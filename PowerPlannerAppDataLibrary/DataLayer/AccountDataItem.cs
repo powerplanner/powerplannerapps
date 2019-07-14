@@ -418,10 +418,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         [DataMember]
+        [Obsolete("Use Token instead")]
         public string Password
         {
             // Legacy up-convert
-            set { Token = value; }
+            get { return null; }
+            set { if (value != null) Token = value; }
         }
 
         private bool _rememberUsername;
