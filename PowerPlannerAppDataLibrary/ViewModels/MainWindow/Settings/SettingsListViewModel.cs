@@ -80,5 +80,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             var popupHost = GetPopupViewModelHost();
             popupHost.ShowPopup(new GoogleCalendarIntegrationViewModel(popupHost, Account));
         }
+
+        private const string ContributeUrl = "https://powerplanner.net/contribute";
+
+        /// <summary>
+        /// Returns the url, caller must navigate to the url
+        /// </summary>
+        /// <returns></returns>
+        public string OpenContribute()
+        {
+            TelemetryExtension.Current?.TrackEvent("Action_OpenContribute");
+
+            return ContributeUrl;
+        }
     }
 }

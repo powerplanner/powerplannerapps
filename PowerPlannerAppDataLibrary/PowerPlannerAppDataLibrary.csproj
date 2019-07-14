@@ -235,9 +235,12 @@
     <Compile Include="ViewModels\MainWindow\MainScreen\Years\YearsViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\PremiumVersionViewModel.cs" />
+    <Compile Include="ViewModels\MainWindow\Promos\PromoContributeViewModel.cs" />
+    <Compile Include="ViewModels\MainWindow\Promos\PromoRegistrations.cs" />
     <Compile Include="ViewModels\MainWindow\Settings\AboutViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Settings\BaseSettingsSplitViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Settings\BaseSettingsViewModelWithAccount.cs" />
+    <Compile Include="ViewModels\MainWindow\Settings\BaseWebContentViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Settings\CalendarIntegrationClassesViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Settings\CalendarIntegrationTasksViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Settings\CalendarIntegrationViewModel.cs" />

@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.App;
+using BareMvvm.Core.ViewModels;
 using Newtonsoft.Json.Linq;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
@@ -133,40 +134,49 @@ namespace PowerPlannerAppDataLibrary.App
             return await OwnsInAppPurchaseAsync();
         }
 
+        /// <summary>
+        /// Note that this WILL throw exceptions, caller should catch
+        /// </summary>
+        /// <param name="createViewModel"></param>
+        public void ShowPopup(Func<BaseViewModel, BaseViewModel> createViewModel)
+        {
+            var mainWindow = Windows.OfType<MainAppWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                // For iOS, we get the currently visible view model and then find its closest popup host, so that this works
+                // when there's already a popup visible (like adding homework -> repeating requires premium).
+                // I think it has to do with only being able to show one modal popup controller at a time.
+                // For Windows, we do NOT want that, since we want the popup shown on a separate layer, rather than in the same page stack as the current popup
+                if (SyncExtensions.GetPlatform() == "iOS")
+                {
+                    var popupViewModelHost = mainWindow.GetViewModel()?.GetFinalContent()?.GetPopupViewModelHost();
+
+                    if (popupViewModelHost != null)
+                    {
+                        popupViewModelHost.ShowPopup(createViewModel(popupViewModelHost));
+                    }
+                    else
+                    {
+                        throw new NullReferenceException("Couldn't find popup view model host");
+                    }
+                }
+
+                else
+                {
+                    mainWindow.ViewModel.ShowPopup(createViewModel(mainWindow.ViewModel));
+                }
+            }
+            else
+            {
+                throw new NullReferenceException("Couldn't find main window");
+            }
+        }
+
         public async void PromptPurchase(string contextualMessage)
         {
             try
             {
-                var mainWindow = Windows.OfType<MainAppWindow>().FirstOrDefault();
-                if (mainWindow != null)
-                {
-                    // For iOS, we get the currently visible view model and then find its closest popup host, so that this works
-                    // when there's already a popup visible (like adding homework -> repeating requires premium).
-                    // I think it has to do with only being able to show one modal popup controller at a time.
-                    // For Windows, we do NOT want that, since we want the popup shown on a separate layer, rather than in the same page stack as the current popup
-                    if (SyncExtensions.GetPlatform() == "iOS")
-                    {
-                        var popupViewModelHost = mainWindow.GetViewModel()?.GetFinalContent()?.GetPopupViewModelHost();
-
-                        if (popupViewModelHost != null)
-                        {
-                            popupViewModelHost.ShowPopup(new PremiumVersionViewModel(popupViewModelHost, contextualMessage));
-                        }
-                        else
-                        {
-                            throw new NullReferenceException("Couldn't find popup view model host");
-                        }
-                    }
-
-                    else
-                    {
-                        mainWindow.ViewModel.ShowPopup(new PremiumVersionViewModel(mainWindow.ViewModel, contextualMessage));
-                    }
-                }
-                else
-                {
-                    throw new NullReferenceException("Couldn't find main window");
-                }
+                ShowPopup((parent) => new PremiumVersionViewModel(parent, contextualMessage));
             }
 
             catch (Exception ex)

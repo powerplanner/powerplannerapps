@@ -1625,4 +1625,10 @@
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>مرفقات الصور</value>
   </data>
+  <data name="Settings_MainPage_ContributeItem.Subtitle" xml:space="preserve">
+    <value>هل أنت مطور؟ مساعدة إضافة بعض الميزات!</value>
+  </data>
+  <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
+    <value>المساهمة في تخطيط الطاقة</value>
+  </data>
 </root>

@@ -157,5 +157,17 @@ namespace PowerPlannerUWP.Views
         {
             ViewModel.OpenGoogleCalendarIntegration();
         }
+
+        private async void ButtonContribute_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await Launcher.LaunchUriAsync(new Uri(ViewModel.OpenContribute()));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
     }
 }

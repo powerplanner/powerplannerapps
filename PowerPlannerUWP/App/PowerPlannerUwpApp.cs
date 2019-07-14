@@ -1,6 +1,8 @@
 ﻿using BareMvvm.Core.App;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
+using PowerPlannerUWP.ViewModel.Promos;
 using PowerPlannerUWPLibrary;
 using PowerPlannerUWPLibrary.Extensions;
 using System;
@@ -32,6 +34,9 @@ namespace PowerPlannerUWP
         protected override async Task InitializeAsyncOverride()
         {
             InitializeUWP.Initialize();
+
+            // We register promoting other accounts as one of the first promotions
+            PromoRegistrations.Registrations.Insert(0, typeof(PromoOtherPlatformsViewModel.Registration));
 
             // Extensions are registered with InitializeUWP.Initialize, since they're also needed from the background task
 

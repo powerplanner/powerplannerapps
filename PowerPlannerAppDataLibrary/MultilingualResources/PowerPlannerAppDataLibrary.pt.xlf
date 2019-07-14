@@ -2163,6 +2163,14 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">Anexos de imagem</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Are you a developer? Help add some features!</source>
+          <target state="final" state-qualifier="mt-suggestion">Você é um desenvolvedor? Ajude a adicionar alguns recursos!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
+          <source>Contribute to Power Planner</source>
+          <target state="final" state-qualifier="mt-suggestion">Contribua para Power Planner</target>
+        </trans-unit>
       </group>
     </body>
   </file>

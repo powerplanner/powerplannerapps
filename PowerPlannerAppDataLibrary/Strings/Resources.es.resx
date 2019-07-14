@@ -1623,4 +1623,10 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>Adjuntos de imagen</value>
   </data>
+  <data name="Settings_MainPage_ContributeItem.Subtitle" xml:space="preserve">
+    <value>¿Eres desarrollador? ¡Ayuda a añadir algunas funciones!</value>
+  </data>
+  <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
+    <value>Contribuir a Power Planner</value>
+  </data>
 </root>

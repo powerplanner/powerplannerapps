@@ -2164,6 +2164,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">Adjuntos de imagen</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Are you a developer? Help add some features!</source>
+          <target state="final" state-qualifier="mt-suggestion">¿Eres desarrollador? ¡Ayuda a añadir algunas funciones!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
+          <source>Contribute to Power Planner</source>
+          <target state="final" state-qualifier="mt-suggestion">Contribuir a Power Planner</target>
+        </trans-unit>
       </group>
     </body>
   </file>

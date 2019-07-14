@@ -2165,6 +2165,14 @@ Please think about using an online account instead!</source>
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">مرفقات الصور</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Are you a developer? Help add some features!</source>
+          <target state="final" state-qualifier="mt-suggestion">هل أنت مطور؟ مساعدة إضافة بعض الميزات!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
+          <source>Contribute to Power Planner</source>
+          <target state="final" state-qualifier="mt-suggestion">المساهمة في تخطيط الطاقة</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -17,6 +17,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
@@ -123,6 +124,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             if (lastAccount != null && lastAccount.IsAutoLoginPossible && lastAccount.AutoLogin)
             {
                 await this.SetCurrentAccount(lastAccount);
+                PromoRegistrations.StartPromoLogic(lastAccount);
                 LoggedInFromNormalActivation?.Invoke(this, lastAccount);
             }
 

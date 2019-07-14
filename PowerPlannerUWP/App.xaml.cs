@@ -84,6 +84,7 @@ using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerUWP.Views.SettingsViews.Grades;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 
 namespace PowerPlannerUWP
 {
@@ -108,14 +109,7 @@ namespace PowerPlannerUWP
             this.Suspending += OnSuspending;
             this.Resuming += OnResuming;
 
-            MainWindowViewModel.LoggedInFromNormalActivation += new WeakEventHandler<AccountDataItem>(MainWindowViewModel_LoggedInFromNormalActivation).Handler;
-
             var dontWait = ConfigureJumpList();
-        }
-
-        private void MainWindowViewModel_LoggedInFromNormalActivation(object sender, AccountDataItem e)
-        {
-            PromoOtherPlatformsViewModel.ShowIfNeeded(e, sender as MainWindowViewModel);
         }
 
         public override Type GetPortableAppType()
@@ -193,7 +187,8 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassAverageGradesViewModel), typeof(ConfigureClassAverageGradesView) },
                 { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
                 { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
-                { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) }
+                { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
+                { typeof(PromoContributeViewModel), typeof(PromoContributeView) }
             };
         }
 

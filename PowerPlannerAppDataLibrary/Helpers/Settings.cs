@@ -83,6 +83,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string LAST_SELECTED_DURATION_FOR_EVENT_WITHOUT_CLASS = "LastDurationEventNoClass";
         private const string AVERAGE_IMAGE_BLOB_SAVE_SPEED_IN_BYTES_PER_SECOND = "AverageImageBlobSaveSpeedInBytesPerSecond";
         private const string AVERAGE_IMAGE_UPLOAD_SPEED_IN_BYTES_PER_SECOND = "AverageImageUploadSpeedInBytesPerSecond";
+        private const string HAS_SHOWN_PROMO_CONTRIBUTE = "HasShownPromoContribute";
 
         #endregion
 
@@ -140,6 +141,22 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 else
                 {
                     AppSettings.Remove(HAS_REVIEWED_OR_EMAILED_DEV);
+                }
+            }
+        }
+
+        public static bool HasShownPromoContribute
+        {
+            get => AppSettings.GetValueOrDefault(HAS_SHOWN_PROMO_CONTRIBUTE, false);
+            set
+            {
+                if (value)
+                {
+                    AppSettings.AddOrUpdateValue(HAS_SHOWN_PROMO_CONTRIBUTE, true);
+                }
+                else
+                {
+                    AppSettings.Remove(HAS_SHOWN_PROMO_CONTRIBUTE);
                 }
             }
         }

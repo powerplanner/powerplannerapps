@@ -208,6 +208,9 @@
     <Compile Include="Views\ForgotUsernameView.xaml.cs">
       <DependentUpon>ForgotUsernameView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Promos\PromoContributeView.xaml.cs">
+      <DependentUpon>PromoContributeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Promos\PromoOtherPlatformsView.xaml.cs">
       <DependentUpon>PromoOtherPlatformsView.xaml</DependentUpon>
     </Compile>
@@ -330,6 +333,9 @@
     </Compile>
     <Compile Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml.cs">
       <DependentUpon>TwoWeekScheduleSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\WebContentView.xaml.cs">
+      <DependentUpon>WebContentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SyncErrorsView.xaml.cs">
       <DependentUpon>SyncErrorsView.xaml</DependentUpon>
@@ -626,6 +632,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Promos\PromoContributeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Promos\PromoOtherPlatformsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -787,6 +797,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\WebContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

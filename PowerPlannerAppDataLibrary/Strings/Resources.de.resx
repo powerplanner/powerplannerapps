@@ -1623,4 +1623,10 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>Bild-Anhänge</value>
   </data>
+  <data name="Settings_MainPage_ContributeItem.Subtitle" xml:space="preserve">
+    <value>Sind Sie Entwickler? Helfen Sie, einige Funktionen hinzuzufügen!</value>
+  </data>
+  <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
+    <value>Beitrag zum Power Planner</value>
+  </data>
 </root>

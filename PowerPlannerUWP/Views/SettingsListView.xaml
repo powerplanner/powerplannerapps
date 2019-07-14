@@ -86,6 +86,12 @@
                 Click="ButtonTwoWeekSchedule_Click"/>
 
             <settingsviews:MainSettingsItem
+                x:Name="ButtonContribute"
+                x:Uid="Settings_MainPage_ContributeItem"
+                Symbol="World"
+                Click="ButtonContribute_Click"/>
+
+            <settingsviews:MainSettingsItem
                 x:Name="ButtonAbout"
                 x:Uid="Settings_MainPage_AboutItem"
                 Subtitle="BareBones Dev"
