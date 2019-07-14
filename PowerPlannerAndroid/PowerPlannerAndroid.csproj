@@ -178,7 +178,13 @@
       <HintPath>..\packages\Xamarin.Android.Arch.Lifecycle.ViewModel.1.1.1.1\lib\monoandroid90\Xamarin.Android.Arch.Lifecycle.ViewModel.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Glide, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.Android.Glide.4.0.0\lib\MonoAndroid70\Xamarin.Android.Glide.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Glide.4.9.0\lib\monoandroid81\Xamarin.Android.Glide.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Glide.DiskLruCache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Android.Glide.DiskLruCache.4.9.0\lib\monoandroid81\Xamarin.Android.Glide.DiskLruCache.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Glide.GifDecoder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Android.Glide.GifDecoder.4.9.0\lib\monoandroid81\Xamarin.Android.Glide.GifDecoder.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.28.0.0.1\lib\monoandroid90\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
