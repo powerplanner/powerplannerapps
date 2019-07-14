@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/FullWidthEditText"
+            android:id="@+id/EditTextDetails"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+            android:hint="{ClassPage_PivotItemDetails.Header}"
+            android:minLines="5"
+            android:gravity="top"
+            local:Binding="{Source=Details, Target=Text, Mode=TwoWay}"/>
+        
+    </LinearLayout>
+
+</ScrollView>

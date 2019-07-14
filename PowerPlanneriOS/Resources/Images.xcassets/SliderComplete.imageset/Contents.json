@@ -1,0 +1,29 @@
+{
+  "images": [
+    {
+      "scale": "1x",
+      "idiom": "universal",
+      "filename": "icons8-Ok-50.png"
+    },
+    {
+      "scale": "2x",
+      "idiom": "universal",
+      "filename": "icons8-Ok-100.png"
+    },
+    {
+      "scale": "3x",
+      "idiom": "universal",
+      "filename": "icons8-Ok-150.png"
+    },
+    {
+      "idiom": "universal"
+    }
+  ],
+  "properties": {
+    "template-rendering-intent": ""
+  },
+  "info": {
+    "version": 1,
+    "author": ""
+  }
+}

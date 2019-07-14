@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:settingsListItem="http://schemas.android.com/apk/res-auto"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemUpgradeToPremium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      settingsListItem:settingIcon="@drawable/ic_shop_black_48dp"
+      settingsListItem:settingTitle="Upgrade to premium version!"
+      settingsListItem:settingSubtitle="Unlock all the features!"
+      local:Binding="{Source=@Settings_MainPage_UpgradeToPremiumItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_UpgradeToPremiumItem.Subtitle, Target=SettingSubtitle}"/>
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemAccount"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      settingsListItem:settingIcon="@drawable/ic_account_circle_black_48dp"
+      settingsListItem:settingTitle="My account"
+      settingsListItem:settingSubtitle="Logout or manage account"
+      local:Binding="{Source=@Settings_MainPage_MyAccountItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_MyAccountItem.Subtitle, Target=SettingSubtitle}"/>
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemWidgets"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      settingsListItem:settingIcon="@drawable/ic_dashboard_black_48dp"
+      settingsListItem:settingTitle="Widgets"
+      settingsListItem:settingSubtitle="Customize Android home screen widgets"
+      local:Binding="{Source=@String_Widgets, Target=SettingTitle}; {Source=@Settings_MainPage_Widgets_Subtitle, Target=SettingSubtitle}"/>
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemSyncOptions"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      settingsListItem:settingIcon="@drawable/ic_cached_black_48dp"
+      local:Binding="{Source=@Settings_MainPage_SyncOptionsItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_SyncOptionsItem.Subtitle, Target=SettingSubtitle}"/>
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemGoogleCalendar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      settingsListItem:settingIcon="@drawable/ic_gcal_black_48dp"
+      settingsListItem:settingTitle="Google Calendar integration"
+      settingsListItem:settingSubtitle="Tasks and classes in Google Calendar"
+      local:Binding="{Source=@Settings_MainPage_GoogleCalendarIntegrationItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle, Target=SettingSubtitle}"/>
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemTwoWeekSchedule"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      settingsListItem:settingIcon="@drawable/ic_date_range_black_48dp"
+      settingsListItem:settingTitle="Two week schedule"
+      settingsListItem:settingSubtitle="Set current week and day week changes"
+      local:Binding="{Source=@Settings_MainPage_TwoWeekScheduleItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_TwoWeekScheduleItem.Subtitle, Target=SettingSubtitle}"/>
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemAbout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      settingsListItem:settingIcon="@drawable/ic_help_black_48dp"
+      settingsListItem:settingTitle="About"
+      settingsListItem:settingSubtitle="BareBones Dev"
+      local:Binding="{Source=@Settings_MainPage_AboutItem.Title, Target=SettingTitle}"/>
+
+    </LinearLayout>
+</ScrollView>

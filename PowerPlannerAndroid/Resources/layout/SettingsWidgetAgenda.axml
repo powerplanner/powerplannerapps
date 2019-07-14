@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settingsListItem="http://schemas.android.com/apk/res-auto"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@android:style/TextAppearance.Large"
+            android:text="{String_AgendaWidget}"
+            android:textAllCaps="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <TextView
+            android:text="{Settings_WidgetAgenda_Description}"
+            style="@android:style/TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <View
+            style="@style/Divider" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/SettingsWidgetAgendaShowTasksSwitch"
+            android:text="{Settings_Tiles_MainTile_ToggleHomework.Header}"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <View
+            style="@style/Divider" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/SettingsWidgetAgendaShowEventsSwitch"
+            android:text="{Settings_Tiles_MainTile_ToggleExams.Header}"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <View
+            style="@style/Divider" />
+
+        <TextView
+            android:id="@+id/SettingsWidgetAgendaSkipItemsExplanation"
+            android:text="You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days."
+            style="@android:style/TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <View
+            style="@style/Divider" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+          <TextView
+            android:text="{Tile_SkipItems.Text}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingBottom="6dp"
+            android:paddingRight="3dp"/>
+
+          <EditText
+            android:id="@+id/SettingsWidgetAgendaSkipDaysEditText"
+            local:Binding="{Source=Account.MainTileSettings.SkipItemsOlderThan, Target=Text, Converter=SkipItemsToStringConverter}"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+          <TextView
+            android:text="{Tile_DaysPastToday.Text}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:paddingBottom="6dp"
+            android:paddingLeft="3dp"/>
+      
+        </LinearLayout>
+
+      <View
+          style="@style/Divider" />
+
+      <TextView
+          android:text="{Tile_SkipExplanation0.Text}"
+          style="@android:style/TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:paddingLeft="16dp"
+          android:paddingRight="16dp"/>
+
+      <TextView
+          android:text="{Tile_SkipExplanation1.Text}"
+          style="@android:style/TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:paddingLeft="16dp"
+          android:paddingRight="16dp"/>
+
+      <TextView
+          android:text="{Tile_SkipExplanation2.Text}"
+          style="@android:style/TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:paddingLeft="16dp"
+          android:paddingRight="16dp"/>
+
+      <TextView
+          android:text="{Tile_SkipExplanationBlank.Text}"
+          style="@android:style/TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:paddingLeft="16dp"
+          android:paddingRight="16dp"/>
+
+    </LinearLayout>
+</ScrollView>

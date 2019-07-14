@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--http://stackoverflow.com/questions/19238738/android-shape-with-bottom-stroke-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item>
+    <shape android:shape="rectangle" >
+      <solid android:color="@android:color/transparent" />
+    </shape>
+  </item>
+
+  <item android:top="-4dp" android:right="-4dp" android:left="-4dp">
+    <shape>
+      <solid android:color="@android:color/transparent" />
+      <stroke
+          android:width="2dp"
+          android:color="#B5B5B5" />
+    </shape>
+  </item>
+
+</layer-list>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  android:id="@+id/SemesterView"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:clickable="true"
+  android:background="#F5F5F5"
+  android:padding="8dp"
+  android:layout_marginTop="8dp"
+  android:layout_marginBottom="8dp">
+
+  <TextView
+    style="@android:style/TextAppearance.Medium"
+    android:id="@+id/SemesterName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:maxLines="1"
+    local:Binding="{Source=Name, Target=Text, Mode=OneWay}"/>
+
+  <LinearLayout
+    android:id="@+id/ClassesHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp">
+    
+    <TextView
+      android:layout_width="0dp"
+      android:layout_weight="1"
+      android:layout_height="wrap_content"
+      android:text="{SemesterView_HeaderClass.Text}"
+      android:textStyle="bold"/>
+
+    <TextView
+      android:layout_width="80dp"
+      android:layout_height="wrap_content"
+      android:text="{SemesterView_HeaderCredits.Text}"
+      android:textStyle="bold"
+      android:gravity="right"
+      android:paddingLeft="4dp"/>
+
+    <TextView
+      android:layout_width="80dp"
+      android:layout_height="wrap_content"
+      android:text="{SemesterView_HeaderGPA.Text}"
+      android:textStyle="bold"
+      android:gravity="right"
+      android:paddingLeft="4dp"/>
+
+  </LinearLayout>
+
+  <TextView
+    android:id="@+id/TextViewNoClasses"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="{SemesterView_NoClasses}"
+    android:visibility="gone"/>
+
+  <LinearLayout
+    android:id="@+id/ViewGroupClasses"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+  <LinearLayout
+    android:id="@+id/ClassesFooter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+      style="@android:style/TextAppearance.Medium"
+      android:layout_width="0dp"
+      android:layout_weight="1"
+      android:layout_height="wrap_content"
+      android:text="{SemesterView_Total.Text}"/>
+
+    <TextView
+      style="@android:style/TextAppearance.Medium"
+      android:layout_width="80dp"
+      android:layout_height="wrap_content"
+      android:gravity="right"
+      android:paddingLeft="4dp"
+      local:Binding="{Source=CreditsEarned, Target=Text, Converter=CreditsToStringConverter}"/>
+
+    <TextView
+      style="@android:style/TextAppearance.Medium"
+      android:layout_width="80dp"
+      android:layout_height="wrap_content"
+      android:gravity="right"
+      android:paddingLeft="4dp"
+      local:Binding="{Source=GPA, Target=Text, Converter=GpaToStringConverter}"/>
+
+  </LinearLayout>
+
+  <Button
+    style="@style/PowerPlannerBlueButton"
+    android:id="@+id/ButtonOpenSemester"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="{SemesterView_ButtonOpenSemester.Content}"
+    android:layout_marginTop="12dp"/>
+
+</LinearLayout>

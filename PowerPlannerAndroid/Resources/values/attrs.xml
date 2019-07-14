@@ -1,0 +1,10 @@
+﻿<resources>
+    <declare-styleable name="SettingsListItem">
+        <attr name="settingIcon" format="reference"/>
+        <attr name="settingTitle" format="string"/>
+        <attr name="settingSubtitle" format="string"/>
+    </declare-styleable>
+  <declare-styleable name="ImageAttachmentsWrapGrid">
+    <attr name="isEditing" format="boolean"/>
+  </declare-styleable>
+</resources>

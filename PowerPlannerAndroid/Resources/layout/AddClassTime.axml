@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="0dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+      <Button
+          android:id="@+id/ButtonStartTime"
+          style="@style/BorderlessButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          local:Binding="{Source=StartTime, Target=Text, Converter=TimeSpanToStringConverter}" />
+      <TextView
+          android:text="{TextBlock_To.Text}"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+      <Button
+          android:id="@+id/ButtonEndTime"
+          style="@style/BorderlessButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          local:Binding="{Source=EndTime, Target=Text, Converter=TimeSpanToStringConverter}" />
+    </LinearLayout>
+    <View
+        style="@style/Divider" />
+    <EditText
+        style="@style/FullWidthEditText"
+        android:inputType="textCapWords|textAutoCorrect"
+        android:imeOptions="actionDone"
+        android:hint="{EditingClassScheduleItemView_TextBoxRoom.Header}"
+        local:Binding="{Source=Room, Target=Text, Mode=TwoWay}" />
+    <View
+        style="@style/Divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp">
+
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <CheckBox
+            android:text="Monday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CheckBoxMonday"
+            local:Binding="{Source=IsMondayChecked, Target=Checked, Mode=TwoWay}"
+            android:layout_marginBottom="6dp"/>
+
+        <CheckBox
+            android:text="Tuesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CheckBoxTuesday"
+            local:Binding="{Source=IsTuesdayChecked, Target=Checked, Mode=TwoWay}"
+            android:layout_marginBottom="6dp"/>
+
+        <CheckBox
+            android:text="Wednesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CheckBoxWednesday"
+            local:Binding="{Source=IsWednesdayChecked, Target=Checked, Mode=TwoWay}"
+            android:layout_marginBottom="6dp"/>
+
+        <CheckBox
+            android:text="Thursday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CheckBoxThursday"
+            local:Binding="{Source=IsThursdayChecked, Target=Checked, Mode=TwoWay}"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <CheckBox
+            android:text="Friday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CheckBoxFriday"
+            local:Binding="{Source=IsFridayChecked, Target=Checked, Mode=TwoWay}"
+            android:layout_marginBottom="6dp"/>
+
+        <CheckBox
+            android:text="Saturday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CheckBoxSaturday"
+            local:Binding="{Source=IsSaturdayChecked, Target=Checked, Mode=TwoWay}"
+            android:layout_marginBottom="6dp"/>
+
+        <CheckBox
+            android:text="Sunday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CheckBoxSunday"
+            local:Binding="{Source=IsSundayChecked, Target=Checked, Mode=TwoWay}"/>
+
+      </LinearLayout>
+
+    </LinearLayout>
+    
+    <View
+        style="@style/Divider" />
+
+    <Spinner
+        android:id="@+id/SpinnerWeek"
+        style="@style/FullWidthSpinner"/>
+
+    <TextView
+        android:text="{EditingClassScheduleItemView_TextBlockWeekDescription.Text}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="10dp"
+        style="@android:style/TextAppearance.Small"/>
+
+    <View
+        style="@style/Divider" />
+
+  </LinearLayout>
+</ScrollView>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/EditTextName"
+            style="@style/FullWidthEditText"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:imeOptions="actionDone"
+            android:hint="{EditGradePage_TextBoxName.Header}"
+            local:Binding="{Source=Name, Target=Text, Mode=TwoWay}"/>
+
+        <View style="@style/Divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fullWidthItemHeight"
+            android:orientation="horizontal">
+
+            <EditText
+                style="@style/FullWidthEditText"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:inputType="number|numberDecimal"
+                local:Binding="{Source=GradeReceived, Target=Text, Mode=TwoWay, Converter=GradeToEditViewTextConverter}"
+                android:hint="--"/>
+
+            <TextView
+                style="@android:style/TextAppearance.Medium"
+                android:textSize="20sp"
+                android:text="/"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="2dp"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                style="@style/FullWidthEditText"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:inputType="number|numberDecimal"
+                local:Binding="{Source=GradeTotal, Target=Text, Mode=TwoWay, Converter=GradeToEditViewTextConverter}"
+                android:hint="--"/>
+
+            <TextView
+                style="@android:style/TextAppearance.Large"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:paddingRight="16dp"
+                local:Binding="{Source=GradePercent, Target=Text}"/>
+        
+        </LinearLayout>
+
+        <View style="@style/Divider"/>
+
+        <Spinner
+            android:id="@+id/SpinnerWeightCategory"
+            style="@style/FullWidthSpinner"/>
+
+        <View style="@style/Divider"/>
+
+        <Button
+            android:id="@+id/ButtonDate"
+            style="@style/FullWidthBorderlessButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fullWidthItemHeight"
+            local:Binding="{Source=Date, Target=Text, Converter=DateTimeToStringConverter, ConverterParameter='dddd, MMM d')}"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:gravity="left|center_vertical"
+            android:paddingStart="16dp"/>
+
+        <View style="@style/Divider"/>
+
+        <EditText
+            style="@style/FullWidthEditText"
+            android:id="@+id/EditTextDetails"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+            android:hint="{EditGradePage_TextBoxDetails.Header}"
+            android:minLines="3"
+            android:gravity="top"
+            local:Binding="{Source=Details, Target=Text, Mode=TwoWay}"/>
+
+        <View style="@style/Divider"/>
+        
+    </LinearLayout>
+
+</ScrollView>

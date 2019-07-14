@@ -1,0 +1,111 @@
+﻿<UserControl
+    x:Class="PowerPlannerUWP.Controls.RecurrenceControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    xmlns:interfacesUwpControls="using:InterfacesUWP.Controls">
+
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                x:Uid="RepeatingEntry_TextBlockRepeatEvery"
+                VerticalAlignment="Center"/>
+
+            <interfacesUwpControls:NumberTextBox
+                Grid.Column="1"
+                Text="{Binding RepeatIntervalAsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                NumberType="Integer"
+                NumberMin="1"
+                Margin="6,0,0,0"/>
+
+            <ComboBox
+                Grid.Column="2"
+                ItemsSource="{Binding RepeatOptionsAsStrings}"
+                SelectedItem="{Binding SelectedRepeatOptionAsString, Mode=TwoWay}"
+                Margin="6,0,0,0"/>
+
+        </Grid>
+
+        <TextBlock
+            x:Uid="RepeatingEntry_TextBlockRepeatOn"
+            Visibility="{Binding AreDayCheckBoxesVisible}"
+            Margin="0,12,0,6"/>
+
+        <Grid Visibility="{Binding AreDayCheckBoxesVisible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.Resources>
+                <DataTemplate x:Key="DayCheckboxTemplate">
+                    <CheckBox
+                        Content="{Binding DisplayName, Mode=OneTime}"
+                        IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                </DataTemplate>
+            </Grid.Resources>
+
+            <ItemsControl
+                ItemsSource="{Binding DayCheckBoxesLeftSide, Mode=OneTime}"
+                ItemTemplate="{StaticResource DayCheckboxTemplate}"/>
+
+            <ItemsControl
+                Grid.Column="1"
+                ItemsSource="{Binding DayCheckBoxesRightSide, Mode=OneTime}"
+                ItemTemplate="{StaticResource DayCheckboxTemplate}"/>
+        </Grid>
+
+        <TextBlock
+            x:Uid="RepeatingEntry_TextBlockEnds"
+            Margin="0,12,0,6"/>
+
+        <Grid Margin="0,6,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton
+                x:Uid="RepeatingEntry_RadioButtonEndsOn"
+                IsChecked="{Binding IsEndDateChecked, Mode=TwoWay}"/>
+            <CalendarDatePicker
+                x:Name="CalendarPickerEndDate"
+                Grid.Column="1"
+                IsEnabled="{Binding IsEndDateChecked}"
+                DateChanged="CalendarPickerEndDate_DateChanged"/>
+        </Grid>
+
+        <Grid Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton
+                x:Uid="RepeatingEntry_RadioButtonEndsAfter"
+                IsChecked="{Binding IsEndOccurrencesChecked, Mode=TwoWay}"/>
+            <interfacesUwpControls:NumberTextBox
+                Grid.Column="1"
+                Text="{Binding EndOccurrencesAsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                NumberType="Integer"
+                NumberMin="2"
+                IsEnabled="{Binding IsEndOccurrencesChecked}"/>
+            <TextBlock
+                Grid.Column="2"
+                x:Uid="RepeatingEntry_TextBlockOccurrences"
+                VerticalAlignment="Center"
+                Margin="6,0,0,0"/>
+        </Grid>
+
+    </StackPanel>
+</UserControl>

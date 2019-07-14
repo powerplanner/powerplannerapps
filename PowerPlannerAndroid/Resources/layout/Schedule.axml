@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <!--The visual schedule goes up here-->
+    <LinearLayout
+        android:id="@+id/NormalContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <InterfacesDroid.Views.MyZoomAndPanView
+            android:id="@+id/ScrollViewSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ScheduleHost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
+        
+        </InterfacesDroid.Views.MyZoomAndPanView>
+      
+        <!--Week and change week bar-->
+      <android.support.v7.widget.Toolbar
+        android:id="@+id/WeekToolbar"
+        style="@style/ActionBar">
+        
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="3dp"
+          android:orientation="horizontal">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Medium"
+            android:gravity="bottom"
+            android:textColor="#FFFFFF"
+            local:Binding="{Source=DisplayStartDate, Target=Text, Converter=WeekDateToStringConverter}"/>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Medium"
+            android:gravity="bottom"
+            android:text="-"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Medium"
+            android:gravity="bottom"
+            android:textColor="#FFFFFF"
+            local:Binding="{Source=DisplayEndDate, Target=Text, Converter=WeekDateToStringConverter}"/>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Small"
+            android:gravity="bottom"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="8dp"
+            local:Binding="{Source=DisplayStartDate, Target=Text, Converter=DateTimeToStringConverter, ConverterParameter=yyyy}"/>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Small"
+            android:gravity="bottom"
+            android:textColor="#FFFFFF"
+            local:Binding="{Source=CurrentWeek, Target=Text, Converter=ScheduleViewCurrentWeekToStringConverter}; {Source=HasTwoWeekSchedule, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+          
+        </LinearLayout>
+        
+      </android.support.v7.widget.Toolbar>
+    </LinearLayout>
+
+    <!--Editing section is down here-->
+    <ScrollView
+        android:id="@+id/EditingContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--Classes list-->
+            <LinearLayout
+                android:id="@+id/EditingClassesViewGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <!--Add class button-->
+            <Button
+                android:id="@+id/ButtonAddClass"
+                style="@style/AddItemButton"
+                android:text="{SchedulePage_ButtonAddClass.Content}"
+                android:layout_marginTop="5dp"/>
+            
+        </LinearLayout>
+
+    </ScrollView>
+  
+  <!--Welcome section is here-->
+  <LinearLayout
+    android:id="@+id/WelcomeContent"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:visibility="gone">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="{SchedulePage_TextBlockWelcomeTitle.Text}"
+      android:textAlignment="center"
+      android:gravity="center_horizontal"
+      style="@android:style/TextAppearance.Large"/>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:text="{SchedulePage_TextBlockWelcomeSubtitle.Text}"
+      android:textAlignment="center"
+      android:gravity="center_horizontal"
+      style="@android:style/TextAppearance.Small"/>
+      
+    <Button
+      style="@style/PowerPlannerBlueButton"
+      android:text="{SchedulePage_ButtonAddClass.Content}"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="32dp"
+      android:maxWidth="200dp"
+      android:layout_gravity="center_horizontal"
+      android:id="@+id/ButtonWelcomeAddClass"/>
+    
+  </LinearLayout>
+
+</LinearLayout>

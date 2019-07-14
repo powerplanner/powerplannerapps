@@ -1,0 +1,91 @@
+﻿<views:PopupViewHostGeneric
+    x:Uid="CreateAccountPage"
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    x:Class="PowerPlannerUWP.Views.CreateAccountView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="CREATE ACCOUNT">
+
+    <views:PopupViewHostGeneric.MainContent>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="20">
+                    <TextBox
+                        x:Uid="CreateAccountPage_TextBoxUsername"
+                            x:Name="createUsername"
+                            Header="Username"
+                            PlaceholderText="Pick a username"
+                        InputScope="Default"
+                        IsSpellCheckEnabled="False"
+                        IsTextPredictionEnabled="False"
+                            KeyUp="createUsername_KeyUp"
+                        Loaded="createUsername_Loaded"
+                        Text="{Binding Username, Mode=TwoWay}"/>
+
+                    <TextBox
+                        x:Uid="CreateAccountPage_TextBoxEmail"
+                            x:Name="createEmail"
+                            Header="Email address"
+                            Margin="0,15,0,0"
+                            InputScope="EmailSmtpAddress"
+                            PlaceholderText="For recovery purposes"
+                            KeyUp="createEmail_KeyUp"
+                        Text="{Binding Email, Mode=TwoWay}"/>
+
+                    <PasswordBox
+                        x:Uid="CreateAccountPage_PasswordBoxPassword"
+                            x:Name="createPassword"
+                            Header="Password"
+                            Margin="0,15,0,0"
+                            PlaceholderText="Create a password"
+                            KeyUp="createPassword_KeyUp"
+                        Password="{Binding Password, Mode=TwoWay}"/>
+
+                    <PasswordBox
+                        x:Uid="CreateAccountPage_PasswordBoxConfirmPassword"
+                            x:Name="createPasswordConfirm"
+                            Header="Confirm password"
+                            PlaceholderText="Enter your password again"
+                            Margin="0,15,0,0"
+                            KeyUp="createPasswordConfirm_KeyUp"
+                        Password="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                    <TextBlock
+                        x:Uid="CreateAccountPage_TextBlockCreateOfflineAccount"
+                            x:Name="createOfflineAccount"
+                            Text="No internet? Click here to make an offline account"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                        Foreground="{StaticResource PowerPlannerSecondaryBlue}"
+                            TextAlignment="Right"
+                            Margin="12,24,12,12"
+                            Tapped="createOfflineAccount_Tapped"/>
+                </StackPanel>
+
+
+
+                <Button
+                Grid.Row="1"
+                x:Uid="WelcomePage_ButtonCreateAccount"
+                x:Name="createOnlineAccount"
+                Style="{StaticResource WelcomeButtonStyle}"
+                Content="CREATE ACCOUNT "
+                Click="createOnlineAccount_Click"
+                Margin="20"/>
+            </Grid>
+        </ScrollViewer>
+
+    </views:PopupViewHostGeneric.MainContent>
+
+</views:PopupViewHostGeneric>

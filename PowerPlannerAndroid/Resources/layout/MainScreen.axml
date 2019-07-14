@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/MenuDrawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--The main content view-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/Toolbar"
+                style="@style/ActionBar"/>
+            
+            <FrameLayout
+                android:id="@+id/ContentFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/Toolbar"/>
+
+        </RelativeLayout>
+
+        <!-- The navigation drawer -->
+        <ScrollView android:id="@+id/MenuDrawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/primary">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/ButtonIsOffline"
+                    style="@style/FullWidthBorderlessButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:drawableLeft="@drawable/ic_signal_wifi_off_white_24dp"
+                    android:textColor="#ffffff"
+                    android:text="Offline"/>
+
+                <Button
+                    android:id="@+id/ButtonSyncError"
+                    style="@style/FullWidthBorderlessButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:drawableLeft="@drawable/ic_error_outline_white_24dp"
+                    android:textColor="#ffffff"
+                    android:text="{String_SyncError}"/>
+
+                <ImageView
+                    android:id="@+id/ImageViewPowerPlannerMenuIcon"
+                    android:layout_width="fill_parent"
+                    android:layout_height="80dp"
+                    android:src="@drawable/logo"
+                    android:scaleType="centerInside"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="24dp"/>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayoutMenuItems"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.DrawerLayout>
+
+    <InterfacesDroid.ViewModelPresenters.PopupsPresenter
+        android:id="@+id/MainScreenPopupsPresenter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:id="@+id/SyncProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:indeterminateTint="#ffffff"
+        android:progressTint="#ffffff"
+        android:progressBackgroundTint="#66ffffff"
+        android:indeterminate="true"
+        android:elevation="20dp"
+        android:visibility="gone"/>
+
+</FrameLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="38dp"
+    android:paddingBottom="2dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#AAAAAA"/>
+
+            <View
+                android:id="@+id/ListItemGradeColorBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                local:Binding="{Source=WeightCategory.Class.Color, Target=Background, Converter=ColorArrayToDrawableConverter}"/>
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="16dp">
+
+            <!--Name-->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:textStyle="bold"
+                android:lines="1"
+                local:Binding="{Source=Name, Target=Text, Mode=OneWay}"/>
+
+            <!--Grade-->
+            <InterfacesDroid.Views.MyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:lines="1"
+                local:Binding="{Source=GradeSubtitle, Target=Text}; {Source=WeightCategory.Class.Color, Target=TextColor, Converter=ColorArrayToColorConverter}"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

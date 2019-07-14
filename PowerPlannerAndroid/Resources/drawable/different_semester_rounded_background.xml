@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--http://tips.androidhive.info/2013/09/android-layout-rounded-corner-border/-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+   
+      <!-- view background color -->
+      <solid android:color="#C8000000"/>
+   
+      <!-- If you want to add some padding -->
+      <!--<padding
+        android:left="4dp"
+        android:top="4dp"
+        android:right="4dp"
+        android:bottom="4dp">
+        
+  </padding>-->
+   
+      <!-- Here is the corner radius -->
+      <corners
+        android:radius="5dp"/>
+   
+</shape>

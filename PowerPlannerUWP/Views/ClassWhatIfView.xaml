@@ -1,0 +1,251 @@
+﻿<local:MainScreenContentViewHostGeneric
+    x:Name="thisPage"
+    xmlns:pages="using:PowerPlannerUWP.Pages"
+    x:Class="PowerPlannerUWP.Views.ClassWhatIfView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:interfaces="using:InterfacesUWP"
+    xmlns:gradeViews="using:PowerPlannerUWP.Views.GradeViews">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.Transitions>
+            <TransitionCollection>
+                <EntranceThemeTransition />
+            </TransitionCollection>
+        </Grid.Transitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <ScrollViewer Grid.Row="1">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Rectangle
+                    Fill="{Binding Class.Color, Converter={StaticResource ColorToBrushConverter}}"/>
+
+                <StackPanel>
+                    <Grid Margin="12,12,12,0" x:Name="GridTopBar">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Rectangle
+                            Height="4"
+                            Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                            VerticalAlignment="Center"/>
+
+                        <TextBlock
+                            x:Uid="ClassWhatIfPage_TextBlockHeader"
+                            Text="WHAT IF?"
+                            Style="{ThemeResource TitleTextBlockStyle}"
+                            Margin="20,0,20,0"
+                            TextWrapping="NoWrap"
+                            TextLineBounds="Tight"
+                            Grid.Column="1"
+                            Foreground="White"/>
+
+                        <Rectangle
+                            Height="4"
+                            Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                            VerticalAlignment="Center"
+                            Grid.Column="2"/>
+
+                    </Grid>
+
+                    <StackPanel Margin="12,0,12,12" MaxWidth="550">
+
+                        <Button
+                            Style="{StaticResource TransparentButtonStyle}"
+                            x:Name="ButtonExpandCollapseDescription"
+                            Click="ButtonExpandCollapseDescription_Click"
+                            Padding="0"
+                            Margin="0,6,0,12">
+
+                            <StackPanel>
+                                <RichTextBlock
+                                    x:Name="RichTextBlockDescription"
+                                    FontSize="12"
+                                    Foreground="White"
+                                    LineHeight="14"
+                                    MaxLines="2"
+                                    IsTextSelectionEnabled="False"
+                                    TextTrimming="CharacterEllipsis">
+
+                                    <Paragraph>
+                                        <Run
+                                            x:Uid="ClassWhatIfPage_RunExplanation"
+                                            Text="What If? mode allows..."/>
+                                    </Paragraph>
+                                </RichTextBlock>
+
+                            </StackPanel>
+                        </Button>
+
+                        <TextBlock
+                            x:Uid="ClassWhatIfPage_TextBlockEnterDesired"
+                            Text="Enter desired grade or GPA"
+                            Foreground="White"/>
+                        <Grid RequestedTheme="Dark" Margin="0,4,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox
+                                x:Uid="ClassWhatIfPage_TextBoxDesiredGrade"
+                                x:Name="TextBoxDesiredGrade"
+                                PlaceholderText="grade"
+                                TextChanged="TextBoxDesiredGrade_TextChanged"
+                                InputScope="Number"/>
+
+                            <TextBox
+                                x:Uid="ClassWhatIfPage_TextBoxDesiredGPA"
+                                x:Name="TextBoxDesiredGPA"
+                                PlaceholderText="GPA"
+                                TextChanged="TextBoxDesiredGPA_TextChanged"
+                                Grid.Column="2"
+                                InputScope="Number"/>
+
+                        </Grid>
+                
+                        <TextBlock
+                            x:Name="TextBlockDesiredError"
+                            Style="{ThemeResource BodyTextBlockStyle}"
+                            Visibility="{Binding DesiredErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
+                            Margin="0,4,0,0"
+                            Text="{Binding DesiredErrorMessage}"/>
+
+                    </StackPanel>
+                </StackPanel>
+
+
+                <Rectangle
+                    Fill="{Binding Class.Color, Converter={StaticResource ColorToBrushConverter}}"
+                    Grid.Row="1"
+                    Opacity="0.15"/>
+
+                <StackPanel
+                    Grid.Row="1">
+
+
+
+                    <!--Grades info section-->
+                    <StackPanel Margin="20,20,20,12">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                                Text="{Binding Class.Grade, Converter={StaticResource NumberToFormatConverter}, ConverterParameter='0.##%', FallbackValue=[percent]}"
+                                                Style="{StaticResource TitleTextBlockStyle}"
+                                                FontWeight="SemiLight"/>
+
+                            <StackPanel
+                                                Grid.Column="1">
+
+                                <TextBlock
+                                                    Text="{Binding Class.GPA, Converter={StaticResource GpaToStringConverter}, ConverterParameter='IncludeGPA', FallbackValue=[gpa]}"
+                                                    Style="{StaticResource SubtitleTextBlockStyle}"
+                                                    FontWeight="SemiLight"
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Right"/>
+
+                                <TextBlock
+                                                    Text="{Binding Class.Credits, Converter={StaticResource CreditsToStringConverter}, ConverterParameter=IncludeCredits}"
+                                                    Style="{ThemeResource BodyTextBlockStyle}"
+                                                    FontWeight="SemiLight"
+                                                    HorizontalAlignment="Right"/>
+
+                            </StackPanel>
+
+                        </Grid>
+
+
+                        <ItemsControl
+                            Margin="0,18,0,0"
+                            ItemsSource="{Binding Class.WeightCategories}"
+                            IsHitTestVisible="False">
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                                            Text="{Binding Name, FallbackValue=[weight-category]}"
+                                                            Margin="0,0,12,0"/>
+
+                                        <TextBlock
+                                                            Text="{Binding WeightAchieved, Converter={StaticResource GradeToFormatConverter}, ConverterParameter=0.##, FallbackValue=[received]}"
+                                                            Grid.Column="1"
+                                                            Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
+
+                                        <TextBlock
+                                                            Text="/"
+                                                            Grid.Column="2"
+                                                            Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
+
+                                        <TextBlock
+                                                            Text="{Binding WeightValue, Converter={StaticResource NumberToFormatConverter}, ConverterParameter=0.##, FallbackValue=[total]}"
+                                                            Grid.Column="3"
+                                                            Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                    </StackPanel>
+
+                    <ItemsControl
+                        ItemsSource="{Binding Class.WeightCategories}" Margin="20,0,8,20">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <interfaces:MyAdaptiveGridPanel MinColumnWidth="300"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <gradeViews:WeightCategoryListViewItem
+                                    Margin="0,12,12,0"
+                                    OnRequestViewGrade="WeightCategoryListViewItem_OnRequestViewGrade"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+                </StackPanel>
+                
+            </Grid>
+            
+        </ScrollViewer>
+
+    </Grid>
+
+</local:MainScreenContentViewHostGeneric>

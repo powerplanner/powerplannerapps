@@ -1,0 +1,56 @@
+﻿<UserControl
+    CanDrag="True"
+    DragStarting="UserControl_DragStarting"
+    x:Class="PowerPlannerUWP.Views.CalendarViews.MainCalendarItemView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views.CalendarViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="40"
+    d:DesignWidth="200">
+
+    <Grid
+        Background="{Binding Class.Color, Converter={StaticResource ColorToBrushConverter}, Mode=OneTime, FallbackValue={ThemeResource TaskOrEventBrush}}"
+        Margin="0,0,0,2"
+        Tapped="Grid_Tapped"
+        Height="29">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle
+            Fill="Black"
+            Opacity="0.2"
+            Width="10"
+            Visibility="{Binding IsComplete, Converter={StaticResource IsCompleteToVisibilityConverter}, Mode=OneTime}"/>
+
+        <Grid
+            Grid.Column="1"
+            Margin="6,0,0,2"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left">
+
+            <TextBlock
+                x:Name="TextBlockName"
+                Text="{Binding Name, Mode=OneTime}"
+                MaxLines="1"
+                TextWrapping="NoWrap"
+                FontWeight="SemiBold"
+                FontSize="13"
+                Foreground="White"
+                Opacity="{Binding IsComplete, Converter={StaticResource IsCompleteToOpacityConverter}, Mode=OneTime}"/>
+
+            <Rectangle
+                Fill="White"
+                Height="1"
+                VerticalAlignment="Center"
+                Margin="0,2,0,0"
+                Visibility="{Binding IsComplete, Converter={StaticResource IsCompleteToVisibilityConverter}, Mode=OneTime}"/>
+        </Grid>
+
+    </Grid>
+</UserControl>

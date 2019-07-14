@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+        
+    <style name="ItemContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#EFEFEF</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="AddItemButton" parent="BorderlessButton">
+        <item name="android:drawableLeft">@android:drawable/ic_input_add</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableTint">@color/accent</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:textColor">@color/accent</item>
+    </style>
+
+  <style name="AddItemButtonTopLevel" parent="AddItemButton">
+    <item name="android:background">#E9E9E9</item>
+  </style>
+
+    <style name="AddYearButton" parent="AddItemButton">
+        <item name="android:background">#E9E9E9</item>
+    </style>
+
+    <style name="AddSemesterButton" parent="AddItemButton">
+        <item name="android:background">#F5F5F5</item>
+    </style>
+
+    <style name="ActionBar">
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?android:actionBarSize</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:background">@color/primary</item>
+    </style>
+
+    <style name="MenuButtonSave">
+        <item name="android:title">{String_Save}</item>
+        <item name="android:icon">@drawable/ic_check_white_36dp</item>
+    </style>
+
+    <style name="MenuButtonDelete">
+        <item name="android:title">{MenuItemDelete}</item>
+    </style>
+
+    <style name="MenuButtonEditClass">
+      <item name="android:title">{String_EditClass}</item>
+      <item name="android:showAsAction">never</item>
+    </style>
+
+    <style name="MenuButtonDeleteClass" parent="MenuButtonDelete">
+        <item name="android:title">{String_DeleteClass}</item>
+        <item name="android:showAsAction">never</item>
+    </style>
+
+    <!--TODO: Need a done icon-->
+    <style name="MenuButtonDone">
+        <item name="android:title">Done</item>
+        <item name="android:icon">@drawable/ic_check_white_36dp</item>
+    </style>
+
+    <style name="MenuButtonEdit">
+        <item name="android:title">{AppBarButtonEdit.Label}</item>
+        <item name="android:icon">@drawable/ic_edit_white_24dp</item>
+    </style>
+    
+    <style name="FullWidthEditText" parent="Widget.AppCompat.EditText">  
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">@dimen/abc_text_size_subhead_material</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/fullWidthItemHeight</item>
+    </style>
+    
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+    <style name="BorderlessButton" parent="Widget.AppCompat.Button.Borderless">
+        
+    </style>
+
+    <style name="FullWidthBorderlessButton" parent="BorderlessButton">
+
+    </style>
+
+    <style name="FullWidthSpinner">
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/fullWidthItemHeight</item>
+    </style>
+
+    <style name="FloatingActionButton">
+        <item name="backgroundTint">@color/accent</item>
+        <item name="android:tint">#FFFFFF</item>
+        <item name="rippleColor">@color/primaryLight</item>
+    </style>
+    
+    <style name="PowerPlannerBlueButton">
+        <item name="android:background">#546BC7</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="WhiteEditTextHint" parent="TextAppearance.AppCompat">
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@android:color/white</item>
+    </style>
+    
+</resources>

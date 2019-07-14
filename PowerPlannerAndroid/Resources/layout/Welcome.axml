@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1F2656">
+    
+    <!--TODO: Put settings link up here-->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+        
+        <TextView
+            style="@android:style/TextAppearance.Large"
+            android:text="Power Planner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="#ffffff"/>
+        
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:text="{WelcomePage_TextBlockSubtitle.Text}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:textColor="#cccccc"/>
+    
+    </LinearLayout>
+        
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp">
+        <Button
+            style="@style/PowerPlannerBlueButton"
+            android:text="{WelcomePage_ButtonLogin.Content}"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/ButtonLogin"/>
+        <View
+            android:layout_width="16dp"
+            android:layout_height="match_parent"/>
+        <Button
+            style="@style/PowerPlannerBlueButton"
+            android:text="{WelcomePage_ButtonCreateAccount.Content}"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/ButtonCreateAccount"/>
+    </LinearLayout>
+</LinearLayout>

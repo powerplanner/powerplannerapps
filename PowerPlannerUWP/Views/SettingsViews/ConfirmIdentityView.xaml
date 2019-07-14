@@ -1,0 +1,53 @@
+﻿<views:PopupViewHostGeneric
+    x:Uid="Settings_ConfirmIdentityPage"
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.ConfirmIdentityView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="CONFIRM IDENTITY">
+
+    <views:PopupViewHostGeneric.MainContent>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12">
+
+                <TextBlock
+                    x:Uid="Settings_ConfirmIdentitiyPage_Description"
+                Text="Please confirm your identity by entering your Power Planner account password."
+                Style="{ThemeResource BodyTextBlockStyle}"/>
+
+                <TextBlock
+                x:Name="TextBlockError"
+                Text="Incorrect password. Please try again."
+                TextWrapping="Wrap"
+                Style="{ThemeResource BaseTextBlockStyle}"
+                Foreground="Red"
+                Margin="0,12,0,0"
+                Visibility="Collapsed"/>
+
+                <PasswordBox
+                    x:Uid="Settings_ConfirmIdentityPage_TextBoxCurrentPassword"
+                x:Name="passwordConfirmCurrentPassword"
+                PlaceholderText="current password"
+                KeyUp="passwordConfirmCurrentPassword_KeyUp"
+                Margin="0,12,0,0"
+                    Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    PasswordChanged="passwordConfirmCurrentPassword_PasswordChanged"/>
+
+                <Button
+                    x:Uid="Settings_ConfirmIdentityPage_ButtonContinue"
+                x:Name="ButtonContinue"
+                Content="Continue"
+                Click="ButtonContinue_Click"
+                Margin="0,12,0,0"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </views:PopupViewHostGeneric.MainContent>
+    
+</views:PopupViewHostGeneric>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:background="#FFFFFF">
+
+  <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1F2656">
+
+    <FrameLayout
+      android:id="@+id/WidgetAgendaHeaderBranding"
+      android:layout_width="0dp"
+      android:layout_height="40dp"
+      android:layout_weight="1">
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left"
+        android:scaleType="fitStart"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/logo"/>
+    </FrameLayout>
+
+    <ImageButton
+      android:id="@+id/WidgetAgendaHeaderAddButton"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:src="@android:drawable/ic_input_add"
+      android:tint="#FFFFFF"
+      android:background="@null"/>
+
+  </LinearLayout>
+
+  <ListView
+    android:id="@+id/WidgetAgendaListView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"/>
+
+  <!--Empty view is shown if list items are empty-->
+  <TextView
+    android:id="@+id/WidgetAgendaEmptyView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Loading..."
+    android:gravity="center"
+    android:textColor="#666666"
+    android:paddingTop="3dp"
+    android:visibility="gone"/>
+  
+</LinearLayout>

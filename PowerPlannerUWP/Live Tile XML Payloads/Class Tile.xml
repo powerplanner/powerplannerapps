@@ -1,0 +1,24 @@
+<tile>
+  <visual>
+
+    <binding template="TileMedium">
+      <group>
+        <subgroup>
+          <text hint-style="caption">Tomorrow</text>
+          <text hint-style="captionSubtle">AWS Queue Project</text>
+        </subgroup>
+      </group>
+
+      <text />
+
+      <group>
+        <subgroup>
+          <text hint-style="caption">English</text>
+          <text hint-style="titleNumeral">2:00</text>
+          <text hint-style="captionSubtle" hint-wrap="true">Modern Languages 320</text>
+        </subgroup>
+      </group>
+    </binding>
+
+  </visual>
+</tile>

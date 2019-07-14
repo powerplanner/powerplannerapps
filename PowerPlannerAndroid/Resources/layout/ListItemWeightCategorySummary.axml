@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!--Name-->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingRight="8dp"
+        android:textColor="#000000"
+        android:lines="1"
+        local:Binding="{Source=Name, Target=Text}"/>
+
+    <!--Grade-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        local:Binding="{Source=WeightAchieved, Target=Text, Converter=GradeToStringConverter, ConverterParameter='0.##'}"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"/>
+
+    <!--Weight value-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        local:Binding="{Source=WeightValue, Target=Text, Converter=GradeToStringConverter, ConverterParameter='0.##'}"/>
+
+</LinearLayout>

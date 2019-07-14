@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <View
+        android:id="@+id/FloatingAddItemExpandedBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CCFFFFFF"
+        android:visibility="gone"
+        android:clickable="true"/>
+
+    <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
+    <LinearLayout
+        android:id="@+id/FloadingAddItemAddHolidaySection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="136dp"
+        android:clickable="true">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:id="@+id/FloatingAddItemAddHolidayText"
+                android:text="{String_AddHoliday}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
+        </FrameLayout>
+        
+        <android.support.design.widget.FloatingActionButton
+            style="@style/FloatingActionButton"
+            android:id="@+id/FloatingActionButtonAddHoliday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android.support.design:fabSize="mini"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="16dp"
+            android:src="@android:drawable/ic_input_add"/>
+    
+    </LinearLayout>
+
+    <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
+    <LinearLayout
+        android:id="@+id/FloadingAddItemAddExamSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="76dp"
+        android:clickable="true">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:id="@+id/FloatingAddItemAddExamText"
+                android:text="{String_AddEvent}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
+        </FrameLayout>
+        
+        <android.support.design.widget.FloatingActionButton
+            style="@style/FloatingActionButton"
+            android:id="@+id/FloatingActionButtonAddExam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android.support.design:fabSize="mini"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="16dp"
+            android:src="@android:drawable/ic_input_add"/>
+    
+    </LinearLayout>
+
+
+    <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
+    <LinearLayout
+        android:id="@+id/FloadingAddItemAddHomeworkSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:clickable="true">
+        
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:id="@+id/FloatingAddItemAddHomeworkText"
+                android:text="{String_AddTask}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"/>
+        </FrameLayout>
+            
+        <android.support.design.widget.FloatingActionButton
+            style="@style/FloatingActionButton"
+            android:id="@+id/FloatingActionButtonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@android:drawable/ic_input_add" />
+    
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

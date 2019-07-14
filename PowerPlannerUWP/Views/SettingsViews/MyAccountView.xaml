@@ -1,0 +1,113 @@
+﻿<interfacesViews:ViewHostGeneric
+    x:Name="ThisPage"
+    xmlns:interfacesViews="using:InterfacesUWP.Views"
+    xmlns:pages="using:PowerPlannerUWP.Pages"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.MyAccountView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.Transitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.Transitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel x:Name="accountOptions" Margin="20">
+                <TextBlock
+                    x:Uid="Settings_MyAccount_Header"
+                    Text="MY ACCOUNT"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Margin="0,0,0,12"/>
+                
+                <TextBlock Text="{Binding CurrentAccount.Username, FallbackValue=[username]}" Margin="0,0,0,12"/>
+
+                <Button
+                    x:Uid="Settings_MyAccount_ButtonLogOut"
+                    x:Name="ButtonLogOut"
+                    Style="{StaticResource SubitemButtonStyle}" Content="Log Out"
+                    Click="ButtonLogOut_Click"/>
+
+                <Button
+                    x:Uid="Settings_MyAccount_ButtonChangeUsername"
+                    x:Name="ButtonChangeUsername"
+                    Style="{StaticResource SubitemButtonStyle}"
+                    Content="Change Username"
+                    Click="ButtonChangeUsername_Click"/>
+
+
+
+                <Button
+                    x:Uid="Settings_MyAccount_ButtonChangePassword"
+                    x:Name="ButtonChangePassword"
+                    Content="Change Password"
+                    Style="{StaticResource SubitemButtonStyle}"
+                    Click="ButtonChangePassword_Click"/>
+
+                <Button
+                    x:Uid="Settings_MyAccount_ButtonChangeEmail"
+                    x:Name="ButtonChangeEmail"
+                    Style="{StaticResource SubitemButtonStyle}"
+                    Content="Change Email Address"
+                    Visibility="{Binding CurrentAccount.IsOnlineAccount, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Click="ButtonChangeEmail_Click"/>
+
+                <CheckBox
+                    x:Uid="Settings_MyAccount_CheckBoxRememberUsername"
+                    x:Name="CheckBoxRememberUsername"
+                    IsChecked="{Binding RememberUsername, Mode=TwoWay}"
+                    Content="Remember username"
+                    Style="{StaticResource CheckBoxStyle}"/>
+
+                <CheckBox
+                    x:Uid="Settings_MyAccount_CheckBoxRememberPassword"
+                    x:Name="CheckBoxRememberPassword"
+                    IsChecked="{Binding RememberPassword, Mode=TwoWay}"
+                    Content="Remember password"
+                    Style="{StaticResource CheckBoxStyle}"
+                    IsEnabled="{Binding CurrentAccount.IsRememberPasswordPossible}"/>
+
+                <CheckBox
+                    x:Uid="Settings_MyAccount_CheckBoxAutoLogin"
+                    x:Name="CheckBoxAutoLogin"
+                    IsChecked="{Binding AutoLogin, Mode=TwoWay}"
+                    Content="Auto login"
+                    Style="{StaticResource CheckBoxStyle}"
+                    IsEnabled="{Binding CurrentAccount.IsAutoLoginPossible}"/>
+
+
+                <Button
+                    x:Uid="Settings_MyAccount_ButtonConvertToOnline"
+                    x:Name="ButtonConvertToOnline"
+                    Click="ButtonConvertToOnline_Click"
+                    Style="{StaticResource PowerPlannerBlueButtonStyle}"
+                    Content="Convert to Online Account"
+                    Visibility="{Binding CurrentAccount.IsOnlineAccount, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,36,0,0"/>
+
+                <Button
+                    x:Uid="Settings_MyAccount_ButtonDeleteAccount"
+                    x:Name="ButtonDeleteAccount"
+                    Style="{StaticResource PowerPlannerBlueButtonStyle}"
+                    HorizontalAlignment="Stretch"
+                    Content="Delete Account"
+                    Margin="0,12,0,0"
+                    Click="ButtonDeleteAccount_Click"/>
+
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</interfacesViews:ViewHostGeneric>

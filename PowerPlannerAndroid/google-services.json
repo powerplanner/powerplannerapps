@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "141453074704",
+    "firebase_url": "https://power-planner-droid.firebaseio.com",
+    "project_id": "power-planner-droid",
+    "storage_bucket": "power-planner-droid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "<appid>",
+        "android_client_info": {
+          "package_name": "com.barebonesdev.powerplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "<clientid>",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "<apikey>"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

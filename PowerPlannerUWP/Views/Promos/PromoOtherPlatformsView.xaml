@@ -1,0 +1,60 @@
+﻿<views:PopupViewHostGeneric
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    x:Class="PowerPlannerUWP.Views.Promos.PromoOtherPlatformsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Pages.PromoPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="ANNOUNCEMENT">
+
+    <views:PopupViewHostGeneric.MainContent>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Margin="10">
+
+                <TextBlock
+                    Text="Install Power Planner on your phone!"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    TextAlignment="Center"
+                    Margin="0,3,0,17"/>
+
+                <Grid HorizontalAlignment="Stretch" MaxHeight="380">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image
+                        Source="/Assets/PromoOtherPlatforms/iPhone.png"
+                        Stretch="Uniform"/>
+
+                    <Image
+                        Grid.Column="2"
+                        Source="/Assets/PromoOtherPlatforms/Android.png"
+                        Stretch="Uniform"/>
+
+                </Grid>
+
+                <RichTextBlock
+                    Margin="0,15,0,0">
+                    <Paragraph>
+                        Find it in the
+                        <Hyperlink NavigateUri="https://itunes.apple.com/us/app/power-planner-homework-grades/id1278178608?mt=8">App Store</Hyperlink>,
+                        <Hyperlink NavigateUri="https://play.google.com/store/apps/details?id=com.barebonesdev.powerplanner">Google Play</Hyperlink> and
+                        <Hyperlink NavigateUri="https://www.microsoft.com/store/apps/9wzdncrfj25v">Windows Store</Hyperlink>. You can also use the mobile-friendly website:
+                        <Hyperlink NavigateUri="https://powerplanner.net">https://powerplanner.net</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+
+            </StackPanel>
+            
+        </ScrollViewer>
+        
+    </views:PopupViewHostGeneric.MainContent>
+    
+</views:PopupViewHostGeneric>

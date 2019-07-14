@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  android:id="@+id/Root"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+  
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="16dp"
+    local:Binding="{Source=Class.Color, Target=Background, Converter=ColorArrayToDrawableConverter}">
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp">
+
+      <View
+        android:background="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_gravity="center_vertical"/>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="{ClassWhatIfPage_TextBlockHeader.Text}"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        local:Binding="{Source=Class.Color, Target=Background, Converter=ColorArrayToDrawableConverter}"
+        android:layout_gravity="center"/>
+    
+    </FrameLayout>
+
+    <TextView
+      android:text="{ClassWhatIfPage_RunExplanation.Text}"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textColor="#FFFFFF"/>
+
+    <TextView
+      style="@android:style/TextAppearance.Medium"
+      android:text="{ClassWhatIfPage_TextBlockEnterDesired.Text}"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textColor="#FFFFFF"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+      <android.support.design.widget.TextInputLayout
+        android:theme="@style/WhiteEditTextHint"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputEditText
+          android:id="@+id/EditTextWhatIfGrade"
+          android:inputType="number|numberDecimal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="{EditGradePage_TextBoxGradeReceived.Header}"
+          android:textColor="#FFFFFF"
+          android:textColorHint="#FFFFFF"
+          android:foregroundTint="#FFFFFF"
+          local:Binding="{Source=DesiredGrade, Target=Text, Mode=TwoWay, Converter=PercentToEditViewTextConverter}"/>
+      </android.support.design.widget.TextInputLayout>
+
+      <android.support.design.widget.TextInputLayout
+        android:theme="@style/WhiteEditTextHint"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputEditText
+          android:id="@+id/EditTextWhatIfGPA"
+          android:inputType="number|numberDecimal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="{ClassWhatIfPage_TextBoxDesiredGPA.PlaceholderText}"
+          android:textColor="#FFFFFF"
+          android:textColorHint="#FFFFFF"
+          android:foregroundTint="#FFFFFF"
+          local:Binding="{Source=DesiredGPA, Target=Text, Mode=TwoWay, Converter=GpaToEditViewTextConverter}"/>
+      </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+  </LinearLayout>
+</LinearLayout>

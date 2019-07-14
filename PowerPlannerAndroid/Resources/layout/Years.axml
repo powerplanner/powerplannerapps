@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="8dp"
+      android:paddingTop="8dp"
+      android:paddingBottom="4dp">
+
+      <TextView
+        style="@android:style/TextAppearance.Large"
+        android:text="{YearsPage_TextBlockOverall.Text}"
+        android:alpha="0.6"
+        android:paddingRight="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+      <TextView
+        style="@android:style/TextAppearance.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        local:Binding="{Source=YearsViewItemsGroup.School.GPA, Target=Text, Converter=GpaToStringConverter, ConverterParameter=IncludeGPA}"/>
+
+      <TextView
+        style="@android:style/TextAppearance.Large"
+        android:text=" / "
+        android:alpha="0.6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+      <TextView
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:alpha="0.6"
+        local:Binding="{Source=YearsViewItemsGroup.School.CreditsEarned, Target=Text, Converter=CreditsToStringConverter, ConverterParameter=IncludeCredits}"/>
+      
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/YearsListView"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"/>
+
+    <!--<InterfacesDroid.Views.AdapterLinearLayout
+        android:id="@+id/YearsListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>-->
+    <!--
+        android:dividerHeight="10dp"
+        android:divider="#00000000"
+        android:choiceMode="none"-->
+    
+    <Button
+      android:text="{YearsPage_ButtonAddYear.Content}"
+      style="@style/AddYearButton"
+      android:id="@+id/ButtonAddYear"
+      android:layout_marginTop="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:layout_marginBottom="8dp"/>
+        
+  </LinearLayout>
+
+</ScrollView>

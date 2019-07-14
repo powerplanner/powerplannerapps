@@ -1,0 +1,148 @@
+﻿<interfacesViews:ViewHostGeneric
+    xmlns:interfacesViews="using:InterfacesUWP.Views"
+    xmlns:interfaces="using:InterfacesUWP"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.MainTileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:visualizer="using:NotificationsVisualizerLibrary"
+    xmlns:localConverters="using:PowerPlannerUWP.Converters">
+
+    <interfacesViews:ViewHostGeneric.Resources>
+
+        <localConverters:SkipItemsToStringConverter x:Key="SkipItemsToStringConverter"/>
+
+    </interfacesViews:ViewHostGeneric.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel Margin="20">
+                <TextBlock
+                    x:Uid="Settings_Tiles_MainTile_Header"
+                    Text="MAIN TILE"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Margin="0,0,0,12"/>
+
+                <interfaces:MyWrapPanel Margin="0,0,-6,-6">
+
+                    <visualizer:PreviewTile
+                        x:Name="MediumPreviewTile"
+                        TileSize="Medium"
+                        IsAnimationEnabled="False"
+                        Margin="0,0,6,6"/>
+
+                    <visualizer:PreviewTile
+                        x:Name="WidePreviewTile"
+                        TileSize="Wide"
+                        IsAnimationEnabled="False"
+                        Margin="0,0,6,6"/>
+
+                    <visualizer:PreviewTile
+                        x:Name="LargePreviewTile"
+                        TileSize="Large"
+                        IsAnimationEnabled="False"
+                        Margin="0,0,6,6"
+                        Visibility="Collapsed"/>
+
+                </interfaces:MyWrapPanel>
+
+                <TextBlock
+                    x:Uid="Settings_Tiles_MainTile_Description"
+                    Text="These settings affect the main tile, which can be pinned by right clicking Power Planner in your app list, and clicking 'Pin to Start'. The Skip items setting will be inherited by your class tiles, unless you've specifically changed your class tile settings."
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Margin="0,12,0,12"/>
+
+                <ToggleSwitch
+                    x:Uid="Settings_Tiles_MainTile_ToggleHomework"
+                    x:Name="ToggleHomework"
+                    Header="Display incomplete tasks"
+                    IsOn="{Binding Account.MainTileSettings.ShowHomework}"
+                    Toggled="ToggleHomework_Toggled"/>
+
+                <ToggleSwitch
+                    x:Uid="Settings_Tiles_MainTile_ToggleExams"
+                    x:Name="ToggleExams"
+                    Header="Display upcoming events"
+                    IsOn="{Binding Account.MainTileSettings.ShowExams}"
+                    Toggled="ToggleExams_Toggled"
+                    Margin="0,12,0,0"/>
+
+                <TextBlock
+                    x:Uid="Tile_SkipItemsExplanation"
+                    Text="You can also make your live tiles skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days."
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Margin="0,12,0,0"/>
+
+                <TextBlock
+                    x:Uid="Tile_SkipItems"
+                    Text="Skip items"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    Margin="0,12,0,0"/>
+
+                <StackPanel
+                    Orientation="Horizontal"
+                    Margin="0,6,0,0">
+
+                    <TextBox
+                        x:Name="TextBoxSkipAssignments"
+                        InputScope="Number"
+                        Text="{Binding Account.MainTileSettings.SkipItemsOlderThan, Converter={StaticResource SkipItemsToStringConverter}}"
+                        Width="60"
+                        TextChanged="TextBoxSkipAssignments_TextChanged"/>
+
+                    <TextBlock
+                        x:Uid="Tile_DaysPastToday"
+                        x:Name="Tile_DaysPastToday"
+                        Text="days past today"
+                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Margin="12,0,0,0"
+                        VerticalAlignment="Bottom"/>
+
+                </StackPanel>
+
+                <TextBlock
+                    x:Uid="Tile_SkipItemsError"
+                    x:Name="TextBlockSkipItemsError"
+                    Text="This must be an integer, or left blank."
+                    Foreground="Red"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Visibility="Collapsed"/>
+
+
+                <TextBlock
+                    x:Uid="Tile_SkipExplanation0"
+                    Text="Entering 0 will ignore items due today or earlier"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Margin="0,12,0,0"/>
+
+                <TextBlock
+                    x:Uid="Tile_SkipExplanation1"
+                    Text="Entering 1 will ignore items due yesterday or earlier"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Margin="0,12,0,0"/>
+
+                <TextBlock
+                    x:Uid="Tile_SkipExplanation2"
+                    Text="Entering 2 will ignore items due 2 days ago or earlier"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Margin="0,12,0,0"/>
+
+                <TextBlock
+                    x:Uid="Tile_SkipExplanationBlank"
+                    Text="Leaving this blank means the earliest assignment will be displayed (default behavior)"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Margin="0,12,0,0"/>
+
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</interfacesViews:ViewHostGeneric>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/MenuItemSave"
+          style="@style/MenuButtonSave"
+          android:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/MenuItemDelete"
+          style="@style/MenuButtonDelete"
+          android:showAsAction="never"/>
+</menu>

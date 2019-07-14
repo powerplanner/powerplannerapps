@@ -1,0 +1,141 @@
+﻿<views:PopupViewHostGeneric
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    x:Class="PowerPlannerUWP.Views.AddClassTimeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignWidth="450">
+
+    <views:PopupViewHostGeneric.Resources>
+        <Style x:Key="DayCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,6"/>
+        </Style>
+    </views:PopupViewHostGeneric.Resources>
+
+    <views:PopupViewHostGeneric.PrimaryCommands>
+
+        <AppBarButton
+            x:Uid="AppBarButtonSave"
+            x:Name="ButtonSave"
+            Icon="Save"
+            Label="Save"
+            Click="ButtonSave_Click"/>
+
+        <AppBarButton
+            x:Uid="AppBarButtonDelete"
+                x:Name="ButtonDelete"
+                Icon="Delete"
+                Label="Delete"
+                Click="ButtonDelete_Click"/>
+
+    </views:PopupViewHostGeneric.PrimaryCommands>
+
+    <views:PopupViewHostGeneric.MainContent>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12">
+                <TimePicker
+                    x:Uid="EditingClassScheduleItemView_TimePickerStart"
+                    x:Name="timePickerStart"
+                    Header="From"
+                    HorizontalAlignment="Stretch"
+                    Time="{Binding StartTime, Mode=TwoWay}"/>
+
+                <TimePicker
+                    x:Uid="EditingClassScheduleItemView_TimePickerEnd"
+                    x:Name="timePickerEnd"
+                    Header="To"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,24,0,0"
+                    Time="{Binding EndTime, Mode=TwoWay}"/>
+
+                <TextBox
+                    x:Uid="EditingClassScheduleItemView_TextBoxRoom"
+                    x:Name="tbRoom"
+                    Header="Room"
+                    PlaceholderText="ex: Modern Languages 302"
+                    Margin="0,24,0,0"
+                IsSpellCheckEnabled="True"
+                IsTextPredictionEnabled="True"
+                    Text="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                <Grid Margin="0,24,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <CheckBox
+                            x:Name="checkBoxMonday"
+                            Content="Monday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsMondayChecked, Mode=TwoWay}"/>
+
+                        <CheckBox
+                            x:Name="checkBoxTuesday"
+                            Content="Tuesday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsTuesdayChecked, Mode=TwoWay}"/>
+
+                        <CheckBox
+                            x:Name="checkBoxWednesday"
+                            Content="Wednesday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsWednesdayChecked, Mode=TwoWay}"/>
+
+                        <CheckBox
+                            x:Name="checkBoxThursday"
+                            Content="Thursday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsThursdayChecked, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <CheckBox
+                            x:Name="checkBoxFriday"
+                            Content="Friday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsFridayChecked, Mode=TwoWay}"/>
+
+                        <CheckBox
+                            x:Name="checkBoxSaturday"
+                            Content="Saturday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsSaturdayChecked, Mode=TwoWay}"/>
+
+                        <CheckBox
+                            x:Name="checkBoxSunday"
+                            Content="Sunday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsSundayChecked, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                </Grid>
+
+
+
+
+
+                <views:WeekComboBox
+                    x:Uid="EditingClassScheduleItemView_WeekComboBox"
+                    x:Name="weekComboBox"
+                    Header="Week"
+                    Margin="0,24,0,0"
+                    SelectedWeek="{Binding ScheduleWeek, Mode=TwoWay}"/>
+
+                <TextBlock
+                    x:Uid="EditingClassScheduleItemView_TextBlockWeekDescription"
+                    Text="Leave this on 'Both Weeks' unless you have a two-week schedule."
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Margin="1,0,0,0"/>
+
+            </StackPanel>
+
+        </ScrollViewer>
+    </views:PopupViewHostGeneric.MainContent>
+</views:PopupViewHostGeneric>

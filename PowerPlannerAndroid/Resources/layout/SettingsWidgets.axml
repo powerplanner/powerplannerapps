@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:settingsListItem="http://schemas.android.com/apk/res-auto"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+  <TextView
+    android:text="{String_Widgets}"
+    android:textAllCaps="true"
+    style="@android:style/TextAppearance.Large"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingStart="16dp"
+    android:paddingBottom="12dp"/>
+
+  <PowerPlannerAndroid.Views.Controls.SettingsListItem
+    android:id="@+id/SettingsWidgetAgenda"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    settingsListItem:settingIcon="@drawable/ic_assignment_black_48dp"
+    settingsListItem:settingTitle="Agenda widget"
+    settingsListItem:settingSubtitle="Displays upcoming tasks and events"
+    local:Binding="{Source=@String_AgendaWidget, Target=SettingTitle}; {Source=@Settings_Widgets_Agenda_Subtitle, Target=SettingSubtitle}"/>
+
+  <PowerPlannerAndroid.Views.Controls.SettingsListItem
+    android:id="@+id/SettingsWidgetSchedule"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    settingsListItem:settingIcon="@drawable/ic_date_range_black_48dp"
+    settingsListItem:settingTitle="Schedule widget"
+    settingsListItem:settingSubtitle="Displays upcoming classes"
+    local:Binding="{Source=@String_ScheduleWidget, Target=SettingTitle}; {Source=@Settings_Widgets_Schedule_Subtitle, Target=SettingSubtitle}"/>
+
+  </LinearLayout>
+</ScrollView>

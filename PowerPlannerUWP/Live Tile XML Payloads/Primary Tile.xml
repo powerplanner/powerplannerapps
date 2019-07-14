@@ -1,0 +1,85 @@
+<tile>
+  <visual branding="nameAndLogo">
+
+    <binding template="TileMedium" displayName="Planner">
+      <group>
+        <subgroup>
+          <text>Tomorrow</text>
+          <text hint-style="captionSubtle">AWS Queue Project</text>
+        </subgroup>
+      </group>
+
+      <text />
+
+      <group>
+        <subgroup>
+          <text>This Wednesday</text>
+          <text hint-style="captionSubtle">Bookwork</text>
+        </subgroup>
+      </group>
+
+      <text hint-style="captionSubtle">Exam 2</text>
+
+    </binding>
+
+
+
+    <binding template="TileWide">
+      <group>
+        <subgroup>
+          <text>Tomorrow</text>
+          <text hint-style="captionSubtle">AWS Queue Project</text>
+        </subgroup>
+      </group>
+
+      <text />
+
+      <group>
+        <subgroup>
+          <text>This Wednesday</text>
+          <text hint-style="captionSubtle">Bookwork</text>
+        </subgroup>
+      </group>
+
+      <text hint-style="captionSubtle">Exam 2</text>
+
+    </binding>
+
+
+
+    <binding template="TileLarge">
+      <group>
+        <subgroup>
+          <text hint-style="body">Tomorrow</text>
+          <text hint-style="captionSubtle">AWS Queue Project</text>
+        </subgroup>
+      </group>
+
+      <text />
+
+      <group>
+        <subgroup>
+          <text hint-style="body">This Wednesday</text>
+          <text hint-style="captionSubtle">Bookwork</text>
+        </subgroup>
+      </group>
+
+      <text hint-style="captionSubtle">Exam 2</text>
+
+      <text />
+
+
+      <group>
+        <subgroup>
+          <text hint-style="body">Next Friday</text>
+          <text hint-style="captionSubtle">Quiz 4</text>
+        </subgroup>
+      </group>
+
+      <text hint-style="captionSubtle">Presentation</text>
+      <text hint-style="captionSubtle">Chpt 3, Pg 46-52</text>
+
+    </binding>
+
+  </visual>
+</tile>

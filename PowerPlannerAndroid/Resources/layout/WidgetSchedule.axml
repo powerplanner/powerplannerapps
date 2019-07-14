@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:background="#FFFFFF">
+
+  <LinearLayout
+    android:id="@+id/WidgetScheduleHeader"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="#1F2656">
+
+    <ImageView
+      android:layout_width="24dp"
+      android:layout_height="fill_parent"
+      android:scaleType="fitStart"
+      android:layout_marginTop="8dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginBottom="8dp"
+      android:src="@drawable/logo"/>
+
+    <TextView
+      android:id="@+id/WidgetScheduleHeaderText"
+      android:layout_width="0dp"
+      android:layout_weight="1"
+      android:layout_height="wrap_content"
+      android:text="Schedule"
+      android:paddingLeft="4dp"
+      android:textSize="17sp"
+      android:layout_gravity="center_vertical"
+      android:singleLine="true"
+      android:textColor="#FFFFFF"/>
+
+  </LinearLayout>
+
+  <!--PaddingTop and ClipToPadding gives the list view a top padding of 4px-->
+  <ListView
+    android:id="@+id/WidgetScheduleListView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:divider="@android:color/transparent"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
+    android:clipToPadding="false"
+    android:dividerHeight="4dp"/>
+
+  <!--Empty view is shown if list items are empty-->
+  <TextView
+    android:id="@+id/WidgetScheduleEmptyView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Loading..."
+    android:gravity="center"
+    android:textColor="#666666"
+    android:paddingTop="3dp"
+    android:visibility="gone"/>
+  
+</LinearLayout>

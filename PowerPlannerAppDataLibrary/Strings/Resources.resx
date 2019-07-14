@@ -1,0 +1,1731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Buttons_Cancel.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ImageUploadOptions_Always" xml:space="preserve">
+    <value>Always</value>
+  </data>
+  <data name="ImageUploadOptions_Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="ImageUploadOptions_WifiOnly" xml:space="preserve">
+    <value>Wi-Fi Only</value>
+  </data>
+  <data name="Settings_AboutPage_AboutAppHeader.Text" xml:space="preserve">
+    <value>about the app</value>
+  </data>
+  <data name="Settings_AboutPage_AboutAppValue.Text" xml:space="preserve">
+    <value>Most features are free since I know not all students can pay for an app. You can always delete your current semester to get around the 1 semester limitation. However, the premium version unlocks useful additional features, and also shows your appreciation for my work!</value>
+  </data>
+  <data name="Settings_AboutPage_ContactHeader.Text" xml:space="preserve">
+    <value>contact</value>
+  </data>
+  <data name="Settings_AboutPage_DeveloperHeader.Text" xml:space="preserve">
+    <value>developer</value>
+  </data>
+  <data name="Settings_AboutPage_DeveloperValue.Text" xml:space="preserve">
+    <value>BareBones Dev, owned by Andrew Bares</value>
+  </data>
+  <data name="Settings_AboutPage_Header.Text" xml:space="preserve">
+    <value>ABOUT</value>
+  </data>
+  <data name="Settings_AboutPage_VersionHeader.Text" xml:space="preserve">
+    <value>version</value>
+  </data>
+  <data name="Settings_CalendarIntegration_Classes_Description.Text" xml:space="preserve">
+    <value>Power Planner can display your classes in the system calendar, so that you can view your schedule from the Calendar app.</value>
+  </data>
+  <data name="Settings_CalendarIntegration_Classes_Header.Text" xml:space="preserve">
+    <value>CLASSES CALENDAR INTEGRATION</value>
+  </data>
+  <data name="Settings_CalendarIntegration_Tasks_Description.Text" xml:space="preserve">
+    <value>Power Planner can display your tasks and events in the system calendar, so that you can view them from the Calendar app.</value>
+  </data>
+  <data name="Settings_CalendarIntegration_Tasks_Header.Text" xml:space="preserve">
+    <value>TASKS CALENDAR INTEGRATION</value>
+  </data>
+  <data name="Settings_ChangeEmailPage.Title" xml:space="preserve">
+    <value>CHANGE EMAIL</value>
+  </data>
+  <data name="Settings_ChangeEmailPage_ButtonUpdateEmail.Content" xml:space="preserve">
+    <value>Update email</value>
+  </data>
+  <data name="Settings_ChangeEmailPage_Errors_FailedGrabEmail" xml:space="preserve">
+    <value>Failed to grab your current email. Maybe you're offline?</value>
+  </data>
+  <data name="Settings_ChangeEmailPage_Errors_FailedUpdateOnline" xml:space="preserve">
+    <value>Failed to update your email. Maybe you're offline?</value>
+  </data>
+  <data name="Settings_ChangeEmailPage_Errors_NoAccount" xml:space="preserve">
+    <value>Failed to load account, please close the settings and make sure you're logged in.</value>
+  </data>
+  <data name="Settings_ChangeEmailPage_FetchingEmailMessage" xml:space="preserve">
+    <value>Fetching email...</value>
+  </data>
+  <data name="Settings_ChangeEmailPage_TextBoxEmail.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Settings_ChangePasswordPage.Title" xml:space="preserve">
+    <value>CHANGE PASSWORD</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_ButtonUpdatePassword.Content" xml:space="preserve">
+    <value>Update password</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_Erorrs_UnknownError" xml:space="preserve">
+    <value>Something went wrong. Try closing Power Planner.</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_Errors_FailedUpdateOnline" xml:space="preserve">
+    <value>Failed to change your online password. Maybe you're not connected to the internet?</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_Errors_MustEnterPassword" xml:space="preserve">
+    <value>You must enter a password!</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_Errors_PasswordsDidNotMatch" xml:space="preserve">
+    <value>Your passwords did not match. Try again.</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_TextBoxConfirmPassword.Header" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_TextBoxConfirmPassword.PlaceholderText" xml:space="preserve">
+    <value>Retype your new password</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_TextBoxNewPassword.Header" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="Settings_ChangePasswordPage_TextBoxNewPassword.PlaceholderText" xml:space="preserve">
+    <value>Enter a new password</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage.Title" xml:space="preserve">
+    <value>CHANGE USERNAME</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage_ButtonUpdateUsername.Content" xml:space="preserve">
+    <value>Update username</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage_Errors_FailedUpdateOnline" xml:space="preserve">
+    <value>You might not be connected to the internet, or Power Planner is currently down.</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage_Errors_NoAccount" xml:space="preserve">
+    <value>Failed to load account, please close the settings and make sure you're logged in.</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage_Errors_NoUsername" xml:space="preserve">
+    <value>You must enter a username!</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage_Errors_UnknownError" xml:space="preserve">
+    <value>Something went wrong. Try closing the app.</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage_Errors_UsernameExists" xml:space="preserve">
+    <value>This username already exists on your computer. Please choose a unique username.</value>
+  </data>
+  <data name="Settings_ChangeUsernamePage_TextBoxUsername.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Settings_ConfirmIdentitiyPage_Description.Text" xml:space="preserve">
+    <value>Please confirm your identity by entering your Power Planner account password.</value>
+  </data>
+  <data name="Settings_ConfirmIdentityPage.Title" xml:space="preserve">
+    <value>CONFIRM IDENTITY</value>
+  </data>
+  <data name="Settings_ConfirmIdentityPage_ButtonContinue.Content" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Settings_ConfirmIdentityPage_Errors_IncorrectPassword" xml:space="preserve">
+    <value>Incorrect password. Try again.</value>
+  </data>
+  <data name="Settings_ConfirmIdentityPage_Errors_NoCurrentAccount" xml:space="preserve">
+    <value>You're not logged in right now. Something went wrong. Try closing Power Planner.</value>
+  </data>
+  <data name="Settings_ConfirmIdentityPage_TextBoxCurrentPassword.PlaceholderText" xml:space="preserve">
+    <value>current password</value>
+  </data>
+  <data name="Settings_ConvertToOnlinePage.Title" xml:space="preserve">
+    <value>CONVERT TO ONLINE</value>
+  </data>
+  <data name="Settings_ConvertToOnlinePage_ButtonConvert.Content" xml:space="preserve">
+    <value>Convert to online account</value>
+  </data>
+  <data name="Settings_ConvertToOnlinePage_TextBoxEmail.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Settings_ConvertToOnlinePage_TextBoxEmail.PlaceholderText" xml:space="preserve">
+    <value>Provide your email</value>
+  </data>
+  <data name="Settings_ConvertToOnline_Errors_FailedCreateOnline" xml:space="preserve">
+    <value>Failed to create account. Maybe you're offline?</value>
+  </data>
+  <data name="Settings_ConvertToOnline_TextBlockConfirmMergeExisting.Text" xml:space="preserve">
+    <value>You are logging into an existing account. This will likely cause duplicate items to be uploaded, since everything currently on this device will be uploaded as new items.
+
+It is recommended that you delete your current account and then convert this device's account to an online account. Nevertheless, would you like to continue logging into the online account?
+
+Click Continue to login (which might cause duplicates).</value>
+  </data>
+  <data name="Settings_DeleteAccountPage.Title" xml:space="preserve">
+    <value>DELETE ACCOUNT</value>
+  </data>
+  <data name="Settings_DeleteAccountPage_ButtonConfirmDelete.Content" xml:space="preserve">
+    <value>yes, delete my account</value>
+  </data>
+  <data name="Settings_DeleteAccountPage_CheckBoxDeleteOnlineToo.Content" xml:space="preserve">
+    <value>Delete online account too?</value>
+  </data>
+  <data name="Settings_DeleteAccountPage_Description.Text" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="Settings_DeleteAccountPage_Errors_ErrorDeletingHeader" xml:space="preserve">
+    <value>Error deleting account</value>
+  </data>
+  <data name="Settings_DeleteAccountPage_Errors_UnknownErrorDeletingOnline" xml:space="preserve">
+    <value>Failed to delete your online account. Maybe you're offline?</value>
+  </data>
+  <data name="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" xml:space="preserve">
+    <value>Upload via</value>
+  </data>
+  <data name="Settings_ImageUploadOptionsPage_Description.Text" xml:space="preserve">
+    <value>Control when images are uploaded, so that you don't incur charges on your data plan.</value>
+  </data>
+  <data name="Settings_ImageUploadOptionsPage_Header.Text" xml:space="preserve">
+    <value>IMAGE UPLOAD OPTIONS</value>
+  </data>
+  <data name="Settings_MainPage_AboutItem.Title" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Settings_MainPage_CalendarIntegrationItem.Subtitle" xml:space="preserve">
+    <value>Tasks and classes in native Calendar app</value>
+  </data>
+  <data name="Settings_MainPage_CalendarIntegrationItem.Title" xml:space="preserve">
+    <value>Calendar integration</value>
+  </data>
+  <data name="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" xml:space="preserve">
+    <value>Tasks and classes in Google Calendar</value>
+  </data>
+  <data name="Settings_MainPage_GoogleCalendarIntegrationItem.Title" xml:space="preserve">
+    <value>Google Calendar integration</value>
+  </data>
+  <data name="Settings_MainPage_LiveTilesItem.Subtitle" xml:space="preserve">
+    <value>Edit Live Tile settings</value>
+  </data>
+  <data name="Settings_MainPage_LiveTilesItem.Title" xml:space="preserve">
+    <value>Live Tiles</value>
+  </data>
+  <data name="Settings_MainPage_MyAccountItem.Subtitle" xml:space="preserve">
+    <value>Logout or manage account</value>
+  </data>
+  <data name="Settings_MainPage_MyAccountItem.Title" xml:space="preserve">
+    <value>My account</value>
+  </data>
+  <data name="Settings_MainPage_RemindersItem.Subtitle" xml:space="preserve">
+    <value>Change reminder settings</value>
+  </data>
+  <data name="Settings_MainPage_RemindersItem.Title" xml:space="preserve">
+    <value>Reminders</value>
+  </data>
+  <data name="Settings_MainPage_SyncOptionsItem.Subtitle" xml:space="preserve">
+    <value>Upload options, push</value>
+  </data>
+  <data name="Settings_MainPage_SyncOptionsItem.Title" xml:space="preserve">
+    <value>Sync options</value>
+  </data>
+  <data name="Settings_MainPage_TwoWeekScheduleItem.Subtitle" xml:space="preserve">
+    <value>Set current week and day week changes</value>
+  </data>
+  <data name="Settings_MainPage_TwoWeekScheduleItem.Title" xml:space="preserve">
+    <value>Two week schedule</value>
+  </data>
+  <data name="Settings_MainPage_UpgradeToPremiumItem.Subtitle" xml:space="preserve">
+    <value>Unlock all the features!</value>
+  </data>
+  <data name="Settings_MainPage_UpgradeToPremiumItem.Title" xml:space="preserve">
+    <value>Upgrade to premium version!</value>
+  </data>
+  <data name="Settings_MyAccount_ButtonChangeEmail.Content" xml:space="preserve">
+    <value>Change Email</value>
+  </data>
+  <data name="Settings_MyAccount_ButtonChangePassword.Content" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Settings_MyAccount_ButtonChangeUsername.Content" xml:space="preserve">
+    <value>Change Username</value>
+  </data>
+  <data name="Settings_MyAccount_ButtonConvertToOnline.Content" xml:space="preserve">
+    <value>Convert to Online Account</value>
+  </data>
+  <data name="Settings_MyAccount_ButtonDeleteAccount.Content" xml:space="preserve">
+    <value>Delete Account</value>
+  </data>
+  <data name="Settings_MyAccount_ButtonLogOut.Content" xml:space="preserve">
+    <value>Log Out</value>
+  </data>
+  <data name="Settings_MyAccount_CheckBoxAutoLogin.Content" xml:space="preserve">
+    <value>Auto login</value>
+  </data>
+  <data name="Settings_MyAccount_CheckBoxRememberPassword.Content" xml:space="preserve">
+    <value>Remember password</value>
+  </data>
+  <data name="Settings_MyAccount_CheckBoxRememberUsername.Content" xml:space="preserve">
+    <value>Remember username</value>
+  </data>
+  <data name="Settings_MyAccount_Header.Text" xml:space="preserve">
+    <value>MY ACCOUNT</value>
+  </data>
+  <data name="Settings_PushPage_Description.Text" xml:space="preserve">
+    <value>If you have an online account, you can enable push notifications. With push enabled, changes from another device will instantly appear on this device, even while the app isn't running.</value>
+  </data>
+  <data name="Settings_PushPage_Header.Text" xml:space="preserve">
+    <value>PUSH NOTIFICATIONS</value>
+  </data>
+  <data name="Settings_Reminders_DayBeforeDescription.Text" xml:space="preserve">
+    <value>This feature reminds you the day before your incomplete tasks or events are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</value>
+  </data>
+  <data name="Settings_Reminders_DayOfDescription.Text" xml:space="preserve">
+    <value>This feature reminds you on the same day that your incomplete tasks or events are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</value>
+  </data>
+  <data name="Settings_Reminders_Description.Text" xml:space="preserve">
+    <value>This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option.</value>
+  </data>
+  <data name="Settings_Reminders_Header.Text" xml:space="preserve">
+    <value>REMINDERS</value>
+  </data>
+  <data name="Settings_Reminders_ToggleDayBefore.Header" xml:space="preserve">
+    <value>day before</value>
+  </data>
+  <data name="Settings_Reminders_ToggleDayOf.Header" xml:space="preserve">
+    <value>day of</value>
+  </data>
+  <data name="Settings_ScheduleTilePage_Description.Text" xml:space="preserve">
+    <value>The schedule tile displays your upcoming classes, so that you know when and where your next class is! Perfect for when you're learning a new schedule at the start of the year.</value>
+  </data>
+  <data name="Settings_ScheduleTilePage_Header.Text" xml:space="preserve">
+    <value>SCHEDULE TILE</value>
+  </data>
+  <data name="Settings_Tiles_ClassTiles_Description.Text" xml:space="preserve">
+    <value>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</value>
+  </data>
+  <data name="Settings_Tiles_ClassTiles_Header.Text" xml:space="preserve">
+    <value>CLASS TILES</value>
+  </data>
+  <data name="Settings_Tiles_ClassTiles_TextBlockNoClasses.Text" xml:space="preserve">
+    <value>Looks like you don't have any classes. Add some classes first and then check this page.</value>
+  </data>
+  <data name="Settings_Tiles_ClassTiles_TextBlockNoSemester.Text" xml:space="preserve">
+    <value>You must select a semester first. Please open the menu, click Years, and open a semester.</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_ButtonPinLabel" xml:space="preserve">
+    <value>Pin class</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_ButtonUnpinLabel" xml:space="preserve">
+    <value>Unpin class</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_Explanation.Text" xml:space="preserve">
+    <value>These settings affect your single class tile. If not already pinned, tap the pin icon!</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_Header.Text" xml:space="preserve">
+    <value>CLASS TILE</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_PromptPremiumFeature" xml:space="preserve">
+    <value>Pinning classes is a premium feature. Please upgrade to premium to unlock all secondary tile capabilities!</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_ToggleExams.Header" xml:space="preserve">
+    <value>Display upcoming events</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_ToggleHomework.Header" xml:space="preserve">
+    <value>Display incomplete tasks</value>
+  </data>
+  <data name="Settings_Tiles_MainTile_Description.Text" xml:space="preserve">
+    <value>These settings affect the main tile, which can be pinned by right clicking Power Planner in your app list, and clicking 'Pin to Start'. The Skip items setting will be inherited by your class tiles, unless you've specifically changed your class tile settings.</value>
+  </data>
+  <data name="Settings_Tiles_MainTile_Header.Text" xml:space="preserve">
+    <value>MAIN TILE</value>
+  </data>
+  <data name="Settings_Tiles_MainTile_ToggleExams.Header" xml:space="preserve">
+    <value>Display upcoming events</value>
+  </data>
+  <data name="Settings_Tiles_MainTile_ToggleHomework.Header" xml:space="preserve">
+    <value>Display incomplete tasks</value>
+  </data>
+  <data name="Settings_Tiles_QuickAdd_Description.Text" xml:space="preserve">
+    <value>The Quick Add Tile allows you to quickly add a new task or event, by instantly opening the options to add those items when tapped.</value>
+  </data>
+  <data name="Settings_Tiles_QuickAdd_Header.Text" xml:space="preserve">
+    <value>QUICK ADD TILE</value>
+  </data>
+  <data name="Tiles_TextBlockNotPinned.Text" xml:space="preserve">
+    <value>Not pinned</value>
+  </data>
+  <data name="Tiles_TextBlockPinned.Text" xml:space="preserve">
+    <value>Pinned</value>
+  </data>
+  <data name="Tile_ButtonPinTile.Label" xml:space="preserve">
+    <value>Pin tile</value>
+  </data>
+  <data name="Tile_ButtonUnpinTile.Label" xml:space="preserve">
+    <value>Unpin tile</value>
+  </data>
+  <data name="Tile_DaysPastToday.Text" xml:space="preserve">
+    <value>days past today</value>
+    <comment>Skip items {0] days past today</comment>
+  </data>
+  <data name="Tile_SkipExplanation0.Text" xml:space="preserve">
+    <value>Entering 0 will ignore items due today or earlier</value>
+  </data>
+  <data name="Tile_SkipExplanation1.Text" xml:space="preserve">
+    <value>Entering 1 will ignore items due yesterday or earlier</value>
+  </data>
+  <data name="Tile_SkipExplanation2.Text" xml:space="preserve">
+    <value>Entering 2 will ignore items due 2 days ago or earlier</value>
+  </data>
+  <data name="Tile_SkipExplanationBlank.Text" xml:space="preserve">
+    <value>Leaving this blank means the earliest assignment will be displayed (default behavior)</value>
+  </data>
+  <data name="Tile_SkipItems.Text" xml:space="preserve">
+    <value>Skip items</value>
+    <comment>Skip items {0} days past today</comment>
+  </data>
+  <data name="Tile_SkipItemsError.Text" xml:space="preserve">
+    <value>This must be an integer, or left blank.</value>
+  </data>
+  <data name="Tile_SkipItemsExplanation.Text" xml:space="preserve">
+    <value>You can also make your live tiles skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</value>
+  </data>
+  <data name="Button_LogIn.Content" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="Settings_TwoWeekSchedule_ComboBoxCurrentWeek.Header" xml:space="preserve">
+    <value>Current week</value>
+  </data>
+  <data name="Settings_TwoWeekSchedule_ComboBoxWeekChangesOn.Header" xml:space="preserve">
+    <value>Week changes on</value>
+  </data>
+  <data name="Settings_TwoWeekSchedule_Description.Text" xml:space="preserve">
+    <value>If your school uses a schedule that rotates between two weeks (Week One and Week Two, or Week A and Week B), you can configure what the current week is, and which day the week changes on.</value>
+  </data>
+  <data name="Settings_TwoWeekSchedule_Header.Text" xml:space="preserve">
+    <value>TWO WEEK SCHEDULE</value>
+  </data>
+  <data name="Settings_UpdateCredentialsPage.Title" xml:space="preserve">
+    <value>UPDATE CREDENTIALS</value>
+  </data>
+  <data name="Settings_UpdateCredentialsPage_Description.Text" xml:space="preserve">
+    <value>Your online account's username or password has changed. Please log back in to continue using your online account.</value>
+  </data>
+  <data name="Settings_UpgradeToPremium_ButtonUpgrade.Content" xml:space="preserve">
+    <value>UPGRADE TO PREMIUM</value>
+  </data>
+  <data name="Settings_UpgradeToPremium_Description.Text" xml:space="preserve">
+    <value>The premium version of Power Planner unlocks a number of useful features, and is a one-time lifetime purchase!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+ - Cannot pin classes as secondary tiles
+ - 1 photo attachment per item
+
+Once you purchase the premium version, you own the premium version on all your devices.</value>
+  </data>
+  <data name="TextBox_Password.Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="TextBox_Username.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Settings_CalendarIntegration_Title" xml:space="preserve">
+    <value>CALENDAR INTEGRATION</value>
+  </data>
+  <data name="Settings_CalendarIntegration_ItemClasses_DisplayName" xml:space="preserve">
+    <value>Classes integration</value>
+  </data>
+  <data name="Settings_CalendarIntegration_ItemTasks_DisplayName" xml:space="preserve">
+    <value>Tasks integration</value>
+  </data>
+  <data name="Settings_LiveTiles_Title" xml:space="preserve">
+    <value>LIVE TILES</value>
+  </data>
+  <data name="Settings_LiveTiles_ItemClassTiles_DisplayName" xml:space="preserve">
+    <value>Class Tiles</value>
+  </data>
+  <data name="Settings_LiveTiles_ItemMainTile_DisplayName" xml:space="preserve">
+    <value>Main Tile</value>
+  </data>
+  <data name="Settings_LiveTiles_ItemQuickAddTile_DisplayName" xml:space="preserve">
+    <value>Quick Add Tile</value>
+  </data>
+  <data name="Settings_LiveTiles_ItemScheduleTile_DisplayName" xml:space="preserve">
+    <value>Schedule Tile</value>
+  </data>
+  <data name="Settings_SyncOptions_Title" xml:space="preserve">
+    <value>SYNC OPTIONS</value>
+  </data>
+  <data name="Settings_SyncOptions_ItemImageUploadOptions_DisplayName" xml:space="preserve">
+    <value>Image upload options</value>
+  </data>
+  <data name="Settings_SyncOptions_ItemPushNotifications_DisplayName" xml:space="preserve">
+    <value>Push notifications</value>
+  </data>
+  <data name="Settings_ChangeEmailPage_ButtonUpdateEmail_Content" xml:space="preserve">
+    <value>Update email</value>
+  </data>
+  <data name="Settings_Tiles_ClassTile_HeaderText" xml:space="preserve">
+    <value>CLASS TILE</value>
+  </data>
+  <data name="Tile_PinTile" xml:space="preserve">
+    <value>Pin tile</value>
+  </data>
+  <data name="Tile_UnpinTile" xml:space="preserve">
+    <value>Unpin tile</value>
+  </data>
+  <data name="MainMenuItem_Agenda" xml:space="preserve">
+    <value>Agenda</value>
+  </data>
+  <data name="MainMenuItem_Calendar" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="MainMenuItem_Classes" xml:space="preserve">
+    <value>Classes</value>
+  </data>
+  <data name="MainMenuItem_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="MainMenuItem_Schedule" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="MainMenuItem_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MainMenuItem_Years" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="MenuItemCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MenuItemDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="MessageFreeSemesterLimitReached" xml:space="preserve">
+    <value>To add more than one semester, you must upgrade to the premium version of Power Planner. Alternatively, you could always delete your current semester.</value>
+  </data>
+  <data name="SemesterViewEditing_TextBoxName.PlaceholderText" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SemesterView_ButtonOpenSemester.Content" xml:space="preserve">
+    <value>Open Semester</value>
+  </data>
+  <data name="SemesterView_HeaderClass.Text" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="SemesterView_HeaderCredits.Text" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="SemesterView_HeaderGPA.Text" xml:space="preserve">
+    <value>GPA</value>
+  </data>
+  <data name="String_Credits" xml:space="preserve">
+    <value>{0} Credits</value>
+    <comment>Include the {0}, the credits will be inserted there</comment>
+  </data>
+  <data name="String_GPA" xml:space="preserve">
+    <value>{0} GPA</value>
+    <comment>Include the {0}, the GPA will be inserted there</comment>
+  </data>
+  <data name="YearsPage_ButtonAddYear.Content" xml:space="preserve">
+    <value>add year</value>
+  </data>
+  <data name="YearsPage_TextBlockOverall.Text" xml:space="preserve">
+    <value>Overall:</value>
+    <comment>Include the colon - this is displayed like "Overall: [GPA] / [Credits]"</comment>
+  </data>
+  <data name="YearView_ButtonAddSemester.Content" xml:space="preserve">
+    <value>add semester</value>
+  </data>
+  <data name="AddYearPage_MessageNoName_Body" xml:space="preserve">
+    <value>You must enter a name for this year!</value>
+  </data>
+  <data name="AddYearPage_MessageNoName_Title" xml:space="preserve">
+    <value>No name</value>
+  </data>
+  <data name="AddYearPage_TextBoxName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AddYearPage_TextBoxName.PlaceholderText" xml:space="preserve">
+    <value>ex: Freshman</value>
+    <comment>Provide an example of a name of a year, like Freshman, Sophomore, Junior, or Senior</comment>
+  </data>
+  <data name="AddYearPage_Title_Adding" xml:space="preserve">
+    <value>ADD YEAR</value>
+  </data>
+  <data name="AddYearPage_Title_Editing" xml:space="preserve">
+    <value>EDIT YEAR</value>
+  </data>
+  <data name="AppBarButtonDelete.Label" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="AppBarButtonSave.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MessageDeleteYear_Body" xml:space="preserve">
+    <value>Are you sure you want to delete this year and all of its semesters, classes, and grades?</value>
+  </data>
+  <data name="MessageDeleteYear_Title" xml:space="preserve">
+    <value>Delete year?</value>
+  </data>
+  <data name="SemesterView_Total.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Calendar_FullCalendarAddButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Calendar_FullCalendarGoToTodayButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Go To Today</value>
+  </data>
+  <data name="RelativeDate_Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="RelativeDate_Tomorrow" xml:space="preserve">
+    <value>Tomorrow</value>
+  </data>
+  <data name="RelativeDate_Yesterday" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
+  <data name="String_Exam" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="String_Homework" xml:space="preserve">
+    <value>Task</value>
+  </data>
+  <data name="RelativeDate_Future" xml:space="preserve">
+    <value>Future</value>
+  </data>
+  <data name="RelativeDate_InThePast" xml:space="preserve">
+    <value>In the past</value>
+  </data>
+  <data name="RelativeDate_InXDays" xml:space="preserve">
+    <value>In {0} days</value>
+  </data>
+  <data name="RelativeDate_WithinXDays" xml:space="preserve">
+    <value>Within {0} days</value>
+  </data>
+  <data name="String_GoToToday" xml:space="preserve">
+    <value>Go to today</value>
+  </data>
+  <data name="String_NewItem" xml:space="preserve">
+    <value>New item</value>
+  </data>
+  <data name="String_PinToStart" xml:space="preserve">
+    <value>Pin to Start</value>
+  </data>
+  <data name="String_UnpinFromStart" xml:space="preserve">
+    <value>Unpin from Start</value>
+  </data>
+  <data name="String_WeekA" xml:space="preserve">
+    <value>Week A</value>
+    <comment>In the context of the schedule view, for toggling between week A and B</comment>
+  </data>
+  <data name="String_WeekB" xml:space="preserve">
+    <value>Week B</value>
+    <comment>In the context of the schedule view, for toggling between week A and B</comment>
+  </data>
+  <data name="String_TimeToTime" xml:space="preserve">
+    <value>{0} to {1}</value>
+    <comment>Ex: "8:00 AM to 8:50 AM"</comment>
+  </data>
+  <data name="ClassPage_ButtonAddGradeScale.Content" xml:space="preserve">
+    <value>+ add grade scale</value>
+  </data>
+  <data name="ClassPage_ButtonAddWeightCategory.Content" xml:space="preserve">
+    <value>+ add weight category</value>
+  </data>
+  <data name="ClassPage_ButtonWhatIfMode.Content" xml:space="preserve">
+    <value>What If? Mode</value>
+  </data>
+  <data name="ClassPage_ColorPickerEditClassColor.Header" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="ClassPage_EditGrades_TextBlockGPA.Text" xml:space="preserve">
+    <value>GPA</value>
+  </data>
+  <data name="ClassPage_EditGrades_TextBlockGradeScales.Text" xml:space="preserve">
+    <value>Grade Scales</value>
+  </data>
+  <data name="ClassPage_EditGrades_TextBlockName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ClassPage_EditGrades_TextBlockStartingGrade.Text" xml:space="preserve">
+    <value>Starting Grade</value>
+  </data>
+  <data name="ClassPage_EditGrades_TextBlockWeight.Text" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="ClassPage_EditGrades_TextBlockWeightCategories.Text" xml:space="preserve">
+    <value>Weight Categories</value>
+  </data>
+  <data name="ClassPage_PivotItemDetails.Header" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="ClassPage_PivotItemExams.Header" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="ClassPage_PivotItemGrades.Header" xml:space="preserve">
+    <value>Grades</value>
+  </data>
+  <data name="ClassPage_PivotItemHomework.Header" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="ClassPage_PivotItemOverview.Header" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="ClassPage_PivotItemTimes.Header" xml:space="preserve">
+    <value>Times</value>
+  </data>
+  <data name="ClassPage_SchedulesNoTimesDetails.Text" xml:space="preserve">
+    <value>Click the edit button in the app bar to add class times</value>
+  </data>
+  <data name="ClassPage_SchedulesNoTimesHeader.Text" xml:space="preserve">
+    <value>No Times</value>
+  </data>
+  <data name="ClassPage_TextBlockAverageGradesHelpBody.Text" xml:space="preserve">
+    <value>Typically, you should leave this DISABLED. If you enable averaging grade totals, then your total class grade will be calculated by each grade's percent, not points. That means if you have a grade of 9/10 and another grade of 96/100, your average grade will be 93% even though the second one was worth more points. Most teachers grade by summing up the points, thus leaving this option disabled will have that effect. Your grade would then be 95.45% since the second grade was worth more points.</value>
+  </data>
+  <data name="ClassPage_TextBlockAverageGradesHelpHeader.Text" xml:space="preserve">
+    <value>Average grades</value>
+  </data>
+  <data name="ClassPage_TextBlockClassTimes.Text" xml:space="preserve">
+    <value>CLASS TIMES</value>
+  </data>
+  <data name="ClassPage_TextBlockDetails.Text" xml:space="preserve">
+    <value>DETAILS</value>
+  </data>
+  <data name="ClassPage_TextBlockExams.Text" xml:space="preserve">
+    <value>EVENTS</value>
+  </data>
+  <data name="ClassPage_TextBlockGrades.Text" xml:space="preserve">
+    <value>GRADES</value>
+  </data>
+  <data name="ClassPage_TextBlockHomework.Text" xml:space="preserve">
+    <value>TASKS</value>
+  </data>
+  <data name="ClassPage_TextBlockRoundGradesUpHelpBody.Text" xml:space="preserve">
+    <value>Typically, you should leave this ENABLED. Rounding grades up means that if your total grade is 89.6%, you will still get a 4.0. Most teachers round grades up like this. Disabling this option will mean that even if you got a 89.9%, you're still going home with a 3.0. If your teacher is evil and doesn't round grades, disable this option.</value>
+  </data>
+  <data name="ClassPage_TextBlockRoundGradesUpHelpHeader.Text" xml:space="preserve">
+    <value>Round grades up</value>
+  </data>
+  <data name="ClassPage_TextBoxEditClassName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ClassPage_TextBoxEditCredits.Header" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="ClassPage_TextBoxEditCredits.PlaceholderText" xml:space="preserve">
+    <value>ex: 4</value>
+  </data>
+  <data name="ClassPage_TextBoxEditWeightCategoryName.PlaceholderText" xml:space="preserve">
+    <value>ex: Exams</value>
+  </data>
+  <data name="ClassPage_ToggleAverageGrades.Header" xml:space="preserve">
+    <value>Average grades</value>
+  </data>
+  <data name="ClassPage_ToggleRoundGradesUp.Header" xml:space="preserve">
+    <value>Round grades up</value>
+  </data>
+  <data name="ConfigureClassGrades_Items_WeightCategories.Title" xml:space="preserve">
+    <value>Weight categories</value>
+  </data>
+  <data name="ConfigureClassGrades_Items_WeightCategories.Subtitle" xml:space="preserve">
+    <value>Edit weight categories</value>
+  </data>
+  <data name="ConfigureClassGrades_Items_GradeScale.Title" xml:space="preserve">
+    <value>Grade scale</value>
+  </data>
+  <data name="ConfigureClassGrades_Items_GradeScale.Subtitle" xml:space="preserve">
+    <value>Edit the grade scale</value>
+  </data>
+  <data name="String_AddTime" xml:space="preserve">
+    <value>Add time</value>
+  </data>
+  <data name="String_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="String_ConfirmDeleteClassHeader" xml:space="preserve">
+    <value>Delete class?</value>
+  </data>
+  <data name="String_ConfirmDeleteClassMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this class and all its contents?</value>
+  </data>
+  <data name="String_DeleteClass" xml:space="preserve">
+    <value>Delete class</value>
+  </data>
+  <data name="String_EditClass" xml:space="preserve">
+    <value>Edit class</value>
+  </data>
+  <data name="String_EditDetails" xml:space="preserve">
+    <value>Edit details</value>
+  </data>
+  <data name="String_EditGrades" xml:space="preserve">
+    <value>Edit grades</value>
+  </data>
+  <data name="String_EditTimes" xml:space="preserve">
+    <value>Edit times</value>
+  </data>
+  <data name="String_ExamDatePrefix" xml:space="preserve">
+    <value>on</value>
+    <comment>Something like "on 3/25/2016"</comment>
+  </data>
+  <data name="String_GradeScaleCustom" xml:space="preserve">
+    <value>Custom (not saved)</value>
+  </data>
+  <data name="String_HomeworkDatePrefix" xml:space="preserve">
+    <value>due</value>
+    <comment>Something like "due 3/25/2016"</comment>
+  </data>
+  <data name="String_InvalidGradeScalesMessageBody" xml:space="preserve">
+    <value>Your grade scales are invalid. Please ensure that each scale's Start Grade is less than the previous one's Start Grade.</value>
+  </data>
+  <data name="String_InvalidGradeScalesMessageHeader" xml:space="preserve">
+    <value>Invalid Grade Scales</value>
+  </data>
+  <data name="String_InvalidWeightCategoriesMessageBody" xml:space="preserve">
+    <value>Your weight categories are invalid. Please ensure that each weight category has a name and a non-positive value.</value>
+  </data>
+  <data name="String_InvalidWeightCategoriesMessageHeader" xml:space="preserve">
+    <value>Invalid Weight Categories</value>
+  </data>
+  <data name="String_NewExam" xml:space="preserve">
+    <value>New event</value>
+  </data>
+  <data name="String_NewGrade" xml:space="preserve">
+    <value>New grade</value>
+  </data>
+  <data name="String_NewHomework" xml:space="preserve">
+    <value>New task</value>
+  </data>
+  <data name="String_NoClassNameMessageBody" xml:space="preserve">
+    <value>You must enter a name for this class!</value>
+  </data>
+  <data name="String_NoNameMessageHeader" xml:space="preserve">
+    <value>No name</value>
+  </data>
+  <data name="String_PinClass" xml:space="preserve">
+    <value>Pin class</value>
+  </data>
+  <data name="String_PinningClassPremiumFeatureMessage" xml:space="preserve">
+    <value>Pinning classes is a premium feature. Please upgrade to premium to unlock all secondary tile capabilities!</value>
+  </data>
+  <data name="String_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="String_SaveTimes" xml:space="preserve">
+    <value>Save times</value>
+  </data>
+  <data name="String_UnpinClass" xml:space="preserve">
+    <value>Unpin class</value>
+  </data>
+  <data name="TextBlock_To.Text" xml:space="preserve">
+    <value>to</value>
+    <comment>Something like "10:00 to 10:50"</comment>
+  </data>
+  <data name="AddClassPage_AddTitle" xml:space="preserve">
+    <value>ADD CLASS</value>
+  </data>
+  <data name="AddClassPage_ColorPickerEditClassColor.Header" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="AddClassPage_TextBoxName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ClassSchedulesEditing_TextBlockNoTimes.Text" xml:space="preserve">
+    <value>Click the "+" button in the app bar to add a time</value>
+  </data>
+  <data name="EditGradePage_HeaderAddString" xml:space="preserve">
+    <value>ADD GRADE</value>
+  </data>
+  <data name="EditGradePage_HeaderAddWhatIfString" xml:space="preserve">
+    <value>ADD GRADE (WHAT IF)</value>
+  </data>
+  <data name="EditGradePage_HeaderEditString" xml:space="preserve">
+    <value>EDIT GRADE</value>
+  </data>
+  <data name="EditGradePage_HeaderEditWhatIfString" xml:space="preserve">
+    <value>EDIT GRADE (WHAT IF)</value>
+  </data>
+  <data name="EditGradePage_MessageNoWeightCategoryBody" xml:space="preserve">
+    <value>You must pick a weight category!</value>
+  </data>
+  <data name="EditGradePage_MessageNoWeightCategoryHeader" xml:space="preserve">
+    <value>No weight category</value>
+  </data>
+  <data name="EditingClassScheduleItemView_ButtonDelete.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="EditingClassScheduleItemView_TextBlockWeekDescription.Text" xml:space="preserve">
+    <value>Leave this on 'Every week' unless you have a two-week schedule.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_TextBoxRoom.Header" xml:space="preserve">
+    <value>Room</value>
+  </data>
+  <data name="EditingClassScheduleItemView_TextBoxRoom.PlaceholderText" xml:space="preserve">
+    <value>ex: Modern Languages 302</value>
+  </data>
+  <data name="EditingClassScheduleItemView_TimePickerEnd.Header" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="EditingClassScheduleItemView_TimePickerStart.Header" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="EditingClassScheduleItemView_WeekComboBox.Header" xml:space="preserve">
+    <value>Week</value>
+  </data>
+  <data name="String_ExtraCreditAbbreviation" xml:space="preserve">
+    <value>EC</value>
+  </data>
+  <data name="String_NoNameMessageBody" xml:space="preserve">
+    <value>You must enter a name!</value>
+  </data>
+  <data name="AppBarButtonEdit.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EditHomeworkPage_ComboBoxClasses.Header" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="EditHomeworkPage_DatePickerDate.Header" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="EditHomeworkPage_TextBoxDetails.Header" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="EditHomeworkPage_TextBoxName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ForgotUsername_String_EnterEmailAddressExplanation" xml:space="preserve">
+    <value>Enter your EMAIL ADDRESS to recover your username.</value>
+  </data>
+  <data name="ForgotUsername_String_ErrorFindingUsername" xml:space="preserve">
+    <value>Error finding username</value>
+  </data>
+  <data name="ForgotUsername_String_FindingUsernameStatusText" xml:space="preserve">
+    <value>Finding username</value>
+  </data>
+  <data name="ForgotUsername_String_MessageHeader" xml:space="preserve">
+    <value>Forgot Username</value>
+  </data>
+  <data name="ForgotUsername_String_NoUsernameFoundExplanation" xml:space="preserve">
+    <value>No username was found under the email address of {0}.</value>
+  </data>
+  <data name="ForgotUsername_String_NoUsernameFoundHeader" xml:space="preserve">
+    <value>Nothing found</value>
+  </data>
+  <data name="ForgotUsername_String_YourUsernames" xml:space="preserve">
+    <value>Your usernames are...</value>
+  </data>
+  <data name="LoginPage_String_CheckingOnlinePassword" xml:space="preserve">
+    <value>Checking online password</value>
+  </data>
+  <data name="LoginPage_String_ExplanationIncorrectPasswordAndLocalAccount" xml:space="preserve">
+    <value>Your password is incorrect. Since this is a local account, there is no way to reset your password. Consider creating an online account in the future.</value>
+  </data>
+  <data name="LoginPage_String_ExplanationIncorrectPasswordAndOffline" xml:space="preserve">
+    <value>Your password didn't match the locally-stored password, and we couldn't connect to the internet to check if you've updated your online password. Please ensure that you are connected to the internet.</value>
+  </data>
+  <data name="LoginPage_String_ExplanationOfflineAndNoLocalAccountFound" xml:space="preserve">
+    <value>You might be offline, and no local accounts exist with this username. Check your internet connection.</value>
+  </data>
+  <data name="LoginPage_String_ExplanationUsernameExistsLocally" xml:space="preserve">
+    <value>There is already a local account with the username that you picked. Please choose a unique username.</value>
+  </data>
+  <data name="LoginPage_String_IncorrectPassword" xml:space="preserve">
+    <value>Incorrect password</value>
+  </data>
+  <data name="LoginPage_String_LoggingIn" xml:space="preserve">
+    <value>Logging in</value>
+  </data>
+  <data name="LoginPage_String_NoAccountFoundHeader" xml:space="preserve">
+    <value>No account found</value>
+  </data>
+  <data name="LoginPage_String_SyncingAccount" xml:space="preserve">
+    <value>Syncing account</value>
+  </data>
+  <data name="LoginPage_String_UsernameEmpty" xml:space="preserve">
+    <value>Username was empty</value>
+  </data>
+  <data name="LoginPage_String_UsernameEmptyExplanation" xml:space="preserve">
+    <value>You must enter a username!</value>
+  </data>
+  <data name="LoginPage_String_UsernameExists" xml:space="preserve">
+    <value>Username exists</value>
+  </data>
+  <data name="LoginPage_TextBlockForgotPassword.Text" xml:space="preserve">
+    <value>Forgot Password</value>
+  </data>
+  <data name="LoginPage_TextBlockForgotUsername.Text" xml:space="preserve">
+    <value>Forgot Username</value>
+  </data>
+  <data name="LoginPage_TextBoxPassword.Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="LoginPage_TextBoxUsername.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="QuickAddPage.Title" xml:space="preserve">
+    <value>QUICK ADD</value>
+  </data>
+  <data name="QuickAddPage_ButtonAddExam.Content" xml:space="preserve">
+    <value>add event</value>
+  </data>
+  <data name="QuickAddPage_ButtonAddHomework.Content" xml:space="preserve">
+    <value>add task</value>
+  </data>
+  <data name="ResetPassword_String_ErrorResettingPassword" xml:space="preserve">
+    <value>Error resetting password</value>
+  </data>
+  <data name="ResetPassword_String_ResetSuccessHeader" xml:space="preserve">
+    <value>Password reset!</value>
+  </data>
+  <data name="ResetPassword_String_ResettingPasswordStatusText" xml:space="preserve">
+    <value>Resetting your password</value>
+  </data>
+  <data name="SaveGradeScalePage.Title" xml:space="preserve">
+    <value>SAVE GRADE SCALE</value>
+  </data>
+  <data name="SaveGradeScalePage_TextBoxName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SelectClassPage_TextBlockExplanation.Text" xml:space="preserve">
+    <value>Select a class from the menu, or click the "+" button in the menu to add a new class.</value>
+  </data>
+  <data name="SelectClassPage_TextBlockHeader.Text" xml:space="preserve">
+    <value>No Class</value>
+  </data>
+  <data name="String_AddExam" xml:space="preserve">
+    <value>Add event</value>
+  </data>
+  <data name="String_AddHomework" xml:space="preserve">
+    <value>Add task</value>
+  </data>
+  <data name="String_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="String_DropGrade" xml:space="preserve">
+    <value>Drop grade</value>
+  </data>
+  <data name="String_EditExam" xml:space="preserve">
+    <value>Edit event</value>
+  </data>
+  <data name="String_EditHomework" xml:space="preserve">
+    <value>Edit task</value>
+  </data>
+  <data name="String_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="String_Fail" xml:space="preserve">
+    <value>Fail</value>
+  </data>
+  <data name="String_Failing" xml:space="preserve">
+    <value>Failing</value>
+  </data>
+  <data name="String_Pass" xml:space="preserve">
+    <value>Pass</value>
+  </data>
+  <data name="String_Passing" xml:space="preserve">
+    <value>Passing</value>
+  </data>
+  <data name="String_InvalidUsername" xml:space="preserve">
+    <value>Invalid username</value>
+  </data>
+  <data name="String_InvalidUsernameExplanation" xml:space="preserve">
+    <value>Usernames must be 50 or fewer characters long, and can only contain letters, numbers, and the special symbols {0}</value>
+  </data>
+  <data name="String_NoClassMessageBody" xml:space="preserve">
+    <value>You must select a class!</value>
+  </data>
+  <data name="String_NoClassMessageHeader" xml:space="preserve">
+    <value>No class</value>
+  </data>
+  <data name="String_OfflineExplanation" xml:space="preserve">
+    <value>Maybe you're offline? Couldn't connect to the server.</value>
+  </data>
+  <data name="String_Recover" xml:space="preserve">
+    <value>Recover</value>
+    <comment>Used in the context of recovering something, like a forgotten username.</comment>
+  </data>
+  <data name="String_UndropGrade" xml:space="preserve">
+    <value>Undrop grade</value>
+  </data>
+  <data name="ViewGradePage.Title" xml:space="preserve">
+    <value>VIEW GRADE</value>
+  </data>
+  <data name="ViewGradePage_AppBarButtonDelete.Label" xml:space="preserve">
+    <value>Delete grade</value>
+  </data>
+  <data name="ViewGradePage_TextBlockDropped.Text" xml:space="preserve">
+    <value>dropped</value>
+  </data>
+  <data name="ViewHomeworkPage_String_TitleExam" xml:space="preserve">
+    <value>VIEW EVENT</value>
+  </data>
+  <data name="ViewHomeworkPage_String_TitleHomework" xml:space="preserve">
+    <value>VIEW TASK</value>
+  </data>
+  <data name="ClassWhatIfPage_RunExplanation.Text" xml:space="preserve">
+    <value>What If? mode allows you to expirement with your grades without saving any changes. You can delete grades, add new grades, edit existing grades, and more, all without the fear of changing your actual grades. When you're done, just press the back button to return to your actual grades.
+
+If you have ungraded items, you can also find out exactly what grade you need to keep your desired grade in the class. After entering your desired grade, Power Planner will calculate what you need on ungraded items to achieve your desired grade.</value>
+  </data>
+  <data name="ClassWhatIfPage_String_InvalidGpaErrorMessage" xml:space="preserve">
+    <value>Invalid GPA: You must pick a GPA that is actually in the grade scale. GPA's are exact numbers.</value>
+  </data>
+  <data name="ClassWhatIfPage_TextBlockEnterDesired.Text" xml:space="preserve">
+    <value>Enter desired grade or GPA</value>
+  </data>
+  <data name="ClassWhatIfPage_TextBlockHeader.Text" xml:space="preserve">
+    <value>WHAT IF?</value>
+  </data>
+  <data name="ClassWhatIfPage_TextBoxDesiredGPA.PlaceholderText" xml:space="preserve">
+    <value>GPA</value>
+  </data>
+  <data name="ClassWhatIfPage_TextBoxDesiredGrade.PlaceholderText" xml:space="preserve">
+    <value>grade</value>
+  </data>
+  <data name="CreateAccountPage.Title" xml:space="preserve">
+    <value>CREATE ACCOUNT</value>
+  </data>
+  <data name="CreateAccountPage_ButtonCreateOnlineAccount.Content" xml:space="preserve">
+    <value>Create account</value>
+  </data>
+  <data name="CreateAccountPage_PasswordBoxConfirmPassword.Header" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="CreateAccountPage_PasswordBoxConfirmPassword.PlaceholderText" xml:space="preserve">
+    <value>Enter your password again</value>
+  </data>
+  <data name="CreateAccountPage_PasswordBoxPassword.Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="CreateAccountPage_PasswordBoxPassword.PlaceholderText" xml:space="preserve">
+    <value>Create a password</value>
+  </data>
+  <data name="CreateAccountPage_String_WarningOfflineAccount" xml:space="preserve">
+    <value>WARNING: Offline Account</value>
+  </data>
+  <data name="CreateAccountPage_String_WarningOfflineAccountExplanation" xml:space="preserve">
+    <value>I strongly suggest you use an online account.
+
+With an offline account, you won't be able to...
+ - Sync data with other devices (Android/iOS/Windows)
+ - Transfer data to a new device
+ - Use the website (powerplanner.net)
+
+Please think about using an online account instead!</value>
+  </data>
+  <data name="CreateAccountPage_TextBlockCreateOfflineAccount.Text" xml:space="preserve">
+    <value>No internet? Click here to make an offline account</value>
+  </data>
+  <data name="CreateAccountPage_TextBoxEmail.Header" xml:space="preserve">
+    <value>Email address</value>
+  </data>
+  <data name="CreateAccountPage_TextBoxEmail.PlaceholderText" xml:space="preserve">
+    <value>For recovery purposes</value>
+  </data>
+  <data name="CreateAccountPage_TextBoxUsername.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="CreateAccountPage_TextBoxUsername.PlaceholderText" xml:space="preserve">
+    <value>Pick a username</value>
+  </data>
+  <data name="String_Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="String_GoBack" xml:space="preserve">
+    <value>Go back</value>
+  </data>
+  <data name="String_InvalidConfirmationPassword" xml:space="preserve">
+    <value>Invalid confirmation password</value>
+  </data>
+  <data name="String_InvalidConfirmationPasswordExplanation" xml:space="preserve">
+    <value>Your passwords did not match. Please make sure you entered the same password twice.</value>
+  </data>
+  <data name="String_InvalidPassword" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="String_InvalidPasswordTooShortExplanation" xml:space="preserve">
+    <value>Your password must be 5 or more characters.</value>
+  </data>
+  <data name="String_NoEmailBody" xml:space="preserve">
+    <value>You must enter an email address! It is strictly used for password recovery purposes.</value>
+  </data>
+  <data name="String_NoEmailHeader" xml:space="preserve">
+    <value>No email</value>
+  </data>
+  <data name="String_NoUsernameBody" xml:space="preserve">
+    <value>You must enter a username!</value>
+  </data>
+  <data name="String_NoUsernameHeader" xml:space="preserve">
+    <value>No username</value>
+  </data>
+  <data name="ForgotPassword_ButtonHeader.Content" xml:space="preserve">
+    <value>FORGOT PASSWORD</value>
+  </data>
+  <data name="ForgotPassword_ButtonReset.Content" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="ForgotPassword_TextBoxEmail.Header" xml:space="preserve">
+    <value>Email address</value>
+  </data>
+  <data name="ForgotPassword_TextBoxEmail.PlaceholderText" xml:space="preserve">
+    <value>Your email</value>
+  </data>
+  <data name="ForgotPassword_TextBoxUsername.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="ForgotPassword_TextBoxUsername.PlaceholderText" xml:space="preserve">
+    <value>Your username</value>
+  </data>
+  <data name="String_YesDelete" xml:space="preserve">
+    <value>yes, delete</value>
+  </data>
+  <data name="String_BothWeeks" xml:space="preserve">
+    <value>Every week</value>
+  </data>
+  <data name="EditGradePage_ComboBoxWeightCategories.Header" xml:space="preserve">
+    <value>Weight Category</value>
+  </data>
+  <data name="EditGradePage_DatePickerDate.Header" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="EditGradePage_TextBlockOutOf.Text" xml:space="preserve">
+    <value>out of</value>
+    <comment>Like "5 out of 5 points"</comment>
+  </data>
+  <data name="EditGradePage_TextBoxDetails.Header" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="EditGradePage_TextBoxGradeReceived.Header" xml:space="preserve">
+    <value>Grade</value>
+  </data>
+  <data name="EditGradePage_TextBoxName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="String_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="String_MoreOptions" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="EditSemesterPage_TextBoxName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EditSemesterPage_TextBoxName.PlaceholderText" xml:space="preserve">
+    <value>ex: Fall</value>
+  </data>
+  <data name="EditSemesterPage_Title_Adding" xml:space="preserve">
+    <value>ADD SEMESTER</value>
+  </data>
+  <data name="EditSemesterPage_Title_Editing" xml:space="preserve">
+    <value>EDIT SEMESTER</value>
+  </data>
+  <data name="MessageDeleteSemester_Body" xml:space="preserve">
+    <value>Are you sure you want to delete this semester and all of its contents?</value>
+  </data>
+  <data name="MessageDeleteSemester_Title" xml:space="preserve">
+    <value>Delete semester</value>
+  </data>
+  <data name="EditSemesterPage_DatePickerEnd.Header" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="EditSemesterPage_DatePickerStart.Header" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="EditSemesterPage_String_InvalidStartDate" xml:space="preserve">
+    <value>Invalid start date</value>
+  </data>
+  <data name="EditSemesterPage_String_StartDateGreaterThanEndExplanation" xml:space="preserve">
+    <value>Your start date must be earlier than your end date.</value>
+  </data>
+  <data name="DifferentSemesterOverlayControl_TextBlockDescription.Text" xml:space="preserve">
+    <value>This is a different semester. Tap this to view all of your semesters.</value>
+  </data>
+  <data name="DifferentSemesterOverlayControl_TextBlockHeader.Text" xml:space="preserve">
+    <value>Different semester</value>
+  </data>
+  <data name="WelcomePage_ButtonCreateAccount.Content" xml:space="preserve">
+    <value>CREATE ACCOUNT</value>
+  </data>
+  <data name="WelcomePage_ButtonLogin.Content" xml:space="preserve">
+    <value>LOG IN</value>
+  </data>
+  <data name="LoginPage.Title" xml:space="preserve">
+    <value>LOG IN</value>
+  </data>
+  <data name="WelcomePage_TextBlockSubtitle.Text" xml:space="preserve">
+    <value>The ultimate homework planner.</value>
+  </data>
+  <data name="WelcomePage_TextBlockSettings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_UpdateToPremium.Title" xml:space="preserve">
+    <value>PREMIUM VERSION</value>
+  </data>
+  <data name="MessageFreeGradesLimitReached" xml:space="preserve">
+    <value>To add more than 5 grades per class, you must upgrade to the premium version of Power Planner.</value>
+  </data>
+  <data name="String_EditSchedule" xml:space="preserve">
+    <value>Edit schedule</value>
+  </data>
+  <data name="AddClassPage_EditTitle" xml:space="preserve">
+    <value>EDIT CLASS</value>
+  </data>
+  <data name="ClassPage_ButtonHideOldExamsString" xml:space="preserve">
+    <value>Hide old events</value>
+  </data>
+  <data name="ClassPage_ButtonHideOldHomeworkString" xml:space="preserve">
+    <value>Hide old tasks</value>
+  </data>
+  <data name="ClassPage_ButtonShowOldExamsString" xml:space="preserve">
+    <value>Show old events</value>
+  </data>
+  <data name="ClassPage_ButtonShowOldHomeworkString" xml:space="preserve">
+    <value>Show old tasks</value>
+  </data>
+  <data name="RelativeDate_NextDayOfWeek" xml:space="preserve">
+    <value>Next {0}</value>
+    <comment>Something like "Next Monday" or "Next Wednesday"</comment>
+  </data>
+  <data name="RelativeDate_ThisDayOfWeek" xml:space="preserve">
+    <value>This {0}</value>
+    <comment>Something like "This Monday" or "This Wednesday"</comment>
+  </data>
+  <data name="RelativeDate_InTwoDays" xml:space="preserve">
+    <value>In two days</value>
+  </data>
+  <data name="RelativeDate_XDaysAgo" xml:space="preserve">
+    <value>{0} days ago</value>
+    <comment>Like "5 days ago"</comment>
+  </data>
+  <data name="SchedulePage_ButtonAddClass.Content" xml:space="preserve">
+    <value>add class</value>
+  </data>
+  <data name="SchedulePage_TextBlockWelcomeTitle.Text" xml:space="preserve">
+    <value>Welcome to Power Planner!</value>
+  </data>
+  <data name="SchedulePage_TextBlockWelcomeSubtitle.Text" xml:space="preserve">
+    <value>To get started, add your classes and schedule!</value>
+  </data>
+  <data name="ClassGrades_UnassignedItemsHeader" xml:space="preserve">
+    <value>Unassigned items</value>
+  </data>
+  <data name="EditHomeworkPage_ComboBoxWeightCategory.Header" xml:space="preserve">
+    <value>Grade Weight Category</value>
+  </data>
+  <data name="ViewHomeworkPage_ButtonConvertToGrade.Content" xml:space="preserve">
+    <value>Convert to grade</value>
+  </data>
+  <data name="WeightCategory_Exclude" xml:space="preserve">
+    <value>Exclude from grades</value>
+  </data>
+  <data name="WeightCategory_Unassigned" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
+  <data name="AddHolidayView_DatePickerEnd.Header" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="AddHolidayView_DatePickerStart.Header" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="AddHolidayView_TextBoxName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AddHolidayView_TextBoxName.PlaceholderText" xml:space="preserve">
+    <value>ex: Spring Break</value>
+  </data>
+  <data name="String_AddHoliday" xml:space="preserve">
+    <value>Add holiday</value>
+  </data>
+  <data name="String_EditHoliday" xml:space="preserve">
+    <value>Edit holiday</value>
+  </data>
+  <data name="String_Holiday" xml:space="preserve">
+    <value>Holiday</value>
+  </data>
+  <data name="String_AddEvent" xml:space="preserve">
+    <value>Add event</value>
+  </data>
+  <data name="String_AddTask" xml:space="preserve">
+    <value>Add task</value>
+  </data>
+  <data name="String_EditEvent" xml:space="preserve">
+    <value>Edit event</value>
+  </data>
+  <data name="String_EditTask" xml:space="preserve">
+    <value>Edit task</value>
+  </data>
+  <data name="String_EndTime" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="String_Event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="String_StartTime" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="String_Task" xml:space="preserve">
+    <value>Task</value>
+  </data>
+  <data name="String_AtX" xml:space="preserve">
+    <value>At {0}</value>
+  </data>
+  <data name="String_DueTime" xml:space="preserve">
+    <value>Due time</value>
+  </data>
+  <data name="String_DueX" xml:space="preserve">
+    <value>Due {0}</value>
+  </data>
+  <data name="String_LastWeek" xml:space="preserve">
+    <value>Last week</value>
+  </data>
+  <data name="String_NextWeek" xml:space="preserve">
+    <value>Next week</value>
+  </data>
+  <data name="String_NoClass" xml:space="preserve">
+    <value>No class</value>
+  </data>
+  <data name="String_OnX" xml:space="preserve">
+    <value>On {0}</value>
+  </data>
+  <data name="String_Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="String_ViewEvent" xml:space="preserve">
+    <value>View event</value>
+  </data>
+  <data name="String_ViewTask" xml:space="preserve">
+    <value>View task</value>
+  </data>
+  <data name="TimeOption_AllDay" xml:space="preserve">
+    <value>All day</value>
+  </data>
+  <data name="TimeOption_BeforeClass" xml:space="preserve">
+    <value>Before class</value>
+  </data>
+  <data name="TimeOption_CustomDueTime" xml:space="preserve">
+    <value>Custom due time</value>
+  </data>
+  <data name="TimeOption_CustomTime" xml:space="preserve">
+    <value>Custom time</value>
+  </data>
+  <data name="TimeOption_DuringClass" xml:space="preserve">
+    <value>During class</value>
+  </data>
+  <data name="TimeOption_EndOfClass" xml:space="preserve">
+    <value>End of class</value>
+  </data>
+  <data name="TimeOption_EndOfDay" xml:space="preserve">
+    <value>End of day</value>
+  </data>
+  <data name="TimeOption_StartOfClass" xml:space="preserve">
+    <value>Start of class</value>
+  </data>
+  <data name="String_ExportToImage" xml:space="preserve">
+    <value>Export to image</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Cancel_Subtitle" xml:space="preserve">
+    <value>Cancel the export operation</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Cancel_Title" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Clipboard_Subtitle" xml:space="preserve">
+    <value>Copy image of schedule to paste into other apps</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Clipboard_Title" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Description" xml:space="preserve">
+    <value>Image of your week schedule</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Save_Subtitle" xml:space="preserve">
+    <value>Save an image of your schedule</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Save_Title" xml:space="preserve">
+    <value>Save to image</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Share_Subtitle" xml:space="preserve">
+    <value>Open Share dialog, showing apps that support images</value>
+  </data>
+  <data name="String_ScheduleExportToImage_Share_Title" xml:space="preserve">
+    <value>Share with apps</value>
+  </data>
+  <data name="DummyFirstYear" xml:space="preserve">
+    <value>Freshman</value>
+    <comment>The dummy first year name, like Freshman, Sophomore, Junior, or Senior</comment>
+  </data>
+  <data name="DummyFirstSemester" xml:space="preserve">
+    <value>Fall</value>
+    <comment>The dummy first semester name, like Fall or Spring</comment>
+  </data>
+  <data name="ResetPassword_Description" xml:space="preserve">
+    <value>Enter your username and email address to reset your password. You will then receive an email that contains a link allowing you to reset your password.</value>
+  </data>
+  <data name="SemesterView_NoClasses" xml:space="preserve">
+    <value>No classes. Click "open semester" to add some classes!</value>
+  </data>
+  <data name="Settings_MainPage_Widgets_Subtitle" xml:space="preserve">
+    <value>Customize Android home screen widgets</value>
+  </data>
+  <data name="Settings_MyAccount_DeleteAccountConfirmation_Title" xml:space="preserve">
+    <value>Delete account?</value>
+  </data>
+  <data name="Settings_WidgetAgenda_Description" xml:space="preserve">
+    <value>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</value>
+  </data>
+  <data name="Settings_WidgetSchedule_Description" xml:space="preserve">
+    <value>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</value>
+  </data>
+  <data name="Settings_Widgets_Agenda_Subtitle" xml:space="preserve">
+    <value>Displays upcoming tasks and events</value>
+  </data>
+  <data name="Settings_Widgets_Schedule_Subtitle" xml:space="preserve">
+    <value>Displays upcoming classes</value>
+  </data>
+  <data name="String_AgendaWidget" xml:space="preserve">
+    <value>Agenda widget</value>
+  </data>
+  <data name="String_EndOfSemester" xml:space="preserve">
+    <value>End of semester</value>
+  </data>
+  <data name="String_GradeOptions" xml:space="preserve">
+    <value>Grade options</value>
+  </data>
+  <data name="String_Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="String_NoAccount" xml:space="preserve">
+    <value>No account</value>
+  </data>
+  <data name="String_NoClassesThisWeek" xml:space="preserve">
+    <value>No classes this week!</value>
+  </data>
+  <data name="String_NoClassToday" xml:space="preserve">
+    <value>No class today!</value>
+  </data>
+  <data name="String_NoMoreClasses" xml:space="preserve">
+    <value>No more classes!</value>
+  </data>
+  <data name="String_NoSemester" xml:space="preserve">
+    <value>No semester</value>
+  </data>
+  <data name="String_NothingDue" xml:space="preserve">
+    <value>Nothing due!</value>
+  </data>
+  <data name="String_PartialSemesterClass" xml:space="preserve">
+    <value>Partial semester class?</value>
+  </data>
+  <data name="String_PreviousWeek" xml:space="preserve">
+    <value>Previous week</value>
+  </data>
+  <data name="String_ScheduleWidget" xml:space="preserve">
+    <value>Schedule widget</value>
+  </data>
+  <data name="String_StartGrade" xml:space="preserve">
+    <value>Start grade</value>
+  </data>
+  <data name="String_StartOfSemester" xml:space="preserve">
+    <value>Start of semester</value>
+  </data>
+  <data name="String_SyncError" xml:space="preserve">
+    <value>Sync error</value>
+  </data>
+  <data name="String_WidgetDisabled" xml:space="preserve">
+    <value>Widget disabled from app settings</value>
+  </data>
+  <data name="String_Widgets" xml:space="preserve">
+    <value>Widgets</value>
+  </data>
+  <data name="SyncErrors_Description" xml:space="preserve">
+    <value>These are the sync errors since your last sync. You can tap the Power Planner icon in the main menu to trigger a new sync.</value>
+  </data>
+  <data name="RepeatingEntry_CheckBoxRepeats.Content" xml:space="preserve">
+    <value>Repeats?</value>
+  </data>
+  <data name="RepeatingEntry_OptionDay" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="RepeatingEntry_OptionMonth" xml:space="preserve">
+    <value>month</value>
+  </data>
+  <data name="RepeatingEntry_OptionWeek" xml:space="preserve">
+    <value>week</value>
+  </data>
+  <data name="RepeatingEntry_RadioButtonEndsAfter.Content" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="RepeatingEntry_RadioButtonEndsOn.Content" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="RepeatingEntry_TextBlockEnds.Text" xml:space="preserve">
+    <value>Ends</value>
+  </data>
+  <data name="RepeatingEntry_TextBlockMustUpgrade.Text" xml:space="preserve">
+    <value>You must upgrade to premium to use repeating bulk entry.</value>
+  </data>
+  <data name="RepeatingEntry_TextBlockNoteCannotBulkEdit.Text" xml:space="preserve">
+    <value>Note: You won't be able to bulk edit this series once you save it, so check for typos now!</value>
+  </data>
+  <data name="RepeatingEntry_TextBlockOccurrences.Text" xml:space="preserve">
+    <value>occurrences</value>
+  </data>
+  <data name="RepeatingEntry_TextBlockRepeatEvery.Text" xml:space="preserve">
+    <value>Repeat every</value>
+  </data>
+  <data name="RepeatingEntry_TextBlockRepeatOn.Text" xml:space="preserve">
+    <value>Repeat on</value>
+  </data>
+  <data name="RepeatingEntry_TextBlockTryForFree.Text" xml:space="preserve">
+    <value>Premium feature. You can try this once for free.</value>
+  </data>
+  <data name="Settings_GradeOptions_ListItemGpaType.Title" xml:space="preserve">
+    <value>GPA type (standard or pass/fail)</value>
+  </data>
+  <data name="Settings_GradeOptions_GpaType" xml:space="preserve">
+    <value>GPA type</value>
+  </data>
+  <data name="Settings_GradeOptions_ListItemPassingGrade.Title" xml:space="preserve">
+    <value>Passing grade</value>
+  </data>
+  <data name="Settings_GradeOptions_GpaType_Standard.Text" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Settings_GradeOptions_GpaType_PassFail.Text" xml:space="preserve">
+    <value>Pass/fail</value>
+  </data>
+  <data name="Settings_GradeOptions_GpaType_StandardExplanation.Text" xml:space="preserve">
+    <value>Both your GPA and credits are counted. Most classes are like this.</value>
+  </data>
+  <data name="Settings_GradeOptions_GpaType_PassFailExplanation.Text" xml:space="preserve">
+    <value>The class never impacts your GPA. If you receive a passing grade, the credits of this class will count towards your overall credits. Otherwise, the credits won't be counted.</value>
+  </data>
+  <data name="String_ExamplePlaceholderText" xml:space="preserve">
+    <value>ex: {0}</value>
+    <comment>Text that's shown as an example in the text box when blank. {0} will programmatically be filled in with something like 60 or Freshman</comment>
+  </data>
+  <data name="Settings_GradeOptions_PassingGrade_Explanation.Text" xml:space="preserve">
+    <value>Specify what grade (percentage) counts as a passing grade for this class. Typically, 60% is a passing grade, so you would enter "60". Click save when you're done!</value>
+  </data>
+  <data name="String_ImageAttachments" xml:space="preserve">
+    <value>Image attachments</value>
+  </data>
+</root>

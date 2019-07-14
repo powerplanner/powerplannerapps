@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settingsListItem="http://schemas.android.com/apk/res-auto"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@android:style/TextAppearance.Large"
+            android:text="{Settings_ImageUploadOptionsPage_Header.Text}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <TextView
+            android:text="{Settings_ImageUploadOptionsPage_Description.Text}"
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <View
+            style="@style/Divider" />
+
+        <Spinner
+            android:id="@+id/SpinnerUploadImagesVia"
+            style="@style/FullWidthSpinner"/>
+
+        <View
+            style="@style/Divider" />
+
+    </LinearLayout>
+</ScrollView>

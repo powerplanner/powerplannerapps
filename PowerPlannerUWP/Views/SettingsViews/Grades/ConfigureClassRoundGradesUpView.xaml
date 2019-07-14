@@ -1,0 +1,31 @@
+﻿<views:PopupViewHostGeneric
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.Grades.ConfigureClassRoundGradesUpView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views.SettingsViews.Grades"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <views:PopupViewHostGeneric.MainContent>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12">
+                <ToggleSwitch
+                    x:Uid="ClassPage_ToggleRoundGradesUp"
+                    IsOn="{Binding RoundGradesUp, Mode=TwoWay}"
+                    IsEnabled="{Binding IsEnabled}"/>
+
+                <TextBlock
+                    x:Uid="ClassPage_TextBlockRoundGradesUpHelpBody"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Margin="0,12,0,0"/>
+            </StackPanel>
+        </ScrollViewer>
+
+    </views:PopupViewHostGeneric.MainContent>
+</views:PopupViewHostGeneric>

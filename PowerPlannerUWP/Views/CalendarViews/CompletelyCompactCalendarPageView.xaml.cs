@@ -1,0 +1,96 @@
+﻿using InterfacesUWP.CalendarFolder;
+using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
+using PowerPlannerUWPLibrary;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using ToolsPortable;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+
+namespace PowerPlannerUWP.Views.CalendarViews
+{
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class CompletelyCompactCalendarPageView : Page
+    {
+        public CompletelyCompactCalendarPageView()
+        {
+            this.InitializeComponent();
+        }
+
+#if DEBUG
+        ~CompletelyCompactCalendarPageView()
+        {
+            System.Diagnostics.Debug.WriteLine("CompletelyCompactCalendar disposed");
+        }
+#endif
+
+        private void SmallCalendar_SelectionChanged(object sender, InterfacesUWP.CalendarFolder.EventArgsCalendar e)
+        {
+            try
+            {
+                if (e.SelectedDate == null)
+                    return;
+
+                DateTime selectedDate = e.SelectedDate.Value;
+
+                // Reset to unselected so date can be selected again
+                smallCalendar.SelectedDate = null;
+
+                _viewModel.OpenDay(selectedDate.Date);
+            }
+
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        private CalendarViewModel _viewModel;
+
+        public void Initialize(CalendarViewModel viewModel)
+        {
+            try
+            {
+                _viewModel = viewModel;
+
+                // Don't set selected date, since this doesn't use a selected date
+                smallCalendar.SetBinding(TCalendarView.DisplayMonthProperty, new Binding()
+                {
+                    Path = new PropertyPath(nameof(viewModel.DisplayMonth)),
+                    Source = viewModel,
+                    Mode = BindingMode.TwoWay
+                });
+
+                smallCalendar.ViewModel = viewModel.SemesterItemsViewGroup;
+
+                smallCalendar.SelectionChanged += SmallCalendar_SelectionChanged;
+            }
+
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public void GoToToday()
+        {
+            smallCalendar.DisplayMonth = DateTime.Today;
+        }
+    }
+}

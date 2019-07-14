@@ -1,0 +1,45 @@
+﻿<UserControl
+    x:Class="PowerPlannerUWP.Views.SettingsViews.SettingItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views.SettingsViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+
+        <Style x:Key="TitleStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
+        </Style>
+
+    </UserControl.Resources>
+
+    <Button
+        Style="{ThemeResource ItemContainerStyle}"
+        HorizontalAlignment="Stretch"
+        Padding="12,4,12,12"
+        Click="Button_Click">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+                x:Name="tbHeader"
+                Text="[Header]"
+                Style="{StaticResource TitleStyle}"/>
+
+            <Border
+                x:Name="expandedContentContainer"
+                Grid.Row="1"
+                Margin="0,24,0,0"
+                Visibility="Collapsed">
+            </Border>
+
+        </Grid>
+
+    </Button>
+</UserControl>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingTop="4dp"
+  android:paddingBottom="3dp"
+  android:paddingLeft="4dp"
+  android:paddingRight="4dp"
+  android:layout_marginLeft="6dp"
+  android:layout_marginRight="6dp"
+  android:id="@+id/WidgetScheduleClassListItem">
+
+  <TextView
+    android:id="@+id/WidgetScheduleClassNameTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:singleLine="true"
+    android:textSize="12sp"
+    android:textStyle="bold"
+    android:textColor="#FFFFFF"/>
+
+  <TextView
+    android:id="@+id/WidgetScheduleClassTimeTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="12sp"
+    android:textStyle="bold"
+    android:textColor="#FFFFFF"/>
+
+</LinearLayout>

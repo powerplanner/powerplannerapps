@@ -1,0 +1,79 @@
+﻿<interfacesViews:ViewHostGeneric
+    xmlns:interfacesViews="using:InterfacesUWP.Views"
+    xmlns:interfaces="using:InterfacesUWP"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.ScheduleTileView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:visualizer="using:NotificationsVisualizerLibrary">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <CommandBar Style="{StaticResource PowerPlannerCommandBarStyle}">
+
+
+            <AppBarButton
+                x:Uid="Tile_ButtonPinTile"
+                x:Name="appBarPin"
+                Icon="Pin"
+                Label="Pin tile"
+                Click="appBarPin_Click"/>
+
+        </CommandBar>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel Margin="20">
+                <TextBlock
+                    x:Uid="Settings_ScheduleTilePage_Header"
+                    x:Name="TextBlockTitle"
+                    Text="SCHEDULE TILE"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Margin="0,0,0,12"
+                    TextWrapping="NoWrap"/>
+
+                <interfaces:MyWrapPanel Margin="0,0,-6,-6">
+
+                    <visualizer:PreviewTile
+                        x:Name="SmallPreviewTile"
+                        TileSize="Small"
+                        IsAnimationEnabled="False"
+                        Margin="0,0,6,6"/>
+
+                    <visualizer:PreviewTile
+                        x:Name="MediumPreviewTile"
+                        TileSize="Medium"
+                        IsAnimationEnabled="False"
+                        Margin="0,0,6,6"/>
+
+                    <visualizer:PreviewTile
+                        x:Name="WidePreviewTile"
+                        TileSize="Wide"
+                        IsAnimationEnabled="False"
+                        Margin="0,0,6,6"/>
+
+                    <visualizer:PreviewTile
+                        x:Name="LargePreviewTile"
+                        TileSize="Large"
+                        IsAnimationEnabled="False"
+                        Margin="0,0,6,6"
+                        Visibility="Collapsed"/>
+
+                </interfaces:MyWrapPanel>
+
+                <TextBlock
+                    x:Uid="Settings_ScheduleTilePage_Description"
+                    Text="The schedule tile displays your upcoming classes, so that you know when and where your next class is! Perfect for when you're learning a new schedule at the start of the year."
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Margin="0,12,0,12"/>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</interfacesViews:ViewHostGeneric>

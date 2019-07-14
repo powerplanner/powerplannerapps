@@ -1,0 +1,86 @@
+﻿<interfacesViews:ViewHostGeneric
+    x:Name="ThisPage"
+    xmlns:interfacesViews="using:InterfacesUWP.Views"
+    xmlns:interfaces="using:InterfacesUWP"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.ClassTilesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel Margin="20">
+                <TextBlock
+                    x:Uid="Settings_Tiles_ClassTiles_Header"
+                    Text="CLASS TILES"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Margin="0,0,0,12"/>
+
+                <TextBlock
+                    x:Uid="Settings_Tiles_ClassTiles_Description"
+                    Text="You can pin a tile for every class, and it'll display your upcoming homework and exams for that class. Plus, it'll launch straight into that class when you click it."
+                    Style="{ThemeResource BodyTextBlockStyle}"/>
+
+                <TextBlock
+                    x:Uid="Settings_Tiles_ClassTiles_TextBlockNoSemester"
+                    x:Name="TextBlockNoSemester"
+                    Text="You must select a semester first. Please open the menu, click Years, and open a semester."
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Foreground="Red"
+                    Margin="0,12,0,0"
+                    Visibility="Collapsed"/>
+
+                <TextBlock
+                    x:Uid="Settings_Tiles_ClassTiles_TextBlockNoClasses"
+                    x:Name="TextBlockNoClasses"
+                    Text="Looks like you don't have any classes. Add some classes first and then check this page."
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Foreground="Red"
+                    Margin="0,12,0,0"
+                    Visibility="Collapsed"/>
+
+
+                <ListView
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    Margin="-12,12,-12,0"
+                    x:Name="ListViewClasses"
+                    SelectionChanged="ListViewClasses_SelectionChanged"
+                    ItemsSource="{Binding Classes}"
+                    Visibility="Collapsed">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,1,0,6">
+                                
+                                <TextBlock
+                                    Text="{Binding Class.Name}"
+                                    Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                
+                                <TextBlock
+                                    x:Uid="Tiles_TextBlockPinned"
+                                    Text="Pinned"
+                                    Style="{ThemeResource BodyTextBlockStyle}"
+                                    Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
+
+                                <TextBlock
+                                    x:Uid="Tiles_TextBlockNotPinned"
+                                    Text="Not pinned"
+                                    Style="{ThemeResource BodyTextBlockStyle}"
+                                    Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}"
+                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
+                                
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                </ListView>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</interfacesViews:ViewHostGeneric>
