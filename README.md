@@ -103,3 +103,57 @@ return new Dictionary<Type, Type>()
     { typeof(LoginViewModel), typeof(LoginView) },
     { typeof(MainScreenViewModel), typeof(MainScreenView) },
 ```
+
+
+## Localization
+
+The Android and UWP apps are currently fully localized. Localized strings are found in `PowerPlannerAppDataLibrary/Strings`. iOS has not been updated to take advantage of the localized strings (text is hardcoded right now).
+
+The multilingual app toolkit by Microsoft is used to help auto-generate translations. The process for adding a new string is as follows...
+
+1. Add the new English string in `PowerPlannerAppDataLibrary/Strings/Resources.resx`
+1. Build the `PowerPlannerAppDataLibrary` project
+1. Notice that the `PowerPlannerAppDataLibrary/MultilingualResources` files have been updated... but they don't have translations yet
+1. If you're using the multilingual app toolkit, right click on one of those multilingual `.xlf` files and select Multilingual App Toolkit -> Generate machine translations. This will only generate translations for new strings.
+1. Now, open the `.xlf` file (the diff view in VS works well), find the newly added strings, review them, and set their `<target state="final">`.
+1. Build `PowerPlannerAppDataLibrary` once again, and notice that the `PowerPlannerAppDataLibrary/Strings/Resources.*.resx` files have been updated
+
+To access a localized string programmatically...
+
+```csharp
+Title = PowerPlannerResources.GetString("ViewGradePage.Title");
+```
+
+### UWP-specific localization considerations
+
+UWP supports localization within the XAML markup, using `x:Uid`. For example, the `Label` property of the following control is localized...
+
+```xaml
+<AppBarButton
+    x:Uid="AppBarButtonSave"
+    x:Name="ButtonSave"
+    Icon="Save"
+    Label="Save"
+    Click="ButtonSave_Click"/>
+```
+
+![image](https://user-images.githubusercontent.com/13246069/61190767-5251c680-a656-11e9-8bc2-d5d868648011.png)
+
+The resources can use `.` to set properties, like the `.Label` causes the label property to be localized with the value in the resources.
+
+
+### Android-specific localization considerations
+
+In Android, you can also localize directly in the XML layout views. But this uses custom syntax part of a custom Android layout binding language.
+
+```xml
+<TextView
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:text="{Settings_GradeOptions_GpaType_StandardExplanation.Text}"
+  android:textSize="12sp"
+  android:textColor="#000000"
+  android:layout_marginTop="4dp"/>
+```
+
+Simply place the resource string's id within `{}`. I can't remember whether localization is supported on any text property, or only specific ones like TextView.text... it might be supported on any.
