@@ -118,9 +118,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             // If we previously auto filled and the user is changing it, remove the auto fill so they have to type their correct password.
             // We check if it equals stored pass, since when we programmatically set the password to STORED_PASS, that'll trigger this event,
             // but since it will equal STORED_PASS, we won't immediately disable it
-            if (_autoFilledHashedPassword != null && !Password.Equals(STORED_PASS))
+            if (_autoFilledToken != null && !Password.Equals(STORED_PASS))
             {
-                _autoFilledHashedPassword = null;
+                _autoFilledToken = null;
             }
         }
 
@@ -142,7 +142,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         public bool CanLogin()
         {
-            return _autoFilledHashedPassword != null;
+            return _autoFilledToken != null;
         }
 
         public async System.Threading.Tasks.Task LoginAsync()
@@ -159,8 +159,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                 else
                 {
-                    if ((_autoFilledHashedPassword != null && matching.Token.Equals(_autoFilledHashedPassword))
-                        || matching.Token.Equals(password))
+                    if ((_autoFilledToken != null && matching.Token.Equals(_autoFilledToken))
+                        || PowerPlannerAuth.ValidatePasswordLocally(
+                            password: password,
+                            localUsername: username,
+                            localToken: matching.Token))
                     {
                         ToMainPage(matching);
                     }
@@ -196,7 +199,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             return Password;
         }
 
-        private string _autoFilledHashedPassword;
+        private string _autoFilledToken;
 
         private void FillInPassword(string username)
         {
@@ -207,7 +210,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 // If matching, we potentially can fill in password if the user has selected to remember password
                 if (matching != null && matching.RememberPassword)
                 {
-                    _autoFilledHashedPassword = matching.Token;
+                    _autoFilledToken = matching.Token;
                     _password = STORED_PASS;
                     OnPropertyChanged(nameof(Password));
                 }
@@ -215,7 +218,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 // Otherwise, we should clear the password box (if it's displaying our Stored Password message)
                 else
                 {
-                    if (_autoFilledHashedPassword != null)
+                    if (_autoFilledToken != null)
                     {
                         _password = "";
                         OnPropertyChanged(nameof(Password));
