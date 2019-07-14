@@ -8,20 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "<appid>",
+        "mobilesdk_app_id": "<android.googleServices.appId>",
         "android_client_info": {
           "package_name": "com.barebonesdev.powerplanner"
         }
       },
       "oauth_client": [
         {
-          "client_id": "<clientid>",
+          "client_id": "<android.googleServices.clientId>",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "<apikey>"
+          "current_key": "<android.googleServices.apiKey>"
         }
       ],
       "services": {

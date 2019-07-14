@@ -2,6 +2,6 @@
 {
     internal static class Secrets
     {
-        internal const string AppCenterAppSecret = "<appCenterAppSecret>";
+        internal const string AppCenterAppSecret = "<ios.appCenterAppSecret>";
     }
 }

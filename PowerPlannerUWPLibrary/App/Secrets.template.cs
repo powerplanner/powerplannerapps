@@ -8,6 +8,6 @@ namespace PowerPlannerUWPLibrary.App
 {
     internal static class Secrets
     {
-        internal const string HockeyAppId = "<hockeyAppId>";
+        internal const string HockeyAppId = "<uwp.hockeyAppId>";
     }
 }

@@ -305,6 +305,7 @@
     <Compile Include="Adapters\SpinnerClassesAdapter.cs" />
     <Compile Include="Adapters\SpinnerWeightCategoriesAdapter.cs" />
     <Compile Include="App\Secrets.cs" />
+    <None Include="App\Secrets.template.cs" />
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
     <Compile Include="Converters\GpaToStringConverter.cs" />
@@ -452,6 +453,7 @@
       <SubType>Designer</SubType>
     </None>
     <GoogleServicesJson Include="google-services.json" />
+    <None Include="google-services.template.json" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

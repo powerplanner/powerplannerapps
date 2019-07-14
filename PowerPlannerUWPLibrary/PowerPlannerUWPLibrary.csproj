@@ -110,6 +110,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="App\Secrets.template.cs" />
     <Compile Include="App\Secrets.cs" />
     <Compile Include="Extensions\UWPAppointmentsExtension.cs" />
     <Compile Include="Extensions\UWPDateTimeFormatterExtension.cs" />

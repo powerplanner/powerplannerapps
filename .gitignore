@@ -223,3 +223,6 @@ _pkginfo.txt
 
 # Ignore the store key (but keep the temp key since that's nice to have)
 *_StoreKey.pfx
+
+# Ignore the entire secrets file
+/secrets.json
