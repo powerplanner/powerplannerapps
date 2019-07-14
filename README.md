@@ -34,3 +34,65 @@ Each platform-specific app simply needs to build views on top of the shared view
 
 
 ## Architecture
+
+### Data layer
+
+All three apps use a common shared data layer - `PowerPlannerAppDataLibrary`. The data layer handles...
+
+* Connecting to the server
+* Syncing between local client and server
+* Storing all local content and accounts
+
+### View model layer
+
+All three apps also use a common view model layer, contained in `PowerPlannerAppDataLibrary`. The view model is a virtual representation of the pages that should be shown to the user. It has concepts like popups, navigation, etc.
+
+The view model layer is written using the custom `BareMvvm.Core` project.
+
+```csharp
+public class WelcomeViewModel : BaseViewModel
+{
+    public WelcomeViewModel(BaseViewModel parent) : base(parent) { }
+
+    public void Login()
+    {
+        ShowPopup(new LoginViewModel(this));
+    }
+
+    public void CreateAccount()
+    {
+        ShowPopup(new CreateAccountViewModel(this));
+    }
+```
+
+There is then a platform-specific **presenter** library, contained in `InterfacesDroid`, `InterfacesiOS`, and `InterfacesUWP`. The presenter library binds to the view model and accordingly shows views as they're created, hides views as they're removed, etc.
+
+```csharp
+        private void UpdateContent()
+        {
+            KeyboardHelper.HideKeyboard(this);
+
+            // Remove previous content
+            base.RemoveAllViews();
+
+            if (ViewModel?.Content != null)
+            {
+                // Create and set new content
+                var view = ViewModelToViewConverter.Convert(this, ViewModel.Content);
+                base.AddView(view);
+            }
+```
+
+Views are **registered** to ViewModels so that the presenter knows which view to create corresponding to the current view model. They are registered in...
+
+* `PowerPlannerUWP/App.xaml.cs`
+* `PowerPlannerAndroid/App/NativeApplication.cs`
+* `PowerPlanneriOS/AppDelegate.cs`
+
+```csharp
+return new Dictionary<Type, Type>()
+{
+    { typeof(WelcomeViewModel), typeof(WelcomeView) },
+    { typeof(LoginViewModel), typeof(LoginView) },
+    { typeof(MainScreenViewModel), typeof(MainScreenView) },
+```
