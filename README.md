@@ -3,6 +3,12 @@ Source code of the mobile apps for Power Planner... they're open source!
 
 ![](http://powerplanner.net/Images/PowerPlannerSuite.png)
 
+| App store links |
+|--|
+| [Windows store](https://www.microsoft.com/store/apps/9wzdncrfj25v) |
+| [Google Play store](https://play.google.com/store/apps/details?id=com.barebonesdev.powerplanner) |
+| [Apple App store](https://itunes.apple.com/us/app/power-planner-homework-grades/id1278178608)
+
 
 ## Overview
 
@@ -25,7 +31,8 @@ Each platform-specific app simply needs to build views on top of the shared view
 
 ## Getting started
 
-1. For the first time, after cloning, generate the secrets
+1. Be sure to **clone submodules** too. If you didn't, `git submodule update --init --recursive`
+1. For the first time after cloning, generate the secrets
     1. In the top-level directory, open PowerShell and run `.\ApplySecrets.ps1`
         1. This will generate a blank `secrets.json` file (ignored from git), and generates the corresponding secret files needed to compile the app
         1. If you have actual secrets to use, update the `secrets.json` file with the secrets and re-run `.\ApplySecrets.ps1`
@@ -65,7 +72,7 @@ public class WelcomeViewModel : BaseViewModel
     }
 ```
 
-There is then a platform-specific **presenter** library, contained in `InterfacesDroid`, `InterfacesiOS`, and `InterfacesUWP`. The presenter library binds to the view model and accordingly shows views as they're created, hides views as they're removed, etc.
+Then there are platform-specific **presenter** libraries, contained in `InterfacesDroid`, `InterfacesiOS`, and `InterfacesUWP`. The presenter library binds to the view model and accordingly shows views as they're created, hides views as they're removed, etc.
 
 ```csharp
         private void UpdateContent()
