@@ -37,6 +37,7 @@ namespace PowerPlannerUWP
 
             // We register promoting other accounts as one of the first promotions
             PromoRegistrations.Registrations.Insert(0, typeof(PromoOtherPlatformsViewModel.Registration));
+            PromoRegistrations.Registrations.Add(typeof(PromoContributeViewModel.Registration));
 
             // Extensions are registered with InitializeUWP.Initialize, since they're also needed from the background task
 
