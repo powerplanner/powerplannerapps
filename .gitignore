@@ -226,3 +226,10 @@ _pkginfo.txt
 
 # Ignore the entire secrets file
 /secrets.json
+
+# Ignore each secret transformed file
+PowerPlannerAppDataLibrary\App\Secrets.cs
+PowerPlannerAndroid\App\Secrets.cs
+PowerPlannerAndroid\google-services.json
+PowerPlanneriOS\App\Secrets.cs
+PowerPlannerUWPLibrary\App\Secrets.cs
