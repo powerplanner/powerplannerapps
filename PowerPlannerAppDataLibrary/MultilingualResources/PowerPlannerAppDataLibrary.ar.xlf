@@ -39,8 +39,8 @@
           <target state="final">المطور</target>
         </trans-unit>
         <trans-unit id="Settings_AboutPage_DeveloperValue.Text" translate="yes" xml:space="preserve">
-          <source>BareBones Dev, owned by Andrew Bares</source>
-          <target state="final">"BareBones Dev"، مملوكة ل "اندرو باريس" Andrew Bares</target>
+          <source>BareBones Dev, owned by Andrew Leader</source>
+          <target state="final">"BareBones Dev"، مملوكة ل "اندرو باريس" Andrew Leader</target>
         </trans-unit>
         <trans-unit id="Settings_AboutPage_Header.Text" translate="yes" xml:space="preserve">
           <source>ABOUT</source>
