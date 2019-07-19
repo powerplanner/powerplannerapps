@@ -471,8 +471,14 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                     catch (Exception ex)
                     {
+                        // This captures non-200 HTTP codes
+                        if (ex is HttpRequestException rex)
+                        {
+                            TelemetryExtension.Current?.TrackException(ex, "SyncModernHttpError");
+                            Debug.WriteLine("Error syncing (HttpError): " + ex.ToString());
+                        }
                         // Ignore typical issues
-                        if (!ExceptionHelper.IsHttpWebIssue(ex))
+                        else if (!ExceptionHelper.IsHttpWebIssue(ex))
                         {
                             TelemetryExtension.Current?.TrackException(ex);
                             Debug.WriteLine("Error syncing (WebException): " + ex.ToString());
