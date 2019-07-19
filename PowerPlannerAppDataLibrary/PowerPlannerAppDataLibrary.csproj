@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\CreateAccountHelper.cs" />
+    <Compile Include="App\SharedInitialization.cs" />
     <Compile Include="App\PowerPlannerApp.cs" />
     <Compile Include="App\Secrets.cs" />
     <None Include="App\Secrets.template.cs" />

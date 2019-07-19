@@ -1,10 +1,7 @@
 ﻿using BareMvvm.Core.App;
 using BareMvvm.Core.ViewModels;
-using Newtonsoft.Json.Linq;
-using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
@@ -15,10 +12,7 @@ using PowerPlannerAppDataLibrary.Windows;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
 
@@ -38,22 +32,11 @@ namespace PowerPlannerAppDataLibrary.App
 
         protected override System.Threading.Tasks.Task InitializeAsyncOverride()
         {
-            // Set up API key
-            SetUpApiKey();
-            PowerPlannerAuth.WebsiteApiUrl = new Uri(Website.URL);
-
-            // Pipe localizer so it works on Android from portable binding library
-            PortableLocalizedResources.LocalizerExtension = PowerPlannerResources.GetString;
+            SharedInitialization.Initialize();
 
             Sync.SyncQueued += Sync_SyncQueued;
 
             return System.Threading.Tasks.Task.FromResult(true);
-        }
-
-        private static void SetUpApiKey()
-        {
-            Website.ApiKey = new ApiKeyCombo(Secrets.PowerPlannerApiKey, Secrets.PowerPlannerApiHashedKey);
-            PowerPlannerAuth.SetApiKey(Website.ApiKey.ApiKey, Website.ApiKey.HashedKey);
         }
 
         public void ShowImage(ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages)

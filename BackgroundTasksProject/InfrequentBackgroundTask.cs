@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer;
+﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerUWPLibrary;
 using PowerPlannerUWPLibrary.TileHelpers;
@@ -14,6 +15,7 @@ namespace BackgroundTasksProject
 
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
+            SharedInitialization.Initialize();
             InitializeUWP.Initialize();
 
             taskInstance.Canceled += TaskInstance_Canceled;
