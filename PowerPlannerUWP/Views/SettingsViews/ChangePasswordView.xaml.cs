@@ -78,12 +78,6 @@ namespace PowerPlannerUWP.Views.SettingsViews
             ViewModel.Update();
         }
 
-        private async System.Threading.Tasks.Task changeLocalPassword(AccountDataItem account, string newEncryptedPassword)
-        {
-            account.Token = newEncryptedPassword;
-            await AccountsManager.Save(account);
-        }
-
         private void UpdateProgress()
         {
             if (ViewModel.IsUpdatingPassword)

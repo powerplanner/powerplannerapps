@@ -79,7 +79,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                             accountId: Account.AccountId,
                             username: Account.Username,
                             newPassword: Password,
-                            oldToken: Account.Token);
+                            currentToken: Account.Token);
 
                         if (resp.Error != null)
                         {
@@ -87,7 +87,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                             return;
                         }
 
-                        await updateToken(Account, resp.Token);
+                        await updateToken(Account, resp.LocalToken, resp.Token);
                         GoBack();
                     }
 
@@ -97,8 +97,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 else
                 {
-                    var newToken = PowerPlannerAuth.ChangeOfflineAccountPassword(Account.Username, Password, Account.Token);
-                    await updateToken(Account, newToken);
+                    var newLocalToken = PowerPlannerAuth.ChangeOfflineAccountPassword(Account.Username, Password, Account.LocalToken);
+                    await updateToken(Account, newLocalToken, null);
                     GoBack();
                 }
             }
@@ -111,8 +111,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             ActionError?.Invoke(this, error);
         }
 
-        private async System.Threading.Tasks.Task updateToken(AccountDataItem account, string newToken)
+        private async System.Threading.Tasks.Task updateToken(AccountDataItem account, string newLocalToken, string newToken)
         {
+            account.LocalToken = newLocalToken;
             account.Token = newToken;
             await AccountsManager.Save(account);
         }

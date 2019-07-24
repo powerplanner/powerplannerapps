@@ -110,9 +110,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             if (!isOkayToCreateLocal())
                 return;
 
-            string token = PowerPlannerAuth.CreateOfflineAccount(Username, Password);
+            string localToken = PowerPlannerAuth.CreateOfflineAccount(Username, Password);
 
-            await FinishCreateAccount(Username, token, 0, 0);
+            await FinishCreateAccount(Username, localToken, null, 0, 0);
         }
 
         private bool _isCreatingOnlineAccount;
@@ -148,7 +148,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
                 else
                 {
-                    await FinishCreateAccount(username, resp.Token, resp.AccountId, resp.DeviceId);
+                    await FinishCreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId);
                 }
             }
 
@@ -163,9 +163,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             }
         }
 
-        private async System.Threading.Tasks.Task FinishCreateAccount(string username, string token, long accountId, int deviceId)
+        private async System.Threading.Tasks.Task FinishCreateAccount(string username, string localToken, string token, long accountId, int deviceId)
         {
-            var account = await CreateAccountHelper.CreateAccountLocally(username, token, accountId, deviceId);
+            var account = await CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId);
 
             if (account != null)
             {

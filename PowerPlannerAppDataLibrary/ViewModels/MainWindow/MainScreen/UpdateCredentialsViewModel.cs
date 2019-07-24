@@ -86,6 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                     // Set their new device ID and token
                     Account.DeviceId = resp.DeviceId;
+                    Account.LocalToken = resp.LocalToken;
                     Account.Token = resp.Token;
 
                     await AccountsManager.Save(Account);
@@ -113,6 +114,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                     //update their local account
                     Account.Username = username;
+                    Account.LocalToken = resp.LocalToken;
                     Account.Token = resp.Token;
 
                     await AccountsManager.Save(Account);

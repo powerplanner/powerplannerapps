@@ -78,11 +78,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     try
                     {
-                        ChangeUsernameResponse resp = await WebHelper.Download<ChangeUsernameRequest, ChangeUsernameResponse>(Website.URL + "changeusernamemodern", new ChangeUsernameRequest()
+                        ChangeUsernameResponse resp = await Account.PostAuthenticatedAsync<ChangeUsernameRequest, ChangeUsernameResponse>(Website.URL + "changeusernamemodern", new ChangeUsernameRequest()
                         {
-                            OldLogin = Account.GenerateCredentials(),
                             NewUsername = Username
-                        }, Website.ApiKey);
+                        });
 
                         if (resp.Error != null)
                         {

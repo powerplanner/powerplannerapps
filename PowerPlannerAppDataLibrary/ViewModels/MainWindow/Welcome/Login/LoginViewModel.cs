@@ -118,9 +118,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             // If we previously auto filled and the user is changing it, remove the auto fill so they have to type their correct password.
             // We check if it equals stored pass, since when we programmatically set the password to STORED_PASS, that'll trigger this event,
             // but since it will equal STORED_PASS, we won't immediately disable it
-            if (_autoFilledToken != null && !Password.Equals(STORED_PASS))
+            if (_autoFilledLocalToken != null && !Password.Equals(STORED_PASS))
             {
-                _autoFilledToken = null;
+                _autoFilledLocalToken = null;
             }
         }
 
@@ -142,7 +142,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         public bool CanLogin()
         {
-            return _autoFilledToken != null;
+            return _autoFilledLocalToken != null;
         }
 
         public async System.Threading.Tasks.Task LoginAsync()
@@ -159,20 +159,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                 else
                 {
-                    if ((_autoFilledToken != null && matching.Token.Equals(_autoFilledToken))
+                    if ((_autoFilledLocalToken != null && matching.LocalToken.Equals(_autoFilledLocalToken))
                         || PowerPlannerAuth.ValidatePasswordLocally(
                             password: password,
                             localUsername: username,
-                            localToken: matching.Token))
+                            localToken: matching.LocalToken))
                     {
                         ToMainPage(matching);
                     }
 
                     //if a local transferred account
-                    else if (!matching.IsOnlineAccount && matching.Token.Equals(Variables.OLD_PASSWORD))
+                    else if (!matching.IsOnlineAccount && matching.LocalToken.Equals(Variables.OLD_PASSWORD))
                     {
                         //update password with the new password
-                        matching.Token = password;
+                        matching.LocalToken = password;
                         await AccountsManager.Save(matching);
                         ToMainPage(matching);
                     }
@@ -199,7 +199,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             return Password;
         }
 
-        private string _autoFilledToken;
+        private string _autoFilledLocalToken;
 
         private void FillInPassword(string username)
         {
@@ -210,7 +210,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 // If matching, we potentially can fill in password if the user has selected to remember password
                 if (matching != null && matching.RememberPassword)
                 {
-                    _autoFilledToken = matching.Token;
+                    _autoFilledLocalToken = matching.LocalToken;
                     _password = STORED_PASS;
                     OnPropertyChanged(nameof(Password));
                 }
@@ -218,7 +218,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 // Otherwise, we should clear the password box (if it's displaying our Stored Password message)
                 else
                 {
-                    if (_autoFilledToken != null)
+                    if (_autoFilledLocalToken != null)
                     {
                         _password = "";
                         OnPropertyChanged(nameof(Password));
@@ -253,14 +253,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 try
                 {
                     IsCheckingOnlinePassword = true;
-                    CheckPasswordResponse resp = await WebHelper.Download<CheckPasswordRequest, CheckPasswordResponse>(
-                        Website.URL + "checkpasswordmodern",
-                        new CheckPasswordRequest()
-                        {
-                            AccountId = account.AccountId,
-                            Username = account.Username,
-                            PasswordToTry = password
-                        }, Website.ApiKey);
+                    var resp = await PowerPlannerAuth.CheckUpdatedCredentialsAsync(
+                        accountId: account.AccountId,
+                        username: account.Username,
+                        password: password);
 
                     if (resp.Error != null)
                         ShowMessage(resp.Error, "Password error");
@@ -268,7 +264,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                     else
                     {
                         //update to new password
-                        account.Token = password;
+                        account.LocalToken = resp.LocalToken;
+                        account.Token = resp.Token;
                         await AccountsManager.Save(account);
 
                         //then log them in
@@ -336,7 +333,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                 else
                 {
-                    AccountDataItem account = await CreateAccount(username, resp.Token, resp.AccountId, resp.DeviceId);
+                    AccountDataItem account = await CreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId);
                     AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
 
                     if (account != null)
@@ -376,9 +373,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 IsLoggingInOnline = false;
             }
         }
-        public System.Threading.Tasks.Task<AccountDataItem> CreateAccount(string username, string token, long accountId, int deviceId)
+        public System.Threading.Tasks.Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId)
         {
-            return CreateAccountHelper.CreateAccountLocally(username, token, accountId, deviceId);
+            return CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId);
         }
 
         private static async void ShowMessage(string message, string title)

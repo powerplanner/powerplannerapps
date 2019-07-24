@@ -422,6 +422,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// Thread safe. Throws various exceptions if cannot be created.
         /// </summary>
         /// <param name="username"></param>
+        /// <param name="localToken"></param>
         /// <param name="token"></param>
         /// <param name="accountId"></param>
         /// <param name="deviceId"></param>
@@ -429,7 +430,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <param name="rememberPassword"></param>
         /// <param name="autoLogin"></param>
         /// <returns></returns>
-        public static async Task<AccountDataItem> CreateAccount(string username, string token, long accountId, int deviceId, bool rememberUsername, bool rememberPassword, bool autoLogin)
+        public static async Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId, bool rememberUsername, bool rememberPassword, bool autoLogin)
         {
             await ValidateUsername(username);
 
@@ -437,6 +438,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             AccountDataItem account = new AccountDataItem(Guid.NewGuid())
             {
                 Username = username,
+                LocalToken = localToken,
                 Token = token,
                 AccountId = accountId,
                 DeviceId = deviceId,

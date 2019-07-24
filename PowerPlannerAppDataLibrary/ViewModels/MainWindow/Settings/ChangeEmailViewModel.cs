@@ -24,12 +24,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
-                GetEmailResponse response = await WebHelper.Download<GetEmailRequest, GetEmailResponse>(
+                GetEmailResponse response = await Account.PostAuthenticatedAsync<GetEmailRequest, GetEmailResponse>(
                     Website.URL + "getemailmodern",
-                    new GetEmailRequest()
-                    {
-                        Login = Account.GenerateCredentials()
-                    }, Website.ApiKey);
+                    new GetEmailRequest());
 
                 if (response != null)
                 {
@@ -103,13 +100,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             try
             {
-                ChangeEmailResponse response = await WebHelper.Download<ChangeEmailRequest, ChangeEmailResponse>(
+                ChangeEmailResponse response = await Account.PostAuthenticatedAsync<ChangeEmailRequest, ChangeEmailResponse>(
                     Website.URL + "changeemailmodern",
                     new ChangeEmailRequest()
                     {
-                        Login = Account.GenerateCredentials(),
                         NewEmail = Email
-                    }, Website.ApiKey);
+                    });
 
                 if (response.Error != null)
                 {

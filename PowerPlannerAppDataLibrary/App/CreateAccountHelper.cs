@@ -15,11 +15,11 @@ namespace PowerPlannerAppDataLibrary.App
         public static Action AlertInvalidUsername = delegate { ShowMessage("Your username is invalid.", "Invalid username"); };
         public static Action AlertUsernameEmpty = delegate { ShowMessage("You must provide a username!", "No username"); };
 
-        public static async Task<AccountDataItem> CreateAccountLocally(string username, string token, long accountId, int deviceId)
+        public static async Task<AccountDataItem> CreateAccountLocally(string username, string localToken, string token, long accountId, int deviceId)
         {
             try
             {
-                AccountDataItem account = account = await AccountsManager.CreateAccount(username, token, accountId, deviceId, true, true, true);
+                AccountDataItem account = account = await AccountsManager.CreateAccount(username, localToken, token, accountId, deviceId, true, true, true);
 
                 return account;
             }

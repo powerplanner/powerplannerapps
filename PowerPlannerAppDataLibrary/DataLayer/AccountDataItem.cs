@@ -409,13 +409,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set { SetProperty(ref _username, value, "Username"); }
         }
 
-        private string _token;
-        [DataMember]
-        public string Token
+        private string _localToken;
+        [DataMember(Name = "Token")] // Named "Token" for legacy upgrading purposes
+        public string LocalToken
         {
-            get { return _token; }
-            set { SetProperty(ref _token, value, "Token"); }
+            get { return _localToken; }
+            set { SetProperty(ref _localToken, value, nameof(LocalToken)); }
         }
+
+        [DataMember(Name = "OnlineToken")]
+        public string Token { get; set; }
 
         [DataMember]
         [Obsolete("Use Token instead")]
@@ -423,7 +426,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             // Legacy up-convert
             get { return null; }
-            set { if (value != null) Token = value; }
+            set { if (value != null) LocalToken = value; }
         }
 
         private bool _rememberUsername;
@@ -477,14 +480,64 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             get { return AccountId != 0 && DeviceId != 0; }
         }
 
-        public LoginCredentials GenerateCredentials()
+        private System.Threading.Tasks.Task<string> _refreshOnlineTokenTask;
+        private System.Threading.Tasks.Task<string> RefreshOnlineTokenAsync()
         {
-            return new LoginCredentials()
+            if (_refreshOnlineTokenTask == null || _refreshOnlineTokenTask.IsCompleted)
             {
+                _refreshOnlineTokenTask = RefreshOnlineTokenHelperAsync();
+            }
+
+            return _refreshOnlineTokenTask;
+        }
+
+        private async System.Threading.Tasks.Task<string> RefreshOnlineTokenHelperAsync()
+        {
+            var resp = await PowerPlannerAppAuthLibrary.PowerPlannerAuth.RefreshOnlineTokenAsync(AccountId, Username, LocalToken);
+            if (resp.Error != null)
+            {
+                Token = resp.Token;
+                await AccountsManager.Save(this);
+                return null;
+            }
+            else
+            {
+                return resp.Error;
+            }
+        }
+
+        public async Task<T> PostAuthenticatedAsync<K, T>(string url, K postData, ToolsPortable.WebHelper.Serializer serializer = ToolsPortable.WebHelper.Serializer.DataContractJson, System.Threading.CancellationToken? cancellationToken = null)
+            where K : PartialLoginRequest
+            where T : PlainResponse
+        {
+            if (Token == null)
+            {
+                // Get the token (this happens from clients upgrading from older versions)
+                string error = await RefreshOnlineTokenAsync();
+                if (error != null)
+                {
+                    var answer = (T)Activator.CreateInstance(typeof(T));
+                    answer.Error = error;
+                    return answer;
+                }
+            }
+
+            if (Token == null)
+            {
+                // This theoretically should never get hit
+                var answer = (T)Activator.CreateInstance(typeof(T));
+                answer.Error = SyncResponse.INCORRECT_CREDENTIALS;
+                return answer;
+            }
+
+            postData.Login = new LoginCredentials()
+            {
+                AccountId = AccountId,
                 Username = Username,
-                Token = Token,
-                AccountId = AccountId
+                Token = Token
             };
+
+            return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, serializer, cancellationToken ?? System.Threading.CancellationToken.None);
         }
 
 #if ANDROID

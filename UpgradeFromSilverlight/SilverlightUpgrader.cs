@@ -98,7 +98,7 @@ namespace UpgradeFromSilverlight
                     CurrentChangeNumber = accountSection.CurrentChangeNumber,
                     CurrentSemesterId = accountSection.School.ActiveSemesterIdentifier,
                     DeviceId = accountSection.DeviceId,
-                    Token = accountSection.Password,
+                    LocalToken = accountSection.Password,
                     PremiumAccountExpiresOn = accountSection.PremiumAccountExpiresOn,
                     RememberPassword = accountSection.RememberPassword,
                     RememberUsername = accountSection.RememberUsername,

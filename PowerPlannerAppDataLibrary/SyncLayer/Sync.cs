@@ -420,7 +420,6 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                 req = new SyncRequest()
                 {
-                    Login = account.GenerateCredentials(),
                     Updates = updatesAndDeletes.Item1,
                     Deletes = updatesAndDeletes.Item2,
                     CurrentChangeNumber = account.CurrentChangeNumber,
@@ -461,7 +460,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 {
                     try
                     {
-                        response = await WebHelper.Download<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, Website.ApiKey, WebHelper.Serializer.JsonNET, request.CancellationToken);
+                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, WebHelper.Serializer.JsonNET, request.CancellationToken);
                     }
 
                     catch (OperationCanceledException)
@@ -1352,11 +1351,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     {
                         SyncSettingsRequest request = new SyncSettingsRequest()
                         {
-                            Login = account.GenerateCredentials(),
                             Settings = settings
                         };
 
-                        SyncSettingsResponse response = await WebHelper.Download<SyncSettingsRequest, SyncSettingsResponse>(Website.URL + "syncsettingsmodern", request, Website.ApiKey);
+                        SyncSettingsResponse response = await account.PostAuthenticatedAsync<SyncSettingsRequest, SyncSettingsResponse>(Website.URL + "syncsettingsmodern", request);
 
                         await System.Threading.Tasks.Task.Delay(9000);
 
@@ -1411,13 +1409,12 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
         {
             try
             {
-                AddPremiumAccountDurationResponse resp = await WebHelper.Download<AddPremiumAccountDurationRequest, AddPremiumAccountDurationResponse>(
+                AddPremiumAccountDurationResponse resp = await account.PostAuthenticatedAsync<AddPremiumAccountDurationRequest, AddPremiumAccountDurationResponse>(
                     Website.URL + "addpremiumaccountduration",
                     new AddPremiumAccountDurationRequest()
                     {
-                        Login = account.GenerateCredentials(),
                         DaysToAdd = int.MaxValue
-                    }, Website.ApiKey);
+                    });
 
                 if (resp.Error == null)
                     return true;

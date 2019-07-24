@@ -20,7 +20,7 @@ namespace UnitTestProject.BaseTestClasses
         [TestInitialize]
         public async Task Initialize()
         {
-            AccountDataItem account = await AccountsManager.CreateAccount("andrewbares", "andrew", 0, 0, true, true, true);
+            AccountDataItem account = await AccountsManager.CreateAccount("andrewbares", "andrew", null, 0, 0, true, true, true);
 
             LocalAccountId = account.LocalAccountId;
 

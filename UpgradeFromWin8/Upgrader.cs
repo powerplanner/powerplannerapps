@@ -98,7 +98,7 @@ namespace UpgradeFromWin8
                 CurrentSemesterId = account.School.ActiveSemesterIdentifier,
                 DeviceId = login.DeviceId,
                 LocalAccountId = login.LocalAccountId,
-                Token = login.Password,
+                LocalToken = login.Password,
                 PremiumAccountExpiresOn = account.PremiumAccountExpiresOn,
                 RememberPassword = login.RememberPassword,
                 RememberUsername = login.RememberUsername,

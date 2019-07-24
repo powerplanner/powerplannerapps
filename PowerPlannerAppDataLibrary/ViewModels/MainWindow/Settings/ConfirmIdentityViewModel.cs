@@ -35,7 +35,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void Continue()
         {
-            if (PowerPlannerAuth.ValidatePasswordLocally(Password, _currAccount.Username, _currAccount.Token))
+            if (PowerPlannerAuth.ValidatePasswordLocally(Password, _currAccount.Username, _currAccount.LocalToken))
             {
                 OnIdentityConfirmed?.Invoke(this, new EventArgs());
 

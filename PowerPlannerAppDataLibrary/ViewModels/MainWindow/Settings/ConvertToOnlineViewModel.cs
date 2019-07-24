@@ -56,7 +56,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     new CreateAccountRequest()
                     {
                         Username = currAccount.Username,
-                        Password = currAccount.Token,
+                        Password = currAccount.LocalToken,
                         Email = email,
                         AddDevice = true
                     }, Website.ApiKey);
