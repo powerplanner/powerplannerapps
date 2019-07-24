@@ -494,7 +494,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private async System.Threading.Tasks.Task<string> RefreshOnlineTokenHelperAsync()
         {
             var resp = await PowerPlannerAppAuthLibrary.PowerPlannerAuth.RefreshOnlineTokenAsync(AccountId, Username, LocalToken);
-            if (resp.Error != null)
+            if (resp.Error == null)
             {
                 Token = resp.Token;
                 await AccountsManager.Save(this);

@@ -53,13 +53,12 @@ namespace PowerPlannerUWP.ViewModel.Promos
                 if (hasContent)
                 {
                     // Try downloading and then show
-                    ShouldSuggestOtherPlatformsResponse response = await WebHelper.Download<ShouldSuggestOtherPlatformsRequest, ShouldSuggestOtherPlatformsResponse>(
+                    ShouldSuggestOtherPlatformsResponse response = await account.PostAuthenticatedAsync<ShouldSuggestOtherPlatformsRequest, ShouldSuggestOtherPlatformsResponse>(
                     Website.URL + "shouldsuggestotherplatforms",
                     new ShouldSuggestOtherPlatformsRequest()
                     {
-                        Login = account.GenerateCredentials(),
                         CurrentPlatform = "Windows 10"
-                    }, Website.ApiKey);
+                    });
 
                     if (response.ShouldSuggest)
                     {
