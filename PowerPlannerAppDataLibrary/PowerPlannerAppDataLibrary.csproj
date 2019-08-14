@@ -273,7 +273,10 @@
     <Compile Include="ViewModels\MainWindow\Settings\SyncOptionsViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Settings\TwoWeekScheduleSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\ShowImagesViewModel.cs" />
+    <Compile Include="ViewModels\MainWindow\Welcome\ConnectAccountViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Welcome\CreateAccount\CreateAccountViewModel.cs" />
+    <Compile Include="ViewModels\MainWindow\Welcome\ExistingUserViewModel.cs" />
+    <Compile Include="ViewModels\MainWindow\Welcome\GetStartedViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Welcome\Login\ForgotUsernameViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Welcome\Login\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindow\Welcome\Login\RecoveredUsernamesViewModel.cs" />

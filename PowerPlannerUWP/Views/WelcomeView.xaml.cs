@@ -40,19 +40,14 @@ namespace PowerPlannerUWP.Views
                 VisualStateManager.GoToState(this, "NormalState", true);
         }
 
-        private void ButtonLogin_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Login();
-        }
-
-        private void ButtonCreateAccount_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.CreateAccount();
-        }
-
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.OpenSettings();
+        }
+
+        private void ButtonGetStarted_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GetStarted();
         }
     }
 }

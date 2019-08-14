@@ -24,6 +24,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome
             ShowPopup(new CreateAccountViewModel(this));
         }
 
+        public void GetStarted()
+        {
+            ShowPopup(new GetStartedViewModel(this));
+        }
+
         public void OpenSettings()
         {
             var mainWindowViewModel = this.FindAncestor<MainWindowViewModel>();

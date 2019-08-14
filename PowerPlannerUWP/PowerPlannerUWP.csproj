@@ -362,6 +362,15 @@
     <Compile Include="Views\SettingsListView.xaml.cs">
       <DependentUpon>SettingsListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WelcomeViews\ConnectAccountView.xaml.cs">
+      <DependentUpon>ConnectAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WelcomeViews\ExistingUserView.xaml.cs">
+      <DependentUpon>ExistingUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WelcomeViews\GetStartedView.xaml.cs">
+      <DependentUpon>GetStartedView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\YearsView.xaml.cs">
       <DependentUpon>YearsView.xaml</DependentUpon>
     </Compile>
@@ -835,6 +844,18 @@
     <Page Include="Views\SettingsListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WelcomeViews\ConnectAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WelcomeViews\ExistingUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WelcomeViews\GetStartedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\YearsView.xaml">
       <SubType>Designer</SubType>

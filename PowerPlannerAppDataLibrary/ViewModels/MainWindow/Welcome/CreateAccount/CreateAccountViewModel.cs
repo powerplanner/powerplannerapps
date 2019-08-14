@@ -165,41 +165,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         private async System.Threading.Tasks.Task FinishCreateAccount(string username, string localToken, string token, long accountId, int deviceId)
         {
-            var account = await CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId);
+            var account = await AccountsManager.CreateAndInitializeAccountAsync(username, localToken, token, accountId, deviceId);
 
             if (account != null)
             {
-                AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
-
-                // Add the default year/semester
-                try
-                {
-                    DataItemYear year = new DataItemYear()
-                    {
-                        Identifier = Guid.NewGuid(),
-                        Name = PowerPlannerResources.GetString("DummyFirstYear")
-                    };
-
-                    DataItemSemester semester = new DataItemSemester()
-                    {
-                        Identifier = Guid.NewGuid(),
-                        UpperIdentifier = year.Identifier,
-                        Name = PowerPlannerResources.GetString("DummyFirstSemester")
-                    };
-
-                    DataChanges changes = new DataChanges();
-                    changes.Add(year);
-                    changes.Add(semester);
-
-                    await PowerPlannerApp.Current.SaveChanges(account, changes);
-                    await account.SetCurrentSemesterAsync(semester.Identifier);
-                    NavigationManager.MainMenuSelection = NavigationManager.MainMenuSelections.Schedule;
-                }
-                catch (Exception ex)
-                {
-                    TelemetryExtension.Current?.TrackException(ex);
-                }
-
+                // Take us to the account
                 var dontWait = FindAncestor<MainWindowViewModel>().SetCurrentAccount(account);
             }
         }
