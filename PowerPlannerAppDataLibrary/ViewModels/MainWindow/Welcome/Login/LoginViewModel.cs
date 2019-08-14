@@ -93,7 +93,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             Accounts = new MyObservableList<AccountDataItem>(await AccountsManager.GetAllAccounts());
 
             // TODO: What if RememberUsername is edited? That's quite a minor case, not worth building something for, but it's potentially a flaw
-            AccountsWithRememberUsername = Accounts.Sublist(i => i.RememberUsername);
+            AccountsWithRememberUsername = Accounts.Sublist(i => i.RememberUsername && i.Username != AccountsManager.DefaultOfflineAccountUsername);
 
             AccountsManager.OnAccountDeleted += new WeakEventHandler<Guid>(AccountsManager_OnAccountDeleted).Handler;
             AccountsManager.OnAccountAdded += new WeakEventHandler<AccountDataItem>(AccountsManager_OnAccountAdded).Handler;
@@ -103,7 +103,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             {
                 var lastLogin = Accounts.FirstOrDefault(i => i.LocalAccountId == lastLoginLocalId);
 
-                if (lastLogin != null && lastLogin.RememberUsername)
+                if (lastLogin != null && lastLogin.RememberUsername && lastLogin.Username != AccountsManager.DefaultOfflineAccountUsername)
                     Username = lastLogin.Username;
             }
         }
