@@ -37,7 +37,26 @@ Each platform-specific app simply needs to build views on top of the shared view
         1. This will generate a blank `secrets.json` file (ignored from git), and generates the corresponding secret files needed to compile the app
         1. If you have actual secrets to use, update the `secrets.json` file with the secrets and re-run `.\ApplySecrets.ps1`
         1. Note that the app still should compile and run without actual secrets, but things like accessing the server won't work (offline accounts should work though).
-1. Open the `PowerPlannerApps.sln` solution and you should be able to build the projects!
+1. Open the `PowerPlannerApps.sln` solution and you should be able to build the projects! See below for how to build each project.
+
+### Building UWP
+
+1. Set the start up project to `PowerPlannerUWP (Universal Windows)`, and ensure the build config is set to `Debug` and architecture is one of `x86`, `x64`, or `ARM` (Windows Phone only)
+1. Click **Local Machine** to deploy!
+
+![](assets\readme\BuildingUwpConfig.jpg)
+
+
+### Building Android
+
+1. Set the start up project to `PowerPlannerDroid`, and ensure the build config is set to `Debug (Droid)` (important that it must be the `(Droid)` config) and architecture is `Any CPU`
+1. Click **Local Machine** to deploy!
+
+
+### Building iOS
+
+1. Set the start up project to `PowerPlanneriOS`, and ensure the build config is set to `Debug` and architecture is `Any CPU`
+1. Click **Local Machine** to deploy!
 
 
 ## Architecture
