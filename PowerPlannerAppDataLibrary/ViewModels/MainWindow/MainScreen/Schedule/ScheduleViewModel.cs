@@ -12,6 +12,8 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
@@ -490,6 +492,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+        }
+
+        public void LogIn()
+        {
+            ShowPopup(new ExistingUserViewModel(this));
         }
     }
 }

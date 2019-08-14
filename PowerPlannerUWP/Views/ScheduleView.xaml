@@ -437,7 +437,32 @@
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
             Padding="24">
 
-            <StackPanel VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel
+                HorizontalAlignment="Right"
+                Grid.Row="0"
+                Orientation="Vertical"
+                Margin="0,0,0,12">
+                <TextBlock
+                    Text="Returning user?"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    TextAlignment="Right"/>
+
+                <Button
+                    x:Name="ButtonLogIn"
+                    Style="{StaticResource WelcomeButtonStyle}"
+                    Content="LOG IN"
+                    Margin="0,6,0,0"
+                    HorizontalAlignment="Right"
+                    Click="ButtonLogIn_Click"
+                    MinWidth="120"/>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Center" Grid.Row="1">
 
                 <TextBlock
                     x:Uid="SchedulePage_TextBlockWelcomeTitle"
