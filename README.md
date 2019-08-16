@@ -218,3 +218,12 @@ In Android, you can also localize directly in the XML layout views. But this use
 ```
 
 Simply place the resource string's id within `{}`. I can't remember whether localization is supported on any text property, or only specific ones like TextView.text... it might be supported on any.
+
+
+## Helpful code snippets
+
+### Showing a dialog cross-platform
+
+```csharp
+new PortableMessageDialog("my content", "my title").Show(); // or ShowAsync() if you want to wait for it to be closed
+```
