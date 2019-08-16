@@ -70,7 +70,8 @@
                         Foreground="{StaticResource PowerPlannerSecondaryBlue}"
                             TextAlignment="Right"
                             Margin="12,24,12,12"
-                            Tapped="createOfflineAccount_Tapped"/>
+                            Tapped="createOfflineAccount_Tapped"
+                        Visibility="{Binding IsCreateLocalAccountVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
 
 

@@ -417,6 +417,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set { SetProperty(ref _localToken, value, nameof(LocalToken)); }
         }
 
+        /// <summary>
+        /// The online token
+        /// </summary>
         [DataMember(Name = "OnlineToken")]
         public string Token { get; set; }
 
@@ -475,10 +478,15 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             get { return RememberUsername && RememberPassword; }
         }
 
-        public bool IsOnlineAccount
+        public bool IsOnlineAccount => CachedComputation(delegate
         {
-            get { return AccountId != 0 && DeviceId != 0; }
-        }
+            return AccountId != 0 && DeviceId != 0;
+        }, new string[] { nameof(AccountId), nameof(DeviceId) });
+
+        public bool IsDefaultOfflineAccount => CachedComputation(delegate
+        {
+            return !IsOnlineAccount && Username == AccountsManager.DefaultOfflineAccountUsername && LocalToken == "";
+        }, new string[] { nameof(IsOnlineAccount), nameof(Username), nameof(LocalToken) });
 
         private System.Threading.Tasks.Task<string> _refreshOnlineTokenTask;
         private System.Threading.Tasks.Task<string> RefreshOnlineTokenAsync()

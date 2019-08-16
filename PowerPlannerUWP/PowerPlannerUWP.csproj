@@ -331,6 +331,9 @@
     <Compile Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml.cs">
       <DependentUpon>CalendarIntegrationTasksView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml.cs">
+      <DependentUpon>SuccessfullyCreatedAccountView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml.cs">
       <DependentUpon>TwoWeekScheduleSettingsView.xaml</DependentUpon>
     </Compile>
@@ -367,9 +370,6 @@
     </Compile>
     <Compile Include="Views\WelcomeViews\ExistingUserView.xaml.cs">
       <DependentUpon>ExistingUserView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WelcomeViews\GetStartedView.xaml.cs">
-      <DependentUpon>GetStartedView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\YearsView.xaml.cs">
       <DependentUpon>YearsView.xaml</DependentUpon>
@@ -805,6 +805,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -850,10 +854,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WelcomeViews\ExistingUserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WelcomeViews\GetStartedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

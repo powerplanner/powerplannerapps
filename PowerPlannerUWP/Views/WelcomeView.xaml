@@ -63,12 +63,27 @@
                 </StackPanel>
 
                 <Grid Margin="0,18,0,0" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition x:Name="ColumnLoginButton" Width="*"/>
+                        <ColumnDefinition x:Name="ColumnCreateAccountButton" Width="*"/>
+                    </Grid.ColumnDefinitions>
 
                     <Button
-                        x:Name="ButtonGetStarted"
+                        x:Uid="WelcomePage_ButtonLogIn"
+                        x:Name="ButtonLogin"
                         Style="{StaticResource WelcomeButtonStyle}"
-                        Content="GET STARTED"
-                        Click="ButtonGetStarted_Click"/>
+                        Content="LOG IN"
+                        Margin="0,0,6,0"
+                        Click="ButtonLogin_Click"/>
+
+                    <Button
+                        x:Uid="WelcomePage_ButtonCreateAccount"
+                        x:Name="ButtonCreateAccount"
+                        Content="CREATE ACCOUNT"
+                        Style="{StaticResource WelcomeButtonStyle}"
+                        Grid.Column="1"
+                        Margin="6,0,0,0"
+                        Click="ButtonCreateAccount_Click"/>
 
                     <Grid.ChildrenTransitions>
                         <TransitionCollection>

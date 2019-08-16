@@ -24,6 +24,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         private const string STORED_PASS = "Stored password, hidden for security";
 
+        /// <summary>
+        /// A message to be displayed at the top, used to inform user that default offline account will be wiped
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// The default offline account that should be deleted after successful login
+        /// </summary>
+        public AccountDataItem DefaultAccountToDelete { get; set; }
+
         public MyObservableList<AccountDataItem> Accounts
         {
             get { return GetValue<MyObservableList<AccountDataItem>>(); }
@@ -93,7 +103,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             Accounts = new MyObservableList<AccountDataItem>(await AccountsManager.GetAllAccounts());
 
             // TODO: What if RememberUsername is edited? That's quite a minor case, not worth building something for, but it's potentially a flaw
-            AccountsWithRememberUsername = Accounts.Sublist(i => i.RememberUsername && i.Username != AccountsManager.DefaultOfflineAccountUsername);
+            AccountsWithRememberUsername = Accounts.Sublist(i => i.RememberUsername && !i.IsDefaultOfflineAccount);
 
             AccountsManager.OnAccountDeleted += new WeakEventHandler<Guid>(AccountsManager_OnAccountDeleted).Handler;
             AccountsManager.OnAccountAdded += new WeakEventHandler<AccountDataItem>(AccountsManager_OnAccountAdded).Handler;
@@ -103,7 +113,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             {
                 var lastLogin = Accounts.FirstOrDefault(i => i.LocalAccountId == lastLoginLocalId);
 
-                if (lastLogin != null && lastLogin.RememberUsername && lastLogin.Username != AccountsManager.DefaultOfflineAccountUsername)
+                if (lastLogin != null && lastLogin.RememberUsername && !lastLogin.IsDefaultOfflineAccount)
                     Username = lastLogin.Username;
             }
         }
@@ -300,6 +310,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             if (existingAccount)
             {
                 account.ExecuteOnLoginTasks();
+            }
+
+            if (DefaultAccountToDelete != null)
+            {
+                StartDeleteDefaultAccount();
+            }
+        }
+
+        private async void StartDeleteDefaultAccount()
+        {
+            try
+            {
+                await AccountsManager.Delete(DefaultAccountToDelete.LocalAccountId);
+            }
+            catch
+            {
+                // We don't really care if delete fails
             }
         }
 

@@ -128,23 +128,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 TelemetryExtension.Current?.TrackException(ex);
             }
 
-            //have it sync
-            SyncWithoutBlocking(account);
-        }
-
-        private async void SyncWithoutBlocking(AccountDataItem account)
-        {
-            try
-            {
-                await Sync.SyncAccountAsync(account);
-            }
-
-            catch (OperationCanceledException) { }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
+            //have it sync, without waiting
+            Sync.StartSyncAccount(account);
         }
     }
 }

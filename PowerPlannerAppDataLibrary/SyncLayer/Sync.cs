@@ -176,6 +176,25 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             }
         }
 
+        /// <summary>
+        /// Same as <see cref="SyncAccountAsync(AccountDataItem)"/> except it is non-blocking/non-async and works in the background
+        /// </summary>
+        /// <param name="account"></param>
+        public static async void StartSyncAccount(AccountDataItem account)
+        {
+            try
+            {
+                await SyncAccountAsync(account);
+            }
+
+            catch (OperationCanceledException) { }
+
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
         private static SyncResult GenericFailure()
         {
             return new SyncResult()

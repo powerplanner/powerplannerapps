@@ -123,7 +123,6 @@ namespace PowerPlannerUWP
             return new Dictionary<Type, Type>()
             {
                 // Welcome views
-                { typeof(GetStartedViewModel), typeof(GetStartedView) },
                 { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
                 { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
 
@@ -195,7 +194,8 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
                 { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
                 { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
-                { typeof(PromoContributeViewModel), typeof(PromoContributeView) }
+                { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
+                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) }
             };
         }
 

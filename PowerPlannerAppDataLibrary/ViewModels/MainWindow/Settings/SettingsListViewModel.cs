@@ -2,11 +2,14 @@
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
@@ -21,14 +24,79 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             HasAccount = Account != null;
             if (HasAccount)
             {
-                IsOnlineAccount = Account.IsOnlineAccount;
+                Account.PropertyChanged += Account_PropertyChanged;
+                UpdateFromAccount();
             }
             _pagedViewModel = FindAncestor<PagedViewModel>();
         }
 
+        private void Account_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Account.IsOnlineAccount):
+                case nameof(Account.IsDefaultOfflineAccount):
+                    UpdateFromAccount();
+                    break;
+            }
+        }
+
+        private void UpdateFromAccount()
+        {
+            IsOnlineAccount = Account.IsOnlineAccount;
+            IsDefaultOfflineAccount = Account.IsDefaultOfflineAccount;
+        }
+
+        /// <summary>
+        /// This is only false if they enter the settings page from the login page. This will still be true for default offline accounts.
+        /// </summary>
         public bool HasAccount { get; private set; }
 
-        public bool IsOnlineAccount { get; private set; }
+        private bool _isOnlineAccount;
+        public bool IsOnlineAccount
+        {
+            get => _isOnlineAccount;
+            private set => SetProperty(ref _isOnlineAccount, value, nameof(IsOnlineAccount));
+        }
+
+        private bool _isDefaultOfflineAccount;
+        public bool IsDefaultOfflineAccount
+        {
+            get => _isDefaultOfflineAccount;
+            private set => SetProperty(ref _isDefaultOfflineAccount, value, nameof(IsDefaultOfflineAccount));
+        }
+
+        public bool IsCreateAccountVisible => CachedComputation(delegate
+        {
+            return IsDefaultOfflineAccount;
+        }, new string[] { nameof(IsDefaultOfflineAccount) });
+
+        public bool IsLogInVisible => CachedComputation(delegate
+        {
+            return IsDefaultOfflineAccount;
+        }, new string[] { nameof(IsDefaultOfflineAccount) });
+
+        public bool IsMyAccountVisible => CachedComputation(delegate
+        {
+            return IsOnlineAccount;
+        }, new string[] { nameof(IsOnlineAccount) });
+
+        /// <summary>
+        /// Should be visible for default offline account too, clicking it will tell users they need to create an account first
+        /// </summary>
+        public bool IsGoogleCalendarIntegrationVisible => CachedComputation(delegate
+        {
+            return IsOnlineAccount || IsDefaultOfflineAccount;
+        }, new string[] { nameof(IsOnlineAccount), nameof(IsDefaultOfflineAccount) });
+
+        public bool IsRemindersVisible => HasAccount;
+
+        public bool IsSyncOptionsVisible => CachedComputation(delegate
+        {
+            return IsOnlineAccount;
+        }, new string[] { nameof(IsOnlineAccount) });
+
+        public bool IsTwoWeekScheduleVisible => HasAccount;
 
         public void OpenMyAccount()
         {
@@ -77,8 +145,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             TelemetryExtension.Current?.TrackEvent("Action_OpenGoogleCalendarIntegration");
 
-            var popupHost = GetPopupViewModelHost();
-            popupHost.ShowPopup(new GoogleCalendarIntegrationViewModel(popupHost, Account));
+            if (IsDefaultOfflineAccount)
+            {
+                new PortableMessageDialog("In order to use the Google Calendar integration, you first have to create a Power Planner account!", "No account").Show();
+            }
+            else
+            {
+                var popupHost = GetPopupViewModelHost();
+                popupHost.ShowPopup(new GoogleCalendarIntegrationViewModel(popupHost, Account));
+            }
         }
 
         private const string ContributeUrl = "https://powerplanner.net/contribute";
@@ -92,6 +167,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             TelemetryExtension.Current?.TrackEvent("Action_OpenContribute");
 
             return ContributeUrl;
+        }
+
+        public void OpenCreateAccount()
+        {
+            ShowPopup(CreateAccountViewModel.CreateForUpgradingDefaultAccount(this, Account));
+        }
+
+        public void OpenLogIn()
+        {
+            ShowPopup(new LoginViewModel(this)
+            {
+                Message = "By signing in to an account, all information that you've currently entered will be DELETED. If you want to keep your information, create an account instead.",
+                DefaultAccountToDelete = Account.IsDefaultOfflineAccount ? Account : null // It should always be the default account, but just in case
+            });
         }
     }
 }
