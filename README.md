@@ -124,6 +124,48 @@ return new Dictionary<Type, Type>()
 ```
 
 
+#### Helpful binding logic
+
+Views drastically depend on being able to **bind** to view model properties, so that the view magically updates when a property changes.
+
+Anything that needs bindable properties should extend from `BindableBase`. Each property should then have a private and public property, as seen below, and when setting the private field, be sure to use the `SetProperty` method (provided by `BindableBase`), and reference the name of the property that changed (by using `nameof` to ensure that if you rename the property, refactoring will update everywhere).
+
+```csharp
+public class Grade : BindableBase
+{
+    private double _gradeReceived;
+    public double GradeReceived
+    {
+        get => _gradeReceived;
+        set => SetProperty(ref _gradeReceived, value, nameof(GradeReceived));
+    }
+}
+```
+
+Sometimes there are **computed properties** that are dependent on other properties. There's another helper method in `BindableBase` for that... `CachedComputation`. Use it as follows...
+
+```csharp
+public class Grade : BindableBase
+{
+    private double _gradeReceived;
+    public double GradeReceived
+    {
+        get => _gradeReceived;
+        set => SetProperty(ref _gradeReceived, value, nameof(GradeReceived));
+    }
+    
+    // ...
+    
+    public double Percentage => CachedComputation(delegate
+    {
+        return GradeReceived / GradeTotal;
+    }, new string[] { nameof(GradeReceived), nameof(GradeTotal) });
+}
+```
+
+Notice that you have to explicitly reference (via `nameof`) the dependent properties you want to listen to. When one of those properties changes, the computation will run again, and if the result changes, it will trigger a property change event for that property.
+
+
 ## Localization
 
 The Android and UWP apps are currently fully localized. Localized strings are found in `PowerPlannerAppDataLibrary/Strings`. iOS has not been updated to take advantage of the localized strings (text is hardcoded right now).
