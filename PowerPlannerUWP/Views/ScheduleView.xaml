@@ -453,7 +453,7 @@
                     TextAlignment="Right"/>
 
                 <Button
-                    x:Uid="WelcomePage_ButtonLogin.Content"
+                    x:Uid="WelcomePage_ButtonLogin"
                     x:Name="ButtonLogIn"
                     Style="{StaticResource WelcomeButtonStyle}"
                     Margin="0,6,0,0"

@@ -1629,13 +1629,52 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
     <value>Contribua para Power Planner</value>
   </data>
+  <data name="Settings_GoogleCalendar_NoAccountMessage" xml:space="preserve">
+    <value>Para utilizar a integração do Google Calendar, você deve primeiro criar uma conta de Power Planner!</value>
+  </data>
+  <data name="Settings_LogInFromDefaultAccountMessage" xml:space="preserve">
+    <value>Por efetuar login em uma conta, todas as informações que você digitou no momento serão excluídas. Se você deseja manter suas informações, crie uma conta em vez disso.</value>
+  </data>
+  <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
+    <value>Retornando o usuário?</value>
+  </data>
+  <data name="Settings_MainPage_CreateAccountItem.Subtitle" xml:space="preserve">
+    <value>Use Power Planner em vários dispositivos!</value>
+  </data>
   <data name="Settings_MainPage_CreateAccountItem.Title" xml:space="preserve">
     <value>Criar conta</value>
+  </data>
+  <data name="Settings_MainPage_LogInItem.Subtitle" xml:space="preserve">
+    <value>Já tem uma conta? Iniciar sessão!</value>
   </data>
   <data name="Settings_MainPage_LogInItem.Title" xml:space="preserve">
     <value>Fazer logon</value>
   </data>
+  <data name="Settings_SuccessfullyCreatedAccountPage.Title" xml:space="preserve">
+    <value>CONTA CRIADA</value>
+  </data>
+  <data name="Settings_SuccessfullyCreatedAccountPage_Message.Text" xml:space="preserve">
+    <value>Sua conta foi criada! Agora, você pode usar Power Planner na Android, iOS, Windows e web, em https://powerplanner.net!</value>
+  </data>
   <data name="Welcome_ConnectAccountPage.Title" xml:space="preserve">
     <value>CONECTAR CONTA</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage_Message.Text" xml:space="preserve">
+    <value>Você está usando Power Planner em outro dispositivo, mas não criar uma conta? Se assim for, abra o Power Planner desse dispositivo, vá para configurações -&gt; criar conta e criar uma conta. Depois disso, logar-se abaixo!</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage_NeedHelp.Text" xml:space="preserve">
+    <value>Se precisar de ajuda, entre em contato barebonesdev@live.com</value>
+  </data>
+  <data name="Welcome_ExistingUserPage.Title" xml:space="preserve">
+    <value>USUÁRIO EXISTENTE</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_ButtonHasAccount.Content" xml:space="preserve">
+    <value>Sim, eu tenho uma conta</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_ButtonNoAccount.Content" xml:space="preserve">
+    <value>Não, eu não tenho uma conta</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_Message.Text" xml:space="preserve">
+    <value>Você tem uma conta de Power Planner?</value>
   </data>
 </root>
