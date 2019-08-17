@@ -14,7 +14,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 {
     public class UWPTelemetryExtension : TelemetryExtension
     {
-        private string _username;
+        private string _userId = "";
 
         public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null)
         {
@@ -23,7 +23,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 HockeyClient.Current.TrackException(ex, new Dictionary<string, string>()
                 {
                     { "ExceptionName", exceptionName },
-                    { "Username", _username }
+                    { "UserId", _userId }
                 });
             }
             catch { }
@@ -42,7 +42,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 }
                 if (properties.Count < 5)
                 {
-                    properties["Username"] = _username;
+                    properties["UserId"] = _userId;
                 }
 
                 HockeyClient.Current.TrackEvent(eventName, properties);
@@ -57,23 +57,19 @@ namespace PowerPlannerUWPLibrary.Extensions
             {
                 if (account != null)
                 {
-                    _username = account.Username;
+                    _userId = account.GetTelemetryUserId();
                     if (account.IsDefaultOfflineAccount)
                     {
-                        HockeyClient.Current.UpdateContactInfo("default-" + account.LocalAccountId, "");
-                    }
-                    else if (account.IsOnlineAccount)
-                    {
-                        HockeyClient.Current.UpdateContactInfo(account.AccountId.ToString(), account.Username);
+                        HockeyClient.Current.UpdateContactInfo(account.GetTelemetryUserId(), "");
                     }
                     else
                     {
-                        HockeyClient.Current.UpdateContactInfo("offline-" + account.LocalAccountId, account.Username);
+                        HockeyClient.Current.UpdateContactInfo(account.GetTelemetryUserId(), account.Username);
                     }
                 }
                 else
                 {
-                    _username = "";
+                    _userId = "";
                 }
             }
             catch { }
@@ -92,7 +88,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                     Timestamp = timeVisited,
                     Properties =
                     {
-                        { "Username", _username }
+                        { "UserId", _userId }
                     }
                 });
             }

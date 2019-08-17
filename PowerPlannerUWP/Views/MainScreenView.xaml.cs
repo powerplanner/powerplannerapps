@@ -5,6 +5,7 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using PowerPlannerUWP.Views.SettingsViews;
 using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
@@ -328,7 +329,7 @@ namespace PowerPlannerUWP.Views
 
                     // Email dev
                     case 1:
-                        await Launcher.LaunchUriAsync(new Uri("mailto:?to=barebonesdev@live.com&subject=Power Planner for Win 10 - Contact Developer - " + Variables.VERSION));
+                        AboutView.EmailDeveloper(ViewModel);
                         break;
                 }
             }

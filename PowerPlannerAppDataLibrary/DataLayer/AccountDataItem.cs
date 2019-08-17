@@ -488,6 +488,22 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return !IsOnlineAccount && Username == AccountsManager.DefaultOfflineAccountUsername && LocalToken == "";
         }, new string[] { nameof(IsOnlineAccount), nameof(Username), nameof(LocalToken) });
 
+        public string GetTelemetryUserId()
+        {
+            if (IsDefaultOfflineAccount)
+            {
+                return "default-" + LocalAccountId;
+            }
+            else if (IsOnlineAccount)
+            {
+                return AccountId.ToString();
+            }
+            else
+            {
+                return "offline-" + LocalAccountId;
+            }
+        }
+
         private System.Threading.Tasks.Task<string> _refreshOnlineTokenTask;
         private System.Threading.Tasks.Task<string> RefreshOnlineTokenAsync()
         {

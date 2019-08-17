@@ -1,6 +1,8 @@
-﻿using InterfacesUWP.Views;
+﻿using BareMvvm.Core.ViewModels;
+using InterfacesUWP.Views;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
@@ -34,11 +36,23 @@ namespace PowerPlannerUWP.Views.SettingsViews
             tbVersion.Text = Variables.VERSION.ToString();
         }
 
-        private async void buttonEmailDeveloper_Click(object sender, RoutedEventArgs e)
+        private void buttonEmailDeveloper_Click(object sender, RoutedEventArgs e)
+        {
+            EmailDeveloper(ViewModel);
+        }
+
+        public static async void EmailDeveloper(BaseViewModel current)
         {
             try
             {
-                await Launcher.LaunchUriAsync(new Uri("mailto:?to=barebonesdev@live.com&subject=Power Planner for Win 10 - Contact Developer - " + Variables.VERSION));
+                string accountInfo = "";
+                var mainScreen = current is MainScreenViewModel ? current as MainScreenViewModel : current.FindAncestor<MainScreenViewModel>();
+                if (mainScreen != null && mainScreen.CurrentAccount != null)
+                {
+                    accountInfo = " - " + mainScreen.CurrentAccount.GetTelemetryUserId() + " - " + mainScreen.CurrentAccount.DeviceId;
+                }
+
+                await Launcher.LaunchUriAsync(new Uri("mailto:?to=barebonesdev@live.com&subject=Power Planner for Win 10 - Contact Developer - " + Variables.VERSION + accountInfo));
             }
 
             catch (Exception ex)
