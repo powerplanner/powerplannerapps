@@ -78,7 +78,18 @@ namespace PowerPlanneriOS.Extensions
             {
                 if (account != null)
                 {
-                    AppCenter.SetUserId(account.Username);
+                    if (account.IsDefaultOfflineAccount)
+                    {
+                        AppCenter.SetUserId("default-" + account.LocalAccountId);
+                    }
+                    else if (account.IsOnlineAccount)
+                    {
+                        AppCenter.SetUserId(account.AccountId.ToString());
+                    }
+                    else
+                    {
+                        AppCenter.SetUserId("offline-" + account.LocalAccountId);
+                    }
                 }
             }
             catch { }

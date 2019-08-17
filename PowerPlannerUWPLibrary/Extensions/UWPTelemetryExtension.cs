@@ -58,7 +58,18 @@ namespace PowerPlannerUWPLibrary.Extensions
                 if (account != null)
                 {
                     _username = account.Username;
-                    HockeyClient.Current.UpdateContactInfo(account.Username, account.AccountId.ToString());
+                    if (account.IsDefaultOfflineAccount)
+                    {
+                        HockeyClient.Current.UpdateContactInfo("default-" + account.LocalAccountId, "");
+                    }
+                    else if (account.IsOnlineAccount)
+                    {
+                        HockeyClient.Current.UpdateContactInfo(account.AccountId.ToString(), account.Username);
+                    }
+                    else
+                    {
+                        HockeyClient.Current.UpdateContactInfo("offline-" + account.LocalAccountId, account.Username);
+                    }
                 }
                 else
                 {
