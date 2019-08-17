@@ -44,18 +44,16 @@
                 Visibility="Collapsed"/>
 
             <settingsviews:MainSettingsItem
+                x:Uid="Settings_MainPage_CreateAccountItem"
                 x:Name="ButtonCreateAccount"
                 Symbol="AddFriend"
-                Title="Create account"
-                Subtitle="Use Power Planner across multiple devices!"
                 Visibility="{Binding IsCreateAccountVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                 Click="ButtonCreateAccount_Click"/>
 
             <settingsviews:MainSettingsItem
+                x:Uid="Settings_MainPage_LogInItem"
                 x:Name="ButtonLogIn"
                 Symbol="Rename"
-                Title="Log in"
-                Subtitle="Already have an account? Log in!"
                 Visibility="{Binding IsLogInVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                 Click="ButtonLogIn_Click"/>
 

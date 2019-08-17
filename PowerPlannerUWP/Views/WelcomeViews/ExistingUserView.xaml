@@ -1,4 +1,5 @@
 ﻿<views:PopupViewHostGeneric
+    x:Uid="Welcome_ExistingUserPage"
     x:Class="PowerPlannerUWP.Views.WelcomeViews.ExistingUserView"
     xmlns:views="using:PowerPlannerUWP.Views"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -19,6 +20,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock
+                    x:Uid="Welcome_ExistingUserPage_Message"
                     Text="Do you have a Power Planner account?"
                     Style="{ThemeResource BodyTextBlockStyle}"/>
 
@@ -27,6 +29,7 @@
                     Grid.Row="1"
                     Margin="0,24,0,0">
                     <Button
+                        x:Uid="Welcome_ExistingUserPage_ButtonHasAccount"
                         x:Name="ButtonHasAccount"
                         Content="Yes, I have an account"
                         HorizontalAlignment="Stretch"
@@ -34,6 +37,7 @@
                         Click="ButtonHasAccount_Click"/>
 
                     <Button
+                        x:Uid="Welcome_ExistingUserPage_ButtonNoAccount"
                         x:Name="ButtonNoAccount"
                         Content="No, I don't have an account"
                         HorizontalAlignment="Stretch"

@@ -1629,4 +1629,13 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
     <value>Contribuir a Power Planner</value>
   </data>
+  <data name="Settings_MainPage_CreateAccountItem.Title" xml:space="preserve">
+    <value>Crear cuenta</value>
+  </data>
+  <data name="Settings_MainPage_LogInItem.Title" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage.Title" xml:space="preserve">
+    <value>CONECTAR CUENTA</value>
+  </data>
 </root>

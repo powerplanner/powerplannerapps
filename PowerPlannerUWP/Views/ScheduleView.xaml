@@ -448,14 +448,14 @@
                 Orientation="Vertical"
                 Margin="0,0,0,12">
                 <TextBlock
-                    Text="Returning user?"
+                    x:Uid="SchedulePage_TextBlockReturningUser"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     TextAlignment="Right"/>
 
                 <Button
+                    x:Uid="WelcomePage_ButtonLogin.Content"
                     x:Name="ButtonLogIn"
                     Style="{StaticResource WelcomeButtonStyle}"
-                    Content="LOG IN"
                     Margin="0,6,0,0"
                     HorizontalAlignment="Right"
                     Click="ButtonLogIn_Click"

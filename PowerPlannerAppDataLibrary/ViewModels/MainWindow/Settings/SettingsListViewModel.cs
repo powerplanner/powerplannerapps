@@ -147,7 +147,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             if (IsDefaultOfflineAccount)
             {
-                new PortableMessageDialog("In order to use the Google Calendar integration, you first have to create a Power Planner account!", "No account").Show();
+                new PortableMessageDialog(PowerPlannerResources.GetString("Settings_GoogleCalendar_NoAccountMessage"), PowerPlannerResources.GetString("String_NoAccount")).Show();
             }
             else
             {
@@ -178,7 +178,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             ShowPopup(new LoginViewModel(this)
             {
-                Message = "By signing in to an account, all information that you've currently entered will be DELETED. If you want to keep your information, create an account instead.",
+                Message = PowerPlannerResources.GetString("Settings_LogInFromDefaultAccountMessage"),
                 DefaultAccountToDelete = Account.IsDefaultOfflineAccount ? Account : null // It should always be the default account, but just in case
             });
         }

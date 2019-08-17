@@ -1,4 +1,5 @@
 ﻿<views:PopupViewHostGeneric
+    x:Uid="Settings_SuccessfullyCreatedAccountPage"
     xmlns:views="using:PowerPlannerUWP.Views"
     x:Class="PowerPlannerUWP.Views.SettingsViews.SuccessfullyCreatedAccountView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -17,10 +18,12 @@
             <StackPanel Margin="12">
 
                 <TextBlock
-                    Text="Your account has been created! You can now use Power Planner on Android, iOS, Windows, and the web at https://powerplanner.net!"
+                    x:Uid="Settings_SuccessfullyCreatedAccountPage_Message"
                     Style="{ThemeResource BodyTextBlockStyle}"/>
 
+                <!--Will be programmatically localized-->
                 <TextBlock
+                    x:Name="TextBlockUsername"
                     Text="Username"
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Margin="0,24,0,0"/>
@@ -28,6 +31,7 @@
                     Text="{Binding Username, FallbackValue=[username]}"/>
 
                 <TextBlock
+                    x:Name="TextBlockEmail"
                     Text="Email"
                     Style="{ThemeResource BaseTextBlockStyle}"
                     Margin="0,12,0,0"/>
@@ -35,6 +39,7 @@
                     Text="{Binding Email, FallbackValue=[email]}"/>
 
                 <Button
+                    x:Uid="Settings_ConfirmIdentityPage_ButtonContinue.Content"
                     Style="{ThemeResource PowerPlannerSecondaryBlueButtonStyle}"
                     Content="Continue"
                     HorizontalAlignment="Stretch"

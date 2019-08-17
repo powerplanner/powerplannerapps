@@ -1629,4 +1629,13 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
     <value>Contribua para Power Planner</value>
   </data>
+  <data name="Settings_MainPage_CreateAccountItem.Title" xml:space="preserve">
+    <value>Criar conta</value>
+  </data>
+  <data name="Settings_MainPage_LogInItem.Title" xml:space="preserve">
+    <value>Fazer logon</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage.Title" xml:space="preserve">
+    <value>CONECTAR CONTA</value>
+  </data>
 </root>

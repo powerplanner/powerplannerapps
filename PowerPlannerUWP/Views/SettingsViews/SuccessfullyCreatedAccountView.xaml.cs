@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+﻿using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,6 +30,9 @@ namespace PowerPlannerUWP.Views.SettingsViews
         public SuccessfullyCreatedAccountView()
         {
             this.InitializeComponent();
+
+            TextBlockUsername.Text = PowerPlannerResources.GetString("TextBox_Username.Header");
+            TextBlockEmail.Text = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.Header");
         }
 
         private void ButtonContinue_Click(object sender, RoutedEventArgs e)

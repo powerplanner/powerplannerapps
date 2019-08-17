@@ -1,4 +1,5 @@
 ﻿<views:PopupViewHostGeneric
+    x:Uid="Welcome_ConnectAccountPage"
     xmlns:views="using:PowerPlannerUWP.Views"
     x:Class="PowerPlannerUWP.Views.WelcomeViews.ConnectAccountView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -19,7 +20,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock
-                    Style="{ThemeResource BodyTextBlockStyle}">
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    x:Uid="Welcome_ConnectAccountPage_Message">
                     Are you using Power Planner on another device, but haven't set up an account? If so, open Power Planner from that device, go to Settings -> Create Account, and create an account. After that, log in below!
                 </TextBlock>
 
@@ -29,6 +31,7 @@
                     Margin="0,24,0,0">
 
                     <Button
+                        x:Uid="WelcomePage_ButtonLogin.Content"
                         x:Name="ButtonLogIn"
                         Content="LOG IN"
                         HorizontalAlignment="Stretch"
@@ -36,6 +39,7 @@
                         Click="ButtonLogIn_Click"/>
 
                     <TextBlock
+                        x:Uid="Welcome_ConnectAccountPage_NeedHelp"
                         Text="If you need help, contact barebonesdev@live.com"
                         Style="{ThemeResource CaptionTextBlockStyle}"
                         TextWrapping="Wrap"
