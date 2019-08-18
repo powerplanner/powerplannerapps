@@ -145,15 +145,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             TelemetryExtension.Current?.TrackEvent("Action_OpenGoogleCalendarIntegration");
 
-            if (IsDefaultOfflineAccount)
+            if (AlertIfGoogleCalendarIntegrationNotPossible())
             {
-                new PortableMessageDialog(PowerPlannerResources.GetString("Settings_GoogleCalendar_NoAccountMessage"), PowerPlannerResources.GetString("String_NoAccount")).Show();
+                return;
             }
             else
             {
                 var popupHost = GetPopupViewModelHost();
                 popupHost.ShowPopup(new GoogleCalendarIntegrationViewModel(popupHost, Account));
             }
+        }
+
+        public bool AlertIfGoogleCalendarIntegrationNotPossible()
+        {
+            if (IsDefaultOfflineAccount)
+            {
+                new PortableMessageDialog(PowerPlannerResources.GetString("Settings_GoogleCalendar_NoAccountMessage"), PowerPlannerResources.GetString("String_NoAccount")).Show();
+                return true;
+            }
+
+            return false;
         }
 
         private const string ContributeUrl = "https://powerplanner.net/contribute";

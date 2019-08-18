@@ -39,7 +39,7 @@
                     Text="{Binding Email, FallbackValue=[email]}"/>
 
                 <Button
-                    x:Uid="Settings_ConfirmIdentityPage_ButtonContinue.Content"
+                    x:Uid="Settings_ConfirmIdentityPage_ButtonContinue"
                     Style="{ThemeResource PowerPlannerSecondaryBlueButtonStyle}"
                     Content="Continue"
                     HorizontalAlignment="Stretch"

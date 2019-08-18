@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:local="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="{Welcome_ConnectAccountPage_Message.Text}"/>
+
+        <Button
+            android:id="@+id/ButtonLogIn"
+            style="@style/PowerPlannerBlueButton"
+            android:text="{WelcomePage_ButtonLogin.Content}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="{Welcome_ConnectAccountPage_NeedHelp.Text}"
+            android:layout_marginTop="8dp"
+            style="@android:style/TextAppearance.Small"/>
+
+    </LinearLayout>
+</ScrollView>
