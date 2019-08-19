@@ -59,7 +59,6 @@
     <EnableLLVM>true</EnableLLVM>
     <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
     <DebugSymbols>False</DebugSymbols>
-    <AndroidDexTool>d8</AndroidDexTool>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Java.Interop" />
