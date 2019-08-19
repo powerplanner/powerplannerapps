@@ -216,13 +216,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 }
 
                 // Remove this popup, and show a new one saying success!
+                // We have to show first before removing otherwise iOS never shows it
                 var parent = Parent;
-                base.RemoveViewModel();
                 parent.ShowPopup(new SuccessfullyCreatedAccountViewModel(parent)
                 {
                     Username = username,
                     Email = email
                 });
+                base.RemoveViewModel();
 
                 // Trigger a sync (without waiting) so all their content uploads
                 Sync.StartSyncAccount(DefaultAccountToUpgrade);

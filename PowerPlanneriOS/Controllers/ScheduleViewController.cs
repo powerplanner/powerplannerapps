@@ -265,6 +265,7 @@ namespace PowerPlanneriOS.Controllers
                         BackgroundColor = UIColor.White
                     };
                     {
+                        // New user
                         var topSpacer = new UIView() { TranslatesAutoresizingMaskIntoConstraints = false };
                         _welcomeView.Add(topSpacer);
                         topSpacer.StretchWidth(_welcomeView);
@@ -313,6 +314,28 @@ namespace PowerPlanneriOS.Controllers
                             "subtitle", subtitle,
                             "buttonAddClass", buttonAddClass,
                             "bottomSpacer", bottomSpacer));
+
+                        // Returning user (we add on top so it remains clickable
+                        {
+                            var returningUser = new UILabel()
+                            {
+                                TranslatesAutoresizingMaskIntoConstraints = false,
+                                Text = PowerPlannerResources.GetString("SchedulePage_TextBlockReturningUser.Text"),
+                                Font = UIFont.PreferredCaption1
+                            };
+                            _welcomeView.Add(returningUser);
+                            returningUser.StretchWidth(_welcomeView, left: 16, right: 16);
+
+                            var buttonLogIn = PowerPlannerUIHelper.CreatePowerPlannerBlueButton("Log In");
+                            buttonLogIn.TranslatesAutoresizingMaskIntoConstraints = false;
+                            buttonLogIn.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.LogIn(); }).Handler;
+                            _welcomeView.Add(buttonLogIn);
+                            buttonLogIn.PinToLeft(_welcomeView, left: 16);
+
+                            _welcomeView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-16-[returningUser]-8-[buttonLogIn]", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                                "returningUser", returningUser,
+                                "buttonLogIn", buttonLogIn));
+                        }
                     }
                 }
 

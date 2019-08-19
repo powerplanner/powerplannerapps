@@ -60,6 +60,13 @@ namespace PowerPlanneriOS.Helpers
             button.SetTitle(title, UIControlState.Normal);
             button.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
             button.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
+            button.ContentEdgeInsets = new UIEdgeInsets()
+            {
+                Left = 8,
+                Right = 8,
+                Top = 6,
+                Bottom = 6
+            };
 
             return button;
         }

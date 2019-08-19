@@ -63,7 +63,10 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer: Andrew Bares (A8B2P228SK)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignProvision>cf5ea2fa-7466-4c83-83b3-fa754698c7da</CodesignProvision>
+    <CodesignProvision>Power Planner Debug Deployment</CodesignProvision>
+    <MtouchFastDev>true</MtouchFastDev>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <DeviceSpecificBuild>true</DeviceSpecificBuild>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -107,6 +110,9 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <BuildIpa>true</BuildIpa>
     <MtouchSdkVersion>12.1</MtouchSdkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
     <None Include="App\Secrets.template.cs" />
@@ -157,13 +163,16 @@
     <Compile Include="Controllers\Settings\ReminderSettingsViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsViewController.cs" />
+    <Compile Include="Controllers\Settings\SuccessfullyCreatedAccountViewController.cs" />
     <Compile Include="Controllers\Settings\TwoWeekScheduleSettingsViewController.cs" />
     <Compile Include="Controllers\Settings\UpdateCredentialsViewController.cs" />
     <Compile Include="Controllers\SyncErrorsViewController.cs" />
     <Compile Include="Controllers\TasksViewController.cs" />
     <Compile Include="Controllers\ViewGradeViewController.cs" />
     <Compile Include="Controllers\ViewHomeworkViewController.cs" />
+    <Compile Include="Controllers\Welcome\ConnectAccountViewController.cs" />
     <Compile Include="Controllers\Welcome\CreateAccountViewController.cs" />
+    <Compile Include="Controllers\Welcome\ExistingUserViewController.cs" />
     <Compile Include="Controllers\Welcome\ResetPasswordViewController.cs" />
     <Compile Include="Controllers\Welcome\ForgotUsernameViewController.cs" />
     <Compile Include="Controllers\Welcome\RecoveredUsernamesViewController.cs" />
