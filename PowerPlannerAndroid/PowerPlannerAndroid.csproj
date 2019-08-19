@@ -57,7 +57,7 @@
     <Debugger>Xamarin</Debugger>
     <AotAssemblies>true</AotAssemblies>
     <EnableLLVM>true</EnableLLVM>
-    <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <DebugSymbols>False</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
