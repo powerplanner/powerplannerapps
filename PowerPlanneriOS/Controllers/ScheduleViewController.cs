@@ -318,42 +318,24 @@ namespace PowerPlanneriOS.Controllers
                         // Returning user (we add on top so it remains clickable
                         if (ViewModel.IsReturningUserVisible)
                         {
-                            var returningVisibilityContainer = new BareUIVisibilityContainer()
+                            var returningUser = new UILabel()
                             {
-                                
+                                TranslatesAutoresizingMaskIntoConstraints = false,
+                                Text = PowerPlannerResources.GetString("SchedulePage_TextBlockReturningUser.Text"),
+                                Font = UIFont.PreferredCaption1
                             };
-                            {
-                                var returningViews = new UIView()
-                                {
-                                    TranslatesAutoresizingMaskIntoConstraints = false
-                                };
+                            _welcomeView.Add(returningUser);
+                            returningUser.StretchWidth(_welcomeView, left: 16, right: 16);
 
-                                var returningUser = new UILabel()
-                                {
-                                    TranslatesAutoresizingMaskIntoConstraints = false,
-                                    Text = PowerPlannerResources.GetString("SchedulePage_TextBlockReturningUser.Text"),
-                                    Font = UIFont.PreferredCaption1
-                                };
-                                returningViews.Add(returningUser);
-                                returningUser.StretchWidth(returningViews, left: 16, right: 16);
+                            var buttonLogIn = PowerPlannerUIHelper.CreatePowerPlannerBlueButton("Log In");
+                            buttonLogIn.TranslatesAutoresizingMaskIntoConstraints = false;
+                            buttonLogIn.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.LogIn(); }).Handler;
+                            _welcomeView.Add(buttonLogIn);
+                            buttonLogIn.PinToLeft(_welcomeView, left: 16);
 
-                                var buttonLogIn = PowerPlannerUIHelper.CreatePowerPlannerBlueButton("Log In");
-                                buttonLogIn.TranslatesAutoresizingMaskIntoConstraints = false;
-                                buttonLogIn.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.LogIn(); }).Handler;
-                                returningViews.Add(buttonLogIn);
-                                buttonLogIn.PinToLeft(returningViews, left: 16);
-
-                                returningViews.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-16-[returningUser]-8-[buttonLogIn]", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                                    "returningUser", returningUser,
-                                    "buttonLogIn", buttonLogIn));
-
-                                returningVisibilityContainer.Child = returningViews;
-                            }
-
-                            BindingHost.SetVisibilityBinding(returningVisibilityContainer, nameof(ViewModel.IsReturningUserVisible));
-                            _welcomeView.Add(returningVisibilityContainer);
-                            returningVisibilityContainer.StretchWidth(_welcomeView);
-                            returningVisibilityContainer.PinToTop(_welcomeView);
+                            _welcomeView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-16-[returningUser]-8-[buttonLogIn]", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                                "returningUser", returningUser,
+                                "buttonLogIn", buttonLogIn));
                         }
                     }
                 }

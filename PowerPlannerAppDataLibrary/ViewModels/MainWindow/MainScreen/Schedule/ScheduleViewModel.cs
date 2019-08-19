@@ -37,33 +37,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             set { SetProperty(ref _layoutMode, value, nameof(LayoutMode)); }
         }
 
-        private bool _confinguredIsReturningUserVisible;
         /// <summary>
-        /// This WILL be dynamically updated if they log in directly from the schedule page and log into an account that has an empty schedule
+        /// Boolean that represents whether the returning user UI should be shown. This should never dynamically change since to create an account you have to
+        /// go to the settings page, and returning to the schedule page re-creates the view model
         /// </summary>
-        public bool IsReturningUserVisible
-        {
-            get
-            {
-                if (!_confinguredIsReturningUserVisible)
-                {
-                    _confinguredIsReturningUserVisible = true;
-                    Account.PropertyChanged += Account_PropertyChanged;
-                }
-
-                return Account.IsDefaultOfflineAccount;
-            }
-        }
-
-        private void Account_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(Account.IsDefaultOfflineAccount):
-                    OnPropertyChanged(nameof(IsReturningUserVisible));
-                    break;
-            }
-        }
+        public bool IsReturningUserVisible => Account.IsDefaultOfflineAccount;
 
         public AccountDataItem Account { get; private set; }
 

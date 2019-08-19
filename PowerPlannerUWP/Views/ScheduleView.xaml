@@ -441,7 +441,7 @@
                 HorizontalAlignment="Right"
                 Grid.Row="0"
                 Orientation="Vertical"
-                Visibility="{Binding IsReturningUserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                Visibility="{Binding IsReturningUserVisible, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock
                     x:Uid="SchedulePage_TextBlockReturningUser"
                     Style="{ThemeResource BodyTextBlockStyle}"
