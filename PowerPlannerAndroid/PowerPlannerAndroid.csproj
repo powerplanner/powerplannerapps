@@ -59,6 +59,7 @@
     <EnableLLVM>true</EnableLLVM>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <DebugSymbols>False</DebugSymbols>
+    <AndroidSupportedAbis>armeabi-v7a;arm64-v8a</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Java.Interop" />
