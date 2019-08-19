@@ -316,6 +316,7 @@ namespace PowerPlanneriOS.Controllers
                             "bottomSpacer", bottomSpacer));
 
                         // Returning user (we add on top so it remains clickable
+                        if (ViewModel.IsReturningUserVisible)
                         {
                             var returningUser = new UILabel()
                             {
