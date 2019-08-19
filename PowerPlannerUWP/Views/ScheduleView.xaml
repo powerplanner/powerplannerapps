@@ -437,16 +437,11 @@
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
             Padding="24">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
             <StackPanel
                 HorizontalAlignment="Right"
                 Grid.Row="0"
                 Orientation="Vertical"
-                Margin="0,0,0,12">
+                Visibility="{Binding IsReturningUserVisible, Mode=OneTime}">
                 <TextBlock
                     x:Uid="SchedulePage_TextBlockReturningUser"
                     Style="{ThemeResource BodyTextBlockStyle}"
@@ -462,7 +457,7 @@
                     MinWidth="120"/>
             </StackPanel>
 
-            <StackPanel VerticalAlignment="Center" Grid.Row="1">
+            <StackPanel VerticalAlignment="Center">
 
                 <TextBlock
                     x:Uid="SchedulePage_TextBlockWelcomeTitle"

@@ -37,6 +37,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             set { SetProperty(ref _layoutMode, value, nameof(LayoutMode)); }
         }
 
+        /// <summary>
+        /// Boolean that represents whether the returning user UI should be shown. This should never dynamically change since to create an account you have to
+        /// go to the settings page, and returning to the schedule page re-creates the view model
+        /// </summary>
+        public bool IsReturningUserVisible => Account.IsDefaultOfflineAccount;
+
         public AccountDataItem Account { get; private set; }
 
         public TimeSpan StartTime { get; private set; }
