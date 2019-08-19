@@ -215,6 +215,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 
+                // Make sure to update user info for telemetry
+                TelemetryExtension.Current?.UpdateCurrentUser(DefaultAccountToUpgrade);
+
                 // Remove this popup, and show a new one saying success!
                 // We have to show first before removing otherwise iOS never shows it
                 var parent = Parent;
