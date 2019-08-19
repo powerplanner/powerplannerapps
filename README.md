@@ -26,8 +26,8 @@ Each platform-specific app simply needs to build views on top of the shared view
 
 ## Prerequisites
 
-* Visual Studio 2017 with Xamarin and UWP SDKs
-* Mac needed to build/run the iOS version
+* Visual Studio 2019 with Xamarin and UWP SDKs
+* If building iOS version, Mac needed to build/run the iOS version
 
 ## Getting started
 
