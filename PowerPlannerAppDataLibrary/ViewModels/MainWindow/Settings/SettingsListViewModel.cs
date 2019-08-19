@@ -145,14 +145,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             TelemetryExtension.Current?.TrackEvent("Action_OpenGoogleCalendarIntegration");
 
-            if (AlertIfGoogleCalendarIntegrationNotPossible())
+            try
             {
-                return;
+                if (AlertIfGoogleCalendarIntegrationNotPossible())
+                {
+                    return;
+                }
+                else
+                {
+                    var popupHost = GetPopupViewModelHost();
+                    popupHost.ShowPopup(new GoogleCalendarIntegrationViewModel(popupHost, Account));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var popupHost = GetPopupViewModelHost();
-                popupHost.ShowPopup(new GoogleCalendarIntegrationViewModel(popupHost, Account));
+                TelemetryExtension.Current?.TrackException(ex);
             }
         }
 
@@ -182,16 +189,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenCreateAccount()
         {
-            ShowPopup(CreateAccountViewModel.CreateForUpgradingDefaultAccount(this, Account));
+            try
+            {
+                ShowPopup(CreateAccountViewModel.CreateForUpgradingDefaultAccount(this, Account));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public void OpenLogIn()
         {
-            ShowPopup(new LoginViewModel(this)
+            try
             {
-                Message = PowerPlannerResources.GetString("Settings_LogInFromDefaultAccountMessage"),
-                DefaultAccountToDelete = Account.IsDefaultOfflineAccount ? Account : null // It should always be the default account, but just in case
-            });
+                ShowPopup(new LoginViewModel(this)
+                {
+                    Message = PowerPlannerResources.GetString("Settings_LogInFromDefaultAccountMessage"),
+                    DefaultAccountToDelete = Account.IsDefaultOfflineAccount ? Account : null // It should always be the default account, but just in case
+                });
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
     }
 }
