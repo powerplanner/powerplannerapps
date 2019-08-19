@@ -121,6 +121,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         {
             // Restore previous login
             AccountDataItem lastAccount = await AccountsManager.GetLastLogin();
+
+            if (lastAccount == null && (await AccountsManager.GetAllAccounts()).Count == 0)
+            {
+                // If no accounts, we create the default account
+                try
+                {
+                    var account = await AccountsManager.CreateAndInitializeAccountAsync(AccountsManager.DefaultOfflineAccountUsername, "", null, 0, 0);
+
+                    if (account != null)
+                    {
+                        lastAccount = account;
+                    }
+                    else
+                    {
+                        TelemetryExtension.Current?.TrackException(new Exception("Tried creating default offline account, but it returned null"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+            }
+
             if (lastAccount != null && lastAccount.IsAutoLoginPossible && lastAccount.AutoLogin)
             {
                 await this.SetCurrentAccount(lastAccount);

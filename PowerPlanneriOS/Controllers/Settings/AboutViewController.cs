@@ -10,6 +10,8 @@ using InterfacesiOS.Controllers;
 using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary;
 using ToolsPortable;
+using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.App;
 
 namespace PowerPlanneriOS.Controllers.Settings
 {
@@ -58,7 +60,14 @@ namespace PowerPlanneriOS.Controllers.Settings
 
         public static void EmailDeveloper()
         {
-            NSUrl url = new NSUrl("mailto:?to=barebonesdev@live.com&subject=Power%20Planner%20for%20iOS%20-%20Contact%20Developer%20-%20" + Variables.VERSION);
+            var account = PowerPlannerApp.Current.GetCurrentAccount();
+            string accountInfo = "";
+            if (account != null)
+            {
+                accountInfo = "%20-%20" + account.GetTelemetryUserId() + "%20-%20" + account.DeviceId;
+            }
+
+            NSUrl url = new NSUrl("mailto:?to=barebonesdev@live.com&subject=Power%20Planner%20for%20iOS%20-%20Contact%20Developer%20-%20" + Variables.VERSION + accountInfo);
 
             if (!UIApplication.SharedApplication.OpenUrl(url))
             {

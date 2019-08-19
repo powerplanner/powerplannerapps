@@ -78,7 +78,7 @@ namespace PowerPlanneriOS.Extensions
             {
                 if (account != null)
                 {
-                    AppCenter.SetUserId(account.Username);
+                    AppCenter.SetUserId(account.GetTelemetryUserId());
                 }
             }
             catch { }

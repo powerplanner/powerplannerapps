@@ -33,6 +33,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAndroid.ViewModel.Settings;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerAndroid.Views.SettingsViews.Grades;
+using PowerPlannerAndroid.Views.WelcomeViews;
+using PowerPlannerAndroid.Views.SettingsViews;
 
 namespace PowerPlannerAndroid.App
 {
@@ -68,8 +70,13 @@ namespace PowerPlannerAndroid.App
         {
             return new Dictionary<Type, Type>()
             {
+                // Welcome views
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
                 { typeof(LoginViewModel), typeof(LoginView) },
+                { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
+                { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
+
+                // Main views
                 { typeof(MainScreenViewModel), typeof(MainScreenView) },
                 { typeof(YearsViewModel), typeof(YearsView) },
                 { typeof(CreateAccountViewModel), typeof(CreateAccountView) },
@@ -120,7 +127,10 @@ namespace PowerPlannerAndroid.App
                 { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
                 { typeof(ConfigureClassWeightCategoriesViewModel), typeof(ConfigureClassWeightCategoriesView) },
 
-                { typeof(ShowImagesViewModel), typeof(ShowImagesView) }
+                { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
+
+                // Settings
+                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) }
             };
         }
 

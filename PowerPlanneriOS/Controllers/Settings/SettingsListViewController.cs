@@ -48,7 +48,18 @@ namespace PowerPlanneriOS.Controllers.Settings
         {
             base.OnViewModelLoadedOverride();
 
+            ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             RedrawItems();
+        }
+
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewModel.IsOnlineAccount):
+                    RedrawItems();
+                    break;
+            }
         }
 
         public override async void ViewDidAppear(bool animated)
@@ -65,6 +76,7 @@ namespace PowerPlanneriOS.Controllers.Settings
             catch { }
         }
 
+        private bool _isListeningToMain;
         private bool _isFullVersion;
         private async void RedrawItems()
         {
@@ -83,7 +95,11 @@ namespace PowerPlanneriOS.Controllers.Settings
 
                 if (ViewModel.IsOnlineAccount)
                 {
-                    mainScreenViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(MainScreenViewModel_PropertyChanged).Handler;
+                    if (!_isListeningToMain)
+                    {
+                        _isListeningToMain = true;
+                        mainScreenViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(MainScreenViewModel_PropertyChanged).Handler;
+                    }
 
                     _cellSyncStatus = new UITableViewCell(UITableViewCellStyle.Default, "TableCellSyncStatus");
                     _tableView.AddCell(_cellSyncStatus, delegate
@@ -104,16 +120,36 @@ namespace PowerPlanneriOS.Controllers.Settings
 
                     _tableView.StartNewGroup();
                 }
+            }
 
+            if (ViewModel.IsCreateAccountVisible)
+            {
+                _tableView.AddCell("Create Account", ViewModel.OpenCreateAccount);
+            }
+
+            if (ViewModel.IsLogInVisible)
+            {
+                _tableView.AddCell("Log In", ViewModel.OpenLogIn);
+            }
+
+            if (ViewModel.IsMyAccountVisible)
+            {
                 _tableView.AddCell("My Account", ViewModel.OpenMyAccount);
+            }
+
+            if (ViewModel.IsRemindersVisible)
+            {
                 _tableView.AddCell("Reminders", ViewModel.OpenReminderSettings);
+            }
 
-                if (ViewModel.IsOnlineAccount)
-                {
-                    _tableView.AddCell("Google Calendar integration", OpenGoogleCalendarIntegration);
-                }
+            if (ViewModel.IsGoogleCalendarIntegrationVisible)
+            {
+                _tableView.AddCell("Google Calendar Integration", OpenGoogleCalendarIntegration);
+            }
 
-                _tableView.AddCell("Two week schedule", ViewModel.OpenTwoWeekScheduleSettings);
+            if (ViewModel.IsTwoWeekScheduleVisible)
+            {
+                _tableView.AddCell("Two Week Schedule", ViewModel.OpenTwoWeekScheduleSettings);
             }
 
             _tableView.AddCell("About", ViewModel.OpenAbout);
@@ -126,6 +162,11 @@ namespace PowerPlanneriOS.Controllers.Settings
             try
             {
                 TelemetryExtension.Current?.TrackEvent("Action_OpenGoogleCalendarIntegration");
+
+                if (ViewModel.AlertIfGoogleCalendarIntegrationNotPossible())
+                {
+                    return;
+                }
 
                 UIApplication.SharedApplication.OpenUrl(new NSUrl(GoogleCalendarIntegrationViewModel.Url));
             }

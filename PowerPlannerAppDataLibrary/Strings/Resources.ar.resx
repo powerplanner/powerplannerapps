@@ -1631,4 +1631,52 @@
   <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
     <value>المساهمة في تخطيط الطاقة</value>
   </data>
+  <data name="Settings_GoogleCalendar_NoAccountMessage" xml:space="preserve">
+    <value>من أجل استخدام دمج جوجل التقويم، يجب عليك أولاً إنشاء حساب Power Planner!</value>
+  </data>
+  <data name="Settings_LogInFromDefaultAccountMessage" xml:space="preserve">
+    <value>عن طريق تسجيل الدخول إلى حساب، سيتم حذف جميع المعلومات التي قمت بإدخالها حاليا. إذا كنت ترغب في الاحتفاظ بالمعلومات الخاصة بك، قم بإنشاء حساب بدلاً من ذلك.</value>
+  </data>
+  <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
+    <value>إرجاع المستخدم؟</value>
+  </data>
+  <data name="Settings_MainPage_CreateAccountItem.Subtitle" xml:space="preserve">
+    <value>استخدام Power Planner عبر أجهزة متعددة!</value>
+  </data>
+  <data name="Settings_MainPage_CreateAccountItem.Title" xml:space="preserve">
+    <value>إنشاء حساب</value>
+  </data>
+  <data name="Settings_MainPage_LogInItem.Subtitle" xml:space="preserve">
+    <value>لديك حساب؟ تسجيل الدخول!</value>
+  </data>
+  <data name="Settings_MainPage_LogInItem.Title" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="Settings_SuccessfullyCreatedAccountPage.Title" xml:space="preserve">
+    <value>حساب تم إنشاؤه</value>
+  </data>
+  <data name="Settings_SuccessfullyCreatedAccountPage_Message.Text" xml:space="preserve">
+    <value>تم إنشاء الحساب الخاص بك! يمكنك الآن استخدام Power Planner على الروبوت، ودائرة الرقابة الداخلية، ويندوز، وشبكة الإنترنت في https://powerplanner.net!</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage.Title" xml:space="preserve">
+    <value>اتصال الحساب</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage_Message.Text" xml:space="preserve">
+    <value>يمكنك استخدام Power Planner على جهاز آخر، ولكن لم تقم بإعداد حساب؟ إذا كان الأمر كذلك، فتح Power Planner من ذلك الجهاز، انتقل إلى إعدادات--&gt; إنشاء حساب، وإنشاء حساب. وبعد ذلك تسجيل الدخول أدناه!</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage_NeedHelp.Text" xml:space="preserve">
+    <value>إذا كنت بحاجة إلى مساعدة، اتصل barebonesdev@live.com</value>
+  </data>
+  <data name="Welcome_ExistingUserPage.Title" xml:space="preserve">
+    <value>مستخدم موجود</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_ButtonHasAccount.Content" xml:space="preserve">
+    <value>نعم، لدى حساب</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_ButtonNoAccount.Content" xml:space="preserve">
+    <value>لا، ليس لدى حساب</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_Message.Text" xml:space="preserve">
+    <value>هل لديك حساب Power Planner؟</value>
+  </data>
 </root>

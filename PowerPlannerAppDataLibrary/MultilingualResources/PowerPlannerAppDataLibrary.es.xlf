@@ -2084,27 +2084,27 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         </trans-unit>
         <trans-unit id="ConfigureClassGrades_Items_WeightCategories.Title" translate="yes" xml:space="preserve">
           <source>Weight categories</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Categorías de peso</target>
+          <target state="final" state-qualifier="mt-suggestion">Categorías de peso</target>
         </trans-unit>
         <trans-unit id="ConfigureClassGrades_Items_WeightCategories.Subtitle" translate="yes" xml:space="preserve">
           <source>Edit weight categories</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Editar categorías de peso</target>
+          <target state="final" state-qualifier="mt-suggestion">Editar categorías de peso</target>
         </trans-unit>
         <trans-unit id="ConfigureClassGrades_Items_GradeScale.Title" translate="yes" xml:space="preserve">
           <source>Grade scale</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Escala de grado</target>
+          <target state="final" state-qualifier="mt-suggestion">Escala de grado</target>
         </trans-unit>
         <trans-unit id="ConfigureClassGrades_Items_GradeScale.Subtitle" translate="yes" xml:space="preserve">
           <source>Edit the grade scale</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Editar la escala de grado</target>
+          <target state="final" state-qualifier="mt-suggestion">Editar la escala de grado</target>
         </trans-unit>
         <trans-unit id="String_Disabled" translate="yes" xml:space="preserve">
           <source>Disabled</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Deshabilitado</target>
+          <target state="final" state-qualifier="tm-suggestion">Deshabilitado</target>
         </trans-unit>
         <trans-unit id="String_Enabled" translate="yes" xml:space="preserve">
           <source>Enabled</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">Habilitado</target>
+          <target state="final" state-qualifier="tm-suggestion">Habilitado</target>
         </trans-unit>
         <trans-unit id="String_Failing" translate="yes" xml:space="preserve">
           <source>Failing</source>
@@ -2120,8 +2120,7 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         </trans-unit>
         <trans-unit id="String_Passing" translate="yes" xml:space="preserve">
           <source>Passing</source>
-          <target state="needs-review-translation" state-qualifier="mt-suggestion">Aprobando</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="final" state-qualifier="mt-suggestion">Aprobando</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_ListItemGpaType.Title" translate="yes" xml:space="preserve">
           <source>GPA type (standard or pass/fail)</source>
@@ -2171,6 +2170,70 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
           <source>Contribute to Power Planner</source>
           <target state="final" state-qualifier="mt-suggestion">Contribuir a Power Planner</target>
+        </trans-unit>
+        <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
+          <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
+          <target state="final">Para utilizar la integración de Google Calendar, primero debe crear una cuenta de Power Planner!</target>
+        </trans-unit>
+        <trans-unit id="Settings_LogInFromDefaultAccountMessage" translate="yes" xml:space="preserve">
+          <source>By logging in to an account, all information you've currently entered will be DELETED. If you want to keep your information, create an account instead.</source>
+          <target state="final" state-qualifier="mt-suggestion">Por iniciar sesión en una cuenta, se BORRARÁ toda la información que has introducido en la actualidad. Si quieres mantener tu información, crea una cuenta en su lugar.</target>
+        </trans-unit>
+        <trans-unit id="SchedulePage_TextBlockReturningUser.Text" translate="yes" xml:space="preserve">
+          <source>Returning user?</source>
+          <target state="final" state-qualifier="mt-suggestion">¿Devolver el usuario?</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_CreateAccountItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Use Power Planner across multiple devices!</source>
+          <target state="final">¡Utiliza Power Planner a través de múltiples dispositivos!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_CreateAccountItem.Title" translate="yes" xml:space="preserve">
+          <source>Create account</source>
+          <target state="final" state-qualifier="tm-suggestion">Crear cuenta</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LogInItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Already have an account? Log in!</source>
+          <target state="final" state-qualifier="mt-suggestion">¿Ya tienes una cuenta? ¡Inicia sesión!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LogInItem.Title" translate="yes" xml:space="preserve">
+          <source>Log in</source>
+          <target state="final" state-qualifier="tm-suggestion">Iniciar sesión</target>
+        </trans-unit>
+        <trans-unit id="Settings_SuccessfullyCreatedAccountPage.Title" translate="yes" xml:space="preserve">
+          <source>ACCOUNT CREATED</source>
+          <target state="final" state-qualifier="mt-suggestion">CUENTA CREADA</target>
+        </trans-unit>
+        <trans-unit id="Settings_SuccessfullyCreatedAccountPage_Message.Text" translate="yes" xml:space="preserve">
+          <source>Your account has been created! You can now use Power Planner on Android, iOS, Windows, and the web at https://powerplanner.net!</source>
+          <target state="final">¡Tu cuenta ha sido creada! Ahora puede utilizar Power Planner en Android, iOS, Windows y la web en https://powerplanner.net!</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ConnectAccountPage.Title" translate="yes" xml:space="preserve">
+          <source>CONNECT ACCOUNT</source>
+          <target state="final" state-qualifier="tm-suggestion">CONECTAR CUENTA</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ConnectAccountPage_Message.Text" translate="yes" xml:space="preserve">
+          <source>Are you using Power Planner on another device, but haven't set up an account? If so, open Power Planner from that device, go to Settings -&gt; Create account, and create an account. After that, log in below!</source>
+          <target state="translated">¿Está utilizando Power Planner en otro dispositivo, pero no ha configurado una cuenta? Si es así, abra Power Planner desde ese dispositivo, vaya a Configuración -&gt; Crear cuenta y crear una cuenta. Después de eso, inicie sesión a continuación.</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ConnectAccountPage_NeedHelp.Text" translate="yes" xml:space="preserve">
+          <source>If you need help, contact barebonesdev@live.com</source>
+          <target state="final" state-qualifier="mt-suggestion">Si usted necesita ayuda, póngase en contacto con barebonesdev@live.com</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage.Title" translate="yes" xml:space="preserve">
+          <source>EXISTING USER</source>
+          <target state="final" state-qualifier="mt-suggestion">USUARIO EXISTENTE</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage_ButtonHasAccount.Content" translate="yes" xml:space="preserve">
+          <source>Yes, I have an account</source>
+          <target state="final" state-qualifier="mt-suggestion">Sí, tengo una cuenta</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage_ButtonNoAccount.Content" translate="yes" xml:space="preserve">
+          <source>No, I don't have an account</source>
+          <target state="final" state-qualifier="mt-suggestion">No, no tengo una cuenta</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage_Message.Text" translate="yes" xml:space="preserve">
+          <source>Do you have a Power Planner account?</source>
+          <target state="final">¿Tienes una cuenta de Power Planner?</target>
         </trans-unit>
       </group>
     </body>

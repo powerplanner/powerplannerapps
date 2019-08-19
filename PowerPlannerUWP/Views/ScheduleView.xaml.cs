@@ -1172,5 +1172,10 @@ namespace PowerPlannerUWP.Views
             ScrollViewerSchedule.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             ScrollViewerSchedule.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
         }
+
+        private void ButtonLogIn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.LogIn();
+        }
     }
 }

@@ -42,12 +42,27 @@
                 Symbol="Shop"
                 Click="ButtonUpgradeToPremium_Click"
                 Visibility="Collapsed"/>
-            
+
+            <settingsviews:MainSettingsItem
+                x:Uid="Settings_MainPage_CreateAccountItem"
+                x:Name="ButtonCreateAccount"
+                Symbol="AddFriend"
+                Visibility="{Binding IsCreateAccountVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                Click="ButtonCreateAccount_Click"/>
+
+            <settingsviews:MainSettingsItem
+                x:Uid="Settings_MainPage_LogInItem"
+                x:Name="ButtonLogIn"
+                Symbol="Rename"
+                Visibility="{Binding IsLogInVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                Click="ButtonLogIn_Click"/>
+
             <settingsviews:MainSettingsItem
                 x:Name="ButtonMyAccount"
                 x:Uid="Settings_MainPage_MyAccountItem"
                 Symbol="Contact"
-                Click="ButtonMyAccount_Click"/>
+                Click="ButtonMyAccount_Click"
+                Visibility="{Binding IsMyAccountVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <settingsviews:MainSettingsItem
                 x:Name="ButtonLiveTiles"
@@ -59,13 +74,15 @@
                 x:Name="ButtonReminders"
                 x:Uid="Settings_MainPage_RemindersItem"
                 Symbol="Clock"
-                Click="ButtonReminders_Click"/>
+                Click="ButtonReminders_Click"
+                Visibility="{Binding IsRemindersVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <settingsviews:MainSettingsItem
                 x:Name="ButtonSyncOptions"
                 x:Uid="Settings_MainPage_SyncOptionsItem"
                 Symbol="Sync"
-                Click="ButtonSyncOptions_Click"/>
+                Click="ButtonSyncOptions_Click"
+                Visibility="{Binding IsSyncOptionsVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <settingsviews:MainSettingsItem
                 x:Name="ButtonCalendarIntegration"
@@ -77,13 +94,15 @@
                 x:Name="ButtonGoogleCalendarIntegration"
                 x:Uid="Settings_MainPage_GoogleCalendarIntegrationItem"
                 Symbol="CalendarReply"
-                Click="ButtonGoogleCalendarIntegration_Click"/>
+                Click="ButtonGoogleCalendarIntegration_Click"
+                Visibility="{Binding IsGoogleCalendarIntegrationVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
             
             <settingsviews:MainSettingsItem
                 x:Name="ButtonTwoWeekSchedule"
                 x:Uid="Settings_MainPage_TwoWeekScheduleItem"
                 Symbol="CalendarWeek"
-                Click="ButtonTwoWeekSchedule_Click"/>
+                Click="ButtonTwoWeekSchedule_Click"
+                Visibility="{Binding IsTwoWeekScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <settingsviews:MainSettingsItem
                 x:Name="ButtonContribute"

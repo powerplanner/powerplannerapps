@@ -85,6 +85,7 @@ using Windows.System.Profile;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
+using PowerPlannerUWP.Views.WelcomeViews;
 
 namespace PowerPlannerUWP
 {
@@ -121,6 +122,11 @@ namespace PowerPlannerUWP
         {
             return new Dictionary<Type, Type>()
             {
+                // Welcome views
+                { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
+                { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
+
+                // Main views
                 { typeof(AddClassTimeViewModel), typeof(AddClassTimeView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
@@ -188,7 +194,8 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
                 { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
                 { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
-                { typeof(PromoContributeViewModel), typeof(PromoContributeView) }
+                { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
+                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) }
             };
         }
 

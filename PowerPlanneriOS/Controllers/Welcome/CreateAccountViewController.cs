@@ -79,25 +79,28 @@ namespace PowerPlanneriOS
 
             AddDivider(fullWidth: true);
 
-            var bottomView = new UIView()
+            if (ViewModel.IsCreateLocalAccountVisible)
             {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = ColorResources.InputSectionDividers
-            };
-            {
-                var buttonCreateLocalAccount = new UIButton(UIButtonType.System)
+                var bottomView = new UIView()
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
-                    Font = UIFont.PreferredCaption1
+                    BackgroundColor = ColorResources.InputSectionDividers
                 };
-                buttonCreateLocalAccount.TouchUpInside += new WeakEventHandler(ButtonCreateLocalAccount_TouchUpInside).Handler;
-                buttonCreateLocalAccount.SetTitle("No internet? Create offline account", UIControlState.Normal);
-                bottomView.Add(buttonCreateLocalAccount);
-                buttonCreateLocalAccount.PinToRight(bottomView, right: 16);
-                buttonCreateLocalAccount.StretchHeight(bottomView, top: 8);
+                {
+                    var buttonCreateLocalAccount = new UIButton(UIButtonType.System)
+                    {
+                        TranslatesAutoresizingMaskIntoConstraints = false,
+                        Font = UIFont.PreferredCaption1
+                    };
+                    buttonCreateLocalAccount.TouchUpInside += new WeakEventHandler(ButtonCreateLocalAccount_TouchUpInside).Handler;
+                    buttonCreateLocalAccount.SetTitle("No internet? Create offline account", UIControlState.Normal);
+                    bottomView.Add(buttonCreateLocalAccount);
+                    buttonCreateLocalAccount.PinToRight(bottomView, right: 16);
+                    buttonCreateLocalAccount.StretchHeight(bottomView, top: 8);
+                }
+                StackView.AddArrangedSubview(bottomView);
+                bottomView.StretchWidth(StackView);
             }
-            StackView.AddArrangedSubview(bottomView);
-            bottomView.StretchWidth(StackView);
 
             BindingHost.SetBinding(nameof(ViewModel.IsCreatingOnlineAccount), delegate
             {

@@ -66,9 +66,13 @@ namespace PowerPlanneriOS
         {
             return new Dictionary<Type, Type>()
             {
+                // Welcome views
                 { typeof(WelcomeViewModel), typeof(WelcomeViewController) },
                 { typeof(LoginViewModel), typeof(LoginViewController) },
                 { typeof(CreateAccountViewModel), typeof(CreateAccountViewController) },
+                { typeof(ExistingUserViewModel), typeof(ExistingUserViewController) },
+                { typeof(ConnectAccountViewModel), typeof(ConnectAccountViewController) },
+
                 { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
                 { typeof(CalendarViewModel), typeof(CalendarViewController) },
                 { typeof(DayViewModel), typeof(DayViewController) },
@@ -93,6 +97,7 @@ namespace PowerPlanneriOS
                 { typeof(ConfigureClassCreditsViewModel), typeof(EditClassCreditsViewController) },
                 { typeof(ConfigureClassWeightCategoriesViewModel), typeof(EditClassWeightCategoriesViewController) },
 
+                // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) },
                 { typeof(SettingsListViewModel), typeof(SettingsListViewController) },
                 { typeof(MyAccountViewModel), typeof(MyAccountViewController) },
@@ -110,6 +115,7 @@ namespace PowerPlanneriOS
                 { typeof(AboutViewModelAsPopup), typeof(AboutViewControllerAsPopup) },
                 { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsViewController) },
                 { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsViewController) },
+                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) },
 
                 { typeof(ConfigureClassGradesViewModel), typeof(ConfigureClassGradesViewController) },
                 { typeof(ConfigureClassGradesListViewModel), typeof(ConfigureClassGradesListViewController) },

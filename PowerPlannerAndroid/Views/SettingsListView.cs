@@ -26,6 +26,8 @@ namespace PowerPlannerAndroid.Views
 
         public SettingsListView(ViewGroup root) : base(Resource.Layout.SettingsList, root)
         {
+            FindViewById<View>(Resource.Id.SettingsListItemCreateAccount).Click += delegate { ViewModel.OpenCreateAccount(); };
+            FindViewById<View>(Resource.Id.SettingsListItemLogIn).Click += delegate { ViewModel.OpenLogIn(); };
             FindViewById<View>(Resource.Id.SettingsListItemAccount).Click += delegate { ViewModel.OpenMyAccount(); };
             FindViewById<View>(Resource.Id.SettingsListItemWidgets).Click += delegate { NavigateToCustomViewModel<WidgetsViewModel>(); };
             FindViewById<View>(Resource.Id.SettingsListItemAbout).Click += delegate { ViewModel.OpenAbout(); };
@@ -45,6 +47,11 @@ namespace PowerPlannerAndroid.Views
             try
             {
                 TelemetryExtension.Current?.TrackEvent("Action_OpenGoogleCalendarIntegration");
+
+                if (ViewModel.AlertIfGoogleCalendarIntegrationNotPossible())
+                {
+                    return;
+                }
 
                 var browserIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse(GoogleCalendarIntegrationViewModel.Url));
 
@@ -79,15 +86,7 @@ namespace PowerPlannerAndroid.Views
         {
             if (!ViewModel.HasAccount)
             {
-                FindViewById<View>(Resource.Id.SettingsListItemAccount).Visibility = ViewStates.Gone;
                 FindViewById<View>(Resource.Id.SettingsListItemWidgets).Visibility = ViewStates.Gone;
-                FindViewById<View>(Resource.Id.SettingsListItemTwoWeekSchedule).Visibility = ViewStates.Gone;
-                FindViewById<View>(Resource.Id.SettingsListItemGoogleCalendar).Visibility = ViewStates.Gone;
-            }
-
-            else if (!ViewModel.IsOnlineAccount)
-            {
-                FindViewById<View>(Resource.Id.SettingsListItemGoogleCalendar).Visibility = ViewStates.Gone;
             }
 
             UpdateUpgradeToPremiumVisibility();

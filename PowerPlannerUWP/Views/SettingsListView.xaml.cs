@@ -61,18 +61,8 @@ namespace PowerPlannerUWP.Views
             {
                 if (!ViewModel.HasAccount)
                 {
-                    ButtonMyAccount.Visibility = Visibility.Collapsed;
                     ButtonCalendarIntegration.Visibility = Visibility.Collapsed;
-                    ButtonGoogleCalendarIntegration.Visibility = Visibility.Collapsed;
-                    ButtonReminders.Visibility = Visibility.Collapsed;
                     ButtonLiveTiles.Visibility = Visibility.Collapsed;
-                    ButtonSyncOptions.Visibility = Visibility.Collapsed;
-                    ButtonTwoWeekSchedule.Visibility = Visibility.Collapsed;
-                }
-
-                else if (!ViewModel.IsOnlineAccount)
-                {
-                    ButtonGoogleCalendarIntegration.Visibility = Visibility.Collapsed;
                 }
 
                 UpdateUpgradeToPremiumVisibility();
@@ -168,6 +158,16 @@ namespace PowerPlannerUWP.Views
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+        }
+
+        private void ButtonCreateAccount_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OpenCreateAccount();
+        }
+
+        private void ButtonLogIn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OpenLogIn();
         }
     }
 }

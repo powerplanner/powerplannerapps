@@ -2171,6 +2171,70 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Contribute to Power Planner</source>
           <target state="final" state-qualifier="mt-suggestion">Contribua para Power Planner</target>
         </trans-unit>
+        <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
+          <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
+          <target state="final" state-qualifier="mt-suggestion">Para utilizar a integração do Google Calendar, você deve primeiro criar uma conta de Power Planner!</target>
+        </trans-unit>
+        <trans-unit id="Settings_LogInFromDefaultAccountMessage" translate="yes" xml:space="preserve">
+          <source>By logging in to an account, all information you've currently entered will be DELETED. If you want to keep your information, create an account instead.</source>
+          <target state="final" state-qualifier="mt-suggestion">Por efetuar login em uma conta, todas as informações que você digitou no momento serão excluídas. Se você deseja manter suas informações, crie uma conta em vez disso.</target>
+        </trans-unit>
+        <trans-unit id="SchedulePage_TextBlockReturningUser.Text" translate="yes" xml:space="preserve">
+          <source>Returning user?</source>
+          <target state="final" state-qualifier="mt-suggestion">Retornando o usuário?</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_CreateAccountItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Use Power Planner across multiple devices!</source>
+          <target state="final">Use Power Planner em vários dispositivos!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_CreateAccountItem.Title" translate="yes" xml:space="preserve">
+          <source>Create account</source>
+          <target state="final" state-qualifier="tm-suggestion">Criar conta</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LogInItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Already have an account? Log in!</source>
+          <target state="final" state-qualifier="mt-suggestion">Já tem uma conta? Iniciar sessão!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LogInItem.Title" translate="yes" xml:space="preserve">
+          <source>Log in</source>
+          <target state="final" state-qualifier="tm-suggestion">Fazer logon</target>
+        </trans-unit>
+        <trans-unit id="Settings_SuccessfullyCreatedAccountPage.Title" translate="yes" xml:space="preserve">
+          <source>ACCOUNT CREATED</source>
+          <target state="final" state-qualifier="mt-suggestion">CONTA CRIADA</target>
+        </trans-unit>
+        <trans-unit id="Settings_SuccessfullyCreatedAccountPage_Message.Text" translate="yes" xml:space="preserve">
+          <source>Your account has been created! You can now use Power Planner on Android, iOS, Windows, and the web at https://powerplanner.net!</source>
+          <target state="final" state-qualifier="mt-suggestion">Sua conta foi criada! Agora, você pode usar Power Planner na Android, iOS, Windows e web, em https://powerplanner.net!</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ConnectAccountPage.Title" translate="yes" xml:space="preserve">
+          <source>CONNECT ACCOUNT</source>
+          <target state="final" state-qualifier="tm-suggestion">CONECTAR CONTA</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ConnectAccountPage_Message.Text" translate="yes" xml:space="preserve">
+          <source>Are you using Power Planner on another device, but haven't set up an account? If so, open Power Planner from that device, go to Settings -&gt; Create account, and create an account. After that, log in below!</source>
+          <target state="final">Você está usando Power Planner em outro dispositivo, mas não criar uma conta? Se assim for, abra o Power Planner desse dispositivo, vá para configurações -&gt; criar conta e criar uma conta. Depois disso, logar-se abaixo!</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ConnectAccountPage_NeedHelp.Text" translate="yes" xml:space="preserve">
+          <source>If you need help, contact barebonesdev@live.com</source>
+          <target state="final" state-qualifier="mt-suggestion">Se precisar de ajuda, entre em contato barebonesdev@live.com</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage.Title" translate="yes" xml:space="preserve">
+          <source>EXISTING USER</source>
+          <target state="final" state-qualifier="mt-suggestion">USUÁRIO EXISTENTE</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage_ButtonHasAccount.Content" translate="yes" xml:space="preserve">
+          <source>Yes, I have an account</source>
+          <target state="final" state-qualifier="mt-suggestion">Sim, eu tenho uma conta</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage_ButtonNoAccount.Content" translate="yes" xml:space="preserve">
+          <source>No, I don't have an account</source>
+          <target state="final" state-qualifier="mt-suggestion">Não, eu não tenho uma conta</target>
+        </trans-unit>
+        <trans-unit id="Welcome_ExistingUserPage_Message.Text" translate="yes" xml:space="preserve">
+          <source>Do you have a Power Planner account?</source>
+          <target state="final" state-qualifier="mt-suggestion">Você tem uma conta de Power Planner?</target>
+        </trans-unit>
       </group>
     </body>
   </file>

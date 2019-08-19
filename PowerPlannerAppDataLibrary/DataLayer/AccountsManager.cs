@@ -8,11 +8,15 @@ using System.Diagnostics;
 using PCLStorage;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.App;
 
 namespace PowerPlannerAppDataLibrary.DataLayer
 {
     public static class AccountsManager
     {
+        public const string DefaultOfflineAccountUsername = "DefaultOfflineAccount";
+
         private class CachedAccountEntry
         {
             private WeakReference<AccountDataItem> _account;
@@ -45,6 +49,49 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 //Semaphore = new Semaphore(0, 1, "AccountDataItem-" + localAccountId);
             }
+        }
+
+        public static async System.Threading.Tasks.Task<AccountDataItem> CreateAndInitializeAccountAsync(string username, string localToken, string token, long accountId, int deviceId)
+        {
+            var account = await CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId);
+
+            if (account != null)
+            {
+                AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
+
+                // Add the default year/semester
+                try
+                {
+                    DataItemYear year = new DataItemYear()
+                    {
+                        Identifier = Guid.NewGuid(),
+                        Name = PowerPlannerResources.GetString("DummyFirstYear")
+                    };
+
+                    DataItemSemester semester = new DataItemSemester()
+                    {
+                        Identifier = Guid.NewGuid(),
+                        UpperIdentifier = year.Identifier,
+                        Name = PowerPlannerResources.GetString("DummyFirstSemester")
+                    };
+
+                    DataChanges changes = new DataChanges();
+                    changes.Add(year);
+                    changes.Add(semester);
+
+                    await PowerPlannerApp.Current.SaveChanges(account, changes);
+                    await account.SetCurrentSemesterAsync(semester.Identifier);
+                    NavigationManager.MainMenuSelection = NavigationManager.MainMenuSelections.Schedule;
+
+                    return account;
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+            }
+
+            return null;
         }
 
         public static event EventHandler<Guid> OnAccountDeleted;

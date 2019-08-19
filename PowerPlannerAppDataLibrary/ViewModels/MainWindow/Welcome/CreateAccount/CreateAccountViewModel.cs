@@ -11,6 +11,8 @@ using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppAuthLibrary;
+using PowerPlannerAppDataLibrary.SyncLayer;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 {
@@ -22,6 +24,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         public Action AlertNoEmail = delegate { ShowMessage("You must provide an email!", "No email"); };
 
         public CreateAccountViewModel(BaseViewModel parent) : base(parent) { }
+
+        public AccountDataItem DefaultAccountToUpgrade { get; private set; }
+
+        /// <summary>
+        /// Creating a local account should only be allowed when not upgrading the default account
+        /// </summary>
+        public bool IsCreateLocalAccountVisible => DefaultAccountToUpgrade == null;
 
         private string _username = "";
         public string Username
@@ -101,18 +110,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 return false;
             }
 
+            if (DefaultAccountToUpgrade != null && DefaultAccountToUpgrade.IsOnlineAccount)
+            {
+                // This shouldn't ever happen, but would happen if it failed to hide the create account page after successfully creating.
+                TelemetryExtension.Current?.TrackException(new Exception("Trying to upgrade default account when it's already online"));
+                return false;
+            }
+
             return true;
         }
 
 
         public async void CreateLocalAccount()
         {
+            if (DefaultAccountToUpgrade != null)
+            {
+                // This code should never be hit. If it does get hit, that implies the UI wasn't correctly hiding the option for
+                // creating the local account (it should be hidden when upgrading a default account, only allowing online account).
+                TelemetryExtension.Current?.TrackException(new Exception("Tried to create local account for default account"));
+                return;
+            }
+
             if (!isOkayToCreateLocal())
                 return;
 
             string localToken = PowerPlannerAuth.CreateOfflineAccount(Username, Password);
 
-            await FinishCreateAccount(Username, localToken, null, 0, 0);
+            await FinishCreateAccount(Username, localToken, null, 0, 0, "");
         }
 
         private bool _isCreatingOnlineAccount;
@@ -148,7 +172,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
                 else
                 {
-                    await FinishCreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId);
+                    await FinishCreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId, email);
                 }
             }
 
@@ -163,50 +187,80 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             }
         }
 
-        private async System.Threading.Tasks.Task FinishCreateAccount(string username, string localToken, string token, long accountId, int deviceId)
+        private async System.Threading.Tasks.Task FinishCreateAccount(string username, string localToken, string token, long accountId, int deviceId, string email)
         {
-            var account = await CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId);
-
-            if (account != null)
+            if (DefaultAccountToUpgrade != null)
             {
-                AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
+                if (DefaultAccountToUpgrade.IsOnlineAccount)
+                {
+                    throw new Exception("Should be an offline account. This implies it got created but for some reason stayed on this page.");
+                }
 
-                // Add the default year/semester
+                DefaultAccountToUpgrade.Username = username;
+                DefaultAccountToUpgrade.LocalToken = localToken;
+                DefaultAccountToUpgrade.Token = token;
+                DefaultAccountToUpgrade.AccountId = accountId;
+                DefaultAccountToUpgrade.DeviceId = deviceId;
+
+                await AccountsManager.Save(DefaultAccountToUpgrade);
+
+                TelemetryExtension.Current?.TrackEvent("CreatedAccountFromDefault");
+
+                // Transfer the settings
                 try
                 {
-                    DataItemYear year = new DataItemYear()
-                    {
-                        Identifier = Guid.NewGuid(),
-                        Name = PowerPlannerResources.GetString("DummyFirstYear")
-                    };
-
-                    DataItemSemester semester = new DataItemSemester()
-                    {
-                        Identifier = Guid.NewGuid(),
-                        UpperIdentifier = year.Identifier,
-                        Name = PowerPlannerResources.GetString("DummyFirstSemester")
-                    };
-
-                    DataChanges changes = new DataChanges();
-                    changes.Add(year);
-                    changes.Add(semester);
-
-                    await PowerPlannerApp.Current.SaveChanges(account, changes);
-                    await account.SetCurrentSemesterAsync(semester.Identifier);
-                    NavigationManager.MainMenuSelection = NavigationManager.MainMenuSelections.Schedule;
+                    await SavedGradeScalesManager.TransferToOnlineAccountAsync(DefaultAccountToUpgrade.LocalAccountId, DefaultAccountToUpgrade.AccountId);
                 }
+
                 catch (Exception ex)
                 {
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 
-                var dontWait = FindAncestor<MainWindowViewModel>().SetCurrentAccount(account);
+                // Make sure to update user info for telemetry
+                TelemetryExtension.Current?.UpdateCurrentUser(DefaultAccountToUpgrade);
+
+                // Remove this popup, and show a new one saying success!
+                // We have to show first before removing otherwise iOS never shows it
+                var parent = Parent;
+                parent.ShowPopup(new SuccessfullyCreatedAccountViewModel(parent)
+                {
+                    Username = username,
+                    Email = email
+                });
+                base.RemoveViewModel();
+
+                // Trigger a sync (without waiting) so all their content uploads
+                Sync.StartSyncAccount(DefaultAccountToUpgrade);
+            }
+            else
+            {
+                var account = await AccountsManager.CreateAndInitializeAccountAsync(username, localToken, token, accountId, deviceId);
+
+                if (account != null)
+                {
+                    // Take us to the account
+                    var dontWait = FindAncestor<MainWindowViewModel>().SetCurrentAccount(account);
+                }
             }
         }
 
         private static async void ShowMessage(string message, string title)
         {
             await new PortableMessageDialog(message, title).ShowAsync();
+        }
+
+        public static CreateAccountViewModel CreateForUpgradingDefaultAccount(BaseViewModel parent, AccountDataItem account)
+        {
+            if (account.IsOnlineAccount)
+            {
+                throw new Exception("Should be an offline account");
+            }
+
+            return new CreateAccountViewModel(parent)
+            {
+                DefaultAccountToUpgrade = account
+            };
         }
     }
 }

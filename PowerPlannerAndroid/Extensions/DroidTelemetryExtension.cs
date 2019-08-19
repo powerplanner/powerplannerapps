@@ -72,7 +72,7 @@ namespace PowerPlannerAndroid.Extensions
                     return;
                 }
 
-                AppCenter.SetUserId(account.Username);
+                AppCenter.SetUserId(account.GetTelemetryUserId());
             }
             catch { }
         }

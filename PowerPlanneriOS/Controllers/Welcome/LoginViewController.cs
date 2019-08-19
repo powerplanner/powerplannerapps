@@ -8,6 +8,7 @@ using UIKit;
 using InterfacesiOS.Views;
 using System.ComponentModel;
 using PowerPlanneriOS.Helpers;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Welcome
 {
@@ -25,6 +26,26 @@ namespace PowerPlanneriOS.Welcome
         public override void OnViewModelLoadedOverride()
         {
             AddTopSectionDivider();
+
+            if (ViewModel.Message != null)
+            {
+                StackView.AddSpacing(8);
+
+                var labelMessage = new UILabel()
+                {
+                    TranslatesAutoresizingMaskIntoConstraints = false,
+                    Text = ViewModel.Message,
+                    Font = UIFont.PreferredCaption1,
+                    Lines = 0
+                };
+                
+                StackView.AddArrangedSubview(labelMessage);
+                labelMessage.StretchWidth(StackView, left: 16, right: 16);
+
+                StackView.AddSpacing(8);
+
+                AddSectionDivider();
+            }
 
             AddTextField(new UITextField()
             {

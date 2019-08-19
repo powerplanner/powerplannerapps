@@ -55,6 +55,13 @@ namespace PowerPlannerAndroid.Views
 
             var scrollViewSchedule = FindViewById<MyZoomAndPanView>(Resource.Id.ScrollViewSchedule);
             scrollViewSchedule.ViewChanging += ScrollViewSchedule_ViewChanging;
+
+            FindViewById<Button>(Resource.Id.ButtonLogIn).Click += new WeakEventHandler(ScheduleView_Click).Handler;
+        }
+
+        private void ScheduleView_Click(object sender, EventArgs e)
+        {
+            ViewModel.LogIn();
         }
 
         private void ScrollViewSchedule_ViewChanging(object sender, EventArgs e)

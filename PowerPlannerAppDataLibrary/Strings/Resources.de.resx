@@ -1629,4 +1629,52 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
     <value>Beitrag zum Power Planner</value>
   </data>
+  <data name="Settings_GoogleCalendar_NoAccountMessage" xml:space="preserve">
+    <value>Um die Integration von Google Kalender verwenden, müssen Sie zunächst ein Power Planner konto erstellen!</value>
+  </data>
+  <data name="Settings_LogInFromDefaultAccountMessage" xml:space="preserve">
+    <value>Von einem Konto anmelden, werden alle Informationen, die Sie gerade eingegeben haben gelöscht. Wenn Sie Ihre Daten behalten möchten, erstellen Sie stattdessen ein Konto.</value>
+  </data>
+  <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
+    <value>Wiederkehrender Benutzer?</value>
+  </data>
+  <data name="Settings_MainPage_CreateAccountItem.Subtitle" xml:space="preserve">
+    <value>Verwenden Sie Power Planner über mehrere Geräte hinweg!</value>
+  </data>
+  <data name="Settings_MainPage_CreateAccountItem.Title" xml:space="preserve">
+    <value>Konto erstellen</value>
+  </data>
+  <data name="Settings_MainPage_LogInItem.Subtitle" xml:space="preserve">
+    <value>Sie haben bereits ein Konto? Anmelden!</value>
+  </data>
+  <data name="Settings_MainPage_LogInItem.Title" xml:space="preserve">
+    <value>Anmelden</value>
+  </data>
+  <data name="Settings_SuccessfullyCreatedAccountPage.Title" xml:space="preserve">
+    <value>KONTO ERSTELLT</value>
+  </data>
+  <data name="Settings_SuccessfullyCreatedAccountPage_Message.Text" xml:space="preserve">
+    <value>Ihr Konto wurde erstellt! Power Planner können Sie nun auf Android, iOS, Windows und im Internet unter https://powerplanner.net!</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage.Title" xml:space="preserve">
+    <value>KONTO VERBINDEN</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage_Message.Text" xml:space="preserve">
+    <value>Verwenden Sie Power Planner auf einem anderen Gerät, aber noch kein Konto einrichten? Wenn ja, öffnen Sie macht Power Planner von diesem Gerät zu, gehen Sie zu Einstellungen -&gt; Erstellen Konto und erstellen Sie ein Konto. Dann logge dich unten!</value>
+  </data>
+  <data name="Welcome_ConnectAccountPage_NeedHelp.Text" xml:space="preserve">
+    <value>Wenn Sie Hilfe benötigen, wenden Sie sich an barebonesdev@live.com</value>
+  </data>
+  <data name="Welcome_ExistingUserPage.Title" xml:space="preserve">
+    <value>BESTEHENDE BENUTZER</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_ButtonHasAccount.Content" xml:space="preserve">
+    <value>Ja, ich habe ein Konto</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_ButtonNoAccount.Content" xml:space="preserve">
+    <value>Nein, ich habe ein Konto</value>
+  </data>
+  <data name="Welcome_ExistingUserPage_Message.Text" xml:space="preserve">
+    <value>Haben Sie ein Power Planner konto?</value>
+  </data>
 </root>
