@@ -87,6 +87,13 @@ namespace PowerPlannerAndroid.Views.Controls
                 base.AddView(texts);
             }
 
+#if DEBUG
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+#endif
+
             finally { a.Recycle(); }
         }
 

@@ -130,22 +130,22 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:text="{SchedulePage_TextBlockReturningUser.Text}"
-              android:gravity="right"/>
+              android:layout_marginTop="16dp"/>
       
             <Button
               style="@style/PowerPlannerBlueButton"
               android:text="{WelcomePage_ButtonLogin.Content}"
-              android:layout_width="match_parent"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginTop="8dp"
               android:maxWidth="200dp"
-              android:layout_gravity="right"
               android:id="@+id/ButtonLogIn"/>
 
         </LinearLayout>

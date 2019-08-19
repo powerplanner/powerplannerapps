@@ -14,6 +14,7 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
+    <!-- Make sure to include title and subtitle text, not just in the binding, since it will fail at runtime if those properties aren't set-->
     <PowerPlannerAndroid.Views.Controls.SettingsListItem
       android:id="@+id/SettingsListItemUpgradeToPremium"
       android:layout_width="match_parent"
@@ -29,6 +30,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       settingsListItem:settingIcon="@drawable/ic_account_circle_black_48dp"
+      settingsListItem:settingTitle="Create account"
+      settingsListItem:settingSubtitle="Use Power Planner across all your devices!"
       local:Binding="{Source=@Settings_MainPage_CreateAccountItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_CreateAccountItem.Subtitle, Target=SettingSubtitle}; {Source=IsCreateAccountVisible, Target=Visibility}"/>
 
     <PowerPlannerAndroid.Views.Controls.SettingsListItem
@@ -36,6 +39,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       settingsListItem:settingIcon="@drawable/ic_input_black_48dp"
+      settingsListItem:settingTitle="Log in"
+      settingsListItem:settingSubtitle="Have an account? Log in!"
       local:Binding="{Source=@Settings_MainPage_LogInItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_LogInItem.Subtitle, Target=SettingSubtitle}; {Source=IsLogInVisible, Target=Visibility}"/>
 
     <PowerPlannerAndroid.Views.Controls.SettingsListItem
