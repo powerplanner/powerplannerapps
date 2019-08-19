@@ -196,6 +196,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                     throw new Exception("Should be an offline account. This implies it got created but for some reason stayed on this page.");
                 }
 
+                TelemetryExtension.Current?.TrackEvent("CreatingAccountFromDefault");
+
                 DefaultAccountToUpgrade.Username = username;
                 DefaultAccountToUpgrade.LocalToken = localToken;
                 DefaultAccountToUpgrade.Token = token;
