@@ -60,7 +60,7 @@
     <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
     <DebugSymbols>False</DebugSymbols>
     <AndroidDexTool>d8</AndroidDexTool>
-    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidLinkTool>proguard</AndroidLinkTool>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Java.Interop" />
