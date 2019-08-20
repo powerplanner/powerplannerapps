@@ -365,6 +365,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                     if (account != null)
                     {
+                        TelemetryExtension.Current?.TrackEvent("LoggedInToOnlineAccount");
+
                         IsSyncingAccount = true;
 
                         try

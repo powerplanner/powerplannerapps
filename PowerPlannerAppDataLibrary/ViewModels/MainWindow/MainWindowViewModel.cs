@@ -132,6 +132,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                     if (account != null)
                     {
                         lastAccount = account;
+                        TelemetryExtension.Current?.TrackEvent("CreatedDefaultOfflineAccount");
                     }
                     else
                     {
