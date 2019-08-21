@@ -27,7 +27,13 @@ using Android.Webkit;
 
 namespace PowerPlannerAndroid
 {
-    [Activity(Label = "Power Planner", MainLauncher = true, Icon = "@mipmap/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, WindowSoftInputMode = SoftInput.AdjustResize)]
+    [Activity(Label =
+#if DEBUG
+        "PP-Dev"
+#else
+        "Power Planner"
+#endif
+        , MainLauncher = true, Icon = "@mipmap/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, WindowSoftInputMode = SoftInput.AdjustResize)]
     public class MainActivity : BareActivity
     {
         public static MainActivity GetCurrent()
