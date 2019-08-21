@@ -39,8 +39,7 @@
     <EnableLLVM>False</EnableLLVM>
     <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
     <EnableProguard>False</EnableProguard>
-    <!--The settings page fails to work when AAPT is enabled-->
-    <AndroidUseAapt2>false</AndroidUseAapt2>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
