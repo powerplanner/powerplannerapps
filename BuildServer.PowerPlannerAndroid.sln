@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolsPortable", "portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj", "{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BareMvvm.Core", "portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj", "{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfacesDroid", "applibraries\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj", "{CE015236-0E8D-4042-B596-6E20BD26E56E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerAppDataLibrary", "PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj", "{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerAndroid", "PowerPlannerAndroid\PowerPlannerAndroid.csproj", "{ABBD34C7-DE94-44FF-BCBC-C7AE9AA99543}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerSending", "shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj", "{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}.Release|Any CPU.ActiveCfg = Release (Android)|Any CPU
+		{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}.Release|Any CPU.Build.0 = Release (Android)|Any CPU
+		{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE015236-0E8D-4042-B596-6E20BD26E56E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE015236-0E8D-4042-B596-6E20BD26E56E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}.Release|Any CPU.ActiveCfg = Release (Android)|Any CPU
+		{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}.Release|Any CPU.Build.0 = Release (Android)|Any CPU
+		{ABBD34C7-DE94-44FF-BCBC-C7AE9AA99543}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABBD34C7-DE94-44FF-BCBC-C7AE9AA99543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABBD34C7-DE94-44FF-BCBC-C7AE9AA99543}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DBFB10F1-4CBB-45EB-99B0-F9C472ABB303}
+	EndGlobalSection
+EndGlobal
