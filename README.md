@@ -31,6 +31,8 @@ Each platform-specific app simply needs to build views on top of the shared view
 
 ## Getting started
 
+**Detailed step-by-step instructions are [available here](https://github.com/powerplanner/powerplannerapps/wiki/Getting-started-(new-developer))**. The instructions below are cliff notes meant for devs experienced with Windows and Xamarin development.
+
 1. Be sure to **clone submodules** too. If you didn't, `git submodule update --init --recursive`
 1. For the first time after cloning, generate the secrets
     1. In the top-level directory, open PowerShell and run `.\ApplySecrets.ps1`
