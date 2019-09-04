@@ -52,7 +52,7 @@ namespace PowerPlannerUWP.Views.SettingsViews
                     accountInfo = " - " + mainScreen.CurrentAccount.GetTelemetryUserId() + " - " + mainScreen.CurrentAccount.DeviceId;
                 }
 
-                await Launcher.LaunchUriAsync(new Uri("mailto:?to=barebonesdev@live.com&subject=Power Planner for Win 10 - Contact Developer - " + Variables.VERSION + accountInfo));
+                await Launcher.LaunchUriAsync(new Uri("mailto:?to=support@powerplanner.net&subject=Power Planner for Win 10 - Contact Developer - " + Variables.VERSION + accountInfo));
             }
 
             catch (Exception ex)
