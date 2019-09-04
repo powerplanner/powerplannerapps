@@ -2216,8 +2216,8 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <target state="translated">¿Está utilizando Power Planner en otro dispositivo, pero no ha configurado una cuenta? Si es así, abra Power Planner desde ese dispositivo, vaya a Configuración -&gt; Crear cuenta y crear una cuenta. Después de eso, inicie sesión a continuación.</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage_NeedHelp.Text" translate="yes" xml:space="preserve">
-          <source>If you need help, contact barebonesdev@live.com</source>
-          <target state="final" state-qualifier="mt-suggestion">Si usted necesita ayuda, póngase en contacto con barebonesdev@live.com</target>
+          <source>If you need help, contact support@powerplanner.net</source>
+          <target state="final" state-qualifier="mt-suggestion">Si usted necesita ayuda, póngase en contacto con support@powerplanner.net</target>
         </trans-unit>
         <trans-unit id="Welcome_ExistingUserPage.Title" translate="yes" xml:space="preserve">
           <source>EXISTING USER</source>

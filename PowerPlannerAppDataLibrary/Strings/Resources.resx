@@ -1768,7 +1768,7 @@ Please think about using an online account instead!</value>
     <value>Are you using Power Planner on another device, but haven't set up an account? If so, open Power Planner from that device, go to Settings -&gt; Create account, and create an account. After that, log in below!</value>
   </data>
   <data name="Welcome_ConnectAccountPage_NeedHelp.Text" xml:space="preserve">
-    <value>If you need help, contact barebonesdev@live.com</value>
+    <value>If you need help, contact support@powerplanner.net</value>
   </data>
   <data name="Welcome_ExistingUserPage.Title" xml:space="preserve">
     <value>EXISTING USER</value>

@@ -1663,7 +1663,7 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
     <value>Você está usando Power Planner em outro dispositivo, mas não criar uma conta? Se assim for, abra o Power Planner desse dispositivo, vá para configurações -&gt; criar conta e criar uma conta. Depois disso, logar-se abaixo!</value>
   </data>
   <data name="Welcome_ConnectAccountPage_NeedHelp.Text" xml:space="preserve">
-    <value>Se precisar de ajuda, entre em contato barebonesdev@live.com</value>
+    <value>Se precisar de ajuda, entre em contato support@powerplanner.net</value>
   </data>
   <data name="Welcome_ExistingUserPage.Title" xml:space="preserve">
     <value>USUÁRIO EXISTENTE</value>
