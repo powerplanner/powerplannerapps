@@ -2217,8 +2217,8 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <target state="final">Verwenden Sie Power Planner auf einem anderen Gerät, aber noch kein Konto einrichten? Wenn ja, öffnen Sie macht Power Planner von diesem Gerät zu, gehen Sie zu Einstellungen -&gt; Erstellen Konto und erstellen Sie ein Konto. Dann logge dich unten!</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage_NeedHelp.Text" translate="yes" xml:space="preserve">
-          <source>If you need help, contact barebonesdev@live.com</source>
-          <target state="final" state-qualifier="mt-suggestion">Wenn Sie Hilfe benötigen, wenden Sie sich an barebonesdev@live.com</target>
+          <source>If you need help, contact support@powerplanner.net</source>
+          <target state="final" state-qualifier="mt-suggestion">Wenn Sie Hilfe benötigen, wenden Sie sich an support@powerplanner.net</target>
         </trans-unit>
         <trans-unit id="Welcome_ExistingUserPage.Title" translate="yes" xml:space="preserve">
           <source>EXISTING USER</source>

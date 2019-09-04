@@ -56,7 +56,7 @@
                         and I'm looking for developers interested in working on it!
                     </Paragraph>
                     <Paragraph Margin="0,12,0,0">
-                        <Hyperlink NavigateUri="mailto:barebonesdev@live.com">Contact me</Hyperlink>
+                        <Hyperlink NavigateUri="mailto:support@powerplanner.net">Contact me</Hyperlink>
                         if you're interested, or
                         <Hyperlink NavigateUri="https://powerplanner.net/contribute">learn more here</Hyperlink>!
                     </Paragraph>

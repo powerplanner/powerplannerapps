@@ -1665,7 +1665,7 @@
     <value>يمكنك استخدام Power Planner على جهاز آخر، ولكن لم تقم بإعداد حساب؟ إذا كان الأمر كذلك، فتح Power Planner من ذلك الجهاز، انتقل إلى إعدادات--&gt; إنشاء حساب، وإنشاء حساب. وبعد ذلك تسجيل الدخول أدناه!</value>
   </data>
   <data name="Welcome_ConnectAccountPage_NeedHelp.Text" xml:space="preserve">
-    <value>إذا كنت بحاجة إلى مساعدة، اتصل barebonesdev@live.com</value>
+    <value>إذا كنت بحاجة إلى مساعدة، اتصل support@powerplanner.net</value>
   </data>
   <data name="Welcome_ExistingUserPage.Title" xml:space="preserve">
     <value>مستخدم موجود</value>

@@ -67,7 +67,7 @@
                     Margin="0,20,0,0"/>
                 <Button
                     Style="{StaticResource SubitemButtonStyle}"
-                    Content="BareBonesDev@live.com"
+                    Content="support@powerplanner.net"
                     x:Name="buttonEmailDeveloper"
                     Click="buttonEmailDeveloper_Click"/>
 

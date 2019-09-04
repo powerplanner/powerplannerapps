@@ -2218,8 +2218,8 @@ Please think about using an online account instead!</source>
           <target state="final">يمكنك استخدام Power Planner على جهاز آخر، ولكن لم تقم بإعداد حساب؟ إذا كان الأمر كذلك، فتح Power Planner من ذلك الجهاز، انتقل إلى إعدادات--&gt; إنشاء حساب، وإنشاء حساب. وبعد ذلك تسجيل الدخول أدناه!</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage_NeedHelp.Text" translate="yes" xml:space="preserve">
-          <source>If you need help, contact barebonesdev@live.com</source>
-          <target state="final" state-qualifier="mt-suggestion">إذا كنت بحاجة إلى مساعدة، اتصل barebonesdev@live.com</target>
+          <source>If you need help, contact support@powerplanner.net</source>
+          <target state="final" state-qualifier="mt-suggestion">إذا كنت بحاجة إلى مساعدة، اتصل support@powerplanner.net</target>
         </trans-unit>
         <trans-unit id="Welcome_ExistingUserPage.Title" translate="yes" xml:space="preserve">
           <source>EXISTING USER</source>

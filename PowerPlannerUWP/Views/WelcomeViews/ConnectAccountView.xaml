@@ -40,7 +40,7 @@
 
                     <TextBlock
                         x:Uid="Welcome_ConnectAccountPage_NeedHelp"
-                        Text="If you need help, contact barebonesdev@live.com"
+                        Text="If you need help, contact support@powerplanner.net"
                         Style="{ThemeResource CaptionTextBlockStyle}"
                         TextWrapping="Wrap"
                         Margin="0,12,0,0"/>

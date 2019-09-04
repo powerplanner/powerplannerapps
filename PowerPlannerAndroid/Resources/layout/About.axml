@@ -68,7 +68,7 @@
             android:id="@+id/ButtonEmailDeveloper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BareBonesDev@live.com"/>
+            android:text="support@powerplanner.net"/>
 
     </LinearLayout>
 </ScrollView>
