@@ -67,7 +67,7 @@ namespace PowerPlanneriOS.Controllers.Settings
                 accountInfo = "%20-%20" + account.GetTelemetryUserId() + "%20-%20" + account.DeviceId;
             }
 
-            NSUrl url = new NSUrl("mailto:?to=barebonesdev@live.com&subject=Power%20Planner%20for%20iOS%20-%20Contact%20Developer%20-%20" + Variables.VERSION + accountInfo);
+            NSUrl url = new NSUrl("mailto:?to=support@powerplanner.net&subject=Power%20Planner%20for%20iOS%20-%20Contact%20Developer%20-%20" + Variables.VERSION + accountInfo);
 
             if (!UIApplication.SharedApplication.OpenUrl(url))
             {
@@ -93,7 +93,7 @@ namespace PowerPlanneriOS.Controllers.Settings
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 HorizontalAlignment = UIControlContentHorizontalAlignment.Left
             };
-            buttonContact.SetTitle("BareBonesDev@live.com", UIControlState.Normal);
+            buttonContact.SetTitle("support@powerplanner.net", UIControlState.Normal);
             buttonContact.TouchUpInside += ButtonContact_TouchUpInside;
             stackView.AddArrangedSubview(buttonContact);
             buttonContact.StretchWidth(stackView);
