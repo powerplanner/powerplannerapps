@@ -47,11 +47,13 @@ namespace PowerPlannerAndroid.Views
             }
 
             var _version = PowerPlannerAppDataLibrary.Variables.VERSION.ToString();
-            Intent emailIntent = new Intent(Intent.ActionSend);
-            emailIntent.SetType("message/rfc822");
+            Intent emailIntent = new Intent(Intent.ActionSendto);
+            emailIntent.SetData(Android.Net.Uri.Parse("mailto:")); // Sendto and mailto ensures only email apps are shown
             emailIntent.PutExtra(Intent.ExtraEmail, new string[] { "support@powerplanner.net" });
             emailIntent.PutExtra(Intent.ExtraSubject, "Power Planner Droid - Contact Developer - " + _version + accountInfo);
-            emailIntent.PutExtra(Intent.ExtraText, "\n\nPower Planner Droid - Version " + _version + accountInfo);
+
+            // Note that we're not including body text, since when sending from Outlook, it trims the leading newlines leaving no space for user to write.
+            //emailIntent.PutExtra(Intent.ExtraText, "\n\nPower Planner Droid - Version " + _version + accountInfo);
 
             try
             {
