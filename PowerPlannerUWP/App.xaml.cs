@@ -728,7 +728,7 @@ namespace PowerPlannerUWP
 
                     // Message about the display scaling issue
                     if (v < new Version(3, 0, 6, 0))
-                        changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is BareBonesDev@live.com (you can find it in Settings -> About).";
+                        changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
                     if (v < new Version(5, 4, 76, 0))
