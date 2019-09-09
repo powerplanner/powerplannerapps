@@ -315,7 +315,7 @@ namespace PowerPlanneriOS.Views
             }
 
             // If Saturday or Sunday and no items on day, hide it
-            if (!HasItemsOnDay(date.DayOfWeek) && (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) && !arranger.HolidayAndAllDayItems.Any())
+            if (!arranger.HolidayAndAllDayItems.Any() && !arranger.EventItems.Any() && !arranger.ScheduleItems.Any() && (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday))
             {
                 col.SetWidth(0);
                 _allDayItemsRow.Subviews[colIndex].SetWidth(0);
