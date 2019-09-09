@@ -12,6 +12,7 @@ using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.App;
 using CoreGraphics;
 using PowerPlanneriOS.Controllers;
+using System.ComponentModel;
 
 namespace PowerPlanneriOS.Views
 {
@@ -44,6 +45,7 @@ namespace PowerPlanneriOS.Views
             this.BackgroundColor = UIColor.FromWhiteAlpha(245 / 255f, 1);
 
             ViewModel = viewModel;
+            ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
 
             _mainView = new UIView()
             {
@@ -66,7 +68,7 @@ namespace PowerPlanneriOS.Views
             };
             _mainView.Add(_contentColumn);
             _contentColumn.StretchHeight(_mainView);
-            _mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|[timesColumn][contentColumn({COL_WIDTH * 7})]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
+            _mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|[timesColumn][contentColumn]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
                 "timesColumn", _timesColumn,
                 "contentColumn", _contentColumn)));
 
@@ -210,7 +212,19 @@ namespace PowerPlanneriOS.Views
                 this.ContentInset = new UIEdgeInsets(0, 0, MainScreenViewController.TAB_BAR_HEIGHT + 44, 0);
             });
 
+            UpdateWidth();
+
             Render();
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewModel.CountOfDaysToDisplay):
+                    UpdateWidth();
+                    break;
+            }
         }
 
         private UIView CreateAllDayItemView(object obj)
@@ -277,6 +291,11 @@ namespace PowerPlanneriOS.Views
             _scheduleRow.SetHeight(INITIAL_MARGIN + ((classEndTime - classStartTime).Hours + 1) * HEIGHT_OF_HOUR + 55);
 
             RenderAllDates();
+        }
+
+        private void UpdateWidth()
+        {
+            _contentColumn.SetWidth(COL_WIDTH * ViewModel.CountOfDaysToDisplay);
         }
 
         private void RenderAllDates()
@@ -389,6 +408,10 @@ namespace PowerPlanneriOS.Views
                 diffSemesterOverlay.StretchWidth(col);
                 diffSemesterOverlay.StretchHeight(col);
             }
+
+            //_mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|[timesColumn][contentColumn({COL_WIDTH * 7})]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
+            //    "timesColumn", _timesColumn,
+            //    "contentColumn", _contentColumn)));
         }
 
         private void ScheduleItem_TouchUpInside(object sender, EventArgs e)

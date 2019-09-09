@@ -120,6 +120,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             }
         }
 
+        /// <summary>
+        /// How many days the schedule should show (sat/sun get dropped if there's no items on those days)
+        /// </summary>
+        public int CountOfDaysToDisplay => CachedComputation(delegate
+        {
+            return (int)(DisplayEndDate - DisplayStartDate).TotalDays + 1;
+        }, new string[] { nameof(DisplayStartDate), nameof(DisplayEndDate) });
+
         private void NotifyDisplayDatesChanged()
         {
             OnPropertyChanged(nameof(DisplayStartDate), nameof(DisplayEndDate), nameof(CurrentWeek));
