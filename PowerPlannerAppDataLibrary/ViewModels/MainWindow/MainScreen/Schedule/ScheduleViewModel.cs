@@ -92,7 +92,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 if (StartDate.DayOfWeek == DayOfWeek.Sunday)
                 {
                     // If there's no items on Sunday, skip Sunday
-                    if (Items.Count > 0 && !Items[DayOfWeek.Sunday].IsValid())
+                    if (Items.Count > 0 && !Items[DayOfWeek.Sunday].HasItems())
                     {
                         return StartDate.AddDays(1);
                     }
@@ -110,7 +110,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 if (endDate.DayOfWeek == DayOfWeek.Saturday)
                 {
                     // If there's no items on Saturday, skip Saturday
-                    if (Items.Count > 0 && !Items[DayOfWeek.Saturday].IsValid())
+                    if (Items.Count > 0 && !Items[DayOfWeek.Saturday].HasItems())
                     {
                         return endDate.AddDays(-1);
                     }

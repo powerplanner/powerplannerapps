@@ -544,9 +544,22 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             return answer;
         }
 
+        /// <summary>
+        /// Returns true if the schedule portion is valid and has any items
+        /// </summary>
+        /// <returns></returns>
         public bool IsValid()
         {
             return EndTime >= StartTime && (ScheduleItems.Length > 0 || EventItems.Length > 0);
+        }
+
+        /// <summary>
+        /// Returns true if has any items
+        /// </summary>
+        /// <returns></returns>
+        public bool HasItems()
+        {
+            return ScheduleItems.Length > 0 || EventItems.Length > 0 || HasHolidays || AllDayItems.Count > 0;
         }
 
         /// <summary>
