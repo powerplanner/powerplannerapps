@@ -31,13 +31,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             get { return _deletedItems; }
         }
 
-        public DataChangedEvent(Guid localAccountId, IEnumerable<BaseDataItem> newItems, IEnumerable<BaseDataItem> editedItems, DeletedItems deletedItems, bool wasLocalChanges)
+        public HashSet<Guid> EditedClassIdentifiersToIgnoreFromCalendarIntegration { get; private set; }
+
+        public DataChangedEvent(Guid localAccountId, IEnumerable<BaseDataItem> newItems, IEnumerable<BaseDataItem> editedItems, DeletedItems deletedItems, bool wasLocalChanges, DataChanges originalChanges)
         {
             LocalAccountId = localAccountId;
             _newItems = newItems.ToList();
             _editedItems = editedItems.ToList();
             _deletedItems = deletedItems;
             WasLocalChanges = wasLocalChanges;
+            EditedClassIdentifiersToIgnoreFromCalendarIntegration = new HashSet<Guid>(originalChanges.EditedClassIdentifiersToIgnoreFromCalendarIntegration);
         }
 
         public void Merge(DataChangedEvent newerEvent)
@@ -56,9 +59,23 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             // Add the deletes
             _deletedItems.Merge(newerEvent._deletedItems);
 
+            // Add all ignore class edits
+            foreach (var editedClassToIgnore in newerEvent.EditedClassIdentifiersToIgnoreFromCalendarIntegration)
+            {
+                EditedClassIdentifiersToIgnoreFromCalendarIntegration.Add(editedClassToIgnore);
+            }
+
             // Merge the edits
             foreach (var edited in newerEvent.EditedItems)
             {
+                // If this is a class and isn't ignored from calendar integration but was by the old event, we need to include it
+                if (edited is DataItems.DataItemClass 
+                    && EditedClassIdentifiersToIgnoreFromCalendarIntegration.Contains(edited.Identifier)
+                    && !newerEvent.EditedClassIdentifiersToIgnoreFromCalendarIntegration.Contains(edited.Identifier))
+                {
+                    EditedClassIdentifiersToIgnoreFromCalendarIntegration.Remove(edited.Identifier);
+                }
+
                 ProcessMergingEditedItem(edited);
             }
 

@@ -663,7 +663,10 @@ namespace PowerPlannerUWPLibrary.Extensions
                             var newAndEditedItems = DataChangedEvent.EditedItems.Concat(DataChangedEvent.NewItems);
 
                             // Classes that were edited will require loading and updating homework/exams/schedules, since the class name might have been edited
-                            Guid[] classIdentifiersNeedingChildrenLoaded = DataChangedEvent.EditedItems.OfType<DataItemClass>().Select(i => i.Identifier).ToArray();
+                            Guid[] classIdentifiersNeedingChildrenLoaded = DataChangedEvent.EditedItems.OfType<DataItemClass>()
+                                .Select(i => i.Identifier)
+                                .Except(DataChangedEvent.EditedClassIdentifiersToIgnoreFromCalendarIntegration)
+                                .ToArray();
 
                             // Now we need to load those classes and children of edited classes
                             if (IsClassesEnabled || classIdentifiersNeedingChildrenLoaded.Length > 0)
