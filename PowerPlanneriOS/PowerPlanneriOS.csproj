@@ -192,6 +192,7 @@
     <Compile Include="Views\UIEditClassScheduleView.cs" />
     <Compile Include="Views\UIFriendlyDateHeaderCell.cs" />
     <Compile Include="Views\UIGradeCell.cs" />
+    <Compile Include="Views\UIHeaderCell.cs" />
     <Compile Include="Views\UIInlineMultiDayPickerView.cs" />
     <Compile Include="Views\UIMainCalendarItemView.cs" />
     <Compile Include="Views\UIPagedDayView.cs" />

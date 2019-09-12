@@ -180,6 +180,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
+        public void TogglePastCompletedItems()
+        {
+            if (Type == ItemType.Homework)
+            {
+                if (ClassViewModel.ViewItemsGroupClass.IsPastCompletedHomeworkDisplayed)
+                {
+                    ClassViewModel.ViewItemsGroupClass.HidePastCompletedHomework();
+                }
+                else
+                {
+                    ClassViewModel.ViewItemsGroupClass.ShowPastCompletedHomework();
+                }
+            }
+            else
+            {
+                if (ClassViewModel.ViewItemsGroupClass.IsPastCompletedExamsDisplayed)
+                {
+                    ClassViewModel.ViewItemsGroupClass.HidePastCompletedExams();
+                }
+                else
+                {
+                    ClassViewModel.ViewItemsGroupClass.ShowPastCompletedExams();
+                }
+                ClassViewModel.ViewItemsGroupClass.ShowPastCompletedExams();
+            }
+        }
+
         public void ShowPastCompletedItems()
         {
             if (Type == ItemType.Homework)
