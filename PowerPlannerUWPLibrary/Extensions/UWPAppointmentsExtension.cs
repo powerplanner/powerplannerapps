@@ -482,6 +482,13 @@ namespace PowerPlannerUWPLibrary.Extensions
                         {
                             ThrowIfCanceled();
 
+                            // Skip any tasks that are also new (if a new task was created and the parent class was edited at the same time, the new task would appear
+                            // both in this "edited parents" list, and the new items list from earlier, causing a duplicate to be added!
+                            if (DataChangedEvent.NewItems.OfType<DataItemMegaItem>().Any(i => i.Identifier == edited.Identifier))
+                            {
+                                continue;
+                            }
+
                             Appointment existing = null;
 
                             if (edited.AppointmentLocalId != null)
