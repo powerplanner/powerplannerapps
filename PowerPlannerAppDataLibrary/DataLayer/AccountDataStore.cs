@@ -993,12 +993,24 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     TelemetryExtension.Current?.TrackException(ex);
                 }
             }
+
+            bool needsAppointmentReset = false;
+            if (version < 7)
+            {
+                // On UWP, we were adding duplicates to calendar integration, so we'll reset calendar integration
+                needsAppointmentReset = true;
+            }
             if (version < DataInfo.LATEST_VERSION)
             {
                 dataInfo.Version = DataInfo.LATEST_VERSION;
                 _db.InsertOrReplace(dataInfo);
             }
             timeTracker.End(3, "AccountDataStore.InitializeDatabase handle upgrade");
+
+            if (needsAppointmentReset)
+            {
+                AppointmentsExtension.Current?.ResetAll(Account, this);
+            }
         }
 
         private class BatchDbInserter : IDisposable
@@ -1036,7 +1048,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public class DataInfo
         {
-            public const int LATEST_VERSION = 6;
+            public const int LATEST_VERSION = 7;
 
             [PrimaryKey]
             public short Key { get; set; } = 1;
