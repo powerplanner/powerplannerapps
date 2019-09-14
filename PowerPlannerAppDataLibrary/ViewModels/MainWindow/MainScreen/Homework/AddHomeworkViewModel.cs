@@ -939,6 +939,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                         {
                             // Save into the class itself
                             changes.Add(CreateClassSavedInfoDataItem());
+
+                            // And ignore updating calendar integration on that class edit, since it doesn't affect calendar integration
+                            changes.IgnoreEditedClassIdentifierFromCalendarIntegration(Class.Identifier);
                         }
                     }
                     catch (Exception ex)

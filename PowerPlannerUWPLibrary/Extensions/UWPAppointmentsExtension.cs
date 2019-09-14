@@ -482,6 +482,13 @@ namespace PowerPlannerUWPLibrary.Extensions
                         {
                             ThrowIfCanceled();
 
+                            // Skip any tasks that are also new (if a new task was created and the parent class was edited at the same time, the new task would appear
+                            // both in this "edited parents" list, and the new items list from earlier, causing a duplicate to be added!
+                            if (DataChangedEvent.NewItems.OfType<DataItemMegaItem>().Any(i => i.Identifier == edited.Identifier))
+                            {
+                                continue;
+                            }
+
                             Appointment existing = null;
 
                             if (edited.AppointmentLocalId != null)
@@ -656,7 +663,10 @@ namespace PowerPlannerUWPLibrary.Extensions
                             var newAndEditedItems = DataChangedEvent.EditedItems.Concat(DataChangedEvent.NewItems);
 
                             // Classes that were edited will require loading and updating homework/exams/schedules, since the class name might have been edited
-                            Guid[] classIdentifiersNeedingChildrenLoaded = DataChangedEvent.EditedItems.OfType<DataItemClass>().Select(i => i.Identifier).ToArray();
+                            Guid[] classIdentifiersNeedingChildrenLoaded = DataChangedEvent.EditedItems.OfType<DataItemClass>()
+                                .Select(i => i.Identifier)
+                                .Except(DataChangedEvent.EditedClassIdentifiersToIgnoreFromCalendarIntegration)
+                                .ToArray();
 
                             // Now we need to load those classes and children of edited classes
                             if (IsClassesEnabled || classIdentifiersNeedingChildrenLoaded.Length > 0)

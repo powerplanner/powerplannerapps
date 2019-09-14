@@ -151,6 +151,32 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             get { return _storage.Where(i => i.Value == null).Select(i => i.Key); }
         }
 
+        private HashSet<Guid> _editedClassIdentifiersToIgnoreFromCalendarIntegration;
+        public IEnumerable<Guid> EditedClassIdentifiersToIgnoreFromCalendarIntegration
+        {
+            get
+            {
+                if (_editedClassIdentifiersToIgnoreFromCalendarIntegration == null)
+                {
+                    return new Guid[0];
+                }
+                else
+                {
+                    return _editedClassIdentifiersToIgnoreFromCalendarIntegration;
+                }
+            }
+        }
+
+        public void IgnoreEditedClassIdentifierFromCalendarIntegration(Guid classId)
+        {
+            if (_editedClassIdentifiersToIgnoreFromCalendarIntegration == null)
+            {
+                _editedClassIdentifiersToIgnoreFromCalendarIntegration = new HashSet<Guid>();
+            }
+
+            _editedClassIdentifiersToIgnoreFromCalendarIntegration.Add(classId);
+        }
+
         private Dictionary<Guid, BaseDataItem> _storage = new Dictionary<Guid, BaseDataItem>();
 
         private bool DoesGuidExist(Guid id)
@@ -967,12 +993,24 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     TelemetryExtension.Current?.TrackException(ex);
                 }
             }
+
+            bool needsAppointmentReset = false;
+            if (version < 7)
+            {
+                // On UWP, we were adding duplicates to calendar integration, so we'll reset calendar integration
+                needsAppointmentReset = true;
+            }
             if (version < DataInfo.LATEST_VERSION)
             {
                 dataInfo.Version = DataInfo.LATEST_VERSION;
                 _db.InsertOrReplace(dataInfo);
             }
             timeTracker.End(3, "AccountDataStore.InitializeDatabase handle upgrade");
+
+            if (needsAppointmentReset)
+            {
+                AppointmentsExtension.Current?.ResetAll(Account, this);
+            }
         }
 
         private class BatchDbInserter : IDisposable
@@ -1010,7 +1048,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public class DataInfo
         {
-            public const int LATEST_VERSION = 6;
+            public const int LATEST_VERSION = 7;
 
             [PrimaryKey]
             public short Key { get; set; } = 1;
@@ -1528,7 +1566,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
 
 
-            DataChangedEvent dataChangedEvent = new DataChangedEvent(LocalAccountId, newDataItems, existingDataItems, deletedItems, wasLocalChanges: processType == ProcessType.Local);
+            DataChangedEvent dataChangedEvent = new DataChangedEvent(LocalAccountId, newDataItems, existingDataItems, deletedItems, wasLocalChanges: processType == ProcessType.Local, dataChanges);
 
             // Queue the Appointments to be updated (this saves the account so that it's flagged as Appointments not updated, and then does remaining work on separate thread)
             bool needsSave = false;
