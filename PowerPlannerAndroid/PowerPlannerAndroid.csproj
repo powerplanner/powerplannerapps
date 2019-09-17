@@ -53,7 +53,7 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
-    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
     <Debugger>Xamarin</Debugger>
     <AotAssemblies>true</AotAssemblies>
     <EnableLLVM>true</EnableLLVM>
