@@ -1566,7 +1566,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
 
 
-            DataChangedEvent dataChangedEvent = new DataChangedEvent(LocalAccountId, newDataItems, existingDataItems, deletedItems, wasLocalChanges: processType == ProcessType.Local, dataChanges);
+            DataChangedEvent dataChangedEvent = new DataChangedEvent(LocalAccountId, newDataItems, existingDataItems, deletedItems, wasLocalChanges: processType == ProcessType.Local, originalChanges: dataChanges);
 
             // Queue the Appointments to be updated (this saves the account so that it's flagged as Appointments not updated, and then does remaining work on separate thread)
             bool needsSave = false;
