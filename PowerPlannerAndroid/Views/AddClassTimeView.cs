@@ -95,7 +95,12 @@ namespace PowerPlannerAndroid.Views
 
         private void EndTime_Click(object sender, EventArgs e)
         {
-            new TimePickerDialog(Context, OnEndTimePicked, ViewModel.EndTime.Hours, ViewModel.EndTime.Minutes, false).Show();
+            new TimePickerDialog(
+                context: Context,
+                callBack: OnEndTimePicked,
+                hourOfDay: ViewModel.EndTime.Hours,
+                minute: ViewModel.EndTime.Minutes,
+                is24HourView: Android.Text.Format.DateFormat.Is24HourFormat(Context)).Show();
         }
 
         private void OnEndTimePicked(object sender, TimePickerDialog.TimeSetEventArgs e)
@@ -105,7 +110,12 @@ namespace PowerPlannerAndroid.Views
 
         private void StartTime_Click(object sender, EventArgs e)
         {
-            new TimePickerDialog(Context, OnStartTimePicked, ViewModel.StartTime.Hours, ViewModel.StartTime.Minutes, false).Show();
+            new TimePickerDialog(
+                context: Context,
+                callBack: OnStartTimePicked,
+                hourOfDay: ViewModel.StartTime.Hours,
+                minute: ViewModel.StartTime.Minutes,
+                is24HourView: Android.Text.Format.DateFormat.Is24HourFormat(Context)).Show();
         }
 
         private void OnStartTimePicked(object sender, TimePickerDialog.TimeSetEventArgs e)
