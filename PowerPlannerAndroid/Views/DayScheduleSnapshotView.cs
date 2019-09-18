@@ -304,7 +304,7 @@ namespace PowerPlannerAndroid.Views
 
                 _schedulesContent.AddView(new TextView(Context)
                 {
-                    Text = new DateTime().Add(time).ToString("h ").TrimEnd(),
+                    Text = Android.Text.Format.DateFormat.Is24HourFormat(Context) ? time.Hours.ToString() : new DateTime().Add(time).ToString("h ").TrimEnd(),
                     TextSize = 26,
                     LayoutParameters = new RelativeLayout.LayoutParams(
                         TimeIndicatorSize,

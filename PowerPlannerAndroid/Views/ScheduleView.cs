@@ -25,6 +25,7 @@ using Android.Graphics;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using Android.Support.V4.Content;
 using PowerPlannerAndroid.Views.Controls;
+using InterfacesDroid.Helpers;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -323,7 +324,7 @@ namespace PowerPlannerAndroid.Views
             {
                 timesViewGroup.AddView(SetMargin(new TextView(Context)
                 {
-                    Text = tempClassStartTime.ToString("t").TrimEnd(' ', 'P', 'A', 'M', 'a', 'p', 'm'),
+                    Text = DateHelper.ToShortTimeString(tempClassStartTime).TrimEnd(' ', 'P', 'A', 'M', 'a', 'p', 'm')
                 },
                 left: ThemeHelper.AsPx(Context, 12),
                 top: getTopMarginAsPx(tempClassStartTime.TimeOfDay, classStartTime.TimeOfDay) - ThemeHelper.AsPx(Context, 4),
