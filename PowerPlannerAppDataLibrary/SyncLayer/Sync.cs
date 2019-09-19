@@ -138,6 +138,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
         /// <summary>
         /// Places the account on the queue to be synced (will merge with existing queued if there are any), async task completes once the account is synced.
+        /// Does NOT throw exceptions (except operation canceled), will always return a result.
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
@@ -520,6 +521,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                     if (response.Error != null)
                     {
+                        TelemetryExtension.Current?.TrackException(new Exception("SyncError: " + response.Error));
                         Debug.WriteLine("Sync error: " + response.Error);
 
                         return new SyncResult()
