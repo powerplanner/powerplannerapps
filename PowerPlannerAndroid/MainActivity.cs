@@ -113,6 +113,8 @@ namespace PowerPlannerAndroid
 
             if (requestCode == PickImageId)
             {
+                PickImageResult result;
+
                 try
                 {
                     if ((resultCode == Result.Ok) && (intent != null))
@@ -121,21 +123,38 @@ namespace PowerPlannerAndroid
                         Stream stream = ContentResolver.OpenInputStream(uri);
                         string extension = MimeTypeMap.Singleton.GetExtensionFromMimeType(ContentResolver.GetType(uri));
 
-                        // Set the result as the completion of the Task
-                        PickImageTaskCompletionSource.SetResult(new PickImageResult()
+                        result = new PickImageResult()
                         {
                             Stream = stream,
                             Extension = extension
-                        });
+                        };
                     }
                     else
                     {
-                        PickImageTaskCompletionSource.SetResult(null);
+                        result = null;
                     }
                 }
                 catch (Exception ex)
                 {
-                    PickImageTaskCompletionSource.SetException(ex);
+                    try
+                    {
+                        PickImageTaskCompletionSource.SetException(ex);
+                    }
+                    catch
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+                    return;
+                }
+
+                // Set the result as the completion of the Task
+                try
+                {
+                    PickImageTaskCompletionSource.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
                 }
             }
         }
