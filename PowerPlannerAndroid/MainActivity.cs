@@ -113,6 +113,12 @@ namespace PowerPlannerAndroid
 
             if (requestCode == PickImageId)
             {
+                if (PickImageTaskCompletionSource == null)
+                {
+                    TelemetryExtension.Current?.TrackException(new InvalidOperationException("PickImageTaskCompletionSource was null, app must have dehydrated while picking images"));
+                    return;
+                }
+
                 PickImageResult result;
 
                 try
