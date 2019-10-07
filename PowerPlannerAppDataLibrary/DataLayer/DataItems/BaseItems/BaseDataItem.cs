@@ -350,7 +350,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
                         return 2;
                 }
 
-                if (item is DataItemHomework || item is DataItemExam || item is DataItemWeightCategory || item is DataItemSchedule || item is DataItemClassAttributeUnderClass || item is DataItemClassSubjectUnderClass)
+                if (
+#pragma warning disable 612, 618
+                    item is DataItemHomework || item is DataItemExam
+#pragma warning restore 612, 618
+                    || item is DataItemWeightCategory || item is DataItemSchedule || item is DataItemClassAttributeUnderClass || item is DataItemClassSubjectUnderClass)
                     return 3;
 
                 if (item is DataItemGrade || item is DataItemTeacherUnderSchedule)

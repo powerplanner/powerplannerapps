@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
 {
+    [Obsolete("Legacy type no longer used, replaced by DataItemMegaItem")]
     public class DataItemExam : BaseDataItemHomeworkExam
     {
         public override ItemType ItemType

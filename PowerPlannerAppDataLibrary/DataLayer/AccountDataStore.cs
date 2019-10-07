@@ -830,8 +830,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 if (_db.GetTableInfo("DataItemHomework").Count > 0)
                 {
+#pragma warning disable 612, 618
                     _db.CreateTable<DataItemHomework>();
                     _db.CreateTable<DataItemExam>();
+#pragma warning restore 612, 618
 
                     var semesters = TableSemesters.ToArray();
                     var classes = TableClasses.ToArray();
@@ -850,7 +852,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                     using (var batchInserter = new BatchDbInserter(_db, 30))
                     {
+#pragma warning disable 612, 618
                         foreach (var h in _db.Table<DataItemHomework>())
+#pragma warning restore 612, 618
                         {
                             handleV2update(h);
 
@@ -886,7 +890,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                             });
                         }
 
+#pragma warning disable 612, 618
                         foreach (var e in _db.Table<DataItemExam>())
+#pragma warning restore 612, 618
                         {
                             handleV2update(e);
 
@@ -922,8 +928,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                         }
                     }
 
+#pragma warning disable 612, 618
                     _db.DropTable<DataItemHomework>();
                     _db.DropTable<DataItemExam>();
+#pragma warning restore 612, 618
                 }
             }
             if (version < 4)

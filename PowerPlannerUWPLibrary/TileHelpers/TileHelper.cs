@@ -414,19 +414,6 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             }
         }
 
-        private static IEnumerable<BaseDataItemHomeworkExam> getAllUpcomingFromExistingUpcomingList(IEnumerable<BaseDataItemHomeworkExam> existingUpcoming, DateTime todayAsUtc)
-        {
-            foreach (var item in existingUpcoming)
-            {
-                // Skip exams that are past today
-                if (item is DataItemExam && DateTime.SpecifyKind(item.Date.Date, DateTimeKind.Utc) < todayAsUtc)
-                    continue;
-
-                // Add all homeworks, since a different today date doesn't change anything
-                yield return item;
-            }
-        }
-
         internal class ItemsOnDay
         {
             public DateTime DateInUtc { get; set; }
