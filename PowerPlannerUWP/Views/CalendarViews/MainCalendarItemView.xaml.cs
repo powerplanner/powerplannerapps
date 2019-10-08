@@ -1,6 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerUWP.Views.HomeworkViews;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 {
     public sealed partial class MainCalendarItemView : UserControl
     {
-        public BaseViewItemHomeworkExam Item => DataContext as BaseViewItemHomeworkExam;
+        public ViewItemTaskOrEvent Item => DataContext as ViewItemTaskOrEvent;
 
         public MainCalendarItemView()
         {
@@ -33,7 +33,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.ShowItem(DataContext as BaseViewItemHomeworkExam);
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.ShowItem(Item);
 
             e.Handled = true;
 

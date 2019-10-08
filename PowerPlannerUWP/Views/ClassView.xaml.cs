@@ -28,6 +28,7 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -553,12 +554,12 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void WeightCategoryListViewItem_OnRequestViewGrade(object sender, BaseViewItemHomeworkExamGrade e)
+        private void WeightCategoryListViewItem_OnRequestViewGrade(object sender, BaseViewItemMegaItem e)
         {
             ViewModel.GradesViewModel.ShowItem(e);
         }
 
-        private void HomeworkListViewItem_OnClickItem(object sender, BaseViewItemHomeworkExam e)
+        private void HomeworkListViewItem_OnClickItem(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.GradesViewModel.ShowUnassignedItem(e);
         }

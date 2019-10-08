@@ -53,7 +53,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 
         public class EditParameter
         {
-            public BaseViewItemHomeworkExamGrade Item { get; set; }
+            public BaseViewItemMegaItem Item { get; set; }
 
             public Action OnSaved { get; set; }
 
@@ -90,9 +90,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
             ViewItemWeightCategory weight = editParams.Item.WeightCategory;
 
             ViewItemClass c;
-            if (editParams.Item is BaseViewItemHomeworkExam)
+            if (editParams.Item is ViewItemTaskOrEvent item)
             {
-                c = (editParams.Item as BaseViewItemHomeworkExam).GetClassOrNull();
+                c = item.Class;
             }
             else
             {
@@ -139,7 +139,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
         }
 
         private Action _onSaved;
-        private BaseViewItemHomeworkExamGrade _editingGrade;
+        private BaseViewItemMegaItem _editingGrade;
 
         private string _name = "";
         public string Name
@@ -251,7 +251,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                     //// What If mode
                     if (State == OperationState.AddingWhatIf || State == OperationState.EditingWhatIf)
                     {
-                        BaseViewItemHomeworkExamGrade whatIfGrade;
+                        BaseViewItemMegaItem whatIfGrade;
 
                         // New
                         if (_editingGrade == null)

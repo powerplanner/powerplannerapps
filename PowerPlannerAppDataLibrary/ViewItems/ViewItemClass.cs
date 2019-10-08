@@ -36,7 +36,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
         public ViewItemClass(
             DataItemClass dataItem,
-            Func<DataItemMegaItem, BaseViewItemHomeworkExam> createHomeworkOrExamMethod = null,
+            Func<DataItemMegaItem, ViewItemTaskOrEvent> createHomeworkOrExamMethod = null,
             Func<DataItemSchedule, ViewItemSchedule> createScheduleMethod = null,
             Func<DataItemWeightCategory, ViewItemWeightCategory> createWeightMethod = null,
             Func<DataItemMegaItem, bool> isHomeworkOrExamChildMethod = null) : base(dataItem)
@@ -81,11 +81,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 children: WeightCategories));
         }
 
-        public void AddHomeworkAndExamChildrenHelper(Func<DataItemMegaItem, BaseViewItemHomeworkExam> createItemMethod, Func<DataItemMegaItem, bool> isChildMethod = null)
+        public void AddHomeworkAndExamChildrenHelper(Func<DataItemMegaItem, ViewItemTaskOrEvent> createItemMethod, Func<DataItemMegaItem, bool> isChildMethod = null)
         {
-            HomeworkAndExams = new MyObservableList<BaseViewItems.BaseViewItemHomeworkExam>();
+            HomeworkAndExams = new MyObservableList<ViewItemTaskOrEvent>();
 
-            AddChildrenHelper(new ViewItemChildrenHelper<DataItemMegaItem, BaseViewItemHomeworkExam>(
+            AddChildrenHelper(new ViewItemChildrenHelper<DataItemMegaItem, ViewItemTaskOrEvent>(
                 isChild: isChildMethod != null ? isChildMethod : IsHomeworkOrExamChild,
                 addMethod: Add,
                 removeMethod: Remove,
@@ -375,16 +375,9 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
         public MyObservableList<ViewItemWeightCategory> WeightCategories { get; private set; }
 
-        internal void Add(BaseViewItemHomeworkExam viewItemHomeworkOrExam)
+        internal void Add(ViewItemTaskOrEvent viewItemHomeworkOrExam)
         {
-            if (viewItemHomeworkOrExam is ViewItemHomework)
-            {
-                (viewItemHomeworkOrExam as ViewItemHomework).Class = this;
-            }
-            else if (viewItemHomeworkOrExam is ViewItemExam)
-            {
-                (viewItemHomeworkOrExam as ViewItemExam).Class = this;
-            }
+            viewItemHomeworkOrExam.Class = this;
 
             HandleWeightCategoryForHomeworkExam(viewItemHomeworkOrExam);
 
@@ -394,7 +387,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
-        internal void Remove(BaseViewItemHomeworkExam viewItemHomeworkOrExam)
+        internal void Remove(ViewItemTaskOrEvent viewItemHomeworkOrExam)
         {
             HomeworkAndExams?.Remove(viewItemHomeworkOrExam);
         }
@@ -420,9 +413,9 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// <summary>
         /// List is already sorted
         /// </summary>
-        public MyObservableList<BaseViewItemHomeworkExam> HomeworkAndExams { get; private set; }
+        public MyObservableList<ViewItemTaskOrEvent> HomeworkAndExams { get; private set; }
 
-        private void HandleWeightCategoryForHomeworkExam(BaseViewItemHomeworkExam item)
+        private void HandleWeightCategoryForHomeworkExam(ViewItemTaskOrEvent item)
         {
             if (item.WeightCategoryIdentifier == PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_UNASSIGNED)
             {
@@ -645,7 +638,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         //sorted by biggest importance first
         private class SortedGradeItem : IComparable<SortedGradeItem>, IComparer<SortedGradeItem>
         {
-            public BaseViewItemHomeworkExamGrade Grade;
+            public BaseViewItemMegaItem Grade;
             public double Importance;
 
             public int Compare(SortedGradeItem x, SortedGradeItem y)
@@ -840,7 +833,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// </summary>
         /// <param name="grade"></param>
         /// <param name="percentNeeded"></param>
-        private static void setBaseGrade(BaseViewItemHomeworkExamGrade grade, double percentNeeded)
+        private static void setBaseGrade(BaseViewItemMegaItem grade, double percentNeeded)
         {
             //set grade to the lower option
             grade.GradeReceived = Math.Floor(percentNeeded * grade.GradeTotal);
@@ -853,7 +846,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// </summary>
         /// <param name="grade"></param>
         /// <returns>Returns true if the class grade is now greater than or equal to the desired grade, else false.</returns>
-        private bool incrementGrade(BaseViewItemHomeworkExamGrade grade, double desiredGrade)
+        private bool incrementGrade(BaseViewItemMegaItem grade, double desiredGrade)
         {
             grade.GradeReceived++;
             grade.WasChanged = true;
@@ -870,7 +863,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// Will increase grade received by 1 if it doesn't make the class' grade higher than the desired grade (also calculates grade)
         /// </summary>
         /// <param name="grade"></param>
-        private void tryIncrementGrade(BaseViewItemHomeworkExamGrade grade, double desiredGrade)
+        private void tryIncrementGrade(BaseViewItemMegaItem grade, double desiredGrade)
         {
             grade.GradeReceived++;
             grade.WeightCategory.NeedsRecalc = true;

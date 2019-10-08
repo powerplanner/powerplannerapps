@@ -19,9 +19,9 @@ namespace PowerPlannerUWP.Converters
                 initialString = " - ";
             }
 
-            if (value is ViewItemHomework)
+            if (value is ViewItemTaskOrEvent task && task.Type == TaskOrEventType.Task)
             {
-                if ((value as ViewItemHomework).Class.IsNoClassClass)
+                if (task.Class.IsNoClassClass)
                 {
                     return CapitalizeFirstLetter(LocalizedResources.GetString("String_HomeworkDatePrefix"));
                 }
@@ -31,9 +31,9 @@ namespace PowerPlannerUWP.Converters
                 }
             }
 
-            else if (value is ViewItemExam)
+            else if (value is ViewItemTaskOrEvent eventItem && eventItem.Type == TaskOrEventType.Event)
             {
-                if ((value as ViewItemExam).Class.IsNoClassClass)
+                if (eventItem.Class.IsNoClassClass)
                 {
                     return CapitalizeFirstLetter(LocalizedResources.GetString("String_ExamDatePrefix"));
                 }

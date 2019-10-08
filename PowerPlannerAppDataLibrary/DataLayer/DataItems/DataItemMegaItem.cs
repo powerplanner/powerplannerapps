@@ -175,7 +175,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
         /// </summary>
         /// <param name="semester"></param>
         /// <returns></returns>
-        public BaseViewItemHomeworkExam CreateViewItemTaskOrEvent(ViewItemSemester semester)
+        public ViewItemTaskOrEvent CreateViewItemTaskOrEvent(ViewItemSemester semester)
         {
             return CreateViewItemTaskOrEvent(semester.Classes, semester.NoClassClass);
         }
@@ -185,48 +185,29 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
         /// </summary>
         /// <param name="semester"></param>
         /// <returns></returns>
-        public BaseViewItemHomeworkExam CreateViewItemTaskOrEvent(IEnumerable<ViewItemClass> classes, ViewItemClass noClassClass)
+        public ViewItemTaskOrEvent CreateViewItemTaskOrEvent(IEnumerable<ViewItemClass> classes, ViewItemClass noClassClass)
         {
-            BaseViewItemHomeworkExam view;
+            ViewItemTaskOrEvent view;
             switch (MegaItemType)
             {
                 case MegaItemType.Homework:
                 case MegaItemType.Task:
-                    view = new ViewItemHomework(this);
-                    break;
-
                 case MegaItemType.Exam:
                 case MegaItemType.Event:
-                    view = new ViewItemExam(this);
+                    view = new ViewItemTaskOrEvent(this);
                     break;
 
                 default:
                     return null;
             }
 
-            if (view is ViewItemHomework)
+            if (this.MegaItemType == MegaItemType.Task || this.MegaItemType == MegaItemType.Event)
             {
-                var h = view as ViewItemHomework;
-                if (this.MegaItemType == MegaItemType.Task)
-                {
-                    h.Class = noClassClass;
-                }
-                else
-                {
-                    h.Class = classes.First(i => i.Identifier == this.UpperIdentifier);
-                }
+                view.Class = noClassClass;
             }
-            else if (view is ViewItemExam)
+            else
             {
-                var e = view as ViewItemExam;
-                if (this.MegaItemType == MegaItemType.Event)
-                {
-                    e.Class = noClassClass;
-                }
-                else
-                {
-                    e.Class = classes.First(i => i.Identifier == this.UpperIdentifier);
-                }
+                view.Class = classes.First(i => i.Identifier == this.UpperIdentifier);
             }
 
             return view;
@@ -337,6 +318,25 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             base.serialize(into);
 
             return into;
+        }
+
+        /// <summary>
+        /// Returns true if the MegaItemType is Task, Homework, Event, or Exam
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTaskOrEvent()
+        {
+            switch (MegaItemType)
+            {
+                case MegaItemType.Task:
+                case MegaItemType.Homework:
+                case MegaItemType.Event:
+                case MegaItemType.Exam:
+                    return true;
+
+                default:
+                    return false;
+            }
         }
     }
 }

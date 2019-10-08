@@ -32,7 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         public TimeSpan MinDuration { get; private set; }
 
-        public List<BaseViewItemHomeworkExam> AllDayItems { get; private set; }
+        public List<ViewItemTaskOrEvent> AllDayItems { get; private set; }
 
         public List<ViewItemHoliday> Holidays { get; private set; }
 
@@ -142,14 +142,14 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         {
             public bool IsCollapsedMode { get; set; }
 
-            public BaseViewItemHomeworkExam Item { get; private set; }
+            public ViewItemTaskOrEvent Item { get; private set; }
 
             /// <summary>
             /// In the case where IsCollapsedMode is true and there's additional items, this will be initialized with the additional items
             /// </summary>
-            public List<BaseViewItemHomeworkExam> AdditionalItems { get; private set; }
+            public List<ViewItemTaskOrEvent> AdditionalItems { get; private set; }
 
-            public EventItem(DayScheduleItemsArranger arranger, BaseViewItemHomeworkExam item) : base(arranger)
+            public EventItem(DayScheduleItemsArranger arranger, ViewItemTaskOrEvent item) : base(arranger)
             {
                 Item = item;
 
@@ -178,7 +178,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             {
                 if (AdditionalItems == null)
                 {
-                    AdditionalItems = new List<BaseViewItemHomeworkExam>();
+                    AdditionalItems = new List<ViewItemTaskOrEvent>();
                 }
 
                 AdditionalItems.Add(item.Item);
@@ -203,7 +203,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         private SemesterItemsViewGroup _semesterItems;
         private SchedulesOnDay _schedules;
-        private MyObservableList<BaseViewItemHomeworkExamGrade> _events;
+        private MyObservableList<BaseViewItemMegaItem> _events;
         private MyObservableList<ViewItemHoliday> _holidays;
         private double _spacingWhenNoAdditionalItems;
         private double _spacingWithAdditionalItems;
@@ -247,7 +247,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             }
             else
             {
-                _events = new MyObservableList<BaseViewItemHomeworkExamGrade>();
+                _events = new MyObservableList<BaseViewItemMegaItem>();
             }
 
             if (includeHomeworkAndHolidays)
@@ -283,7 +283,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             System.Diagnostics.Debug.WriteLine("DayScheduleItemsArranger disposed");
         }
 
-        private void Initialize(SchedulesOnDay schedules, MyObservableList<BaseViewItemHomeworkExamGrade> events, MyObservableList<ViewItemHoliday> holidays)
+        private void Initialize(SchedulesOnDay schedules, MyObservableList<BaseViewItemMegaItem> events, MyObservableList<ViewItemHoliday> holidays)
         {
             List<ScheduleItem> schedulesCopied;
             if (schedules == null)
@@ -297,8 +297,8 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             }
 
             List<EventItem> eventsCopied = new List<EventItem>();
-            List<BaseViewItemHomeworkExam> allDayEvents = new List<ViewItems.BaseViewItems.BaseViewItemHomeworkExam>();
-            foreach (var e in events.OfType<BaseViewItemHomeworkExam>())
+            List<ViewItemTaskOrEvent> allDayEvents = new List<ViewItemTaskOrEvent>();
+            foreach (var e in events.OfType<ViewItemTaskOrEvent>())
             {
                 if (e.IsDuringDay())
                 {

@@ -44,7 +44,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         /// Gets the last changed item and then resets it to null
         /// </summary>
         /// <returns></returns>
-        public BaseViewItemHomeworkExam GetLastChangedTaskOrEvent()
+        public ViewItemTaskOrEvent GetLastChangedTaskOrEvent()
         {
             // Grab reference of it since this could change in a background thread
             var lastIdentifiers = _lastChangedItemsIdentifiers;
@@ -117,8 +117,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(_localAccountId, ClassId, _today, _semester);
 
                 DetailsViewModel = new ClassDetailsViewModel(this);
-                HomeworkViewModel = new ClassHomeworkOrExamsViewModel(this, ClassHomeworkOrExamsViewModel.ItemType.Homework);
-                ExamsViewModel = new ClassHomeworkOrExamsViewModel(this, ClassHomeworkOrExamsViewModel.ItemType.Exams);
+                HomeworkViewModel = new ClassHomeworkOrExamsViewModel(this, TaskOrEventType.Task);
+                ExamsViewModel = new ClassHomeworkOrExamsViewModel(this, TaskOrEventType.Event);
                 TimesViewModel = new ClassTimesViewModel(this);
                 GradesViewModel = new Class.ClassGradesViewModel(this);
             }

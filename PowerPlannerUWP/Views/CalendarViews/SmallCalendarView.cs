@@ -25,8 +25,8 @@ namespace PowerPlannerUWP.Views.CalendarViews
         private HashSet<DateTime> _storedHolidays = new HashSet<DateTime>();
 
         private NotifyCollectionChangedEventHandler _itemsChangedHandler;
-        private MyObservableList<BaseViewItemHomeworkExamGrade> _items;
-        private MyObservableList<BaseViewItemHomeworkExamGrade> Items
+        private MyObservableList<BaseViewItemMegaItem> _items;
+        private MyObservableList<BaseViewItemMegaItem> Items
         {
             get
             {
@@ -92,7 +92,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
 
-                    foreach (var date in e.NewItems.OfType<BaseViewItemHomeworkExamGrade>().Select(i => i.Date.Date).Distinct())
+                    foreach (var date in e.NewItems.OfType<BaseViewItemMegaItem>().Select(i => i.Date.Date).Distinct())
                     {
                         setDay(date);
                     }
@@ -102,7 +102,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
 
-                    foreach (var date in e.OldItems.OfType<BaseViewItemHomeworkExamGrade>().Select(i => i.Date.Date).Distinct())
+                    foreach (var date in e.OldItems.OfType<BaseViewItemMegaItem>().Select(i => i.Date.Date).Distinct())
                     {
                         setDay(date);
                     }
@@ -187,21 +187,17 @@ namespace PowerPlannerUWP.Views.CalendarViews
             foreach (var item in Items)
             {
                 //add the current item to the colors list (don't add complete homeworks)
-                if (item is BaseViewItemHomeworkExam && item.Date.Date == date && ShouldIncludeItem(item))
+                if (item is ViewItemTaskOrEvent && item.Date.Date == date && ShouldIncludeItem(item))
                     colors.Add(getBrush(item));
             }
 
             setSquare(colors, date);
         }
 
-        private static bool ShouldIncludeItem(BaseViewItemHomeworkExamGrade item)
+        private static bool ShouldIncludeItem(BaseViewItemMegaItem item)
         {
-            // If homework and complete, don't include
-            if (item is BaseViewItemHomework && (item as BaseViewItemHomework).IsComplete)
-                return false;
-
-            // If exam and complete (in the past), don't include
-            if (item is ViewItemExam && (item as ViewItemExam).IsComplete)
+            // If task/event and complete, don't include
+            if (item is ViewItemTaskOrEvent taskOrEvent && taskOrEvent.IsComplete)
                 return false;
 
             return true;
@@ -212,13 +208,10 @@ namespace PowerPlannerUWP.Views.CalendarViews
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private SolidColorBrush getBrush(BaseViewItemHomeworkExamGrade item)
+        private SolidColorBrush getBrush(BaseViewItemMegaItem item)
         {
-            if (item is ViewItemHomework)
-                return new SolidColorBrush(ColorTools.GetColor((item as ViewItemHomework).Class.Color));
-
-            else if (item is ViewItemExam)
-                return new SolidColorBrush(ColorTools.GetColor((item as ViewItemExam).Class.Color));
+            if (item is ViewItemTaskOrEvent taskOrEvent)
+                return new SolidColorBrush(ColorTools.GetColor(taskOrEvent.Class.Color));
 
             return Brushes.Black;
         }

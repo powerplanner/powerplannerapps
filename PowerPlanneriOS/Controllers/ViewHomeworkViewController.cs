@@ -30,7 +30,7 @@ namespace PowerPlanneriOS.Controllers
 
         public override void OnViewModelLoadedOverride()
         {
-            bool isHomework = ViewModel.Item is ViewItemHomework;
+            bool isHomework = ViewModel.Item.Type == TaskOrEventType.Task;
 
             Title = isHomework ? "View Task" : "View Event";
 
@@ -69,9 +69,9 @@ namespace PowerPlanneriOS.Controllers
                 BindingObject = ViewModel.Item
             };
             _classBindingHost = new BindingHost();
-            _itemBindingHost.SetBinding(nameof(ViewItemHomework.Class), delegate
+            _itemBindingHost.SetBinding(nameof(ViewItemTaskOrEvent.Class), delegate
             {
-                _classBindingHost.BindingObject = ViewModel.Item.GetClassOrNull();
+                _classBindingHost.BindingObject = ViewModel.Item.Class;
             });
 
             var labelTitle = new UILabel()
@@ -92,7 +92,7 @@ namespace PowerPlanneriOS.Controllers
                 Font = UIFont.PreferredSubheadline,
                 Lines = 0
             };
-            _itemBindingHost.SetLabelTextBinding(labelSubtitle, nameof(ViewItemHomework.Subtitle));
+            _itemBindingHost.SetLabelTextBinding(labelSubtitle, nameof(ViewItemTaskOrEvent.Subtitle));
             _classBindingHost.SetBinding<byte[]>(nameof(ViewItemClass.Color), (color) =>
             {
                 labelSubtitle.TextColor = BareUIHelper.ToColor(color);
@@ -109,7 +109,7 @@ namespace PowerPlanneriOS.Controllers
                 Lines = 0,
                 TextColor = UIColor.DarkGray
             };
-            _itemBindingHost.SetLabelTextBinding(labelDetails, nameof(ViewItemHomework.Details));
+            _itemBindingHost.SetLabelTextBinding(labelDetails, nameof(ViewItemTaskOrEvent.Details));
             _stackView.AddArrangedSubview(labelDetails);
             labelDetails.StretchWidth(_stackView);
 
@@ -157,7 +157,7 @@ namespace PowerPlanneriOS.Controllers
                         ThumbTintColor = UIColor.FromRGB(42 / 255f, 222 / 255f, 42 / 255f)
 
                     };
-                    _itemBindingHost.SetSliderBinding(_completionSlider, nameof(ViewItemHomework.PercentComplete));
+                    _itemBindingHost.SetSliderBinding(_completionSlider, nameof(ViewItemTaskOrEvent.PercentComplete));
                     _completionSlider.TouchUpInside += new WeakEventHandler(CompletionSlider_ValueCommitted).Handler;
                     _completionSlider.TouchUpOutside += new WeakEventHandler(CompletionSlider_ValueCommitted).Handler;
                     completionSliderContainer.Add(_completionSlider);
@@ -228,7 +228,7 @@ namespace PowerPlanneriOS.Controllers
                     completionSliderContainer.PinToBottom(base.ContentView, bottom: 16);
                 }
 
-                _itemBindingHost.SetBinding(nameof(ViewItemHomework.PercentComplete), UpdateSliderImages);
+                _itemBindingHost.SetBinding(nameof(ViewItemTaskOrEvent.PercentComplete), UpdateSliderImages);
             }
 
             base.OnViewModelLoadedOverride();

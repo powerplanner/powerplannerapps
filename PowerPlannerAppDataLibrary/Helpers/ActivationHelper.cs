@@ -119,14 +119,14 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return args;
         }
 
-        public static BaseArguments CreateArgumentsForView(BaseViewItemHomeworkExam item, Guid localAccountId)
+        public static BaseArguments CreateArgumentsForView(ViewItemTaskOrEvent item, Guid localAccountId)
         {
             BaseArgumentsWithAccountAndItem args;
 
-            if (item is ViewItemHomework)
+            if (item.Type == TaskOrEventType.Task)
                 args = new ViewHomeworkArguments();
 
-            else if (item is ViewItemExam)
+            else if (item.Type == TaskOrEventType.Event)
                 args = new ViewExamArguments();
 
             else

@@ -169,13 +169,10 @@
     <Compile Include="ViewItemsGroups\ClassViewItemsGroup.cs" />
     <Compile Include="ViewItemsGroups\HolidayViewItemsGroup.cs" />
     <Compile Include="ViewItemsGroups\SemesterItemsViewGroup.cs" />
-    <Compile Include="ViewItemsGroups\SingleExamViewItemsGroup.cs" />
-    <Compile Include="ViewItemsGroups\SingleHomeworkViewItemsGroup.cs" />
+    <Compile Include="ViewItemsGroups\SingleTaskOrEventViewItemsGroup.cs" />
     <Compile Include="ViewItemsGroups\YearsViewItemsGroup.cs" />
     <Compile Include="ViewItems\BaseViewItems\BaseViewItem.cs" />
-    <Compile Include="ViewItems\BaseViewItems\BaseViewItemHomework.cs" />
-    <Compile Include="ViewItems\BaseViewItems\BaseViewItemHomeworkExam.cs" />
-    <Compile Include="ViewItems\BaseViewItems\BaseViewItemHomeworkExamGrade.cs" />
+    <Compile Include="ViewItems\BaseViewItems\BaseViewItemMegaItem.cs" />
     <Compile Include="ViewItems\BaseViewItems\BaseViewItemWithDetails.cs" />
     <Compile Include="ViewItems\BaseViewItems\BaseViewItemWithImages.cs" />
     <Compile Include="ViewItems\BaseViewItems\BaseViewItemWithName.cs" />
@@ -187,10 +184,9 @@
     <Compile Include="ViewItems\ScheduleCreator.cs" />
     <Compile Include="ViewItems\ViewItemCache.cs" />
     <Compile Include="ViewItems\ViewItemClass.cs" />
-    <Compile Include="ViewItems\ViewItemExam.cs" />
     <Compile Include="ViewItems\ViewItemGrade.cs" />
     <Compile Include="ViewItems\ViewItemHoliday.cs" />
-    <Compile Include="ViewItems\ViewItemHomework.cs" />
+    <Compile Include="ViewItems\ViewItemTaskOrEvent.cs" />
     <Compile Include="ViewItems\ViewItemSchedule.cs" />
     <Compile Include="ViewItems\ViewItemSchool.cs" />
     <Compile Include="ViewItems\ViewItemSemester.cs" />

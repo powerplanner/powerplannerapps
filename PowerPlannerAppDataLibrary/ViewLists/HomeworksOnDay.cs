@@ -9,9 +9,9 @@ using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewLists
 {
-    public class HomeworksOnDay : MyObservableList<BaseViewItemHomeworkExamGrade>
+    public class HomeworksOnDay : MyObservableList<BaseViewItemMegaItem>
     {
-        private class DayFilter : IFilter<BaseViewItemHomeworkExamGrade>
+        private class DayFilter : IFilter<BaseViewItemMegaItem>
         {
             public DateTime Date { get; private set; }
 
@@ -20,17 +20,17 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 Date = date.Date;
             }
 
-            public bool ShouldInsert(BaseViewItemHomeworkExamGrade itemToBeInserted)
+            public bool ShouldInsert(BaseViewItemMegaItem itemToBeInserted)
             {
-                return (itemToBeInserted is ViewItemHomework || itemToBeInserted is ViewItemExam)
+                return itemToBeInserted is ViewItemTaskOrEvent
                     && itemToBeInserted.Date.Date == Date;
             }
         }
 
         public DateTime Date { get; private set; }
-        public MyObservableList<BaseViewItemHomeworkExamGrade> MainList { get; private set; }
+        public MyObservableList<BaseViewItemMegaItem> MainList { get; private set; }
 
-        private HomeworksOnDay(MyObservableList<BaseViewItemHomeworkExamGrade> mainList, DateTime date)
+        private HomeworksOnDay(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date)
         {
             Date = date.Date;
             MainList = mainList;
@@ -42,7 +42,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         private static readonly List<WeakReference<HomeworksOnDay>> _cached = new List<WeakReference<HomeworksOnDay>>();
 
-        public static HomeworksOnDay Get(MyObservableList<BaseViewItemHomeworkExamGrade> mainList, DateTime date)
+        public static HomeworksOnDay Get(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date)
         {
             HomeworksOnDay answer;
             for (int i = 0; i < _cached.Count; i++)

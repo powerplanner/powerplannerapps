@@ -26,7 +26,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
         private ArrowButtonBase _rightButton;
         private ArrowButtonBase _leftButton;
 
-        private MyObservableList<BaseViewItemHomeworkExamGrade> _allItems;
+        private MyObservableList<BaseViewItemMegaItem> _allItems;
 
         public override bool AutoInitialize
         {
@@ -36,7 +36,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             }
         }
 
-        public MainCalendarGrid(TCalendarView calendarView, DateTime displayMonth, bool isMouseOver, MyObservableList<BaseViewItemHomeworkExamGrade> allItems)
+        public MainCalendarGrid(TCalendarView calendarView, DateTime displayMonth, bool isMouseOver, MyObservableList<BaseViewItemMegaItem> allItems)
             : base(calendarView, displayMonth)
         {
             _allItems = allItems;

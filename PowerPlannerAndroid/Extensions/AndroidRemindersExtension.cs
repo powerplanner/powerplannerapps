@@ -206,8 +206,8 @@ namespace PowerPlannerAndroid.Extensions
             }
 
             // Need to mark them as sent
-            Guid[] newlySentHomeworkReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).OfType<ViewItemHomework>().Where(i => !i.HasSentReminder).Select(i => i.Identifier).ToArray();
-            Guid[] newlySentExamReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).OfType<ViewItemExam>().Where(i => !i.HasSentReminder).Select(i => i.Identifier).ToArray();
+            Guid[] newlySentHomeworkReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).OfType<ViewItemTaskOrEvent>().Where(i => !i.HasSentReminder).Select(i => i.Identifier).ToArray();
+            Guid[] newlySentExamReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).OfType<ViewItemTaskOrEvent>().Where(i => !i.HasSentReminder).Select(i => i.Identifier).ToArray();
 
             if (newlySentHomeworkReminders.Length > 0 || newlySentExamReminders.Length > 0)
             {
@@ -256,17 +256,17 @@ namespace PowerPlannerAndroid.Extensions
         /// <param name="now"></param>
         /// <param name="nextReminderTime"></param>
         /// <returns></returns>
-        private static List<Tuple<BaseViewItemHomeworkExam, DateTime>> GetItemsThatCouldHaveDayOfNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now, out DateTime nextReminderTime)
+        private static List<Tuple<ViewItemTaskOrEvent, DateTime>> GetItemsThatCouldHaveDayOfNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, DateTime now, out DateTime nextReminderTime)
         {
-            List<Tuple<BaseViewItemHomeworkExam, DateTime>> shouldBeActive = new List<Tuple<BaseViewItemHomeworkExam, DateTime>>();
+            List<Tuple<ViewItemTaskOrEvent, DateTime>> shouldBeActive = new List<Tuple<ViewItemTaskOrEvent, DateTime>>();
 
             nextReminderTime = DateTime.MinValue;
             PowerPlannerSending.Schedule.Week currentWeek = account.GetWeekOnDifferentDate(now);
 
             // Add past-due incomplete tasks (we don't add exams since they're "complete" when they're past-due)
-            foreach (var task in agendaItems.Items.OfType<ViewItemHomework>().Where(i => i.Date.Date < now.Date).OrderBy(i => i))
+            foreach (var task in agendaItems.Items.OfType<ViewItemTaskOrEvent>().Where(i => i.Date.Date < now.Date).OrderBy(i => i))
             {
-                shouldBeActive.Add(new Tuple<BaseViewItemHomeworkExam, DateTime>(task, task.Date.Date));
+                shouldBeActive.Add(new Tuple<ViewItemTaskOrEvent, DateTime>(task, task.Date.Date));
             }
 
             // Look at items due today
@@ -291,7 +291,7 @@ namespace PowerPlannerAndroid.Extensions
                         // expire once they're over (so need to update again right when an event completes)
                         if (endTime > now && (nextReminderTime == DateTime.MinValue || endTime < nextReminderTime))
                         {
-                            shouldBeActive.Add(new Tuple<BaseViewItemHomeworkExam, DateTime>(item, reminderTime));
+                            shouldBeActive.Add(new Tuple<ViewItemTaskOrEvent, DateTime>(item, reminderTime));
                             nextReminderTime = endTime;
                         }
                     }
@@ -299,7 +299,7 @@ namespace PowerPlannerAndroid.Extensions
                     else
                     {
                         // Otherwise add it
-                        shouldBeActive.Add(new Tuple<BaseViewItemHomeworkExam, DateTime>(item, reminderTime));
+                        shouldBeActive.Add(new Tuple<ViewItemTaskOrEvent, DateTime>(item, reminderTime));
                     }
                 }
                 else if (nextReminderTime == DateTime.MinValue || reminderTime < nextReminderTime)
@@ -333,15 +333,15 @@ namespace PowerPlannerAndroid.Extensions
             return shouldBeActive;
         }
 
-        private static DateTime GetDayOfReminderTime(PowerPlannerSending.Schedule.Week weekOnItemDate, BaseViewItemHomeworkExam item)
+        private static DateTime GetDayOfReminderTime(PowerPlannerSending.Schedule.Week weekOnItemDate, ViewItemTaskOrEvent item)
         {
             bool hadSpecificTime;
             return item.GetDayOfReminderTime(out hadSpecificTime);
         }
         
-        private static void UpdateDayOfNotification(Guid localAccountId, BaseViewItemHomeworkExam item, DateTime dayOfReminderTime, Context context, NotificationManager notificationManager, List<StatusBarNotification> existingNotifs, bool fromForeground)
+        private static void UpdateDayOfNotification(Guid localAccountId, ViewItemTaskOrEvent item, DateTime dayOfReminderTime, Context context, NotificationManager notificationManager, List<StatusBarNotification> existingNotifs, bool fromForeground)
         {
-            ViewItemClass c = item.GetClassOrNull();
+            ViewItemClass c = item.Class;
             if (c == null)
             {
                 return;
@@ -380,7 +380,7 @@ namespace PowerPlannerAndroid.Extensions
             }
 
             BaseArguments launchArgs;
-            if (item is ViewItemHomework)
+            if (item.Type == TaskOrEventType.Task)
             {
                 launchArgs = new ViewHomeworkArguments()
                 {
@@ -405,7 +405,7 @@ namespace PowerPlannerAndroid.Extensions
             builder.SetExtras(b);
             builder.SetContentTitle(item.Name);
             builder.SetChannelId(GetChannelIdForDayOf(localAccountId));
-            string subtitle = item.GetSubtitleOrNull();
+            string subtitle = item.Subtitle;
             if (subtitle != null)
             {
                 builder.SetContentText(subtitle);
@@ -567,7 +567,7 @@ namespace PowerPlannerAndroid.Extensions
             notificationManager.Notify(tag, NotificationIds.DAY_BEFORE_NOTIFICATION, BuildReminder(builder));
         }
 
-        private static void PopulateNotificationDayBeforeWithItems(NotificationCompat.Builder builder, BaseViewItemHomeworkExam[] items)
+        private static void PopulateNotificationDayBeforeWithItems(NotificationCompat.Builder builder, ViewItemTaskOrEvent[] items)
         {
             if (items.Length == 1)
             {

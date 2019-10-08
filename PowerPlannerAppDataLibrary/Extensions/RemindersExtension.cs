@@ -120,11 +120,11 @@ namespace PowerPlannerAppDataLibrary.Extensions
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static string GetDueTimeAsString(BaseViewItemHomeworkExam item)
+        public static string GetDueTimeAsString(ViewItemTaskOrEvent item)
         {
             string answer = "";
             
-            if (item is ViewItemHomework)
+            if (item.Type == TaskOrEventType.Task)
             {
                 answer += "Due ";
             }

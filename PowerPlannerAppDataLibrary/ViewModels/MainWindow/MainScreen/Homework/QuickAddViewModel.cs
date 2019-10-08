@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.ViewItems;
 using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
@@ -16,15 +17,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public void AddHomework()
         {
-            AddItem(AddHomeworkViewModel.ItemType.Homework);
+            AddItem(TaskOrEventType.Task);
         }
 
         public void AddExam()
         {
-            AddItem(AddHomeworkViewModel.ItemType.Exam);
+            AddItem(TaskOrEventType.Event);
         }
 
-        private async void AddItem(AddHomeworkViewModel.ItemType type)
+        private async void AddItem(TaskOrEventType type)
         {
             if (MainScreenViewModel.Classes == null || MainScreenViewModel.Classes.Count == 0)
             {

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 {
-    public abstract class BaseViewItemHomeworkExamGrade : BaseViewItemWithImages, IComparable<BaseViewItemHomeworkExamGrade>
+    public abstract class BaseViewItemMegaItem : BaseViewItemWithImages, IComparable<BaseViewItemMegaItem>
     {
-        public BaseViewItemHomeworkExamGrade(BaseDataItemHomeworkExamGrade dataItem) : base(dataItem) { }
+        public BaseViewItemMegaItem(BaseDataItemHomeworkExamGrade dataItem) : base(dataItem) { }
 
         public ViewItemWeightCategory _weightCategory;
         public ViewItemWeightCategory WeightCategory
@@ -191,9 +191,9 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
         public BaseDataItemHomeworkExamGrade CreateBlankDataItem()
         {
-            if (this is BaseViewItemHomeworkExam)
+            if (this is ViewItemTaskOrEvent)
             {
-                return (this as BaseViewItemHomeworkExam).CreateBlankDataItem();
+                return (this as ViewItemTaskOrEvent).CreateBlankDataItem();
             }
             if (this is ViewItemGrade)
             {
@@ -207,15 +207,15 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
         public override int CompareTo(BaseViewItem other)
         {
-            if (other is BaseViewItemHomeworkExamGrade)
+            if (other is BaseViewItemMegaItem)
             {
-                return CompareTo(other as BaseViewItemHomeworkExamGrade);
+                return CompareTo(other as BaseViewItemMegaItem);
             }
 
             return base.CompareTo(other);
         }
 
-        public int CompareTo(BaseViewItemHomeworkExamGrade other)
+        public int CompareTo(BaseViewItemMegaItem other)
         {
             if (this.Date < other.Date)
                 return -1;

@@ -31,11 +31,9 @@ namespace PowerPlannerAndroid.Views.ListItems
         {
             var barView = FindViewById<View>(Resource.Id.ListItemHomeworkPercentCompleteBar);
 
-            if (DataContext is ViewItemHomework)
+            if (DataContext is ViewItemTaskOrEvent taskOrEvent)
             {
-                var h = DataContext as ViewItemHomework;
-
-                if (h.IsComplete)
+                if (taskOrEvent.IsComplete)
                 {
                     barView.Visibility = ViewStates.Gone;
                 }
@@ -43,18 +41,6 @@ namespace PowerPlannerAndroid.Views.ListItems
                 else
                 {
                     barView.Visibility = ViewStates.Visible;
-                }
-            }
-
-            else
-            {
-                if (DataContext is ViewItemExam && (DataContext as ViewItemExam).Date.Date >= DateTime.Today)
-                {
-                    barView.Visibility = ViewStates.Visible;
-                }
-                else
-                {
-                    barView.Visibility = ViewStates.Gone;
                 }
             }
         }

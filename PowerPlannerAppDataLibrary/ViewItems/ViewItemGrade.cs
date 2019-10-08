@@ -11,7 +11,7 @@ using PowerPlannerSending;
 
 namespace PowerPlannerAppDataLibrary.ViewItems
 {
-    public class ViewItemGrade : BaseViewItemHomeworkExamGrade, IComparable<ViewItemGrade>
+    public class ViewItemGrade : BaseViewItemMegaItem, IComparable<ViewItemGrade>
     {
         public ViewItemGrade(DataItemGrade dataItem) : base(dataItem) { }
 

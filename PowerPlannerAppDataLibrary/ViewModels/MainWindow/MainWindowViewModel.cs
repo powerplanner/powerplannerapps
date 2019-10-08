@@ -18,6 +18,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
@@ -240,32 +241,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public async Task HandleViewHomeworkActivation(Guid localAccountId, Guid homeworkId)
         {
-            if (CurrentAccount == null || CurrentAccount.LocalAccountId != localAccountId)
-            {
-                AccountsManager.SetLastLoginIdentifier(localAccountId);
-                await HandleNormalLaunchActivation();
-            }
-            
-            var mainScreen = GetMainScreenViewModel();
-            if (mainScreen != null && mainScreen.CurrentAccount != null)
-            {
-                Popups.Clear();
-                var singleHomework = await SingleHomeworkViewItemsGroup.LoadAsync(localAccountId, homeworkId);
-                if (singleHomework != null && singleHomework.Item != null)
-                {
-                    mainScreen.ShowItem(singleHomework.Item);
-
-                    // Remove all but latest popup
-                    // Have to do this AFTER showing the popup since on iOS if we first clear and then show immediately, iOS freaks out
-                    while (mainScreen.Popups.Count > 1)
-                    {
-                        mainScreen.Popups.RemoveAt(0);
-                    }
-                }
-            }
+            await HandleViewTaskOrEventActivation(localAccountId, homeworkId);
         }
 
         public async Task HandleViewExamActivation(Guid localAccountId, Guid examId)
+        {
+            await HandleViewTaskOrEventActivation(localAccountId, examId);
+        }
+
+        private async Task HandleViewTaskOrEventActivation(Guid localAccountId, Guid itemId)
         {
             if (CurrentAccount == null || CurrentAccount.LocalAccountId != localAccountId)
             {
@@ -277,7 +261,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             if (mainScreen != null && mainScreen.CurrentAccount != null)
             {
                 Popups.Clear();
-                var singleExam = await SingleExamViewItemsGroup.LoadAsync(localAccountId, examId);
+                var singleExam = await SingleTaskOrEventViewItemsGroup.LoadAsync(localAccountId, itemId);
                 if (singleExam != null && singleExam.Item != null)
                 {
                     mainScreen.ShowItem(singleExam.Item);
@@ -367,15 +351,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public Task HandleQuickAddHomework()
         {
-            return HandleQuickAddItem(AddHomeworkViewModel.ItemType.Homework);
+            return HandleQuickAddItem(TaskOrEventType.Task);
         }
 
         public Task HandleQuickAddExam()
         {
-            return HandleQuickAddItem(AddHomeworkViewModel.ItemType.Exam);
+            return HandleQuickAddItem(TaskOrEventType.Event);
         }
 
-        private async Task HandleQuickAddItem(AddHomeworkViewModel.ItemType type)
+        private async Task HandleQuickAddItem(TaskOrEventType type)
         {
             if (CurrentAccount == null)
             {

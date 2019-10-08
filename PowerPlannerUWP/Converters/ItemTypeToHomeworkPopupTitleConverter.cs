@@ -12,7 +12,7 @@ namespace PowerPlannerUWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is ViewItemExam)
+            if (value is ViewItemTaskOrEvent eventItem && eventItem.Type == TaskOrEventType.Event)
                 return "VIEW EXAM";
 
             return "VIEW HOMEWORK";

@@ -171,7 +171,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             ClassTile
         }
 
-        internal static List<ItemsOnDay> GroupByDay(IEnumerable<BaseViewItemHomeworkExam> allUpcoming)
+        internal static List<ItemsOnDay> GroupByDay(IEnumerable<ViewItemTaskOrEvent> allUpcoming)
         {
             List<ItemsOnDay> answer = new List<ItemsOnDay>();
 
@@ -204,7 +204,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
         /// <param name="allUpcoming">This list will be manipulated. Should already be sorted.</param>
         /// <param name="todayInLocal"></param>
         /// <param name="type"></param>
-        internal static void UpdateUpcomingTile(TileUpdater updater, List<BaseViewItemHomeworkExam> allUpcoming, DateTime todayInLocal, UpcomingTileType type, BaseUpcomingTileSettings tileSettings)
+        internal static void UpdateUpcomingTile(TileUpdater updater, List<ViewItemTaskOrEvent> allUpcoming, DateTime todayInLocal, UpcomingTileType type, BaseUpcomingTileSettings tileSettings)
         {
             try
             {
@@ -223,7 +223,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
                     // Remove any exams that are past "today"
                     for (int x = 0; x < groupedByDay.Count; x++)
                     {
-                        groupedByDay[x].Items.RemoveAll(item => item is ViewItemExam && item.Date < today);
+                        groupedByDay[x].Items.RemoveAll(item => item.Type == TaskOrEventType.Event && item.Date < today);
                         if (groupedByDay[x].Items.Count == 0)
                         {
                             groupedByDay.RemoveAt(x);
@@ -252,7 +252,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
                         {
                             // We ignore "all day" items which end at 11:59:59
                             DateTime endTime;
-                            if (item is ViewItemExam && item.TryGetEndDateWithTime(out endTime) && endTime.TimeOfDay != new TimeSpan(23, 59, 59))
+                            if (item.Type == TaskOrEventType.Event && item.TryGetEndDateWithTime(out endTime) && endTime.TimeOfDay != new TimeSpan(23, 59, 59))
                             {
                                 identifiersAndEndTimes[item.Identifier] = endTime;
                             }
@@ -417,7 +417,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
         internal class ItemsOnDay
         {
             public DateTime DateInUtc { get; set; }
-            public List<BaseViewItemHomeworkExam> Items { get; private set; } = new List<BaseViewItemHomeworkExam>();
+            public List<ViewItemTaskOrEvent> Items { get; private set; } = new List<ViewItemTaskOrEvent>();
         }
 
         /// <summary>
@@ -567,7 +567,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
                 return trim(dateInUtc.DayOfWeek.ToString(), 3).ToLower() + ", " + trim(dateInUtc.ToString("MMM"), 3).ToLower() + " " + dateInUtc.Day.ToString();
         }
 
-        private static AdaptiveText GenerateTileTextForUpcomingItem(BaseViewItemHomeworkExam item)
+        private static AdaptiveText GenerateTileTextForUpcomingItem(ViewItemTaskOrEvent item)
         {
             return new AdaptiveText()
             {
@@ -581,11 +581,11 @@ namespace PowerPlannerUWPLibrary.TileHelpers
         /// </summary>
         /// <param name="data"></param>
         /// <returns>Should always return an initialized list.</returns>
-        private static async Task<List<BaseViewItemHomeworkExam>> getAllUpcomingBlocking(AccountDataItem account, AccountDataStore data, DateTime todayAsUtc, BaseUpcomingTileSettings tileSettings)
+        private static async Task<List<ViewItemTaskOrEvent>> getAllUpcomingBlocking(AccountDataItem account, AccountDataStore data, DateTime todayAsUtc, BaseUpcomingTileSettings tileSettings)
         {
             var currSemesterId = account.CurrentSemesterId;
             if (currSemesterId == Guid.Empty)
-                return new List<BaseViewItemHomeworkExam>();
+                return new List<ViewItemTaskOrEvent>();
 
             ScheduleViewItemsGroup scheduleViewGroup;
             try
@@ -595,7 +595,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             catch
             {
                 // If semester not found
-                return new List<BaseViewItemHomeworkExam>();
+                return new List<ViewItemTaskOrEvent>();
             }
 
             DateTime dateToStartDisplayingFrom = DateTime.SpecifyKind(tileSettings.GetDateToStartDisplayingOn(todayAsUtc), DateTimeKind.Utc);
@@ -608,7 +608,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             // Agenda view group doesn't sort, so we have to sort it
             return agendaViewGroup.Items.Where(
                 i => i.Date.Date >= dateToStartDisplayingFrom
-                && ((tileSettings.ShowHomework && i is ViewItemHomework) || (tileSettings.ShowExams && i is ViewItemExam))
+                && ((tileSettings.ShowHomework && i.Type == TaskOrEventType.Task) || (tileSettings.ShowExams && i.Type == TaskOrEventType.Event))
                 ).OrderBy(i => i).ToList();
         }
 

@@ -31,7 +31,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             SemesterItemsViewGroup = SemesterItemsViewGroup.Load(localAccountId, semester);
         }
 
-        public void ShowItem(BaseViewItemHomeworkExam item)
+        public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
         }
@@ -45,12 +45,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         public void AddHomework()
         {
-            AddItem(AddHomeworkViewModel.ItemType.Homework);
+            AddItem(TaskOrEventType.Task);
         }
 
         public void AddExam()
         {
-            AddItem(AddHomeworkViewModel.ItemType.Exam);
+            AddItem(TaskOrEventType.Event);
         }
 
         public void AddHoliday()
@@ -63,7 +63,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             }));
         }
 
-        private void AddItem(AddHomeworkViewModel.ItemType type)
+        private void AddItem(TaskOrEventType type)
         {
             MainScreenViewModel.ShowPopup(AddHomeworkViewModel.CreateForAdd(MainScreenViewModel, new AddHomeworkViewModel.AddParameter()
             {

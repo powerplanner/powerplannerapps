@@ -15,14 +15,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
     public class ViewGradeViewModel : BaseMainScreenViewModelChild
     {
-        public BaseViewItemHomeworkExamGrade Grade { get; private set; }
+        public BaseViewItemMegaItem Grade { get; private set; }
         public bool IsInWhatIfMode { get; private set; }
 
         public ViewGradeViewModel(BaseViewModel parent) : base(parent)
         {
         }
 
-        public static ViewGradeViewModel Create(BaseViewModel parent, BaseViewItemHomeworkExamGrade item, bool isInWhatIfMode = false)
+        public static ViewGradeViewModel Create(BaseViewModel parent, BaseViewItemMegaItem item, bool isInWhatIfMode = false)
         {
             return new ViewGradeViewModel(parent)
             {
@@ -48,9 +48,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                 else
                 {
                     // Homeworks/exams don't actually get deleted, just excluded from grades
-                    if (Grade is BaseViewItemHomeworkExam)
+                    if (Grade is ViewItemTaskOrEvent taskOrEvent)
                     {
-                        var dataItem = (Grade as BaseViewItemHomeworkExam).CreateBlankDataItem();
+                        var dataItem = taskOrEvent.CreateBlankDataItem();
                         dataItem.WeightCategoryIdentifier = PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED;
 
                         DataChanges changes = new DataChanges();

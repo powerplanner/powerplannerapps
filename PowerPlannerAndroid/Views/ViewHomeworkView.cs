@@ -43,13 +43,13 @@ namespace PowerPlannerAndroid.Views
 
         private void _homeworkProgressBarControl_OnProgressChangedByUser(object sender, EventArgs e)
         {
-            if (ViewModel.Type == ViewHomeworkViewModel.ItemType.Homework)
+            if (ViewModel.Item.Type == TaskOrEventType.Task)
             {
                 ViewModel.SetPercentComplete(_homeworkProgressBarControl.Progress);
             }
         }
 
-        private BaseViewItemHomeworkExam _prevItem;
+        private ViewItemTaskOrEvent _prevItem;
         private PropertyChangedEventHandler _itemPropertyChangedHandler;
         public override void OnViewModelLoadedOverride()
         {
@@ -59,14 +59,14 @@ namespace PowerPlannerAndroid.Views
                 _prevItem = null;
             }
 
-            switch (ViewModel.Type)
+            switch (ViewModel.Item.Type)
             {
-                case ViewHomeworkViewModel.ItemType.Exam:
+                case TaskOrEventType.Event:
                     Title = PowerPlannerResources.GetString("ViewHomeworkPage_String_TitleExam");
                     _homeworkProgressBarControl.Visibility = ViewStates.Gone;
                     break;
 
-                case ViewHomeworkViewModel.ItemType.Homework:
+                case TaskOrEventType.Task:
                     Title = PowerPlannerResources.GetString("ViewHomeworkPage_String_TitleHomework");
 
                     if (ViewModel.IsUnassigedMode)
@@ -88,7 +88,7 @@ namespace PowerPlannerAndroid.Views
 
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            ViewItemHomework homework = ViewModel.Item as ViewItemHomework;
+            ViewItemTaskOrEvent homework = ViewModel.Item as ViewItemTaskOrEvent;
             if (homework == null)
             {
                 return;
@@ -115,7 +115,7 @@ namespace PowerPlannerAndroid.Views
 
         private void UpdatePercentCompleteFromItem()
         {
-            ViewItemHomework homework = ViewModel.Item as ViewItemHomework;
+            ViewItemTaskOrEvent homework = ViewModel.Item as ViewItemTaskOrEvent;
             if (homework == null)
             {
                 return;

@@ -1,5 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.App;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewItems;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +22,7 @@ namespace PowerPlannerUWP.Views.HomeworkViews
 {
     public sealed partial class HomeworkListViewItem : UserControl
     {
-        public event EventHandler<BaseViewItemHomeworkExam> OnClickItem;
+        public event EventHandler<ViewItemTaskOrEvent> OnClickItem;
 
         private const string IMAGE_ATTACHMENT_SYMBOL = "\uD83D\uDCF7";
 
@@ -33,17 +33,17 @@ namespace PowerPlannerUWP.Views.HomeworkViews
             this.DataContextChanged += HomeworkListViewItem_DataContextChanged;
         }
 
-        private BaseViewItemHomeworkExam _currItem;
+        private ViewItemTaskOrEvent _currItem;
 
         private void HomeworkListViewItem_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            _currItem = args.NewValue as BaseViewItemHomeworkExam;
+            _currItem = args.NewValue as ViewItemTaskOrEvent;
             
             UpdateDisplayDetails();
             UpdateSubtitlePartTwo();
         }
 
-        private BaseViewItemHomeworkExam GetCurrentItem()
+        private ViewItemTaskOrEvent GetCurrentItem()
         {
             return _currItem;
         }

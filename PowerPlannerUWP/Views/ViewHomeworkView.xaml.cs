@@ -43,18 +43,18 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelLoadedOverride();
 
-            switch (ViewModel.Type)
+            switch (ViewModel.Item.Type)
             {
-                case ViewHomeworkViewModel.ItemType.Homework:
+                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Task:
                     this.Title = LocalizedResources.GetString("String_ViewTask").ToUpper();
                     break;
 
-                case ViewHomeworkViewModel.ItemType.Exam:
+                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Event:
                     this.Title = LocalizedResources.GetString("String_ViewEvent").ToUpper();
                     break;
             }
 
-            if ((ViewModel.Type == ViewHomeworkViewModel.ItemType.Homework) && !ViewModel.IsUnassigedMode)
+            if ((ViewModel.Item.Type == PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Task) && !ViewModel.IsUnassigedMode)
             {
                 completionSlider.Visibility = Visibility.Visible;
             }

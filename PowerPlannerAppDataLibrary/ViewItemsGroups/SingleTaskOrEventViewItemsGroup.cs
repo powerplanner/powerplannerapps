@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 {
-    public class SingleExamViewItemsGroup : BaseSingleItemViewItemsGroup<ViewItemExam>
+    public class SingleTaskOrEventViewItemsGroup : BaseSingleItemViewItemsGroup
     {
-        private SingleExamViewItemsGroup(Guid localAccountId, bool trackChanges) : base(localAccountId, trackChanges)
+        private SingleTaskOrEventViewItemsGroup(Guid localAccountId, bool trackChanges) : base(localAccountId, trackChanges)
         {
         }
 
-        public static async Task<SingleExamViewItemsGroup> LoadAsync(Guid localAccountId, Guid examId, bool trackChanges = true)
+        public static async Task<SingleTaskOrEventViewItemsGroup> LoadAsync(Guid localAccountId, Guid homeworkId, bool trackChanges = true)
         {
             try
             {
-                var answer = new SingleExamViewItemsGroup(localAccountId, trackChanges);
-                await Task.Run(async delegate { await answer.LoadBlocking(examId); });
+                var answer = new SingleTaskOrEventViewItemsGroup(localAccountId, trackChanges);
+                await Task.Run(async delegate { await answer.LoadBlocking(homeworkId); });
                 return answer;
             }
             catch (SemesterNotFoundException) { return null; }
@@ -33,9 +33,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             }
         }
 
-        protected override ViewItemExam CreateItem(DataItemMegaItem dataItem, ViewItemClass c)
+        protected override ViewItemTaskOrEvent CreateItem(DataItemMegaItem dataItem, ViewItemClass c)
         {
-            return new ViewItemExam(dataItem)
+            return new ViewItemTaskOrEvent(dataItem)
             {
                 Class = c
             };

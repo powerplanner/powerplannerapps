@@ -162,7 +162,7 @@ namespace PowerPlanneriOS.Controllers
         private class MyDataProvider : BareUICalendarItemsSourceProvider
         {
             private SemesterItemsViewGroup _semesterItems;
-            private MyObservableList<BaseViewItemHomeworkExamGrade> _holidays;
+            private MyObservableList<BaseViewItemMegaItem> _holidays;
             private MyCalendarView _calendarView;
             public MyDataProvider(SemesterItemsViewGroup semesterItems, MyCalendarView calendarView)
             {
