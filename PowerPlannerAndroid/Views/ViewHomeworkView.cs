@@ -88,8 +88,8 @@ namespace PowerPlannerAndroid.Views
 
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            ViewItemTaskOrEvent homework = ViewModel.Item as ViewItemTaskOrEvent;
-            if (homework == null)
+            ViewItemTaskOrEvent item = ViewModel.Item;
+            if (item == null)
             {
                 return;
             }
@@ -98,7 +98,7 @@ namespace PowerPlannerAndroid.Views
             {
                 switch (e.PropertyName)
                 {
-                    case nameof(homework.PercentComplete):
+                    case nameof(item.PercentComplete):
                         UpdatePercentCompleteFromItem();
                         break;
                 }
@@ -115,13 +115,13 @@ namespace PowerPlannerAndroid.Views
 
         private void UpdatePercentCompleteFromItem()
         {
-            ViewItemTaskOrEvent homework = ViewModel.Item as ViewItemTaskOrEvent;
-            if (homework == null)
+            ViewItemTaskOrEvent item = ViewModel.Item;
+            if (item == null)
             {
                 return;
             }
 
-            _homeworkProgressBarControl.SetProgress(homework.PercentComplete);
+            _homeworkProgressBarControl.SetProgress(item.PercentComplete);
         }
 
         public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
