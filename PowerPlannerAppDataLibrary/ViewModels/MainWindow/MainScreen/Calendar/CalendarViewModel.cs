@@ -84,25 +84,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public void AddHomework(bool useSelectedDate = true)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Homework, useSelectedDate: useSelectedDate);
+            AddItem(TaskOrEventType.Task, useSelectedDate: useSelectedDate);
         }
 
         public void AddHomework(DateTime date)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Homework, date);
+            AddItem(TaskOrEventType.Task, date);
         }
 
         public void AddExam(bool useSelectedDate = true)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Exam, useSelectedDate: useSelectedDate);
+            AddItem(TaskOrEventType.Event, useSelectedDate: useSelectedDate);
         }
 
         public void AddExam(DateTime date)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Exam, date);
+            AddItem(TaskOrEventType.Event, date);
         }
 
-        private void AddItem(AddHomeworkViewModel.ItemType type, DateTime? dueDate = null, bool useSelectedDate = true)
+        private void AddItem(TaskOrEventType type, DateTime? dueDate = null, bool useSelectedDate = true)
         {
             dueDate = GetDateForAdd(dueDate, useSelectedDate);
 
@@ -182,7 +182,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             return dueDate;
         }
 
-        public void ShowItem(BaseViewItemHomeworkExam item)
+        public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
         }
@@ -203,7 +203,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             MainScreenViewModel.Navigate(new ScheduleViewModel(MainScreenViewModel));
         }
 
-        public async Task MoveItem(BaseViewItemHomeworkExam item, DateTime toDate)
+        public async Task MoveItem(ViewItemTaskOrEvent item, DateTime toDate)
         {
             try
             {

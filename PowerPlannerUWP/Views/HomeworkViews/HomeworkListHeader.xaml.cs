@@ -61,31 +61,31 @@ namespace PowerPlannerUWP.Views.HomeworkViews
 
         private void buttonAddHomework_Click(object sender, RoutedEventArgs e)
         {
-            initializeAdding(AddHomeworkViewModel.ItemType.Homework);
+            initializeAdding(TaskOrEventType.Task);
         }
 
         private void buttonAddExam_Click(object sender, RoutedEventArgs e)
         {
-            initializeAdding(AddHomeworkViewModel.ItemType.Exam);
+            initializeAdding(TaskOrEventType.Event);
         }
 
         private void buttonAdd_Click(object sender, RoutedEventArgs e)
         {
             //if only adding homework is enabled, directly show adding homework
             if (!IsAddExamEnabled && IsAddHomeworkEnabled)
-                initializeAdding(AddHomeworkViewModel.ItemType.Homework);
+                initializeAdding(TaskOrEventType.Task);
 
             //else if only adding exam is enabled, directly show adding exam
             else if (!IsAddHomeworkEnabled && IsAddExamEnabled)
-                initializeAdding(AddHomeworkViewModel.ItemType.Exam);
+                initializeAdding(TaskOrEventType.Event);
 
             //otherwise show the options
             else
             {
                 App.ShowFlyoutAddHomeworkOrExam(
                     elToCenterFrom: buttonAdd,
-                    addHomeworkAction: delegate { initializeAdding(AddHomeworkViewModel.ItemType.Homework); },
-                    addExamAction: delegate { initializeAdding(AddHomeworkViewModel.ItemType.Exam); },
+                    addHomeworkAction: delegate { initializeAdding(TaskOrEventType.Task); },
+                    addExamAction: delegate { initializeAdding(TaskOrEventType.Event); },
                     addHolidayAction: AllowHolidays ? new Action(delegate { AddHoliday(); }) : null);
             }
         }
@@ -99,7 +99,7 @@ namespace PowerPlannerUWP.Views.HomeworkViews
             return classes.ToArray();
         }
 
-        private void initializeAdding(AddHomeworkViewModel.ItemType type)
+        private void initializeAdding(TaskOrEventType type)
         {
             var viewModel = PowerPlannerApp.Current.GetMainScreenViewModel();
             if (viewModel != null)

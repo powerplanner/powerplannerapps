@@ -205,8 +205,8 @@ namespace PowerPlanneriOS.Views
             }
 
             private NotifyCollectionChangedEventHandler _itemsChangedHandler;
-            private MyObservableList<BaseViewItemHomeworkExamGrade> _items;
-            public MyObservableList<BaseViewItemHomeworkExamGrade> Items
+            private MyObservableList<BaseViewItemMegaItem> _items;
+            public MyObservableList<BaseViewItemMegaItem> Items
             {
                 set
                 {

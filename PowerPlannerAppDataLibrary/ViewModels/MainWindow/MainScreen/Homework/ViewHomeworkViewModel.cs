@@ -16,14 +16,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 {
     public class ViewHomeworkViewModel : BaseMainScreenViewModelChild
     {
-        public ItemType Type { get; private set; }
-
-        public enum ItemType
-        {
-            Homework, Exam
-        }
-
-        public BaseViewItemHomeworkExam Item { get; private set; }
+        public ViewItemTaskOrEvent Item { get; private set; }
 
         public bool IsUnassigedMode { get; private set; }
 
@@ -33,7 +26,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public override string GetPageName()
         {
-            if (Type == ItemType.Homework)
+            if (Item.Type == TaskOrEventType.Task)
             {
                 return "ViewTaskView";
             }
@@ -43,22 +36,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             }
         }
 
-        public static ViewHomeworkViewModel Create(BaseViewModel parent, BaseViewItemHomeworkExam item)
+        public static ViewHomeworkViewModel Create(BaseViewModel parent, ViewItemTaskOrEvent item)
         {
-            ItemType type;
-            if (item is ViewItemHomework)
-            {
-                type = ItemType.Homework;
-            }
-            else
-            {
-                type = ItemType.Exam;
-            }
-
             return new ViewHomeworkViewModel(parent)
             {
-                Item = item,
-                Type = type
+                Item = item
             };
         }
 
@@ -68,12 +50,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         /// <param name="parent"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static ViewHomeworkViewModel CreateForUnassigned(BaseViewModel parent, BaseViewItemHomeworkExam item)
+        public static ViewHomeworkViewModel CreateForUnassigned(BaseViewModel parent, ViewItemTaskOrEvent item)
         {
             return new ViewHomeworkViewModel(parent)
             {
                 Item = item,
-                Type = (item is ViewItemHomework) ? ItemType.Homework : ItemType.Exam,
                 IsUnassigedMode = true
             };
         }
@@ -110,7 +91,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public void SetPercentComplete(double percentComplete)
         {
-            ViewItemHomework homework = Item as ViewItemHomework;
+            ViewItemTaskOrEvent homework = Item as ViewItemTaskOrEvent;
             if (homework == null || homework.PercentComplete == percentComplete)
             {
                 return;
@@ -141,7 +122,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             await TryHandleUserInteractionAsync("ConvertToGrade", async (cancellationToken) =>
             {
                 // For free version, block assigning grade if number of graded items exceeds 5
-                if (Item.GetClassOrNull().WeightCategories.SelectMany(i => i.Grades).Where(i => i.GradeReceived != PowerPlannerSending.Grade.UNGRADED).Count() >= 5
+                if (Item.Class.WeightCategories.SelectMany(i => i.Grades).Where(i => i.GradeReceived != PowerPlannerSending.Grade.UNGRADED).Count() >= 5
                     && !await PowerPlannerApp.Current.IsFullVersionAsync())
                 {
                     cancellationToken.ThrowIfCancellationRequested();

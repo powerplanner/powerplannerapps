@@ -38,28 +38,28 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         public ViewItemClass Class { get; private set; }
 
-        public IMyObservableReadOnlyList<ViewItemHomework> Homework { get; private set; }
+        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Homework { get; private set; }
 
-        public IMyObservableReadOnlyList<ViewItemExam> Exams { get; private set; }
+        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Exams { get; private set; }
 
-        public MyObservableList<BaseViewItemHomeworkExam> PastCompletedHomeworkAndExams;
+        public MyObservableList<ViewItemTaskOrEvent> PastCompletedHomeworkAndExams;
 
-        private MyObservableList<ViewItemHomework> _pastCompletedHomework;
-        public MyObservableList<ViewItemHomework> PastCompletedHomework
+        private MyObservableList<ViewItemTaskOrEvent> _pastCompletedHomework;
+        public MyObservableList<ViewItemTaskOrEvent> PastCompletedHomework
         {
             get { return _pastCompletedHomework; }
             set { SetProperty(ref _pastCompletedHomework, value, "PastCompletedHomework"); }
         }
 
-        private MyObservableList<ViewItemExam> _pastCompletedExams;
-        public MyObservableList<ViewItemExam> PastCompletedExams
+        private MyObservableList<ViewItemTaskOrEvent> _pastCompletedExams;
+        public MyObservableList<ViewItemTaskOrEvent> PastCompletedExams
         {
             get { return _pastCompletedExams; }
             set { SetProperty(ref _pastCompletedExams, value, "PastCompletedExams"); }
         }
 
-        private MyObservableList<BaseViewItemHomeworkExam> _unassignedItems;
-        public MyObservableList<BaseViewItemHomeworkExam> UnassignedItems
+        private MyObservableList<ViewItemTaskOrEvent> _unassignedItems;
+        public MyObservableList<ViewItemTaskOrEvent> UnassignedItems
         {
             get { return _unassignedItems; }
             set { SetProperty(ref _unassignedItems, value, nameof(UnassignedItems)); }
@@ -215,13 +215,10 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                                 && i.WeightCategoryIdentifier != PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED)
                                 .ToArray();
 
-                            var unassignedItems = new MyObservableList<BaseViewItemHomeworkExam>();
+                            var unassignedItems = new MyObservableList<ViewItemTaskOrEvent>();
                             unassignedItems.InsertSorted(dataItems
                                 .Where(i => IsUnassignedChild(i))
-                                .Select(i =>
-                                    i.MegaItemType == PowerPlannerSending.MegaItemType.Homework ?
-                                        new ViewItemHomework(i) { Class = this.Class, WeightCategory = ViewItemWeightCategory.UNASSIGNED } as BaseViewItemHomeworkExam
-                                        : new ViewItemExam(i) { Class = this.Class, WeightCategory = ViewItemWeightCategory.UNASSIGNED }));
+                                .Select(i => new ViewItemTaskOrEvent(i) { Class = this.Class, WeightCategory = ViewItemWeightCategory.UNASSIGNED }));
 
                             PortableDispatcher.GetCurrentDispatcher().Run(delegate
                             {
@@ -293,7 +290,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 {
                     await cached.LoadingTask;
                     DataItemMegaItem[] dataMegaItems = cached.Items
-                        .OfType<BaseViewItemHomeworkExam>()
+                        .OfType<ViewItemTaskOrEvent>()
                         .Select(i => i.DataItem)
                         .OfType<DataItemMegaItem>()
                         .ToArray();
@@ -327,10 +324,10 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 HasPastCompletedHomework = hasPastCompletedHomework;
                 HasPastCompletedExams = hasPastCompletedExams;
-                Homework = this.Class.HomeworkAndExams.Sublist(ShouldIncludeInNormalHomeworkFunction(TodayAsUtc)).Cast<ViewItemHomework>();
-                Exams = new MyObservableList<ViewItemExam>();
-                (Exams as MyObservableList<ViewItemExam>).InsertSorted(
-                    this.Class.HomeworkAndExams.Sublist(ShouldIncludeInNormalExamsFunction()).Cast<ViewItemExam>());
+                Homework = this.Class.HomeworkAndExams.Sublist(ShouldIncludeInNormalHomeworkFunction(TodayAsUtc)).Cast<ViewItemTaskOrEvent>();
+                Exams = new MyObservableList<ViewItemTaskOrEvent>();
+                (Exams as MyObservableList<ViewItemTaskOrEvent>).InsertSorted(
+                    this.Class.HomeworkAndExams.Sublist(ShouldIncludeInNormalExamsFunction()).Cast<ViewItemTaskOrEvent>());
                 OnPropertyChanged(nameof(Homework));
                 OnPropertyChanged(nameof(Exams));
 
@@ -350,20 +347,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             return new ViewItemClass(dataClass, createWeightMethod: CreateWeightForOtherClasses);
         }
 
-        private BaseViewItemHomeworkExam CreateHomeworkOrExam(DataItemMegaItem dataHomework)
+        private ViewItemTaskOrEvent CreateHomeworkOrExam(DataItemMegaItem dataHomework)
         {
-            if (dataHomework.MegaItemType == PowerPlannerSending.MegaItemType.Homework)
-            {
-                return new ViewItemHomework(dataHomework);
-            }
-            else if (dataHomework.MegaItemType == PowerPlannerSending.MegaItemType.Exam)
-            {
-                return new ViewItemExam(dataHomework);
-            }
-            else
-            {
-                throw new NotImplementedException("Unknown type: " + dataHomework.MegaItemType);
-            }
+            return new ViewItemTaskOrEvent(dataHomework);
         }
 
         private static ViewItemSchedule CreateSchedule(DataItemSchedule dataSchedule)
@@ -383,9 +369,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 && i.Date >= todayAsUtc);
         }
 
-        private static Func<BaseViewItemHomeworkExam, bool> ShouldIncludeInNormalHomeworkFunction(DateTime todayAsUtc)
+        private static Func<ViewItemTaskOrEvent, bool> ShouldIncludeInNormalHomeworkFunction(DateTime todayAsUtc)
         {
-            return i => i is ViewItemHomework && ((i as ViewItemHomework).PercentComplete < 1 || i.Date >= todayAsUtc);
+            return i => i.Type == TaskOrEventType.Task && (i.PercentComplete < 1 || i.Date >= todayAsUtc);
         }
 
         private static Func<DataItemMegaItem, bool> IsPastCompletedHomeworkOrExamFunction(Guid classId, DateTime todayAsUtc)
@@ -424,16 +410,16 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 && i.Date < nextDay);
         }
 
-        private static Func<BaseViewItemHomeworkExam, bool> ShouldIncludeInNormalExamsFunction()
+        private static Func<ViewItemTaskOrEvent, bool> ShouldIncludeInNormalExamsFunction()
         {
-            return i => i is ViewItemExam && !i.IsComplete();
+            return i => i.Type == TaskOrEventType.Event && !i.IsComplete;
         }
 
         private ViewItemWeightCategory CreateWeight(DataItemWeightCategory dataWeight)
         {
             return new ViewItemWeightCategory(
                 dataWeight,
-                createGradeMethod: _isGradesLoaded ? new Func<BaseDataItemHomeworkExamGrade, BaseViewItemHomeworkExamGrade>(ViewItemWeightCategory.CreateGradeHelper) : null);
+                createGradeMethod: _isGradesLoaded ? new Func<BaseDataItemHomeworkExamGrade, BaseViewItemMegaItem>(ViewItemWeightCategory.CreateGradeHelper) : null);
         }
 
         private ViewItemWeightCategory CreateWeightForOtherClasses(DataItemWeightCategory dataWeight)
@@ -458,34 +444,15 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                         if (matched != null)
                         {
                             // If no longer under this class, we need to re-assign the class
-                            if (matched is ViewItemHomework)
+                            if (matched.Class.Identifier != edited.UpperIdentifier)
                             {
-                                var h = matched as ViewItemHomework;
-                                if (h.Class.Identifier != edited.UpperIdentifier)
+                                if (edited.UpperIdentifier == _semester.NoClassClass.Identifier)
                                 {
-                                    if (edited.UpperIdentifier == _semester.NoClassClass.Identifier)
-                                    {
-                                        h.Class = _semester.NoClassClass;
-                                    }
-                                    else
-                                    {
-                                        h.Class = _semester.Classes.FirstOrDefault(i => i.Identifier == edited.UpperIdentifier);
-                                    }
+                                    matched.Class = _semester.NoClassClass;
                                 }
-                            }
-                            else if (matched is ViewItemExam)
-                            {
-                                var exam = matched as ViewItemExam;
-                                if (exam.Class.Identifier != edited.UpperIdentifier)
+                                else
                                 {
-                                    if (edited.UpperIdentifier == _semester.NoClassClass.Identifier)
-                                    {
-                                        exam.Class = _semester.NoClassClass;
-                                    }
-                                    else
-                                    {
-                                        exam.Class = _semester.Classes.FirstOrDefault(i => i.Identifier == edited.UpperIdentifier);
-                                    }
+                                    matched.Class = _semester.Classes.FirstOrDefault(i => i.Identifier == edited.UpperIdentifier);
                                 }
                             }
                         }
@@ -566,18 +533,10 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                     {
                         if (IsUnassignedChild(newItem))
                         {
-                            BaseViewItemHomeworkExam newViewItem;
-                            if (newItem.MegaItemType == PowerPlannerSending.MegaItemType.Homework)
+                            ViewItemTaskOrEvent newViewItem;
+                            if (newItem.MegaItemType == PowerPlannerSending.MegaItemType.Homework || newItem.MegaItemType == PowerPlannerSending.MegaItemType.Exam)
                             {
-                                newViewItem = new ViewItemHomework(newItem)
-                                {
-                                    Class = this.Class,
-                                    WeightCategory = ViewItemWeightCategory.UNASSIGNED
-                                };
-                            }
-                            else if (newItem.MegaItemType == PowerPlannerSending.MegaItemType.Exam)
-                            {
-                                newViewItem = new ViewItemExam(newItem)
+                                newViewItem = new ViewItemTaskOrEvent(newItem)
                                 {
                                     Class = this.Class,
                                     WeightCategory = ViewItemWeightCategory.UNASSIGNED
@@ -632,12 +591,12 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                     additionalHomeworkAndExams = additionalHomeworkAndExams.Where(a => !this.Class.HomeworkAndExams.Any(i => i.Identifier == a.Identifier)).ToArray();
 
                     // And then update the child function so that we include all homework for the class, and inject the new items
-                    this.Class.UpdateIsChildMethod<DataItemMegaItem, BaseViewItemHomeworkExam>(i => i.UpperIdentifier == _classId && i.MegaItemType == PowerPlannerSending.MegaItemType.Homework || i.MegaItemType == PowerPlannerSending.MegaItemType.Exam, additionalHomeworkAndExams);
+                    this.Class.UpdateIsChildMethod<DataItemMegaItem, ViewItemTaskOrEvent>(i => i.UpperIdentifier == _classId && i.MegaItemType == PowerPlannerSending.MegaItemType.Homework || i.MegaItemType == PowerPlannerSending.MegaItemType.Exam, additionalHomeworkAndExams);
                 }
 
                 // Include the opposite of the other function
-                PastCompletedHomework = new PastCompletedHomeworkList(this.Class.HomeworkAndExams.OfTypeObservable<ViewItemHomework>(), TodayAsUtc);
-                PastCompletedExams = new PastCompletedExamsList(this.Class.HomeworkAndExams.OfTypeObservable<ViewItemExam>(), TodayAsUtc);
+                PastCompletedHomework = new PastCompletedHomeworkList(this.Class.HomeworkAndExams.Sublist(i => i.Type == TaskOrEventType.Task), TodayAsUtc);
+                PastCompletedExams = new PastCompletedExamsList(this.Class.HomeworkAndExams.Sublist(i => i.Type == TaskOrEventType.Event), TodayAsUtc);
             }
 
             catch (Exception ex)
@@ -696,18 +655,18 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             set { SetProperty(ref _hasPastCompletedExams, value, "HasPastCompletedExams"); }
         }
 
-        private class PastCompletedExamsList : MyObservableList<ViewItemExam>
+        private class PastCompletedExamsList : MyObservableList<ViewItemTaskOrEvent>
         {
-            public PastCompletedExamsList(IMyObservableReadOnlyList<ViewItemExam> sourceList, DateTime todayAsUtc)
+            public PastCompletedExamsList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
             {
                 base.Filter = new FilterUsingFunction(i => !ShouldIncludeInNormalExamsFunction().Invoke(i));
                 base.Comparer = new PastCompletedExamsComparer();
                 base.InsertSorted(sourceList);
             }
 
-            private class PastCompletedExamsComparer : IComparer<ViewItemExam>
+            private class PastCompletedExamsComparer : IComparer<ViewItemTaskOrEvent>
             {
-                public int Compare(ViewItemExam x, ViewItemExam y)
+                public int Compare(ViewItemTaskOrEvent x, ViewItemTaskOrEvent y)
                 {
                     // Show in reverse order
                     return x.CompareTo(y) * -1;
@@ -715,18 +674,18 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             }
         }
 
-        private class PastCompletedHomeworkList : MyObservableList<ViewItemHomework>
+        private class PastCompletedHomeworkList : MyObservableList<ViewItemTaskOrEvent>
         {
-            public PastCompletedHomeworkList(IMyObservableReadOnlyList<ViewItemHomework> sourceList, DateTime todayAsUtc)
+            public PastCompletedHomeworkList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
             {
                 base.Filter = new FilterUsingFunction(i => !ShouldIncludeInNormalHomeworkFunction(todayAsUtc).Invoke(i));
                 base.Comparer = new PastCompletedHomeworkComparer();
                 base.InsertSorted(sourceList);
             }
 
-            private class PastCompletedHomeworkComparer : IComparer<ViewItemHomework>
+            private class PastCompletedHomeworkComparer : IComparer<ViewItemTaskOrEvent>
             {
-                public int Compare(ViewItemHomework x, ViewItemHomework y)
+                public int Compare(ViewItemTaskOrEvent x, ViewItemTaskOrEvent y)
                 {
                     // Show in reverse order
                     return x.CompareTo(y) * -1;

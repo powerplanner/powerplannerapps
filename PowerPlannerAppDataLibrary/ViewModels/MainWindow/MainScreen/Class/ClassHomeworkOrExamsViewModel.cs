@@ -15,13 +15,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
     public class ClassHomeworkOrExamsViewModel : BaseClassContentViewModel
     {
-        public enum ItemType
-        {
-            Homework,
-            Exams
-        }
-
-        public ItemType Type { get; private set; }
+        public TaskOrEventType Type { get; private set; }
 
         private IReadOnlyList<object> _itemsWithHeaders;
         public IReadOnlyList<object> ItemsWithHeaders
@@ -32,12 +26,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 {
                     switch (Type)
                     {
-                        case ItemType.Homework:
-                            _itemsWithHeaders = ClassViewModel.ViewItemsGroupClass.Homework.ToHeaderedList<ViewItemHomework, DateTime>(ItemToGroupHeader);
+                        case TaskOrEventType.Task:
+                            _itemsWithHeaders = ClassViewModel.ViewItemsGroupClass.Homework.ToHeaderedList(ItemToGroupHeader);
                             break;
 
-                        case ItemType.Exams:
-                            _itemsWithHeaders = ClassViewModel.ViewItemsGroupClass.Exams.ToHeaderedList<ViewItemExam, DateTime>(ItemToGroupHeader);
+                        case TaskOrEventType.Event:
+                            _itemsWithHeaders = ClassViewModel.ViewItemsGroupClass.Exams.ToHeaderedList(ItemToGroupHeader);
                             break;
 
                         default:
@@ -49,12 +43,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        private DateTime ItemToGroupHeader(BaseViewItemHomeworkExam item)
+        private DateTime ItemToGroupHeader(ViewItemTaskOrEvent item)
         {
             return item.Date.Date;
         }
 
-        public ClassHomeworkOrExamsViewModel(ClassViewModel parent, ItemType type) : base(parent)
+        public ClassHomeworkOrExamsViewModel(ClassViewModel parent, TaskOrEventType type) : base(parent)
         {
             Type = type;
         }
@@ -71,42 +65,42 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             switch (e.PropertyName)
             {
                 case nameof(ClassViewItemsGroup.IsPastCompletedHomeworkDisplayed):
-                    if (Type == ItemType.Homework)
+                    if (Type == TaskOrEventType.Task)
                     {
                         OnPropertyChanged(nameof(IsPastCompletedItemsDisplayed));
                     }
                     break;
 
                 case nameof(ClassViewItemsGroup.IsPastCompletedExamsDisplayed):
-                    if (Type == ItemType.Exams)
+                    if (Type == TaskOrEventType.Event)
                     {
                         OnPropertyChanged(nameof(IsPastCompletedItemsDisplayed));
                     }
                     break;
 
                 case nameof(ClassViewItemsGroup.PastCompletedHomework):
-                    if (Type == ItemType.Homework)
+                    if (Type == TaskOrEventType.Task)
                     {
                         OnPropertyChanged(nameof(PastCompletedItemsWithHeaders));
                     }
                     break;
 
                 case nameof(ClassViewItemsGroup.PastCompletedExams):
-                    if (Type == ItemType.Exams)
+                    if (Type == TaskOrEventType.Event)
                     {
                         OnPropertyChanged(nameof(PastCompletedItemsWithHeaders));
                     }
                     break;
 
                 case nameof(ClassViewItemsGroup.HasPastCompletedHomework):
-                    if (Type == ItemType.Homework)
+                    if (Type == TaskOrEventType.Task)
                     {
                         OnPropertyChanged(nameof(HasPastCompletedItems));
                     }
                     break;
 
                 case nameof(ClassViewItemsGroup.HasPastCompletedExams):
-                    if (Type == ItemType.Exams)
+                    if (Type == TaskOrEventType.Event)
                     {
                         OnPropertyChanged(nameof(HasPastCompletedItems));
                     }
@@ -118,7 +112,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             get
             {
-                if (Type == ItemType.Homework)
+                if (Type == TaskOrEventType.Task)
                 {
                     return ClassViewModel.ViewItemsGroupClass.IsPastCompletedHomeworkDisplayed;
                 }
@@ -133,7 +127,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             get
             {
-                if (Type == ItemType.Homework)
+                if (Type == TaskOrEventType.Task)
                 {
                     return ClassViewModel.ViewItemsGroupClass.HasPastCompletedHomework;
                 }
@@ -149,7 +143,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             get
             {
-                if (Type == ItemType.Homework)
+                if (Type == TaskOrEventType.Task)
                 {
                     if (ClassViewModel.ViewItemsGroupClass.PastCompletedHomework == null)
                     {
@@ -158,7 +152,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                     if (_pastCompletedItemsWithHeaders == null)
                     {
-                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedHomework.ToSortedList().ToHeaderedList<ViewItemHomework, DateTime>(ItemToGroupHeader);
+                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedHomework.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, DateTime>(ItemToGroupHeader);
                     }
 
                     return _pastCompletedItemsWithHeaders;
@@ -172,7 +166,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                     if (_pastCompletedItemsWithHeaders == null)
                     {
-                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedExams.ToSortedList().ToHeaderedList<ViewItemExam, DateTime>(ItemToGroupHeader);
+                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedExams.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, DateTime>(ItemToGroupHeader);
                     }
 
                     return _pastCompletedItemsWithHeaders;
@@ -208,7 +202,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void ShowPastCompletedItems()
         {
-            if (Type == ItemType.Homework)
+            if (Type == TaskOrEventType.Task)
             {
                 ClassViewModel.ViewItemsGroupClass.ShowPastCompletedHomework();
             }
@@ -220,7 +214,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void HidePastCompletedItems()
         {
-            if (Type == ItemType.Homework)
+            if (Type == TaskOrEventType.Task)
             {
                 ClassViewModel.ViewItemsGroupClass.HidePastCompletedHomework();
             }
@@ -230,35 +224,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        public void ShowItem(BaseViewItemHomeworkExam item)
+        public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
         }
 
         public void Add()
         {
-            AddHomeworkViewModel.ItemType addType;
-
-            switch (Type)
-            {
-                case ItemType.Homework:
-                    addType = AddHomeworkViewModel.ItemType.Homework;
-                    break;
-
-                case ItemType.Exams:
-                    addType = AddHomeworkViewModel.ItemType.Exam;
-                    break;
-
-                default:
-                    throw new NotImplementedException("Unknown type");
-            }
-            
             MainScreenViewModel.ShowPopup(AddHomeworkViewModel.CreateForAdd(MainScreenViewModel, new AddHomeworkViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
                 Classes = new List<ViewItemClass>() { ClassViewModel.ViewItemsGroupClass.Class },
                 SelectedClass = ClassViewModel.ViewItemsGroupClass.Class,
-                Type = addType,
+                Type = Type,
                 HideClassPicker = true
             }));
         }

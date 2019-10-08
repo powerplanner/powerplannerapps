@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+﻿using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace PowerPlannerUWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is BaseViewItemHomework)
+            if (value is ViewItemTaskOrEvent item && item.Type == TaskOrEventType.Task)
                 return Visibility.Visible;
 
             return Visibility.Collapsed;

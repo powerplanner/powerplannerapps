@@ -222,7 +222,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
         {
             public ViewItemClass Class { get; set; }
 
-            public List<BaseViewItemHomeworkExam> AllUpcoming { get; set; }
+            public List<ViewItemTaskOrEvent> AllUpcoming { get; set; }
         }
 
         private static Task<ClassData> LoadDataAsync(AccountDataStore data, Guid classId, DateTime todayAsUtc, ClassTileSettings settings)
@@ -271,7 +271,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             classViewItemsGroup.LoadHomeworkAndExams();
             await classViewItemsGroup.LoadHomeworkAndExamsTask;
 
-            List<BaseViewItemHomeworkExam> copied;
+            List<ViewItemTaskOrEvent> copied;
 
             using (await classViewItemsGroup.DataChangeLock.LockForReadAsync())
             {

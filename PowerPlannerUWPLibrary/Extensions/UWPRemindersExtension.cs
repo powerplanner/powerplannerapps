@@ -123,7 +123,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
             DateTime todayAsUtc = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
 
-            BaseViewItemHomeworkExam[] itemsDueTodayOrGreater;
+            ViewItemTaskOrEvent[] itemsDueTodayOrGreater;
             ViewItemSchedule[] allSchedules;
 
             try
@@ -153,20 +153,20 @@ namespace PowerPlannerUWPLibrary.Extensions
 
             if (account.RemindersDayBefore)
             {
-                Dictionary<DateTime, List<BaseViewItemHomeworkExam>> groupedByDay = new Dictionary<DateTime, List<BaseViewItemHomeworkExam>>();
+                Dictionary<DateTime, List<ViewItemTaskOrEvent>> groupedByDay = new Dictionary<DateTime, List<ViewItemTaskOrEvent>>();
 
                 DateTime tomorrow = DateTime.SpecifyKind(todayAsUtc.AddDays(1), DateTimeKind.Local);
 
                 //select all incomplete homework that is due on tomorrow or later
-                foreach (BaseViewItemHomeworkExam h in itemsDueTodayOrGreater.Where(i => i.Date.Date >= tomorrow))
+                foreach (ViewItemTaskOrEvent h in itemsDueTodayOrGreater.Where(i => i.Date.Date >= tomorrow))
                 {
                     token.ThrowIfCancellationRequested();
 
                     var hDate = h.Date.Date;
 
-                    if (!groupedByDay.TryGetValue(hDate, out List<BaseViewItemHomeworkExam> group))
+                    if (!groupedByDay.TryGetValue(hDate, out List<ViewItemTaskOrEvent> group))
                     {
-                        group = new List<BaseViewItemHomeworkExam>();
+                        group = new List<ViewItemTaskOrEvent>();
                         groupedByDay[hDate] = group;
                     }
 
@@ -178,7 +178,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                     token.ThrowIfCancellationRequested();
 
                     DateTime dueOn = pair.Key;
-                    List<BaseViewItemHomeworkExam> items = pair.Value;
+                    List<ViewItemTaskOrEvent> items = pair.Value;
 
                     DateTime reminderTime = GetDayBeforeReminderTime(dueOn.AddDays(-1), account, allSchedules);
 
@@ -186,8 +186,8 @@ namespace PowerPlannerUWPLibrary.Extensions
                         continue;
 
 
-                    ViewItemHomework[] homeworks = items.OfType<ViewItemHomework>().ToArray();
-                    ViewItemExam[] exams = items.OfType<ViewItemExam>().ToArray();
+                    ViewItemTaskOrEvent[] homeworks = items.OfType<ViewItemTaskOrEvent>().ToArray();
+                    ViewItemTaskOrEvent[] exams = items.OfType<ViewItemTaskOrEvent>().ToArray();
 
 
                     if (homeworks.Length > 0)
@@ -253,7 +253,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
             if (account.RemindersDayOf)
             {
-                foreach (BaseViewItemHomeworkExam h in itemsDueTodayOrGreater)
+                foreach (ViewItemTaskOrEvent h in itemsDueTodayOrGreater)
                 {
                     token.ThrowIfCancellationRequested();
                     bool hasClassTime = false;
@@ -265,7 +265,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
                     string subtitle = GetClassName(h) + " - ";
 
-                    if (h is BaseViewItemHomework)
+                    if (h.Type == TaskOrEventType.Task)
                         subtitle += "due ";
 
                     if (hasClassTime)
@@ -301,9 +301,9 @@ namespace PowerPlannerUWPLibrary.Extensions
             }
         }
 
-        private static DateTime GetDayOfReminderTime(BaseViewItemHomeworkExam h, ref bool hasClassTime)
+        private static DateTime GetDayOfReminderTime(ViewItemTaskOrEvent h, ref bool hasClassTime)
         {
-            ViewItemClass c = h.GetClassOrNull();
+            ViewItemClass c = h.Class;
 
             if (c == null)
                 return DateTime.MinValue;
@@ -311,17 +311,17 @@ namespace PowerPlannerUWPLibrary.Extensions
             return h.GetDayOfReminderTime(out hasClassTime);
         }
 
-        private static string GetItemLineText(BaseViewItemHomeworkExam item)
+        private static string GetItemLineText(ViewItemTaskOrEvent item)
         {
             return GetClassName(item) + " - " + TrimString(item.Name, 150);
         }
 
-        private static string GetClassName(BaseViewItemHomeworkExam item)
+        private static string GetClassName(ViewItemTaskOrEvent item)
         {
             if (item == null)
                 return "";
 
-            var c = item.GetClassOrNull();
+            var c = item.Class;
 
             if (c != null)
                 return c.Name;
@@ -451,15 +451,13 @@ namespace PowerPlannerUWPLibrary.Extensions
 
             schedules = allSchedules.Where(i => i.DayOfWeek == date.DayOfWeek && (i.ScheduleWeek == week || i.ScheduleWeek == PowerPlannerSending.Schedule.Week.BothWeeks));
 
-            try
+            // If there aren't any schedules on that day
+            if (!schedules.Any())
             {
-                return date.Add(schedules.Max(i => i.EndTime.TimeOfDay)).AddMinutes(10); //day before reminders show up 10 mins after last class
+                return date.AddHours(15); // 3:00 PM is default time for day before reminders
             }
-            catch
-            {
-                //if there aren't any schedules on that day
-                return date.AddHours(15); //3:00 PM is default time for day before reminders
-            }
+
+            return date.Add(schedules.Max(i => i.EndTime.TimeOfDay)).AddMinutes(10); //day before reminders show up 10 mins after last class
         }
 
         internal static string TrimString(string str, int maxLength)

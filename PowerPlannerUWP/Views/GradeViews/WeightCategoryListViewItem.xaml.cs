@@ -23,7 +23,7 @@ namespace PowerPlannerUWP.Views.GradeViews
     public sealed partial class WeightCategoryListViewItem : UserControl
     {
         public event EventHandler OnRequestEdit;
-        public event EventHandler<BaseViewItemHomeworkExamGrade> OnRequestViewGrade;
+        public event EventHandler<BaseViewItemMegaItem> OnRequestViewGrade;
 
         public WeightCategoryListViewItem()
         {
@@ -41,7 +41,7 @@ namespace PowerPlannerUWP.Views.GradeViews
                 OnRequestEdit(this, null);
         }
 
-        private void GradeListViewItem_OnRequestViewGrade(object sender, BaseViewItemHomeworkExamGrade e)
+        private void GradeListViewItem_OnRequestViewGrade(object sender, BaseViewItemMegaItem e)
         {
             OnRequestViewGrade?.Invoke(this, e);
         }

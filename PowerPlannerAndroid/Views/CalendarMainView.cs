@@ -382,16 +382,16 @@ namespace PowerPlannerAndroid.Views
             {
                 _itemsControlWrapper = new ItemsControlWrapper(this)
                 {
-                    ItemTemplate = new CustomDataTemplate<BaseViewItemHomeworkExamGrade>(CreateCircle)
+                    ItemTemplate = new CustomDataTemplate<BaseViewItemMegaItem>(CreateCircle)
                 };
             }
 
-            public void SetItemsSource(MyObservableList<BaseViewItemHomeworkExamGrade> items)
+            public void SetItemsSource(MyObservableList<BaseViewItemMegaItem> items)
             {
                 _itemsControlWrapper.ItemsSource = items;
             }
 
-            private View CreateCircle(ViewGroup root, BaseViewItemHomeworkExamGrade item)
+            private View CreateCircle(ViewGroup root, BaseViewItemMegaItem item)
             {
                 View view = new View(root.Context)
                 {

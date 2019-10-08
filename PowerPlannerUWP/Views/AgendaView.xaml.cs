@@ -1,5 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerUWP.Views.HomeworkViews;
 
@@ -32,9 +32,9 @@ namespace PowerPlannerUWP.Views
     /// </summary>
     public sealed partial class AgendaView : MainScreenContentViewHostGeneric
     {
-        private class FilteredList : MyObservableList<BaseViewItemHomeworkExam>
+        private class FilteredList : MyObservableList<ViewItemTaskOrEvent>
         {
-            private class DateFilter : IFilter<BaseViewItemHomeworkExam>
+            private class DateFilter : IFilter<ViewItemTaskOrEvent>
             {
                 private DateTime _min, _max;
 
@@ -49,7 +49,7 @@ namespace PowerPlannerUWP.Views
                     _max = max;
                 }
 
-                public bool ShouldInsert(BaseViewItemHomeworkExam itemToBeInserted)
+                public bool ShouldInsert(ViewItemTaskOrEvent itemToBeInserted)
                 {
                     return itemToBeInserted.Date.Date >= _min && itemToBeInserted.Date.Date <= _max;
                 }
@@ -61,7 +61,7 @@ namespace PowerPlannerUWP.Views
             /// <param name="allItems"></param>
             /// <param name="min"></param>
             /// <param name="max"></param>
-            public FilteredList(MyObservableList<BaseViewItemHomeworkExam> allItems, DateTime min, DateTime max)
+            public FilteredList(MyObservableList<ViewItemTaskOrEvent> allItems, DateTime min, DateTime max)
             {
                 base.Filter = new DateFilter(DateTime.SpecifyKind(min.Date, DateTimeKind.Utc), DateTime.SpecifyKind(max.Date, DateTimeKind.Utc));
 

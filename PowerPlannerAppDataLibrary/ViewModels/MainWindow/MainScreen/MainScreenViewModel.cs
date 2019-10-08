@@ -1133,12 +1133,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             ShowPopup(AddClassViewModel.CreateForEdit(this, c));
         }
 
-        public void ShowItem(BaseViewItemHomeworkExam item)
+        public void ShowItem(ViewItemTaskOrEvent item)
         {
             ShowPopup(ViewHomeworkViewModel.Create(this, item));
         }
 
-        public void EditHomeworkOrExam(BaseViewItemHomeworkExam item)
+        public void EditHomeworkOrExam(ViewItemTaskOrEvent item)
         {
             ShowPopup(AddHomeworkViewModel.CreateForEdit(this, new AddHomeworkViewModel.EditParameter()
             {
@@ -1146,7 +1146,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }));
         }
 
-        public void EditGrade(BaseViewItemHomeworkExamGrade grade, bool whatIf = false)
+        public void EditGrade(BaseViewItemMegaItem grade, bool whatIf = false)
         {
             ShowPopup(AddGradeViewModel.CreateForEdit(this, new AddGradeViewModel.EditParameter()
             {

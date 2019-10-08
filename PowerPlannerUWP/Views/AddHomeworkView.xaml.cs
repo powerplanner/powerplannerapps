@@ -56,7 +56,7 @@ namespace PowerPlannerUWP.Views
         {
             switch (ViewModel.Type)
             {
-                case AddHomeworkViewModel.ItemType.Exam:
+                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Event:
                     if (IsEditing())
                         return LocalizedResources.GetString("String_EditEvent").ToUpper();
                     else
@@ -74,7 +74,7 @@ namespace PowerPlannerUWP.Views
         {
             switch (ViewModel.Type)
             {
-                case AddHomeworkViewModel.ItemType.Exam:
+                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Event:
                     return LocalizedResources.GetString("String_StartTime");
 
                 default:

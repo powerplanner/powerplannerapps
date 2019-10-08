@@ -24,6 +24,7 @@ using PowerPlannerAppDataLibrary.PPEventArgs;
 using Windows.UI.Xaml.Shapes;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerUWP.Views.CalendarViews
 {
@@ -33,7 +34,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
         private HolidaysOnDay _holidays;
 
-        public MainCalendarSquare(MainCalendarGrid calendarGrid, DateTime date, MyObservableList<BaseViewItemHomeworkExamGrade> allItems) : base(calendarGrid, date)
+        public MainCalendarSquare(MainCalendarGrid calendarGrid, DateTime date, MyObservableList<BaseViewItemMegaItem> allItems) : base(calendarGrid, date)
         {
             // Render is called before this
 
@@ -70,7 +71,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             try
             {
-                var item = DataPackageHelpers.GetViewItem<BaseViewItemHomeworkExam>(e.DataView);
+                var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
                 if (item != null)
                 {
                     OnRequestChangeItemDate?.Invoke(this, new ChangeItemDateEventArgs(item, this.Date.Date));
@@ -86,7 +87,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             try
             {
-                var item = DataPackageHelpers.GetViewItem<BaseViewItemHomeworkExam>(e.DataView);
+                var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
                 if (item != null)
                 {
                     if (item.Date.Date != this.Date.Date)

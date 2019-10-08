@@ -102,7 +102,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 // Process weight category changes
                 List<EditingWeightCategoryViewModel> newWeights = new List<EditingWeightCategoryViewModel>(WeightCategories);
 
-                List<BaseViewItemHomeworkExamGrade> lostGrades = new List<BaseViewItemHomeworkExamGrade>();
+                List<BaseViewItemMegaItem> lostGrades = new List<BaseViewItemMegaItem>();
 
                 //handle weights that were deleted
                 foreach (ViewItemWeightCategory existing in Class.WeightCategories)
@@ -185,7 +185,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                     changes.Add(g);
                 }
-                foreach (var lostGrade in lostGrades.OfType<ViewItemHomework>())
+                foreach (var lostGrade in lostGrades.OfType<ViewItemTaskOrEvent>())
                 {
                     DataItemMegaItem g = new DataItemMegaItem()
                     {
@@ -196,7 +196,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                     changes.Add(g);
                 }
-                foreach (var lostGrade in lostGrades.OfType<ViewItemExam>())
+                foreach (var lostGrade in lostGrades.OfType<ViewItemTaskOrEvent>())
                 {
                     DataItemMegaItem g = new DataItemMegaItem()
                     {

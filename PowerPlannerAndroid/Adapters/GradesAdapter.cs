@@ -29,7 +29,7 @@ namespace PowerPlannerAndroid.Adapters
         private const int UNASSIGNED_ITEMS_HEADER_TYPE = 3;
         private const int UNASSIGNED_ITEM_TYPE = 4;
 
-        public event EventHandler<BaseViewItemHomeworkExamGrade> ItemClick;
+        public event EventHandler<BaseViewItemMegaItem> ItemClick;
         public event EventHandler<BaseViewItemHomeworkExam> UnassignedItemClick;
         public event EventHandler ButtonWhatIfModeClick;
         public event EventHandler ButtonEditGradeOptionsClick;
@@ -82,7 +82,7 @@ namespace PowerPlannerAndroid.Adapters
 
         private void GradeView_Click(object sender, EventArgs e)
         {
-            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemHomeworkExamGrade);
+            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemMegaItem);
         }
 
         protected override int GetItemViewType(object item)

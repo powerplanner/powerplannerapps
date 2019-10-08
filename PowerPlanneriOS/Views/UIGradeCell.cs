@@ -12,7 +12,7 @@ using PowerPlannerAppDataLibrary.Converters;
 
 namespace PowerPlanneriOS.Views
 {
-    public class UIGradeCell : BareUITableViewCell<BaseViewItemHomeworkExamGrade>
+    public class UIGradeCell : BareUITableViewCell<BaseViewItemMegaItem>
     {
         private UIView _completionBar;
         private NSLayoutConstraint _constraintCompletionBarHeight;

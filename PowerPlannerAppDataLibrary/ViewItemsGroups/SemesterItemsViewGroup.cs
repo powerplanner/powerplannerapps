@@ -22,7 +22,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             get { return Semester.Classes; }
         }
 
-        public MyObservableList<BaseViewItemHomeworkExamGrade> Items { get; private set; } = new MyObservableList<BaseViewItemHomeworkExamGrade>();
+        public MyObservableList<BaseViewItemMegaItem> Items { get; private set; } = new MyObservableList<BaseViewItemMegaItem>();
 
         public Task LoadingTask { get; private set; }
 
@@ -112,7 +112,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
         /// <param name="h"></param>
         private void Add(DataItemMegaItem i)
         {
-            BaseViewItemHomeworkExam taskOrExam = i.CreateViewItemTaskOrEvent(Semester);
+            ViewItemTaskOrEvent taskOrExam = i.CreateViewItemTaskOrEvent(Semester);
             if (taskOrExam != null)
             {
                 Items.Add(taskOrExam);
@@ -173,10 +173,8 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                             matched.PopulateFromDataItem(edited);
 
-                            if (matched is ViewItemHomework)
-                                AssignClass(edited, matched as ViewItemHomework);
-                            else if (matched is ViewItemExam)
-                                AssignClass(edited, matched as ViewItemExam);
+                            if (matched is ViewItemTaskOrEvent taskOrEvent)
+                                AssignClass(edited, taskOrEvent);
 
                             Items[matchedIndex] = matched;
                             changed = true;
@@ -204,8 +202,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 // Any items that are no longer have a class need to be removed
                 changed = changed || Items.RemoveWhere(i =>
-                    (i is ViewItemHomework && !Semester.Classes.Contains((i as ViewItemHomework).Class) && !(i as ViewItemHomework).Class.IsNoClassClass)
-                    || (i is ViewItemExam && !Semester.Classes.Contains((i as ViewItemExam).Class) && !(i as ViewItemExam).Class.IsNoClassClass));
+                    i is ViewItemTaskOrEvent taskOrEvent && !Semester.Classes.Contains(taskOrEvent.Class) && !taskOrEvent.Class.IsNoClassClass);
 
                 // Add new items
                 foreach (var newItem in e.NewItems.OfType<DataItemMegaItem>().Where(ShouldIncludeItemFunction(Semester.Identifier, classIdentifiers)))
@@ -221,21 +218,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             }
         }
 
-        private void AssignClass(DataItemMegaItem data, ViewItemExam view)
+        private void AssignClass(DataItemMegaItem data, ViewItemTaskOrEvent view)
         {
             if (data.MegaItemType == PowerPlannerSending.MegaItemType.Event)
-            {
-                view.Class = Semester.NoClassClass;
-            }
-            else
-            {
-                view.Class = Semester.Classes.First(i => i.Identifier == data.UpperIdentifier);
-            }
-        }
-
-        private void AssignClass(DataItemMegaItem data, ViewItemHomework view)
-        {
-            if (data.MegaItemType == PowerPlannerSending.MegaItemType.Task)
             {
                 view.Class = Semester.NoClassClass;
             }

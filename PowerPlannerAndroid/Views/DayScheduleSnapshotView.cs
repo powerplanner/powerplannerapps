@@ -878,7 +878,7 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private View CreateCircle(ViewGroup root, BaseViewItemHomeworkExamGrade item)
+        private View CreateCircle(ViewGroup root, BaseViewItemMegaItem item)
         {
             View view = new View(root.Context)
             {

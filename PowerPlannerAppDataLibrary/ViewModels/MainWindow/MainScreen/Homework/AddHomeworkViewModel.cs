@@ -30,13 +30,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         protected override bool InitialAllowLightDismissValue => false;
 
-        private ItemType _type;
-        public ItemType Type
+        private TaskOrEventType _type;
+        public TaskOrEventType Type
         {
             get { return _type; }
             private set
             {
-                if (value == ItemType.Homework)
+                if (value == TaskOrEventType.Task)
                 {
                     TimeOption_BeforeClass = PowerPlannerResources.GetString("TimeOption_BeforeClass");
                     TimeOption_StartOfClass = PowerPlannerResources.GetString("TimeOption_StartOfClass");
@@ -60,7 +60,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         {
             if (State == OperationState.Adding)
             {
-                if (Type == ItemType.Homework)
+                if (Type == TaskOrEventType.Task)
                 {
                     return "AddTaskView";
                 }
@@ -71,7 +71,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             }
             else
             {
-                if (Type == ItemType.Homework)
+                if (Type == TaskOrEventType.Task)
                 {
                     return "EditTaskView";
                 }
@@ -80,11 +80,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     return "EditEventView";
                 }
             }
-        }
-
-        public enum ItemType
-        {
-            Homework, Exam
         }
 
         public string TimeOption_AllDay;
@@ -98,7 +93,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         {
             public Guid SemesterIdentifier { get; set; }
 
-            public ItemType Type { get; set; }
+            public TaskOrEventType Type { get; set; }
 
             public DateTime? DueDate { get; set; }
 
@@ -116,7 +111,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public class EditParameter
         {
-            public BaseViewItemHomeworkExam Item { get; set; }
+            public ViewItemTaskOrEvent Item { get; set; }
         }
 
         public AccountDataItem Account { get; private set; }
@@ -149,7 +144,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             ViewItemClass c = addParams.SelectedClass;
             if (c == null)
             {
-                if (addParams.Type == ItemType.Homework || addParams.Type == ItemType.Exam)
+                if (addParams.Type == TaskOrEventType.Task || addParams.Type == TaskOrEventType.Event)
                 {
                     var prevClassIdentifier = NavigationManager.GetPreviousAddItemClass();
                     if (prevClassIdentifier != null)
@@ -261,46 +256,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             {
                 throw new NullReferenceException("CurrentAccount was null");
             }
-            ViewItemClass c = null;
-            ItemType type;
+            ViewItemClass c = editParams.Item.Class;
+            TaskOrEventType type = editParams.Item.Type;
 
-            if (editParams.Item is ViewItemHomework)
+            if (c == null)
             {
-                var h = editParams.Item as ViewItemHomework;
-
-                c = h.Class;
-                type = ItemType.Homework;
+                throw new NullReferenceException("Class of the item was null. Item id " + editParams.Item.Identifier);
             }
 
-            else if (editParams.Item is ViewItemExam)
+            if (c.Semester == null)
             {
-                var e = editParams.Item as ViewItemExam;
-
-                c = e.Class;
-                type = ItemType.Exam;
+                throw new NullReferenceException("Semester of the class was null. Item id " + editParams.Item.Identifier);
             }
 
-            else
+            if (c.Semester.Classes == null)
             {
-                throw new NotImplementedException("editParams.Item wasn't of any of the expected types");
-            }
-
-            if (type == ItemType.Homework || type == ItemType.Exam)
-            {
-                if (c == null)
-                {
-                    throw new NullReferenceException("Class of the item was null. Item id " + editParams.Item.Identifier);
-                }
-
-                if (c.Semester == null)
-                {
-                    throw new NullReferenceException("Semester of the class was null. Item id " + editParams.Item.Identifier);
-                }
-
-                if (c.Semester.Classes == null)
-                {
-                    throw new NullReferenceException("Classes of the semester was null. Item id " + editParams.Item.Identifier);
-                }
+                throw new NullReferenceException("Classes of the semester was null. Item id " + editParams.Item.Identifier);
             }
 
             var model = new AddHomeworkViewModel(parent)
@@ -422,7 +393,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     if (!_userChangedTimeOptions)
                     {
                         // Auto-adjust the time options based on last time options used for that class
-                        if (Type == ItemType.Homework)
+                        if (Type == TaskOrEventType.Task)
                         {
                             if (value.DataItem.LastTaskDueTime != null)
                             {
@@ -571,7 +542,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public bool IsEndTimePickerVisible
         {
-            get { return IsStartTimePickerVisible && Type != ItemType.Homework; }
+            get { return IsStartTimePickerVisible && Type != TaskOrEventType.Task; }
         }
 
         private bool _userChangedTimeOptions;
@@ -598,7 +569,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
                 SetProperty(ref _startTime, value, nameof(StartTime));
 
-                if (Type == ItemType.Exam)
+                if (Type == TaskOrEventType.Event)
                 {
                     var desiredEndTime = StartTime + diff;
                     if (desiredEndTime.TotalHours > 24)
@@ -782,7 +753,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             {
                 switch (Type)
                 {
-                    case ItemType.Homework:
+                    case TaskOrEventType.Task:
                         MakeTimeOptionsLike(new string[]
                         {
                             TimeOption_BeforeClass,
@@ -794,7 +765,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                         });
                         break;
 
-                    case ItemType.Exam:
+                    case TaskOrEventType.Event:
                         MakeTimeOptionsLike(new string[]
                         {
                             TimeOption_AllDay,
@@ -807,7 +778,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
             if (!TimeOptions.Contains(SelectedTimeOption))
             {
-                if (Type == ItemType.Exam && TimeOptions.Length == 3)
+                if (Type == TaskOrEventType.Event && TimeOptions.Length == 3)
                 {
                     SelectedTimeOption = TimeOptions[1];
                 }
@@ -1147,12 +1118,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         {
             switch (Type)
             {
-                case ItemType.Homework:
+                case TaskOrEventType.Task:
                     dataItem.LastTaskTimeOption = SelectedTimeOption;
                     dataItem.LastTaskDueTime = StartTime;
                     break;
 
-                case ItemType.Exam:
+                case TaskOrEventType.Event:
                     dataItem.LastEventTimeOption = SelectedTimeOption;
                     dataItem.LastEventStartTime = StartTime;
                     dataItem.LastEventDuration = EndTime - StartTime;
@@ -1169,7 +1140,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
             switch (Type)
             {
-                case ItemType.Exam:
+                case TaskOrEventType.Event:
                     if (Class.IsNoClassClass)
                     {
                         dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Event;
@@ -1180,7 +1151,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     }
                     break;
 
-                case ItemType.Homework:
+                case TaskOrEventType.Task:
                     if (Class.IsNoClassClass)
                     {
                         dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Task;
@@ -1244,7 +1215,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
             switch (Type)
             {
-                case ItemType.Homework:
+                case TaskOrEventType.Task:
                     if (SelectedTimeOption == TimeOption_BeforeClass)
                     {
                         dataItem.Date = dataItem.Date.AddSeconds(1);
@@ -1270,7 +1241,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     }
                     break;
 
-                case ItemType.Exam:
+                case TaskOrEventType.Event:
                     if (SelectedTimeOption == TimeOption_Custom)
                     {
                         dataItem.Date = dataItem.Date.Add(StartTime);
@@ -1295,7 +1266,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         private void TrackTimeOption(string name)
         {
             string itemType;
-            if (Type == ItemType.Homework)
+            if (Type == TaskOrEventType.Task)
             {
                 itemType = "Task";
             }

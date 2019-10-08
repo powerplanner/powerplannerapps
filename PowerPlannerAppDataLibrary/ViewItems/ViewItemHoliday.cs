@@ -9,7 +9,7 @@ using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 
 namespace PowerPlannerAppDataLibrary.ViewItems
 {
-    public class ViewItemHoliday : BaseViewItemHomeworkExamGrade
+    public class ViewItemHoliday : BaseViewItemMegaItem
     {
         public ViewItemHoliday(BaseDataItemHomeworkExamGrade dataItem) : base(dataItem)
         {

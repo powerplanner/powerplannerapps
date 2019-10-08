@@ -27,7 +27,7 @@ namespace PowerPlannerAndroid.Adapters
         private const int TOP_HEADER_ITEM_TYPE = 1;
         private const int SECTION_HEADER_ITEM_TYPE = 2;
 
-        public event EventHandler<BaseViewItemHomeworkExamGrade> ItemClick;
+        public event EventHandler<BaseViewItemMegaItem> ItemClick;
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
@@ -52,7 +52,7 @@ namespace PowerPlannerAndroid.Adapters
 
         private void GradeView_Click(object sender, EventArgs e)
         {
-            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemHomeworkExamGrade);
+            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemMegaItem);
         }
 
         protected override int GetItemViewType(object item)
