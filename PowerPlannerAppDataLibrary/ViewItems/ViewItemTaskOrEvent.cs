@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         public TaskOrEventType Type
         {
             get => _type;
-            set => SetProperty(ref _type, value, nameof(Type), nameof(SubtitleDueDate), nameof(SubtitleDueTime));
+            set => SetProperty(ref _type, value, nameof(Type), nameof(Subtitle), nameof(SubtitleDueDate), nameof(SubtitleDueTime));
         }
 
         private ViewItemClass _class;
