@@ -39,31 +39,6 @@ namespace PowerPlannerUWP.Views
             this.InitializeComponent();
         }
 
-        public override void OnViewModelLoadedOverride()
-        {
-            base.OnViewModelLoadedOverride();
-
-            switch (ViewModel.Item.Type)
-            {
-                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Task:
-                    this.Title = LocalizedResources.GetString("String_ViewTask").ToUpper();
-                    break;
-
-                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Event:
-                    this.Title = LocalizedResources.GetString("String_ViewEvent").ToUpper();
-                    break;
-            }
-
-            if ((ViewModel.Item.Type == PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Task) && !ViewModel.IsUnassigedMode)
-            {
-                completionSlider.Visibility = Visibility.Visible;
-            }
-            else if (ViewModel.IsUnassigedMode)
-            {
-                ButtonConvertToGrade.Visibility = Visibility.Visible;
-            }
-        }
-
         private void ButtonDelete_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             PopupMenuConfirmDelete.Show(ButtonDelete, ViewModel.Delete);
