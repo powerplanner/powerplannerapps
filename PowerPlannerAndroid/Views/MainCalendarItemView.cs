@@ -9,13 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using Android.Graphics.Drawables;
 using InterfacesDroid.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
 using InterfacesDroid.Themes;
 using Android.Graphics;
 using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -76,8 +76,8 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private BaseViewItemHomeworkExam _item;
-        public BaseViewItemHomeworkExam Item
+        private ViewItemTaskOrEvent _item;
+        public ViewItemTaskOrEvent Item
         {
             get { return _item; }
             set
@@ -96,10 +96,10 @@ namespace PowerPlannerAndroid.Views
 
             try
             {
-                base.Background = new ColorDrawable(ColorTools.GetColor(Item.GetClassOrNull().Color));
+                base.Background = new ColorDrawable(ColorTools.GetColor(Item.Class.Color));
                 _textViewTitle.Text = Item.Name;
 
-                if (Item.IsComplete())
+                if (Item.IsComplete)
                 {
                     _viewIsComplete.Visibility = ViewStates.Visible;
                     _textViewTitle.Alpha = 0.7f;

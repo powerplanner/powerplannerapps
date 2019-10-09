@@ -14,11 +14,11 @@ using InterfacesDroid.Views;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using PowerPlannerAndroid.Adapters;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using InterfacesDroid.Themes;
 using System.ComponentModel;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -35,7 +35,7 @@ namespace PowerPlannerAndroid.Views
         {
             FindViewById<FloatingActionButton>(Resource.Id.FloatingActionButtonAdd).Click += ButtonAdd_Click;
             FindViewById<Button>(Resource.Id.ButtonHideOldItems).Click += ButtonHideOldItems_Click;
-            FindViewById<Button>(Resource.Id.ButtonHideOldItems).Text = PowerPlannerResources.GetString(ViewModel.Type == ClassHomeworkOrExamsViewModel.ItemType.Homework ?
+            FindViewById<Button>(Resource.Id.ButtonHideOldItems).Text = PowerPlannerResources.GetString(ViewModel.Type == TaskOrEventType.Task ?
                     "ClassPage_ButtonHideOldHomeworkString" : "ClassPage_ButtonHideOldExamsString");
             RecyclerView recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerViewAgenda);
 
@@ -73,7 +73,7 @@ namespace PowerPlannerAndroid.Views
 
             _buttonShowOldItems = new Button(Context)
             {
-                Text = PowerPlannerResources.GetString(ViewModel.Type == ClassHomeworkOrExamsViewModel.ItemType.Homework ?
+                Text = PowerPlannerResources.GetString(ViewModel.Type == TaskOrEventType.Task ?
                     "ClassPage_ButtonShowOldHomeworkString" : "ClassPage_ButtonShowOldExamsString"),
                 LayoutParameters = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MatchParent,
@@ -149,7 +149,7 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private void _oldItemsAdapter_ItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void _oldItemsAdapter_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
         }
@@ -164,7 +164,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.ShowPastCompletedItems();
         }
 
-        private void Adapter_ItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void Adapter_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
         }

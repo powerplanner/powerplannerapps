@@ -28,6 +28,7 @@ using Android.Support.V4.Content;
 using Android.Support.V4.View;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System.Collections.Specialized;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -342,7 +343,7 @@ namespace PowerPlannerAndroid.Views
 
                     UpdateSelectedStatus();
 
-                    _myHomeworkCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is BaseViewItemHomeworkExam && i.Date.Date == date.Date && !(i as BaseViewItemHomeworkExam).IsComplete()));
+                    _myHomeworkCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is ViewItemTaskOrEvent && i.Date.Date == date.Date && !(i as ViewItemTaskOrEvent).IsComplete));
 
                     if (_holidaysOnDay != null && _holidaysChangedHandler != null)
                     {
@@ -404,7 +405,7 @@ namespace PowerPlannerAndroid.Views
                     }
                 };
 
-                if (item is BaseViewItemHomeworkExam)
+                if (item is ViewItemTaskOrEvent)
                 {
                     ViewCompat.SetBackgroundTintList(view, new ColorStateList(new int[][]
                     {
@@ -412,7 +413,7 @@ namespace PowerPlannerAndroid.Views
                     },
                     new int[]
                     {
-                        ColorTools.GetColor((item as BaseViewItemHomeworkExam).GetClassOrNull().Color).ToArgb()
+                        ColorTools.GetColor((item as ViewItemTaskOrEvent).Class.Color).ToArgb()
                     }));
                 }
 
@@ -444,7 +445,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.SelectedDate = e;
         }
 
-        private void _dayPagerControl_ItemClick(object sender, PowerPlannerAppDataLibrary.ViewItems.BaseViewItems.BaseViewItemHomeworkExam e)
+        private void _dayPagerControl_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
         }

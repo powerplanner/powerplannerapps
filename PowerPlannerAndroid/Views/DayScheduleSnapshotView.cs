@@ -790,7 +790,7 @@ namespace PowerPlannerAndroid.Views
                 Text = item.Item.Name
             };
             tb.SetTextColor(Color.White);
-            if (item.Item.IsComplete())
+            if (item.Item.IsComplete)
             {
                 tb.SetStrikethrough(true);
             }
@@ -799,7 +799,7 @@ namespace PowerPlannerAndroid.Views
             return grid;
         }
 
-        public static Android.Content.Res.ColorStateList GetBackgroundColorStateList(BaseViewItemHomeworkExam item)
+        public static Android.Content.Res.ColorStateList GetBackgroundColorStateList(ViewItemTaskOrEvent item)
         {
             return new Android.Content.Res.ColorStateList(new int[][]
             {
@@ -807,7 +807,7 @@ namespace PowerPlannerAndroid.Views
             },
             new int[]
             {
-                item.IsComplete() ? new Color(180, 180, 180).ToArgb() : ColorTools.GetColor(item.GetClassOrNull().Color).ToArgb()
+                item.IsComplete ? new Color(180, 180, 180).ToArgb() : ColorTools.GetColor(item.Class.Color).ToArgb()
             });
         }
     }
@@ -855,8 +855,8 @@ namespace PowerPlannerAndroid.Views
             Visibility = ViewStates.Gone;
         }
 
-        private IEnumerable<BaseViewItemHomeworkExam> _additionalItems;
-        public IEnumerable<BaseViewItemHomeworkExam> AdditionalItems
+        private IEnumerable<ViewItemTaskOrEvent> _additionalItems;
+        public IEnumerable<ViewItemTaskOrEvent> AdditionalItems
         {
             get { return _additionalItems; }
             set
@@ -891,9 +891,9 @@ namespace PowerPlannerAndroid.Views
                 }
             };
 
-            if (item is BaseViewItemHomeworkExam)
+            if (item is ViewItemTaskOrEvent)
             {
-                ViewCompat.SetBackgroundTintList(view, MyFullEventItem.GetBackgroundColorStateList(item as BaseViewItemHomeworkExam));
+                ViewCompat.SetBackgroundTintList(view, MyFullEventItem.GetBackgroundColorStateList(item as ViewItemTaskOrEvent));
             }
 
             return view;

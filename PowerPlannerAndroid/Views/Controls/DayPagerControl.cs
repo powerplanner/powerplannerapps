@@ -23,7 +23,7 @@ namespace PowerPlannerAndroid.Views.Controls
     public class DayPagerControl : ViewPager
     {
         public event EventHandler<DateTime> CurrentDateChanged;
-        public event EventHandler<BaseViewItemHomeworkExam> ItemClick;
+        public event EventHandler<ViewItemTaskOrEvent> ItemClick;
         public event EventHandler<ViewItemHoliday> HolidayItemClick;
         public event EventHandler<ViewItemSchedule> ScheduleItemClick;
         public event EventHandler ScheduleClick;
@@ -134,14 +134,14 @@ namespace PowerPlannerAndroid.Views.Controls
             ScheduleItemClick?.Invoke(this, e);
         }
 
-        private void Adapter_ItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void Adapter_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ItemClick?.Invoke(this, e);
         }
 
         private class DayPagerAdapter : PagerAdapter
         {
-            public event EventHandler<BaseViewItemHomeworkExam> ItemClick;
+            public event EventHandler<ViewItemTaskOrEvent> ItemClick;
             public event EventHandler<ViewItemHoliday> HolidayItemClick;
             public event EventHandler<ViewItemSchedule> ScheduleItemClick;
             public event EventHandler ScheduleClick;
@@ -230,7 +230,7 @@ namespace PowerPlannerAndroid.Views.Controls
                 ScheduleItemClick?.Invoke(this, e);
             }
 
-            private void SingleDayControl_ItemClick(object sender, BaseViewItemHomeworkExam e)
+            private void SingleDayControl_ItemClick(object sender, ViewItemTaskOrEvent e)
             {
                 ItemClick?.Invoke(sender, e);
             }

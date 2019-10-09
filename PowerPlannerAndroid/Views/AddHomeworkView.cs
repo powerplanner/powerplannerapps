@@ -53,7 +53,7 @@ namespace PowerPlannerAndroid.Views
 
             switch (ViewModel.Type)
             {
-                case AddHomeworkViewModel.ItemType.Homework:
+                case TaskOrEventType.Task:
                     switch (ViewModel.State)
                     {
                         case AddHomeworkViewModel.OperationState.Adding:
@@ -69,7 +69,7 @@ namespace PowerPlannerAndroid.Views
                     }
                     break;
 
-                case AddHomeworkViewModel.ItemType.Exam:
+                case TaskOrEventType.Event:
                     switch (ViewModel.State)
                     {
                         case AddHomeworkViewModel.OperationState.Adding:
