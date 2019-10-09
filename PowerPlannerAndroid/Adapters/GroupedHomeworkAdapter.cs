@@ -13,7 +13,7 @@ using Android.Widget;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.Views.ListItems;
 using InterfacesDroid.Adapters;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Adapters
 {
@@ -22,7 +22,7 @@ namespace PowerPlannerAndroid.Adapters
         public const int NORMAL_ITEM_TYPE = 0;
         public const int HEADER_ITEM_TYPE = 1;
 
-        public event EventHandler<BaseViewItemHomeworkExam> ItemClick;
+        public event EventHandler<ViewItemTaskOrEvent> ItemClick;
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
@@ -50,7 +50,7 @@ namespace PowerPlannerAndroid.Adapters
 
         private void ListItemHomeworkView_Click(object sender, EventArgs e)
         {
-            ItemClick?.Invoke(this, (sender as ListItemHomeworkView).DataContext as BaseViewItemHomeworkExam);
+            ItemClick?.Invoke(this, (sender as ListItemHomeworkView).DataContext as ViewItemTaskOrEvent);
         }
 
         protected abstract RecyclerView.ViewHolder OnCreateViewHolderForHeader(ViewGroup parent);

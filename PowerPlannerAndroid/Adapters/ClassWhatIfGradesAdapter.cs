@@ -63,7 +63,7 @@ namespace PowerPlannerAndroid.Adapters
             if (item is ViewItemWeightCategory)
                 return SECTION_HEADER_ITEM_TYPE;
 
-            if (item is BaseViewItemHomeworkExam)
+            if (item is ViewItemTaskOrEvent)
             {
                 return GRADE_ITEM_TYPE;
             }

@@ -14,12 +14,12 @@ using InterfacesDroid.Views;
 using Android.Support.V7.Widget;
 using PowerPlannerAndroid.Adapters;
 using Android.Support.Design.Widget;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using InterfacesDroid.Decorations;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using InterfacesDroid.Themes;
 using PowerPlannerAndroid.Views.Controls;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -67,7 +67,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.AddExam();
         }
 
-        private void Adapter_ItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void Adapter_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
         }

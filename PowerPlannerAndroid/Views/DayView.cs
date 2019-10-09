@@ -16,6 +16,7 @@ using Android.Support.Design.Widget;
 using PowerPlannerAppDataLibrary.Extensions;
 using System.ComponentModel;
 using ToolsPortable;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -92,7 +93,7 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private void _dayPagerControl_ItemClick(object sender, PowerPlannerAppDataLibrary.ViewItems.BaseViewItems.BaseViewItemHomeworkExam e)
+        private void _dayPagerControl_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
         }
