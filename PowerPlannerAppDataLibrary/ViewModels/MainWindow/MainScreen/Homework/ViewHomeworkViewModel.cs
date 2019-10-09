@@ -11,6 +11,8 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
+using ToolsPortable;
+using System.ComponentModel;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 {
@@ -20,8 +22,38 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public bool IsUnassigedMode { get; private set; }
 
-        private ViewHomeworkViewModel(BaseViewModel parent) : base(parent)
+        public string PageTitle
         {
+            get
+            {
+                if (Item.Type == TaskOrEventType.Task)
+                {
+                    return PowerPlannerResources.GetString("String_ViewTask").ToUpper();
+                }
+                else
+                {
+                    return PowerPlannerResources.GetString("String_ViewEvent").ToUpper();
+                }
+            }
+        }
+
+        private ViewHomeworkViewModel(BaseViewModel parent, ViewItemTaskOrEvent item) : base(parent)
+        {
+            Item = item;
+            Item.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Item_PropertyChanged).Handler;
+        }
+
+        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                // When the item type changes, these dependent values need to change
+                case nameof(Item.Type):
+                    OnPropertyChanged(
+                        nameof(PageTitle),
+                        nameof(IsCompletionSliderVisible));
+                    break;
+            }
         }
 
         public override string GetPageName()
@@ -38,10 +70,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public static ViewHomeworkViewModel Create(BaseViewModel parent, ViewItemTaskOrEvent item)
         {
-            return new ViewHomeworkViewModel(parent)
-            {
-                Item = item
-            };
+            return new ViewHomeworkViewModel(parent, item);
         }
 
         /// <summary>
@@ -52,12 +81,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         /// <returns></returns>
         public static ViewHomeworkViewModel CreateForUnassigned(BaseViewModel parent, ViewItemTaskOrEvent item)
         {
-            return new ViewHomeworkViewModel(parent)
+            return new ViewHomeworkViewModel(parent, item)
             {
-                Item = item,
                 IsUnassigedMode = true
             };
         }
+
+        /// <summary>
+        /// If we're in unassigned mode (viewing an unassigned grade), we always hide completion slider. Else we only show it if it's a task.
+        /// </summary>
+        public bool IsCompletionSliderVisible => Item.Type == TaskOrEventType.Task && !IsUnassigedMode;
+
+        public bool IsButtonConvertToGradeVisible => IsUnassigedMode;
 
         public void Edit()
         {
