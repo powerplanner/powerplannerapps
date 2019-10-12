@@ -78,8 +78,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public bool IsMyAccountVisible => CachedComputation(delegate
         {
-            return IsOnlineAccount;
-        }, new string[] { nameof(IsOnlineAccount) });
+            // We hide when it's the default account, only options for them are create or log in
+            return HasAccount && !IsDefaultOfflineAccount;
+        }, new string[] { nameof(IsDefaultOfflineAccount) });
 
         /// <summary>
         /// Should be visible for default offline account too, clicking it will tell users they need to create an account first
