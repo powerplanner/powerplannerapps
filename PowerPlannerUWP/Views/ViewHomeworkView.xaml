@@ -30,6 +30,16 @@
 
     </views:PopupViewHostGeneric.PrimaryCommands>
 
+    <views:PopupViewHostGeneric.SecondaryCommands>
+
+        <AppBarButton
+            x:Uid="AppBarButtonConvert"
+                x:Name="ButtonConvert"
+                Label="Convert"
+                Click="ButtonConvert_Click"/>
+
+    </views:PopupViewHostGeneric.SecondaryCommands>
+
     <views:PopupViewHostGeneric.MainContent>
         <Grid Grid.Row="1">
 

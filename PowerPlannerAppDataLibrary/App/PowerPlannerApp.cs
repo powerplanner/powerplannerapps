@@ -95,8 +95,8 @@ namespace PowerPlannerAppDataLibrary.App
 #if DEBUG
             await System.Threading.Tasks.Task.Delay(800);
             return true;
-#endif
 
+#endif
             try
             {
                 var currAccount = GetCurrentAccount();

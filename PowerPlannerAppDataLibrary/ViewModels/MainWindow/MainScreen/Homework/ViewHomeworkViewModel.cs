@@ -152,6 +152,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             });
         }
 
+        public void ConvertItem()
+        {
+            DataChanges changes = new DataChanges(); 
+
+            if (Item.Type == TaskOrEventType.Event)
+            {
+                changes.Add(new DataItemMegaItem()
+                {
+                    Identifier = Item.Identifier,
+                    MegaItemType = PowerPlannerSending.MegaItemType.Task
+                });
+            }
+
+            else
+            {
+                changes.Add(new DataItemMegaItem()
+                {
+                    Identifier = Item.Identifier,
+                    MegaItemType = PowerPlannerSending.MegaItemType.Event
+                });
+            }
+
+             PowerPlannerApp.Current.SaveChanges(changes);
+        }
+
         public async void ConvertToGrade()
         {
             await TryHandleUserInteractionAsync("ConvertToGrade", async (cancellationToken) =>

@@ -66,5 +66,10 @@ namespace PowerPlannerUWP.Views
                 ButtonConvertToGrade.Focus(FocusState.Programmatic);
             }
         }
+
+        private void ButtonConvert_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ConvertItem();
+        }
     }
 }

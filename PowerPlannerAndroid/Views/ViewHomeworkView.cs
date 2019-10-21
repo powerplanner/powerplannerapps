@@ -135,6 +135,10 @@ namespace PowerPlannerAndroid.Views
                 case Resource.Id.MenuItemDelete:
                     ViewModel.Delete();
                     break;
+
+                case Resource.Id.MenuItemConvert:
+                    ViewModel.ConvertItem();
+                    break;
             }
         }
 
