@@ -7,26 +7,32 @@ using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using PowerPlannerAppDataLibrary.DataLayer;
 using System.Runtime.CompilerServices;
-using Microsoft.HockeyApp;
 using System.Diagnostics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 
 namespace PowerPlannerUWPLibrary.Extensions
 {
     public class UWPTelemetryExtension : TelemetryExtension
     {
-        private string _userId = "";
-
         public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null)
         {
             try
             {
-                HockeyClient.Current.TrackException(ex, new Dictionary<string, string>()
+                Crashes.TrackError(ex, exceptionName == null ? null : new Dictionary<string, string>()
                 {
-                    { "ExceptionName", exceptionName },
-                    { "UserId", _userId }
+                    { "ExceptionName", exceptionName }
                 });
             }
-            catch { }
+            catch (Exception ex2)
+            {
+                TrackEvent("FailedTrackError", new Dictionary<string, string>()
+                {
+                    { "Message", ex2.Message },
+                    { "OriginalMessage", ex.Message }
+                });
+            }
         }
 
         public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
@@ -36,16 +42,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 #else
             try
             {
-                if (properties == null)
-                {
-                    properties = new Dictionary<string, string>();
-                }
-                if (properties.Count < 5)
-                {
-                    properties["UserId"] = _userId;
-                }
-
-                HockeyClient.Current.TrackEvent(eventName, properties);
+                Analytics.TrackEvent(eventName, properties);
             }
             catch { }
 #endif
@@ -57,19 +54,9 @@ namespace PowerPlannerUWPLibrary.Extensions
             {
                 if (account != null)
                 {
-                    _userId = account.GetTelemetryUserId();
-                    if (account.IsDefaultOfflineAccount)
-                    {
-                        HockeyClient.Current.UpdateContactInfo(account.GetTelemetryUserId(), "");
-                    }
-                    else
-                    {
-                        HockeyClient.Current.UpdateContactInfo(account.GetTelemetryUserId(), account.Username);
-                    }
-                }
-                else
-                {
-                    _userId = "";
+                    var userId = account.GetTelemetryUserId();
+
+                    AppCenter.SetUserId(userId);
                 }
             }
             catch { }
@@ -82,14 +69,9 @@ namespace PowerPlannerUWPLibrary.Extensions
 #if DEBUG
                 Debug.WriteLine($"Page visited: {pageName} for {duration.TotalSeconds.ToString("0.#")} seconds on {timeVisited.ToString("t")}");
 #endif
-                HockeyClient.Current.TrackPageView(new Microsoft.HockeyApp.DataContracts.PageViewTelemetry(pageName)
+                Analytics.TrackEvent("PageView_" + pageName, new Dictionary<string, string>()
                 {
-                    Duration = duration,
-                    Timestamp = timeVisited,
-                    Properties =
-                    {
-                        { "UserId", _userId }
-                    }
+                    { "Duration", Math.Ceiling(duration.TotalSeconds).ToString("0") }
                 });
             }
             catch { }

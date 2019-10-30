@@ -1,25 +1,21 @@
 ﻿using InterfacesUWP;
 using InterfacesUWP.App;
-using Microsoft.HockeyApp;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerUWPLibrary.App;
 using PowerPlannerUWPLibrary.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToolsPortable;
-using ToolsUniversal;
 using Windows.ApplicationModel;
-using Windows.UI.Xaml;
 
 namespace PowerPlannerUWPLibrary
 {
     public static class InitializeUWP
     {
-        private const string HOCKEY_APP_ID = Secrets.HockeyAppId;
+        private const string APP_CENTER_APP_SECRET = Secrets.AppCenterAppSecret;
 
         private static bool _initialized;
         public static void Initialize()
@@ -33,7 +29,7 @@ namespace PowerPlannerUWPLibrary
 
             try
             {
-                HockeyClient.Current.Configure(HOCKEY_APP_ID);
+                AppCenter.Start(APP_CENTER_APP_SECRET, typeof(Crashes), typeof(Analytics));
             }
 
             catch { }
