@@ -29,31 +29,32 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             try
             {
-                HttpWebRequest req = WebRequest.CreateHttp(imageUrl);
-
-                using (WebResponse resp = await req.GetResponseAsync())
+                using (HttpClient client = new HttpClient())
                 {
-                    IFile file = await imagesFolder.CreateFileAsync(imageName, CreationCollisionOption.ReplaceExisting);
-                    try
+                    using (var stream = await client.GetStreamAsync(imageUrl))
                     {
-                        using (Stream storageStream = await file.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
+                        IFile file = await imagesFolder.CreateFileAsync(imageName, CreationCollisionOption.ReplaceExisting);
+                        try
                         {
-                            await resp.GetResponseStream().CopyToAsync(storageStream);
+                            using (Stream storageStream = await file.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
+                            {
+                                await stream.CopyToAsync(storageStream);
+                            }
+                            return new ImageAttachmentLoadResult()
+                            {
+                                Status = ImageAttachmentStatus.Loaded,
+                                File = file
+                            };
                         }
-                        return new ImageAttachmentLoadResult()
+                        catch (Exception ex)
                         {
-                            Status = ImageAttachmentStatus.Loaded,
-                            File = file
-                        };
-                    }
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
-                        await file.DeleteAsync();
+                            TelemetryExtension.Current?.TrackException(ex);
+                            await file.DeleteAsync();
+                        }
                     }
                 }
             }
-            catch (WebException)
+            catch (HttpRequestException)
             {
                 return new ImageAttachmentLoadResult()
                 {
