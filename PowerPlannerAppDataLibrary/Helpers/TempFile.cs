@@ -1,4 +1,4 @@
-﻿using PCLStorage;
+﻿using StorageEverywhere;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -74,7 +74,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
             catch { }
         }
 
-        public Task<Stream> OpenAsync(FileAccess fileAccess, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<Stream> OpenAsync(StorageEverywhere.FileAccess fileAccess, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _file.OpenAsync(fileAccess, cancellationToken);
         }

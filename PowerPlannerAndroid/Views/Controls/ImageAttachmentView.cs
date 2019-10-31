@@ -13,7 +13,7 @@ using Android.Views;
 using Android.Widget;
 using Bumptech.Glide;
 using ImageViews.Photo;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;

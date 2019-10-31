@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;

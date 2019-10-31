@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 using ToolsPortable;
 using System.Diagnostics;
 using PowerPlannerAppDataLibrary.Helpers;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using Newtonsoft.Json;
@@ -439,7 +439,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 // Write the data to the temp file
                 timeTracker = TimeTracker.Start();
-                using (Stream s = await tempFile.OpenAsync(FileAccess.ReadAndWrite))
+                using (Stream s = await tempFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                 {
                     timeTracker.End(3, "ChangedItems.Save open stream");
 
@@ -528,7 +528,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
 
                 timeTracker = TimeTracker.Start();
-                using (Stream s = await file.OpenAsync(FileAccess.Read))
+                using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
                 {
                     timeTracker.End(3, "ChangedItems.Load OpenAsync");
 

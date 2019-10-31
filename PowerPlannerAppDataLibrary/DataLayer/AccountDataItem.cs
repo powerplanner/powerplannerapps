@@ -1,4 +1,4 @@
-﻿using PCLStorage;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
@@ -341,7 +341,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 if (file != null)
                 {
-                    using (Stream s = await file.OpenAsync(FileAccess.Read))
+                    using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
                     {
                         ClassTileSettings answer = (ClassTileSettings)GetClassTileSettingsSerializer().ReadObject(s);
                         return answer;
@@ -367,7 +367,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             IFile temp = await destination.CreateFileAsync("Temp" + classId + ".dat", CreationCollisionOption.ReplaceExisting);
 
             // Write the data to the temp file
-            using (Stream s = await temp.OpenAsync(FileAccess.ReadAndWrite))
+            using (Stream s = await temp.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
             {
                 GetClassTileSettingsSerializer().WriteObject(s, settings);
             }
@@ -530,7 +530,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        public async Task<T> PostAuthenticatedAsync<K, T>(string url, K postData, ToolsPortable.WebHelper.Serializer serializer = ToolsPortable.WebHelper.Serializer.DataContractJson, System.Threading.CancellationToken? cancellationToken = null)
+        public async Task<T> PostAuthenticatedAsync<K, T>(string url, K postData, System.Threading.CancellationToken? cancellationToken = null)
             where K : PartialLoginRequest
             where T : PlainResponse
         {
@@ -561,7 +561,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 Token = Token
             };
 
-            return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, serializer, cancellationToken ?? System.Threading.CancellationToken.None);
+            return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, cancellationToken ?? System.Threading.CancellationToken.None);
         }
 
 #if ANDROID

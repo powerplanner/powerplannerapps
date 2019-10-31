@@ -1,4 +1,4 @@
-﻿using PCLStorage;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
                     IFile file = await imagesFolder.CreateFileAsync(imageName, CreationCollisionOption.ReplaceExisting);
                     try
                     {
-                        using (Stream storageStream = await file.OpenAsync(FileAccess.ReadAndWrite))
+                        using (Stream storageStream = await file.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                         {
                             await resp.GetResponseStream().CopyToAsync(storageStream);
                         }

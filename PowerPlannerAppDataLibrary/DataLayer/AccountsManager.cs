@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Diagnostics;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -278,7 +278,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             // Otherwise 
             AccountDataItem account;
             timeTracker = TimeTracker.Start();
-            using (Stream s = await file.OpenAsync(FileAccess.Read))
+            using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
             {
                 timeTracker.End(3, "AccountsManager.Load open file stream");
 
@@ -358,7 +358,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                         // Write the data to the temp file
                         timeTracker = TimeTracker.Start();
-                        using (Stream s = await tempAccountFile.OpenAsync(FileAccess.ReadAndWrite))
+                        using (Stream s = await tempAccountFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                         {
                             timeTracker.End(3, "AccountsManager.Save opening file stream");
 
