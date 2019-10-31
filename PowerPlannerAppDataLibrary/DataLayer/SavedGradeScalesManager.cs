@@ -1,4 +1,4 @@
-﻿using PCLStorage;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using PowerPlannerSending;
@@ -40,7 +40,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 GradeScale[] scales;
 
-                using (Stream s = await file.OpenAsync(FileAccess.Read))
+                using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
                 {
                     scales = SERIALIZER.ReadObject(s) as GradeScale[];
                 }
@@ -72,7 +72,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         public async System.Threading.Tasks.Task SaveGradeScale(string name, GradeScale[] scales)
         {
             IFile file = await _savedGradeScalesFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
-            using (Stream s = await file.OpenAsync(FileAccess.ReadAndWrite))
+            using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
             {
                 SERIALIZER.WriteObject(s, scales);
             }

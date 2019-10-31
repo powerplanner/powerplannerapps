@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -480,7 +480,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 {
                     try
                     {
-                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, WebHelper.Serializer.JsonNET, request.CancellationToken);
+                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, request.CancellationToken);
                     }
 
                     catch (OperationCanceledException)
@@ -598,7 +598,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                             var partialFile = await partialSyncsFolder.CreateFileAsync("Partial" + partialSyncNumber, CreationCollisionOption.ReplaceExisting);
                             partialSyncFiles.Add(partialFile);
                             var jsonSerializer = new JsonSerializer();
-                            using (var stream = await partialFile.OpenAsync(FileAccess.ReadAndWrite))
+                            using (var stream = await partialFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                             {
                                 using (var streamWriter = new StreamWriter(stream))
                                 {
@@ -675,7 +675,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     foreach (var partialFile in partialSyncFiles)
                     {
                         UpdatedItems partialItems;
-                        using (var stream = await partialFile.OpenAsync(FileAccess.Read))
+                        using (var stream = await partialFile.OpenAsync(StorageEverywhere.FileAccess.Read))
                         {
                             using (var streamReader = new StreamReader(stream))
                             {
@@ -1102,7 +1102,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             try
             {
                 // https://stackoverflow.com/questions/16416601/c-sharp-httpclient-4-5-multipart-form-data-upload
-                using (Stream stream = await imageFile.OpenAsync(FileAccess.Read))
+                using (Stream stream = await imageFile.OpenAsync(StorageEverywhere.FileAccess.Read))
                 {
                     using (var client = new HttpClient())
                     {
