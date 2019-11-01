@@ -20,6 +20,10 @@ namespace PowerPlannerUWPLibrary.Extensions
         {
             try
             {
+#if DEBUG
+                Debugger.Break();
+#endif
+
                 Crashes.TrackError(ex, exceptionName == null ? null : new Dictionary<string, string>()
                 {
                     { "ExceptionName", exceptionName }
