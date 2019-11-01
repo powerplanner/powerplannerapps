@@ -240,12 +240,27 @@ namespace PowerPlanneriOS.Extensions
 
         private async Task<string[]> GetScheduledNotificationIdentifiersAsync(Guid localAccountId)
         {
+            // This seems to randomly crash the app when running in the simulator and called multiple times, but works
+            // perfectly fine on my device. So have to assume it's an issue with the simulator.
+
+            // In iOS 13, this returns null if there aren't any scheduled notifications
+            // https://stackoverflow.com/a/58168417/1454643
+            // I'm not quite sure if the task itself returns null, or returns a task with null item, so checking both.
+            var notifsTask = _notificationCenter.GetPendingNotificationRequestsAsync();
+            if (notifsTask == null)
+            {
+                return new string[0];
+            }
+            var notifs = await notifsTask;
+            if (notifs == null || notifs.Length == 0)
+            {
+                return new string[0];
+            }
+
             List<string> ids = new List<string>();
             string idStartString = GetIdentifierStartStringForAccount(localAccountId);
 
-            // This seems to randomly crash the app when running in the simulator and called multiple times, but works
-            // perfectly fine on my device. So have to assume it's an issue with the simulator.
-            foreach (var notif in await _notificationCenter.GetPendingNotificationRequestsAsync())
+            foreach (var notif in notifs)
             {
                 if (notif.Identifier.StartsWith(idStartString))
                 {
