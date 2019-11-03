@@ -815,6 +815,17 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             
             catch (Exception ex)
             {
+                // Ignore typical issues, only capture unusal ones
+                if (ExceptionHelper.IsHttpWebIssue(ex))
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                    Debug.WriteLine("Error syncing (WebException): " + ex.ToString());
+                    return new SyncResult()
+                    {
+                        Error = "Offline."
+                    };
+                }
+
                 Debug.WriteLine("Error syncing: " + ex.ToString());
                 TelemetryExtension.Current?.TrackException(ex);
                 return new SyncResult()
