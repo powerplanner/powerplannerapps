@@ -162,7 +162,7 @@ namespace PowerPlannerAndroid.Extensions
             List<StatusBarNotification> existingNotifs;
             if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
-                existingNotifs = notificationManager.GetActiveNotifications().Where(i => i.Id == NotificationIds.DAY_OF_NOTIFICATIONS && i.Tag.StartsWith(tagForAccountStartsWith)).ToList();
+                existingNotifs = notificationManager.GetActiveNotifications().Where(i => i.Id == NotificationIds.DAY_OF_NOTIFICATIONS && i.Tag != null && i.Tag.StartsWith(tagForAccountStartsWith)).ToList();
             }
             else
             {
@@ -348,7 +348,7 @@ namespace PowerPlannerAndroid.Extensions
             }
 
             string tag = localAccountId.ToString() + ";" + item.Identifier.ToString();
-            var existing = existingNotifs.FirstOrDefault(i => i.Tag.Equals(tag));
+            var existing = existingNotifs.FirstOrDefault(i => i.Tag == tag);
 
             // If the reminder has already been sent and the notification doesn't exist,
             // that means the user dismissed it, so don't show it again
@@ -427,7 +427,7 @@ namespace PowerPlannerAndroid.Extensions
             StatusBarNotification existing;
             if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
-                existing = notificationManager.GetActiveNotifications().FirstOrDefault(i => i.Id == NotificationIds.DAY_BEFORE_NOTIFICATION && i.Tag.Equals(tag));
+                existing = notificationManager.GetActiveNotifications().FirstOrDefault(i => i.Id == NotificationIds.DAY_BEFORE_NOTIFICATION && i.Tag == tag);
             }
             else
             {
