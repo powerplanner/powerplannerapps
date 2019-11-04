@@ -41,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             catch (Exception ex)
             {
-                TelemetryExtension.Current?.TrackException(ex);
+                TelemetryExtension.Current?.TrackException(ex, "UnknownCreateAccountLocallyError");
                 ShowMessage("Unknown error occurred. Your error has been sent to the developer.", "Error");
             }
 
