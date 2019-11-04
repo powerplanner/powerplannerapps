@@ -334,6 +334,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v < new Version(1911, 2, 0, 0))
+                    {
+                        changedText += "\n - Support for Monday as first day of week on Calendar for countries like Spain!";
+                    }
+
                     if (v < new Version(5, 4, 86, 0))
                     {
                         changedText += "\n - 2x improvement in app launch speed!";
