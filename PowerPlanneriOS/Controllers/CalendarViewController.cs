@@ -33,7 +33,7 @@ namespace PowerPlanneriOS.Controllers
 
         public override void OnViewModelLoadedOverride()
         {
-            var cal = new MyCalendarView()
+            var cal = new MyCalendarView(ViewModel.FirstDayOfWeek)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 DisplayMonth = ViewModel.DisplayMonth
@@ -72,9 +72,11 @@ namespace PowerPlanneriOS.Controllers
 
         private class MyCalendarView : BareUICalendarView
         {
+            public MyCalendarView(DayOfWeek firstDayOfWeek) : base(firstDayOfWeek) { }
+
             protected override BareUICalendarMonthView CreateView()
             {
-                return new MyMonthView();
+                return new MyMonthView(FirstDayOfWeek);
             }
 
             public void SetSemester(ViewItemSemester semester)
@@ -88,6 +90,8 @@ namespace PowerPlanneriOS.Controllers
 
         private class MyMonthView : BareUICalendarMonthView
         {
+            public MyMonthView(DayOfWeek firstDayOfWeek) : base(firstDayOfWeek) { }
+
             protected override CGColor GetColorForItem(object item)
             {
                 if (item is BaseViewItemHomeworkExam)
