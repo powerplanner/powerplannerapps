@@ -731,6 +731,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v < new Version(1911, 2))
+                    {
+                        changedText += "\n - Support for Monday as first day of week on Calendar for countries like Spain!";
+                    }
+
                     if (v < new Version(1909, 12, 1, 0))
                     {
                         changedText += "\n - Fixed duplicate calendar entries in Windows Calendar integration";
