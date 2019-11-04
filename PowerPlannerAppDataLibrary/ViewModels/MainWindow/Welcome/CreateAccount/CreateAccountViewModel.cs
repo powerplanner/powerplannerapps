@@ -201,6 +201,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 DefaultAccountToUpgrade.Token = token;
                 DefaultAccountToUpgrade.AccountId = accountId;
                 DefaultAccountToUpgrade.DeviceId = deviceId;
+                DefaultAccountToUpgrade.NeedsToSyncSettings = true; // Make sure we sync settings so things like week info uploads
 
                 await AccountsManager.Save(DefaultAccountToUpgrade);
 

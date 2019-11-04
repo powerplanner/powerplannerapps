@@ -42,6 +42,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
                 _calendar = new MainCalendarView(viewModel); // This object handles loading items when month changes
 
+                _calendar.FirstDayOfWeek = viewModel.FirstDayOfWeek;
                 _calendar.DisplayMonth = viewModel.DisplayMonth;
 
                 calendarContainer.Child = _calendar;

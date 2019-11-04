@@ -101,7 +101,7 @@ namespace PowerPlannerUWP
         public App()
         {
 #if DEBUG
-            ApplicationLanguages.PrimaryLanguageOverride = "en";
+            //ApplicationLanguages.PrimaryLanguageOverride = "es";
 #endif
 
             this.UnhandledException += App_UnhandledException;

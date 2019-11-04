@@ -18,7 +18,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
     [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/PowerPlannerUWPLibrary.DataLayer")]
     public class AccountDataItem : BindableBaseWithPortableDispatcher
     {
-        public const int CURRENT_ACCOUNT_DATA_VERSION = 2;
+        public const int CURRENT_ACCOUNT_DATA_VERSION = 3;
         public const int CURRENT_SYNCED_DATA_VERSION = 5;
 
         /// <summary>
@@ -150,20 +150,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <param name="currentWeek"></param>
         public async System.Threading.Tasks.Task SetWeek(DayOfWeek startsOn, Schedule.Week currentWeek)
         {
-            // Clear cached schedules on day since they don't subscribe to these changes.
-            // Ideally I would have the lists subscribe to the account, but this will do for now.
-            ViewLists.SchedulesOnDay.ClearCached();
-            ViewLists.DayScheduleItemsArranger.ClearCached();
-
-            DateTime today = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
-
-            if (currentWeek == Schedule.Week.WeekTwo)
-                today = today.AddDays(-7);
-
-            DateTime answer = DateTools.Last(startsOn, today);
-            if (answer != WeekOneStartsOn)
+            if (SetWeekSimple(startsOn, currentWeek))
             {
-                WeekOneStartsOn = answer;
+                // Clear cached schedules on day since they don't subscribe to these changes.
+                // Ideally I would have the lists subscribe to the account, but this will do for now.
+                ViewLists.SchedulesOnDay.ClearCached();
+                ViewLists.DayScheduleItemsArranger.ClearCached();
+
                 NeedsToSyncSettings = true;
 
                 // Save
@@ -184,6 +177,28 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.WeekOneStartsOn);
             }
+        }
+
+        /// <summary>
+        /// Doesn't do any saving or setting of any other dependent properties
+        /// </summary>
+        /// <param name="startsOn"></param>
+        /// <param name="currentWeek"></param>
+        public bool SetWeekSimple(DayOfWeek startsOn, Schedule.Week currentWeek)
+        {
+            DateTime today = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
+
+            if (currentWeek == Schedule.Week.WeekTwo)
+                today = today.AddDays(-7);
+
+            DateTime answer = DateTools.Last(startsOn, today);
+            if (answer != WeekOneStartsOn)
+            {
+                WeekOneStartsOn = answer;
+                return true;
+            }
+
+            return false;
         }
 
         private async System.Threading.Tasks.Task SaveOnThread()

@@ -16,6 +16,10 @@ namespace PowerPlannerUWPLibrary.Extensions
     {
         public override Task<bool> OwnsInAppPurchaseAsync()
         {
+#if DEBUG
+            return Task.FromResult(true);
+#endif
+
             try
             {
                 var licenseInformation = CurrentApp.LicenseInformation;

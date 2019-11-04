@@ -37,10 +37,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         private void Initialize(Guid localAccountId, ViewItemSemester semester)
         {
+            var acct = MainScreenViewModel.CurrentAccount;
+            if (acct == null)
+            {
+                throw new NullReferenceException("MainScreenViewModel.CurrentAccount was null");
+            }
+            FirstDayOfWeek = acct.WeekChangesOn;
+
             SemesterItemsViewGroup = SemesterItemsViewGroup.Load(localAccountId, semester);
         }
 
         public DateTime Today { get; private set; } = DateTime.Today;
+
+        public DayOfWeek FirstDayOfWeek { get; private set; }
 
         private DateTime _selectedDate = NavigationManager.GetSelectedDate();
         public DateTime SelectedDate

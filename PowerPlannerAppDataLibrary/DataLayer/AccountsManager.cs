@@ -301,7 +301,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             account.LocalAccountId = localAccountId;
 
-            bool needsSyncSettings = false;
+            SyncLayer.Sync.ChangedSetting? changedSettings = null;
 
             // Upgrade account data
             if (account.AccountDataVersion < 2)
@@ -311,7 +311,42 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 if (account.CurrentSemesterId != Guid.Empty)
                 {
                     account.NeedsToSyncSettings = true;
-                    needsSyncSettings = true;
+
+                    if (changedSettings == null)
+                    {
+                        changedSettings = SyncLayer.Sync.ChangedSetting.SelectedSemesterId;
+                    }
+                    else
+                    {
+                        changedSettings = changedSettings.Value | SyncLayer.Sync.ChangedSetting.SelectedSemesterId;
+                    }
+                }
+            }
+
+            if (account.AccountDataVersion < 3)
+            {
+                // We introduced auto-selecting the week that the schedule changes on,
+                // so users in Spain will now have everything as Monday for first day
+                DayOfWeek cultureFirstDayOfWeek = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek;
+                if (account.WeekChangesOn != cultureFirstDayOfWeek)
+                {
+                    account.NeedsToSyncSettings = true;
+                    account.SetWeekSimple(cultureFirstDayOfWeek, account.CurrentWeek);
+
+                    if (changedSettings == null)
+                    {
+                        changedSettings = SyncLayer.Sync.ChangedSetting.WeekOneStartsOn;
+                    }
+                    else
+                    {
+                        changedSettings = changedSettings.Value | SyncLayer.Sync.ChangedSetting.WeekOneStartsOn;
+                    }
+
+                    // While we technically should update their reminders/schedule tile (since if
+                    // they were using two-week schedules, that info changed), we'll skip doing that
+                    // since it's extra complicated to load the data items here while also loading the
+                    // account, and if they were using two week, they probably already have this set
+                    // correctly anyways
                 }
             }
 
@@ -321,9 +356,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 var dontWait = Save(account); // Don't wait, otherwise we would get in a dead lock
             }
 
-            if (needsSyncSettings)
+            if (changedSettings != null)
             {
-                var dontWait = SyncLayer.Sync.SyncSettings(account);
+                var dontWait = SyncLayer.Sync.SyncSettings(account, changedSettings.Value);
             }
 
             return account;
@@ -491,7 +526,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 DeviceId = deviceId,
                 RememberUsername = rememberUsername,
                 RememberPassword = rememberPassword,
-                AutoLogin = autoLogin
+                AutoLogin = autoLogin,
+                NeedsToSyncSettings = true, // Needs settings uploaded since we're setting WeekOneStartsOn
+                WeekOneStartsOn = ToolsPortable.DateTools.Last(System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek, DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc))
             };
 
             // Place it in the cache

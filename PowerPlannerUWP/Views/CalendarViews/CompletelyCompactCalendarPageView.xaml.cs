@@ -69,6 +69,9 @@ namespace PowerPlannerUWP.Views.CalendarViews
             {
                 _viewModel = viewModel;
 
+                // Not bothering to bind this property for now
+                smallCalendar.FirstDayOfWeek = viewModel.FirstDayOfWeek;
+
                 // Don't set selected date, since this doesn't use a selected date
                 smallCalendar.SetBinding(TCalendarView.DisplayMonthProperty, new Binding()
                 {
