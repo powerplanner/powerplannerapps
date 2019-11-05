@@ -92,18 +92,6 @@ namespace PowerPlannerAndroid.Views
             _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.MenuDrawerLayout);
         }
 
-        private void MenuItemsListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            try
-            {
-                ViewModel.SelectedItem = ViewModel.AvailableItems[e.Position];
-            }
-
-            catch { }
-
-            _drawerLayout.CloseDrawers();
-        }
-
         private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
 
         public override void OnViewModelLoadedOverride()
@@ -320,6 +308,13 @@ namespace PowerPlannerAndroid.Views
 
                 textView.Click += delegate
                 {
+                    // If we're currently on classes and they clicked classes
+                    if (mainMenuSelection == NavigationManager.MainMenuSelections.Classes && _mainScreenView.ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
+                    {
+                        // Toggle the classes list
+                        _mainScreenView.ToggleClasses();
+                    }
+
                     _mainScreenView.ViewModel.SelectedItem = mainMenuSelection;
 
                     if (mainMenuSelection != NavigationManager.MainMenuSelections.Classes)
@@ -433,6 +428,37 @@ namespace PowerPlannerAndroid.Views
                 {
                     View.Background = null;
                 }
+            }
+        }
+
+        private bool AreClassesShown()
+        {
+            View classesViewGroup = null;
+            View classAddButton = null;
+
+            if (_classesViewGroupReference != null)
+            {
+                _classesViewGroupReference.TryGetTarget(out classesViewGroup);
+            }
+
+            if (_classAddButtonReference != null)
+            {
+                _classAddButtonReference.TryGetTarget(out classAddButton);
+            }
+
+            return classesViewGroup != null && classesViewGroup.Visibility == ViewStates.Visible
+                && classAddButton != null && classAddButton.Visibility == ViewStates.Visible;
+        }
+
+        private void ToggleClasses()
+        {
+            if (AreClassesShown())
+            {
+                HideClasses();
+            }
+            else
+            {
+                ShowClasses();
             }
         }
 
