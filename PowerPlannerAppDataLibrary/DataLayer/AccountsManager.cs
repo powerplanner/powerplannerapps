@@ -328,7 +328,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 // We introduced auto-selecting the week that the schedule changes on,
                 // so users in Spain will now have everything as Monday for first day
                 DayOfWeek cultureFirstDayOfWeek = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek;
-                if (account.WeekChangesOn != cultureFirstDayOfWeek)
+                if (account.WeekChangesOn == DayOfWeek.Sunday && account.WeekChangesOn != cultureFirstDayOfWeek)
                 {
                     account.NeedsToSyncSettings = true;
                     account.SetWeekSimple(cultureFirstDayOfWeek, account.CurrentWeek);
