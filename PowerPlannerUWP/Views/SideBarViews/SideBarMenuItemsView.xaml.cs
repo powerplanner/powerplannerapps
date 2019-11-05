@@ -176,6 +176,12 @@ namespace PowerPlannerUWP.Views.SideBarViews
 
             if (selected == NavigationManager.MainMenuSelections.Classes)
             {
+                // Clicking toggles visibility
+                if (_listViewClasses != null)
+                {
+                    _listViewClasses.Visibility = _listViewClasses.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                }
+
                 // If there's classes, we won't close since user can pick a class
                 if (MenuItemsModel != null && MenuItemsModel.Classes != null && MenuItemsModel.Classes.Count > 0)
                     return;
