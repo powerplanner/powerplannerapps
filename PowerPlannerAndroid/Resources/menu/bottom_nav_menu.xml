@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+    android:id="@+id/MenuCalendar"
+    android:enabled="true"
+    android:icon="@drawable/ic_date_range_black_48dp"
+    android:title="Calendar"
+    app:showAsAction="ifRoom" />
+  <item
+    android:id="@+id/MenuDay"
+    android:enabled="true"
+    android:icon="@drawable/ic_dashboard_black_48dp"
+    android:title="Day"
+    app:showAsAction="ifRoom" />
+  <item
+    android:id="@+id/MenuAgenda"
+    android:enabled="true"
+    android:icon="@drawable/ic_menu_white_24dp"
+    android:title="Agenda"
+    app:showAsAction="ifRoom" />
+  <item
+    android:id="@+id/MenuSchedule"
+    android:enabled="true"
+    android:icon="@drawable/ic_gcal_black_48dp"
+    android:title="Schedule"
+    app:showAsAction="ifRoom" />
+  <item
+    android:id="@+id/MenuClasses"
+    android:enabled="true"
+    android:icon="@drawable/ic_help_black_48dp"
+    android:title="Classes"
+    app:showAsAction="ifRoom" />
+</menu>

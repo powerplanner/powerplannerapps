@@ -1245,6 +1245,12 @@
       <Version>71.1610.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\bottom_nav_menu.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

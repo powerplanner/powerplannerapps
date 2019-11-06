@@ -19,11 +19,24 @@
                 android:id="@+id/Toolbar"
                 style="@style/ActionBar"/>
             
-            <FrameLayout
-                android:id="@+id/ContentFrame"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/Toolbar"/>
+                android:layout_below="@id/Toolbar">
+                <FrameLayout
+                    android:id="@+id/ContentFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/BottomNav"/>
+                <android.support.design.widget.BottomNavigationView
+                    android:id="@+id/BottomNav"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_gravity="start"
+                    android:layout_alignParentBottom="true"
+                    android:background="#DDD"
+                    app:menu="@menu/bottom_nav_menu"/>
+            </RelativeLayout>
 
         </RelativeLayout>
 
