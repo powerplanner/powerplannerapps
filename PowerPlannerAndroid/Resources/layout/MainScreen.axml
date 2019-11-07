@@ -34,9 +34,8 @@
                     android:layout_height="56dp"
                     android:layout_gravity="start"
                     android:layout_alignParentBottom="true"
-                    android:background="#FFF"
                     app:elevation="24dp"
-                    app:itemIconTint="#2E366D"
+                    android:background="#FFF"
                     app:menu="@menu/bottom_nav_menu"/>
             </RelativeLayout>
 
