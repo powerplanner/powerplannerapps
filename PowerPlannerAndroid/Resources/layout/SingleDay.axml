@@ -21,11 +21,9 @@
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
+        android:paddingStart="18dp"
         android:paddingBottom="8dp"
         android:layout_gravity="bottom"/>
-
-      <View style="@style/Divider" android:layout_gravity="bottom"/>
 
     </FrameLayout>
 
