@@ -32,6 +32,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using System.ComponentModel;
 using static Android.Views.View;
 using PowerPlannerAppDataLibrary.DataLayer;
+using Android.Support.Design.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -96,6 +97,9 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnViewModelLoadedOverride()
         {
+            var bottomNav = FindViewById<BottomNavigationView>(Resource.Id.BottomNav);
+            bottomNav.NavigationItemSelected += BottomNav_NavigationItemSelected;
+
             _itemsWrapperMenuItems = new ItemsControlWrapper(FindViewById<ViewGroup>(Resource.Id.LinearLayoutMenuItems))
             {
                 ItemsSource = ViewModel.AvailableItems,
@@ -124,6 +128,32 @@ namespace PowerPlannerAndroid.Views
             FindViewById<View>(Resource.Id.ImageViewPowerPlannerMenuIcon).Click += delegate { ViewModel.SyncCurrentAccount(); };
 
             TryAskingForRatingIfNeeded();
+        }
+
+        private void BottomNav_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
+        {
+            switch (e.Item.ItemId)
+            {
+                case Resource.Id.MenuCalendar:
+                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Calendar;
+                    break;
+
+                case Resource.Id.MenuDay:
+                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Day;
+                    break;
+
+                case Resource.Id.MenuAgenda:
+                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Agenda;
+                    break;
+
+                case Resource.Id.MenuSchedule:
+                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Schedule;
+                    break;
+
+                case Resource.Id.MenuClasses:
+                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Classes;
+                    break;
+            }
         }
 
         private async void TryAskingForRatingIfNeeded()

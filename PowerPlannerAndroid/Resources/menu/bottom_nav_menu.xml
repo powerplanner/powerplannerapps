@@ -4,31 +4,31 @@
   <item
     android:id="@+id/MenuCalendar"
     android:enabled="true"
-    android:icon="@drawable/ic_date_range_black_48dp"
+    android:icon="@drawable/ic_icons8_calendar_24"
     android:title="Calendar"
     app:showAsAction="ifRoom" />
   <item
     android:id="@+id/MenuDay"
     android:enabled="true"
-    android:icon="@drawable/ic_dashboard_black_48dp"
+    android:icon="@drawable/ic_icons8_today_apps_24"
     android:title="Day"
     app:showAsAction="ifRoom" />
   <item
     android:id="@+id/MenuAgenda"
     android:enabled="true"
-    android:icon="@drawable/ic_menu_white_24dp"
+    android:icon="@drawable/ic_icons8_todo_list_24"
     android:title="Agenda"
     app:showAsAction="ifRoom" />
   <item
     android:id="@+id/MenuSchedule"
     android:enabled="true"
-    android:icon="@drawable/ic_gcal_black_48dp"
+    android:icon="@drawable/ic_icons8_timesheet_24"
     android:title="Schedule"
     app:showAsAction="ifRoom" />
   <item
     android:id="@+id/MenuClasses"
     android:enabled="true"
-    android:icon="@drawable/ic_help_black_48dp"
+    android:icon="@drawable/ic_icons8_book_shelf_24"
     android:title="Classes"
     app:showAsAction="ifRoom" />
 </menu>
