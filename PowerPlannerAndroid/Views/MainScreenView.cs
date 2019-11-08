@@ -44,7 +44,6 @@ namespace PowerPlannerAndroid.Views
         private ProgressBar _syncProgressBar;
         private Button _buttonIsOffline;
         private Button _buttonSyncError;
-        private ItemsControlWrapper _itemsWrapperMenuItems;
         public  Android.Support.V7.Widget.Toolbar Toolbar { get; private set; }
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
@@ -120,8 +119,8 @@ namespace PowerPlannerAndroid.Views
             _buttonSyncError.Click += delegate { _drawerLayout.CloseDrawers(); ViewModel.ViewSyncErrors(); };
             FindViewById<View>(Resource.Id.ImageViewPowerPlannerMenuIcon).Click += delegate { ViewModel.SyncCurrentAccount(); };
 
-            FindViewById(Resource.Id.MenuItemYears).Click += delegate { ViewModel.OpenYears(); };
-            FindViewById(Resource.Id.MenuItemSettings).Click += delegate { ViewModel.OpenSettings(); };
+            FindViewById(Resource.Id.MenuItemYears).Click += delegate { CloseDrawer(); ViewModel.OpenYears(); };
+            FindViewById(Resource.Id.MenuItemSettings).Click += delegate { CloseDrawer(); ViewModel.OpenSettings(); };
 
             TryAskingForRatingIfNeeded();
         }
@@ -348,6 +347,11 @@ namespace PowerPlannerAndroid.Views
         {
             // Navigation on click
             _drawerLayout.OpenDrawer(_drawerLayout.GetChildAt(1));
+        }
+
+        public void CloseDrawer()
+        {
+            _drawerLayout.CloseDrawers();
         }
     }
 }

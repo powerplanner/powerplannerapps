@@ -107,8 +107,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             SelectedItem = AvailableItems.First();
         }
 
+        public readonly bool UseTabNavigation;
+
         private MainScreenViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
+            UseTabNavigation = SyncExtensions.GetPlatform() == "Android";
             CurrentAccount = account;
 
             AccountDataStore.DataChangedEvent += new WeakEventHandler<DataChangedEvent>(AccountDataStore_DataChangedEvent).Handler;
@@ -1030,6 +1033,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <returns></returns>
         private bool makeAvailableItemsLike(params NavigationManager.MainMenuSelections[] desired)
         {
+            if (UseTabNavigation)
+            {
+                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years, MainMenuSelections.Settings }).ToArray();
+            }
+
             return IListExtensions.MakeListLike(_availableItems, desired);
         }
 
@@ -1136,7 +1144,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
+                if (!UseTabNavigation)
+                {
+                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                }
 
+                ShowPopup(new YearsViewModel(this));
             }
             catch (Exception ex)
             {
@@ -1148,7 +1161,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
+                if (!UseTabNavigation)
+                {
+                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                }
 
+                ShowPopup(new SettingsViewModel(this));
             }
             catch (Exception ex)
             {
