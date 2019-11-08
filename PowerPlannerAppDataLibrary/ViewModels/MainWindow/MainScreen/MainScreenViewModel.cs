@@ -1131,5 +1131,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             this.ShowPopup(AddHolidayViewModel.CreateForEdit(this, holiday));
         }
+
+        public void OpenYears()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public void OpenSettings()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
     }
 }

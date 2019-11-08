@@ -82,11 +82,29 @@
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="24dp"/>
 
-                <LinearLayout
-                    android:id="@+id/LinearLayoutMenuItems"
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/MenuItemYears"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="{MainMenuItem_Years}"
+                    android:clickable="true"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:paddingStart="20dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"/>
+
+                <TextView
+                    android:id="@+id/MenuItemSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="{MainMenuItem_Settings}"
+                    android:clickable="true"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:paddingStart="20dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"/>
 
             </LinearLayout>
 
