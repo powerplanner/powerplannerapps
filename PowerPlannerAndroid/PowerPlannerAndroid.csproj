@@ -578,10 +578,6 @@
     <AndroidResource Include="Resources\values\BindingAttributes.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable-ldrtl-hdpi\" />
-    <Folder Include="Resources\drawable-ldrtl-mdpi\" />
-    <Folder Include="Resources\drawable-ldrtl-xhdpi\" />
-    <Folder Include="Resources\drawable-ldrtl-xxxhdpi\" />
     <Folder Include="Views\Containers\" />
   </ItemGroup>
   <ItemGroup>
@@ -794,9 +790,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_signal_wifi_off_white_24dp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-ldrtl-xxhdpi\ic_signal_wifi_off_white_24dp.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_signal_wifi_off_white_24dp.png" />
@@ -1154,12 +1147,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_arrow_upward_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_autorenew_black_48dp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_autorenew_black_48dp.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_cached_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1331,6 +1318,36 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\color\bottom_nav_foreground.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-ldrtl-xxhdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-ldrtl-xhdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-ldrtl-mdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-ldrtl-hdpi\ic_arrow_back_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-ldrtl-xxxhdpi\ic_arrow_back_black_24dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
