@@ -94,10 +94,21 @@ namespace PowerPlannerAndroid.Views
 
         private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
 
+        private static Dictionary<NavigationManager.MainMenuSelections, int> MenuSelectionsToResourceIds = new Dictionary<NavigationManager.MainMenuSelections, int>()
+        {
+            { NavigationManager.MainMenuSelections.Calendar, Resource.Id.MenuCalendar },
+            { NavigationManager.MainMenuSelections.Day, Resource.Id.MenuDay },
+            { NavigationManager.MainMenuSelections.Agenda, Resource.Id.MenuAgenda },
+            { NavigationManager.MainMenuSelections.Schedule, Resource.Id.MenuSchedule },
+            { NavigationManager.MainMenuSelections.Classes, Resource.Id.MenuClasses }
+        };
+
+        private BottomNavigationView _bottomNav;
+
         public override void OnViewModelLoadedOverride()
         {
-            var bottomNav = FindViewById<BottomNavigationView>(Resource.Id.BottomNav);
-            bottomNav.NavigationItemSelected += BottomNav_NavigationItemSelected;
+            _bottomNav = FindViewById<BottomNavigationView>(Resource.Id.BottomNav);
+            _bottomNav.NavigationItemSelected += BottomNav_NavigationItemSelected;
 
             // Place the content presenter
             _contentPresenter = new PagedViewModelPresenter(Context);
@@ -111,6 +122,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.PropertyChanged += _viewModelPropertyChangedEventHandler;
 
             UpdateActionBarTitle();
+            UpdateSelectedMenuItem();
             UpdateSyncBarStatus();
             UpdateIsOffline();
             UpdateSyncError();
@@ -123,6 +135,14 @@ namespace PowerPlannerAndroid.Views
             FindViewById(Resource.Id.MenuItemSettings).Click += delegate { CloseDrawer(); ViewModel.OpenSettings(); };
 
             TryAskingForRatingIfNeeded();
+        }
+
+        private void UpdateSelectedMenuItem()
+        {
+            if (ViewModel.SelectedItem != null && MenuSelectionsToResourceIds.TryGetValue(ViewModel.SelectedItem.Value, out int resourceId))
+            {
+                _bottomNav.SelectedItemId = resourceId;
+            }
         }
 
         private void BottomNav_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
@@ -336,6 +356,7 @@ namespace PowerPlannerAndroid.Views
         private void OnSelectedMenuItemChanged()
         {
             UpdateActionBarTitle();
+            UpdateSelectedMenuItem();
         }
 
         private void OnSelectedClassChanged()
