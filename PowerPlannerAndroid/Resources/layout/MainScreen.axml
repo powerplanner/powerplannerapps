@@ -37,8 +37,7 @@
                     app:elevation="24dp"
                     android:background="@color/primaryDark"
                     app:itemIconTint="@color/bottom_nav_foreground"
-                    app:itemTextColor="@color/bottom_nav_foreground"
-                    app:menu="@menu/bottom_nav_menu"/>
+                    app:itemTextColor="@color/bottom_nav_foreground"/>
             </RelativeLayout>
 
         </RelativeLayout>

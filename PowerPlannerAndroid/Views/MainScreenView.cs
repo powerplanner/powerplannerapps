@@ -33,6 +33,8 @@ using System.ComponentModel;
 using static Android.Views.View;
 using PowerPlannerAppDataLibrary.DataLayer;
 using Android.Support.Design.Widget;
+using PowerPlannerAndroid.Helpers;
+using System.Collections.Specialized;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -94,15 +96,6 @@ namespace PowerPlannerAndroid.Views
 
         private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
 
-        private static Dictionary<NavigationManager.MainMenuSelections, int> MenuSelectionsToResourceIds = new Dictionary<NavigationManager.MainMenuSelections, int>()
-        {
-            { NavigationManager.MainMenuSelections.Calendar, Resource.Id.MenuCalendar },
-            { NavigationManager.MainMenuSelections.Day, Resource.Id.MenuDay },
-            { NavigationManager.MainMenuSelections.Agenda, Resource.Id.MenuAgenda },
-            { NavigationManager.MainMenuSelections.Schedule, Resource.Id.MenuSchedule },
-            { NavigationManager.MainMenuSelections.Classes, Resource.Id.MenuClasses }
-        };
-
         private BottomNavigationView _bottomNav;
 
         public override void OnViewModelLoadedOverride()
@@ -120,9 +113,10 @@ namespace PowerPlannerAndroid.Views
 
             _viewModelPropertyChangedEventHandler = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             ViewModel.PropertyChanged += _viewModelPropertyChangedEventHandler;
+            ViewModel.AvailableItems.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(AvailableItems_CollectionChanged).Handler;
 
             UpdateActionBarTitle();
-            UpdateSelectedMenuItem();
+            UpdateBottomNavMenu();
             UpdateSyncBarStatus();
             UpdateIsOffline();
             UpdateSyncError();
@@ -137,38 +131,55 @@ namespace PowerPlannerAndroid.Views
             TryAskingForRatingIfNeeded();
         }
 
+        private void AvailableItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateBottomNavMenu();
+        }
+
+        private bool? _bottomMenuHasAll;
+        private void UpdateBottomNavMenu()
+        {
+            bool shouldHaveAll = ViewModel.AvailableItems.Contains(NavigationManager.MainMenuSelections.Calendar);
+
+            if (_bottomMenuHasAll != null && _bottomMenuHasAll.Value == shouldHaveAll)
+            {
+                // If we're already set up correctly
+                return;
+            }
+
+            _bottomMenuHasAll = shouldHaveAll;
+
+            _bottomNav.Menu.Clear();
+
+            if (shouldHaveAll)
+            {
+                AddMenuItem(NavigationManager.MainMenuSelections.Calendar, "MainMenuItem_Calendar", Resource.Drawable.ic_icons8_calendar_24);
+                AddMenuItem(NavigationManager.MainMenuSelections.Day, "MainMenuItem_Day", Resource.Drawable.ic_icons8_today_apps_24);
+                AddMenuItem(NavigationManager.MainMenuSelections.Agenda, "MainMenuItem_Agenda", Resource.Drawable.ic_icons8_todo_list_24);
+            }
+
+            AddMenuItem(NavigationManager.MainMenuSelections.Schedule, "MainMenuItem_Schedule", Resource.Drawable.ic_icons8_timesheet_24);
+            AddMenuItem(NavigationManager.MainMenuSelections.Classes, "MainMenuItem_Classes", Resource.Drawable.ic_icons8_book_shelf_24);
+
+            UpdateSelectedMenuItem();
+        }
+
+        private void AddMenuItem(NavigationManager.MainMenuSelections selection, string localizedId, int icon)
+        {
+            _bottomNav.Menu.Add(Menu.None, (int)selection, Menu.None, PowerPlannerResources.GetString(localizedId)).SetIcon(icon);
+        }
+
         private void UpdateSelectedMenuItem()
         {
-            if (ViewModel.SelectedItem != null && MenuSelectionsToResourceIds.TryGetValue(ViewModel.SelectedItem.Value, out int resourceId))
+            if (ViewModel.SelectedItem != null)
             {
-                _bottomNav.SelectedItemId = resourceId;
+                _bottomNav.SelectedItemId = (int)ViewModel.SelectedItem.Value;
             }
         }
 
         private void BottomNav_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
-            switch (e.Item.ItemId)
-            {
-                case Resource.Id.MenuCalendar:
-                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Calendar;
-                    break;
-
-                case Resource.Id.MenuDay:
-                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Day;
-                    break;
-
-                case Resource.Id.MenuAgenda:
-                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Agenda;
-                    break;
-
-                case Resource.Id.MenuSchedule:
-                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Schedule;
-                    break;
-
-                case Resource.Id.MenuClasses:
-                    ViewModel.SelectedItem = NavigationManager.MainMenuSelections.Classes;
-                    break;
-            }
+            ViewModel.SelectedItem = (NavigationManager.MainMenuSelections)e.Item.ItemId;
         }
 
         private async void TryAskingForRatingIfNeeded()
