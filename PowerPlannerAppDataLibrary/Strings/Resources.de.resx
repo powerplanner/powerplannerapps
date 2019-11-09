@@ -1677,4 +1677,10 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="Welcome_ExistingUserPage_Message.Text" xml:space="preserve">
     <value>Haben Sie ein Power Planner konto?</value>
   </data>
+  <data name="ClassesPage_TextBlockNoClassesHeader.Text" xml:space="preserve">
+    <value>Keine Klassen</value>
+  </data>
+  <data name="ClassesPage_TextBlockNoClassesDescription.Text" xml:space="preserve">
+    <value>Klicken Sie auf die Schaltfläche "+" im oberen Menü, um Ihre erste Klasse hinzuzufügen!</value>
+  </data>
 </root>

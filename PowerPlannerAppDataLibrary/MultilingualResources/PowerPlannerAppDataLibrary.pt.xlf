@@ -2235,6 +2235,14 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Do you have a Power Planner account?</source>
           <target state="final" state-qualifier="mt-suggestion">Você tem uma conta de Power Planner?</target>
         </trans-unit>
+        <trans-unit id="ClassesPage_TextBlockNoClassesHeader.Text" translate="yes" xml:space="preserve">
+          <source>No classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Sem aulas</target>
+        </trans-unit>
+        <trans-unit id="ClassesPage_TextBlockNoClassesDescription.Text" translate="yes" xml:space="preserve">
+          <source>Click the "+" button in the top menu to add your first class!</source>
+          <target state="final" state-qualifier="mt-suggestion">Clique no botão "+" no menu superior para adicionar sua primeira classe!</target>
+        </trans-unit>
       </group>
     </body>
   </file>

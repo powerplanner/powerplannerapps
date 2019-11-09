@@ -2191,7 +2191,7 @@ Please think about using an online account instead!</source>
         </trans-unit>
         <trans-unit id="Settings_MainPage_CreateAccountItem.Title" translate="yes" xml:space="preserve">
           <source>Create account</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">إنشاء حساب</target>
+          <target state="final" state-qualifier="tm-suggestion">إنشاء حساب</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_LogInItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Already have an account? Log in!</source>
@@ -2199,7 +2199,7 @@ Please think about using an online account instead!</source>
         </trans-unit>
         <trans-unit id="Settings_MainPage_LogInItem.Title" translate="yes" xml:space="preserve">
           <source>Log in</source>
-          <target state="needs-review-translation" state-qualifier="tm-suggestion">تسجيل الدخول</target>
+          <target state="final" state-qualifier="tm-suggestion">تسجيل الدخول</target>
         </trans-unit>
         <trans-unit id="Settings_SuccessfullyCreatedAccountPage.Title" translate="yes" xml:space="preserve">
           <source>ACCOUNT CREATED</source>
@@ -2236,6 +2236,14 @@ Please think about using an online account instead!</source>
         <trans-unit id="Welcome_ExistingUserPage_Message.Text" translate="yes" xml:space="preserve">
           <source>Do you have a Power Planner account?</source>
           <target state="final">هل لديك حساب Power Planner؟</target>
+        </trans-unit>
+        <trans-unit id="ClassesPage_TextBlockNoClassesHeader.Text" translate="yes" xml:space="preserve">
+          <source>No classes</source>
+          <target state="final" state-qualifier="mt-suggestion">لا توجد فصول</target>
+        </trans-unit>
+        <trans-unit id="ClassesPage_TextBlockNoClassesDescription.Text" translate="yes" xml:space="preserve">
+          <source>Click the "+" button in the top menu to add your first class!</source>
+          <target state="final" state-qualifier="mt-suggestion">انقر فوق الزر "+" في القائمة العلوية لأضافه الدرجة الاولي!</target>
         </trans-unit>
       </group>
     </body>

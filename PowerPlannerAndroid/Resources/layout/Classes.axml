@@ -23,13 +23,13 @@
         local:Binding="{Source=HasClasses, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}">
         <TextView
             style="@android:style/TextAppearance.Large"
-            android:text="{SelectClassPage_TextBlockHeader.Text}"
+            android:text="{ClassesPage_TextBlockNoClassesHeader.Text}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"/>
 
         <TextView
-            android:text="{SelectClassPage_TextBlockExplanation.Text}"
+            android:text="{ClassesPage_TextBlockNoClassesDescription.Text}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"/>
