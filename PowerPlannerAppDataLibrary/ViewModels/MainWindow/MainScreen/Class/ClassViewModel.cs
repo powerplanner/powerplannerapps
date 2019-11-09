@@ -121,8 +121,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             try
             {
-                // Replace this one with the generic classes view model
-                MainScreenViewModel.Replace(this, new ClassesViewModel(MainScreenViewModel));
+                if (MainScreenViewModel.UseTabNavigation)
+                {
+                    RemoveViewModel();
+                }
+                else
+                {
+                    // Replace this one with the generic classes view model
+                    MainScreenViewModel.Replace(this, new ClassesViewModel(MainScreenViewModel));
+                }
             }
 
             catch (Exception ex)
