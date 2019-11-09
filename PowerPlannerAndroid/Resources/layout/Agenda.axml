@@ -12,9 +12,8 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="18dp"
-
-android:clipToPadding="false"/>
+        android:paddingBottom="90dp"
+        android:clipToPadding="false"/>
 
     <LinearLayout
         android:layout_width="match_parent"
