@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                 throw new NullReferenceException("Couldn't find MainScreenViewModel");
             }
+        }
+
+        private List<MainScreenViewModel.IDataChangeListener> _listeners = new List<MainScreenViewModel.IDataChangeListener>();
+        protected MainScreenViewModel.ChangedItemListener ListenToItem(Guid itemIdentifier)
+        {
+            var listener = MainScreenViewModel.ListenToItem(itemIdentifier);
+
+            // We add to an instance variable list, so that the reference won't get lost until the view model gets destroyed
+            _listeners.Add(listener);
+
+            return listener;
+        }
+
+        protected MainScreenViewModel.ItemsEditedLocallyListener<T> ListenToLocalEditsFor<T>() where T : BaseDataItem
+        {
+            var listener = MainScreenViewModel.ListenToLocalEditsFor<T>();
+
+            // We add to an instance variable list, so that the reference won't get lost until the view model gets destroyed
+            _listeners.Add(listener);
+
+            return listener;
         }
 
         public static async void TryStartDataOperationAndThenNavigate(Func<Task> dataOperation, Action navigateOperation, [CallerMemberName]string callerFunctionName = "", [CallerFilePath]string callerFilePath = "")
