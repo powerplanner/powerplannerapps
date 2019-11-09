@@ -1453,6 +1453,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     return true;
             }
 
+            catch (HttpRequestException)
+            {
+                // Nothing, no need to log
+            }
+
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
