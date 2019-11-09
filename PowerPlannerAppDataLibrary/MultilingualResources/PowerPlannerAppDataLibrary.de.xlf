@@ -2244,6 +2244,14 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Click the "+" button in the top menu to add your first class!</source>
           <target state="final" state-qualifier="mt-suggestion">Klicken Sie auf die Schaltfläche "+" im oberen Menü, um Ihre erste Klasse hinzuzufügen!</target>
         </trans-unit>
+        <trans-unit id="Agenda_NoItemsDescription.Text" translate="yes" xml:space="preserve">
+          <source>Click the "+" button to add some tasks or events.</source>
+          <target state="final" state-qualifier="mt-suggestion">Klicken Sie auf die Schaltfläche "+", um einige Aufgaben oder Ereignisse hinzuzufügen.</target>
+        </trans-unit>
+        <trans-unit id="Agenda_NoItemsHeader.Text" translate="yes" xml:space="preserve">
+          <source>All done!</source>
+          <target state="final" state-qualifier="tm-suggestion">Fertig!</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -2243,6 +2243,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Click the "+" button in the top menu to add your first class!</source>
           <target state="final" state-qualifier="mt-suggestion">¡Haga clic en el botón "+" en el menú superior para agregar su primera clase!</target>
         </trans-unit>
+        <trans-unit id="Agenda_NoItemsDescription.Text" translate="yes" xml:space="preserve">
+          <source>Click the "+" button to add some tasks or events.</source>
+          <target state="final" state-qualifier="mt-suggestion">Haga clic en el botón "+" para agregar algunas tareas o eventos.</target>
+        </trans-unit>
+        <trans-unit id="Agenda_NoItemsHeader.Text" translate="yes" xml:space="preserve">
+          <source>All done!</source>
+          <target state="final" state-qualifier="tm-suggestion">¡Listo!</target>
+        </trans-unit>
       </group>
     </body>
   </file>

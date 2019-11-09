@@ -1788,4 +1788,10 @@ Please think about using an online account instead!</value>
   <data name="Welcome_ExistingUserPage_Message.Text" xml:space="preserve">
     <value>Do you have a Power Planner account?</value>
   </data>
+  <data name="Agenda_NoItemsDescription.Text" xml:space="preserve">
+    <value>Click the "+" button to add some tasks or events.</value>
+  </data>
+  <data name="Agenda_NoItemsHeader.Text" xml:space="preserve">
+    <value>All done!</value>
+  </data>
 </root>

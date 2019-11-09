@@ -2245,6 +2245,14 @@ Please think about using an online account instead!</source>
           <source>Click the "+" button in the top menu to add your first class!</source>
           <target state="final" state-qualifier="mt-suggestion">انقر فوق الزر "+" في القائمة العلوية لأضافه الدرجة الاولي!</target>
         </trans-unit>
+        <trans-unit id="Agenda_NoItemsDescription.Text" translate="yes" xml:space="preserve">
+          <source>Click the "+" button to add some tasks or events.</source>
+          <target state="final" state-qualifier="mt-suggestion">انقر فوق الزر "+" لأضافه بعض المهام أو الاحداث.</target>
+        </trans-unit>
+        <trans-unit id="Agenda_NoItemsHeader.Text" translate="yes" xml:space="preserve">
+          <source>All done!</source>
+          <target state="final" state-qualifier="tm-suggestion">تمت جميع الإجراءات!</target>
+        </trans-unit>
       </group>
     </body>
   </file>

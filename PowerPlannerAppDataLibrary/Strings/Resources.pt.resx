@@ -1683,4 +1683,10 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="ClassesPage_TextBlockNoClassesDescription.Text" xml:space="preserve">
     <value>Clique no botão "+" no menu superior para adicionar sua primeira classe!</value>
   </data>
+  <data name="Agenda_NoItemsDescription.Text" xml:space="preserve">
+    <value>Clique no botão "+" para adicionar algumas tarefas ou eventos.</value>
+  </data>
+  <data name="Agenda_NoItemsHeader.Text" xml:space="preserve">
+    <value>Tudo pronto!</value>
+  </data>
 </root>
