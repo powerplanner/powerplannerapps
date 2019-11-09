@@ -40,6 +40,12 @@
         <item name="android:background">@color/primary</item>
     </style>
 
+  <style name="MenuButtonAdd">
+    <item name="android:title">{Calendar_FullCalendarAddButton.ToolTipService.ToolTip}</item>
+    <item name="android:icon">@drawable/ic_add_24px</item>
+    <item name="android:iconTint">@android:color/white</item>
+  </style>
+
     <style name="MenuButtonSave">
         <item name="android:title">{String_Save}</item>
         <item name="android:icon">@drawable/ic_check_white_36dp</item>

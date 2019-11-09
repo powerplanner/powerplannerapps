@@ -1173,5 +1173,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
+
+        public void OpenClass(ViewItemClass c)
+        {
+            try
+            {
+                if (!UseTabNavigation)
+                {
+                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                }
+
+                if (c == null)
+                {
+                    throw new ArgumentNullException(nameof(c));
+                }
+
+                if (CurrentSemester == null)
+                {
+                    throw new InvalidOperationException("CurrentSemester was null");
+                }
+
+                ShowPopup(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
     }
 }
