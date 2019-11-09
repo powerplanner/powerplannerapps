@@ -884,6 +884,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         private EventHandler<DataChangedEvent> _scheduleChangesOccurredHandler;
         private async Task OnSemesterChanged()
         {
+            // Null this out so that when we set the item for the new semester, it loads
+            _selectedItem = null;
+
             // Restore the default stored items
             NavigationManager.RestoreDefaultMemoryItems();
 
