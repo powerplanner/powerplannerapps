@@ -91,9 +91,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             if (CurrentSemesterId == semesterId)
             {
-                if (alwaysNavigate && SelectedItem != AvailableItems.First())
+                if (alwaysNavigate)
                 {
-                    SelectedItem = AvailableItems.First();
+                    // This is only called in case where we have a semester, so there'll always be available items
+                    if (SelectedItem != AvailableItems.First())
+                    {
+                        SelectedItem = AvailableItems.First();
+                    }
+
+                    if (UseTabNavigation)
+                    {
+                        // We need to clear the Years page
+                        Popups.Clear();
+                    }
                 }
                 return;
             }
@@ -104,7 +114,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             await OnSemesterChanged(); // Loads the classes
             UpdateAvailableItemsAndTriggerUpdateDisplay();
 
-            SelectedItem = AvailableItems.First();
+            if (AvailableItems.Any())
+            {
+                SelectedItem = AvailableItems.First();
+            }
+            else
+            {
+                SelectedItem = null;
+            }
+
+            if (UseTabNavigation && AvailableItems.Any())
+            {
+                // We need to clear the Years page
+                Popups.Clear();
+            }
         }
 
         public readonly bool UseTabNavigation;
@@ -460,16 +483,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             model.updateAvailableItems();
 
-            MainMenuSelections selectedItem;
+            MainMenuSelections? selectedItem = null;
 
             if (model.AvailableItems.Contains(NavigationManager.MainMenuSelection))
                 selectedItem = NavigationManager.MainMenuSelection;
-            else
+            else if (model.AvailableItems.Any())
             {
                 selectedItem = model.AvailableItems.First();
             }
 
-            if (selectedItem == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
+            if (!model.UseTabNavigation && selectedItem.GetValueOrDefault() == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
             {
                 var c = model.Classes.FirstOrDefault(i => NavigationManager.ClassSelection == i.Identifier);
                 if (c != null)
@@ -1038,7 +1061,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years, MainMenuSelections.Settings }).ToArray();
             }
 
-            return IListExtensions.MakeListLike(_availableItems, desired);
+            bool answer = IListExtensions.MakeListLike(_availableItems, desired);
+
+            if (UseTabNavigation && !AvailableItems.Any() && Popups.Count == 0)
+            {
+                OpenYears();
+            }
+
+            return answer;
         }
 
         public void SetContent(BaseViewModel viewModel, bool preserveBack = false)
