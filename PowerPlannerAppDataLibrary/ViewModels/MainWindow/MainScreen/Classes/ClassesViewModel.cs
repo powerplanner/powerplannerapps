@@ -23,6 +23,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
         public ClassesViewModel(BaseViewModel parent) : base(parent)
         {
             MainScreenViewModel.Classes.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Classes_CollectionChanged).Handler;
+            HasClasses = MainScreenViewModel.Classes.Any();
         }
 
         private void Classes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

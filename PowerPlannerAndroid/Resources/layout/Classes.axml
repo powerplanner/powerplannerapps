@@ -20,7 +20,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        local:Binding="{Source=HasClasses, Target=Visibility, Converter=BoolToVisibilityConverter}">
+        local:Binding="{Source=HasClasses, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}">
         <TextView
             style="@android:style/TextAppearance.Large"
             android:text="{SelectClassPage_TextBlockHeader.Text}"
