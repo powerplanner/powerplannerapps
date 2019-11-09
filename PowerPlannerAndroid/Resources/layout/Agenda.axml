@@ -11,7 +11,10 @@
         android:id="@+id/RecyclerViewAgenda"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="18dp"
+
+android:clipToPadding="false"/>
 
     <LinearLayout
         android:layout_width="match_parent"
