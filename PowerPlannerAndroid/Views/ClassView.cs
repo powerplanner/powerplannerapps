@@ -20,7 +20,7 @@ using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class ClassView : MainScreenViewHostDescendant<ClassViewModel>
+    public class ClassView : PopupViewHost<ClassViewModel>
     {
         private static int LastSelectedPage;
 
@@ -42,7 +42,7 @@ namespace PowerPlannerAndroid.Views
         {
             LastSelectedPage = _viewPager.CurrentItem;
 
-            RequestUpdateMenu();
+            UpdateMenu();
             
             switch (_viewPager.CurrentItem)
             {
@@ -65,6 +65,13 @@ namespace PowerPlannerAndroid.Views
                     ViewModel.CurrentViewModel = null;
                     break;
             }
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            SetBinding(nameof(ViewModel.ClassName), target: this, targetPropertyName: nameof(Title));
+
+            base.OnViewModelSetOverride();
         }
 
         public override void OnViewModelLoadedOverride()
@@ -172,7 +179,12 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        protected override int GetMenuResource()
+        private void UpdateMenu()
+        {
+            SetMenu(GetMenuResource());
+        }
+
+        private int GetMenuResource()
         {
             switch (_viewPager.CurrentItem)
             {
@@ -189,7 +201,7 @@ namespace PowerPlannerAndroid.Views
             return Resource.Menu.class_basic_menu;
         }
 
-        public override void OnMenuItemClick(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

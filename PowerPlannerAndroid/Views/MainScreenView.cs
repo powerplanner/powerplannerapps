@@ -32,6 +32,9 @@ using PowerPlannerAppDataLibrary.Extensions;
 using System.ComponentModel;
 using static Android.Views.View;
 using PowerPlannerAppDataLibrary.DataLayer;
+using Android.Support.Design.Widget;
+using PowerPlannerAndroid.Helpers;
+using System.Collections.Specialized;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -43,7 +46,6 @@ namespace PowerPlannerAndroid.Views
         private ProgressBar _syncProgressBar;
         private Button _buttonIsOffline;
         private Button _buttonSyncError;
-        private ItemsControlWrapper _itemsWrapperMenuItems;
         public  Android.Support.V7.Widget.Toolbar Toolbar { get; private set; }
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
@@ -94,13 +96,12 @@ namespace PowerPlannerAndroid.Views
 
         private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
 
+        private BottomNavigationView _bottomNav;
+
         public override void OnViewModelLoadedOverride()
         {
-            _itemsWrapperMenuItems = new ItemsControlWrapper(FindViewById<ViewGroup>(Resource.Id.LinearLayoutMenuItems))
-            {
-                ItemsSource = ViewModel.AvailableItems,
-                ItemTemplate = new CustomDataTemplate<NavigationManager.MainMenuSelections>(CreateMenuItem)
-            };
+            _bottomNav = FindViewById<BottomNavigationView>(Resource.Id.BottomNav);
+            _bottomNav.NavigationItemSelected += BottomNav_NavigationItemSelected;
 
             // Place the content presenter
             _contentPresenter = new PagedViewModelPresenter(Context);
@@ -112,9 +113,10 @@ namespace PowerPlannerAndroid.Views
 
             _viewModelPropertyChangedEventHandler = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             ViewModel.PropertyChanged += _viewModelPropertyChangedEventHandler;
+            ViewModel.AvailableItems.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(AvailableItems_CollectionChanged).Handler;
 
             UpdateActionBarTitle();
-            UpdateClassesVisibility();
+            UpdateBottomNavMenu();
             UpdateSyncBarStatus();
             UpdateIsOffline();
             UpdateSyncError();
@@ -123,7 +125,61 @@ namespace PowerPlannerAndroid.Views
             _buttonSyncError.Click += delegate { _drawerLayout.CloseDrawers(); ViewModel.ViewSyncErrors(); };
             FindViewById<View>(Resource.Id.ImageViewPowerPlannerMenuIcon).Click += delegate { ViewModel.SyncCurrentAccount(); };
 
+            FindViewById(Resource.Id.MenuItemYears).Click += delegate { CloseDrawer(); ViewModel.OpenYears(); };
+            FindViewById(Resource.Id.MenuItemSettings).Click += delegate { CloseDrawer(); ViewModel.OpenSettings(); };
+
             TryAskingForRatingIfNeeded();
+        }
+
+        private void AvailableItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateBottomNavMenu();
+        }
+
+        private bool? _bottomMenuHasAll;
+        private void UpdateBottomNavMenu()
+        {
+            bool shouldHaveAll = ViewModel.AvailableItems.Contains(NavigationManager.MainMenuSelections.Calendar);
+
+            if (_bottomMenuHasAll != null && _bottomMenuHasAll.Value == shouldHaveAll)
+            {
+                // If we're already set up correctly
+                return;
+            }
+
+            _bottomMenuHasAll = shouldHaveAll;
+
+            _bottomNav.Menu.Clear();
+
+            if (shouldHaveAll)
+            {
+                AddMenuItem(NavigationManager.MainMenuSelections.Calendar, "MainMenuItem_Calendar", Resource.Drawable.ic_icons8_calendar_24);
+                AddMenuItem(NavigationManager.MainMenuSelections.Day, "MainMenuItem_Day", Resource.Drawable.ic_icons8_today_apps_24);
+                AddMenuItem(NavigationManager.MainMenuSelections.Agenda, "MainMenuItem_Agenda", Resource.Drawable.ic_icons8_todo_list_24);
+            }
+
+            AddMenuItem(NavigationManager.MainMenuSelections.Schedule, "MainMenuItem_Schedule", Resource.Drawable.ic_icons8_timesheet_24);
+            AddMenuItem(NavigationManager.MainMenuSelections.Classes, "MainMenuItem_Classes", Resource.Drawable.ic_icons8_book_shelf_24);
+
+            UpdateSelectedMenuItem();
+        }
+
+        private void AddMenuItem(NavigationManager.MainMenuSelections selection, string localizedId, int icon)
+        {
+            _bottomNav.Menu.Add(Menu.None, (int)selection, Menu.None, PowerPlannerResources.GetString(localizedId)).SetIcon(icon);
+        }
+
+        private void UpdateSelectedMenuItem()
+        {
+            if (ViewModel.SelectedItem != null)
+            {
+                _bottomNav.SelectedItemId = (int)ViewModel.SelectedItem.Value;
+            }
+        }
+
+        private void BottomNav_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
+        {
+            ViewModel.SelectedItem = (NavigationManager.MainMenuSelections)e.Item.ItemId;
         }
 
         private async void TryAskingForRatingIfNeeded()
@@ -267,299 +323,6 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private WeakReference<View> _classesViewGroupReference;
-        private WeakReference<View> _classAddButtonReference;
-
-        private const int MENU_ITEM_PADDING_LEFT_PX = 20;
-
-        private View CreateMenuItem(ViewGroup root, NavigationManager.MainMenuSelections mainMenuSelection)
-        {
-            return new MenuItemCreator(root, mainMenuSelection, this).View;
-        }
-
-        private class MenuItemCreator
-        {
-            private MainScreenView _mainScreenView;
-            private NavigationManager.MainMenuSelections _mainMenuSelection;
-            private ItemsControlWrapper _itemsWrapperClasses;
-
-            public View View { get; private set; }
-
-            public MenuItemCreator(ViewGroup root, NavigationManager.MainMenuSelections mainMenuSelection, MainScreenView mainScreenView)
-            {
-                _mainScreenView = mainScreenView;
-                _mainMenuSelection = mainMenuSelection;
-                _mainScreenView.ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged1).Handler;
-
-                TextView textView = new TextView(root.Context)
-                {
-                    Text = PowerPlannerResources.GetStringMenuItem(mainMenuSelection),
-                    TextSize = 20,
-                    Clickable = true,
-                    LayoutParameters = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MatchParent,
-                        LinearLayout.LayoutParams.WrapContent)
-                };
-                textView.SetTextColor(new Color(255, 255, 255));
-
-                int paddingTopBottom = ThemeHelper.AsPx(root.Context, 11);
-                int paddingLeft = ThemeHelper.AsPx(root.Context, MENU_ITEM_PADDING_LEFT_PX);
-                textView.SetPaddingRelative(paddingLeft, paddingTopBottom, 0, paddingTopBottom);
-
-                textView.Click += delegate
-                {
-                    // If we're currently on classes and they clicked classes
-                    if (mainMenuSelection == NavigationManager.MainMenuSelections.Classes && _mainScreenView.ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
-                    {
-                        // Toggle the classes list
-                        _mainScreenView.ToggleClasses();
-                    }
-
-                    _mainScreenView.ViewModel.SelectedItem = mainMenuSelection;
-
-                    if (mainMenuSelection != NavigationManager.MainMenuSelections.Classes)
-                    {
-                        _mainScreenView._drawerLayout.CloseDrawers();
-                    }
-                };
-
-                if (mainMenuSelection == NavigationManager.MainMenuSelections.Classes)
-                {
-                    LinearLayout linearLayout = new LinearLayout(root.Context)
-                    {
-                        Orientation = Orientation.Vertical,
-                        LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MatchParent,
-                            LinearLayout.LayoutParams.WrapContent)
-                    };
-
-                    LinearLayout layoutClassesHeaderAndAddButton = new LinearLayout(root.Context)
-                    {
-                        Orientation = Orientation.Horizontal,
-                        LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MatchParent,
-                            LinearLayout.LayoutParams.WrapContent)
-                    };
-
-                    // This width will stretch
-                    textView.LayoutParameters.Width = 0;
-                    (textView.LayoutParameters as LinearLayout.LayoutParams).Weight = 1;
-
-                    layoutClassesHeaderAndAddButton.AddView(textView);
-
-                    // And then the add class button
-                    ImageButton addClassButton = new ImageButton(root.Context)
-                    {
-                        LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WrapContent,
-                            LinearLayout.LayoutParams.MatchParent),
-                        Visibility = ViewStates.Invisible
-                    };
-                    addClassButton.Background = ThemeHelper.GetAttributeDrawable(root.Context, Resource.Attribute.selectableItemBackground);
-                    addClassButton.SetImageDrawable(ContextCompat.GetDrawable(root.Context, Android.Resource.Drawable.IcInputAdd));
-                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-                    {
-                        addClassButton.ImageTintList = new Android.Content.Res.ColorStateList(new int[][] { new int[0] }, new int[] { new Color(255, 255, 255) });
-                    }
-                    addClassButton.Click += AddClassButton_Click;
-
-                    _mainScreenView._classAddButtonReference = new WeakReference<View>(addClassButton);
-                    layoutClassesHeaderAndAddButton.AddView(addClassButton);
-
-
-
-                    linearLayout.AddView(layoutClassesHeaderAndAddButton);
-
-
-                    LinearLayout classesViewGroup = new LinearLayout(root.Context)
-                    {
-                        Orientation = Orientation.Vertical,
-                        LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MatchParent,
-                            LinearLayout.LayoutParams.WrapContent),
-                        Visibility = ViewStates.Gone
-                    };
-
-                    _itemsWrapperClasses = new ItemsControlWrapper(classesViewGroup)
-                    {
-                        ItemsSource = _mainScreenView.ViewModel.Classes,
-                        ItemTemplate = new CustomDataTemplate<ViewItemClass>(_mainScreenView.CreateClassMenuItem)
-                    };
-
-                    _mainScreenView._classesViewGroupReference = new WeakReference<View>(classesViewGroup);
-
-                    linearLayout.AddView(classesViewGroup);
-
-                    View = linearLayout;
-                }
-
-                else
-                {
-                    View = textView;
-                }
-
-                UpdateIsSelected();
-            }
-
-            private void AddClassButton_Click(object sender, EventArgs e)
-            {
-                _mainScreenView._drawerLayout.CloseDrawers();
-                _mainScreenView.ViewModel.AddClass(navigateToClassAfterAdd: true);
-            }
-
-            private void ViewModel_PropertyChanged1(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-            {
-                switch (e.PropertyName)
-                {
-                    case nameof(_mainScreenView.ViewModel.SelectedItem):
-                        UpdateIsSelected();
-                        break;
-                }
-            }
-
-            private void UpdateIsSelected()
-            {
-                if (_mainMenuSelection == _mainScreenView.ViewModel.SelectedItem)
-                {
-                    View.Background = new ColorDrawable(new Color(ContextCompat.GetColor(View.Context, Resource.Color.primaryLight)));
-                }
-
-                else
-                {
-                    View.Background = null;
-                }
-            }
-        }
-
-        private bool AreClassesShown()
-        {
-            View classesViewGroup = null;
-            View classAddButton = null;
-
-            if (_classesViewGroupReference != null)
-            {
-                _classesViewGroupReference.TryGetTarget(out classesViewGroup);
-            }
-
-            if (_classAddButtonReference != null)
-            {
-                _classAddButtonReference.TryGetTarget(out classAddButton);
-            }
-
-            return classesViewGroup != null && classesViewGroup.Visibility == ViewStates.Visible
-                && classAddButton != null && classAddButton.Visibility == ViewStates.Visible;
-        }
-
-        private void ToggleClasses()
-        {
-            if (AreClassesShown())
-            {
-                HideClasses();
-            }
-            else
-            {
-                ShowClasses();
-            }
-        }
-
-        private void ShowClasses()
-        {
-            View classesViewGroup = null;
-            View classAddButton = null;
-            
-            if (_classesViewGroupReference != null)
-            {
-                _classesViewGroupReference.TryGetTarget(out classesViewGroup);
-            }
-
-            if (_classAddButtonReference != null)
-            {
-                _classAddButtonReference.TryGetTarget(out classAddButton);
-            }
-
-            if (classesViewGroup != null)
-                classesViewGroup.Visibility = ViewStates.Visible;
-
-            if (classAddButton != null)
-                classAddButton.Visibility = ViewStates.Visible;
-        }
-
-        private void HideClasses()
-        {
-            View classesViewGroup = null;
-            View classAddButton = null;
-
-            if (_classesViewGroupReference != null)
-            {
-                _classesViewGroupReference.TryGetTarget(out classesViewGroup);
-            }
-
-            if (_classAddButtonReference != null)
-            {
-                _classAddButtonReference.TryGetTarget(out classAddButton);
-            }
-
-            if (classesViewGroup != null)
-                classesViewGroup.Visibility = ViewStates.Gone;
-
-            if (classAddButton != null)
-                classAddButton.Visibility = ViewStates.Invisible;
-        }
-
-        private View CreateClassMenuItem(ViewGroup root, ViewItemClass c)
-        {
-            var layout = new ListItemClassMenuItemView(root)
-            {
-                DataContext = c
-            };
-
-            layout.Click += delegate
-            {
-                var dontWait = ViewModel.SelectClass(c.Identifier);
-                _drawerLayout.CloseDrawers();
-            };
-
-            UpdateIsClassSelected(layout, c.Identifier);
-
-            PropertyChangedEventHandler propertyChangedHandler = null;
-            propertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>((s, e) =>
-            {
-                try
-                {
-                    if (e.PropertyName.Equals(nameof(ViewModel.SelectedClass)))
-                    {
-                        UpdateIsClassSelected(layout, c.Identifier);
-                    }
-                }
-                catch (ObjectDisposedException)
-                {
-                    ViewModel.PropertyChanged -= propertyChangedHandler;
-                }
-                catch (Exception ex)
-                {
-                    TelemetryExtension.Current?.TrackException(ex);
-                }
-            }).Handler;
-            ViewModel.PropertyChanged += propertyChangedHandler;
-
-            return layout;
-        }
-
-
-
-        private void UpdateIsClassSelected(View classMenuView, Guid classIdentifier)
-        {
-            if (ViewModel != null && ViewModel.SelectedClass != null && classIdentifier == ViewModel.SelectedClass.Identifier)
-            {
-                classMenuView.Background = new ColorDrawable(new Color(61, 153, 219));
-            }
-
-            else
-            {
-                classMenuView.Background = null;
-            }
-        }
-
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             try
@@ -604,15 +367,7 @@ namespace PowerPlannerAndroid.Views
         private void OnSelectedMenuItemChanged()
         {
             UpdateActionBarTitle();
-            UpdateClassesVisibility();
-        }
-
-        private void UpdateClassesVisibility()
-        {
-            if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
-                ShowClasses();
-            else
-                HideClasses();
+            UpdateSelectedMenuItem();
         }
 
         private void OnSelectedClassChanged()
@@ -624,6 +379,11 @@ namespace PowerPlannerAndroid.Views
         {
             // Navigation on click
             _drawerLayout.OpenDrawer(_drawerLayout.GetChildAt(1));
+        }
+
+        public void CloseDrawer()
+        {
+            _drawerLayout.CloseDrawers();
         }
     }
 }

@@ -11,11 +11,23 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
+using ToolsPortable;
+using System.ComponentModel;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class ClassViewModel : BaseMainScreenViewModelChild
+    public class ClassViewModel : BaseMainScreenViewModelDescendant
     {
+        private string _className = "";
+        /// <summary>
+        /// The name of the class. This is populated immediately when navigated from a cached class.
+        /// </summary>
+        public string ClassName
+        {
+            get => _className;
+            set => SetProperty(ref _className, value, nameof(ClassName));
+        }
+
         private ClassViewItemsGroup _classViewItemsGroup;
         public ClassViewItemsGroup ViewItemsGroupClass
         {
@@ -29,6 +41,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         private ViewItemSemester _semester;
         public ClassViewModel(BaseViewModel parent, Guid localAccountId, Guid classId, DateTime today, ViewItemSemester semester) : base(parent)
         {
+            if (MainScreenViewModel != null)
+            {
+                var c = MainScreenViewModel.Classes.FirstOrDefault(i => i.Identifier == classId);
+                if (c != null)
+                {
+                    _className = c.Name;
+                }
+            }
+
             _localAccountId = localAccountId;
             ClassId = classId;
             _today = today;
@@ -100,8 +121,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             try
             {
-                // Replace this one with the generic classes view model
-                MainScreenViewModel.Replace(this, new ClassesViewModel(MainScreenViewModel));
+                if (MainScreenViewModel.UseTabNavigation)
+                {
+                    RemoveViewModel();
+                }
+                else
+                {
+                    // Replace this one with the generic classes view model
+                    MainScreenViewModel.Replace(this, new ClassesViewModel(MainScreenViewModel));
+                }
             }
 
             catch (Exception ex)
@@ -115,6 +143,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             try
             {
                 ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(_localAccountId, ClassId, _today, _semester);
+                ViewItemsGroupClass.Class.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
+                ClassName = ViewItemsGroupClass.Class.Name;
 
                 DetailsViewModel = new ClassDetailsViewModel(this);
                 HomeworkViewModel = new ClassHomeworkOrExamsViewModel(this, ClassHomeworkOrExamsViewModel.ItemType.Homework);
@@ -132,6 +162,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 TelemetryExtension.Current?.TrackException(ex);
                 RemoveViewModel();
+            }
+        }
+
+        private void Class_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewItemClass.Name):
+                    ClassName = (sender as ViewItemClass).Name;
+                    break;
             }
         }
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.App;
+using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
@@ -69,6 +70,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 await MainScreenViewModel.SetCurrentSemester(semesterId, alwaysNavigate: true);
             });
+        }
+
+        public override bool GoBack()
+        {
+            if (MainScreenViewModel.UseTabNavigation && !MainScreenViewModel.AvailableItems.Any())
+            {
+                return false;
+            }
+
+            return base.GoBack();
         }
     }
 }

@@ -17,15 +17,18 @@ using InterfacesDroid.ViewModelPresenters;
 using PowerPlannerAppDataLibrary.Extensions;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAndroid.ViewModel.Settings;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsListView : InterfacesDroid.Views.PopupViewHost<SettingsListViewModel>
+    public class SettingsListView : PopupViewHost<SettingsListViewModel>
     {
         private View _listItemUpgradeToPremium;
 
         public SettingsListView(ViewGroup root) : base(Resource.Layout.SettingsList, root)
         {
+            Title = PowerPlannerResources.GetString("MainMenuItem_Settings");
+
             FindViewById<View>(Resource.Id.SettingsListItemCreateAccount).Click += delegate { ViewModel.OpenCreateAccount(); };
             FindViewById<View>(Resource.Id.SettingsListItemLogIn).Click += delegate { ViewModel.OpenLogIn(); };
             FindViewById<View>(Resource.Id.SettingsListItemAccount).Click += delegate { ViewModel.OpenMyAccount(); };

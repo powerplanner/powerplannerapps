@@ -334,6 +334,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(1911, 5, 2, 0))
+                    {
+                        changedText += "\n - Updated UI! Bottom navigation bar for quicker access to the most used pages.";
+                    }
+
                     if (v < new Version(1911, 2, 0, 0))
                     {
                         changedText += "\n - Support for Monday as first day of week on Calendar for countries like Spain!";

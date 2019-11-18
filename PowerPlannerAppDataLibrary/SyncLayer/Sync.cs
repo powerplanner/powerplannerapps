@@ -1057,7 +1057,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 else
                 {
                     Debug.WriteLine("Exception uploading image: " + ex.ToString());
-                    TelemetryExtension.Current?.TrackException(ex);
+
+                    if (!(ex is HttpRequestException))
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
                 }
 
                 lock (_lockUploadImages)
@@ -1451,6 +1455,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                 if (resp.Error == null)
                     return true;
+            }
+
+            catch (HttpRequestException)
+            {
+                // Nothing, no need to log
             }
 
             catch (Exception ex)

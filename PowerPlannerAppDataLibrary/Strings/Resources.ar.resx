@@ -1679,4 +1679,16 @@
   <data name="Welcome_ExistingUserPage_Message.Text" xml:space="preserve">
     <value>هل لديك حساب Power Planner؟</value>
   </data>
+  <data name="ClassesPage_TextBlockNoClassesHeader.Text" xml:space="preserve">
+    <value>لا توجد فصول</value>
+  </data>
+  <data name="ClassesPage_TextBlockNoClassesDescription.Text" xml:space="preserve">
+    <value>انقر فوق الزر "+" في القائمة العلوية لأضافه الدرجة الاولي!</value>
+  </data>
+  <data name="Agenda_NoItemsDescription.Text" xml:space="preserve">
+    <value>انقر فوق الزر "+" لأضافه بعض المهام أو الاحداث.</value>
+  </data>
+  <data name="Agenda_NoItemsHeader.Text" xml:space="preserve">
+    <value>تمت جميع الإجراءات!</value>
+  </data>
 </root>

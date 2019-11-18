@@ -19,11 +19,26 @@
                 android:id="@+id/Toolbar"
                 style="@style/ActionBar"/>
             
-            <FrameLayout
-                android:id="@+id/ContentFrame"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/Toolbar"/>
+                android:layout_below="@id/Toolbar">
+                <FrameLayout
+                    android:id="@+id/ContentFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/BottomNav"/>
+                <android.support.design.widget.BottomNavigationView
+                    android:id="@+id/BottomNav"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_gravity="start"
+                    android:layout_alignParentBottom="true"
+                    app:elevation="24dp"
+                    android:background="@color/primaryDark"
+                    app:itemIconTint="@color/bottom_nav_foreground"
+                    app:itemTextColor="@color/bottom_nav_foreground"/>
+            </RelativeLayout>
 
         </RelativeLayout>
 
@@ -68,11 +83,29 @@
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="24dp"/>
 
-                <LinearLayout
-                    android:id="@+id/LinearLayoutMenuItems"
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/MenuItemYears"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="{MainMenuItem_Years}"
+                    android:clickable="true"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:paddingStart="20dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"/>
+
+                <TextView
+                    android:id="@+id/MenuItemSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="{MainMenuItem_Settings}"
+                    android:clickable="true"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white"
+                    android:paddingStart="20dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"/>
 
             </LinearLayout>
 

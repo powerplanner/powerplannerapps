@@ -206,27 +206,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             await AccountsManager.Save(this);
         }
 
-        private Schedule.Week getWeekOnDifferentDate(DateTime startDate, DateTime date)
-        {
-            int days;
-
-            if (date.Date >= startDate.Date)
-                days = (date.Date - startDate.Date).Days;
-
-            else
-                days = (startDate.Date - date.Date).Days + 6;
-
-            if (days / 7 % 2 == 0)
-            {
-                return Schedule.Week.WeekOne;
-            }
-
-            else
-            {
-                return Schedule.Week.WeekTwo;
-            }
-        }
-
         private Schedule.Week toggleWeek()
         {
             if (CurrentWeek == Schedule.Week.WeekOne)
@@ -244,7 +223,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
-            return getWeekOnDifferentDate(WeekOneStartsOn, date);
+            return PowerPlannerSending.Helpers.WeekHelper.GetWeekOnDifferentDate(WeekOneStartsOn, date);
         }
 
         private bool showSchedule = true;
