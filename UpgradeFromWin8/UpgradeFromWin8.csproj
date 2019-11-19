@@ -179,8 +179,8 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.9</Version>
     </PackageReference>
-    <PackageReference Include="StorageEverywhere">
-      <Version>1.0.0</Version>
+    <PackageReference Include="StorageEverywhereIncludingiOS">
+      <Version>1.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
