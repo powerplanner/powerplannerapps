@@ -18,6 +18,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassGradeScaleViewModel : BaseMainScreenViewModelDescendant
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public ViewItemClass Class { get; private set; }
 
         public MyObservableList<GradeScale> GradeScales { get; private set; }

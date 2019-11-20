@@ -14,6 +14,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
     public class UpdateCredentialsViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public UpdateTypes UpdateType { get; private set; }
         public AccountDataItem Account { get; private set; }
 

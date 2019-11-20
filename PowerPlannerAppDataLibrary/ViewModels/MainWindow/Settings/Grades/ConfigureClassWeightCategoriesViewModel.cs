@@ -17,6 +17,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassWeightCategoriesViewModel : BaseMainScreenViewModelDescendant
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public ViewItemClass Class { get; private set; }
 
         public ConfigureClassWeightCategoriesViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
