@@ -18,6 +18,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 {
     public class CreateAccountViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public Action AlertPasswordTooShort = delegate { ShowMessage("Your password is too short.", "Password too short"); };
         public Action AlertConfirmationPasswordDidNotMatch = delegate { ShowMessage("Your confirmation password didn't match.", "Invalid password"); };
         public Action AlertNoUsername = delegate { ShowMessage("You must provide a username!", "No username"); };

@@ -17,6 +17,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
     public class LoginViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public LoginViewModel(BaseViewModel parent) : base(parent)
         {
             Initialize();
