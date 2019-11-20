@@ -11,6 +11,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class ConfirmIdentityViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         private AccountDataItem _currAccount;
         public event EventHandler OnIdentityConfirmed;
         public event EventHandler ActionIncorrectPassword;

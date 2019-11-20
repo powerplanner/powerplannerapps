@@ -28,6 +28,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public OperationState State { get; private set; }
 
+        protected override bool InitialAllowLightDismissValue => false;
+
         private ItemType _type;
         public ItemType Type
         {

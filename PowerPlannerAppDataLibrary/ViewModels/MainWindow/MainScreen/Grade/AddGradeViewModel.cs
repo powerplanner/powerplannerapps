@@ -22,6 +22,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
         /// </summary>
         public bool UsesIsDropped { get; set; }
 
+        protected override bool InitialAllowLightDismissValue => false;
+
         public AddGradeViewModel(BaseViewModel parent) : base(parent)
         {
         }

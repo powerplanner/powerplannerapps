@@ -12,6 +12,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class ChangeEmailViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public AccountDataItem Account { get; private set; }
 
         public ChangeEmailViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)

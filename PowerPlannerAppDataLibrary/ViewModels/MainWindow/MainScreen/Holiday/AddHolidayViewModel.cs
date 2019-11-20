@@ -19,6 +19,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
 
         public OperationState State { get; private set; }
 
+        protected override bool InitialAllowLightDismissValue => false;
+
         public override string GetPageName()
         {
             if (State == OperationState.Adding)

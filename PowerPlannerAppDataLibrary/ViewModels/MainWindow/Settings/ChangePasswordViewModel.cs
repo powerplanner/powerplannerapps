@@ -13,6 +13,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class ChangePasswordViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public event EventHandler<string> ActionError;
         public event EventHandler<string> ActionPasswordsDidNotMatch;
 

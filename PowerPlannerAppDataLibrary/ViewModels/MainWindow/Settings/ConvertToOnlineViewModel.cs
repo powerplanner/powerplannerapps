@@ -14,6 +14,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class ConvertToOnlineViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public AccountDataItem Account { get; private set; }
 
         public ConvertToOnlineViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
