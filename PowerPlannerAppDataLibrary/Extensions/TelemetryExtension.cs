@@ -36,7 +36,16 @@ namespace PowerPlannerAppDataLibrary.Extensions
         public const string EVENT_VIEW_EDIT_CLASS_DETAILS = "ViewEditClassDetails";
         public const string EVENT_VIEW_EDIT_CLASS_GRADES = "ViewEditClassGrades";
 
+#if DEBUG
+        private static DebugTelemetryExtension _debugTelemetryExtension = new DebugTelemetryExtension();
+        public static TelemetryExtension Current
+        {
+            get => _debugTelemetryExtension;
+            set { /* no-op */ }
+        }
+#else
         public static TelemetryExtension Current { get; set; }
+#endif
 
         public abstract void TrackException(Exception ex, [CallerMemberName]string exceptionName = null);
 
@@ -58,6 +67,31 @@ namespace PowerPlannerAppDataLibrary.Extensions
             Current?.TrackException(ex);
         }
     }
+
+#if DEBUG
+    public class DebugTelemetryExtension : TelemetryExtension
+    {
+        public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
+        {
+            System.Diagnostics.Debug.WriteLine($"Event: {eventName}");
+        }
+
+        public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null)
+        {
+            System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+        }
+
+        public override void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration)
+        {
+            System.Diagnostics.Debug.WriteLine($"PageView: {pageName}");
+        }
+
+        public override void UpdateCurrentUser(AccountDataItem account)
+        {
+            System.Diagnostics.Debug.WriteLine($"CurrentUser: {account?.GetTelemetryUserId()}");
+        }
+    }
+#endif
 
     namespace Telemetry
     {
