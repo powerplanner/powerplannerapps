@@ -519,7 +519,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         if (response.Error != SyncResponse.INCORRECT_PASSWORD
                             && response.Error != SyncResponse.USERNAME_CHANGED
                             && response.Error != SyncResponse.DEVICE_NOT_FOUND
-                            && response.Error != SyncResponse.INCORRECT_CREDENTIALS)
+                            && response.Error != SyncResponse.INCORRECT_CREDENTIALS
+                            && !response.Error.StartsWith("Backend error."))
                         {
                             TelemetryExtension.Current?.TrackException(new Exception("SyncError: " + response.Error));
                         }
