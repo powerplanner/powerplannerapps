@@ -209,6 +209,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void EditTimes()
         {
+            if (MainScreenViewModel.UseTabNavigation)
+            {
+                // Remove self (currently a popup)
+                RemoveViewModel();
+            }
+
             MainScreenViewModel.Navigate(new ScheduleViewModel(MainScreenViewModel, new ScheduleViewModel.Params()
             {
                 IsEditing = true
