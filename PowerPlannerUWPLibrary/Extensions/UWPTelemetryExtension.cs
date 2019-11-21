@@ -16,52 +16,42 @@ namespace PowerPlannerUWPLibrary.Extensions
 {
     public class UWPTelemetryExtension : TelemetryExtension
     {
+        private string _userId;
+
+        public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
+        {
+            try
+            {
+                if (properties == null)
+                {
+                    properties = new Dictionary<string, string>();
+                }
+
+                if (_userId != null)
+                {
+                    // Custom events don't include the custom assigned UserId, so include manually
+                    properties["AccountId"] = _userId;
+                }
+
+                if (properties.Count > 0)
+                {
+                    Analytics.TrackEvent(eventName, properties);
+                }
+                else
+                {
+                    Analytics.TrackEvent(eventName);
+                }
+            }
+            catch { }
+        }
         public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null)
         {
             try
             {
-#if DEBUG
-                //Debugger.Break();
-#endif
-
                 Crashes.TrackError(ex, exceptionName == null ? null : new Dictionary<string, string>()
                 {
                     { "ExceptionName", exceptionName }
                 });
-            }
-            catch (Exception ex2)
-            {
-                TrackEvent("FailedTrackError", new Dictionary<string, string>()
-                {
-                    { "Message", ex2.Message },
-                    { "OriginalMessage", ex.Message }
-                });
-            }
-        }
-
-        public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
-        {
-#if DEBUG
-            return;
-#else
-            try
-            {
-                Analytics.TrackEvent(eventName, properties);
-            }
-            catch { }
-#endif
-        }
-
-        public override void UpdateCurrentUser(AccountDataItem account)
-        {
-            try
-            {
-                if (account != null)
-                {
-                    var userId = account.GetTelemetryUserId();
-
-                    AppCenter.SetUserId(userId);
-                }
             }
             catch { }
         }
@@ -70,13 +60,28 @@ namespace PowerPlannerUWPLibrary.Extensions
         {
             try
             {
-#if DEBUG
-                Debug.WriteLine($"Page visited: {pageName} for {duration.TotalSeconds.ToString("0.#")} seconds on {timeVisited.ToString("t")}");
-#endif
                 Analytics.TrackEvent("PageView_" + pageName, new Dictionary<string, string>()
                 {
-                    { "Duration", Math.Ceiling(duration.TotalSeconds).ToString("0") }
+                    { "AccountId", _userId }
                 });
+            }
+            catch { }
+        }
+
+        public override void UpdateCurrentUser(AccountDataItem account)
+        {
+            try
+            {
+                if (account != null)
+                {
+                    _userId = account.GetTelemetryUserId();
+
+                    AppCenter.SetUserId(_userId);
+                }
+                else
+                {
+                    _userId = null;
+                }
             }
             catch { }
         }

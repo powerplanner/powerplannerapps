@@ -50,16 +50,16 @@ namespace PowerPlanneriOS.Extensions
         {
             try
             {
-                Crashes.TrackError(ex);
+                Crashes.TrackError(ex, exceptionName == null ? null : new Dictionary<string, string>()
+                {
+                    { "ExceptionName", exceptionName }
+                });
             }
             catch { }
         }
 
         public override void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration)
         {
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine($"Page visited: {pageName} for {duration.TotalSeconds.ToString("0.0")} seconds on {timeVisited.ToString("t")}");
-#endif
             try
             {
                 Analytics.TrackEvent("PageView_" + pageName, new Dictionary<string, string>()
