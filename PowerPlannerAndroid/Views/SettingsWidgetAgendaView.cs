@@ -19,7 +19,7 @@ using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsWidgetAgendaView : InterfacesDroid.Views.PopupViewHost<WidgetAgendaViewModel>
+    public class SettingsWidgetAgendaView : PopupViewHost<WidgetAgendaViewModel>
     {
         private SwitchCompat _switchTasks;
         private SwitchCompat _switchEvents;
@@ -27,6 +27,8 @@ namespace PowerPlannerAndroid.Views
 
         public SettingsWidgetAgendaView(ViewGroup root) : base(Resource.Layout.SettingsWidgetAgenda, root)
         {
+            Title = PowerPlannerResources.GetString("String_AgendaWidget");
+
             FindViewById<TextView>(Resource.Id.SettingsWidgetAgendaSkipItemsExplanation).Text = PowerPlannerResources.GetString("Tile_SkipItemsExplanation.Text").Replace("live tiles", "widget");
         }
 

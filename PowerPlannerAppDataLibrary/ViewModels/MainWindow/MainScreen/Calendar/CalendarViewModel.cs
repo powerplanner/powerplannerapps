@@ -195,7 +195,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public void ViewClass(ViewItemClass c)
         {
-            MainScreenViewModel.Navigate(new ClassViewModel(MainScreenViewModel, MainScreenViewModel.CurrentLocalAccountId, c.Identifier, DateTime.Today, SemesterItemsViewGroup.Semester));
+            MainScreenViewModel.ViewClass(c);
         }
 
         public void ViewSchedule()

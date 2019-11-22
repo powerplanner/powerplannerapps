@@ -13,21 +13,13 @@
         android:layout_height="wrap_content">
 
         <TextView
-            style="@android:style/TextAppearance.Large"
-            android:text="{Settings_TwoWeekSchedule_Header.Text}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"/>
-
-        <TextView
             android:text="{Settings_TwoWeekSchedule_Description.Text}"
             style="@android:style/TextAppearance.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
+            android:paddingTop="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"/>
 

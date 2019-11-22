@@ -15,10 +15,12 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class MyAccountView : InterfacesDroid.Views.PopupViewHost<MyAccountViewModel>
+    public class MyAccountView : PopupViewHost<MyAccountViewModel>
     {
         public MyAccountView(ViewGroup root) : base(Resource.Layout.MyAccount, root)
         {
+            Title = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Title");
+
             FindViewById<Button>(Resource.Id.ButtonLogOut).Click += delegate { ViewModel.LogOut(); };
             FindViewById<Button>(Resource.Id.ButtonChangeUsername).Click += delegate { ViewModel.ChangeUsername(); };
             FindViewById<Button>(Resource.Id.ButtonChangePassword).Click += delegate { ViewModel.ChangePassword(); };

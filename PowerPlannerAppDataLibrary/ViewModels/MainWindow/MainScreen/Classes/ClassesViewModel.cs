@@ -38,7 +38,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         public void OpenClass(ViewItemClass viewItemClass)
         {
-            MainScreenViewModel.OpenClass(viewItemClass);
+            MainScreenViewModel.ViewClass(viewItemClass);
         }
     }
 }

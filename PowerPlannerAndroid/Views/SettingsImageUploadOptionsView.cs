@@ -10,14 +10,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using InterfacesDroid.Adapters;
+using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsImageUploadOptionsView : InterfacesDroid.Views.PopupViewHost<ImageUploadOptionsViewModel>
+    public class SettingsImageUploadOptionsView : PopupViewHost<ImageUploadOptionsViewModel>
     {
         public SettingsImageUploadOptionsView(ViewGroup root) : base(Resource.Layout.SettingsImageUploadOptions, root)
         {
+            Title = PowerPlannerResources.GetString("Settings_SyncOptions_ItemImageUploadOptions_DisplayName");
         }
 
         public override void OnViewModelLoadedOverride()

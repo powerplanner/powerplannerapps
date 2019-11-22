@@ -10,17 +10,20 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class AboutView : InterfacesDroid.Views.PopupViewHost<AboutViewModel>
+    public class AboutView : PopupViewHost<AboutViewModel>
     {
         private string _version = "";
 
         public AboutView(ViewGroup root) : base(Resource.Layout.About, root)
         {
+            Title = PowerPlannerResources.GetString("Settings_MainPage_AboutItem.Title");
+
             try
             {
                 _version = PowerPlannerAppDataLibrary.Variables.VERSION.ToString();

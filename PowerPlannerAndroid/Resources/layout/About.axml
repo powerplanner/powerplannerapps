@@ -14,17 +14,10 @@
         android:padding="16dp">
 
         <TextView
-            style="@android:style/TextAppearance.Large"
-            android:text="{Settings_AboutPage_Header.Text}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
             style="@android:style/TextAppearance.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="{Settings_AboutPage_VersionHeader.Text}"
-            android:layout_marginTop="12dp"/>
+            android:text="{Settings_AboutPage_VersionHeader.Text}"/>
 
         <TextView
             android:id="@+id/TextViewVersionNumber"
