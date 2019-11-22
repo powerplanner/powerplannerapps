@@ -11,13 +11,16 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAndroid.ViewModel.Settings;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsWidgetsView : InterfacesDroid.Views.PopupViewHost<WidgetsViewModel>
+    public class SettingsWidgetsView : PopupViewHost<WidgetsViewModel>
     {
         public SettingsWidgetsView(ViewGroup root) : base(Resource.Layout.SettingsWidgets, root)
         {
+            Title = PowerPlannerResources.GetString("String_Widgets");
+
             FindViewById<View>(Resource.Id.SettingsWidgetAgenda).Click += delegate { NavigateToCustomViewModel<WidgetAgendaViewModel>(); };
             FindViewById<View>(Resource.Id.SettingsWidgetSchedule).Click += delegate { NavigateToCustomViewModel<WidgetScheduleViewModel>(); };
         }

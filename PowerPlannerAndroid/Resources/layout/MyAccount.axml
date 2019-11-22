@@ -14,17 +14,10 @@
         android:padding="16dp">
 
         <TextView
-            style="@android:style/TextAppearance.Large"
-            android:text="{Settings_MyAccount_Header.Text}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
             style="@android:style/TextAppearance.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             local:Binding="{Source=CurrentAccount.Username, Target=Text, Mode=OneWay}"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
 
         <Button
