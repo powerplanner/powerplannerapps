@@ -204,11 +204,14 @@ namespace PowerPlanneriOS.Helpers
                         {
                             SKPaymentQueue.DefaultQueue.FinishTransaction(t);
 
+                            // Persist on iOS, since we didn't implement looking up purchases
+                            PowerPlannerAppDataLibrary.Helpers.Settings.OwnsInAppPurchase = true;
+
                             var currAccount = PowerPlannerApp.Current.GetCurrentAccount();
 
                             if (currAccount != null)
                             {
-                                var dontBlock = currAccount.SetAsLifetimePremiumAsync();
+                                var dontBlock = Sync.SetAsPremiumAccount(currAccount);
                             }
 
                             _completionSource.TrySetResult(new PurchaseResponse()

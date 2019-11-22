@@ -1447,6 +1447,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
         {
             try
             {
+                if (!account.IsOnlineAccount)
+                {
+                    return true;
+                }
+
                 AddPremiumAccountDurationResponse resp = await account.PostAuthenticatedAsync<AddPremiumAccountDurationRequest, AddPremiumAccountDurationResponse>(
                     Website.URL + "addpremiumaccountduration",
                     new AddPremiumAccountDurationRequest()
@@ -1455,7 +1460,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     });
 
                 if (resp.Error == null)
+                {
+                    await account.SetAsLifetimePremiumAsync();
                     return true;
+                }
             }
 
             catch (HttpRequestException)

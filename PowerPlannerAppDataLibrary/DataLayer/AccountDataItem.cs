@@ -764,16 +764,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         /// <summary>
-        /// Saves locally and then uploads premium status to account without waiting
+        /// Saves locally
         /// </summary>
         /// <returns></returns>
         public async System.Threading.Tasks.Task SetAsLifetimePremiumAsync()
         {
-            PremiumAccountExpiresOn = PowerPlannerSending.DateValues.LIFETIME_PREMIUM_ACCOUNT;
+            if (PremiumAccountExpiresOn != DateValues.LIFETIME_PREMIUM_ACCOUNT)
+            {
+                PremiumAccountExpiresOn = DateValues.LIFETIME_PREMIUM_ACCOUNT;
 
-            await AccountsManager.Save(this);
-
-            var dontWait = Sync.SetAsPremiumAccount(this);
+                await AccountsManager.Save(this);
+            }
         }
 
         public DateTime LastSyncOn { get; internal set; }

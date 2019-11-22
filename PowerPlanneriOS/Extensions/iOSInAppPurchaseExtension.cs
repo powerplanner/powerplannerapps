@@ -8,6 +8,7 @@ using UIKit;
 using PowerPlannerAppDataLibrary.Extensions;
 using System.Threading.Tasks;
 using PowerPlanneriOS.Helpers;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlanneriOS.Extensions
 {
@@ -18,7 +19,7 @@ namespace PowerPlanneriOS.Extensions
 
         public override Task<bool> OwnsInAppPurchaseAsync()
         {
-            return Task.FromResult(false);
+            return Task.FromResult(Settings.OwnsInAppPurchase);
         }
 
         public override async Task<bool> PromptPurchase()

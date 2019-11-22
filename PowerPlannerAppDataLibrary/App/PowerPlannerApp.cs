@@ -68,17 +68,25 @@ namespace PowerPlannerAppDataLibrary.App
             }
         }
 
+        private bool _ownsInAppPurchase;
+
         /// <summary>
         /// Use IsFullVersionAsync to check either whether the account is premium or the in app purchase is owned.
         /// </summary>
         /// <returns></returns>
         public async Task<bool> OwnsInAppPurchaseAsync()
         {
+            if (_ownsInAppPurchase)
+            {
+                return true;
+            }
+
             try
             {
                 if (InAppPurchaseExtension.Current != null)
                 {
-                    return await InAppPurchaseExtension.Current.OwnsInAppPurchaseAsync();
+                    _ownsInAppPurchase = await InAppPurchaseExtension.Current.OwnsInAppPurchaseAsync();
+                    return _ownsInAppPurchase;
                 }
             }
 
