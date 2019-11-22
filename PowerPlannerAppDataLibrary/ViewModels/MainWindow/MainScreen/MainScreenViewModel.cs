@@ -1207,7 +1207,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
-        public void OpenClass(ViewItemClass c)
+        public void ViewClass(ViewItemClass c)
+        {
+            if (UseTabNavigation)
+            {
+                OpenClassAsPopup(c);
+            }
+            else
+            {
+                Navigate(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester));
+            }
+        }
+
+        private void OpenClassAsPopup(ViewItemClass c)
         {
             try
             {
