@@ -203,7 +203,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 {
                     ClassViewModel.ViewItemsGroupClass.ShowPastCompletedExams();
                 }
-                ClassViewModel.ViewItemsGroupClass.ShowPastCompletedExams();
             }
         }
 
