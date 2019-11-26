@@ -198,7 +198,11 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                     }
                 }
 
-                cell.DataContext = GetItem(indexPath.Row);
+                // We don't set data context on the Show Hide old items button, since it already set the data context in its construtor
+                if (cellId != CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON)
+                {
+                    cell.DataContext = GetItem(indexPath.Row);
+                }
 
                 return cell;
             }
