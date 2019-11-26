@@ -13,6 +13,8 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlanneriOS.Views;
 using System.ComponentModel;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlanneriOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -57,7 +59,8 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
             private const string CELL_ID_ITEM = "Item";
             private const string CELL_ID_HEADER = "Header";
-            private const string CELL_ID_BUTTON = "Button";
+            private const string CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON = "ShowHideButton";
+            private const string CELL_ID_OLD_ITEMS_HEADER = "OldItemsHeader";
 
             public TableViewSource(UITableView tableView, ClassHomeworkOrExamsViewModel viewModel)
             {
@@ -65,9 +68,28 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                 _viewModel = viewModel;
 
                 viewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+                viewModel.ClassViewModel.ViewItemsGroupClass.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewItemsGroupClass_PropertyChanged).Handler;
                 (viewModel.ItemsWithHeaders as INotifyCollectionChanged).CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(TableViewSource_CollectionChanged).Handler;
 
                 tableView.ReloadData();
+            }
+
+            private void ViewItemsGroupClass_PropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                if (_viewModel.Type == ClassHomeworkOrExamsViewModel.ItemType.Homework)
+                {
+                    if (e.PropertyName == nameof(ClassViewItemsGroup.PastCompletedHomework))
+                    {
+                        ReloadData();
+                    }
+                }
+                else
+                {
+                    if (e.PropertyName == nameof(ClassViewItemsGroup.PastCompletedExams))
+                    {
+                        ReloadData();
+                    }
+                }
             }
 
             public void ScrollToItem(BaseViewItemHomeworkExam item)
@@ -84,10 +106,26 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
             private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName == nameof(_viewModel.HasPastCompletedItems))
+                switch (e.PropertyName)
                 {
-                    ReloadData();
+                    case nameof(_viewModel.HasPastCompletedItems):
+                    case nameof(_viewModel.IsPastCompletedItemsDisplayed):
+                        ReloadData();
+                        break;
+
+                    case nameof(_viewModel.PastCompletedItemsWithHeaders):
+                        if (_viewModel.PastCompletedItemsWithHeaders is INotifyCollectionChanged pastCompletedItemsCollection)
+                        {
+                            pastCompletedItemsCollection.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(PastCompletedItemsCollection_CollectionChanged).Handler;
+                        }
+                        ReloadData();
+                        break;
                 }
+            }
+
+            private void PastCompletedItemsCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                ReloadData();
             }
 
             private void TableViewSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -109,14 +147,13 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                 if (row == _viewModel.ItemsWithHeaders.Count)
                 {
-                    return CELL_ID_BUTTON;
+                    return CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON;
                 }
 
                 // I need to actually load these first
-                throw new NotImplementedException();
-                //row = row - _viewModel.ItemsWithHeaders.Count - 1;
+                row = row - _viewModel.ItemsWithHeaders.Count - 1;
 
-                //return _viewModel.PastCompletedItemsWithHeaders[row] is DateTime ? CELL_ID_HEADER : CELL_ID_ITEM;
+                return _viewModel.PastCompletedItemsWithHeaders[row] is DateTime ? CELL_ID_HEADER : CELL_ID_ITEM;
             }
 
             private object GetItem(int row)
@@ -128,13 +165,12 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                 if (row == _viewModel.ItemsWithHeaders.Count)
                 {
-                    return CELL_ID_BUTTON;
+                    return CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON;
                 }
 
-                throw new NotImplementedException();
-                //row = row - _viewModel.ItemsWithHeaders.Count - 1;
+                row = row - _viewModel.ItemsWithHeaders.Count - 1;
 
-                //return _viewModel.PastCompletedItemsWithHeaders[row];
+                return _viewModel.PastCompletedItemsWithHeaders[row];
             }
 
             public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -156,31 +192,74 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                             cell = new UIFriendlyDateHeaderCell(CELL_ID_HEADER);
                             break;
 
-                        case CELL_ID_BUTTON:
-                            cell = new BareUITableViewCell(CELL_ID_BUTTON);
+                        case CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON:
+                            cell = new UIShowHideOldItemsCell(CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON, _viewModel.ClassViewModel.ViewItemsGroupClass, _viewModel.Type);
                             break;
                     }
                 }
 
-                cell.DataContext = GetItem(indexPath.Row);
+                // We don't set data context on the Show Hide old items button, since it already set the data context in its construtor
+                if (cellId != CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON)
+                {
+                    cell.DataContext = GetItem(indexPath.Row);
+                }
 
                 return cell;
+            }
+
+            private class UIShowHideOldItemsCell : BareUITableViewCell
+            {
+                private UILabel _labelText;
+
+                public UIShowHideOldItemsCell(string cellId, ClassViewItemsGroup classItemsGroup, ClassHomeworkOrExamsViewModel.ItemType type) : base(cellId)
+                {
+                    ContentView.BackgroundColor = new UIColor(0.95f, 1);
+
+                    _labelText = new UILabel()
+                    {
+                        TranslatesAutoresizingMaskIntoConstraints = false,
+                        Font = UIFont.PreferredSubheadline,
+                        TextColor = ColorResources.PowerPlannerAccentBlue,
+                        TextAlignment = UITextAlignment.Center
+                    };
+
+                    DataContext = classItemsGroup;
+
+                    if (type == ClassHomeworkOrExamsViewModel.ItemType.Homework)
+                    {
+                        BindingHost.SetLabelTextBinding(_labelText, nameof(classItemsGroup.IsPastCompletedHomeworkDisplayed), (isDisplayed) =>
+                        {
+                            return ((bool)isDisplayed) ? "Hide old tasks" : "Show old tasks";
+                        });
+                    }
+                    else
+                    {
+                        BindingHost.SetLabelTextBinding(_labelText, nameof(classItemsGroup.IsPastCompletedExamsDisplayed), (isDisplayed) =>
+                        {
+                            return ((bool)isDisplayed) ? "Hide old events" : "Show old events";
+                        });
+                    }
+
+                    ContentView.AddSubview(_labelText);
+                    _labelText.StretchWidthAndHeight(ContentView, left: 16, top: 8, bottom: 8);
+
+                    ContentView.SetHeight(44);
+                }
             }
 
             public override nint RowsInSection(UITableView tableview, nint section)
             {
                 nint count = _viewModel.ItemsWithHeaders.Count;
 
-                // In future when I add support for that, I'll have to uncomment this code again
-                //if (_viewModel.HasPastCompletedItems)
-                //{
-                //    count++;
+                if (_viewModel.HasPastCompletedItems)
+                {
+                    count++;
 
-                //    if (_viewModel.IsPastCompletedItemsDisplayed)
-                //    {
-                //        count += _viewModel.PastCompletedItemsWithHeaders.Count;
-                //    }
-                //}
+                    if (_viewModel.IsPastCompletedItemsDisplayed && _viewModel.PastCompletedItemsWithHeaders != null)
+                    {
+                        count += _viewModel.PastCompletedItemsWithHeaders.Count;
+                    }
+                }
 
                 return count;
             }
@@ -195,6 +274,11 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                     // Immediately unselect it
                     _tableView.SelectRow(null, true, UITableViewScrollPosition.None);
+                }
+
+                else if (item is string s && s == CELL_ID_SHOW_HIDE_OLD_ITEMS_BUTTON)
+                {
+                    _viewModel.TogglePastCompletedItems();
                 }
             }
         }
