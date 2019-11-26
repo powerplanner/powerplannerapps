@@ -14,6 +14,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
     public class EditClassDetailsViewModel : BaseMainScreenViewModelChild
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public ViewItemClass Class { get; private set; }
 
         private string _details = "";

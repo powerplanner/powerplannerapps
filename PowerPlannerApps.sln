@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerSending", "shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj", "{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolsPortable", "PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj", "{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolsPortable", "PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj", "{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject\UnitTestProject.csproj", "{9E3B1170-FFB8-4E61-A376-4F13214C58BA}"
 EndProject
@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerAndroid", "Powe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfacesDroid", "applibraries\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj", "{CE015236-0E8D-4042-B596-6E20BD26E56E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BareMvvm.Core", "PortableLibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj", "{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BareMvvm.Core", "PortableLibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj", "{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlanneriOS", "PowerPlanneriOS\PowerPlanneriOS.csproj", "{7CFAFCB2-C6ED-4C4B-9CBE-745347986F20}"
 EndProject
@@ -123,18 +123,18 @@ Global
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.AppStore|x64.Build.0 = Release|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.AppStore|x86.ActiveCfg = Release|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.AppStore|x86.Build.0 = Release|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|Any CPU.ActiveCfg = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|Any CPU.Build.0 = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|ARM.ActiveCfg = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|ARM.Build.0 = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhone.ActiveCfg = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhone.Build.0 = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhoneSimulator.ActiveCfg = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhoneSimulator.Build.0 = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x64.ActiveCfg = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x64.Build.0 = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x86.ActiveCfg = Debug (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x86.Build.0 = Debug (Android)|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|Any CPU.Build.0 = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|ARM.ActiveCfg = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|ARM.Build.0 = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhone.ActiveCfg = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhone.Build.0 = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x64.ActiveCfg = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x64.Build.0 = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x86.ActiveCfg = Debug|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug (Android)|x86.Build.0 = Debug|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -147,18 +147,18 @@ Global
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug|x64.Build.0 = Debug|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Debug|x86.Build.0 = Debug|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|Any CPU.ActiveCfg = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|Any CPU.Build.0 = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|ARM.ActiveCfg = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|ARM.Build.0 = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhone.ActiveCfg = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhone.Build.0 = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhoneSimulator.ActiveCfg = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhoneSimulator.Build.0 = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x64.ActiveCfg = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x64.Build.0 = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x86.ActiveCfg = Release (Android)|Any CPU
-		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x86.Build.0 = Release (Android)|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|Any CPU.Build.0 = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|ARM.ActiveCfg = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|ARM.Build.0 = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhone.ActiveCfg = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhone.Build.0 = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|iPhoneSimulator.Build.0 = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x64.ActiveCfg = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x64.Build.0 = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x86.ActiveCfg = Release|Any CPU
+		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release (Android)|x86.Build.0 = Release|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}.Release|ARM.ActiveCfg = Release|Any CPU

@@ -11,13 +11,15 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using InterfacesDroid.Adapters;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsTwoWeekScheduleView : InterfacesDroid.Views.PopupViewHost<TwoWeekScheduleSettingsViewModel>
+    public class SettingsTwoWeekScheduleView : PopupViewHost<TwoWeekScheduleSettingsViewModel>
     {
         public SettingsTwoWeekScheduleView(ViewGroup root) : base(Resource.Layout.SettingsTwoWeekSchedule, root)
         {
+            Title = PowerPlannerResources.GetString("Settings_MainPage_TwoWeekScheduleItem.Title");
         }
 
         public override void OnViewModelLoadedOverride()

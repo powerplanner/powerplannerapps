@@ -14,6 +14,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassPassingGradeViewModel : BaseMainScreenViewModelChild
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public ViewItemClass Class { get; private set; }
 
         private double m_passingGrade;

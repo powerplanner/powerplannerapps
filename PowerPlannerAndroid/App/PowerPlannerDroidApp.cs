@@ -36,7 +36,10 @@ namespace PowerPlannerAndroid.App
         {
             PortableLocalizedResources.CultureExtension = delegate { return System.Globalization.CultureInfo.CurrentCulture; };
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for Android"; };
+
+            // Beware that ViewModel-related things are dependent on this value being exactly Android, do not change.
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetPlatform = delegate { return "Android"; };
+
             DateTimeFormatterExtension.Current = new DroidDateTimeFormatterExtension();
             InAppPurchaseExtension.Current = new AndroidInAppPurchaseExtension();
             RemindersExtension.Current = new AndroidRemindersExtension();

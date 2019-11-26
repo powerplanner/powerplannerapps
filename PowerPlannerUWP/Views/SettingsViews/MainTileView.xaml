@@ -95,7 +95,7 @@
                         x:Name="TextBoxSkipAssignments"
                         InputScope="Number"
                         Text="{Binding Account.MainTileSettings.SkipItemsOlderThan, Converter={StaticResource SkipItemsToStringConverter}}"
-                        Width="60"
+                        Width="64"
                         TextChanged="TextBoxSkipAssignments_TextChanged"/>
 
                     <TextBlock

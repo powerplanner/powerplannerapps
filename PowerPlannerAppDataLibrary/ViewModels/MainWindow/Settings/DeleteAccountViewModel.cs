@@ -12,6 +12,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class DeleteAccountViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public AccountDataItem Account { get; private set; }
 
         public DeleteAccountViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)

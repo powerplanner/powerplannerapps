@@ -91,9 +91,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             if (CurrentSemesterId == semesterId)
             {
-                if (alwaysNavigate && SelectedItem != AvailableItems.First())
+                if (alwaysNavigate)
                 {
-                    SelectedItem = AvailableItems.First();
+                    // This is only called in case where we have a semester, so there'll always be available items
+                    if (SelectedItem != AvailableItems.First())
+                    {
+                        SelectedItem = AvailableItems.First();
+                    }
+
+                    if (UseTabNavigation)
+                    {
+                        // We need to clear the Years page
+                        Popups.Clear();
+                    }
                 }
                 return;
             }
@@ -104,11 +114,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             await OnSemesterChanged(); // Loads the classes
             UpdateAvailableItemsAndTriggerUpdateDisplay();
 
-            SelectedItem = AvailableItems.First();
+            if (AvailableItems.Any())
+            {
+                SelectedItem = AvailableItems.First();
+            }
+            else
+            {
+                SelectedItem = null;
+            }
+
+            if (UseTabNavigation && AvailableItems.Any())
+            {
+                // We need to clear the Years page
+                Popups.Clear();
+            }
         }
+
+        public readonly bool UseTabNavigation;
 
         private MainScreenViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
+            UseTabNavigation = SyncExtensions.GetPlatform() == "Android";
             CurrentAccount = account;
 
             AccountDataStore.DataChangedEvent += new WeakEventHandler<DataChangedEvent>(AccountDataStore_DataChangedEvent).Handler;
@@ -457,16 +483,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             model.updateAvailableItems();
 
-            MainMenuSelections selectedItem;
+            MainMenuSelections? selectedItem = null;
 
             if (model.AvailableItems.Contains(NavigationManager.MainMenuSelection))
                 selectedItem = NavigationManager.MainMenuSelection;
-            else
+            else if (model.AvailableItems.Any())
             {
                 selectedItem = model.AvailableItems.First();
             }
 
-            if (selectedItem == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
+            if (!model.UseTabNavigation && selectedItem.GetValueOrDefault() == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
             {
                 var c = model.Classes.FirstOrDefault(i => NavigationManager.ClassSelection == i.Identifier);
                 if (c != null)
@@ -858,6 +884,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         private EventHandler<DataChangedEvent> _scheduleChangesOccurredHandler;
         private async Task OnSemesterChanged()
         {
+            // Null this out so that when we set the item for the new semester, it loads
+            _selectedItem = null;
+
             // Restore the default stored items
             NavigationManager.RestoreDefaultMemoryItems();
 
@@ -1030,7 +1059,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <returns></returns>
         private bool makeAvailableItemsLike(params NavigationManager.MainMenuSelections[] desired)
         {
-            return IListExtensions.MakeListLike(_availableItems, desired);
+            if (UseTabNavigation)
+            {
+                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years, MainMenuSelections.Settings }).ToArray();
+            }
+
+            bool answer = IListExtensions.MakeListLike(_availableItems, desired);
+
+            if (UseTabNavigation && !AvailableItems.Any() && Popups.Count == 0)
+            {
+                OpenYears();
+            }
+
+            return answer;
         }
 
         public void SetContent(BaseViewModel viewModel, bool preserveBack = false)
@@ -1130,6 +1171,79 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         public void ViewHoliday(ViewItemHoliday holiday)
         {
             this.ShowPopup(AddHolidayViewModel.CreateForEdit(this, holiday));
+        }
+
+        public void OpenYears()
+        {
+            try
+            {
+                if (!UseTabNavigation)
+                {
+                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                }
+
+                ShowPopup(new YearsViewModel(this));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public void OpenSettings()
+        {
+            try
+            {
+                if (!UseTabNavigation)
+                {
+                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                }
+
+                ShowPopup(new SettingsViewModel(this));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public void ViewClass(ViewItemClass c)
+        {
+            if (UseTabNavigation)
+            {
+                OpenClassAsPopup(c);
+            }
+            else
+            {
+                Navigate(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester));
+            }
+        }
+
+        private void OpenClassAsPopup(ViewItemClass c)
+        {
+            try
+            {
+                if (!UseTabNavigation)
+                {
+                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                }
+
+                if (c == null)
+                {
+                    throw new ArgumentNullException(nameof(c));
+                }
+
+                if (CurrentSemester == null)
+                {
+                    throw new InvalidOperationException("CurrentSemester was null");
+                }
+
+                ShowPopup(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
     }
 }

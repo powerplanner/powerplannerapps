@@ -100,11 +100,11 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 var paddedStartTime = StartTime;
                 var paddedEndTime = EndTime;
 
-                if (this.GetType() != other.GetType())
-                {
-                    paddedStartTime = StartTime.Subtract(TimeSpan.FromMinutes(10));
-                    paddedEndTime = EndTime.Add(TimeSpan.FromMinutes(10));
-                }
+                //if (this.GetType() != other.GetType())
+                //{
+                //    paddedStartTime = StartTime.Subtract(TimeSpan.FromMinutes(10));
+                //    paddedEndTime = EndTime.Add(TimeSpan.FromMinutes(10));
+                //}
 
                 // AAAA
                 //      BBBB
@@ -357,6 +357,10 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                             doesCollideWithSchedule = true;
                             scheduleCollisionsWithEvent.Add(s);
                         }
+                        else
+                        {
+                            AccomodateTouchingItemsIfNeeded(s, e);
+                        }
                     }
                 }
 
@@ -428,6 +432,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                                 }
                                 else
                                 {
+                                    AccomodateTouchingItemsIfNeeded(prev, next);
                                     break;
                                 }
                             }
@@ -491,12 +496,51 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         {
             for (int i = 0; i < copiedList.Count; i++)
             {
-                if (into.Any(existing => existing.CollidesWith(copiedList[i])))
+                if (AddColliding(copiedList[i], into))
                 {
-                    into.Add(copiedList[i]);
                     copiedList.RemoveAt(i);
                     i--;
                 }
+            }
+        }
+
+        /// <summary>
+        /// If the item is colliding and can't be resolved (like same start time as an end time), adds into the into list and returns true
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="incoming"></param>
+        /// <param name="into"></param>
+        /// <returns></returns>
+        private static bool AddColliding<T>(T incoming, List<T> into) where T : BaseScheduleItem
+        {
+            foreach (var existing in into)
+            {
+                if (existing.CollidesWith(incoming))
+                {
+                    into.Add(incoming);
+                    return true;
+                }
+
+                AccomodateTouchingItemsIfNeeded(incoming, existing);
+            }
+
+            return false;
+        }
+
+        private static void AccomodateTouchingItemsIfNeeded(BaseScheduleItem first, BaseScheduleItem second)
+        {
+            const int collisionPadding = 8;
+
+            if (first.StartTime == second.EndTime)
+            {
+                second.EndTime = second.EndTime.Subtract(TimeSpan.FromMinutes(collisionPadding / 2));
+                first.StartTime = first.StartTime.Add(TimeSpan.FromMinutes(collisionPadding / 2));
+            }
+
+            else if (first.EndTime == second.StartTime)
+            {
+                first.EndTime = first.EndTime.Subtract(TimeSpan.FromMinutes(collisionPadding / 2));
+                second.StartTime = second.StartTime.Add(TimeSpan.FromMinutes(collisionPadding / 2));
             }
         }
 

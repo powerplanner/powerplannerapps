@@ -29,6 +29,9 @@ namespace PowerPlannerAndroid.Views
             Toolbar = popupView.FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.Toolbar);
             Toolbar.MenuItemClick += Toolbar_MenuItemClick;
 
+            Toolbar.SetNavigationIcon(Resource.Drawable.ic_arrow_back_black_24dp);
+            Toolbar.NavigationClick += delegate { ViewModel.GoBack(); };
+
             // Use the base method so that it participates in binding correctly
             View content = base.CreateView(inflater, resourceId, root);
 

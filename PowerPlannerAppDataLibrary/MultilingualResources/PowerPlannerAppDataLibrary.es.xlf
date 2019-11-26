@@ -2213,7 +2213,7 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage_Message.Text" translate="yes" xml:space="preserve">
           <source>Are you using Power Planner on another device, but haven't set up an account? If so, open Power Planner from that device, go to Settings -&gt; Create account, and create an account. After that, log in below!</source>
-          <target state="translated">¿Está utilizando Power Planner en otro dispositivo, pero no ha configurado una cuenta? Si es así, abra Power Planner desde ese dispositivo, vaya a Configuración -&gt; Crear cuenta y crear una cuenta. Después de eso, inicie sesión a continuación.</target>
+          <target state="final">¿Está utilizando Power Planner en otro dispositivo, pero no ha configurado una cuenta? Si es así, abra Power Planner desde ese dispositivo, vaya a Configuración -&gt; Crear cuenta y crear una cuenta. Después de eso, inicie sesión a continuación.</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage_NeedHelp.Text" translate="yes" xml:space="preserve">
           <source>If you need help, contact support@powerplanner.net</source>
@@ -2234,6 +2234,22 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         <trans-unit id="Welcome_ExistingUserPage_Message.Text" translate="yes" xml:space="preserve">
           <source>Do you have a Power Planner account?</source>
           <target state="final">¿Tienes una cuenta de Power Planner?</target>
+        </trans-unit>
+        <trans-unit id="ClassesPage_TextBlockNoClassesHeader.Text" translate="yes" xml:space="preserve">
+          <source>No classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Sin clases</target>
+        </trans-unit>
+        <trans-unit id="ClassesPage_TextBlockNoClassesDescription.Text" translate="yes" xml:space="preserve">
+          <source>Click the "+" button in the top menu to add your first class!</source>
+          <target state="final" state-qualifier="mt-suggestion">¡Haga clic en el botón "+" en el menú superior para agregar su primera clase!</target>
+        </trans-unit>
+        <trans-unit id="Agenda_NoItemsDescription.Text" translate="yes" xml:space="preserve">
+          <source>Click the "+" button to add some tasks or events.</source>
+          <target state="final" state-qualifier="mt-suggestion">Haga clic en el botón "+" para agregar algunas tareas o eventos.</target>
+        </trans-unit>
+        <trans-unit id="Agenda_NoItemsHeader.Text" translate="yes" xml:space="preserve">
+          <source>All done!</source>
+          <target state="final" state-qualifier="tm-suggestion">¡Listo!</target>
         </trans-unit>
       </group>
     </body>

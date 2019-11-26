@@ -49,7 +49,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using PowerPlannerUWPLibrary.Extensions;
-using PCLStorage;
+using StorageEverywhere;
 using InterfacesUWP.ViewModelPresenters;
 using Windows.UI.Xaml.Data;
 using InterfacesUWP.App;
@@ -101,7 +101,7 @@ namespace PowerPlannerUWP
         public App()
         {
 #if DEBUG
-            ApplicationLanguages.PrimaryLanguageOverride = "en";
+            //ApplicationLanguages.PrimaryLanguageOverride = "es";
 #endif
 
             this.UnhandledException += App_UnhandledException;
@@ -730,6 +730,11 @@ namespace PowerPlannerUWP
                     if (v < new Version(3, 0, 6, 0))
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
+
+                    if (v < new Version(1911, 2))
+                    {
+                        changedText += "\n - Support for Monday as first day of week on Calendar for countries like Spain!";
+                    }
 
                     if (v < new Version(1909, 12, 1, 0))
                     {

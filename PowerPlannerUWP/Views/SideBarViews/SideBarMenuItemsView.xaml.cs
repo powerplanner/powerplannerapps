@@ -31,6 +31,9 @@ namespace PowerPlannerUWP.Views.SideBarViews
 {
     public sealed partial class SideBarMenuItemsView : UserControl
     {
+        /// <summary>
+        /// This is for when in mobile/compact mode and the menu is temporarily open... RequestClose gets triggered indicating that the menu should now be closed.
+        /// </summary>
         public event EventHandler RequestClose;
 
         public static readonly DependencyProperty MenuItemsModelProperty = DependencyProperty.Register("MenuItemsModel", typeof(MainScreenViewModel), typeof(SideBarMenuItemsView), new PropertyMetadata(null, OnMenuItemsModelChanged));
@@ -173,6 +176,12 @@ namespace PowerPlannerUWP.Views.SideBarViews
 
             if (selected == NavigationManager.MainMenuSelections.Classes)
             {
+                // Clicking toggles visibility
+                if (_listViewClasses != null)
+                {
+                    _listViewClasses.Visibility = _listViewClasses.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                }
+
                 // If there's classes, we won't close since user can pick a class
                 if (MenuItemsModel != null && MenuItemsModel.Classes != null && MenuItemsModel.Classes.Count > 0)
                     return;

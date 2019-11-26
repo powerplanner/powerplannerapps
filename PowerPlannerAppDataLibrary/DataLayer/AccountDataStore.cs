@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 using ToolsPortable;
 using System.Diagnostics;
 using PowerPlannerAppDataLibrary.Helpers;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using Newtonsoft.Json;
@@ -439,7 +439,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 // Write the data to the temp file
                 timeTracker = TimeTracker.Start();
-                using (Stream s = await tempFile.OpenAsync(FileAccess.ReadAndWrite))
+                using (Stream s = await tempFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                 {
                     timeTracker.End(3, "ChangedItems.Save open stream");
 
@@ -528,7 +528,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
 
                 timeTracker = TimeTracker.Start();
-                using (Stream s = await file.OpenAsync(FileAccess.Read))
+                using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
                 {
                     timeTracker.End(3, "ChangedItems.Load OpenAsync");
 
@@ -830,8 +830,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 if (_db.GetTableInfo("DataItemHomework").Count > 0)
                 {
+#pragma warning disable 612, 618
                     _db.CreateTable<DataItemHomework>();
                     _db.CreateTable<DataItemExam>();
+#pragma warning restore 612, 618
 
                     var semesters = TableSemesters.ToArray();
                     var classes = TableClasses.ToArray();
@@ -850,7 +852,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                     using (var batchInserter = new BatchDbInserter(_db, 30))
                     {
+#pragma warning disable 612, 618
                         foreach (var h in _db.Table<DataItemHomework>())
+#pragma warning restore 612, 618
                         {
                             handleV2update(h);
 
@@ -886,7 +890,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                             });
                         }
 
+#pragma warning disable 612, 618
                         foreach (var e in _db.Table<DataItemExam>())
+#pragma warning restore 612, 618
                         {
                             handleV2update(e);
 
@@ -922,8 +928,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                         }
                     }
 
+#pragma warning disable 612, 618
                     _db.DropTable<DataItemHomework>();
                     _db.DropTable<DataItemExam>();
+#pragma warning restore 612, 618
                 }
             }
             if (version < 4)
@@ -1566,7 +1574,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
 
 
-            DataChangedEvent dataChangedEvent = new DataChangedEvent(LocalAccountId, newDataItems, existingDataItems, deletedItems, wasLocalChanges: processType == ProcessType.Local, dataChanges);
+            DataChangedEvent dataChangedEvent = new DataChangedEvent(LocalAccountId, newDataItems, existingDataItems, deletedItems, wasLocalChanges: processType == ProcessType.Local, originalChanges: dataChanges);
 
             // Queue the Appointments to be updated (this saves the account so that it's flagged as Appointments not updated, and then does remaining work on separate thread)
             bool needsSave = false;

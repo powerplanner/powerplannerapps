@@ -10,7 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAndroid.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
@@ -27,7 +27,7 @@ namespace PowerPlannerAndroid.Extensions
                 {
                     // Copy to local temp file
                     var tempFile = await TempFile.CreateAsync($"{Guid.NewGuid()}.{result.Extension}");
-                    using (var fileStream = await tempFile.OpenAsync(PCLStorage.FileAccess.ReadAndWrite))
+                    using (var fileStream = await tempFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                     {
                         await result.Stream.CopyToAsync(fileStream);
                     }

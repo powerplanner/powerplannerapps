@@ -45,7 +45,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
 
             _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
-            _calendarView.Adapter = new MyCalendarAdapter(ViewModel, ViewModel.DisplayMonth);
+            _calendarView.Adapter = new MyCalendarAdapter(ViewModel, ViewModel.DisplayMonth, ViewModel.FirstDayOfWeek);
             _calendarView_DisplayMonthChanged(_calendarView, new EventArgs());
             _calendarView.DisplayMonthChanged += _calendarView_DisplayMonthChanged;
             _calendarView.SelectedDateChanged += _calendarView_SelectedDateChanged;
@@ -115,14 +115,14 @@ namespace PowerPlannerAndroid.Views
         {
             private CalendarViewModel _viewModel;
 
-            public MyCalendarAdapter(CalendarViewModel viewModel, DateTime month) : base(month)
+            public MyCalendarAdapter(CalendarViewModel viewModel, DateTime month, DayOfWeek firstDayOfWeek) : base(month, firstDayOfWeek)
             {
                 _viewModel = viewModel;
             }
 
             public override MyCalendarMonthView GetView(ViewGroup parent, MyCalendarView calendarView)
             {
-                return new MySmallCalendarMonthView(parent, calendarView, _viewModel);
+                return new MySmallCalendarMonthView(parent, calendarView, _viewModel, FirstDayOfWeek);
             }
         }
 
@@ -131,7 +131,7 @@ namespace PowerPlannerAndroid.Views
             private CalendarViewModel _viewModel;
             private TextView _title;
 
-            public MySmallCalendarMonthView(ViewGroup parent, MyCalendarView calendarView, CalendarViewModel viewModel) : base(parent, calendarView)
+            public MySmallCalendarMonthView(ViewGroup parent, MyCalendarView calendarView, CalendarViewModel viewModel, DayOfWeek firstDayOfWeek) : base(parent, calendarView, firstDayOfWeek)
             {
                 _viewModel = viewModel;
 

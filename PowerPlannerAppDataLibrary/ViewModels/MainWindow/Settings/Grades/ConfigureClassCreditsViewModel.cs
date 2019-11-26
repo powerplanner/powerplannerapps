@@ -14,6 +14,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassCreditsViewModel : BaseMainScreenViewModelChild
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public ViewItemClass Class { get; private set; }
 
         public ConfigureClassCreditsViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)

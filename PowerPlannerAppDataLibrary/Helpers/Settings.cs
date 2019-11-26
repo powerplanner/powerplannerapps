@@ -84,8 +84,28 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string AVERAGE_IMAGE_BLOB_SAVE_SPEED_IN_BYTES_PER_SECOND = "AverageImageBlobSaveSpeedInBytesPerSecond";
         private const string AVERAGE_IMAGE_UPLOAD_SPEED_IN_BYTES_PER_SECOND = "AverageImageUploadSpeedInBytesPerSecond";
         private const string HAS_SHOWN_PROMO_CONTRIBUTE = "HasShownPromoContribute";
+        private const string OWNS_IN_APP_PURCHASE = "OwnsInAppPurchase";
 
         #endregion
+
+        /// <summary>
+        /// Only iOS uses this, on the rest of the platforms we query the platform APIs to retrieve if they've purchased
+        /// </summary>
+        public static bool OwnsInAppPurchase
+        {
+            get => AppSettings.GetValueOrDefault(OWNS_IN_APP_PURCHASE, false);
+            set
+            {
+                if (value)
+                {
+                    AppSettings.AddOrUpdateValue(OWNS_IN_APP_PURCHASE, true);
+                }
+                else
+                {
+                    AppSettings.Remove(OWNS_IN_APP_PURCHASE);
+                }
+            }
+        }
 
         public static double AverageImageBlobSaveSpeedInBytesPerSecond
         {

@@ -18,6 +18,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 {
     public class CreateAccountViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public Action AlertPasswordTooShort = delegate { ShowMessage("Your password is too short.", "Password too short"); };
         public Action AlertConfirmationPasswordDidNotMatch = delegate { ShowMessage("Your confirmation password didn't match.", "Invalid password"); };
         public Action AlertNoUsername = delegate { ShowMessage("You must provide a username!", "No username"); };
@@ -201,6 +203,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 DefaultAccountToUpgrade.Token = token;
                 DefaultAccountToUpgrade.AccountId = accountId;
                 DefaultAccountToUpgrade.DeviceId = deviceId;
+                DefaultAccountToUpgrade.NeedsToSyncSettings = true; // Make sure we sync settings so things like week info uploads
 
                 await AccountsManager.Save(DefaultAccountToUpgrade);
 

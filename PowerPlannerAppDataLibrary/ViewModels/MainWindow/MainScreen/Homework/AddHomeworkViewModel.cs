@@ -1,5 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -27,6 +27,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         public enum OperationState { Adding, Editing }
 
         public OperationState State { get; private set; }
+
+        protected override bool InitialAllowLightDismissValue => false;
 
         private ItemType _type;
         public ItemType Type

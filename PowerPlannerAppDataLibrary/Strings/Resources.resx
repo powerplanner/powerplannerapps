@@ -1111,6 +1111,12 @@ Once you purchase the premium version, you own the premium version on all your d
   <data name="SelectClassPage_TextBlockHeader.Text" xml:space="preserve">
     <value>No Class</value>
   </data>
+  <data name="ClassesPage_TextBlockNoClassesHeader.Text" xml:space="preserve">
+    <value>No classes</value>
+  </data>
+  <data name="ClassesPage_TextBlockNoClassesDescription.Text" xml:space="preserve">
+    <value>Click the "+" button in the top menu to add your first class!</value>
+  </data>
   <data name="String_AddExam" xml:space="preserve">
     <value>Add event</value>
   </data>
@@ -1781,5 +1787,11 @@ Please think about using an online account instead!</value>
   </data>
   <data name="Welcome_ExistingUserPage_Message.Text" xml:space="preserve">
     <value>Do you have a Power Planner account?</value>
+  </data>
+  <data name="Agenda_NoItemsDescription.Text" xml:space="preserve">
+    <value>Click the "+" button to add some tasks or events.</value>
+  </data>
+  <data name="Agenda_NoItemsHeader.Text" xml:space="preserve">
+    <value>All done!</value>
   </data>
 </root>

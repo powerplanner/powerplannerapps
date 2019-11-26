@@ -17,6 +17,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
     public class LoginViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public LoginViewModel(BaseViewModel parent) : base(parent)
         {
             Initialize();
@@ -361,11 +363,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 else
                 {
                     AccountDataItem account = await CreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId);
-                    AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
 
                     if (account != null)
                     {
                         TelemetryExtension.Current?.TrackEvent("LoggedInToOnlineAccount");
+
+                        AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
 
                         IsSyncingAccount = true;
 

@@ -1,4 +1,4 @@
-﻿using PCLStorage;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using System;
@@ -30,7 +30,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 // Copy to local temp file
                 string fileName = $"{Guid.NewGuid()}{file.FileType}";
                 var tempFile = await TempFile.CreateAsync(fileName);
-                using (var fileStream = await tempFile.OpenAsync(PCLStorage.FileAccess.ReadAndWrite))
+                using (var fileStream = await tempFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                 {
                     using (var originalStream = await file.OpenStreamForReadAsync())
                     {

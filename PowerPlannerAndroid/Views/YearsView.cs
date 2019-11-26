@@ -18,24 +18,22 @@ using ToolsPortable;
 using InterfacesDroid.Adapters;
 using InterfacesDroid.Themes;
 using InterfacesDroid.DataTemplates;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class YearsView : InterfacesDroid.Views.PopupViewHost<YearsViewModel>
+    public class YearsView : PopupViewHost<YearsViewModel>
     {
         private ItemsControlWrapper _itemsWrapperYears;
 
         public YearsView(ViewGroup root) : base(Resource.Layout.Years, root)
         {
-            base.Visibility = ViewStates.Gone;
+            Title = PowerPlannerResources.GetString("MainMenuItem_Years");
         }
 
         public override void OnViewModelLoadedOverride()
         {
-            //FindViewById<AdapterLinearLayout>(Resource.Id.YearsListView).Adapter = ObservableAdapter.Create(
-            //    ViewModel.YearsViewItemsGroup.School.Years,
-            //    CreateYearView);
-
+            // Must keep a strong reference so doesn't get disposed
             _itemsWrapperYears = new ItemsControlWrapper(FindViewById<ViewGroup>(Resource.Id.YearsListView))
             {
                 ItemsSource = ViewModel.YearsViewItemsGroup.School.Years,
@@ -44,7 +42,7 @@ namespace PowerPlannerAndroid.Views
 
             FindViewById<Button>(Resource.Id.ButtonAddYear).Click += ButtonAddYear_Click;
 
-            base.Visibility = ViewStates.Visible;
+            FindViewById(Resource.Id.YearsContent).Visibility = ViewStates.Visible;
         }
 
         private View CreateYearView(ViewGroup root, ViewItemYear year)

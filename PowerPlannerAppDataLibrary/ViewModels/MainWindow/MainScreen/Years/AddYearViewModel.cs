@@ -15,6 +15,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
     public class AddYearViewModel : BaseMainScreenViewModelChild
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public enum OperationState { Adding, Editing }
 
         public OperationState State { get; private set; }

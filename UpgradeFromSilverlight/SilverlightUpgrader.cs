@@ -15,7 +15,7 @@ using UpgradeFromSilverlight.Model;
 using UpgradeFromSilverlight.Sections;
 using Windows.Storage;
 using Windows.UI.StartScreen;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 
 namespace UpgradeFromSilverlight
@@ -148,8 +148,8 @@ namespace UpgradeFromSilverlight
                                 {
                                     using (IsolatedStorageFileStream existingStream = store.OpenFile(path, System.IO.FileMode.Open, System.IO.FileAccess.Read, FileShare.Read))
                                     {
-                                        var newFile = await newImagesFolder.CreateFileAsync(imageName, PCLStorage.CreationCollisionOption.ReplaceExisting);
-                                        using (Stream newStream = await newFile.OpenAsync(PCLStorage.FileAccess.ReadAndWrite))
+                                        var newFile = await newImagesFolder.CreateFileAsync(imageName, StorageEverywhere.CreationCollisionOption.ReplaceExisting);
+                                        using (Stream newStream = await newFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                                         {
                                             existingStream.CopyTo(newStream);
                                         }

@@ -12,6 +12,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
     public class ResetPasswordViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public ResetPasswordViewModel(BaseViewModel parent, string username) : base(parent)
         {
             Username = username;

@@ -1,4 +1,4 @@
-﻿using PCLStorage;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
@@ -18,7 +18,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
     [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/PowerPlannerUWPLibrary.DataLayer")]
     public class AccountDataItem : BindableBaseWithPortableDispatcher
     {
-        public const int CURRENT_ACCOUNT_DATA_VERSION = 2;
+        public const int CURRENT_ACCOUNT_DATA_VERSION = 3;
         public const int CURRENT_SYNCED_DATA_VERSION = 5;
 
         /// <summary>
@@ -150,20 +150,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <param name="currentWeek"></param>
         public async System.Threading.Tasks.Task SetWeek(DayOfWeek startsOn, Schedule.Week currentWeek)
         {
-            // Clear cached schedules on day since they don't subscribe to these changes.
-            // Ideally I would have the lists subscribe to the account, but this will do for now.
-            ViewLists.SchedulesOnDay.ClearCached();
-            ViewLists.DayScheduleItemsArranger.ClearCached();
-
-            DateTime today = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
-
-            if (currentWeek == Schedule.Week.WeekTwo)
-                today = today.AddDays(-7);
-
-            DateTime answer = DateTools.Last(startsOn, today);
-            if (answer != WeekOneStartsOn)
+            if (SetWeekSimple(startsOn, currentWeek))
             {
-                WeekOneStartsOn = answer;
+                // Clear cached schedules on day since they don't subscribe to these changes.
+                // Ideally I would have the lists subscribe to the account, but this will do for now.
+                ViewLists.SchedulesOnDay.ClearCached();
+                ViewLists.DayScheduleItemsArranger.ClearCached();
+
                 NeedsToSyncSettings = true;
 
                 // Save
@@ -186,30 +179,31 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
+        /// <summary>
+        /// Doesn't do any saving or setting of any other dependent properties
+        /// </summary>
+        /// <param name="startsOn"></param>
+        /// <param name="currentWeek"></param>
+        public bool SetWeekSimple(DayOfWeek startsOn, Schedule.Week currentWeek)
+        {
+            DateTime today = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
+
+            if (currentWeek == Schedule.Week.WeekTwo)
+                today = today.AddDays(-7);
+
+            DateTime answer = DateTools.Last(startsOn, today);
+            if (answer != WeekOneStartsOn)
+            {
+                WeekOneStartsOn = answer;
+                return true;
+            }
+
+            return false;
+        }
+
         private async System.Threading.Tasks.Task SaveOnThread()
         {
             await AccountsManager.Save(this);
-        }
-
-        private Schedule.Week getWeekOnDifferentDate(DateTime startDate, DateTime date)
-        {
-            int days;
-
-            if (date.Date >= startDate.Date)
-                days = (date.Date - startDate.Date).Days;
-
-            else
-                days = (startDate.Date - date.Date).Days + 6;
-
-            if (days / 7 % 2 == 0)
-            {
-                return Schedule.Week.WeekOne;
-            }
-
-            else
-            {
-                return Schedule.Week.WeekTwo;
-            }
         }
 
         private Schedule.Week toggleWeek()
@@ -229,7 +223,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
-            return getWeekOnDifferentDate(WeekOneStartsOn, date);
+            return PowerPlannerSending.Helpers.WeekHelper.GetWeekOnDifferentDate(WeekOneStartsOn, date);
         }
 
         private bool showSchedule = true;
@@ -341,7 +335,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 if (file != null)
                 {
-                    using (Stream s = await file.OpenAsync(FileAccess.Read))
+                    using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
                     {
                         ClassTileSettings answer = (ClassTileSettings)GetClassTileSettingsSerializer().ReadObject(s);
                         return answer;
@@ -367,7 +361,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             IFile temp = await destination.CreateFileAsync("Temp" + classId + ".dat", CreationCollisionOption.ReplaceExisting);
 
             // Write the data to the temp file
-            using (Stream s = await temp.OpenAsync(FileAccess.ReadAndWrite))
+            using (Stream s = await temp.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
             {
                 GetClassTileSettingsSerializer().WriteObject(s, settings);
             }
@@ -530,7 +524,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        public async Task<T> PostAuthenticatedAsync<K, T>(string url, K postData, ToolsPortable.WebHelper.Serializer serializer = ToolsPortable.WebHelper.Serializer.DataContractJson, System.Threading.CancellationToken? cancellationToken = null)
+        public async Task<T> PostAuthenticatedAsync<K, T>(string url, K postData, System.Threading.CancellationToken? cancellationToken = null)
             where K : PartialLoginRequest
             where T : PlainResponse
         {
@@ -561,7 +555,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 Token = Token
             };
 
-            return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, serializer, cancellationToken ?? System.Threading.CancellationToken.None);
+            return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, cancellationToken ?? System.Threading.CancellationToken.None);
         }
 
 #if ANDROID
@@ -770,16 +764,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         /// <summary>
-        /// Saves locally and then uploads premium status to account without waiting
+        /// Saves locally
         /// </summary>
         /// <returns></returns>
         public async System.Threading.Tasks.Task SetAsLifetimePremiumAsync()
         {
-            PremiumAccountExpiresOn = PowerPlannerSending.DateValues.LIFETIME_PREMIUM_ACCOUNT;
+            if (PremiumAccountExpiresOn != DateValues.LIFETIME_PREMIUM_ACCOUNT)
+            {
+                PremiumAccountExpiresOn = DateValues.LIFETIME_PREMIUM_ACCOUNT;
 
-            await AccountsManager.Save(this);
-
-            var dontWait = Sync.SetAsPremiumAccount(this);
+                await AccountsManager.Save(this);
+            }
         }
 
         public DateTime LastSyncOn { get; internal set; }

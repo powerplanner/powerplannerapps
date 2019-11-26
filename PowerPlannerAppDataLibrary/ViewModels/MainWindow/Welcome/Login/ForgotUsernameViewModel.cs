@@ -12,6 +12,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
     public class ForgotUsernameViewModel : BaseViewModel
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         public static string StoredEmail = "";
 
         public ForgotUsernameViewModel(BaseViewModel parent) : base(parent)

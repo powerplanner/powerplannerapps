@@ -15,6 +15,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
     public class AddClassViewModel : BaseMainScreenViewModelChild
     {
+        protected override bool InitialAllowLightDismissValue => false;
+
         /// <summary>
         /// Views should set this to true to enable editing details
         /// </summary>

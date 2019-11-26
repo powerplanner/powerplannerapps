@@ -11,7 +11,9 @@
         android:id="@+id/RecyclerViewGrades"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="90dp"
+        android:clipToPadding="false"/>
 
     <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
     <android.support.design.widget.FloatingActionButton

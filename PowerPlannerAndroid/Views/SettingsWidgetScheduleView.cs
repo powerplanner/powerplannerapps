@@ -10,13 +10,15 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAndroid.ViewModel.Settings;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsWidgetScheduleView : InterfacesDroid.Views.PopupViewHost<WidgetScheduleViewModel>
+    public class SettingsWidgetScheduleView : PopupViewHost<WidgetScheduleViewModel>
     {
         public SettingsWidgetScheduleView(ViewGroup root) : base(Resource.Layout.SettingsWidgetSchedule, root)
         {
+            Title = PowerPlannerResources.GetString("String_ScheduleWidget");
         }
     }
 }

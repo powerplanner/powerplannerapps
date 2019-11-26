@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PCLStorage;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -138,6 +138,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
         /// <summary>
         /// Places the account on the queue to be synced (will merge with existing queued if there are any), async task completes once the account is synced.
+        /// Does NOT throw exceptions (except operation canceled), will always return a result.
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
@@ -479,7 +480,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 {
                     try
                     {
-                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, WebHelper.Serializer.JsonNET, request.CancellationToken);
+                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, request.CancellationToken);
                     }
 
                     catch (OperationCanceledException)
@@ -489,14 +490,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                     catch (Exception ex)
                     {
-                        // This captures non-200 HTTP codes
-                        if (ex is HttpRequestException rex)
-                        {
-                            TelemetryExtension.Current?.TrackException(ex, "SyncModernHttpError");
-                            Debug.WriteLine("Error syncing (HttpError): " + ex.ToString());
-                        }
-                        // Ignore typical issues
-                        else if (!ExceptionHelper.IsHttpWebIssue(ex))
+                        // Ignore typical issues, only capture unusal ones
+                        if (!ExceptionHelper.IsHttpWebIssue(ex))
                         {
                             TelemetryExtension.Current?.TrackException(ex);
                             Debug.WriteLine("Error syncing (WebException): " + ex.ToString());
@@ -520,6 +515,15 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                     if (response.Error != null)
                     {
+                        // Skip logging the common ones where user simply changed their credentials
+                        if (response.Error != SyncResponse.INCORRECT_PASSWORD
+                            && response.Error != SyncResponse.USERNAME_CHANGED
+                            && response.Error != SyncResponse.DEVICE_NOT_FOUND
+                            && response.Error != SyncResponse.INCORRECT_CREDENTIALS
+                            && !response.Error.StartsWith("Backend error."))
+                        {
+                            TelemetryExtension.Current?.TrackException(new Exception("SyncError: " + response.Error));
+                        }
                         Debug.WriteLine("Sync error: " + response.Error);
 
                         return new SyncResult()
@@ -596,7 +600,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                             var partialFile = await partialSyncsFolder.CreateFileAsync("Partial" + partialSyncNumber, CreationCollisionOption.ReplaceExisting);
                             partialSyncFiles.Add(partialFile);
                             var jsonSerializer = new JsonSerializer();
-                            using (var stream = await partialFile.OpenAsync(FileAccess.ReadAndWrite))
+                            using (var stream = await partialFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                             {
                                 using (var streamWriter = new StreamWriter(stream))
                                 {
@@ -673,7 +677,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     foreach (var partialFile in partialSyncFiles)
                     {
                         UpdatedItems partialItems;
-                        using (var stream = await partialFile.OpenAsync(FileAccess.Read))
+                        using (var stream = await partialFile.OpenAsync(StorageEverywhere.FileAccess.Read))
                         {
                             using (var streamReader = new StreamReader(stream))
                             {
@@ -819,6 +823,17 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             
             catch (Exception ex)
             {
+                // Ignore typical issues, only capture unusal ones
+                if (ExceptionHelper.IsHttpWebIssue(ex))
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                    Debug.WriteLine("Error syncing (WebException): " + ex.ToString());
+                    return new SyncResult()
+                    {
+                        Error = "Offline."
+                    };
+                }
+
                 Debug.WriteLine("Error syncing: " + ex.ToString());
                 TelemetryExtension.Current?.TrackException(ex);
                 return new SyncResult()
@@ -1043,7 +1058,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 else
                 {
                     Debug.WriteLine("Exception uploading image: " + ex.ToString());
-                    TelemetryExtension.Current?.TrackException(ex);
+
+                    if (!(ex is HttpRequestException))
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
                 }
 
                 lock (_lockUploadImages)
@@ -1100,7 +1119,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             try
             {
                 // https://stackoverflow.com/questions/16416601/c-sharp-httpclient-4-5-multipart-form-data-upload
-                using (Stream stream = await imageFile.OpenAsync(FileAccess.Read))
+                using (Stream stream = await imageFile.OpenAsync(StorageEverywhere.FileAccess.Read))
                 {
                     using (var client = new HttpClient())
                     {
@@ -1428,6 +1447,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
         {
             try
             {
+                if (!account.IsOnlineAccount)
+                {
+                    return true;
+                }
+
                 AddPremiumAccountDurationResponse resp = await account.PostAuthenticatedAsync<AddPremiumAccountDurationRequest, AddPremiumAccountDurationResponse>(
                     Website.URL + "addpremiumaccountduration",
                     new AddPremiumAccountDurationRequest()
@@ -1436,7 +1460,15 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     });
 
                 if (resp.Error == null)
+                {
+                    await account.SetAsLifetimePremiumAsync();
                     return true;
+                }
+            }
+
+            catch (HttpRequestException)
+            {
+                // Nothing, no need to log
             }
 
             catch (Exception ex)

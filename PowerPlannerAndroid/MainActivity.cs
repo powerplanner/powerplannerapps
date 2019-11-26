@@ -113,6 +113,14 @@ namespace PowerPlannerAndroid
 
             if (requestCode == PickImageId)
             {
+                if (PickImageTaskCompletionSource == null)
+                {
+                    TelemetryExtension.Current?.TrackException(new InvalidOperationException("PickImageTaskCompletionSource was null, app must have dehydrated while picking images"));
+                    return;
+                }
+
+                PickImageResult result;
+
                 try
                 {
                     if ((resultCode == Result.Ok) && (intent != null))
@@ -121,21 +129,38 @@ namespace PowerPlannerAndroid
                         Stream stream = ContentResolver.OpenInputStream(uri);
                         string extension = MimeTypeMap.Singleton.GetExtensionFromMimeType(ContentResolver.GetType(uri));
 
-                        // Set the result as the completion of the Task
-                        PickImageTaskCompletionSource.SetResult(new PickImageResult()
+                        result = new PickImageResult()
                         {
                             Stream = stream,
                             Extension = extension
-                        });
+                        };
                     }
                     else
                     {
-                        PickImageTaskCompletionSource.SetResult(null);
+                        result = null;
                     }
                 }
                 catch (Exception ex)
                 {
-                    PickImageTaskCompletionSource.SetException(ex);
+                    try
+                    {
+                        PickImageTaskCompletionSource.SetException(ex);
+                    }
+                    catch
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+                    return;
+                }
+
+                // Set the result as the completion of the Task
+                try
+                {
+                    PickImageTaskCompletionSource.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
                 }
             }
         }
@@ -308,6 +333,16 @@ namespace PowerPlannerAndroid
                 if (v.Major > 0 && v < Variables.VERSION)
                 {
                     string changedText = "";
+
+                    if (v <= new Version(1911, 5, 2, 0))
+                    {
+                        changedText += "\n - Updated UI! Bottom navigation bar for quicker access to the most used pages.";
+                    }
+
+                    if (v < new Version(1911, 2, 0, 0))
+                    {
+                        changedText += "\n - Support for Monday as first day of week on Calendar for countries like Spain!";
+                    }
 
                     if (v < new Version(5, 4, 86, 0))
                     {

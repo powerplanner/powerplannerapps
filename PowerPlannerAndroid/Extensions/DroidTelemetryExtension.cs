@@ -21,18 +21,30 @@ namespace PowerPlannerAndroid.Extensions
 {
     public class DroidTelemetryExtension : TelemetryExtension
     {
+        private string _userId;
+
         public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             try
             {
                 if (properties == null)
                 {
-                    Analytics.TrackEvent(eventName);
+                    properties = new Dictionary<string, string>();
                 }
 
-                else
+                if (_userId != null)
+                {
+                    // Custom events don't include the custom assigned UserId, so include manually
+                    properties["AccountId"] = _userId;
+                }
+
+                if (properties.Count > 0)
                 {
                     Analytics.TrackEvent(eventName, properties);
+                }
+                else
+                {
+                    Analytics.TrackEvent(eventName);
                 }
             }
             catch { }
@@ -42,22 +54,22 @@ namespace PowerPlannerAndroid.Extensions
         {
             try
             {
-                Crashes.TrackError(ex);
+                Crashes.TrackError(ex, exceptionName == null ? null : new Dictionary<string, string>()
+                {
+                    { "ExceptionName", exceptionName }
+                });
             }
             catch { }
         }
 
         public override void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration)
         {
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine($"Page visited: {pageName} for {duration.TotalSeconds.ToString("0.0")} seconds on {timeVisited.ToString("t")}");
-#endif
             try
             {
                 // Have to track username since it doesn't automatically get logged for events/page views
                 Analytics.TrackEvent("PageView_" + pageName, new Dictionary<string, string>()
                 {
-                    { "Duration", Math.Ceiling(duration.TotalSeconds).ToString("0") }
+                    { "AccountId", _userId }
                 });
             }
             catch { }
@@ -67,12 +79,16 @@ namespace PowerPlannerAndroid.Extensions
         {
             try
             {
-                if (account == null)
+                if (account != null)
                 {
-                    return;
-                }
+                    _userId = account.GetTelemetryUserId();
 
-                AppCenter.SetUserId(account.GetTelemetryUserId());
+                    AppCenter.SetUserId(_userId);
+                }
+                else
+                {
+                    _userId = null;
+                }
             }
             catch { }
         }

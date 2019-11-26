@@ -12,12 +12,10 @@
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
+        android:paddingStart="18dp"
         android:paddingBottom="8dp"
         android:layout_gravity="bottom"
         android:lines="1"
         android:text="{ClassGrades_UnassignedItemsHeader}"/>
-
-    <View style="@style/Divider" android:layout_gravity="bottom"/>
 
 </FrameLayout>
