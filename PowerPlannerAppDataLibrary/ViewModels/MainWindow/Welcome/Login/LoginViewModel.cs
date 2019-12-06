@@ -87,12 +87,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             set { SetValue(value); }
         }
 
-        public bool IsSyncingAccount
-        {
-            get { return GetValue<bool>(); }
-            set { SetValue(value); }
-        }
-
         private WeakReference<Action<string>> _alertUserUpgradeAccountNeeded;
         public Action<string> AlertUserUpgradeAccountNeeded
         {
@@ -306,8 +300,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
         {
             AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
 
-            // We only sync if it's an existing account. For new accounts, we already performed a sync when logging in for first time.
-            await base.FindAncestor<MainWindowViewModel>().SetCurrentAccount(account, syncAccount: existingAccount);
+            await base.FindAncestor<MainWindowViewModel>().SetCurrentAccount(account, syncAccount: true);
 
             if (existingAccount)
             {
@@ -370,25 +363,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                         AccountsManager.SetLastLoginIdentifier(account.LocalAccountId);
 
-                        IsSyncingAccount = true;
-
-                        try
-                        {
-                            var result = await Sync.SyncAccountAsync(account);
-
-                            if (result != null && result.SelectedSemesterId != null && result.SelectedSemesterId.Value != Guid.Empty)
-                            {
-                                await account.SetCurrentSemesterAsync(result.SelectedSemesterId.Value, uploadSettings: false);
-                            }
-                        }
-
-                        catch (OperationCanceledException) { }
-
-                        catch { }
-
-                        IsSyncingAccount = false;
-
-                        ToMainPage(account, false); // don't sync since we just did
+                        ToMainPage(account, existingAccount: false);
                     }
                 }
             }
@@ -405,9 +380,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 IsLoggingInOnline = false;
             }
         }
+
+        /// <summary>
+        /// Creates an online account
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="localToken"></param>
+        /// <param name="token"></param>
+        /// <param name="accountId"></param>
+        /// <param name="deviceId"></param>
+        /// <returns></returns>
         public System.Threading.Tasks.Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId)
         {
-            return CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId);
+            return CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId, needsInitialSync: true);
         }
 
         private static async void ShowMessage(string message, string title)

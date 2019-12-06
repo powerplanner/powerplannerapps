@@ -54,6 +54,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set { SetProperty(ref _currentChangeNumber, value, "CurrentChangeNumber"); }
         }
 
+        [DataMember]
+        public bool NeedsInitialSync { get; set; }
+
         #region Settings
 
         private bool _needsToSyncSettings;
@@ -696,7 +699,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         /// <summary>
-        /// Syncs account and updates tiles, without awaiting
+        /// Updates tiles and calendar, without awaiting
         /// </summary>
         public async void ExecuteOnLoginTasks()
         {
