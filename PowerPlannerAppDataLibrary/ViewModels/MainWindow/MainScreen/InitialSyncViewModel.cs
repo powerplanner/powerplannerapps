@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,14 +14,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
     public class InitialSyncViewModel : PagedViewModelWithPopups
     {
         public readonly AccountDataItem Account;
+        private EventHandler<SyncQueuedEventArgs> _syncQueuedEventHandler;
 
         public InitialSyncViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
             Account = account;
 
-            Sync.SyncQueued += new WeakEventHandler<SyncQueuedEventArgs>(Sync_SyncQueued).Handler;
+            _syncQueuedEventHandler = new WeakEventHandler<SyncQueuedEventArgs>(Sync_SyncQueued).Handler;
+            Sync.SyncQueued += _syncQueuedEventHandler;
 
             Sync.StartSyncAccount(account);
+        }
+
+        public void TryAgain()
+        {
+            IsSyncing = true;
+            Error = null;
+
+            Sync.StartSyncAccount(Account);
+        }
+
+        public void OpenSettings()
+        {
+            var mainWindowViewModel = this.FindAncestor<MainWindowViewModel>();
+            mainWindowViewModel.Navigate(new SettingsViewModel(mainWindowViewModel));
         }
 
         private bool _isSyncing = true;
@@ -40,6 +57,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         private Task<SyncResult> _currSyncResultTask;
         private async void Sync_SyncQueued(object sender, SyncQueuedEventArgs e)
         {
+            // We already synced and left this page, we should be good
+            if (!Account.NeedsInitialSync)
+            {
+                return;
+            }
+
             try
             {
                 await Dispatcher.RunOrFallbackToCurrentThreadAsync(async delegate
@@ -61,20 +84,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                             catch (OperationCanceledException) { result = null; }
 
-                            // If this is still the task we're considering for intermediate, then we clear intermediate (if another was queued, it wouldn't match task)
-                            if (_currSyncResultTask == e.ResultTask)
+                            // If this is not the task we're considering for intermediate, then we ignore
+                            if (_currSyncResultTask != e.ResultTask)
                             {
-                                IsSyncing = false;
-                            }
-                            else
                                 return;
+                            }
 
                             // Canceled
                             if (result == null)
+                            {
+                                IsSyncing = false;
                                 return;
+                            }
 
                             else if (result.Error != null)
                             {
+                                IsSyncing = false;
+
                                 if (result.Error.Equals("Offline."))
                                 {
                                     Error = PowerPlannerResources.GetString("String_OfflineExplanation");
@@ -93,7 +119,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                 if (result.Error.Equals(PowerPlannerSending.SyncResponse.INCORRECT_PASSWORD) || result.Error.Equals(PowerPlannerSending.SyncResponse.USERNAME_CHANGED) || result.Error.Equals(PowerPlannerSending.SyncResponse.DEVICE_NOT_FOUND))
                                 {
                                     ShowPopupUpdateCredentials(Account);
-                                    return;
                                 }
 
                                 else if (result.Error.Equals(PowerPlannerSending.SyncResponse.DEVICE_NOT_FOUND) || result.Error.Equals(PowerPlannerSending.SyncResponse.NO_DEVICE))
@@ -116,6 +141,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                 // Navigate to main 
                                 var mainWindow = FindAncestor<MainWindowViewModel>();
                                 mainWindow.Replace(await MainScreenViewModel.LoadAsync(mainWindow, Account, syncAccount: false));
+
+                                // No need to set IsSyncing to false since we replaced this view
+
+                                // Remove the event handler
+                                Sync.SyncQueued -= _syncQueuedEventHandler;
                             }
                         }
                     }
@@ -124,6 +154,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     {
                         TelemetryExtension.Current?.TrackException(ex);
                         Error = ex.ToString();
+                        IsSyncing = false;
                     }
                 });
             }
@@ -132,6 +163,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             {
                 TelemetryExtension.Current?.TrackException(ex);
                 Error = ex.ToString();
+                IsSyncing = false;
             }
         }
 

@@ -77,6 +77,7 @@ namespace PowerPlannerAndroid.App
                 { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
 
                 // Main views
+                { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(MainScreenViewModel), typeof(MainScreenView) },
                 { typeof(YearsViewModel), typeof(YearsView) },
                 { typeof(CreateAccountViewModel), typeof(CreateAccountView) },

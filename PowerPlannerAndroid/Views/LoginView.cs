@@ -50,10 +50,6 @@ namespace PowerPlannerAndroid.Views
                 case nameof(ViewModel.IsLoggingInOnline):
                     UpdateIsLoggingInOnline();
                     break;
-
-                case nameof(ViewModel.IsSyncingAccount):
-                    UpdateIsSyncingAccount();
-                    break;
             }
         }
 
@@ -80,33 +76,6 @@ namespace PowerPlannerAndroid.Views
                 if (_progressDialogLoggingIn != null)
                 {
                     _progressDialogLoggingIn.Hide();
-                }
-            }
-        }
-
-        private ProgressDialog _progressDialogSyncing;
-        private void UpdateIsSyncingAccount()
-        {
-            if (ViewModel.IsSyncingAccount)
-            {
-                if (_progressDialogSyncing == null)
-                {
-                    _progressDialogSyncing = new ProgressDialog(Context)
-                    {
-                        Indeterminate = true
-                    };
-                    _progressDialogSyncing.SetCancelable(false);
-                    _progressDialogSyncing.SetTitle(PowerPlannerResources.GetString("LoginPage_String_SyncingAccount"));
-                }
-
-                _progressDialogSyncing.Show();
-            }
-
-            else
-            {
-                if (_progressDialogSyncing != null)
-                {
-                    _progressDialogSyncing.Hide();
                 }
             }
         }

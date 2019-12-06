@@ -224,6 +224,7 @@
     <Compile Include="Views\UpdateCredentialsView.cs" />
     <Compile Include="Views\ViewGradeView.cs" />
     <Compile Include="Views\ViewHomeworkView.cs" />
+    <Compile Include="Views\InitialSyncView.cs" />
     <Compile Include="Views\WelcomeView.cs" />
     <Compile Include="Views\WelcomeViews\ConnectAccountView.cs" />
     <Compile Include="Views\WelcomeViews\ExistingUserView.cs" />
@@ -1364,6 +1365,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_add_24px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\InitialSync.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
