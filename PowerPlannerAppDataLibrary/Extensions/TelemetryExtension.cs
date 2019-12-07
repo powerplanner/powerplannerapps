@@ -71,6 +71,8 @@ namespace PowerPlannerAppDataLibrary.Extensions
 #if DEBUG
     public class DebugTelemetryExtension : TelemetryExtension
     {
+        private string _userId;
+
         public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             System.Diagnostics.Debug.WriteLine($"Event: {eventName}");
@@ -88,6 +90,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public override void UpdateCurrentUser(AccountDataItem account)
         {
+            _userId = account?.GetTelemetryUserId();
             System.Diagnostics.Debug.WriteLine($"CurrentUser: {account?.GetTelemetryUserId()}");
         }
     }

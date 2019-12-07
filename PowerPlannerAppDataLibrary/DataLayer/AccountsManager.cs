@@ -545,6 +545,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 // And save the account
                 await Save(account);
+
+                TelemetryExtension.Current?.UpdateCurrentUser(account);
             }
 
             catch

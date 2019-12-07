@@ -101,6 +101,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             {
                                 IsSyncing = false;
 
+                                TelemetryExtension.Current?.TrackEvent("FailedInitialSync", new Dictionary<string, string>()
+                                {
+                                    { "Error", result.Error }
+                                });
+
                                 if (result.Error.Equals("Offline."))
                                 {
                                     Error = PowerPlannerResources.GetString("String_OfflineExplanation");
@@ -146,6 +151,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                                 // Remove the event handler
                                 Sync.SyncQueued -= _syncQueuedEventHandler;
+
+                                TelemetryExtension.Current?.TrackEvent("SuccessfullyFinishedInitialSync");
                             }
                         }
                     }
