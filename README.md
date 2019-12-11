@@ -168,6 +168,64 @@ public class Grade : BindableBase
 Notice that you have to explicitly reference (via `nameof`) the dependent properties you want to listen to. When one of those properties changes, the computation will run again, and if the result changes, it will trigger a property change event for that property.
 
 
+### iOS-specific binding examples
+
+Within a ViewController, to add a generic binding that can perform any action, do the following... But note there's specific bindings for common tasks like binding text that you should use instead.
+
+```csharp
+BindingHost.SetBinding(nameof(ViewModel.IsSyncing), delegate
+{
+    if (ViewModel.IsSyncing)
+    {
+        // Do whatever you want here
+    }
+    else
+    {
+        // Do whatever you want here
+    }
+});
+```
+
+To bind **text**...
+
+```csharp
+BindingHost.SetLabelTextBinding(labelErrorDescription, nameof(ViewModel.Error));
+```
+
+To bind **text boxes**... (It's two-way binding by default)
+
+```csharp
+BindingHost.SetTextFieldTextBinding(myTextField, nameof(ViewModel.Name));
+```
+
+You'll notice there's also lots of other binding options for binding visibility, color, etc.
+
+To bind **visibility** where you need the item to collapse, you can either put the item in a `BareUIVisibilityContainer` and set the `Child` to your content and then set the visibilty binding on the visibility container (iOS doesn't have the concept of visibility on elements themselves, that's why we have to add it in a container)...
+
+```csharp
+var pickerCustomTimeContainer = new BareUIVisibilityContainer()
+{
+    Child = stackViewPickerCustomTime // Your content that you want visible/collapsed
+};
+BindingHost.SetVisibilityBinding(pickerCustomTimeContainer, nameof(ViewModel.IsStartTimePickerVisible));
+```
+
+Alternatively, if you're adding content into a StackView, you can use a simpler method for toggling **visibility**... Use the `AddUnderVisibility` extension on the StackView to add the item instead of using `AddArrangedSubview`. This will automatically use the BareUIVisibilityContainer under the scenes.
+
+```csharp
+var progressBar = new UIProgressView(UIProgressViewStyle.Default)
+{
+    TranslatesAutoresizingMaskIntoConstraints = false
+};
+viewCenterContainer.AddUnderVisiblity(progressBar, BindingHost, nameof(ViewModel.IsSyncing));
+```
+
+If you just need the item to be **hidden** but not actually collapsed, you can use `SetVisibilityBinding` directly on the view rather than wrapping it in a `BareUiVisibilityContainer`.
+
+```csharp
+BindingHost.SetVisibilityBinding(buttonSettings, nameof(ViewModel.IsSyncing));
+```
+
 ## Localization
 
 The Android and UWP apps are currently fully localized. Localized strings are found in `PowerPlannerAppDataLibrary/Strings`. iOS has not been updated to take advantage of the localized strings (text is hardcoded right now).
