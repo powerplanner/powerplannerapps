@@ -136,6 +136,7 @@
     <Compile Include="Controllers\ClassViewControllers\ClassTimesViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\EditClassDetailsViewController.cs" />
     <Compile Include="Controllers\DayViewController.cs" />
+    <Compile Include="Controllers\InitialSyncViewController.cs" />
     <Compile Include="Controllers\MainScreenViewController.cs" />
     <Compile Include="Controllers\PopupViewController.cs" />
     <Compile Include="Controllers\PopupViewControllerWithScrolling.cs" />

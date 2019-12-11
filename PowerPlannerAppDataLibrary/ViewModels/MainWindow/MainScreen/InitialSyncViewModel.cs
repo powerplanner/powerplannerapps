@@ -34,10 +34,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             Sync.StartSyncAccount(Account);
         }
 
-        public void OpenSettings()
+        public void OpenSettings(bool asPopup = false)
         {
             var mainWindowViewModel = this.FindAncestor<MainWindowViewModel>();
-            mainWindowViewModel.Navigate(new SettingsViewModel(mainWindowViewModel));
+
+            if (asPopup)
+            {
+                mainWindowViewModel.ShowPopup(new SettingsViewModel(mainWindowViewModel));
+            }
+            else
+            {
+                mainWindowViewModel.Navigate(new SettingsViewModel(mainWindowViewModel));
+            }
         }
 
         private bool _isSyncing = true;

@@ -159,7 +159,6 @@ namespace PowerPlanneriOS.Welcome
             switch (e.PropertyName)
             {
                 case nameof(ViewModel.IsLoggingInOnline):
-                case nameof(ViewModel.IsSyncingAccount):
                     UpdateStatus();
                     break;
             }
@@ -170,10 +169,6 @@ namespace PowerPlanneriOS.Welcome
             if (ViewModel.IsLoggingInOnline)
             {
                 ShowLoadingOverlay(loadingText: "Logging in...");
-            }
-            else if (ViewModel.IsSyncingAccount)
-            {
-                ShowLoadingOverlay(loadingText: "Syncing account...");
             }
             else
             {
