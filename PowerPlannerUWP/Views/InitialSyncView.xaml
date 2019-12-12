@@ -38,27 +38,36 @@
                     Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <TextBlock
-                    Text="Syncing..."
+                    x:Name="TextBlockSyncing"
                     HorizontalAlignment="Center"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
                     Foreground="White"
+                    Margin="0,12,0,0"
                     Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <TextBlock
-                    Text="{Binding Error}"
-                    Foreground="White"
-                    Margin="0,24,0,0"
+                    x:Name="TextBlockError"
                     HorizontalAlignment="Center"
-                    Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"/>
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    Foreground="White"
+                    Margin="0,12,0,0"
+                    Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
 
                 <Button
                     x:Name="ButtonSyncAgain"
-                    Content="Sync"
+                    Content="Try again"
                     HorizontalAlignment="Center"
                     MinWidth="120"
                     Margin="0,24,0,0"
                     Click="ButtonSyncAgain_Click"
                     Style="{ThemeResource PowerPlannerSecondaryBlueButtonStyle}"
                     Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+
+                <TextBlock
+                    Text="{Binding Error}"
+                    Foreground="White"
+                    Margin="0,24,0,0"
+                    Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"/>
             </StackPanel>
         </ScrollViewer>
 

@@ -1,4 +1,5 @@
 ﻿using InterfacesUWP.Views;
+using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using System;
 using System.Collections.Generic;
@@ -33,16 +34,19 @@ namespace PowerPlannerUWP.Views
         public InitialSyncView()
         {
             this.InitializeComponent();
+
+            TextBlockSyncing.Text = PowerPlannerResources.GetString("LoginPage_String_SyncingAccount");
+            TextBlockError.Text = PowerPlannerResources.GetString("String_SyncError");
         }
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
-
+            ViewModel.OpenSettings();
         }
 
         private void ButtonSyncAgain_Click(object sender, RoutedEventArgs e)
         {
-            
+            ViewModel.TryAgain();
         }
     }
 }
