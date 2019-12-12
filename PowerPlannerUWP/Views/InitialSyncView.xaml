@@ -67,7 +67,8 @@
                     Text="{Binding Error}"
                     Foreground="White"
                     Margin="0,24,0,0"
-                    Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"/>
+                    Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"
+                    TextWrapping="Wrap"/>
             </StackPanel>
         </ScrollViewer>
 
@@ -78,7 +79,8 @@
             VerticalAlignment="Top"
             Margin="15"
             Padding="5"
-            Click="ButtonSettings_Click">
+            Click="ButtonSettings_Click"
+            Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
 
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="Setting"/>
