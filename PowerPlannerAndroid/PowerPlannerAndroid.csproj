@@ -224,6 +224,7 @@
     <Compile Include="Views\UpdateCredentialsView.cs" />
     <Compile Include="Views\ViewGradeView.cs" />
     <Compile Include="Views\ViewHomeworkView.cs" />
+    <Compile Include="Views\InitialSyncView.cs" />
     <Compile Include="Views\WelcomeView.cs" />
     <Compile Include="Views\WelcomeViews\ConnectAccountView.cs" />
     <Compile Include="Views\WelcomeViews\ExistingUserView.cs" />
@@ -239,309 +240,309 @@
     <None Include="google-services.template.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\Login.axml">
+    <AndroidResource Include="Resources\layout\Login.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Welcome.axml">
+    <AndroidResource Include="Resources\layout\Welcome.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\MainScreen.axml">
+    <AndroidResource Include="Resources\layout\MainScreen.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Years.axml">
+    <AndroidResource Include="Resources\layout\Years.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsList.axml">
+    <AndroidResource Include="Resources\layout\SettingsList.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemYear.axml">
+    <AndroidResource Include="Resources\layout\ListItemYear.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\CreateAccount.axml">
+    <AndroidResource Include="Resources\layout\CreateAccount.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddYear.axml">
+    <AndroidResource Include="Resources\layout\AddYear.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddSemester.axml">
+    <AndroidResource Include="Resources\layout\AddSemester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingScheduleClass.axml">
+    <AndroidResource Include="Resources\layout\ListItemEditingScheduleClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddClass.axml">
+    <AndroidResource Include="Resources\layout\AddClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Schedule.axml">
+    <AndroidResource Include="Resources\layout\Schedule.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\PopupView.axml">
+    <AndroidResource Include="Resources\layout\PopupView.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemSemester.axml">
+    <AndroidResource Include="Resources\layout\ListItemSemester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\CalendarMain.axml">
+    <AndroidResource Include="Resources\layout\CalendarMain.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddClassTime.axml">
+    <AndroidResource Include="Resources\layout\AddClassTime.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingScheduleClassTime.axml">
+    <AndroidResource Include="Resources\layout\ListItemEditingScheduleClassTime.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Agenda.axml">
+    <AndroidResource Include="Resources\layout\Agenda.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderAgenda.axml">
+    <AndroidResource Include="Resources\layout\ListItemHeaderAgenda.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHomework.axml">
+    <AndroidResource Include="Resources\layout\ListItemHomework.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddHomework.axml">
+    <AndroidResource Include="Resources\layout\AddHomework.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemClass.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ViewHomework.axml">
+    <AndroidResource Include="Resources\layout\ViewHomework.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SingleDay.axml">
+    <AndroidResource Include="Resources\layout\SingleDay.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Day.axml">
+    <AndroidResource Include="Resources\layout\Day.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SingleClass.axml">
+    <AndroidResource Include="Resources\layout\SingleClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassDetails.axml">
+    <AndroidResource Include="Resources\layout\ClassDetails.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassHomeworkOrExams.axml">
+    <AndroidResource Include="Resources\layout\ClassHomeworkOrExams.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderDateGroup.axml">
+    <AndroidResource Include="Resources\layout\ListItemHeaderDateGroup.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\EditClassDetails.axml">
+    <AndroidResource Include="Resources\layout\EditClassDetails.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassTimes.axml">
+    <AndroidResource Include="Resources\layout\ClassTimes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemClassGroupedTimes.axml">
+    <AndroidResource Include="Resources\layout\ListItemClassGroupedTimes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\HomeworkProgressBarControl.axml">
+    <AndroidResource Include="Resources\layout\HomeworkProgressBarControl.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\FloatingAddItemControl.axml">
+    <AndroidResource Include="Resources\layout\FloatingAddItemControl.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\CalendarSelectedDayBorder.axml">
+    <AndroidResource Include="Resources\drawable\CalendarSelectedDayBorder.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Classes.axml">
+    <AndroidResource Include="Resources\layout\Classes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemSemesterClass.axml">
+    <AndroidResource Include="Resources\layout\ListItemSemesterClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\MyAccount.axml">
+    <AndroidResource Include="Resources\layout\MyAccount.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\About.axml">
+    <AndroidResource Include="Resources\layout\About.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfirmIdentity.axml">
+    <AndroidResource Include="Resources\layout\ConfirmIdentity.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangeEmail.axml">
+    <AndroidResource Include="Resources\layout\ChangeEmail.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangeUsername.axml">
+    <AndroidResource Include="Resources\layout\ChangeUsername.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangePassword.axml">
+    <AndroidResource Include="Resources\layout\ChangePassword.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\UpdateCredentials.axml">
+    <AndroidResource Include="Resources\layout\UpdateCredentials.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SplashScreen.axml">
+    <AndroidResource Include="Resources\layout\SplashScreen.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ForgotUsername.axml">
+    <AndroidResource Include="Resources\layout\ForgotUsername.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\RecoveredUsernames.axml">
+    <AndroidResource Include="Resources\layout\RecoveredUsernames.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ResetPassword.axml">
+    <AndroidResource Include="Resources\layout\ResetPassword.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\PremiumVersion.axml">
+    <AndroidResource Include="Resources\layout\PremiumVersion.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SyncErrors.axml">
+    <AndroidResource Include="Resources\layout\SyncErrors.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassGrades.axml">
+    <AndroidResource Include="Resources\layout\ClassGrades.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemGrade.axml">
+    <AndroidResource Include="Resources\layout\ListItemGrade.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderWeightCategory.axml">
+    <AndroidResource Include="Resources\layout\ListItemHeaderWeightCategory.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassGradesTopHeader.axml">
+    <AndroidResource Include="Resources\layout\ClassGradesTopHeader.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemWeightCategorySummary.axml">
+    <AndroidResource Include="Resources\layout\ListItemWeightCategorySummary.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ViewGrade.axml">
+    <AndroidResource Include="Resources\layout\ViewGrade.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddGrade.axml">
+    <AndroidResource Include="Resources\layout\AddGrade.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemWeightCategory.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemWeightCategory.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingWeightCategory.axml">
+    <AndroidResource Include="Resources\layout\ListItemEditingWeightCategory.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingGradeScale.axml">
+    <AndroidResource Include="Resources\layout\ListItemEditingGradeScale.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemClassMenuItem.axml">
+    <AndroidResource Include="Resources\layout\ListItemClassMenuItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemUnassignedItemsHeader.axml">
+    <AndroidResource Include="Resources\layout\ListItemUnassignedItemsHeader.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemHomeworkWeightCategoryPreview.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemHomeworkWeightCategoryPreview.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassWhatIf.axml">
+    <AndroidResource Include="Resources\layout\ClassWhatIf.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassWhatIfTopHeader.axml">
+    <AndroidResource Include="Resources\layout\ClassWhatIfTopHeader.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddHoliday.axml">
+    <AndroidResource Include="Resources\layout\AddHoliday.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOptionPreview.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemTimeOptionPreview.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOption.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemTimeOption.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeekPreview.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeekPreview.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeek.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeek.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsTwoWeekSchedule.axml">
+    <AndroidResource Include="Resources\layout\SettingsTwoWeekSchedule.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemCurrentWeekPreview.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemCurrentWeekPreview.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemWeekChangesOnPreview.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemWeekChangesOnPreview.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemDayOfWeek.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemDayOfWeek.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetAgenda.axml">
+    <AndroidResource Include="Resources\layout\WidgetAgenda.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetAgendaTaskListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetAgendaTaskListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetAgendaDateListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetAgendaDateListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\QuickAdd.axml">
+    <AndroidResource Include="Resources\layout\QuickAdd.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetLoading.axml">
+    <AndroidResource Include="Resources\layout\WidgetLoading.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetAgendaEmptyListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetAgendaEmptyListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsWidgets.axml">
+    <AndroidResource Include="Resources\layout\SettingsWidgets.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsWidgetAgenda.axml">
+    <AndroidResource Include="Resources\layout\SettingsWidgetAgenda.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetSchedule.axml">
+    <AndroidResource Include="Resources\layout\WidgetSchedule.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetScheduleEmptyListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetScheduleEmptyListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetScheduleClassListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetScheduleClassListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetScheduleDateListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetScheduleDateListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetScheduleClassWithRoomListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetScheduleClassWithRoomListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WidgetScheduleHolidayListItem.axml">
+    <AndroidResource Include="Resources\layout\WidgetScheduleHolidayListItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsWidgetSchedule.axml">
+    <AndroidResource Include="Resources\layout\SettingsWidgetSchedule.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\RecurrenceControl.axml">
+    <AndroidResource Include="Resources\layout\RecurrenceControl.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddHomeworkRepeatsSubControl.axml">
+    <AndroidResource Include="Resources\layout\AddHomeworkRepeatsSubControl.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.axml">
+    <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGradesList.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassGradesList.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassAverageGrades.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassAverageGrades.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassRoundGradesUp.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassRoundGradesUp.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassCredits.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassCredits.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassWeightCategories.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassWeightCategories.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGradeScale.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassGradeScale.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassPassingGrade.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassPassingGrade.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGpaType.axml">
+    <AndroidResource Include="Resources\layout\ConfigureClassGpaType.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml">
+    <AndroidResource Include="Resources\layout\Main.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -1095,7 +1096,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\icons8_up_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\ShowImages.axml">
+    <AndroidResource Include="Resources\layout\ShowImages.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -1109,25 +1110,25 @@
     <AndroidResource Include="Resources\drawable\ImageOffline.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsImageUploadOptions.axml">
+    <AndroidResource Include="Resources\layout\SettingsImageUploadOptions.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemCurrentUploadImageViaPreview.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemCurrentUploadImageViaPreview.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemUploadImageOption.axml">
+    <AndroidResource Include="Resources\layout\SpinnerItemUploadImageOption.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsSyncOptions.axml">
+    <AndroidResource Include="Resources\layout\SettingsSyncOptions.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -1163,19 +1164,19 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_cached_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsSuccessfullyCreatedAccount.axml">
+    <AndroidResource Include="Resources\layout\SettingsSuccessfullyCreatedAccount.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\WelcomeConnectAccount.axml">
+    <AndroidResource Include="Resources\layout\WelcomeConnectAccount.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\WelcomeExistingUser.axml">
+    <AndroidResource Include="Resources\layout\WelcomeExistingUser.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -1364,6 +1365,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_add_24px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\InitialSync.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

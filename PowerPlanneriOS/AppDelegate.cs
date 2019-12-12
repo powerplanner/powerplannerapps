@@ -73,6 +73,7 @@ namespace PowerPlanneriOS
                 { typeof(ExistingUserViewModel), typeof(ExistingUserViewController) },
                 { typeof(ConnectAccountViewModel), typeof(ConnectAccountViewController) },
 
+                { typeof(InitialSyncViewModel), typeof(InitialSyncViewController) },
                 { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
                 { typeof(CalendarViewModel), typeof(CalendarViewController) },
                 { typeof(DayViewModel), typeof(DayViewController) },

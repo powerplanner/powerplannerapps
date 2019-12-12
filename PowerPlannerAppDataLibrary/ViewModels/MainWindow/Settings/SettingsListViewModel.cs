@@ -20,7 +20,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public SettingsListViewModel(BaseViewModel parent) : base(parent)
         {
-            Account = FindAncestor<MainScreenViewModel>()?.CurrentAccount;
+            Account = FindAncestor<MainWindowViewModel>()?.CurrentAccount;
             HasAccount = Account != null;
             if (HasAccount)
             {

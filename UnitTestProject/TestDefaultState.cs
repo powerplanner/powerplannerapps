@@ -23,7 +23,7 @@ namespace UnitTestProject
         [TestMethod]
         public async Task TestCreatingAccount()
         {
-            AccountDataItem account = await AccountsManager.CreateAccount("andrewbares", "andrew", null, 0, 0, true, true, true);
+            AccountDataItem account = await AccountsManager.CreateAccount("andrewbares", "andrew", null, 0, 0, true, true, true, false);
 
             LoginViewModel accountsViewModel = await LoginViewModel.Load();
 

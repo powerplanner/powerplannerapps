@@ -53,7 +53,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public static async System.Threading.Tasks.Task<AccountDataItem> CreateAndInitializeAccountAsync(string username, string localToken, string token, long accountId, int deviceId)
         {
-            var account = await CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId);
+            var account = await CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId, needsInitialSync: false);
 
             if (account != null)
             {
@@ -512,7 +512,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <param name="rememberPassword"></param>
         /// <param name="autoLogin"></param>
         /// <returns></returns>
-        public static async Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId, bool rememberUsername, bool rememberPassword, bool autoLogin)
+        public static async Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId, bool rememberUsername, bool rememberPassword, bool autoLogin, bool needsInitialSync)
         {
             await ValidateUsername(username);
 
@@ -528,7 +528,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 RememberPassword = rememberPassword,
                 AutoLogin = autoLogin,
                 NeedsToSyncSettings = true, // Needs settings uploaded since we're setting WeekOneStartsOn
-                WeekOneStartsOn = ToolsPortable.DateTools.Last(System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek, DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc))
+                WeekOneStartsOn = ToolsPortable.DateTools.Last(System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek, DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc)),
+                NeedsInitialSync = needsInitialSync
             };
 
             // Place it in the cache
@@ -544,6 +545,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 // And save the account
                 await Save(account);
+
+                TelemetryExtension.Current?.UpdateCurrentUser(account);
             }
 
             catch

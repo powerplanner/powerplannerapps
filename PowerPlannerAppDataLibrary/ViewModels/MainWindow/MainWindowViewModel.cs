@@ -92,7 +92,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 {
                     IsEnabled = false;
                     base.ClearBackStack();
-                    base.Replace(await MainScreenViewModel.LoadAsync(this, account, syncAccount: syncAccount));
+
+                    if (account.NeedsInitialSync)
+                    {
+                        base.Replace(new InitialSyncViewModel(this, account));
+                    }
+                    else
+                    {
+                        base.Replace(await MainScreenViewModel.LoadAsync(this, account, syncAccount: syncAccount));
+                    }
                 }
 
                 finally

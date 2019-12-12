@@ -85,7 +85,7 @@ namespace PowerPlanneriOS.Controllers.Settings
             if (ViewModel.HasAccount)
             {
                 var mainScreenViewModel = ViewModel.FindAncestor<MainScreenViewModel>();
-                var account = mainScreenViewModel.CurrentAccount;
+                var account = ViewModel.Account;
 
                 _isFullVersion = await PowerPlannerApp.Current.IsFullVersionAsync();
                 if (!_isFullVersion)
@@ -93,7 +93,7 @@ namespace PowerPlanneriOS.Controllers.Settings
                     _tableView.AddCell("Upgrade to Premium", ViewModel.OpenPremiumVersion);
                 }
 
-                if (ViewModel.IsOnlineAccount)
+                if (ViewModel.IsOnlineAccount && mainScreenViewModel != null)
                 {
                     if (!_isListeningToMain)
                     {

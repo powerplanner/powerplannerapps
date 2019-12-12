@@ -121,7 +121,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             try
             {
-                if (MainScreenViewModel.UseTabNavigation)
+                if (MainScreenViewModel.UseTabNavigation || SyncLayer.SyncExtensions.GetPlatform() == "iOS")
                 {
                     RemoveViewModel();
                 }

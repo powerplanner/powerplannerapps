@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1F2656">
+    
+    <!--TODO: Put settings link up here-->
+
+    <ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <ImageView
+                android:id="@+id/ImageViewPowerPlannerMenuIcon"
+                android:layout_width="fill_parent"
+                android:layout_height="90dp"
+                android:src="@drawable/logo"
+                android:scaleType="centerInside"/>
+
+            <ProgressBar
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:indeterminateTint="#cccccc"
+                android:progressBackgroundTint="#66ffffff"
+                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+        
+            <TextView
+                style="@android:style/TextAppearance.Medium"
+                android:text="{LoginPage_String_SyncingAccount}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:textColor="#cccccc"
+                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+        
+            <TextView
+                style="@android:style/TextAppearance.Medium"
+                android:text="{String_SyncError}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:textColor="#cccccc"
+                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}"/>
+        
+            <Button
+                style="@style/PowerPlannerBlueButton"
+                android:text="Try again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginTop="8dp"
+                android:id="@+id/ButtonSyncAgain"
+                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}"/>
+        
+            <TextView
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="#ffffff"
+                local:Binding="{Source=Error, Target=Text}; {Source=Error, Target=Visibility, Converter=StringToVisibilityConverter}"/>
+    
+        </LinearLayout>
+    </ScrollView>
+        
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}">
+        <Button
+            style="@style/PowerPlannerBlueButton"
+            android:text="{MainMenuItem_Settings}"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/ButtonSettings"/>
+    </LinearLayout>
+</LinearLayout>

@@ -69,10 +69,6 @@ namespace PowerPlannerUWP.Views
                 case "IsLoggingInOnline":
                     UpdateIsLoggingInOnline();
                     break;
-
-                case "IsSyncingAccount":
-                    UpdateIsSyncingAccount();
-                    break;
             }
         }
 
@@ -117,28 +113,6 @@ namespace PowerPlannerUWP.Views
             else
             {
                 _loadingPopupIsLoggingInOnline?.Close();
-            }
-        }
-
-        private LoadingPopup _loadingPopupIsSyncingAccount;
-        private void UpdateIsSyncingAccount()
-        {
-            if (ViewModel.IsSyncingAccount)
-            {
-                if (_loadingPopupIsSyncingAccount == null)
-                {
-                    _loadingPopupIsSyncingAccount = new LoadingPopup()
-                    {
-                        Text = LocalizedResources.GetString("LoginPage_String_SyncingAccount")
-                    };
-                }
-
-                _loadingPopupIsSyncingAccount.Show();
-            }
-
-            else
-            {
-                _loadingPopupIsSyncingAccount?.Close();
             }
         }
 
