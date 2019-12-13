@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerSending", "shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj", "{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerPlannerSending", "shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj", "{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolsPortable", "PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj", "{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}"
 EndProject
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolsUniversal", "applibrar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfacesUWP", "applibraries\InterfacesUWP\InterfacesUWP\InterfacesUWP.csproj", "{4A105DE9-FB7D-446F-88B5-01338B38C920}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerAppDataLibrary", "PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj", "{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerPlannerAppDataLibrary", "PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj", "{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPlannerAndroid", "PowerPlannerAndroid\PowerPlannerAndroid.csproj", "{ABBD34C7-DE94-44FF-BCBC-C7AE9AA99543}"
 EndProject
