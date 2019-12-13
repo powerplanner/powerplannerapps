@@ -23,7 +23,6 @@
     <ApplicationInsightsResourceId>/subscriptions/47a3db26-28c4-420b-9e28-7571554e6c5a/resourcegroups//subscriptions/47a3db26-28c4-420b-9e28-7571554e6c5a/resourceGroups/Default-Storage-WestUS/providers/microsoft.insights/components/PowerPlannerUWP</ApplicationInsightsResourceId>
     <PackageCertificateThumbprint>5096846D2C9DF248D12AAEB67350FE7E524F6966</PackageCertificateThumbprint>
     <AppxBundle>Never</AppxBundle>
-    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
