@@ -75,7 +75,8 @@ namespace PowerPlanneriOS.Views
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.PreferredCaption2,
                     TextColor = UIColor.DarkGray,
-                    Lines = 0
+                    Lines = 0,
+                    TextAlignment = UITextAlignment.Right
                 };
                 BindingHost.SetLabelTextBinding(labelDates, nameof(ViewItemSemester.Start), delegate
                 {
