@@ -98,6 +98,7 @@
     <Compile Include="Converters\GradeToStringConverter.cs" />
     <Compile Include="Converters\ScheduleViewCurrentWeekToStringConverter.cs" />
     <Compile Include="Converters\ScheduleWeekToStringConverter.cs" />
+    <Compile Include="Converters\SemesterToSemesterViewStartEndStringConverter.cs" />
     <Compile Include="Converters\SkipItemsToStringConverter.cs" />
     <Compile Include="Converters\StartOrEndDateToStringConverter.cs" />
     <Compile Include="Converters\WeekDateToStringConverter.cs" />

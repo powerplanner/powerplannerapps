@@ -12,23 +12,7 @@ namespace PowerPlannerUWP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            ViewItemSemester semester = value as ViewItemSemester;
-            if (semester == null)
-                return value;
-
-            // If neither are assigned, do nothing
-            if (PowerPlannerSending.DateValues.IsUnassigned(semester.Start) && PowerPlannerSending.DateValues.IsUnassigned(semester.End))
-                return "";
-
-            string start = "";
-            if (!PowerPlannerSending.DateValues.IsUnassigned(semester.Start))
-                start = semester.Start.ToString("d");
-
-            string end = "";
-            if (!PowerPlannerSending.DateValues.IsUnassigned(semester.End))
-                end = semester.End.ToString("d");
-
-            return start + " - \n" + end;
+            return PowerPlannerAppDataLibrary.Converters.SemesterToSemesterViewStartEndStringConverter.Convert(value as ViewItemSemester);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
