@@ -47,6 +47,7 @@ namespace PowerPlannerAndroid.App
             PushExtension.Current = new DroidPushExtension();
             ImagePickerExtension.Current = new DroidImagePickerExtension();
             NetworkInfoExtension.Current = new DroidNetworkInfoExtension();
+            AppShortcutsExtension.Current = new DroidAppShortcutsExtension();
 
             return base.InitializeAsyncOverride();
         }

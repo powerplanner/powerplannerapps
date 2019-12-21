@@ -23,6 +23,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
     public class MainWindowViewModel : PagedViewModelWithPopups
     {
+        private static bool _hasInitializedAppShortcuts;
         public static event EventHandler<AccountDataItem> LoggedInFromNormalActivation;
 
         public AccountDataItem CurrentAccount { get; private set; }
@@ -37,9 +38,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public MainWindowViewModel(BaseViewModel parent) : base(parent)
         {
+            if (!_hasInitializedAppShortcuts)
+            {
+                _hasInitializedAppShortcuts = true;
+                InitializeAppShortcuts();
+            }
+
             AccountsManager.OnAccountDeleted += new WeakEventHandler<Guid>(AccountsManager_OnAccountDeleted).Handler;
 
             PropertyChanged += MainWindowViewModel_PropertyChanged;
+        }
+
+        private async void InitializeAppShortcuts()
+        {
+            try
+            {
+                if (AppShortcutsExtension.Current != null)
+                {
+                    await Task.Run(async delegate
+                    {
+                        await AppShortcutsExtension.Current.UpdateAsync(showAddItemShortcuts: true);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

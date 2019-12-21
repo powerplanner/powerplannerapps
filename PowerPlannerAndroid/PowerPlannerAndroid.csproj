@@ -102,6 +102,7 @@
     <Compile Include="Converters\SkipItemsToStringConverter.cs" />
     <Compile Include="Converters\StartOrEndDateToStringConverter.cs" />
     <Compile Include="Converters\WeekDateToStringConverter.cs" />
+    <Compile Include="Extensions\DroidAppShortcutsExtension.cs" />
     <Compile Include="Extensions\DroidDateTimeFormatterExtension.cs" />
     <Compile Include="Extensions\DroidImagePickerExtension.cs" />
     <Compile Include="Extensions\DroidNetworkInfoExtension.cs" />

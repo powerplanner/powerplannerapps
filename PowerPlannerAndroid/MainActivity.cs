@@ -33,7 +33,13 @@ namespace PowerPlannerAndroid
 #else
         "Power Planner"
 #endif
-        , MainLauncher = true, Icon = "@mipmap/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, WindowSoftInputMode = SoftInput.AdjustResize)]
+        , Name =
+        #if DEBUG
+        "com.barebonesdev.powerplanner.dev.MainActivity"
+#else
+        "com.barebonesdev.powerplanner.MainActivity"
+#endif
+        ,MainLauncher = true, Icon = "@mipmap/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, WindowSoftInputMode = SoftInput.AdjustResize)]
     public class MainActivity : BareActivity
     {
         public static MainActivity GetCurrent()
@@ -241,6 +247,20 @@ namespace PowerPlannerAndroid
                         TrackLaunch(args, launchContext, "HomeworkExam");
                         var viewExamArgs = args as ViewExamArguments;
                         await viewModel.HandleViewExamActivation(viewExamArgs.LocalAccountId, viewExamArgs.ItemId);
+                        return;
+                    }
+
+                    else if (args is QuickAddHomeworkToCurrentAccountArguments)
+                    {
+                        TrackLaunch(args, launchContext, "QuickAddHomework");
+                        await viewModel.HandleQuickAddHomework();
+                        return;
+                    }
+
+                    else if (args is QuickAddExamToCurrentAccountArguments)
+                    {
+                        TrackLaunch(args, launchContext, "QuickAddExam");
+                        await viewModel.HandleQuickAddExam();
                         return;
                     }
 
