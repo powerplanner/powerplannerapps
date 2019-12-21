@@ -27,7 +27,35 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             await ClassViewModel.ViewItemsGroupClass.LoadGradesTask;
 
+            Class.WeightCategories.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(WeightCategories_CollectionChanged).Handler;
+            UpdateShowWeightCategoriesSummary();
+
             await base.LoadAsyncOverride();
+        }
+
+        private void WeightCategories_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            try
+            {
+                UpdateShowWeightCategoriesSummary();
+            }
+            catch { }
+        }
+
+        private void UpdateShowWeightCategoriesSummary()
+        {
+            if (Class.WeightCategories.Count > 1)
+            {
+                ShowWeightCategoriesSummary = true;
+            }
+            else if (Class.WeightCategories.Count == 1 && Class.WeightCategories[0].WeightValue != 100)
+            {
+                ShowWeightCategoriesSummary = true;
+            }
+            else
+            {
+                ShowWeightCategoriesSummary = false;
+            }
         }
 
         public ViewItemClass Class
@@ -41,6 +69,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         public void ConfigureGrades()
         {
             ClassViewModel.ConfigureGrades();
+        }
+
+        private bool _showWeightCategoriesSummary = false;
+        public bool ShowWeightCategoriesSummary
+        {
+            get => _showWeightCategoriesSummary;
+            set => SetProperty(ref _showWeightCategoriesSummary, value, nameof(ShowWeightCategoriesSummary));
         }
 
         private IReadOnlyList<object> _itemsWithHeaders;

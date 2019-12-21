@@ -33,6 +33,8 @@ namespace PowerPlannerAndroid.Views
                 ItemTemplate = new CustomDataTemplate<ViewItemWeightCategory>(CreateWeightCategorySummary)
             };
 
+            SetBinding(nameof(ClassGradesViewModel.ShowWeightCategoriesSummary), viewGroupWeightCategoriesSummary, nameof(viewGroupWeightCategoriesSummary.Visibility));
+
             var buttonWhatIfMode = FindViewById<Button>(Resource.Id.ButtonWhatIfMode);
             if (hideWhatIfModeButton)
             {

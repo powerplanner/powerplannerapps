@@ -36,6 +36,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             private set { SetProperty(ref _class, value, nameof(Class)); }
         }
 
+        /// <summary>
+        /// Here so that when viewing What If, the weight categories will be displayed. We don't bother dynamically updating this.
+        /// </summary>
+        public bool ShowWeightCategoriesSummary { get => true; }
+
         private double _desiredGrade;
         public double DesiredGrade
         {
