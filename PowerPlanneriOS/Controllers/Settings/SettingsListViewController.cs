@@ -152,9 +152,26 @@ namespace PowerPlanneriOS.Controllers.Settings
                 _tableView.AddCell("Two Week Schedule", ViewModel.OpenTwoWeekScheduleSettings);
             }
 
+            _tableView.AddCell("Help", OpenHelp);
+
             _tableView.AddCell("About", ViewModel.OpenAbout);
 
             _tableView.Compile();
+        }
+
+        private void OpenHelp()
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("Action_OpenHelp");
+
+                UIApplication.SharedApplication.OpenUrl(new NSUrl(SettingsListViewModel.HelpUrl));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+                var dontWait = new PortableMessageDialog("Failed to open web browser", "Error").ShowAsync();
+            }
         }
 
         private void OpenGoogleCalendarIntegration()
