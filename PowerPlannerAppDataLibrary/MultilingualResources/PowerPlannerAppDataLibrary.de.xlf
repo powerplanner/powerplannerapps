@@ -2252,6 +2252,14 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>All done!</source>
           <target state="final" state-qualifier="tm-suggestion">Fertig!</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_HelpItem.Title" translate="yes" xml:space="preserve">
+          <source>Help</source>
+          <target state="final" state-qualifier="tm-suggestion">Hilfe</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_HelpItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Tutorials and FAQ</source>
+          <target state="final" state-qualifier="mt-suggestion">Tutorials und FAQ</target>
+        </trans-unit>
       </group>
     </body>
   </file>

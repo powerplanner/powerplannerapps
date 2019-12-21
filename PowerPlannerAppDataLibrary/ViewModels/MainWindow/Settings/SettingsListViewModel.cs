@@ -18,6 +18,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private PagedViewModel _pagedViewModel;
         public DataLayer.AccountDataItem Account { get; private set; }
 
+        public const string HelpUrl = "https://powerplanner.freshdesk.com/support/home";
+
         public SettingsListViewModel(BaseViewModel parent) : base(parent)
         {
             Account = FindAncestor<MainWindowViewModel>()?.CurrentAccount;

@@ -2251,6 +2251,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>All done!</source>
           <target state="final" state-qualifier="tm-suggestion">¡Listo!</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_HelpItem.Title" translate="yes" xml:space="preserve">
+          <source>Help</source>
+          <target state="final" state-qualifier="tm-suggestion">Ayuda</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_HelpItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Tutorials and FAQ</source>
+          <target state="final" state-qualifier="mt-suggestion">Tutoriales y preguntas frecuentes</target>
+        </trans-unit>
       </group>
     </body>
   </file>

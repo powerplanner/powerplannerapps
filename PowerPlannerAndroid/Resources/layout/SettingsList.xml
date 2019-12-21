@@ -87,10 +87,19 @@
       local:Binding="{Source=@Settings_MainPage_TwoWeekScheduleItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_TwoWeekScheduleItem.Subtitle, Target=SettingSubtitle}; {Source=IsTwoWeekScheduleVisible, Target=Visibility}"/>
 
     <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemAbout"
+      android:id="@+id/SettingsListItemHelp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       settingsListItem:settingIcon="@drawable/ic_help_black_48dp"
+      settingsListItem:settingTitle="Help"
+      settingsListItem:settingSubtitle="Tutorials and FAQ"
+      local:Binding="{Source=@Settings_MainPage_HelpItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_HelpItem.Subtitle, Target=SettingSubtitle}"/>
+
+    <PowerPlannerAndroid.Views.Controls.SettingsListItem
+      android:id="@+id/SettingsListItemAbout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      settingsListItem:settingIcon="@drawable/outline_info_black_48"
       settingsListItem:settingTitle="About"
       settingsListItem:settingSubtitle="BareBones Dev"
       local:Binding="{Source=@Settings_MainPage_AboutItem.Title, Target=SettingTitle}"/>

@@ -1689,4 +1689,10 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="Agenda_NoItemsHeader.Text" xml:space="preserve">
     <value>¡Listo!</value>
   </data>
+  <data name="Settings_MainPage_HelpItem.Title" xml:space="preserve">
+    <value>Ayuda</value>
+  </data>
+  <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
+    <value>Tutoriales y preguntas frecuentes</value>
+  </data>
 </root>

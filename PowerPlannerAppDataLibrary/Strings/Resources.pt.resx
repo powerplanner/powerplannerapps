@@ -1689,4 +1689,10 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="Agenda_NoItemsHeader.Text" xml:space="preserve">
     <value>Tudo pronto!</value>
   </data>
+  <data name="Settings_MainPage_HelpItem.Title" xml:space="preserve">
+    <value>Ajuda</value>
+  </data>
+  <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
+    <value>Tutoriais e FAQ</value>
+  </data>
 </root>

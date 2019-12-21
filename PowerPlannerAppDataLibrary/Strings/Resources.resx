@@ -304,6 +304,12 @@ Click Continue to login (which might cause duplicates).</value>
   <data name="Settings_ImageUploadOptionsPage_Header.Text" xml:space="preserve">
     <value>IMAGE UPLOAD OPTIONS</value>
   </data>
+  <data name="Settings_MainPage_HelpItem.Title" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
+    <value>Tutorials and FAQ</value>
+  </data>
   <data name="Settings_MainPage_AboutItem.Title" xml:space="preserve">
     <value>About</value>
   </data>

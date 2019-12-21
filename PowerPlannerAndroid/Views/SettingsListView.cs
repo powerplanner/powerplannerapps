@@ -37,12 +37,30 @@ namespace PowerPlannerAndroid.Views
             FindViewById<View>(Resource.Id.SettingsListItemTwoWeekSchedule).Click += delegate { ViewModel.OpenTwoWeekScheduleSettings(); };
             FindViewById<View>(Resource.Id.SettingsListItemSyncOptions).Click += delegate { ViewModel.OpenSyncOptionsSimple(); };
             FindViewById<View>(Resource.Id.SettingsListItemGoogleCalendar).Click += GoogleCalendar_Click;
+            FindViewById<View>(Resource.Id.SettingsListItemHelp).Click += SettingsListView_Click;
             _listItemUpgradeToPremium = FindViewById<View>(Resource.Id.SettingsListItemUpgradeToPremium);
             _listItemUpgradeToPremium.Click += delegate { ViewModel.OpenPremiumVersion(); };
 
 #if DEBUG
             GC.Collect();
 #endif
+        }
+
+        private void SettingsListView_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("Action_OpenHelp");
+
+                var browserIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse(SettingsListViewModel.HelpUrl));
+
+                Context.StartActivity(browserIntent);
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+                Toast.MakeText(Context, "Web browser couldn't be launched.", ToastLength.Short).Show();
+            }
         }
 
         private void GoogleCalendar_Click(object sender, EventArgs e)
