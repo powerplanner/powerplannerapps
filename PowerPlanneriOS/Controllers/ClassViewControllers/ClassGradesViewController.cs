@@ -96,6 +96,10 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                 _summaryCategories = new UIView();
                 itemsSourceWeightSummaries = new BareUIViewItemsSourceAdapterAsStackPanel(_summaryCategories, (o) => new UIWeightSummaryView() { DataContext = o });
+                viewController.BindingHost.SetBinding(nameof(ClassGradesViewModel.ShowWeightCategoriesSummary), delegate
+                {
+                    LayoutSubviews();
+                });
                 Add(_summaryCategories);
             }
 
@@ -122,12 +126,21 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                 currY += 16;
 
-                nfloat summaryRowHeight = UIFont.PreferredCaption1.LineHeight;
-                nfloat summaryHeight = summaryRowHeight * _summaryCategories.Subviews.Length;
-                _summaryCategories.Frame = new CGRect(16, currY, base.Frame.Width - 32, summaryHeight);
-                currY += summaryHeight;
+                if (_viewController.ViewModel != null && _viewController.ViewModel.ShowWeightCategoriesSummary)
+                {
+                    // Show the summary
+                    nfloat summaryRowHeight = UIFont.PreferredCaption1.LineHeight;
+                    nfloat summaryHeight = summaryRowHeight * _summaryCategories.Subviews.Length;
+                    _summaryCategories.Frame = new CGRect(16, currY, base.Frame.Width - 32, summaryHeight);
+                    currY += summaryHeight;
 
-                currY += 16;
+                    currY += 16;
+                }
+                else
+                {
+                    // Hide the summary
+                    _summaryCategories.Frame = new CGRect(16, currY, base.Frame.Width - 32, 0);
+                }
 
                 base.Frame = new CGRect(base.Frame.X, base.Frame.Y, base.Frame.Width, currY);
             }
