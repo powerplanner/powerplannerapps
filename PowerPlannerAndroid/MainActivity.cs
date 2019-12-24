@@ -354,6 +354,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v < new Version(1912, 23, 0))
+                    {
+                        changedText += "\n - App shortcuts added to launcher icon!";
+                    }
+
                     if (v <= new Version(1911, 5, 2, 0))
                     {
                         changedText += "\n - Updated UI! Bottom navigation bar for quicker access to the most used pages.";
