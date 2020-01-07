@@ -183,11 +183,34 @@ namespace PowerPlanneriOS
             TelemetryExtension.Current = new iOSTelemetryExtension();
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
 
+            // Get whether launched from shortcut
+            ShortcutAction? shortcutAction = null;
+            if (launchOptions != null && UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+            {
+                var shortcutItem = launchOptions[UIApplication.LaunchOptionsShortcutItemKey] as UIApplicationShortcutItem;
+                switch (shortcutItem.Type)
+                {
+                    case "com.barebonesdev.powerplanner.addtask":
+                        shortcutAction = ShortcutAction.AddTask;
+                        break;
+
+                    case "com.barebonesdev.powerplanner.addevent":
+                        shortcutAction = ShortcutAction.AddEvent;
+                        break;
+                }
+            }
+
             bool result = base.FinishedLaunching(application, launchOptions);
 
-            RegisterWindow();
+            RegisterWindow(shortcutAction);
 
             return result;
+        }
+
+        private enum ShortcutAction
+        {
+            AddTask,
+            AddEvent
         }
 
         private class MyUserNotificationCenterDelegate : UNUserNotificationCenterDelegate
@@ -282,7 +305,7 @@ namespace PowerPlanneriOS
 
         public static bool _hasActivatedWindow;
         public static Func<MainWindowViewModel, Task> _handleLaunchAction;
-        private async void RegisterWindow()
+        private async void RegisterWindow(ShortcutAction? shortcutAction)
         {
             this.Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
@@ -296,7 +319,25 @@ namespace PowerPlanneriOS
             await PortableApp.Current.RegisterWindowAsync(_mainAppWindow, new NativeiOSAppWindow(Window));
 
             // Launch the app
-            await _mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
+            var mainWindowViewModel = _mainAppWindow.GetViewModel();
+            if (shortcutAction != null)
+            {
+                switch (shortcutAction)
+                {
+                    case ShortcutAction.AddTask:
+                        // This is getting called, but the popup isn't appearing
+                        await mainWindowViewModel.HandleQuickAddHomework();
+                        break;
+
+                    case ShortcutAction.AddEvent:
+                        await mainWindowViewModel.HandleQuickAddExam();
+                        break;
+                }
+            }
+            else
+            {
+                await mainWindowViewModel.HandleNormalLaunchActivation();
+            }
 
             ViewManager.RootViewModel = _mainAppWindow.ViewModel;
         }
