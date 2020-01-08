@@ -151,6 +151,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 ExamsViewModel = new ClassHomeworkOrExamsViewModel(this, ClassHomeworkOrExamsViewModel.ItemType.Exams);
                 TimesViewModel = new ClassTimesViewModel(this);
                 GradesViewModel = new Class.ClassGradesViewModel(this);
+                OnPropertyChanged(nameof(GradesViewModel)); // Notify so that UWP will update views
             }
             catch (ClassViewItemsGroup.ClassNotFoundExcetion)
             {

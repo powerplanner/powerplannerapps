@@ -111,6 +111,12 @@
                 Click="ButtonContribute_Click"/>
 
             <settingsviews:MainSettingsItem
+                x:Name="ButtonHelp"
+                x:Uid="Settings_MainPage_HelpItem"
+                Symbol="Help"
+                Click="ButtonHelp_Click"/>
+
+            <settingsviews:MainSettingsItem
                 x:Name="ButtonAbout"
                 x:Uid="Settings_MainPage_AboutItem"
                 Subtitle="BareBones Dev"

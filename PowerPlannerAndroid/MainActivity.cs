@@ -252,6 +252,11 @@ namespace PowerPlannerAndroid
 
                     else if (args is QuickAddHomeworkToCurrentAccountArguments)
                     {
+                        if (launchContext == LaunchSurface.Normal)
+                        {
+                            launchContext = LaunchSurface.JumpList;
+                        }
+
                         TrackLaunch(args, launchContext, "QuickAddHomework");
                         await viewModel.HandleQuickAddHomework();
                         return;
@@ -259,6 +264,11 @@ namespace PowerPlannerAndroid
 
                     else if (args is QuickAddExamToCurrentAccountArguments)
                     {
+                        if (launchContext == LaunchSurface.Normal)
+                        {
+                            launchContext = LaunchSurface.JumpList;
+                        }
+
                         TrackLaunch(args, launchContext, "QuickAddExam");
                         await viewModel.HandleQuickAddExam();
                         return;

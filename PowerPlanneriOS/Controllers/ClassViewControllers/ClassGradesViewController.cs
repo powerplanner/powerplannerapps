@@ -98,7 +98,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                 itemsSourceWeightSummaries = new BareUIViewItemsSourceAdapterAsStackPanel(_summaryCategories, (o) => new UIWeightSummaryView() { DataContext = o });
                 viewController.BindingHost.SetBinding(nameof(ClassGradesViewModel.ShowWeightCategoriesSummary), delegate
                 {
-                    LayoutSubviews();
+                    SetNeedsLayout(); // Will invoke LayoutSubviews in next display cycle
                 });
                 Add(_summaryCategories);
             }

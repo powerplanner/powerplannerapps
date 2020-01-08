@@ -162,7 +162,7 @@ namespace PowerPlannerUWP.Views
             PivotMain.SelectedIndex = _prevSelectedIndex;
         }
 
-        public override void OnViewModelLoadedOverride()
+        public override async void OnViewModelLoadedOverride()
         {
             base.OnViewModelLoadedOverride();
 
@@ -176,6 +176,7 @@ namespace PowerPlannerUWP.Views
 
                 ViewModel.ViewItemsGroupClass.LoadHomeworkAndExams();
                 ViewModel.ViewItemsGroupClass.LoadGrades();
+                await ViewModel.GradesViewModel.LoadAsync(); // So that the show weight categories boolean gets initialized
             }
 
             catch (Exception ex)

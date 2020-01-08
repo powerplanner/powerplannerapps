@@ -552,7 +552,8 @@
                                 <ItemsControl
                                     Margin="0,18,0,0"
                                     ItemsSource="{Binding ViewItemsGroupClass.Class.WeightCategories}"
-                                    IsHitTestVisible="False">
+                                    IsHitTestVisible="False"
+                                    Visibility="{Binding GradesViewModel.ShowWeightCategoriesSummary, Converter={StaticResource BoolToVisibilityConverter}}">
 
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>

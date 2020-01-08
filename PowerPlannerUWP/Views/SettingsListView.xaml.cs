@@ -169,5 +169,20 @@ namespace PowerPlannerUWP.Views
         {
             ViewModel.OpenLogIn();
         }
+
+        private async void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("Action_OpenHelp");
+
+                await Launcher.LaunchUriAsync(new Uri(SettingsListViewModel.HelpUrl));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+                new PortableMessageDialog("Web browser couldn't be launched.").Show();
+            }
+        }
     }
 }
