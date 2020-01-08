@@ -50,5 +50,24 @@
 	<false/>
   <key>UIUserInterfaceStyle</key>
   <string>Light</string>
+  <key>UIApplicationShortcutItems</key>
+  <array>
+    <dict>
+      <key>UIApplicationShortcutItemIconType</key>
+      <string>UIApplicationShortcutIconTypeAdd</string>
+      <key>UIApplicationShortcutItemTitle</key>
+      <string>Add task</string>
+      <key>UIApplicationShortcutItemType</key>
+      <string>com.barebonesdev.powerplanner.addtask</string>
+    </dict>
+    <dict>
+      <key>UIApplicationShortcutItemIconType</key>
+      <string>UIApplicationShortcutIconTypeAdd</string>
+      <key>UIApplicationShortcutItemTitle</key>
+      <string>Add event</string>
+      <key>UIApplicationShortcutItemType</key>
+      <string>com.barebonesdev.powerplanner.addevent</string>
+    </dict>
+  </array>
 </dict>
 </plist>

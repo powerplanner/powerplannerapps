@@ -419,13 +419,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             if (mainScreen != null && mainScreen.CurrentAccount != null && mainScreen.Classes != null && mainScreen.Classes.Count > 0)
             {
                 Popups.Clear();
-                mainScreen.Popups.Clear();
-                mainScreen.ShowPopup(AddHomeworkViewModel.CreateForAdd(mainScreen, new AddHomeworkViewModel.AddParameter()
+                var newModel = AddHomeworkViewModel.CreateForAdd(mainScreen, new AddHomeworkViewModel.AddParameter()
                 {
                     Classes = mainScreen.Classes.ToArray(),
                     DueDate = DateTime.Today,
                     Type = type
-                }));
+                });
+
+                // For iOS, we can't clear and then add, we need to replace
+                if (mainScreen.Popups.Count >= 1)
+                {
+                    mainScreen.Popups[0] = newModel;
+                    while (mainScreen.Popups.Count > 1)
+                    {
+                        mainScreen.Popups.RemoveAt(1);
+                    }
+                }
+                else
+                {
+                    mainScreen.ShowPopup(newModel);
+                }
             }
         }
 

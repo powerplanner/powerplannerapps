@@ -159,6 +159,15 @@ namespace PowerPlanneriOS
             catch { }
         }
 
+        public override void PerformActionForShortcutItem(UIApplication application, UIApplicationShortcutItem shortcutItem, UIOperationHandler completionHandler)
+        {
+            ShortcutAction? action = ConvertShortcutItem(shortcutItem);
+            if (action != null)
+            {
+                HandleShortcutAction(action.Value);
+            }
+        }
+
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
             _hasActivatedWindow = false;
@@ -175,7 +184,7 @@ namespace PowerPlanneriOS
                     // Don't need to do anything to handle approval
                 });
 
-                UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate();
+                UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
 
                 RemindersExtension.Current = new IOSRemindersExtension();
             }
@@ -183,15 +192,54 @@ namespace PowerPlanneriOS
             TelemetryExtension.Current = new iOSTelemetryExtension();
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
 
+            // Get whether launched from shortcut
+            ShortcutAction? shortcutAction = null;
+            if (launchOptions != null && UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+            {
+                var shortcutItem = launchOptions[UIApplication.LaunchOptionsShortcutItemKey] as UIApplicationShortcutItem;
+                shortcutAction = ConvertShortcutItem(shortcutItem);
+            }
+
             bool result = base.FinishedLaunching(application, launchOptions);
 
-            RegisterWindow();
+            RegisterWindow(shortcutAction);
 
             return result;
         }
 
+        private static ShortcutAction? ConvertShortcutItem(UIApplicationShortcutItem item)
+        {
+            if (item == null)
+            {
+                return null;
+            }
+
+            switch (item.Type)
+            {
+                case "com.barebonesdev.powerplanner.addtask":
+                    return ShortcutAction.AddTask;
+
+                case "com.barebonesdev.powerplanner.addevent":
+                    return ShortcutAction.AddEvent;
+            }
+
+            return null;
+        }
+
+        private enum ShortcutAction
+        {
+            AddTask,
+            AddEvent
+        }
+
         private class MyUserNotificationCenterDelegate : UNUserNotificationCenterDelegate
         {
+            private AppDelegate _appDelegate;
+            public MyUserNotificationCenterDelegate(AppDelegate appDelegate)
+            {
+                _appDelegate = appDelegate;
+            }
+
             public override void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
             {
                 completionHandler(UNNotificationPresentationOptions.Alert);
@@ -214,7 +262,7 @@ namespace PowerPlanneriOS
                                 DateTime dateToShow = dateOfArtificalToday.AddDays(1);
 
                                 // Show day view
-                                HandleLaunch((viewModel) =>
+                                _appDelegate.HandleLaunch((viewModel) =>
                                 {
                                     viewModel.HandleViewDayActivation(localAccountId, dateToShow);
                                     return Task.FromResult(true);
@@ -226,7 +274,7 @@ namespace PowerPlanneriOS
                                 TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_HomeworkExam");
 
                                 // Show task
-                                HandleLaunch(async (viewModel) =>
+                                _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
                                     await viewModel.HandleViewHomeworkActivation(localAccountId, taskIdentifier);
                                 });
@@ -237,7 +285,7 @@ namespace PowerPlanneriOS
                                 TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_HomeworkExam");
 
                                 // Show task
-                                HandleLaunch(async (viewModel) =>
+                                _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
                                     await viewModel.HandleViewExamActivation(localAccountId, eventIdentifier);
                                 });
@@ -255,34 +303,34 @@ namespace PowerPlanneriOS
                     completionHandler();
                 }
             }
+        }
 
-            private async void HandleLaunch(Func<MainWindowViewModel, Task> action)
+        private async void HandleLaunch(Func<MainWindowViewModel, Task> action)
+        {
+            if (_hasActivatedWindow)
             {
-                if (_hasActivatedWindow)
+                try
                 {
-                    try
+                    var viewModel = PowerPlannerApp.Current.GetMainWindowViewModel();
+                    if (viewModel != null)
                     {
-                        var viewModel = PowerPlannerApp.Current.GetMainWindowViewModel();
-                        if (viewModel != null)
-                        {
-                            await action(viewModel);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
+                        await action(viewModel);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    _handleLaunchAction = action;
+                    TelemetryExtension.Current?.TrackException(ex);
                 }
+            }
+            else
+            {
+                _handleLaunchAction = action;
             }
         }
 
         public static bool _hasActivatedWindow;
         public static Func<MainWindowViewModel, Task> _handleLaunchAction;
-        private async void RegisterWindow()
+        private async void RegisterWindow(ShortcutAction? shortcutAction)
         {
             this.Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
@@ -296,9 +344,45 @@ namespace PowerPlanneriOS
             await PortableApp.Current.RegisterWindowAsync(_mainAppWindow, new NativeiOSAppWindow(Window));
 
             // Launch the app
-            await _mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
+            var mainWindowViewModel = _mainAppWindow.GetViewModel();
+            if (shortcutAction != null)
+            {
+                HandleShortcutAction(shortcutAction.Value);
+
+                // We make sure to activate the normal launch, and then later the HandleLaunch kicks in
+                if (!_hasActivatedWindow)
+                {
+                    await mainWindowViewModel.HandleNormalLaunchActivation();
+                }
+            }
+            else
+            {
+                await mainWindowViewModel.HandleNormalLaunchActivation();
+            }
 
             ViewManager.RootViewModel = _mainAppWindow.ViewModel;
+        }
+
+        private void HandleShortcutAction(ShortcutAction action)
+        {
+            TelemetryExtension.Current?.TrackEvent($"Launch_FromJumpList_QuickAdd" + (action == ShortcutAction.AddTask ? "Homework" : "Exam"));
+
+            // This works unless there's currently a popup open (like view homework is open)
+            // So the fact that the shared code clears all popups and then adds a popup messes things up...
+            // My iOS code doesn't like all popups being cleared and then a new popup being added immediately...
+            HandleLaunch(async (viewModel) =>
+            {
+                switch (action)
+                {
+                    case ShortcutAction.AddTask:
+                        await viewModel.HandleQuickAddHomework();
+                        break;
+
+                    case ShortcutAction.AddEvent:
+                        await viewModel.HandleQuickAddExam();
+                        break;
+                }
+            });
         }
 
         public override Type GetPortableAppType()
