@@ -159,6 +159,15 @@ namespace PowerPlanneriOS
             catch { }
         }
 
+        public override void PerformActionForShortcutItem(UIApplication application, UIApplicationShortcutItem shortcutItem, UIOperationHandler completionHandler)
+        {
+            ShortcutAction? action = ConvertShortcutItem(shortcutItem);
+            if (action != null)
+            {
+                HandleShortcutAction(action.Value);
+            }
+        }
+
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
             _hasActivatedWindow = false;
@@ -188,16 +197,7 @@ namespace PowerPlanneriOS
             if (launchOptions != null && UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
             {
                 var shortcutItem = launchOptions[UIApplication.LaunchOptionsShortcutItemKey] as UIApplicationShortcutItem;
-                switch (shortcutItem.Type)
-                {
-                    case "com.barebonesdev.powerplanner.addtask":
-                        shortcutAction = ShortcutAction.AddTask;
-                        break;
-
-                    case "com.barebonesdev.powerplanner.addevent":
-                        shortcutAction = ShortcutAction.AddEvent;
-                        break;
-                }
+                shortcutAction = ConvertShortcutItem(shortcutItem);
             }
 
             bool result = base.FinishedLaunching(application, launchOptions);
@@ -205,6 +205,25 @@ namespace PowerPlanneriOS
             RegisterWindow(shortcutAction);
 
             return result;
+        }
+
+        private static ShortcutAction? ConvertShortcutItem(UIApplicationShortcutItem item)
+        {
+            if (item == null)
+            {
+                return null;
+            }
+
+            switch (item.Type)
+            {
+                case "com.barebonesdev.powerplanner.addtask":
+                    return ShortcutAction.AddTask;
+
+                case "com.barebonesdev.powerplanner.addevent":
+                    return ShortcutAction.AddEvent;
+            }
+
+            return null;
         }
 
         private enum ShortcutAction
@@ -328,24 +347,7 @@ namespace PowerPlanneriOS
             var mainWindowViewModel = _mainAppWindow.GetViewModel();
             if (shortcutAction != null)
             {
-                TelemetryExtension.Current?.TrackEvent($"Launch_FromJumpList_QuickAdd" + (shortcutAction.Value == ShortcutAction.AddTask ? "Homework" : "Exam"));
-
-                switch (shortcutAction)
-                {
-                    case ShortcutAction.AddTask:
-                        HandleLaunch(async (viewModel) =>
-                        {
-                            await viewModel.HandleQuickAddHomework();
-                        });
-                        break;
-
-                    case ShortcutAction.AddEvent:
-                        HandleLaunch(async (viewModel) =>
-                        {
-                            await viewModel.HandleQuickAddExam();
-                        });
-                        break;
-                }
+                HandleShortcutAction(shortcutAction.Value);
 
                 // We make sure to activate the normal launch, and then later the HandleLaunch kicks in
                 if (!_hasActivatedWindow)
@@ -359,6 +361,28 @@ namespace PowerPlanneriOS
             }
 
             ViewManager.RootViewModel = _mainAppWindow.ViewModel;
+        }
+
+        private void HandleShortcutAction(ShortcutAction action)
+        {
+            TelemetryExtension.Current?.TrackEvent($"Launch_FromJumpList_QuickAdd" + (action == ShortcutAction.AddTask ? "Homework" : "Exam"));
+
+            // This works unless there's currently a popup open (like view homework is open)
+            // So the fact that the shared code clears all popups and then adds a popup messes things up...
+            // My iOS code doesn't like all popups being cleared and then a new popup being added immediately...
+            HandleLaunch(async (viewModel) =>
+            {
+                switch (action)
+                {
+                    case ShortcutAction.AddTask:
+                        await viewModel.HandleQuickAddHomework();
+                        break;
+
+                    case ShortcutAction.AddEvent:
+                        await viewModel.HandleQuickAddExam();
+                        break;
+                }
+            });
         }
 
         public override Type GetPortableAppType()
