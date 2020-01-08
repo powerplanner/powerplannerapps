@@ -175,7 +175,7 @@ namespace PowerPlanneriOS
                     // Don't need to do anything to handle approval
                 });
 
-                UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate();
+                UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
 
                 RemindersExtension.Current = new IOSRemindersExtension();
             }
@@ -215,6 +215,12 @@ namespace PowerPlanneriOS
 
         private class MyUserNotificationCenterDelegate : UNUserNotificationCenterDelegate
         {
+            private AppDelegate _appDelegate;
+            public MyUserNotificationCenterDelegate(AppDelegate appDelegate)
+            {
+                _appDelegate = appDelegate;
+            }
+
             public override void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
             {
                 completionHandler(UNNotificationPresentationOptions.Alert);
@@ -237,7 +243,7 @@ namespace PowerPlanneriOS
                                 DateTime dateToShow = dateOfArtificalToday.AddDays(1);
 
                                 // Show day view
-                                HandleLaunch((viewModel) =>
+                                _appDelegate.HandleLaunch((viewModel) =>
                                 {
                                     viewModel.HandleViewDayActivation(localAccountId, dateToShow);
                                     return Task.FromResult(true);
@@ -249,7 +255,7 @@ namespace PowerPlanneriOS
                                 TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_HomeworkExam");
 
                                 // Show task
-                                HandleLaunch(async (viewModel) =>
+                                _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
                                     await viewModel.HandleViewHomeworkActivation(localAccountId, taskIdentifier);
                                 });
@@ -260,7 +266,7 @@ namespace PowerPlanneriOS
                                 TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_HomeworkExam");
 
                                 // Show task
-                                HandleLaunch(async (viewModel) =>
+                                _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
                                     await viewModel.HandleViewExamActivation(localAccountId, eventIdentifier);
                                 });
@@ -278,28 +284,28 @@ namespace PowerPlanneriOS
                     completionHandler();
                 }
             }
+        }
 
-            private async void HandleLaunch(Func<MainWindowViewModel, Task> action)
+        private async void HandleLaunch(Func<MainWindowViewModel, Task> action)
+        {
+            if (_hasActivatedWindow)
             {
-                if (_hasActivatedWindow)
+                try
                 {
-                    try
+                    var viewModel = PowerPlannerApp.Current.GetMainWindowViewModel();
+                    if (viewModel != null)
                     {
-                        var viewModel = PowerPlannerApp.Current.GetMainWindowViewModel();
-                        if (viewModel != null)
-                        {
-                            await action(viewModel);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
+                        await action(viewModel);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    _handleLaunchAction = action;
+                    TelemetryExtension.Current?.TrackException(ex);
                 }
+            }
+            else
+            {
+                _handleLaunchAction = action;
             }
         }
 
@@ -322,16 +328,29 @@ namespace PowerPlanneriOS
             var mainWindowViewModel = _mainAppWindow.GetViewModel();
             if (shortcutAction != null)
             {
+                TelemetryExtension.Current?.TrackEvent($"Launch_FromJumpList_QuickAdd" + (shortcutAction.Value == ShortcutAction.AddTask ? "Homework" : "Exam"));
+
                 switch (shortcutAction)
                 {
                     case ShortcutAction.AddTask:
-                        // This is getting called, but the popup isn't appearing
-                        await mainWindowViewModel.HandleQuickAddHomework();
+                        HandleLaunch(async (viewModel) =>
+                        {
+                            await viewModel.HandleQuickAddHomework();
+                        });
                         break;
 
                     case ShortcutAction.AddEvent:
-                        await mainWindowViewModel.HandleQuickAddExam();
+                        HandleLaunch(async (viewModel) =>
+                        {
+                            await viewModel.HandleQuickAddExam();
+                        });
                         break;
+                }
+
+                // We make sure to activate the normal launch, and then later the HandleLaunch kicks in
+                if (!_hasActivatedWindow)
+                {
+                    await mainWindowViewModel.HandleNormalLaunchActivation();
                 }
             }
             else
