@@ -48,7 +48,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                 var timeSpan = s.EndTime.TimeOfDay - s.StartTime.TimeOfDay;
                 var hours = timeSpan.TotalHours;
-                var showDateText = timeSpan.TotalMinutes >= 38; // 38 minutes
+                var showTimeText = timeSpan.TotalMinutes >= 38;
                 
                 base.Height = Math.Max(HEIGHT_OF_HOUR * hours, 0);
 
@@ -72,9 +72,9 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                 Grid.SetColumnSpan(tbClass, 2);
                 base.Children.Add(tbClass);
 
-                // Add the time text (00:00 to 00:00) - do NOT show the date text for anything below 38 minutes as that will overlap with the title and get pushed beneath it.
+                // Add the time text (xx:xx to xx:xx) - do NOT show the date text for anything below 38 minutes as that will overlap with the title and get pushed beneath it.
                 TextBlock tbTime = null;
-                if (showDateText)
+                if (showTimeText)
                 {
                     var timeFormatter = new DateTimeFormatter("shorttime");
                     tbTime = new TextBlock()
@@ -100,9 +100,9 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                     FontSize = 14
                 };
 
-                if (hours > 1.1)
+                if (hours >= 1.1)
                 {
-                    if (showDateText)
+                    if (showTimeText)
                     {
                         Grid.SetRow(tbTime, 1);
                         Grid.SetColumnSpan(tbTime, 2);
@@ -111,7 +111,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                     if (!string.IsNullOrWhiteSpace(s.Room))
                     {
-                        Grid.SetRow(tbRoom, showDateText ? 2 : 1);
+                        Grid.SetRow(tbRoom, showTimeText ? 2 : 1);
                         Grid.SetColumnSpan(tbRoom, 2);
                         base.Children.Add(tbRoom);
                     }
@@ -119,7 +119,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                 else
                 {
-                    if (showDateText)
+                    if (showTimeText)
                     {
                         tbTime.Margin = new Thickness(tbTime.Margin.Left, tbTime.Margin.Top, tbTime.Margin.Right, 8);
                         tbTime.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Bottom;
@@ -132,7 +132,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                     tbRoom.TextAlignment = TextAlignment.Right;
                     tbRoom.TextWrapping = TextWrapping.NoWrap;
                     tbRoom.TextTrimming = TextTrimming.CharacterEllipsis;
-                    Grid.SetRow(tbRoom, showDateText ? 2 : 1);
+                    Grid.SetRow(tbRoom, showTimeText ? 2 : 1);
                     Grid.SetColumn(tbRoom, 1);
                     base.Children.Add(tbRoom);
                 }
