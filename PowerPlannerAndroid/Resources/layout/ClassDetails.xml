@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
             local:Binding="{Source=ClassViewModel.ViewItemsGroupClass.Class.Details, Target=Text}"
-            android:autoLink="web"/>
+            android:autoLink="all"/>
 
     </LinearLayout>
 

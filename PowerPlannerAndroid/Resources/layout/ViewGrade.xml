@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
             local:Binding="{Source=Grade.Name, Target=Text}"
-            android:autoLink="web"/>
+            android:autoLink="all"/>
         
         <!--Subtitle-->
         <InterfacesDroid.Views.MyTextView
@@ -54,7 +54,7 @@
             android:textIsSelectable="true"
             android:layout_marginTop="8dp"
             local:Binding="{Source=Grade.Details, Target=Text}"
-            android:autoLink="web"/>
+            android:autoLink="all"/>
 
     </LinearLayout>
 
