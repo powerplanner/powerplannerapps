@@ -102,16 +102,27 @@ namespace PowerPlanneriOS.Controllers
 
             _stackView.AddArrangedSubview(new UIView().SetHeight(4));
 
-            var labelDetails = new UILabel()
+            _stackView.AddSpacing(12);
+
+            var textViewDetails = new UITextView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Font = UIFont.PreferredCaption1,
-                Lines = 0,
-                TextColor = UIColor.DarkGray
+                Font = UIFont.PreferredBody,
+                TextColor = UIColor.DarkGray,
+                Editable = false,
+                ScrollEnabled = false,
+
+                // Link detection: http://iosdevelopertips.com/user-interface/creating-clickable-hyperlinks-from-a-url-phone-number-or-address.html
+                DataDetectorTypes = UIDataDetectorType.All
             };
-            _itemBindingHost.SetLabelTextBinding(labelDetails, nameof(ViewItemHomework.Details));
-            _stackView.AddArrangedSubview(labelDetails);
-            labelDetails.StretchWidth(_stackView);
+
+            // Lose the padding: https://stackoverflow.com/questions/746670/how-to-lose-margin-padding-in-uitextview
+            textViewDetails.TextContainerInset = UIEdgeInsets.Zero;
+            textViewDetails.TextContainer.LineFragmentPadding = 0;
+
+            _itemBindingHost.SetTextViewTextBinding(textViewDetails, nameof(ViewItemHomework.Details));
+            _stackView.AddArrangedSubview(textViewDetails);
+            textViewDetails.StretchWidth(_stackView);
 
             if (ViewModel.IsUnassigedMode)
             {

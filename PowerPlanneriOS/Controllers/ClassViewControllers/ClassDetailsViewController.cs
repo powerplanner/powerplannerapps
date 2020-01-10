@@ -17,15 +17,24 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
         {
             Title = "Details";
 
-            var labelDetails = new UILabel()
+            var textViewDetails = new UITextView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Lines = 0,
-                Font = UIFont.PreferredBody
+                Font = UIFont.PreferredBody,
+                Editable = false,
+                ScrollEnabled = false,
+
+                // Link detection: http://iosdevelopertips.com/user-interface/creating-clickable-hyperlinks-from-a-url-phone-number-or-address.html
+                DataDetectorTypes = UIDataDetectorType.All
             };
-            BindingHost.SetLabelTextBinding(labelDetails, nameof(ViewModel.Details));
-            StackView.AddArrangedSubview(labelDetails);
-            labelDetails.StretchWidth(StackView);
+
+            // Lose the padding: https://stackoverflow.com/questions/746670/how-to-lose-margin-padding-in-uitextview
+            textViewDetails.TextContainerInset = UIEdgeInsets.Zero;
+            textViewDetails.TextContainer.LineFragmentPadding = 0;
+
+            BindingHost.SetTextViewTextBinding(textViewDetails, nameof(ViewModel.Details));
+            StackView.AddArrangedSubview(textViewDetails);
+            textViewDetails.StretchWidth(StackView);
 
             var labelNothingHere = new UILabel()
             {
