@@ -732,7 +732,7 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
-                    if (v <= new Version(2001, 9, 1))
+                    if (v <= new Version(2001, 9, 1, 0))
                     {
                         changedText += "\n - Hyperlink detection in details text!";
                     }
