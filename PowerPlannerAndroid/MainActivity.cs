@@ -364,6 +364,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2001, 9, 1, 0))
+                    {
+                        changedText += "\n - Email addresses and phone numbers are now clickable in details text!";
+                    }
+
                     if (v < new Version(1912, 23, 0))
                     {
                         changedText += "\n - App shortcuts added to launcher icon!";
