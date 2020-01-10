@@ -42,10 +42,10 @@
 
                     <!--Title-->
                     <TextBlock
-                            Text="{Binding Item.Name, FallbackValue=[name]}"
-                            Style="{StaticResource SubtitleTextBlockStyle}"
-                            TextWrapping="Wrap"
-                            IsTextSelectionEnabled="True"/>
+                        interfaces:TextBlockExtensions.RawText="{Binding Item.Name, FallbackValue=[name]}"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        TextWrapping="Wrap"
+                        IsTextSelectionEnabled="True"/>
 
 
                     <!--Subtitle-->

@@ -52,7 +52,7 @@
 
                 <!--Title-->
                 <TextBlock
-                    Text="{Binding Grade.Name, FallbackValue=[name]}"
+                    interfaces:TextBlockExtensions.RawText="{Binding Grade.Name, FallbackValue=[name]}"
                     Style="{StaticResource SubtitleTextBlockStyle}"
                     TextWrapping="Wrap"
                     IsTextSelectionEnabled="True"/>
