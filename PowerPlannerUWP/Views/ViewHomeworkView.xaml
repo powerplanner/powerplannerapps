@@ -58,15 +58,13 @@
 
 
                     <!--Details-->
-                    <RichTextBlock
-                            Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}"
-                            Margin="0,0,0,8"
-                            IsTextSelectionEnabled="True"
-                            Visibility="{Binding Item.Details, Converter={StaticResource StringToVisibilityConverter}}">
-                        <Paragraph>
-                            <Run Text="{Binding Item.Details}"/>
-                        </Paragraph>
-                    </RichTextBlock>
+                    <TextBlock
+                        Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}"
+                        Margin="0,0,0,8"
+                        IsTextSelectionEnabled="True"
+                        Visibility="{Binding Item.Details, Converter={StaticResource StringToVisibilityConverter}}"
+                        interfaces:TextBlockExtensions.RawText="{Binding Item.Details}"
+                        TextWrapping="Wrap"/>
 
 
 

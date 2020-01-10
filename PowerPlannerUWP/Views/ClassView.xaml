@@ -323,9 +323,10 @@
 
                             <TextBlock
                                 x:Name="TextBlockDetails"
-                                Text="{Binding ViewItemsGroupClass.Class.Details, FallbackValue=[details]}"
+                                interfaces:TextBlockExtensions.RawText="{Binding ViewItemsGroupClass.Class.Details, FallbackValue=[details]}"
                                 Style="{ThemeResource BodyTextBlockStyle}"
-                                IsTextSelectionEnabled="True"/>
+                                IsTextSelectionEnabled="True"
+                                TextWrapping="Wrap"/>
 
                             <views:ImagesWrapGrid
                                 DataContext="{Binding ViewItemsGroupClass.Class.ImageNames}"
