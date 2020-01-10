@@ -46,9 +46,11 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                 base.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
                 base.Background = new SolidColorBrush(ColorTools.GetColor(c.Color));
 
-                double hours = (s.EndTime.TimeOfDay - s.StartTime.TimeOfDay).TotalHours;
+                var timeSpan = s.EndTime.TimeOfDay - s.StartTime.TimeOfDay;
+                var hours = timeSpan.TotalHours;
+                var showTimeText = timeSpan.TotalMinutes >= 38;
+                
                 base.Height = Math.Max(HEIGHT_OF_HOUR * hours, 0);
-
 
                 base.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 base.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -56,7 +58,6 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                 base.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 base.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-
 
                 TextBlock tbClass = new TextBlock()
                 {
@@ -71,18 +72,22 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                 Grid.SetColumnSpan(tbClass, 2);
                 base.Children.Add(tbClass);
 
-                var timeFormatter = new DateTimeFormatter("shorttime");
-
-                TextBlock tbTime = new TextBlock()
+                // Add the time text (xx:xx to xx:xx) - do NOT show the date text for anything below 38 minutes as that will overlap with the title and get pushed beneath it.
+                TextBlock tbTime = null;
+                if (showTimeText)
                 {
-                    Text = LocalizedResources.Common.GetStringTimeToTime(timeFormatter.Format(s.StartTime), timeFormatter.Format(s.EndTime)),
-                    Style = Application.Current.Resources["BaseTextBlockStyle"] as Style,
-                    Foreground = Brushes.White,
-                    FontWeight = FontWeights.SemiBold,
-                    Margin = new Windows.UI.Xaml.Thickness(6, -2, 6, 0),
-                    TextWrapping = Windows.UI.Xaml.TextWrapping.NoWrap,
-                    FontSize = 14
-                };
+                    var timeFormatter = new DateTimeFormatter("shorttime");
+                    tbTime = new TextBlock()
+                    {
+                        Text = LocalizedResources.Common.GetStringTimeToTime(timeFormatter.Format(s.StartTime), timeFormatter.Format(s.EndTime)),
+                        Style = Application.Current.Resources["BaseTextBlockStyle"] as Style,
+                        Foreground = Brushes.White,
+                        FontWeight = FontWeights.SemiBold,
+                        Margin = new Windows.UI.Xaml.Thickness(6, -2, 6, 0),
+                        TextWrapping = Windows.UI.Xaml.TextWrapping.NoWrap,
+                        FontSize = 14
+                    };
+                }
 
                 TextBlock tbRoom = new TextBlock()
                 {
@@ -97,13 +102,16 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                 if (hours >= 1.1)
                 {
-                    Grid.SetRow(tbTime, 1);
-                    Grid.SetColumnSpan(tbTime, 2);
-                    base.Children.Add(tbTime);
+                    if (showTimeText)
+                    {
+                        Grid.SetRow(tbTime, 1);
+                        Grid.SetColumnSpan(tbTime, 2);
+                        base.Children.Add(tbTime);
+                    }
 
                     if (!string.IsNullOrWhiteSpace(s.Room))
                     {
-                        Grid.SetRow(tbRoom, 2);
+                        Grid.SetRow(tbRoom, showTimeText ? 2 : 1);
                         Grid.SetColumnSpan(tbRoom, 2);
                         base.Children.Add(tbRoom);
                     }
@@ -111,17 +119,20 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                 else
                 {
-                    tbTime.Margin = new Thickness(tbTime.Margin.Left, tbTime.Margin.Top, tbTime.Margin.Right, 8);
-                    tbTime.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Bottom;
-                    Grid.SetRow(tbTime, 2);
-                    base.Children.Add(tbTime);
+                    if (showTimeText)
+                    {
+                        tbTime.Margin = new Thickness(tbTime.Margin.Left, tbTime.Margin.Top, tbTime.Margin.Right, 8);
+                        tbTime.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Bottom;
+                        Grid.SetRow(tbTime, 2);
+                        base.Children.Add(tbTime);
+                    }
 
                     tbRoom.Margin = new Thickness(tbRoom.Margin.Left, tbRoom.Margin.Top, tbRoom.Margin.Right, 8);
                     tbRoom.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Bottom;
                     tbRoom.TextAlignment = TextAlignment.Right;
                     tbRoom.TextWrapping = TextWrapping.NoWrap;
                     tbRoom.TextTrimming = TextTrimming.CharacterEllipsis;
-                    Grid.SetRow(tbRoom, 2);
+                    Grid.SetRow(tbRoom, showTimeText ? 2 : 1);
                     Grid.SetColumn(tbRoom, 1);
                     base.Children.Add(tbRoom);
                 }
