@@ -30,6 +30,7 @@ namespace PowerPlannerUWP.Views
     /// </summary>
     public sealed partial class AddClassTimeView : PopupViewHostGeneric
     {
+
         public new AddClassTimeViewModel ViewModel
         {
             get { return base.ViewModel as AddClassTimeViewModel; }

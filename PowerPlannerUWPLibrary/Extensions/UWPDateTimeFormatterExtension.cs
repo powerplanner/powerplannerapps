@@ -12,12 +12,12 @@ namespace PowerPlannerUWPLibrary.Extensions
     {
         public override string FormatAsShortTime(DateTime time)
         {
-            return DateTimeFormatter.ShortTime.Format(time);
+            return DateTimeFormatter.ShortTime.Format(time).Replace("\u200E", "");
         }
 
         public override string FormatAsShortTimeWithoutAmPm(DateTime time)
         {
-            return DateTimeFormatter.ShortTime.Format(time).TrimEnd('A', 'P', 'M', 'a', 'p', 'm', ' ');
+            return FormatAsShortTime(time).TrimEnd('A', 'P', 'M', 'a', 'p', 'm', ' ');
         }
     }
 }

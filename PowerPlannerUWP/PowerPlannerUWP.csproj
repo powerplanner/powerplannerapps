@@ -125,6 +125,9 @@
     <Compile Include="Controls\RecurrenceControl.xaml.cs">
       <DependentUpon>RecurrenceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TimePickerControl.xaml.cs">
+      <DependentUpon>TimePickerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
     <Compile Include="Converters\CanBeUsedForWhatIfModeToFontWeightConverter.cs" />
@@ -252,7 +255,7 @@
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\NothingHerePage.xaml.cs">
+    <Compile Include="Views\NothingHerePage.xaml.cs">
       <DependentUpon>NothingHerePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SaveGradeScaleView.xaml.cs">
@@ -591,6 +594,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TimePickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddClassView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -703,7 +710,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\NothingHerePage.xaml">
+    <Page Include="Views\NothingHerePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

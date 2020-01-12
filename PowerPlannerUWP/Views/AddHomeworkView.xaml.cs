@@ -47,23 +47,23 @@ namespace PowerPlannerUWP.Views
             TextBlockImageAttachments.Text = PowerPlannerResources.GetString("String_ImageAttachments");
         }
 
-        private void updateHeaderText()
+        private void UpdateHeaderText()
         {
-            this.Title = getHeaderText();
+            this.Title = GetHeaderText();
         }
 
-        private string getHeaderText()
+        private string GetHeaderText()
         {
             switch (ViewModel.Type)
             {
                 case AddHomeworkViewModel.ItemType.Exam:
-                    if (isEditing())
+                    if (IsEditing())
                         return LocalizedResources.GetString("String_EditEvent").ToUpper();
                     else
                         return LocalizedResources.GetString("String_AddEvent").ToUpper();
 
                 default:
-                    if (isEditing())
+                    if (IsEditing())
                         return LocalizedResources.GetString("String_EditTask").ToUpper();
                     else
                         return LocalizedResources.GetString("String_AddTask").ToUpper();
@@ -82,7 +82,7 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private bool isEditing()
+        private bool IsEditing()
         {
             return ViewModel.State == AddHomeworkViewModel.OperationState.Editing;
         }
@@ -111,7 +111,7 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelLoadedOverride();
 
-            updateHeaderText();
+            UpdateHeaderText();
 
             datePickerDate.Date = ViewModel.Date;
         }
@@ -121,17 +121,17 @@ namespace PowerPlannerUWP.Views
             Save();
         }
 
-        private async void Save()
+        private void Save()
         {
             ViewModel.Save();
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            cancel();
+            Cancel();
         }
 
-        private void cancel()
+        private void Cancel()
         {
             ViewModel.RemoveViewModel();
         }
@@ -144,7 +144,7 @@ namespace PowerPlannerUWP.Views
 
             _needsFocus = false;
 
-            if (isEditing())
+            if (IsEditing())
                 return;
 
             tbName.Focus(FocusState.Programmatic);

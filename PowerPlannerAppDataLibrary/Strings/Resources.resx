@@ -1800,4 +1800,25 @@ Please think about using an online account instead!</value>
   <data name="Agenda_NoItemsHeader.Text" xml:space="preserve">
     <value>All done!</value>
   </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Content" xml:space="preserve">
+    <value>The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Title" xml:space="preserve">
+    <value>Invalid Start Time</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" xml:space="preserve">
+    <value>You must select at least one day of week. If you want to delete this time, use the delete option in the menu.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" xml:space="preserve">
+    <value>No day of weeks</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Content" xml:space="preserve">
+    <value>The end time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. In addition to that, you can also add a "+" sign to the beginning in order to make the end time a relative amount after the start time (e.g. +50m)</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Title" xml:space="preserve">
+    <value>Invalid End Time</value>
+  </data>
+  <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
+    <value>Your end time must be greater than your start time.</value>
+  </data>
 </root>

@@ -7,6 +7,7 @@
     xmlns:local="using:PowerPlannerUWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:PowerPlannerUWP.Controls"
     mc:Ignorable="d"
     d:DesignWidth="450">
 
@@ -37,20 +38,22 @@
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="12">
-                <TimePicker
-                    x:Uid="EditingClassScheduleItemView_TimePickerStart"
-                    x:Name="timePickerStart"
-                    Header="From"
+                
+                <!-- Start Time -->
+                <controls:TimePickerControl
+                    x:Uid="EditingClassScheduleItemView_TimePickerStart.Header"
+                    Margin="6"
                     HorizontalAlignment="Stretch"
-                    Time="{Binding StartTime, Mode=TwoWay}"/>
+                    controls:TimePickerControl.Header="From"
+                    controls:TimePickerControl.IsEndTime="False"/>
 
-                <TimePicker
-                    x:Uid="EditingClassScheduleItemView_TimePickerEnd"
-                    x:Name="timePickerEnd"
-                    Header="To"
+                <!-- End Time -->
+                <controls:TimePickerControl
+                    x:Uid="EditingClassScheduleItemView_TimePickerEnd.Header"
+                    Margin="6"
                     HorizontalAlignment="Stretch"
-                    Margin="0,24,0,0"
-                    Time="{Binding EndTime, Mode=TwoWay}"/>
+                    controls:TimePickerControl.Header="To"
+                    controls:TimePickerControl.IsEndTime="True"/>
 
                 <TextBox
                     x:Uid="EditingClassScheduleItemView_TextBoxRoom"

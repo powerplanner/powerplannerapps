@@ -2260,6 +2260,34 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Tutorials and FAQ</source>
           <target state="final" state-qualifier="mt-suggestion">Tutorials und FAQ</target>
         </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Content" translate="yes" xml:space="preserve">
+          <source>The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</source>
+          <target state="new">The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Title" translate="yes" xml:space="preserve">
+          <source>Invalid Start Time</source>
+          <target state="new">Invalid Start Time</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidEndTime.Content" translate="yes" xml:space="preserve">
+          <source>The end time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. In addition to that, you can also add a "+" sign to the beginning in order to make the end time a relative amount after the start time (e.g. +50m)</source>
+          <target state="new">The end time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. In addition to that, you can also add a "+" sign to the beginning in order to make the end time a relative amount after the start time (e.g. +50m)</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidEndTime.Title" translate="yes" xml:space="preserve">
+          <source>Invalid End Time</source>
+          <target state="new">Invalid End Time</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" translate="yes" xml:space="preserve">
+          <source>You must select at least one day of week. If you want to delete this time, use the delete option in the menu.</source>
+          <target state="new">You must select at least one day of week. If you want to delete this time, use the delete option in the menu.</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" translate="yes" xml:space="preserve">
+          <source>No day of weeks</source>
+          <target state="new">No day of weeks</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_LowEndTime.Content" translate="yes" xml:space="preserve">
+          <source>Your end time must be greater than your start time.</source>
+          <target state="new">Your end time must be greater than your start time.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
