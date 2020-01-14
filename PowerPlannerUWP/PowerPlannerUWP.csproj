@@ -17,11 +17,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>PowerPlannerUWP_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <ApplicationInsightsResourceId>/subscriptions/47a3db26-28c4-420b-9e28-7571554e6c5a/resourcegroups//subscriptions/47a3db26-28c4-420b-9e28-7571554e6c5a/resourceGroups/Default-Storage-WestUS/providers/microsoft.insights/components/PowerPlannerUWP</ApplicationInsightsResourceId>
-    <PackageCertificateThumbprint>5096846D2C9DF248D12AAEB67350FE7E524F6966</PackageCertificateThumbprint>
     <AppxBundle>Never</AppxBundle>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
@@ -98,7 +96,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="PowerPlannerUWP_StoreKey.pfx" />
     <None Include="Service References\Application Insights\ConnectedService.json" />
     <PRIResource Include="Strings\de\Resources.resw">
       <SubType>Designer</SubType>
@@ -1052,7 +1049,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.9</Version>
+      <Version>6.2.9</Version>
     </PackageReference>
     <PackageReference Include="NotificationsVisualizerLibrary">
       <Version>1.0.5</Version>
@@ -1061,7 +1058,7 @@
       <Version>2.1.32-alpha</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.5.231</Version>
+      <Version>1.6.292</Version>
     </PackageReference>
     <PackageReference Include="StorageEverywhereIncludingiOS">
       <Version>1.0.1</Version>

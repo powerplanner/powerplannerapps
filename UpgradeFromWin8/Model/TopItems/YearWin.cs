@@ -19,8 +19,6 @@ namespace UpgradeFromWin8.Model.TopItems
             get { return PowerPlannerSending.ItemType.Year; }
         }
 
-        private bool _needsRecalc;
-
         //public override BaseItemWin Parent
         //{
         //    get

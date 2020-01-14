@@ -105,6 +105,8 @@ namespace PowerPlannerAppDataLibrary.App
             return true;
 #endif
 
+// Ignore unreachable code warning
+#pragma warning disable 0162
             try
             {
                 var currAccount = GetCurrentAccount();
@@ -123,6 +125,8 @@ namespace PowerPlannerAppDataLibrary.App
             }
 
             return await OwnsInAppPurchaseAsync();
+
+#pragma warning restore 0162
         }
 
         /// <summary>

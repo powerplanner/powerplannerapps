@@ -23,7 +23,7 @@ namespace PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule
 {
     public class ExportSchedulePopupViewModel : BaseViewModel
     {
-        private ScheduleViewModel _scheduleViewModel;
+        private readonly ScheduleViewModel _scheduleViewModel;
         public UIElement Element { get; private set; }
         public Panel PanelForPrinting { get; set; }
 
@@ -163,8 +163,10 @@ namespace PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule
                 TelemetryExtension.Current?.TrackEvent("Action_ExportSchedule_ViaFile");
                 IsEnabled = false;
 
-                FileSavePicker picker = new FileSavePicker();
-                picker.DefaultFileExtension = ".jpg";
+                FileSavePicker picker = new FileSavePicker
+                {
+                    DefaultFileExtension = ".jpg"
+                };
                 picker.FileTypeChoices.Add(new KeyValuePair<string, IList<string>>("JPEG", new List<string>() { ".jpg" }));
                 picker.SuggestedFileName = "Schedule";
                 picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
@@ -275,77 +277,6 @@ namespace PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule
                 IsEnabled = true;
                 deferral.Complete();
             }
-        }
-
-        public async void ExportToPrinter()
-        {
-            // Turns out printing is a whole lot more complicated than I thought.
-            // I have to handle breaking everything into separate pages,
-            // and making sure it fits the width. Not an easy task.
-
-            //try
-            //{
-            //    PanelForPrinting.Children.Clear();
-
-                  // Using UWP Community Toolkit
-            //    var printHelper = new PrintHelper(PanelForPrinting);
-
-            //    var printableView = CreatePrintableView();
-
-            //    // Add the schedule view
-            //    printHelper.AddFrameworkElementToPrint(printableView);
-
-            //    // Start printing process
-            //    await printHelper.ShowPrintUIAsync("Class schedule");
-
-            //    printHelper.OnPrintSucceeded += delegate
-            //    {
-            //        try
-            //        {
-            //            if (IsCurrentNavigatedPage)
-            //            {
-            //                GoBack();
-            //            }
-            //        }
-            //        catch { }
-            //    };
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    TelemetryExtension.Current?.TrackException(ex);
-            //}
-        }
-
-        private FrameworkElement CreatePrintableView()
-        {
-            MyAdaptiveGridPanel panel = new MyAdaptiveGridPanel()
-            {
-                MinColumnWidth = 280
-            };
-
-            DayOfWeek dayOfWeek = DayOfWeek.Sunday;
-            for (int i = 0; i < 7; i++, dayOfWeek = dayOfWeek + 1)
-            {
-                var snapshot = new DayScheduleSnapshot();
-                snapshot.Initialize(_scheduleViewModel.SemesterViewItemsGroup, DateTools.Last(dayOfWeek, _scheduleViewModel.StartDate));
-
-                panel.Children.Add(new StackPanel()
-                {
-                    Children =
-                    {
-                        new TextBlock()
-                        {
-                            Text = dayOfWeek.ToString(),
-                            FontSize = 30
-                        },
-
-                        snapshot
-                    }
-                });
-            }
-
-            return panel;
         }
 
         public class ShareItem

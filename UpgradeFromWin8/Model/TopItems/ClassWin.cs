@@ -157,7 +157,7 @@ namespace UpgradeFromWin8.Model.TopItems
 
         private class AllGradesComparer : IComparer<GradeWin>
         {
-            private ClassWin classItem;
+            private readonly ClassWin classItem;
             public AllGradesComparer(ClassWin c) { classItem = c; }
 
             public int Compare(GradeWin x, GradeWin y)
@@ -183,10 +183,14 @@ namespace UpgradeFromWin8.Model.TopItems
             {
                 if (_grades == null)
                 {
-                    _grades = new MyObservableList<GradeWin>();
-                    _grades.Comparer = new AllGradesComparer(this);
+                    _grades = new MyObservableList<GradeWin>
+                    {
+                        Comparer = new AllGradesComparer(this)
+                    };
 
+#pragma warning disable CS0618 // Type or member is obsolete
                     _grades.InsertSorted(WeightCategories, "Grades");
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
 
                 return _grades;
@@ -212,10 +216,10 @@ namespace UpgradeFromWin8.Model.TopItems
 
         public override void Calculate()
         {
-            calculate();
+            CalculateInternal();
         }
 
-        private void calculate()
+        private void CalculateInternal()
         {
             double totalGrade = 0, totalWeight = 0;
 
@@ -365,7 +369,7 @@ namespace UpgradeFromWin8.Model.TopItems
             Class into = new Class()
             {
                 CourseNumber = CourseNumber,
-                GradeScales = GradeScales == null ? null : GradeScales.ToArray(),
+                GradeScales = GradeScales?.ToArray(),
                 ShouldAverageGradeTotals = ShouldAverageGradeTotals,
                 Credits = Credits,
                 Position = Position,

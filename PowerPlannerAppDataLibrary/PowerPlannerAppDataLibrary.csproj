@@ -28,10 +28,10 @@
     <None Include="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
-    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.190724.4" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.200114.3" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1" />
     <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />

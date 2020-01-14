@@ -28,7 +28,12 @@ namespace PowerPlannerUWP.Views
 
         private class ButtonCommandHandler : ICommand
         {
+            /// <summary>
+            /// Not used, only here because required for interface
+            /// </summary>
+#pragma warning disable 0067
             public event EventHandler CanExecuteChanged;
+#pragma warning restore 0067
 
             public bool CanExecute(object parameter)
             {
@@ -67,10 +72,10 @@ namespace PowerPlannerUWP.Views
 
         private static void OnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as HomeworkDatePicker).OnChanged(e);
+            (sender as HomeworkDatePicker).OnChanged();
         }
 
-        private void OnChanged(DependencyPropertyChangedEventArgs e)
+        private void OnChanged()
         {
             FinalDateString = Date.ToString(DateFormat);
         }
@@ -85,7 +90,9 @@ namespace PowerPlannerUWP.Views
 
         private static readonly DependencyProperty ButtonCommandProperty = DependencyProperty.Register("ButtonCommand", typeof(ICommand), typeof(HomeworkDatePicker), new PropertyMetadata(null));
 
+#pragma warning disable IDE0052 // Remove unread private members
         private ICommand ButtonCommand
+#pragma warning restore IDE0052 // Remove unread private members
         {
             get { return GetValue(ButtonCommandProperty) as ICommand; }
             set { SetValue(ButtonCommandProperty, value); }

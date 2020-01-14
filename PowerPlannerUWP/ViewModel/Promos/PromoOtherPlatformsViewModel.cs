@@ -77,26 +77,10 @@ namespace PowerPlannerUWP.ViewModel.Promos
             }
         }
 
-        private static bool _hasBeenRequestedThisSession;
         private const string SETTING_HAS_PROMOTED_ANDROID_AND_IOS = "HasPromotedAndroidAndiOS";
 
         private PromoOtherPlatformsViewModel(BaseViewModel parent) : base(parent)
         {
-        }
-
-        public static async void ShowIfNeeded(AccountDataItem account, MainWindowViewModel mainViewModel)
-        {
-            if (_hasBeenRequestedThisSession)
-            {
-                return;
-            }
-            _hasBeenRequestedThisSession = true;
-
-            try
-            {
-                
-            }
-            catch { }
         }
     }
 }

@@ -102,7 +102,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             AccountsWithRememberUsername = Accounts.Sublist(i => i.RememberUsername && !i.IsDefaultOfflineAccount);
 
             AccountsManager.OnAccountDeleted += new WeakEventHandler<Guid>(AccountsManager_OnAccountDeleted).Handler;
-            AccountsManager.OnAccountAdded += new WeakEventHandler<AccountDataItem>(AccountsManager_OnAccountAdded).Handler;
 
             var lastLoginLocalId = AccountsManager.GetLastLoginLocalId();
             if (lastLoginLocalId != Guid.Empty)
@@ -130,14 +129,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             }
         }
 
-        private void AccountsManager_OnAccountAdded(object sender, AccountDataItem e)
-        {
-            Dispatcher.Run(delegate
-            {
-                Accounts.Add(e);
-            });
-        }
-
         private void AccountsManager_OnAccountDeleted(object sender, Guid e)
         {
             Dispatcher.Run(delegate
@@ -155,13 +146,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
         {
             try
             {
-                string username = getUsername();
-                string password = getPassword();
+                string username = GetUsername();
+                string password = GetPassword();
 
                 var matching = await FindAccountByUsername(username);
 
                 if (matching == null)
-                    localNotFound(username);
+                    LocalNotFound(username);
 
                 else
                 {
@@ -184,7 +175,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                     }
 
                     else
-                        incorrectLocalPassword(matching, password);
+                        IncorrectLocalPassword(matching, password);
                 }
             }
 
@@ -195,12 +186,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             }
         }
 
-        private string getUsername()
+        private string GetUsername()
         {
             return Username;
         }
 
-        private string getPassword()
+        private string GetPassword()
         {
             return Password;
         }
@@ -252,7 +243,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             return allAccounts.FirstOrDefault(i => i.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        private async void incorrectLocalPassword(AccountDataItem account, string password)
+        private async void IncorrectLocalPassword(AccountDataItem account, string password)
         {
             if (account.IsOnlineAccount)
             {
@@ -325,9 +316,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             }
         }
 
-        private async void localNotFound(string username)
+        private async void LocalNotFound(string username)
         {
-            string password = getPassword();
+            string password = GetPassword();
 
             try
             {
