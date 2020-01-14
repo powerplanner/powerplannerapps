@@ -52,16 +52,23 @@ namespace PowerPlannerUWP.Views
             checkBoxSunday.Content = DateTools.ToLocalizedString(DayOfWeek.Sunday);
         }
 
+        private DateTime? _startedAddingTime;
         public override void OnViewModelLoadedOverride()
         {
             base.OnViewModelLoadedOverride();
 
             base.Title = ViewModel.ClassName.ToUpper();
+
+            // For tracking effectiveness of new time picker
+            if (ViewModel.State == AddClassTimeViewModel.OperationState.Adding)
+            {
+                _startedAddingTime = DateTime.UtcNow;
+            }
         }
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Save();
+            ViewModel.Save(_startedAddingTime);
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)

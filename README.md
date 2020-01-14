@@ -287,3 +287,66 @@ Simply place the resource string's id within `{}`. I can't remember whether loca
 ```csharp
 new PortableMessageDialog("my content", "my title").Show(); // or ShowAsync() if you want to wait for it to be closed
 ```
+
+
+## A/B Testing
+
+There's already code to help with performing A/B tests.
+
+To add a new test, in `PowerPlannerAppDataLibrary\Helpers\AbTestHelper.cs`, add a new test to the `Tests` class. You can set the boolean to true or false, which is only used in debug mode, so that you can test both scenarios.
+
+```csharp
+public static class Tests
+{
+    public static TestItem NewTimePicker { get; set; } = new TestItem(nameof(NewTimePicker), true); // The boolean at the end is only used in debug mode, so that you can enable or disable the test. In release mode, it'll be randomly enabled/disabled.
+}
+```
+
+To change your code programmatically based on the test value...
+
+```csharp
+if (AbTestHelper.Tests.NewTimePicker)
+{
+    // Perform code when enabled
+}
+else
+{
+    // Perform the old code
+}
+```
+
+If you have UI you need to swap out, specify the name of the test and provide the enabled and disabled content...
+
+```xml
+<controls:AbTestControl TestName="NewTimePicker">
+    <controls:AbTestControl.EnabledContent>
+        <controls:TimePickerControl
+            x:Uid="EditingClassScheduleItemView_TimePickerStart"
+            Margin="6"
+            HorizontalAlignment="Stretch"
+            controls:TimePickerControl.Header="From"
+            controls:TimePickerControl.IsEndTime="False"/>
+    </controls:AbTestControl.EnabledContent>
+    <controls:AbTestControl.DisabledContent>
+        <TimePicker
+            x:Uid="EditingClassScheduleItemView_TimePickerStart"
+            Header="From"
+            HorizontalAlignment="Stretch"
+            Time="{Binding StartTime, Mode=TwoWay}"/>
+    </controls:AbTestControl.DisabledContent>
+</controls:AbTestControl>
+```
+
+And finally, to log metrics of the test, do something like...
+
+```csharp
+try
+{
+    TelemetryExtension.Current?.TrackEvent("NewTimePicker_TestResult", new Dictionary<string, string>()
+    {
+        { "Duration", ((int)Math.Ceiling(duration.TotalSeconds)).ToString() },
+        { "IsEnabled", AbTestHelper.Tests.NewTimePicker.Value.ToString() }
+    });
+}
+catch { }
+```

@@ -121,6 +121,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="App\PowerPlannerUwpApp.cs" />
+    <Compile Include="Controls\AbTestControl.cs" />
     <Compile Include="Controls\ImageAttachmentControl.cs" />
     <Compile Include="Controls\RecurrenceControl.xaml.cs">
       <DependentUpon>RecurrenceControl.xaml</DependentUpon>
