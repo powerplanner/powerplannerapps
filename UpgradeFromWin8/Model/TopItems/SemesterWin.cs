@@ -25,8 +25,6 @@ namespace UpgradeFromWin8.Model.TopItems
             Tasks = new MyObservableList<TaskWin>();
         }
 
-        private bool _needsRecalc;
-
         private DateTime _start;
         [DataMember]
         public DateTime Start
@@ -77,7 +75,9 @@ namespace UpgradeFromWin8.Model.TopItems
                 if (_homework == null)
                 {
                     _homework = new MyObservableList<HomeworkWin>();
+#pragma warning disable CS0618 // Type or member is obsolete
                     _homework.InsertSorted(Classes, "Homework");
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
 
                 return _homework;
@@ -102,7 +102,9 @@ namespace UpgradeFromWin8.Model.TopItems
                 if (_exams == null)
                 {
                     _exams = new MyObservableList<ExamWin>();
+#pragma warning disable CS0618 // Type or member is obsolete
                     _exams.InsertSorted(Classes, "Exams");
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
 
                 return _exams;

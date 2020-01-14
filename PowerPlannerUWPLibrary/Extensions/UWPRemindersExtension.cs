@@ -26,7 +26,7 @@ namespace PowerPlannerUWPLibrary.Extensions
         {
             try
             {
-                clearReminders(localAccountId, CancellationToken.None);
+                ClearReminders(localAccountId, CancellationToken.None);
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@ namespace PowerPlannerUWPLibrary.Extensions
             {
                 await System.Threading.Tasks.Task.Run(async delegate
                 {
-                    await resetReminders(account, data, CancellationToken.None);
+                    await ResetReminders(account, CancellationToken.None);
                 });
             }
 
@@ -75,7 +75,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
 
         private static ToastNotifier _toastNotifier;
-        private static ToastNotifier toastNotifier
+        private static ToastNotifier ToastNotifier
         {
             get
             {
@@ -88,32 +88,32 @@ namespace PowerPlannerUWPLibrary.Extensions
             }
         }
 
-        private void clearReminders(Guid localAccountId, CancellationToken token)
+        private void ClearReminders(Guid localAccountId, CancellationToken token)
         {
-            foreach (var n in toastNotifier.GetScheduledToastNotifications().Where(i => i.Id.Equals(getId(localAccountId))).ToArray())
+            foreach (var n in ToastNotifier.GetScheduledToastNotifications().Where(i => i.Id.Equals(GetId(localAccountId))).ToArray())
             {
                 token.ThrowIfCancellationRequested();
 
-                toastNotifier.RemoveFromSchedule(n);
+                ToastNotifier.RemoveFromSchedule(n);
             }
         }
 
-        private static string getId(Guid localAccountId)
+        private static string GetId(Guid localAccountId)
         {
             return localAccountId.GetHashCode().ToString();
         }
 
-        private static string getId(AccountDataItem account)
+        private static string GetId(AccountDataItem account)
         {
-            return getId(account.LocalAccountId);
+            return GetId(account.LocalAccountId);
         }
 
-        private async Task resetReminders(AccountDataItem account, AccountDataStore data, CancellationToken token)
+        private async Task ResetReminders(AccountDataItem account, CancellationToken token)
         {
             if (account == null)
                 return;
 
-            clearReminders(account.LocalAccountId, token);
+            ClearReminders(account.LocalAccountId, token);
 
             token.ThrowIfCancellationRequested();
 
@@ -162,11 +162,9 @@ namespace PowerPlannerUWPLibrary.Extensions
                 {
                     token.ThrowIfCancellationRequested();
 
-                    List<BaseViewItemHomeworkExam> group;
-
                     var hDate = h.Date.Date;
 
-                    if (!groupedByDay.TryGetValue(hDate, out group))
+                    if (!groupedByDay.TryGetValue(hDate, out List<BaseViewItemHomeworkExam> group))
                     {
                         group = new List<BaseViewItemHomeworkExam>();
                         groupedByDay[hDate] = group;
@@ -182,9 +180,9 @@ namespace PowerPlannerUWPLibrary.Extensions
                     DateTime dueOn = pair.Key;
                     List<BaseViewItemHomeworkExam> items = pair.Value;
 
-                    DateTime reminderTime = getDayBeforeReminderTime(dueOn.AddDays(-1), account, allSchedules);
+                    DateTime reminderTime = GetDayBeforeReminderTime(dueOn.AddDays(-1), account, allSchedules);
 
-                    if (!isTimeOkay(reminderTime))
+                    if (!IsTimeOkay(reminderTime))
                         continue;
 
 
@@ -194,11 +192,13 @@ namespace PowerPlannerUWPLibrary.Extensions
 
                     if (homeworks.Length > 0)
                     {
-                        XmlDocument xml = generateToastReminder(
+                        XmlDocument xml = GenerateToastReminder(
                             homeworks.Length == 1 ? "You have 1 item due tomorrow" : "You have " + homeworks.Length + " items due tomorrow",
-                            getItemLineText(homeworks[0]),
-                            homeworks.Length >= 2 ? getItemLineText(homeworks[1]) : null,
+                            GetItemLineText(homeworks[0]),
+                            homeworks.Length >= 2 ? GetItemLineText(homeworks[1]) : null,
+#pragma warning disable 0612
                             new QueryStringHelper()
+#pragma warning restore 0612
                             .SetLocalAccountId(account.LocalAccountId)
                             .SetAction("DayBeforeHomeworkReminder")
                             .ToString()
@@ -211,22 +211,24 @@ namespace PowerPlannerUWPLibrary.Extensions
                             remoteId = $"PP_DayBeforeHomeworks_{account.AccountId}_{hashedItems}";
                         }
 
-                        schedule(
-                            generateScheduledToastNotification(
+                        Schedule(
+                            GenerateScheduledToastNotification(
                                 xml,
                                 reminderTime,
-                                getId(account), //id's don't need to be unique
+                                GetId(account), //id's don't need to be unique
                                 remoteId)
                             );
                     }
 
                     if (exams.Length > 0)
                     {
-                        XmlDocument xml = generateToastReminder(
+                        XmlDocument xml = GenerateToastReminder(
                             exams.Length == 1 ? "You have 1 event tomorrow" : "You have " + exams.Length + " events tomorrow",
-                            getItemLineText(exams[0]),
-                            exams.Length >= 2 ? getItemLineText(exams[1]) : null,
+                            GetItemLineText(exams[0]),
+                            exams.Length >= 2 ? GetItemLineText(exams[1]) : null,
+#pragma warning disable 0612
                             new QueryStringHelper()
+#pragma warning restore 0612
                             .SetLocalAccountId(account.LocalAccountId)
                             .SetAction("DayBeforeExamReminder")
                             .ToString()
@@ -239,11 +241,11 @@ namespace PowerPlannerUWPLibrary.Extensions
                             remoteId = $"PP_DayBeforeExams_{account.AccountId}_{hashedItems}";
                         }
 
-                        schedule(
-                            generateScheduledToastNotification(
+                        Schedule(
+                            GenerateScheduledToastNotification(
                             xml,
                             reminderTime,
-                            getId(account),
+                            GetId(account),
                             remoteId));
                     }
                 }
@@ -256,12 +258,12 @@ namespace PowerPlannerUWPLibrary.Extensions
                     token.ThrowIfCancellationRequested();
                     bool hasClassTime = false;
 
-                    DateTime reminderTime = getDayOfReminderTime(h, account, ref hasClassTime);
+                    DateTime reminderTime = GetDayOfReminderTime(h, ref hasClassTime);
 
-                    if (!isTimeOkay(reminderTime))
+                    if (!IsTimeOkay(reminderTime))
                         continue;
 
-                    string subtitle = getClassName(h) + " - ";
+                    string subtitle = GetClassName(h) + " - ";
 
                     if (h is BaseViewItemHomework)
                         subtitle += "due ";
@@ -276,7 +278,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                         subtitle += "today";
                     }
 
-                    XmlDocument xml = generateToastReminder(
+                    XmlDocument xml = GenerateToastReminder(
                         TrimString(h.Name, 200),
                         subtitle,
                         TrimString(h.Details, 200),
@@ -289,17 +291,17 @@ namespace PowerPlannerUWPLibrary.Extensions
                         remoteId = $"PP_DayOf_{account.AccountId}_{h.Identifier}";
                     }
 
-                    schedule(
-                        generateScheduledToastNotification(
+                    Schedule(
+                        GenerateScheduledToastNotification(
                             xml,
                             reminderTime,
-                            getId(account),
+                            GetId(account),
                             remoteId));
                 }
             }
         }
 
-        private static DateTime getDayOfReminderTime(BaseViewItemHomeworkExam h, AccountDataItem account, ref bool hasClassTime)
+        private static DateTime GetDayOfReminderTime(BaseViewItemHomeworkExam h, ref bool hasClassTime)
         {
             ViewItemClass c = h.GetClassOrNull();
 
@@ -309,12 +311,12 @@ namespace PowerPlannerUWPLibrary.Extensions
             return h.GetDayOfReminderTime(out hasClassTime);
         }
 
-        private static string getItemLineText(BaseViewItemHomeworkExam item)
+        private static string GetItemLineText(BaseViewItemHomeworkExam item)
         {
-            return getClassName(item) + " - " + TrimString(item.Name, 150);
+            return GetClassName(item) + " - " + TrimString(item.Name, 150);
         }
 
-        private static string getClassName(BaseViewItemHomeworkExam item)
+        private static string GetClassName(BaseViewItemHomeworkExam item)
         {
             if (item == null)
                 return "";
@@ -327,12 +329,12 @@ namespace PowerPlannerUWPLibrary.Extensions
             return "";
         }
 
-        private static void schedule(ScheduledToastNotification notification)
+        private static void Schedule(ScheduledToastNotification notification)
         {
-            toastNotifier.AddToSchedule(notification);
+            ToastNotifier.AddToSchedule(notification);
         }
 
-        private static ScheduledToastNotification generateScheduledToastNotification(XmlDocument xml, DateTime startTime, string id, string remoteId)
+        private static ScheduledToastNotification GenerateScheduledToastNotification(XmlDocument xml, DateTime startTime, string id, string remoteId)
         {
             var notif = new ScheduledToastNotification(xml, startTime)
             {
@@ -348,7 +350,7 @@ namespace PowerPlannerUWPLibrary.Extensions
             return notif;
         }
 
-        private static XmlDocument generateToastReminder(string title, string item1, string item2, string launch)
+        private static XmlDocument GenerateToastReminder(string title, string item1, string item2, string launch)
         {
             ToastBindingGeneric binding = new ToastBindingGeneric()
             {
@@ -429,12 +431,12 @@ namespace PowerPlannerUWPLibrary.Extensions
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        private static bool isTimeOkay(DateTime time)
+        private static bool IsTimeOkay(DateTime time)
         {
             return time >= DateTime.Now.AddSeconds(10);
         }
 
-        private static DateTime getDayBeforeReminderTime(DateTime date, AccountDataItem account, IEnumerable<ViewItemSchedule> allSchedules)
+        private static DateTime GetDayBeforeReminderTime(DateTime date, AccountDataItem account, IEnumerable<ViewItemSchedule> allSchedules)
         {
             date = DateTime.SpecifyKind(date.Date, DateTimeKind.Local);
 
