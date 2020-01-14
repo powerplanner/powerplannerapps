@@ -21,33 +21,36 @@ namespace UpgradeFromSilverlight.Model
         /// </summary>
         public event EventHandler OnSchedulesChanged;
 
-        internal void triggerOnSchedulesChanged()
+        internal void TriggerOnSchedulesChanged()
         {
-            if (OnSchedulesChanged != null)
-                OnSchedulesChanged(this, null);
+            OnSchedulesChanged?.Invoke(this, null);
         }
 
         public AccountWP()
         {
-            initialize();
+            Initialize();
         }
 
         /// <summary>
         /// Empty constructor for testing
         /// </summary>
         /// <param name="test"></param>
+#pragma warning disable IDE0060 // Remove unused parameter
         public AccountWP(bool test)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
 
         }
 
         [OnDeserialized]
+#pragma warning disable IDE1006 // Naming Styles
         public void _onDeserialized(StreamingContext context)
+#pragma warning restore IDE1006 // Naming Styles
         {
-            initialize();
+            Initialize();
         }
 
-        private void initialize()
+        private void Initialize()
         {
             _changedItems = new Dictionary<Guid, BaseItem>();
         }
@@ -74,7 +77,9 @@ namespace UpgradeFromSilverlight.Model
             {
                 AccountId = AccountId,
                 Username = Username,
+#pragma warning disable CS0618 // Type or member is obsolete
                 Password = Password
+#pragma warning restore CS0618 // Type or member is obsolete
             };
         }
         
@@ -184,7 +189,7 @@ namespace UpgradeFromSilverlight.Model
             get
             {
                 if (_partialChanges == null)
-                    loadPartialChanges();
+                    LoadPartialChanges();
 
                 return _partialChanges;
             }
@@ -192,7 +197,7 @@ namespace UpgradeFromSilverlight.Model
             set { _partialChanges = value; }
         }
 
-        private void loadPartialChanges()
+        private void LoadPartialChanges()
         {
             bool upgradedFromOld = false;
 
@@ -253,15 +258,17 @@ namespace UpgradeFromSilverlight.Model
         /// <summary>
         /// Initialized with initialize()
         /// </summary>
+#pragma warning disable IDE0052 // Remove unread private members
         private Dictionary<Guid, BaseItem> _changedItems;
+#pragma warning restore IDE0052 // Remove unread private members
 
 
 
         #region School
 
-        
 
-        
+
+
 
 
         #region DisplayLists
