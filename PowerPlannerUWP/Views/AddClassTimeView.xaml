@@ -40,20 +40,44 @@
             <StackPanel Margin="12">
                 
                 <!-- Start Time -->
-                <controls:TimePickerControl
-                    x:Uid="EditingClassScheduleItemView_TimePickerStart.Header"
-                    Margin="6"
-                    HorizontalAlignment="Stretch"
-                    controls:TimePickerControl.Header="From"
-                    controls:TimePickerControl.IsEndTime="False"/>
+                <controls:AbTestControl TestName="NewTimePicker">
+                    <controls:AbTestControl.EnabledContent>
+                        <controls:TimePickerControl
+                            x:Uid="EditingClassScheduleItemView_TimePickerStart"
+                            Margin="6"
+                            HorizontalAlignment="Stretch"
+                            controls:TimePickerControl.Header="From"
+                            controls:TimePickerControl.IsEndTime="False"/>
+                    </controls:AbTestControl.EnabledContent>
+                    <controls:AbTestControl.DisabledContent>
+                        <TimePicker
+                            x:Uid="EditingClassScheduleItemView_TimePickerStart"
+                            Header="From"
+                            HorizontalAlignment="Stretch"
+                            Time="{Binding StartTime, Mode=TwoWay}"/>
+                    </controls:AbTestControl.DisabledContent>
+                </controls:AbTestControl>
+
 
                 <!-- End Time -->
-                <controls:TimePickerControl
-                    x:Uid="EditingClassScheduleItemView_TimePickerEnd.Header"
-                    Margin="6"
-                    HorizontalAlignment="Stretch"
-                    controls:TimePickerControl.Header="To"
-                    controls:TimePickerControl.IsEndTime="True"/>
+                <controls:AbTestControl TestName="NewTimePicker">
+                    <controls:AbTestControl.EnabledContent>
+                        <controls:TimePickerControl
+                            x:Uid="EditingClassScheduleItemView_TimePickerEnd"
+                            Margin="6"
+                            HorizontalAlignment="Stretch"
+                            controls:TimePickerControl.Header="To"
+                            controls:TimePickerControl.IsEndTime="True"/>
+                    </controls:AbTestControl.EnabledContent>
+                    <controls:AbTestControl.DisabledContent>
+                        <TimePicker
+                            x:Uid="EditingClassScheduleItemView_TimePickerEnd"
+                            Header="To"
+                            HorizontalAlignment="Stretch"
+                            Margin="0,24,0,0"
+                            Time="{Binding EndTime, Mode=TwoWay}"/>
+                    </controls:AbTestControl.DisabledContent>
+                </controls:AbTestControl>
 
                 <TextBox
                     x:Uid="EditingClassScheduleItemView_TextBoxRoom"
