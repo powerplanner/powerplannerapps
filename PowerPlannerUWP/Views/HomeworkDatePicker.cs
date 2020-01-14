@@ -28,7 +28,12 @@ namespace PowerPlannerUWP.Views
 
         private class ButtonCommandHandler : ICommand
         {
+            /// <summary>
+            /// Not used, only here because required for interface
+            /// </summary>
+#pragma warning disable 0067
             public event EventHandler CanExecuteChanged;
+#pragma warning restore 0067
 
             public bool CanExecute(object parameter)
             {

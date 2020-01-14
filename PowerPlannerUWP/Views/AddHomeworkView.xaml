@@ -18,7 +18,7 @@
                 x:Name="ButtonSave"
                 Icon="Save"
                 Label="Save"
-                Click="buttonSave_Click"/>
+                Click="ButtonSave_Click"/>
 
     </views:PopupViewHostGeneric.PrimaryCommands>
 
@@ -30,11 +30,11 @@
                     x:Name="tbName"
                     Grid.Row="1"
                     Header="Name"
-                    Loaded="tbName_Loaded"
+                    Loaded="TbName_Loaded"
                     InputScope="Default"
                     IsSpellCheckEnabled="True"
                     IsTextPredictionEnabled="True"
-                    KeyUp="tbName_KeyUp"
+                    KeyUp="TbName_KeyUp"
                     Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Margin="0,0,0,6"/>
 
@@ -46,7 +46,7 @@
                         Header="Date"
                         Margin="6"
                         HorizontalAlignment="Stretch"
-                        DateChanged="datePickerDate_DateChanged"
+                        DateChanged="DatePickerDate_DateChanged"
                         Visibility="{Binding IsDatePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                     <ComboBox

@@ -98,7 +98,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="PowerPlannerUWP_StoreKey.pfx" />
     <None Include="Service References\Application Insights\ConnectedService.json" />
     <PRIResource Include="Strings\de\Resources.resw">
       <SubType>Designer</SubType>
