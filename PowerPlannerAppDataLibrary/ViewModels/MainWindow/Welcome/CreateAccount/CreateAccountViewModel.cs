@@ -229,7 +229,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 try
                 {
                     // Trigger a sync so all their content uploads
-                    await Sync.SyncAccountAsync(DefaultAccountToUpgrade);
+                    DateTime start = DateTime.UtcNow;
+
+                    var syncResult = await Sync.SyncAccountAsync(DefaultAccountToUpgrade);
+
+                    bool retried = false;
+                    if (syncResult.Error != null)
+                    {
+                        // Try one more time
+                        retried = true;
+                        syncResult = await Sync.SyncAccountAsync(DefaultAccountToUpgrade);
+                    }
+
+                    var duration = DateTime.UtcNow - start;
+
+                    Dictionary<string, string> properties = new Dictionary<string, string>()
+                    {
+                        { "Duration", ((int)Math.Ceiling(duration.TotalSeconds)).ToString() }
+                    };
+
+                    if (retried)
+                    {
+                        properties["Retried"] = "true";
+                    }
+
+                    if (syncResult.Error != null)
+                    {
+                        properties["Error"] = syncResult.Error;
+                    }
+
+                    TelemetryExtension.Current?.TrackEvent("InitialSyncAfterCreatingAccount", properties);
                 }
                 catch (Exception ex)
                 {
