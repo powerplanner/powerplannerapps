@@ -207,7 +207,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
                 await AccountsManager.Save(DefaultAccountToUpgrade);
 
-                TelemetryExtension.Current?.TrackEvent("CreatedAccountFromDefault");
+                TelemetryExtension.Current?.TrackEvent("CreatedAccountFromDefault", new Dictionary<string, string>()
+                {
+                    { "NewOnlineAccountId", accountId.ToString() }
+                });
+
+                // Make sure to update user info for telemetry
+                TelemetryExtension.Current?.UpdateCurrentUser(DefaultAccountToUpgrade);
 
                 // Transfer the settings
                 try
@@ -220,8 +226,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 
-                // Make sure to update user info for telemetry
-                TelemetryExtension.Current?.UpdateCurrentUser(DefaultAccountToUpgrade);
+                try
+                {
+                    // Trigger a sync so all their content uploads
+                    await Sync.SyncAccountAsync(DefaultAccountToUpgrade);
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
 
                 // Remove this popup, and show a new one saying success!
                 // We have to show first before removing otherwise iOS never shows it
@@ -232,9 +245,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                     Email = email
                 });
                 base.RemoveViewModel();
-
-                // Trigger a sync (without waiting) so all their content uploads
-                Sync.StartSyncAccount(DefaultAccountToUpgrade);
             }
             else
             {
