@@ -42,6 +42,9 @@
   <data name="Settings_AboutPage_Header.Text" xml:space="preserve">
     <value>SOBRE</value>
   </data>
+  <data name="Settings_AboutPage_PrivacyHeader.Text" xml:space="preserve">
+    <value>política de privacidade</value>
+  </data>
   <data name="Settings_AboutPage_VersionHeader.Text" xml:space="preserve">
     <value>versão</value>
   </data>
