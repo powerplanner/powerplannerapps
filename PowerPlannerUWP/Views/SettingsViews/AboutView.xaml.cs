@@ -36,7 +36,7 @@ namespace PowerPlannerUWP.Views.SettingsViews
             tbVersion.Text = Variables.VERSION.ToString();
         }
 
-        private void buttonEmailDeveloper_Click(object sender, RoutedEventArgs e)
+        private void ButtonEmailDeveloper_Click(object sender, RoutedEventArgs e)
         {
             EmailDeveloper(ViewModel);
         }
@@ -53,6 +53,19 @@ namespace PowerPlannerUWP.Views.SettingsViews
                 }
 
                 await Launcher.LaunchUriAsync(new Uri("mailto:?to=support@powerplanner.net&subject=Power Planner for Win 10 - Contact Developer - " + Variables.VERSION + accountInfo));
+            }
+
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        private async void ButtonPrivacy_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await Launcher.LaunchUriAsync(new Uri("https://powerplanner.net/privacy"));
             }
 
             catch (Exception ex)
