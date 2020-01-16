@@ -168,7 +168,7 @@
       <Version>2.1.32-alpha</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.6.292</Version>
+      <Version>1.5.231</Version>
     </PackageReference>
     <PackageReference Include="StorageEverywhereIncludingiOS">
       <Version>1.0.1</Version>
