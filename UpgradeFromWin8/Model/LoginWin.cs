@@ -116,7 +116,9 @@ namespace UpgradeFromWin8.Model
             return new LoginCredentials()
             {
                 Username = Username,
+#pragma warning disable CS0618 // Type or member is obsolete
                 Password = Password,
+#pragma warning restore CS0618 // Type or member is obsolete
                 AccountId = AccountId
             };
         }

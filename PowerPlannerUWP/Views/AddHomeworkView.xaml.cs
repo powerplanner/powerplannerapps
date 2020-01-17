@@ -116,7 +116,7 @@ namespace PowerPlannerUWP.Views
             datePickerDate.Date = ViewModel.Date;
         }
 
-        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             Save();
         }
@@ -126,18 +126,8 @@ namespace PowerPlannerUWP.Views
             ViewModel.Save();
         }
 
-        private void buttonCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Cancel();
-        }
-
-        private void Cancel()
-        {
-            ViewModel.RemoveViewModel();
-        }
-
         private bool _needsFocus = true;
-        private void tbName_Loaded(object sender, RoutedEventArgs e)
+        private void TbName_Loaded(object sender, RoutedEventArgs e)
         {
             if (_needsFocus == false)
                 return;
@@ -150,7 +140,7 @@ namespace PowerPlannerUWP.Views
             tbName.Focus(FocusState.Programmatic);
         }
 
-        private void datePickerDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        private void DatePickerDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
             if (datePickerDate.Date != null)
             {
@@ -158,7 +148,7 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void tbName_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void TbName_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {

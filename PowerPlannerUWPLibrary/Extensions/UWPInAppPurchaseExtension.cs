@@ -20,6 +20,7 @@ namespace PowerPlannerUWPLibrary.Extensions
             return Task.FromResult(true);
 #endif
 
+#pragma warning disable 0162 // Ignore unreachable code
             try
             {
                 var licenseInformation = CurrentApp.LicenseInformation;
@@ -45,6 +46,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
                 return Task.FromResult(false);
             }
+#pragma warning restore 0162
         }
 
         public override async Task<bool> PromptPurchase()

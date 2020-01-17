@@ -74,7 +74,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
                 LocalAccountId = account.LocalAccountId
             }.SerializeToString();
 
-            SecondaryTile tile = new SecondaryTile(GenerateScheduleTileId(account.LocalAccountId), "Schedule", args, new Uri("ms-appx:///Assets/Square150x150Logo.png"), TileSize.Default);
+            SecondaryTile tile = new SecondaryTile(GenerateScheduleTileId(account.LocalAccountId), "Schedule", args, new Uri("ms-appx:///Assets/Square150x150Logo.png"), Windows.UI.StartScreen.TileSize.Default);
             tile.VisualElements.Square71x71Logo = new Uri("ms-appx:///Assets/Square71x71Logo.png");
             tile.VisualElements.Wide310x150Logo = new Uri("ms-appx:///Assets/Wide310x150Logo.png");
             tile.VisualElements.Square310x310Logo = new Uri("ms-appx:///Assets/Square310x310Logo.png");
@@ -88,7 +88,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             if (!await tile.RequestCreateAsync())
                 return;
 
-            await UpdateScheduleTile(tile.TileId, account, data);
+            await UpdateScheduleTile(tile.TileId, account);
         }
 
         private static string GenerateScheduleTileId(Guid localAccountId)
@@ -104,7 +104,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
         {
             try
             {
-                await UpdateScheduleTile(GenerateScheduleTileId(account.LocalAccountId), account, data);
+                await UpdateScheduleTile(GenerateScheduleTileId(account.LocalAccountId), account);
             }
 
             catch (Exception ex)
@@ -113,7 +113,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             }
         }
 
-        private static async Task UpdateScheduleTile(string tileId, AccountDataItem account, AccountDataStore data)
+        private static async Task UpdateScheduleTile(string tileId, AccountDataItem account)
         {
             try
             {
@@ -351,7 +351,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
 
         private static XmlDocument GenerateHolidayTileNotification(IEnumerable<ViewItemHoliday> holidays, string displayName, DateTime dateOfHoliday)
         {
-            var genericContent = GenerateGenericHolidayContent(holidays, dateOfHoliday);
+            var genericContent = GenerateGenericHolidayContent(holidays);
 
             TileContent content = new TileContent()
             {
@@ -422,7 +422,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             };
         }
 
-        private static TileBindingContentAdaptive GenerateGenericHolidayContent(IEnumerable<ViewItemHoliday> holidays, DateTime date)
+        private static TileBindingContentAdaptive GenerateGenericHolidayContent(IEnumerable<ViewItemHoliday> holidays)
         {
             var answer = new TileBindingContentAdaptive();
 

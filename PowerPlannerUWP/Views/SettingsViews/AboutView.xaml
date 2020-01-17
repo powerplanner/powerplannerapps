@@ -61,6 +61,17 @@
                     Style="{ThemeResource BodyTextBlockStyle}"/>
 
                 <TextBlock
+                    x:Uid="Settings_AboutPage_PrivacyHeader"
+                    Text="privacy policy"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    Margin="0,20,0,0"/>
+                <Button
+                    Style="{StaticResource SubitemButtonStyle}"
+                    Content="https://powerplanner.net/privacy"
+                    x:Name="buttonPrivacy"
+                    Click="ButtonPrivacy_Click"/>
+
+                <TextBlock
                     x:Uid="Settings_AboutPage_ContactHeader"
                     Text="contact"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
@@ -69,7 +80,7 @@
                     Style="{StaticResource SubitemButtonStyle}"
                     Content="support@powerplanner.net"
                     x:Name="buttonEmailDeveloper"
-                    Click="buttonEmailDeveloper_Click"/>
+                    Click="ButtonEmailDeveloper_Click"/>
 
 
             </StackPanel>

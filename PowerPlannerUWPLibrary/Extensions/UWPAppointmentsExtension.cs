@@ -236,14 +236,13 @@ namespace PowerPlannerUWPLibrary.Extensions
             }
         }
 
-        private Dictionary<Guid, string> _megaItemLocalIdsToSave = new Dictionary<Guid, string>();
-        private Dictionary<Guid, string> _scheduleLocalIdsToSave = new Dictionary<Guid, string>();
+        private readonly Dictionary<Guid, string> _megaItemLocalIdsToSave = new Dictionary<Guid, string>();
+        private readonly Dictionary<Guid, string> _scheduleLocalIdsToSave = new Dictionary<Guid, string>();
 
         private async Task AddNewTask(Dictionary<Guid, ViewItemClass> classes, DataItemMegaItem task, ViewItemClass noClassClass)
         {
-            ViewItemClass c;
 
-            if (classes.TryGetValue(task.UpperIdentifier, out c))
+            if (classes.TryGetValue(task.UpperIdentifier, out ViewItemClass c))
             {
                 // Nothing, obtained class
             }
@@ -296,9 +295,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
         private async Task AddNewSchedule(ViewItemSemester semester, Dictionary<Guid, ViewItemClass> classes, ViewItemSchedule schedule)
         {
-            ViewItemClass c;
-
-            if (classes.TryGetValue(schedule.Class.Identifier, out c))
+            if (classes.TryGetValue(schedule.Class.Identifier, out ViewItemClass c))
             {
                 await AddNewSchedule(semester, c, schedule);
             }
@@ -560,8 +557,6 @@ namespace PowerPlannerUWPLibrary.Extensions
 
                             else
                             {
-                                DataItemClass c;
-
                                 // If we found the class, we can update it
                                 if (edited.DataItem.AreTimesValid()
                                     && PopulateAppointment(existing, edited, edited.Class, allData.Semester))
@@ -723,7 +718,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 _activeHelpers.Remove(this);
 
                 // We need to start next
-                var dontWait = StartNextHelper();
+                _ = StartNextHelper();
             }
         }
 
@@ -905,14 +900,12 @@ namespace PowerPlannerUWPLibrary.Extensions
 
             var viewItemTask = task.CreateViewItemTaskOrEvent(classes, noClassClass);
 
-            DateTime startTime;
-            if (viewItemTask.TryGetDueDateWithTime(out startTime))
+            if (viewItemTask.TryGetDueDateWithTime(out DateTime startTime))
             {
                 appointment.StartTime = startTime;
                 appointment.AllDay = false;
 
-                DateTime endTime;
-                if (viewItemTask.TryGetEndDateWithTime(out endTime) && endTime > startTime)
+                if (viewItemTask.TryGetEndDateWithTime(out DateTime endTime) && endTime > startTime)
                 {
                     appointment.Duration = endTime - startTime;
                     appointment.BusyStatus = AppointmentBusyStatus.Busy;
@@ -1069,9 +1062,9 @@ namespace PowerPlannerUWPLibrary.Extensions
         }
 
         private static TaskCompletionSource<bool> _taskForAllCompleted;
-        private static List<AppointmentsHelper> _activeHelpers = new List<AppointmentsHelper>();
+        private static readonly List<AppointmentsHelper> _activeHelpers = new List<AppointmentsHelper>();
 
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         public static void ResetAll(AccountDataItem account, AccountDataStore dataStore)
         {
@@ -1084,7 +1077,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 if (account.IsAppointmentsUpToDate)
                 {
                     account.IsAppointmentsUpToDate = false;
-                    var dontWaitSaveAccount = AccountsManager.Save(account);
+                    _ = AccountsManager.Save(account);
                 }
 
                 // If there's a reset in the queue, we're all good
@@ -1115,7 +1108,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 }
 
                 // Otherwise, we need to trigger this one to start since it's the only one in the queue
-                var dontWaitOnStartNext = StartNextHelper();
+                _ = StartNextHelper();
             }
         }
 
@@ -1239,7 +1232,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 // If this is the only one in the queue, start it
                 if (_activeHelpers.Count == 1)
                 {
-                    var dontWaitOnStart = StartNextHelper();
+                    _ = StartNextHelper();
                 }
             }
 
@@ -1281,11 +1274,6 @@ namespace PowerPlannerUWPLibrary.Extensions
             return localAccountId + ":" + type;
         }
 
-        private string GenerateCalendarRemoteId(string type)
-        {
-            return GenerateCalendarRemoteId(Account.LocalAccountId, type);
-        }
-
         private static string GenerateTasksCalendarRemoteId(Guid localAccountId)
         {
             return GenerateCalendarRemoteId(localAccountId, "Tasks");
@@ -1307,10 +1295,6 @@ namespace PowerPlannerUWPLibrary.Extensions
         }
 
         private bool _isCanceled;
-
-        private bool _isStarted;
-
-        private object _instanceLock = new object();
 
         private void Cancel()
         {
@@ -1426,16 +1410,6 @@ namespace PowerPlannerUWPLibrary.Extensions
                 }
                 return false;
             }
-        }
-
-        private static async Task<AppointmentCalendar> GetOrCreateCalendar(AppointmentStore store, IEnumerable<AppointmentCalendar> calendars, string displayName)
-        {
-            var matching = calendars.FirstOrDefault(i => i.DisplayName.Equals(displayName));
-
-            if (matching != null)
-                return matching;
-
-            return await store.CreateAppointmentCalendarAsync(displayName);
         }
     }
 }

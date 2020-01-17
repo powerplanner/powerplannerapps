@@ -207,7 +207,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
                 await AccountsManager.Save(DefaultAccountToUpgrade);
 
-                TelemetryExtension.Current?.TrackEvent("CreatedAccountFromDefault");
+                TelemetryExtension.Current?.TrackEvent("CreatedAccountFromDefault", new Dictionary<string, string>()
+                {
+                    { "NewOnlineAccountId", accountId.ToString() }
+                });
+
+                // Make sure to update user info for telemetry
+                TelemetryExtension.Current?.UpdateCurrentUser(DefaultAccountToUpgrade);
 
                 // Transfer the settings
                 try
@@ -220,8 +226,44 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 
-                // Make sure to update user info for telemetry
-                TelemetryExtension.Current?.UpdateCurrentUser(DefaultAccountToUpgrade);
+                try
+                {
+                    // Trigger a sync so all their content uploads
+                    DateTime start = DateTime.UtcNow;
+
+                    var syncResult = await Sync.SyncAccountAsync(DefaultAccountToUpgrade);
+
+                    bool retried = false;
+                    if (syncResult.Error != null)
+                    {
+                        // Try one more time
+                        retried = true;
+                        syncResult = await Sync.SyncAccountAsync(DefaultAccountToUpgrade);
+                    }
+
+                    var duration = DateTime.UtcNow - start;
+
+                    Dictionary<string, string> properties = new Dictionary<string, string>()
+                    {
+                        { "Duration", ((int)Math.Ceiling(duration.TotalSeconds)).ToString() }
+                    };
+
+                    if (retried)
+                    {
+                        properties["Retried"] = "true";
+                    }
+
+                    if (syncResult.Error != null)
+                    {
+                        properties["Error"] = syncResult.Error;
+                    }
+
+                    TelemetryExtension.Current?.TrackEvent("InitialSyncAfterCreatingAccount", properties);
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
 
                 // Remove this popup, and show a new one saying success!
                 // We have to show first before removing otherwise iOS never shows it
@@ -232,9 +274,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                     Email = email
                 });
                 base.RemoveViewModel();
-
-                // Trigger a sync (without waiting) so all their content uploads
-                Sync.StartSyncAccount(DefaultAccountToUpgrade);
             }
             else
             {

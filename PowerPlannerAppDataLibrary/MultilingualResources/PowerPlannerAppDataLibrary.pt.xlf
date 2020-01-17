@@ -46,6 +46,10 @@
           <source>ABOUT</source>
           <target state="final">SOBRE</target>
         </trans-unit>
+        <trans-unit id="Settings_AboutPage_PrivacyHeader.Text" translate="yes" xml:space="preserve">
+          <source>privacy policy</source>
+          <target state="final" state-qualifier="tm-suggestion">política de privacidade</target>
+        </trans-unit>
         <trans-unit id="Settings_AboutPage_VersionHeader.Text" translate="yes" xml:space="preserve">
           <source>version</source>
           <target state="final">versão</target>

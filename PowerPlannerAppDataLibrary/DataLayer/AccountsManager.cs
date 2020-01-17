@@ -28,9 +28,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     if (_account == null)
                         return null;
 
-                    AccountDataItem a;
-
-                    if (_account.TryGetTarget(out a))
+                    if (_account.TryGetTarget(out AccountDataItem a))
                         return a;
 
                     return null;
@@ -43,11 +41,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     else
                         _account = new WeakReference<AccountDataItem>(value);
                 }
-            }
-
-            public CachedAccountEntry(Guid localAccountId)
-            {
-                //Semaphore = new Semaphore(0, 1, "AccountDataItem-" + localAccountId);
             }
         }
 
@@ -96,28 +89,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public static event EventHandler<Guid> OnAccountDeleted;
 
-        /// <summary>
-        /// This event currently isn't supported
-        /// </summary>
-        public static event EventHandler<AccountDataItem> OnAccountAdded;
-
         private static readonly Dictionary<Guid, CachedAccountEntry> _cachedAccounts = new Dictionary<Guid, CachedAccountEntry>();
 
         internal static void ClearCachedAccounts()
         {
             _cachedAccounts.Clear();
-        }
-
-        private static CachedAccountEntry GetCachedEntry(Guid localAccountId)
-        {
-            lock (_cachedAccounts)
-            {
-                CachedAccountEntry entry;
-
-                _cachedAccounts.TryGetValue(localAccountId, out entry);
-
-                return entry;
-            }
         }
 
         /// <summary>
@@ -145,7 +121,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 if (!_cachedAccounts.TryGetValue(localAccountId, out entry))
                 {
-                    entry = new CachedAccountEntry(localAccountId);
+                    entry = new CachedAccountEntry();
                     _cachedAccounts[localAccountId] = entry;
                 }
 
@@ -223,9 +199,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             foreach (IFolder accountFolder in folders)
             {
-                Guid localAccountId;
-
-                if (Guid.TryParse(accountFolder.Name, out localAccountId))
+                if (Guid.TryParse(accountFolder.Name, out Guid localAccountId))
                 {
                     AccountDataItem account = await AccountsManager.GetOrLoad(localAccountId);
 
@@ -353,12 +327,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (account.AccountDataVersion < AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION)
             {
                 account.AccountDataVersion = AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION;
-                var dontWait = Save(account); // Don't wait, otherwise we would get in a dead lock
+                _ = Save(account); // Don't wait, otherwise we would get in a dead lock
             }
 
             if (changedSettings != null)
             {
-                var dontWait = SyncLayer.Sync.SyncSettings(account, changedSettings.Value);
+                _ = SyncLayer.Sync.SyncSettings(account, changedSettings.Value);
             }
 
             return account;
@@ -443,8 +417,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
             });
 
-            if (OnAccountDeleted != null)
-                OnAccountDeleted(null, localAccountId);
+            OnAccountDeleted?.Invoke(null, localAccountId);
 
             // Clear reminders
             try
@@ -535,7 +508,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             // Place it in the cache
             lock (_cachedAccounts)
             {
-                _cachedAccounts[account.LocalAccountId] = new CachedAccountEntry(account.LocalAccountId)
+                _cachedAccounts[account.LocalAccountId] = new CachedAccountEntry()
                 {
                     Account = account
                 };
