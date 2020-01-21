@@ -176,7 +176,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void TogglePastCompletedItems()
         {
-            if (Type == ItemType.Homework)
+            if (Type == TaskOrEventType.Task)
             {
                 if (ClassViewModel.ViewItemsGroupClass.IsPastCompletedHomeworkDisplayed)
                 {
