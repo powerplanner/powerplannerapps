@@ -13,8 +13,8 @@ using Android.Widget;
 using InterfacesDroid.Views;
 using Android.Content.Res;
 using InterfacesDroid.Themes;
-using Android.Support.V4.View;
-using Android.Support.V4.Content;
+using AndroidX.Core.View;
+using AndroidX.Core.Content;
 
 namespace PowerPlannerAndroid.Views.Controls
 {

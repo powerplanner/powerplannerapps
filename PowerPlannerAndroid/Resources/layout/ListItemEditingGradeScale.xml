@@ -7,7 +7,7 @@
   android:layout_height="wrap_content"
   android:orientation="horizontal">
 
-  <android.support.design.widget.TextInputEditText
+  <com.google.android.material.textfield.TextInputEditText
     android:inputType="number|numberDecimal"
     android:layout_width="0dp"
     android:layout_weight="1"
@@ -17,7 +17,7 @@
     local:Binding="{Source=StartGrade, Target=Text, Mode=TwoWay, Converter=DoubleToStringConverter}"
     android:paddingRight="8dp"/>
   
-  <android.support.design.widget.TextInputEditText
+  <com.google.android.material.textfield.TextInputEditText
     android:inputType="number|numberDecimal"
     android:layout_width="0dp"
     android:layout_weight="1"

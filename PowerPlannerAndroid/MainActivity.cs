@@ -24,6 +24,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System.IO;
 using Android.Webkit;
+using AndroidX.Core.Content;
 
 namespace PowerPlannerAndroid
 {
@@ -73,7 +74,7 @@ namespace PowerPlannerAndroid
             {
                 this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
                 this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                this.Window.SetStatusBarColor(new Android.Graphics.Color(Android.Support.V4.Content.ContextCompat.GetColor(this, Resource.Color.primaryDark)));
+                this.Window.SetStatusBarColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.primaryDark)));
             }
 
             // Register the window

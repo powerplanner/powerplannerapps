@@ -24,10 +24,10 @@ using InterfacesDroid.Views;
 using InterfacesDroid.DataTemplates;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
 using System.ComponentModel;
 using BareMvvm.Core.App;
+using AndroidX.Core.Content;
+using AndroidX.Core.View;
 
 namespace PowerPlannerAndroid.Views
 {

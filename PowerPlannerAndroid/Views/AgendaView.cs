@@ -11,15 +11,14 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using InterfacesDroid.Views;
-using Android.Support.V7.Widget;
 using PowerPlannerAndroid.Adapters;
-using Android.Support.Design.Widget;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using InterfacesDroid.Decorations;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using InterfacesDroid.Themes;
 using PowerPlannerAndroid.Views.Controls;
+using AndroidX.RecyclerView.Widget;
 
 namespace PowerPlannerAndroid.Views
 {

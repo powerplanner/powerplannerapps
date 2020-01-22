@@ -7,7 +7,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
@@ -123,7 +122,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.StartTime = new TimeSpan(e.HourOfDay, e.Minute, 0);
         }
 
-        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

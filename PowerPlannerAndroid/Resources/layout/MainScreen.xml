@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
-    <android.support.v4.widget.DrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/MenuDrawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/Toolbar"
                 style="@style/ActionBar"/>
             
@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_above="@id/BottomNav"/>
-                <android.support.design.widget.BottomNavigationView
+                <com.google.android.material.bottomnavigation.BottomNavigationView
                     android:id="@+id/BottomNav"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
@@ -111,7 +111,7 @@
 
         </ScrollView>
 
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
     <InterfacesDroid.ViewModelPresenters.PopupsPresenter
         android:id="@+id/MainScreenPopupsPresenter"

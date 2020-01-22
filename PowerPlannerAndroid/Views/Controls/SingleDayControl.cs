@@ -13,7 +13,6 @@ using InterfacesDroid.Views;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using ToolsPortable;
-using Android.Support.V7.Widget;
 using PowerPlannerAndroid.Adapters;
 using PowerPlannerAppDataLibrary;
 using InterfacesDroid.Themes;
@@ -21,6 +20,7 @@ using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewLists;
+using AndroidX.RecyclerView.Widget;
 
 namespace PowerPlannerAndroid.Views.Controls
 {

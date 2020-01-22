@@ -12,7 +12,6 @@ using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.Views.Controls;
-using Android.Support.Design.Widget;
 using InterfacesDroid.Helpers;
 using Android.Graphics.Drawables;
 using Android.Graphics;
@@ -24,10 +23,10 @@ using Android.Content.Res;
 using Android.Graphics.Drawables.Shapes;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System.Collections.Specialized;
+using AndroidX.Core.Content;
+using AndroidX.Core.View;
 
 namespace PowerPlannerAndroid.Views
 {

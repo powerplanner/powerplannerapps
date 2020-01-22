@@ -23,7 +23,7 @@ namespace PowerPlannerAndroid.Views.SettingsViews.Grades
             SetMenu(Resource.Menu.configure_class_credits_menu);
         }
 
-        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

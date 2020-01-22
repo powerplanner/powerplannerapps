@@ -7,9 +7,9 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using InterfacesDroid.Adapters;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.ViewHosts;
@@ -53,7 +53,7 @@ namespace PowerPlannerAndroid.Views
             return Resource.Menu.classes_menu;
         }
 
-        public override void OnMenuItemClick(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

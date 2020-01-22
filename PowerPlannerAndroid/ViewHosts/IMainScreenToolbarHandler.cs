@@ -14,7 +14,7 @@ namespace PowerPlannerAndroid.ViewHosts
 {
     public interface IMainScreenToolbarHandler
     {
-        void OnMenuItemClick(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e);
+        void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e);
 
         void RequestUpdateMenu();
     }

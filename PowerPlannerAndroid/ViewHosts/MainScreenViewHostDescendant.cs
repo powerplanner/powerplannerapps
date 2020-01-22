@@ -62,7 +62,7 @@ namespace PowerPlannerAndroid.ViewHosts
             LocalizationHelper.LocalizeMenu(MainScreenView.Toolbar.Menu);
         }
 
-        public virtual void OnMenuItemClick(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public virtual void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             // Nothing
         }

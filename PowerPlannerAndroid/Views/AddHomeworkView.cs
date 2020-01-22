@@ -12,7 +12,6 @@ using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
 using InterfacesDroid.Adapters;
 using InterfacesDroid.Views;
-using Android.Support.V7.Widget;
 using PowerPlannerAndroid.Adapters;
 using PowerPlannerAppDataLibrary.ViewItems;
 using InterfacesDroid.Helpers;
@@ -304,7 +303,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.Date = new DateTime(e.Year, e.Month + 1, e.DayOfMonth);
         }
 
-        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {
