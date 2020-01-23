@@ -19,12 +19,16 @@ using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewItems;
 using System.Collections.Specialized;
 using PowerPlanneriOS.Views;
+using System.ComponentModel;
 
 namespace PowerPlanneriOS.Controllers
 {
     public class CalendarViewController : BaseTasksViewController<CalendarViewModel>
     {
         private object _tabBarHeightListener;
+        private MyCalendarView _cal;
+        private UIPagedDayView _pagedDayView;
+        private AdaptiveView _container;
 
         public CalendarViewController()
         {
@@ -33,26 +37,124 @@ namespace PowerPlanneriOS.Controllers
 
         public override void OnViewModelLoadedOverride()
         {
-            var cal = new MyCalendarView(ViewModel.FirstDayOfWeek)
+            // Calendar
+            _cal = new MyCalendarView(ViewModel.FirstDayOfWeek)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                DisplayMonth = ViewModel.DisplayMonth
+                DisplayMonth = ViewModel.DisplayMonth,
+                SelectedDate = ViewModel.SelectedDate
             };
-            cal.SetSemester(ViewModel.SemesterItemsViewGroup.Semester);
-            cal.Provider = new MyDataProvider(ViewModel.SemesterItemsViewGroup, cal);
-            cal.DateClicked += new WeakEventHandler<DateTime>(Cal_DateClicked).Handler;
-            cal.DisplayMonthChanged += new WeakEventHandler<DateTime>(Cal_DisplayMonthChanged).Handler;
+            _cal.SetSemester(ViewModel.SemesterItemsViewGroup.Semester);
+            _cal.Provider = new MyDataProvider(ViewModel.SemesterItemsViewGroup, _cal);
+            _cal.DateClicked += new WeakEventHandler<DateTime>(Cal_DateClicked).Handler;
+            _cal.DisplayMonthChanged += new WeakEventHandler<DateTime>(Cal_DisplayMonthChanged).Handler;
 
-            View.Add(cal);
-            cal.StretchWidth(base.View);
-            cal.PinToTop(base.View);
+            // Day pager
+            _pagedDayView = new UIPagedDayView(ViewModel.SemesterItemsViewGroup, ViewModel.MainScreenViewModel)
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Date = ViewModel.SelectedDate
+            };
+            _pagedDayView.OnRequestViewClass += new WeakEventHandler<ViewItemClass>(PagedDayView_OnRequestViewClass).Handler;
+            _pagedDayView.DateChanged += new WeakEventHandler<DateTime>(PagedDayView_DateChanged).Handler;
+
+            ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+
+            _container = new AdaptiveView(_cal, _pagedDayView, ViewModel)
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+
+            View.Add(_container);
+            _container.StretchWidth(View);
+            _container.PinToTop(View);
 
             MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
             {
-                cal.RemovePinToBottom(base.View).PinToBottom(base.View, (int)MainScreenViewController.TAB_BAR_HEIGHT);
+                _container.RemovePinToBottom(View).PinToBottom(View, (int)MainScreenViewController.TAB_BAR_HEIGHT);
             });
 
             base.OnViewModelLoadedOverride();
+        }
+
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewModel.SelectedDate):
+                    if (_pagedDayView.Date != ViewModel.SelectedDate.Date)
+                    {
+                        _pagedDayView.Date = ViewModel.SelectedDate.Date;
+                    }
+                    if (_cal.SelectedDate != ViewModel.SelectedDate.Date)
+                    {
+                        _cal.SelectedDate = ViewModel.SelectedDate.Date;
+                    }
+                    break;
+            }
+        }
+
+        private class AdaptiveView : UIView
+        {
+            private MyCalendarView _calendarView;
+            private UIPagedDayView _dayView;
+            private CalendarViewModel _viewModel;
+
+            public bool IsInSplitMode { get; set; }
+
+            public AdaptiveView(MyCalendarView calendarView, UIPagedDayView dayView, CalendarViewModel viewModel)
+            {
+                _calendarView = calendarView;
+                _dayView = dayView;
+                _viewModel = viewModel;
+
+                Add(calendarView);
+                Add(dayView);
+            }
+
+            public override void LayoutSubviews()
+            {
+                var width = this.Bounds.Width;
+                var height = this.Bounds.Height;
+
+                if (height > 500)
+                {
+                    nfloat splitCalendarHeight = 300;
+
+                    if (height > 950)
+                    {
+                        splitCalendarHeight = 450;
+                    }
+
+                    _calendarView.Frame = new CGRect(0, 0, width, splitCalendarHeight);
+
+                    _dayView.Frame = new CGRect(0, splitCalendarHeight, width, height - splitCalendarHeight);
+                    _dayView.Hidden = false;
+
+                    _calendarView.SelectedDate = _viewModel.SelectedDate;
+
+                    IsInSplitMode = true;
+                }
+                else
+                {
+                    _calendarView.Frame = new CGRect(0, 0, width, height);
+                    _dayView.Hidden = true;
+
+                    _calendarView.SelectedDate = null;
+
+                    IsInSplitMode = false;
+                }
+            }
+        }
+
+        private void PagedDayView_OnRequestViewClass(object sender, ViewItemClass e)
+        {
+            ViewModel.ViewClass(e);
+        }
+
+        private void PagedDayView_DateChanged(object sender, DateTime e)
+        {
+            ViewModel.SelectedDate = e;
         }
 
         private void Cal_DisplayMonthChanged(object sender, DateTime e)
@@ -62,7 +164,15 @@ namespace PowerPlanneriOS.Controllers
 
         private void Cal_DateClicked(object sender, DateTime e)
         {
-            ViewModel.OpenDay(e);
+            if (_container.IsInSplitMode)
+            {
+                ViewModel.SelectedDate = e;
+            }
+
+            else
+            {
+                ViewModel.OpenDay(e);
+            }
         }
 
         protected override string GetTitle()
