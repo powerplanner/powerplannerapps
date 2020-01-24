@@ -132,7 +132,7 @@
                                 Header="End time"
                                 Margin="6"
                                 HorizontalAlignment="Stretch"
-                                Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Visibility="{Binding IsEndTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Time="{Binding EndTime, Mode=TwoWay}"/>
                         </controls:AbTestControl.DisabledContent>
                     </controls:AbTestControl>
