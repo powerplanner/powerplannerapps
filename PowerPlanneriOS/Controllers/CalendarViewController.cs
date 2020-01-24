@@ -40,7 +40,6 @@ namespace PowerPlanneriOS.Controllers
             // Calendar
             _cal = new MyCalendarView(ViewModel.FirstDayOfWeek)
             {
-                TranslatesAutoresizingMaskIntoConstraints = false,
                 DisplayMonth = ViewModel.DisplayMonth,
                 SelectedDate = ViewModel.SelectedDate
             };
@@ -52,7 +51,6 @@ namespace PowerPlanneriOS.Controllers
             // Day pager
             _pagedDayView = new UIPagedDayView(ViewModel.SemesterItemsViewGroup, ViewModel.MainScreenViewModel)
             {
-                TranslatesAutoresizingMaskIntoConstraints = false,
                 Date = ViewModel.SelectedDate
             };
             _pagedDayView.OnRequestViewClass += new WeakEventHandler<ViewItemClass>(PagedDayView_OnRequestViewClass).Handler;
