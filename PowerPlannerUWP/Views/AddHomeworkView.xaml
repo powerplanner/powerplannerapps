@@ -92,21 +92,50 @@
 
                 <interfaces:MyAdaptiveGridPanel MinColumnWidth="236" Margin="-6,0,-6,0">
 
-                    <controls:TimePickerControl
-                        x:Name="TimePickerStartTime"
-                        Margin="6"
-                        HorizontalAlignment="Stretch"
-                        Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                        controls:TimePickerControl.Header="Start time"
-                        controls:TimePickerControl.IsEndTime="False"/>
+                    <controls:AbTestControl TestName="NewTimePicker">
+                        <controls:AbTestControl.EnabledContent>
+                            <controls:TimePickerControl
+                                x:Name="TimePickerStartTime"
+                                Margin="6"
+                                HorizontalAlignment="Stretch"
+                                IsEnd="False"
+                                Header="Due time"
+                                MainTime="{Binding StartTime, Mode=TwoWay}"
+                                Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                    <controls:TimePickerControl
-                        x:Name="TimePickerEndTime"
-                        Margin="6"
-                        HorizontalAlignment="Stretch"
-                        Visibility="{Binding IsEndTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                        controls:TimePickerControl.Header="End time"
-                        controls:TimePickerControl.IsEndTime="True"/>
+                        </controls:AbTestControl.EnabledContent>
+                        <controls:AbTestControl.DisabledContent>
+                            <TimePicker
+                                Header="Start time"
+                                Margin="6"
+                                HorizontalAlignment="Stretch"
+                                Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Time="{Binding StartTime, Mode=TwoWay}"/>
+
+                        </controls:AbTestControl.DisabledContent>
+                    </controls:AbTestControl>
+
+                    <controls:AbTestControl TestName="NewTimePicker">
+                        <controls:AbTestControl.EnabledContent>
+                            <controls:TimePickerControl
+                                x:Name="TimePickerEndTime"
+                                HorizontalAlignment="Stretch"
+                                Margin="6"
+                                IsEnd="True"
+                                Header="End time"
+                                StartTime="{Binding StartTime, Mode=TwoWay}"
+                                MainTime="{Binding EndTime, Mode=TwoWay}"
+                                Visibility="{Binding IsEndTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </controls:AbTestControl.EnabledContent>
+                        <controls:AbTestControl.DisabledContent>
+                            <TimePicker
+                                Header="Start time"
+                                Margin="6"
+                                HorizontalAlignment="Stretch"
+                                Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Time="{Binding StartTime, Mode=TwoWay}"/>
+                        </controls:AbTestControl.DisabledContent>
+                    </controls:AbTestControl>
 
                 </interfaces:MyAdaptiveGridPanel>
 

@@ -44,10 +44,10 @@
                     <controls:AbTestControl.EnabledContent>
                         <controls:TimePickerControl
                             x:Uid="EditingClassScheduleItemView_TimePickerStart"
-                            Margin="6"
                             HorizontalAlignment="Stretch"
-                            controls:TimePickerControl.Header="From"
-                            controls:TimePickerControl.IsEndTime="False"/>
+                            Header="From"
+                            IsEnd="False"
+                            MainTime="{Binding StartTime, Mode=TwoWay}"/>
                     </controls:AbTestControl.EnabledContent>
                     <controls:AbTestControl.DisabledContent>
                         <TimePicker
@@ -58,16 +58,16 @@
                     </controls:AbTestControl.DisabledContent>
                 </controls:AbTestControl>
 
-
                 <!-- End Time -->
                 <controls:AbTestControl TestName="NewTimePicker">
                     <controls:AbTestControl.EnabledContent>
                         <controls:TimePickerControl
                             x:Uid="EditingClassScheduleItemView_TimePickerEnd"
-                            Margin="6"
                             HorizontalAlignment="Stretch"
-                            controls:TimePickerControl.Header="To"
-                            controls:TimePickerControl.IsEndTime="True"/>
+                            Header="To"
+                            IsEnd="True"
+                            StartTime="{Binding StartTime, Mode=TwoWay}"
+                            MainTime="{Binding EndTime, Mode=TwoWay}"/>
                     </controls:AbTestControl.EnabledContent>
                     <controls:AbTestControl.DisabledContent>
                         <TimePicker
@@ -143,10 +143,6 @@
                     </StackPanel>
 
                 </Grid>
-
-
-
-
 
                 <views:WeekComboBox
                     x:Uid="EditingClassScheduleItemView_WeekComboBox"

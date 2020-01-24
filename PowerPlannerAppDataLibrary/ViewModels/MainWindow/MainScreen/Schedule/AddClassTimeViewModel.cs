@@ -46,7 +46,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public static AddClassTimeViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
         {
-            return AddTimePickerVM(new AddClassTimeViewModel(parent)
+            return new AddClassTimeViewModel(parent)
             {
                 State = OperationState.Adding,
                 AddParams = addParams,
@@ -56,12 +56,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 DayOfWeeks = new MyObservableList<DayOfWeek>() { DayOfWeek.Monday },
                 ScheduleWeek = PowerPlannerSending.Schedule.Week.BothWeeks,
                 ClassName = addParams.Class.Name
-            });
+            };
         }
 
         public static AddClassTimeViewModel CreateForEdit(BaseViewModel parent, EditParameter editParams)
         {
-            return AddTimePickerVM(new AddClassTimeViewModel(parent)
+            return new AddClassTimeViewModel(parent)
             {
                 State = OperationState.Editing,
                 EditParams = editParams,
@@ -71,13 +71,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 DayOfWeeks = new MyObservableList<DayOfWeek>(editParams.GroupedSchedules.Select(i => i.DayOfWeek).Distinct()),
                 ScheduleWeek = editParams.GroupedSchedules.First().ScheduleWeek,
                 ClassName = editParams.GroupedSchedules.First().Class.Name
-            });
-        }
-
-        static AddClassTimeViewModel AddTimePickerVM(AddClassTimeViewModel vm)
-        {
-            vm.TimePicker = new TimePickerControlViewModel(true, nameof(StartTime), () => vm.StartTime, v => vm.StartTime = v, nameof(EndTime), () => vm.EndTime, v => vm.EndTime = v, vm);
-            return vm;
+            };
         }
 
         public string ClassName { get; private set; }
@@ -124,17 +118,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     OnPropertyChanged(nameof(StartTime));
                 }
             }
-        }
-
-        private TimePickerControlViewModel _timePicker;
-
-        /// <summary>
-        /// The handler for the time picker controls.
-        /// </summary>
-        public TimePickerControlViewModel TimePicker
-        {
-            get => _timePicker;
-            set => SetProperty(ref _timePicker, value, nameof(TimePicker));
         }
 
         private string _room = "";

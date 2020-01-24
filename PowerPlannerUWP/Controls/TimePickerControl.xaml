@@ -9,7 +9,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <!-- Bindings are set automatically (depending on whether this is marked as EndTime or not in the code behind -->
-    <ComboBox x:Name="TimePickerComboBox" DataContext="{Binding TimePicker}" IsEditable="True" HorizontalAlignment="Stretch" />
+    <ComboBox x:Name="TimePickerComboBox" IsEditable="True" HorizontalAlignment="Stretch" SelectionChanged="TimePickerComboBox_SelectionChanged" />
     
 </UserControl>

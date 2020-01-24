@@ -232,7 +232,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 }
             }
 
-            return AddTimePickerVM(new AddHomeworkViewModel(parent)
+            return new AddHomeworkViewModel(parent)
             {
                 Account = account,
                 State = OperationState.Adding,
@@ -244,7 +244,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 IsWeightCategoryPickerVisible = true,
                 ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(),
                 Class = c // Assign class last, since it also assigns weight categories, and updates time options from remembered times
-            });
+            };
         }
 
         private static IList<ViewItemClass> GetClassesWithNoClassClass(IList<ViewItemClass> normalClasses)
@@ -256,7 +256,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public static AddHomeworkViewModel CreateForEdit(BaseViewModel parent, EditParameter editParams)
         {
-            AccountDataItem account = parent.FindAncestor<MainWindowViewModel>()?.CurrentAccount;
+            var account = parent.FindAncestor<MainWindowViewModel>()?.CurrentAccount;
             if (account == null)
             {
                 throw new NullReferenceException("CurrentAccount was null");
@@ -303,7 +303,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 }
             }
 
-            var model = AddTimePickerVM(new AddHomeworkViewModel(parent)
+            var model = new AddHomeworkViewModel(parent)
             {
                 Account = account,
                 State = OperationState.Editing,
@@ -315,7 +315,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 Type = type,
                 ImageNames = editParams.Item.ImageNames.ToArray(),
                 Class = c // Assign class last, since it also assigns weight categories
-            });
+            };
 
             // Assign existing image attachments
             model.ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(editParams.Item.ImageNames.Select(i => new EditingExistingImageAttachmentViewModel(model, i)));
@@ -353,12 +353,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             model._userChangedSelectedTimeOption = false;
 
             return model;
-        }
-
-        static AddHomeworkViewModel AddTimePickerVM(AddHomeworkViewModel vm)
-        {
-            vm.TimePicker = new TimePickerControlViewModel(vm.IsEndTimePickerVisible, nameof(StartTime), () => vm.StartTime, v => vm.StartTime = v, nameof(EndTime), () => vm.EndTime, v => vm.EndTime = v, vm);
-            return vm;
         }
 
         private ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c)
@@ -624,13 +618,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     OnPropertyChanged(nameof(StartTime));
                 }
             }
-        }
-
-        private TimePickerControlViewModel _timePicker;
-        public TimePickerControlViewModel TimePicker
-        {
-            get => _timePicker;
-            set => SetProperty(ref _timePicker, value, nameof(TimePicker));
         }
 
         /// <summary>
