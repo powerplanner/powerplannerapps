@@ -13,11 +13,6 @@ namespace PowerPlanneriOS.App
 {
     public class PowerPlanneriOSApp : PowerPlannerApp
     {
-        static PowerPlanneriOSApp()
-        {
-            UseTasksViewModel = true;
-        }
-
         public static new PowerPlanneriOSApp Current
         {
             get { return PortableApp.Current as PowerPlanneriOSApp; }

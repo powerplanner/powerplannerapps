@@ -126,7 +126,6 @@
     <Compile Include="Controllers\AddYearViewController.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />
     <Compile Include="Controllers\AgendaViewController.cs" />
-    <Compile Include="Controllers\BaseTasksViewController.cs" />
     <Compile Include="Controllers\CalendarViewController.cs" />
     <Compile Include="Controllers\ClassesViewController.cs" />
     <Compile Include="Controllers\ClassViewController.cs" />
@@ -135,7 +134,6 @@
     <Compile Include="Controllers\ClassViewControllers\ClassHomeworkOrExamsViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\ClassTimesViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\EditClassDetailsViewController.cs" />
-    <Compile Include="Controllers\DayViewController.cs" />
     <Compile Include="Controllers\InitialSyncViewController.cs" />
     <Compile Include="Controllers\MainScreenViewController.cs" />
     <Compile Include="Controllers\PopupViewController.cs" />
@@ -168,7 +166,6 @@
     <Compile Include="Controllers\Settings\TwoWeekScheduleSettingsViewController.cs" />
     <Compile Include="Controllers\Settings\UpdateCredentialsViewController.cs" />
     <Compile Include="Controllers\SyncErrorsViewController.cs" />
-    <Compile Include="Controllers\TasksViewController.cs" />
     <Compile Include="Controllers\ViewGradeViewController.cs" />
     <Compile Include="Controllers\ViewHomeworkViewController.cs" />
     <Compile Include="Controllers\Welcome\ConnectAccountViewController.cs" />

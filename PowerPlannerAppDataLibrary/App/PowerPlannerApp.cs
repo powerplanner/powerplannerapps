@@ -20,11 +20,6 @@ namespace PowerPlannerAppDataLibrary.App
 {
     public class PowerPlannerApp : PortableApp
     {
-        /// <summary>
-        /// Whether on the home page the TasksViewModel should be returned for Calendar/Day/Agenda. iOS uses this.
-        /// </summary>
-        public static bool UseTasksViewModel { get; set; }
-
         public new static PowerPlannerApp Current
         {
             get { return PortableApp.Current as PowerPlannerApp; }

@@ -27,7 +27,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Tasks;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -451,11 +450,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             if (Content == null)
                 throw new NullReferenceException("Content was null");
 
-            if (Content is TasksViewModel)
-            {
-                return (Content as TasksViewModel).SelectedItem;
-            }
-
             if (!ContentTypesToMenuSelections.ContainsKey(Content.GetType()))
             {
                 throw new KeyNotFoundException("Please register this content type for menu item selection");
@@ -700,10 +694,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             get
             {
-                if (Content is TasksViewModel)
-                {
-                    return (Content as TasksViewModel).SelectedItem;
-                }
                 return _selectedItem;
             }
             set
@@ -760,14 +750,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
 
             return false;
-        }
-
-        public void OpenTasksView()
-        {
-            if (!(Content is TasksViewModel))
-            {
-                SelectedItem = Helpers.Settings.NavigationManagerSettings.TasksViewSelection;
-            }
         }
 
         public void KeepBackStack()
@@ -1076,28 +1058,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
         public void SetContent(BaseViewModel viewModel, bool preserveBack = false)
         {
-            if (PowerPlannerApp.UseTasksViewModel)
-            {
-                if (viewModel is CalendarViewModel || viewModel is DayViewModel || viewModel is AgendaViewModel)
-                {
-                    var tasksViewModel = Content as TasksViewModel;
-                    bool needToNavigate = false;
-                    if (tasksViewModel == null)
-                    {
-                        needToNavigate = true;
-                        tasksViewModel = new TasksViewModel(this);
-                    }
-                    tasksViewModel.Replace(viewModel);
-
-                    if (!needToNavigate)
-                    {
-                        return;
-                    }
-
-                    viewModel = tasksViewModel;
-                }
-            }
-
             if (preserveBack)
                 base.Navigate(viewModel);
             else

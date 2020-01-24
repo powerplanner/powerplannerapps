@@ -61,6 +61,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     return;
 
                 SetProperty(ref _selectedDate, value.Date, nameof(SelectedDate)); NavigationManager.SetSelectedDate(value);
+
+                if (DisplayState == DisplayStates.CompactCalendar)
+                {
+                    DisplayState = DisplayStates.Day;
+                }
             }
         }
 
@@ -79,6 +84,106 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 SetProperty(ref _displayMonth, value, nameof(DisplayMonth));
                 NavigationManager.SetDisplayMonth(value);
+            }
+        }
+
+        public enum ViewSizeStates
+        {
+            /// <summary>
+            /// Only calendar (or day) can be displayed
+            /// </summary>
+            FullyCompact,
+
+            /// <summary>
+            /// Split calendar/day can be displayed
+            /// </summary>
+            Compact
+        }
+
+        private ViewSizeStates _viewSizeState;
+        /// <summary>
+        /// Only used in iOS right now. The view should set this based on the view's size.
+        /// </summary>
+        public ViewSizeStates ViewSizeState
+        {
+            get => _viewSizeState;
+            set
+            {
+                if (_viewSizeState != value)
+                {
+                    _viewSizeState = value;
+
+                    switch (value)
+                    {
+                        case ViewSizeStates.Compact:
+                            DisplayState = DisplayStates.Split;
+                            break;
+
+                        case ViewSizeStates.FullyCompact:
+                            if (DisplayState == DisplayStates.Split)
+                            {
+                                DisplayState = DisplayStates.CompactCalendar;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        public enum DisplayStates
+        {
+            /// <summary>
+            /// Only display the compact calendar.
+            /// </summary>
+            CompactCalendar,
+
+            /// <summary>
+            /// Only display the day, along with a back button to return to calendar.
+            /// </summary>
+            Day,
+
+            /// <summary>
+            /// Display the split calendar/day.
+            /// </summary>
+            Split
+        }
+
+        private DisplayStates _displayState;
+        /// <summary>
+        /// Only used in iOS right now. The view should listen and display according to this property.
+        /// </summary>
+        public DisplayStates DisplayState
+        {
+            get => _displayState;
+            private set => SetProperty(ref _displayState, value, nameof(DisplayState));
+        }
+
+        public void ExpandDay()
+        {
+            if (ViewSizeState == ViewSizeStates.Compact)
+            {
+                DisplayState = DisplayStates.Day;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void BackToCalendar()
+        {
+            switch (ViewSizeState)
+            {
+                case ViewSizeStates.Compact:
+                    DisplayState = DisplayStates.Split;
+                    break;
+
+                case ViewSizeStates.FullyCompact:
+                    DisplayState = DisplayStates.CompactCalendar;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
             }
         }
 

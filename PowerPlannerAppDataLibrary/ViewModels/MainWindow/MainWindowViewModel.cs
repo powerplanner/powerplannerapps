@@ -12,7 +12,6 @@ using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Tasks;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
@@ -196,22 +195,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public Task HandleViewDayActivation(Guid localAccountId, DateTime date)
         {
-            if (CurrentAccount != null && CurrentAccount.LocalAccountId == localAccountId)
-            {
-                var mainScreen = GetMainScreenViewModel();
-                if (mainScreen != null)
-                {
-                    var dayViewModel = (mainScreen.Content as TasksViewModel)?.Content as DayViewModel;
-                    if (dayViewModel != null)
-                    {
-                        Popups.Clear();
-                        mainScreen.Popups.Clear();
-                        dayViewModel.CurrentDate = date;
-                        return Task.FromResult(true);
-                    }
-                }
-            }
-
             NavigationManager.SetSelectedDate(date);
             NavigationManager.SetDisplayMonth(date);
             return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Day);

@@ -18,6 +18,7 @@ namespace PowerPlanneriOS.Views
     {
         public event EventHandler<ViewItemClass> OnRequestViewClass;
         public event EventHandler<DateTime> DateChanged;
+        public event EventHandler OnRequestExpand;
 
         public UIPagedDayView(SemesterItemsViewGroup semesterItems, MainScreenViewModel mainScreenViewModel)
         {
@@ -76,7 +77,14 @@ namespace PowerPlanneriOS.Views
 
         protected override UISingleDayView CreateView()
         {
-            return new UISingleDayView();
+            var view = new UISingleDayView();
+            view.OnRequestExpand += SingleDayView_OnRequestExpand;
+            return view;
+        }
+
+        private void SingleDayView_OnRequestExpand(object sender, EventArgs e)
+        {
+            OnRequestExpand?.Invoke(this, new EventArgs());
         }
 
         protected override void OnMovedToNext()

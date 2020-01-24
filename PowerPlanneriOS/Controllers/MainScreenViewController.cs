@@ -132,11 +132,11 @@ namespace PowerPlanneriOS.Controllers
         {
             if (ViewModel.IsOffline || ViewModel.HasSyncErrors)
             {
-                _tabBarItemSettings.BadgeValue = "!";
+                _tabBarItemMore.BadgeValue = "!";
             }
             else
             {
-                _tabBarItemSettings.BadgeValue = null;
+                _tabBarItemMore.BadgeValue = null;
             }
         }
 
@@ -159,10 +159,12 @@ namespace PowerPlanneriOS.Controllers
         {
             switch (ViewModel.SelectedItem)
             {
-                case PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda:
                 case PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Calendar:
-                case PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Day:
-                    _tabBar.SelectedItem = _tabBarItemTasks;
+                    _tabBar.SelectedItem = _tabBarItemCalendar;
+                    break;
+
+                case PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda:
+                    _tabBar.SelectedItem = _tabBarItemAgenda;
                     break;
 
                 case PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Schedule:
@@ -173,37 +175,31 @@ namespace PowerPlanneriOS.Controllers
                     _tabBar.SelectedItem = _tabBarItemClasses;
                     break;
 
-                case PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Years:
-                    _tabBar.SelectedItem = _tabBarItemYears;
-                    break;
-
                 case PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Settings:
-                    _tabBar.SelectedItem = _tabBarItemSettings;
+                    _tabBar.SelectedItem = _tabBarItemMore;
                     break;
             }
         }
 
         private void UpdateAvailableTabs()
         {
-            _tabBarItemTasks.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda)
-                || ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Calendar)
-                || ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Day);
+            _tabBarItemCalendar.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Calendar);
+
+            _tabBarItemAgenda.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda);
 
             _tabBarItemSchedule.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Schedule);
 
             _tabBarItemClasses.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Classes);
 
-            _tabBarItemYears.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Years);
-
-            _tabBarItemSettings.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Settings);
+            _tabBarItemMore.Enabled = ViewModel.AvailableItems.Contains(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Settings);
         }
 
         private UITabBar _tabBar;
-        private UITabBarItem _tabBarItemTasks;
+        private UITabBarItem _tabBarItemCalendar;
+        private UITabBarItem _tabBarItemAgenda;
         private UITabBarItem _tabBarItemSchedule;
         private UITabBarItem _tabBarItemClasses;
-        private UITabBarItem _tabBarItemYears;
-        private UITabBarItem _tabBarItemSettings;
+        private UITabBarItem _tabBarItemMore;
         private UIView _bottomGlass;
 
         public MainScreenViewController()
@@ -219,26 +215,26 @@ namespace PowerPlanneriOS.Controllers
 
             // https://developer.xamarin.com/Recipes/ios/Content_Controls/Tab_Bar/Create_a_Tab_Bar/
 
-            _tabBarItemTasks = new UITabBarItem("Tasks", UIImage.FromBundle("TabAgenda"), UIImage.FromBundle("TabAgendaSelected"));
+            _tabBarItemCalendar = new UITabBarItem("Calendar", UIImage.FromBundle("TabAgenda"), UIImage.FromBundle("TabAgendaSelected"));
+
+            _tabBarItemAgenda = new UITabBarItem("Agenda", UIImage.FromBundle("TabAgenda"), UIImage.FromBundle("TabAgendaSelected"));
 
             _tabBarItemSchedule = new UITabBarItem("Schedule", UIImage.FromBundle("TabSchedule"), UIImage.FromBundle("TabScheduleSelected"));
 
             _tabBarItemClasses = new UITabBarItem("Classes", UIImage.FromBundle("TabClasses"), UIImage.FromBundle("TabClassesSelected"));
 
-            _tabBarItemYears = new UITabBarItem("Years", UIImage.FromBundle("TabYears"), UIImage.FromBundle("TabYearsSelected"));
-
-            _tabBarItemSettings = new UITabBarItem("Settings", UIImage.FromBundle("TabSettings"), UIImage.FromBundle("TabSettingsSelected"));
+            _tabBarItemMore = new UITabBarItem("Settings", UIImage.FromBundle("TabSettings"), UIImage.FromBundle("TabSettingsSelected"));
 
             _tabBar = new UITabBar()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Items = new UITabBarItem[]
                 {
-                    _tabBarItemTasks,
+                    _tabBarItemCalendar,
+                    _tabBarItemAgenda,
                     _tabBarItemSchedule,
                     _tabBarItemClasses,
-                    _tabBarItemYears,
-                    _tabBarItemSettings
+                    _tabBarItemMore
                 },
                 //BarTintColor = ColorResources.PowerPlannerBlueChromeColor,
                 //UnselectedItemTintColor = UIColor.White,
@@ -294,9 +290,13 @@ namespace PowerPlanneriOS.Controllers
         {
             var item = e.Item;
 
-            if (item == _tabBarItemTasks)
+            if (item == _tabBarItemCalendar)
             {
-                ViewModel.OpenTasksView();
+                ViewModel.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Calendar;
+            }
+            else if (item == _tabBarItemAgenda)
+            {
+                ViewModel.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda;
             }
             else if (item == _tabBarItemSchedule)
             {
@@ -306,11 +306,7 @@ namespace PowerPlanneriOS.Controllers
             {
                 ViewModel.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Classes;
             }
-            else if (item == _tabBarItemYears)
-            {
-                ViewModel.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Years;
-            }
-            else if (item == _tabBarItemSettings)
+            else if (item == _tabBarItemMore)
             {
                 ViewModel.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Settings;
             }

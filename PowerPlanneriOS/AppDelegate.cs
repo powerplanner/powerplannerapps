@@ -38,7 +38,6 @@ using PowerPlanneriOS.Controllers.Welcome;
 using PowerPlanneriOS.ViewModels;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Tasks;
 using UserNotifications;
 using InterfacesiOS.Helpers;
 using System.Threading.Tasks;
@@ -76,7 +75,6 @@ namespace PowerPlanneriOS
                 { typeof(InitialSyncViewModel), typeof(InitialSyncViewController) },
                 { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
                 { typeof(CalendarViewModel), typeof(CalendarViewController) },
-                { typeof(DayViewModel), typeof(DayViewController) },
                 { typeof(AgendaViewModel), typeof(AgendaViewController) },
                 { typeof(ScheduleViewModel), typeof(ScheduleViewController) },
                 { typeof(ClassesViewModel), typeof(ClassesViewController) },
@@ -92,7 +90,6 @@ namespace PowerPlanneriOS
                 { typeof(ViewHomeworkViewModel), typeof(ViewHomeworkViewController) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsViewController) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayViewController) },
-                { typeof(TasksViewModel), typeof(TasksViewController) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeViewController) },
                 { typeof(AddGradeViewModel), typeof(AddGradeViewController) },
                 { typeof(ConfigureClassCreditsViewModel), typeof(EditClassCreditsViewController) },

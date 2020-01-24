@@ -23,8 +23,10 @@ namespace PowerPlanneriOS.Views
     public class UISingleDayView : UIView
     {
         public event EventHandler<ViewItemClass> OnRequestViewClass;
+        public event EventHandler OnRequestExpand;
 
         private UILabel _title;
+        private UIButton _buttonExpand;
         private CAShapeLayer _line;
         private UITableView _items;
         private object _tabBarHeightListener;
@@ -40,6 +42,11 @@ namespace PowerPlanneriOS.Views
                 Font = UIFont.PreferredBody
             };
             this.Add(_title);
+
+            _buttonExpand = new UIButton(UIButtonType.System);
+            _buttonExpand.SetTitle("Expand", UIControlState.Normal);
+            _buttonExpand.TouchUpInside += _buttonExpand_TouchUpInside;
+            this.Add(_buttonExpand);
 
             _line = new CAShapeLayer()
             {
@@ -65,6 +72,11 @@ namespace PowerPlanneriOS.Views
             {
                 _items.ContentInset = new UIEdgeInsets(0, 0, MainScreenViewController.TAB_BAR_HEIGHT, 0);
             });
+        }
+
+        private void _buttonExpand_TouchUpInside(object sender, EventArgs e)
+        {
+            OnRequestExpand?.Invoke(this, new EventArgs());
         }
 
         private void _scheduleSnapshot_OnRequestViewClass(object sender, ViewItemClass e)
@@ -164,6 +176,12 @@ namespace PowerPlanneriOS.Views
                 y: y,
                 width: this.Frame.Width,
                 height: titleSize.Height);
+
+            _buttonExpand.Frame = new CGRect(
+                x: this.Frame.Width - 100,
+                y: y,
+                width: 100,
+                height: 40);
 
             y += titleSize.Height + 12;
 
