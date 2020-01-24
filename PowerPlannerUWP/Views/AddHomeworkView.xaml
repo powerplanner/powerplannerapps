@@ -129,11 +129,11 @@
                         </controls:AbTestControl.EnabledContent>
                         <controls:AbTestControl.DisabledContent>
                             <TimePicker
-                                Header="Start time"
+                                Header="End time"
                                 Margin="6"
                                 HorizontalAlignment="Stretch"
                                 Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                                Time="{Binding StartTime, Mode=TwoWay}"/>
+                                Time="{Binding EndTime, Mode=TwoWay}"/>
                         </controls:AbTestControl.DisabledContent>
                     </controls:AbTestControl>
 
