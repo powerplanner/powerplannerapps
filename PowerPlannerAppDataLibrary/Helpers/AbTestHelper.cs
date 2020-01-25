@@ -13,7 +13,8 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             906267,
             1030231,
-            91353
+            91353,
+            1723027
         };
 
         private static long[] DisabledAccountIds = new long[]
