@@ -12,6 +12,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,6 +27,11 @@ namespace PowerPlannerUWP.Controls
 {
     public partial class TimePickerControl : UserControl
     {
+        /// <summary>
+        /// Gets whether the OS supports this control (supported in 17763 and up), which 7% of my users are still lower than that as of 1/25/2020.
+        /// </summary>
+        public static bool IsSupported => ApiInformation.IsEventPresent(typeof(ComboBox).FullName, "TextSubmitted");
+
         public const int CUSTOM_TIME_PICKER_DEFAULT_INTERVAL = 30;
 
         protected ObservableCollection<TimeEntry> _timeEntries = new ObservableCollection<TimeEntry>();

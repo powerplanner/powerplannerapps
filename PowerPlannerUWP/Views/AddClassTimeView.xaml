@@ -37,46 +37,9 @@
 
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="12">
+            <StackPanel x:Name="StackPanel" Margin="12">
                 
-                <!-- Start Time -->
-                <controls:AbTestControl TestName="NewTimePicker">
-                    <controls:AbTestControl.EnabledContent>
-                        <controls:TimePickerControl
-                            x:Uid="EditingClassScheduleItemView_TimePickerStart"
-                            HorizontalAlignment="Stretch"
-                            Header="From"
-                            SelectedTime="{Binding StartTime, Mode=TwoWay}"/>
-                    </controls:AbTestControl.EnabledContent>
-                    <controls:AbTestControl.DisabledContent>
-                        <TimePicker
-                            x:Uid="EditingClassScheduleItemView_TimePickerStart"
-                            Header="From"
-                            HorizontalAlignment="Stretch"
-                            Time="{Binding StartTime, Mode=TwoWay}"/>
-                    </controls:AbTestControl.DisabledContent>
-                </controls:AbTestControl>
-
-                <!-- End Time -->
-                <controls:AbTestControl TestName="NewTimePicker">
-                    <controls:AbTestControl.EnabledContent>
-                        <controls:EndTimePickerControl
-                            x:Uid="EditingClassScheduleItemView_TimePickerEnd"
-                            HorizontalAlignment="Stretch"
-                            Margin="0,24,0,0"
-                            Header="To"
-                            StartTime="{Binding StartTime, Mode=TwoWay}"
-                            SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
-                    </controls:AbTestControl.EnabledContent>
-                    <controls:AbTestControl.DisabledContent>
-                        <TimePicker
-                            x:Uid="EditingClassScheduleItemView_TimePickerEnd"
-                            Header="To"
-                            HorizontalAlignment="Stretch"
-                            Margin="0,24,0,0"
-                            Time="{Binding EndTime, Mode=TwoWay}"/>
-                    </controls:AbTestControl.DisabledContent>
-                </controls:AbTestControl>
+                <!-- Start Time and End Time will be programmatically added since uses APIs that are new -->
 
                 <TextBox
                     x:Uid="EditingClassScheduleItemView_TextBoxRoom"
