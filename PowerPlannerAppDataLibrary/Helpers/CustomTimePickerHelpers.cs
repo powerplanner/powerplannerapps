@@ -13,8 +13,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
     /// </summary>
     public static class CustomTimePickerHelpers
     {
-        public const int CUSTOM_TIME_PICKER_DEFAULT_INTERVAL = 30;
-
         /// <summary>
         /// Generates time offset text such as "+30m" or "+1h40m".
         /// </summary>

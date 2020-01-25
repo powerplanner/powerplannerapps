@@ -26,6 +26,8 @@ namespace PowerPlannerUWP.Controls
 {
     public partial class TimePickerControl : UserControl
     {
+        public const int CUSTOM_TIME_PICKER_DEFAULT_INTERVAL = 30;
+
         protected ObservableCollection<TimeEntry> _timeEntries = new ObservableCollection<TimeEntry>();
 
         public string Header
@@ -104,7 +106,7 @@ namespace PowerPlannerUWP.Controls
         private IEnumerable<TimeEntry> GenerateEntries()
         {
             var start = GetStartTime();
-            var interval = TimeSpan.FromMinutes(30);
+            var interval = TimeSpan.FromMinutes(CUSTOM_TIME_PICKER_DEFAULT_INTERVAL);
             var current = start;
             var addedExtraItem = false;
 
