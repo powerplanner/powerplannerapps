@@ -168,6 +168,11 @@ namespace PowerPlannerUWP.Controls
             {
                 // Mark the event as handled so the framework doesn't update the selected item.
                 args.Handled = true;
+
+                var correctString = "EditingClassScheduleItemView_Invalid" + (this is EndTimePickerControl ? "End" : "Start") + "Time";
+                var correctTitle = PowerPlannerResources.GetString(correctString + ".Title");
+                var correctContent = PowerPlannerResources.GetString(correctString + ".Content");
+                new PortableMessageDialog(correctContent, correctTitle).Show();
             }
         }
 
