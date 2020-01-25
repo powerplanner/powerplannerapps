@@ -53,9 +53,6 @@ namespace PowerPlannerUWP.Controls
         {
             InitializeComponent();
 
-            // Initialize the items
-            UpdateItems();
-
             TimePickerComboBox.ItemsSource = _timeEntries;
 
             // Update selected time
@@ -74,7 +71,7 @@ namespace PowerPlannerUWP.Controls
                 throw new InvalidOperationException("SelectedTime must be less than a day.");
             }
 
-            // Remove any non-30 minute interval times that aren't selected
+            // Update items and remove any non-30 minute interval times that aren't selected
             UpdateItems();
 
             var matching = _timeEntries.FirstOrDefault(i => i.Time == SelectedTime);
@@ -88,11 +85,6 @@ namespace PowerPlannerUWP.Controls
                 // Wasn't in the list, add it and select it
                 TimePickerComboBox.SelectedItem = AddTime(SelectedTime);
             }
-        }
-
-        protected virtual string FormatTime(TimeSpan time)
-        {
-            return DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(time.Ticks));
         }
 
         private void TimePickerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -152,12 +144,13 @@ namespace PowerPlannerUWP.Controls
                 var matching = _timeEntries.FirstOrDefault(i => i.Time == time);
                 if (matching != null)
                 {
+                    // Select the item
                     args.Handled = true;
                     TimePickerComboBox.SelectedItem = matching;
                 }
                 else
                 {
-                    // Add the item
+                    // Add the item and select it
                     args.Handled = true;
                     TimePickerComboBox.SelectedItem = AddTime(time);
                 }
@@ -165,7 +158,7 @@ namespace PowerPlannerUWP.Controls
 
             else
             {
-                // Mark the event as handled so the framework doesn’t update the selected item.
+                // Mark the event as handled so the framework doesn't update the selected item.
                 args.Handled = true;
             }
         }
@@ -269,13 +262,8 @@ namespace PowerPlannerUWP.Controls
                 return time > StartTime;
             }
 
-            time = default(TimeSpan);
+            time = default;
             return false;
-        }
-
-        protected override string FormatTime(TimeSpan time)
-        {
-            return DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(time.Ticks)) + CustomTimePickerHelpers.GenerateTimeOffsetText(time - StartTime);
         }
 
         private class EndTimeEntry : TimeEntry
@@ -287,7 +275,7 @@ namespace PowerPlannerUWP.Controls
                 _endTimePickerControl = endTimePickerControl;
             }
 
-            public override string DisplayText => DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(Time.Ticks)) + CustomTimePickerHelpers.GenerateTimeOffsetText(Time - _endTimePickerControl.StartTime);
+            public override string DisplayText => base.DisplayText + CustomTimePickerHelpers.GenerateTimeOffsetText(Time - _endTimePickerControl.StartTime);
 
             public void NotifyDisplayTextChanged()
             {

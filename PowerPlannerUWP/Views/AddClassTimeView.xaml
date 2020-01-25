@@ -63,6 +63,7 @@
                         <controls:EndTimePickerControl
                             x:Uid="EditingClassScheduleItemView_TimePickerEnd"
                             HorizontalAlignment="Stretch"
+                            Margin="0,24,0,0"
                             Header="To"
                             StartTime="{Binding StartTime, Mode=TwoWay}"
                             SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
