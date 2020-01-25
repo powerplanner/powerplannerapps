@@ -12,6 +12,8 @@ namespace PowerPlannerUWP.Controls
 {
     public class AbTestControl : UserControl
     {
+        private TimeSpan _durationWithFocus = new TimeSpan();
+
         private UIElement _disabledContent;
         public UIElement DisabledContent
         {
@@ -73,6 +75,34 @@ namespace PowerPlannerUWP.Controls
                 {
                     Content = DisabledContent;
                 }
+            }
+        }
+
+        private DateTime _gotFocus;
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+            _gotFocus = DateTime.UtcNow;
+            System.Diagnostics.Debug.WriteLine("GotFocus");
+            base.OnGotFocus(e);
+        }
+
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
+            _durationWithFocus += DateTime.UtcNow - _gotFocus;
+            _gotFocus = DateTime.MinValue;
+            System.Diagnostics.Debug.WriteLine("LostFocus");
+            base.OnLostFocus(e);
+        }
+
+        public TimeSpan GetDurationWithFocus()
+        {
+            if (_gotFocus != DateTime.MinValue)
+            {
+                return _durationWithFocus + (DateTime.UtcNow - _gotFocus);
+            }
+            else
+            {
+                return _durationWithFocus;
             }
         }
     }

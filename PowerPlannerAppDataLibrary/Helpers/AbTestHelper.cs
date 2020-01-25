@@ -10,7 +10,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
     {
         public static class Tests
         {
-            public static TestItem NewTimePicker { get; set; } = new TestItem(nameof(NewTimePicker), true);
+            public static TestItem NewTimePicker { get; set; } = new TestItem(nameof(NewTimePicker), false);
         }
 
         public static bool IsEnabled(string testName)
