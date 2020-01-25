@@ -98,9 +98,8 @@
                                 x:Name="TimePickerStartTime"
                                 Margin="6"
                                 HorizontalAlignment="Stretch"
-                                IsEnd="False"
                                 Header="Due time"
-                                MainTime="{Binding StartTime, Mode=TwoWay}"
+                                SelectedTime="{Binding StartTime, Mode=TwoWay}"
                                 Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         </controls:AbTestControl.EnabledContent>
@@ -117,14 +116,13 @@
 
                     <controls:AbTestControl TestName="NewTimePicker">
                         <controls:AbTestControl.EnabledContent>
-                            <controls:TimePickerControl
+                            <controls:EndTimePickerControl
                                 x:Name="TimePickerEndTime"
                                 HorizontalAlignment="Stretch"
                                 Margin="6"
-                                IsEnd="True"
                                 Header="End time"
                                 StartTime="{Binding StartTime, Mode=TwoWay}"
-                                MainTime="{Binding EndTime, Mode=TwoWay}"
+                                SelectedTime="{Binding EndTime, Mode=TwoWay}"
                                 Visibility="{Binding IsEndTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </controls:AbTestControl.EnabledContent>
                         <controls:AbTestControl.DisabledContent>

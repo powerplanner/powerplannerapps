@@ -24,35 +24,30 @@ using Windows.UI.Xaml.Navigation;
 
 namespace PowerPlannerUWP.Controls
 {
-    public sealed partial class TimePickerControl : UserControl
+    public partial class TimePickerControl : UserControl
     {
-        public static DependencyProperty HeaderProperty = ComboBox.HeaderProperty;
-        public static string GetHeader(DependencyObject obj) => ((TimePickerControl)obj).Header;
-        public static string SetHeader(DependencyObject obj, string val) => ((TimePickerControl)obj).Header = val;
-
-        public static DependencyProperty IsEndProperty = DependencyProperty.Register("IsEnd", typeof(bool), typeof(TimePickerControl), new PropertyMetadata(false, TimeChanged));
-        public static bool GetIsEnd(DependencyObject obj) => (bool)obj.GetValue(IsEndProperty);
-        public static void SetIsEnd(DependencyObject obj, bool val) => obj.SetValue(IsEndProperty, val);
-
-        // If this is an end control, we can optionally use this to work out an offset against the StartTime.
-
-        public static DependencyProperty StartTimeProperty = DependencyProperty.Register("StartTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), TimeChanged));
-        public static TimeSpan GetStartTime(DependencyObject obj) => (TimeSpan)obj.GetValue(StartTimeProperty);
-        public static void SetStartTime(DependencyObject obj, TimeSpan val) => obj.SetValue(StartTimeProperty, val);
-
-        // The time this control shows.
-
-        public static DependencyProperty MainTimeProperty = DependencyProperty.Register("MainTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), TimeChanged));
-        public static TimeSpan GetMainTime(DependencyObject obj) => (TimeSpan)obj.GetValue(MainTimeProperty);
-        public static void SetMainTime(DependencyObject obj, TimeSpan val) => obj.SetValue(MainTimeProperty, val);
-
-        bool _timeChanged;
-
         public string Header
         {
-            get => (string)TimePickerComboBox.GetValue(ComboBox.HeaderProperty);
-            set => TimePickerComboBox.SetValue(ComboBox.HeaderProperty, value);
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
         }
+
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(string), typeof(TimePickerControl), new PropertyMetadata(""));
+
+        /// <summary>
+        /// The selected time.
+        /// </summary>
+        public TimeSpan SelectedTime
+        {
+            get { return (TimeSpan)GetValue(SelectedTimeProperty); }
+            set { SetValue(SelectedTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedTimeProperty =
+            DependencyProperty.Register("SelectedTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnValuesChanged));
+
+        bool _timeChanged;
 
         public string Selected
         {
@@ -66,7 +61,7 @@ namespace PowerPlannerUWP.Controls
             UpdateTime();
         }
 
-        private static void TimeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        protected static void OnValuesChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var timePicker = ((TimePickerControl)sender);
             timePicker.UpdateTime();
@@ -74,14 +69,16 @@ namespace PowerPlannerUWP.Controls
 
         private void UpdateTime()
         {
-            var mainTimeTicks = GetMainTime(this).Ticks;
+            var selectedTime = SelectedTime;
             _timeChanged = true;
             UpdateItems();
 
-            if (GetIsEnd(this))
-                Selected = DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(mainTimeTicks)) + CustomTimePickerHelpers.GenerateTimeOffsetText(new TimeSpan(mainTimeTicks - GetStartTime(this).Ticks));
-            else
-                Selected = DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(mainTimeTicks));
+            Selected = FormatTime(selectedTime);
+        }
+
+        protected virtual string FormatTime(TimeSpan time)
+        {
+            return DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(time.Ticks));
         }
 
         private void TimePickerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,35 +90,64 @@ namespace PowerPlannerUWP.Controls
                 return;
             }
 
-            var isEnd = GetIsEnd(this);
-
             // Attempt to parse the value that was just set into the ComboBox.
-            if (!CustomTimePickerHelpers.ParseComboBoxItem(isEnd ? new DateTime(GetStartTime(this).Ticks) : DateTime.MinValue, (string)TimePickerComboBox.SelectedItem, out var t))
+            if (!ParseText((string)TimePickerComboBox.SelectedItem, out var t))
             {
-                var correctString = "EditingClassScheduleItemView_Invalid" + (isEnd ? "End" : "Start") + "Time";
+                var correctString = "EditingClassScheduleItemView_Invalid" + (this is EndTimePickerControl ? "End" : "Start") + "Time";
                 var correctTitle = PowerPlannerResources.GetString(correctString + ".Title");
                 var correctContent = PowerPlannerResources.GetString(correctString + ".Content");
                 new PortableMessageDialog(correctContent, correctTitle).Show();
                 return;
             }
 
-            SetMainTime(this, t);
+            SelectedTime = t;
         }
 
         private void UpdateItems()
         {
-            ObservableCollection<string> items;
+            List<string> items = GenerateItems();
 
-            // Generate the new items.
-            if (GetIsEnd(this))
-                items = CustomTimePickerHelpers.GenerateTimesWithOffset(new DateTime(GetStartTime(this).Ticks), new DateTime(GetMainTime(this).Ticks), CustomTimePickerHelpers.CUSTOM_TIME_PICKER_DEFAULT_INTERVAL);
-            else
-                items = CustomTimePickerHelpers.GenerateTimes(DateTime.MinValue, new DateTime(GetMainTime(this).Ticks), CustomTimePickerHelpers.CUSTOM_TIME_PICKER_DEFAULT_INTERVAL);
+            TimePickerComboBox.ItemsSource = items;
+        }
 
-            // Put them into the ComboBox.
-            TimePickerComboBox.Items.Clear();
-            for (int i = 0; i < items.Count; i++)
-                TimePickerComboBox.Items.Add(items[i]);
+        protected virtual List<string> GenerateItems()
+        {
+            return CustomTimePickerHelpers.GenerateTimes(DateTime.MinValue, new DateTime(SelectedTime.Ticks), CustomTimePickerHelpers.CUSTOM_TIME_PICKER_DEFAULT_INTERVAL);
+        }
+
+        protected virtual bool ParseText(string text, out TimeSpan time)
+        {
+            return CustomTimePickerHelpers.ParseComboBoxItem(DateTime.MinValue, text, out time);
+        }
+    }
+
+    public class EndTimePickerControl : TimePickerControl
+    {
+        /// <summary>
+        /// If this is an end time control, you can use this property so it'll dynamically eliminate values based on start time.
+        /// </summary>
+        public TimeSpan StartTime
+        {
+            get { return (TimeSpan)GetValue(StartTimeProperty); }
+            set { SetValue(StartTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty StartTimeProperty =
+            DependencyProperty.Register("StartTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(null, OnValuesChanged));
+
+        protected override List<string> GenerateItems()
+        {
+            return CustomTimePickerHelpers.GenerateTimesWithOffset(new DateTime(StartTime.Ticks), new DateTime(SelectedTime.Ticks), CustomTimePickerHelpers.CUSTOM_TIME_PICKER_DEFAULT_INTERVAL);
+        }
+
+        protected override bool ParseText(string text, out TimeSpan time)
+        {
+            return CustomTimePickerHelpers.ParseComboBoxItem(new DateTime(StartTime.Ticks), text, out time);
+        }
+
+        protected override string FormatTime(TimeSpan time)
+        {
+            return DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(time.Ticks)) + CustomTimePickerHelpers.GenerateTimeOffsetText(time - StartTime);
         }
     }
 }

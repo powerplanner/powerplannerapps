@@ -19,9 +19,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
         /// </summary>
         /// <param name="perEachItem">This will evaluate per each item, and the result this gives back will be append to the end of each item, the single parameter is the time we're currently at.</param>
         /// <param name="extraItem">If we need to, we will add an extraItem in the correct place, provided it isn't already in the list.</param>
-        public static ObservableCollection<string> GenerateTimes(DateTime startTime, DateTime extraItem, int minutes, Func<DateTime, string> perEachItem = null)
+        public static List<string> GenerateTimes(DateTime startTime, DateTime extraItem, int minutes, Func<DateTime, string> perEachItem = null)
         {
-            var ret = new ObservableCollection<string>();
+            var ret = new List<string>();
             var currentTime = startTime;
             var addedExtraItem = false;
 
@@ -52,7 +52,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         /// Similar to <see cref="GenerateTimes(DateTime, int, Func{string})"/>, except with <see cref="GenerateTimeOffsetText(DateTime)"/> appended to the ends of each item.
         /// </summary>
         /// <returns></returns>
-        public static ObservableCollection<string> GenerateTimesWithOffset(DateTime startTime, DateTime extraItem, int minutes) => GenerateTimes(startTime, extraItem, minutes, t => GenerateTimeOffsetText(t.Subtract(startTime)));
+        public static List<string> GenerateTimesWithOffset(DateTime startTime, DateTime extraItem, int minutes) => GenerateTimes(startTime, extraItem, minutes, t => GenerateTimeOffsetText(t.Subtract(startTime)));
 
         /// <summary>
         /// Generates time offset text such as "+30m" or "+1h40m".

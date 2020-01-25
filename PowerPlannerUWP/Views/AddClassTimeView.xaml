@@ -46,8 +46,7 @@
                             x:Uid="EditingClassScheduleItemView_TimePickerStart"
                             HorizontalAlignment="Stretch"
                             Header="From"
-                            IsEnd="False"
-                            MainTime="{Binding StartTime, Mode=TwoWay}"/>
+                            SelectedTime="{Binding StartTime, Mode=TwoWay}"/>
                     </controls:AbTestControl.EnabledContent>
                     <controls:AbTestControl.DisabledContent>
                         <TimePicker
@@ -61,13 +60,12 @@
                 <!-- End Time -->
                 <controls:AbTestControl TestName="NewTimePicker">
                     <controls:AbTestControl.EnabledContent>
-                        <controls:TimePickerControl
+                        <controls:EndTimePickerControl
                             x:Uid="EditingClassScheduleItemView_TimePickerEnd"
                             HorizontalAlignment="Stretch"
                             Header="To"
-                            IsEnd="True"
                             StartTime="{Binding StartTime, Mode=TwoWay}"
-                            MainTime="{Binding EndTime, Mode=TwoWay}"/>
+                            SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
                     </controls:AbTestControl.EnabledContent>
                     <controls:AbTestControl.DisabledContent>
                         <TimePicker
