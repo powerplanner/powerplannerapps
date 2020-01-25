@@ -102,6 +102,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public override void UpdateCurrentUser(AccountDataItem account)
         {
+            base.UpdateCurrentUser(account);
             _userId = account?.GetTelemetryUserId();
             System.Diagnostics.Debug.WriteLine($"CurrentUser: {account?.GetTelemetryUserId()}");
         }
