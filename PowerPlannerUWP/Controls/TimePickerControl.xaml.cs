@@ -37,7 +37,7 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(string), typeof(TimePickerControl), new PropertyMetadata(""));
+            DependencyProperty.Register(nameof(Header), typeof(string), typeof(TimePickerControl), new PropertyMetadata(""));
 
         /// <summary>
         /// The selected time.
@@ -49,7 +49,7 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty SelectedTimeProperty =
-            DependencyProperty.Register("SelectedTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnSelectedTimeChanged));
+            DependencyProperty.Register(nameof(SelectedTime), typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnSelectedTimeChanged));
 
         public TimePickerControl()
         {
@@ -248,7 +248,7 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty StartTimeProperty =
-            DependencyProperty.Register("StartTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnStartTimeChanged));
+            DependencyProperty.Register(nameof(StartTime), typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnStartTimeChanged));
 
         private static void OnStartTimeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
