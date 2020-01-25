@@ -97,7 +97,8 @@ namespace PowerPlannerUWP.Controls
 
         protected void UpdateItems()
         {
-            _timeEntries.MakeListLike(GenerateEntries().ToList());
+            var desired = GenerateEntries().ToList();
+            _timeEntries.MakeListLike(desired);
         }
 
         private IEnumerable<TimeEntry> GenerateEntries()
@@ -138,6 +139,13 @@ namespace PowerPlannerUWP.Controls
         {
             // https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/combo-box#text-submitted
             // This is only invoked for unknown (unmatched) values
+
+            // However there seems to be a bug where it submits even if user selects from list, after they then leave the text control
+            if (_timeEntries.Any(i => i.DisplayText == args.Text))
+            {
+                // Don't do anything, framework should correctly update (keep) the selected item
+                return;
+            }
 
             if (ParseText(args.Text, out TimeSpan time))
             {
@@ -197,6 +205,26 @@ namespace PowerPlannerUWP.Controls
             public virtual string DisplayText
             {
                 get => DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(Time.Ticks));
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is TimeEntry other)
+                {
+                    return Time == other.Time;
+                }
+
+                return base.Equals(obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return Time.GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                return DisplayText;
             }
         }
     }
