@@ -398,7 +398,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 {
                     await PowerPlannerApp.Current.SaveChanges(changes);
 
-                    if (timeStartedAdding != null)
+                    if (timeStartedAdding != null && !AbTestHelper.ShouldIgnoreFromTelemetry())
                     {
                         TimeSpan duration = DateTime.UtcNow - timeStartedAdding.Value;
 

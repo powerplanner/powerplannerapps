@@ -53,7 +53,19 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public abstract void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration);
 
-        public abstract void UpdateCurrentUser(AccountDataItem account);
+        public virtual void UpdateCurrentUser(AccountDataItem account)
+        {
+            if (account == null || !account.IsOnlineAccount)
+            {
+                CurrentAccountId = 0;
+            }
+            else
+            {
+                CurrentAccountId = account.AccountId;
+            }
+        }
+
+        public long CurrentAccountId { get; private set; }
 
         static TelemetryExtension()
         {

@@ -72,6 +72,8 @@ namespace PowerPlanneriOS.Extensions
 
         public override void UpdateCurrentUser(AccountDataItem account)
         {
+            base.UpdateCurrentUser(account);
+
             try
             {
                 if (account != null)
