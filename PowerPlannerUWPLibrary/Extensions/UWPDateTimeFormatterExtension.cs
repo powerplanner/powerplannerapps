@@ -10,9 +10,26 @@ namespace PowerPlannerUWPLibrary.Extensions
 {
     public class UWPDateTimeFormatterExtension : DateTimeFormatterExtension
     {
+        private string[] _cachedShortTimes = new string[1440];
+
         public override string FormatAsShortTime(DateTime time)
         {
-            return DateTimeFormatter.ShortTime.Format(time).Replace("\u200E", "");
+            // We cache these answers, since UWP's DateTimeFormatter is ridiculously slow for some reason,
+            // taking about 5 milliseconds per each call, which adds up when generating a lot of times in a loop.
+            // Our cache uses an array instead of a dictionary, since 1,440 items isn't that many, and an array
+            // is more efficient than using a dictionary of variable size.
+
+            int minutes = (int)time.TimeOfDay.TotalMinutes;
+
+            string answer = _cachedShortTimes[minutes];
+
+            if (answer == null)
+            {
+                answer = DateTimeFormatter.ShortTime.Format(time).Replace("\u200E", "");
+                _cachedShortTimes[minutes] = answer;
+            }
+
+            return answer;
         }
 
         public override string FormatAsShortTimeWithoutAmPm(DateTime time)
