@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
+using PowerPlannerAppDataLibrary.Helpers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -50,6 +51,16 @@ namespace PowerPlannerUWP.Views
             checkBoxFriday.Content = DateTools.ToLocalizedString(DayOfWeek.Friday);
             checkBoxSaturday.Content = DateTools.ToLocalizedString(DayOfWeek.Saturday);
             checkBoxSunday.Content = DateTools.ToLocalizedString(DayOfWeek.Sunday);
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            if (AbTestHelper.Tests.NewTimePicker)
+            {
+                ViewModel.AutoAdjustEndTimes = false;
+            }
+
+            base.OnViewModelSetOverride();
         }
 
         private DateTime? _startedAddingTime;

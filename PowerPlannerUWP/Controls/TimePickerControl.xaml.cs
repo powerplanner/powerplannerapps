@@ -26,6 +26,8 @@ namespace PowerPlannerUWP.Controls
 {
     public partial class TimePickerControl : UserControl
     {
+        protected ObservableCollection<TimeEntry> _timeEntries = new ObservableCollection<TimeEntry>();
+
         public string Header
         {
             get { return (string)GetValue(HeaderProperty); }
@@ -45,35 +47,47 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty SelectedTimeProperty =
-            DependencyProperty.Register("SelectedTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnValuesChanged));
-
-        bool _timeChanged;
-
-        public string Selected
-        {
-            get => (string)TimePickerComboBox.SelectedItem;
-            set => TimePickerComboBox.SelectedItem = value;
-        }
+            DependencyProperty.Register("SelectedTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnSelectedTimeChanged));
 
         public TimePickerControl()
         {
             InitializeComponent();
-            UpdateTime();
-        }
 
-        protected static void OnValuesChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var timePicker = ((TimePickerControl)sender);
-            timePicker.UpdateTime();
-        }
-
-        private void UpdateTime()
-        {
-            var selectedTime = SelectedTime;
-            _timeChanged = true;
+            // Initialize the items
             UpdateItems();
 
-            Selected = FormatTime(selectedTime);
+            TimePickerComboBox.ItemsSource = _timeEntries;
+
+            // Update selected time
+            OnSelectedTimeChanged();
+        }
+
+        private static void OnSelectedTimeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as TimePickerControl).OnSelectedTimeChanged();
+        }
+
+        private void OnSelectedTimeChanged()
+        {
+            if (SelectedTime.TotalDays >= 1)
+            {
+                throw new InvalidOperationException("SelectedTime must be less than a day.");
+            }
+
+            // Remove any non-30 minute interval times that aren't selected
+            UpdateItems();
+
+            var matching = _timeEntries.FirstOrDefault(i => i.Time == SelectedTime);
+            if (matching != null)
+            {
+                // Select it
+                TimePickerComboBox.SelectedItem = matching;
+            }
+            else
+            {
+                // Wasn't in the list, add it and select it
+                TimePickerComboBox.SelectedItem = AddTime(SelectedTime);
+            }
         }
 
         protected virtual string FormatTime(TimeSpan time)
@@ -83,41 +97,114 @@ namespace PowerPlannerUWP.Controls
 
         private void TimePickerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // If we've changed this through the "TimeChanged" method then don't do anything.
-            if (_timeChanged)
+            if (TimePickerComboBox.SelectedItem is TimeEntry entry)
             {
-                _timeChanged = false;
-                return;
+                SelectedTime = entry.Time;
             }
-
-            // Attempt to parse the value that was just set into the ComboBox.
-            if (!ParseText((string)TimePickerComboBox.SelectedItem, out var t))
-            {
-                var correctString = "EditingClassScheduleItemView_Invalid" + (this is EndTimePickerControl ? "End" : "Start") + "Time";
-                var correctTitle = PowerPlannerResources.GetString(correctString + ".Title");
-                var correctContent = PowerPlannerResources.GetString(correctString + ".Content");
-                new PortableMessageDialog(correctContent, correctTitle).Show();
-                return;
-            }
-
-            SelectedTime = t;
         }
 
-        private void UpdateItems()
+        protected void UpdateItems()
         {
-            List<string> items = GenerateItems();
-
-            TimePickerComboBox.ItemsSource = items;
+            _timeEntries.MakeListLike(GenerateEntries().ToList());
         }
 
-        protected virtual List<string> GenerateItems()
+        private IEnumerable<TimeEntry> GenerateEntries()
         {
-            return CustomTimePickerHelpers.GenerateTimes(DateTime.MinValue, new DateTime(SelectedTime.Ticks), CustomTimePickerHelpers.CUSTOM_TIME_PICKER_DEFAULT_INTERVAL);
+            var start = GetStartTime();
+            var interval = TimeSpan.FromMinutes(30);
+            var current = start;
+            var addedExtraItem = false;
+
+            while (current.Days == 0)
+            {
+                // Don't add the extra item if it exactly matches something already in the list.
+                if (SelectedTime == current)
+                    addedExtraItem = true;
+
+                if (!addedExtraItem && current > SelectedTime)
+                {
+                    yield return CreateTimeEntry(SelectedTime);
+                    addedExtraItem = true;
+                }
+
+                yield return CreateTimeEntry(current);
+                current = current.Add(interval);
+            }
+        }
+
+        protected virtual TimeSpan GetStartTime()
+        {
+            return new TimeSpan();
         }
 
         protected virtual bool ParseText(string text, out TimeSpan time)
         {
             return CustomTimePickerHelpers.ParseComboBoxItem(DateTime.MinValue, text, out time);
+        }
+
+        private void TimePickerComboBox_TextSubmitted(ComboBox sender, ComboBoxTextSubmittedEventArgs args)
+        {
+            // https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/combo-box#text-submitted
+            // This is only invoked for unknown (unmatched) values
+
+            if (ParseText(args.Text, out TimeSpan time))
+            {
+                var matching = _timeEntries.FirstOrDefault(i => i.Time == time);
+                if (matching != null)
+                {
+                    args.Handled = true;
+                    TimePickerComboBox.SelectedItem = matching;
+                }
+                else
+                {
+                    // Add the item
+                    args.Handled = true;
+                    TimePickerComboBox.SelectedItem = AddTime(time);
+                }
+            }
+
+            else
+            {
+                // Mark the event as handled so the framework doesn’t update the selected item.
+                args.Handled = true;
+            }
+        }
+
+        private TimeEntry AddTime(TimeSpan time)
+        {
+            var newEntry = CreateTimeEntry(time);
+
+            for (int i = 0; i < _timeEntries.Count; i++)
+            {
+                if (time < _timeEntries[i].Time)
+                {
+                    _timeEntries.Insert(i, newEntry);
+                    return newEntry;
+                }
+            }
+
+            _timeEntries.Add(newEntry);
+            return newEntry;
+        }
+
+        protected virtual TimeEntry CreateTimeEntry(TimeSpan time)
+        {
+            return new TimeEntry(time);
+        }
+
+        protected class TimeEntry : BindableBase
+        {
+            public TimeSpan Time { get; private set; }
+
+            public TimeEntry(TimeSpan time)
+            {
+                Time = time;
+            }
+
+            public virtual string DisplayText
+            {
+                get => DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(Time.Ticks));
+            }
         }
     }
 
@@ -133,21 +220,79 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty StartTimeProperty =
-            DependencyProperty.Register("StartTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(null, OnValuesChanged));
+            DependencyProperty.Register("StartTime", typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnStartTimeChanged));
 
-        protected override List<string> GenerateItems()
+        private static void OnStartTimeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            return CustomTimePickerHelpers.GenerateTimesWithOffset(new DateTime(StartTime.Ticks), new DateTime(SelectedTime.Ticks), CustomTimePickerHelpers.CUSTOM_TIME_PICKER_DEFAULT_INTERVAL);
+            (sender as EndTimePickerControl).OnStartTimeChanged(e);
+        }
+
+        private void OnStartTimeChanged(DependencyPropertyChangedEventArgs e)
+        {
+            UpdateItems();
+
+            TimeSpan changeAmount = (TimeSpan)e.NewValue - (TimeSpan)e.OldValue;
+
+            TimeSpan newSelectedTime = SelectedTime + changeAmount;
+            if (newSelectedTime.Days > 0)
+            {
+                newSelectedTime = new TimeSpan(23, 59, 0);
+            }
+            else if (newSelectedTime.Ticks <= 0)
+            {
+                newSelectedTime = new TimeSpan(0, 1, 0);
+            }
+            SelectedTime = newSelectedTime;
+
+            // Update their end times
+            foreach (var entry in _timeEntries.OfType<EndTimeEntry>())
+            {
+                entry.NotifyDisplayTextChanged();
+            }
+        }
+
+        protected override TimeSpan GetStartTime()
+        {
+            return StartTime.Add(TimeSpan.FromMinutes(30));
+        }
+
+        protected override TimeEntry CreateTimeEntry(TimeSpan time)
+        {
+            return new EndTimeEntry(this, time);
         }
 
         protected override bool ParseText(string text, out TimeSpan time)
         {
-            return CustomTimePickerHelpers.ParseComboBoxItem(new DateTime(StartTime.Ticks), text, out time);
+            if (CustomTimePickerHelpers.ParseComboBoxItem(new DateTime(StartTime.Ticks), text, out time))
+            {
+                // Time must be greater than start time
+                return time > StartTime;
+            }
+
+            time = default(TimeSpan);
+            return false;
         }
 
         protected override string FormatTime(TimeSpan time)
         {
             return DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(time.Ticks)) + CustomTimePickerHelpers.GenerateTimeOffsetText(time - StartTime);
+        }
+
+        private class EndTimeEntry : TimeEntry
+        {
+            private EndTimePickerControl _endTimePickerControl;
+
+            public EndTimeEntry(EndTimePickerControl endTimePickerControl, TimeSpan time) : base(time)
+            {
+                _endTimePickerControl = endTimePickerControl;
+            }
+
+            public override string DisplayText => DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(Time.Ticks)) + CustomTimePickerHelpers.GenerateTimeOffsetText(Time - _endTimePickerControl.StartTime);
+
+            public void NotifyDisplayTextChanged()
+            {
+                OnPropertyChanged(nameof(DisplayText));
+            }
         }
     }
 }

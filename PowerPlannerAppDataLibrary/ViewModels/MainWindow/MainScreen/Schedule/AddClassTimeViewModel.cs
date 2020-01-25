@@ -27,6 +27,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public override string GetPageName() => State == OperationState.Adding ? "AddClassTimeView" : "EditClassTimeView";
 
+        /// <summary>
+        /// View should initialize this to false if end times will be managed by the view
+        /// </summary>
+        public bool AutoAdjustEndTimes { get; set; } = true;
+
         public class AddParameter
         {
             public ViewItemClass Class { get; set; }
@@ -83,17 +88,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             get => _startTime;
             set
             {
+                if (AutoAdjustEndTimes)
+                {
+                    // Automatically adjust the end time, maintaining the class as the same size it was before.
+                    var diff = EndTime - StartTime;
+                    SetProperty(ref _startTime, value, nameof(StartTime));
 
-                // Automatically adjust the end time, maintaining the class as the same size it was before.
-                var diff = EndTime - StartTime;
-                SetProperty(ref _startTime, value, nameof(StartTime));
-                
-                var desiredEndTime = StartTime + diff;
-                if (desiredEndTime.TotalHours >= 24)
-                    desiredEndTime = new TimeSpan(23, 59, 0);
+                    var desiredEndTime = StartTime + diff;
+                    if (desiredEndTime.TotalHours >= 24)
+                        desiredEndTime = new TimeSpan(23, 59, 0);
 
-                _endTime = desiredEndTime;
-                OnPropertyChanged(nameof(EndTime));
+                    _endTime = desiredEndTime;
+                    OnPropertyChanged(nameof(EndTime));
+                }
+                else
+                {
+                    SetProperty(ref _startTime, value, nameof(StartTime));
+                }
             }
         }
 
@@ -104,18 +115,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             get => _endTime;
             set
             {
-                var diff = StartTime - EndTime;
-                SetProperty(ref _endTime, value, nameof(EndTime));
-
-                // If the EndTime is less than the StartTime, then push the StartTime back by the difference between the two.
-                // So, if the EndTime is 10:30 and the StartTime is 10:40, the StartTime will become 10:20.
-                if (EndTime < StartTime)
+                if (AutoAdjustEndTimes)
                 {
-                    _startTime = EndTime + diff;
-                    if (_startTime.Ticks == 0)
-                        _startTime = new TimeSpan(0);
+                    var diff = StartTime - EndTime;
+                    SetProperty(ref _endTime, value, nameof(EndTime));
 
-                    OnPropertyChanged(nameof(StartTime));
+                    // If the EndTime is less than the StartTime, then push the StartTime back by the difference between the two.
+                    // So, if the EndTime is 10:30 and the StartTime is 10:40, the StartTime will become 10:20.
+                    if (EndTime < StartTime)
+                    {
+                        _startTime = EndTime + diff;
+                        if (_startTime.Ticks == 0)
+                            _startTime = new TimeSpan(0);
+
+                        OnPropertyChanged(nameof(StartTime));
+                    }
+                }
+                else
+                {
+                    SetProperty(ref _endTime, value, nameof(EndTime));
                 }
             }
         }
