@@ -93,6 +93,8 @@ namespace PowerPlanneriOS.Controllers.Settings
                 if (!_isFullVersion)
                 {
                     _tableView.AddCell("Upgrade to Premium", ViewModel.OpenPremiumVersion);
+
+                    _tableView.StartNewGroup();
                 }
 
                 if (ViewModel.HasAccount && mainScreenViewModel != null)
