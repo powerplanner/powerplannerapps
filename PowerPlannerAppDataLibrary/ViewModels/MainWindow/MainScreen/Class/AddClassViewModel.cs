@@ -26,17 +26,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public OperationState State { get; private set; }
 
-        public override string GetPageName()
-        {
-            if (State == OperationState.Adding)
-            {
-                return "AddClassView";
-            }
-            else
-            {
-                return "EditClassView";
-            }
-        }
+        public override string GetPageName() => State == OperationState.Adding ? "AddClassView" : "EditClassView";
 
         public ViewItemClass ClassToEdit { get; private set; }
 

@@ -732,6 +732,14 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2001, 26, 2, 0))
+                    {
+                        if (Controls.TimePickers.TextBasedTimePicker.IsSupported && AbTestHelper.Tests.NewTimePicker)
+                        {
+                            changedText += "\n - New text-based time pickers! Let me know what you think!";
+                        }
+                    }
+                    
                     if (v <= new Version(2001, 9, 1, 0))
                     {
                         changedText += "\n - Hyperlink detection in details text!";
