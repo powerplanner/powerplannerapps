@@ -12,12 +12,13 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public virtual string FormatAsShortTime(DateTime time)
         {
-            return time.ToString("t");
+            var s = time.ToString("t");
+            return s;
         }
 
         public virtual string FormatAsShortTimeWithoutAmPm(DateTime time)
         {
-            return time.ToString("t").TrimEnd('A', 'P', 'M', 'a', 'p', 'm', ' ');
+            return FormatAsShortTime(time).TrimEnd('A', 'P', 'M', 'a', 'p', 'm', ' ');
         }
     }
 }

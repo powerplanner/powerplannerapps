@@ -3,9 +3,13 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,17 +25,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public OperationState State { get; private set; }
 
-        public override string GetPageName()
-        {
-            if (State == OperationState.Adding)
-            {
-                return "AddClassTimeView";
-            }
-            else
-            {
-                return "EditClassTimeView";
-            }
-        }
+        public override string GetPageName() => State == OperationState.Adding ? "AddClassTimeView" : "EditClassTimeView";
+
+        /// <summary>
+        /// View should initialize this to false if end times will be managed by the view
+        /// </summary>
+        public bool AutoAdjustEndTimes { get; set; } = true;
 
         public class AddParameter
         {
@@ -47,9 +46,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public EditParameter EditParams { get; private set; }
 
-        private AddClassTimeViewModel(BaseViewModel parent) : base(parent)
-        {
-        }
+        // Trigger the start and end time texts.
+        private AddClassTimeViewModel(BaseViewModel parent) : base(parent) { }
 
         public static AddClassTimeViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
         {
@@ -87,25 +85,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public TimeSpan StartTime
         {
-            get { return _startTime; }
+            get => _startTime;
             set
             {
-                if (value == _startTime)
-                    return;
+                if (AutoAdjustEndTimes)
+                {
+                    // Automatically adjust the end time, maintaining the class as the same size it was before.
+                    var diff = EndTime - StartTime;
+                    SetProperty(ref _startTime, value, nameof(StartTime));
 
-                if (value.TotalHours >= 24)
-                    value = TimeSpan.FromHours(23);
+                    var desiredEndTime = StartTime + diff;
+                    if (desiredEndTime.TotalHours >= 24)
+                        desiredEndTime = new TimeSpan(23, 59, 0);
 
-                TimeSpan diff = EndTime - StartTime;
-
-                SetProperty(ref _startTime, value, nameof(StartTime));
-                
-                var desiredEndTime = StartTime + diff;
-                if (desiredEndTime.TotalHours >= 24)
-                    desiredEndTime = new TimeSpan(23, 59, 0);
-
-                _endTime = desiredEndTime;
-                OnPropertyChanged(nameof(EndTime));
+                    _endTime = desiredEndTime;
+                    OnPropertyChanged(nameof(EndTime));
+                }
+                else
+                {
+                    SetProperty(ref _startTime, value, nameof(StartTime));
+                }
             }
         }
 
@@ -113,26 +112,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public TimeSpan EndTime
         {
-            get { return _endTime; }
+            get => _endTime;
             set
             {
-                if (value == _endTime)
-                    return;
-
-                if (value.TotalHours > 24)
-                    value = TimeSpan.FromHours(24);
-
-                TimeSpan diff = StartTime - EndTime;
-
-                SetProperty(ref _endTime, value, nameof(EndTime));
-
-                if (EndTime < StartTime)
+                if (AutoAdjustEndTimes)
                 {
-                    _startTime = EndTime + diff;
-                    if (_startTime.TotalHours < 0)
-                        _startTime = TimeSpan.FromHours(0);
+                    var diff = StartTime - EndTime;
+                    SetProperty(ref _endTime, value, nameof(EndTime));
 
-                    OnPropertyChanged(nameof(StartTime));
+                    // If the EndTime is less than the StartTime, then push the StartTime back by the difference between the two.
+                    // So, if the EndTime is 10:30 and the StartTime is 10:40, the StartTime will become 10:20.
+                    if (EndTime < StartTime)
+                    {
+                        _startTime = EndTime + diff;
+                        if (_startTime.Ticks == 0)
+                            _startTime = new TimeSpan(0);
+
+                        OnPropertyChanged(nameof(StartTime));
+                    }
+                }
+                else
+                {
+                    SetProperty(ref _endTime, value, nameof(EndTime));
                 }
             }
         }
@@ -154,7 +155,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private void DayOfWeeks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            List<DayOfWeek> changes = new List<DayOfWeek>();
+            var changes = new List<DayOfWeek>();
 
             if (e.OldItems != null)
             {
@@ -329,22 +330,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             });
         }
 
-        public void Save()
+        public void Save(DateTime? timeStartedAdding = null)
         {
+            if (StartTime >= EndTime)
+            {
+                new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_LowEndTime.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
+                return;
+            }
+
+            if (DayOfWeeks.Count == 0)
+            {
+                new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Title")).Show();
+                return;
+            }
+
             TryStartDataOperationAndThenNavigate(async delegate
             {
-                if (StartTime >= EndTime)
-                {
-                    new PortableMessageDialog("Your end time must be greater than your start time.", "Invalid end time").Show();
-                    return;
-                }
-
-                if (DayOfWeeks.Count == 0)
-                {
-                    new PortableMessageDialog("You must select at least one day of week. If you want to delete this time, use the delete option in the menu.", "No day of weeks").Show();
-                    return;
-                }
-
                 var updatedAndNewSchedules = new List<DataItemSchedule>();
 
                 Guid classId = AddParams != null ? AddParams.Class.Identifier : EditParams.GroupedSchedules.First().Class.Identifier;
@@ -396,6 +397,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 if (!changes.IsEmpty())
                 {
                     await PowerPlannerApp.Current.SaveChanges(changes);
+
+                    if (timeStartedAdding != null && !AbTestHelper.ShouldIgnoreFromTelemetry())
+                    {
+                        TimeSpan duration = DateTime.UtcNow - timeStartedAdding.Value;
+
+                        try
+                        {
+                            TelemetryExtension.Current?.TrackEvent("NewTimePicker_TestResult", new Dictionary<string, string>()
+                            {
+                                { "Duration", ((int)Math.Ceiling(duration.TotalSeconds)).ToString() },
+                                { "IsEnabled", AbTestHelper.Tests.NewTimePicker.Value.ToString() }
+                            });
+                        }
+                        catch { }
+                    }
                 }
             }, delegate
             {

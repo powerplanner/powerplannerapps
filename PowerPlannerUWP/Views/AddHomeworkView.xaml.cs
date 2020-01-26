@@ -24,6 +24,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerUWP.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -89,8 +91,10 @@ namespace PowerPlannerUWP.Views
 
         public override void OnViewModelSetOverride()
         {
-            TimePickerStartTime.Header = GetStartTimeText();
-            TimePickerEndTime.Header = LocalizedResources.GetString("String_EndTime");
+            ViewModel.AutoAdjustEndTimes = false;
+
+            StartTimePicker.Header = GetStartTimeText();
+            EndTimePicker.Header = LocalizedResources.GetString("String_EndTime");
             ComboBoxTimeOptions.Header = LocalizedResources.GetString("String_Time");
 
             ViewModel.PropertyChanged += new WeakEventHandler<System.ComponentModel.PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
