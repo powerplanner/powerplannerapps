@@ -108,7 +108,7 @@ namespace PowerPlanneriOS.Controllers.Settings
                     UpdateCurrentSemesterText(mainScreenViewModel.CurrentSemester);
                     _tableView.AddCell(_cellCurrentSemester, null);
 
-                    _tableView.AddCell("View years and semesters", () => mainScreenViewModel.OpenYears(checkUseTabNavigation: false));
+                    _tableView.AddCell("View Years & Semesters", () => mainScreenViewModel.OpenYears(checkUseTabNavigation: false));
 
                     _tableView.StartNewGroup();
                 }
@@ -252,13 +252,13 @@ namespace PowerPlanneriOS.Controllers.Settings
             if (account == null)
             {
                 SetDisabled(_cellSyncStatus, "No account to sync");
-                SetDisabled(_cellSyncNow, "Sync now");
+                SetDisabled(_cellSyncNow, "Sync Now");
                 return;
             }
 
             if (mainScreenViewModel.SyncState == MainScreenViewModel.SyncStates.Done)
             {
-                SetNormal(_cellSyncNow, "Sync now");
+                SetNormal(_cellSyncNow, "Sync Now");
             }
             else
             {
