@@ -150,7 +150,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             CompactCalendar
         }
 
+        // Use previous selected display state from before
         private DisplayStates _displayState = _lastDisplayState;
+
         /// <summary>
         /// Only used in iOS right now. The view should listen and display according to this property.
         /// </summary>
@@ -159,7 +161,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             get => _displayState;
             private set
             {
+                // Remember the selected display state
                 _lastDisplayState = value;
+
                 SetProperty(ref _displayState, value, nameof(DisplayState));
             }
         }

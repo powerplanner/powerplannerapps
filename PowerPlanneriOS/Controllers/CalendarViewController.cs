@@ -31,7 +31,6 @@ namespace PowerPlanneriOS.Controllers
 
         public CalendarViewController()
         {
-            //Title = GetTitle();
             HideBackButton();
 
             NavItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Add)
@@ -302,11 +301,6 @@ namespace PowerPlanneriOS.Controllers
         private void Cal_DateClicked(object sender, DateTime e)
         {
             ViewModel.SelectedDate = e;
-        }
-
-        protected string GetTitle()
-        {
-            return "Calendar";
         }
 
         private class MyCalendarView : BareUICalendarView
