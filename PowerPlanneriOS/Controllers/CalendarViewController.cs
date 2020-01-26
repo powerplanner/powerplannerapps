@@ -108,6 +108,7 @@ namespace PowerPlanneriOS.Controllers
         }
 
         private UIBarButtonItem _backButton;
+        private UIButton _backButtonContents;
         private void UpdateTitle()
         {
             if (ViewModel.DisplayState == CalendarViewModel.DisplayStates.Day)
@@ -116,11 +117,14 @@ namespace PowerPlanneriOS.Controllers
 
                 if (_backButton == null)
                 {
-                    _backButton = new UIBarButtonItem();
-                    _backButton.Clicked += _backButton_Clicked;
+                    _backButtonContents = new UIButton(UIButtonType.Custom);
+                    _backButtonContents.SetImage(UIImage.FromBundle("ToolbarBack").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
+                    _backButtonContents.TouchUpInside += _backButton_Clicked;
+
+                    _backButton = new UIBarButtonItem(_backButtonContents);
                 }
 
-                _backButton.Title = ViewModel.SelectedDate.ToLongDateString();
+                _backButtonContents.SetTitle(ViewModel.SelectedDate.ToLongDateString(), UIControlState.Normal);
 
                 NavItem.LeftBarButtonItem = _backButton;
             }
