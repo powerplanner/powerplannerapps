@@ -179,30 +179,6 @@ namespace PowerPlanneriOS.Controllers
             private UIPagedDayView _dayView;
             private CalendarViewModel _viewModel;
 
-            private bool _isInFullDay;
-            public bool IsInFullDay
-            {
-                get => _isInFullDay;
-                set
-                {
-                    if (_isInFullDay != value)
-                    {
-                        _isInFullDay = value;
-                        UIView.Animate(1, delegate
-                        {
-                            if (_isInFullDay)
-                            {
-                                _dayView.Frame = new CGRect(0, 0, this.Bounds.Width, this.Bounds.Height);
-                            }
-                            else
-                            {
-                                _dayView.Frame = new CGRect(0, this.Bounds.Height / 2, this.Bounds.Width, this.Bounds.Height / 2);
-                            }
-                        });
-                    }
-                }
-            }
-
             public AdaptiveView(MyCalendarView calendarView, UIPagedDayView dayView, CalendarViewModel viewModel)
             {
                 _calendarView = calendarView;
@@ -220,7 +196,7 @@ namespace PowerPlanneriOS.Controllers
                 switch (e.PropertyName)
                 {
                     case nameof(ViewModel.DisplayState):
-                        SetNeedsLayout();
+                        UIView.Animate(0.4, () => UpdateLayout(base.Bounds));
                         break;
                 }
             }
@@ -230,6 +206,8 @@ namespace PowerPlanneriOS.Controllers
                 get => base.Bounds;
                 set
                 {
+                    base.Bounds = value;
+
                     if (value.Height > 500)
                     {
                         _viewModel.ViewSizeState = CalendarViewModel.ViewSizeStates.Compact;
@@ -239,14 +217,14 @@ namespace PowerPlanneriOS.Controllers
                         _viewModel.ViewSizeState = CalendarViewModel.ViewSizeStates.FullyCompact;
                     }
 
-                    base.Bounds = value;
+                    UpdateLayout(value);
                 }
             }
 
-            public override void LayoutSubviews()
+            private void UpdateLayout(CGRect bounds)
             {
-                var width = this.Bounds.Width;
-                var height = this.Bounds.Height;
+                var width = bounds.Width;
+                var height = bounds.Height;
 
                 switch (_viewModel.DisplayState)
                 {
