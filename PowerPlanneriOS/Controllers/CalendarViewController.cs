@@ -199,7 +199,6 @@ namespace PowerPlanneriOS.Controllers
                 Add(dayView);
             }
 
-            private bool _firstChange = true;
             private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
             {
                 switch (e.PropertyName)
@@ -207,9 +206,8 @@ namespace PowerPlanneriOS.Controllers
                     case nameof(ViewModel.DisplayState):
 
                         // Don't animate the very first time
-                        if (_firstChange)
+                        if (!_hasLaidOutOnce)
                         {
-                            _firstChange = false;
                             UpdateLayout(base.Bounds);
                             return;
                         }
@@ -239,8 +237,11 @@ namespace PowerPlanneriOS.Controllers
                 }
             }
 
+            private bool _hasLaidOutOnce = false;
             private void UpdateLayout(CGRect bounds)
             {
+                _hasLaidOutOnce = true;
+
                 var width = bounds.Width;
                 var height = bounds.Height;
 
