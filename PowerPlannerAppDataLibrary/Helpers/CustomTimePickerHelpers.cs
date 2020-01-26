@@ -13,47 +13,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
     /// </summary>
     public static class CustomTimePickerHelpers
     {
-        public const int CUSTOM_TIME_PICKER_DEFAULT_INTERVAL = 30;
-        /// <summary>
-        /// Generates an array of times, that are seperated by a certain interval.
-        /// </summary>
-        /// <param name="perEachItem">This will evaluate per each item, and the result this gives back will be append to the end of each item, the single parameter is the time we're currently at.</param>
-        /// <param name="extraItem">If we need to, we will add an extraItem in the correct place, provided it isn't already in the list.</param>
-        public static ObservableCollection<string> GenerateTimes(DateTime startTime, DateTime extraItem, int minutes, Func<DateTime, string> perEachItem = null)
-        {
-            var ret = new ObservableCollection<string>();
-            var currentTime = startTime;
-            var addedExtraItem = false;
-
-            // Continue until the time reaches 24 hours, increasing the time by the interval each time.
-            // NOTE: The day starts off as "1", so, when it hits day 2, then we know we've hit our limit.
-            while (currentTime.Day < 2)
-            {
-                // Don't add the extra item if it exactly matches something already in the list.
-                if (extraItem == currentTime)
-                    addedExtraItem = true;
-
-                if (!addedExtraItem && currentTime > extraItem)
-                {
-                    var afterText = perEachItem == null ? string.Empty : perEachItem(extraItem);
-                    ret.Add(DateTimeFormatterExtension.Current.FormatAsShortTime(extraItem) + afterText);
-                    addedExtraItem = true;
-                }
-
-                var perEachItemText = perEachItem == null ? string.Empty : perEachItem(currentTime);
-                ret.Add(DateTimeFormatterExtension.Current.FormatAsShortTime(currentTime) + perEachItemText);
-                currentTime = currentTime.AddMinutes(minutes);
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Similar to <see cref="GenerateTimes(DateTime, int, Func{string})"/>, except with <see cref="GenerateTimeOffsetText(DateTime)"/> appended to the ends of each item.
-        /// </summary>
-        /// <returns></returns>
-        public static ObservableCollection<string> GenerateTimesWithOffset(DateTime startTime, DateTime extraItem, int minutes) => GenerateTimes(startTime, extraItem, minutes, t => GenerateTimeOffsetText(t.Subtract(startTime)));
-
         /// <summary>
         /// Generates time offset text such as "+30m" or "+1h40m".
         /// </summary>

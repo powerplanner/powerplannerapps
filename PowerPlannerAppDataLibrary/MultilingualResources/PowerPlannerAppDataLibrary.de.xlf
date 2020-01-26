@@ -2266,31 +2266,31 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Content" translate="yes" xml:space="preserve">
           <source>The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</source>
-          <target state="new">The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</target>
+          <target state="final" state-qualifier="mt-suggestion">Die eingegebene Startzeit ist ungültig! Sie können '(stunde):(Minute)', '(stunde):(Minute) (AM/PM)' oder '(hour)h(minute)m' schreiben.</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Title" translate="yes" xml:space="preserve">
           <source>Invalid Start Time</source>
-          <target state="new">Invalid Start Time</target>
+          <target state="final" state-qualifier="mt-suggestion">Ungültige Startzeit</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidEndTime.Content" translate="yes" xml:space="preserve">
           <source>The end time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. In addition to that, you can also add a "+" sign to the beginning in order to make the end time a relative amount after the start time (e.g. +50m)</source>
-          <target state="new">The end time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. In addition to that, you can also add a "+" sign to the beginning in order to make the end time a relative amount after the start time (e.g. +50m)</target>
+          <target state="final" state-qualifier="mt-suggestion">Die von Ihnen eingegebene Endzeit ist ungültig! Sie können '(stunde):(Minute)', '(Stunde):(Minute) (AM/PM)', '(stunde)h(minute)m'' schreiben. Darüber hinaus können Sie am Anfang auch ein "+"-Zeichen hinzufügen, um die Endzeit nach der Startzeit relativ viel zu machen (z.B. +50m)</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidEndTime.Title" translate="yes" xml:space="preserve">
           <source>Invalid End Time</source>
-          <target state="new">Invalid End Time</target>
+          <target state="final" state-qualifier="mt-suggestion">Ungültige Endzeit</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" translate="yes" xml:space="preserve">
           <source>You must select at least one day of week. If you want to delete this time, use the delete option in the menu.</source>
-          <target state="new">You must select at least one day of week. If you want to delete this time, use the delete option in the menu.</target>
+          <target state="final" state-qualifier="mt-suggestion">Sie müssen mindestens einen Wochentag auswählen. Wenn Sie diese Zeit löschen möchten, verwenden Sie die Löschoption im Menü.</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" translate="yes" xml:space="preserve">
           <source>No day of weeks</source>
-          <target state="new">No day of weeks</target>
+          <target state="final" state-qualifier="mt-suggestion">Kein Wochentag</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_LowEndTime.Content" translate="yes" xml:space="preserve">
           <source>Your end time must be greater than your start time.</source>
-          <target state="new">Your end time must be greater than your start time.</target>
+          <target state="final" state-qualifier="mt-suggestion">Ihre Endzeit muss größer sein als Ihre Startzeit.</target>
         </trans-unit>
       </group>
     </body>
