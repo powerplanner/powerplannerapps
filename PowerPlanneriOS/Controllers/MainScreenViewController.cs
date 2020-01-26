@@ -223,7 +223,7 @@ namespace PowerPlanneriOS.Controllers
 
             _tabBarItemClasses = new UITabBarItem("Classes", UIImage.FromBundle("TabClasses"), UIImage.FromBundle("TabClassesSelected"));
 
-            _tabBarItemMore = new UITabBarItem("More", UIImage.FromBundle("TabYears"), UIImage.FromBundle("TabYearsSelected"));
+            _tabBarItemMore = new UITabBarItem("More", UIImage.FromBundle("TabMore"), UIImage.FromBundle("TabMoreSelected"));
 
             _tabBar = new UITabBar()
             {
