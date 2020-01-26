@@ -217,7 +217,7 @@ namespace PowerPlannerUWP.Controls.TimePickers
 
             public virtual string DisplayText
             {
-                get => DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(Time.Ticks));
+                get => DateTimeFormatterExtension.Current.FormatAsShortTime(DateTime.Today.Add(Time));
             }
 
             public override bool Equals(object obj)
