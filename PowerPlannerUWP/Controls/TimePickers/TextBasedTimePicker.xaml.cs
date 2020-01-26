@@ -106,6 +106,10 @@ namespace PowerPlannerUWP.Controls.TimePickers
         protected void UpdateItems()
         {
             var desired = GenerateEntries().ToList();
+            if (desired.Count == 0)
+            {
+                desired.Add(CreateTimeEntry(new TimeSpan(23, 59, 0)));
+            }
             _timeEntries.MakeListLike(desired);
         }
 
@@ -217,7 +221,7 @@ namespace PowerPlannerUWP.Controls.TimePickers
 
             public virtual string DisplayText
             {
-                get => DateTimeFormatterExtension.Current.FormatAsShortTime(new DateTime(Time.Ticks));
+                get => DateTimeFormatterExtension.Current.FormatAsShortTime(DateTime.Today.Add(Time));
             }
 
             public override bool Equals(object obj)

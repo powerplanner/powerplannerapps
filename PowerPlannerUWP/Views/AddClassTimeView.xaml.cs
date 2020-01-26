@@ -76,8 +76,13 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            // Clicking button doesn't take focus away from TextBasedTimePicker, so their edited value doesn't get committed...
+            // Therefore we have to take focus away, and then wait for the next UI cycle to commit changes
+            ButtonSave.Focus(FocusState.Programmatic);
+            await System.Threading.Tasks.Task.Delay(1);
+
             ViewModel.Save(_startedAddingTime);
         }
 
