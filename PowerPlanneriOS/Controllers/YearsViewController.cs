@@ -86,6 +86,8 @@ namespace PowerPlanneriOS.Controllers
             StackView.AddArrangedSubview(stackViewYears);
             stackViewYears.StretchWidth(StackView);
 
+            StackView.AddSpacing(16);
+
             var buttonAddYear = new UIButton(UIButtonType.System)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
