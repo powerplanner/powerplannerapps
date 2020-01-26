@@ -21,6 +21,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
     public class CalendarViewModel : BaseMainScreenViewModelChild
     {
+        private static DisplayStates _lastDisplayState;
+
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; private set; }
 
         public CalendarViewModel(BaseViewModel parent, Guid localAccountId, ViewItemSemester semester) : base(parent)
@@ -90,14 +92,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         public enum ViewSizeStates
         {
             /// <summary>
-            /// Only calendar (or day) can be displayed
-            /// </summary>
-            FullyCompact,
-
-            /// <summary>
             /// Split calendar/day can be displayed
             /// </summary>
-            Compact
+            Compact,
+
+            /// <summary>
+            /// Only calendar (or day) can be displayed
+            /// </summary>
+            FullyCompact
         }
 
         private ViewSizeStates _viewSizeState;
@@ -133,9 +135,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         public enum DisplayStates
         {
             /// <summary>
-            /// Only display the compact calendar.
+            /// Display the split calendar/day.
             /// </summary>
-            CompactCalendar,
+            Split,
 
             /// <summary>
             /// Only display the day, along with a back button to return to calendar.
@@ -143,19 +145,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             Day,
 
             /// <summary>
-            /// Display the split calendar/day.
+            /// Only display the compact calendar.
             /// </summary>
-            Split
+            CompactCalendar
         }
 
-        private DisplayStates _displayState;
+        private DisplayStates _displayState = _lastDisplayState;
         /// <summary>
         /// Only used in iOS right now. The view should listen and display according to this property.
         /// </summary>
         public DisplayStates DisplayState
         {
             get => _displayState;
-            private set => SetProperty(ref _displayState, value, nameof(DisplayState));
+            private set
+            {
+                _lastDisplayState = value;
+                SetProperty(ref _displayState, value, nameof(DisplayState));
+            }
         }
 
         public void ExpandDay()
