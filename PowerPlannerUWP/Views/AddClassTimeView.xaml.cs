@@ -43,71 +43,6 @@ namespace PowerPlannerUWP.Views
         {
             this.InitializeComponent();
 
-            if (TimePickerControl.IsSupported && AbTestHelper.Tests.NewTimePicker)
-            {
-                var startTime = new TimePickerControl()
-                {
-                    Header = PortableLocalizedResources.GetString("EditingClassScheduleItemView_TimePickerStart.Header"),
-                    HorizontalAlignment = HorizontalAlignment.Stretch
-                };
-                startTime.SetBinding(TimePickerControl.SelectedTimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.StartTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                StackPanel.Children.Insert(0, startTime);
-
-                var endTime = new EndTimePickerControl()
-                {
-                    Header = PortableLocalizedResources.GetString("EditingClassScheduleItemView_TimePickerEnd.Header"),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Margin = new Thickness(0, 24, 0, 0)
-                };
-                endTime.SetBinding(EndTimePickerControl.StartTimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.StartTime))
-                });
-                endTime.SetBinding(TimePickerControl.SelectedTimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.EndTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                StackPanel.Children.Insert(1, endTime);
-            }
-
-            else
-            {
-                var startTime = new TimePicker()
-                {
-                    Header = PortableLocalizedResources.GetString("EditingClassScheduleItemView_TimePickerStart.Header"),
-                    HorizontalAlignment = HorizontalAlignment.Stretch
-                };
-                startTime.SetBinding(TimePicker.TimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.StartTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                StackPanel.Children.Insert(0, startTime);
-
-                var endTime = new TimePicker()
-                {
-                    Header = PortableLocalizedResources.GetString("EditingClassScheduleItemView_TimePickerEnd.Header"),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Margin = new Thickness(0, 24, 0, 0)
-                };
-                endTime.SetBinding(TimePicker.TimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.EndTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                StackPanel.Children.Insert(1, endTime);
-            }
-
             MaxWindowSize = new Size(450, double.MaxValue);
 
             checkBoxMonday.Content = DateTools.ToLocalizedString(DayOfWeek.Monday);
@@ -121,10 +56,7 @@ namespace PowerPlannerUWP.Views
 
         public override void OnViewModelSetOverride()
         {
-            if (TimePickerControl.IsSupported && AbTestHelper.Tests.NewTimePicker)
-            {
-                ViewModel.AutoAdjustEndTimes = false;
-            }
+            ViewModel.AutoAdjustEndTimes = false;
 
             base.OnViewModelSetOverride();
         }
@@ -137,7 +69,7 @@ namespace PowerPlannerUWP.Views
             base.Title = ViewModel.ClassName.ToUpper();
 
             // For tracking effectiveness of new time picker
-            if (ViewModel.State == AddClassTimeViewModel.OperationState.Adding && TimePickerControl.IsSupported)
+            if (ViewModel.State == AddClassTimeViewModel.OperationState.Adding && TextBasedTimePicker.IsSupported)
             {
                 _startedAddingTime = DateTime.UtcNow;
             }

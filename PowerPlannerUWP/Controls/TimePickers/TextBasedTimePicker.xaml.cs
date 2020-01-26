@@ -23,9 +23,9 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace PowerPlannerUWP.Controls
+namespace PowerPlannerUWP.Controls.TimePickers
 {
-    public partial class TimePickerControl : UserControl
+    public partial class TextBasedTimePicker : UserControl
     {
         /// <summary>
         /// Gets whether the OS supports this control (supported in 17763 and up), which 7% of my users are still lower than that as of 1/25/2020.
@@ -33,6 +33,16 @@ namespace PowerPlannerUWP.Controls
         public static bool IsSupported => ApiInformation.IsEventPresent(typeof(ComboBox).FullName, "TextSubmitted");
 
         public const int CUSTOM_TIME_PICKER_DEFAULT_INTERVAL = 30;
+
+        public TextBasedTimePicker()
+        {
+            InitializeComponent();
+
+            TimePickerComboBox.ItemsSource = _timeEntries;
+
+            // Update selected time
+            OnSelectedTimeChanged();
+        }
 
         protected ObservableCollection<TimeEntry> _timeEntries = new ObservableCollection<TimeEntry>();
 
@@ -43,7 +53,7 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register(nameof(Header), typeof(string), typeof(TimePickerControl), new PropertyMetadata(""));
+            DependencyProperty.Register(nameof(Header), typeof(string), typeof(TextBasedTimePicker), new PropertyMetadata(""));
 
         /// <summary>
         /// The selected time.
@@ -55,21 +65,11 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty SelectedTimeProperty =
-            DependencyProperty.Register(nameof(SelectedTime), typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnSelectedTimeChanged));
-
-        public TimePickerControl()
-        {
-            InitializeComponent();
-
-            TimePickerComboBox.ItemsSource = _timeEntries;
-
-            // Update selected time
-            OnSelectedTimeChanged();
-        }
+            DependencyProperty.Register(nameof(SelectedTime), typeof(TimeSpan), typeof(TextBasedTimePicker), new PropertyMetadata(new TimeSpan(9, 0, 0), OnSelectedTimeChanged));
 
         private static void OnSelectedTimeChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as TimePickerControl).OnSelectedTimeChanged();
+            (sender as TextBasedTimePicker).OnSelectedTimeChanged();
         }
 
         private void OnSelectedTimeChanged()
@@ -177,7 +177,7 @@ namespace PowerPlannerUWP.Controls
                 // Mark the event as handled so the framework doesn't update the selected item.
                 args.Handled = true;
 
-                var correctString = "EditingClassScheduleItemView_Invalid" + (this is EndTimePickerControl ? "End" : "Start") + "Time";
+                var correctString = "EditingClassScheduleItemView_Invalid" + (this is TextBasedEndTimePicker ? "End" : "Start") + "Time";
                 var correctTitle = PowerPlannerResources.GetString(correctString + ".Title");
                 var correctContent = PowerPlannerResources.GetString(correctString + ".Content");
                 new PortableMessageDialog(correctContent, correctTitle).Show();
@@ -242,7 +242,7 @@ namespace PowerPlannerUWP.Controls
         }
     }
 
-    public class EndTimePickerControl : TimePickerControl
+    public class TextBasedEndTimePicker : TextBasedTimePicker
     {
         /// <summary>
         /// If this is an end time control, you can use this property so it'll dynamically eliminate values based on start time.
@@ -254,11 +254,11 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty StartTimeProperty =
-            DependencyProperty.Register(nameof(StartTime), typeof(TimeSpan), typeof(TimePickerControl), new PropertyMetadata(new TimeSpan(9, 0, 0), OnStartTimeChanged));
+            DependencyProperty.Register(nameof(StartTime), typeof(TimeSpan), typeof(TextBasedTimePicker), new PropertyMetadata(new TimeSpan(9, 0, 0), OnStartTimeChanged));
 
         private static void OnStartTimeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as EndTimePickerControl).OnStartTimeChanged(e);
+            (sender as TextBasedEndTimePicker).OnStartTimeChanged(e);
         }
 
         private void OnStartTimeChanged(DependencyPropertyChangedEventArgs e)
@@ -309,9 +309,9 @@ namespace PowerPlannerUWP.Controls
 
         private class EndTimeEntry : TimeEntry
         {
-            private EndTimePickerControl _endTimePickerControl;
+            private TextBasedEndTimePicker _endTimePickerControl;
 
-            public EndTimeEntry(EndTimePickerControl endTimePickerControl, TimeSpan time) : base(time)
+            public EndTimeEntry(TextBasedEndTimePicker endTimePickerControl, TimeSpan time) : base(time)
             {
                 _endTimePickerControl = endTimePickerControl;
             }

@@ -91,98 +91,10 @@ namespace PowerPlannerUWP.Views
 
         public override void OnViewModelSetOverride()
         {
-            if (TimePickerControl.IsSupported && AbTestHelper.Tests.NewTimePicker)
-            {
-                ViewModel.AutoAdjustEndTimes = false;
+            ViewModel.AutoAdjustEndTimes = false;
 
-                var startTime = new TimePickerControl()
-                {
-                    Header = GetStartTimeText(),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Margin = new Thickness(6)
-                };
-                startTime.SetBinding(TimePickerControl.SelectedTimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.StartTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                startTime.SetBinding(TimePickerControl.VisibilityProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.IsStartTimePickerVisible)),
-                    Converter = new InterfacesUWP.Converters.BoolToVisibilityConverter()
-                });
-                TimesPanel.Children.Add(startTime);
-
-                var endTime = new EndTimePickerControl()
-                {
-                    Header = LocalizedResources.GetString("String_EndTime"),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Margin = new Thickness(6)
-                };
-                endTime.SetBinding(EndTimePickerControl.StartTimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.StartTime))
-                });
-                endTime.SetBinding(TimePickerControl.SelectedTimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.EndTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                endTime.SetBinding(TimePickerControl.VisibilityProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.IsEndTimePickerVisible)),
-                    Converter = new InterfacesUWP.Converters.BoolToVisibilityConverter()
-                });
-                TimesPanel.Children.Add(endTime);
-            }
-            else
-            {
-                var startTime = new TimePicker()
-                {
-                    Header = GetStartTimeText(),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Margin = new Thickness(6)
-                };
-                startTime.SetBinding(TimePicker.TimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.StartTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                startTime.SetBinding(TimePicker.VisibilityProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.IsStartTimePickerVisible)),
-                    Converter = new InterfacesUWP.Converters.BoolToVisibilityConverter()
-                });
-                TimesPanel.Children.Add(startTime);
-
-                var endTime = new TimePicker()
-                {
-                    Header = LocalizedResources.GetString("String_EndTime"),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Margin = new Thickness(6)
-                };
-                endTime.SetBinding(TimePicker.TimeProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.EndTime)),
-                    Mode = BindingMode.TwoWay
-                });
-                endTime.SetBinding(TimePicker.VisibilityProperty, new Binding()
-                {
-                    Source = ViewModel,
-                    Path = new PropertyPath(nameof(ViewModel.IsEndTimePickerVisible)),
-                    Converter = new InterfacesUWP.Converters.BoolToVisibilityConverter()
-                });
-                TimesPanel.Children.Add(endTime);
-            }
-
+            StartTimePicker.Header = GetStartTimeText();
+            EndTimePicker.Header = LocalizedResources.GetString("String_EndTime");
             ComboBoxTimeOptions.Header = LocalizedResources.GetString("String_Time");
 
             ViewModel.PropertyChanged += new WeakEventHandler<System.ComponentModel.PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;

@@ -92,7 +92,22 @@
 
                 <interfaces:MyAdaptiveGridPanel x:Name="TimesPanel" MinColumnWidth="236" Margin="-6,0,-6,0">
 
-                    <!--Will be programmatically added since uses new APIs-->
+                    <controls:EnhancedTimePicker
+                        x:Name="StartTimePicker"
+                        Header="Start time"
+                        HorizontalAlignment="Stretch"
+                        Margin="6"
+                        SelectedTime="{Binding StartTime, Mode=TwoWay}"
+                        Visibility="{Binding IsStartTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                    <controls:EnhancedEndTimePicker
+                        x:Name="EndTimePicker"
+                        Header="End time"
+                        HorizontalAlignment="Stretch"
+                        Margin="6"
+                        StartTime="{Binding StartTime}"
+                        SelectedTime="{Binding EndTime, Mode=TwoWay}"
+                        Visibility="{Binding IsEndTimePickerVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 </interfaces:MyAdaptiveGridPanel>
 

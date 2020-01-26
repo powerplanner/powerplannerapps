@@ -119,12 +119,14 @@
     </Compile>
     <Compile Include="App\PowerPlannerUwpApp.cs" />
     <Compile Include="Controls\AbTestControl.cs" />
+    <Compile Include="Controls\TimePickers\EndTimePicker.cs" />
+    <Compile Include="Controls\TimePickers\EnhancedTimePicker.cs" />
     <Compile Include="Controls\ImageAttachmentControl.cs" />
     <Compile Include="Controls\RecurrenceControl.xaml.cs">
       <DependentUpon>RecurrenceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TimePickerControl.xaml.cs">
-      <DependentUpon>TimePickerControl.xaml</DependentUpon>
+    <Compile Include="Controls\TimePickers\TextBasedTimePicker.xaml.cs">
+      <DependentUpon>TextBasedTimePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
@@ -592,7 +594,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TimePickerControl.xaml">
+    <Page Include="Controls\TimePickers\TextBasedTimePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

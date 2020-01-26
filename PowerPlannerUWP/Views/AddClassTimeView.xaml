@@ -39,7 +39,19 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="StackPanel" Margin="12">
                 
-                <!-- Start Time and End Time will be programmatically added since uses APIs that are new -->
+                <controls:EnhancedTimePicker
+                    x:Uid="EditingClassScheduleItemView_TimePickerStart"
+                    Header="Start time"
+                    HorizontalAlignment="Stretch"
+                    SelectedTime="{Binding StartTime, Mode=TwoWay}"/>
+
+                <controls:EnhancedEndTimePicker
+                    x:Uid="EditingClassScheduleItemView_TimePickerEnd"
+                    Header="End time"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,24,0,0"
+                    StartTime="{Binding StartTime}"
+                    SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
 
                 <TextBox
                     x:Uid="EditingClassScheduleItemView_TextBoxRoom"
