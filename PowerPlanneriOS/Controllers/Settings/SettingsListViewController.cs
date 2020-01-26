@@ -108,7 +108,7 @@ namespace PowerPlanneriOS.Controllers.Settings
                     UpdateCurrentSemesterText(mainScreenViewModel.CurrentSemester);
                     _tableView.AddCell(_cellCurrentSemester, null);
 
-                    _tableView.AddCell("View Years & Semesters", () => mainScreenViewModel.OpenYears(checkUseTabNavigation: false));
+                    _tableView.AddCell("View Years & Semesters", () => mainScreenViewModel.OpenYears());
 
                     _tableView.StartNewGroup();
                 }

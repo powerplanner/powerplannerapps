@@ -98,7 +98,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         SelectedItem = AvailableItems.First();
                     }
 
-                    if (UseTabNavigation)
+                    if (PowerPlannerApp.DoNotShowYearsInTabItems)
                     {
                         // We need to clear the Years page
                         Popups.Clear();
@@ -122,18 +122,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 SelectedItem = null;
             }
 
-            if (UseTabNavigation && AvailableItems.Any())
+            if (PowerPlannerApp.DoNotShowYearsInTabItems && AvailableItems.Any())
             {
                 // We need to clear the Years page
                 Popups.Clear();
             }
         }
 
-        public readonly bool UseTabNavigation;
-
         private MainScreenViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
-            UseTabNavigation = SyncExtensions.GetPlatform() == "Android";
             CurrentAccount = account;
 
             AccountDataStore.DataChangedEvent += new WeakEventHandler<DataChangedEvent>(AccountDataStore_DataChangedEvent).Handler;
@@ -486,7 +483,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 selectedItem = model.AvailableItems.First();
             }
 
-            if (!model.UseTabNavigation && selectedItem.GetValueOrDefault() == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
+            if (!PowerPlannerApp.ShowClassesAsPopups && selectedItem.GetValueOrDefault() == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
             {
                 var c = model.Classes.FirstOrDefault(i => NavigationManager.ClassSelection == i.Identifier);
                 if (c != null)
@@ -1041,24 +1038,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <returns></returns>
         private bool makeAvailableItemsLike(params NavigationManager.MainMenuSelections[] desired)
         {
+            var desiredList = new List<MainMenuSelections>(desired);
+
             if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
             {
-                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Day }).ToArray();
+                desiredList.Remove(MainMenuSelections.Day);
             }
 
-            if (PowerPlannerApp.DoNotShowYearsInMenuItems)
+            if (PowerPlannerApp.DoNotShowYearsInTabItems)
             {
-                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years }).ToArray();
+                desiredList.Remove(MainMenuSelections.Years);
             }
 
-            if (UseTabNavigation)
+            if (PowerPlannerApp.DoNotShowSettingsInTabItems)
             {
-                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years, MainMenuSelections.Settings }).ToArray();
+                desiredList.Remove(MainMenuSelections.Settings);
             }
 
             bool answer = IListExtensions.MakeListLike(_availableItems, desired);
 
-            if (UseTabNavigation && !AvailableItems.Any() && Popups.Count == 0)
+            if (PowerPlannerApp.DoNotShowYearsInTabItems && !AvailableItems.Any() && Popups.Count == 0)
             {
                 OpenYears();
             }
@@ -1143,13 +1142,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             this.ShowPopup(AddHolidayViewModel.CreateForEdit(this, holiday));
         }
 
-        public void OpenYears(bool checkUseTabNavigation = true)
+        public void OpenYears()
         {
             try
             {
-                if (checkUseTabNavigation && !UseTabNavigation)
+                if (!PowerPlannerApp.DoNotShowYearsInTabItems)
                 {
-                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                    throw new InvalidOperationException("If you're using this, you should have set DoNotShowYearsInTabItems to true");
                 }
 
                 ShowPopup(new YearsViewModel(this));
@@ -1164,9 +1163,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
-                if (!UseTabNavigation)
+                if (!PowerPlannerApp.DoNotShowSettingsInTabItems)
                 {
-                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                    throw new InvalidOperationException("If you're using this, you should have set DoNotShowSettingsInTabItems to true");
                 }
 
                 ShowPopup(new SettingsViewModel(this));
@@ -1179,7 +1178,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
         public void ViewClass(ViewItemClass c)
         {
-            if (UseTabNavigation)
+            if (PowerPlannerApp.ShowClassesAsPopups)
             {
                 OpenClassAsPopup(c);
             }
@@ -1193,9 +1192,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
-                if (!UseTabNavigation)
+                if (!PowerPlannerApp.ShowClassesAsPopups)
                 {
-                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                    throw new InvalidOperationException("If you're using this, you should have set ShowClassesAsPopups to true");
                 }
 
                 if (c == null)
