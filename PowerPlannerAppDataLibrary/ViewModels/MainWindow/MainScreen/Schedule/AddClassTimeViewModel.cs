@@ -332,20 +332,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public void Save(DateTime? timeStartedAdding = null)
         {
+            if (StartTime >= EndTime)
+            {
+                new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_LowEndTime.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
+                return;
+            }
+
+            if (DayOfWeeks.Count == 0)
+            {
+                new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Title")).Show();
+                return;
+            }
+
             TryStartDataOperationAndThenNavigate(async delegate
             {
-                if (StartTime >= EndTime)
-                {
-                    new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_LowEndTime.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
-                    return;
-                }
-
-                if (DayOfWeeks.Count == 0)
-                {
-                    new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Title")).Show();
-                    return;
-                }
-
                 var updatedAndNewSchedules = new List<DataItemSchedule>();
 
                 Guid classId = AddParams != null ? AddParams.Class.Identifier : EditParams.GroupedSchedules.First().Class.Identifier;

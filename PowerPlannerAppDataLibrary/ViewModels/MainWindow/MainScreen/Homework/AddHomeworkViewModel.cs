@@ -882,6 +882,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     return;
                 }
 
+                if (IsEndTimePickerVisible && EndTime <= StartTime)
+                {
+                    new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_LowEndTime.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
+                    return;
+                }
+
                 List<DataItemMegaItem> bulkEntry = null;
 
                 if (Repeats && IsRepeatingEntryEnabled)

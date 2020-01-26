@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerUWP.Controls;
+using PowerPlannerUWP.Controls.TimePickers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
