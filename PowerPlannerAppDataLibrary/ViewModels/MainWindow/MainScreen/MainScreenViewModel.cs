@@ -27,7 +27,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Tasks;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -99,7 +98,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         SelectedItem = AvailableItems.First();
                     }
 
-                    if (UseTabNavigation)
+                    if (PowerPlannerApp.DoNotShowYearsInTabItems)
                     {
                         // We need to clear the Years page
                         Popups.Clear();
@@ -123,18 +122,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 SelectedItem = null;
             }
 
-            if (UseTabNavigation && AvailableItems.Any())
+            if (PowerPlannerApp.DoNotShowYearsInTabItems && AvailableItems.Any())
             {
                 // We need to clear the Years page
                 Popups.Clear();
             }
         }
 
-        public readonly bool UseTabNavigation;
-
         private MainScreenViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
-            UseTabNavigation = SyncExtensions.GetPlatform() == "Android";
             CurrentAccount = account;
 
             AccountDataStore.DataChangedEvent += new WeakEventHandler<DataChangedEvent>(AccountDataStore_DataChangedEvent).Handler;
@@ -451,11 +447,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             if (Content == null)
                 throw new NullReferenceException("Content was null");
 
-            if (Content is TasksViewModel)
-            {
-                return (Content as TasksViewModel).SelectedItem;
-            }
-
             if (!ContentTypesToMenuSelections.ContainsKey(Content.GetType()))
             {
                 throw new KeyNotFoundException("Please register this content type for menu item selection");
@@ -492,7 +483,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 selectedItem = model.AvailableItems.First();
             }
 
-            if (!model.UseTabNavigation && selectedItem.GetValueOrDefault() == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
+            if (!PowerPlannerApp.ShowClassesAsPopups && selectedItem.GetValueOrDefault() == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
             {
                 var c = model.Classes.FirstOrDefault(i => NavigationManager.ClassSelection == i.Identifier);
                 if (c != null)
@@ -700,10 +691,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             get
             {
-                if (Content is TasksViewModel)
-                {
-                    return (Content as TasksViewModel).SelectedItem;
-                }
                 return _selectedItem;
             }
             set
@@ -760,14 +747,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
 
             return false;
-        }
-
-        public void OpenTasksView()
-        {
-            if (!(Content is TasksViewModel))
-            {
-                SelectedItem = Helpers.Settings.NavigationManagerSettings.TasksViewSelection;
-            }
         }
 
         public void KeepBackStack()
@@ -1059,14 +1038,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <returns></returns>
         private bool makeAvailableItemsLike(params NavigationManager.MainMenuSelections[] desired)
         {
-            if (UseTabNavigation)
+            var desiredList = new List<MainMenuSelections>(desired);
+
+            if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
             {
-                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years, MainMenuSelections.Settings }).ToArray();
+                desiredList.Remove(MainMenuSelections.Day);
+            }
+
+            if (PowerPlannerApp.DoNotShowYearsInTabItems)
+            {
+                desiredList.Remove(MainMenuSelections.Years);
+            }
+
+            if (PowerPlannerApp.DoNotShowSettingsInTabItems)
+            {
+                desiredList.Remove(MainMenuSelections.Settings);
             }
 
             bool answer = IListExtensions.MakeListLike(_availableItems, desired);
 
-            if (UseTabNavigation && !AvailableItems.Any() && Popups.Count == 0)
+            if (PowerPlannerApp.DoNotShowYearsInTabItems && !AvailableItems.Any() && Popups.Count == 0)
             {
                 OpenYears();
             }
@@ -1076,28 +1067,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
         public void SetContent(BaseViewModel viewModel, bool preserveBack = false)
         {
-            if (PowerPlannerApp.UseTasksViewModel)
-            {
-                if (viewModel is CalendarViewModel || viewModel is DayViewModel || viewModel is AgendaViewModel)
-                {
-                    var tasksViewModel = Content as TasksViewModel;
-                    bool needToNavigate = false;
-                    if (tasksViewModel == null)
-                    {
-                        needToNavigate = true;
-                        tasksViewModel = new TasksViewModel(this);
-                    }
-                    tasksViewModel.Replace(viewModel);
-
-                    if (!needToNavigate)
-                    {
-                        return;
-                    }
-
-                    viewModel = tasksViewModel;
-                }
-            }
-
             if (preserveBack)
                 base.Navigate(viewModel);
             else
@@ -1177,9 +1146,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
-                if (!UseTabNavigation)
+                if (!PowerPlannerApp.DoNotShowYearsInTabItems)
                 {
-                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                    throw new InvalidOperationException("If you're using this, you should have set DoNotShowYearsInTabItems to true");
                 }
 
                 ShowPopup(new YearsViewModel(this));
@@ -1194,9 +1163,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
-                if (!UseTabNavigation)
+                if (!PowerPlannerApp.DoNotShowSettingsInTabItems)
                 {
-                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                    throw new InvalidOperationException("If you're using this, you should have set DoNotShowSettingsInTabItems to true");
                 }
 
                 ShowPopup(new SettingsViewModel(this));
@@ -1209,7 +1178,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
         public void ViewClass(ViewItemClass c)
         {
-            if (UseTabNavigation)
+            if (PowerPlannerApp.ShowClassesAsPopups)
             {
                 OpenClassAsPopup(c);
             }
@@ -1223,9 +1192,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
-                if (!UseTabNavigation)
+                if (!PowerPlannerApp.ShowClassesAsPopups)
                 {
-                    throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
+                    throw new InvalidOperationException("If you're using this, you should have set ShowClassesAsPopups to true");
                 }
 
                 if (c == null)

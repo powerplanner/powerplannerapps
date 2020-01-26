@@ -38,7 +38,6 @@ using PowerPlanneriOS.Controllers.Welcome;
 using PowerPlanneriOS.ViewModels;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Tasks;
 using UserNotifications;
 using InterfacesiOS.Helpers;
 using System.Threading.Tasks;
@@ -76,7 +75,6 @@ namespace PowerPlanneriOS
                 { typeof(InitialSyncViewModel), typeof(InitialSyncViewController) },
                 { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
                 { typeof(CalendarViewModel), typeof(CalendarViewController) },
-                { typeof(DayViewModel), typeof(DayViewController) },
                 { typeof(AgendaViewModel), typeof(AgendaViewController) },
                 { typeof(ScheduleViewModel), typeof(ScheduleViewController) },
                 { typeof(ClassesViewModel), typeof(ClassesViewController) },
@@ -92,7 +90,6 @@ namespace PowerPlanneriOS
                 { typeof(ViewHomeworkViewModel), typeof(ViewHomeworkViewController) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsViewController) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayViewController) },
-                { typeof(TasksViewModel), typeof(TasksViewController) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeViewController) },
                 { typeof(AddGradeViewModel), typeof(AddGradeViewController) },
                 { typeof(ConfigureClassCreditsViewModel), typeof(EditClassCreditsViewController) },
@@ -176,14 +173,8 @@ namespace PowerPlanneriOS
             AppCenter.Start(Secrets.AppCenterAppSecret,
                    typeof(Analytics), typeof(Crashes));
 
-            // Request notification permissions from the user
             if (SdkSupportHelper.IsNotificationsSupported)
             {
-                UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, err) =>
-                {
-                    // Don't need to do anything to handle approval
-                });
-
                 UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
 
                 RemindersExtension.Current = new IOSRemindersExtension();
@@ -262,11 +253,19 @@ namespace PowerPlanneriOS
                                 DateTime dateToShow = dateOfArtificalToday.AddDays(1);
 
                                 // Show day view
-                                _appDelegate.HandleLaunch((viewModel) =>
+                                if (AppDelegate._hasActivatedWindow)
                                 {
-                                    viewModel.HandleViewDayActivation(localAccountId, dateToShow);
-                                    return Task.FromResult(true);
-                                });
+                                    _appDelegate.HandleLaunch(async (viewModel) =>
+                                    {
+                                        await viewModel.HandleViewDayActivation(localAccountId, dateToShow);
+                                    });
+                                }
+                                else
+                                {
+                                    // We just set the properties, weird stuff seemed to happen if we tried to use the unified activation methods
+                                    CalendarViewModel.SetInitialDisplayState(CalendarViewModel.DisplayStates.Day, dateToShow);
+                                    NavigationManager.MainMenuSelection = NavigationManager.MainMenuSelections.Calendar;
+                                }
                             }
 
                             else if (IOSRemindersExtension.TryParsingDayOfTaskIdentifier(identifier, out Guid taskIdentifier))

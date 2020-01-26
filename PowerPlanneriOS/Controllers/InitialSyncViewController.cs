@@ -112,7 +112,7 @@ namespace PowerPlanneriOS.Controllers
                     TranslatesAutoresizingMaskIntoConstraints = false
                 };
                 {
-                    var settingsImage = new UIImageView(UIImage.FromBundle("TabSettings").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate))
+                    var settingsImage = new UIImageView(UIImage.FromBundle("SettingsIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate))
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
                         TintColor = UIColor.White,

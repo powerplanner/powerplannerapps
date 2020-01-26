@@ -23,20 +23,51 @@ using System.ComponentModel;
 
 namespace PowerPlanneriOS.Controllers
 {
-    public class CalendarViewController : BaseTasksViewController<CalendarViewModel>
+    public class CalendarViewController : PopupViewController<CalendarViewModel>
     {
-        private object _tabBarHeightListener;
         private MyCalendarView _cal;
         private UIPagedDayView _pagedDayView;
         private AdaptiveView _container;
 
         public CalendarViewController()
         {
-            this.AutomaticallyAdjustsScrollViewInsets = false;
+            HideBackButton();
+
+            NavItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Add)
+            {
+                Title = "Add item"
+            };
+            NavItem.RightBarButtonItem.Clicked += new WeakEventHandler<EventArgs>(ButtonAddItem_Clicked).Handler;
+        }
+
+        private void ButtonAddItem_Clicked(object sender, EventArgs e)
+        {
+            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
+            UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Task", UIAlertActionStyle.Default, delegate { ViewModel.AddHomework(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Event", UIAlertActionStyle.Default, delegate { ViewModel.AddExam(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Holiday", UIAlertActionStyle.Default, delegate { ViewModel.AddHoliday(); }));
+
+            actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            // Required for iPad - You must specify a source for the Action Sheet since it is
+            // displayed as a popover
+            UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
+            if (presentationPopover != null)
+            {
+                presentationPopover.BarButtonItem = NavItem.RightBarButtonItem;
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+            }
+
+            // Display the alert
+            this.PresentViewController(actionSheetAlert, true, null);
         }
 
         public override void OnViewModelLoadedOverride()
         {
+            UpdateTitle();
+
             // Calendar
             _cal = new MyCalendarView(ViewModel.FirstDayOfWeek)
             {
@@ -49,12 +80,13 @@ namespace PowerPlanneriOS.Controllers
             _cal.DisplayMonthChanged += new WeakEventHandler<DateTime>(Cal_DisplayMonthChanged).Handler;
 
             // Day pager
-            _pagedDayView = new UIPagedDayView(ViewModel.SemesterItemsViewGroup, ViewModel.MainScreenViewModel)
+            _pagedDayView = new UIPagedDayView(ViewModel.SemesterItemsViewGroup, ViewModel)
             {
                 Date = ViewModel.SelectedDate
             };
             _pagedDayView.OnRequestViewClass += new WeakEventHandler<ViewItemClass>(PagedDayView_OnRequestViewClass).Handler;
             _pagedDayView.DateChanged += new WeakEventHandler<DateTime>(PagedDayView_DateChanged).Handler;
+            _pagedDayView.OnRequestExpand += new WeakEventHandler(PagedDayView_OnRequestExpand).Handler;
 
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
 
@@ -63,16 +95,53 @@ namespace PowerPlanneriOS.Controllers
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
 
-            View.Add(_container);
-            _container.StretchWidth(View);
-            _container.PinToTop(View);
-
-            MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
-            {
-                _container.RemovePinToBottom(View).PinToBottom(View, (int)MainScreenViewController.TAB_BAR_HEIGHT);
-            });
+            ContentView.Add(_container);
+            _container.StretchWidthAndHeight(ContentView);
 
             base.OnViewModelLoadedOverride();
+        }
+
+        private void PagedDayView_OnRequestExpand(object sender, EventArgs e)
+        {
+            ViewModel.ExpandDay();
+        }
+
+        private UIBarButtonItem _backButton;
+        private UIButton _backButtonContents;
+        private void UpdateTitle()
+        {
+            if (ViewModel.DisplayState == CalendarViewModel.DisplayStates.Day)
+            {
+                Title = "";
+
+                if (_backButtonContents == null)
+                {
+                    _backButtonContents = new UIButton(UIButtonType.Custom);
+                    _backButtonContents.SetImage(UIImage.FromBundle("ToolbarBack").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
+                    _backButtonContents.TouchUpInside += _backButton_Clicked;
+                }
+
+                _backButtonContents.SetTitle(UISingleDayView.GetHeaderText(ViewModel.SelectedDate), UIControlState.Normal);
+                _backButtonContents.SizeToFit();
+
+                if (_backButton == null)
+                {
+                    _backButton = new UIBarButtonItem(_backButtonContents);
+                }
+
+                NavItem.LeftBarButtonItem = _backButton;
+            }
+
+            else
+            {
+                Title = ViewModel.DisplayMonth.ToString("MMMM yyyy");
+                NavItem.LeftBarButtonItem = null;
+            }
+        }
+
+        private void _backButton_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.BackToCalendar();
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -88,8 +157,27 @@ namespace PowerPlanneriOS.Controllers
                     {
                         _cal.SelectedDate = ViewModel.SelectedDate.Date;
                     }
+                    if (ViewModel.DisplayState == CalendarViewModel.DisplayStates.Day)
+                    {
+                        UpdateTitle();
+                    }
+                    break;
+
+                case nameof(ViewModel.DisplayMonth):
+                    UpdateTitle();
+                    break;
+
+                case nameof(ViewModel.DisplayState):
+                    UpdateTitle();
                     break;
             }
+        }
+
+        private enum SplitModes
+        {
+            Calendar,
+            Split,
+            Day
         }
 
         private class AdaptiveView : UIView
@@ -98,49 +186,99 @@ namespace PowerPlanneriOS.Controllers
             private UIPagedDayView _dayView;
             private CalendarViewModel _viewModel;
 
-            public bool IsInSplitMode { get; set; }
-
             public AdaptiveView(MyCalendarView calendarView, UIPagedDayView dayView, CalendarViewModel viewModel)
             {
                 _calendarView = calendarView;
                 _dayView = dayView;
                 _viewModel = viewModel;
 
+                _viewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+
                 Add(calendarView);
                 Add(dayView);
             }
 
-            public override void LayoutSubviews()
+            private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                var width = this.Bounds.Width;
-                var height = this.Bounds.Height;
-
-                if (height > 500)
+                switch (e.PropertyName)
                 {
-                    nfloat splitCalendarHeight = 300;
+                    case nameof(ViewModel.DisplayState):
 
-                    if (height > 950)
+                        // Don't animate the very first time
+                        if (!_hasLaidOutOnce)
+                        {
+                            UpdateLayout(base.Bounds);
+                            return;
+                        }
+
+                        UIView.Animate(0.4, () => UpdateLayout(base.Bounds));
+                        break;
+                }
+            }
+
+            public override CGRect Bounds
+            {
+                get => base.Bounds;
+                set
+                {
+                    base.Bounds = value;
+
+                    if (value.Height > 500)
                     {
-                        splitCalendarHeight = 450;
+                        _viewModel.ViewSizeState = CalendarViewModel.ViewSizeStates.Compact;
+                    }
+                    else
+                    {
+                        _viewModel.ViewSizeState = CalendarViewModel.ViewSizeStates.FullyCompact;
                     }
 
-                    _calendarView.Frame = new CGRect(0, 0, width, splitCalendarHeight);
-
-                    _dayView.Frame = new CGRect(0, splitCalendarHeight, width, height - splitCalendarHeight);
-                    _dayView.Hidden = false;
-
-                    _calendarView.SelectedDate = _viewModel.SelectedDate;
-
-                    IsInSplitMode = true;
+                    UpdateLayout(value);
                 }
-                else
+            }
+
+            private bool _hasLaidOutOnce = false;
+            private void UpdateLayout(CGRect bounds)
+            {
+                _hasLaidOutOnce = true;
+
+                var width = bounds.Width;
+                var height = bounds.Height;
+
+                switch (_viewModel.DisplayState)
                 {
-                    _calendarView.Frame = new CGRect(0, 0, width, height);
-                    _dayView.Hidden = true;
+                    case CalendarViewModel.DisplayStates.CompactCalendar:
+                        {
+                            _calendarView.Hidden = false;
+                            _calendarView.Frame = new CGRect(0, 0, width, height);
+                            _dayView.Hidden = true;
+                        }
+                        break;
 
-                    _calendarView.SelectedDate = null;
+                    case CalendarViewModel.DisplayStates.Day:
+                        {
+                            _calendarView.Hidden = true;
+                            _dayView.Frame = new CGRect(0, 0, width, height);
+                            _dayView.Hidden = false;
+                        }
+                        break;
 
-                    IsInSplitMode = false;
+                    case CalendarViewModel.DisplayStates.Split:
+                        {
+                            _calendarView.Hidden = false;
+                            _dayView.Hidden = false;
+
+                            nfloat splitCalendarHeight = 300;
+
+                            if (height > 950)
+                            {
+                                splitCalendarHeight = 450;
+                            }
+
+                            _calendarView.Frame = new CGRect(0, 0, width, splitCalendarHeight);
+
+                            _dayView.Frame = new CGRect(0, splitCalendarHeight, width, height - splitCalendarHeight);
+                        }
+                        break;
                 }
             }
         }
@@ -162,20 +300,7 @@ namespace PowerPlanneriOS.Controllers
 
         private void Cal_DateClicked(object sender, DateTime e)
         {
-            if (_container.IsInSplitMode)
-            {
-                ViewModel.SelectedDate = e;
-            }
-
-            else
-            {
-                ViewModel.OpenDay(e);
-            }
-        }
-
-        protected override string GetTitle()
-        {
-            return "Calendar";
+            ViewModel.SelectedDate = e;
         }
 
         private class MyCalendarView : BareUICalendarView

@@ -24,6 +24,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             Sync.SyncQueued += _syncQueuedEventHandler;
 
             Sync.StartSyncAccount(account);
+
+            try
+            {
+                // Perfect time to ask for permission to send notifications
+                RemindersExtension.Current?.RequestReminderPermission();
+            }
+            catch { }
         }
 
         public void TryAgain()

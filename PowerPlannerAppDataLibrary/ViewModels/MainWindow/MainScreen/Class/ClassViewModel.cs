@@ -121,7 +121,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             try
             {
-                if (MainScreenViewModel.UseTabNavigation || SyncLayer.SyncExtensions.GetPlatform() == "iOS")
+                if (App.PowerPlannerApp.ShowClassesAsPopups || SyncLayer.SyncExtensions.GetPlatform() == "iOS")
                 {
                     RemoveViewModel();
                 }
@@ -210,7 +210,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void EditTimes()
         {
-            if (MainScreenViewModel.UseTabNavigation)
+            if (App.PowerPlannerApp.ShowClassesAsPopups)
             {
                 // Remove self (currently a popup)
                 RemoveViewModel();

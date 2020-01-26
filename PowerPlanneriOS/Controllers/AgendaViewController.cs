@@ -18,14 +18,21 @@ using PowerPlannerAppDataLibrary.Extensions;
 
 namespace PowerPlanneriOS.Controllers
 {
-    public class AgendaViewController : BaseTasksViewController<AgendaViewModel>
+    public class AgendaViewController : PopupViewController<AgendaViewModel>
     {
         private UITableView _tableView;
         private object _tabBarHeightListener;
 
         public AgendaViewController()
         {
-            this.AutomaticallyAdjustsScrollViewInsets = false;
+            Title = GetTitle();
+            HideBackButton();
+
+            NavItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Add)
+            {
+                Title = "Add item"
+            };
+            NavItem.RightBarButtonItem.Clicked += new WeakEventHandler<EventArgs>(ButtonAddItem_Clicked).Handler;
 
             _tableView = new UITableView()
             {
@@ -38,8 +45,8 @@ namespace PowerPlanneriOS.Controllers
                 _tableView.CellLayoutMarginsFollowReadableWidth = false;
             }
             _tableView.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
-            View.Add(_tableView);
-            _tableView.StretchWidthAndHeight(View);
+            ContentView.Add(_tableView);
+            _tableView.StretchWidthAndHeight(ContentView);
 
             MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
             {
@@ -47,7 +54,30 @@ namespace PowerPlanneriOS.Controllers
             });
         }
 
-        protected override string GetTitle()
+        private void ButtonAddItem_Clicked(object sender, EventArgs e)
+        {
+            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
+            UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Task", UIAlertActionStyle.Default, delegate { ViewModel.AddHomework(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Event", UIAlertActionStyle.Default, delegate { ViewModel.AddExam(); }));
+
+            actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            // Required for iPad - You must specify a source for the Action Sheet since it is
+            // displayed as a popover
+            UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
+            if (presentationPopover != null)
+            {
+                presentationPopover.BarButtonItem = NavItem.RightBarButtonItem;
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+            }
+
+            // Display the alert
+            this.PresentViewController(actionSheetAlert, true, null);
+        }
+
+        protected string GetTitle()
         {
             return "Agenda";
         }

@@ -286,15 +286,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 }
             }
 
-            public static MainMenuSelections TasksViewSelection
-            {
-                get { return AppSettings.GetEnumOrDefault<MainMenuSelections>(TASKS_VIEW_SELECTION, MainMenuSelections.Calendar); }
-                set
-                {
-                    AppSettings.AddOrUpdateEnum(TASKS_VIEW_SELECTION, value);
-                }
-            }
-
             public static Guid ClassSelection
             {
                 get { return AppSettings.GetValueOrDefault(CLASS_SELECTION, Guid.Empty); }

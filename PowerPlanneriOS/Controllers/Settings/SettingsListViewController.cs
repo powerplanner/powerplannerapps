@@ -27,7 +27,7 @@ namespace PowerPlanneriOS.Controllers.Settings
         public SettingsListViewController()
         {
             AutomaticallyAdjustsScrollViewInsets = false;
-            Title = "Settings";
+            Title = "More";
 
             // Creating a table view programmatically: https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/TableView_iPhone/CreateConfigureTableView/CreateConfigureTableView.html#//apple_ref/doc/uid/TP40007451-CH6-SW4
             // Xamarin: https://developer.xamarin.com/guides/ios/user_interface/controls/tables/populating-a-table-with-data/
@@ -76,8 +76,10 @@ namespace PowerPlanneriOS.Controllers.Settings
             catch { }
         }
 
+        private bool _isListeningToSemester;
         private bool _isListeningToMain;
         private bool _isFullVersion;
+        private UITableViewCell _cellCurrentSemester;
         private async void RedrawItems()
         {
             _tableView.ClearAll();
@@ -91,6 +93,26 @@ namespace PowerPlanneriOS.Controllers.Settings
                 if (!_isFullVersion)
                 {
                     _tableView.AddCell("Upgrade to Premium", ViewModel.OpenPremiumVersion);
+
+                    _tableView.StartNewGroup();
+                }
+
+                if (ViewModel.HasAccount && mainScreenViewModel != null)
+                {
+                    _cellCurrentSemester = new UITableViewCell(UITableViewCellStyle.Default, "TableCellCurrentSemester");
+
+                    if (mainScreenViewModel.CurrentSemester != null && !_isListeningToSemester)
+                    {
+                        _isListeningToSemester = true;
+                        mainScreenViewModel.CurrentSemester.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(CurrentSemester_PropertyChanged).Handler;
+                    }
+
+                    UpdateCurrentSemesterText(mainScreenViewModel.CurrentSemester);
+                    _tableView.AddCell(_cellCurrentSemester, null);
+
+                    _tableView.AddCell("View Years & Semesters", () => mainScreenViewModel.OpenYears());
+
+                    _tableView.StartNewGroup();
                 }
 
                 if (ViewModel.IsOnlineAccount && mainScreenViewModel != null)
@@ -159,6 +181,27 @@ namespace PowerPlanneriOS.Controllers.Settings
             _tableView.Compile();
         }
 
+        private void CurrentSemester_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(PowerPlannerAppDataLibrary.ViewItems.ViewItemSemester.Name):
+                    UpdateCurrentSemesterText(sender as PowerPlannerAppDataLibrary.ViewItems.ViewItemSemester);
+                    break;
+            }
+        }
+
+        private void UpdateCurrentSemesterText(PowerPlannerAppDataLibrary.ViewItems.ViewItemSemester semester)
+        {
+            try
+            {
+                string currentSemesterText = semester?.Name ?? "None";
+
+                SetDisabled(_cellCurrentSemester, "Current semester: " + currentSemesterText);
+            }
+            catch { }
+        }
+
         private void OpenHelp()
         {
             try
@@ -211,13 +254,13 @@ namespace PowerPlanneriOS.Controllers.Settings
             if (account == null)
             {
                 SetDisabled(_cellSyncStatus, "No account to sync");
-                SetDisabled(_cellSyncNow, "Sync now");
+                SetDisabled(_cellSyncNow, "Sync Now");
                 return;
             }
 
             if (mainScreenViewModel.SyncState == MainScreenViewModel.SyncStates.Done)
             {
-                SetNormal(_cellSyncNow, "Sync now");
+                SetNormal(_cellSyncNow, "Sync Now");
             }
             else
             {
