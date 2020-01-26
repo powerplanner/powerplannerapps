@@ -115,16 +115,20 @@ namespace PowerPlanneriOS.Controllers
             {
                 Title = "";
 
-                if (_backButton == null)
+                if (_backButtonContents == null)
                 {
                     _backButtonContents = new UIButton(UIButtonType.Custom);
                     _backButtonContents.SetImage(UIImage.FromBundle("ToolbarBack").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
                     _backButtonContents.TouchUpInside += _backButton_Clicked;
-
-                    _backButton = new UIBarButtonItem(_backButtonContents);
                 }
 
-                _backButtonContents.SetTitle(ViewModel.SelectedDate.ToLongDateString(), UIControlState.Normal);
+                _backButtonContents.SetTitle(UISingleDayView.GetHeaderText(ViewModel.SelectedDate), UIControlState.Normal);
+                _backButtonContents.SizeToFit();
+
+                if (_backButton == null)
+                {
+                    _backButton = new UIBarButtonItem(_backButtonContents);
+                }
 
                 NavItem.LeftBarButtonItem = _backButton;
             }

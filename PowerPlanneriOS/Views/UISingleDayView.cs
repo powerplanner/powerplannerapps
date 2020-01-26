@@ -32,7 +32,6 @@ namespace PowerPlanneriOS.Views
         private CAShapeLayer _line;
         private UITableView _items;
         private object _tabBarHeightListener;
-        private DateTime _today = DateTime.Today;
         public SemesterItemsViewGroup SemesterItems { get; set; }
         private TableViewSource _tableViewSource;
         private UIDayScheduleSnapshot _scheduleSnapshot;
@@ -188,15 +187,17 @@ namespace PowerPlanneriOS.Views
             }
         }
 
-        private string GetHeaderText(DateTime date)
+        public static string GetHeaderText(DateTime date)
         {
-            if (date.Date == _today)
+            var today = DateTime.Today;
+
+            if (date.Date == today)
                 return PowerPlannerResources.GetRelativeDateToday();
 
-            else if (date.Date == _today.AddDays(1))
+            else if (date.Date == today.AddDays(1))
                 return PowerPlannerResources.GetRelativeDateTomorrow();
 
-            else if (date.Date == _today.AddDays(-1))
+            else if (date.Date == today.AddDays(-1))
                 return PowerPlannerResources.GetRelativeDateYesterday();
 
             return date.ToString("dddd, MMM d");
