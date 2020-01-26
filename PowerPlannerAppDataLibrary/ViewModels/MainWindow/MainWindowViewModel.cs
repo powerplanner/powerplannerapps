@@ -217,6 +217,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         private async Task HandleSelectMenuItemActivation(Guid localAccountId, NavigationManager.MainMenuSelections menuItem)
         {
+            // If we already have a current account and it matches the specified (or unspecified) account ID
             if (CurrentAccount != null && (localAccountId == Guid.Empty || CurrentAccount.LocalAccountId == localAccountId))
             {
                 var mainScreen = GetMainScreenViewModel();
@@ -231,6 +232,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 }
             }
 
+            // Otherwise it's a fresh boot, or wrong account
             else
             {
                 if (localAccountId != Guid.Empty)

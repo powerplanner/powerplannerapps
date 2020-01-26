@@ -259,10 +259,9 @@ namespace PowerPlanneriOS
                                 DateTime dateToShow = dateOfArtificalToday.AddDays(1);
 
                                 // Show day view
-                                _appDelegate.HandleLaunch((viewModel) =>
+                                _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
-                                    viewModel.HandleViewDayActivation(localAccountId, dateToShow);
-                                    return Task.FromResult(true);
+                                    await viewModel.HandleViewDayActivation(localAccountId, dateToShow);
                                 });
                             }
 
