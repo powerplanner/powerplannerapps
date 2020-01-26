@@ -199,11 +199,21 @@ namespace PowerPlanneriOS.Controllers
                 Add(dayView);
             }
 
+            private bool _firstChange = true;
             private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
             {
                 switch (e.PropertyName)
                 {
                     case nameof(ViewModel.DisplayState):
+
+                        // Don't animate the very first time
+                        if (_firstChange)
+                        {
+                            _firstChange = false;
+                            UpdateLayout(base.Bounds);
+                            return;
+                        }
+
                         UIView.Animate(0.4, () => UpdateLayout(base.Bounds));
                         break;
                 }
