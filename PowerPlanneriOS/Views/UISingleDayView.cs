@@ -46,7 +46,9 @@ namespace PowerPlanneriOS.Views
             this.Add(_title);
 
             _buttonExpand = new UIButton(UIButtonType.System);
-            _buttonExpand.SetTitle("Expand", UIControlState.Normal);
+            _buttonExpand.SetImage(UIImage.FromBundle("ToolbarDown").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
+            nfloat radians180 = unchecked((nfloat)Math.PI); // 180 degrees is exactly PI in radians
+            _buttonExpand.Transform = CGAffineTransform.MakeRotation(radians180);
             _buttonExpand.TouchUpInside += _buttonExpand_TouchUpInside;
             this.Add(_buttonExpand);
 
@@ -227,19 +229,22 @@ namespace PowerPlanneriOS.Views
             {
                 y += 16;
 
+                nfloat hPadding = 16;
+
+                var buttonSize = _buttonExpand.SizeThatFits(this.Frame.Size);
                 var titleSize = _title.SizeThatFits(this.Frame.Size);
 
                 _title.Frame = new CGRect(
-                    x: 16,
+                    x: hPadding,
                     y: y,
-                    width: this.Frame.Width,
+                    width: -hPadding + this.Frame.Width - hPadding - buttonSize.Width - hPadding,
                     height: titleSize.Height);
 
                 _buttonExpand.Frame = new CGRect(
-                    x: this.Frame.Width - 100,
-                    y: y,
-                    width: 100,
-                    height: 40);
+                    x: this.Frame.Width - hPadding - buttonSize.Width,
+                    y: y + (titleSize.Height - buttonSize.Height) / 2, // We want this vertically centered with the text
+                    width: buttonSize.Width,
+                    height: buttonSize.Height);
 
                 _title.Hidden = false;
                 _buttonExpand.Hidden = false;
