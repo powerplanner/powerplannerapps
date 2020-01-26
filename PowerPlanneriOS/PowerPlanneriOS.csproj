@@ -422,6 +422,30 @@
     <ImageAsset Include="Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-90.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\TabClasses.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>

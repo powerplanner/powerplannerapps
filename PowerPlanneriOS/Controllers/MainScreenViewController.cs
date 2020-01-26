@@ -215,7 +215,7 @@ namespace PowerPlanneriOS.Controllers
 
             // https://developer.xamarin.com/Recipes/ios/Content_Controls/Tab_Bar/Create_a_Tab_Bar/
 
-            _tabBarItemCalendar = new UITabBarItem("Calendar", UIImage.FromBundle("TabAgenda"), UIImage.FromBundle("TabAgendaSelected"));
+            _tabBarItemCalendar = new UITabBarItem("Calendar", UIImage.FromBundle("TabCalendar"), UIImage.FromBundle("TabCalendarSelected"));
 
             _tabBarItemAgenda = new UITabBarItem("Agenda", UIImage.FromBundle("TabAgenda"), UIImage.FromBundle("TabAgendaSelected"));
 
@@ -223,7 +223,7 @@ namespace PowerPlanneriOS.Controllers
 
             _tabBarItemClasses = new UITabBarItem("Classes", UIImage.FromBundle("TabClasses"), UIImage.FromBundle("TabClassesSelected"));
 
-            _tabBarItemMore = new UITabBarItem("Settings", UIImage.FromBundle("TabSettings"), UIImage.FromBundle("TabSettingsSelected"));
+            _tabBarItemMore = new UITabBarItem("More", UIImage.FromBundle("TabYears"), UIImage.FromBundle("TabYearsSelected"));
 
             _tabBar = new UITabBar()
             {
