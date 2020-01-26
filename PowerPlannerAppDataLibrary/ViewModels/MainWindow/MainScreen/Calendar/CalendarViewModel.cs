@@ -23,6 +23,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
     {
         private static DisplayStates _lastDisplayState;
 
+        public static void SetInitialDisplayState(DisplayStates displayState)
+        {
+            _lastDisplayState = displayState;
+        }
+
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; private set; }
 
         public CalendarViewModel(BaseViewModel parent, Guid localAccountId, ViewItemSemester semester) : base(parent)

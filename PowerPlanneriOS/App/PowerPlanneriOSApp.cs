@@ -13,6 +13,12 @@ namespace PowerPlanneriOS.App
 {
     public class PowerPlanneriOSApp : PowerPlannerApp
     {
+        static PowerPlanneriOSApp()
+        {
+            UseUnifiedCalendarDayTabItem = true;
+            DoNotShowYearsInMenuItems = true;
+        }
+
         public static new PowerPlanneriOSApp Current
         {
             get { return PortableApp.Current as PowerPlanneriOSApp; }

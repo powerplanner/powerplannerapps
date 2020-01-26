@@ -1041,6 +1041,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <returns></returns>
         private bool makeAvailableItemsLike(params NavigationManager.MainMenuSelections[] desired)
         {
+            if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
+            {
+                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Day }).ToArray();
+            }
+
+            if (PowerPlannerApp.DoNotShowYearsInMenuItems)
+            {
+                desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years }).ToArray();
+            }
+
             if (UseTabNavigation)
             {
                 desired = desired.Except(new MainMenuSelections[] { MainMenuSelections.Years, MainMenuSelections.Settings }).ToArray();

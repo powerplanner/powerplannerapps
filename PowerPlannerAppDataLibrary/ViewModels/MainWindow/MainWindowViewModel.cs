@@ -197,7 +197,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         {
             NavigationManager.SetSelectedDate(date);
             NavigationManager.SetDisplayMonth(date);
-            return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Day);
+
+            if (App.PowerPlannerApp.UseUnifiedCalendarDayTabItem)
+            {
+                // Have the calendar view open in day view
+                CalendarViewModel.SetInitialDisplayState(CalendarViewModel.DisplayStates.Day);
+                return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Calendar);
+            }
+            else
+            {
+                return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Day);
+            }
         }
 
         public Task HandleViewScheduleActivation(Guid localAccountId)

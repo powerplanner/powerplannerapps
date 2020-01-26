@@ -20,6 +20,16 @@ namespace PowerPlannerAppDataLibrary.App
 {
     public class PowerPlannerApp : PortableApp
     {
+        /// <summary>
+        /// iOS sets this to true, it only has a Calendar tab entry that also has days.
+        /// </summary>
+        public static bool UseUnifiedCalendarDayTabItem { get; set; }
+
+        /// <summary>
+        /// iOS sets this to true, it shows years within settings page, opened as a popup
+        /// </summary>
+        public static bool DoNotShowYearsInMenuItems { get; set; }
+
         public new static PowerPlannerApp Current
         {
             get { return PortableApp.Current as PowerPlannerApp; }
