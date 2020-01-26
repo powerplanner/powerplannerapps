@@ -350,6 +350,18 @@
     <ImageAsset Include="Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-60.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-30.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-90.png">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\SliderComplete.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
