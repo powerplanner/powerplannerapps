@@ -173,14 +173,8 @@ namespace PowerPlanneriOS
             AppCenter.Start(Secrets.AppCenterAppSecret,
                    typeof(Analytics), typeof(Crashes));
 
-            // Request notification permissions from the user
             if (SdkSupportHelper.IsNotificationsSupported)
             {
-                UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, err) =>
-                {
-                    // Don't need to do anything to handle approval
-                });
-
                 UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
 
                 RemindersExtension.Current = new IOSRemindersExtension();

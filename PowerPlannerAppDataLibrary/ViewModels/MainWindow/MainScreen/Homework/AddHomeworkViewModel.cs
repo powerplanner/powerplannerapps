@@ -993,6 +993,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     // Non-critical code
                     try
                     {
+                        // Perfect time to ask for permission to send notifications
+                        RemindersExtension.Current?.RequestReminderPermission();
+
                         NavigationManager.SetPreviousAddItemClass(dataItem.UpperIdentifier);
 
                         if (!Class.IsNoClassClass)
