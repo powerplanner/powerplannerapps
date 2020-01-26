@@ -22,16 +22,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
     public class CalendarViewModel : BaseMainScreenViewModelChild
     {
         private static DisplayStates _lastDisplayState;
+        private static DateTime _initialSelectedDate;
 
-        public static void SetInitialDisplayState(DisplayStates displayState)
+        public static void SetInitialDisplayState(DisplayStates displayState, DateTime selectedDate)
         {
             _lastDisplayState = displayState;
+            _initialSelectedDate = selectedDate;
         }
 
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; private set; }
 
         public CalendarViewModel(BaseViewModel parent, Guid localAccountId, ViewItemSemester semester) : base(parent)
         {
+            // iOS uses this to show the day when day before notification is clicked
+            if (_initialSelectedDate != DateTime.MinValue)
+            {
+                NavigationManager.SetSelectedDate(_initialSelectedDate);
+                NavigationManager.SetDisplayMonth(_initialSelectedDate);
+                _selectedDate = NavigationManager.GetSelectedDate();
+                _displayMonth = NavigationManager.GetDisplayMonth();
+                _initialSelectedDate = DateTime.MinValue;
+            }
+
             Initialize(localAccountId, semester);
         }
 

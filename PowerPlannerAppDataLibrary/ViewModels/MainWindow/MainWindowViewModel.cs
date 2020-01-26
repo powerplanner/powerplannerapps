@@ -195,17 +195,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public Task HandleViewDayActivation(Guid localAccountId, DateTime date)
         {
-            NavigationManager.SetSelectedDate(date);
-            NavigationManager.SetDisplayMonth(date);
-
             if (App.PowerPlannerApp.UseUnifiedCalendarDayTabItem)
             {
                 // Have the calendar view open in day view
-                CalendarViewModel.SetInitialDisplayState(CalendarViewModel.DisplayStates.Day);
+                CalendarViewModel.SetInitialDisplayState(CalendarViewModel.DisplayStates.Day, date);
                 return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Calendar);
             }
             else
             {
+                // Note that this probably doesn't work on clean launches, since the selected items are reset when the semester is loaded.
+                // But iOS uses an alternative path when clean launching, and so far iOS is the only one that uses this method.
+                NavigationManager.SetSelectedDate(date);
+                NavigationManager.SetDisplayMonth(date);
+
                 return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Day);
             }
         }

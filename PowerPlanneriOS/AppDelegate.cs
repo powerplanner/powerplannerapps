@@ -259,10 +259,19 @@ namespace PowerPlanneriOS
                                 DateTime dateToShow = dateOfArtificalToday.AddDays(1);
 
                                 // Show day view
-                                _appDelegate.HandleLaunch(async (viewModel) =>
+                                if (AppDelegate._hasActivatedWindow)
                                 {
-                                    await viewModel.HandleViewDayActivation(localAccountId, dateToShow);
-                                });
+                                    _appDelegate.HandleLaunch(async (viewModel) =>
+                                    {
+                                        await viewModel.HandleViewDayActivation(localAccountId, dateToShow);
+                                    });
+                                }
+                                else
+                                {
+                                    // We just set the properties, weird stuff seemed to happen if we tried to use the unified activation methods
+                                    CalendarViewModel.SetInitialDisplayState(CalendarViewModel.DisplayStates.Day, dateToShow);
+                                    NavigationManager.MainMenuSelection = NavigationManager.MainMenuSelections.Calendar;
+                                }
                             }
 
                             else if (IOSRemindersExtension.TryParsingDayOfTaskIdentifier(identifier, out Guid taskIdentifier))
