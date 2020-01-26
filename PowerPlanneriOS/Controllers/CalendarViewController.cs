@@ -81,7 +81,7 @@ namespace PowerPlanneriOS.Controllers
             _cal.DisplayMonthChanged += new WeakEventHandler<DateTime>(Cal_DisplayMonthChanged).Handler;
 
             // Day pager
-            _pagedDayView = new UIPagedDayView(ViewModel.SemesterItemsViewGroup, ViewModel.MainScreenViewModel)
+            _pagedDayView = new UIPagedDayView(ViewModel.SemesterItemsViewGroup, ViewModel)
             {
                 Date = ViewModel.SelectedDate
             };

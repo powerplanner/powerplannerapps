@@ -17,6 +17,8 @@ using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
+using System.ComponentModel;
 
 namespace PowerPlanneriOS.Views
 {
@@ -84,17 +86,52 @@ namespace PowerPlanneriOS.Views
             OnRequestViewClass?.Invoke(this, e);
         }
 
+        private CalendarViewModel _viewModel;
         private ViewItemSemester _semester;
         /// <summary>
         /// Set this once after constructing
         /// </summary>
-        public MainScreenViewModel MainScreenViewModel
+        public CalendarViewModel CalendarViewModel
         {
             set
             {
+                _viewModel = value;
                 _tableViewSource = new TableViewSource(_items, value);
                 _items.Source = _tableViewSource;
-                _semester = value.CurrentSemester;
+                _semester = value.MainScreenViewModel.CurrentSemester;
+
+                value.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+
+                UpdateShowHeader();
+            }
+        }
+
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(_viewModel.DisplayState):
+                    UpdateShowHeader();
+                    break;
+            }
+        }
+
+        private void UpdateShowHeader()
+        {
+            ShowHeader = _viewModel.DisplayState != CalendarViewModel.DisplayStates.Day;
+        }
+
+        private bool _showHeader = true;
+        private bool ShowHeader
+        {
+            get => _showHeader;
+            set
+            {
+                if (_showHeader != value)
+                {
+                    _showHeader = value;
+                    SetNeedsLayout();
+                }
             }
         }
 
@@ -167,25 +204,40 @@ namespace PowerPlanneriOS.Views
 
         public override void LayoutSubviews()
         {
-            var titleSize = _title.SizeThatFits(this.Frame.Size);
+            nfloat y = 0;
 
-            nfloat y = 16;
+            if (ShowHeader)
+            {
+                y += 16;
 
-            _title.Frame = new CGRect(
-                x: 16,
-                y: y,
-                width: this.Frame.Width,
-                height: titleSize.Height);
+                var titleSize = _title.SizeThatFits(this.Frame.Size);
 
-            _buttonExpand.Frame = new CGRect(
-                x: this.Frame.Width - 100,
-                y: y,
-                width: 100,
-                height: 40);
+                _title.Frame = new CGRect(
+                    x: 16,
+                    y: y,
+                    width: this.Frame.Width,
+                    height: titleSize.Height);
 
-            y += titleSize.Height + 12;
+                _buttonExpand.Frame = new CGRect(
+                    x: this.Frame.Width - 100,
+                    y: y,
+                    width: 100,
+                    height: 40);
 
-            _line.Path = CGPath.FromRect(new CGRect(0, y - 0.5, this.Frame.Width, 0.5f));
+                _title.Hidden = false;
+                _buttonExpand.Hidden = false;
+                _line.Hidden = false;
+
+                y += titleSize.Height + 12;
+
+                _line.Path = CGPath.FromRect(new CGRect(0, y - 0.5, this.Frame.Width, 0.5f));
+            }
+            else
+            {
+                _title.Hidden = true;
+                _buttonExpand.Hidden = true;
+                _line.Hidden = true;
+            }
 
             nfloat remainingHeight = this.Frame.Height - y;
             if (remainingHeight < 0)
@@ -212,11 +264,11 @@ namespace PowerPlanneriOS.Views
         private class TableViewSource : UITableViewSource
         {
             private UITableView _tableView;
-            private MainScreenViewModel _viewModel;
+            private CalendarViewModel _viewModel;
 
             private const string CELL_ID_ITEM = "Item";
 
-            public TableViewSource(UITableView tableView, MainScreenViewModel viewModel)
+            public TableViewSource(UITableView tableView, CalendarViewModel viewModel)
             {
                 _tableView = tableView;
                 _viewModel = viewModel;

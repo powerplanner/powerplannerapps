@@ -11,6 +11,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewItems;
 using ToolsPortable;
 using CoreGraphics;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 
 namespace PowerPlanneriOS.Views
 {
@@ -20,14 +21,14 @@ namespace PowerPlanneriOS.Views
         public event EventHandler<DateTime> DateChanged;
         public event EventHandler OnRequestExpand;
 
-        public UIPagedDayView(SemesterItemsViewGroup semesterItems, MainScreenViewModel mainScreenViewModel)
+        public UIPagedDayView(SemesterItemsViewGroup semesterItems, CalendarViewModel calendarViewModel)
         {
             // Have to set these here, since when we initialize the views in CreateViews, that gets called
             // from the base class' constructor, which occurs before we could possibly cache these parameters
             foreach (var singleDayView in GetViews())
             {
                 singleDayView.SemesterItems = semesterItems;
-                singleDayView.MainScreenViewModel = mainScreenViewModel;
+                singleDayView.CalendarViewModel = calendarViewModel;
                 singleDayView.OnRequestViewClass += new WeakEventHandler<ViewItemClass>(SingleDayView_OnRequestViewClass).Handler;
             }
         }
