@@ -76,8 +76,10 @@ namespace PowerPlanneriOS.Controllers.Settings
             catch { }
         }
 
+        private bool _isListeningToSemester;
         private bool _isListeningToMain;
         private bool _isFullVersion;
+        private UITableViewCell _cellCurrentSemester;
         private async void RedrawItems()
         {
             _tableView.ClearAll();
@@ -95,12 +97,18 @@ namespace PowerPlanneriOS.Controllers.Settings
 
                 if (ViewModel.HasAccount && mainScreenViewModel != null)
                 {
-                    var cellCurrentSemester = new UITableViewCell(UITableViewCellStyle.Default, "TableCellCurrentSemester");
-                    string currentSemesterText = mainScreenViewModel.CurrentSemester?.Name ?? "None";
-                    SetDisabled(cellCurrentSemester, "Current semester: " + currentSemesterText);
-                    _tableView.AddCell(cellCurrentSemester, null);
+                    _cellCurrentSemester = new UITableViewCell(UITableViewCellStyle.Default, "TableCellCurrentSemester");
 
-                    _tableView.AddCell("View years/semesters", () => mainScreenViewModel.OpenYears(checkUseTabNavigation: false));
+                    if (mainScreenViewModel.CurrentSemester != null && !_isListeningToSemester)
+                    {
+                        _isListeningToSemester = true;
+                        mainScreenViewModel.CurrentSemester.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(CurrentSemester_PropertyChanged).Handler;
+                    }
+
+                    UpdateCurrentSemesterText(mainScreenViewModel.CurrentSemester);
+                    _tableView.AddCell(_cellCurrentSemester, null);
+
+                    _tableView.AddCell("View years and semesters", () => mainScreenViewModel.OpenYears(checkUseTabNavigation: false));
 
                     _tableView.StartNewGroup();
                 }
@@ -169,6 +177,27 @@ namespace PowerPlanneriOS.Controllers.Settings
             _tableView.AddCell("About", ViewModel.OpenAbout);
 
             _tableView.Compile();
+        }
+
+        private void CurrentSemester_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(PowerPlannerAppDataLibrary.ViewItems.ViewItemSemester.Name):
+                    UpdateCurrentSemesterText(sender as PowerPlannerAppDataLibrary.ViewItems.ViewItemSemester);
+                    break;
+            }
+        }
+
+        private void UpdateCurrentSemesterText(PowerPlannerAppDataLibrary.ViewItems.ViewItemSemester semester)
+        {
+            try
+            {
+                string currentSemesterText = semester?.Name ?? "None";
+
+                SetDisabled(_cellCurrentSemester, "Current semester: " + currentSemesterText);
+            }
+            catch { }
         }
 
         private void OpenHelp()
