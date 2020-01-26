@@ -29,6 +29,7 @@ namespace PowerPlanneriOS.Views
 
         private UILabel _title;
         private UIButton _buttonExpand;
+        private UILabel _nothingDueText;
         private CAShapeLayer _line;
         private UITableView _items;
         private object _tabBarHeightListener;
@@ -48,6 +49,15 @@ namespace PowerPlanneriOS.Views
             _buttonExpand.SetTitle("Expand", UIControlState.Normal);
             _buttonExpand.TouchUpInside += _buttonExpand_TouchUpInside;
             this.Add(_buttonExpand);
+
+            _nothingDueText = new UILabel()
+            {
+                Font = UIFont.PreferredBody,
+                Text = PowerPlannerResources.GetString("String_NothingDue"),
+                TextAlignment = UITextAlignment.Center,
+                TextColor = UIColor.LightGray
+            };
+            this.Add(_nothingDueText);
 
             _line = new CAShapeLayer()
             {
@@ -100,9 +110,15 @@ namespace PowerPlanneriOS.Views
                 _semester = value.MainScreenViewModel.CurrentSemester;
 
                 value.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+                _tableViewSource.HasItemsChanged += _tableViewSource_HasItemsChanged;
 
                 UpdateShowHeader();
             }
+        }
+
+        private void _tableViewSource_HasItemsChanged(object sender, bool e)
+        {
+            SetNeedsLayout();
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -240,6 +256,28 @@ namespace PowerPlanneriOS.Views
                 _line.Hidden = true;
             }
 
+            if (_tableViewSource != null && !_tableViewSource.HasItems)
+            {
+                y += 16;
+
+                // Show nothing due text
+                _nothingDueText.Hidden = false;
+
+                var size = _nothingDueText.SizeThatFits(this.Frame.Size);
+
+                _nothingDueText.Frame = new CGRect(
+                    x: 0,
+                    y: y,
+                    width: this.Frame.Width,
+                    height: size.Height);
+
+                y += size.Height;
+            }
+            else
+            {
+                _nothingDueText.Hidden = true;
+            }
+
             nfloat remainingHeight = this.Frame.Height - y;
             if (remainingHeight < 0)
             {
@@ -266,6 +304,8 @@ namespace PowerPlanneriOS.Views
         {
             private UITableView _tableView;
             private CalendarViewModel _viewModel;
+
+            public event EventHandler<bool> HasItemsChanged;
 
             private const string CELL_ID_ITEM = "Item";
 
@@ -301,7 +341,23 @@ namespace PowerPlanneriOS.Views
                         }
                         _items.CollectionChanged += _itemsChangedHandler;
 
+                        HasItems = value.Any();
+
                         _tableView.ReloadData();
+                    }
+                }
+            }
+
+            private bool _hasItems;
+            public bool HasItems
+            {
+                get => _hasItems;
+                set
+                {
+                    if (_hasItems != value)
+                    {
+                        _hasItems = value;
+                        HasItemsChanged?.Invoke(this, value);
                     }
                 }
             }
@@ -320,6 +376,7 @@ namespace PowerPlanneriOS.Views
 
             private void TableViewSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
             {
+                HasItems = _items != null && _items.Any();
                 ReloadData();
             }
 
