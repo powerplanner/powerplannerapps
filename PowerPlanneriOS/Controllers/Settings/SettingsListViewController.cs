@@ -27,7 +27,7 @@ namespace PowerPlanneriOS.Controllers.Settings
         public SettingsListViewController()
         {
             AutomaticallyAdjustsScrollViewInsets = false;
-            Title = "Settings";
+            Title = "More";
 
             // Creating a table view programmatically: https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/TableView_iPhone/CreateConfigureTableView/CreateConfigureTableView.html#//apple_ref/doc/uid/TP40007451-CH6-SW4
             // Xamarin: https://developer.xamarin.com/guides/ios/user_interface/controls/tables/populating-a-table-with-data/
@@ -91,6 +91,18 @@ namespace PowerPlanneriOS.Controllers.Settings
                 if (!_isFullVersion)
                 {
                     _tableView.AddCell("Upgrade to Premium", ViewModel.OpenPremiumVersion);
+                }
+
+                if (ViewModel.HasAccount && mainScreenViewModel != null)
+                {
+                    var cellCurrentSemester = new UITableViewCell(UITableViewCellStyle.Default, "TableCellCurrentSemester");
+                    string currentSemesterText = mainScreenViewModel.CurrentSemester?.Name ?? "None";
+                    SetDisabled(cellCurrentSemester, "Current semester: " + currentSemesterText);
+                    _tableView.AddCell(cellCurrentSemester, null);
+
+                    _tableView.AddCell("View years/semesters", () => mainScreenViewModel.OpenYears(checkUseTabNavigation: false));
+
+                    _tableView.StartNewGroup();
                 }
 
                 if (ViewModel.IsOnlineAccount && mainScreenViewModel != null)

@@ -1133,11 +1133,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             this.ShowPopup(AddHolidayViewModel.CreateForEdit(this, holiday));
         }
 
-        public void OpenYears()
+        public void OpenYears(bool checkUseTabNavigation = true)
         {
             try
             {
-                if (!UseTabNavigation)
+                if (checkUseTabNavigation && !UseTabNavigation)
                 {
                     throw new InvalidOperationException("If you're using this, you should have set UseTabNavigation to true");
                 }
