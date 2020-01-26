@@ -106,6 +106,10 @@ namespace PowerPlannerUWP.Controls.TimePickers
         protected void UpdateItems()
         {
             var desired = GenerateEntries().ToList();
+            if (desired.Count == 0)
+            {
+                desired.Add(CreateTimeEntry(new TimeSpan(23, 59, 0)));
+            }
             _timeEntries.MakeListLike(desired);
         }
 
