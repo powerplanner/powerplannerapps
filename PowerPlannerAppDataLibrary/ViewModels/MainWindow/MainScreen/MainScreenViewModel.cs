@@ -1055,7 +1055,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 desiredList.Remove(MainMenuSelections.Settings);
             }
 
-            bool answer = IListExtensions.MakeListLike(_availableItems, desired);
+            bool answer = IListExtensions.MakeListLike(_availableItems, desiredList);
 
             if (PowerPlannerApp.DoNotShowYearsInTabItems && !AvailableItems.Any() && Popups.Count == 0)
             {
