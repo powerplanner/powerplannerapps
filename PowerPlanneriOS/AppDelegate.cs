@@ -167,7 +167,14 @@ namespace PowerPlanneriOS
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
-            iOSPushExtension.RegisteredForRemoteNotifications(deviceToken.ToString());
+            try
+            {
+                iOSPushExtension.RegisteredForRemoteNotifications(deviceToken.Description.Trim('<', '>').Replace(" ", ""));
+            }
+            catch (Exception ex)
+            {
+                iOSPushExtension.FailedToRegisterForRemoteNotifications(ex.ToString());
+            }
 
             base.RegisteredForRemoteNotifications(application, deviceToken);
         }
