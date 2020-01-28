@@ -175,6 +175,7 @@
     <Compile Include="Controllers\Welcome\ForgotUsernameViewController.cs" />
     <Compile Include="Controllers\Welcome\RecoveredUsernamesViewController.cs" />
     <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />
+    <Compile Include="Extensions\iOSPushExtension.cs" />
     <Compile Include="Extensions\iOSTelemetryExtension.cs" />
     <Compile Include="Extensions\IOSRemindersExtension.cs" />
     <Compile Include="Helpers\ColorResources.cs" />

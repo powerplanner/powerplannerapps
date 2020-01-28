@@ -165,6 +165,21 @@ namespace PowerPlanneriOS
             }
         }
 
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            iOSPushExtension.RegisteredForRemoteNotifications(deviceToken.ToString());
+
+            base.RegisteredForRemoteNotifications(application, deviceToken);
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            // Might fail if not connected to network, APNs servers unreachable, or doesn't have proper code-signing entitlement
+            iOSPushExtension.FailedToRegisterForRemoteNotifications(error.ToString());
+
+            base.FailedToRegisterForRemoteNotifications(application, error);
+        }
+
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
             _hasActivatedWindow = false;
@@ -173,15 +188,16 @@ namespace PowerPlanneriOS
             AppCenter.Start(Secrets.AppCenterAppSecret,
                    typeof(Analytics), typeof(Crashes));
 
+            TelemetryExtension.Current = new iOSTelemetryExtension();
+            InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
+            PushExtension.Current = new iOSPushExtension();
+
             if (SdkSupportHelper.IsNotificationsSupported)
             {
                 UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
 
                 RemindersExtension.Current = new IOSRemindersExtension();
             }
-
-            TelemetryExtension.Current = new iOSTelemetryExtension();
-            InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
 
             // Get whether launched from shortcut
             ShortcutAction? shortcutAction = null;
