@@ -321,6 +321,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public void OpenDay(DateTime date)
         {
+            if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
+            {
+                throw new InvalidOperationException("If using unified calendar/day tab, you should set SelectedDate on the CalendarViewModel instead.");
+            }
+
             NavigationManager.SetSelectedDate(date.Date);
             MainScreenViewModel.SetContent(new DayViewModel(MainScreenViewModel, MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester), preserveBack: true);
         }

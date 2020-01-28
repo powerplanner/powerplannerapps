@@ -267,7 +267,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             private const string MAIN_MENU_SELECTION = "NavManager_MainMenuSelection";
             private const string CLASS_SELECTION = "NavManager_ClassSelection";
-            private const string TASKS_VIEW_SELECTION = "NavManager_TasksViewSelection";
 
             static NavigationManagerSettings()
             {
