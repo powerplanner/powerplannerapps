@@ -170,29 +170,48 @@ namespace PowerPlanneriOS
             try
             {
                 // https://docs.microsoft.com/en-us/xamarin/ios/platform/user-notifications/deprecated/remote-notifications-in-ios#registering-with-apns
-                if (!string.IsNullOrWhiteSpace(deviceToken.Description))
-                {
-                    TelemetryExtension.Current?.TrackEvent("PushToken", new Dictionary<string, string>()
-                    {
-                        { "Token", deviceToken.Description }
-                    });
-                    iOSPushExtension.RegisteredForRemoteNotifications(deviceToken.Description.Trim('<', '>'));
-                }
-                else
-                {
-                    iOSPushExtension.RegisteredForRemoteNotifications(null);
-                }
+                string pushToken = ParsePushToken(deviceToken);
+                iOSPushExtension.RegisteredForRemoteNotifications(pushToken);
             }
             catch (Exception ex)
             {
-                iOSPushExtension.FailedToRegisterForRemoteNotifications(ex.ToString());
+                try
+                {
+                    iOSPushExtension.FailedToRegisterForRemoteNotifications(ex.ToString());
+                }
+                catch (Exception ex2)
+                {
+                    TelemetryExtension.Current?.TrackException(ex2);
+                }
             }
+        }
+
+        private static string ParsePushToken(NSData deviceToken)
+        {
+            // https://onesignal.com/blog/ios-13-introduces-4-breaking-changes-to-notifications/
+            // https://medium.com/@kevinle/correctly-capture-ios-13-device-token-in-xamarin-3d0fa390b71b
+
+            int length = (int)deviceToken.Length;
+            if (deviceToken.Length == 0)
+            {
+                return null;
+            }
+
+            string[] hexArray = deviceToken.Select(b => b.ToString("x2")).ToArray();
+            return string.Join(string.Empty, hexArray);
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
         {
             // Might fail if not connected to network, APNs servers unreachable, or doesn't have proper code-signing entitlement
-            iOSPushExtension.FailedToRegisterForRemoteNotifications(error.ToString());
+            try
+            {
+                iOSPushExtension.FailedToRegisterForRemoteNotifications(error.ToString());
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
