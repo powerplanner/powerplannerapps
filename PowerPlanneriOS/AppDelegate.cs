@@ -183,16 +183,12 @@ namespace PowerPlanneriOS
             {
                 iOSPushExtension.FailedToRegisterForRemoteNotifications(ex.ToString());
             }
-
-            base.RegisteredForRemoteNotifications(application, deviceToken);
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
         {
             // Might fail if not connected to network, APNs servers unreachable, or doesn't have proper code-signing entitlement
             iOSPushExtension.FailedToRegisterForRemoteNotifications(error.ToString());
-
-            base.FailedToRegisterForRemoteNotifications(application, error);
         }
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
