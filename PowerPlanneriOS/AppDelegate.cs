@@ -172,6 +172,10 @@ namespace PowerPlanneriOS
                 // https://docs.microsoft.com/en-us/xamarin/ios/platform/user-notifications/deprecated/remote-notifications-in-ios#registering-with-apns
                 if (!string.IsNullOrWhiteSpace(deviceToken.Description))
                 {
+                    TelemetryExtension.Current?.TrackEvent("PushToken", new Dictionary<string, string>()
+                    {
+                        { "Token", deviceToken.Description }
+                    });
                     iOSPushExtension.RegisteredForRemoteNotifications(deviceToken.Description.Trim('<', '>'));
                 }
                 else
