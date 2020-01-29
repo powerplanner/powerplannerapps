@@ -248,6 +248,43 @@ namespace PowerPlanneriOS
             return result;
         }
 
+        public override async void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            // Payload reference: https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification
+
+            /*
+             * {
+             *   "content-available": 1
+             *   "action": "syncAccount",
+             *   "accountId": 49831
+             * }
+             * */
+
+            try
+            {
+                if (userInfo.TryGetValue(new NSString("action"), out NSObject actionValue)
+                    && actionValue is NSString actionValueStr
+                    && actionValueStr == "syncAccount"
+                    && userInfo.TryGetValue(new NSString("accountId"), out NSObject accountIdValue)
+                    && accountIdValue is NSNumber accountIdNum)
+                {
+                    long accountId = accountIdNum.Int64Value;
+
+                    await PowerPlannerApp.SyncAccountInBackground(accountId);
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+
+            try
+            {
+                completionHandler(UIBackgroundFetchResult.NewData);
+            }
+            catch { }
+        }
+
         private static ShortcutAction? ConvertShortcutItem(UIApplicationShortcutItem item)
         {
             if (item == null)

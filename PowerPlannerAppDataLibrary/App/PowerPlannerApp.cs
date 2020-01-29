@@ -441,5 +441,43 @@ namespace PowerPlannerAppDataLibrary.App
             else
                 return closestAfter.Class;
         }
+
+        /// <summary>
+        /// Used for syncing from background task (raw push notification).
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public static async System.Threading.Tasks.Task SyncAccountInBackground(long accountId)
+        {
+            try
+            {
+                if (accountId == 0)
+                {
+                    return;
+                }
+
+                // First try to grab cached
+                var account = AccountsManager.GetCurrentlyLoadedAccounts().FirstOrDefault(i => i.AccountId == accountId);
+                if (account == null)
+                {
+                    account = (await AccountsManager.GetAllAccounts()).FirstOrDefault(i => i.AccountId == accountId);
+                }
+                if (account == null)
+                {
+                    return;
+                }
+
+                var syncResult = await Sync.SyncAccountAsync(account);
+
+                if (syncResult != null && syncResult.SaveChangesTask != null)
+                {
+                    await syncResult.SaveChangesTask.WaitForAllTasksAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
     }
 }
