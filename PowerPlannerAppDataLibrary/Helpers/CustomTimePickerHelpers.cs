@@ -100,9 +100,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
             is24hour = true;
             isPM = false;
 
-            if (str.EndsWith("am"))
+            if (str.EndsWith("am") || str.EndsWith("a"))
                 is24hour = false;
-            else if (str.EndsWith("pm"))
+            else if (str.EndsWith("pm") || str.EndsWith("p"))
             {
                 is24hour = false;
                 isPM = true;
@@ -141,7 +141,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 var hasHour = hPos != -1;
                 var hasMinute = mPos != -1;
                 var hourPart = hasHour ? numberPart.Substring(0, hPos) : "";
-                var minutePart = hasMinute ? numberPart.Substring(hasHour ? hPos + 1 : 0, numberPart.Length - hPos - 1) : "";
+                var minutePart = hasMinute ? numberPart.Substring(hasHour ? hPos + 1 : 0, numberPart.Length - hPos - 1).TrimEnd('m') : "";
 
                 if (hasHour && hasMinute)
                     return ParseMinuteANDHour(ref timeSpan, is24hour, isPM, new string[] { hourPart, minutePart });
