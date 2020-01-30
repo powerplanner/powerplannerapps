@@ -196,6 +196,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
                     maxTime = true;
             }
 
+            // "12 AM" becomes "00:xx"
+            else if (hour == 12)
+                hour = 0;
+
             return true;
         }
 
