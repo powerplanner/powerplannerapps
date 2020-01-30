@@ -41,9 +41,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
         static string ForceTwoDigitNumber(int num) => num < 10 ? "0" + num.ToString() : num.ToString();
 
-        // =============================
-        // TEXT PARSING:
-        // =============================
+        #region Text Parsing
 
         /// <summary>
         /// This will take some text and convert it into a TimeSpan, and will return true of false depending on success or not.
@@ -85,26 +83,26 @@ namespace PowerPlannerAppDataLibrary.Helpers
             // If there was one item, then that means that we either have just one number or it was in the format "xhxm".
             if (numberSplitParts.Length == 1)
             {
-                var successful = HandleSingleNumberSplitParts(ref timeSpan, is24hour, isPM, numberPart, numberSplitParts);
+                var successful = HandleSingleNumberSplitParts(ref timeSpan, is24hour, isPM, numberPart);
                 return HandleRelative(ref timeSpan, startTime.TimeOfDay, relativeTime, successful);
             }
 
             // Otherwise, if there was more than one item - we know that it was definitely "xx:xx", so, we'll just parse those numbers!
-            var wasSuccessful = ParseMinuteAndHour(ref timeSpan, is24hour, isPM, numberSplitParts);
+            var wasSuccessful = ParseMinuteANDHour(ref timeSpan, is24hour, isPM, numberSplitParts);
             return HandleRelative(ref timeSpan, startTime.TimeOfDay, relativeTime, wasSuccessful);
         }
 
         /// <summary>
         /// Checks if the <paramref name="str"/> is a 12-hour time and if so, whether it's AM or PM.
         /// </summary>
-        private static bool CheckFor12Hour(string str, out bool is24hour, out bool isPM)
+        static bool CheckFor12Hour(string str, out bool is24hour, out bool isPM)
         {
             is24hour = true;
             isPM = false;
 
-            if (str.EndsWith("am"))
+            if (str.EndsWith("am") || str.EndsWith("a"))
                 is24hour = false;
-            else if (str.EndsWith("pm"))
+            else if (str.EndsWith("pm") || str.EndsWith("p"))
             {
                 is24hour = false;
                 isPM = true;
@@ -113,93 +111,47 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return true;
         }
 
-        /// <summary>
-        /// Takes in a string array with two items in it, one is the hour, and one is the minute.
-        /// </summary>
-        private static bool ParseMinuteAndHour(ref TimeSpan timeSpan, bool is24hour, bool isPM, string[] numberSplitParts)
-        {
-            if (!int.TryParse(numberSplitParts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int hour) || !Handle12Hour(ref hour, out bool maxTime, is24hour, isPM))
-                return false; // Fail
-
-            // If after adding 12-hours for PM, the clock hits 24:00, push that back down to 23:59 - and return that.
-            if (maxTime)
-            {
-                timeSpan = new TimeSpan(23, 59, 0);
-                return true;
-            }
-
-            if (!int.TryParse(numberSplitParts[1], out int minute) || minute >= 60)
-                return false; // Fail
-
-            timeSpan = new TimeSpan(hour, minute, 0);
-
-            return true;
-        }
-
         // xhxm or xx
-        private static bool HandleSingleNumberSplitParts(ref TimeSpan timeSpan, bool is24hour, bool isPM, string numberPart, string[] numberParts)
+        static bool HandleSingleNumberSplitParts(ref TimeSpan timeSpan, bool is24hour, bool isPM, string numberPart)
         {
             // Check if it's in the format "xhxm" (or the format "xm").
             if (HandleXHXM(ref timeSpan, is24hour, isPM, numberPart))
                 return true;
 
-            // If we got here, then we've confirmed that it is not in the xhxm format.
-            if (int.TryParse(numberParts[0], out int singleHour) && singleHour < 24 &&
-                Handle12Hour(ref singleHour, out bool singleMaxTime, is24hour, isPM))
-            {
-                // If the 12-hour clock hits 24:00, push that back down to 23:59.
-                if (singleMaxTime)
-                    timeSpan = new TimeSpan(23, 59, 0);
-                else
-                    timeSpan = new TimeSpan(singleHour, 0, 0);
-                return true;
-            }
-            else
-                return false; // Fail
+            // If it's not XHXM, then it's just one number, which we assume is the hour.
+            if (!ParseMinuteORHour(numberPart, ref timeSpan, true, is24hour, isPM))
+                return false;
+
+            return true;
         }
 
-        private static bool HandleXHXM(ref TimeSpan timeSpan, bool is24hour, bool isPM, string numberPart)
+        static bool HandleXHXM(ref TimeSpan timeSpan, bool is24hour, bool isPM, string numberPart)
         {
-            var isXHXM = is24hour ? numberPart.EndsWith("m") : numberPart.EndsWith("h");
+            // You can't enter a 12-hour time (AM/PM) as an "xhxm" format.
+            if (!is24hour)
+                return false;
 
-            // If it's not XHXM, then stop.
+            var isXHXM = numberPart.EndsWith("m") || numberPart.EndsWith("h");
+
+            // Now, we'll work out what that minute and hour is.
             if (isXHXM)
             {
-                string[] parts;
-                int mPos = 0;
-
-                // The hour part can be excluded (so, we can literally just have "xm"/"xxm", so, let's see if we have an hour part.
                 var hPos = numberPart.IndexOf('h');
+                var mPos = numberPart.IndexOf('m');
                 var hasHour = hPos != -1;
+                var hasMinute = mPos != -1;
+                var hourPart = hasHour ? numberPart.Substring(0, hPos) : "";
+                var minutePart = hasMinute ? numberPart.Substring(hasHour ? hPos + 1 : 0, numberPart.Length - hPos - 1).TrimEnd('m') : "";
 
-                // If we do have a "h", we'll split the string into two (the hour and minute), and place it into the array.
-                if (hasHour) {
-                    parts = new string[] { numberPart.Substring(0, hPos), numberPart.Substring(hPos + 1, numberPart.Length - hPos - 1) };
-                    mPos = parts[1].IndexOf('m');
-                }
+                if (hasHour && hasMinute)
+                    return ParseMinuteANDHour(ref timeSpan, is24hour, isPM, new string[] { hourPart, minutePart });
+                else if (hasHour)
+                    return ParseMinuteORHour(hourPart, ref timeSpan, true, is24hour, isPM);
+                else if (hasMinute)
+                    return ParseMinuteORHour(minutePart, ref timeSpan, false, is24hour, isPM);
 
-                // If not, then it could be just a minute (like "xm"), so, we're going to check to see if there's an "m" in there, and if not, then it's not that - so it can't be XHXM.
-                else if ((mPos = numberPart.IndexOf('m')) != -1)
-                {
-                    parts = new string[] { numberPart };
-                }
-
-                // If it wasn't "xhxm" or "xm", then it can't be XHXM, so, return false.
+                // If it wasn't any of those, this can't be valid.
                 else return false;
-
-                // Remove the "m", if there is one.
-                if (mPos != -1)
-                    parts[hasHour ? 1 : 0] = parts[hasHour ? 1 : 0].Remove(mPos, 1);
-
-                // Finally, parse the (optionally hour) and minute.
-                if (hasHour)
-                    return ParseMinuteAndHour(ref timeSpan, is24hour, isPM, parts);
-                else 
-                {
-                    var successful = int.TryParse(parts[0], out int res);
-                    timeSpan = new TimeSpan(0, res, 0);
-                    return successful;
-                }
             }
             return false;
         }
@@ -222,7 +174,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         /// </summary>
         /// <param name="maxTime">If we hit 24 hours, then this will specify that the final TimeSpan needs to be 23:59, as 24:00 would be a problem.</param>
         /// <returns>True if valid, False is invalid</returns>
-        public static bool Handle12Hour(ref int hour, out bool maxTime, bool is24hour, bool isPM)
+        static bool Handle12Hour(ref int hour, out bool maxTime, bool is24hour, bool isPM)
         {
             maxTime = false;
 
@@ -233,6 +185,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
             // However, if it is, and it's PM, then we have to add 12 hours, and fail if that doesn't work.
             if (isPM)
             {
+                // If the hour is "12", don't do anything, since "12 PM" is not "24:00", it's actually "12:00" in 24-hour time!
+                if (hour == 12)
+                    return true;
+
                 hour += 12;
                 if (hour > 24)
                     return false; // Fail
@@ -240,7 +196,68 @@ namespace PowerPlannerAppDataLibrary.Helpers
                     maxTime = true;
             }
 
+            // "12 AM" becomes "00:xx"
+            else if (hour == 12)
+                hour = 0;
+
             return true;
         }
+
+        /// <summary>
+        /// Takes in a string array with two items in it, one is the hour, and one is the minute.
+        /// </summary>
+        static bool ParseMinuteANDHour(ref TimeSpan timeSpan, bool is24hour, bool isPM, string[] numberSplitParts)
+        {
+            // Handle the minute.
+            if (!ParseMinuteORHour(numberSplitParts[1], ref timeSpan, false, is24hour, isPM))
+                return false;
+
+            // Handle the hour.
+            if (!ParseMinuteORHour(numberSplitParts[0], ref timeSpan, true, is24hour, isPM))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Parses the given number, and places it into either the hour or minute of the given TimeSpan.
+        /// </summary>
+        static bool ParseMinuteORHour(string text, ref TimeSpan timeSpan, bool isHour, bool is24hour, bool isPM)
+        {
+            var timeLimit = isHour ? 23 : 59;
+
+            if (isHour)
+            {
+                if (!int.TryParse(text, out int hour))
+                    return false;
+
+                if (!Handle12Hour(ref hour, out bool maxTime, is24hour, isPM))
+                    return false;
+
+                // If it reached the maximum time, push the time down to "23:59"
+                if (maxTime)
+                {
+                    timeSpan = new TimeSpan(23, 59, 0);
+                    return true;
+                }
+
+                if (hour < 0 || hour > timeLimit)
+                    return false;
+
+                timeSpan = timeSpan.Add(TimeSpan.FromHours(hour));
+            } else {
+
+                if (!int.TryParse(text, out int minute))
+                    return false;
+
+                if (minute < 0 || minute > timeLimit)
+                    return false;
+
+                timeSpan = timeSpan.Add(TimeSpan.FromMinutes(minute));
+            }
+
+            return true;
+        }
+#endregion
     }
 }

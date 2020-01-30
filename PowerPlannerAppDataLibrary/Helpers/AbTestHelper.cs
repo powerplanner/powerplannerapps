@@ -83,7 +83,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
                     if (val == 0)
                     {
                         val = new Random().Next(1, 3); // Upper is exclusive
-
                         CrossSettings.Current.AddOrUpdateValue("AbTest." + _testName, val);
                     }
 
