@@ -1,6 +1,7 @@
 ﻿using Plugin.Settings;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -8,6 +9,31 @@ namespace PowerPlannerAppDataLibrary.Helpers
 {
     public static class AbTestHelper
     {
+        private static long[] EnabledAccountIds = new long[]
+        {
+            906267,
+            1030231,
+            91353,
+            1723027
+        };
+
+        private static long[] DisabledAccountIds = new long[]
+        {
+            1725994
+        };
+
+        public static bool ShouldIgnoreFromTelemetry()
+        {
+            long accountId = Extensions.TelemetryExtension.Current?.CurrentAccountId ?? 0;
+
+            if (EnabledAccountIds.Contains(accountId) || DisabledAccountIds.Contains(accountId))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static class Tests
         {
             public static TestItem NewTimePicker { get; set; } = new TestItem(nameof(NewTimePicker), true);
@@ -39,6 +65,18 @@ namespace PowerPlannerAppDataLibrary.Helpers
                         return _debugValue.Value;
                     }
 #endif
+
+                    if (Extensions.TelemetryExtension.Current != null && Extensions.TelemetryExtension.Current.CurrentAccountId > 0)
+                    {
+                        if (EnabledAccountIds.Contains(Extensions.TelemetryExtension.Current.CurrentAccountId))
+                        {
+                            return true;
+                        }
+                        else if (DisabledAccountIds.Contains(Extensions.TelemetryExtension.Current.CurrentAccountId))
+                        {
+                            return false;
+                        }
+                    }
 
                     int val = CrossSettings.Current.GetValueOrDefault("AbTest." + _testName, 0);
 

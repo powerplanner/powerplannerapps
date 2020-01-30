@@ -15,7 +15,8 @@ namespace PowerPlanneriOS.App
     {
         static PowerPlanneriOSApp()
         {
-            UseTasksViewModel = true;
+            UseUnifiedCalendarDayTabItem = true;
+            DoNotShowYearsInTabItems = true;
         }
 
         public static new PowerPlanneriOSApp Current

@@ -1698,4 +1698,25 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
     <value>Tutoriales y preguntas frecuentes</value>
   </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Content" xml:space="preserve">
+    <value>¡La hora de inicio que ha introducido no es válida! Puede escribir '(hour):(minute)', '(hour):(minute) (AM/PM)' o '(hour)h(minute)m'.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Title" xml:space="preserve">
+    <value>Hora de inicio no válida</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Content" xml:space="preserve">
+    <value>¡La hora de finalización que ha introducido no es válida! Puede escribir '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. Además de eso, también puede agregar un signo "+" al principio con el fin de hacer que la hora de finalización una cantidad relativa después de la hora de inicio (por ejemplo, +50m)</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Title" xml:space="preserve">
+    <value>Hora de finalización no válida</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" xml:space="preserve">
+    <value>Debe seleccionar al menos un día de la semana. Si desea eliminar esta vez, utilice la opción de eliminación en el menú.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" xml:space="preserve">
+    <value>No hay día de semanas</value>
+  </data>
+  <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
+    <value>La hora de finalización debe ser mayor que la hora de inicio.</value>
+  </data>
 </root>

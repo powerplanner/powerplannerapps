@@ -1700,4 +1700,25 @@
   <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
     <value>الدروس والاسئله الشائعة</value>
   </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Content" xml:space="preserve">
+    <value>وقت البدء الذي أدخلته غير صالح! يمكنك كتابة '(ساعة) :(دقيقة)' أو '(ساعة) :(دقيقة) (صباحاً/مساءً)" أو '(ساعة) ح (دقيقة)م'.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Title" xml:space="preserve">
+    <value>وقت البدء غير صالح</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Content" xml:space="preserve">
+    <value>وقت الانتهاء الذي أدخلته غير صالح! يمكنك كتابة '(ساعة) :(دقيقة)'، '(ساعة) :(دقيقة) (صباحاً/مساءً)'، '(ساعة) ح (دقيقة)م'. بالإضافة إلى ذلك ، يمكنك أيضًا إضافة علامة "+" إلى البداية من أجل جعل وقت الانتهاء مبلغًا نسبيًا بعد وقت البدء (على سبيل المثال + 50m)</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Title" xml:space="preserve">
+    <value>وقت الانتهاء غير صالح</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" xml:space="preserve">
+    <value>يجب تحديد يوم واحد على الأقل من الأسبوع. إذا كنت تريد حذف هذه المرة، استخدم خيار الحذف في القائمة.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" xml:space="preserve">
+    <value>لا يوجد يوم من الأسابيع</value>
+  </data>
+  <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
+    <value>يجب أن يكون وقت الانتهاء أكبر من وقت البدء.</value>
+  </data>
 </root>

@@ -20,6 +20,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerUWP.Controls;
+using PowerPlannerUWP.Controls.TimePickers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -52,6 +55,13 @@ namespace PowerPlannerUWP.Views
             checkBoxSunday.Content = DateTools.ToLocalizedString(DayOfWeek.Sunday);
         }
 
+        public override void OnViewModelSetOverride()
+        {
+            ViewModel.AutoAdjustEndTimes = false;
+
+            base.OnViewModelSetOverride();
+        }
+
         private DateTime? _startedAddingTime;
         public override void OnViewModelLoadedOverride()
         {
@@ -60,14 +70,19 @@ namespace PowerPlannerUWP.Views
             base.Title = ViewModel.ClassName.ToUpper();
 
             // For tracking effectiveness of new time picker
-            if (ViewModel.State == AddClassTimeViewModel.OperationState.Adding)
+            if (ViewModel.State == AddClassTimeViewModel.OperationState.Adding && TextBasedTimePicker.IsSupported)
             {
                 _startedAddingTime = DateTime.UtcNow;
             }
         }
 
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            // Clicking button doesn't take focus away from TextBasedTimePicker, so their edited value doesn't get committed...
+            // Therefore we have to take focus away, and then wait for the next UI cycle to commit changes
+            ButtonSave.Focus(FocusState.Programmatic);
+            await System.Threading.Tasks.Task.Delay(1);
+
             ViewModel.Save(_startedAddingTime);
         }
 

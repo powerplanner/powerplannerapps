@@ -21,9 +21,24 @@ namespace PowerPlannerAppDataLibrary.App
     public class PowerPlannerApp : PortableApp
     {
         /// <summary>
-        /// Whether on the home page the TasksViewModel should be returned for Calendar/Day/Agenda. iOS uses this.
+        /// iOS sets this to true, it only has a Calendar tab entry that also has days.
         /// </summary>
-        public static bool UseTasksViewModel { get; set; }
+        public static bool UseUnifiedCalendarDayTabItem { get; set; }
+
+        /// <summary>
+        /// iOS and Android sets this to true. iOS shows years within settings page, opened as a popup, Android shows it in a separate menu, also opened as a popup.
+        /// </summary>
+        public static bool DoNotShowYearsInTabItems { get; set; }
+
+        /// <summary>
+        /// Android sets this to true, it shows settings in separate menu item and opens as popup.
+        /// </summary>
+        public static bool DoNotShowSettingsInTabItems { get; set; }
+
+        /// <summary>
+        /// Android sets this to true
+        /// </summary>
+        public static bool ShowClassesAsPopups { get; set; }
 
         public new static PowerPlannerApp Current
         {

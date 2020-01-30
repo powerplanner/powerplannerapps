@@ -1698,4 +1698,25 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
     <value>Tutorials und FAQ</value>
   </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Content" xml:space="preserve">
+    <value>Die eingegebene Startzeit ist ungültig! Sie können '(stunde):(Minute)', '(stunde):(Minute) (AM/PM)' oder '(hour)h(minute)m' schreiben.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Title" xml:space="preserve">
+    <value>Ungültige Startzeit</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Content" xml:space="preserve">
+    <value>Die von Ihnen eingegebene Endzeit ist ungültig! Sie können '(stunde):(Minute)', '(Stunde):(Minute) (AM/PM)', '(stunde)h(minute)m'' schreiben. Darüber hinaus können Sie am Anfang auch ein "+"-Zeichen hinzufügen, um die Endzeit nach der Startzeit relativ viel zu machen (z.B. +50m)</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Title" xml:space="preserve">
+    <value>Ungültige Endzeit</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" xml:space="preserve">
+    <value>Sie müssen mindestens einen Wochentag auswählen. Wenn Sie diese Zeit löschen möchten, verwenden Sie die Löschoption im Menü.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" xml:space="preserve">
+    <value>Kein Wochentag</value>
+  </data>
+  <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
+    <value>Ihre Endzeit muss größer sein als Ihre Startzeit.</value>
+  </data>
 </root>

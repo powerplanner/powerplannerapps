@@ -74,7 +74,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public override bool GoBack()
         {
-            if (MainScreenViewModel.UseTabNavigation && !MainScreenViewModel.AvailableItems.Any())
+            if (PowerPlannerApp.DoNotShowYearsInTabItems && !MainScreenViewModel.AvailableItems.Any())
             {
                 return false;
             }
