@@ -447,7 +447,7 @@ namespace PowerPlannerAppDataLibrary.App
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns></returns>
-        public static async System.Threading.Tasks.Task SyncAccountInBackground(long accountId)
+        public static async System.Threading.Tasks.Task SyncAccountInBackgroundAsync(long accountId)
         {
             try
             {

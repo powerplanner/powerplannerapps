@@ -270,7 +270,7 @@ namespace PowerPlanneriOS
                 {
                     long accountId = accountIdNum.Int64Value;
 
-                    await PowerPlannerApp.SyncAccountInBackground(accountId);
+                    await PowerPlannerApp.SyncAccountInBackgroundAsync(accountId);
                 }
             }
             catch (Exception ex)

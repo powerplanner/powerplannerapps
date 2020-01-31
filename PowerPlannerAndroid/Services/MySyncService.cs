@@ -23,7 +23,7 @@ namespace PowerPlannerAndroid.Services
         {
             long accountId = @params.Extras.GetLong("AccountId");
 
-            await PowerPlannerApp.SyncAccountInBackground(accountId);
+            await PowerPlannerApp.SyncAccountInBackgroundAsync(accountId);
         }
     }
 }
