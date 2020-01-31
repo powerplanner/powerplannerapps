@@ -165,6 +165,55 @@ namespace PowerPlanneriOS
             }
         }
 
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            try
+            {
+                // https://docs.microsoft.com/en-us/xamarin/ios/platform/user-notifications/deprecated/remote-notifications-in-ios#registering-with-apns
+                string pushToken = ParsePushToken(deviceToken);
+                iOSPushExtension.RegisteredForRemoteNotifications(pushToken);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    iOSPushExtension.FailedToRegisterForRemoteNotifications(ex.ToString());
+                }
+                catch (Exception ex2)
+                {
+                    TelemetryExtension.Current?.TrackException(ex2);
+                }
+            }
+        }
+
+        private static string ParsePushToken(NSData deviceToken)
+        {
+            // https://onesignal.com/blog/ios-13-introduces-4-breaking-changes-to-notifications/
+            // https://medium.com/@kevinle/correctly-capture-ios-13-device-token-in-xamarin-3d0fa390b71b
+
+            int length = (int)deviceToken.Length;
+            if (deviceToken.Length == 0)
+            {
+                return null;
+            }
+
+            string[] hexArray = deviceToken.Select(b => b.ToString("x2")).ToArray();
+            return string.Join(string.Empty, hexArray);
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            // Might fail if not connected to network, APNs servers unreachable, or doesn't have proper code-signing entitlement
+            try
+            {
+                iOSPushExtension.FailedToRegisterForRemoteNotifications(error.ToString());
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
             _hasActivatedWindow = false;
@@ -173,15 +222,16 @@ namespace PowerPlanneriOS
             AppCenter.Start(Secrets.AppCenterAppSecret,
                    typeof(Analytics), typeof(Crashes));
 
+            TelemetryExtension.Current = new iOSTelemetryExtension();
+            InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
+            PushExtension.Current = new iOSPushExtension();
+
             if (SdkSupportHelper.IsNotificationsSupported)
             {
                 UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
 
                 RemindersExtension.Current = new IOSRemindersExtension();
             }
-
-            TelemetryExtension.Current = new iOSTelemetryExtension();
-            InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
 
             // Get whether launched from shortcut
             ShortcutAction? shortcutAction = null;
@@ -196,6 +246,43 @@ namespace PowerPlanneriOS
             RegisterWindow(shortcutAction);
 
             return result;
+        }
+
+        public override async void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            // Payload reference: https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification
+
+            /*
+             * {
+             *   "content-available": 1
+             *   "action": "syncAccount",
+             *   "accountId": 49831
+             * }
+             * */
+
+            try
+            {
+                if (userInfo.TryGetValue(new NSString("action"), out NSObject actionValue)
+                    && actionValue is NSString actionValueStr
+                    && actionValueStr == "syncAccount"
+                    && userInfo.TryGetValue(new NSString("accountId"), out NSObject accountIdValue)
+                    && accountIdValue is NSNumber accountIdNum)
+                {
+                    long accountId = accountIdNum.Int64Value;
+
+                    await PowerPlannerApp.SyncAccountInBackgroundAsync(accountId);
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+
+            try
+            {
+                completionHandler(UIBackgroundFetchResult.NewData);
+            }
+            catch { }
         }
 
         private static ShortcutAction? ConvertShortcutItem(UIApplicationShortcutItem item)
