@@ -1,5 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
+using PowerPlannerAppDataLibrary.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,14 +48,86 @@ namespace PowerPlannerAppDataLibrary.Extensions
         public static TelemetryExtension Current { get; set; }
 #endif
 
+        public string UserId { get; private set; }
+
         public abstract void TrackException(Exception ex, [CallerMemberName]string exceptionName = null);
 
         public abstract void TrackEvent(string eventName, IDictionary<string, string> properties = null);
 
-        public abstract void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration);
+        private string _lastPageName;
+        private object _pageViewLock = new object();
+        private TelemetryPageViewBundler _pageViewBundler;
+        public virtual void TrackPageVisited(string pageName)
+        {
+            try
+            {
+                _lastPageName = pageName;
+
+                DateTime utcTimeVisited = DateTime.UtcNow;
+                string userId = UserId;
+
+                lock (_pageViewLock)
+                {
+                    if (_pageViewBundler == null)
+                    {
+                        _pageViewBundler = new TelemetryPageViewBundler(userId);
+                    }
+
+                    // If able to add the page to the bundler
+                    if (_pageViewBundler.TryAddPage(userId, pageName, utcTimeVisited))
+                    {
+                        return;
+                    }
+
+                    // Otherwise, need to log bundler and create new
+                    FinishPageViewBundler();
+
+                    // And then add to new one
+                    _pageViewBundler = new TelemetryPageViewBundler(userId);
+                    _pageViewBundler.TryAddPage(userId, pageName, utcTimeVisited);
+                }
+            }
+            catch (Exception ex)
+            {
+                TrackException(ex);
+            }
+        }
+
+        public void LeavingApp()
+        {
+            try
+            {
+                lock (_pageViewLock)
+                {
+                    FinishPageViewBundler();
+                }
+            }
+            catch (Exception ex) { TrackException(ex); }
+        }
+
+        public void ReturnedToApp()
+        {
+            TrackPageVisited(_lastPageName);
+        }
+
+        private void FinishPageViewBundler()
+        {
+            TrackEvent("PageViews", _pageViewBundler.GenerateProperties());
+
+            _pageViewBundler = null;
+        }
 
         public virtual void UpdateCurrentUser(AccountDataItem account)
         {
+            if (account != null)
+            {
+                UserId = account.GetTelemetryUserId();
+            }
+            else
+            {
+                UserId = null;
+            }
+
             if (account == null || !account.IsOnlineAccount)
             {
                 CurrentAccountId = 0;
@@ -83,8 +156,6 @@ namespace PowerPlannerAppDataLibrary.Extensions
 #if DEBUG
     public class DebugTelemetryExtension : TelemetryExtension
     {
-        private string _userId;
-
         public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             System.Diagnostics.Debug.WriteLine($"Event: {eventName}");
@@ -95,7 +166,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
             System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
         }
 
-        public override void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration)
+        public override void TrackPageVisited(string pageName)
         {
             System.Diagnostics.Debug.WriteLine($"PageView: {pageName}");
         }
@@ -103,8 +174,8 @@ namespace PowerPlannerAppDataLibrary.Extensions
         public override void UpdateCurrentUser(AccountDataItem account)
         {
             base.UpdateCurrentUser(account);
-            _userId = account?.GetTelemetryUserId();
-            System.Diagnostics.Debug.WriteLine($"CurrentUser: {account?.GetTelemetryUserId()}");
+
+            System.Diagnostics.Debug.WriteLine($"CurrentUser: {UserId}");
         }
     }
 #endif
