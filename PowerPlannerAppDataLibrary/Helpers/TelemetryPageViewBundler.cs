@@ -70,10 +70,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             var answer = new Dictionary<string, string>()
             {
-                { "Date", UtcDate.ToString("yyyy-MM-dd") } // ISO8601 format
+                { "Date", UtcDate.ToString("yyyy-MM-dd") }, // ISO8601 format
+                { "AccountId", UserId } // We have to add AccountId, since if it changed, the AccountId automatically logged would be different
             };
-
-            // Note that AccountId is added automatically
 
             // Entries0 - Entries17
             for (int i = 0; i < _pageProperties.Count; i++)

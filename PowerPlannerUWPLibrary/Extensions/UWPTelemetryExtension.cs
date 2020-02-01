@@ -28,7 +28,10 @@ namespace PowerPlannerUWPLibrary.Extensions
                 if (UserId != null)
                 {
                     // Custom events don't include the custom assigned UserId, so include manually
-                    properties["AccountId"] = UserId;
+                    if (!properties.ContainsKey("AccountId"))
+                    {
+                        properties["AccountId"] = UserId;
+                    }
                 }
 
                 if (properties.Count > 0)
