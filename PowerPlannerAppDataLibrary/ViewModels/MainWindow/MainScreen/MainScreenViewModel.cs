@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
@@ -140,12 +140,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             base.PropertyChanged += MainScreenViewModel_PropertyChanged;
         }
 
-        private double _uploadImageProgress;
-        public double UploadImageProgress
-        {
-            get { return _uploadImageProgress; }
-            set { SetProperty(ref _uploadImageProgress, value, nameof(UploadImageProgress)); }
-        }
+        public double UploadImageProgress { get; set; }
 
         private void Sync_UploadImageProgress(object sender, UploadImageProgressEventArgs e)
         {
@@ -169,7 +164,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     else
                     {
                         // Silently set upload image progress... a new sync operation is currently happening which takes priority
-                        _uploadImageProgress = 1;
+                        UploadImageProgress = 1;
                     }
                 }
 
@@ -186,7 +181,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     else
                     {
                         // Silently set image progress... a new sync operation is currently happening which takes priority
-                        _uploadImageProgress = e.Progress;
+                        UploadImageProgress = e.Progress;
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
 using System.Collections.Generic;
@@ -34,26 +34,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             Years.Remove(year);
         }
 
-        private double _gpa = PowerPlannerSending.Grade.UNGRADED;
-        public double GPA
-        {
-            get { return _gpa; }
-            set { SetProperty(ref _gpa, value, nameof(GPA)); }
-        }
+        public double GPA { get; set; } = PowerPlannerSending.Grade.UNGRADED;
 
-        private double _creditsEarned = PowerPlannerSending.Grade.UNGRADED;
-        public double CreditsEarned
-        {
-            get { return _creditsEarned; }
-            set { SetProperty(ref _creditsEarned, value, nameof(CreditsEarned)); }
-        }
+        public double CreditsEarned { get; set; } = PowerPlannerSending.Grade.UNGRADED;
 
-        private double _creditsAffectingGpa = PowerPlannerSending.Grade.UNGRADED;
-        public double CreditsAffectingGpa
-        {
-            get { return _creditsAffectingGpa; }
-            set { SetProperty(ref _creditsAffectingGpa, value, nameof(CreditsAffectingGpa)); }
-        }
+        public double CreditsAffectingGpa { get; set; } = PowerPlannerSending.Grade.UNGRADED;
 
         public void CalculateEverything()
         {

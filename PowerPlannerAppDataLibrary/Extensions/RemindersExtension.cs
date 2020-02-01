@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;

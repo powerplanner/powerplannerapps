@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,12 +39,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             public Action OnSaved { get; set; }
         }
 
-        private string _name = "";
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
-        }
+        public string Name { get; set; } = "";
 
         public async void Save()
         {

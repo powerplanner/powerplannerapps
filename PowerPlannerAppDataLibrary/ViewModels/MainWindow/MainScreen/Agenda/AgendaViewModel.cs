@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using System;
 using System.Collections.Generic;
@@ -16,22 +16,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 {
     public class AgendaViewModel : BaseMainScreenViewModelChild
     {
-        private AgendaViewItemsGroup _agendaViewItemsGroup;
-        public AgendaViewItemsGroup AgendaViewItemsGroup
-        {
-            get { return _agendaViewItemsGroup; }
-            set { SetProperty(ref _agendaViewItemsGroup, value, "AgendaViewItemsGroup"); }
-        }
+        public AgendaViewItemsGroup AgendaViewItemsGroup { get; set; }
 
-        private bool _hasNoItems;
         /// <summary>
         /// Returns true if there aren't any tasks/events. Supports binding.
         /// </summary>
-        public bool HasNoItems
-        {
-            get { return _hasNoItems; }
-            set { SetProperty(ref _hasNoItems, value, nameof(HasNoItems)); }
-        }
+        public bool HasNoItems { get; set; }
 
         private ViewItemSemester _semester;
 

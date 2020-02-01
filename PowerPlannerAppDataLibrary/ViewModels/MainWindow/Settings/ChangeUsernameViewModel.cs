@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerSending;
 using System;
@@ -24,20 +24,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Username = account.Username;
         }
 
-        private string _username = "";
 
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value, nameof(Username)); }
-        }
+        public string Username { get; set; } = "";
 
-        private bool _isUpdatingUsername;
-        public bool IsUpdatingUsername
-        {
-            get { return _isUpdatingUsername; }
-            set { SetProperty(ref _isUpdatingUsername, value, nameof(IsUpdatingUsername)); }
-        }
+        public bool IsUpdatingUsername { get; set; }
 
         public async void Update()
         {

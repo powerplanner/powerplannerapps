@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,12 +34,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
         }
 
-        private BaseViewModel[] _items;
-        public BaseViewModel[] Items
-        {
-            get { return _items; }
-            set { SetProperty(ref _items, value, nameof(Items)); }
-        }
+        public BaseViewModel[] Items { get; set; }
 
         public enum ViewState
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,12 +21,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Account = account;
         }
 
-        private bool _deleteOnlineAccountToo;
-        public bool DeleteOnlineAccountToo
-        {
-            get { return _deleteOnlineAccountToo; }
-            set { SetProperty(ref _deleteOnlineAccountToo, value, nameof(DeleteOnlineAccountToo)); }
-        }
+        public bool DeleteOnlineAccountToo { get; set; }
 
         /// <summary>
         /// This permanently deletes without any confirmation.

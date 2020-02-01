@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -85,29 +85,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             RemoveViewModel(this);
         }
 
-        private string _name = "";
 
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
-        }
+        public string Name { get; set; } = "";
 
-        private DateTime? _startDate;
 
-        public DateTime? StartDate
-        {
-            get { return _startDate; }
-            set { SetProperty(ref _startDate, value, nameof(StartDate)); }
-        }
+        public DateTime? StartDate { get; set; }
 
-        private DateTime? _endDate;
 
-        public DateTime? EndDate
-        {
-            get { return _endDate; }
-            set { SetProperty(ref _endDate, value, nameof(EndDate)); }
-        }
+        public DateTime? EndDate { get; set; }
 
         public void Save()
         {

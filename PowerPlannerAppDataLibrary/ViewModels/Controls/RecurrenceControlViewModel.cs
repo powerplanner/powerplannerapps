@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Extensions;
+using PropertyChanged;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,12 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
             return GetRepeatIntervalAsNumber() > 0;
         }
 
-        private string _repeatIntervalAsString = "1";
-        public string RepeatIntervalAsString
-        {
-            get { return _repeatIntervalAsString; }
-            set { SetProperty(ref _repeatIntervalAsString, value, nameof(RepeatIntervalAsString)); }
-        }
+        public string RepeatIntervalAsString { get; set; } = "1";
 
         public enum RepeatOptions
         {
@@ -40,12 +36,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
             Monthly
         }
 
-        private RepeatOptions _selectedRepeatOption = RepeatOptions.Weekly;
-        public RepeatOptions SelectedRepeatOption
-        {
-            get { return _selectedRepeatOption; }
-            set { SetProperty(ref _selectedRepeatOption, value, nameof(SelectedRepeatOption), nameof(SelectedRepeatOptionAsString), nameof(AreDayCheckBoxesVisible)); }
-        }
+        [DependsOn(nameof(SelectedRepeatOptionAsString), nameof(AreDayCheckBoxesVisible))]
+        public RepeatOptions SelectedRepeatOption { get; set; } = RepeatOptions.Weekly;
 
         /// <summary>
         /// The options, like "day", "week", and "month"
@@ -81,19 +73,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
             {
                 DayOfWeek = dayOfWeek;
                 DisplayName = DateTools.ToLocalizedString(dayOfWeek);
-                _isChecked = isChecked;
+                IsChecked = isChecked;
             }
 
             public DayOfWeek DayOfWeek { get; private set; }
 
             public string DisplayName { get; private set; }
 
-            private bool _isChecked;
-            public bool IsChecked
-            {
-                get { return _isChecked; }
-                set { SetProperty(ref _isChecked, value, nameof(IsChecked)); }
-            }
+            public bool IsChecked { get; set; }
         }
 
         public bool AreDayCheckBoxesVisible => SelectedRepeatOption == RepeatOptions.Weekly;
@@ -319,12 +306,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
             Occurrences
         }
 
-        private EndOptions _endOptions = EndOptions.Date;
-        public EndOptions SelectedEndOption
-        {
-            get { return _endOptions; }
-            set { SetProperty(ref _endOptions, value, nameof(SelectedEndOption), nameof(IsEndDateChecked), nameof(IsEndOccurrencesChecked)); }
-        }
+        [DependsOn(nameof(IsEndDateChecked), nameof(IsEndOccurrencesChecked))]
+        public EndOptions SelectedEndOption { get; set; } = EndOptions.Date;
 
         public bool IsEndDateChecked
         {
@@ -345,12 +328,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
             set { SetProperty(ref _endDate, value.Date, nameof(EndDate)); }
         }
 
-        private string _endOccurrencesAsString = "5";
-        public string EndOccurrencesAsString
-        {
-            get { return _endOccurrencesAsString; }
-            set { SetProperty(ref _endOccurrencesAsString, value, nameof(EndOccurrencesAsString)); }
-        }
+        public string EndOccurrencesAsString { get; set; } = "5";
 
         public uint GetEndOccurrencesAsNumber()
         {

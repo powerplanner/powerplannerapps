@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.App;
+using BareMvvm.Core.App;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;

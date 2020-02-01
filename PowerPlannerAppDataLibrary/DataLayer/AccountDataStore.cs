@@ -1,4 +1,4 @@
-﻿using PowerPlannerSending;
+using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using SQLite;

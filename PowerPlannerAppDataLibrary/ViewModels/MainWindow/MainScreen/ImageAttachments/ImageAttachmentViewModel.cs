@@ -1,4 +1,4 @@
-﻿using StorageEverywhere;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using System;
@@ -31,15 +31,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttac
             _hasStartedLoad = true;
         }
 
-        private ImageAttachmentStatus _status = ImageAttachmentStatus.NotStarted;
         /// <summary>
         /// Views should subscribe to status and change image based on that, not based on the file
         /// </summary>
-        public ImageAttachmentStatus Status
-        {
-            get { return _status; }
-            set { SetProperty(ref _status, value, nameof(Status)); }
-        }
+        public ImageAttachmentStatus Status { get; set; } = ImageAttachmentStatus.NotStarted;
 
         private bool _hasStartedLoad;
         public async void StartLoad()

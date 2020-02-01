@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,12 +25,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             Credits = c.Credits;
         }
 
-        private double _credits;
-        public double Credits
-        {
-            get { return _credits; }
-            set { SetProperty(ref _credits, value, nameof(Credits)); }
-        }
+        public double Credits { get; set; }
 
         public void Save()
         {

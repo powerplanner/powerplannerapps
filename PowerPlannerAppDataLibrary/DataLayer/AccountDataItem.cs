@@ -1,4 +1,4 @@
-﻿using StorageEverywhere;
+using StorageEverywhere;
 using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
@@ -46,62 +46,37 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         [DataMember]
         public int SyncedDataVersion { get; set; } = CURRENT_SYNCED_DATA_VERSION;
 
-        private int _currentChangeNumber;
         [DataMember]
-        public int CurrentChangeNumber
-        {
-            get { return _currentChangeNumber; }
-            set { SetProperty(ref _currentChangeNumber, value, "CurrentChangeNumber"); }
-        }
+        public int CurrentChangeNumber { get; set; }
 
         [DataMember]
         public bool NeedsInitialSync { get; set; }
 
         #region Settings
 
-        private bool _needsToSyncSettings;
         /// <summary>
         /// In case user exits or is offline when they modify settings, I'll remember that I need to sync them
         /// </summary>
         [DataMember]
-        public bool NeedsToSyncSettings
-        {
-            get { return _needsToSyncSettings; }
-            set { SetProperty(ref _needsToSyncSettings, value, "NeedsToSyncSettings"); }
-        }
+        public bool NeedsToSyncSettings { get; set; }
 
-        private bool _isAppointmentsUpToDate;
         /// <summary>
         /// Gets and sets a value indicating whether the Appointments calendar has been updated. If false, an entire re-write of the Appointments data will be performed. If true, incremental updates of Appointments data can be made.
         /// </summary>
         [DataMember]
-        public bool IsAppointmentsUpToDate
-        {
-            get { return _isAppointmentsUpToDate; }
-            set { SetProperty(ref _isAppointmentsUpToDate, value, "IsAppointmentsUpToDate"); }
-        }
+        public bool IsAppointmentsUpToDate { get; set; }
 
-        private bool _isTasksCalendarIntegrationDisabled;
         /// <summary>
         /// Gets and sets a value indicating whether the Tasks calendar integration with system calendar has been disabled.
         /// </summary>
         [DataMember]
-        public bool IsTasksCalendarIntegrationDisabled
-        {
-            get { return _isTasksCalendarIntegrationDisabled; }
-            set { SetProperty(ref _isTasksCalendarIntegrationDisabled, value, "IsTasksCalendarIntegrationDisabled"); }
-        }
+        public bool IsTasksCalendarIntegrationDisabled { get; set; }
 
-        private bool _isClassesCalendarIntegrationDisabled;
         /// <summary>
         /// Gets and sets a value indicating whether the Classes calendar integration with system calendar has been disabled.
         /// </summary>
         [DataMember]
-        public bool IsClassesCalendarIntegrationDisabled
-        {
-            get { return _isClassesCalendarIntegrationDisabled; }
-            set { SetProperty(ref _isClassesCalendarIntegrationDisabled, value, "IsClassesCalendarIntegrationDisabled"); }
-        }
+        public bool IsClassesCalendarIntegrationDisabled { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether all calendar integration has been disabled.
@@ -111,13 +86,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return IsTasksCalendarIntegrationDisabled && IsClassesCalendarIntegrationDisabled;
         }
 
-        private GpaOptions _gpaOption;
         [DataMember]
-        public GpaOptions GpaOption
-        {
-            get { return _gpaOption; }
-            set { SetProperty(ref _gpaOption, value, "GpaOption"); }
-        }
+        public GpaOptions GpaOption { get; set; }
 
         private DateTime _weekOneStartsOn = DateTools.Last(DayOfWeek.Sunday, DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
         [DataMember]
@@ -229,32 +199,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return PowerPlannerSending.Helpers.WeekHelper.GetWeekOnDifferentDate(WeekOneStartsOn, date);
         }
 
-        private bool showSchedule = true;
         [DataMember]
-        public bool ShowSchedule
-        {
-            get { return showSchedule; }
-            set { SetProperty(ref showSchedule, value, "ShowSchedule"); }
-        }
+        public bool ShowSchedule { get; set; } = true;
 
-        private bool showBackground = true;
         [DataMember]
-        public bool ShowBackground
-        {
-            get { return showBackground; }
-            set { SetProperty(ref showBackground, value, "ShowBackground"); }
-        }
+        public bool ShowBackground { get; set; } = true;
 
-        private bool _reviewed;
         /// <summary>
         /// If the user hasn't reviewed the app, this should be false.
         /// </summary>
         [DataMember]
-        public bool Reviewed
-        {
-            get { return _reviewed; }
-            set { SetProperty(ref _reviewed, value, "Reviewed"); }
-        }
+        public bool Reviewed { get; set; }
 
         private bool _hasAddedRepeating = false;
         [DataMember]
@@ -264,53 +219,23 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set { _hasAddedRepeating = value; }
         }
 
-        private bool _firstHomework = true;
         [DataMember]
-        public bool FirstHomework
-        {
-            get { return _firstHomework; }
-            set { SetProperty(ref _firstHomework, value, "FirstHomework"); }
-        }
+        public bool FirstHomework { get; set; } = true;
 
-        private bool _firstNotes = true;
         [DataMember]
-        public bool FirstNotes
-        {
-            get { return _firstNotes; }
-            set { SetProperty(ref _firstNotes, value, "FirstNotes"); }
-        }
+        public bool FirstNotes { get; set; } = true;
 
-        private bool _remindersDayBefore = true;
         [DataMember]
-        public bool RemindersDayBefore
-        {
-            get { return _remindersDayBefore; }
-            set { SetProperty(ref _remindersDayBefore, value, "RemindersDayBefore"); }
-        }
+        public bool RemindersDayBefore { get; set; } = true;
 
-        private bool _remindersDayOf = true;
         [DataMember]
-        public bool RemindersDayOf
-        {
-            get { return _remindersDayOf; }
-            set { SetProperty(ref _remindersDayOf, value, "RemindersDayOf"); }
-        }
+        public bool RemindersDayOf { get; set; } = true;
 
-        private ImageUploadOptions _imageUploadOption = ImageUploadOptions.WifiOnly;
         [DataMember]
-        public ImageUploadOptions ImageUploadOption
-        {
-            get { return _imageUploadOption; }
-            set { SetProperty(ref _imageUploadOption, value, "ImageUploadOption"); }
-        }
+        public ImageUploadOptions ImageUploadOption { get; set; } = ImageUploadOptions.WifiOnly;
 
-        private bool _isPushDisabled = false;
         [DataMember]
-        public bool IsPushDisabled
-        {
-            get { return _isPushDisabled; }
-            set { SetProperty(ref _isPushDisabled, value, "IsPushDisabled"); }
-        }
+        public bool IsPushDisabled { get; set; } = false;
 
         [DataMember]
         private MainTileSettings _mainTileSettings;
@@ -398,21 +323,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set { SetProperties(ref _accountId, value, "AccountId", "IsOnlineAccount"); }
         }
 
-        private string _username;
         [DataMember]
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value, "Username"); }
-        }
+        public string Username { get; set; }
 
-        private string _localToken;
         [DataMember(Name = "Token")] // Named "Token" for legacy upgrading purposes
-        public string LocalToken
-        {
-            get { return _localToken; }
-            set { SetProperty(ref _localToken, value, nameof(LocalToken)); }
-        }
+        public string LocalToken { get; set; }
 
         /// <summary>
         /// The online token
@@ -457,13 +372,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        private bool _autoLogin;
         [DataMember]
-        public bool AutoLogin
-        {
-            get { return _autoLogin; }
-            set { SetProperty(ref _autoLogin, value, "AutoLogin"); }
-        }
+        public bool AutoLogin { get; set; }
 
         public bool IsRememberPasswordPossible
         {

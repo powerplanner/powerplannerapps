@@ -1,4 +1,4 @@
-﻿using PowerPlannerSending;
+using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
@@ -19,47 +19,17 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             get { return base.DataItem as DataItemSchedule; }
         }
 
-        private ViewItemClass _class;
-        public ViewItemClass Class
-        {
-            get { return _class; }
-            set { SetProperty(ref _class, value, "Class"); }
-        }
+        public ViewItemClass Class { get; set; }
 
-        private DayOfWeek _dayOfWeek;
-        public DayOfWeek DayOfWeek
-        {
-            get { return _dayOfWeek; }
-            set { SetProperty(ref _dayOfWeek, value, "DayOfWeek"); }
-        }
+        public DayOfWeek DayOfWeek { get; set; }
 
-        private DateTime _startTime;
-        public DateTime StartTime
-        {
-            get { return _startTime; }
-            set { SetProperty(ref _startTime, value, "StartTime"); }
-        }
+        public DateTime StartTime { get; set; }
 
-        private DateTime _endTime;
-        public DateTime EndTime
-        {
-            get { return _endTime; }
-            set { SetProperty(ref _endTime, value, "EndTime"); }
-        }
+        public DateTime EndTime { get; set; }
 
-        private string _room;
-        public string Room
-        {
-            get { return _room; }
-            set { SetProperty(ref _room, value, "Room"); }
-        }
+        public string Room { get; set; }
 
-        private Schedule.Week _scheduleWeek;
-        public Schedule.Week ScheduleWeek
-        {
-            get { return _scheduleWeek; }
-            set { SetProperty(ref _scheduleWeek, value, "ScheduleWeek"); }
-        }
+        public Schedule.Week ScheduleWeek { get; set; }
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {

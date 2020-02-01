@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,33 +34,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         /// </summary>
         public bool IsCreateLocalAccountVisible => DefaultAccountToUpgrade == null;
 
-        private string _username = "";
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value, nameof(Username)); }
-        }
+        public string Username { get; set; } = "";
 
-        private string _password = "";
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); }
-        }
+        public string Password { get; set; } = "";
 
-        private string _confirmPassword = "";
-        public string ConfirmPassword
-        {
-            get { return _confirmPassword; }
-            set { SetProperty(ref _confirmPassword, value, nameof(ConfirmPassword)); }
-        }
+        public string ConfirmPassword { get; set; } = "";
 
-        private string _email = "";
-        public string Email
-        {
-            get { return _email; }
-            set { SetProperty(ref _email, value, nameof(Email)); }
-        }
+        public string Email { get; set; } = "";
 
         private bool isPasswordOkay()
         {
@@ -141,12 +121,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             await FinishCreateAccount(Username, localToken, null, 0, 0, "");
         }
 
-        private bool _isCreatingOnlineAccount;
-        public bool IsCreatingOnlineAccount
-        {
-            get { return _isCreatingOnlineAccount; }
-            set { SetProperty(ref _isCreatingOnlineAccount, value, nameof(IsCreatingOnlineAccount)); }
-        }
+        public bool IsCreatingOnlineAccount { get; set; }
 
         public async void CreateAccount()
         {

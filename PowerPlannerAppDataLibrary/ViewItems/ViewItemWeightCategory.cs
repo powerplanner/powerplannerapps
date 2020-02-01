@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerSending;
 using ToolsPortable;
 using System.ComponentModel;
+using PropertyChanged;
 
 namespace PowerPlannerAppDataLibrary.ViewItems
 {
@@ -82,19 +83,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
-        private double _weightAchievedSummed = Grade.UNGRADED;
-        public double WeightAchievedSummed
-        {
-            get { return _weightAchievedSummed; }
-            set { SetProperty(ref _weightAchievedSummed, value, "WeightAchievedSummed", nameof(WeightAchieved), nameof(WeightAchievedAndTotalString)); }
-        }
+        [DependsOn(nameof(WeightAchieved), nameof(WeightAchievedAndTotalString))]
+        public double WeightAchievedSummed { get; set; } = Grade.UNGRADED;
 
-        private double _weightAchievedAveraged = Grade.UNGRADED;
-        public double WeightAchievedAveraged
-        {
-            get { return _weightAchievedAveraged; }
-            set { SetProperty(ref _weightAchievedAveraged, value, "WeightAchievedAveraged", nameof(WeightAchieved), nameof(WeightAchievedAndTotalString)); }
-        }
+        [DependsOn(nameof(WeightAchieved), nameof(WeightAchievedAndTotalString))]
+        public double WeightAchievedAveraged { get; set; } = Grade.UNGRADED;
 
         public void Remove(BaseViewItemHomeworkExamGrade viewItemGrade)
         {

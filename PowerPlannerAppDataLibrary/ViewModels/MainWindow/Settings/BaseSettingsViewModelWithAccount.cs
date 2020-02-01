@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using System;
 using System.Collections.Generic;
@@ -21,11 +21,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public AccountDataItem Account { get; private set; }
 
-        private bool _isEnabled;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
-        }
+        public bool IsEnabled { get; set; }
     }
 }

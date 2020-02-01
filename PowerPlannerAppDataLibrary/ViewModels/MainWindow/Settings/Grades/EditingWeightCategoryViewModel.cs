@@ -1,4 +1,5 @@
-﻿using System;
+using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,19 +12,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
     {
         public Guid Identifier { get; set; }
 
-        private string _name = "";
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name), nameof(IsNameValid)); }
-        }
+        [DependsOn(nameof(IsNameValid))]
+        public string Name { get; set; } = "";
 
-        private double _weight = 0;
-        public double Weight
-        {
-            get { return _weight; }
-            set { SetProperty(ref _weight, value, nameof(Weight), nameof(IsWeightValueValid)); }
-        }
+        [DependsOn(nameof(IsWeightValueValid))]
+        public double Weight { get; set; } = 0;
 
         public bool IsWeightValueValid
         {

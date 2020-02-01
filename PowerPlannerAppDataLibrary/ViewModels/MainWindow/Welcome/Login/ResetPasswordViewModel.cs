@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerSending;
 using System;
@@ -19,12 +19,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             Username = username;
         }
 
-        private string _username;
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value, nameof(Username)); }
-        }
+        public string Username { get; set; }
 
         private string _email = ForgotUsernameViewModel.StoredEmail;
         public string Email
@@ -33,12 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             set { SetProperty(ref _email, value, nameof(Email)); ForgotUsernameViewModel.StoredEmail = value; }
         }
 
-        private bool _isResettingPassword;
-        public bool IsResettingPassword
-        {
-            get { return _isResettingPassword; }
-            set { SetProperty(ref _isResettingPassword, value, nameof(IsResettingPassword)); }
-        }
+        public bool IsResettingPassword { get; set; }
         
         public async void ResetPassword()
         {

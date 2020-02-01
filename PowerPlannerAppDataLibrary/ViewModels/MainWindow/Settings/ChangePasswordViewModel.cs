@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerSending;
@@ -25,29 +25,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Account = account;
         }
 
-        private string _password = "";
 
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); }
-        }
+        public string Password { get; set; } = "";
 
-        private string _confirmPassword = "";
 
-        public string ConfirmPassword
-        {
-            get { return _confirmPassword; }
-            set { SetProperty(ref _confirmPassword, value, nameof(ConfirmPassword)); }
-        }
+        public string ConfirmPassword { get; set; } = "";
 
-        private bool _isUpdatingPassword;
 
-        public bool IsUpdatingPassword
-        {
-            get { return _isUpdatingPassword; }
-            set { SetProperty(ref _isUpdatingPassword, value, nameof(IsUpdatingPassword)); }
-        }
+        public bool IsUpdatingPassword { get; set; }
         
         public async void Update()
         {

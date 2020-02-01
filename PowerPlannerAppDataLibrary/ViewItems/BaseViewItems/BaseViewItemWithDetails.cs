@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
         }
 
-        private string _details;
-        public string Details
-        {
-            get { return _details; }
-            set { SetProperty(ref _details, value, "Details", "ListItemTertiaryText"); }
-        }
+        [DependsOn("ListItemTertiaryText")]
+        public string Details { get; set; }
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {

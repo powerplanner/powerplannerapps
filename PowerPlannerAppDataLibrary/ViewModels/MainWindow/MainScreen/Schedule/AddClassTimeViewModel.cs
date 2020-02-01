@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -138,13 +138,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             }
         }
 
-        private string _room = "";
 
-        public string Room
-        {
-            get { return _room; }
-            set { SetProperty(ref _room, value, nameof(Room)); }
-        }
+        public string Room { get; set; } = "";
 
         private MyObservableList<DayOfWeek> _dayOfWeeks;
         public MyObservableList<DayOfWeek> DayOfWeeks
@@ -236,12 +231,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             set { SetChecked(DayOfWeek.Sunday, value); }
         }
 
-        private PowerPlannerSending.Schedule.Week _scheduleWeek;
-        public PowerPlannerSending.Schedule.Week ScheduleWeek
-        {
-            get { return _scheduleWeek; }
-            set { SetProperty(ref _scheduleWeek, value, nameof(ScheduleWeek)); }
-        }
+        public PowerPlannerSending.Schedule.Week ScheduleWeek { get; set; }
 
         private string[] _availableScheduleWeekStrings;
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -143,13 +143,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             Class.SetDream(grade);
         }
 
-        private string _desiredErrorMessage;
 
-        public string DesiredErrorMessage
-        {
-            get { return _desiredErrorMessage; }
-            set { SetProperty(ref _desiredErrorMessage, value, nameof(DesiredErrorMessage)); }
-        }
+        public string DesiredErrorMessage { get; set; }
 
 
         protected override Task LoadAsyncOverride()

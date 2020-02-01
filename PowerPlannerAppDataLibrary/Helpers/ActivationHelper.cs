@@ -1,4 +1,4 @@
-﻿using Microsoft.QueryStringDotNET;
+using Microsoft.QueryStringDotNET;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;

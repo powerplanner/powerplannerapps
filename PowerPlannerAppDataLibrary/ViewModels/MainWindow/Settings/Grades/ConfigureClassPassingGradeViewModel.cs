@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -18,15 +18,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public ViewItemClass Class { get; private set; }
 
-        private double m_passingGrade;
         /// <summary>
         /// This is represented as 60 rather than 0.6 for easier display purposes on the control.
         /// </summary>
-        public double PassingGrade
-        {
-            get { return m_passingGrade; }
-            set { SetProperty(ref m_passingGrade, value, nameof(PassingGrade)); }
-        }
+        public double PassingGrade { get; set; }
 
         public ConfigureClassPassingGradeViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {

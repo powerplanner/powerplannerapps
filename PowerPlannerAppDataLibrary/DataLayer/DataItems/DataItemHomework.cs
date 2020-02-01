@@ -1,4 +1,4 @@
-﻿using PowerPlannerSending;
+using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
 using System.Collections.Generic;

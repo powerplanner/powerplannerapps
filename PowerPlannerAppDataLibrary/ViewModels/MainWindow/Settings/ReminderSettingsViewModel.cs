@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using System;
@@ -25,12 +25,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
         }
 
-        private bool _isEnabled;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
-        }
+        public bool IsEnabled { get; set; }
 
         private bool _remindersDayOf;
         public bool RemindersDayOf

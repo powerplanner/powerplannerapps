@@ -1,4 +1,4 @@
-﻿using PowerPlannerSending;
+using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             DayOfWeeks = new List<DayOfWeek>() { DayOfWeek.Monday };
             startTime = PREVIOUS_START;
             endTime = PREVIOUS_END;
-            week = Schedule.Week.BothWeeks;
+            Week = Schedule.Week.BothWeeks;
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             DayOfWeeks = new List<DayOfWeek>() { s.DayOfWeek };
             startTime = s.StartTime.TimeOfDay;
             endTime = s.EndTime.TimeOfDay;
-            room = s.Room;
-            week = s.ScheduleWeek;
+            Room = s.Room;
+            Week = s.ScheduleWeek;
 
             existingSchedules.Add(s);
         }
@@ -167,12 +167,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         private List<ViewItemSchedule> existingSchedules = new List<ViewItemSchedule>();
         public List<ViewItemSchedule> ExistingSchedules { get { return existingSchedules; } }
 
-        private List<DayOfWeek> _dayOfWeeks;
-        public List<DayOfWeek> DayOfWeeks
-        {
-            get { return _dayOfWeeks; }
-            set { SetProperty(ref _dayOfWeeks, value, "DayOfWeeks"); }
-        }
+        public List<DayOfWeek> DayOfWeeks { get; set; }
 
         private TimeSpan startTime;
         public TimeSpan StartTime
@@ -212,19 +207,9 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
-        private string room = "";
-        public string Room
-        {
-            get { return room; }
-            set { SetProperty(ref room, value, "Room"); }
-        }
+        public string Room { get; set; } = "";
 
-        private Schedule.Week week;
-        public Schedule.Week Week
-        {
-            get { return week; }
-            set { SetProperty(ref week, value, "Week"); }
-        }
+        public Schedule.Week Week { get; set; }
 
         public bool Equals(ViewItemSchedule other)
         {

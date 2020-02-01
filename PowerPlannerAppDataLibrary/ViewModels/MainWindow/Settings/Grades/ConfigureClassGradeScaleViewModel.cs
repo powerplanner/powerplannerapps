@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -187,12 +187,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
 
 
-        private List<SavedGradeScale> _savedGradeScales;
-        public List<SavedGradeScale> SavedGradeScales
-        {
-            get { return _savedGradeScales; }
-            set { SetProperty(ref _savedGradeScales, value, nameof(SavedGradeScales)); }
-        }
+        public List<SavedGradeScale> SavedGradeScales { get; set; }
 
         private SavedGradeScale _selectedSavedGradeScale;
         public SavedGradeScale SelectedSavedGradeScale

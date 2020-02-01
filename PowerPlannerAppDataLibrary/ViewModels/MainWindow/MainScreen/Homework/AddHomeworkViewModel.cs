@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using StorageEverywhere;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
@@ -386,19 +386,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             return answer.ToArray();
         }
 
-        private string _name = "";
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
-        }
+        public string Name { get; set; } = "";
 
-        private DateTime _date = DateTime.Today;
-        public DateTime Date
-        {
-            get { return _date; }
-            set { SetProperty(ref _date, value, nameof(Date)); UpdateTimeOptions(); }
-        }
+        public DateTime Date { get; set; } = DateTime.Today;
 
         private ViewItemClass _class;
 
@@ -462,27 +452,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             }
         }
 
-        private string _details = "";
 
-        public string Details
-        {
-            get { return _details; }
-            set { SetProperty(ref _details, value, nameof(Details)); }
-        }
+        public string Details { get; set; } = "";
 
-        private ViewItemWeightCategory[] _weightCategories;
-        public ViewItemWeightCategory[] WeightCategories
-        {
-            get { return _weightCategories; }
-            set { SetProperty(ref _weightCategories, value, nameof(WeightCategories)); }
-        }
+        public ViewItemWeightCategory[] WeightCategories { get; set; }
 
-        private ViewItemWeightCategory _selectedWeightCategory;
-        public ViewItemWeightCategory SelectedWeightCategory
-        {
-            get { return _selectedWeightCategory; }
-            set { SetProperty(ref _selectedWeightCategory, value, nameof(SelectedWeightCategory)); }
-        }
+        public ViewItemWeightCategory SelectedWeightCategory { get; set; }
 
         public string[] TimeOptions { get; private set; } = new string[0];
 

@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +13,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
     public class YearsViewModel : BaseMainScreenViewModelChild
     {
-        private YearsViewItemsGroup _yearsViewItemsGroup;
-        public YearsViewItemsGroup YearsViewItemsGroup
-        {
-            get { return _yearsViewItemsGroup; }
-            set { SetProperty(ref _yearsViewItemsGroup, value, "YearsViewItemsGroup"); }
-        }
+        public YearsViewItemsGroup YearsViewItemsGroup { get; set; }
 
         public YearsViewModel(BaseViewModel parent) : base(parent)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PropertyChanged;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
@@ -143,42 +144,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
         private Action _onSaved;
         private BaseViewItemHomeworkExamGrade _editingGrade;
 
-        private string _name = "";
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
-        }
+        public string Name { get; set; } = "";
 
         private TimeSpan _originalDateOffset = new TimeSpan();
-        private DateTime _date = DateTime.Today;
-        public DateTime Date
-        {
-            get { return _date; }
-            set { SetProperty(ref _date, value, nameof(Date)); }
-        }
+        public DateTime Date { get; set; } = DateTime.Today;
 
-        private string _details = "";
 
-        public string Details
-        {
-            get { return _details; }
-            set { SetProperty(ref _details, value, nameof(Details)); }
-        }
+        public string Details { get; set; } = "";
 
-        private double _gradeReceived = PowerPlannerSending.Grade.UNGRADED;
-        public double GradeReceived
-        {
-            get { return _gradeReceived; }
-            set { SetProperty(ref _gradeReceived, value, nameof(GradeReceived), nameof(GradePercent)); }
-        }
+        [DependsOn(nameof(GradePercent))]
+        public double GradeReceived { get; set; } = PowerPlannerSending.Grade.UNGRADED;
 
-        private double _gradeTotal = 100;
-        public double GradeTotal
-        {
-            get { return _gradeTotal; }
-            set { SetProperty(ref _gradeTotal, value, nameof(GradeTotal), nameof(GradePercent)); }
-        }
+        [DependsOn(nameof(GradePercent))]
+        public double GradeTotal { get; set; } = 100;
 
         public string GradePercent
         {
@@ -200,19 +178,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 
         public MyObservableList<ViewItemWeightCategory> WeightCategories { get; private set; }
 
-        private ViewItemWeightCategory _selectedWeightCategory;
-        public ViewItemWeightCategory SelectedWeightCategory
-        {
-            get { return _selectedWeightCategory; }
-            set { SetProperty(ref _selectedWeightCategory, value, nameof(SelectedWeightCategory)); }
-        }
+        public ViewItemWeightCategory SelectedWeightCategory { get; set; }
 
-        private bool _isDropped;
-        public bool IsDropped
-        {
-            get { return _isDropped; }
-            set { SetProperty(ref _isDropped, value, nameof(IsDropped)); }
-        }
+        public bool IsDropped { get; set; }
 
         public async void Save()
         {

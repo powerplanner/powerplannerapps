@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -109,47 +109,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             return ColorItem.DefaultColors.First().Color;
         }
 
-        private string _name = "";
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
-        }
+        public string Name { get; set; } = "";
 
-        private byte[] _color;
-        public byte[] Color
-        {
-            get { return _color; }
-            set { SetProperty(ref _color, value, nameof(Color)); }
-        }
+        public byte[] Color { get; set; }
 
-        private bool _isPartialSemesterClass = false;
-        public bool IsPartialSemesterClass
-        {
-            get { return _isPartialSemesterClass; }
-            set { SetProperty(ref _isPartialSemesterClass, value, nameof(IsPartialSemesterClass)); }
-        }
+        public bool IsPartialSemesterClass { get; set; } = false;
 
-        private DateTime? _startDate;
-        public DateTime? StartDate
-        {
-            get { return _startDate; }
-            set { SetProperty(ref _startDate, value, nameof(StartDate)); }
-        }
+        public DateTime? StartDate { get; set; }
 
-        private DateTime? _endDate;
-        public DateTime? EndDate
-        {
-            get { return _endDate; }
-            set { SetProperty(ref _endDate, value, nameof(EndDate)); }
-        }
+        public DateTime? EndDate { get; set; }
 
-        private string _details = "";
-        public string Details
-        {
-            get { return _details; }
-            set { SetProperty(ref _details, value, nameof(Details)); }
-        }
+        public string Details { get; set; } = "";
 
         public async void Save()
         {

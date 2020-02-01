@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +15,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
         }
 
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, "Name"); }
-        }
+        public string Name { get; set; }
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {

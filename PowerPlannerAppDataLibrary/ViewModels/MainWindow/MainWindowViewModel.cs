@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using System;
@@ -27,13 +27,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public AccountDataItem CurrentAccount { get; private set; }
 
-        private bool _isEnabled = true;
 
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, "IsEnabled"); }
-        }
+        public bool IsEnabled { get; set; } = true;
 
         public MainWindowViewModel(BaseViewModel parent) : base(parent)
         {

@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -195,12 +195,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
         public DateTime DateCreated { get; set; }
 
-        private DateTime _updated;
-        public DateTime Updated
-        {
-            get { return _updated; }
-            set { SetProperty(ref _updated, value, "Updated"); }
-        }
+        public DateTime Updated { get; set; }
         
 
         public virtual int CompareTo(BaseViewItem other)

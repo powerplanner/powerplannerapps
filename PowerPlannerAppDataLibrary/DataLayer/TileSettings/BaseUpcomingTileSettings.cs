@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.Serialization;
 using ToolsPortable;
 
@@ -7,29 +7,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer.TileSettings
     [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/PowerPlannerUWPLibrary.DataLayer.TileSettings")]
     public abstract class BaseUpcomingTileSettings : BindableBase
     {
-        private bool _showHomework = true;
         [DataMember]
-        public bool ShowHomework
-        {
-            get { return _showHomework; }
-            set { SetProperty(ref _showHomework, value, "ShowHomework"); }
-        }
+        public bool ShowHomework { get; set; } = true;
 
-        private bool _showExams = true;
         [DataMember]
-        public bool ShowExams
-        {
-            get { return _showExams; }
-            set { SetProperty(ref _showExams, value, "ShowExams"); }
-        }
+        public bool ShowExams { get; set; } = true;
 
-        private int _skipItemsOlderThan = int.MinValue;
         [DataMember]
-        public int SkipItemsOlderThan
-        {
-            get { return _skipItemsOlderThan; }
-            set { SetProperty(ref _skipItemsOlderThan, value, "SkipItemsOlderThan"); }
-        }
+        public int SkipItemsOlderThan { get; set; } = int.MinValue;
 
         public bool IsDisabled()
         {

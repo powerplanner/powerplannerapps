@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
@@ -33,37 +33,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             };
         }
 
-        private string _username = "";
 
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value, nameof(Username)); }
-        }
+        public string Username { get; set; } = "";
 
-        private string _password = "";
 
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); }
-        }
+        public string Password { get; set; } = "";
 
-        private string _error = "";
 
-        public string Error
-        {
-            get { return _error; }
-            set { SetProperty(ref _error, value, nameof(Error)); }
-        }
+        public string Error { get; set; } = "";
 
-        private bool _isLoggingIn;
 
-        public bool IsLoggingIn
-        {
-            get { return _isLoggingIn; }
-            set { SetProperty(ref _isLoggingIn, value, nameof(IsLoggingIn)); }
-        }
+        public bool IsLoggingIn { get; set; }
 
         public async void LogIn()
         {

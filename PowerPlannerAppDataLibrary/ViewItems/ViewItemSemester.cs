@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
 using System.Collections.Generic;
@@ -33,19 +33,9 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         }
 
 
-        private DateTime _start;
-        public DateTime Start
-        {
-            get { return _start; }
-            set { SetProperty(ref _start, value, "Start"); }
-        }
+        public DateTime Start { get; set; }
 
-        private DateTime _end;
-        public DateTime End
-        {
-            get { return _end; }
-            set { SetProperty(ref _end, value, "End"); }
-        }
+        public DateTime End { get; set; }
 
         private ViewItemClass _noClassClass;
         public ViewItemClass NoClassClass

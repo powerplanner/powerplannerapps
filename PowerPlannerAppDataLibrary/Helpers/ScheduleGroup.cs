@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using System;
 using System.Collections.Generic;

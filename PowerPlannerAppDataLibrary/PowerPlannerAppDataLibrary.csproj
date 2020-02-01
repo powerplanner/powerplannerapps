@@ -31,6 +31,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.200114.3" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.5" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1" />
     <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />

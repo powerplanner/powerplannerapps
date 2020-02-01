@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -87,13 +87,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
             RemoveViewModel(this);
         }
 
-        private string _name = "";
 
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
-        }
+        public string Name { get; set; } = "";
 
         private DateTime _startDate;
 

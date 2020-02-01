@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using System;
@@ -27,13 +27,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
         }
 
-        private string _password = "";
 
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); }
-        }
+        public string Password { get; set; } = "";
 
         public void Continue()
         {

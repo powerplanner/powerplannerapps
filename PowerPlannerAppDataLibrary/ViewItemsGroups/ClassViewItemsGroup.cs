@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
@@ -44,33 +44,13 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         public MyObservableList<BaseViewItemHomeworkExam> PastCompletedHomeworkAndExams;
 
-        private MyObservableList<ViewItemHomework> _pastCompletedHomework;
-        public MyObservableList<ViewItemHomework> PastCompletedHomework
-        {
-            get { return _pastCompletedHomework; }
-            set { SetProperty(ref _pastCompletedHomework, value, "PastCompletedHomework"); }
-        }
+        public MyObservableList<ViewItemHomework> PastCompletedHomework { get; set; }
 
-        private MyObservableList<ViewItemExam> _pastCompletedExams;
-        public MyObservableList<ViewItemExam> PastCompletedExams
-        {
-            get { return _pastCompletedExams; }
-            set { SetProperty(ref _pastCompletedExams, value, "PastCompletedExams"); }
-        }
+        public MyObservableList<ViewItemExam> PastCompletedExams { get; set; }
 
-        private MyObservableList<BaseViewItemHomeworkExam> _unassignedItems;
-        public MyObservableList<BaseViewItemHomeworkExam> UnassignedItems
-        {
-            get { return _unassignedItems; }
-            set { SetProperty(ref _unassignedItems, value, nameof(UnassignedItems)); }
-        }
+        public MyObservableList<BaseViewItemHomeworkExam> UnassignedItems { get; set; }
 
-        private bool _hasUnassignedItems;
-        public bool HasUnassignedItems
-        {
-            get { return _hasUnassignedItems; }
-            set { SetProperty(ref _hasUnassignedItems, value, nameof(HasUnassignedItems)); }
-        }
+        public bool HasUnassignedItems { get; set; }
 
         /// <summary>
         /// Throws ArgumentException if class wasn't found
@@ -176,12 +156,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
         }
 
         private bool _hasGradesBeenRequested;
-        private bool _isGradesLoaded;
-        public bool IsGradesLoaded
-        {
-            get { return _isGradesLoaded; }
-            set { SetProperty(ref _isGradesLoaded, value, nameof(IsGradesLoaded)); }
-        }
+        public bool IsGradesLoaded { get; set; }
 
         public async void LoadGrades()
         {
@@ -433,7 +408,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
         {
             return new ViewItemWeightCategory(
                 dataWeight,
-                createGradeMethod: _isGradesLoaded ? new Func<BaseDataItemHomeworkExamGrade, BaseViewItemHomeworkExamGrade>(ViewItemWeightCategory.CreateGradeHelper) : null);
+                createGradeMethod: IsGradesLoaded ? new Func<BaseDataItemHomeworkExamGrade, BaseViewItemHomeworkExamGrade>(ViewItemWeightCategory.CreateGradeHelper) : null);
         }
 
         private ViewItemWeightCategory CreateWeightForOtherClasses(DataItemWeightCategory dataWeight)
@@ -682,19 +657,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             IsPastCompletedExamsDisplayed = false;
         }
 
-        private bool _hasPastCompletedHomework;
-        public bool HasPastCompletedHomework
-        {
-            get { return _hasPastCompletedHomework; }
-            set { SetProperty(ref _hasPastCompletedHomework, value, "HasPastCompletedHomework"); }
-        }
+        public bool HasPastCompletedHomework { get; set; }
 
-        private bool _hasPastCompletedExams;
-        public bool HasPastCompletedExams
-        {
-            get { return _hasPastCompletedExams; }
-            set { SetProperty(ref _hasPastCompletedExams, value, "HasPastCompletedExams"); }
-        }
+        public bool HasPastCompletedExams { get; set; }
 
         private class PastCompletedExamsList : MyObservableList<ViewItemExam>
         {

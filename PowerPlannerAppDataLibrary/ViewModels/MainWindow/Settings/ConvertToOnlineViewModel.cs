@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,26 +23,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Account = account;
         }
 
-        private string _email;
-        public string Email
-        {
-            get { return _email; }
-            set { SetProperty(ref _email, value, nameof(Email)); }
-        }
+        public string Email { get; set; }
 
-        private string _error;
-        public string Error
-        {
-            get { return _error; }
-            set { SetProperty(ref _error, value, nameof(Error)); }
-        }
+        public string Error { get; set; }
 
-        private bool _showConfirmMergeExisting;
-        public bool ShowConfirmMergeExisting
-        {
-            get { return _showConfirmMergeExisting; }
-            set { SetProperty(ref _showConfirmMergeExisting, value, nameof(ShowConfirmMergeExisting)); }
-        }
+        public bool ShowConfirmMergeExisting { get; set; }
 
         private CreateAccountResponse _response;
         public async System.Threading.Tasks.Task CreateOnlineAccountAsync()

@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerSending;
 using System;
@@ -53,42 +53,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             SetError(PowerPlannerResources.GetString("Settings_ChangeEmailPage_Errors_FailedGrabEmail"));
         }
 
-        private bool _isRetrievingEmail = true;
 
-        public bool IsRetrievingEmail
-        {
-            get { return _isRetrievingEmail; }
-            set { SetProperty(ref _isRetrievingEmail, value, nameof(IsRetrievingEmail)); }
-        }
+        public bool IsRetrievingEmail { get; set; } = true;
 
-        private bool _isUpdatingEmail;
 
-        public bool IsUpdatingEmail
-        {
-            get { return _isUpdatingEmail; }
-            set { SetProperty(ref _isUpdatingEmail, value, nameof(IsUpdatingEmail)); }
-        }
+        public bool IsUpdatingEmail { get; set; }
 
-        private string _email = "";
 
-        public string Email
-        {
-            get { return _email; }
-            set { SetProperty(ref _email, value, nameof(Email)); }
-        }
+        public string Email { get; set; } = "";
 
         private void SetError(string error)
         {
             Error = error;
         }
 
-        private string _error = "";
 
-        public string Error
-        {
-            get { return _error; }
-            set { SetProperty(ref _error, value, nameof(Error)); }
-        }
+        public string Error { get; set; } = "";
 
         public async void UpdateEmail()
         {

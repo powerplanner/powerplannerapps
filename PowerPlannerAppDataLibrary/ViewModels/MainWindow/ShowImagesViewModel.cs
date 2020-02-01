@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using System;
 using System.Collections.Generic;
@@ -18,11 +18,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public ImageAttachmentViewModel[] AllImages { get; set; }
 
-        private ImageAttachmentViewModel _currentImage;
-        public ImageAttachmentViewModel CurrentImage
-        {
-            get { return _currentImage; }
-            set { SetProperty(ref _currentImage, value, nameof(CurrentImage)); }
-        }
+        public ImageAttachmentViewModel CurrentImage { get; set; }
     }
 }

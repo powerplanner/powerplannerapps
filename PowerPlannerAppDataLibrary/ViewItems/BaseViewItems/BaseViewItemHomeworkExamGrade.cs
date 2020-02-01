@@ -1,5 +1,6 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,26 +23,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             }
         }
 
-        private DateTime _date;
-        public DateTime Date
-        {
-            get { return _date; }
-            set { SetProperty(ref _date, value, "Date", "IsComplete", "PercentComplete", "ListItemTertiaryText"); }
-        }
+        [DependsOn("IsComplete", "PercentComplete", "ListItemTertiaryText")]
+        public DateTime Date { get; set; }
 
-        private double _gradeReceived;
-        public double GradeReceived
-        {
-            get { return _gradeReceived; }
-            set { SetProperty(ref _gradeReceived, value, "GradeReceived", "IsGraded", "DoesCount", "GradePercent", nameof(GradeSubtitle)); }
-        }
+        [DependsOn(nameof(IsGraded), nameof(DoesCount), nameof(GradePercent), nameof(GradeSubtitle))]
+        public double GradeReceived { get; set; }
 
-        private double _gradeTotal;
-        public double GradeTotal
-        {
-            get { return _gradeTotal; }
-            set { SetProperty(ref _gradeTotal, value, "GradeTotal", "IsExtraCredit", "GradePercent", nameof(GradeSubtitle)); }
-        }
+        [DependsOn(nameof(IsExtraCredit), nameof(GradePercent), nameof(GradeSubtitle))]
+        public double GradeTotal { get; set; }
 
         /// <summary>
         /// Between 0.0 and 1.0 (other than UNGRADED)
@@ -57,12 +46,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             }
         }
 
-        private bool _isDropped;
-        public bool IsDropped
-        {
-            get { return _isDropped; }
-            set { SetProperty(ref _isDropped, value, "IsDropped", "DoesCount", nameof(GradeSubtitle)); }
-        }
+        [DependsOn(nameof(DoesCount), nameof(GradeSubtitle))]
+        public bool IsDropped { get; set; }
 
         private double _individualWeight;
         public double IndividualWeight
@@ -71,22 +56,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             private set { SetProperty(ref _individualWeight, value, "IndividualWeight"); }
         }
 
-        private bool wasChanged;
         /// <summary>
         /// Used for What If mode
         /// </summary>
-        public bool WasChanged
-        {
-            get { return wasChanged; }
-            set { SetProperty(ref wasChanged, value, "WasChanged", "ColorWhenInWhatIfMode"); }
-        }
+        [DependsOn("ColorWhenInWhatIfMode")]
+        public bool WasChanged { get; set; }
 
-        private bool _canBeUsedForAchievingDesiredGrade;
-        public bool CanBeUsedForAchievingDesiredGrade
-        {
-            get { return _canBeUsedForAchievingDesiredGrade; }
-            set { SetProperty(ref _canBeUsedForAchievingDesiredGrade, value, "CanBeUsedForAchievingDesiredGrade"); }
-        }
+        public bool CanBeUsedForAchievingDesiredGrade { get; set; }
 
         /// <summary>
         /// Returns true if the item is graded.

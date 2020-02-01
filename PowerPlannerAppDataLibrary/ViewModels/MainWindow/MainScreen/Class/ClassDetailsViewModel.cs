@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,12 +12,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
     public class ClassDetailsViewModel : BaseClassContentViewModel
     {
         private BindablePropertyWatcher _detailsPropertyWatcher;
-        private string _details = "";
-        public string Details
-        {
-            get { return _details; }
-            set { SetProperty(ref _details, value, nameof(Details)); }
-        }
+        public string Details { get; set; }
 
         public ClassDetailsViewModel(ClassViewModel parent) : base(parent)
         {

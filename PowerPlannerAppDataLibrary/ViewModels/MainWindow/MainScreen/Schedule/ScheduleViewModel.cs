@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,13 +29,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             Welcome
         }
 
-        private LayoutModes _layoutMode = LayoutModes.Normal;
 
-        public LayoutModes LayoutMode
-        {
-            get { return _layoutMode; }
-            set { SetProperty(ref _layoutMode, value, nameof(LayoutMode)); }
-        }
+        public LayoutModes LayoutMode { get; set; } = LayoutModes.Normal;
 
         /// <summary>
         /// Boolean that represents whether the returning user UI should be shown. This should never dynamically change since to create an account you have to
