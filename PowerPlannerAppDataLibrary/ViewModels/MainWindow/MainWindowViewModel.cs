@@ -72,7 +72,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             {
                 case nameof(FinalContent):
                     string pageName = FinalContent.GetPageName();
-                    PageViewTelemetryHelper.TrackPageVisited(pageName);
+                    TelemetryExtension.Current?.TrackPageVisited(pageName);
                     break;
             }
         }
@@ -443,7 +443,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         public void HandleBeingLeft()
         {
             _timeLeftAt = DateTime.Now;
-            PageViewTelemetryHelper.TrackLeavingApp();
+            TelemetryExtension.Current?.LeavingApp();
         }
 
         public async Task HandleBeingReturnedTo()
@@ -492,7 +492,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 TelemetryExtension.Current?.TrackException(ex);
             }
 
-            PageViewTelemetryHelper.TrackReturningToApp();
+            TelemetryExtension.Current?.ReturnedToApp();
         }
 
         public MainScreenViewModel GetMainScreenViewModel()
