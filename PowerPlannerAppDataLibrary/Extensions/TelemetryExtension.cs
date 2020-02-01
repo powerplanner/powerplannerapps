@@ -61,11 +61,6 @@ namespace PowerPlannerAppDataLibrary.Extensions
         {
             try
             {
-                if (pageName.EndsWith("View"))
-                {
-                    pageName = pageName.Substring(0, pageName.Length - 4);
-                }
-
                 _lastPageName = pageName;
 
                 // App Center analytics allows up to 20 properties per event, and each property value can only be 125 chars long...
