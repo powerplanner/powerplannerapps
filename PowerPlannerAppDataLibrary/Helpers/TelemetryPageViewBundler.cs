@@ -91,7 +91,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
         private static string FormatPageEntry(string pageName, DateTime utcTimeVisited)
         {
-            // Calendar,00:00:05
+            // Calendar,15:07:05
             return $"{pageName},{FormatTime(utcTimeVisited)}";
         }
 
