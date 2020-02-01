@@ -51,7 +51,40 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public abstract void TrackEvent(string eventName, IDictionary<string, string> properties = null);
 
-        public abstract void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration);
+        private class PageView
+        {
+            public string PageName { get; set; }
+            public DateTime TimeVisited { get; set; }
+        }
+
+        private List<PageView> _unsentPageViews = new List<PageView>();
+        public virtual void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration)
+        {
+            // App Center analytics allows up to 20 properties per event, and each property value can only be 125 chars long...
+
+            // Events are usually part of the same date, so no reason to log date info, just time... But we can't infer date from the time the event was logged,
+            // since it'd be difficult to tell when it's just about to change date and we should log
+
+            // Functions we have in log query are todatetime("2015-12-24") or todatetime("2018-06-30 20:12:42.9") (ISO8601 format), and totimespan("0.00:01:00") (1 minute)
+            // totimespan("1:05") == 1 hr, 5 min
+            // totimespan("0:1:05") == 1 min, 5 sec
+            // totimespan("5") == 5 hr
+            // totimespan("1:01:00") == 1 hour, 1 min
+            // totimespan("0:0:20") == 20 sec
+
+            /*
+             * Name: PageViews
+             * Properties:
+             *  AccountId: 39179
+             *  Date: 1/31/2019
+             *  Pages: Calendar,0:0:16;Agenda,0:0:4;ViewTask,0:0:12
+             * */
+            _unsentPageViews.Add(new PageView()
+            {
+                PageName = pageName,
+                TimeVisited = timeVisited
+            });
+        }
 
         public virtual void UpdateCurrentUser(AccountDataItem account)
         {
