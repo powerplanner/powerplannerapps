@@ -99,7 +99,10 @@ namespace PowerPlannerAppDataLibrary.Extensions
             {
                 lock (_pageViewLock)
                 {
-                    FinishPageViewBundler();
+                    if (_pageViewBundler != null)
+                    {
+                        FinishPageViewBundler();
+                    }
                 }
             }
             catch (Exception ex) { TrackException(ex); }
