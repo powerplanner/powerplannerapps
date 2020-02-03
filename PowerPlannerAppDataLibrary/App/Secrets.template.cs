@@ -1,4 +1,4 @@
-namespace PowerPlannerAppDataLibrary.App
+﻿namespace PowerPlannerAppDataLibrary.App
 {
     internal static class Secrets
     {

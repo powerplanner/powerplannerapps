@@ -1,4 +1,4 @@
-using BareMvvm.Core.ViewModels;
+﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;

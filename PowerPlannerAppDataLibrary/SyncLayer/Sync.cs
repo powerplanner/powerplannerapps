@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using StorageEverywhere;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;

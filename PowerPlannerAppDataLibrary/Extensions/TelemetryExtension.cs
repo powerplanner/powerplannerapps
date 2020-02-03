@@ -1,4 +1,4 @@
-using PowerPlannerAppDataLibrary.DataLayer;
+﻿using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using System;
 using System.Collections.Generic;

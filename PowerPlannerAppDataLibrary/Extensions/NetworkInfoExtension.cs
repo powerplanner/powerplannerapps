@@ -1,4 +1,4 @@
-using PowerPlannerAppDataLibrary.Extensions.NetworkInfo;
+﻿using PowerPlannerAppDataLibrary.Extensions.NetworkInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;

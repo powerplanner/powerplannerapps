@@ -1,4 +1,4 @@
-using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using System;
 using System.Collections.Generic;

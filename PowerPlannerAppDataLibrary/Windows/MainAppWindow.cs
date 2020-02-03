@@ -1,4 +1,4 @@
-using BareMvvm.Core.Windows;
+﻿using BareMvvm.Core.Windows;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;

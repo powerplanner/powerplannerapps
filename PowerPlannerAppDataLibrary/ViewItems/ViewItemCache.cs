@@ -1,4 +1,4 @@
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+﻿using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
