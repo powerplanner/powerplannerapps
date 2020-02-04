@@ -1,4 +1,4 @@
-using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+﻿using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;

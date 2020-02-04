@@ -1,4 +1,4 @@
-using BareMvvm.Core.ViewModels;
+﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using System;

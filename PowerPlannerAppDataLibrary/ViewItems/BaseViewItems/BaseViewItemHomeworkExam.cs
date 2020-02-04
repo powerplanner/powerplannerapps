@@ -1,4 +1,4 @@
-using PowerPlannerAppDataLibrary.App;
+﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;

@@ -1,4 +1,4 @@
-using StorageEverywhere;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;

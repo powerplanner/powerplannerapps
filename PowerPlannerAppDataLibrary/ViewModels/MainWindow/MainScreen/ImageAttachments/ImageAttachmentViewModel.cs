@@ -1,4 +1,4 @@
-using StorageEverywhere;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using System;

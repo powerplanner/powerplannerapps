@@ -1,4 +1,4 @@
-using BareMvvm.Core.ViewModels;
+﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerSending;
 using System;
