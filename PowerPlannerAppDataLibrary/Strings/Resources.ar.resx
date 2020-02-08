@@ -1721,4 +1721,7 @@
   <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
     <value>يجب أن يكون وقت الانتهاء أكبر من وقت البدء.</value>
   </data>
+  <data name="WeightCategory_AllGrades" xml:space="preserve">
+    <value>جميع الدرجات</value>
+  </data>
 </root>

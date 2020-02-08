@@ -2291,6 +2291,10 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Your end time must be greater than your start time.</source>
           <target state="final" state-qualifier="mt-suggestion">La hora de finalización debe ser mayor que la hora de inicio.</target>
         </trans-unit>
+        <trans-unit id="WeightCategory_AllGrades" translate="yes" xml:space="preserve">
+          <source>All grades</source>
+          <target state="final">Todos los notas</target>
+        </trans-unit>
       </group>
     </body>
   </file>
