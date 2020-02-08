@@ -15,7 +15,7 @@ namespace PowerPlannerUWP.Controls
     {
         public EnhancedTimePicker()
         {
-            if (TextBasedTimePicker.IsSupported && AbTestHelper.Tests.NewTimePicker)
+            if (TextBasedTimePicker.IsSupported)
             {
                 var picker = CreateTextBasedTimePicker();
 

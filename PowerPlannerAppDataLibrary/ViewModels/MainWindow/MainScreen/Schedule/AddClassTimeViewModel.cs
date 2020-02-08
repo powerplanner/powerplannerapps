@@ -330,7 +330,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             });
         }
 
-        public void Save(DateTime? timeStartedAdding = null)
+        public void Save()
         {
             if (StartTime >= EndTime)
             {
@@ -397,21 +397,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 if (!changes.IsEmpty())
                 {
                     await PowerPlannerApp.Current.SaveChanges(changes);
-
-                    if (timeStartedAdding != null && !AbTestHelper.ShouldIgnoreFromTelemetry())
-                    {
-                        TimeSpan duration = DateTime.UtcNow - timeStartedAdding.Value;
-
-                        try
-                        {
-                            TelemetryExtension.Current?.TrackEvent("NewTimePicker_TestResult", new Dictionary<string, string>()
-                            {
-                                { "Duration", ((int)Math.Ceiling(duration.TotalSeconds)).ToString() },
-                                { "IsEnabled", AbTestHelper.Tests.NewTimePicker.Value.ToString() }
-                            });
-                        }
-                        catch { }
-                    }
                 }
             }, delegate
             {

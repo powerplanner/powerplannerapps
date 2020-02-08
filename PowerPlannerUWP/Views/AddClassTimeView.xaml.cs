@@ -62,18 +62,11 @@ namespace PowerPlannerUWP.Views
             base.OnViewModelSetOverride();
         }
 
-        private DateTime? _startedAddingTime;
         public override void OnViewModelLoadedOverride()
         {
             base.OnViewModelLoadedOverride();
 
             base.Title = ViewModel.ClassName.ToUpper();
-
-            // For tracking effectiveness of new time picker
-            if (ViewModel.State == AddClassTimeViewModel.OperationState.Adding && TextBasedTimePicker.IsSupported)
-            {
-                _startedAddingTime = DateTime.UtcNow;
-            }
         }
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
@@ -83,7 +76,7 @@ namespace PowerPlannerUWP.Views
             ButtonSave.Focus(FocusState.Programmatic);
             await System.Threading.Tasks.Task.Delay(1);
 
-            ViewModel.Save(_startedAddingTime);
+            ViewModel.Save();
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
