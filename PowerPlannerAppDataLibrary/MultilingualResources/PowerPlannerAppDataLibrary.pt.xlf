@@ -681,7 +681,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
         </trans-unit>
         <trans-unit id="MessageFreeSemesterLimitReached" translate="yes" xml:space="preserve">
           <source>To add more than one semester, you must upgrade to the premium version of Power Planner. Alternatively, you could always delete your current semester.</source>
-          <target state="final">Para adicionar mais que um semestre, você deve atualizar para a versão premium do Power Planner. Alternativamente, você sempre pode exculir o seu semestre atual.</target>
+          <target state="final">Para adicionar mais que um semestre, você deve atualizar para a versão premium do Power Planner. Alternativamente, você sempre pode excluir o seu semestre atual.</target>
         </trans-unit>
         <trans-unit id="SemesterViewEditing_TextBoxName.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Name</source>
@@ -996,7 +996,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
         </trans-unit>
         <trans-unit id="String_DeleteClass" translate="yes" xml:space="preserve">
           <source>Delete class</source>
-          <target state="final">Exculir aulas</target>
+          <target state="final">Excluir aula</target>
         </trans-unit>
         <trans-unit id="String_EditClass" translate="yes" xml:space="preserve">
           <source>Edit class</source>

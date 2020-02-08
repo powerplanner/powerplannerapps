@@ -511,7 +511,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
     <value>Excluir</value>
   </data>
   <data name="MessageFreeSemesterLimitReached" xml:space="preserve">
-    <value>Para adicionar mais que um semestre, você deve atualizar para a versão premium do Power Planner. Alternativamente, você sempre pode exculir o seu semestre atual.</value>
+    <value>Para adicionar mais que um semestre, você deve atualizar para a versão premium do Power Planner. Alternativamente, você sempre pode excluir o seu semestre atual.</value>
   </data>
   <data name="SemesterViewEditing_TextBoxName.PlaceholderText" xml:space="preserve">
     <value>Nome</value>
@@ -749,7 +749,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
     <value>Tem certeza que deseja excluir esta aula e todos os seus conteúdos?</value>
   </data>
   <data name="String_DeleteClass" xml:space="preserve">
-    <value>Exculir aulas</value>
+    <value>Excluir aula</value>
   </data>
   <data name="String_EditClass" xml:space="preserve">
     <value>Editar aula</value>
