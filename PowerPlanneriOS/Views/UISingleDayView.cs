@@ -218,7 +218,7 @@ namespace PowerPlanneriOS.Views
             else if (date.Date == today.AddDays(-1))
                 return PowerPlannerResources.GetRelativeDateYesterday();
 
-            return date.ToString("dddd, MMM d");
+            return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date).ToUpper();
         }
 
         public override void LayoutSubviews()

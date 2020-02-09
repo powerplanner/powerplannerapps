@@ -71,7 +71,7 @@ namespace PowerPlannerUWP.Views.DayViews
             else if (date.Date == _today.AddDays(-1))
                 return LocalizedResources.Common.GetRelativeDateYesterday().ToUpper();
 
-            return date.ToString("dddd, MMM d").ToUpper();
+            return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date).ToUpper();
         }
 
         private void OnHeaderClicked(object sender, RoutedEventArgs e)
