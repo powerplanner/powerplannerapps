@@ -27,5 +27,25 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 return date.ToString("d");
             }
         }
+
+        /// <summary>
+        /// Something like "Monday, Feb 10"
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static string ToMediumDateString(DateTime date)
+        {
+            if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "pt")
+            {
+                // We use short day since it's slightly longer, and it outputs "segunda-feira" for Monday, which is crazy long
+                // Returns "seg, 10 de fev"
+                return date.ToString("ddd, d \\de MMM");
+            }
+            else
+            {
+                // Returns "Monday, Feb 10
+                return date.ToString("dddd, MMM d");
+            }
+        }
     }
 }

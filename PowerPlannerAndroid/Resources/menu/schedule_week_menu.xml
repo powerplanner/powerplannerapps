@@ -5,10 +5,10 @@
         android:showAsAction="ifRoom|withText"/>-->
     <item android:id="@+id/MenuItemPreviousWeek"
           android:showAsAction="always|withText"
-          android:title="Previous week"
+          android:title="{String_PreviousWeek}"
           android:icon="@drawable/ic_arrowhead_left_36dp"/>
   <item android:id="@+id/MenuItemNextWeek"
         android:showAsAction="always|withText"
-        android:title="Next week"
+        android:title="{String_NextWeek}"
         android:icon="@drawable/ic_arrowhead_right_36dp"/>
 </menu>

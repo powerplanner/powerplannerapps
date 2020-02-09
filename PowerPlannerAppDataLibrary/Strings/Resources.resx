@@ -1449,6 +1449,9 @@ Please think about using an online account instead!</value>
   <data name="ViewHomeworkPage_ButtonConvertToGrade.Content" xml:space="preserve">
     <value>Convert to grade</value>
   </data>
+  <data name="WeightCategory_AllGrades" xml:space="preserve">
+    <value>All grades</value>
+  </data>
   <data name="WeightCategory_Exclude" xml:space="preserve">
     <value>Exclude from grades</value>
   </data>

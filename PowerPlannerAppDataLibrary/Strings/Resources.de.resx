@@ -1719,4 +1719,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
     <value>Ihre Endzeit muss größer sein als Ihre Startzeit.</value>
   </data>
+  <data name="WeightCategory_AllGrades" xml:space="preserve">
+    <value>Alle Klassen</value>
+  </data>
 </root>

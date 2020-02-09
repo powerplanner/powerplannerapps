@@ -1719,4 +1719,7 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
     <value>La hora de finalización debe ser mayor que la hora de inicio.</value>
   </data>
+  <data name="WeightCategory_AllGrades" xml:space="preserve">
+    <value>Todos los notas</value>
+  </data>
 </root>

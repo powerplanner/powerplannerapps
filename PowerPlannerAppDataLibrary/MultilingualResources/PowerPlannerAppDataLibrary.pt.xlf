@@ -681,7 +681,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
         </trans-unit>
         <trans-unit id="MessageFreeSemesterLimitReached" translate="yes" xml:space="preserve">
           <source>To add more than one semester, you must upgrade to the premium version of Power Planner. Alternatively, you could always delete your current semester.</source>
-          <target state="final">Para adicionar mais que um semestre, você deve atualizar para a versão premium do Power Planner. Alternativamente, você sempre pode exculir o seu semestre atual.</target>
+          <target state="final">Para adicionar mais que um semestre, você deve atualizar para a versão premium do Power Planner. Alternativamente, você sempre pode excluir o seu semestre atual.</target>
         </trans-unit>
         <trans-unit id="SemesterViewEditing_TextBoxName.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Name</source>
@@ -996,7 +996,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
         </trans-unit>
         <trans-unit id="String_DeleteClass" translate="yes" xml:space="preserve">
           <source>Delete class</source>
-          <target state="final">Exculir aulas</target>
+          <target state="final">Excluir aula</target>
         </trans-unit>
         <trans-unit id="String_EditClass" translate="yes" xml:space="preserve">
           <source>Edit class</source>
@@ -1810,11 +1810,11 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         </trans-unit>
         <trans-unit id="String_LastWeek" translate="yes" xml:space="preserve">
           <source>Last week</source>
-          <target state="final">Semana pasada</target>
+          <target state="final">Semana anterior</target>
         </trans-unit>
         <trans-unit id="String_NextWeek" translate="yes" xml:space="preserve">
           <source>Next week</source>
-          <target state="final">Semana que vem</target>
+          <target state="final">Próxima semana</target>
         </trans-unit>
         <trans-unit id="String_NoClass" translate="yes" xml:space="preserve">
           <source>No class</source>
@@ -2290,6 +2290,10 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         <trans-unit id="EditingClassScheduleItemView_LowEndTime.Content" translate="yes" xml:space="preserve">
           <source>Your end time must be greater than your start time.</source>
           <target state="final" state-qualifier="mt-suggestion">Seu tempo de término deve ser maior do que o seu horário de início.</target>
+        </trans-unit>
+        <trans-unit id="WeightCategory_AllGrades" translate="yes" xml:space="preserve">
+          <source>All grades</source>
+          <target state="final">Todas as notas</target>
         </trans-unit>
       </group>
     </body>

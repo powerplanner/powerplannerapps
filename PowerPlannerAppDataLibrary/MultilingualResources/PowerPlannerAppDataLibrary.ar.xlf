@@ -2293,6 +2293,10 @@ Please think about using an online account instead!</source>
           <source>Your end time must be greater than your start time.</source>
           <target state="final" state-qualifier="mt-suggestion">يجب أن يكون وقت الانتهاء أكبر من وقت البدء.</target>
         </trans-unit>
+        <trans-unit id="WeightCategory_AllGrades" translate="yes" xml:space="preserve">
+          <source>All grades</source>
+          <target state="final">جميع الدرجات</target>
+        </trans-unit>
       </group>
     </body>
   </file>
