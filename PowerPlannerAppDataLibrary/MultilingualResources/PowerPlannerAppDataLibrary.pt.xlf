@@ -1810,11 +1810,11 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         </trans-unit>
         <trans-unit id="String_LastWeek" translate="yes" xml:space="preserve">
           <source>Last week</source>
-          <target state="final">Semana pasada</target>
+          <target state="final">Semana anterior</target>
         </trans-unit>
         <trans-unit id="String_NextWeek" translate="yes" xml:space="preserve">
           <source>Next week</source>
-          <target state="final">Semana que vem</target>
+          <target state="final">Próxima semana</target>
         </trans-unit>
         <trans-unit id="String_NoClass" translate="yes" xml:space="preserve">
           <source>No class</source>

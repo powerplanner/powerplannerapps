@@ -1357,10 +1357,10 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
     <value>Devido {0}</value>
   </data>
   <data name="String_LastWeek" xml:space="preserve">
-    <value>Semana pasada</value>
+    <value>Semana anterior</value>
   </data>
   <data name="String_NextWeek" xml:space="preserve">
-    <value>Semana que vem</value>
+    <value>Próxima semana</value>
   </data>
   <data name="String_NoClass" xml:space="preserve">
     <value>Sem classe</value>
