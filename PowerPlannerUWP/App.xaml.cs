@@ -732,6 +732,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2002, 9, 1, 0))
+                    {
+                        changedText += "\n - UI fixes for tablet devices";
+                    }
+
                     if (v <= new Version(2002, 3, 1, 0))
                     {
                         // Switched 100% to new time picker, need to show message to the other 50% that are just getting it now
