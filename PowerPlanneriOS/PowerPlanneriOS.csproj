@@ -163,6 +163,7 @@
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsViewController.cs" />
     <Compile Include="Controllers\Settings\SuccessfullyCreatedAccountViewController.cs" />
+    <Compile Include="Controllers\Settings\SchoolTimeZoneSettingsViewController.cs" />
     <Compile Include="Controllers\Settings\TwoWeekScheduleSettingsViewController.cs" />
     <Compile Include="Controllers\Settings\UpdateCredentialsViewController.cs" />
     <Compile Include="Controllers\SyncErrorsViewController.cs" />

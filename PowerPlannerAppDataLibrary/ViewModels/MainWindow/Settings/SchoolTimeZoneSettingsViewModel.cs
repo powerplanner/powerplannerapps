@@ -12,7 +12,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
     {
         public SchoolTimeZoneSettingsViewModel(BaseViewModel parent) : base(parent)
         {
-            _selectedSchoolTimeZone = Account.SchoolTimeZone;
+            if (Account.SchoolTimeZone != null)
+            {
+                var matching = AvailableTimeZones.FirstOrDefault(i => i.Equals(Account.SchoolTimeZone));
+                if (matching != null)
+                {
+                    _selectedSchoolTimeZone = matching;
+                }
+            }
         }
 
         private TimeZoneInfo _selectedSchoolTimeZone;

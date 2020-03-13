@@ -17,6 +17,7 @@ namespace PowerPlanneriOS.App
         {
             UseUnifiedCalendarDayTabItem = true;
             DoNotShowYearsInTabItems = true;
+            UsesIanaTimeZoneIds = true;
         }
 
         public static new PowerPlanneriOSApp Current

@@ -37,6 +37,26 @@ namespace PowerPlanneriOS.Controllers
 
             AddTopSectionDivider();
 
+            if (ViewModel.IsInDifferentTimeZone)
+            {
+                AddSpacing(12);
+
+                var timeZoneWarning = new UILabel()
+                {
+                    TranslatesAutoresizingMaskIntoConstraints = false,
+                    Text = PowerPlannerResources.GetString("DifferentTimeZoneWarning.Text"),
+                    TextColor = UIColor.Red,
+                    Font = UIFont.PreferredCaption1,
+                    Lines = 0
+                };
+                StackView.AddArrangedSubview(timeZoneWarning);
+                timeZoneWarning.StretchWidth(StackView, left: 16, right: 16);
+
+                AddSpacing(12);
+
+                AddSectionDivider();
+            }
+
             var timePickerFrom = new BareUIInlineTimePicker(this, left: 16, right: 16)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
