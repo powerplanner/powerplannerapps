@@ -40,15 +40,57 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private static List<TimeZoneInfo> GetAvailableTimeZones()
         {
             List<TimeZoneInfo> answer = new List<TimeZoneInfo>();
-            foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+
+            if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
             {
-                if (TZConvert.TryWindowsToIana(tz.Id, out string iana))
+                HashSet<string> visitedWindowsIds = new HashSet<string>();
+                // In Android, the system time zones are already in IANA format
+                foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
                 {
-                    answer.Add(tz);
+                    if (TZConvert.TryIanaToWindows(tz.Id, out string windows))
+                    {
+                        if (visitedWindowsIds.Add(windows))
+                        {
+                            if (TZConvert.TryWindowsToIana(windows, out string iana))
+                            {
+                                try
+                                {
+                                    answer.Add(TimeZoneInfo.FindSystemTimeZoneById(iana));
+                                }
+                                catch { }
+                            }
+                        }
+                    }
+                }
+                answer = answer.OrderBy(i => i.BaseUtcOffset).ToList();
+            }
+            else
+            {
+                foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+                {
+                    if (TZConvert.TryWindowsToIana(tz.Id, out string iana))
+                    {
+                        answer.Add(tz);
+                    }
                 }
             }
 
             return answer;
+        }
+
+        /// <summary>
+        /// Some platforms like Android don't format time zones by default very well.
+        /// </summary>
+        /// <param name="timeZone"></param>
+        /// <returns></returns>
+        public static string Format(TimeZoneInfo timeZone)
+        {
+            if (!App.PowerPlannerApp.UsesIanaTimeZoneIds)
+            {
+                throw new InvalidOperationException("This should only be called if UsesIanaTimeZoneIds is set to true");
+            }
+
+            return $"(UTC{(timeZone.BaseUtcOffset.TotalMinutes < 0 ? "-" : "+")}{timeZone.BaseUtcOffset.ToString("hh\\:mm")}) {TZConvert.IanaToWindows(timeZone.Id)}";
         }
     }
 }

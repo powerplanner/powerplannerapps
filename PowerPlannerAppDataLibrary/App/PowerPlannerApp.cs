@@ -40,6 +40,11 @@ namespace PowerPlannerAppDataLibrary.App
         /// </summary>
         public static bool ShowClassesAsPopups { get; set; }
 
+        /// <summary>
+        /// Android should set this to true as TimeZoneInfo operates on IANA ids. Windows should keep this false;
+        /// </summary>
+        public static bool UsesIanaTimeZoneIds { get; set; }
+
         public new static PowerPlannerApp Current
         {
             get { return PortableApp.Current as PowerPlannerApp; }

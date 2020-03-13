@@ -284,7 +284,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 var dontWaitScheduleTile = ScheduleTileExtension.Current?.UpdateScheduleTile(this, data);
             });
 
-            dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.WeekOneStartsOn);
+            dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.SchoolTimeZone);
         }
 
         /// <summary>

@@ -37,6 +37,7 @@ namespace PowerPlannerAndroid.Views
             FindViewById<View>(Resource.Id.SettingsListItemTwoWeekSchedule).Click += delegate { ViewModel.OpenTwoWeekScheduleSettings(); };
             FindViewById<View>(Resource.Id.SettingsListItemSyncOptions).Click += delegate { ViewModel.OpenSyncOptionsSimple(); };
             FindViewById<View>(Resource.Id.SettingsListItemGoogleCalendar).Click += GoogleCalendar_Click;
+            FindViewById<View>(Resource.Id.SettingsListItemTimeZone).Click += delegate { ViewModel.OpenSchoolTimeZone(); };
             FindViewById<View>(Resource.Id.SettingsListItemHelp).Click += SettingsListView_Click;
             _listItemUpgradeToPremium = FindViewById<View>(Resource.Id.SettingsListItemUpgradeToPremium);
             _listItemUpgradeToPremium.Click += delegate { ViewModel.OpenPremiumVersion(); };
