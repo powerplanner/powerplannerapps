@@ -46,6 +46,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public EditParameter EditParams { get; private set; }
 
+        public bool IsInDifferentTimeZone { get; private set; }
+
         // Trigger the start and end time texts.
         private AddClassTimeViewModel(BaseViewModel parent) : base(parent) { }
 
@@ -60,7 +62,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 Room = "",
                 DayOfWeeks = new MyObservableList<DayOfWeek>() { DayOfWeek.Monday },
                 ScheduleWeek = PowerPlannerSending.Schedule.Week.BothWeeks,
-                ClassName = addParams.Class.Name
+                ClassName = addParams.Class.Name,
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone
             };
         }
 
@@ -75,7 +78,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 Room = editParams.GroupedSchedules.First().Room,
                 DayOfWeeks = new MyObservableList<DayOfWeek>(editParams.GroupedSchedules.Select(i => i.DayOfWeek).Distinct()),
                 ScheduleWeek = editParams.GroupedSchedules.First().ScheduleWeek,
-                ClassName = editParams.GroupedSchedules.First().Class.Name
+                ClassName = editParams.GroupedSchedules.First().Class.Name,
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone
             };
         }
 

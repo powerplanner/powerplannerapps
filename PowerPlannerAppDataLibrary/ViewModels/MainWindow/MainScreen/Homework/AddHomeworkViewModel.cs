@@ -129,6 +129,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         public AddParameter AddParams { get; private set; }
         public EditParameter EditParams { get; private set; }
 
+        public bool IsInDifferentTimeZone { get; private set; }
+
         private AddHomeworkViewModel(BaseViewModel parent) : base(parent)
         {
         }
@@ -248,6 +250,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 IsClassPickerVisible = !addParams.HideClassPicker,
                 IsWeightCategoryPickerVisible = true,
                 ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(),
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c // Assign class last, since it also assigns weight categories, and updates time options from remembered times
             };
         }
@@ -319,6 +322,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 Details = editParams.Item.Details,
                 Type = type,
                 ImageNames = editParams.Item.ImageNames.ToArray(),
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c // Assign class last, since it also assigns weight categories
             };
 
