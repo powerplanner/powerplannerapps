@@ -141,7 +141,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
             BaseDataItemHomeworkExamGrade i = dataItem as BaseDataItemHomeworkExamGrade;
 
-            Date = ToViewItemTime(i.Date);
+            if (this is ViewItemHoliday)
+            {
+                // Holidays don't get localized since they're just raw dates
+                Date = ToViewItemSchoolTime(i.Date);
+            }
+            else
+            {
+                Date = ToViewItemTime(i.Date);
+            }
+
             DateInSchoolTime = ToViewItemSchoolTime(i.Date);
 
             GradeReceived = i.GradeReceived;
