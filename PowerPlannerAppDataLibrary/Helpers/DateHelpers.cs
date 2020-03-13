@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerPlannerAppDataLibrary.DataLayer;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -46,6 +47,18 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 // Returns "Monday, Feb 10
                 return date.ToString("dddd, MMM d");
             }
+        }
+
+        public static DateTime ToViewItemTime(AccountDataItem account, DateTime rawDateTime)
+        {
+            if (account.SchoolTimeZone == null)
+            {
+                return DateTime.SpecifyKind(rawDateTime, DateTimeKind.Local);
+            }
+
+            var currentTimeZone = TimeZoneInfo.Local;
+
+            return TimeZoneInfo.ConvertTime(DateTime.SpecifyKind(rawDateTime, DateTimeKind.Unspecified), sourceTimeZone: account.SchoolTimeZone, destinationTimeZone: currentTimeZone);
         }
     }
 }

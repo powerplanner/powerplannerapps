@@ -1827,4 +1827,28 @@ Please think about using an online account instead!</value>
   <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
     <value>Your end time must be greater than your start time.</value>
   </data>
+  <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
+    <value>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+    <value>Set your school's time zone</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+    <value>Time zone</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" xml:space="preserve">
+    <value>School's time zone</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Description.Text" xml:space="preserve">
+    <value>If you're traveling and need to see times relative to your current time zone, you can specify your school's time zone. You should set the below time zone to the time zone of where you attend school, regardless of what your current time zone is.</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Header.Text" xml:space="preserve">
+    <value>SCHOOL'S TIME ZONE</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
+    <value>Saving changes will restart Power Planner so that the changes can be applied.</value>
+  </data>
 </root>

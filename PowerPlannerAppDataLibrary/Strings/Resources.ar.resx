@@ -1724,4 +1724,28 @@
   <data name="WeightCategory_AllGrades" xml:space="preserve">
     <value>جميع الدرجات</value>
   </data>
+  <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
+    <value>أنت حالياً في منطقة زمنية مختلفة عن المنطقة الزمنية لمدرستك. يتم عرض هذه القيم في المنطقة الزمنية للمدرسة. إذا قالت المدرسة 9 صباحا، ببساطة أدخل 9 صباحا.</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+    <value>تعيين المنطقة الزمنية لمدرستك</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+    <value>المنطقة الزمنية</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
+    <value>حفظ التغييرات</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" xml:space="preserve">
+    <value>المنطقة الزمنية للمدرسة</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Description.Text" xml:space="preserve">
+    <value>إذا كنت مسافرًا وتحتاج إلى رؤية أوقات تتعلق بالمنطقة الزمنية الحالية، يمكنك تحديد المنطقة الزمنية لمدرستك. يجب تعيين المنطقة الزمنية أدناه إلى المنطقة الزمنية حيث تذهب إلى المدرسة، بغض النظر عن ما هي المنطقة الزمنية الحالية الخاصة بك.</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Header.Text" xml:space="preserve">
+    <value>المنطقة الزمنية للمدرسة</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
+    <value>سيؤدي حفظ التغييرات إلى إعادة تشغيل مخطط الطاقة بحيث يمكن تطبيق التغييرات.</value>
+  </data>
 </root>

@@ -32,6 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         {
             var megaItem = dataItem as DataItemMegaItem;
 
+            // We don't localize holidays since they're just raw dates
             EndTime = DateTime.SpecifyKind(megaItem.EndTime, DateTimeKind.Local);
 
             base.PopulateFromDataItemOverride(dataItem);

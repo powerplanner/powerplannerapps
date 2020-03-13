@@ -111,6 +111,85 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return IsTasksCalendarIntegrationDisabled && IsClassesCalendarIntegrationDisabled;
         }
 
+        [DataMember]
+        private string _serializedSchoolTimeZone { get; set; }
+
+        public event EventHandler OnSchoolTimeZoneChanged;
+        private bool _initializedSchoolTimeZone;
+        private TimeZoneInfo _schoolTimeZone;
+        public TimeZoneInfo SchoolTimeZone
+        {
+            get
+            {
+                if (!_initializedSchoolTimeZone)
+                {
+                    if (_serializedSchoolTimeZone != null)
+                    {
+                        try
+                        {
+                            _schoolTimeZone = TimeZoneInfo.FindSystemTimeZoneById(_serializedSchoolTimeZone);
+                        }
+                        catch { }
+                    }
+                    _initializedSchoolTimeZone = true;
+                }
+
+                return _schoolTimeZone;
+            }
+            set
+            {
+                if (object.Equals(SchoolTimeZone, value))
+                {
+                    return;
+                }
+
+                if (value == null)
+                {
+                    _serializedSchoolTimeZone = null;
+                }
+                else
+                {
+                    _serializedSchoolTimeZone = value.Id;
+                }
+
+                _schoolTimeZone = value;
+                UpdateIsInDifferentTimeZone();
+                OnPropertyChanged(nameof(SchoolTimeZone));
+                OnSchoolTimeZoneChanged(this, null);
+            }
+        }
+
+        private bool? _isInDifferentTimeZone;
+        /// <summary>
+        /// Returns true if local time is actually different than school time (hours or minutes are different).
+        /// </summary>
+        public bool IsInDifferentTimeZone
+        {
+            get
+            {
+                if (_isInDifferentTimeZone == null)
+                {
+                    UpdateIsInDifferentTimeZone();
+                }
+
+                return _isInDifferentTimeZone.Value;
+            }
+        }
+
+        private void UpdateIsInDifferentTimeZone()
+        {
+            DateTime now = DateTime.Now;
+
+            if (SchoolTimeZone.GetUtcOffset(now) != TimeZoneInfo.Local.GetUtcOffset(now))
+            {
+                _isInDifferentTimeZone = true;
+            }
+            else
+            {
+                _isInDifferentTimeZone = false;
+            }
+        }
+
         private GpaOptions _gpaOption;
         [DataMember]
         public GpaOptions GpaOption
@@ -180,6 +259,32 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.WeekOneStartsOn);
             }
+        }
+
+        /// <summary>
+        /// Saves changes, then triggers updates to reminders/tiles, and triggers a settings sync
+        /// </summary>
+        /// <param name="schoolTimeZone"></param>
+        /// <returns></returns>
+        public async System.Threading.Tasks.Task SetSchoolTimeZone(TimeZoneInfo schoolTimeZone)
+        {
+            SchoolTimeZone = schoolTimeZone;
+            NeedsToSyncSettings = true;
+
+            // Save
+            await SaveOnThread();
+
+            AccountDataStore data = await AccountDataStore.Get(this.LocalAccountId);
+
+            var dontWait = RemindersExtension.Current?.ResetReminders(this, data);
+
+            var dontWaitThread = System.Threading.Tasks.Task.Run(delegate
+            {
+                // Update schedule tile
+                var dontWaitScheduleTile = ScheduleTileExtension.Current?.UpdateScheduleTile(this, data);
+            });
+
+            dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.SchoolTimeZone);
         }
 
         /// <summary>

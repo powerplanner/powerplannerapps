@@ -111,6 +111,13 @@
 
                 </interfaces:MyAdaptiveGridPanel>
 
+                <TextBlock
+                    x:Uid="DifferentTimeZoneWarning"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Foreground="Red"
+                    Margin="0,6,0,6"
+                    Visibility="{Binding IsInDifferentTimeZone, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                 <TextBox
                     x:Uid="EditHomeworkPage_TextBoxDetails"
                     x:Name="tbDetails"

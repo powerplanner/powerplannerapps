@@ -174,6 +174,11 @@ namespace PowerPlanneriOS.Controllers.Settings
                 _tableView.AddCell("Two Week Schedule", ViewModel.OpenTwoWeekScheduleSettings);
             }
 
+            if (ViewModel.IsSchoolTimeZoneVisible)
+            {
+                _tableView.AddCell("Time Zone", ViewModel.OpenSchoolTimeZone);
+            }
+
             _tableView.AddCell("Help", OpenHelp);
 
             _tableView.AddCell("About", ViewModel.OpenAbout);

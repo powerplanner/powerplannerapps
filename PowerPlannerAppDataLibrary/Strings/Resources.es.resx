@@ -1722,4 +1722,28 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="WeightCategory_AllGrades" xml:space="preserve">
     <value>Todos los notas</value>
   </data>
+  <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
+    <value>Actualmente se encuentra en una zona horaria diferente a la zona horaria de su escuela. Estos valores se muestran en la zona horaria de su escuela. Si la escuela dijo 9 AM, simplemente ingrese a las 9 AM.</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+    <value>Establezca la zona horaria de su escuela</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+    <value>Zona horaria</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
+    <value>Guardar cambios</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" xml:space="preserve">
+    <value>Zona horaria de la escuela</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Description.Text" xml:space="preserve">
+    <value>Si viaja y necesita ver los horarios relativos a su zona horaria actual, puede especificar la zona horaria de su escuela. Debe establecer la siguiente zona horaria en la zona horaria en la que asiste a la escuela, independientemente de cuál sea su zona horaria actual.</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Header.Text" xml:space="preserve">
+    <value>ZONA HORARIA ESCOLAR</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
+    <value>Guardar los cambios se reiniciará Power Planner para que se puedan aplicar los cambios.</value>
+  </data>
 </root>

@@ -364,6 +364,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2002, 9, 1, 0))
+                    {
+                        changedText += "\n - Time zone support! If you're traveling, go to the settings page to set your school's time zone.";
+                    }
+
                     if (v <= new Version(2001, 9, 1, 0))
                     {
                         changedText += "\n - Email addresses and phone numbers are now clickable in details text!";

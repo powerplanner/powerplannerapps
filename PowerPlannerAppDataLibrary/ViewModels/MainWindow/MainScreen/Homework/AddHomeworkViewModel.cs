@@ -129,6 +129,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
         public AddParameter AddParams { get; private set; }
         public EditParameter EditParams { get; private set; }
 
+        public bool IsInDifferentTimeZone { get; private set; }
+
         private AddHomeworkViewModel(BaseViewModel parent) : base(parent)
         {
         }
@@ -248,6 +250,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 IsClassPickerVisible = !addParams.HideClassPicker,
                 IsWeightCategoryPickerVisible = true,
                 ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(),
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c // Assign class last, since it also assigns weight categories, and updates time options from remembered times
             };
         }
@@ -315,10 +318,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 EditParams = editParams,
                 Name = editParams.Item.Name,
                 Classes = GetClassesWithNoClassClass(c.Semester.Classes),
-                Date = editParams.Item.Date.Date,
+                Date = editParams.Item.DateInSchoolTime.Date,
                 Details = editParams.Item.Details,
                 Type = type,
                 ImageNames = editParams.Item.ImageNames.ToArray(),
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c // Assign class last, since it also assigns weight categories
             };
 
@@ -336,8 +340,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     break;
 
                 case DataItemMegaItem.TimeOptions.Custom:
-                    model._startTime = new TimeSpan(editParams.Item.Date.Hour, editParams.Item.Date.Minute, 0);
-                    model._endTime = editParams.Item.EndTime.TimeOfDay;
+                    model._startTime = new TimeSpan(editParams.Item.DateInSchoolTime.Hour, editParams.Item.DateInSchoolTime.Minute, 0);
+                    model._endTime = editParams.Item.EndTimeInSchoolTime.TimeOfDay;
                     model.SelectedTimeOption = model.TimeOption_Custom;
                     break;
 

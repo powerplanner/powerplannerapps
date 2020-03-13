@@ -339,6 +339,9 @@
     <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml.cs">
       <DependentUpon>SuccessfullyCreatedAccountView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml.cs">
+      <DependentUpon>SchoolTimeZoneSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml.cs">
       <DependentUpon>TwoWeekScheduleSettingsView.xaml</DependentUpon>
     </Compile>
@@ -821,6 +824,10 @@
     <Page Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml">
       <SubType>Designer</SubType>

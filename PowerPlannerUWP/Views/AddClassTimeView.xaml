@@ -38,7 +38,14 @@
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="StackPanel" Margin="12">
-                
+
+                <TextBlock
+                    x:Uid="DifferentTimeZoneWarning"
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Foreground="Red"
+                    Margin="0,0,0,12"
+                    Visibility="{Binding IsInDifferentTimeZone, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                 <controls:EnhancedTimePicker
                     x:Uid="EditingClassScheduleItemView_TimePickerStart"
                     Header="Start time"

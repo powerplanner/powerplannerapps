@@ -2297,6 +2297,38 @@ Please think about using an online account instead!</source>
           <source>All grades</source>
           <target state="final">جميع الدرجات</target>
         </trans-unit>
+        <trans-unit id="DifferentTimeZoneWarning.Text" translate="yes" xml:space="preserve">
+          <source>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
+          <target state="final" state-qualifier="mt-suggestion">أنت حالياً في منطقة زمنية مختلفة عن المنطقة الزمنية لمدرستك. يتم عرض هذه القيم في المنطقة الزمنية للمدرسة. إذا قالت المدرسة 9 صباحا، ببساطة أدخل 9 صباحا.</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Set your school's time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">تعيين المنطقة الزمنية لمدرستك</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Title" translate="yes" xml:space="preserve">
+          <source>Time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">المنطقة الزمنية</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_ButtonSave.Content" translate="yes" xml:space="preserve">
+          <source>Save changes</source>
+          <target state="final" state-qualifier="tm-suggestion">حفظ التغييرات</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" translate="yes" xml:space="preserve">
+          <source>School's time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">المنطقة الزمنية للمدرسة</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_Description.Text" translate="yes" xml:space="preserve">
+          <source>If you're traveling and need to see times relative to your current time zone, you can specify your school's time zone. You should set the below time zone to the time zone of where you attend school, regardless of what your current time zone is.</source>
+          <target state="final" state-qualifier="mt-suggestion">إذا كنت مسافرًا وتحتاج إلى رؤية أوقات تتعلق بالمنطقة الزمنية الحالية، يمكنك تحديد المنطقة الزمنية لمدرستك. يجب تعيين المنطقة الزمنية أدناه إلى المنطقة الزمنية حيث تذهب إلى المدرسة، بغض النظر عن ما هي المنطقة الزمنية الحالية الخاصة بك.</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_Header.Text" translate="yes" xml:space="preserve">
+          <source>SCHOOL'S TIME ZONE</source>
+          <target state="final" state-qualifier="mt-suggestion">المنطقة الزمنية للمدرسة</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_RestartNote.Text" translate="yes" xml:space="preserve">
+          <source>Saving changes will restart Power Planner so that the changes can be applied.</source>
+          <target state="final" state-qualifier="mt-suggestion">سيؤدي حفظ التغييرات إلى إعادة تشغيل مخطط الطاقة بحيث يمكن تطبيق التغييرات.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -114,6 +114,7 @@ namespace PowerPlanneriOS
                 { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsViewController) },
                 { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsViewController) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) },
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsViewController) },
 
                 { typeof(ConfigureClassGradesViewModel), typeof(ConfigureClassGradesViewController) },
                 { typeof(ConfigureClassGradesListViewModel), typeof(ConfigureClassGradesListViewController) },

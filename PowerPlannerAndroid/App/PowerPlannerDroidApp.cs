@@ -32,6 +32,7 @@ namespace PowerPlannerAndroid.App
             DoNotShowYearsInTabItems = true;
             DoNotShowSettingsInTabItems = true;
             ShowClassesAsPopups = true;
+            UsesIanaTimeZoneIds = true;
         }
 
         public static new PowerPlannerDroidApp Current

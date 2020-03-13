@@ -2295,6 +2295,38 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>All grades</source>
           <target state="final">Todas as notas</target>
         </trans-unit>
+        <trans-unit id="DifferentTimeZoneWarning.Text" translate="yes" xml:space="preserve">
+          <source>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
+          <target state="final" state-qualifier="mt-suggestion">Você está atualmente em um fuso horário diferente do fuso horário da sua escola. Esses valores são exibidos no fuso horário da sua escola. Se a escola disse 9 da manhã, basta entrar às 9 da manhã.</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Set your school's time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">Defina o fuso horário da sua escola</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Title" translate="yes" xml:space="preserve">
+          <source>Time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">Fuso horário</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_ButtonSave.Content" translate="yes" xml:space="preserve">
+          <source>Save changes</source>
+          <target state="final" state-qualifier="tm-suggestion">Salvar alterações</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" translate="yes" xml:space="preserve">
+          <source>School's time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">Fuso horário da escola</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_Description.Text" translate="yes" xml:space="preserve">
+          <source>If you're traveling and need to see times relative to your current time zone, you can specify your school's time zone. You should set the below time zone to the time zone of where you attend school, regardless of what your current time zone is.</source>
+          <target state="final" state-qualifier="mt-suggestion">Se você está viajando e precisa ver os horários relativos ao seu fuso horário atual, você pode especificar o fuso horário da sua escola. Você deve definir o fuso horário abaixo para o fuso horário de onde você frequenta a escola, independentemente do seu fuso horário atual.</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_Header.Text" translate="yes" xml:space="preserve">
+          <source>SCHOOL'S TIME ZONE</source>
+          <target state="final" state-qualifier="mt-suggestion">FUSO HORÁRIO DA ESCOLA</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_RestartNote.Text" translate="yes" xml:space="preserve">
+          <source>Saving changes will restart Power Planner so that the changes can be applied.</source>
+          <target state="final" state-qualifier="mt-suggestion">A economia de alterações reiniciará o Power Planner para que as alterações possam ser aplicadas.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
