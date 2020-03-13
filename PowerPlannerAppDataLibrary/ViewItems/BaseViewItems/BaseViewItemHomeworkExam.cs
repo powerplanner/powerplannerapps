@@ -26,6 +26,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             private set { SetProperty(ref _endTime, value, "EndTime"); }
         }
 
+        private DateTime _endTimeInSchoolTime;
+        public DateTime EndTimeInSchoolTime
+        {
+            get => _endTimeInSchoolTime;
+            private set => SetProperty(ref _endTimeInSchoolTime, value, nameof(EndTimeInSchoolTime));
+        }
+
         private DateTime _reminder;
         public DateTime Reminder
         {
@@ -144,10 +151,12 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             if (i.EndTime == PowerPlannerSending.DateValues.UNASSIGNED)
             {
                 EndTime = i.EndTime;
+                EndTimeInSchoolTime = i.EndTime;
             }
             else
             {
                 EndTime = ToViewItemTime(i.EndTime);
+                EndTimeInSchoolTime = ToViewItemSchoolTime(i.EndTime);
             }
 
             // TODO: I probably need to do a similar local conversion for Reminder too when I start using it

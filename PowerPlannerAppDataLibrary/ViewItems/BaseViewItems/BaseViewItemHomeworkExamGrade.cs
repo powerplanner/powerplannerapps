@@ -29,6 +29,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             set { SetProperty(ref _date, value, "Date", "IsComplete", "PercentComplete", "ListItemTertiaryText"); }
         }
 
+        private DateTime _dateInSchoolTime;
+        public DateTime DateInSchoolTime
+        {
+            get => _dateInSchoolTime;
+            set => SetProperty(ref _dateInSchoolTime, value, nameof(DateInSchoolTime));
+        }
+
         private double _gradeReceived;
         public double GradeReceived
         {
@@ -135,6 +142,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             BaseDataItemHomeworkExamGrade i = dataItem as BaseDataItemHomeworkExamGrade;
 
             Date = ToViewItemTime(i.Date);
+            DateInSchoolTime = ToViewItemSchoolTime(i.Date);
+
             GradeReceived = i.GradeReceived;
             GradeTotal = i.GradeTotal;
             IsDropped = i.IsDropped;

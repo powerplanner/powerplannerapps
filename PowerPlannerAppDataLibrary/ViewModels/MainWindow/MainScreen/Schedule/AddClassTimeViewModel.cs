@@ -70,8 +70,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             {
                 State = OperationState.Editing,
                 EditParams = editParams,
-                StartTime = editParams.GroupedSchedules.First().StartTime.TimeOfDay,
-                EndTime = editParams.GroupedSchedules.First().EndTime.TimeOfDay,
+                StartTime = editParams.GroupedSchedules.First().StartTimeInSchoolTime.TimeOfDay,
+                EndTime = editParams.GroupedSchedules.First().EndTimeInSchoolTime.TimeOfDay,
                 Room = editParams.GroupedSchedules.First().Room,
                 DayOfWeeks = new MyObservableList<DayOfWeek>(editParams.GroupedSchedules.Select(i => i.DayOfWeek).Distinct()),
                 ScheduleWeek = editParams.GroupedSchedules.First().ScheduleWeek,

@@ -228,6 +228,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             return DateHelpers.ToViewItemTime(Account, rawDateTime);
         }
 
+        protected DateTime ToViewItemSchoolTime(DateTime rawDateTime)
+        {
+            return DateTime.SpecifyKind(rawDateTime, DateTimeKind.Local);
+        }
+
         private void Account_OnSchoolTimeZoneChanged(object sender, EventArgs e)
         {
             PopulateFromDataItem(DataItem);
