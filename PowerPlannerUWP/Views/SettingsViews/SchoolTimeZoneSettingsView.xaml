@@ -58,7 +58,7 @@
 
                 <TextBlock
                     x:Uid="Settings_SchoolTimeZone_RestartNote"
-                    Text="Note that saving will restart Power Planner so that the changes can be applied."
+                    Text="Saving changes will restart Power Planner so that the changes can be applied."
                     TextWrapping="Wrap"
                     Margin="0,6,0,0"
                     Style="{ThemeResource CaptionTextBlockStyle}"/>

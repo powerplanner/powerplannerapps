@@ -1722,4 +1722,28 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="WeightCategory_AllGrades" xml:space="preserve">
     <value>Alle Klassen</value>
   </data>
+  <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
+    <value>Sie befinden sich derzeit in einer anderen Zeitzone als die Zeitzone Ihrer Schule. Diese Werte werden in der Zeitzone Ihrer Schule angezeigt. Wenn die Schule 9 Uhr morgens sagte, geben Sie einfach 9 Uhr ein.</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+    <value>Festlegen der Zeitzone Ihrer Schule</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+    <value>Zeitzone</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
+    <value>Speichern von Änderungen</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" xml:space="preserve">
+    <value>Zeitzone der Schule</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Description.Text" xml:space="preserve">
+    <value>Wenn Sie unterwegs sind und Zeiten relativ zu Ihrer aktuellen Zeitzone anzeigen müssen, können Sie die Zeitzone Ihrer Schule angeben. Sie sollten die folgende Zeitzone auf die Zeitzone festlegen, in der Sie die Schule besuchen, unabhängig davon, was Ihre aktuelle Zeitzone ist.</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Header.Text" xml:space="preserve">
+    <value>SCHULZEITZONE</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
+    <value>Durch das Speichern von Änderungen wird Power Planner neu gestartet, damit die Änderungen angewendet werden können.</value>
+  </data>
 </root>

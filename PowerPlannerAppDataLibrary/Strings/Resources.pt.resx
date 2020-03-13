@@ -1722,4 +1722,28 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="WeightCategory_AllGrades" xml:space="preserve">
     <value>Todas as notas</value>
   </data>
+  <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
+    <value>Você está atualmente em um fuso horário diferente do fuso horário da sua escola. Esses valores são exibidos no fuso horário da sua escola. Se a escola disse 9 da manhã, basta entrar às 9 da manhã.</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+    <value>Defina o fuso horário da sua escola</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+    <value>Fuso horário</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
+    <value>Salvar alterações</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" xml:space="preserve">
+    <value>Fuso horário da escola</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Description.Text" xml:space="preserve">
+    <value>Se você está viajando e precisa ver os horários relativos ao seu fuso horário atual, você pode especificar o fuso horário da sua escola. Você deve definir o fuso horário abaixo para o fuso horário de onde você frequenta a escola, independentemente do seu fuso horário atual.</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Header.Text" xml:space="preserve">
+    <value>FUSO HORÁRIO DA ESCOLA</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
+    <value>A economia de alterações reiniciará o Power Planner para que as alterações possam ser aplicadas.</value>
+  </data>
 </root>

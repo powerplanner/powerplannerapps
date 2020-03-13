@@ -41,7 +41,6 @@
 
                 <TextBlock
                     x:Uid="DifferentTimeZoneWarning"
-                    Text="You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM."
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Foreground="Red"
                     Margin="0,0,0,12"
