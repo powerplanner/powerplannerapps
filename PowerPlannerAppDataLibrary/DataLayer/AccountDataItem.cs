@@ -152,8 +152,41 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     _serializedSchoolTimeZone = value.Id;
                 }
 
-                SetProperty(ref _schoolTimeZone, value, nameof(SchoolTimeZone));
+                _schoolTimeZone = value;
+                UpdateIsInDifferentTimeZone();
+                OnPropertyChanged(nameof(SchoolTimeZone));
                 OnSchoolTimeZoneChanged(this, null);
+            }
+        }
+
+        private bool? _isInDifferentTimeZone;
+        /// <summary>
+        /// Returns true if local time is actually different than school time (hours or minutes are different).
+        /// </summary>
+        public bool IsInDifferentTimeZone
+        {
+            get
+            {
+                if (_isInDifferentTimeZone == null)
+                {
+                    UpdateIsInDifferentTimeZone();
+                }
+
+                return _isInDifferentTimeZone.Value;
+            }
+        }
+
+        private void UpdateIsInDifferentTimeZone()
+        {
+            DateTime now = DateTime.Now;
+
+            if (SchoolTimeZone.GetUtcOffset(now) != TimeZoneInfo.Local.GetUtcOffset(now))
+            {
+                _isInDifferentTimeZone = true;
+            }
+            else
+            {
+                _isInDifferentTimeZone = false;
             }
         }
 
