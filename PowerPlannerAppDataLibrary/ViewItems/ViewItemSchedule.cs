@@ -68,8 +68,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             DataItemSchedule schedule = (DataItemSchedule)dataItem;
 
             DayOfWeek = schedule.DayOfWeek;
-            StartTime = DateTime.SpecifyKind(schedule.StartTime, DateTimeKind.Local);
-            EndTime = DateTime.SpecifyKind(schedule.EndTime, DateTimeKind.Local);
+            StartTime = ToViewItemTime(schedule.StartTime);
+            EndTime = ToViewItemTime(schedule.EndTime);
             Room = schedule.Room;
             ScheduleWeek = schedule.ScheduleWeek;
         }

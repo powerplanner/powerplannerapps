@@ -134,7 +134,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
             BaseDataItemHomeworkExamGrade i = dataItem as BaseDataItemHomeworkExamGrade;
 
-            Date = DateTime.SpecifyKind(i.Date, DateTimeKind.Local);
+            Date = ToViewItemTime(i.Date);
             GradeReceived = i.GradeReceived;
             GradeTotal = i.GradeTotal;
             IsDropped = i.IsDropped;

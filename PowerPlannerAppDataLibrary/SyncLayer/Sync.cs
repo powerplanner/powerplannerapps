@@ -777,6 +777,18 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         accountChanged = true;
                     }
 
+                    if (response.Settings.SchoolTimeZone != null)
+                    {
+                        if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(response.Settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
+                        {
+                            if (!serverSchoolTimeZone.Equals(account.SchoolTimeZone))
+                            {
+                                account.SchoolTimeZone = serverSchoolTimeZone;
+                                accountChanged = true;
+                            }
+                        }
+                    }
+
                     // For now we'll just return the semester ID and on initial login the login task can apply it
                     // since we don't handle this dynamically changing while the app is already loaded.
                     answer.SelectedSemesterId = response.Settings.SelectedSemesterId;

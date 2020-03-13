@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ToolsPortable;
 using System.Reflection;
 using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 {
@@ -214,6 +215,22 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
                 return CompareTo(obj as BaseViewItem);
 
             return 0;
+        }
+
+        private bool _usingLocalTimes = false;
+        protected DateTime ToViewItemTime(DateTime rawDateTime)
+        {
+            if (!_usingLocalTimes)
+            {
+                _usingLocalTimes = true;
+                Account.OnSchoolTimeZoneChanged += new WeakEventHandler(Account_OnSchoolTimeZoneChanged).Handler;
+            }
+            return DateHelpers.ToViewItemTime(Account, rawDateTime);
+        }
+
+        private void Account_OnSchoolTimeZoneChanged(object sender, EventArgs e)
+        {
+            PopulateFromDataItem(DataItem);
         }
     }
 }

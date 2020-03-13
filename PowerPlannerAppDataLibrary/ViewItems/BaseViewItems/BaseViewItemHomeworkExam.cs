@@ -147,7 +147,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             }
             else
             {
-                EndTime = DateTime.SpecifyKind(i.EndTime, DateTimeKind.Local);
+                EndTime = ToViewItemTime(i.EndTime);
             }
 
             // TODO: I probably need to do a similar local conversion for Reminder too when I start using it
