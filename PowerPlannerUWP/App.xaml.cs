@@ -733,6 +733,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2003, 6, 1, 0))
+                    {
+                        changedText += "\n - Time zone support! If you're traveling, go to the settings page to set your school's time zone.";
+                    }
+
                     if (v <= new Version(2002, 9, 1, 0))
                     {
                         changedText += "\n - UI fixes for tablet devices";
