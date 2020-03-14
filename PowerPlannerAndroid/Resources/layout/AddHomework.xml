@@ -79,26 +79,23 @@
           local:Binding="{Source=EndTime, Target=Text, Converter=TimeSpanToStringConverter}; {Source=IsEndTimePickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        local:Binding="{Source=IsInDifferentTimeZone, Target=Visibility, Converter=BoolToVisibilityConverter}">
-        <View style="@style/Divider"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="{DifferentTimeZoneWarning.Text}"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textColor="#fc0000"
-            style="@android:style/TextAppearance.Small"/>
-    </LinearLayout>
-
     <View style="@style/Divider"
         local:Binding="{Source=IsStartTimePickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="{DifferentTimeZoneWarning.Text}"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="#fc0000"
+        style="@android:style/TextAppearance.Small"
+        local:Binding="{Source=IsInDifferentTimeZone, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <View style="@style/Divider"
+        local:Binding="{Source=IsInDifferentTimeZone, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
 
     <EditText
         style="@style/FullWidthEditText"
