@@ -155,7 +155,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 _schoolTimeZone = value;
                 UpdateIsInDifferentTimeZone();
                 OnPropertyChanged(nameof(SchoolTimeZone));
-                OnSchoolTimeZoneChanged(this, null);
+                OnSchoolTimeZoneChanged?.Invoke(this, null);
             }
         }
 
