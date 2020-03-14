@@ -7,7 +7,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:local="using:PowerPlannerUWP.Views.SettingsViews"
     xmlns:interfaces="using:InterfacesUWP">
+
+    <interfacesViews:ViewHostGeneric.Resources>
+        <local:TimeZoneToStringConverter x:Key="TimeZoneToStringConverter"/>
+    </interfacesViews:ViewHostGeneric.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -45,6 +50,12 @@
                     ItemsSource="{Binding AvailableTimeZones}"
                     SelectedItem="{Binding SelectedSchoolTimeZone, Mode=TwoWay}"
                     IsEnabled="{Binding IsEnabled}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding Converter={StaticResource TimeZoneToStringConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <Button

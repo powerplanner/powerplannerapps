@@ -44,4 +44,26 @@ namespace PowerPlannerUWP.Views.SettingsViews
             ViewModel.Save();
         }
     }
+
+    public class TimeZoneToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is TimeZoneInfo tz)
+            {
+#if DEBUG
+                return tz.DisplayName;
+#else
+                return SchoolTimeZoneSettingsViewModel.FormatWindows(tz);
+#endif
+            }
+
+            return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

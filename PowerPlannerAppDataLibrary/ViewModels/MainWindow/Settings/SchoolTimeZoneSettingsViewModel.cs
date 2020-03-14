@@ -97,7 +97,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 throw new InvalidOperationException("This should only be called if UsesIanaTimeZoneIds is set to true");
             }
 
-            return $"(UTC{(timeZone.BaseUtcOffset.TotalMinutes < 0 ? "-" : "+")}{timeZone.BaseUtcOffset.ToString("hh\\:mm")}) {TZConvert.IanaToWindows(timeZone.Id)}";
+            return Format(timeZone.BaseUtcOffset, TZConvert.IanaToWindows(timeZone.Id));
+        }
+
+        public static string FormatWindows(TimeZoneInfo timeZone)
+        {
+            return Format(timeZone.BaseUtcOffset, timeZone.DisplayName);
+        }
+
+        private static string Format(TimeSpan offset, string displayName)
+        {
+            return $"(UTC{(offset.TotalMinutes < 0 ? "-" : "+")}{offset.ToString("hh\\:mm")}) {displayName}";
         }
     }
 }
