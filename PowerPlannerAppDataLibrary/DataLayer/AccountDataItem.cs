@@ -178,6 +178,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private void UpdateIsInDifferentTimeZone()
         {
+            if (SchoolTimeZone == null)
+            {
+                _isInDifferentTimeZone = false;
+                return;
+            }
+
             DateTime now = DateTime.Now;
 
             if (SchoolTimeZone.GetUtcOffset(now) != TimeZoneInfo.Local.GetUtcOffset(now))
