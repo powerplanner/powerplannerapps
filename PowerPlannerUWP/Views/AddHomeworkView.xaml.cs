@@ -120,12 +120,22 @@ namespace PowerPlannerUWP.Views
             datePickerDate.Date = ViewModel.Date;
         }
 
-        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             // Clicking button doesn't take focus away from TextBasedTimePicker, so their edited value doesn't get committed...
-            // Therefore we have to take focus away, and then wait for the next UI cycle to commit changes
-            ButtonSave.Focus(FocusState.Programmatic);
-            await System.Threading.Tasks.Task.Delay(1);
+            // Therefore we have to take focus away, and wait for the focus to actually switch
+            if (ButtonSave.FocusState == FocusState.Unfocused)
+            {
+                RoutedEventHandler gotFocus = null;
+                gotFocus = delegate
+                {
+                    ButtonSave.GotFocus -= gotFocus;
+                    Save();
+                };
+                ButtonSave.GotFocus += gotFocus;
+                ButtonSave.Focus(FocusState.Programmatic);
+                return;
+            }
 
             Save();
         }
