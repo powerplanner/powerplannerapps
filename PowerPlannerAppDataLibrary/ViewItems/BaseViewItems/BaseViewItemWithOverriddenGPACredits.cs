@@ -81,6 +81,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             protected set { SetProperty(ref _overriddenCredits, value, nameof(OverriddenCredits), nameof(CreditsEarned), nameof(CreditsAffectingGpa)); }
         }
 
+        public bool HasGrades { get; set; }
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);

@@ -14,5 +14,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         double CreditsEarned { get; }
 
         double CreditsAffectingGpa { get; }
+
+        bool HasGrades { get; }
     }
 }

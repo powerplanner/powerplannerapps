@@ -251,6 +251,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             CalculatedCreditsEarned = answer.CreditsEarned;
             CalculatedCreditsAffectingGpa = answer.CreditsAffectingGpa;
             CalculatedGPA = answer.GPA;
+            HasGrades = answer.HasGrades;
         }
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)

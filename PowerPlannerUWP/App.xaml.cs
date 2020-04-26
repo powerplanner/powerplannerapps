@@ -733,6 +733,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2004, 24, 2, 99))
+                    {
+                        changedText += "\n - Classes that don't have any grades yet will no longer count towards overall GPA";
+                    }
+
                     if (v <= new Version(2003, 6, 1, 0))
                     {
                         changedText += "\n - Time zone support! If you're traveling, go to the settings page to set your school's time zone.";
