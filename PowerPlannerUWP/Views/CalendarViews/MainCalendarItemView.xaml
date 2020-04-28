@@ -13,6 +13,7 @@
 
     <Grid
         Background="{Binding Class.Color, Converter={StaticResource ColorToBrushConverter}, Mode=OneTime, FallbackValue={ThemeResource TaskOrEventBrush}}"
+        Opacity="{Binding IsComplete, Converter={StaticResource IsCompleteToOpacityConverter}, Mode=OneTime}"
         Margin="0,0,0,2"
         Tapped="Grid_Tapped"
         Height="29">
@@ -41,8 +42,7 @@
                 TextWrapping="NoWrap"
                 FontWeight="SemiBold"
                 FontSize="13"
-                Foreground="White"
-                Opacity="{Binding IsComplete, Converter={StaticResource IsCompleteToOpacityConverter}, Mode=OneTime}"/>
+                Foreground="White"/>
 
             <Rectangle
                 Fill="White"

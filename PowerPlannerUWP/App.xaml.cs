@@ -733,6 +733,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2004, 26, 1, 99))
+                    {
+                        changedText += "\n - Past completed items will no longer appear on the main calendar view to help focus on what's due";
+                    }
+
                     if (v <= new Version(2004, 24, 2, 99))
                     {
                         changedText += "\n - Classes that don't have any grades yet will no longer count towards overall GPA";

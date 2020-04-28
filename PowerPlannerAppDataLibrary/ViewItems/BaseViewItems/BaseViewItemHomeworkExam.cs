@@ -521,5 +521,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             }
             return null;
         }
+
+        /// <summary>
+        /// Returns true if the item is not past-completed.
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool IsActive(DateTime today);
     }
 }
