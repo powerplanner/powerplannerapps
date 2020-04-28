@@ -192,5 +192,10 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         {
             return base.CompareTo(other);
         }
+
+        public override bool IsActive(DateTime today)
+        {
+            return !IsComplete;
+        }
     }
 }
