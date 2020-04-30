@@ -86,6 +86,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
+using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Calendar;
+using PowerPlannerUWP.Views.CalendarViews;
 
 namespace PowerPlannerUWP
 {
@@ -197,7 +199,9 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
+
+                { typeof(PastItemsSurveyViewModel), typeof(PastItemsSurveyView) }
             };
         }
 
@@ -732,6 +736,12 @@ namespace PowerPlannerUWP
                     if (v < new Version(3, 0, 6, 0))
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
+
+                    if (v <= new Version(2004, 28, 1, 99))
+                    {
+                        // We'll initialize the survey, since we only want to show it to existing users and not new users
+                        Settings.TimesShowedCalendarPastCompletedSurvey = 0;
+                    }
 
                     if (v <= new Version(2004, 26, 1, 99))
                     {

@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
+using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Calendar;
 using PowerPlannerUWP.Views.CalendarViews;
 
 using PowerPlannerUWPLibrary;
@@ -198,6 +199,8 @@ namespace PowerPlannerUWP.Views
                     var fullView = new FullCalendarPageView();
                     fullView.Initialize(ViewModel);
                     Root.Child = fullView;
+
+                    PastItemsSurveyViewModel.ShowIfNeeded(ViewModel);
 
                     break;
 
