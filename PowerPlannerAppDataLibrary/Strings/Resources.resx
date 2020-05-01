@@ -1851,4 +1851,10 @@ Please think about using an online account instead!</value>
   <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
     <value>Saving changes will restart Power Planner so that the changes can be applied.</value>
   </data>
+  <data name="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="ShowPastCompleteItems.Text" xml:space="preserve">
+    <value>Show past complete items</value>
+  </data>
 </root>

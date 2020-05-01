@@ -733,9 +733,16 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
-                    if (v <= new Version(2004, 30, 1, 99) && v > new Version(2004, 26, 1, 99))
+                    if (v <= new Version(2004, 30, 1, 99))
                     {
-                        changedText += "\n - Past completed items are back! Public opinion has spoken :) I'll add an option to toggle showing them in a later update.";
+                        if (v > new Version(2004, 26, 1, 99))
+                        {
+                            changedText += "\n - Back by popular demand, you can now toggle showing past complete items on the calendar view! Use the filter button in the top right.";
+                        }
+                        else
+                        {
+                            changedText += "\n - You can now toggle showing past complete items on the calendar view! Use the filter button in the top right.";
+                        }
                     }
 
                     if (v <= new Version(2004, 26, 1, 99))

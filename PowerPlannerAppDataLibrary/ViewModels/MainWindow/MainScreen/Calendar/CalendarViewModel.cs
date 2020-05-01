@@ -61,6 +61,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 throw new NullReferenceException("MainScreenViewModel.CurrentAccount was null");
             }
+            _showPastCompleteItemsOnFullCalendar = acct.ShowPastCompleteItemsOnFullCalendar;
             FirstDayOfWeek = acct.WeekChangesOn;
 
             SemesterItemsViewGroup = SemesterItemsViewGroup.Load(localAccountId, semester);
@@ -69,6 +70,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         public DateTime Today { get; private set; } = DateTime.Today;
 
         public DayOfWeek FirstDayOfWeek { get; private set; }
+
+        private bool _showPastCompleteItemsOnFullCalendar = false;
+        public bool ShowPastCompleteItemsOnFullCalendar
+        {
+            get => _showPastCompleteItemsOnFullCalendar;
+            set
+            {
+                if (_showPastCompleteItemsOnFullCalendar == value)
+                {
+                    return;
+                }
+
+                _showPastCompleteItemsOnFullCalendar = value;
+                MainScreenViewModel.CurrentAccount.ShowPastCompleteItemsOnFullCalendar = value;
+                OnPropertyChanged(nameof(ShowPastCompleteItemsOnFullCalendar));
+                TelemetryExtension.Current?.TrackEvent("ToggledShowPastCompleteItems", new Dictionary<string, string>()
+                {
+                    { "Value", value.ToString() }
+                });
+
+                try
+                {
+                    _ = AccountsManager.Save(MainScreenViewModel.CurrentAccount);
+                }
+                catch { }
+            }
+        }
 
         private DateTime _selectedDate = NavigationManager.GetSelectedDate();
         public DateTime SelectedDate

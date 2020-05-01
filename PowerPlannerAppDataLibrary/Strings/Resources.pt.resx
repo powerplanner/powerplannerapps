@@ -1746,4 +1746,10 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
     <value>A economia de alterações reiniciará o Power Planner para que as alterações possam ser aplicadas.</value>
   </data>
+  <data name="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Filtrar</value>
+  </data>
+  <data name="ShowPastCompleteItems.Text" xml:space="preserve">
+    <value>Mostrar itens completos passados</value>
+  </data>
 </root>
