@@ -1754,4 +1754,22 @@
   <data name="ShowPastCompleteItems.Text" xml:space="preserve">
     <value>إظهار العناصر المكتملة السابقة</value>
   </data>
+  <data name="Settings_LanguageSettings_ComboBoxLanguageOption.Header" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="Settings_LanguageSettings_Description.Text" xml:space="preserve">
+    <value>بشكل افتراضي، يتم تحديد اللغة تلقائيًا بواسطة إعدادات لغة النظام. ومع ذلك، إذا كنت ترغب في استخدام Power Planner بلغة مختلفة عن لغة النظام، يمكنك تجاوز اللغة أدناه.</value>
+  </data>
+  <data name="Settings_LanguageSettings_Header.Text" xml:space="preserve">
+    <value>إعدادات اللغة</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Subtitle" xml:space="preserve">
+    <value>تغيير لغة العرض الحالية</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Title" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="Settings_LanguageSettings_AutomaticOptionDisplayName" xml:space="preserve">
+    <value>تلقائي (استنادًا إلى إعدادات لغة النظام)</value>
+  </data>
 </root>

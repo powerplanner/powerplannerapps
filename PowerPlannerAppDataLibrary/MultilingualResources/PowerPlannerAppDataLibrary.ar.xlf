@@ -2337,6 +2337,30 @@ Please think about using an online account instead!</source>
           <source>Show past complete items</source>
           <target state="final" state-qualifier="mt-suggestion">إظهار العناصر المكتملة السابقة</target>
         </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_ComboBoxLanguageOption.Header" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final" state-qualifier="tm-suggestion">اللغة</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_Description.Text" translate="yes" xml:space="preserve">
+          <source>By default, the language is automatically determined by your system's language settings. However, if you'd like to use Power Planner in a different language than your system language, you can override the language below.</source>
+          <target state="final" state-qualifier="mt-suggestion">بشكل افتراضي، يتم تحديد اللغة تلقائيًا بواسطة إعدادات لغة النظام. ومع ذلك، إذا كنت ترغب في استخدام Power Planner بلغة مختلفة عن لغة النظام، يمكنك تجاوز اللغة أدناه.</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_Header.Text" translate="yes" xml:space="preserve">
+          <source>LANGUAGE SETTINGS</source>
+          <target state="final" state-qualifier="mt-suggestion">إعدادات اللغة</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LanguageItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Change the current display language</source>
+          <target state="final" state-qualifier="mt-suggestion">تغيير لغة العرض الحالية</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LanguageItem.Title" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final" state-qualifier="tm-suggestion">اللغة</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_AutomaticOptionDisplayName" translate="yes" xml:space="preserve">
+          <source>Automatic (based on system language settings)</source>
+          <target state="final" state-qualifier="mt-suggestion">تلقائي (استنادًا إلى إعدادات لغة النظام)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

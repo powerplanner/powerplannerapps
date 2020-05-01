@@ -112,6 +112,12 @@
                 Visibility="{Binding IsSchoolTimeZoneVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <settingsviews:MainSettingsItem
+                x:Name="ButtonLanguageSettings"
+                x:Uid="Settings_MainPage_LanguageItem"
+                Symbol="Character"
+                Click="ButtonLanguageSettings_Click"/>
+
+            <settingsviews:MainSettingsItem
                 x:Name="ButtonContribute"
                 x:Uid="Settings_MainPage_ContributeItem"
                 Symbol="World"

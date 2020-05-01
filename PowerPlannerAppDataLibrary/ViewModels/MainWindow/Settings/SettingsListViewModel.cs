@@ -224,5 +224,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             _pagedViewModel.Navigate(new SchoolTimeZoneSettingsViewModel(_pagedViewModel));
         }
+
+        public void OpenLanguageSettings()
+        {
+            _pagedViewModel.Navigate(new LanguageSettingsViewModel(_pagedViewModel));
+        }
     }
 }

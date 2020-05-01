@@ -197,7 +197,8 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
+                { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }
 
@@ -732,6 +733,11 @@ namespace PowerPlannerUWP
                     if (v < new Version(3, 0, 6, 0))
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
+
+                    if (v <= new Version(2005, 1, 2, 99))
+                    {
+                        changedText += "\n - Language setting added to allow overriding system selected language!";
+                    }
 
                     if (v <= new Version(2004, 30, 1, 99))
                     {

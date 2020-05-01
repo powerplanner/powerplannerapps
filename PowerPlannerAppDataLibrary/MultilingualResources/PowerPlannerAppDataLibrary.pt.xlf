@@ -2335,6 +2335,30 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Show past complete items</source>
           <target state="final" state-qualifier="mt-suggestion">Mostrar itens completos passados</target>
         </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_ComboBoxLanguageOption.Header" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final" state-qualifier="tm-suggestion">Idioma</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_Description.Text" translate="yes" xml:space="preserve">
+          <source>By default, the language is automatically determined by your system's language settings. However, if you'd like to use Power Planner in a different language than your system language, you can override the language below.</source>
+          <target state="final" state-qualifier="mt-suggestion">Por padrão, o idioma é automaticamente determinado pelas configurações de idioma do seu sistema. No entanto, se você quiser usar o Power Planner em um idioma diferente do idioma do sistema, você pode substituir o idioma abaixo.</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_Header.Text" translate="yes" xml:space="preserve">
+          <source>LANGUAGE SETTINGS</source>
+          <target state="final" state-qualifier="mt-suggestion">CONFIGURAÇÕES DO IDIOMA</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LanguageItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Change the current display language</source>
+          <target state="final" state-qualifier="mt-suggestion">Alterar o idioma de exibição atual</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LanguageItem.Title" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final" state-qualifier="tm-suggestion">Idioma</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_AutomaticOptionDisplayName" translate="yes" xml:space="preserve">
+          <source>Automatic (based on system language settings)</source>
+          <target state="final" state-qualifier="mt-suggestion">Automático (baseado nas configurações do idioma do sistema)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

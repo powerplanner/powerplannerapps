@@ -189,5 +189,10 @@ namespace PowerPlannerUWP.Views
         {
             ViewModel.OpenSchoolTimeZone();
         }
+
+        private void ButtonLanguageSettings_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OpenLanguageSettings();
+        }
     }
 }

@@ -1857,4 +1857,22 @@ Please think about using an online account instead!</value>
   <data name="ShowPastCompleteItems.Text" xml:space="preserve">
     <value>Show past complete items</value>
   </data>
+  <data name="Settings_LanguageSettings_AutomaticOptionDisplayName" xml:space="preserve">
+    <value>Automatic (based on system language settings)</value>
+  </data>
+  <data name="Settings_LanguageSettings_ComboBoxLanguageOption.Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_LanguageSettings_Description.Text" xml:space="preserve">
+    <value>By default, the language is automatically determined by your system's language settings. However, if you'd like to use Power Planner in a different language than your system language, you can override the language below.</value>
+  </data>
+  <data name="Settings_LanguageSettings_Header.Text" xml:space="preserve">
+    <value>LANGUAGE SETTINGS</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Subtitle" xml:space="preserve">
+    <value>Change the current display language</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Title" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>

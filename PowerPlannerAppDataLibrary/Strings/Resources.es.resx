@@ -1752,4 +1752,22 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="ShowPastCompleteItems.Text" xml:space="preserve">
     <value>Mostrar elementos completos anteriores</value>
   </data>
+  <data name="Settings_LanguageSettings_ComboBoxLanguageOption.Header" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Settings_LanguageSettings_Description.Text" xml:space="preserve">
+    <value>De forma predeterminada, el idioma se determina automáticamente mediante la configuración de idioma del sistema. Sin embargo, si quieres usar Power Planner en un idioma diferente al del idioma del sistema, puedes anular el idioma siguiente.</value>
+  </data>
+  <data name="Settings_LanguageSettings_Header.Text" xml:space="preserve">
+    <value>CONFIGURACIÓN DE IDIOMA</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Subtitle" xml:space="preserve">
+    <value>Cambiar el idioma de visualización actual</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Title" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Settings_LanguageSettings_AutomaticOptionDisplayName" xml:space="preserve">
+    <value>Automático (basado en la configuración del idioma del sistema)</value>
+  </data>
 </root>
