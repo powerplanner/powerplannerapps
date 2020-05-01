@@ -84,7 +84,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string AVERAGE_IMAGE_BLOB_SAVE_SPEED_IN_BYTES_PER_SECOND = "AverageImageBlobSaveSpeedInBytesPerSecond";
         private const string AVERAGE_IMAGE_UPLOAD_SPEED_IN_BYTES_PER_SECOND = "AverageImageUploadSpeedInBytesPerSecond";
         private const string HAS_SHOWN_PROMO_CONTRIBUTE = "HasShownPromoContribute";
-        private const string TIMES_SHOWN_CALENDAR_PAST_COMPLETED_SURVEY = "TimesShownCalendarPastCompletedSurvey";
         private const string OWNS_IN_APP_PURCHASE = "OwnsInAppPurchase";
 
         #endregion
@@ -180,15 +179,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
                     AppSettings.Remove(HAS_SHOWN_PROMO_CONTRIBUTE);
                 }
             }
-        }
-
-        /// <summary>
-        /// For the calendar survey about past completed items
-        /// </summary>
-        public static int TimesShowedCalendarPastCompletedSurvey
-        {
-            get => AppSettings.GetValueOrDefault(TIMES_SHOWN_CALENDAR_PAST_COMPLETED_SURVEY, -1);
-            set => AppSettings.AddOrUpdateValue(TIMES_SHOWN_CALENDAR_PAST_COMPLETED_SURVEY, value);
         }
 
         public static bool WasUpdatedByBackgroundTask
