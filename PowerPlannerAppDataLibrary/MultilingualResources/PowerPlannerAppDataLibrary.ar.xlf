@@ -2329,6 +2329,14 @@ Please think about using an online account instead!</source>
           <source>Saving changes will restart Power Planner so that the changes can be applied.</source>
           <target state="final" state-qualifier="mt-suggestion">سيؤدي حفظ التغييرات إلى إعادة تشغيل مخطط الطاقة بحيث يمكن تطبيق التغييرات.</target>
         </trans-unit>
+        <trans-unit id="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Filter</source>
+          <target state="final" state-qualifier="tm-suggestion">عامل تصفية</target>
+        </trans-unit>
+        <trans-unit id="ShowPastCompleteItems.Text" translate="yes" xml:space="preserve">
+          <source>Show past complete items</source>
+          <target state="final" state-qualifier="mt-suggestion">إظهار العناصر المكتملة السابقة</target>
+        </trans-unit>
       </group>
     </body>
   </file>

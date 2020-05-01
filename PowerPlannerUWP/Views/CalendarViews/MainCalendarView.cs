@@ -79,7 +79,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
         protected override TCalendarGrid GenerateCalendarGrid(DateTime displayMonth)
         {
-            var grid = new MainCalendarGrid(this, displayMonth, IsMouseOver, ViewModel.SemesterItemsViewGroup.Items);
+            var grid = new MainCalendarGrid(this, displayMonth, IsMouseOver, ViewModel.SemesterItemsViewGroup.Items, ViewModel);
             grid.OnRequestChangeItemDate += Grid_OnRequestChangeItemDate;
             return grid;
         }

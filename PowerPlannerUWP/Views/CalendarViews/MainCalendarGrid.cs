@@ -16,6 +16,7 @@ using InterfacesUWP.ArrowButtonFolder;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.PPEventArgs;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 
 namespace PowerPlannerUWP.Views.CalendarViews
 {
@@ -28,6 +29,8 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
         private MyObservableList<BaseViewItemHomeworkExamGrade> _allItems;
 
+        public CalendarViewModel ViewModel { get; private set; }
+
         public override bool AutoInitialize
         {
             get
@@ -36,10 +39,11 @@ namespace PowerPlannerUWP.Views.CalendarViews
             }
         }
 
-        public MainCalendarGrid(TCalendarView calendarView, DateTime displayMonth, bool isMouseOver, MyObservableList<BaseViewItemHomeworkExamGrade> allItems)
+        public MainCalendarGrid(TCalendarView calendarView, DateTime displayMonth, bool isMouseOver, MyObservableList<BaseViewItemHomeworkExamGrade> allItems, CalendarViewModel viewModel)
             : base(calendarView, displayMonth)
         {
             _allItems = allItems;
+            ViewModel = viewModel;
 
             base.Initialize();
             

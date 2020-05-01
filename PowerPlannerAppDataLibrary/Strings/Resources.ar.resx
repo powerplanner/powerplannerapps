@@ -1748,4 +1748,10 @@
   <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
     <value>سيؤدي حفظ التغييرات إلى إعادة تشغيل مخطط الطاقة بحيث يمكن تطبيق التغييرات.</value>
   </data>
+  <data name="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>عامل تصفية</value>
+  </data>
+  <data name="ShowPastCompleteItems.Text" xml:space="preserve">
+    <value>إظهار العناصر المكتملة السابقة</value>
+  </data>
 </root>

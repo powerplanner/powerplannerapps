@@ -39,6 +39,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             try
             {
                 _viewModel = viewModel;
+                DataContext = viewModel;
 
                 _calendar = new MainCalendarView(viewModel); // This object handles loading items when month changes
 
@@ -116,6 +117,11 @@ namespace PowerPlannerUWP.Views.CalendarViews
         public DateTime DisplayMonth
         {
             get { return _calendar.DisplayMonth; }
+        }
+
+        private void buttonFilter_Click(object sender, RoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(buttonFilter);
         }
     }
 }

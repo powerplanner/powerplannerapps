@@ -1746,4 +1746,10 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
     <value>Durch das Speichern von Änderungen wird Power Planner neu gestartet, damit die Änderungen angewendet werden können.</value>
   </data>
+  <data name="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Filtern</value>
+  </data>
+  <data name="ShowPastCompleteItems.Text" xml:space="preserve">
+    <value>Vergangene vollständige Elemente anzeigen</value>
+  </data>
 </root>

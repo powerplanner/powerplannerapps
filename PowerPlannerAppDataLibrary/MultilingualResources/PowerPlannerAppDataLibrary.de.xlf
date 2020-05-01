@@ -2328,6 +2328,14 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Saving changes will restart Power Planner so that the changes can be applied.</source>
           <target state="final" state-qualifier="mt-suggestion">Durch das Speichern von Änderungen wird Power Planner neu gestartet, damit die Änderungen angewendet werden können.</target>
         </trans-unit>
+        <trans-unit id="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Filter</source>
+          <target state="final" state-qualifier="tm-suggestion">Filtern</target>
+        </trans-unit>
+        <trans-unit id="ShowPastCompleteItems.Text" translate="yes" xml:space="preserve">
+          <source>Show past complete items</source>
+          <target state="final" state-qualifier="mt-suggestion">Vergangene vollständige Elemente anzeigen</target>
+        </trans-unit>
       </group>
     </body>
   </file>

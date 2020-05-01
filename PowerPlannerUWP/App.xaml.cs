@@ -86,8 +86,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
-using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Calendar;
-using PowerPlannerUWP.Views.CalendarViews;
 
 namespace PowerPlannerUWP
 {
@@ -199,9 +197,7 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
-
-                { typeof(PastItemsSurveyViewModel), typeof(PastItemsSurveyView) }
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
             };
         }
 
@@ -737,10 +733,16 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
-                    if (v <= new Version(2004, 28, 1, 99))
+                    if (v <= new Version(2004, 30, 1, 99))
                     {
-                        // We'll initialize the survey, since we only want to show it to existing users and not new users
-                        Settings.TimesShowedCalendarPastCompletedSurvey = 0;
+                        if (v > new Version(2004, 26, 1, 99))
+                        {
+                            changedText += "\n - Back by popular demand, you can now toggle showing past complete items on the calendar view! Use the filter button in the top right.";
+                        }
+                        else
+                        {
+                            changedText += "\n - You can now toggle showing past complete items on the calendar view! Use the filter button in the top right.";
+                        }
                     }
 
                     if (v <= new Version(2004, 26, 1, 99))

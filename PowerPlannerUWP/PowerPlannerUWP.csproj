@@ -162,7 +162,6 @@
     <Compile Include="DataTemplateSelectors\ScheduleAllDayItemTemplateSelector.cs" />
     <Compile Include="MenuButtons\CancelAndDelete.cs" />
     <Compile Include="MenuButtons\CancelAndDeleteBlue.cs" />
-    <Compile Include="ViewModel\MainWindow\MainScreen\Calendar\PastItemsSurveyViewModel.cs" />
     <Compile Include="ViewModel\MainWindow\MainScreen\Schedule\ExportSchedulePopupViewModel.cs" />
     <Compile Include="ViewModel\Promos\PromoOtherPlatformsViewModel.cs" />
     <Compile Include="ViewModel\Settings\ClassTilesPagedHostViewModel.cs" />
@@ -186,9 +185,6 @@
     </Compile>
     <Compile Include="Views\CalendarMainView.xaml.cs">
       <DependentUpon>CalendarMainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CalendarViews\PastItemsSurveyView.xaml.cs">
-      <DependentUpon>PastItemsSurveyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
@@ -622,10 +618,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CalendarMainView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CalendarViews\PastItemsSurveyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
