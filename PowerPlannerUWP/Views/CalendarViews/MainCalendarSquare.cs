@@ -40,7 +40,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             AllowDrop = true;
             DragOver += MainCalendarSquare_DragOver;
             Drop += MainCalendarSquare_Drop;
-            _itemsControl.ItemsSource = HomeworksOnDay.Get(allItems, date, DateTime.Today, activeOnly: true);
+            _itemsControl.ItemsSource = HomeworksOnDay.Get(allItems, date);
             _holidays = HolidaysOnDay.Create(allItems, date);
             _holidays.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(delegate { UpdateIsHoliday(); }).Handler;
             UpdateIsHoliday();
