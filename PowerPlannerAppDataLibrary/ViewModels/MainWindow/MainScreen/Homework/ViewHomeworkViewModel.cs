@@ -29,6 +29,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         private ViewHomeworkViewModel(BaseViewModel parent) : base(parent)
         {
+            BareMvvm.Core.Snackbar.BareSnackbar.Show("Task opened", "Undo", () => { });
         }
 
         public override string GetPageName()

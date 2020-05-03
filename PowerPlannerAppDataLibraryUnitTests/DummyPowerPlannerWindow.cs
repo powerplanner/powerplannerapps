@@ -1,4 +1,5 @@
-﻿using BareMvvm.Core.Windows;
+﻿using BareMvvm.Core.Snackbar;
+using BareMvvm.Core.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,8 @@ namespace PowerPlannerAppDataLibraryUnitTests
 {
     public class DummyPowerPlannerWindow : INativeAppWindow
     {
+        public IBareSnackbarManager SnackbarManager => null;
+
         public event EventHandler<CancelEventArgs> BackPressed;
 
         public void Register(PortableAppWindow portableWindow)
