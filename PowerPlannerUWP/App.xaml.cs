@@ -737,6 +737,7 @@ namespace PowerPlannerUWP
                     if (v <= new Version(2005, 1, 2, 99))
                     {
                         changedText += "\n - Language setting added to allow overriding system selected language!";
+                        changedText += "\n - Fixed hyperlink detection bug with upper case characters";
                     }
 
                     if (v <= new Version(2004, 30, 1, 99))
@@ -747,13 +748,8 @@ namespace PowerPlannerUWP
                         }
                         else
                         {
-                            changedText += "\n - You can now toggle showing past complete items on the calendar view! Use the filter button in the top right.";
+                            changedText += "\n - Past complete items hidden from calendar by default. You can now toggle showing past complete items by using the filter button in the top right.";
                         }
-                    }
-
-                    if (v <= new Version(2004, 26, 1, 99))
-                    {
-                        changedText += "\n - Past completed items will no longer appear on the main calendar view to help focus on what's due";
                     }
 
                     if (v <= new Version(2004, 24, 2, 99))
