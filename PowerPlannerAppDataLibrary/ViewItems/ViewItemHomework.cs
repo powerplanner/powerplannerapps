@@ -113,7 +113,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             switch (GetActualTimeOption())
             {
                 case DataItemMegaItem.TimeOptions.AllDay:
-                    return ", " + PowerPlannerResources.GetString("TimeOption_EndOfDay").ToLower();
+                    {
+                        if (Account.IsInDifferentTimeZone)
+                        {
+                            return ", " + PowerPlannerResources.GetStringAsLowercaseWithParameters("String_AtX", DateTimeFormatterExtension.Current.FormatAsShortTime(Date));
+                        }
+
+                        return ", " + PowerPlannerResources.GetString("TimeOption_EndOfDay").ToLower();
+                    }
 
                 case DataItemMegaItem.TimeOptions.BeforeClass:
                     return ", " + PowerPlannerResources.GetString("TimeOption_BeforeClass").ToLower();
@@ -166,6 +173,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         public int CompareTo(ViewItemHomework other)
         {
             return base.CompareTo(other);
+        }
+
+        public override bool IsActive(DateTime today)
+        {
+            return !IsComplete || Date >= today;
         }
     }
 }

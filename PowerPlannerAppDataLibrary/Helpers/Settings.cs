@@ -267,7 +267,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             private const string MAIN_MENU_SELECTION = "NavManager_MainMenuSelection";
             private const string CLASS_SELECTION = "NavManager_ClassSelection";
-            private const string TASKS_VIEW_SELECTION = "NavManager_TasksViewSelection";
 
             static NavigationManagerSettings()
             {
@@ -283,15 +282,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
                         return;
 
                     AppSettings.AddOrUpdateEnum(MAIN_MENU_SELECTION, value);
-                }
-            }
-
-            public static MainMenuSelections TasksViewSelection
-            {
-                get { return AppSettings.GetEnumOrDefault<MainMenuSelections>(TASKS_VIEW_SELECTION, MainMenuSelections.Calendar); }
-                set
-                {
-                    AppSettings.AddOrUpdateEnum(TASKS_VIEW_SELECTION, value);
                 }
             }
 

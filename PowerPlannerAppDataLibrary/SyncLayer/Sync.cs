@@ -777,6 +777,18 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         accountChanged = true;
                     }
 
+                    if (response.Settings.SchoolTimeZone != null)
+                    {
+                        if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(response.Settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
+                        {
+                            if (!serverSchoolTimeZone.Equals(account.SchoolTimeZone))
+                            {
+                                account.SchoolTimeZone = serverSchoolTimeZone;
+                                accountChanged = true;
+                            }
+                        }
+                    }
+
                     // For now we'll just return the semester ID and on initial login the login task can apply it
                     // since we don't handle this dynamically changing while the app is already loaded.
                     answer.SelectedSemesterId = response.Settings.SelectedSemesterId;
@@ -1338,7 +1350,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
         {
             GpaOption,
             WeekOneStartsOn,
-            SelectedSemesterId
+            SelectedSemesterId,
+            SchoolTimeZone
         }
 
         public static System.Threading.Tasks.Task SyncSettings(AccountDataItem account)
@@ -1346,7 +1359,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             return SyncSettings(account,
                 ChangedSetting.GpaOption |
                 ChangedSetting.WeekOneStartsOn |
-                ChangedSetting.SelectedSemesterId);
+                ChangedSetting.SelectedSemesterId |
+                ChangedSetting.SchoolTimeZone);
         }
 
         private static SyncSettingsMultiWorkerQueue _syncSettingsMultiWorkerQueue = new SyncSettingsMultiWorkerQueue();
@@ -1384,6 +1398,17 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     {
                         settings.SelectedSemesterId = account.CurrentSemesterId;
                     }
+                    if (changedSettings.HasFlag(ChangedSetting.SchoolTimeZone) && account.SchoolTimeZone != null)
+                    {
+                        if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
+                        {
+                            settings.SchoolTimeZone = account.SchoolTimeZone.Id;
+                        }
+                        else if (TimeZoneConverter.TZConvert.TryWindowsToIana(account.SchoolTimeZone.Id, out string iana))
+                        {
+                            settings.SchoolTimeZone = iana;
+                        }
+                    }
 
                     try
                     {
@@ -1393,8 +1418,6 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         };
 
                         SyncSettingsResponse response = await account.PostAuthenticatedAsync<SyncSettingsRequest, SyncSettingsResponse>(Website.URL + "syncsettingsmodern", request);
-
-                        await System.Threading.Tasks.Task.Delay(9000);
 
                         if (response == null)
                             return;

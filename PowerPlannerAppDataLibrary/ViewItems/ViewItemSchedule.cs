@@ -40,11 +40,25 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set { SetProperty(ref _startTime, value, "StartTime"); }
         }
 
+        private DateTime _startTimeInSchoolTime;
+        public DateTime StartTimeInSchoolTime
+        {
+            get => _startTimeInSchoolTime;
+            set => SetProperty(ref _startTimeInSchoolTime, value, nameof(StartTimeInSchoolTime));
+        }
+
         private DateTime _endTime;
         public DateTime EndTime
         {
             get { return _endTime; }
             set { SetProperty(ref _endTime, value, "EndTime"); }
+        }
+
+        private DateTime _endTimeInSchoolTime;
+        public DateTime EndTimeInSchoolTime
+        {
+            get => _endTimeInSchoolTime;
+            set => SetProperty(ref _endTimeInSchoolTime, value, nameof(EndTimeInSchoolTime));
         }
 
         private string _room;
@@ -68,8 +82,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             DataItemSchedule schedule = (DataItemSchedule)dataItem;
 
             DayOfWeek = schedule.DayOfWeek;
-            StartTime = DateTime.SpecifyKind(schedule.StartTime, DateTimeKind.Local);
-            EndTime = DateTime.SpecifyKind(schedule.EndTime, DateTimeKind.Local);
+
+            StartTime = ToViewItemTime(schedule.StartTime);
+            StartTimeInSchoolTime = ToViewItemSchoolTime(schedule.StartTime);
+
+            EndTime = ToViewItemTime(schedule.EndTime);
+            EndTimeInSchoolTime = ToViewItemSchoolTime(schedule.EndTime);
+
             Room = schedule.Room;
             ScheduleWeek = schedule.ScheduleWeek;
         }

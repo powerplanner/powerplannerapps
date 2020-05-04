@@ -123,7 +123,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     newWeights.Add(new EditingWeightCategoryViewModel()
                     {
-                        Name = "All Grades",
+                        Name = PowerPlannerResources.GetString("WeightCategory_AllGrades"),
                         Weight = 100
                     });
                 }

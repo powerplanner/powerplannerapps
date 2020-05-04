@@ -12,8 +12,8 @@ namespace PowerPlannerAppDataLibrary
     {
 #if DEBUG
         public static readonly string URL = "https://powerplanner.net/api/";
-        //public static readonly string URL = "http://powerplannerapp-staging.azurewebsites.net/api/";
-        //public static readonly string URL = "http://localhost:55458/api/";
+        //public static readonly string URL = "https://powerplannerwebsite-staging.azurewebsites.net/api/";
+        //public static readonly string URL = "http://localhost:51266/api/";
 #else
         public static readonly string URL = "https://powerplanner.net/api/";
 #endif

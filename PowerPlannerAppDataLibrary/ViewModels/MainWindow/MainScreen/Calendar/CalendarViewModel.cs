@@ -21,10 +21,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
     public class CalendarViewModel : BaseMainScreenViewModelChild
     {
+        private static DisplayStates _lastDisplayState;
+        private static DateTime _initialSelectedDate;
+
+        public static void SetInitialDisplayState(DisplayStates displayState, DateTime selectedDate)
+        {
+            _lastDisplayState = displayState;
+            _initialSelectedDate = selectedDate;
+        }
+
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; private set; }
 
         public CalendarViewModel(BaseViewModel parent, Guid localAccountId, ViewItemSemester semester) : base(parent)
         {
+            // iOS uses this to show the day when day before notification is clicked
+            if (_initialSelectedDate != DateTime.MinValue)
+            {
+                NavigationManager.SetSelectedDate(_initialSelectedDate);
+                NavigationManager.SetDisplayMonth(_initialSelectedDate);
+                _selectedDate = NavigationManager.GetSelectedDate();
+                _displayMonth = NavigationManager.GetDisplayMonth();
+                _initialSelectedDate = DateTime.MinValue;
+            }
+
             Initialize(localAccountId, semester);
         }
 
@@ -42,6 +61,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 throw new NullReferenceException("MainScreenViewModel.CurrentAccount was null");
             }
+            _showPastCompleteItemsOnFullCalendar = acct.ShowPastCompleteItemsOnFullCalendar;
             FirstDayOfWeek = acct.WeekChangesOn;
 
             SemesterItemsViewGroup = SemesterItemsViewGroup.Load(localAccountId, semester);
@@ -50,6 +70,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         public DateTime Today { get; private set; } = DateTime.Today;
 
         public DayOfWeek FirstDayOfWeek { get; private set; }
+
+        private bool _showPastCompleteItemsOnFullCalendar = false;
+        public bool ShowPastCompleteItemsOnFullCalendar
+        {
+            get => _showPastCompleteItemsOnFullCalendar;
+            set
+            {
+                if (_showPastCompleteItemsOnFullCalendar == value)
+                {
+                    return;
+                }
+
+                _showPastCompleteItemsOnFullCalendar = value;
+                MainScreenViewModel.CurrentAccount.ShowPastCompleteItemsOnFullCalendar = value;
+                OnPropertyChanged(nameof(ShowPastCompleteItemsOnFullCalendar));
+                TelemetryExtension.Current?.TrackEvent("ToggledShowPastCompleteItems", new Dictionary<string, string>()
+                {
+                    { "Value", value.ToString() }
+                });
+
+                try
+                {
+                    _ = AccountsManager.Save(MainScreenViewModel.CurrentAccount);
+                }
+                catch { }
+            }
+        }
 
         private DateTime _selectedDate = NavigationManager.GetSelectedDate();
         public DateTime SelectedDate
@@ -61,6 +108,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     return;
 
                 SetProperty(ref _selectedDate, value.Date, nameof(SelectedDate)); NavigationManager.SetSelectedDate(value);
+
+                if (DisplayState == DisplayStates.CompactCalendar)
+                {
+                    DisplayState = DisplayStates.Day;
+                }
             }
         }
 
@@ -79,6 +131,114 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 SetProperty(ref _displayMonth, value, nameof(DisplayMonth));
                 NavigationManager.SetDisplayMonth(value);
+            }
+        }
+
+        public enum ViewSizeStates
+        {
+            /// <summary>
+            /// Split calendar/day can be displayed
+            /// </summary>
+            Compact,
+
+            /// <summary>
+            /// Only calendar (or day) can be displayed
+            /// </summary>
+            FullyCompact
+        }
+
+        private ViewSizeStates _viewSizeState;
+        /// <summary>
+        /// Only used in iOS right now. The view should set this based on the view's size.
+        /// </summary>
+        public ViewSizeStates ViewSizeState
+        {
+            get => _viewSizeState;
+            set
+            {
+                if (_viewSizeState != value)
+                {
+                    _viewSizeState = value;
+
+                    switch (value)
+                    {
+                        case ViewSizeStates.Compact:
+                            DisplayState = DisplayStates.Split;
+                            break;
+
+                        case ViewSizeStates.FullyCompact:
+                            if (DisplayState == DisplayStates.Split)
+                            {
+                                DisplayState = DisplayStates.CompactCalendar;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        public enum DisplayStates
+        {
+            /// <summary>
+            /// Display the split calendar/day.
+            /// </summary>
+            Split,
+
+            /// <summary>
+            /// Only display the day, along with a back button to return to calendar.
+            /// </summary>
+            Day,
+
+            /// <summary>
+            /// Only display the compact calendar.
+            /// </summary>
+            CompactCalendar
+        }
+
+        // Use previous selected display state from before
+        private DisplayStates _displayState = _lastDisplayState;
+
+        /// <summary>
+        /// Only used in iOS right now. The view should listen and display according to this property.
+        /// </summary>
+        public DisplayStates DisplayState
+        {
+            get => _displayState;
+            private set
+            {
+                // Remember the selected display state
+                _lastDisplayState = value;
+
+                SetProperty(ref _displayState, value, nameof(DisplayState));
+            }
+        }
+
+        public void ExpandDay()
+        {
+            if (ViewSizeState == ViewSizeStates.Compact)
+            {
+                DisplayState = DisplayStates.Day;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void BackToCalendar()
+        {
+            switch (ViewSizeState)
+            {
+                case ViewSizeStates.Compact:
+                    DisplayState = DisplayStates.Split;
+                    break;
+
+                case ViewSizeStates.FullyCompact:
+                    DisplayState = DisplayStates.CompactCalendar;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
             }
         }
 
@@ -189,6 +349,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public void OpenDay(DateTime date)
         {
+            if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
+            {
+                throw new InvalidOperationException("If using unified calendar/day tab, you should set SelectedDate on the CalendarViewModel instead.");
+            }
+
             NavigationManager.SetSelectedDate(date.Date);
             MainScreenViewModel.SetContent(new DayViewModel(MainScreenViewModel, MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester), preserveBack: true);
         }

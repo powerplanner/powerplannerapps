@@ -30,6 +30,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         protected override bool InitialAllowLightDismissValue => false;
 
+        /// <summary>
+        /// View should initialize this to false if end times will be managed by the view
+        /// </summary>
+        public bool AutoAdjustEndTimes { get; set; } = true;
+
         private ItemType _type;
         public ItemType Type
         {
@@ -123,6 +128,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public AddParameter AddParams { get; private set; }
         public EditParameter EditParams { get; private set; }
+
+        public bool IsInDifferentTimeZone { get; private set; }
 
         private AddHomeworkViewModel(BaseViewModel parent) : base(parent)
         {
@@ -243,6 +250,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 IsClassPickerVisible = !addParams.HideClassPicker,
                 IsWeightCategoryPickerVisible = true,
                 ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(),
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c // Assign class last, since it also assigns weight categories, and updates time options from remembered times
             };
         }
@@ -256,7 +264,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public static AddHomeworkViewModel CreateForEdit(BaseViewModel parent, EditParameter editParams)
         {
-            AccountDataItem account = parent.FindAncestor<MainWindowViewModel>()?.CurrentAccount;
+            var account = parent.FindAncestor<MainWindowViewModel>()?.CurrentAccount;
             if (account == null)
             {
                 throw new NullReferenceException("CurrentAccount was null");
@@ -310,10 +318,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                 EditParams = editParams,
                 Name = editParams.Item.Name,
                 Classes = GetClassesWithNoClassClass(c.Semester.Classes),
-                Date = editParams.Item.Date.Date,
+                Date = editParams.Item.DateInSchoolTime.Date,
                 Details = editParams.Item.Details,
                 Type = type,
                 ImageNames = editParams.Item.ImageNames.ToArray(),
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c // Assign class last, since it also assigns weight categories
             };
 
@@ -331,8 +340,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     break;
 
                 case DataItemMegaItem.TimeOptions.Custom:
-                    model._startTime = new TimeSpan(editParams.Item.Date.Hour, editParams.Item.Date.Minute, 0);
-                    model._endTime = editParams.Item.EndTime.TimeOfDay;
+                    model._startTime = new TimeSpan(editParams.Item.DateInSchoolTime.Hour, editParams.Item.DateInSchoolTime.Minute, 0);
+                    model._endTime = editParams.Item.EndTimeInSchoolTime.TimeOfDay;
                     model.SelectedTimeOption = model.TimeOption_Custom;
                     break;
 
@@ -555,23 +564,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
 
         public bool IsClassPickerVisible { get; private set; } = true;
 
-        public bool IsDatePickerVisible { get { return true; } }
+        public bool IsDatePickerVisible => true;
 
-        public bool IsStartTimePickerVisible
-        {
-            get { return SelectedTimeOption == TimeOption_Custom; }
-        }
+        public bool IsStartTimePickerVisible => SelectedTimeOption == TimeOption_Custom;
+
+        public bool IsEndTimePickerVisible => IsStartTimePickerVisible && Type == ItemType.Exam;
+
 
         private bool _isWeightCategoryPickerVisible = true;
         public bool IsWeightCategoryPickerVisible
         {
             get { return _isWeightCategoryPickerVisible; }
             private set { SetProperty(ref _isWeightCategoryPickerVisible, value, nameof(IsWeightCategoryPickerVisible)); }
-        }
-
-        public bool IsEndTimePickerVisible
-        {
-            get { return IsStartTimePickerVisible && Type != ItemType.Homework; }
         }
 
         private bool _userChangedTimeOptions;
@@ -584,28 +588,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             set
             {
                 if (!_programmaticallyChangingTimeOptions)
-                {
                     _userChangedTimeOptions = true;
-                }
 
-                if (value == _startTime)
-                    return;
-
-                if (value.TotalHours > 24)
-                    value = TimeSpan.FromHours(24);
-
-                TimeSpan diff = EndTime - StartTime;
-
-                SetProperty(ref _startTime, value, nameof(StartTime));
-
-                if (Type == ItemType.Exam)
+                if (AutoAdjustEndTimes)
                 {
-                    var desiredEndTime = StartTime + diff;
-                    if (desiredEndTime.TotalHours > 24)
-                        desiredEndTime = new TimeSpan(23, 59, 0);
+                    // If this was an exam, then it has an end time, so, in that case, automatically adjust the end time, maintaining the task as the same size it was before.
+                    var diff = EndTime - StartTime;
+                    SetProperty(ref _startTime, value, nameof(StartTime));
 
-                    _endTime = desiredEndTime;
-                    OnPropertyChanged(nameof(EndTime));
+                    if (Type == ItemType.Exam)
+                    {
+                        var desiredEndTime = StartTime + diff;
+                        if (desiredEndTime.TotalHours > 24)
+                            desiredEndTime = new TimeSpan(23, 59, 0);
+
+                        _endTime = desiredEndTime;
+                        OnPropertyChanged(nameof(EndTime));
+                    }
+                }
+                else
+                {
+                    SetProperty(ref _startTime, value, nameof(StartTime));
                 }
             }
         }
@@ -617,27 +620,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
             set
             {
                 if (!_programmaticallyChangingTimeOptions)
-                {
                     _userChangedSelectedTimeOption = true;
-                }
 
-                if (value == _endTime)
-                    return;
-
-                if (value.TotalHours > 24)
-                    value = TimeSpan.FromHours(24);
-
-                TimeSpan diff = StartTime - EndTime;
-
-                SetProperty(ref _endTime, value, nameof(EndTime));
-
-                if (EndTime < StartTime)
+                if (AutoAdjustEndTimes)
                 {
-                    _startTime = EndTime + diff;
-                    if (_startTime.TotalHours < 0)
-                        _startTime = TimeSpan.FromHours(0);
+                    // If the EndTime is less than the StartTime, then push the StartTime back by the difference between the two.
+                    // So, if the EndTime is 10:30 and the StartTime is 10:40, the StartTime will become 10:20.
+                    var diff = StartTime - EndTime;
+                    SetProperty(ref _endTime, value, nameof(EndTime));
 
-                    OnPropertyChanged(nameof(StartTime));
+                    if (EndTime < StartTime)
+                    {
+                        _startTime = EndTime + diff;
+                        if (_startTime.TotalHours < 0)
+                            _startTime = TimeSpan.FromHours(0);
+                        OnPropertyChanged(nameof(StartTime));
+                    }
+                }
+                else
+                {
+                    SetProperty(ref _endTime, value, nameof(EndTime));
                 }
             }
         }
@@ -884,6 +886,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     return;
                 }
 
+                if (IsEndTimePickerVisible && EndTime <= StartTime)
+                {
+                    new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_LowEndTime.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
+                    return;
+                }
+
                 List<DataItemMegaItem> bulkEntry = null;
 
                 if (Repeats && IsRepeatingEntryEnabled)
@@ -989,6 +997,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework
                     // Non-critical code
                     try
                     {
+                        // Perfect time to ask for permission to send notifications
+                        RemindersExtension.Current?.RequestReminderPermission();
+
                         NavigationManager.SetPreviousAddItemClass(dataItem.UpperIdentifier);
 
                         if (!Class.IsNoClassClass)

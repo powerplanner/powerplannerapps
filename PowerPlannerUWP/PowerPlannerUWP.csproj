@@ -118,9 +118,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="App\PowerPlannerUwpApp.cs" />
+    <Compile Include="Controls\AbTestControl.cs" />
+    <Compile Include="Controls\TimePickers\EndTimePicker.cs" />
+    <Compile Include="Controls\TimePickers\EnhancedTimePicker.cs" />
     <Compile Include="Controls\ImageAttachmentControl.cs" />
     <Compile Include="Controls\RecurrenceControl.xaml.cs">
       <DependentUpon>RecurrenceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TimePickers\TextBasedTimePicker.xaml.cs">
+      <DependentUpon>TextBasedTimePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
@@ -249,7 +255,7 @@
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\NothingHerePage.xaml.cs">
+    <Compile Include="Views\NothingHerePage.xaml.cs">
       <DependentUpon>NothingHerePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SaveGradeScaleView.xaml.cs">
@@ -309,6 +315,9 @@
     <Compile Include="Views\SettingsViews\ImageUploadOptionsView.xaml.cs">
       <DependentUpon>ImageUploadOptionsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsViews\LanguageSettingsView.xaml.cs">
+      <DependentUpon>LanguageSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsViews\MainTileView.xaml.cs">
       <DependentUpon>MainTileView.xaml</DependentUpon>
     </Compile>
@@ -332,6 +341,9 @@
     </Compile>
     <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml.cs">
       <DependentUpon>SuccessfullyCreatedAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml.cs">
+      <DependentUpon>SchoolTimeZoneSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml.cs">
       <DependentUpon>TwoWeekScheduleSettingsView.xaml</DependentUpon>
@@ -588,6 +600,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TimePickers\TextBasedTimePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddClassView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -700,7 +716,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\NothingHerePage.xaml">
+    <Page Include="Views\NothingHerePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -780,6 +796,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SettingsViews\LanguageSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsViews\MainTileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -811,6 +831,10 @@
     <Page Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml">
       <SubType>Designer</SubType>

@@ -15,6 +15,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             public double GPA;
             public double CreditsAffectingGpa;
             public double CreditsEarned;
+            public bool HasGrades;
         }
 
         public static Answer Calculate(IEnumerable<IGPACredits> lowerItems)
@@ -29,6 +30,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             bool usingCredits = false;
             bool isGradesActive = false;
 
+            bool hasGrades = false;
+
             foreach (IGPACredits g in lowerItems)
             {
                 // If no credits
@@ -42,9 +45,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
                         default:
                             {
-                                gradePointsNone += g.GPA;
-                                count++;
-                                isGradesActive = true;
+                                // Only include if it has grades
+                                if (g.HasGrades)
+                                {
+                                    gradePointsNone += g.GPA;
+                                    count++;
+                                    isGradesActive = true;
+                                    hasGrades = true;
+                                }
                             }
                             break;
                     }
@@ -55,11 +63,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 {
                     usingCredits = true;
 
-                    // This works for both pass/fail classes and normal classes
+                    // This works for both pass/fail classes and normal classes, and classes that don't have grades
                     creditsEarned += g.CreditsEarned;
                     creditsAffectingGpa += g.CreditsAffectingGpa;
                     gradePoints += g.GPA * g.CreditsAffectingGpa;
                     isGradesActive = true;
+
+                    if (g.HasGrades)
+                    {
+                        hasGrades = true;
+                    }
                 }
             }
 
@@ -93,6 +106,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 answer.CreditsAffectingGpa = -1;
                 answer.CreditsEarned = -1;
             }
+
+            answer.HasGrades = hasGrades;
 
             return answer;
         }

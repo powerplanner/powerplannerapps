@@ -24,6 +24,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerUWP.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -89,8 +91,10 @@ namespace PowerPlannerUWP.Views
 
         public override void OnViewModelSetOverride()
         {
-            TimePickerStartTime.Header = GetStartTimeText();
-            TimePickerEndTime.Header = LocalizedResources.GetString("String_EndTime");
+            ViewModel.AutoAdjustEndTimes = false;
+
+            StartTimePicker.Header = GetStartTimeText();
+            EndTimePicker.Header = LocalizedResources.GetString("String_EndTime");
             ComboBoxTimeOptions.Header = LocalizedResources.GetString("String_Time");
 
             ViewModel.PropertyChanged += new WeakEventHandler<System.ComponentModel.PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
@@ -118,6 +122,21 @@ namespace PowerPlannerUWP.Views
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            // Clicking button doesn't take focus away from TextBasedTimePicker, so their edited value doesn't get committed...
+            // Therefore we have to take focus away, and wait for the focus to actually switch
+            if (ButtonSave.FocusState == FocusState.Unfocused)
+            {
+                RoutedEventHandler gotFocus = null;
+                gotFocus = delegate
+                {
+                    ButtonSave.GotFocus -= gotFocus;
+                    Save();
+                };
+                ButtonSave.GotFocus += gotFocus;
+                ButtonSave.Focus(FocusState.Programmatic);
+                return;
+            }
+
             Save();
         }
 

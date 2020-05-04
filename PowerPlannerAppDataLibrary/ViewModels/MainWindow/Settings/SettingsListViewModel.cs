@@ -101,6 +101,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public bool IsTwoWeekScheduleVisible => HasAccount;
 
+        public bool IsSchoolTimeZoneVisible => HasAccount;
+
         public void OpenMyAccount()
         {
             _pagedViewModel.Navigate(MyAccountViewModel.Load(_pagedViewModel));
@@ -216,6 +218,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+        }
+
+        public void OpenSchoolTimeZone()
+        {
+            _pagedViewModel.Navigate(new SchoolTimeZoneSettingsViewModel(_pagedViewModel));
+        }
+
+        public void OpenLanguageSettings()
+        {
+            _pagedViewModel.Navigate(new LanguageSettingsViewModel(_pagedViewModel));
         }
     }
 }

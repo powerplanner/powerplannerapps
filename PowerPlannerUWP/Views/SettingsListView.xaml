@@ -73,7 +73,7 @@
             <settingsviews:MainSettingsItem
                 x:Name="ButtonReminders"
                 x:Uid="Settings_MainPage_RemindersItem"
-                Symbol="Clock"
+                Symbol="Volume"
                 Click="ButtonReminders_Click"
                 Visibility="{Binding IsRemindersVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
@@ -103,6 +103,19 @@
                 Symbol="CalendarWeek"
                 Click="ButtonTwoWeekSchedule_Click"
                 Visibility="{Binding IsTwoWeekScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+            <settingsviews:MainSettingsItem
+                x:Name="ButtonSchoolTimeZone"
+                x:Uid="Settings_MainPage_SchoolTimeZoneItem"
+                Symbol="Clock"
+                Click="ButtonSchoolTimeZone_Click"
+                Visibility="{Binding IsSchoolTimeZoneVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+            <settingsviews:MainSettingsItem
+                x:Name="ButtonLanguageSettings"
+                x:Uid="Settings_MainPage_LanguageItem"
+                Symbol="Character"
+                Click="ButtonLanguageSettings_Click"/>
 
             <settingsviews:MainSettingsItem
                 x:Name="ButtonContribute"

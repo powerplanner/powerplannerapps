@@ -251,6 +251,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             CalculatedCreditsEarned = answer.CreditsEarned;
             CalculatedCreditsAffectingGpa = answer.CreditsAffectingGpa;
             CalculatedGPA = answer.GPA;
+            HasGrades = answer.HasGrades;
         }
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
@@ -259,6 +260,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
             DataItemSemester i = dataItem as DataItemSemester;
 
+            // We don't localize to time zone since these are just raw dates
             Start = DateTime.SpecifyKind(i.Start, DateTimeKind.Local);
             End = DateTime.SpecifyKind(i.End, DateTimeKind.Local);
         }

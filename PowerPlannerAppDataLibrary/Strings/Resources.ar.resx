@@ -1700,4 +1700,76 @@
   <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
     <value>الدروس والاسئله الشائعة</value>
   </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Content" xml:space="preserve">
+    <value>وقت البدء الذي أدخلته غير صالح! يمكنك كتابة '(ساعة) :(دقيقة)' أو '(ساعة) :(دقيقة) (صباحاً/مساءً)" أو '(ساعة) ح (دقيقة)م'.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Title" xml:space="preserve">
+    <value>وقت البدء غير صالح</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Content" xml:space="preserve">
+    <value>وقت الانتهاء الذي أدخلته غير صالح! يمكنك كتابة '(ساعة) :(دقيقة)'، '(ساعة) :(دقيقة) (صباحاً/مساءً)'، '(ساعة) ح (دقيقة)م'. بالإضافة إلى ذلك ، يمكنك أيضًا إضافة علامة "+" إلى البداية من أجل جعل وقت الانتهاء مبلغًا نسبيًا بعد وقت البدء (على سبيل المثال + 50m)</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Title" xml:space="preserve">
+    <value>وقت الانتهاء غير صالح</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" xml:space="preserve">
+    <value>يجب تحديد يوم واحد على الأقل من الأسبوع. إذا كنت تريد حذف هذه المرة، استخدم خيار الحذف في القائمة.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" xml:space="preserve">
+    <value>لا يوجد يوم من الأسابيع</value>
+  </data>
+  <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
+    <value>يجب أن يكون وقت الانتهاء أكبر من وقت البدء.</value>
+  </data>
+  <data name="WeightCategory_AllGrades" xml:space="preserve">
+    <value>جميع الدرجات</value>
+  </data>
+  <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
+    <value>أنت حالياً في منطقة زمنية مختلفة عن المنطقة الزمنية لمدرستك. يتم عرض هذه القيم في المنطقة الزمنية للمدرسة. إذا قالت المدرسة 9 صباحا، ببساطة أدخل 9 صباحا.</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+    <value>تعيين المنطقة الزمنية لمدرستك</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+    <value>المنطقة الزمنية</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
+    <value>حفظ التغييرات</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" xml:space="preserve">
+    <value>المنطقة الزمنية للمدرسة</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Description.Text" xml:space="preserve">
+    <value>إذا كنت مسافرًا وتحتاج إلى رؤية أوقات تتعلق بالمنطقة الزمنية الحالية، يمكنك تحديد المنطقة الزمنية لمدرستك. يجب تعيين المنطقة الزمنية أدناه إلى المنطقة الزمنية حيث تذهب إلى المدرسة، بغض النظر عن ما هي المنطقة الزمنية الحالية الخاصة بك.</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Header.Text" xml:space="preserve">
+    <value>المنطقة الزمنية للمدرسة</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
+    <value>سيؤدي حفظ التغييرات إلى إعادة تشغيل مخطط الطاقة بحيث يمكن تطبيق التغييرات.</value>
+  </data>
+  <data name="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>عامل تصفية</value>
+  </data>
+  <data name="ShowPastCompleteItems.Text" xml:space="preserve">
+    <value>إظهار العناصر المكتملة السابقة</value>
+  </data>
+  <data name="Settings_LanguageSettings_ComboBoxLanguageOption.Header" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="Settings_LanguageSettings_Description.Text" xml:space="preserve">
+    <value>بشكل افتراضي، يتم تحديد اللغة تلقائيًا بواسطة إعدادات لغة النظام. ومع ذلك، إذا كنت ترغب في استخدام Power Planner بلغة مختلفة عن لغة النظام، يمكنك تجاوز اللغة أدناه.</value>
+  </data>
+  <data name="Settings_LanguageSettings_Header.Text" xml:space="preserve">
+    <value>إعدادات اللغة</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Subtitle" xml:space="preserve">
+    <value>تغيير لغة العرض الحالية</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Title" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="Settings_LanguageSettings_AutomaticOptionDisplayName" xml:space="preserve">
+    <value>تلقائي (استنادًا إلى إعدادات لغة النظام)</value>
+  </data>
 </root>

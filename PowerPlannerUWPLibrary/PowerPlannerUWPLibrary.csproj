@@ -104,6 +104,7 @@
     <Compile Include="Extensions\UWPDateTimeFormatterExtension.cs" />
     <Compile Include="Extensions\UWPImagePickerExtension.cs" />
     <Compile Include="Extensions\UWPInAppPurchaseExtension.cs" />
+    <Compile Include="Extensions\UWPLanguageExtension.cs" />
     <Compile Include="Extensions\UWPLocalizationExtension.cs" />
     <Compile Include="Extensions\UWPNetworkInfoExtension.cs" />
     <Compile Include="Extensions\UWPPushExtension.cs" />

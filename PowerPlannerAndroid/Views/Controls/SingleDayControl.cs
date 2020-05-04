@@ -215,7 +215,7 @@ namespace PowerPlannerAndroid.Views.Controls
             else if (date.Date == DateTime.Today.AddDays(-1))
                 return PowerPlannerResources.GetRelativeDateYesterday().ToUpper();
 
-            return date.ToString("dddd, MMM d").ToUpper();
+            return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date).ToUpper();
         }
     }
 }

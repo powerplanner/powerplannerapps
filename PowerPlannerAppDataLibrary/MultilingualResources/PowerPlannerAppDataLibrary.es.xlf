@@ -2263,6 +2263,102 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Tutorials and FAQ</source>
           <target state="final" state-qualifier="mt-suggestion">Tutoriales y preguntas frecuentes</target>
         </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Content" translate="yes" xml:space="preserve">
+          <source>The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</source>
+          <target state="final" state-qualifier="mt-suggestion">¡La hora de inicio que ha introducido no es válida! Puede escribir '(hour):(minute)', '(hour):(minute) (AM/PM)' o '(hour)h(minute)m'.</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Title" translate="yes" xml:space="preserve">
+          <source>Invalid Start Time</source>
+          <target state="final" state-qualifier="mt-suggestion">Hora de inicio no válida</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidEndTime.Content" translate="yes" xml:space="preserve">
+          <source>The end time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. In addition to that, you can also add a "+" sign to the beginning in order to make the end time a relative amount after the start time (e.g. +50m)</source>
+          <target state="final" state-qualifier="mt-suggestion">¡La hora de finalización que ha introducido no es válida! Puede escribir '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. Además de eso, también puede agregar un signo "+" al principio con el fin de hacer que la hora de finalización una cantidad relativa después de la hora de inicio (por ejemplo, +50m)</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidEndTime.Title" translate="yes" xml:space="preserve">
+          <source>Invalid End Time</source>
+          <target state="final" state-qualifier="tm-suggestion">Hora de finalización no válida</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" translate="yes" xml:space="preserve">
+          <source>You must select at least one day of week. If you want to delete this time, use the delete option in the menu.</source>
+          <target state="final" state-qualifier="mt-suggestion">Debe seleccionar al menos un día de la semana. Si desea eliminar esta vez, utilice la opción de eliminación en el menú.</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" translate="yes" xml:space="preserve">
+          <source>No day of weeks</source>
+          <target state="final" state-qualifier="mt-suggestion">No hay día de semanas</target>
+        </trans-unit>
+        <trans-unit id="EditingClassScheduleItemView_LowEndTime.Content" translate="yes" xml:space="preserve">
+          <source>Your end time must be greater than your start time.</source>
+          <target state="final" state-qualifier="mt-suggestion">La hora de finalización debe ser mayor que la hora de inicio.</target>
+        </trans-unit>
+        <trans-unit id="WeightCategory_AllGrades" translate="yes" xml:space="preserve">
+          <source>All grades</source>
+          <target state="final">Todos los notas</target>
+        </trans-unit>
+        <trans-unit id="DifferentTimeZoneWarning.Text" translate="yes" xml:space="preserve">
+          <source>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
+          <target state="final" state-qualifier="mt-suggestion">Actualmente se encuentra en una zona horaria diferente a la zona horaria de su escuela. Estos valores se muestran en la zona horaria de su escuela. Si la escuela dijo 9 AM, simplemente ingrese a las 9 AM.</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Set your school's time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">Establezca la zona horaria de su escuela</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Title" translate="yes" xml:space="preserve">
+          <source>Time zone</source>
+          <target state="final" state-qualifier="tm-suggestion">Zona horaria</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_ButtonSave.Content" translate="yes" xml:space="preserve">
+          <source>Save changes</source>
+          <target state="final" state-qualifier="tm-suggestion">Guardar cambios</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" translate="yes" xml:space="preserve">
+          <source>School's time zone</source>
+          <target state="final" state-qualifier="mt-suggestion">Zona horaria de la escuela</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_Description.Text" translate="yes" xml:space="preserve">
+          <source>If you're traveling and need to see times relative to your current time zone, you can specify your school's time zone. You should set the below time zone to the time zone of where you attend school, regardless of what your current time zone is.</source>
+          <target state="final" state-qualifier="mt-suggestion">Si viaja y necesita ver los horarios relativos a su zona horaria actual, puede especificar la zona horaria de su escuela. Debe establecer la siguiente zona horaria en la zona horaria en la que asiste a la escuela, independientemente de cuál sea su zona horaria actual.</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_Header.Text" translate="yes" xml:space="preserve">
+          <source>SCHOOL'S TIME ZONE</source>
+          <target state="final" state-qualifier="mt-suggestion">ZONA HORARIA ESCOLAR</target>
+        </trans-unit>
+        <trans-unit id="Settings_SchoolTimeZone_RestartNote.Text" translate="yes" xml:space="preserve">
+          <source>Saving changes will restart Power Planner so that the changes can be applied.</source>
+          <target state="final" state-qualifier="mt-suggestion">Guardar los cambios se reiniciará Power Planner para que se puedan aplicar los cambios.</target>
+        </trans-unit>
+        <trans-unit id="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Filter</source>
+          <target state="final" state-qualifier="tm-suggestion">Filter</target>
+        </trans-unit>
+        <trans-unit id="ShowPastCompleteItems.Text" translate="yes" xml:space="preserve">
+          <source>Show past complete items</source>
+          <target state="final" state-qualifier="mt-suggestion">Mostrar elementos completos anteriores</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_ComboBoxLanguageOption.Header" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final" state-qualifier="tm-suggestion">Idioma</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_Description.Text" translate="yes" xml:space="preserve">
+          <source>By default, the language is automatically determined by your system's language settings. However, if you'd like to use Power Planner in a different language than your system language, you can override the language below.</source>
+          <target state="final" state-qualifier="mt-suggestion">De forma predeterminada, el idioma se determina automáticamente mediante la configuración de idioma del sistema. Sin embargo, si quieres usar Power Planner en un idioma diferente al del idioma del sistema, puedes anular el idioma siguiente.</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_Header.Text" translate="yes" xml:space="preserve">
+          <source>LANGUAGE SETTINGS</source>
+          <target state="final" state-qualifier="mt-suggestion">CONFIGURACIÓN DE IDIOMA</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LanguageItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Change the current display language</source>
+          <target state="final" state-qualifier="mt-suggestion">Cambiar el idioma de visualización actual</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_LanguageItem.Title" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="final" state-qualifier="tm-suggestion">Idioma</target>
+        </trans-unit>
+        <trans-unit id="Settings_LanguageSettings_AutomaticOptionDisplayName" translate="yes" xml:space="preserve">
+          <source>Automatic (based on system language settings)</source>
+          <target state="final" state-qualifier="mt-suggestion">Automático (basado en la configuración del idioma del sistema)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

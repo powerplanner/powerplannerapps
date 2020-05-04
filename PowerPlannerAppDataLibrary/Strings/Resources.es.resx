@@ -1698,4 +1698,76 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
     <value>Tutoriales y preguntas frecuentes</value>
   </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Content" xml:space="preserve">
+    <value>¡La hora de inicio que ha introducido no es válida! Puede escribir '(hour):(minute)', '(hour):(minute) (AM/PM)' o '(hour)h(minute)m'.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidStartTime.Title" xml:space="preserve">
+    <value>Hora de inicio no válida</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Content" xml:space="preserve">
+    <value>¡La hora de finalización que ha introducido no es válida! Puede escribir '(hour):(minute)', '(hour):(minute) (AM/PM)', '(hour)h(minute)m'. Además de eso, también puede agregar un signo "+" al principio con el fin de hacer que la hora de finalización una cantidad relativa después de la hora de inicio (por ejemplo, +50m)</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidEndTime.Title" xml:space="preserve">
+    <value>Hora de finalización no válida</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Content" xml:space="preserve">
+    <value>Debe seleccionar al menos un día de la semana. Si desea eliminar esta vez, utilice la opción de eliminación en el menú.</value>
+  </data>
+  <data name="EditingClassScheduleItemView_InvalidDaysOfWeek.Title" xml:space="preserve">
+    <value>No hay día de semanas</value>
+  </data>
+  <data name="EditingClassScheduleItemView_LowEndTime.Content" xml:space="preserve">
+    <value>La hora de finalización debe ser mayor que la hora de inicio.</value>
+  </data>
+  <data name="WeightCategory_AllGrades" xml:space="preserve">
+    <value>Todos los notas</value>
+  </data>
+  <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
+    <value>Actualmente se encuentra en una zona horaria diferente a la zona horaria de su escuela. Estos valores se muestran en la zona horaria de su escuela. Si la escuela dijo 9 AM, simplemente ingrese a las 9 AM.</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+    <value>Establezca la zona horaria de su escuela</value>
+  </data>
+  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+    <value>Zona horaria</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
+    <value>Guardar cambios</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_ComboBoxTimeZone.Header" xml:space="preserve">
+    <value>Zona horaria de la escuela</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Description.Text" xml:space="preserve">
+    <value>Si viaja y necesita ver los horarios relativos a su zona horaria actual, puede especificar la zona horaria de su escuela. Debe establecer la siguiente zona horaria en la zona horaria en la que asiste a la escuela, independientemente de cuál sea su zona horaria actual.</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_Header.Text" xml:space="preserve">
+    <value>ZONA HORARIA ESCOLAR</value>
+  </data>
+  <data name="Settings_SchoolTimeZone_RestartNote.Text" xml:space="preserve">
+    <value>Guardar los cambios se reiniciará Power Planner para que se puedan aplicar los cambios.</value>
+  </data>
+  <data name="Calendar_FullCalendarFilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="ShowPastCompleteItems.Text" xml:space="preserve">
+    <value>Mostrar elementos completos anteriores</value>
+  </data>
+  <data name="Settings_LanguageSettings_ComboBoxLanguageOption.Header" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Settings_LanguageSettings_Description.Text" xml:space="preserve">
+    <value>De forma predeterminada, el idioma se determina automáticamente mediante la configuración de idioma del sistema. Sin embargo, si quieres usar Power Planner en un idioma diferente al del idioma del sistema, puedes anular el idioma siguiente.</value>
+  </data>
+  <data name="Settings_LanguageSettings_Header.Text" xml:space="preserve">
+    <value>CONFIGURACIÓN DE IDIOMA</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Subtitle" xml:space="preserve">
+    <value>Cambiar el idioma de visualización actual</value>
+  </data>
+  <data name="Settings_MainPage_LanguageItem.Title" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Settings_LanguageSettings_AutomaticOptionDisplayName" xml:space="preserve">
+    <value>Automático (basado en la configuración del idioma del sistema)</value>
+  </data>
 </root>

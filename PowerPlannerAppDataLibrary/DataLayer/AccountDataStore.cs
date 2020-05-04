@@ -1977,13 +1977,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             
             c.SetGradeScales(GradeScale.GenerateDefaultScaleWithoutLetters());
 
-            DataItemWeightCategory weight = new DataItemWeightCategory()
-            {
-                Identifier = Guid.NewGuid(),
-                Name = "All Grades",
-                WeightValue = 100,
-                UpperIdentifier = c.Identifier
-            };
+            DataItemWeightCategory weight = CreateDefaultWeightCategory(c.Identifier);
 
             return new BaseDataItem[] { c, weight };
         }
@@ -1993,7 +1987,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return new DataItemWeightCategory()
             {
                 Identifier = Guid.NewGuid(),
-                Name = "All Grades",
+                Name = PowerPlannerResources.GetString("WeightCategory_AllGrades"),
                 WeightValue = 100,
                 UpperIdentifier = classIdentifier
             };

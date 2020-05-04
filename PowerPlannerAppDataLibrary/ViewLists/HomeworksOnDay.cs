@@ -11,45 +11,112 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 {
     public class HomeworksOnDay : MyObservableList<BaseViewItemHomeworkExamGrade>
     {
-        private class DayFilter : IFilter<BaseViewItemHomeworkExamGrade>
+        public class DayFilter : IFilter<BaseViewItemHomeworkExamGrade>
         {
             public DateTime Date { get; private set; }
+            public DateTime Today { get; private set; }
+            public bool ActiveOnly { get; private set; }
 
-            public DayFilter(DateTime date)
+            public DayFilter(DateTime date, DateTime today, bool activeOnly)
             {
                 Date = date.Date;
+                Today = today.Date;
+                ActiveOnly = activeOnly;
             }
 
             public bool ShouldInsert(BaseViewItemHomeworkExamGrade itemToBeInserted)
             {
-                return (itemToBeInserted is ViewItemHomework || itemToBeInserted is ViewItemExam)
-                    && itemToBeInserted.Date.Date == Date;
+                if ((itemToBeInserted is ViewItemHomework || itemToBeInserted is ViewItemExam)
+                    && itemToBeInserted.Date.Date == Date)
+                {
+                    if (ActiveOnly)
+                    {
+                        if ((itemToBeInserted as BaseViewItemHomeworkExam).IsActive(Today))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            public bool Equals(DateTime otherDate, DateTime otherToday, bool otherActiveOnly)
+            {
+                if (Date != otherDate)
+                {
+                    return false;
+                }
+
+                if (ActiveOnly)
+                {
+                    if (!otherActiveOnly)
+                    {
+                        return false;
+                    }
+
+                    if (Today != otherToday)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    if (otherActiveOnly)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
             }
         }
 
-        public DateTime Date { get; private set; }
         public MyObservableList<BaseViewItemHomeworkExamGrade> MainList { get; private set; }
 
-        private HomeworksOnDay(MyObservableList<BaseViewItemHomeworkExamGrade> mainList, DateTime date)
+        public new DayFilter Filter
         {
-            Date = date.Date;
+            get => base.Filter as DayFilter;
+            set => base.Filter = value;
+        }
+
+        private HomeworksOnDay(MyObservableList<BaseViewItemHomeworkExamGrade> mainList, DateTime date, DateTime today, bool activeOnly)
+        {
             MainList = mainList;
 
-            base.Filter = new DayFilter(date);
+            base.Filter = new DayFilter(date, today, activeOnly);
 
             base.InsertSorted(mainList);
         }
 
         private static readonly List<WeakReference<HomeworksOnDay>> _cached = new List<WeakReference<HomeworksOnDay>>();
 
-        public static HomeworksOnDay Get(MyObservableList<BaseViewItemHomeworkExamGrade> mainList, DateTime date)
+        public static HomeworksOnDay Get(MyObservableList<BaseViewItemHomeworkExamGrade> mainList, DateTime date, DateTime? today = null, bool activeOnly = false)
         {
+            if (today == null)
+            {
+                today = DateTime.Today;
+            }
+
             HomeworksOnDay answer;
             for (int i = 0; i < _cached.Count; i++)
             {
                 if (_cached[i].TryGetTarget(out answer))
                 {
-                    if (answer.Date == date.Date && answer.MainList == mainList)
+                    if (answer.MainList == mainList
+                        && answer.Filter.Equals(date, today.Value, activeOnly))
                     {
                         return answer;
                     }
@@ -61,7 +128,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
             }
 
-            answer = new HomeworksOnDay(mainList, date);
+            answer = new HomeworksOnDay(mainList, date, today.Value, activeOnly);
             _cached.Add(new WeakReference<HomeworksOnDay>(answer));
             return answer;
         }
