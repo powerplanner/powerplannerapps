@@ -274,7 +274,7 @@ namespace PowerPlannerAndroid.Views
                         Visibility = ViewStates.Gone
                     };
                     _selectedRectangleView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.CalendarSelectedDayBorder);
-                    ViewCompat.SetBackgroundTintList(_selectedRectangleView, new ColorStateList(new int[][] { new int[0] }, new int[] { new Color(46, 54, 109) }));
+                    ViewCompat.SetBackgroundTintList(_selectedRectangleView, new ColorStateList(new int[][] { new int[0] }, new int[] { ColorTools.GetColor(this.Context, Resource.Color.accent) }));
                     this.AddView(_selectedRectangleView);
 
                     this.Click += MyCalendarDayView_Click;

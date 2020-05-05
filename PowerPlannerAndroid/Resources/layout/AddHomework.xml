@@ -119,7 +119,7 @@
 
     <FrameLayout
       android:id="@+id/RecurrenceControlContainer"
-      android:background="#F1F1F1"
+      android:background="@color/controlBackground"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="12dp"

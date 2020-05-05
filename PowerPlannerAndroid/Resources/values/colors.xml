@@ -13,5 +13,14 @@
   <color name="calendarBackgroundThisMonth">#f0f0f0</color>
   <color name="calendarBackgroundOther">#e4e4e4</color>
   <color name="calendarTextToday">#ffffff</color>
+
+  <!--Background color of controls like schedule snapshot-->
+  <color name="controlBackground">#F0F0F0</color>
+
+  <!--Color for transparency overlays like floating action button background-->
+  <color name="transparentBackground">#CCFFFFFF</color>
+  
+  <!--Full black (or white in dark theme)-->
+  <color name="foregroundFull">#000000</color>
     
 </resources>

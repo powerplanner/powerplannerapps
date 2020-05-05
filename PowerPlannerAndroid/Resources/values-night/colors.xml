@@ -5,7 +5,7 @@
   <color name="primary">#2E366D</color>
 
   <!--Used when floating action button is pressed-->
-  <color name="primaryLight">#ff0000</color>
+  <color name="primaryLight">#1F2656</color>
 
   <!--Same as light theme. Bottom app bar background, top system status bar background (notifications area)-->
   <color name="primaryDark">#1F2656</color>
@@ -20,5 +20,14 @@
   <color name="calendarBackgroundThisMonth">#191919</color>
   <color name="calendarBackgroundOther">#1E1E1E</color>
   <color name="calendarTextToday">#ffffff</color>
+
+  <!--Background color of controls like schedule snapshot-->
+  <color name="controlBackground">#1E1E1E</color>
+
+  <!--Color for transparency overlays like floating action button background-->
+  <color name="transparentBackground">#CC000000</color>
+  
+  <!--Full black (or white in dark theme)-->
+  <color name="foregroundFull">#ffffff</color>
     
 </resources>

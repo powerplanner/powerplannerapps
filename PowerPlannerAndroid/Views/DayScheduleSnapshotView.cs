@@ -55,7 +55,7 @@ namespace PowerPlannerAndroid.Views
 
         public DayScheduleSnapshotView(Context context) : base(context)
         {
-            this.Background = new ColorDrawable(Color.Argb(255, 240, 240, 240));
+            this.SetBackgroundResource(Resource.Color.controlBackground);
             this.Orientation = Orientation.Vertical;
 
             TimeIndicatorSize = ThemeHelper.AsPx(context, TIME_INDICATOR_SIZE);
