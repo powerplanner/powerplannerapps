@@ -10,25 +10,30 @@
     </style>
 
     <style name="AddItemButton" parent="BorderlessButton">
-        <item name="android:drawableLeft">@android:drawable/ic_input_add</item>
+        <item name="icon">@android:drawable/ic_input_add</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:drawableTint">@color/accent</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingRight">4dp</item>
+        <item name="iconTint">@color/accent</item>
         <item name="android:textColor">@color/accent</item>
     </style>
 
-  <style name="AddItemButtonTopLevel" parent="AddItemButton">
-    <item name="android:background">#E9E9E9</item>
-  </style>
-
-    <style name="AddYearButton" parent="AddItemButton">
-        <item name="android:background">#E9E9E9</item>
+    <style name="AddItemButtonContained" parent="Widget.MaterialComponents.Button.Icon">
+      <item name="icon">@android:drawable/ic_input_add</item>
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="backgroundTint">@color/yearBackground</item>
+      <item name="android:textColor">@color/accent</item>
+      <item name="iconTint">@color/accent</item>
     </style>
 
-    <style name="AddSemesterButton" parent="AddItemButton">
-        <item name="android:background">#F5F5F5</item>
+  <style name="AddItemButtonTopLevel" parent="AddItemButtonContained">
+  </style>
+
+    <style name="AddYearButton" parent="AddItemButtonContained">
+    </style>
+
+    <style name="AddSemesterButton" parent="AddItemButtonContained">
+        <item name="backgroundTint">@color/semesterBackground</item>
     </style>
 
     <style name="ActionBar">
@@ -91,8 +96,8 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
-    <style name="BorderlessButton" parent="Widget.AppCompat.Button.Borderless">
-        
+    <style name="BorderlessButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/accent</item>
     </style>
 
     <style name="FullWidthBorderlessButton" parent="BorderlessButton">

@@ -22,5 +22,8 @@
   
   <!--Full black (or white in dark theme)-->
   <color name="foregroundFull">#000000</color>
+
+  <color name="yearBackground">#E9E9E9</color>
+  <color name="semesterBackground">#F5F5F5</color>
     
 </resources>
