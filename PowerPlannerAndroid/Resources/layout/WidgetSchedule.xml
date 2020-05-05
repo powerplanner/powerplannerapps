@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  android:background="#FFFFFF">
+  android:background="@color/widgetBackground">
 
   <LinearLayout
     android:id="@+id/WidgetScheduleHeader"
@@ -56,7 +56,7 @@
     android:layout_height="wrap_content"
     android:text="Loading..."
     android:gravity="center"
-    android:textColor="#666666"
+    android:textColor="@color/widgetTextColorSecondary"
     android:paddingTop="3dp"
     android:visibility="gone"/>
   

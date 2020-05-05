@@ -36,5 +36,9 @@
   <color name="semesterBackground">#F5F5F5</color>
   
   <color name="scheduleSnapshotDividers">#FFFFFF</color>
+
+  <color name="widgetBackground">#FFFFFF</color>
+  <color name="widgetTextColorPrimary">#000000</color>
+  <color name="widgetTextColorSecondary">#666666</color>
     
 </resources>
