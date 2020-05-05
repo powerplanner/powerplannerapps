@@ -13,6 +13,7 @@ using Android.Widget;
 using InterfacesDroid.Themes;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using InterfacesDroid.Helpers;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
@@ -47,7 +48,8 @@ namespace PowerPlannerAndroid.Views.Controls
                     icon.SetImageDrawable(iconDrawable);
                     if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
                     {
-                        icon.ImageTintList = new Android.Content.Res.ColorStateList(new int[][] { new int[0] }, new int[] { new Color(46, 54, 109) });
+                        icon.ImageTintList = new Android.Content.Res.ColorStateList(new int[][] { new int[0] }, new int[] {
+                            ColorTools.IsInNightMode(this.Context) ? new Color(84, 107, 199) : new Color(46, 54, 109) });
                     }
                 }
 

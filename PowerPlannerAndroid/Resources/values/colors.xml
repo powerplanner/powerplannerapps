@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
-    <color name="primary">#2E366D</color>
-    <color name="primaryLight">#546BC7</color>
-    <color name="primaryDark">#1F2656</color>
+  <color name="primary">#2E366D</color>
+  <color name="primaryLight">#546BC7</color>
+  <color name="primaryDark">#1F2656</color>
 
-    <color name="accent">#2E366D</color>
+  <color name="accent">#2E366D</color>
 
-    <color name="iconBackground">#546BC7</color>
+  <color name="iconBackground">#546BC7</color>
+
+  <color name="calendarBackgroundToday">#757575</color>
+  <color name="calendarBackgroundThisMonth">#f0f0f0</color>
+  <color name="calendarBackgroundOther">#e4e4e4</color>
+  <color name="calendarTextToday">#ffffff</color>
     
 </resources>

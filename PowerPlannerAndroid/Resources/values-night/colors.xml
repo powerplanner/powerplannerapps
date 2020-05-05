@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+  <!--Same as light theme. Splash screen background, top toolbar background, menu background, class tab headers background (that one doesn't work well in dark)-->
+  <color name="primary">#2E366D</color>
+
+  <!--Used when floating action button is pressed-->
+  <color name="primaryLight">#ff0000</color>
+
+  <!--Same as light theme. Bottom app bar background, top system status bar background (notifications area)-->
+  <color name="primaryDark">#1F2656</color>
+
+  <!--Lighter than in light theme. Hyperlinks, floating action button, task percent complete slider bar, "add class" text on editing schedule button-->
+  <color name="accent">#546BC7</color>
+
+  <color name="iconBackground">#546BC7</color>
+
+
+  <color name="calendarBackgroundToday">#383838</color>
+  <color name="calendarBackgroundThisMonth">#191919</color>
+  <color name="calendarBackgroundOther">#1E1E1E</color>
+  <color name="calendarTextToday">#ffffff</color>
+    
+</resources>

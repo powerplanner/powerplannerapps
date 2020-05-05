@@ -312,18 +312,18 @@ namespace PowerPlannerAndroid.Views
 
                     if (isToday)
                     {
-                        _backgroundView.Background = new ColorDrawable(Color.Argb(255, 117, 117, 117));
+                        _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundToday);
                     }
                     else
                     {
                         switch (dayType)
                         {
                             case DayType.ThisMonth:
-                                _backgroundView.Background = new ColorDrawable(Color.Argb(255, 240, 240, 240));
+                                _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundThisMonth);
                                 break;
 
                             default:
-                                _backgroundView.Background = new ColorDrawable(Color.Argb(255, 228, 228, 228));
+                                _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundOther);
                                 break;
                         }
                     }
@@ -332,7 +332,7 @@ namespace PowerPlannerAndroid.Views
 
                     if (isToday)
                     {
-                        _tv.SetTextColor(Color.White);
+                        _tv.SetTextColor(ColorTools.GetColor(this.Context, Resource.Color.calendarTextToday));
                     }
                     else
                     {
