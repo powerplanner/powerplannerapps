@@ -54,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
+                android:textColor="@color/foregroundFull"
                 android:lines="1"
                 local:Binding="{Source=Name, Target=Text, Mode=OneWay}; {Source=IsComplete, Target=Strikethrough, Mode=OneWay}"/>
 

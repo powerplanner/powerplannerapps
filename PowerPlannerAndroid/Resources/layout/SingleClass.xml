@@ -12,6 +12,8 @@
         android:id="@+id/ClassPagerTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/accent"
+        app:tabSelectedTextColor="@color/accent"
         app:tabMode="scrollable"/>
 
     <androidx.viewpager.widget.ViewPager
