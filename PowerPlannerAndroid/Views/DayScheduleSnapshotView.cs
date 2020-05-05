@@ -287,7 +287,6 @@ namespace PowerPlannerAndroid.Views
             //put in the vertical gap divider
             View verticalGap = new View(Context)
             {
-                Background = new ColorDrawable(Color.White),
                 LayoutParameters = new RelativeLayout.LayoutParams(
                     GapSize,
                     RelativeLayout.LayoutParams.MatchParent)
@@ -295,6 +294,7 @@ namespace PowerPlannerAndroid.Views
                     LeftMargin = TimeIndicatorSize + GapSize
                 }
             };
+            verticalGap.SetBackgroundResource(Resource.Color.scheduleSnapshotDividers);
             _schedulesContent.AddView(verticalGap);
 
             int row = 0;
@@ -318,7 +318,7 @@ namespace PowerPlannerAndroid.Views
                 //if not last row, add the divider
                 if (time + TimeSpan.FromHours(1) <= _arrangedItems.EndTime)
                 {
-                    _schedulesContent.AddView(new View(Context)
+                    var v = new View(Context)
                     {
                         Background = new ColorDrawable(Color.White),
                         LayoutParameters = new RelativeLayout.LayoutParams(
@@ -327,7 +327,9 @@ namespace PowerPlannerAndroid.Views
                         {
                             TopMargin = startHeight + TimeIndicatorSize
                         }
-                    });
+                    };
+                    v.SetBackgroundResource(Resource.Color.scheduleSnapshotDividers);
+                    _schedulesContent.AddView(v);
                 }
             }
 

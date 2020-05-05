@@ -75,6 +75,7 @@ namespace PowerPlannerAndroid.Views.Controls
                 };
                 _textViewTitle.SetTypeface(_textViewTitle.Typeface, Android.Graphics.TypefaceStyle.Bold);
                 _textViewTitle.SetSingleLine(true);
+                _textViewTitle.SetTextColor(ColorTools.GetColor(this.Context, Resource.Color.foregroundFull));
                 texts.AddView(_textViewTitle);
 
                 string subtitle = a.GetString(Resource.Styleable.SettingsListItem_settingSubtitle);

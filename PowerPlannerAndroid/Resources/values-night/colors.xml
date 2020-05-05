@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
-  <!--Same as light theme. Splash screen background, top toolbar background, menu background, class tab headers background (that one doesn't work well in dark)-->
-  <color name="primary">#2E366D</color>
+  <!--Lighter than light theme-->
+  <color name="primary">#546BC7</color>
 
-  <!--Used when floating action button is pressed-->
+  <!--Darker than light theme-->
   <color name="primaryLight">#1F2656</color>
 
-  <!--Same as light theme. Bottom app bar background, top system status bar background (notifications area)-->
+  <!--Same as light theme.-->
   <color name="primaryDark">#1F2656</color>
 
-  <!--Lighter than in light theme. Hyperlinks, floating action button, task percent complete slider bar, "add class" text on editing schedule button-->
+  <!--Lighter than in light theme.-->
   <color name="accent">#546BC7</color>
+
+  <color name="powerPlannerBlue">#2E366D</color>
 
   <color name="iconBackground">#546BC7</color>
 
@@ -32,5 +34,8 @@
 
   <color name="yearBackground">#333333</color>
   <color name="semesterBackground">#161616</color>
+  
+  <!--Darker than light theme-->
+  <color name="scheduleSnapshotDividers">#757575</color>
     
 </resources>

@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
+  <!--System controls like checkboxes, system "OK/cancel" buttons, anything that uses the primary color by default-->
   <color name="primary">#2E366D</color>
+  
+  <!--Used when floating action button is pressed-->
   <color name="primaryLight">#546BC7</color>
+  
+  <!--Bottom app bar background, top system status bar background (notifications area)-->
   <color name="primaryDark">#1F2656</color>
 
+  <!--Hyperlinks, floating action button, task percent complete slider bar-->
   <color name="accent">#2E366D</color>
+
+  <!--Splash screen background, top toolbar background, menu background-->
+  <color name="powerPlannerBlue">#2E366D</color>
 
   <color name="iconBackground">#546BC7</color>
 
@@ -25,5 +34,7 @@
 
   <color name="yearBackground">#E9E9E9</color>
   <color name="semesterBackground">#F5F5F5</color>
+  
+  <color name="scheduleSnapshotDividers">#FFFFFF</color>
     
 </resources>
