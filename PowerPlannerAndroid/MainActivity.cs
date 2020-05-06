@@ -365,6 +365,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2004, 26, 2, 0))
+                    {
+                        changedText += "\n - Dark theme support added! Power Planner will now use a dark theme based on your theme selected in Android. Even the widgets will be dark!";
+                    }
+
                     if (v <= new Version(2003, 14, 3, 0))
                     {
                         changedText += "\n - Classes that don't have any grades yet will no longer count towards overall GPA";
