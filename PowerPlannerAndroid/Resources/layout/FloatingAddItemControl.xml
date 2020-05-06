@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             app:fabSize="mini"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="16dp"
             android:src="@android:drawable/ic_input_add"/>
     
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             app:fabSize="mini"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="16dp"
             android:src="@android:drawable/ic_input_add"/>
     
