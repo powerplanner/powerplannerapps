@@ -7,6 +7,25 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        local:Binding="{Source=IsInDifferentTimeZone, Target=Visibility, Converter=BoolToVisibilityConverter}">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="{DifferentTimeZoneWarning.Text}"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="#fc0000"
+            style="@android:style/TextAppearance.Small"/>
+        <View style="@style/Divider"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

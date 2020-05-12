@@ -35,6 +35,25 @@
                 ToolTipService.ToolTip="Add"/>
 
             <AppBarButton
+                x:Uid="Calendar_FullCalendarFilterButton"
+                x:Name="buttonFilter"
+                Icon="Filter"
+                IsCompact="True"
+                Click="buttonFilter_Click"
+                ToolTipService.ToolTip="Filter">
+                <FlyoutBase.AttachedFlyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Uid="ShowPastCompleteItems" Text="Show past complete items" IsChecked="{Binding ShowPastCompleteItemsOnFullCalendar, Mode=TwoWay}"/>
+                    </MenuFlyout>
+                </FlyoutBase.AttachedFlyout>
+                <!--<AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem Text="Show past complete items" IsChecked="{Binding ShowPastCompletedItemsOnFullCalendar, Mode=TwoWay}"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>-->
+            </AppBarButton>
+
+            <AppBarButton
                 x:Uid="Calendar_FullCalendarGoToTodayButton"
                 x:Name="buttonToday"
                 Icon="GoToToday"

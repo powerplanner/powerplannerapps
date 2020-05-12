@@ -20,6 +20,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerUWP.Controls;
+using PowerPlannerUWP.Controls.TimePickers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,6 +33,7 @@ namespace PowerPlannerUWP.Views
     /// </summary>
     public sealed partial class AddClassTimeView : PopupViewHostGeneric
     {
+
         public new AddClassTimeViewModel ViewModel
         {
             get { return base.ViewModel as AddClassTimeViewModel; }
@@ -51,6 +55,13 @@ namespace PowerPlannerUWP.Views
             checkBoxSunday.Content = DateTools.ToLocalizedString(DayOfWeek.Sunday);
         }
 
+        public override void OnViewModelSetOverride()
+        {
+            ViewModel.AutoAdjustEndTimes = false;
+
+            base.OnViewModelSetOverride();
+        }
+
         public override void OnViewModelLoadedOverride()
         {
             base.OnViewModelLoadedOverride();
@@ -60,6 +71,21 @@ namespace PowerPlannerUWP.Views
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            // Clicking button doesn't take focus away from TextBasedTimePicker, so their edited value doesn't get committed...
+            // Therefore we have to take focus away, and wait for the focus to actually switch
+            if (ButtonSave.FocusState == FocusState.Unfocused)
+            {
+                RoutedEventHandler gotFocus = null;
+                gotFocus = delegate
+                {
+                    ButtonSave.GotFocus -= gotFocus;
+                    ViewModel.Save();
+                };
+                ButtonSave.GotFocus += gotFocus;
+                ButtonSave.Focus(FocusState.Programmatic);
+                return;
+            }
+
             ViewModel.Save();
         }
 

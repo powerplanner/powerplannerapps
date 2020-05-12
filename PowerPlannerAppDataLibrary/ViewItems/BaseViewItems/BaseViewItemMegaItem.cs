@@ -29,6 +29,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             set { SetProperty(ref _date, value, "Date", "IsComplete", "PercentComplete", "ListItemTertiaryText"); }
         }
 
+        private DateTime _dateInSchoolTime;
+        public DateTime DateInSchoolTime
+        {
+            get => _dateInSchoolTime;
+            set => SetProperty(ref _dateInSchoolTime, value, nameof(DateInSchoolTime));
+        }
+
         private double _gradeReceived;
         public double GradeReceived
         {
@@ -134,7 +141,18 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
             BaseDataItemHomeworkExamGrade i = dataItem as BaseDataItemHomeworkExamGrade;
 
-            Date = DateTime.SpecifyKind(i.Date, DateTimeKind.Local);
+            if (this is ViewItemHoliday)
+            {
+                // Holidays don't get localized since they're just raw dates
+                Date = ToViewItemSchoolTime(i.Date);
+            }
+            else
+            {
+                Date = ToViewItemTime(i.Date);
+            }
+
+            DateInSchoolTime = ToViewItemSchoolTime(i.Date);
+
             GradeReceived = i.GradeReceived;
             GradeTotal = i.GradeTotal;
             IsDropped = i.IsDropped;

@@ -25,6 +25,7 @@ using Windows.UI.Xaml.Shapes;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
+using System.ComponentModel;
 
 namespace PowerPlannerUWP.Views.CalendarViews
 {
@@ -33,18 +34,45 @@ namespace PowerPlannerUWP.Views.CalendarViews
         public event EventHandler<ChangeItemDateEventArgs> OnRequestChangeItemDate;
 
         private HolidaysOnDay _holidays;
+        private CalendarViewModel _calendarViewModel;
+        private MyObservableList<BaseViewItemHomeworkExamGrade> _allItems;
 
         public MainCalendarSquare(MainCalendarGrid calendarGrid, DateTime date, MyObservableList<BaseViewItemMegaItem> allItems) : base(calendarGrid, date)
         {
             // Render is called before this
 
+            _calendarViewModel = calendarGrid.ViewModel;
+            _allItems = allItems;
             AllowDrop = true;
             DragOver += MainCalendarSquare_DragOver;
             Drop += MainCalendarSquare_Drop;
-            _itemsControl.ItemsSource = HomeworksOnDay.Get(allItems, date);
+            _calendarViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(_calendarViewModel_PropertyChanged).Handler;
+            UpdateItemsSource();
             _holidays = HolidaysOnDay.Create(allItems, date);
             _holidays.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(delegate { UpdateIsHoliday(); }).Handler;
             UpdateIsHoliday();
+        }
+
+        private void _calendarViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(_calendarViewModel.ShowPastCompleteItemsOnFullCalendar):
+                    UpdateItemsSource();
+                    break;
+            }
+        }
+
+        private void UpdateItemsSource()
+        {
+            if (_calendarViewModel.ShowPastCompleteItemsOnFullCalendar)
+            {
+                _itemsControl.ItemsSource = HomeworksOnDay.Get(_allItems, Date);
+            }
+            else
+            {
+                _itemsControl.ItemsSource = HomeworksOnDay.Get(_allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
+            }
         }
 
         private void UpdateIsHoliday()

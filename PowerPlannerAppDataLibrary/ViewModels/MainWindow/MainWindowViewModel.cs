@@ -12,7 +12,6 @@ using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Tasks;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
@@ -74,7 +73,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             {
                 case nameof(FinalContent):
                     string pageName = FinalContent.GetPageName();
-                    PageViewTelemetryHelper.TrackPageVisited(pageName);
+                    TelemetryExtension.Current?.TrackPageVisited(pageName);
                     break;
             }
         }
@@ -197,25 +196,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public Task HandleViewDayActivation(Guid localAccountId, DateTime date)
         {
-            if (CurrentAccount != null && CurrentAccount.LocalAccountId == localAccountId)
+            if (App.PowerPlannerApp.UseUnifiedCalendarDayTabItem)
             {
-                var mainScreen = GetMainScreenViewModel();
-                if (mainScreen != null)
-                {
-                    var dayViewModel = (mainScreen.Content as TasksViewModel)?.Content as DayViewModel;
-                    if (dayViewModel != null)
-                    {
-                        Popups.Clear();
-                        mainScreen.Popups.Clear();
-                        dayViewModel.CurrentDate = date;
-                        return Task.FromResult(true);
-                    }
-                }
+                // Have the calendar view open in day view
+                CalendarViewModel.SetInitialDisplayState(CalendarViewModel.DisplayStates.Day, date);
+                return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Calendar);
             }
+            else
+            {
+                // Note that this probably doesn't work on clean launches, since the selected items are reset when the semester is loaded.
+                // But iOS uses an alternative path when clean launching, and so far iOS is the only one that uses this method.
+                NavigationManager.SetSelectedDate(date);
+                NavigationManager.SetDisplayMonth(date);
 
-            NavigationManager.SetSelectedDate(date);
-            NavigationManager.SetDisplayMonth(date);
-            return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Day);
+                return HandleSelectMenuItemActivation(localAccountId, NavigationManager.MainMenuSelections.Day);
+            }
         }
 
         public Task HandleViewScheduleActivation(Guid localAccountId)
@@ -225,6 +220,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         private async Task HandleSelectMenuItemActivation(Guid localAccountId, NavigationManager.MainMenuSelections menuItem)
         {
+            // If we already have a current account and it matches the specified (or unspecified) account ID
             if (CurrentAccount != null && (localAccountId == Guid.Empty || CurrentAccount.LocalAccountId == localAccountId))
             {
                 var mainScreen = GetMainScreenViewModel();
@@ -239,6 +235,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 }
             }
 
+            // Otherwise it's a fresh boot, or wrong account
             else
             {
                 if (localAccountId != Guid.Empty)
@@ -430,7 +427,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         public void HandleBeingLeft()
         {
             _timeLeftAt = DateTime.Now;
-            PageViewTelemetryHelper.TrackLeavingApp();
+            TelemetryExtension.Current?.LeavingApp();
         }
 
         public async Task HandleBeingReturnedTo()
@@ -479,7 +476,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 TelemetryExtension.Current?.TrackException(ex);
             }
 
-            PageViewTelemetryHelper.TrackReturningToApp();
+            TelemetryExtension.Current?.ReturnedToApp();
         }
 
         public MainScreenViewModel GetMainScreenViewModel()

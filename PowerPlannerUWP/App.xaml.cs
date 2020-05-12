@@ -196,7 +196,9 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
                 { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) }
+                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
+                { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }
 
@@ -731,6 +733,56 @@ namespace PowerPlannerUWP
                     if (v < new Version(3, 0, 6, 0))
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
+
+                    if (v <= new Version(2005, 1, 2, 99))
+                    {
+                        changedText += "\n - Language setting added to allow overriding system selected language!";
+                        changedText += "\n - Fixed hyperlink detection bug with upper case characters";
+                    }
+
+                    if (v <= new Version(2004, 30, 1, 99))
+                    {
+                        if (v > new Version(2004, 26, 1, 99))
+                        {
+                            changedText += "\n - Back by popular demand, you can now toggle showing past complete items on the calendar view! Use the filter button in the top right.";
+                        }
+                        else
+                        {
+                            changedText += "\n - Past complete items hidden from calendar by default. You can now toggle showing past complete items by using the filter button in the top right.";
+                        }
+                    }
+
+                    if (v <= new Version(2004, 24, 2, 99))
+                    {
+                        changedText += "\n - Classes that don't have any grades yet will no longer count towards overall GPA";
+                    }
+
+                    if (v <= new Version(2003, 6, 1, 0))
+                    {
+                        changedText += "\n - Time zone support! If you're traveling, go to the settings page to set your school's time zone.";
+                    }
+
+                    if (v <= new Version(2002, 9, 1, 0))
+                    {
+                        changedText += "\n - UI fixes for tablet devices";
+                    }
+
+                    if (v <= new Version(2002, 3, 1, 0))
+                    {
+                        // Switched 100% to new time picker, need to show message to the other 50% that are just getting it now
+                        if (Controls.TimePickers.TextBasedTimePicker.IsSupported && !AbTestHelper.Tests.NewTimePicker)
+                        {
+                            changedText += "\n - New text-based time pickers!";
+                        }
+                    }
+
+                    if (v <= new Version(2001, 26, 2, 0))
+                    {
+                        if (Controls.TimePickers.TextBasedTimePicker.IsSupported && AbTestHelper.Tests.NewTimePicker)
+                        {
+                            changedText += "\n - New text-based time pickers!";
+                        }
+                    }
 
                     if (v <= new Version(2001, 9, 1, 0))
                     {

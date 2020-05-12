@@ -55,6 +55,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set { SetProperty(ref _creditsAffectingGpa, value, nameof(CreditsAffectingGpa)); }
         }
 
+        public bool HasGrades => true;
+
         public void CalculateEverything()
         {
             for (int i = 0; i < Years.Count; i++)

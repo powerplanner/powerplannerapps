@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
 {
@@ -225,14 +226,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             DateTime startDate;
 
             if (!DateValues.IsUnassigned(semester.Start))
-                startDate = DateTime.SpecifyKind(semester.Start, DateTimeKind.Local);
+                startDate = DateHelpers.ToViewItemTime(account, semester.Start);
             else
                 startDate = DateTime.Today.AddYears(-1);
 
             // If the class has a start date, we use that rather than the semester start date
             if (!DateValues.IsUnassigned(c.StartDate))
             {
-                startDate = DateTime.SpecifyKind(c.StartDate, DateTimeKind.Local);
+                startDate = DateHelpers.ToViewItemTime(account, c.StartDate);
             }
 
             var currentWeek = account.GetWeekOnDifferentDate(startDate);

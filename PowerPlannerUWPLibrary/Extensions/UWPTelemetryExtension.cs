@@ -16,8 +16,6 @@ namespace PowerPlannerUWPLibrary.Extensions
 {
     public class UWPTelemetryExtension : TelemetryExtension
     {
-        private string _userId;
-
         public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
             try
@@ -27,10 +25,13 @@ namespace PowerPlannerUWPLibrary.Extensions
                     properties = new Dictionary<string, string>();
                 }
 
-                if (_userId != null)
+                if (UserId != null)
                 {
                     // Custom events don't include the custom assigned UserId, so include manually
-                    properties["AccountId"] = _userId;
+                    if (!properties.ContainsKey("AccountId"))
+                    {
+                        properties["AccountId"] = UserId;
+                    }
                 }
 
                 if (properties.Count > 0)
@@ -56,34 +57,14 @@ namespace PowerPlannerUWPLibrary.Extensions
             catch { }
         }
 
-        public override void TrackPageView(string pageName, DateTime timeVisited, TimeSpan duration)
-        {
-            try
-            {
-                Analytics.TrackEvent("PageView_" + pageName, new Dictionary<string, string>()
-                {
-                    { "AccountId", _userId }
-                });
-            }
-            catch { }
-        }
-
         public override void UpdateCurrentUser(AccountDataItem account)
         {
-            try
-            {
-                if (account != null)
-                {
-                    _userId = account.GetTelemetryUserId();
+            base.UpdateCurrentUser(account);
 
-                    AppCenter.SetUserId(_userId);
-                }
-                else
-                {
-                    _userId = null;
-                }
+            if (UserId != null)
+            {
+                AppCenter.SetUserId(UserId);
             }
-            catch { }
         }
     }
 }

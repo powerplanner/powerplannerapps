@@ -27,6 +27,14 @@ namespace PowerPlannerAndroid.App
 {
     public class PowerPlannerDroidApp : PowerPlannerApp
     {
+        static PowerPlannerDroidApp()
+        {
+            DoNotShowYearsInTabItems = true;
+            DoNotShowSettingsInTabItems = true;
+            ShowClassesAsPopups = true;
+            UsesIanaTimeZoneIds = true;
+        }
+
         public static new PowerPlannerDroidApp Current
         {
             get { return PortableApp.Current as PowerPlannerDroidApp; }

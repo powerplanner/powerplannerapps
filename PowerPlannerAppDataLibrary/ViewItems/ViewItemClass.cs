@@ -93,6 +93,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 children: HomeworkAndExams));
         }
 
+        private bool _hasGrades = false;
+        public bool HasGrades
+        {
+            get => _hasGrades;
+            private set => SetProperty(ref _hasGrades, value, nameof(HasGrades));
+        }
+
         private double _calculatedGrade = PowerPlannerSending.Grade.UNGRADED;
         public double CalculatedGrade
         {
@@ -275,6 +282,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// </summary>
         public string GpaStringForTableDisplay => CachedComputation(delegate
         {
+            // If there aren't any grades entered in the class, we ignore it.
+            // This is for the case where student enters their semester ahead of time,
+            // that semester shouldn't artificially raise their GPA
+            if (!HasGrades)
+            {
+                return "--";
+            }
+
             if (GpaType == GpaType.PassFail)
             {
                 if (IsPassing)
@@ -290,7 +305,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             {
                 return GPA.ToString("0.0##");
             }
-        }, GpaStringDependentOn);
+        }, GpaStringDependentOn.Concat(new string[] { nameof(HasGrades) }).ToArray());
 
         public bool DidEarnCredits => CachedComputation(delegate
         {
@@ -342,12 +357,15 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         {
             get
             {
+                // We still have to return -1 if credits is unassigned since that affects
+                // how we aggregate everything, and still need to know it was unassigned, even
+                // if it was pass/fail or if it doesn't have grades
                 if (Credits == -1)
                 {
                     return -1;
                 }
 
-                return GpaType == GpaType.PassFail ? 0 : Credits;
+                return (GpaType == GpaType.PassFail || !HasGrades) ? 0 : Credits;
             }
         }
 
@@ -558,9 +576,15 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
             //if there was actually a grade
             if (totalWeight != 0)
+            {
                 this.CalculatedGrade = totalGrade / totalWeight;
+                this.HasGrades = true;
+            }
             else
+            {
                 this.CalculatedGrade = 1;
+                this.HasGrades = false;
+            }
 
             this.CalculatedGPA = GetGPAForGrade(CalculatedGrade);
         }

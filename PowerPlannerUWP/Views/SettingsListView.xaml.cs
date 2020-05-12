@@ -184,5 +184,15 @@ namespace PowerPlannerUWP.Views
                 new PortableMessageDialog("Web browser couldn't be launched.").Show();
             }
         }
+
+        private void ButtonSchoolTimeZone_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OpenSchoolTimeZone();
+        }
+
+        private void ButtonLanguageSettings_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.OpenLanguageSettings();
+        }
     }
 }

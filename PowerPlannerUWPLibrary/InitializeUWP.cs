@@ -62,6 +62,7 @@ namespace PowerPlannerUWPLibrary
             PowerPlannerAppDataLibrary.Extensions.TilesExtension.Current = new UWPTilesExtension();
             DateTimeFormatterExtension.Current = new UWPDateTimeFormatterExtension();
             ImagePickerExtension.Current = new UWPImagePickerExtension();
+            LanguageExtension.Current = new UWPLanguageExtension();
         }
     }
 }

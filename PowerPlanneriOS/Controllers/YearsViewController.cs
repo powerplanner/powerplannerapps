@@ -21,8 +21,6 @@ namespace PowerPlanneriOS.Controllers
         {
             Title = "Years";
 
-            HideBackButton();
-
             _loadingIndicator = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.WhiteLarge)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
@@ -88,6 +86,8 @@ namespace PowerPlanneriOS.Controllers
             StackView.AddArrangedSubview(stackViewYears);
             stackViewYears.StretchWidth(StackView);
 
+            StackView.AddSpacing(16);
+
             var buttonAddYear = new UIButton(UIButtonType.System)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
@@ -126,6 +126,9 @@ namespace PowerPlanneriOS.Controllers
         private void YearView_OnRequestOpenSemester(object sender, ViewItemSemester e)
         {
             ViewModel.OpenSemester(e.Identifier);
+
+            // Just for iOS, we remove the popup, it doesn't play happy with all popups being cleared
+            ViewModel.RemoveViewModel();
         }
 
         private void YearView_OnRequestAddSemester(object sender, ViewItemYear e)

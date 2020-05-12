@@ -41,6 +41,14 @@ namespace PowerPlannerAppDataLibrary.Extensions
             ClearCurrentReminders
         }
 
+        /// <summary>
+        /// Platforms that need notification permission (iOS) can use this to prompt the user at the right time, instead of at app launch
+        /// </summary>
+        public virtual void RequestReminderPermission()
+        {
+            // Nothing, extending classes can implement
+        }
+
         public async Task ClearReminders(Guid localAccountId)
         {
             try

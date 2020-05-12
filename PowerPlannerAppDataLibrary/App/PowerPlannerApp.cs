@@ -21,9 +21,29 @@ namespace PowerPlannerAppDataLibrary.App
     public class PowerPlannerApp : PortableApp
     {
         /// <summary>
-        /// Whether on the home page the TasksViewModel should be returned for Calendar/Day/Agenda. iOS uses this.
+        /// iOS sets this to true, it only has a Calendar tab entry that also has days.
         /// </summary>
-        public static bool UseTasksViewModel { get; set; }
+        public static bool UseUnifiedCalendarDayTabItem { get; set; }
+
+        /// <summary>
+        /// iOS and Android sets this to true. iOS shows years within settings page, opened as a popup, Android shows it in a separate menu, also opened as a popup.
+        /// </summary>
+        public static bool DoNotShowYearsInTabItems { get; set; }
+
+        /// <summary>
+        /// Android sets this to true, it shows settings in separate menu item and opens as popup.
+        /// </summary>
+        public static bool DoNotShowSettingsInTabItems { get; set; }
+
+        /// <summary>
+        /// Android sets this to true
+        /// </summary>
+        public static bool ShowClassesAsPopups { get; set; }
+
+        /// <summary>
+        /// Android should set this to true as TimeZoneInfo operates on IANA ids. Windows should keep this false;
+        /// </summary>
+        public static bool UsesIanaTimeZoneIds { get; set; }
 
         public new static PowerPlannerApp Current
         {
@@ -425,6 +445,44 @@ namespace PowerPlannerAppDataLibrary.App
 
             else
                 return closestAfter.Class;
+        }
+
+        /// <summary>
+        /// Used for syncing from background task (raw push notification).
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public static async System.Threading.Tasks.Task SyncAccountInBackgroundAsync(long accountId)
+        {
+            try
+            {
+                if (accountId == 0)
+                {
+                    return;
+                }
+
+                // First try to grab cached
+                var account = AccountsManager.GetCurrentlyLoadedAccounts().FirstOrDefault(i => i.AccountId == accountId);
+                if (account == null)
+                {
+                    account = (await AccountsManager.GetAllAccounts()).FirstOrDefault(i => i.AccountId == accountId);
+                }
+                if (account == null)
+                {
+                    return;
+                }
+
+                var syncResult = await Sync.SyncAccountAsync(account);
+
+                if (syncResult != null && syncResult.SaveChangesTask != null)
+                {
+                    await syncResult.SaveChangesTask.WaitForAllTasksAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
     }
 }

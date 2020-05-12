@@ -208,6 +208,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         private double _spacingWhenNoAdditionalItems;
         private double _spacingWithAdditionalItems;
         private double _widthOfCollapsed;
+        private TimeZoneInfo _schoolTimeZone;
 
         private DayScheduleItemsArranger(AccountDataItem account, SemesterItemsViewGroup semesterItems, ScheduleViewItemsGroup scheduleGroup, DateTime date, double heightOfHour, double spacingWhenNoAdditionalItems, double spacingWithAdditionalItems, double widthOfCollapsed, bool includeHomeworkAndHolidays)
         {
@@ -225,6 +226,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             _spacingWithAdditionalItems = spacingWithAdditionalItems;
             _widthOfCollapsed = widthOfCollapsed;
             Account = account;
+            _schoolTimeZone = account.SchoolTimeZone;
             HeightOfHour = heightOfHour;
             MinDuration = TimeSpan.FromHours(widthOfCollapsed / HeightOfHour);
 
@@ -577,7 +579,8 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                     && cachedAnswer.HeightOfHour == heightOfHour
                     && cachedAnswer._spacingWhenNoAdditionalItems == spacingWhenNoAdditionalItems
                     && cachedAnswer._spacingWithAdditionalItems == spacingWithAdditionalItems
-                    && cachedAnswer._widthOfCollapsed == widthOfCollapsed)
+                    && cachedAnswer._widthOfCollapsed == widthOfCollapsed
+                    && object.Equals(account.SchoolTimeZone, cachedAnswer._schoolTimeZone))
                 {
                     return cachedAnswer;
                 }

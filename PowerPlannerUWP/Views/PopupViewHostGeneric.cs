@@ -38,8 +38,6 @@ namespace PowerPlannerUWP.Views
         private Grid _topTitleBar;
         private StackPanel _topPrimaryCommands;
 
-        private RowDefinition _rowKeyboard;
-
         private Border _fullScreenTitle;
 
         private CommandBar _commandBar;
@@ -158,17 +156,13 @@ namespace PowerPlannerUWP.Views
 
 
 
-
-            _rowKeyboard = new RowDefinition() { Height = GridLength.Auto };
-
             _content = new Grid()
             {
                 RowDefinitions =
                 {
                     new RowDefinition() { Height = GridLength.Auto },
                     new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) },
-                    new RowDefinition() { Height = GridLength.Auto },
-                    _rowKeyboard
+                    new RowDefinition() { Height = GridLength.Auto }
                 },
 
                 Children =
@@ -197,48 +191,6 @@ namespace PowerPlannerUWP.Views
 
                 UpdateAll();
             }
-        }
-
-        protected override void OnViewFocused()
-        {
-            base.OnViewFocused();
-
-            var inputPane = InputPane.GetForCurrentView();
-            inputPane.Showing += InputPane_Changed;
-            inputPane.Hiding += InputPane_Changed;
-
-            UpdateInputPaneOcclusion();
-        }
-
-        protected override void OnViewLostFocus()
-        {
-            base.OnViewLostFocus();
-
-            var inputPane = InputPane.GetForCurrentView();
-            inputPane.Showing -= InputPane_Changed;
-            inputPane.Hiding -= InputPane_Changed;
-        }
-
-        private void InputPane_Changed(InputPane sender, InputPaneVisibilityEventArgs args)
-        {
-            UpdateInputPaneOcclusion();
-        }
-
-        private void UpdateInputPaneOcclusion()
-        {
-            var inputPane = InputPane.GetForCurrentView();
-
-            if (inputPane.OccludedRect.Height > 0)
-            {
-                if (inputPane.OccludedRect.Top != 0)
-                {
-                    _rowKeyboard.MinHeight = inputPane.OccludedRect.Height;
-                    return;
-                }
-            }
-
-            // All other cases, act as if it's hidden
-            _rowKeyboard.MinHeight = 0;
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

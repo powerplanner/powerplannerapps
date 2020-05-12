@@ -126,7 +126,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
             {
                 State = editParams.IsInWhatIfMode ? OperationState.EditingWhatIf : OperationState.Editing,
                 Name = editParams.Item.Name,
-                Date = editParams.Item.Date,
+                Date = editParams.Item.DateInSchoolTime,
                 Details = editParams.Item.Details,
                 WeightCategories = c.WeightCategories,
                 SelectedWeightCategory = weight,

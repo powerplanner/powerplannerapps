@@ -30,6 +30,20 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set => SetProperty(ref _type, value, nameof(Type), nameof(Subtitle), nameof(SubtitleDueDate), nameof(SubtitleDueTime));
         }
 
+        private DateTime _endTimeInSchoolTime;
+        public DateTime EndTimeInSchoolTime
+        {
+            get => _endTimeInSchoolTime;
+            private set => SetProperty(ref _endTimeInSchoolTime, value, nameof(EndTimeInSchoolTime));
+        }
+
+        private DateTime _reminder;
+        public DateTime Reminder
+        {
+            get { return _reminder; }
+            private set { SetProperty(ref _reminder, value, "Reminder"); }
+        }
+
         private ViewItemClass _class;
         private PropertyChangedEventHandler _classPropertyChangedHandler;
         public ViewItemClass Class
@@ -113,10 +127,12 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             if (i.EndTime == PowerPlannerSending.DateValues.UNASSIGNED)
             {
                 EndTime = i.EndTime;
+                EndTimeInSchoolTime = i.EndTime;
             }
             else
             {
-                EndTime = DateTime.SpecifyKind(i.EndTime, DateTimeKind.Local);
+                EndTime = ToViewItemTime(i.EndTime);
+                EndTimeInSchoolTime = ToViewItemSchoolTime(i.EndTime);
             }
 
             // TODO: I probably need to do a similar local conversion for Reminder too when I start using it
@@ -217,7 +233,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             switch (GetActualTimeOption())
             {
                 case DataItemMegaItem.TimeOptions.AllDay:
-                    return ", " + PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "TimeOption_EndOfDay" : "TimeOption_AllDay").ToLower();
+                    {
+                        if (Type == TaskOrEventType.Task && Account.IsInDifferentTimeZone)
+                        {
+                            return ", " + PowerPlannerResources.GetStringAsLowercaseWithParameters("String_AtX", DateTimeFormatterExtension.Current.FormatAsShortTime(Date));
+                        }
+
+                        return ", " + PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "TimeOption_EndOfDay" : "TimeOption_AllDay").ToLower();
+                    }
 
                 case DataItemMegaItem.TimeOptions.BeforeClass:
                     return ", " + PowerPlannerResources.GetString("TimeOption_BeforeClass").ToLower();
@@ -696,6 +719,35 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             var c = Class;
 
             return findSchedule(c, Date.Date);
+        }
+
+        public string GetSubtitleOrNull()
+        {
+            if (this is ViewItemHomework)
+            {
+                return (this as ViewItemHomework).Subtitle;
+            }
+            else if (this is ViewItemExam)
+            {
+                return (this as ViewItemExam).Subtitle;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns true if the item is not past-completed.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsActive(DateTime today)
+        {
+            if (Type == TaskOrEventType.Task)
+            {
+                return !IsComplete || Date >= today;
+            }
+            else
+            {
+                return !IsComplete;
+            }
         }
     }
 }
