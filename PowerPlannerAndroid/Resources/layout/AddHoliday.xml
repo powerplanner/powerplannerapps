@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="0dp"
+            android:paddingLeft="8dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
             <Button
@@ -29,6 +29,7 @@
                 style="@style/BorderlessButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/foregroundFull"
                 local:Binding="{Source=StartDate, Target=Text, Converter=DateTimeToStringConverter, ConverterParameter=d}" />
             <TextView
                 android:text="{TextBlock_To.Text}"
@@ -39,6 +40,7 @@
                 style="@style/BorderlessButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/foregroundFull"
                 local:Binding="{Source=EndDate, Target=Text, Converter=DateTimeToStringConverter, ConverterParameter=d}" />
         </LinearLayout>
 

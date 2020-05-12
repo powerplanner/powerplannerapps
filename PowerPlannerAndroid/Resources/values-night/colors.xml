@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+  <!--Lighter than light theme-->
+  <color name="primary">#546BC7</color>
+
+  <!--Darker than light theme-->
+  <color name="primaryLight">#1F2656</color>
+
+  <!--Same as light theme.-->
+  <color name="primaryDark">#1F2656</color>
+
+  <!--Lighter than in light theme.-->
+  <color name="accent">#546BC7</color>
+
+  <color name="powerPlannerBlue">#2E366D</color>
+
+  <color name="iconBackground">#546BC7</color>
+
+
+  <color name="calendarBackgroundToday">#383838</color>
+  <color name="calendarBackgroundThisMonth">#191919</color>
+  <color name="calendarBackgroundOther">#1E1E1E</color>
+  <color name="calendarTextToday">#ffffff</color>
+
+  <!--Background color of controls like schedule snapshot-->
+  <color name="controlBackground">#1E1E1E</color>
+
+  <!--Color for transparency overlays like floating action button background-->
+  <color name="transparentBackground">#CC000000</color>
+  
+  <!--Full black (or white in dark theme)-->
+  <color name="foregroundFull">#ffffff</color>
+
+  <color name="yearBackground">#333333</color>
+  <color name="semesterBackground">#161616</color>
+  
+  <!--Darker than light theme-->
+  <color name="scheduleSnapshotDividers">#757575</color>
+  
+  <color name="widgetBackground">#202124</color>
+  <color name="widgetTextColorPrimary">#E8EAED</color>
+  <color name="widgetTextColorSecondary">#9AA0A6</color>
+    
+</resources>

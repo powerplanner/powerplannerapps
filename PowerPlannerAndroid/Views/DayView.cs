@@ -12,7 +12,6 @@ using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.Views.Controls;
-using Android.Support.Design.Widget;
 using PowerPlannerAppDataLibrary.Extensions;
 using System.ComponentModel;
 using ToolsPortable;

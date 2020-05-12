@@ -7,11 +7,11 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAndroid.Views.ListItemHeaders;
 using InterfacesDroid.Views;
+using AndroidX.RecyclerView.Widget;
 
 namespace PowerPlannerAndroid.Adapters
 {

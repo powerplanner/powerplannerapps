@@ -11,12 +11,11 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using InterfacesDroid.Views;
-using Android.Support.Design.Widget;
-using Android.Support.V4.View;
 using Java.Lang;
 using PowerPlannerAndroid.ViewHosts;
-using Android.Support.V7.Widget;
 using PowerPlannerAppDataLibrary;
+using Google.Android.Material.Tabs;
+using AndroidX.ViewPager.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -201,7 +200,7 @@ namespace PowerPlannerAndroid.Views
             return Resource.Menu.class_basic_menu;
         }
 
-        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

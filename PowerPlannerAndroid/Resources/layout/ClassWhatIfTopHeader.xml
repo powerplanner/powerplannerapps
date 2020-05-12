@@ -60,12 +60,12 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <android.support.design.widget.TextInputLayout
+      <com.google.android.material.textfield.TextInputLayout
         android:theme="@style/WhiteEditTextHint"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content">
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/EditTextWhatIfGrade"
           android:inputType="number|numberDecimal"
           android:layout_width="match_parent"
@@ -75,14 +75,14 @@
           android:textColorHint="#FFFFFF"
           android:foregroundTint="#FFFFFF"
           local:Binding="{Source=DesiredGrade, Target=Text, Mode=TwoWay, Converter=PercentToEditViewTextConverter}"/>
-      </android.support.design.widget.TextInputLayout>
+      </com.google.android.material.textfield.TextInputLayout>
 
-      <android.support.design.widget.TextInputLayout
+      <com.google.android.material.textfield.TextInputLayout
         android:theme="@style/WhiteEditTextHint"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content">
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/EditTextWhatIfGPA"
           android:inputType="number|numberDecimal"
           android:layout_width="match_parent"
@@ -92,7 +92,7 @@
           android:textColorHint="#FFFFFF"
           android:foregroundTint="#FFFFFF"
           local:Binding="{Source=DesiredGPA, Target=Text, Mode=TwoWay, Converter=GpaToEditViewTextConverter}"/>
-      </android.support.design.widget.TextInputLayout>
+      </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

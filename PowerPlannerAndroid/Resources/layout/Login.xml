@@ -23,30 +23,30 @@
                 local:Binding="{Source=Message, Target=Text}; {Source=Message, Target=Visibility}"
                 android:layout_marginBottom="16dp"/>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="{TextBox_Username.Header}"
                     android:id="@+id/EditTextUsername"
                     local:Binding="{Source=Username, Target=Text, Mode=TwoWay}"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp">
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="{TextBox_Password.Header}"
                     android:id="@+id/EditTextPassword"
                     local:Binding="{Source=Password, Target=Text, Mode=TwoWay}"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         
         </LinearLayout>
 

@@ -1,12 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
-    <color name="primary">#2E366D</color>
-    <color name="primaryLight">#546BC7</color>
-    <color name="primaryDark">#1F2656</color>
+  <!--System controls like checkboxes, system "OK/cancel" buttons, anything that uses the primary color by default-->
+  <color name="primary">#2E366D</color>
+  
+  <!--Used when floating action button is pressed-->
+  <color name="primaryLight">#546BC7</color>
+  
+  <!--Bottom app bar background, top system status bar background (notifications area)-->
+  <color name="primaryDark">#1F2656</color>
 
-    <color name="accent">#2E366D</color>
+  <!--Hyperlinks, floating action button, task percent complete slider bar-->
+  <color name="accent">#2E366D</color>
 
-    <color name="iconBackground">#546BC7</color>
+  <!--Splash screen background, top toolbar background, menu background-->
+  <color name="powerPlannerBlue">#2E366D</color>
+
+  <color name="iconBackground">#546BC7</color>
+
+  <color name="calendarBackgroundToday">#757575</color>
+  <color name="calendarBackgroundThisMonth">#f0f0f0</color>
+  <color name="calendarBackgroundOther">#e4e4e4</color>
+  <color name="calendarTextToday">#ffffff</color>
+
+  <!--Background color of controls like schedule snapshot-->
+  <color name="controlBackground">#F0F0F0</color>
+
+  <!--Color for transparency overlays like floating action button background-->
+  <color name="transparentBackground">#CCFFFFFF</color>
+  
+  <!--Full black (or white in dark theme)-->
+  <color name="foregroundFull">#000000</color>
+
+  <color name="yearBackground">#E9E9E9</color>
+  <color name="semesterBackground">#F5F5F5</color>
+  
+  <color name="scheduleSnapshotDividers">#FFFFFF</color>
+
+  <color name="widgetBackground">#FFFFFF</color>
+  <color name="widgetTextColorPrimary">#000000</color>
+  <color name="widgetTextColorSecondary">#666666</color>
     
 </resources>

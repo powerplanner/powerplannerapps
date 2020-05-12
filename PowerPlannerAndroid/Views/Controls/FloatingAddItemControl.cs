@@ -9,13 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Support.Design.Widget;
 using InterfacesDroid.Views;
 using Android.Util;
 using InterfacesDroid.Themes;
 using BareMvvm.Core.App;
 using ToolsPortable;
 using System.ComponentModel;
+using Google.Android.Material.FloatingActionButton;
 
 namespace PowerPlannerAndroid.Views.Controls
 {

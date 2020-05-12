@@ -26,7 +26,7 @@
         <View
             style="@style/Divider" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/SettingsWidgetAgendaShowTasksSwitch"
             android:text="{Settings_Tiles_MainTile_ToggleHomework.Header}"
             android:textSize="16sp"
@@ -40,7 +40,7 @@
         <View
             style="@style/Divider" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/SettingsWidgetAgendaShowEventsSwitch"
             android:text="{Settings_Tiles_MainTile_ToggleExams.Header}"
             android:textSize="16sp"

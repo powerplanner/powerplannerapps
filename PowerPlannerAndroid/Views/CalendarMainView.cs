@@ -12,7 +12,6 @@ using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.Views.Controls;
-using Android.Support.Design.Widget;
 using InterfacesDroid.Helpers;
 using Android.Graphics.Drawables;
 using Android.Graphics;
@@ -24,10 +23,10 @@ using Android.Content.Res;
 using Android.Graphics.Drawables.Shapes;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System.Collections.Specialized;
+using AndroidX.Core.Content;
+using AndroidX.Core.View;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -275,7 +274,7 @@ namespace PowerPlannerAndroid.Views
                         Visibility = ViewStates.Gone
                     };
                     _selectedRectangleView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.CalendarSelectedDayBorder);
-                    ViewCompat.SetBackgroundTintList(_selectedRectangleView, new ColorStateList(new int[][] { new int[0] }, new int[] { new Color(46, 54, 109) }));
+                    ViewCompat.SetBackgroundTintList(_selectedRectangleView, new ColorStateList(new int[][] { new int[0] }, new int[] { ColorTools.GetColor(this.Context, Resource.Color.accent) }));
                     this.AddView(_selectedRectangleView);
 
                     this.Click += MyCalendarDayView_Click;
@@ -313,18 +312,18 @@ namespace PowerPlannerAndroid.Views
 
                     if (isToday)
                     {
-                        _backgroundView.Background = new ColorDrawable(Color.Argb(255, 117, 117, 117));
+                        _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundToday);
                     }
                     else
                     {
                         switch (dayType)
                         {
                             case DayType.ThisMonth:
-                                _backgroundView.Background = new ColorDrawable(Color.Argb(255, 240, 240, 240));
+                                _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundThisMonth);
                                 break;
 
                             default:
-                                _backgroundView.Background = new ColorDrawable(Color.Argb(255, 228, 228, 228));
+                                _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundOther);
                                 break;
                         }
                     }
@@ -333,7 +332,7 @@ namespace PowerPlannerAndroid.Views
 
                     if (isToday)
                     {
-                        _tv.SetTextColor(Color.White);
+                        _tv.SetTextColor(ColorTools.GetColor(this.Context, Resource.Color.calendarTextToday));
                     }
                     else
                     {
