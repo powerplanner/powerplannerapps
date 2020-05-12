@@ -377,13 +377,6 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             private set { SetProperty(ref _endTime, value, "EndTime"); }
         }
 
-        private DateTime _reminder;
-        public DateTime Reminder
-        {
-            get { return _reminder; }
-            private set { SetProperty(ref _reminder, value, "Reminder"); }
-        }
-
         /// <summary>
         /// For internal uses only. The actual WeightCategory object will be assigned by <see cref="ViewItemClass"/>.
         /// </summary>
@@ -719,19 +712,6 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             var c = Class;
 
             return findSchedule(c, Date.Date);
-        }
-
-        public string GetSubtitleOrNull()
-        {
-            if (this is ViewItemHomework)
-            {
-                return (this as ViewItemHomework).Subtitle;
-            }
-            else if (this is ViewItemExam)
-            {
-                return (this as ViewItemExam).Subtitle;
-            }
-            return null;
         }
 
         /// <summary>

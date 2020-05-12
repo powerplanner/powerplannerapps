@@ -35,7 +35,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
         private HolidaysOnDay _holidays;
         private CalendarViewModel _calendarViewModel;
-        private MyObservableList<BaseViewItemHomeworkExamGrade> _allItems;
+        private MyObservableList<BaseViewItemMegaItem> _allItems;
 
         public MainCalendarSquare(MainCalendarGrid calendarGrid, DateTime date, MyObservableList<BaseViewItemMegaItem> allItems) : base(calendarGrid, date)
         {
