@@ -18,7 +18,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewItems;
-using Android.Support.V4.App;
 using PowerPlannerAndroid.Helpers;
 using Android.Service.Notification;
 using PowerPlannerAndroid.Services;
@@ -26,6 +25,7 @@ using PowerPlannerAndroid.Receivers;
 using Android.Graphics;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary;
+using AndroidX.Core.App;
 
 namespace PowerPlannerAndroid.Extensions
 {

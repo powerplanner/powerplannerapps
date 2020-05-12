@@ -7,7 +7,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using InterfacesDroid.Adapters;
@@ -18,6 +17,7 @@ using PowerPlannerAndroid.Views.ListItemHeaders;
 using PowerPlannerAndroid.Views;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using AndroidX.RecyclerView.Widget;
 
 namespace PowerPlannerAndroid.Adapters
 {

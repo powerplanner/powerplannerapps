@@ -24,6 +24,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using System.IO;
 using Android.Webkit;
+using AndroidX.Core.Content;
 
 namespace PowerPlannerAndroid
 {
@@ -73,7 +74,7 @@ namespace PowerPlannerAndroid
             {
                 this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
                 this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                this.Window.SetStatusBarColor(new Android.Graphics.Color(Android.Support.V4.Content.ContextCompat.GetColor(this, Resource.Color.primaryDark)));
+                this.Window.SetStatusBarColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.primaryDark)));
             }
 
             // Register the window
@@ -363,6 +364,11 @@ namespace PowerPlannerAndroid
                 if (v.Major > 0 && v < Variables.VERSION)
                 {
                     string changedText = "";
+
+                    if (v <= new Version(2004, 26, 2, 0))
+                    {
+                        changedText += "\n - Dark theme support added! Power Planner will now use a dark theme based on your theme selected in Android. Even the widgets will be dark!";
+                    }
 
                     if (v <= new Version(2003, 14, 3, 0))
                     {

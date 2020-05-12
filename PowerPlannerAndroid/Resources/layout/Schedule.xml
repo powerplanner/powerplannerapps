@@ -29,7 +29,7 @@
         </InterfacesDroid.Views.MyZoomAndPanView>
       
         <!--Week and change week bar-->
-      <android.support.v7.widget.Toolbar
+      <androidx.appcompat.widget.Toolbar
         android:id="@+id/WeekToolbar"
         style="@style/ActionBar">
         
@@ -84,7 +84,7 @@
           
         </LinearLayout>
         
-      </android.support.v7.widget.Toolbar>
+      </androidx.appcompat.widget.Toolbar>
     </LinearLayout>
 
     <!--Editing section is down here-->

@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:max="100"/>
+        android:max="100"
+        android:thumbTint="#90EE90"
+        android:progressTint="#90EE90"/>
     
     <ImageButton
         android:id="@+id/ImageButtonHomeworkProgressIncomplete"

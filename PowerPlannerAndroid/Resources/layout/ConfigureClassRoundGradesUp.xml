@@ -11,7 +11,7 @@
       android:layout_height="wrap_content"
       android:padding="16dp">
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/SwitchRoundGradesUp"
         android:text="{ClassPage_ToggleRoundGradesUp.Header}"
         android:textSize="16sp"

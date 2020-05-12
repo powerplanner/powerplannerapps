@@ -10,11 +10,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
-using Android.Support.V7.Widget;
-using Android.Support.Design.Widget;
 using PowerPlannerAndroid.Adapters;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using AndroidX.RecyclerView.Widget;
+using Google.Android.Material.FloatingActionButton;
 
 namespace PowerPlannerAndroid.Views
 {

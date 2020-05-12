@@ -68,7 +68,7 @@ namespace PowerPlannerAndroid.Views
             new DatePickerDialog(Context, handler, selectedDate.Year, selectedDate.Month - 1, selectedDate.Day).Show();
         }
 
-        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

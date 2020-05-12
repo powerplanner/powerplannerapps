@@ -11,14 +11,14 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using InterfacesDroid.Views;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
 using PowerPlannerAndroid.Adapters;
 using InterfacesDroid.Themes;
 using System.ComponentModel;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewItems;
+using AndroidX.RecyclerView.Widget;
+using Google.Android.Material.FloatingActionButton;
 
 namespace PowerPlannerAndroid.Views
 {

@@ -10,12 +10,12 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAndroid.ViewModel.Settings;
-using Android.Support.V7.Widget;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAndroid.Helpers;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary;
+using AndroidX.AppCompat.Widget;
 
 namespace PowerPlannerAndroid.Views
 {

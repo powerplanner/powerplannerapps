@@ -24,10 +24,10 @@ using InterfacesDroid.Views;
 using InterfacesDroid.DataTemplates;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
 using System.ComponentModel;
 using BareMvvm.Core.App;
+using AndroidX.Core.Content;
+using AndroidX.Core.View;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -55,7 +55,7 @@ namespace PowerPlannerAndroid.Views
 
         public DayScheduleSnapshotView(Context context) : base(context)
         {
-            this.Background = new ColorDrawable(Color.Argb(255, 240, 240, 240));
+            this.SetBackgroundResource(Resource.Color.controlBackground);
             this.Orientation = Orientation.Vertical;
 
             TimeIndicatorSize = ThemeHelper.AsPx(context, TIME_INDICATOR_SIZE);
@@ -287,7 +287,6 @@ namespace PowerPlannerAndroid.Views
             //put in the vertical gap divider
             View verticalGap = new View(Context)
             {
-                Background = new ColorDrawable(Color.White),
                 LayoutParameters = new RelativeLayout.LayoutParams(
                     GapSize,
                     RelativeLayout.LayoutParams.MatchParent)
@@ -295,6 +294,7 @@ namespace PowerPlannerAndroid.Views
                     LeftMargin = TimeIndicatorSize + GapSize
                 }
             };
+            verticalGap.SetBackgroundResource(Resource.Color.scheduleSnapshotDividers);
             _schedulesContent.AddView(verticalGap);
 
             int row = 0;
@@ -318,7 +318,7 @@ namespace PowerPlannerAndroid.Views
                 //if not last row, add the divider
                 if (time + TimeSpan.FromHours(1) <= _arrangedItems.EndTime)
                 {
-                    _schedulesContent.AddView(new View(Context)
+                    var v = new View(Context)
                     {
                         Background = new ColorDrawable(Color.White),
                         LayoutParameters = new RelativeLayout.LayoutParams(
@@ -327,7 +327,9 @@ namespace PowerPlannerAndroid.Views
                         {
                             TopMargin = startHeight + TimeIndicatorSize
                         }
-                    });
+                    };
+                    v.SetBackgroundResource(Resource.Color.scheduleSnapshotDividers);
+                    _schedulesContent.AddView(v);
                 }
             }
 
