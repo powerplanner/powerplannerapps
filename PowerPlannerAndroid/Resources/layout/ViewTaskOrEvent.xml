@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <ScrollView
+        android:id="@+id/ViewTaskOrEventScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!--Name-->
+            <TextView
+                style="@android:style/TextAppearance.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                local:Binding="{Source=Item.Name, Target=Text}"
+                android:autoLink="all"/>
+        
+            <!--Subtitle-->
+            <InterfacesDroid.Views.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                local:Binding="{Source=Item.Subtitle, Target=Text}; {Source=Item.Class.Color, Target=TextColor, Converter=ColorArrayToColorConverter}"/>
+        
+            <!--Details-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                local:Binding="{Source=Item.Details, Target=Text}"
+                android:autoLink="all"/>
+
+          <!--Image attachments-->
+          <PowerPlannerAndroid.Views.Controls.ImageAttachmentsWrapGrid
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            local:Binding="{Source=Item.ImageAttachments, Target=ImageAttachments}"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--<FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">-->
+        <PowerPlannerAndroid.Views.Controls.TaskProgressBarControl
+            android:id="@+id/TaskProgressBarControl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:visibility="gone"/>
+    <!--</FrameLayout>-->
+
+    <Button
+      style="@style/PowerPlannerBlueButton"
+      android:id="@+id/ButtonConvertToGrade"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="{ViewTaskOrEventPage_ButtonConvertToGrade.Content}"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="16dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      android:visibility="gone"/>
+
+</LinearLayout>

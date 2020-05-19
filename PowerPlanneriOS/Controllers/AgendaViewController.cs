@@ -15,6 +15,7 @@ using PowerPlanneriOS.Views;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -59,8 +60,8 @@ namespace PowerPlanneriOS.Controllers
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-            actionSheetAlert.AddAction(UIAlertAction.Create("Add Task", UIAlertActionStyle.Default, delegate { ViewModel.AddHomework(); }));
-            actionSheetAlert.AddAction(UIAlertAction.Create("Add Event", UIAlertActionStyle.Default, delegate { ViewModel.AddExam(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Task", UIAlertActionStyle.Default, delegate { ViewModel.AddTask(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Event", UIAlertActionStyle.Default, delegate { ViewModel.AddEvent(); }));
 
             actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
 
@@ -147,7 +148,7 @@ namespace PowerPlanneriOS.Controllers
                 tableView.ReloadData();
             }
 
-            public void ScrollToItem(BaseViewItemHomeworkExam item)
+            public void ScrollToItem(ViewItemTaskOrEvent item)
             {
                 for (int i = 0; i < _viewModel.ItemsWithHeaders.Count; i++)
                 {
@@ -214,9 +215,9 @@ namespace PowerPlanneriOS.Controllers
             {
                 object item = GetItem(indexPath.Row);
 
-                if (item is BaseViewItemHomeworkExam)
+                if (item is ViewItemTaskOrEvent taskOrEvent)
                 {
-                    _viewModel.ShowItem(item as BaseViewItemHomeworkExam);
+                    _viewModel.ShowItem(taskOrEvent);
 
                     // Immediately unselect it
                     _tableView.SelectRow(null, true, UITableViewScrollPosition.None);

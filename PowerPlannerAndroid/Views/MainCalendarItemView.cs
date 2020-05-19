@@ -24,7 +24,7 @@ namespace PowerPlannerAndroid.Views
         private View _viewIsComplete;
         private TextView _textViewTitle;
 
-        public Action AfterOpenedHomeworkAction { get; set; }
+        public Action AfterOpenedTaskOrEventAction { get; set; }
 
         public const int TOTAL_HEIGHT_IN_DP = 31; // 29 + 2dp margin at bottom
 
@@ -68,7 +68,7 @@ namespace PowerPlannerAndroid.Views
 
             try
             {
-                AfterOpenedHomeworkAction?.Invoke();
+                AfterOpenedTaskOrEventAction?.Invoke();
             }
             catch (Exception ex)
             {

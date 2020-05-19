@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System.Collections;
 using System.Collections.Specialized;
 
@@ -161,19 +161,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             InTheFuture
         }
 
-        public void AddHomework()
+        public void AddTask()
         {
             AddItem(TaskOrEventType.Task);
         }
 
-        public void AddExam()
+        public void AddEvent()
         {
             AddItem(TaskOrEventType.Event);
         }
 
         private void AddItem(TaskOrEventType type)
         {
-            MainScreenViewModel.ShowPopup(AddHomeworkViewModel.CreateForAdd(MainScreenViewModel, new AddHomeworkViewModel.AddParameter()
+            MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
                 Classes = MainScreenViewModel.Classes,

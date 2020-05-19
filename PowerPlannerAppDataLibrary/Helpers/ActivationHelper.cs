@@ -62,11 +62,11 @@ namespace PowerPlannerAppDataLibrary.Helpers
                     break;
 
                 case ArgumentsAction.QuickAddHomeworkToCurrentAccount:
-                    answer = new QuickAddHomeworkToCurrentAccountArguments();
+                    answer = new QuickAddTaskToCurrentAccountArguments();
                     break;
 
                 case ArgumentsAction.QuickAddExamToCurrentAccount:
-                    answer = new QuickAddExamToCurrentAccountArguments();
+                    answer = new QuickAddEventToCurrentAccountArguments();
                     break;
 
                 case ArgumentsAction.OpenAccount:
@@ -74,11 +74,11 @@ namespace PowerPlannerAppDataLibrary.Helpers
                     break;
 
                 case ArgumentsAction.ViewHomework:
-                    answer = new ViewHomeworkArguments();
+                    answer = new ViewTaskArguments();
                     break;
 
                 case ArgumentsAction.ViewExam:
-                    answer = new ViewExamArguments();
+                    answer = new ViewEventArguments();
                     break;
 
                 case ArgumentsAction.ViewHoliday:
@@ -101,10 +101,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
             BaseArgumentsWithAccountAndItem args;
 
             if (item.MegaItemType == PowerPlannerSending.MegaItemType.Homework)
-                args = new ViewHomeworkArguments();
+                args = new ViewTaskArguments();
 
             else if (item.MegaItemType == PowerPlannerSending.MegaItemType.Exam)
-                args = new ViewExamArguments();
+                args = new ViewEventArguments();
 
             else
                 return new OpenAccountArguments()
@@ -124,10 +124,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
             BaseArgumentsWithAccountAndItem args;
 
             if (item.Type == TaskOrEventType.Task)
-                args = new ViewHomeworkArguments();
+                args = new ViewTaskArguments();
 
             else if (item.Type == TaskOrEventType.Event)
-                args = new ViewExamArguments();
+                args = new ViewEventArguments();
 
             else
                 return new OpenAccountArguments()
@@ -311,7 +311,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         }
     }
 
-    public class ViewHomeworkArguments : BaseArgumentsWithAccountAndItem
+    public class ViewTaskArguments : BaseArgumentsWithAccountAndItem
     {
         internal override ArgumentsAction Action
         {
@@ -322,7 +322,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         }
     }
 
-    public class ViewExamArguments : BaseArgumentsWithAccountAndItem
+    public class ViewEventArguments : BaseArgumentsWithAccountAndItem
     {
         internal override ArgumentsAction Action
         {
@@ -366,7 +366,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         }
     }
 
-    public class QuickAddHomeworkToCurrentAccountArguments : BaseArguments
+    public class QuickAddTaskToCurrentAccountArguments : BaseArguments
     {
         internal override ArgumentsAction Action
         {
@@ -377,7 +377,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         }
     }
 
-    public class QuickAddExamToCurrentAccountArguments : BaseArguments
+    public class QuickAddEventToCurrentAccountArguments : BaseArguments
     {
         internal override ArgumentsAction Action
         {
@@ -394,10 +394,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
         ViewSchedule,
         ViewClass,
         QuickAdd,
-        QuickAddHomeworkToCurrentAccount,
-        QuickAddExamToCurrentAccount,
-        ViewHomework,
-        ViewExam,
+        QuickAddHomeworkToCurrentAccount, // Left as "Homework" for legacy purposes (old versions might still have content referencing it)
+        QuickAddExamToCurrentAccount, // Left as "Exam" for legacy purposes (old versions might still have content referencing it)
+        ViewHomework, // Left as "Homework" for legacy purposes (notification might have been sent before updates)
+        ViewExam, // Left as "Exam" for legacy purposes (notification might have been sent before updates)
         OpenAccount,
         ViewHoliday,
         ViewPage,

@@ -186,7 +186,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
             foreach (var item in Items)
             {
-                //add the current item to the colors list (don't add complete homeworks)
+                //add the current item to the colors list (don't add complete tasks/events)
                 if (item is ViewItemTaskOrEvent && item.Date.Date == date && ShouldIncludeItem(item))
                     colors.Add(getBrush(item));
             }
@@ -204,7 +204,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
         }
 
         /// <summary>
-        /// Gets the brush for the homework item, based on its class color
+        /// Gets the brush for the task/event item, based on its class color
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>

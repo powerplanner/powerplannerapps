@@ -63,7 +63,7 @@
 
                 <TextBlock
                     x:Uid="Settings_Tiles_QuickAdd_Description"
-                    Text="The Quick Add Tile allows you to quickly add a new homework or exam, by instantly opening the options to add those items when tapped."
+                    Text="The Quick Add Tile allows you to quickly add a new task or event, by instantly opening the options to add those items when tapped."
                     Style="{ThemeResource BodyTextBlockStyle}"
                     Margin="0,12,0,12"/>
 

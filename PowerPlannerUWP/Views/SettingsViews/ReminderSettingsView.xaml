@@ -48,7 +48,7 @@
 
                 <TextBlock
                     x:Uid="Settings_Reminders_Description"
-                    Text="This application automatically sets reminders for each homework and exam. The reminders are just like calendar event reminders, with a snooze and dismiss option."
+                    Text="This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option."
                     Style="{ThemeResource BodyTextBlockStyle}"/>
                 
                 
@@ -63,7 +63,7 @@
                 
                 <TextBlock
                     x:Uid="Settings_Reminders_DayBeforeDescription"
-                    Text="This feature reminds you the day before your incomplete homework or exam is due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day."
+                    Text="This feature reminds you the day before your incomplete task or event is due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day."
                     Style="{ThemeResource CaptionTextBlockStyle}"/>
 
 
@@ -78,7 +78,7 @@
 
                 <TextBlock
                     x:Name="Settings_Reminders_DayOfDescription"
-                    Text="This feature reminds you on the same day that your incomplete homework or exam is due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day."
+                    Text="This feature reminds you on the same day that your incomplete task or event is due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day."
                     Style="{ThemeResource CaptionTextBlockStyle}"/>
 
 

@@ -72,7 +72,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         private double _percentComplete;
         public double PercentComplete
         {
-            get { return _percentComplete; }
+            get
+            {
+                if (Type == TaskOrEventType.Event)
+                {
+                    return IsComplete ? 1 : 0;
+                }
+
+                return _percentComplete;
+            }
+
             private set { SetProperty(ref _percentComplete, value, "PercentComplete", "IsComplete"); }
         }
 
@@ -279,10 +288,10 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
         internal ViewItemTaskOrEvent(DataItemMegaItem dataItem) : base(dataItem)
         {
-            base.PropertyChanged += ViewItemHomework_PropertyChanged;
+            base.PropertyChanged += ViewItemTaskOrEvent_PropertyChanged;
         }
 
-        private void ViewItemHomework_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ViewItemTaskOrEvent_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ToolsPortable;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
@@ -269,14 +269,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             }
         }
 
-        public async Task HandleViewHomeworkActivation(Guid localAccountId, Guid homeworkId)
+        public async Task HandleViewTaskActivation(Guid localAccountId, Guid taskId)
         {
-            await HandleViewTaskOrEventActivation(localAccountId, homeworkId);
+            await HandleViewTaskOrEventActivation(localAccountId, taskId);
         }
 
-        public async Task HandleViewExamActivation(Guid localAccountId, Guid examId)
+        public async Task HandleViewEventActivation(Guid localAccountId, Guid eventId)
         {
-            await HandleViewTaskOrEventActivation(localAccountId, examId);
+            await HandleViewTaskOrEventActivation(localAccountId, eventId);
         }
 
         private async Task HandleViewTaskOrEventActivation(Guid localAccountId, Guid itemId)
@@ -379,12 +379,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             }
         }
 
-        public Task HandleQuickAddHomework()
+        public Task HandleQuickAddTask()
         {
             return HandleQuickAddItem(TaskOrEventType.Task);
         }
 
-        public Task HandleQuickAddExam()
+        public Task HandleQuickAddEvent()
         {
             return HandleQuickAddItem(TaskOrEventType.Event);
         }
@@ -400,7 +400,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             if (mainScreen != null && mainScreen.CurrentAccount != null && mainScreen.Classes != null && mainScreen.Classes.Count > 0)
             {
                 Popups.Clear();
-                var newModel = AddHomeworkViewModel.CreateForAdd(mainScreen, new AddHomeworkViewModel.AddParameter()
+                var newModel = AddTaskOrEventViewModel.CreateForAdd(mainScreen, new AddTaskOrEventViewModel.AddParameter()
                 {
                     Classes = mainScreen.Classes.ToArray(),
                     DueDate = DateTime.Today,

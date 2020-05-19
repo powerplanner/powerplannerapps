@@ -294,7 +294,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     spacingWhenNoAdditionalItems: _spacingWhenNoAdditionalItems,
                     spacingWithAdditionalItems: _spacingWithAdditionalItems,
                     widthOfCollapsed: WidthOfCollapsed,
-                    includeHomeworkAndHolidays: true);
+                    includeTasksAndEventsAndHolidays: true);
 
                 arranger.OnItemsChanged += _arrangerItemsChangedHandler.Handler;
 

@@ -443,7 +443,7 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
           <source>Display upcoming events</source>
           <target state="final" state-qualifier="mt-suggestion">Kommende Veranstaltungen anzeigen</target>
         </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_ToggleHomework.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_Tiles_ClassTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
           <source>Display incomplete tasks</source>
           <target state="final" state-qualifier="mt-suggestion">Unvollständige Aufgaben anzeigen</target>
         </trans-unit>
@@ -455,11 +455,11 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
           <source>MAIN TILE</source>
           <target state="final">HAUPTKACHEL</target>
         </trans-unit>
-        <trans-unit id="Settings_Tiles_MainTile_ToggleExams.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_Tiles_MainTile_ToggleEvents.Header" translate="yes" xml:space="preserve">
           <source>Display upcoming events</source>
           <target state="final" state-qualifier="mt-suggestion">Kommende Veranstaltungen anzeigen</target>
         </trans-unit>
-        <trans-unit id="Settings_Tiles_MainTile_ToggleHomework.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_Tiles_MainTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
           <source>Display incomplete tasks</source>
           <target state="final" state-qualifier="mt-suggestion">Unvollständige Aufgaben anzeigen</target>
         </trans-unit>
@@ -792,14 +792,6 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>Yesterday</source>
           <target state="final" state-qualifier="tm-suggestion">gestern</target>
         </trans-unit>
-        <trans-unit id="String_Exam" translate="yes" xml:space="preserve">
-          <source>Event</source>
-          <target state="final" state-qualifier="tm-suggestion">Ereignis</target>
-        </trans-unit>
-        <trans-unit id="String_Homework" translate="yes" xml:space="preserve">
-          <source>Task</source>
-          <target state="final" state-qualifier="tm-suggestion">Aufgabe</target>
-        </trans-unit>
         <trans-unit id="RelativeDate_Future" translate="yes" xml:space="preserve">
           <source>Future</source>
           <target state="final" state-qualifier="tm-suggestion">Zukunft</target>
@@ -891,7 +883,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>Details</source>
           <target state="final" state-qualifier="tm-suggestion">Details</target>
         </trans-unit>
-        <trans-unit id="ClassPage_PivotItemExams.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_PivotItemEvents.Header" translate="yes" xml:space="preserve">
           <source>Events</source>
           <target state="final" state-qualifier="tm-suggestion">Ereignisse</target>
         </trans-unit>
@@ -899,7 +891,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>Grades</source>
           <target state="final" state-qualifier="tm-suggestion">Noten</target>
         </trans-unit>
-        <trans-unit id="ClassPage_PivotItemHomework.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_PivotItemTasks.Header" translate="yes" xml:space="preserve">
           <source>Tasks</source>
           <target state="final" state-qualifier="tm-suggestion">Aufgaben</target>
         </trans-unit>
@@ -935,7 +927,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>DETAILS</source>
           <target state="final" state-qualifier="tm-suggestion">DETAILS</target>
         </trans-unit>
-        <trans-unit id="ClassPage_TextBlockExams.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_TextBlockEvents.Text" translate="yes" xml:space="preserve">
           <source>EVENTS</source>
           <target state="final">EREIGNISSE</target>
         </trans-unit>
@@ -943,7 +935,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>GRADES</source>
           <target state="final">NOTEN</target>
         </trans-unit>
-        <trans-unit id="ClassPage_TextBlockHomework.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_TextBlockTasks.Text" translate="yes" xml:space="preserve">
           <source>TASKS</source>
           <target state="final" state-qualifier="tm-suggestion">AUFGABEN</target>
         </trans-unit>
@@ -1015,7 +1007,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>Edit times</source>
           <target state="final">Uhrzeiten bearbeiten</target>
         </trans-unit>
-        <trans-unit id="String_ExamDatePrefix" translate="yes" xml:space="preserve">
+        <trans-unit id="String_EventDatePrefix" translate="yes" xml:space="preserve">
           <source>on</source>
           <target state="final">Am</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Something like "on 3/25/2016"</note>
@@ -1024,7 +1016,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>Custom (not saved)</source>
           <target state="final">Benutzerdefiniert (nicht gespeichert)</target>
         </trans-unit>
-        <trans-unit id="String_HomeworkDatePrefix" translate="yes" xml:space="preserve">
+        <trans-unit id="String_TaskDatePrefix" translate="yes" xml:space="preserve">
           <source>due</source>
           <target state="final">Fällig bis</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Something like "due 3/25/2016"</note>
@@ -1045,7 +1037,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>Invalid Weight Categories</source>
           <target state="final">Ungültige Gewichtskategorie</target>
         </trans-unit>
-        <trans-unit id="String_NewExam" translate="yes" xml:space="preserve">
+        <trans-unit id="String_NewEvent" translate="yes" xml:space="preserve">
           <source>New event</source>
           <target state="final" state-qualifier="tm-suggestion">Neues Ereignis</target>
         </trans-unit>
@@ -1053,7 +1045,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>New grade</source>
           <target state="final">Neue Note</target>
         </trans-unit>
-        <trans-unit id="String_NewHomework" translate="yes" xml:space="preserve">
+        <trans-unit id="String_NewTask" translate="yes" xml:space="preserve">
           <source>New task</source>
           <target state="final" state-qualifier="tm-suggestion">Neue Aufgabe</target>
         </trans-unit>
@@ -1170,19 +1162,19 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>Edit</source>
           <target state="final" state-qualifier="tm-suggestion">Bearbeiten</target>
         </trans-unit>
-        <trans-unit id="EditHomeworkPage_ComboBoxClasses.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="EditTaskOrEventPage_ComboBoxClasses.Header" translate="yes" xml:space="preserve">
           <source>Class</source>
           <target state="final">Kurs</target>
         </trans-unit>
-        <trans-unit id="EditHomeworkPage_DatePickerDate.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="EditTaskOrEventPage_DatePickerDate.Header" translate="yes" xml:space="preserve">
           <source>Date</source>
           <target state="final" state-qualifier="tm-suggestion">Datum</target>
         </trans-unit>
-        <trans-unit id="EditHomeworkPage_TextBoxDetails.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="EditTaskOrEventPage_TextBoxDetails.Header" translate="yes" xml:space="preserve">
           <source>Details</source>
           <target state="final" state-qualifier="tm-suggestion">Details</target>
         </trans-unit>
-        <trans-unit id="EditHomeworkPage_TextBoxName.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="EditTaskOrEventPage_TextBoxName.Header" translate="yes" xml:space="preserve">
           <source>Name</source>
           <target state="final" state-qualifier="mt-suggestion">Name</target>
         </trans-unit>
@@ -1282,11 +1274,11 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>QUICK ADD</source>
           <target state="final">SCHNELL HINZUFÜGEN</target>
         </trans-unit>
-        <trans-unit id="QuickAddPage_ButtonAddExam.Content" translate="yes" xml:space="preserve">
+        <trans-unit id="QuickAddPage_ButtonAddEvent.Content" translate="yes" xml:space="preserve">
           <source>add event</source>
           <target state="final">Ereignis hinzufügen</target>
         </trans-unit>
-        <trans-unit id="QuickAddPage_ButtonAddHomework.Content" translate="yes" xml:space="preserve">
+        <trans-unit id="QuickAddPage_ButtonAddTask.Content" translate="yes" xml:space="preserve">
           <source>add task</source>
           <target state="final" state-qualifier="mt-suggestion">Aufgabe hinzufügen</target>
         </trans-unit>
@@ -1318,25 +1310,9 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>No Class</source>
           <target state="final" state-qualifier="tm-suggestion">Keine Klasse</target>
         </trans-unit>
-        <trans-unit id="String_AddExam" translate="yes" xml:space="preserve">
-          <source>Add event</source>
-          <target state="final" state-qualifier="tm-suggestion">Ereignis hinzufügen</target>
-        </trans-unit>
-        <trans-unit id="String_AddHomework" translate="yes" xml:space="preserve">
-          <source>Add task</source>
-          <target state="final" state-qualifier="mt-suggestion">Aufgabe hinzufügen</target>
-        </trans-unit>
         <trans-unit id="String_DropGrade" translate="yes" xml:space="preserve">
           <source>Drop grade</source>
           <target state="final">Note verwerfen</target>
-        </trans-unit>
-        <trans-unit id="String_EditExam" translate="yes" xml:space="preserve">
-          <source>Edit event</source>
-          <target state="final" state-qualifier="tm-suggestion">Ereignis bearbeiten</target>
-        </trans-unit>
-        <trans-unit id="String_EditHomework" translate="yes" xml:space="preserve">
-          <source>Edit task</source>
-          <target state="final" state-qualifier="mt-suggestion">Aufgabe bearbeiten</target>
         </trans-unit>
         <trans-unit id="String_InvalidUsername" translate="yes" xml:space="preserve">
           <source>Invalid username</source>
@@ -1379,11 +1355,11 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>dropped</source>
           <target state="final">verworfen</target>
         </trans-unit>
-        <trans-unit id="ViewHomeworkPage_String_TitleExam" translate="yes" xml:space="preserve">
+        <trans-unit id="ViewTaskOrEventPage_String_TitleEvent" translate="yes" xml:space="preserve">
           <source>VIEW EVENT</source>
           <target state="final">EREIGNIS ANZEIGEN</target>
         </trans-unit>
-        <trans-unit id="ViewHomeworkPage_String_TitleHomework" translate="yes" xml:space="preserve">
+        <trans-unit id="ViewTaskOrEventPage_String_TitleTask" translate="yes" xml:space="preserve">
           <source>VIEW TASK</source>
           <target state="final" state-qualifier="mt-suggestion">AUFGABE ANZEIGEN</target>
         </trans-unit>
@@ -1670,19 +1646,19 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>EDIT CLASS</source>
           <target state="final" state-qualifier="mt-suggestion">KLASSE BEARBEITEN</target>
         </trans-unit>
-        <trans-unit id="ClassPage_ButtonHideOldExamsString" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_ButtonHideOldEventsString" translate="yes" xml:space="preserve">
           <source>Hide old events</source>
           <target state="final" state-qualifier="mt-suggestion">Alte Termine ausblenden</target>
         </trans-unit>
-        <trans-unit id="ClassPage_ButtonHideOldHomeworkString" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_ButtonHideOldTasksString" translate="yes" xml:space="preserve">
           <source>Hide old tasks</source>
           <target state="final">Alte Aufgaben ausblenden</target>
         </trans-unit>
-        <trans-unit id="ClassPage_ButtonShowOldExamsString" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_ButtonShowOldEventsString" translate="yes" xml:space="preserve">
           <source>Show old events</source>
           <target state="final" state-qualifier="mt-suggestion">Alte Veranstaltungen anzeigen</target>
         </trans-unit>
-        <trans-unit id="ClassPage_ButtonShowOldHomeworkString" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_ButtonShowOldTasksString" translate="yes" xml:space="preserve">
           <source>Show old tasks</source>
           <target state="final" state-qualifier="mt-suggestion">Alte Aufgaben anzeigen</target>
         </trans-unit>
@@ -1721,11 +1697,11 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Unassigned items</source>
           <target state="final">Nicht zugewiesenes Element</target>
         </trans-unit>
-        <trans-unit id="EditHomeworkPage_ComboBoxWeightCategory.Header" translate="yes" xml:space="preserve">
+        <trans-unit id="EditTaskOrEventPage_ComboBoxWeightCategory.Header" translate="yes" xml:space="preserve">
           <source>Grade Weight Category</source>
           <target state="final">Noten-Gewichtungsklasse</target>
         </trans-unit>
-        <trans-unit id="ViewHomeworkPage_ButtonConvertToGrade.Content" translate="yes" xml:space="preserve">
+        <trans-unit id="ViewTaskOrEventPage_ButtonConvertToGrade.Content" translate="yes" xml:space="preserve">
           <source>Convert to grade</source>
           <target state="final">In Note umwandeln</target>
         </trans-unit>

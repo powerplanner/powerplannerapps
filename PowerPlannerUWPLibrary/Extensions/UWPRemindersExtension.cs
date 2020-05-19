@@ -157,7 +157,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
                 DateTime tomorrow = DateTime.SpecifyKind(todayAsUtc.AddDays(1), DateTimeKind.Local);
 
-                //select all incomplete homework that is due on tomorrow or later
+                //select all incomplete tasks/events that is due on tomorrow or later
                 foreach (ViewItemTaskOrEvent h in itemsDueTodayOrGreater.Where(i => i.Date.Date >= tomorrow))
                 {
                     token.ThrowIfCancellationRequested();
@@ -186,16 +186,16 @@ namespace PowerPlannerUWPLibrary.Extensions
                         continue;
 
 
-                    ViewItemTaskOrEvent[] homeworks = items.OfType<ViewItemTaskOrEvent>().ToArray();
-                    ViewItemTaskOrEvent[] exams = items.OfType<ViewItemTaskOrEvent>().ToArray();
+                    ViewItemTaskOrEvent[] tasks = items.Where(i => i.Type == TaskOrEventType.Task).ToArray();
+                    ViewItemTaskOrEvent[] events = items.Where(i => i.Type == TaskOrEventType.Event).ToArray();
 
 
-                    if (homeworks.Length > 0)
+                    if (tasks.Length > 0)
                     {
                         XmlDocument xml = GenerateToastReminder(
-                            homeworks.Length == 1 ? "You have 1 item due tomorrow" : "You have " + homeworks.Length + " items due tomorrow",
-                            GetItemLineText(homeworks[0]),
-                            homeworks.Length >= 2 ? GetItemLineText(homeworks[1]) : null,
+                            tasks.Length == 1 ? "You have 1 item due tomorrow" : "You have " + tasks.Length + " items due tomorrow",
+                            GetItemLineText(tasks[0]),
+                            tasks.Length >= 2 ? GetItemLineText(tasks[1]) : null,
 #pragma warning disable 0612
                             new QueryStringHelper()
 #pragma warning restore 0612
@@ -207,7 +207,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                         string remoteId = null;
                         if (account.IsOnlineAccount)
                         {
-                            int hashedItems = string.Join(";", homeworks.Select(i => i.Identifier)).GetHashCode();
+                            int hashedItems = string.Join(";", tasks.Select(i => i.Identifier)).GetHashCode();
                             remoteId = $"PP_DayBeforeHomeworks_{account.AccountId}_{hashedItems}";
                         }
 
@@ -220,12 +220,12 @@ namespace PowerPlannerUWPLibrary.Extensions
                             );
                     }
 
-                    if (exams.Length > 0)
+                    if (events.Length > 0)
                     {
                         XmlDocument xml = GenerateToastReminder(
-                            exams.Length == 1 ? "You have 1 event tomorrow" : "You have " + exams.Length + " events tomorrow",
-                            GetItemLineText(exams[0]),
-                            exams.Length >= 2 ? GetItemLineText(exams[1]) : null,
+                            events.Length == 1 ? "You have 1 event tomorrow" : "You have " + events.Length + " events tomorrow",
+                            GetItemLineText(events[0]),
+                            events.Length >= 2 ? GetItemLineText(events[1]) : null,
 #pragma warning disable 0612
                             new QueryStringHelper()
 #pragma warning restore 0612
@@ -237,7 +237,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                         string remoteId = null;
                         if (account.IsOnlineAccount)
                         {
-                            int hashedItems = string.Join(";", exams.Select(i => i.Identifier)).GetHashCode();
+                            int hashedItems = string.Join(";", events.Select(i => i.Identifier)).GetHashCode();
                             remoteId = $"PP_DayBeforeExams_{account.AccountId}_{hashedItems}";
                         }
 

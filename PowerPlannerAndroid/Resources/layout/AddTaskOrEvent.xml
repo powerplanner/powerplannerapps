@@ -1,0 +1,161 @@
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    xmlns:imageAttachmentsWrapGrid="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        style="@style/FullWidthEditText"
+        android:id="@+id/EditTextName"
+        android:inputType="textCapSentences|textAutoCorrect"
+        android:imeOptions="actionDone"
+        android:hint="{EditTaskOrEventPage_TextBoxName.Header}"
+        local:Binding="{Source=Name, Target=Text, Mode=TwoWay}"/>
+
+    <View style="@style/Divider"/>
+
+    <Spinner
+        android:id="@+id/SpinnerClass"
+        style="@style/FullWidthSpinner"/>
+
+    <View style="@style/Divider"/>
+
+    <Button
+        android:id="@+id/ButtonDate"
+        style="@style/FullWidthNonAccentBorderlessButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fullWidthItemHeight"
+        local:Binding="{Source=Date, Target=Text, Converter=DateTimeToStringConverter, ConverterParameter='dddd, MMM d')}"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+
+    <View style="@style/Divider"/>
+
+    <Spinner
+        android:id="@+id/SpinnerWeightCategory"
+        style="@style/FullWidthSpinner"
+        local:Binding="{Source=IsWeightCategoryPickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <View style="@style/Divider"
+        local:Binding="{Source=IsWeightCategoryPickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <Spinner
+        android:id="@+id/SpinnerTimeOption"
+        style="@style/FullWidthSpinner"/>
+
+    <View style="@style/Divider"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="0dp"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      local:Binding="{Source=IsStartTimePickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}">
+      <Button
+          android:id="@+id/ButtonStartTime"
+          style="@style/BorderlessButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/foregroundFull"
+          local:Binding="{Source=StartTime, Target=Text, Converter=TimeSpanToStringConverter}"/>
+      <TextView
+          android:text="{TextBlock_To.Text}"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          local:Binding="{Source=IsEndTimePickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+      <Button
+          android:id="@+id/ButtonEndTime"
+          style="@style/BorderlessButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/foregroundFull"
+          local:Binding="{Source=EndTime, Target=Text, Converter=TimeSpanToStringConverter}; {Source=IsEndTimePickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+    </LinearLayout>
+
+    <View style="@style/Divider"
+        local:Binding="{Source=IsStartTimePickerVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="{DifferentTimeZoneWarning.Text}"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="#fc0000"
+        style="@android:style/TextAppearance.Small"
+        local:Binding="{Source=IsInDifferentTimeZone, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <View style="@style/Divider"
+        local:Binding="{Source=IsInDifferentTimeZone, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <EditText
+        style="@style/FullWidthEditText"
+        android:id="@+id/EditTextDetails"
+        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+        android:hint="{EditTaskOrEventPage_TextBoxDetails.Header}"
+        android:minLines="3"
+        android:gravity="top"
+        local:Binding="{Source=Details, Target=Text, Mode=TwoWay}"/>
+
+    <View style="@style/Divider"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/SwitchRepeats"
+      android:text="{RepeatingEntry_CheckBoxRepeats.Content}"
+      android:textSize="16sp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      local:Binding="{Source=Repeats, Target=Checked, Mode=TwoWay}; {Source=IsRepeatsVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <FrameLayout
+      android:id="@+id/RecurrenceControlContainer"
+      android:background="@color/controlBackground"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="12dp"
+      android:layout_marginTop="6dp"
+      android:layout_marginBottom="12dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      local:Binding="{Source=Repeats, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+
+    <View style="@style/Divider"/>
+
+    <TextView
+      android:text="{String_ImageAttachments}"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      android:textStyle="bold"/>
+
+    <!--Image attachments-->
+    <PowerPlannerAndroid.Views.Controls.EditingImageAttachmentsWrapGrid
+      android:id="@+id/EditingImageAttachmentsWrapGrid"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      local:Binding="{Source=ImageAttachments, Target=ImageAttachments}"/>
+
+    <View style="@style/Divider"/>
+
+  </LinearLayout>
+
+</ScrollView>

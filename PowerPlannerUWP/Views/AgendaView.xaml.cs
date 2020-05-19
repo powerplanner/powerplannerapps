@@ -1,8 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
-using PowerPlannerUWP.Views.HomeworkViews;
-
+using PowerPlannerUWP.Views.TaskOrEventViews;
 using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
@@ -162,10 +161,10 @@ namespace PowerPlannerUWP.Views
         {
             try
             {
-                App.ShowFlyoutAddHomeworkOrExam(
+                App.ShowFlyoutAddTaskOrEvent(
                     elToCenterFrom: sender as FrameworkElement,
-                    addHomeworkAction: ViewModel.AddHomework,
-                    addExamAction: ViewModel.AddExam);
+                    addTaskAction: ViewModel.AddTask,
+                    addEventAction: ViewModel.AddEvent);
             }
 
             catch (Exception ex)
@@ -194,7 +193,7 @@ namespace PowerPlannerUWP.Views
             g.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             g.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
-            var headerView = new HomeworkListHeader()
+            var headerView = new TasksOrEventsListHeader()
             {
                 Header = header,
                 DateToUseForNewItems = dateForNewItems,
@@ -203,23 +202,13 @@ namespace PowerPlannerUWP.Views
 
             g.Children.Add(headerView);
 
-            var list = new HomeworkItemsControl()
+            var list = new TasksOrEventsItemsControl()
             {
                 Margin = new Thickness(0, 5, 0, 0),
                 VerticalAlignment = VerticalAlignment.Top
             };
 
-            
-
-            //var list = new HomeworkListView()
-            //{
-            //    Header = new Rectangle()
-            //    {
-            //        Height = 6
-            //    }
-            //};
-
-            list.SetBinding(HomeworkListView.ItemsSourceProperty, new Binding() { Path = new PropertyPath(itemsSourcePath), Source = this });
+            list.SetBinding(TasksOrEventsItemsControl.ItemsSourceProperty, new Binding() { Path = new PropertyPath(itemsSourcePath), Source = this });
             Grid.SetRow(list, 1);
 
             g.Children.Add(list);

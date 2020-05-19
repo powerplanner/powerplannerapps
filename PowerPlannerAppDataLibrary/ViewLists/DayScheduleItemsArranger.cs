@@ -210,7 +210,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         private double _widthOfCollapsed;
         private TimeZoneInfo _schoolTimeZone;
 
-        private DayScheduleItemsArranger(AccountDataItem account, SemesterItemsViewGroup semesterItems, ScheduleViewItemsGroup scheduleGroup, DateTime date, double heightOfHour, double spacingWhenNoAdditionalItems, double spacingWithAdditionalItems, double widthOfCollapsed, bool includeHomeworkAndHolidays)
+        private DayScheduleItemsArranger(AccountDataItem account, SemesterItemsViewGroup semesterItems, ScheduleViewItemsGroup scheduleGroup, DateTime date, double heightOfHour, double spacingWhenNoAdditionalItems, double spacingWithAdditionalItems, double widthOfCollapsed, bool includeTasksAndEventsAndHolidays)
         {
             if (semesterItems.Semester == null)
             {
@@ -242,9 +242,9 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
             _schedules = schedules;
 
-            if (includeHomeworkAndHolidays)
+            if (includeTasksAndEventsAndHolidays)
             {
-                _events = HomeworksOnDay.Get(semesterItems.Items, date);
+                _events = TasksOrEventsOnDay.Get(semesterItems.Items, date);
                 _events.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Events_CollectionChanged).Handler;
             }
             else
@@ -252,7 +252,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 _events = new MyObservableList<BaseViewItemMegaItem>();
             }
 
-            if (includeHomeworkAndHolidays)
+            if (includeTasksAndEventsAndHolidays)
             {
                 _holidays = HolidaysOnDay.Create(semesterItems.Items, date);
                 _holidays.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(_holidays_CollectionChanged).Handler;
@@ -553,7 +553,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             _cached.Clear();
         }
 
-        public static DayScheduleItemsArranger Create(AccountDataItem account, SemesterItemsViewGroup semesterItems, ScheduleViewItemsGroup scheduleGroup, DateTime date, double heightOfHour, double spacingWhenNoAdditionalItems, double spacingWithAdditionalItems, double widthOfCollapsed, bool includeHomeworkAndHolidays)
+        public static DayScheduleItemsArranger Create(AccountDataItem account, SemesterItemsViewGroup semesterItems, ScheduleViewItemsGroup scheduleGroup, DateTime date, double heightOfHour, double spacingWhenNoAdditionalItems, double spacingWithAdditionalItems, double widthOfCollapsed, bool includeTasksAndEventsAndHolidays)
         {
             if (account == null)
             {
@@ -586,7 +586,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
             }
 
-            DayScheduleItemsArranger answer = new DayScheduleItemsArranger(account, semesterItems, scheduleGroup, date, heightOfHour, spacingWhenNoAdditionalItems, spacingWithAdditionalItems, widthOfCollapsed, includeHomeworkAndHolidays);
+            DayScheduleItemsArranger answer = new DayScheduleItemsArranger(account, semesterItems, scheduleGroup, date, heightOfHour, spacingWhenNoAdditionalItems, spacingWithAdditionalItems, widthOfCollapsed, includeTasksAndEventsAndHolidays);
             _cached.Add(answer);
             return answer;
         }

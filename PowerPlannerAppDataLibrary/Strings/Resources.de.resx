@@ -337,7 +337,7 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</value>
   <data name="Settings_Tiles_ClassTile_ToggleExams.Header" xml:space="preserve">
     <value>Kommende Veranstaltungen anzeigen</value>
   </data>
-  <data name="Settings_Tiles_ClassTile_ToggleHomework.Header" xml:space="preserve">
+  <data name="Settings_Tiles_ClassTile_ToggleTasks.Header" xml:space="preserve">
     <value>Unvollständige Aufgaben anzeigen</value>
   </data>
   <data name="Settings_Tiles_MainTile_Description.Text" xml:space="preserve">
@@ -346,10 +346,10 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</value>
   <data name="Settings_Tiles_MainTile_Header.Text" xml:space="preserve">
     <value>HAUPTKACHEL</value>
   </data>
-  <data name="Settings_Tiles_MainTile_ToggleExams.Header" xml:space="preserve">
+  <data name="Settings_Tiles_MainTile_ToggleEvents.Header" xml:space="preserve">
     <value>Kommende Veranstaltungen anzeigen</value>
   </data>
-  <data name="Settings_Tiles_MainTile_ToggleHomework.Header" xml:space="preserve">
+  <data name="Settings_Tiles_MainTile_ToggleTasks.Header" xml:space="preserve">
     <value>Unvollständige Aufgaben anzeigen</value>
   </data>
   <data name="Settings_Tiles_QuickAdd_Description.Text" xml:space="preserve">
@@ -595,12 +595,6 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="RelativeDate_Yesterday" xml:space="preserve">
     <value>gestern</value>
   </data>
-  <data name="String_Exam" xml:space="preserve">
-    <value>Ereignis</value>
-  </data>
-  <data name="String_Homework" xml:space="preserve">
-    <value>Aufgabe</value>
-  </data>
   <data name="RelativeDate_Future" xml:space="preserve">
     <value>Zukunft</value>
   </data>
@@ -670,13 +664,13 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="ClassPage_PivotItemDetails.Header" xml:space="preserve">
     <value>Details</value>
   </data>
-  <data name="ClassPage_PivotItemExams.Header" xml:space="preserve">
+  <data name="ClassPage_PivotItemEvents.Header" xml:space="preserve">
     <value>Ereignisse</value>
   </data>
   <data name="ClassPage_PivotItemGrades.Header" xml:space="preserve">
     <value>Noten</value>
   </data>
-  <data name="ClassPage_PivotItemHomework.Header" xml:space="preserve">
+  <data name="ClassPage_PivotItemTasks.Header" xml:space="preserve">
     <value>Aufgaben</value>
   </data>
   <data name="ClassPage_PivotItemOverview.Header" xml:space="preserve">
@@ -703,13 +697,13 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="ClassPage_TextBlockDetails.Text" xml:space="preserve">
     <value>DETAILS</value>
   </data>
-  <data name="ClassPage_TextBlockExams.Text" xml:space="preserve">
+  <data name="ClassPage_TextBlockEvents.Text" xml:space="preserve">
     <value>EREIGNISSE</value>
   </data>
   <data name="ClassPage_TextBlockGrades.Text" xml:space="preserve">
     <value>NOTEN</value>
   </data>
-  <data name="ClassPage_TextBlockHomework.Text" xml:space="preserve">
+  <data name="ClassPage_TextBlockTasks.Text" xml:space="preserve">
     <value>AUFGABEN</value>
   </data>
   <data name="ClassPage_TextBlockRoundGradesUpHelpBody.Text" xml:space="preserve">
@@ -763,14 +757,14 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="String_EditTimes" xml:space="preserve">
     <value>Uhrzeiten bearbeiten</value>
   </data>
-  <data name="String_ExamDatePrefix" xml:space="preserve">
+  <data name="String_EventDatePrefix" xml:space="preserve">
     <value>Am</value>
     <comment>Something like "on 3/25/2016"</comment>
   </data>
   <data name="String_GradeScaleCustom" xml:space="preserve">
     <value>Benutzerdefiniert (nicht gespeichert)</value>
   </data>
-  <data name="String_HomeworkDatePrefix" xml:space="preserve">
+  <data name="String_TaskDatePrefix" xml:space="preserve">
     <value>Fällig bis</value>
     <comment>Something like "due 3/25/2016"</comment>
   </data>
@@ -786,13 +780,13 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="String_InvalidWeightCategoriesMessageHeader" xml:space="preserve">
     <value>Ungültige Gewichtskategorie</value>
   </data>
-  <data name="String_NewExam" xml:space="preserve">
+  <data name="String_NewEvent" xml:space="preserve">
     <value>Neues Ereignis</value>
   </data>
   <data name="String_NewGrade" xml:space="preserve">
     <value>Neue Note</value>
   </data>
-  <data name="String_NewHomework" xml:space="preserve">
+  <data name="String_NewTask" xml:space="preserve">
     <value>Neue Aufgabe</value>
   </data>
   <data name="String_NoClassNameMessageBody" xml:space="preserve">
@@ -880,16 +874,16 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="AppBarButtonEdit.Label" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>
-  <data name="EditHomeworkPage_ComboBoxClasses.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_ComboBoxClasses.Header" xml:space="preserve">
     <value>Kurs</value>
   </data>
-  <data name="EditHomeworkPage_DatePickerDate.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_DatePickerDate.Header" xml:space="preserve">
     <value>Datum</value>
   </data>
-  <data name="EditHomeworkPage_TextBoxDetails.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_TextBoxDetails.Header" xml:space="preserve">
     <value>Details</value>
   </data>
-  <data name="EditHomeworkPage_TextBoxName.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_TextBoxName.Header" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="ForgotUsername_String_EnterEmailAddressExplanation" xml:space="preserve">
@@ -964,10 +958,10 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="QuickAddPage.Title" xml:space="preserve">
     <value>SCHNELL HINZUFÜGEN</value>
   </data>
-  <data name="QuickAddPage_ButtonAddExam.Content" xml:space="preserve">
+  <data name="QuickAddPage_ButtonAddEvent.Content" xml:space="preserve">
     <value>Ereignis hinzufügen</value>
   </data>
-  <data name="QuickAddPage_ButtonAddHomework.Content" xml:space="preserve">
+  <data name="QuickAddPage_ButtonAddTask.Content" xml:space="preserve">
     <value>Aufgabe hinzufügen</value>
   </data>
   <data name="ResetPassword_String_ErrorResettingPassword" xml:space="preserve">
@@ -991,20 +985,8 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="SelectClassPage_TextBlockHeader.Text" xml:space="preserve">
     <value>Keine Klasse</value>
   </data>
-  <data name="String_AddExam" xml:space="preserve">
-    <value>Ereignis hinzufügen</value>
-  </data>
-  <data name="String_AddHomework" xml:space="preserve">
-    <value>Aufgabe hinzufügen</value>
-  </data>
   <data name="String_DropGrade" xml:space="preserve">
     <value>Note verwerfen</value>
-  </data>
-  <data name="String_EditExam" xml:space="preserve">
-    <value>Ereignis bearbeiten</value>
-  </data>
-  <data name="String_EditHomework" xml:space="preserve">
-    <value>Aufgabe bearbeiten</value>
   </data>
   <data name="String_InvalidUsername" xml:space="preserve">
     <value>Ungültiger Benutzername</value>
@@ -1037,10 +1019,10 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
   <data name="ViewGradePage_TextBlockDropped.Text" xml:space="preserve">
     <value>verworfen</value>
   </data>
-  <data name="ViewHomeworkPage_String_TitleExam" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_String_TitleEvent" xml:space="preserve">
     <value>EREIGNIS ANZEIGEN</value>
   </data>
-  <data name="ViewHomeworkPage_String_TitleHomework" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_String_TitleTask" xml:space="preserve">
     <value>AUFGABE ANZEIGEN</value>
   </data>
   <data name="ClassWhatIfPage_RunExplanation.Text" xml:space="preserve">
@@ -1251,16 +1233,16 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="AddClassPage_EditTitle" xml:space="preserve">
     <value>KLASSE BEARBEITEN</value>
   </data>
-  <data name="ClassPage_ButtonHideOldExamsString" xml:space="preserve">
+  <data name="ClassPage_ButtonHideOldEventsString" xml:space="preserve">
     <value>Alte Termine ausblenden</value>
   </data>
-  <data name="ClassPage_ButtonHideOldHomeworkString" xml:space="preserve">
+  <data name="ClassPage_ButtonHideOldTasksString" xml:space="preserve">
     <value>Alte Aufgaben ausblenden</value>
   </data>
-  <data name="ClassPage_ButtonShowOldExamsString" xml:space="preserve">
+  <data name="ClassPage_ButtonShowOldEventsString" xml:space="preserve">
     <value>Alte Veranstaltungen anzeigen</value>
   </data>
-  <data name="ClassPage_ButtonShowOldHomeworkString" xml:space="preserve">
+  <data name="ClassPage_ButtonShowOldTasksString" xml:space="preserve">
     <value>Alte Aufgaben anzeigen</value>
   </data>
   <data name="RelativeDate_NextDayOfWeek" xml:space="preserve">
@@ -1290,10 +1272,10 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="ClassGrades_UnassignedItemsHeader" xml:space="preserve">
     <value>Nicht zugewiesenes Element</value>
   </data>
-  <data name="EditHomeworkPage_ComboBoxWeightCategory.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_ComboBoxWeightCategory.Header" xml:space="preserve">
     <value>Noten-Gewichtungsklasse</value>
   </data>
-  <data name="ViewHomeworkPage_ButtonConvertToGrade.Content" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_ButtonConvertToGrade.Content" xml:space="preserve">
     <value>In Note umwandeln</value>
   </data>
   <data name="WeightCategory_Exclude" xml:space="preserve">

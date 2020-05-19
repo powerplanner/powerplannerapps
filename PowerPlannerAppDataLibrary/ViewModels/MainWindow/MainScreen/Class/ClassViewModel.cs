@@ -73,32 +73,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             if (lastIdentifiers != null)
             {
-                if (ViewItemsGroupClass.Homework != null)
+                if (ViewItemsGroupClass.Tasks != null)
                 {
-                    var item = ViewItemsGroupClass.Homework.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
+                    var item = ViewItemsGroupClass.Tasks.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
                     if (item != null)
                     {
                         return item;
                     }
-                    if (ViewItemsGroupClass.PastCompletedHomework != null)
+                    if (ViewItemsGroupClass.PastCompletedTasks != null)
                     {
-                        item = ViewItemsGroupClass.PastCompletedHomework.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
+                        item = ViewItemsGroupClass.PastCompletedTasks.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
                         if (item != null)
                         {
                             return item;
                         }
                     }
                 }
-                if (ViewItemsGroupClass.Exams != null)
+                if (ViewItemsGroupClass.Events != null)
                 {
-                    var item = ViewItemsGroupClass.Exams.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
+                    var item = ViewItemsGroupClass.Events.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
                     if (item != null)
                     {
                         return item;
                     }
-                    if (ViewItemsGroupClass.PastCompletedExams != null)
+                    if (ViewItemsGroupClass.PastCompletedEvents != null)
                     {
-                        item = ViewItemsGroupClass.PastCompletedExams.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
+                        item = ViewItemsGroupClass.PastCompletedEvents.FirstOrDefault(i => lastIdentifiers.Contains(i.Identifier));
                         if (item != null)
                         {
                             return item;
@@ -147,8 +147,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 ClassName = ViewItemsGroupClass.Class.Name;
 
                 DetailsViewModel = new ClassDetailsViewModel(this);
-                HomeworkViewModel = new ClassHomeworkOrExamsViewModel(this, TaskOrEventType.Task);
-                ExamsViewModel = new ClassHomeworkOrExamsViewModel(this, TaskOrEventType.Event);
+                TasksViewModel = new ClassTasksOrEventsViewModel(this, TaskOrEventType.Task);
+                EventsViewModel = new ClassTasksOrEventsViewModel(this, TaskOrEventType.Event);
                 TimesViewModel = new ClassTimesViewModel(this);
                 GradesViewModel = new Class.ClassGradesViewModel(this);
                 OnPropertyChanged(nameof(GradesViewModel)); // Notify so that UWP will update views
@@ -180,9 +180,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public ClassTimesViewModel TimesViewModel { get; private set; }
 
-        public ClassHomeworkOrExamsViewModel HomeworkViewModel { get; private set; }
+        public ClassTasksOrEventsViewModel TasksViewModel { get; private set; }
 
-        public ClassHomeworkOrExamsViewModel ExamsViewModel { get; private set; }
+        public ClassTasksOrEventsViewModel EventsViewModel { get; private set; }
 
         public ClassGradesViewModel GradesViewModel { get; private set; }
 

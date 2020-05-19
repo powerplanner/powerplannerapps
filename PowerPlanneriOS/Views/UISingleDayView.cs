@@ -174,7 +174,7 @@ namespace PowerPlanneriOS.Views
         {
             _title.Text = GetHeaderText(Date);
 
-            _tableViewSource.Items = HomeworksOnDay.Get(SemesterItems.Items, Date);
+            _tableViewSource.Items = TasksOrEventsOnDay.Get(SemesterItems.Items, Date);
 
             _scheduleSnapshot.Initialize(SemesterItems, Date);
 
@@ -367,7 +367,7 @@ namespace PowerPlanneriOS.Views
                 }
             }
 
-            public void ScrollToItem(BaseViewItemHomeworkExam item)
+            public void ScrollToItem(ViewItemTaskOrEvent item)
             {
                 //for (int i = 0; i < _viewModel.ItemsWithHeaders.Count; i++)
                 //{
@@ -436,9 +436,9 @@ namespace PowerPlanneriOS.Views
             {
                 object item = GetItem(indexPath.Row);
 
-                if (item is BaseViewItemHomeworkExam)
+                if (item is ViewItemTaskOrEvent taskOrEvent)
                 {
-                    _viewModel.ShowItem(item as BaseViewItemHomeworkExam);
+                    _viewModel.ShowItem(taskOrEvent);
 
                     // Immediately unselect it
                     _tableView.SelectRow(null, true, UITableViewScrollPosition.None);

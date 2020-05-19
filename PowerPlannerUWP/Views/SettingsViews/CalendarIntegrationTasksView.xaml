@@ -36,7 +36,7 @@
 
                 <TextBlock
                     x:Uid="Settings_CalendarIntegration_Tasks_Description"
-                    Text="Power Planner can display your homework and exams in the system calendar, so that you can view them from the Calendar app."
+                    Text="Power Planner can display your tasks and events in the system calendar, so that you can view them from the Calendar app."
                     Margin="0,3,0,0"
                     Style="{ThemeResource BodyTextBlockStyle}"/>
 

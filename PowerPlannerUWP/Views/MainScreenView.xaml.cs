@@ -247,7 +247,7 @@ namespace PowerPlannerUWP.Views
                     {
                         var dataStore = await AccountDataStore.Get(ViewModel.CurrentLocalAccountId);
 
-                        // If they actually have a decent amount of homework
+                        // If they actually have a decent amount of tasks/events
                         if (await System.Threading.Tasks.Task.Run(async delegate
                         {
                             using (await Locks.LockDataForReadAsync())

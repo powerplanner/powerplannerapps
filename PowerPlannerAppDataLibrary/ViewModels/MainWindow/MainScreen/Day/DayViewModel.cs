@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
@@ -43,12 +43,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             set { SetProperty(ref _currentDate, value.Date, nameof(CurrentDate)); NavigationManager.SetSelectedDate(value); NavigationManager.SetDisplayMonth(value); }
         }
 
-        public void AddHomework()
+        public void AddTask()
         {
             AddItem(TaskOrEventType.Task);
         }
 
-        public void AddExam()
+        public void AddEvent()
         {
             AddItem(TaskOrEventType.Event);
         }
@@ -65,7 +65,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         private void AddItem(TaskOrEventType type)
         {
-            MainScreenViewModel.ShowPopup(AddHomeworkViewModel.CreateForAdd(MainScreenViewModel, new AddHomeworkViewModel.AddParameter()
+            MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
                 Classes = MainScreenViewModel.Classes,

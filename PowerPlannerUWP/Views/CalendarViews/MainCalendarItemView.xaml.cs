@@ -1,7 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerUWP.Views.HomeworkViews;
 using System;
 using System.Collections.Generic;
 using System.IO;

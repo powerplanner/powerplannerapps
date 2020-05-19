@@ -339,7 +339,7 @@
   <data name="Settings_Tiles_ClassTile_ToggleExams.Header" xml:space="preserve">
     <value>عرض الأحداث القادمة</value>
   </data>
-  <data name="Settings_Tiles_ClassTile_ToggleHomework.Header" xml:space="preserve">
+  <data name="Settings_Tiles_ClassTile_ToggleTasks.Header" xml:space="preserve">
     <value>عرض المهام غير المكتملة</value>
   </data>
   <data name="Settings_Tiles_MainTile_Description.Text" xml:space="preserve">
@@ -348,10 +348,10 @@
   <data name="Settings_Tiles_MainTile_Header.Text" xml:space="preserve">
     <value>البلاطة الرئيسية</value>
   </data>
-  <data name="Settings_Tiles_MainTile_ToggleExams.Header" xml:space="preserve">
+  <data name="Settings_Tiles_MainTile_ToggleEvents.Header" xml:space="preserve">
     <value>عرض الأحداث القادمة</value>
   </data>
-  <data name="Settings_Tiles_MainTile_ToggleHomework.Header" xml:space="preserve">
+  <data name="Settings_Tiles_MainTile_ToggleTasks.Header" xml:space="preserve">
     <value>عرض المهام غير المكتملة</value>
   </data>
   <data name="Settings_Tiles_QuickAdd_Description.Text" xml:space="preserve">
@@ -597,12 +597,6 @@
   <data name="RelativeDate_Yesterday" xml:space="preserve">
     <value>‏‏الأمس</value>
   </data>
-  <data name="String_Exam" xml:space="preserve">
-    <value>حدث</value>
-  </data>
-  <data name="String_Homework" xml:space="preserve">
-    <value>‏‏مهمة</value>
-  </data>
   <data name="RelativeDate_Future" xml:space="preserve">
     <value>المستقبل</value>
   </data>
@@ -672,13 +666,13 @@
   <data name="ClassPage_PivotItemDetails.Header" xml:space="preserve">
     <value>التفاصيل</value>
   </data>
-  <data name="ClassPage_PivotItemExams.Header" xml:space="preserve">
+  <data name="ClassPage_PivotItemEvents.Header" xml:space="preserve">
     <value>الامتحانات</value>
   </data>
   <data name="ClassPage_PivotItemGrades.Header" xml:space="preserve">
     <value>العلامات</value>
   </data>
-  <data name="ClassPage_PivotItemHomework.Header" xml:space="preserve">
+  <data name="ClassPage_PivotItemTasks.Header" xml:space="preserve">
     <value>المهام</value>
   </data>
   <data name="ClassPage_PivotItemOverview.Header" xml:space="preserve">
@@ -705,13 +699,13 @@
   <data name="ClassPage_TextBlockDetails.Text" xml:space="preserve">
     <value>التفاصيل</value>
   </data>
-  <data name="ClassPage_TextBlockExams.Text" xml:space="preserve">
+  <data name="ClassPage_TextBlockEvents.Text" xml:space="preserve">
     <value>الأحداث</value>
   </data>
   <data name="ClassPage_TextBlockGrades.Text" xml:space="preserve">
     <value>العلامات</value>
   </data>
-  <data name="ClassPage_TextBlockHomework.Text" xml:space="preserve">
+  <data name="ClassPage_TextBlockTasks.Text" xml:space="preserve">
     <value>المهام</value>
   </data>
   <data name="ClassPage_TextBlockRoundGradesUpHelpBody.Text" xml:space="preserve">
@@ -765,14 +759,14 @@
   <data name="String_EditTimes" xml:space="preserve">
     <value>تحرير الأوقات</value>
   </data>
-  <data name="String_ExamDatePrefix" xml:space="preserve">
+  <data name="String_EventDatePrefix" xml:space="preserve">
     <value>تشغيل</value>
     <comment>Something like "on 3/25/2016"</comment>
   </data>
   <data name="String_GradeScaleCustom" xml:space="preserve">
     <value>مخصص (غير محفوظة)</value>
   </data>
-  <data name="String_HomeworkDatePrefix" xml:space="preserve">
+  <data name="String_TaskDatePrefix" xml:space="preserve">
     <value>تاريخ التسليم</value>
     <comment>Something like "due 3/25/2016"</comment>
   </data>
@@ -788,13 +782,13 @@
   <data name="String_InvalidWeightCategoriesMessageHeader" xml:space="preserve">
     <value>فئات علامات غير صالحة</value>
   </data>
-  <data name="String_NewExam" xml:space="preserve">
+  <data name="String_NewEvent" xml:space="preserve">
     <value>حدث جديد</value>
   </data>
   <data name="String_NewGrade" xml:space="preserve">
     <value>علامة جديدة</value>
   </data>
-  <data name="String_NewHomework" xml:space="preserve">
+  <data name="String_NewTask" xml:space="preserve">
     <value>مهمة جديدة</value>
   </data>
   <data name="String_NoClassNameMessageBody" xml:space="preserve">
@@ -882,16 +876,16 @@
   <data name="AppBarButtonEdit.Label" xml:space="preserve">
     <value>تحرير</value>
   </data>
-  <data name="EditHomeworkPage_ComboBoxClasses.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_ComboBoxClasses.Header" xml:space="preserve">
     <value>صف دراسي</value>
   </data>
-  <data name="EditHomeworkPage_DatePickerDate.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_DatePickerDate.Header" xml:space="preserve">
     <value>التاريخ</value>
   </data>
-  <data name="EditHomeworkPage_TextBoxDetails.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_TextBoxDetails.Header" xml:space="preserve">
     <value>التفاصيل</value>
   </data>
-  <data name="EditHomeworkPage_TextBoxName.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_TextBoxName.Header" xml:space="preserve">
     <value>الإسم</value>
   </data>
   <data name="ForgotUsername_String_EnterEmailAddressExplanation" xml:space="preserve">
@@ -966,10 +960,10 @@
   <data name="QuickAddPage.Title" xml:space="preserve">
     <value>إضافة سريعة</value>
   </data>
-  <data name="QuickAddPage_ButtonAddExam.Content" xml:space="preserve">
+  <data name="QuickAddPage_ButtonAddEvent.Content" xml:space="preserve">
     <value>إضافة حدث</value>
   </data>
-  <data name="QuickAddPage_ButtonAddHomework.Content" xml:space="preserve">
+  <data name="QuickAddPage_ButtonAddTask.Content" xml:space="preserve">
     <value>إضافة مهمة</value>
   </data>
   <data name="ResetPassword_String_ErrorResettingPassword" xml:space="preserve">
@@ -993,20 +987,8 @@
   <data name="SelectClassPage_TextBlockHeader.Text" xml:space="preserve">
     <value>لا صف دراسي</value>
   </data>
-  <data name="String_AddExam" xml:space="preserve">
-    <value>إضافة حدث</value>
-  </data>
-  <data name="String_AddHomework" xml:space="preserve">
-    <value>إضافة مهمة</value>
-  </data>
   <data name="String_DropGrade" xml:space="preserve">
     <value>إسقاط العلامة</value>
-  </data>
-  <data name="String_EditExam" xml:space="preserve">
-    <value>تحرير حدث</value>
-  </data>
-  <data name="String_EditHomework" xml:space="preserve">
-    <value>تحرير مهمة</value>
   </data>
   <data name="String_InvalidUsername" xml:space="preserve">
     <value>اسم مستخدم غير صالح</value>
@@ -1039,10 +1021,10 @@
   <data name="ViewGradePage_TextBlockDropped.Text" xml:space="preserve">
     <value>أُسقِطت</value>
   </data>
-  <data name="ViewHomeworkPage_String_TitleExam" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_String_TitleEvent" xml:space="preserve">
     <value>عرض حدث</value>
   </data>
-  <data name="ViewHomeworkPage_String_TitleHomework" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_String_TitleTask" xml:space="preserve">
     <value>عرض المهام</value>
   </data>
   <data name="ClassWhatIfPage_RunExplanation.Text" xml:space="preserve">
@@ -1253,16 +1235,16 @@
   <data name="AddClassPage_EditTitle" xml:space="preserve">
     <value>تحرير الصف الدراسي</value>
   </data>
-  <data name="ClassPage_ButtonHideOldExamsString" xml:space="preserve">
+  <data name="ClassPage_ButtonHideOldEventsString" xml:space="preserve">
     <value>إخفاء الأحداث القديمة</value>
   </data>
-  <data name="ClassPage_ButtonHideOldHomeworkString" xml:space="preserve">
+  <data name="ClassPage_ButtonHideOldTasksString" xml:space="preserve">
     <value>إخفاء المهام القديمة</value>
   </data>
-  <data name="ClassPage_ButtonShowOldExamsString" xml:space="preserve">
+  <data name="ClassPage_ButtonShowOldEventsString" xml:space="preserve">
     <value>إظهار الأحداث القديمة</value>
   </data>
-  <data name="ClassPage_ButtonShowOldHomeworkString" xml:space="preserve">
+  <data name="ClassPage_ButtonShowOldTasksString" xml:space="preserve">
     <value>إظهار المهام القديمة</value>
   </data>
   <data name="RelativeDate_NextDayOfWeek" xml:space="preserve">
@@ -1292,10 +1274,10 @@
   <data name="ClassGrades_UnassignedItemsHeader" xml:space="preserve">
     <value>العناصر غير المعينة</value>
   </data>
-  <data name="EditHomeworkPage_ComboBoxWeightCategory.Header" xml:space="preserve">
+  <data name="EditTaskOrEventPage_ComboBoxWeightCategory.Header" xml:space="preserve">
     <value>فئة الوزن</value>
   </data>
-  <data name="ViewHomeworkPage_ButtonConvertToGrade.Content" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_ButtonConvertToGrade.Content" xml:space="preserve">
     <value>تحويل إلى الصف</value>
   </data>
   <data name="WeightCategory_Exclude" xml:space="preserve">

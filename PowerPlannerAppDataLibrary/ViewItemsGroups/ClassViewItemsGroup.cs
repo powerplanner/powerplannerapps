@@ -38,24 +38,24 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         public ViewItemClass Class { get; private set; }
 
-        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Homework { get; private set; }
+        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Tasks { get; private set; }
 
-        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Exams { get; private set; }
+        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Events { get; private set; }
 
-        public MyObservableList<ViewItemTaskOrEvent> PastCompletedHomeworkAndExams;
+        public MyObservableList<ViewItemTaskOrEvent> PastCompletedTasksAndEvents;
 
-        private MyObservableList<ViewItemTaskOrEvent> _pastCompletedHomework;
-        public MyObservableList<ViewItemTaskOrEvent> PastCompletedHomework
+        private MyObservableList<ViewItemTaskOrEvent> _pastCompletedTasks;
+        public MyObservableList<ViewItemTaskOrEvent> PastCompletedTasks
         {
-            get { return _pastCompletedHomework; }
-            set { SetProperty(ref _pastCompletedHomework, value, "PastCompletedHomework"); }
+            get => _pastCompletedTasks;
+            set => SetProperty(ref _pastCompletedTasks, value, nameof(PastCompletedTasks));
         }
 
-        private MyObservableList<ViewItemTaskOrEvent> _pastCompletedExams;
-        public MyObservableList<ViewItemTaskOrEvent> PastCompletedExams
+        private MyObservableList<ViewItemTaskOrEvent> _pastCompletedEvents;
+        public MyObservableList<ViewItemTaskOrEvent> PastCompletedEvents
         {
-            get { return _pastCompletedExams; }
-            set { SetProperty(ref _pastCompletedExams, value, "PastCompletedExams"); }
+            get => _pastCompletedEvents;
+            set => SetProperty(ref _pastCompletedEvents, value, nameof(PastCompletedEvents));
         }
 
         private MyObservableList<ViewItemTaskOrEvent> _unassignedItems;
@@ -259,26 +259,26 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             }
         }
 
-        private TaskCompletionSource<bool> _loadHomeworkAndExamsCompletionSource = new TaskCompletionSource<bool>();
-        public Task LoadHomeworkAndExamsTask
+        private TaskCompletionSource<bool> _loadTasksAndEventsCompletionSource = new TaskCompletionSource<bool>();
+        public Task LoadTasksAndEventsTask
         {
-            get { return _loadHomeworkAndExamsCompletionSource.Task; }
+            get { return _loadTasksAndEventsCompletionSource.Task; }
         }
 
-        private bool _hasHomeworkAndExamsBeenRequested;
-        public async void LoadHomeworkAndExams()
+        private bool _hasTasksAndEventsBeenRequested;
+        public async void LoadTasksAndEvents()
         {
             try
             {
-                if (_hasHomeworkAndExamsBeenRequested)
+                if (_hasTasksAndEventsBeenRequested)
                 {
                     return;
                 }
 
-                _hasHomeworkAndExamsBeenRequested = true;
+                _hasTasksAndEventsBeenRequested = true;
 
-                bool hasPastCompletedHomework = false;
-                bool hasPastCompletedExams = false;
+                bool hasPastCompletedTasks = false;
+                bool hasPastCompletedEvents = false;
 
                 SemesterItemsViewGroup cached = null;
                 if (this.Class.Semester != null)
@@ -295,11 +295,11 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                         .OfType<DataItemMegaItem>()
                         .ToArray();
 
-                    this.Class.AddHomeworkAndExamChildrenHelper(CreateHomeworkOrExam, ShouldIncludeHomeworkOrExamFunction(_classId, TodayAsUtc));
+                    this.Class.AddTasksAndEventsChildrenHelper(CreateTaskOrEvent, ShouldIncludeTaskOrEventFunction(_classId, TodayAsUtc));
                     this.Class.FilterAndAddChildren(dataMegaItems);
 
-                    hasPastCompletedHomework = dataMegaItems.Any(IsPastCompletedHomeworkFunction(_classId, TodayAsUtc));
-                    hasPastCompletedExams = dataMegaItems.Any(IsPastCompletedExamFunction(_classId, TodayAsUtc));
+                    hasPastCompletedTasks = dataMegaItems.Any(IsPastCompletedTaskFunction(_classId, TodayAsUtc));
+                    hasPastCompletedEvents = dataMegaItems.Any(IsPastCompletedEventFunction(_classId, TodayAsUtc));
                 }
                 else
                 {
@@ -307,31 +307,31 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                     {
                         var dataStore = await GetDataStore();
 
-                        DataItemMegaItem[] dataHomeworks;
+                        DataItemMegaItem[] dataTasksOrEvents;
 
                         using (await Locks.LockDataForReadAsync())
                         {
-                            dataHomeworks = dataStore.TableMegaItems.Where(ShouldIncludeHomeworkOrExamFunction(_classId, TodayAsUtc)).ToArray();
+                            dataTasksOrEvents = dataStore.TableMegaItems.Where(ShouldIncludeTaskOrEventFunction(_classId, TodayAsUtc)).ToArray();
 
-                            this.Class.AddHomeworkAndExamChildrenHelper(CreateHomeworkOrExam, ShouldIncludeHomeworkOrExamFunction(_classId, TodayAsUtc));
-                            this.Class.FilterAndAddChildren(dataHomeworks);
+                            this.Class.AddTasksAndEventsChildrenHelper(CreateTaskOrEvent, ShouldIncludeTaskOrEventFunction(_classId, TodayAsUtc));
+                            this.Class.FilterAndAddChildren(dataTasksOrEvents);
 
-                            hasPastCompletedHomework = dataStore.TableMegaItems.Any(IsPastCompletedHomeworkFunction(_classId, TodayAsUtc));
-                            hasPastCompletedExams = dataStore.TableMegaItems.Any(IsPastCompletedExamFunction(_classId, TodayAsUtc));
+                            hasPastCompletedTasks = dataStore.TableMegaItems.Any(IsPastCompletedTaskFunction(_classId, TodayAsUtc));
+                            hasPastCompletedEvents = dataStore.TableMegaItems.Any(IsPastCompletedEventFunction(_classId, TodayAsUtc));
                         }
                     });
                 }
 
-                HasPastCompletedHomework = hasPastCompletedHomework;
-                HasPastCompletedExams = hasPastCompletedExams;
-                Homework = this.Class.HomeworkAndExams.Sublist(ShouldIncludeInNormalHomeworkFunction(TodayAsUtc)).Cast<ViewItemTaskOrEvent>();
-                Exams = new MyObservableList<ViewItemTaskOrEvent>();
-                (Exams as MyObservableList<ViewItemTaskOrEvent>).InsertSorted(
-                    this.Class.HomeworkAndExams.Sublist(ShouldIncludeInNormalExamsFunction()).Cast<ViewItemTaskOrEvent>());
-                OnPropertyChanged(nameof(Homework));
-                OnPropertyChanged(nameof(Exams));
+                HasPastCompletedTasks = hasPastCompletedTasks;
+                HasPastCompletedEvents = hasPastCompletedEvents;
+                Tasks = this.Class.TasksAndEvents.Sublist(ShouldIncludeInNormalTasksFunction(TodayAsUtc)).Cast<ViewItemTaskOrEvent>();
+                Events = new MyObservableList<ViewItemTaskOrEvent>();
+                (Events as MyObservableList<ViewItemTaskOrEvent>).InsertSorted(
+                    this.Class.TasksAndEvents.Sublist(ShouldIncludeInNormalExamsFunction()).Cast<ViewItemTaskOrEvent>());
+                OnPropertyChanged(nameof(Tasks));
+                OnPropertyChanged(nameof(Events));
 
-                _loadHomeworkAndExamsCompletionSource.SetResult(true);
+                _loadTasksAndEventsCompletionSource.SetResult(true);
             }
             catch (Exception ex)
             {
@@ -347,9 +347,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             return new ViewItemClass(dataClass, createWeightMethod: CreateWeightForOtherClasses);
         }
 
-        private ViewItemTaskOrEvent CreateHomeworkOrExam(DataItemMegaItem dataHomework)
+        private ViewItemTaskOrEvent CreateTaskOrEvent(DataItemMegaItem dataTaskOrEvent)
         {
-            return new ViewItemTaskOrEvent(dataHomework);
+            return new ViewItemTaskOrEvent(dataTaskOrEvent);
         }
 
         private static ViewItemSchedule CreateSchedule(DataItemSchedule dataSchedule)
@@ -357,7 +357,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             return new ViewItemSchedule(dataSchedule);
         }
 
-        private static Func<DataItemMegaItem, bool> ShouldIncludeHomeworkOrExamFunction(Guid classId, DateTime todayAsUtc)
+        private static Func<DataItemMegaItem, bool> ShouldIncludeTaskOrEventFunction(Guid classId, DateTime todayAsUtc)
         {
             return i =>
                 (i.MegaItemType == PowerPlannerSending.MegaItemType.Homework
@@ -369,12 +369,12 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 && i.Date >= todayAsUtc);
         }
 
-        private static Func<ViewItemTaskOrEvent, bool> ShouldIncludeInNormalHomeworkFunction(DateTime todayAsUtc)
+        private static Func<ViewItemTaskOrEvent, bool> ShouldIncludeInNormalTasksFunction(DateTime todayAsUtc)
         {
             return i => i.Type == TaskOrEventType.Task && (i.PercentComplete < 1 || i.Date >= todayAsUtc);
         }
 
-        private static Func<DataItemMegaItem, bool> IsPastCompletedHomeworkOrExamFunction(Guid classId, DateTime todayAsUtc)
+        private static Func<DataItemMegaItem, bool> IsPastCompletedTaskOrEventFunction(Guid classId, DateTime todayAsUtc)
         {
             DateTime nextDay = todayAsUtc.Date.AddDays(1);
 
@@ -388,7 +388,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 && i.Date < nextDay);
         }
 
-        private static Func<DataItemMegaItem, bool> IsPastCompletedHomeworkFunction(Guid classId, DateTime todayAsUtc)
+        private static Func<DataItemMegaItem, bool> IsPastCompletedTaskFunction(Guid classId, DateTime todayAsUtc)
         {
             return i =>
                 (i.MegaItemType == PowerPlannerSending.MegaItemType.Homework
@@ -396,7 +396,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 && (i.PercentComplete >= 1 && !(i.Date >= todayAsUtc))); // Negate that last date operation since we need to ignore the seconds on the date
         }
 
-        private static Func<DataItemMegaItem, bool> IsPastCompletedExamFunction(Guid classId, DateTime todayAsUtc)
+        private static Func<DataItemMegaItem, bool> IsPastCompletedEventFunction(Guid classId, DateTime todayAsUtc)
         {
             DateTime nextDay = todayAsUtc.Date.AddDays(1);
 
@@ -434,11 +434,11 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             if (_semester != null)
             {
                 // Look through edited items
-                if (Class.HomeworkAndExams != null)
+                if (Class.TasksAndEvents != null)
                 {
                     foreach (var edited in e.EditedItems.OfType<DataItemMegaItem>())
                     {
-                        var matched = Class.HomeworkAndExams.FirstOrDefault(i => i.Identifier == edited.Identifier);
+                        var matched = Class.TasksAndEvents.FirstOrDefault(i => i.Identifier == edited.Identifier);
 
                         // If found matching
                         if (matched != null)
@@ -469,25 +469,25 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 }
 
                 // If we previously didn't have old items, see whether we do now
-                if (!HasPastCompletedHomework)
+                if (!HasPastCompletedTasks)
                 {
                     bool hasPastCompleted = e.EditedItems.Concat(e.NewItems).OfType<DataItemMegaItem>().Any(
-                        h => IsPastCompletedHomeworkFunction(_classId, TodayAsUtc).Invoke(h));
+                        h => IsPastCompletedTaskFunction(_classId, TodayAsUtc).Invoke(h));
 
                     if (hasPastCompleted)
                     {
-                        HasPastCompletedHomework = true;
+                        HasPastCompletedTasks = true;
                     }
                 }
 
-                if (!HasPastCompletedExams)
+                if (!HasPastCompletedEvents)
                 {
                     bool hasPastCompleted = e.EditedItems.Concat(e.NewItems).OfType<DataItemMegaItem>().Any(
-                        exam => IsPastCompletedExamFunction(_classId, TodayAsUtc).Invoke(exam));
+                        exam => IsPastCompletedEventFunction(_classId, TodayAsUtc).Invoke(exam));
 
                     if (hasPastCompleted)
                     {
-                        HasPastCompletedExams = true;
+                        HasPastCompletedEvents = true;
                     }
                 }
 
@@ -566,37 +566,37 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                     || !this.Class.WeightCategories.Any(i => i.Identifier == item.WeightCategoryIdentifier));
         }
 
-        private bool _hasLoadedPastCompletedHomeworkAndExams;
-        private async void LoadPastCompletedHomeworkAndExams()
+        private bool _hasLoadedPastCompletedTasksAndEvents;
+        private async void LoadPastCompletedTasksAndEvents()
         {
-            if (_hasLoadedPastCompletedHomeworkAndExams)
+            if (_hasLoadedPastCompletedTasksAndEvents)
             {
                 return;
             }
 
-            _hasLoadedPastCompletedHomeworkAndExams = true;
+            _hasLoadedPastCompletedTasksAndEvents = true;
 
             try
             {
                 var dataStore = await GetDataStore();
 
-                DataItemMegaItem[] additionalHomeworkAndExams;
+                DataItemMegaItem[] additionalTasksAndEvents;
 
                 using (await Locks.LockDataForReadAsync())
                 {
                     // Get the data items that we haven't loaded yet
-                    additionalHomeworkAndExams = dataStore.TableMegaItems.Where(IsPastCompletedHomeworkOrExamFunction(_classId, TodayAsUtc)).ToArray();
+                    additionalTasksAndEvents = dataStore.TableMegaItems.Where(IsPastCompletedTaskOrEventFunction(_classId, TodayAsUtc)).ToArray();
 
                     // Exclude any that are already loaded (due to the events being complicated to calculate whether they're incomplete, we end up double loading items that are on today)
-                    additionalHomeworkAndExams = additionalHomeworkAndExams.Where(a => !this.Class.HomeworkAndExams.Any(i => i.Identifier == a.Identifier)).ToArray();
+                    additionalTasksAndEvents = additionalTasksAndEvents.Where(a => !this.Class.TasksAndEvents.Any(i => i.Identifier == a.Identifier)).ToArray();
 
-                    // And then update the child function so that we include all homework for the class, and inject the new items
-                    this.Class.UpdateIsChildMethod<DataItemMegaItem, ViewItemTaskOrEvent>(i => i.UpperIdentifier == _classId && i.MegaItemType == PowerPlannerSending.MegaItemType.Homework || i.MegaItemType == PowerPlannerSending.MegaItemType.Exam, additionalHomeworkAndExams);
+                    // And then update the child function so that we include all tasks/events for the class, and inject the new items
+                    this.Class.UpdateIsChildMethod<DataItemMegaItem, ViewItemTaskOrEvent>(i => i.UpperIdentifier == _classId && i.MegaItemType == PowerPlannerSending.MegaItemType.Homework || i.MegaItemType == PowerPlannerSending.MegaItemType.Exam, additionalTasksAndEvents);
                 }
 
                 // Include the opposite of the other function
-                PastCompletedHomework = new PastCompletedHomeworkList(this.Class.HomeworkAndExams.Sublist(i => i.Type == TaskOrEventType.Task), TodayAsUtc);
-                PastCompletedExams = new PastCompletedExamsList(this.Class.HomeworkAndExams.Sublist(i => i.Type == TaskOrEventType.Event), TodayAsUtc);
+                PastCompletedTasks = new PastCompletedTasksList(this.Class.TasksAndEvents.Sublist(i => i.Type == TaskOrEventType.Task), TodayAsUtc);
+                PastCompletedEvents = new PastCompletedEventsList(this.Class.TasksAndEvents.Sublist(i => i.Type == TaskOrEventType.Event), TodayAsUtc);
             }
 
             catch (Exception ex)
@@ -605,66 +605,66 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             }
         }
 
-        private bool _isPastCompletedHomeworkDisplayed;
-        public bool IsPastCompletedHomeworkDisplayed
+        private bool _isPastCompletedTasksDisplayed;
+        public bool IsPastCompletedTasksDisplayed
         {
-            get { return _isPastCompletedHomeworkDisplayed; }
-            private set { SetProperty(ref _isPastCompletedHomeworkDisplayed, value, "IsPastCompletedHomeworkDisplayed"); }
+            get => _isPastCompletedTasksDisplayed;
+            private set => SetProperty(ref _isPastCompletedTasksDisplayed, value, nameof(IsPastCompletedTasksDisplayed));
         }
 
-        public void ShowPastCompletedHomework()
+        public void ShowPastCompletedTasks()
         {
-            IsPastCompletedHomeworkDisplayed = true;
-            LoadPastCompletedHomeworkAndExams();
+            IsPastCompletedTasksDisplayed = true;
+            LoadPastCompletedTasksAndEvents();
         }
 
-        public void HidePastCompletedHomework()
+        public void HidePastCompletedTasks()
         {
-            IsPastCompletedHomeworkDisplayed = false;
+            IsPastCompletedTasksDisplayed = false;
         }
 
-        private bool _isPastCompletedExamsDisplayed;
-        public bool IsPastCompletedExamsDisplayed
+        private bool _isPastCompletedEventsDisplayed;
+        public bool IsPastCompletedEventsDisplayed
         {
-            get { return _isPastCompletedExamsDisplayed; }
-            private set { SetProperty(ref _isPastCompletedExamsDisplayed, value, "IsPastCompletedExamsDisplayed"); }
+            get => _isPastCompletedEventsDisplayed;
+            private set => SetProperty(ref _isPastCompletedEventsDisplayed, value, nameof(IsPastCompletedEventsDisplayed));
         }
 
-        public void ShowPastCompletedExams()
+        public void ShowPastCompletedEvents()
         {
-            IsPastCompletedExamsDisplayed = true;
-            LoadPastCompletedHomeworkAndExams();
+            IsPastCompletedEventsDisplayed = true;
+            LoadPastCompletedTasksAndEvents();
         }
 
-        public void HidePastCompletedExams()
+        public void HidePastCompletedEvents()
         {
-            IsPastCompletedExamsDisplayed = false;
+            IsPastCompletedEventsDisplayed = false;
         }
 
-        private bool _hasPastCompletedHomework;
-        public bool HasPastCompletedHomework
+        private bool _hasPastCompletedTasks;
+        public bool HasPastCompletedTasks
         {
-            get { return _hasPastCompletedHomework; }
-            set { SetProperty(ref _hasPastCompletedHomework, value, "HasPastCompletedHomework"); }
+            get => _hasPastCompletedTasks;
+            set => SetProperty(ref _hasPastCompletedTasks, value, nameof(HasPastCompletedTasks));
         }
 
-        private bool _hasPastCompletedExams;
-        public bool HasPastCompletedExams
+        private bool _hasPastCompletedEvents;
+        public bool HasPastCompletedEvents
         {
-            get { return _hasPastCompletedExams; }
-            set { SetProperty(ref _hasPastCompletedExams, value, "HasPastCompletedExams"); }
+            get => _hasPastCompletedEvents;
+            set => SetProperty(ref _hasPastCompletedEvents, value, nameof(HasPastCompletedEvents));
         }
 
-        private class PastCompletedExamsList : MyObservableList<ViewItemTaskOrEvent>
+        private class PastCompletedEventsList : MyObservableList<ViewItemTaskOrEvent>
         {
-            public PastCompletedExamsList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
+            public PastCompletedEventsList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
             {
                 base.Filter = new FilterUsingFunction(i => !ShouldIncludeInNormalExamsFunction().Invoke(i));
-                base.Comparer = new PastCompletedExamsComparer();
+                base.Comparer = new PastCompletedEventsComparer();
                 base.InsertSorted(sourceList);
             }
 
-            private class PastCompletedExamsComparer : IComparer<ViewItemTaskOrEvent>
+            private class PastCompletedEventsComparer : IComparer<ViewItemTaskOrEvent>
             {
                 public int Compare(ViewItemTaskOrEvent x, ViewItemTaskOrEvent y)
                 {
@@ -674,16 +674,16 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             }
         }
 
-        private class PastCompletedHomeworkList : MyObservableList<ViewItemTaskOrEvent>
+        private class PastCompletedTasksList : MyObservableList<ViewItemTaskOrEvent>
         {
-            public PastCompletedHomeworkList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
+            public PastCompletedTasksList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
             {
-                base.Filter = new FilterUsingFunction(i => !ShouldIncludeInNormalHomeworkFunction(todayAsUtc).Invoke(i));
-                base.Comparer = new PastCompletedHomeworkComparer();
+                base.Filter = new FilterUsingFunction(i => !ShouldIncludeInNormalTasksFunction(todayAsUtc).Invoke(i));
+                base.Comparer = new PastCompletedTasksComparer();
                 base.InsertSorted(sourceList);
             }
 
-            private class PastCompletedHomeworkComparer : IComparer<ViewItemTaskOrEvent>
+            private class PastCompletedTasksComparer : IComparer<ViewItemTaskOrEvent>
             {
                 public int Compare(ViewItemTaskOrEvent x, ViewItemTaskOrEvent y)
                 {

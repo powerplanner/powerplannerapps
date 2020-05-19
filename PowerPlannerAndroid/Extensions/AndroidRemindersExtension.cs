@@ -206,15 +206,15 @@ namespace PowerPlannerAndroid.Extensions
             }
 
             // Need to mark them as sent
-            Guid[] newlySentHomeworkReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).OfType<ViewItemTaskOrEvent>().Where(i => !i.HasSentReminder).Select(i => i.Identifier).ToArray();
-            Guid[] newlySentExamReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).OfType<ViewItemTaskOrEvent>().Where(i => !i.HasSentReminder).Select(i => i.Identifier).ToArray();
+            Guid[] newlySentTaskReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).Where(i => i.Type == TaskOrEventType.Task && !i.HasSentReminder).Select(i => i.Identifier).ToArray();
+            Guid[] newlySentEventReminders = itemsThatCouldHaveNotifs.Select(i => i.Item1).Where(i => i.Type == TaskOrEventType.Event && !i.HasSentReminder).Select(i => i.Identifier).ToArray();
 
-            if (newlySentHomeworkReminders.Length > 0 || newlySentExamReminders.Length > 0)
+            if (newlySentTaskReminders.Length > 0 || newlySentEventReminders.Length > 0)
             {
                 var dataStore = await AccountDataStore.Get(account.LocalAccountId);
                 if (dataStore != null)
                 {
-                    await dataStore.MarkAndroidRemindersSent(newlySentHomeworkReminders, newlySentExamReminders);
+                    await dataStore.MarkAndroidRemindersSent(newlySentTaskReminders, newlySentEventReminders);
                 }
             }
             
@@ -263,8 +263,8 @@ namespace PowerPlannerAndroid.Extensions
             nextReminderTime = DateTime.MinValue;
             PowerPlannerSending.Schedule.Week currentWeek = account.GetWeekOnDifferentDate(now);
 
-            // Add past-due incomplete tasks (we don't add exams since they're "complete" when they're past-due)
-            foreach (var task in agendaItems.Items.OfType<ViewItemTaskOrEvent>().Where(i => i.Date.Date < now.Date).OrderBy(i => i))
+            // Add past-due incomplete tasks (we don't add events since they're "complete" when they're past-due)
+            foreach (var task in agendaItems.Items.Where(i => i.Type == TaskOrEventType.Task && i.Date.Date < now.Date).OrderBy(i => i))
             {
                 shouldBeActive.Add(new Tuple<ViewItemTaskOrEvent, DateTime>(task, task.Date.Date));
             }
@@ -382,7 +382,7 @@ namespace PowerPlannerAndroid.Extensions
             BaseArguments launchArgs;
             if (item.Type == TaskOrEventType.Task)
             {
-                launchArgs = new ViewHomeworkArguments()
+                launchArgs = new ViewTaskArguments()
                 {
                     LocalAccountId = localAccountId,
                     ItemId = item.Identifier,
@@ -391,7 +391,7 @@ namespace PowerPlannerAndroid.Extensions
             }
             else
             {
-                launchArgs = new ViewExamArguments()
+                launchArgs = new ViewEventArguments()
                 {
                     LocalAccountId = localAccountId,
                     ItemId = item.Identifier,

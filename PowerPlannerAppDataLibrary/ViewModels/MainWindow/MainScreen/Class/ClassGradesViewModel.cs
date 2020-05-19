@@ -2,7 +2,7 @@
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -191,7 +191,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void ShowUnassignedItem(ViewItemTaskOrEvent item)
         {
-            MainScreenViewModel.ShowPopup(ViewHomeworkViewModel.CreateForUnassigned(MainScreenViewModel, item));
+            MainScreenViewModel.ShowPopup(ViewTaskOrEventViewModel.CreateForUnassigned(MainScreenViewModel, item));
         }
 
         public void OpenWhatIf()

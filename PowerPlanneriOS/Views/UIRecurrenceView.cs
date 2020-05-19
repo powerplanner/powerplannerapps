@@ -124,7 +124,7 @@ namespace PowerPlanneriOS.Views
                 var endDatePicker = new BareUIInlineDatePicker(_viewController, left: 16, right: 16)
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
-                    HeaderText = PowerPlannerResources.GetString("EditHomeworkPage_DatePickerDate.Header"), // "Date"
+                    HeaderText = PowerPlannerResources.GetString("EditTaskOrEventPage_DatePickerDate.Header"), // "Date"
                     Date = ViewModel.EndDate
                 };
                 endDatePicker.DateChanged += EndDatePicker_DateChanged;

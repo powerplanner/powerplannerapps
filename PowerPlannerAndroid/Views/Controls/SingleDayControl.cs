@@ -31,7 +31,7 @@ namespace PowerPlannerAndroid.Views.Controls
         public event EventHandler<ViewItemSchedule> ScheduleItemClick;
         public event EventHandler ScheduleClick;
 
-        private FlatHomeworkAdapter _adapter;
+        private FlatTasksOrEventsAdapter _adapter;
         private DayScheduleSnapshotView _snapshot;
         private DateTime? _date;
         private SemesterItemsViewGroup _viewItemsGroup;
@@ -47,7 +47,7 @@ namespace PowerPlannerAndroid.Views.Controls
             _recyclerView.SetLayoutManager(layoutManager);
 
             // Specify the adapter
-            _adapter = new FlatHomeworkAdapter();
+            _adapter = new FlatTasksOrEventsAdapter();
             _adapter.ItemClick += Adapter_ItemClick;
 
             _adapter.CreateViewHolderForFooter = CreateFooterViewHolder;
@@ -138,7 +138,7 @@ namespace PowerPlannerAndroid.Views.Controls
         }
 
         private NotifyCollectionChangedEventHandler _currItemsSourceCollectionChangedHandler;
-        public void Initialize(DateTime date, HomeworksOnDay homeworks, SemesterItemsViewGroup viewGroup)
+        public void Initialize(DateTime date, TasksOrEventsOnDay tasksOrEvents, SemesterItemsViewGroup viewGroup)
         {
             _viewItemsGroup = viewGroup;
             _date = date;
@@ -151,9 +151,9 @@ namespace PowerPlannerAndroid.Views.Controls
                 (_adapter.ItemsSource as INotifyCollectionChanged).CollectionChanged -= _currItemsSourceCollectionChangedHandler;
             }
 
-            _adapter.ItemsSource = homeworks;
+            _adapter.ItemsSource = tasksOrEvents;
             _currItemsSourceCollectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(ItemsSource_CollectionChanged).Handler;
-            homeworks.CollectionChanged += _currItemsSourceCollectionChangedHandler;
+            tasksOrEvents.CollectionChanged += _currItemsSourceCollectionChangedHandler;
 
             InitializeDifferentSemesterOverlay();
             InitializeSnapshot();

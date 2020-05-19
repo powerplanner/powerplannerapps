@@ -23,15 +23,15 @@ namespace PowerPlanneriOS.Controllers
 
         private ClassDetailsViewController _detailsViewController;
         private ClassTimesViewController _timesViewController;
-        private ClassHomeworkOrExamsViewController _homeworkViewController;
-        private ClassHomeworkOrExamsViewController _examsViewController;
+        private ClassTasksOrEventsViewController _tasksOrEventsViewController;
+        private ClassTasksOrEventsViewController _eventsViewController;
         private ClassGradesViewController _gradesViewController;
         private CAPSPageMenuController _pageMenuController;
 
         private UIBarButtonItem _navButtonEditDetails;
         private UIBarButtonItem _navButtonEditTimes;
-        private UIBarButtonItem _navButtonAddHomework;
-        private UIBarButtonItem _navButtonAddExam;
+        private UIBarButtonItem _navButtonAddTask;
+        private UIBarButtonItem _navButtonAddEvent;
         private UIBarButtonItem _navButtonAddGrade;
 
         public override void OnViewModelLoadedOverride()
@@ -48,17 +48,17 @@ namespace PowerPlanneriOS.Controllers
             };
             _navButtonEditTimes.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditTimes(); }).Handler;
 
-            _navButtonAddHomework = new UIBarButtonItem(UIBarButtonSystemItem.Add)
+            _navButtonAddTask = new UIBarButtonItem(UIBarButtonSystemItem.Add)
             {
                 Title = "Add task"
             };
-            _navButtonAddHomework.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.HomeworkViewModel.Add(); }).Handler;
+            _navButtonAddTask.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.TasksViewModel.Add(); }).Handler;
 
-            _navButtonAddExam = new UIBarButtonItem(UIBarButtonSystemItem.Add)
+            _navButtonAddEvent = new UIBarButtonItem(UIBarButtonSystemItem.Add)
             {
                 Title = "Add event"
             };
-            _navButtonAddExam.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.ExamsViewModel.Add(); }).Handler;
+            _navButtonAddEvent.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EventsViewModel.Add(); }).Handler;
 
             _navButtonAddGrade = new UIBarButtonItem(UIBarButtonSystemItem.Add)
             {
@@ -74,15 +74,15 @@ namespace PowerPlanneriOS.Controllers
             {
                 ViewModel = ViewModel.TimesViewModel
             };
-            _homeworkViewController = new ClassHomeworkOrExamsViewController()
+            _tasksOrEventsViewController = new ClassTasksOrEventsViewController()
             {
                 Title = "Tasks",
-                ViewModel = ViewModel.HomeworkViewModel
+                ViewModel = ViewModel.TasksViewModel
             };
-            _examsViewController = new ClassHomeworkOrExamsViewController()
+            _eventsViewController = new ClassTasksOrEventsViewController()
             {
                 Title = "Events",
-                ViewModel = ViewModel.ExamsViewModel
+                ViewModel = ViewModel.EventsViewModel
             };
             _gradesViewController = new ClassGradesViewController()
             {
@@ -93,8 +93,8 @@ namespace PowerPlanneriOS.Controllers
             {
                 _detailsViewController,
                 _timesViewController,
-                _homeworkViewController,
-                _examsViewController,
+                _tasksOrEventsViewController,
+                _eventsViewController,
                 _gradesViewController
             }, new CAPSPageMenuConfiguration()
             {
@@ -130,16 +130,16 @@ namespace PowerPlanneriOS.Controllers
                     var changedItem = ViewModel.GetLastChangedTaskOrEvent();
                     if (changedItem != null)
                     {
-                        // Homework
+                        // Task
                         if (_pageMenuController.CurrentPageIndex == 2)
                         {
-                            _homeworkViewController.ScrollToItem(changedItem);
+                            _tasksOrEventsViewController.ScrollToItem(changedItem);
                         }
 
-                        // Exam
+                        // Event
                         else if (_pageMenuController.CurrentPageIndex == 3)
                         {
-                            _examsViewController.ScrollToItem(changedItem);
+                            _eventsViewController.ScrollToItem(changedItem);
                         }
                     }
                 }
@@ -179,15 +179,15 @@ namespace PowerPlanneriOS.Controllers
             {
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonEditTimes };
             }
-            else if (currentController == _homeworkViewController)
+            else if (currentController == _tasksOrEventsViewController)
             {
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddHomework };
-                ViewModel.ViewItemsGroupClass.LoadHomeworkAndExams();
+                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddTask };
+                ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
             }
-            else if (currentController == _examsViewController)
+            else if (currentController == _eventsViewController)
             {
-                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddExam };
-                ViewModel.ViewItemsGroupClass.LoadHomeworkAndExams();
+                NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddEvent };
+                ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
 
             }
             else if (currentController == _gradesViewController)

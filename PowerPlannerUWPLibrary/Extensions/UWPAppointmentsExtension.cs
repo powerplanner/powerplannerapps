@@ -396,7 +396,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                     {
                         if (allData.HasSemester())
                         {
-                            foreach (string deletedLocalId in DataChangedEvent.DeletedItems.DeletedHomeworkExamAppointments)
+                            foreach (string deletedLocalId in DataChangedEvent.DeletedItems.DeletedTaskEventAppointments)
                             {
                                 try
                                 {
@@ -657,7 +657,7 @@ namespace PowerPlannerUWPLibrary.Extensions
 
                             var newAndEditedItems = DataChangedEvent.EditedItems.Concat(DataChangedEvent.NewItems);
 
-                            // Classes that were edited will require loading and updating homework/exams/schedules, since the class name might have been edited
+                            // Classes that were edited will require loading and updating tasks/events/schedules, since the class name might have been edited
                             Guid[] classIdentifiersNeedingChildrenLoaded = DataChangedEvent.EditedItems.OfType<DataItemClass>()
                                 .Select(i => i.Identifier)
                                 .Except(DataChangedEvent.EditedClassIdentifiersToIgnoreFromCalendarIntegration)

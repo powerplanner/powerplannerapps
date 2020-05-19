@@ -7,20 +7,20 @@ namespace PowerPlannerAppDataLibrary.DataLayer.TileSettings
     [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/PowerPlannerUWPLibrary.DataLayer.TileSettings")]
     public abstract class BaseUpcomingTileSettings : BindableBase
     {
-        private bool _showHomework = true;
+        private bool _showTasks = true;
         [DataMember]
-        public bool ShowHomework
+        public bool ShowTasks
         {
-            get { return _showHomework; }
-            set { SetProperty(ref _showHomework, value, "ShowHomework"); }
+            get { return _showTasks; }
+            set { SetProperty(ref _showTasks, value, nameof(ShowTasks)); }
         }
 
-        private bool _showExams = true;
+        private bool _showEvents = true;
         [DataMember]
-        public bool ShowExams
+        public bool ShowEvents
         {
-            get { return _showExams; }
-            set { SetProperty(ref _showExams, value, "ShowExams"); }
+            get { return _showEvents; }
+            set { SetProperty(ref _showEvents, value, nameof(ShowEvents)); }
         }
 
         private int _skipItemsOlderThan = int.MinValue;
@@ -33,7 +33,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.TileSettings
 
         public bool IsDisabled()
         {
-            return !ShowHomework && !ShowExams;
+            return !ShowTasks && !ShowEvents;
         }
 
         public DateTime GetDateToStartDisplayingOn(DateTime todayAsUtc)

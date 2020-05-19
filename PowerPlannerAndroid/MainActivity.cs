@@ -235,43 +235,43 @@ namespace PowerPlannerAndroid
                         return;
                     }
 
-                    else if (args is ViewHomeworkArguments)
+                    else if (args is ViewTaskArguments)
                     {
-                        TrackLaunch(args, launchContext, "HomeworkExam");
-                        var viewHomeworkArgs = args as ViewHomeworkArguments;
-                        await viewModel.HandleViewHomeworkActivation(viewHomeworkArgs.LocalAccountId, viewHomeworkArgs.ItemId);
+                        TrackLaunch(args, launchContext, "ViewTask");
+                        var viewTaskArgs = args as ViewTaskArguments;
+                        await viewModel.HandleViewTaskActivation(viewTaskArgs.LocalAccountId, viewTaskArgs.ItemId);
                         return;
                     }
 
-                    else if (args is ViewExamArguments)
+                    else if (args is ViewEventArguments)
                     {
-                        TrackLaunch(args, launchContext, "HomeworkExam");
-                        var viewExamArgs = args as ViewExamArguments;
-                        await viewModel.HandleViewExamActivation(viewExamArgs.LocalAccountId, viewExamArgs.ItemId);
+                        TrackLaunch(args, launchContext, "ViewEvent");
+                        var viewEventArgs = args as ViewEventArguments;
+                        await viewModel.HandleViewEventActivation(viewEventArgs.LocalAccountId, viewEventArgs.ItemId);
                         return;
                     }
 
-                    else if (args is QuickAddHomeworkToCurrentAccountArguments)
+                    else if (args is QuickAddTaskToCurrentAccountArguments)
                     {
                         if (launchContext == LaunchSurface.Normal)
                         {
                             launchContext = LaunchSurface.JumpList;
                         }
 
-                        TrackLaunch(args, launchContext, "QuickAddHomework");
-                        await viewModel.HandleQuickAddHomework();
+                        TrackLaunch(args, launchContext, "QuickAddTask");
+                        await viewModel.HandleQuickAddTask();
                         return;
                     }
 
-                    else if (args is QuickAddExamToCurrentAccountArguments)
+                    else if (args is QuickAddEventToCurrentAccountArguments)
                     {
                         if (launchContext == LaunchSurface.Normal)
                         {
                             launchContext = LaunchSurface.JumpList;
                         }
 
-                        TrackLaunch(args, launchContext, "QuickAddExam");
-                        await viewModel.HandleQuickAddExam();
+                        TrackLaunch(args, launchContext, "QuickAddEvent");
+                        await viewModel.HandleQuickAddEvent();
                         return;
                     }
 

@@ -99,27 +99,27 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private AppBarButton _appBarAddHomework;
-        private AppBarButton AppBarAddHomework
+        private AppBarButton _appBarAddTask;
+        private AppBarButton AppBarAddTask
         {
             get
             {
-                if (_appBarAddHomework == null)
-                    _appBarAddHomework = CreateAppBarButton(Symbol.Add, LocalizedResources.GetString("String_NewHomework"), appBarAddHomework_Click);
+                if (_appBarAddTask == null)
+                    _appBarAddTask = CreateAppBarButton(Symbol.Add, LocalizedResources.GetString("String_NewTask"), appBarAddTask_Click);
 
-                return _appBarAddHomework;
+                return _appBarAddTask;
             }
         }
 
-        private AppBarButton _appBarAddExam;
-        private AppBarButton AppBarAddExam
+        private AppBarButton _appBarAddEvent;
+        private AppBarButton AppBarAddEvent
         {
             get
             {
-                if (_appBarAddExam == null)
-                    _appBarAddExam = CreateAppBarButton(Symbol.Add, LocalizedResources.GetString("String_NewExam"), appBarAddExam_Click);
+                if (_appBarAddEvent == null)
+                    _appBarAddEvent = CreateAppBarButton(Symbol.Add, LocalizedResources.GetString("String_NewEvent"), appBarAddEvent_Click);
 
-                return _appBarAddExam;
+                return _appBarAddEvent;
             }
         }
 
@@ -175,7 +175,7 @@ namespace PowerPlannerUWP.Views
                 UpdateAppBarButtons();
                 UpdatePinButton();
 
-                ViewModel.ViewItemsGroupClass.LoadHomeworkAndExams();
+                ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
                 ViewModel.ViewItemsGroupClass.LoadGrades();
                 await ViewModel.GradesViewModel.LoadAsync(); // So that the show weight categories boolean gets initialized
             }
@@ -240,11 +240,11 @@ namespace PowerPlannerUWP.Views
                     break;
 
                 case 3:
-                    GoToHomeworkVisualState();
+                    GoToTasksVisualState();
                     break;
 
                 case 4:
-                    GoToExamsVisualState();
+                    GoToEventsVisualState();
                     break;
 
                 case 5:
@@ -290,13 +290,13 @@ namespace PowerPlannerUWP.Views
                 SetCommandBarCommands(
                     AppBarEditClassTimes);
 
-            else if (state == Homework)
+            else if (state == Tasks)
                 SetCommandBarCommands(
-                    AppBarAddHomework);
+                    AppBarAddTask);
 
-            else if (state == Exams)
+            else if (state == Events)
                 SetCommandBarCommands(
-                    AppBarAddExam);
+                    AppBarAddEvent);
 
             else if (state == Grades)
                 SetCommandBarCommands(
@@ -327,17 +327,17 @@ namespace PowerPlannerUWP.Views
             UpdateAppBarButtons();
         }
 
-        private void GoToHomeworkVisualState()
+        private void GoToTasksVisualState()
         {
-            VisualStateManager.GoToState(this, "Homework", true);
+            VisualStateManager.GoToState(this, "Tasks", true);
             GoToCollapsedHeaderVisualState();
 
             UpdateAppBarButtons();
         }
 
-        private void GoToExamsVisualState()
+        private void GoToEventsVisualState()
         {
-            VisualStateManager.GoToState(this, "Exams", true);
+            VisualStateManager.GoToState(this, "Events", true);
             GoToCollapsedHeaderVisualState();
 
             UpdateAppBarButtons();
@@ -366,14 +366,14 @@ namespace PowerPlannerUWP.Views
             GoToClassTimesVisualState();
         }
 
-        private void appBarAddHomework_Click(object sender, RoutedEventArgs e)
+        private void appBarAddTask_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.HomeworkViewModel.Add();
+            ViewModel.TasksViewModel.Add();
         }
 
-        private void appBarAddExam_Click(object sender, RoutedEventArgs e)
+        private void appBarAddEvent_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.ExamsViewModel.Add();
+            ViewModel.EventsViewModel.Add();
         }
 
         private void PivotHeaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -395,12 +395,12 @@ namespace PowerPlannerUWP.Views
             PivotMain.SelectedIndex = 2;
         }
 
-        private void tileHomework_Click(object sender, RoutedEventArgs e)
+        private void tileTasks_Click(object sender, RoutedEventArgs e)
         {
             PivotMain.SelectedIndex = 3;
         }
 
-        private void tileExams_Click(object sender, RoutedEventArgs e)
+        private void tileEvents_Click(object sender, RoutedEventArgs e)
         {
             PivotMain.SelectedIndex = 4;
         }
@@ -521,15 +521,15 @@ namespace PowerPlannerUWP.Views
             }
         }
         
-        private void ButtonToggleShowPastCompletedHomework_Click(object sender, RoutedEventArgs e)
+        private void ButtonToggleShowPastCompletedTasks_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ViewModel.ViewItemsGroupClass.IsPastCompletedHomeworkDisplayed)
-                    ViewModel.ViewItemsGroupClass.HidePastCompletedHomework();
+                if (ViewModel.ViewItemsGroupClass.IsPastCompletedTasksDisplayed)
+                    ViewModel.ViewItemsGroupClass.HidePastCompletedTasks();
 
                 else
-                    ViewModel.ViewItemsGroupClass.ShowPastCompletedHomework();
+                    ViewModel.ViewItemsGroupClass.ShowPastCompletedTasks();
             }
 
             catch (Exception ex)
@@ -538,15 +538,15 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void ButtonToggleShowPastCompletedExams_Click(object sender, RoutedEventArgs e)
+        private void ButtonToggleShowPastCompletedEvents_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ViewModel.ViewItemsGroupClass.IsPastCompletedExamsDisplayed)
-                    ViewModel.ViewItemsGroupClass.HidePastCompletedExams();
+                if (ViewModel.ViewItemsGroupClass.IsPastCompletedEventsDisplayed)
+                    ViewModel.ViewItemsGroupClass.HidePastCompletedEvents();
 
                 else
-                    ViewModel.ViewItemsGroupClass.ShowPastCompletedExams();
+                    ViewModel.ViewItemsGroupClass.ShowPastCompletedEvents();
             }
 
             catch (Exception ex)
@@ -560,7 +560,7 @@ namespace PowerPlannerUWP.Views
             ViewModel.GradesViewModel.ShowItem(e);
         }
 
-        private void HomeworkListViewItem_OnClickItem(object sender, ViewItemTaskOrEvent e)
+        private void TaskOrEventListViewItem_OnClickItem(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.GradesViewModel.ShowUnassignedItem(e);
         }

@@ -18,7 +18,7 @@ namespace PowerPlanneriOS.Views
         private UIView _completedBarContainer;
         private UILabel _labelTitle;
 
-        public Action AfterOpenedHomeworkAction { get; set; }
+        public Action AfterOpenedTaskOrEventAction { get; set; }
 
         public UIMainCalendarItemView()
         {
@@ -60,13 +60,13 @@ namespace PowerPlanneriOS.Views
 
         private void TouchControl_TouchUpInside(object sender, EventArgs e)
         {
-            if (DataContext is BaseViewItemHomeworkExam)
+            if (DataContext is ViewItemTaskOrEvent taskOrEvent)
             {
-                PowerPlannerApp.Current.GetMainScreenViewModel()?.ShowItem(DataContext as BaseViewItemHomeworkExam);
+                PowerPlannerApp.Current.GetMainScreenViewModel()?.ShowItem(taskOrEvent);
 
                 try
                 {
-                    AfterOpenedHomeworkAction?.Invoke();
+                    AfterOpenedTaskOrEventAction?.Invoke();
                 }
                 catch (Exception ex)
                 {
@@ -81,14 +81,12 @@ namespace PowerPlanneriOS.Views
 
         protected override void OnDataContextChanged()
         {
-            if (DataContext is BaseViewItemHomeworkExam)
+            if (DataContext is ViewItemTaskOrEvent item)
             {
-                var item = DataContext as BaseViewItemHomeworkExam;
-
-                this.BackgroundColor = BareUIHelper.ToColor(item.GetClassOrNull()?.Color);
+                this.BackgroundColor = BareUIHelper.ToColor(item.Class?.Color);
                 _labelTitle.Text = item.Name;
 
-                if (item.IsComplete())
+                if (item.IsComplete)
                 {
                     if (!_completedBarContainer.Subviews.Any())
                     {
@@ -116,12 +114,10 @@ namespace PowerPlanneriOS.Views
                 }
             }
 
-            else if (DataContext is ViewItemHoliday)
+            else if (DataContext is ViewItemHoliday holiday)
             {
-                var item = DataContext as ViewItemHoliday;
-
                 this.BackgroundColor = UIColor.FromRGB(228 / 255f, 0, 137 / 255f);
-                _labelTitle.Text = item.Name;
+                _labelTitle.Text = holiday.Name;
 
                 foreach (var view in _completedBarContainer.Subviews)
                 {

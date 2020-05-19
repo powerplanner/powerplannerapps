@@ -45,8 +45,8 @@ namespace PowerPlanneriOS.Controllers
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-            actionSheetAlert.AddAction(UIAlertAction.Create("Add Task", UIAlertActionStyle.Default, delegate { ViewModel.AddHomework(); }));
-            actionSheetAlert.AddAction(UIAlertAction.Create("Add Event", UIAlertActionStyle.Default, delegate { ViewModel.AddExam(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Task", UIAlertActionStyle.Default, delegate { ViewModel.AddTask(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create("Add Event", UIAlertActionStyle.Default, delegate { ViewModel.AddEvent(); }));
             actionSheetAlert.AddAction(UIAlertAction.Create("Add Holiday", UIAlertActionStyle.Default, delegate { ViewModel.AddHoliday(); }));
 
             actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
@@ -327,9 +327,9 @@ namespace PowerPlanneriOS.Controllers
 
             protected override CGColor GetColorForItem(object item)
             {
-                if (item is BaseViewItemHomeworkExam)
+                if (item is ViewItemTaskOrEvent taskOrEvent)
                 {
-                    var c = (item as BaseViewItemHomeworkExam).GetClassOrNull();
+                    var c = taskOrEvent.Class;
                     if (c != null)
                     {
                         return BareUIHelper.ToCGColor(c.Color);
@@ -416,8 +416,8 @@ namespace PowerPlanneriOS.Controllers
 
             public override IEnumerable GetItemsSource(DateTime date)
             {
-                return HomeworksOnDay.Get(_semesterItems.Items, date)
-                    .Sublist(i => (i is BaseViewItemHomeworkExam) && !(i as BaseViewItemHomeworkExam).IsComplete());
+                return TasksOrEventsOnDay.Get(_semesterItems.Items, date)
+                    .Sublist(i => (i is ViewItemTaskOrEvent) && !(i as ViewItemTaskOrEvent).IsComplete);
             }
 
             public override CGColor GetBackgroundColorForDate(DateTime date)

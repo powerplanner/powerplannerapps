@@ -32,8 +32,8 @@ namespace PowerPlannerAndroid.Views
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
 
             var addItemControl = FindViewById<FloatingAddItemControl>(Resource.Id.FloatingAddItemControl);
-            addItemControl.OnRequestAddExam += AddItemControl_OnRequestAddExam;
-            addItemControl.OnRequestAddHomework += AddItemControl_OnRequestAddHomework;
+            addItemControl.OnRequestAddEvent += AddItemControl_OnRequestAddEvent;
+            addItemControl.OnRequestAddTask += AddItemControl_OnRequestAddTask;
 
             _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
             _dayPagerControl.CurrentDateChanged += _dayPagerControl_CurrentDateChanged;
@@ -59,14 +59,14 @@ namespace PowerPlannerAndroid.Views
             ViewModel.ViewClass(e.Class);
         }
 
-        private void AddItemControl_OnRequestAddHomework(object sender, EventArgs e)
+        private void AddItemControl_OnRequestAddTask(object sender, EventArgs e)
         {
-            ViewModel.AddHomework();
+            ViewModel.AddTask();
         }
 
-        private void AddItemControl_OnRequestAddExam(object sender, EventArgs e)
+        private void AddItemControl_OnRequestAddEvent(object sender, EventArgs e)
         {
-            ViewModel.AddExam();
+            ViewModel.AddEvent();
         }
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -99,7 +99,7 @@ namespace PowerPlannerAndroid.Views
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            ViewModel.AddHomework();
+            ViewModel.AddTask();
         }
     }
 }

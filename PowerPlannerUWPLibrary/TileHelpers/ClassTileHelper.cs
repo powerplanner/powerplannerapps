@@ -268,15 +268,15 @@ namespace PowerPlannerUWPLibrary.TileHelpers
                 today: DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local),
                 viewItemSemester: scheduleViewItemsGroup.Semester,
                 includeWeights: false);
-            classViewItemsGroup.LoadHomeworkAndExams();
-            await classViewItemsGroup.LoadHomeworkAndExamsTask;
+            classViewItemsGroup.LoadTasksAndEvents();
+            await classViewItemsGroup.LoadTasksAndEventsTask;
 
             List<ViewItemTaskOrEvent> copied;
 
             using (await classViewItemsGroup.DataChangeLock.LockForReadAsync())
             {
                 // Class view group sorts the items, so no need to sort
-                copied = classViewItemsGroup.Class.HomeworkAndExams.Where(i => i.Date.Date >= dateToStartDisplayingFrom).ToList();
+                copied = classViewItemsGroup.Class.TasksAndEvents.Where(i => i.Date.Date >= dateToStartDisplayingFrom).ToList();
             }
 
             return new ClassData()

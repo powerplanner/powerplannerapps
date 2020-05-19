@@ -17,12 +17,12 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
         {
         }
 
-        public static async Task<SingleTaskOrEventViewItemsGroup> LoadAsync(Guid localAccountId, Guid homeworkId, bool trackChanges = true)
+        public static async Task<SingleTaskOrEventViewItemsGroup> LoadAsync(Guid localAccountId, Guid taskOrEventId, bool trackChanges = true)
         {
             try
             {
                 var answer = new SingleTaskOrEventViewItemsGroup(localAccountId, trackChanges);
-                await Task.Run(async delegate { await answer.LoadBlocking(homeworkId); });
+                await Task.Run(async delegate { await answer.LoadBlocking(taskOrEventId); });
                 return answer;
             }
             catch (SemesterNotFoundException) { return null; }

@@ -47,7 +47,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                 }
                 else
                 {
-                    // Homeworks/exams don't actually get deleted, just excluded from grades
+                    // Tasks/events don't actually get deleted, just excluded from grades
                     if (Grade is ViewItemTaskOrEvent taskOrEvent)
                     {
                         var dataItem = taskOrEvent.CreateBlankDataItem();

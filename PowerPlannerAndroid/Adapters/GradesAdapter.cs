@@ -56,7 +56,7 @@ namespace PowerPlannerAndroid.Adapters
                     return new GenericRecyclerViewHolder(new InflatedViewWithBinding(Resource.Layout.ListItemUnassignedItemsHeader, parent));
 
                 case UNASSIGNED_ITEM_TYPE:
-                    var unassignedView = new ListItemHomeworkView(parent);
+                    var unassignedView = new ListItemTaskOrEventView(parent);
                     unassignedView.Click += UnassignedView_Click;
                     return new GenericRecyclerViewHolder(unassignedView);
 
@@ -77,7 +77,7 @@ namespace PowerPlannerAndroid.Adapters
 
         private void UnassignedView_Click(object sender, EventArgs e)
         {
-            UnassignedItemClick?.Invoke(this, (sender as ListItemHomeworkView).DataContext as ViewItemTaskOrEvent);
+            UnassignedItemClick?.Invoke(this, (sender as ListItemTaskOrEventView).DataContext as ViewItemTaskOrEvent);
         }
 
         private void GradeView_Click(object sender, EventArgs e)

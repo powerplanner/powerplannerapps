@@ -23,11 +23,11 @@ namespace PowerPlannerUWP.Converters
             {
                 if (task.Class.IsNoClassClass)
                 {
-                    return CapitalizeFirstLetter(LocalizedResources.GetString("String_HomeworkDatePrefix"));
+                    return CapitalizeFirstLetter(LocalizedResources.GetString("String_TaskDatePrefix"));
                 }
                 else
                 {
-                    return initialString + LocalizedResources.GetString("String_HomeworkDatePrefix");
+                    return initialString + LocalizedResources.GetString("String_TaskDatePrefix");
                 }
             }
 
@@ -35,11 +35,11 @@ namespace PowerPlannerUWP.Converters
             {
                 if (eventItem.Class.IsNoClassClass)
                 {
-                    return CapitalizeFirstLetter(LocalizedResources.GetString("String_ExamDatePrefix"));
+                    return CapitalizeFirstLetter(LocalizedResources.GetString("String_EventDatePrefix"));
                 }
                 else
                 {
-                    return initialString + LocalizedResources.GetString("String_ExamDatePrefix");
+                    return initialString + LocalizedResources.GetString("String_EventDatePrefix");
                 }
             }
 

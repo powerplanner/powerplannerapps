@@ -336,9 +336,9 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                     {
                         _viewModel.ShowItem(item as BaseViewItemMegaItem);
                     }
-                    else if (item is BaseViewItemHomeworkExam)
+                    else if (item is ViewItemTaskOrEvent taskOrEvent)
                     {
-                        _viewModel.ShowUnassignedItem(item as BaseViewItemHomeworkExam);
+                        _viewModel.ShowUnassignedItem(taskOrEvent);
                     }
 
                     // Immediately unselect it

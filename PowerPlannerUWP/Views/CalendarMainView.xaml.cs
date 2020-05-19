@@ -66,10 +66,10 @@ namespace PowerPlannerUWP.Views
         {
             try
             {
-                App.ShowFlyoutAddHomeworkOrExam(
+                App.ShowFlyoutAddTaskOrEvent(
                     elToCenterFrom: sender as FrameworkElement,
-                    addHomeworkAction: delegate { ViewModel.AddHomework(ShouldUseSelectedDate()); },
-                    addExamAction: delegate { ViewModel.AddExam(ShouldUseSelectedDate()); },
+                    addTaskAction: delegate { ViewModel.AddTask(ShouldUseSelectedDate()); },
+                    addEventAction: delegate { ViewModel.AddEvent(ShouldUseSelectedDate()); },
                     addHolidayAction: delegate { ViewModel.AddHoliday(ShouldUseSelectedDate()); });
             }
 

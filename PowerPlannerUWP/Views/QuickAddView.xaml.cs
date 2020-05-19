@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerUWP.Views;
 using System;
 using System.Collections.Generic;
@@ -36,14 +36,14 @@ namespace PowerPlannerUWP.Views
             this.InitializeComponent();
         }
 
-        private void ButtonAddHomework_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddTask_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.AddHomework();
+            ViewModel.AddTask();
         }
 
-        private void ButtonAddExam_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddEvent_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.AddExam();
+            ViewModel.AddEvent();
         }
     }
 }

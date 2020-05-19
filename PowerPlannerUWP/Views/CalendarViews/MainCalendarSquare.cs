@@ -67,11 +67,11 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             if (_calendarViewModel.ShowPastCompleteItemsOnFullCalendar)
             {
-                _itemsControl.ItemsSource = HomeworksOnDay.Get(_allItems, Date);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date);
             }
             else
             {
-                _itemsControl.ItemsSource = HomeworksOnDay.Get(_allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
             }
         }
 
@@ -231,7 +231,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
 
 
-            // Homework items
+            // Task and event items
             _itemsControl = new ItemsControl()
             {
                 ItemTemplate = (DataTemplate)App.Current.Resources["MainCalendarItemTemplate"]
@@ -259,10 +259,10 @@ namespace PowerPlannerUWP.Views.CalendarViews
                 if (viewModel == null)
                     throw new NullReferenceException("Parent's view model was null");
 
-                App.ShowFlyoutAddHomeworkOrExam(
+                App.ShowFlyoutAddTaskOrEvent(
                     elToCenterFrom: _addButton,
-                    addHomeworkAction: delegate { viewModel.AddHomework(base.Date); },
-                    addExamAction: delegate { viewModel.AddExam(base.Date); },
+                    addTaskAction: delegate { viewModel.AddTask(base.Date); },
+                    addEventAction: delegate { viewModel.AddEvent(base.Date); },
                     addHolidayAction: delegate { viewModel.AddHoliday(base.Date); });
             }
 

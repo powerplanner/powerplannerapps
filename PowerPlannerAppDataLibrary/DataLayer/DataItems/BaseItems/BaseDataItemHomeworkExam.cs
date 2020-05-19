@@ -10,6 +10,7 @@ using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
 {
+    [Obsolete("Legacy type no longer used, replaced by DataItemMegaItem. Kept around just for data upgrade purposes.")]
     public abstract class BaseDataItemHomeworkExam : BaseDataItemHomeworkExamGrade
     {
         #region EndTime

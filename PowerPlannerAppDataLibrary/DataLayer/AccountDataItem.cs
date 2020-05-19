@@ -40,8 +40,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         /// <summary>
         /// SyncedDataVersion is used so that when we make drastic changes, we can perform needed actions upon upgrade.
-        /// For example, when we added grades linked to homework/exams, we need down-level clients to re-sync
-        /// all homework/exams, so that they pick up the new grade values.
+        /// For example, when we added grades linked to tasks/events, we need down-level clients to re-sync
+        /// all tasks/events, so that they pick up the new grade values.
         /// </summary>
         [DataMember]
         public int SyncedDataVersion { get; set; } = CURRENT_SYNCED_DATA_VERSION;
@@ -381,22 +381,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             get { return _hasAddedRepeating; }
             set { _hasAddedRepeating = value; }
-        }
-
-        private bool _firstHomework = true;
-        [DataMember]
-        public bool FirstHomework
-        {
-            get { return _firstHomework; }
-            set { SetProperty(ref _firstHomework, value, "FirstHomework"); }
-        }
-
-        private bool _firstNotes = true;
-        [DataMember]
-        public bool FirstNotes
-        {
-            get { return _firstNotes; }
-            set { SetProperty(ref _firstNotes, value, "FirstNotes"); }
         }
 
         private bool _remindersDayBefore = true;

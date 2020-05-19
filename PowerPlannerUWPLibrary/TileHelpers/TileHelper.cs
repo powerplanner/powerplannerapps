@@ -504,7 +504,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
 
             foreach (var group in groupedItems)
             {
-                // We know we'll be adding the group header (like "Tomorrow") and at least one homework
+                // We know we'll be adding the group header (like "Tomorrow") and at least one task/event
                 linesAdded += 2;
 
                 // If it's not the first group, we also add a spacer line of text
@@ -608,7 +608,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
             // Agenda view group doesn't sort, so we have to sort it
             return agendaViewGroup.Items.Where(
                 i => i.Date.Date >= dateToStartDisplayingFrom
-                && ((tileSettings.ShowHomework && i.Type == TaskOrEventType.Task) || (tileSettings.ShowExams && i.Type == TaskOrEventType.Event))
+                && ((tileSettings.ShowTasks && i.Type == TaskOrEventType.Task) || (tileSettings.ShowEvents && i.Type == TaskOrEventType.Event))
                 ).OrderBy(i => i).ToList();
         }
 

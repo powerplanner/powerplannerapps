@@ -184,14 +184,14 @@ namespace PowerPlannerUWP.Views.SettingsViews
             }
         }
 
-        private async void ToggleHomework_Toggled(object sender, RoutedEventArgs e)
+        private async void ToggleTasks_Toggled(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ViewModel.Settings.ShowHomework == ToggleHomework.IsOn)
+                if (ViewModel.Settings.ShowTasks == ToggleTasks.IsOn)
                     return;
 
-                ViewModel.Settings.ShowHomework = ToggleHomework.IsOn;
+                ViewModel.Settings.ShowTasks = ToggleTasks.IsOn;
 
                 await ViewModel.Account.SaveClassTileSettings(ViewModel.Class.Identifier, ViewModel.Settings);
 
@@ -204,14 +204,14 @@ namespace PowerPlannerUWP.Views.SettingsViews
             }
         }
 
-        private async void ToggleExams_Toggled(object sender, RoutedEventArgs e)
+        private async void ToggleEvents_Toggled(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ViewModel.Settings.ShowExams == ToggleExams.IsOn)
+                if (ViewModel.Settings.ShowEvents == ToggleEvents.IsOn)
                     return;
 
-                ViewModel.Settings.ShowExams = ToggleExams.IsOn;
+                ViewModel.Settings.ShowEvents = ToggleEvents.IsOn;
 
                 await ViewModel.Account.SaveClassTileSettings(ViewModel.Class.Identifier, ViewModel.Settings);
 

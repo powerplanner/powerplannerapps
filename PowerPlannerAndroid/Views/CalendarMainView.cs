@@ -53,8 +53,8 @@ namespace PowerPlannerAndroid.Views
 
             var addItemControl = FindViewById<FloatingAddItemControl>(Resource.Id.FloatingAddItemControl);
             addItemControl.SupportsAddHoliday = true;
-            addItemControl.OnRequestAddExam += AddItemControl_OnRequestAddExam;
-            addItemControl.OnRequestAddHomework += AddItemControl_OnRequestAddHomework;
+            addItemControl.OnRequestAddEvent += AddItemControl_OnRequestAddEvent;
+            addItemControl.OnRequestAddTask += AddItemControl_OnRequestAddTask;
             addItemControl.OnRequestAddHoliday += AddItemControl_OnRequestAddHoliday;
 
             _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
@@ -87,14 +87,14 @@ namespace PowerPlannerAndroid.Views
             ViewModel.ViewClass(e.Class);
         }
 
-        private void AddItemControl_OnRequestAddHomework(object sender, EventArgs e)
+        private void AddItemControl_OnRequestAddTask(object sender, EventArgs e)
         {
-            ViewModel.AddHomework();
+            ViewModel.AddTask();
         }
 
-        private void AddItemControl_OnRequestAddExam(object sender, EventArgs e)
+        private void AddItemControl_OnRequestAddEvent(object sender, EventArgs e)
         {
-            ViewModel.AddExam();
+            ViewModel.AddEvent();
         }
 
         private void _calendarView_SelectedDateChanged(object sender, EventArgs e)
@@ -191,7 +191,7 @@ namespace PowerPlannerAndroid.Views
                 private View _backgroundOverlayView;
                 private TextView _tv;
                 private ColorStateList _defaultTextColors;
-                private MyHomeworkCircles _myHomeworkCircles;
+                private MyTaskOrEventCircles _myTaskOrEventCircles;
                 private HolidaysOnDay _holidaysOnDay;
                 private NotifyCollectionChangedEventHandler _holidaysChangedHandler;
 
@@ -238,7 +238,7 @@ namespace PowerPlannerAndroid.Views
 
                     var padding = ThemeHelper.AsPx(Context, 4);
 
-                    _myHomeworkCircles = new MyHomeworkCircles(Context)
+                    _myTaskOrEventCircles = new MyTaskOrEventCircles(Context)
                     {
                         LayoutParameters = new FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.MatchParent,
@@ -250,7 +250,7 @@ namespace PowerPlannerAndroid.Views
                             RightMargin = padding
                         }
                     };
-                    this.AddView(_myHomeworkCircles);
+                    this.AddView(_myTaskOrEventCircles);
 
                     _tv = new TextView(Context)
                     {
@@ -342,7 +342,7 @@ namespace PowerPlannerAndroid.Views
 
                     UpdateSelectedStatus();
 
-                    _myHomeworkCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is ViewItemTaskOrEvent && i.Date.Date == date.Date && !(i as ViewItemTaskOrEvent).IsComplete));
+                    _myTaskOrEventCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is ViewItemTaskOrEvent && i.Date.Date == date.Date && !(i as ViewItemTaskOrEvent).IsComplete));
 
                     if (_holidaysOnDay != null && _holidaysChangedHandler != null)
                     {
@@ -374,11 +374,11 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private class MyHomeworkCircles : LinearLayout
+        private class MyTaskOrEventCircles : LinearLayout
         {
             private ItemsControlWrapper _itemsControlWrapper;
 
-            public MyHomeworkCircles(Context context) : base(context)
+            public MyTaskOrEventCircles(Context context) : base(context)
             {
                 _itemsControlWrapper = new ItemsControlWrapper(this)
                 {

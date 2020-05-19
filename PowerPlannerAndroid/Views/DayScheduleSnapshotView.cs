@@ -131,7 +131,7 @@ namespace PowerPlannerAndroid.Views
                     _arrangedItems.OnItemsChanged -= _arrangedItemsOnItemsChangedHandler;
                 }
 
-                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, TIME_INDICATOR_SIZE + GAP_SIZE, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeHomeworkAndHolidays: true);
+                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, TIME_INDICATOR_SIZE + GAP_SIZE, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
                 _arrangedItems.OnItemsChanged += _arrangedItemsOnItemsChangedHandler;
 
                 render();
@@ -741,10 +741,10 @@ namespace PowerPlannerAndroid.Views
             {
                 Item = item.Item,
 
-                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the homework
+                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the task
                 // Ideally we would implement the back handling as part of the view model like we did for UWP, but for simplicity we're going
                 // to leave it like this for now
-                AfterOpenedHomeworkAction = delegate { HideFull(); }
+                AfterOpenedTaskOrEventAction = delegate { HideFull(); }
             });
             if (item.AdditionalItems != null)
             {
@@ -753,7 +753,7 @@ namespace PowerPlannerAndroid.Views
                     sp.AddView(new MainCalendarItemView(Context)
                     {
                         Item = i,
-                        AfterOpenedHomeworkAction = delegate { HideFull(); }
+                        AfterOpenedTaskOrEventAction = delegate { HideFull(); }
                     });
                 }
             }

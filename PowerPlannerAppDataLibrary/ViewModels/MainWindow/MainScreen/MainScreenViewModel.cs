@@ -19,7 +19,7 @@ using ToolsPortable;
 using BareMvvm.Core.ViewModels;
 using static PowerPlannerAppDataLibrary.NavigationManager;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.Extensions;
@@ -1104,12 +1104,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
         public void ShowItem(ViewItemTaskOrEvent item)
         {
-            ShowPopup(ViewHomeworkViewModel.Create(this, item));
+            ShowPopup(ViewTaskOrEventViewModel.Create(this, item));
         }
 
-        public void EditHomeworkOrExam(ViewItemTaskOrEvent item)
+        public void EditTaskOrEvent(ViewItemTaskOrEvent item)
         {
-            ShowPopup(AddHomeworkViewModel.CreateForEdit(this, new AddHomeworkViewModel.EditParameter()
+            ShowPopup(AddTaskOrEventViewModel.CreateForEdit(this, new AddTaskOrEventViewModel.EditParameter()
             {
                 Item = item
             }));
