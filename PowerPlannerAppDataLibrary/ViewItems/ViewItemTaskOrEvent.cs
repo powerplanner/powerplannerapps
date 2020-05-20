@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
@@ -27,7 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         public TaskOrEventType Type
         {
             get => _type;
-            set => SetProperty(ref _type, value, nameof(Type), nameof(Subtitle), nameof(SubtitleDueDate), nameof(SubtitleDueTime));
+            set => SetProperty(ref _type, value, nameof(Type), nameof(Subtitle), nameof(SubtitleDueDate), nameof(SubtitleDueTime), nameof(PercentComplete), nameof(IsComplete));
         }
 
         private DateTime _endTimeInSchoolTime;
@@ -82,7 +83,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 return _percentComplete;
             }
 
-            private set { SetProperty(ref _percentComplete, value, "PercentComplete", "IsComplete"); }
+            private set { SetProperty(ref _percentComplete, value, nameof(PercentComplete), nameof(IsComplete)); }
         }
 
         public bool IsComplete

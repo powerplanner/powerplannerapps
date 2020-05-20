@@ -196,17 +196,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                     changes.Add(g);
                 }
-                foreach (var lostGrade in lostGrades.OfType<ViewItemTaskOrEvent>())
-                {
-                    DataItemMegaItem g = new DataItemMegaItem()
-                    {
-                        Identifier = lostGrade.Identifier
-                    };
-
-                    g.WeightCategoryIdentifier = firstCategory;
-
-                    changes.Add(g);
-                }
 
                 TryStartDataOperationAndThenNavigate(delegate
                 {

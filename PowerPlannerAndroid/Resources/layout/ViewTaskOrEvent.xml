@@ -55,16 +55,12 @@
 
     </ScrollView>
 
-    <!--<FrameLayout
+    <PowerPlannerAndroid.Views.Controls.TaskProgressBarControl
+        android:id="@+id/TaskProgressBarControl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">-->
-        <PowerPlannerAndroid.Views.Controls.TaskProgressBarControl
-            android:id="@+id/TaskProgressBarControl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:visibility="gone"/>
-    <!--</FrameLayout>-->
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        local:Binding="{Source=IsCompletionSliderVisible, Target=Visibility}"/>
 
     <Button
       style="@style/PowerPlannerBlueButton"
@@ -76,6 +72,6 @@
       android:layout_marginBottom="16dp"
       android:layout_marginLeft="16dp"
       android:layout_marginRight="16dp"
-      android:visibility="gone"/>
+      local:Binding="{Source=IsButtonConvertToGradeVisible, Target=Visibility}"/>
 
 </LinearLayout>

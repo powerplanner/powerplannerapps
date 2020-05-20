@@ -162,9 +162,9 @@ namespace PowerPlanneriOS.Controllers
                 }
             }
 
-            else if (isTask)
+            else
             {
-                var completionSliderContainer = new UIView()
+                var completionSliderContainer = new BareUIVisibilityContainer()
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false
                 };
@@ -231,6 +231,7 @@ namespace PowerPlanneriOS.Controllers
 
                     _completionSlider.ValueChanged += new WeakEventHandler(delegate { UpdateSliderImages(); }).Handler;
                 }
+                BindingHost.SetVisibilityBinding(completionSliderContainer, nameof(ViewModel.IsCompletionSliderVisible));
                 base.ContentView.Add(completionSliderContainer);
                 completionSliderContainer.SetHeight(CIRCLE_BUTTON_HEIGHT);
 

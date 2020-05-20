@@ -42,45 +42,35 @@ namespace PowerPlannerAndroid.Views
 
         private void _taskProgressBarControl_OnProgressChangedByUser(object sender, EventArgs e)
         {
-            if (ViewModel.Item.Type == TaskOrEventType.Task)
-            {
-                ViewModel.SetPercentComplete(_taskProgressBarControl.Progress);
-            }
+            ViewModel.SetPercentComplete(_taskProgressBarControl.Progress);
         }
 
-        private ViewItemTaskOrEvent _prevItem;
-        private PropertyChangedEventHandler _itemPropertyChangedHandler;
         public override void OnViewModelLoadedOverride()
         {
-            if (_prevItem != null && _itemPropertyChangedHandler != null)
-            {
-                _prevItem.PropertyChanged -= _itemPropertyChangedHandler;
-                _prevItem = null;
-            }
+            ViewModel.ProertyChanged = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+            UpdatePageTitle();
 
+            ViewModel.Item.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Item_PropertyChanged).Handler;
+            UpdatePercentCompleteFromItem();
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            try
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(ViewModel.PageTitle):
+                        UpdatePageTitle();
+                        break;
+                }
+            }
+            catch { }
+        }
+
+        private void UpdatePageTitle()
+        {
             Title = ViewModel.PageTitle;
-
-            if (ViewModel.IsUnassigedMode)
-            {
-                _taskProgressBarControl.Visibility = ViewStates.Gone;
-                _buttonConvertToGrade.Visibility = ViewStates.Visible;
-                return;
-            }
-
-            switch (ViewModel.Item.Type)
-            {
-                case TaskOrEventType.Event:
-                    _taskProgressBarControl.Visibility = ViewStates.Gone;
-                    break;
-
-                case TaskOrEventType.Task:
-                    _taskProgressBarControl.Visibility = ViewStates.Visible;
-                    _itemPropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(Item_PropertyChanged).Handler;
-                    ViewModel.Item.PropertyChanged += _itemPropertyChangedHandler;
-                    _prevItem = ViewModel.Item;
-                    UpdatePercentCompleteFromItem();
-                    break;
-            }
         }
 
         private void Item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
