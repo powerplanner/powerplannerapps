@@ -47,7 +47,7 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnViewModelLoadedOverride()
         {
-            ViewModel.PropertyChanged = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+            ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             UpdatePageTitle();
 
             ViewModel.Item.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Item_PropertyChanged).Handler;
@@ -92,11 +92,6 @@ namespace PowerPlannerAndroid.Views
             }
             catch (ObjectDisposedException)
             {
-                // If disposed, de-register the changed handler
-                if (_itemPropertyChangedHandler != null && ViewModel?.Item != null)
-                {
-                    ViewModel.Item.PropertyChanged -= _itemPropertyChangedHandler;
-                }
             }
         }
 

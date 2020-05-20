@@ -164,90 +164,99 @@ namespace PowerPlanneriOS.Controllers
 
             else
             {
-                var completionSliderContainer = new BareUIVisibilityContainer()
+                var completionSliderVisibilityContainer = new BareUIVisibilityContainer()
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false
                 };
                 {
-                    _completionSlider = new UISlider()
-                    {
-                        TranslatesAutoresizingMaskIntoConstraints = false,
-                        MaxValue = 1,
-                        MinValue = 0,
-                        MinimumTrackTintColor = UIColor.FromRGB(42 / 255f, 222 / 255f, 42 / 255f),
-                        ThumbTintColor = UIColor.FromRGB(42 / 255f, 222 / 255f, 42 / 255f)
-
-                    };
-                    _itemBindingHost.SetSliderBinding(_completionSlider, nameof(ViewItemTaskOrEvent.PercentComplete));
-                    _completionSlider.TouchUpInside += new WeakEventHandler(CompletionSlider_ValueCommitted).Handler;
-                    _completionSlider.TouchUpOutside += new WeakEventHandler(CompletionSlider_ValueCommitted).Handler;
-                    completionSliderContainer.Add(_completionSlider);
-                    _completionSlider.StretchHeight(completionSliderContainer);
-                    _completionSlider.StretchWidth(completionSliderContainer, left: CIRCLE_BUTTON_HEIGHT + 8, right: CIRCLE_BUTTON_HEIGHT + 8);
-
-                    var incompleteImageContainer = new UIControl()
+                    var completionSliderContainer = new UIView()
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false
                     };
                     {
-                        _incompleteImageView = new UIImageView()
+                        _completionSlider = new UISlider()
                         {
                             TranslatesAutoresizingMaskIntoConstraints = false,
-                            ContentMode = UIViewContentMode.ScaleAspectFit,
-                            TintColor = UIColor.LightGray
-                        };
-                        incompleteImageContainer.Add(_incompleteImageView);
-                        _incompleteImageView.StretchHeight(incompleteImageContainer);
-                        _incompleteImageView.SetWidth(CIRCLE_BUTTON_HEIGHT);
-                        _incompleteImageView.PinToLeft(incompleteImageContainer);
-                    }
-                    incompleteImageContainer.TouchUpInside += new WeakEventHandler(delegate { _completionSlider.Value = 0; ViewModel.SetPercentComplete(0); UpdateSliderImages(); }).Handler;
-                    completionSliderContainer.Add(incompleteImageContainer);
-                    incompleteImageContainer.StretchHeight(completionSliderContainer);
-                    incompleteImageContainer.PinToLeft(completionSliderContainer);
-                    incompleteImageContainer.SetWidth(CIRCLE_BUTTON_HEIGHT);
+                            MaxValue = 1,
+                            MinValue = 0,
+                            MinimumTrackTintColor = UIColor.FromRGB(42 / 255f, 222 / 255f, 42 / 255f),
+                            ThumbTintColor = UIColor.FromRGB(42 / 255f, 222 / 255f, 42 / 255f)
 
-                    var completeImageContainer = new UIControl()
-                    {
-                        TranslatesAutoresizingMaskIntoConstraints = false
-                    };
-                    {
-                        _completeImageView = new UIImageView()
+                        };
+                        _itemBindingHost.SetSliderBinding(_completionSlider, nameof(ViewItemTaskOrEvent.PercentComplete));
+                        _completionSlider.TouchUpInside += new WeakEventHandler(CompletionSlider_ValueCommitted).Handler;
+                        _completionSlider.TouchUpOutside += new WeakEventHandler(CompletionSlider_ValueCommitted).Handler;
+                        completionSliderContainer.Add(_completionSlider);
+                        _completionSlider.StretchHeight(completionSliderContainer);
+                        _completionSlider.StretchWidth(completionSliderContainer, left: CIRCLE_BUTTON_HEIGHT + 8, right: CIRCLE_BUTTON_HEIGHT + 8);
+
+                        var incompleteImageContainer = new UIControl()
                         {
-                            TranslatesAutoresizingMaskIntoConstraints = false,
-                            ContentMode = UIViewContentMode.ScaleAspectFit,
-                            TintColor = UIColor.LightGray
+                            TranslatesAutoresizingMaskIntoConstraints = false
                         };
-                        completeImageContainer.Add(_completeImageView);
-                        _completeImageView.StretchHeight(completeImageContainer);
-                        _completeImageView.SetWidth(CIRCLE_BUTTON_HEIGHT);
-                        _completeImageView.PinToRight(completeImageContainer);
-                    }
-                    completeImageContainer.TouchUpInside += new WeakEventHandler(delegate { _completionSlider.Value = 1; ViewModel.SetPercentComplete(1); UpdateSliderImages(); }).Handler;
-                    completionSliderContainer.Add(completeImageContainer);
-                    completeImageContainer.StretchHeight(completionSliderContainer);
-                    completeImageContainer.PinToRight(completionSliderContainer);
-                    completeImageContainer.SetWidth(CIRCLE_BUTTON_HEIGHT);
+                        {
+                            _incompleteImageView = new UIImageView()
+                            {
+                                TranslatesAutoresizingMaskIntoConstraints = false,
+                                ContentMode = UIViewContentMode.ScaleAspectFit,
+                                TintColor = UIColor.LightGray
+                            };
+                            incompleteImageContainer.Add(_incompleteImageView);
+                            _incompleteImageView.StretchHeight(incompleteImageContainer);
+                            _incompleteImageView.SetWidth(CIRCLE_BUTTON_HEIGHT);
+                            _incompleteImageView.PinToLeft(incompleteImageContainer);
+                        }
+                        incompleteImageContainer.TouchUpInside += new WeakEventHandler(delegate { _completionSlider.Value = 0; ViewModel.SetPercentComplete(0); UpdateSliderImages(); }).Handler;
+                        completionSliderContainer.Add(incompleteImageContainer);
+                        incompleteImageContainer.StretchHeight(completionSliderContainer);
+                        incompleteImageContainer.PinToLeft(completionSliderContainer);
+                        incompleteImageContainer.SetWidth(CIRCLE_BUTTON_HEIGHT);
 
-                    _completionSlider.ValueChanged += new WeakEventHandler(delegate { UpdateSliderImages(); }).Handler;
+                        var completeImageContainer = new UIControl()
+                        {
+                            TranslatesAutoresizingMaskIntoConstraints = false
+                        };
+                        {
+                            _completeImageView = new UIImageView()
+                            {
+                                TranslatesAutoresizingMaskIntoConstraints = false,
+                                ContentMode = UIViewContentMode.ScaleAspectFit,
+                                TintColor = UIColor.LightGray
+                            };
+                            completeImageContainer.Add(_completeImageView);
+                            _completeImageView.StretchHeight(completeImageContainer);
+                            _completeImageView.SetWidth(CIRCLE_BUTTON_HEIGHT);
+                            _completeImageView.PinToRight(completeImageContainer);
+                        }
+                        completeImageContainer.TouchUpInside += new WeakEventHandler(delegate { _completionSlider.Value = 1; ViewModel.SetPercentComplete(1); UpdateSliderImages(); }).Handler;
+                        completionSliderContainer.Add(completeImageContainer);
+                        completeImageContainer.StretchHeight(completionSliderContainer);
+                        completeImageContainer.PinToRight(completionSliderContainer);
+                        completeImageContainer.SetWidth(CIRCLE_BUTTON_HEIGHT);
+
+                        _completionSlider.ValueChanged += new WeakEventHandler(delegate { UpdateSliderImages(); }).Handler;
+                    }
+
+                    completionSliderContainer.SetHeight(CIRCLE_BUTTON_HEIGHT);
+
+                    completionSliderVisibilityContainer.Child = completionSliderContainer;
                 }
-                BindingHost.SetVisibilityBinding(completionSliderContainer, nameof(ViewModel.IsCompletionSliderVisible));
-                base.ContentView.Add(completionSliderContainer);
-                completionSliderContainer.SetHeight(CIRCLE_BUTTON_HEIGHT);
+                BindingHost.SetVisibilityBinding(completionSliderVisibilityContainer, nameof(ViewModel.IsCompletionSliderVisible));
+                base.ContentView.Add(completionSliderVisibilityContainer);
 
                 // https://stackoverflow.com/questions/46344381/ios-11-layout-guidance-about-safe-area-for-iphone-x
                 if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
                 {
                     NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[] {
-                        completionSliderContainer.LeftAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.LeftAnchor, 16),
-                        completionSliderContainer.RightAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.RightAnchor, -16),
-                        completionSliderContainer.BottomAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.BottomAnchor, -16)
+                        completionSliderVisibilityContainer.LeftAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.LeftAnchor, 16),
+                        completionSliderVisibilityContainer.RightAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.RightAnchor, -16),
+                        completionSliderVisibilityContainer.BottomAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.BottomAnchor, -16)
                     });
                 }
                 else
                 {
-                    completionSliderContainer.StretchWidth(base.ContentView, left: 16, right: 16);
-                    completionSliderContainer.PinToBottom(base.ContentView, bottom: 16);
+                    completionSliderVisibilityContainer.StretchWidth(base.ContentView, left: 16, right: 16);
+                    completionSliderVisibilityContainer.PinToBottom(base.ContentView, bottom: 16);
                 }
 
                 _itemBindingHost.SetBinding(nameof(ViewItemTaskOrEvent.PercentComplete), UpdateSliderImages);
