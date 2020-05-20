@@ -13,7 +13,6 @@
 
     <views:PopupViewHostGeneric.PrimaryCommands>
 
-
         <AppBarButton
             x:Uid="AppBarButtonEdit"
                 x:Name="ButtonEdit"
@@ -21,14 +20,21 @@
                 Label="Edit"
                 Click="ButtonEdit_Click"/>
 
+    </views:PopupViewHostGeneric.PrimaryCommands>
+
+    <views:PopupViewHostGeneric.SecondaryCommands>
+
+        <AppBarButton
+            x:Name="ButtonConvertType"
+            Label="{Binding ConvertTypeButtonText}"
+            Click="ButtonConvertType_Click"/>
+
         <AppBarButton
             x:Uid="AppBarButtonDelete"
-                x:Name="ButtonDelete"
-                Icon="Delete"
-                Label="Delete"
-                Click="ButtonDelete_Click"/>
-
-    </views:PopupViewHostGeneric.PrimaryCommands>
+            x:Name="ButtonDelete"
+            Label="Delete"
+            Click="ButtonDelete_Click"/>
+    </views:PopupViewHostGeneric.SecondaryCommands>
 
     <views:PopupViewHostGeneric.MainContent>
         <Grid Grid.Row="1">

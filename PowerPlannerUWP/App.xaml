@@ -792,7 +792,9 @@
                         <Setter Property="VerticalAlignment" Value="Top"/>
                         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
                         <Setter Property="FontWeight" Value="Normal"/>
-                        <Setter Property="Width" Value="130"/>
+                        <Setter Property="Width" Value="Auto"/>
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="MaxWidth" Value="300"/>
                         <Setter Property="UseSystemFocusVisuals" Value="True"/>
                         <Setter Property="Template">
                             <Setter.Value>

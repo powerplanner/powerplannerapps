@@ -33,6 +33,7 @@ namespace PowerPlannerUWP.Views
         private Border _mainContentContainer;
 
         private Border _secondaryOptionsButtonContainer;
+        protected UIElement SecondaryOptionsButtonContainer => _secondaryOptionsButtonContainer;
         private Border _buttonCloseContainer;
 
         private Grid _topTitleBar;
