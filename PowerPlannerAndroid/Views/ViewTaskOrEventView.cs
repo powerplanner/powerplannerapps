@@ -47,7 +47,7 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnViewModelLoadedOverride()
         {
-            ViewModel.ProertyChanged = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+            ViewModel.PropertyChanged = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             UpdatePageTitle();
 
             ViewModel.Item.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Item_PropertyChanged).Handler;
