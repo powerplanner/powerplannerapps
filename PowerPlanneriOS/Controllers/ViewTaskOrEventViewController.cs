@@ -47,12 +47,11 @@ namespace PowerPlanneriOS.Controllers
             var buttonEdit = new UIBarButtonItem(UIBarButtonSystemItem.Edit);
             buttonEdit.Clicked += new WeakEventHandler(delegate { ViewModel.Edit(); }).Handler;
 
-            var buttonDelete = new UIBarButtonItem(UIBarButtonSystemItem.Trash);
-            buttonDelete.Clicked += new WeakEventHandler(ButtonDelete_Clicked).Handler;
+            var buttonMore = new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIBarButtonItemStyle.Plain, new WeakEventHandler(ButtonMore_Clicked).Handler);
 
             NavItem.RightBarButtonItems = new UIBarButtonItem[]
             {
-                buttonDelete,
+                buttonMore,
                 buttonEdit
             };
 
@@ -265,9 +264,31 @@ namespace PowerPlanneriOS.Controllers
             base.OnViewModelLoadedOverride();
         }
 
-        private void ButtonDelete_Clicked(object sender, EventArgs e)
+        private void ConfirmDelete()
         {
-            PowerPlannerUIHelper.ConfirmDeleteQuick(this, NavItem.RightBarButtonItems.First(), ViewModel.Delete);
+            PowerPlannerUIHelper.ConfirmDeleteQuick(this, NavItem.RightBarButtonItems.First(), ViewModel.Delete, "Yes, delete");
+        }
+
+        private void ButtonMore_Clicked(object sender, EventArgs e)
+        {
+            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
+            UIAlertController actionSheetMoreOptions = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+
+            actionSheetMoreOptions.AddAction(UIAlertAction.Create(ViewModel.ConvertTypeButtonText, UIAlertActionStyle.Default, delegate { ViewModel.ConvertType(); }));
+            actionSheetMoreOptions.AddAction(UIAlertAction.Create("Delete", UIAlertActionStyle.Destructive, delegate { ConfirmDelete(); }));
+            actionSheetMoreOptions.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            // Required for iPad - You must specify a source for the Action Sheet since it is
+            // displayed as a popover
+            UIPopoverPresentationController presentationPopover = actionSheetMoreOptions.PopoverPresentationController;
+            if (presentationPopover != null)
+            {
+                presentationPopover.BarButtonItem = NavItem.RightBarButtonItems.First();
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+            }
+
+            // Display the alert
+            this.PresentViewController(actionSheetMoreOptions, true, null);
         }
 
         private UIImage _sliderImageIncomplete;

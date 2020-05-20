@@ -307,6 +307,18 @@
     <ImageAsset Include="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-60.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
