@@ -3,6 +3,10 @@
     <item android:id="@+id/MenuItemEdit"
           style="@style/MenuButtonEdit"
           android:showAsAction="always|withText"/>
+  
+    <item android:id="@+id/MenuItemConvertType"
+          android:title="Convert item (will be programmatically updated)"
+          android:showAsAction="never"/>
     
     <item android:id="@+id/MenuItemDelete"
           style="@style/MenuButtonDelete"

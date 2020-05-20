@@ -49,6 +49,7 @@ namespace PowerPlannerAndroid.Views
         {
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             UpdatePageTitle();
+            UpdateConvertTypeButtonText();
 
             ViewModel.Item.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Item_PropertyChanged).Handler;
             UpdatePercentCompleteFromItem();
@@ -63,9 +64,18 @@ namespace PowerPlannerAndroid.Views
                     case nameof(ViewModel.PageTitle):
                         UpdatePageTitle();
                         break;
+
+                    case nameof(ViewModel.ConvertTypeButtonText):
+                        UpdateConvertTypeButtonText();
+                        break;
                 }
             }
             catch { }
+        }
+
+        private void UpdateConvertTypeButtonText()
+        {
+            Toolbar.Menu.FindItem(Resource.Id.MenuItemConvertType).SetTitle(ViewModel.ConvertTypeButtonText);
         }
 
         private void UpdatePageTitle()
@@ -116,6 +126,10 @@ namespace PowerPlannerAndroid.Views
 
                 case Resource.Id.MenuItemDelete:
                     ViewModel.Delete();
+                    break;
+
+                case Resource.Id.MenuItemConvertType:
+                    ViewModel.ConvertType();
                     break;
             }
         }
