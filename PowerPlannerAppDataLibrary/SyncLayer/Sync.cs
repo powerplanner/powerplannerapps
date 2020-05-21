@@ -779,13 +779,24 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                     if (response.Settings.SchoolTimeZone != null)
                     {
-                        if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(response.Settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
+                        try
                         {
-                            if (!serverSchoolTimeZone.Equals(account.SchoolTimeZone))
+                            // Sometimes TryGetTimeZoneInfo still throws
+                            if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(response.Settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
                             {
-                                account.SchoolTimeZone = serverSchoolTimeZone;
-                                accountChanged = true;
+                                if (!serverSchoolTimeZone.Equals(account.SchoolTimeZone))
+                                {
+                                    account.SchoolTimeZone = serverSchoolTimeZone;
+                                    accountChanged = true;
+                                }
                             }
+                        }
+                        catch
+                        {
+                            TelemetryExtension.Current?.TrackEvent("FailedParseOnlineTimeZone", new Dictionary<string, string>()
+                            {
+                                { "OnlineTimeZone", response.Settings.SchoolTimeZone }
+                            });
                         }
                     }
 
