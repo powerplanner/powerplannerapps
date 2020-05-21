@@ -283,7 +283,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             GpaType,
             PassingGrade,
 
-            //grade (and also homework/exam)
+            //grade (and also task/event)
             GradeReceived,
             GradeTotal,
             IsDropped,
@@ -339,7 +339,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
                 if (item is DataItemSemester)
                     return 1;
 
-                if (item is DataItemTask || item is DataItemClass)
+                if (item is DataItemClass)
                     return 2;
 
                 if (item is DataItemMegaItem)

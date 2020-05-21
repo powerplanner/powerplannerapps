@@ -24,7 +24,7 @@ using PowerPlanneriOS.Controllers.Settings;
 using PowerPlanneriOS.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlanneriOS.Controllers.ClassViewControllers;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using Microsoft.AppCenter;
@@ -86,8 +86,8 @@ namespace PowerPlanneriOS
                 { typeof(AddYearViewModel), typeof(AddYearViewController) },
                 { typeof(AddSemesterViewModel), typeof(AddSemesterViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
-                { typeof(AddHomeworkViewModel), typeof(AddHomeworkViewController) },
-                { typeof(ViewHomeworkViewModel), typeof(ViewHomeworkViewController) },
+                { typeof(AddTaskOrEventViewModel), typeof(AddTaskOrEventViewController) },
+                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventViewController) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsViewController) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayViewController) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeViewController) },
@@ -358,23 +358,23 @@ namespace PowerPlanneriOS
 
                             else if (IOSRemindersExtension.TryParsingDayOfTaskIdentifier(identifier, out Guid taskIdentifier))
                             {
-                                TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_HomeworkExam");
+                                TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_Task");
 
                                 // Show task
                                 _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
-                                    await viewModel.HandleViewHomeworkActivation(localAccountId, taskIdentifier);
+                                    await viewModel.HandleViewTaskActivation(localAccountId, taskIdentifier);
                                 });
                             }
 
                             else if (IOSRemindersExtension.TryParsingDayOfEventIdentifier(identifier, out Guid eventIdentifier))
                             {
-                                TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_HomeworkExam");
+                                TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_Event");
 
                                 // Show task
                                 _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
-                                    await viewModel.HandleViewExamActivation(localAccountId, eventIdentifier);
+                                    await viewModel.HandleViewEventActivation(localAccountId, eventIdentifier);
                                 });
                             }
                         }
@@ -452,9 +452,9 @@ namespace PowerPlanneriOS
 
         private void HandleShortcutAction(ShortcutAction action)
         {
-            TelemetryExtension.Current?.TrackEvent($"Launch_FromJumpList_QuickAdd" + (action == ShortcutAction.AddTask ? "Homework" : "Exam"));
+            TelemetryExtension.Current?.TrackEvent($"Launch_FromJumpList_QuickAdd" + (action == ShortcutAction.AddTask ? "Task" : "Event"));
 
-            // This works unless there's currently a popup open (like view homework is open)
+            // This works unless there's currently a popup open (like view task is open)
             // So the fact that the shared code clears all popups and then adds a popup messes things up...
             // My iOS code doesn't like all popups being cleared and then a new popup being added immediately...
             HandleLaunch(async (viewModel) =>
@@ -462,11 +462,11 @@ namespace PowerPlanneriOS
                 switch (action)
                 {
                     case ShortcutAction.AddTask:
-                        await viewModel.HandleQuickAddHomework();
+                        await viewModel.HandleQuickAddTask();
                         break;
 
                     case ShortcutAction.AddEvent:
-                        await viewModel.HandleQuickAddExam();
+                        await viewModel.HandleQuickAddEvent();
                         break;
                 }
             });

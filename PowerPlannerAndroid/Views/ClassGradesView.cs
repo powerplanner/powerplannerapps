@@ -56,12 +56,12 @@ namespace PowerPlannerAndroid.Views
             ViewModel.OpenWhatIf();
         }
 
-        private void Adapter_UnassignedItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void Adapter_UnassignedItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowUnassignedItem(e);
         }
 
-        private void Adapter_ItemClick(object sender, BaseViewItemHomeworkExamGrade e)
+        private void Adapter_ItemClick(object sender, BaseViewItemMegaItem e)
         {
             ViewModel.ShowItem(e);
         }

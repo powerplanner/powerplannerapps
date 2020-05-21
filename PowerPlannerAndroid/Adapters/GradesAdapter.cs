@@ -29,8 +29,8 @@ namespace PowerPlannerAndroid.Adapters
         private const int UNASSIGNED_ITEMS_HEADER_TYPE = 3;
         private const int UNASSIGNED_ITEM_TYPE = 4;
 
-        public event EventHandler<BaseViewItemHomeworkExamGrade> ItemClick;
-        public event EventHandler<BaseViewItemHomeworkExam> UnassignedItemClick;
+        public event EventHandler<BaseViewItemMegaItem> ItemClick;
+        public event EventHandler<ViewItemTaskOrEvent> UnassignedItemClick;
         public event EventHandler ButtonWhatIfModeClick;
         public event EventHandler ButtonEditGradeOptionsClick;
 
@@ -56,7 +56,7 @@ namespace PowerPlannerAndroid.Adapters
                     return new GenericRecyclerViewHolder(new InflatedViewWithBinding(Resource.Layout.ListItemUnassignedItemsHeader, parent));
 
                 case UNASSIGNED_ITEM_TYPE:
-                    var unassignedView = new ListItemHomeworkView(parent);
+                    var unassignedView = new ListItemTaskOrEventView(parent);
                     unassignedView.Click += UnassignedView_Click;
                     return new GenericRecyclerViewHolder(unassignedView);
 
@@ -77,12 +77,12 @@ namespace PowerPlannerAndroid.Adapters
 
         private void UnassignedView_Click(object sender, EventArgs e)
         {
-            UnassignedItemClick?.Invoke(this, (sender as ListItemHomeworkView).DataContext as BaseViewItemHomeworkExam);
+            UnassignedItemClick?.Invoke(this, (sender as ListItemTaskOrEventView).DataContext as ViewItemTaskOrEvent);
         }
 
         private void GradeView_Click(object sender, EventArgs e)
         {
-            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemHomeworkExamGrade);
+            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemMegaItem);
         }
 
         protected override int GetItemViewType(object item)
@@ -96,9 +96,9 @@ namespace PowerPlannerAndroid.Adapters
             if (item == (ClassGradesViewModel.UNASSIGNED_ITEMS_HEADER as object))
                 return UNASSIGNED_ITEMS_HEADER_TYPE;
 
-            if (item is BaseViewItemHomeworkExam)
+            if (item is ViewItemTaskOrEvent)
             {
-                if ((item as BaseViewItemHomeworkExam).IsUnassignedItem)
+                if ((item as ViewItemTaskOrEvent).IsUnassignedItem)
                 {
                     return UNASSIGNED_ITEM_TYPE;
                 }

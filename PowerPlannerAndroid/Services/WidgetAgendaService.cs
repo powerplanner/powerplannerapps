@@ -111,8 +111,8 @@ namespace PowerPlannerAndroid.Services
                         return emptyView;
                     }
 
-                    var task = item as BaseViewItemHomeworkExam;
-                    var c = task.GetClassOrNull();
+                    var task = item as ViewItemTaskOrEvent;
+                    var c = task.Class;
                     if (c == null)
                     {
                         var emptyView = new RemoteViews(_context.PackageName, Resource.Layout.WidgetAgendaEmptyListItem);
@@ -194,7 +194,7 @@ namespace PowerPlannerAndroid.Services
             private async System.Threading.Tasks.Task InitializeDataAsync()
             {
                 List<object> items = null;
-                List<BaseViewItemHomeworkExam> tasks = null;
+                List<ViewItemTaskOrEvent> tasks = null;
                 _now = DateTime.Now;
                 bool hasAccount = false;
                 bool isDisabledInSettings = false;
@@ -250,14 +250,14 @@ namespace PowerPlannerAndroid.Services
                                             var filtered = agendaViewGroup.Items
                                                 .Where(i => i.Date.Date >= dateToStartDisplayingFrom);
 
-                                            if (!account.MainTileSettings.ShowHomework)
+                                            if (!account.MainTileSettings.ShowTasks)
                                             {
-                                                filtered = filtered.Where(i => !(i is ViewItemHomework));
+                                                filtered = filtered.Where(i => i.Type != TaskOrEventType.Task);
                                             }
 
-                                            if (!account.MainTileSettings.ShowExams)
+                                            if (!account.MainTileSettings.ShowEvents)
                                             {
-                                                filtered = filtered.Where(i => !(i is ViewItemExam));
+                                                filtered = filtered.Where(i => i.Type != TaskOrEventType.Event);
                                             }
 
                                             // Agenda view group doesn't sort, so we have to sort it
@@ -346,7 +346,7 @@ namespace PowerPlannerAndroid.Services
                 }
             }
 
-            private static DateTime? GetNextAgendaChangeTime(IEnumerable<BaseViewItemHomeworkExam> items, DateTime now)
+            private static DateTime? GetNextAgendaChangeTime(IEnumerable<ViewItemTaskOrEvent> items, DateTime now)
             {
                 // If there's no items
                 if (!items.Any())
@@ -355,7 +355,7 @@ namespace PowerPlannerAndroid.Services
                 }
 
                 // If there's an event that ends later today
-                foreach (var i in items.OfType<ViewItemExam>().Where(i => i.EndTime.Date == now.Date))
+                foreach (var i in items.Where(i => i.Type == TaskOrEventType.Event && i.EndTime.Date == now.Date))
                 {
                     DateTime endDateWithTime;
                     if (i.TryGetEndDateWithTime(out endDateWithTime) && endDateWithTime > now)

@@ -104,7 +104,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
             DataItemClass[] dataClasses;
             DataItemSchedule[] dataSchedules;
-            DataItemWeightCategory[] dataWeights = null; // Weights are now needed for adding homework/exams
+            DataItemWeightCategory[] dataWeights = null; // Weights are now needed for adding tasks/events
             DataItemSemester dataSemester;
 
             using (await Locks.LockDataForReadAsync("ScheduleViewItemsGroup.LoadBlocking"))

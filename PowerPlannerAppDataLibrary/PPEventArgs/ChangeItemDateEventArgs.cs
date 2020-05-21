@@ -1,4 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+﻿using PowerPlannerAppDataLibrary.ViewItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace PowerPlannerAppDataLibrary.PPEventArgs
 {
     public class ChangeItemDateEventArgs
     {
-        public BaseViewItemHomeworkExam Item { get; private set; }
+        public ViewItemTaskOrEvent Item { get; private set; }
 
         public DateTime DesiredDate { get; private set; }
 
-        public ChangeItemDateEventArgs(BaseViewItemHomeworkExam item, DateTime desiredDate)
+        public ChangeItemDateEventArgs(ViewItemTaskOrEvent item, DateTime desiredDate)
         {
             Item = item;
             DesiredDate = desiredDate;

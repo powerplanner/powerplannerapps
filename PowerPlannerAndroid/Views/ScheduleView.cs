@@ -615,11 +615,11 @@ namespace PowerPlannerAndroid.Views
 
                 foreach (var i in items)
                 {
-                    if (i is BaseViewItemHomeworkExam)
+                    if (i is ViewItemTaskOrEvent)
                     {
                         var itemView = new MainCalendarItemView(Context)
                         {
-                            Item = i as BaseViewItemHomeworkExam
+                            Item = i as ViewItemTaskOrEvent
                         };
                         (itemView.LayoutParameters as LinearLayout.LayoutParams).RightMargin = ThemeHelper.AsPx(Context, 2);
                         base.AddView(itemView);

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
 {
+    [Obsolete("Legacy type no longer used, replaced by DataItemMegaItem. Kept around just for data upgrade purposes.")]
     public abstract class BaseDataItemHomework : BaseDataItemHomeworkExam
     {
         public static readonly DataItemProperty PercentCompleteProperty = DataItemProperty.Register(SyncPropertyNames.PercentComplete);

@@ -155,7 +155,7 @@ namespace PowerPlanneriOS.Extensions
                 for (int i = 0; i < DAYS_IN_ADVANCE; i++, artificialToday = artificialToday.AddDays(1))
                 {
                     DateTime artificialTomorrow = artificialToday.AddDays(1);
-                    BaseViewItemHomeworkExam[] itemsOnDay = agendaItems.Items.Where(x => x.Date.Date == artificialTomorrow).OrderBy(x => x).ToArray();
+                    ViewItemTaskOrEvent[] itemsOnDay = agendaItems.Items.Where(x => x.Date.Date == artificialTomorrow).OrderBy(x => x).ToArray();
 
                     if (itemsOnDay.Length > 0)
                     {
@@ -194,7 +194,7 @@ namespace PowerPlanneriOS.Extensions
                 DateTime today = now.Date;
                 DateTime maxDate = today.AddDays(DAYS_IN_ADVANCE);
 
-                BaseViewItemHomeworkExam[] itemsDueTodayOrGreater = agendaItems.Items.Where(i => i.Date.Date >= today && i.Date.Date <= maxDate).OrderBy(i => i).ToArray();
+                ViewItemTaskOrEvent[] itemsDueTodayOrGreater = agendaItems.Items.Where(i => i.Date.Date >= today && i.Date.Date <= maxDate).OrderBy(i => i).ToArray();
 
                 foreach (var item in itemsDueTodayOrGreater)
                 {
@@ -224,12 +224,12 @@ namespace PowerPlanneriOS.Extensions
             }
         }
 
-        private static string GetClassName(BaseViewItemHomeworkExam item)
+        private static string GetClassName(ViewItemTaskOrEvent item)
         {
             if (item == null)
                 return "";
 
-            var c = item.GetClassOrNull();
+            var c = item.Class;
 
             if (c != null)
                 return StringTools.TrimLengthWithEllipses(c.Name, 30);
@@ -247,7 +247,7 @@ namespace PowerPlanneriOS.Extensions
             return time >= DateTime.Now.AddSeconds(5);
         }
 
-        private static DateTime GetDayOfReminderTime(BaseViewItemHomeworkExam item, out bool hadSpecificTime)
+        private static DateTime GetDayOfReminderTime(ViewItemTaskOrEvent item, out bool hadSpecificTime)
         {
             return item.GetDayOfReminderTime(out hadSpecificTime);
         }
@@ -341,9 +341,9 @@ namespace PowerPlanneriOS.Extensions
             return GetIdentifierStartStringForAccount(localAccountId) + DAY_BEFORE;
         }
 
-        private static string GetIdentifierForDayOfItem(Guid localAccountId, BaseViewItemHomeworkExam item)
+        private static string GetIdentifierForDayOfItem(Guid localAccountId, ViewItemTaskOrEvent item)
         {
-            return GetIdentifierStartStringForAccount(localAccountId) + ((item is ViewItemHomework) ? DAY_OF_TASK : DAY_OF_EVENT) + item.Identifier;
+            return GetIdentifierStartStringForAccount(localAccountId) + ((item.Type == TaskOrEventType.Task) ? DAY_OF_TASK : DAY_OF_EVENT) + item.Identifier;
         }
 
         public static bool TryParseAccount(string identifier, out Guid localAccountId)
@@ -416,7 +416,7 @@ namespace PowerPlanneriOS.Extensions
             catch { return null; }
         }
 
-        private async Task ScheduleDayOfNotification(Guid localAccountId, BaseViewItemHomeworkExam item, string title, string subtitle, string body, DateTime deliveryTime)
+        private async Task ScheduleDayOfNotification(Guid localAccountId, ViewItemTaskOrEvent item, string title, string subtitle, string body, DateTime deliveryTime)
         {
             var content = new UNMutableNotificationContent()
             {

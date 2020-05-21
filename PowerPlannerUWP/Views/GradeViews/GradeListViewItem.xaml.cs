@@ -24,7 +24,7 @@ namespace PowerPlannerUWP.Views.GradeViews
 {
     public sealed partial class GradeListViewItem : UserControl
     {
-        public event EventHandler<BaseViewItemHomeworkExamGrade> OnRequestViewGrade;
+        public event EventHandler<BaseViewItemMegaItem> OnRequestViewGrade;
 
         public GradeListViewItem()
         {
@@ -51,7 +51,7 @@ namespace PowerPlannerUWP.Views.GradeViews
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            OnRequestViewGrade?.Invoke(this, (BaseViewItemHomeworkExamGrade)DataContext);
+            OnRequestViewGrade?.Invoke(this, (BaseViewItemMegaItem)DataContext);
         }
 
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register("Color", typeof(Color), typeof(GradeListViewItem), null);

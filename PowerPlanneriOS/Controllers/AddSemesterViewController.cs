@@ -59,7 +59,7 @@ namespace PowerPlanneriOS.Controllers
 
             AddSectionDivider();
 
-            AddDeleteButtonWithConfirmation("Delete Semester", ViewModel.Delete, "Delete semester?", "Are you sure you want to delete this semester and all of its classes, grades, and homework?");
+            AddDeleteButtonWithConfirmation("Delete Semester", ViewModel.Delete, "Delete semester?", "Are you sure you want to delete this semester and all of its classes, grades, tasks, and events?");
 
             AddBottomSectionDivider();
 

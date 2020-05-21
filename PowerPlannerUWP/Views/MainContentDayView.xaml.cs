@@ -64,10 +64,10 @@ namespace PowerPlannerUWP.Views
         {
             try
             {
-                App.ShowFlyoutAddHomeworkOrExam(
+                App.ShowFlyoutAddTaskOrEvent(
                     elToCenterFrom: sender as FrameworkElement,
-                    addHomeworkAction: ViewModel.AddHomework,
-                    addExamAction: ViewModel.AddExam,
+                    addTaskAction: ViewModel.AddTask,
+                    addEventAction: ViewModel.AddEvent,
                     addHolidayAction: ViewModel.AddHoliday);
             }
 

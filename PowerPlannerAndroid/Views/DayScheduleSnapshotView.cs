@@ -131,7 +131,7 @@ namespace PowerPlannerAndroid.Views
                     _arrangedItems.OnItemsChanged -= _arrangedItemsOnItemsChangedHandler;
                 }
 
-                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, TIME_INDICATOR_SIZE + GAP_SIZE, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeHomeworkAndHolidays: true);
+                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, TIME_INDICATOR_SIZE + GAP_SIZE, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
                 _arrangedItems.OnItemsChanged += _arrangedItemsOnItemsChangedHandler;
 
                 render();
@@ -741,10 +741,10 @@ namespace PowerPlannerAndroid.Views
             {
                 Item = item.Item,
 
-                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the homework
+                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the task
                 // Ideally we would implement the back handling as part of the view model like we did for UWP, but for simplicity we're going
                 // to leave it like this for now
-                AfterOpenedHomeworkAction = delegate { HideFull(); }
+                AfterOpenedTaskOrEventAction = delegate { HideFull(); }
             });
             if (item.AdditionalItems != null)
             {
@@ -753,7 +753,7 @@ namespace PowerPlannerAndroid.Views
                     sp.AddView(new MainCalendarItemView(Context)
                     {
                         Item = i,
-                        AfterOpenedHomeworkAction = delegate { HideFull(); }
+                        AfterOpenedTaskOrEventAction = delegate { HideFull(); }
                     });
                 }
             }
@@ -792,7 +792,7 @@ namespace PowerPlannerAndroid.Views
                 Text = item.Item.Name
             };
             tb.SetTextColor(Color.White);
-            if (item.Item.IsComplete())
+            if (item.Item.IsComplete)
             {
                 tb.SetStrikethrough(true);
             }
@@ -801,7 +801,7 @@ namespace PowerPlannerAndroid.Views
             return grid;
         }
 
-        public static Android.Content.Res.ColorStateList GetBackgroundColorStateList(BaseViewItemHomeworkExam item)
+        public static Android.Content.Res.ColorStateList GetBackgroundColorStateList(ViewItemTaskOrEvent item)
         {
             return new Android.Content.Res.ColorStateList(new int[][]
             {
@@ -809,7 +809,7 @@ namespace PowerPlannerAndroid.Views
             },
             new int[]
             {
-                item.IsComplete() ? new Color(180, 180, 180).ToArgb() : ColorTools.GetColor(item.GetClassOrNull().Color).ToArgb()
+                item.IsComplete ? new Color(180, 180, 180).ToArgb() : ColorTools.GetColor(item.Class.Color).ToArgb()
             });
         }
     }
@@ -857,8 +857,8 @@ namespace PowerPlannerAndroid.Views
             Visibility = ViewStates.Gone;
         }
 
-        private IEnumerable<BaseViewItemHomeworkExam> _additionalItems;
-        public IEnumerable<BaseViewItemHomeworkExam> AdditionalItems
+        private IEnumerable<ViewItemTaskOrEvent> _additionalItems;
+        public IEnumerable<ViewItemTaskOrEvent> AdditionalItems
         {
             get { return _additionalItems; }
             set
@@ -880,7 +880,7 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private View CreateCircle(ViewGroup root, BaseViewItemHomeworkExamGrade item)
+        private View CreateCircle(ViewGroup root, BaseViewItemMegaItem item)
         {
             View view = new View(root.Context)
             {
@@ -893,9 +893,9 @@ namespace PowerPlannerAndroid.Views
                 }
             };
 
-            if (item is BaseViewItemHomeworkExam)
+            if (item is ViewItemTaskOrEvent)
             {
-                ViewCompat.SetBackgroundTintList(view, MyFullEventItem.GetBackgroundColorStateList(item as BaseViewItemHomeworkExam));
+                ViewCompat.SetBackgroundTintList(view, MyFullEventItem.GetBackgroundColorStateList(item as ViewItemTaskOrEvent));
             }
 
             return view;

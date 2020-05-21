@@ -6,7 +6,7 @@
     xmlns:local="using:PowerPlannerUWP"
     xmlns:localconverters="using:PowerPlannerUWP.Converters"
     xmlns:converters="using:InterfacesUWP.Converters"
-    xmlns:homeworkViews="using:PowerPlannerUWP.Views.HomeworkViews"
+    xmlns:taskOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews"
     xmlns:calendarViews="using:PowerPlannerUWP.Views.CalendarViews"
     xmlns:scheduleViews="using:PowerPlannerUWP.Views.ScheduleViews">
 
@@ -657,7 +657,7 @@
                     <localconverters:BoolToValidityBrushConverter x:Key="BoolToValidityBrushConverter"/>
                     <localconverters:ItemTypeToDatePrefixConverter x:Key="ItemTypeToDatePrefixConverter"/>
 
-                    <localconverters:IsHomeworkToVisibilityConverter x:Key="IsHomeworkToVisibilityConverter"/>
+                    <localconverters:IsTaskToVisibilityConverter x:Key="IsTaskToVisibilityConverter"/>
 
                     <localconverters:StringToImageConverter x:Key="StringToImageConverter"/>
                     <localconverters:StringToImageThumbnailConverter x:Key="StringToImageThumbnailConverter"/>
@@ -732,13 +732,13 @@
                         </Setter>
                     </Style>
 
-                    <DataTemplate x:Key="DataTemplateHomework">
-                        <homeworkViews:HomeworkListViewItem
+                    <DataTemplate x:Key="DataTemplateTaskOrEvent">
+                        <taskOrEventViews:TaskOrEventListViewItem
                             Margin="0,3"/>
                     </DataTemplate>
 
-                    <DataTemplate x:Key="DataTemplateHomeworkWithoutDate">
-                        <homeworkViews:HomeworkListViewItem
+                    <DataTemplate x:Key="DataTemplateTaskOrEventWithoutDate">
+                        <taskOrEventViews:TaskOrEventListViewItem
                             Margin="0,3"
                             IncludeDate="False"/>
                     </DataTemplate>
@@ -792,7 +792,9 @@
                         <Setter Property="VerticalAlignment" Value="Top"/>
                         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
                         <Setter Property="FontWeight" Value="Normal"/>
-                        <Setter Property="Width" Value="130"/>
+                        <Setter Property="Width" Value="Auto"/>
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="MaxWidth" Value="300"/>
                         <Setter Property="UseSystemFocusVisuals" Value="True"/>
                         <Setter Property="Template">
                             <Setter.Value>

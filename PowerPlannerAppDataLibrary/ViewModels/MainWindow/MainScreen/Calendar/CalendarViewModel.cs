@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
@@ -242,31 +242,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }
 
-        public void AddHomework(bool useSelectedDate = true)
+        public void AddTask(bool useSelectedDate = true)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Homework, useSelectedDate: useSelectedDate);
+            AddItem(TaskOrEventType.Task, useSelectedDate: useSelectedDate);
         }
 
-        public void AddHomework(DateTime date)
+        public void AddTask(DateTime date)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Homework, date);
+            AddItem(TaskOrEventType.Task, date);
         }
 
-        public void AddExam(bool useSelectedDate = true)
+        public void AddEvent(bool useSelectedDate = true)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Exam, useSelectedDate: useSelectedDate);
+            AddItem(TaskOrEventType.Event, useSelectedDate: useSelectedDate);
         }
 
-        public void AddExam(DateTime date)
+        public void AddEvent(DateTime date)
         {
-            AddItem(AddHomeworkViewModel.ItemType.Exam, date);
+            AddItem(TaskOrEventType.Event, date);
         }
 
-        private void AddItem(AddHomeworkViewModel.ItemType type, DateTime? dueDate = null, bool useSelectedDate = true)
+        private void AddItem(TaskOrEventType type, DateTime? dueDate = null, bool useSelectedDate = true)
         {
             dueDate = GetDateForAdd(dueDate, useSelectedDate);
 
-            MainScreenViewModel.ShowPopup(AddHomeworkViewModel.CreateForAdd(MainScreenViewModel, new AddHomeworkViewModel.AddParameter()
+            MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
                 Classes = MainScreenViewModel.Classes,
@@ -342,7 +342,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             return dueDate;
         }
 
-        public void ShowItem(BaseViewItemHomeworkExam item)
+        public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
         }
@@ -368,7 +368,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             MainScreenViewModel.Navigate(new ScheduleViewModel(MainScreenViewModel));
         }
 
-        public async Task MoveItem(BaseViewItemHomeworkExam item, DateTime toDate)
+        public async Task MoveItem(ViewItemTaskOrEvent item, DateTime toDate)
         {
             try
             {

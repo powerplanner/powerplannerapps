@@ -23,7 +23,7 @@ namespace PowerPlannerAndroid.Views.Controls
     public class DayPagerControl : ViewPager
     {
         public event EventHandler<DateTime> CurrentDateChanged;
-        public event EventHandler<BaseViewItemHomeworkExam> ItemClick;
+        public event EventHandler<ViewItemTaskOrEvent> ItemClick;
         public event EventHandler<ViewItemHoliday> HolidayItemClick;
         public event EventHandler<ViewItemSchedule> ScheduleItemClick;
         public event EventHandler ScheduleClick;
@@ -134,14 +134,14 @@ namespace PowerPlannerAndroid.Views.Controls
             ScheduleItemClick?.Invoke(this, e);
         }
 
-        private void Adapter_ItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void Adapter_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ItemClick?.Invoke(this, e);
         }
 
         private class DayPagerAdapter : PagerAdapter
         {
-            public event EventHandler<BaseViewItemHomeworkExam> ItemClick;
+            public event EventHandler<ViewItemTaskOrEvent> ItemClick;
             public event EventHandler<ViewItemHoliday> HolidayItemClick;
             public event EventHandler<ViewItemSchedule> ScheduleItemClick;
             public event EventHandler ScheduleClick;
@@ -177,7 +177,7 @@ namespace PowerPlannerAndroid.Views.Controls
             {
                 DateTime date = GetDate(position);
 
-                var homeworksOnDay = HomeworksOnDay.Get(ItemsSource.Items, date);
+                var tasksOrEventsOnDay = TasksOrEventsOnDay.Get(ItemsSource.Items, date);
 
                 SingleDayControl control = _destroyedControls.FirstOrDefault();
 
@@ -187,7 +187,7 @@ namespace PowerPlannerAndroid.Views.Controls
 
                     try
                     {
-                        control.Initialize(date, homeworksOnDay, ItemsSource);
+                        control.Initialize(date, tasksOrEventsOnDay, ItemsSource);
                     }
 
                     // ObjectDisposedException actually shouldn't ever occur here. If it does, we should analyze why.
@@ -207,7 +207,7 @@ namespace PowerPlannerAndroid.Views.Controls
                     control.HolidayItemClick += SingleDayControl_HolidayItemClick;
                     control.ScheduleItemClick += SingleDayControl_ScheduleItemClick;
                     control.ScheduleClick += SingleDayControl_ScheduleClick;
-                    control.Initialize(date, homeworksOnDay, ItemsSource);
+                    control.Initialize(date, tasksOrEventsOnDay, ItemsSource);
                 }
 
                 container.AddView(control);
@@ -230,7 +230,7 @@ namespace PowerPlannerAndroid.Views.Controls
                 ScheduleItemClick?.Invoke(this, e);
             }
 
-            private void SingleDayControl_ItemClick(object sender, BaseViewItemHomeworkExam e)
+            private void SingleDayControl_ItemClick(object sender, ViewItemTaskOrEvent e)
             {
                 ItemClick?.Invoke(sender, e);
             }

@@ -142,12 +142,11 @@
     <Compile Include="Converters\IsCompleteToOpacityConverter.cs" />
     <Compile Include="Converters\IsCompleteToVisibilityConverter.cs" />
     <Compile Include="Converters\IsDroppedToDropStringConverter.cs" />
-    <Compile Include="Converters\IsHomeworkToVisibilityConverter.cs" />
+    <Compile Include="Converters\IsTaskToVisibilityConverter.cs" />
     <Compile Include="Converters\IsNotCompleteToVisibilityConverter.cs" />
-    <Compile Include="Converters\IsPastCompletedExamsDisplayedToButtonContentConverter.cs" />
-    <Compile Include="Converters\IsPastCompletedHomeworkDisplayedToButtonContentConverter.cs" />
+    <Compile Include="Converters\IsPastCompletedEventsDisplayedToButtonContentConverter.cs" />
+    <Compile Include="Converters\IsPastCompletedTasksDisplayedToButtonContentConverter.cs" />
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
-    <Compile Include="Converters\ItemTypeToHomeworkPopupTitleConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
@@ -249,8 +248,8 @@
     <Compile Include="Views\AddGradeView.xaml.cs">
       <DependentUpon>AddGradeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddHomeworkView.xaml.cs">
-      <DependentUpon>AddHomeworkView.xaml</DependentUpon>
+    <Compile Include="Views\AddTaskOrEventView.xaml.cs">
+      <DependentUpon>AddTaskOrEventView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -354,6 +353,12 @@
     <Compile Include="Views\SyncErrorsView.xaml.cs">
       <DependentUpon>SyncErrorsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TaskOrEventViews\TaskOrEventListViewItem.xaml.cs">
+      <DependentUpon>TaskOrEventListViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TaskOrEventViews\TaskOrEventProgressSidebar.xaml.cs">
+      <DependentUpon>TaskOrEventProgressSidebar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UpdateCredentialsView.xaml.cs">
       <DependentUpon>UpdateCredentialsView.xaml</DependentUpon>
     </Compile>
@@ -362,9 +367,6 @@
     </Compile>
     <Compile Include="Views\ViewGradeView.xaml.cs">
       <DependentUpon>ViewGradeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ViewHomeworkView.xaml.cs">
-      <DependentUpon>ViewHomeworkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShowImagesView.xaml.cs">
       <DependentUpon>ShowImagesView.xaml</DependentUpon>
@@ -376,6 +378,9 @@
     <Compile Include="Views\SettingsListView.xaml.cs">
       <DependentUpon>SettingsListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewTaskOrEventView.xaml.cs">
+      <DependentUpon>ViewTaskOrEventView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WelcomeViews\ConnectAccountView.xaml.cs">
       <DependentUpon>ConnectAccountView.xaml</DependentUpon>
     </Compile>
@@ -385,7 +390,6 @@
     <Compile Include="Views\YearsView.xaml.cs">
       <DependentUpon>YearsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PowerPlannerFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\SideBarTemplateSelector.cs" />
     <Compile Include="Views\BasicPopupView.cs" />
@@ -441,24 +445,14 @@
     <Compile Include="Views\GradeViews\WeightCategoryListViewItem.xaml.cs">
       <DependentUpon>WeightCategoryListViewItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HomeworkDatePicker.cs" />
-    <Compile Include="Views\HomeworkDatePickerPopupControl.xaml.cs">
-      <DependentUpon>HomeworkDatePickerPopupControl.xaml</DependentUpon>
+    <Compile Include="Views\TaskOrEventViews\TasksOrEventsItemsControl.xaml.cs">
+      <DependentUpon>TasksOrEventsItemsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HomeworkViews\HomeworkItemsControl.xaml.cs">
-      <DependentUpon>HomeworkItemsControl.xaml</DependentUpon>
+    <Compile Include="Views\TaskOrEventViews\TasksOrEventsListHeader.xaml.cs">
+      <DependentUpon>TasksOrEventsListHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HomeworkViews\HomeworkListHeader.xaml.cs">
-      <DependentUpon>HomeworkListHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HomeworkViews\HomeworkListView.cs" />
-    <Compile Include="Views\HomeworkViews\HomeworkListViewItem.xaml.cs">
-      <DependentUpon>HomeworkListViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HomeworkViews\HomeworkProgressSidebar.xaml.cs">
-      <DependentUpon>HomeworkProgressSidebar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HomeworkViews\IsCompleteToTitleForegroundConverter.cs" />
+    <Compile Include="Views\TaskOrEventViews\TasksOrEventsListView.cs" />
+    <Compile Include="Views\TaskOrEventViews\IsCompleteToTitleForegroundConverter.cs" />
     <Compile Include="Views\ImagesWrapGrid.xaml.cs">
       <DependentUpon>ImagesWrapGrid.xaml</DependentUpon>
     </Compile>
@@ -708,7 +702,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddHomeworkView.xaml">
+    <Page Include="Views\AddTaskOrEventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -848,6 +842,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TaskOrEventViews\TaskOrEventListViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TaskOrEventViews\TaskOrEventProgressSidebar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\UpdateCredentialsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -860,10 +862,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ViewHomeworkView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ShowImagesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -873,6 +871,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ViewTaskOrEventView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -952,23 +954,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HomeworkDatePickerPopupControl.xaml">
+    <Page Include="Views\TaskOrEventViews\TasksOrEventsItemsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HomeworkViews\HomeworkItemsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\HomeworkViews\HomeworkListHeader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\HomeworkViews\HomeworkListViewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\HomeworkViews\HomeworkProgressSidebar.xaml">
+    <Page Include="Views\TaskOrEventViews\TasksOrEventsListHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

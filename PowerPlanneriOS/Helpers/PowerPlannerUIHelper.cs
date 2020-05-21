@@ -13,12 +13,12 @@ namespace PowerPlanneriOS.Helpers
 {
     public static class PowerPlannerUIHelper
     {
-        public static void ConfirmDeleteQuick(UIViewController viewController, UIBarButtonItem barButton, Action deleteAction)
+        public static void ConfirmDeleteQuick(UIViewController viewController, UIBarButtonItem barButton, Action deleteAction, string deleteText = "Delete")
         {
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-            actionSheetAlert.AddAction(UIAlertAction.Create("Delete", UIAlertActionStyle.Destructive, delegate { deleteAction(); }));
+            actionSheetAlert.AddAction(UIAlertAction.Create(deleteText, UIAlertActionStyle.Destructive, delegate { deleteAction(); }));
             actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
 
             // Required for iPad - You must specify a source for the Action Sheet since it is

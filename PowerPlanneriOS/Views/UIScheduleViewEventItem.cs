@@ -12,6 +12,7 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using ToolsPortable;
 using CoreGraphics;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlanneriOS.Views
 {
@@ -190,36 +191,36 @@ namespace PowerPlanneriOS.Views
             return stackView;
         }
 
-        private void AddSingleFullItemView(UIStackView stackView, BaseViewItemHomeworkExam item)
+        private void AddSingleFullItemView(UIStackView stackView, ViewItemTaskOrEvent item)
         {
             var view = new UIMainCalendarItemView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 DataContext = item,
 
-                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the homework
+                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the task
                 // Ideally we would implement the back handling as part of the view model like we did for UWP, but for simplicity we're going
                 // to leave it like this for now
-                AfterOpenedHomeworkAction = delegate { HideFull(); }
+                AfterOpenedTaskOrEventAction = delegate { HideFull(); }
             };
             stackView.AddArrangedSubview(view);
             view.StretchWidth(stackView);
         }
 
-        internal static CGColor GetBackgroundCGColor(BaseViewItemHomeworkExam item)
+        internal static CGColor GetBackgroundCGColor(ViewItemTaskOrEvent item)
         {
-            if (item.IsComplete())
+            if (item.IsComplete)
             {
                 return new CGColor(180 / 255f, 1);
             }
 
             else
             {
-                return BareUIHelper.ToCGColor(item.GetClassOrNull()?.Color);
+                return BareUIHelper.ToCGColor(item.Class?.Color);
             }
         }
 
-        internal static UIColor GetBackgroundColor(BaseViewItemHomeworkExam item)
+        internal static UIColor GetBackgroundColor(ViewItemTaskOrEvent item)
         {
             return new UIColor(GetBackgroundCGColor(item));
         }
@@ -237,8 +238,8 @@ namespace PowerPlanneriOS.Views
                 this.SetWidth(WIDTH);
             }
 
-            private IEnumerable<BaseViewItemHomeworkExam> _additionalItems;
-            public IEnumerable<BaseViewItemHomeworkExam> AdditionalItems
+            private IEnumerable<ViewItemTaskOrEvent> _additionalItems;
+            public IEnumerable<ViewItemTaskOrEvent> AdditionalItems
             {
                 get { return _additionalItems; }
                 set
@@ -250,10 +251,10 @@ namespace PowerPlanneriOS.Views
 
             private UIView CreateCircle(object item)
             {
-                return CreateCircle(item as BaseViewItemHomeworkExam);
+                return CreateCircle(item as ViewItemTaskOrEvent);
             }
 
-            private UIView CreateCircle(BaseViewItemHomeworkExam item)
+            private UIView CreateCircle(ViewItemTaskOrEvent item)
             {
                 var view = new BareUIEllipseView()
                 {
@@ -282,7 +283,7 @@ namespace PowerPlanneriOS.Views
             var label = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                AttributedText = new NSAttributedString(item.Item.Name, strikethroughStyle: item.Item.IsComplete() ? NSUnderlineStyle.Single : NSUnderlineStyle.None),
+                AttributedText = new NSAttributedString(item.Item.Name, strikethroughStyle: item.Item.IsComplete ? NSUnderlineStyle.Single : NSUnderlineStyle.None),
                 TextColor = UIColor.White,
                 Font = UIFont.PreferredCaption1
             };

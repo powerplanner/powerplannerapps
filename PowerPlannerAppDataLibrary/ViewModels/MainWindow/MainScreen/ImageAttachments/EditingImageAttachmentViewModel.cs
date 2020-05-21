@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using StorageEverywhere;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments
 {
     public class EditingExistingImageAttachmentViewModel : BaseEditingImageAttachmentViewModel
     {
-        public EditingExistingImageAttachmentViewModel(AddHomeworkViewModel parent, string imageName) : base(parent)
+        public EditingExistingImageAttachmentViewModel(AddTaskOrEventViewModel parent, string imageName) : base(parent)
         {
             ImageAttachment = new ImageAttachmentViewModel(imageName);
         }
@@ -22,7 +22,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttac
     {
         public IFile TempFile { get; private set; }
 
-        public EditingNewImageAttachmentViewModel(AddHomeworkViewModel parent, IFile tempFile) : base(parent)
+        public EditingNewImageAttachmentViewModel(AddTaskOrEventViewModel parent, IFile tempFile) : base(parent)
         {
             TempFile = tempFile;
             ImageAttachment = new ImageAttachmentViewModel(TempFile);
@@ -31,17 +31,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttac
 
     public class BaseEditingImageAttachmentViewModel : BaseMainScreenViewModelDescendant
     {
-        private AddHomeworkViewModel _addHomeworkViewModel;
-        public BaseEditingImageAttachmentViewModel(AddHomeworkViewModel parent) : base(parent)
+        private AddTaskOrEventViewModel _addTaskOrEventViewModel;
+        public BaseEditingImageAttachmentViewModel(AddTaskOrEventViewModel parent) : base(parent)
         {
-            _addHomeworkViewModel = parent;
+            _addTaskOrEventViewModel = parent;
         }
 
         public ImageAttachmentViewModel ImageAttachment { get; protected set; }
 
         public void RemoveThisImageAttachment()
         {
-            _addHomeworkViewModel.RemoveImageAttachment(this);
+            _addTaskOrEventViewModel.RemoveImageAttachment(this);
         }
     }
 }

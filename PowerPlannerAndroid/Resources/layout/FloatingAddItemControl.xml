@@ -51,7 +51,7 @@
 
     <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
     <LinearLayout
-        android:id="@+id/FloadingAddItemAddExamSection"
+        android:id="@+id/FloadingAddItemAddEventSection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -64,7 +64,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp">
             <TextView
-                android:id="@+id/FloatingAddItemAddExamText"
+                android:id="@+id/FloatingAddItemAddEventText"
                 android:text="{String_AddEvent}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
         
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FloatingActionButton"
-            android:id="@+id/FloatingActionButtonAddExam"
+            android:id="@+id/FloatingActionButtonAddEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fabSize="mini"
@@ -87,7 +87,7 @@
 
     <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
     <LinearLayout
-        android:id="@+id/FloadingAddItemAddHomeworkSection"
+        android:id="@+id/FloadingAddItemAddTaskSection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
@@ -98,7 +98,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp">
             <TextView
-                android:id="@+id/FloatingAddItemAddHomeworkText"
+                android:id="@+id/FloatingAddItemAddTaskText"
                 android:text="{String_AddTask}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

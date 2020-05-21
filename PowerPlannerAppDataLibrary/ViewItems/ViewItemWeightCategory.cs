@@ -96,7 +96,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set { SetProperty(ref _weightAchievedAveraged, value, "WeightAchievedAveraged", nameof(WeightAchieved), nameof(WeightAchievedAndTotalString)); }
         }
 
-        public void Remove(BaseViewItemHomeworkExamGrade viewItemGrade)
+        public void Remove(BaseViewItemMegaItem viewItemGrade)
         {
             if (Grades != null)
                 Grades.Remove(viewItemGrade);
@@ -108,7 +108,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
         public ViewItemWeightCategory(
             DataItemWeightCategory dataItem,
-            Func<BaseDataItemHomeworkExamGrade, BaseViewItemHomeworkExamGrade> createGradeMethod = null) : base(dataItem)
+            Func<BaseDataItemHomeworkExamGrade, BaseViewItemMegaItem> createGradeMethod = null) : base(dataItem)
         {
             if (createGradeMethod != null)
             {
@@ -116,11 +116,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
-        public void AddGradesHelper(Func<BaseDataItemHomeworkExamGrade, BaseViewItemHomeworkExamGrade> createGradeMethod)
+        public void AddGradesHelper(Func<BaseDataItemHomeworkExamGrade, BaseViewItemMegaItem> createGradeMethod)
         {
-            Grades = new MyObservableList<BaseViewItemHomeworkExamGrade>();
+            Grades = new MyObservableList<BaseViewItemMegaItem>();
 
-            AddChildrenHelper(new ViewItemChildrenHelper<BaseDataItemHomeworkExamGrade, BaseViewItemHomeworkExamGrade>(
+            AddChildrenHelper(new ViewItemChildrenHelper<BaseDataItemHomeworkExamGrade, BaseViewItemMegaItem>(
                 isChild: IsChild,
                 addMethod: Add,
                 removeMethod: Remove,
@@ -128,18 +128,18 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 children: Grades));
         }
 
-        public static BaseViewItemHomeworkExamGrade CreateGradeHelper(BaseDataItemHomeworkExamGrade dataItem)
+        public static BaseViewItemMegaItem CreateGradeHelper(BaseDataItemHomeworkExamGrade dataItem)
         {
             if (dataItem is DataItemMegaItem)
             {
                 var type = (dataItem as DataItemMegaItem).MegaItemType;
                 if (type == MegaItemType.Homework)
                 {
-                    return new ViewItemHomework(dataItem as DataItemMegaItem);
+                    return new ViewItemTaskOrEvent(dataItem as DataItemMegaItem);
                 }
                 else if (type == MegaItemType.Exam)
                 {
-                    return new ViewItemExam(dataItem as DataItemMegaItem);
+                    return new ViewItemTaskOrEvent(dataItem as DataItemMegaItem);
                 }
             }
             else if (dataItem is DataItemGrade)
@@ -165,8 +165,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
-        private MyObservableList<BaseViewItemHomeworkExamGrade> _grades;
-        public MyObservableList<BaseViewItemHomeworkExamGrade> Grades
+        private MyObservableList<BaseViewItemMegaItem> _grades;
+        public MyObservableList<BaseViewItemMegaItem> Grades
         {
             get { return _grades; }
             private set { SetProperty(ref _grades, value, nameof(Grades)); }
@@ -179,17 +179,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             private set { SetProperty(ref _weightValue, value, "WeightValue"); }
         }
 
-        public void Add(BaseViewItemHomeworkExamGrade grade)
+        public void Add(BaseViewItemMegaItem grade)
         {
             grade.WeightCategory = this;
 
-            if (grade is ViewItemHomework)
+            if (grade is ViewItemTaskOrEvent)
             {
-                (grade as ViewItemHomework).Class = this.Class;
-            }
-            else if (grade is ViewItemExam)
-            {
-                (grade as ViewItemExam).Class = this.Class;
+                (grade as ViewItemTaskOrEvent).Class = this.Class;
             }
 
             if (Grades != null)

@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
@@ -22,12 +22,12 @@ namespace PowerPlannerAndroid.Views
 
             FindViewById<Button>(Resource.Id.ButtonAddTask).Click += delegate
             {
-                ViewModel.AddHomework();
+                ViewModel.AddTask();
             };
 
             FindViewById<Button>(Resource.Id.ButtonAddEvent).Click += delegate
             {
-                ViewModel.AddExam();
+                ViewModel.AddEvent();
             };
         }
     }

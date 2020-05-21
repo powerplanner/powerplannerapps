@@ -12,10 +12,10 @@ using PowerPlannerAppDataLibrary.Extensions;
 
 namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 {
-    public abstract class BaseSingleItemViewItemsGroup<TViewItem> : BaseAccountViewItemsGroup where TViewItem : BaseViewItemHomeworkExam
+    public abstract class BaseSingleItemViewItemsGroup : BaseAccountViewItemsGroup
     {
         private ScheduleViewItemsGroup _scheduleViewItemsGroup;
-        public TViewItem Item { get; private set; }
+        public ViewItemTaskOrEvent Item { get; private set; }
 
         protected BaseSingleItemViewItemsGroup(Guid localAccountId, bool trackChanges) : base(localAccountId, trackChanges)
         {
@@ -90,7 +90,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             Item = CreateItem(dataItem, viewClass);
         }
 
-        protected abstract TViewItem CreateItem(DataItemMegaItem dataItem, ViewItemClass c);
+        protected abstract ViewItemTaskOrEvent CreateItem(DataItemMegaItem dataItem, ViewItemClass c);
 
         private ViewItemClass CreateClass(DataItemClass c)
         {
@@ -109,7 +109,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         protected override void OnDataChangedEvent(DataChangedEvent e)
         {
-            ViewItemSemester s = Item?.GetClassOrNull()?.Semester;
+            ViewItemSemester s = Item?.Class?.Semester;
             if (s != null)
             {
                 s.HandleDataChangedEvent(e);

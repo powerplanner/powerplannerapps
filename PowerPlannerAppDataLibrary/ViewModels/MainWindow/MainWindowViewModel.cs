@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ToolsPortable;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
@@ -17,6 +17,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
@@ -268,34 +269,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             }
         }
 
-        public async Task HandleViewHomeworkActivation(Guid localAccountId, Guid homeworkId)
+        public async Task HandleViewTaskActivation(Guid localAccountId, Guid taskId)
         {
-            if (CurrentAccount == null || CurrentAccount.LocalAccountId != localAccountId)
-            {
-                AccountsManager.SetLastLoginIdentifier(localAccountId);
-                await HandleNormalLaunchActivation();
-            }
-            
-            var mainScreen = GetMainScreenViewModel();
-            if (mainScreen != null && mainScreen.CurrentAccount != null)
-            {
-                Popups.Clear();
-                var singleHomework = await SingleHomeworkViewItemsGroup.LoadAsync(localAccountId, homeworkId);
-                if (singleHomework != null && singleHomework.Item != null)
-                {
-                    mainScreen.ShowItem(singleHomework.Item);
-
-                    // Remove all but latest popup
-                    // Have to do this AFTER showing the popup since on iOS if we first clear and then show immediately, iOS freaks out
-                    while (mainScreen.Popups.Count > 1)
-                    {
-                        mainScreen.Popups.RemoveAt(0);
-                    }
-                }
-            }
+            await HandleViewTaskOrEventActivation(localAccountId, taskId);
         }
 
-        public async Task HandleViewExamActivation(Guid localAccountId, Guid examId)
+        public async Task HandleViewEventActivation(Guid localAccountId, Guid eventId)
+        {
+            await HandleViewTaskOrEventActivation(localAccountId, eventId);
+        }
+
+        private async Task HandleViewTaskOrEventActivation(Guid localAccountId, Guid itemId)
         {
             if (CurrentAccount == null || CurrentAccount.LocalAccountId != localAccountId)
             {
@@ -307,7 +291,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             if (mainScreen != null && mainScreen.CurrentAccount != null)
             {
                 Popups.Clear();
-                var singleExam = await SingleExamViewItemsGroup.LoadAsync(localAccountId, examId);
+                var singleExam = await SingleTaskOrEventViewItemsGroup.LoadAsync(localAccountId, itemId);
                 if (singleExam != null && singleExam.Item != null)
                 {
                     mainScreen.ShowItem(singleExam.Item);
@@ -395,17 +379,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             }
         }
 
-        public Task HandleQuickAddHomework()
+        public Task HandleQuickAddTask()
         {
-            return HandleQuickAddItem(AddHomeworkViewModel.ItemType.Homework);
+            return HandleQuickAddItem(TaskOrEventType.Task);
         }
 
-        public Task HandleQuickAddExam()
+        public Task HandleQuickAddEvent()
         {
-            return HandleQuickAddItem(AddHomeworkViewModel.ItemType.Exam);
+            return HandleQuickAddItem(TaskOrEventType.Event);
         }
 
-        private async Task HandleQuickAddItem(AddHomeworkViewModel.ItemType type)
+        private async Task HandleQuickAddItem(TaskOrEventType type)
         {
             if (CurrentAccount == null)
             {
@@ -416,7 +400,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             if (mainScreen != null && mainScreen.CurrentAccount != null && mainScreen.Classes != null && mainScreen.Classes.Count > 0)
             {
                 Popups.Clear();
-                var newModel = AddHomeworkViewModel.CreateForAdd(mainScreen, new AddHomeworkViewModel.AddParameter()
+                var newModel = AddTaskOrEventViewModel.CreateForAdd(mainScreen, new AddTaskOrEventViewModel.AddParameter()
                 {
                     Classes = mainScreen.Classes.ToArray(),
                     DueDate = DateTime.Today,

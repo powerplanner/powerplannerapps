@@ -4,7 +4,6 @@ using InterfacesUWP.Converters;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
@@ -244,7 +243,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                     _arrangedItems.OnItemsChanged -= _arrangedItemsOnItemsChangedHandler;
                 }
 
-                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, HEIGHT_OF_HOUR, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeHomeworkAndHolidays: true);
+                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, HEIGHT_OF_HOUR, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
                 _arrangedItems.OnItemsChanged += _arrangedItemsOnItemsChangedHandler;
 
                 render();
@@ -706,7 +705,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                 Margin = new Windows.UI.Xaml.Thickness(6, 6, 0, 0),
                 Text = item.Item.Name
             };
-            if (item.Item.IsComplete())
+            if (item.Item.IsComplete)
             {
                 TextBlockCompat.SetStrikethrough(tb, true);
             }
@@ -751,16 +750,16 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             return grid;
         }
 
-        public static Brush GetBackgroundBrush(BaseViewItemHomeworkExam item)
+        public static Brush GetBackgroundBrush(ViewItemTaskOrEvent item)
         {
-            if (item.IsComplete())
+            if (item.IsComplete)
             {
                 return new SolidColorBrush(Color.FromArgb(255, 180, 180, 180));
             }
 
             else
             {
-                return new ColorArrayToBrushConverter().Convert(item.GetClassOrNull()?.Color, null, null, null) as Brush;
+                return new ColorArrayToBrushConverter().Convert(item.Class?.Color, null, null, null) as Brush;
             }
         }
     }
@@ -773,8 +772,8 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             Visibility = Visibility.Collapsed;
         }
 
-        private IEnumerable<BaseViewItemHomeworkExam> _additionalItems;
-        public IEnumerable<BaseViewItemHomeworkExam> AdditionalItems
+        private IEnumerable<ViewItemTaskOrEvent> _additionalItems;
+        public IEnumerable<ViewItemTaskOrEvent> AdditionalItems
         {
             get { return _additionalItems; }
             set

@@ -33,6 +33,7 @@ namespace PowerPlannerUWP.Views
         private Border _mainContentContainer;
 
         private Border _secondaryOptionsButtonContainer;
+        protected FrameworkElement SecondaryOptionsButtonContainer => _secondaryOptionsButtonContainer;
         private Border _buttonCloseContainer;
 
         private Grid _topTitleBar;
@@ -46,7 +47,7 @@ namespace PowerPlannerUWP.Views
         {
             // Only on Mobile animate
             // Disabled animations for now since they briefly show the base content while animating between popups
-            // (like when going from ViewHomework to EditHomework
+            // (like when going from ViewTaskOrEvent to EditTaskOrEvent
             //if (IsFullScreenMode())
             //{
             //    this.Transitions = new TransitionCollection();
