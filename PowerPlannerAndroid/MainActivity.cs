@@ -365,6 +365,12 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+
+                    if (v <= new Version(2005, 19, 1, 0))
+                    {
+                        changedText += "\n - You can now convert tasks to events and vice versa!";
+                    }
+
                     if (v <= new Version(2004, 26, 2, 0))
                     {
                         changedText += "\n - Dark theme support added! Power Planner will now use a dark theme based on your theme selected in Android. Even the widgets will be dark!";
