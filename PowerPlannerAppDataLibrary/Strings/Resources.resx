@@ -1857,4 +1857,10 @@ Please think about using an online account instead!</value>
   <data name="Settings_MainPage_LanguageItem.Title" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="String_ConvertToEvent" xml:space="preserve">
+    <value>Convert to event</value>
+  </data>
+  <data name="String_ConvertToTask" xml:space="preserve">
+    <value>Convert to task</value>
+  </data>
 </root>

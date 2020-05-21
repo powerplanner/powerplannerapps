@@ -2335,6 +2335,14 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Automatic (based on system language settings)</source>
           <target state="final" state-qualifier="mt-suggestion">Automático (baseado nas configurações do idioma do sistema)</target>
         </trans-unit>
+        <trans-unit id="String_ConvertToEvent" translate="yes" xml:space="preserve">
+          <source>Convert to event</source>
+          <target state="final" state-qualifier="mt-suggestion">Converter para evento</target>
+        </trans-unit>
+        <trans-unit id="String_ConvertToTask" translate="yes" xml:space="preserve">
+          <source>Convert to task</source>
+          <target state="final" state-qualifier="mt-suggestion">Converter em tarefa</target>
+        </trans-unit>
       </group>
     </body>
   </file>

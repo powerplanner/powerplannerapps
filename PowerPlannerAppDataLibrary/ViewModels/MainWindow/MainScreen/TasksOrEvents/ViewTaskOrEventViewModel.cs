@@ -72,7 +72,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         public string ConvertTypeButtonText
         {
-            get => Item.Type == TaskOrEventType.Task ? "Convert to event" : "Convert to task";
+            get => Item.Type == TaskOrEventType.Task ? PowerPlannerResources.GetString("String_ConvertToEvent") : PowerPlannerResources.GetString("String_ConvertToTask");
         }
 
         public static ViewTaskOrEventViewModel Create(BaseViewModel parent, ViewItemTaskOrEvent item)

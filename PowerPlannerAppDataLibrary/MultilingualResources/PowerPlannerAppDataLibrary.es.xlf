@@ -2335,6 +2335,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Automatic (based on system language settings)</source>
           <target state="final" state-qualifier="mt-suggestion">Automático (basado en la configuración del idioma del sistema)</target>
         </trans-unit>
+        <trans-unit id="String_ConvertToEvent" translate="yes" xml:space="preserve">
+          <source>Convert to event</source>
+          <target state="final" state-qualifier="mt-suggestion">Convertir en evento</target>
+        </trans-unit>
+        <trans-unit id="String_ConvertToTask" translate="yes" xml:space="preserve">
+          <source>Convert to task</source>
+          <target state="final" state-qualifier="mt-suggestion">Convertir en tarea</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -1754,4 +1754,10 @@
   <data name="Settings_LanguageSettings_AutomaticOptionDisplayName" xml:space="preserve">
     <value>تلقائي (استنادًا إلى إعدادات لغة النظام)</value>
   </data>
+  <data name="String_ConvertToEvent" xml:space="preserve">
+    <value>التحويل إلى حدث</value>
+  </data>
+  <data name="String_ConvertToTask" xml:space="preserve">
+    <value>التحويل إلى مهمة</value>
+  </data>
 </root>

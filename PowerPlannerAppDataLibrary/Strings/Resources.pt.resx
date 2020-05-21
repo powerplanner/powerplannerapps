@@ -1752,4 +1752,10 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="Settings_LanguageSettings_AutomaticOptionDisplayName" xml:space="preserve">
     <value>Automático (baseado nas configurações do idioma do sistema)</value>
   </data>
+  <data name="String_ConvertToEvent" xml:space="preserve">
+    <value>Converter para evento</value>
+  </data>
+  <data name="String_ConvertToTask" xml:space="preserve">
+    <value>Converter em tarefa</value>
+  </data>
 </root>
