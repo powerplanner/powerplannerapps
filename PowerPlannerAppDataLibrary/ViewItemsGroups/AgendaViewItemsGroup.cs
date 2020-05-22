@@ -231,7 +231,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         private void AssignClass(DataItemMegaItem data, ViewItemTaskOrEvent view)
         {
-            if (data.MegaItemType == PowerPlannerSending.MegaItemType.Event)
+            if (data.MegaItemType == PowerPlannerSending.MegaItemType.Task || data.MegaItemType == PowerPlannerSending.MegaItemType.Event)
             {
                 view.Class = _semester.NoClassClass;
             }
