@@ -10,12 +10,12 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAndroid.ViewModel.Settings;
-using Android.Support.V7.Widget;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAndroid.Helpers;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary;
+using AndroidX.AppCompat.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -40,11 +40,11 @@ namespace PowerPlannerAndroid.Views
             }
 
             _switchTasks = FindViewById<SwitchCompat>(Resource.Id.SettingsWidgetAgendaShowTasksSwitch);
-            _switchTasks.Checked = ViewModel.Account.MainTileSettings.ShowHomework;
+            _switchTasks.Checked = ViewModel.Account.MainTileSettings.ShowTasks;
             _switchTasks.CheckedChange += new WeakEventHandler<CompoundButton.CheckedChangeEventArgs>(Switch_CheckedChange).Handler;
 
             _switchEvents = FindViewById<SwitchCompat>(Resource.Id.SettingsWidgetAgendaShowEventsSwitch);
-            _switchEvents.Checked = ViewModel.Account.MainTileSettings.ShowExams;
+            _switchEvents.Checked = ViewModel.Account.MainTileSettings.ShowEvents;
             _switchTasks.CheckedChange += new WeakEventHandler<CompoundButton.CheckedChangeEventArgs>(Switch_CheckedChange).Handler;
 
             _editShowDays = FindViewById<EditText>(Resource.Id.SettingsWidgetAgendaSkipDaysEditText);
@@ -72,8 +72,8 @@ namespace PowerPlannerAndroid.Views
                     return;
                 }
 
-                ViewModel.Account.MainTileSettings.ShowHomework = _switchTasks.Checked;
-                ViewModel.Account.MainTileSettings.ShowExams = _switchEvents.Checked;
+                ViewModel.Account.MainTileSettings.ShowTasks = _switchTasks.Checked;
+                ViewModel.Account.MainTileSettings.ShowEvents = _switchEvents.Checked;
                 ViewModel.Account.MainTileSettings.SkipItemsOlderThan = GetSkipNumber();
 
                 await AccountsManager.Save(ViewModel.Account);

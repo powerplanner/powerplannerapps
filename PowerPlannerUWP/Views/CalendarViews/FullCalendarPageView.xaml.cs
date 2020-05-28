@@ -101,10 +101,10 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             try
             {
-                App.ShowFlyoutAddHomeworkOrExam(
+                App.ShowFlyoutAddTaskOrEvent(
                     elToCenterFrom: buttonAdd,
-                    addHomeworkAction: delegate { _viewModel.AddHomework(false); },
-                    addExamAction: delegate { _viewModel.AddExam(false); },
+                    addTaskAction: delegate { _viewModel.AddTask(false); },
+                    addEventAction: delegate { _viewModel.AddEvent(false); },
                     addHolidayAction: delegate { _viewModel.AddHoliday(false); });
             }
 

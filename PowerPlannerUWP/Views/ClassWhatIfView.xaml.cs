@@ -157,7 +157,7 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void WeightCategoryListViewItem_OnRequestViewGrade(object sender, BaseViewItemHomeworkExamGrade e)
+        private void WeightCategoryListViewItem_OnRequestViewGrade(object sender, BaseViewItemMegaItem e)
         {
             ViewModel.ShowItem(e);
         }

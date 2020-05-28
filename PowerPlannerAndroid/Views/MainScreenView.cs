@@ -14,7 +14,6 @@ using InterfacesDroid.Views;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary;
 using InterfacesDroid.ViewModelPresenters;
-using Android.Support.V4.Widget;
 using InterfacesDroid.DataTemplates;
 using Android.Graphics;
 using Android.Graphics.Drawables;
@@ -23,18 +22,17 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAndroid.ViewHosts;
 using InterfacesDroid.Helpers;
 using BareMvvm.Core.App;
-using Android.Support.V7.App;
 using ToolsPortable;
-using Android.Support.V4.Content;
 using InterfacesDroid.Bindings.Programmatic;
 using PowerPlannerAndroid.Views.ListItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using System.ComponentModel;
 using static Android.Views.View;
 using PowerPlannerAppDataLibrary.DataLayer;
-using Android.Support.Design.Widget;
 using PowerPlannerAndroid.Helpers;
 using System.Collections.Specialized;
+using Google.Android.Material.BottomNavigation;
+using AndroidX.DrawerLayout.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -46,11 +44,11 @@ namespace PowerPlannerAndroid.Views
         private ProgressBar _syncProgressBar;
         private Button _buttonIsOffline;
         private Button _buttonSyncError;
-        public  Android.Support.V7.Widget.Toolbar Toolbar { get; private set; }
+        public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
         {
-            Toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.Toolbar);
+            Toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
             Toolbar.MenuItemClick += Toolbar_MenuItemClick;
             Toolbar.SetNavigationIcon(Resource.Drawable.ic_menu_white_24dp);
             Toolbar.SetNavigationOnClickListener(this);
@@ -60,7 +58,7 @@ namespace PowerPlannerAndroid.Views
             _buttonSyncError = FindViewById<Button>(Resource.Id.ButtonSyncError);
         }
 
-        private void Toolbar_MenuItemClick(object sender, Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        private void Toolbar_MenuItemClick(object sender, AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             IMainScreenToolbarHandler handler = _contentPresenter?.CurrentView as IMainScreenToolbarHandler;
 
@@ -193,7 +191,7 @@ namespace PowerPlannerAndroid.Views
                     {
                         var dataStore = await AccountDataStore.Get(ViewModel.CurrentLocalAccountId);
 
-                        // If they actually have a decent amount of homework
+                        // If they actually have a decent amount of tasks
                         if (await System.Threading.Tasks.Task.Run(async delegate
                         {
                             using (await Locks.LockDataForReadAsync())

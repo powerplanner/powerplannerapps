@@ -13,30 +13,6 @@ namespace PowerPlannerAppDataLibrary.Extensions
 {
     public abstract class TelemetryExtension
     {
-        public const string EVENT_VIEW_CALENDAR = "ViewCalendar";
-        public const string EVENT_VIEW_DAY = "ViewDay";
-        public const string EVENT_VIEW_AGENDA = "ViewAgenda";
-        public const string EVENT_VIEW_SCHEDULE = "ViewSchedule";
-        public const string EVENT_VIEW_CLASS = "ViewClass";
-        public const string EVENT_VIEW_YEARS = "ViewYears";
-        public const string EVENT_VIEW_SETTINGS = "ViewSettings";
-        public const string EVENT_VIEW_HOMEWORK = "ViewHomework";
-        public const string EVENT_VIEW_EXAM = "ViewExam";
-        public const string EVENT_VIEW_ADD_HOMEWORK = "ViewAddHomework";
-        public const string EVENT_VIEW_EDIT_HOMEWORK = "ViewEditHomework";
-        public const string EVENT_VIEW_ADD_EXAM = "ViewAddExam";
-        public const string EVENT_VIEW_EDIT_EXAM = "ViewEditExam";
-        public const string EVENT_VIEW_ADD_CLASS = "ViewAddClass";
-        public const string EVENT_VIEW_EDIT_CLASS = "ViewEditClass";
-        public const string EVENT_VIEW_ADD_YEAR = "ViewAddYear";
-        public const string EVENT_VIEW_EDIT_YEAR = "ViewEditYear";
-        public const string EVENT_VIEW_ADD_SEMESTER = "ViewAddSemester";
-        public const string EVENT_VIEW_EDIT_SEMESTER = "ViewEditSemester";
-        public const string EVENT_VIEW_ADD_CLASS_TIMES = "ViewAddClassTimes";
-        public const string EVENT_VIEW_EDIT_CLASS_TIMES = "ViewEditClassTimes";
-        public const string EVENT_VIEW_EDIT_CLASS_DETAILS = "ViewEditClassDetails";
-        public const string EVENT_VIEW_EDIT_CLASS_GRADES = "ViewEditClassGrades";
-
 #if DEBUG
         private static DebugTelemetryExtension _debugTelemetryExtension = new DebugTelemetryExtension();
         public static TelemetryExtension Current

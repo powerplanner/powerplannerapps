@@ -222,7 +222,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
         {
             public ViewItemClass Class { get; set; }
 
-            public List<BaseViewItemHomeworkExam> AllUpcoming { get; set; }
+            public List<ViewItemTaskOrEvent> AllUpcoming { get; set; }
         }
 
         private static Task<ClassData> LoadDataAsync(AccountDataStore data, Guid classId, DateTime todayAsUtc, ClassTileSettings settings)
@@ -268,15 +268,15 @@ namespace PowerPlannerUWPLibrary.TileHelpers
                 today: DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local),
                 viewItemSemester: scheduleViewItemsGroup.Semester,
                 includeWeights: false);
-            classViewItemsGroup.LoadHomeworkAndExams();
-            await classViewItemsGroup.LoadHomeworkAndExamsTask;
+            classViewItemsGroup.LoadTasksAndEvents();
+            await classViewItemsGroup.LoadTasksAndEventsTask;
 
-            List<BaseViewItemHomeworkExam> copied;
+            List<ViewItemTaskOrEvent> copied;
 
             using (await classViewItemsGroup.DataChangeLock.LockForReadAsync())
             {
                 // Class view group sorts the items, so no need to sort
-                copied = classViewItemsGroup.Class.HomeworkAndExams.Where(i => i.Date.Date >= dateToStartDisplayingFrom).ToList();
+                copied = classViewItemsGroup.Class.TasksAndEvents.Where(i => i.Date.Date >= dateToStartDisplayingFrom).ToList();
             }
 
             return new ClassData()

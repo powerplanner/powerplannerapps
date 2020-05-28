@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System.Collections;
 using System.Collections.Specialized;
 
@@ -72,7 +72,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         /// Gets the last changed item and then resets it to null
         /// </summary>
         /// <returns></returns>
-        public BaseViewItemHomeworkExam GetLastChangedItem()
+        public ViewItemTaskOrEvent GetLastChangedItem()
         {
             // Grab reference of it since this could change in a background thread
             var lastIdentifiers = _lastChangedItemsIdentifiers;
@@ -100,7 +100,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 if (_itemsWithHeaders == null)
                 {
-                    _itemsWithHeaders = AgendaViewItemsGroup.Items.ToSortedList().ToHeaderedList<BaseViewItemHomeworkExam, ItemsGroup>(new GroupHeaderProvider(Today).GetHeader);
+                    _itemsWithHeaders = AgendaViewItemsGroup.Items.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, ItemsGroup>(new GroupHeaderProvider(Today).GetHeader);
                 }
 
                 return _itemsWithHeaders;
@@ -115,7 +115,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                 Today = today;
             }
 
-            public ItemsGroup GetHeader(BaseViewItemHomeworkExam item)
+            public ItemsGroup GetHeader(ViewItemTaskOrEvent item)
             {
                 DateTime todayAsUtc = DateTime.SpecifyKind(Today, DateTimeKind.Utc);
                 DateTime itemDate = item.Date.Date;
@@ -161,19 +161,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             InTheFuture
         }
 
-        public void AddHomework()
+        public void AddTask()
         {
-            AddItem(AddHomeworkViewModel.ItemType.Homework);
+            AddItem(TaskOrEventType.Task);
         }
 
-        public void AddExam()
+        public void AddEvent()
         {
-            AddItem(AddHomeworkViewModel.ItemType.Exam);
+            AddItem(TaskOrEventType.Event);
         }
 
-        private void AddItem(AddHomeworkViewModel.ItemType type)
+        private void AddItem(TaskOrEventType type)
         {
-            MainScreenViewModel.ShowPopup(AddHomeworkViewModel.CreateForAdd(MainScreenViewModel, new AddHomeworkViewModel.AddParameter()
+            MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
                 Classes = MainScreenViewModel.Classes,
@@ -182,7 +182,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             }));
         }
 
-        public void ShowItem(BaseViewItemHomeworkExam item)
+        public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
         }

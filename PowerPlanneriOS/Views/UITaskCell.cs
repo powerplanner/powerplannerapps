@@ -11,7 +11,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlanneriOS.Views
 {
-    public class UITaskCell : BareUITableViewCell<BaseViewItemHomeworkExam>
+    public class UITaskCell : BareUITableViewCell<ViewItemTaskOrEvent>
     {
         private UIView _completionBar;
         private NSLayoutConstraint _constraintCompletionBarHeight;
@@ -108,7 +108,7 @@ namespace PowerPlanneriOS.Views
         {
             if (DataContext != null)
             {
-                _completionBar.BackgroundColor = BareUIHelper.ToColor(DataContext.GetClassOrNull()?.Color);
+                _completionBar.BackgroundColor = BareUIHelper.ToColor(DataContext.Class?.Color);
 
                 if (_constraintCompletionBarHeight != null)
                 {
@@ -116,13 +116,13 @@ namespace PowerPlanneriOS.Views
                 }
 
                 nfloat multiplier = 1;
-                if (DataContext.IsComplete())
+                if (DataContext.IsComplete)
                 {
                     multiplier = 0;
                 }
-                else if (DataContext is ViewItemHomework)
+                else if (DataContext.Type == TaskOrEventType.Task)
                 {
-                    multiplier = 1 - (nfloat)(DataContext as ViewItemHomework).PercentComplete;
+                    multiplier = 1 - (nfloat)DataContext.PercentComplete;
                 }
                 _constraintCompletionBarHeight = NSLayoutConstraint.Create(
                     _completionBar,
@@ -134,10 +134,10 @@ namespace PowerPlanneriOS.Views
                     0);
                 ContentView.AddConstraint(_constraintCompletionBarHeight);
 
-                _labelTitle.AttributedText = new NSAttributedString(DataContext.Name, strikethroughStyle: DataContext.IsComplete() ? NSUnderlineStyle.Single : NSUnderlineStyle.None);
+                _labelTitle.AttributedText = new NSAttributedString(DataContext.Name, strikethroughStyle: DataContext.IsComplete ? NSUnderlineStyle.Single : NSUnderlineStyle.None);
 
-                _labelSubtitle.Text = DataContext.GetSubtitleOrNull();
-                _labelSubtitle.TextColor = BareUIHelper.ToColor(DataContext.GetClassOrNull()?.Color);
+                _labelSubtitle.Text = DataContext.Subtitle;
+                _labelSubtitle.TextColor = BareUIHelper.ToColor(DataContext.Class?.Color);
 
                 if (string.IsNullOrWhiteSpace(DataContext.Details))
                 {

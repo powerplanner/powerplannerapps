@@ -1,0 +1,113 @@
+﻿<views:PopupViewHostGeneric
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    xmlns:interfaces="using:InterfacesUWP"
+    x:Class="PowerPlannerUWP.Views.ViewTaskOrEventView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="{Binding PageTitle}">
+
+    <views:PopupViewHostGeneric.PrimaryCommands>
+
+        <AppBarButton
+            x:Uid="AppBarButtonEdit"
+                x:Name="ButtonEdit"
+                Icon="Edit"
+                Label="Edit"
+                Click="ButtonEdit_Click"/>
+
+    </views:PopupViewHostGeneric.PrimaryCommands>
+
+    <views:PopupViewHostGeneric.SecondaryCommands>
+
+        <AppBarButton
+            x:Name="ButtonConvertType"
+            Label="{Binding ConvertTypeButtonText}"
+            Click="ButtonConvertType_Click"/>
+
+        <AppBarButton
+            x:Uid="AppBarButtonDelete"
+            x:Name="ButtonDelete"
+            Label="Delete"
+            Click="ButtonDelete_Click"/>
+    </views:PopupViewHostGeneric.SecondaryCommands>
+
+    <views:PopupViewHostGeneric.MainContent>
+        <Grid Grid.Row="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                <StackPanel>
+
+                    <!--Title-->
+                    <TextBlock
+                        interfaces:TextBlockExtensions.RawText="{Binding Item.Name, FallbackValue=[name]}"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        TextWrapping="Wrap"
+                        IsTextSelectionEnabled="True"/>
+
+
+                    <!--Subtitle-->
+                    <TextBlock
+                        Style="{StaticResource BaseTextBlockStyle}"
+                        Text="{Binding Item.Subtitle, FallbackValue=[subtitle]}"
+                        Foreground="{Binding Item.Class.Color, Converter={StaticResource ColorToBrushConverter}, FallbackValue={ThemeResource TaskOrEventBrush}}"
+                        IsTextScaleFactorEnabled="True"/>
+
+
+
+                    <!--Details-->
+                    <TextBlock
+                        Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}"
+                        Margin="0,0,0,8"
+                        IsTextSelectionEnabled="True"
+                        Visibility="{Binding Item.Details, Converter={StaticResource StringToVisibilityConverter}}"
+                        interfaces:TextBlockExtensions.RawText="{Binding Item.Details}"
+                        TextWrapping="Wrap"/>
+
+
+
+                    <!--Pictures-->
+                    <views:ImagesWrapGrid
+                            DataContext="{Binding Item.ImageAttachments}"
+                            Margin="0,6,0,6"/>
+
+
+
+                </StackPanel>
+            </ScrollViewer>
+
+
+
+            <!--Completion slider-->
+            <views:CompletionSlider
+                x:Name="completionSlider"
+                Value="{Binding Item.PercentComplete}"
+                Grid.Row="1"
+                Margin="12"
+                OnValueChangedByUser="completionSlider_OnValueChangedByUser"
+                Visibility="{Binding IsCompletionSliderVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"/>
+            
+            <Button
+                x:Uid="ViewTaskOrEventPage_ButtonConvertToGrade"
+                x:Name="ButtonConvertToGrade"
+                Content="Convert to grade"
+                Click="ButtonConvertToGrade_Click"
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                Margin="12"
+                Style="{StaticResource LargeButtonStyle}"
+                Visibility="{Binding IsButtonConvertToGradeVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"
+                Loaded="ButtonConvertToGrade_Loaded"/>
+
+        </Grid>
+    </views:PopupViewHostGeneric.MainContent>
+</views:PopupViewHostGeneric>

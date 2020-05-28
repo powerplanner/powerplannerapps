@@ -71,13 +71,14 @@
 
         <Button
             android:id="@+id/ButtonDate"
-            style="@style/FullWidthBorderlessButton"
+            style="@style/FullWidthNonAccentBorderlessButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/fullWidthItemHeight"
             local:Binding="{Source=Date, Target=Text, Converter=DateTimeToStringConverter, ConverterParameter='dddd, MMM d')}"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:gravity="left|center_vertical"
-            android:paddingStart="16dp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"/>
 
         <View style="@style/Divider"/>
 

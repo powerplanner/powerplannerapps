@@ -61,18 +61,18 @@
                     Margin="0,12,0,12"/>
 
                 <ToggleSwitch
-                    x:Uid="Settings_Tiles_MainTile_ToggleHomework"
-                    x:Name="ToggleHomework"
+                    x:Uid="Settings_Tiles_MainTile_ToggleTasks"
+                    x:Name="ToggleTasks"
                     Header="Display incomplete tasks"
-                    IsOn="{Binding Account.MainTileSettings.ShowHomework}"
-                    Toggled="ToggleHomework_Toggled"/>
+                    IsOn="{Binding Account.MainTileSettings.ShowTasks}"
+                    Toggled="ToggleTasks_Toggled"/>
 
                 <ToggleSwitch
-                    x:Uid="Settings_Tiles_MainTile_ToggleExams"
-                    x:Name="ToggleExams"
+                    x:Uid="Settings_Tiles_MainTile_ToggleEvents"
+                    x:Name="ToggleEvents"
                     Header="Display upcoming events"
-                    IsOn="{Binding Account.MainTileSettings.ShowExams}"
-                    Toggled="ToggleExams_Toggled"
+                    IsOn="{Binding Account.MainTileSettings.ShowEvents}"
+                    Toggled="ToggleEvents_Toggled"
                     Margin="0,12,0,0"/>
 
                 <TextBlock

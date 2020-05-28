@@ -24,6 +24,7 @@ using PowerPlannerAppDataLibrary.PPEventArgs;
 using Windows.UI.Xaml.Shapes;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewItems;
 using System.ComponentModel;
 
 namespace PowerPlannerUWP.Views.CalendarViews
@@ -34,9 +35,9 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
         private HolidaysOnDay _holidays;
         private CalendarViewModel _calendarViewModel;
-        private MyObservableList<BaseViewItemHomeworkExamGrade> _allItems;
+        private MyObservableList<BaseViewItemMegaItem> _allItems;
 
-        public MainCalendarSquare(MainCalendarGrid calendarGrid, DateTime date, MyObservableList<BaseViewItemHomeworkExamGrade> allItems) : base(calendarGrid, date)
+        public MainCalendarSquare(MainCalendarGrid calendarGrid, DateTime date, MyObservableList<BaseViewItemMegaItem> allItems) : base(calendarGrid, date)
         {
             // Render is called before this
 
@@ -66,11 +67,11 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             if (_calendarViewModel.ShowPastCompleteItemsOnFullCalendar)
             {
-                _itemsControl.ItemsSource = HomeworksOnDay.Get(_allItems, Date);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date);
             }
             else
             {
-                _itemsControl.ItemsSource = HomeworksOnDay.Get(_allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
             }
         }
 
@@ -98,7 +99,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             try
             {
-                var item = DataPackageHelpers.GetViewItem<BaseViewItemHomeworkExam>(e.DataView);
+                var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
                 if (item != null)
                 {
                     OnRequestChangeItemDate?.Invoke(this, new ChangeItemDateEventArgs(item, this.Date.Date));
@@ -114,7 +115,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             try
             {
-                var item = DataPackageHelpers.GetViewItem<BaseViewItemHomeworkExam>(e.DataView);
+                var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
                 if (item != null)
                 {
                     if (item.Date.Date != this.Date.Date)
@@ -230,7 +231,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
 
 
-            // Homework items
+            // Task and event items
             _itemsControl = new ItemsControl()
             {
                 ItemTemplate = (DataTemplate)App.Current.Resources["MainCalendarItemTemplate"]
@@ -258,10 +259,10 @@ namespace PowerPlannerUWP.Views.CalendarViews
                 if (viewModel == null)
                     throw new NullReferenceException("Parent's view model was null");
 
-                App.ShowFlyoutAddHomeworkOrExam(
+                App.ShowFlyoutAddTaskOrEvent(
                     elToCenterFrom: _addButton,
-                    addHomeworkAction: delegate { viewModel.AddHomework(base.Date); },
-                    addExamAction: delegate { viewModel.AddExam(base.Date); },
+                    addTaskAction: delegate { viewModel.AddTask(base.Date); },
+                    addEventAction: delegate { viewModel.AddEvent(base.Date); },
                     addHolidayAction: delegate { viewModel.AddHoliday(base.Date); });
             }
 

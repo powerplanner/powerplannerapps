@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/MenuItemEdit"
+          style="@style/MenuButtonEdit"
+          android:showAsAction="always|withText"/>
+  
+    <item android:id="@+id/MenuItemConvertType"
+          android:title="Convert item (will be programmatically updated)"
+          android:showAsAction="never"/>
+    
+    <item android:id="@+id/MenuItemDelete"
+          style="@style/MenuButtonDelete"
+          android:showAsAction="never"/>
+</menu>

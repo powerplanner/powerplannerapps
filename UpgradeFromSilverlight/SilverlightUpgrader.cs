@@ -112,8 +112,8 @@ namespace UpgradeFromSilverlight
                     RemindersDayOf = accountSection.RemindersDayOf
                 };
 
-                accountUWP.MainTileSettings.ShowExams = accountSection.ShowExamsOnTiles;
-                accountUWP.MainTileSettings.ShowHomework = accountSection.ShowHomeworkOnTiles;
+                accountUWP.MainTileSettings.ShowEvents = accountSection.ShowExamsOnTiles;
+                accountUWP.MainTileSettings.ShowTasks = accountSection.ShowHomeworkOnTiles;
                 accountUWP.MainTileSettings.SkipItemsOlderThan = accountSection.IgnoreItemsOlderThan;
 
                 // Save account (need to do this so there's a folder for everything else)

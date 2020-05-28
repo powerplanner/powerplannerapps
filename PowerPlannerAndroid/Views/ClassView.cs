@@ -11,12 +11,11 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using InterfacesDroid.Views;
-using Android.Support.Design.Widget;
-using Android.Support.V4.View;
 using Java.Lang;
 using PowerPlannerAndroid.ViewHosts;
-using Android.Support.V7.Widget;
 using PowerPlannerAppDataLibrary;
+using Google.Android.Material.Tabs;
+using AndroidX.ViewPager.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -46,14 +45,14 @@ namespace PowerPlannerAndroid.Views
             
             switch (_viewPager.CurrentItem)
             {
-                case ClassPagerAdapter.HOMEWORK:
-                    ViewModel.CurrentViewModel = ViewModel.HomeworkViewModel;
-                    ViewModel.ViewItemsGroupClass.LoadHomeworkAndExams();
+                case ClassPagerAdapter.TASKS:
+                    ViewModel.CurrentViewModel = ViewModel.TasksViewModel;
+                    ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
                     break;
 
-                case ClassPagerAdapter.EXAMS:
-                    ViewModel.CurrentViewModel = ViewModel.ExamsViewModel;
-                    ViewModel.ViewItemsGroupClass.LoadHomeworkAndExams();
+                case ClassPagerAdapter.EVENTS:
+                    ViewModel.CurrentViewModel = ViewModel.EventsViewModel;
+                    ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
                     break;
 
                 case ClassPagerAdapter.GRADES:
@@ -88,7 +87,7 @@ namespace PowerPlannerAndroid.Views
 
         private class ClassPagerAdapter : PagerAdapter
         {
-            public const int DETAILS = 0, TIMES = 1, HOMEWORK = 2, EXAMS = 3, GRADES = 4;
+            public const int DETAILS = 0, TIMES = 1, TASKS = 2, EVENTS = 3, GRADES = 4;
 
             public ClassView ClassView { get; private set; }
 
@@ -124,12 +123,12 @@ namespace PowerPlannerAndroid.Views
                         view = new ClassTimesView(container, ClassView.ViewModel.TimesViewModel);
                         break;
 
-                    case HOMEWORK:
-                        view = new ClassHomeworkOrExamsView(container, ClassView.ViewModel.HomeworkViewModel);
+                    case TASKS:
+                        view = new ClassTasksOrEventsView(container, ClassView.ViewModel.TasksViewModel);
                         break;
 
-                    case EXAMS:
-                        view = new ClassHomeworkOrExamsView(container, ClassView.ViewModel.ExamsViewModel);
+                    case EVENTS:
+                        view = new ClassTasksOrEventsView(container, ClassView.ViewModel.EventsViewModel);
                         break;
 
                     case GRADES:
@@ -164,11 +163,11 @@ namespace PowerPlannerAndroid.Views
                     case TIMES:
                         return PowerPlannerResources.GetString("ClassPage_PivotItemTimes.Header");
 
-                    case HOMEWORK:
-                        return PowerPlannerResources.GetString("ClassPage_PivotItemHomework.Header");
+                    case TASKS:
+                        return PowerPlannerResources.GetString("ClassPage_PivotItemTasks.Header");
 
-                    case EXAMS:
-                        return PowerPlannerResources.GetString("ClassPage_PivotItemExams.Header");
+                    case EVENTS:
+                        return PowerPlannerResources.GetString("ClassPage_PivotItemEvents.Header");
 
                     case GRADES:
                         return PowerPlannerResources.GetString("ClassPage_PivotItemGrades.Header");
@@ -201,7 +200,7 @@ namespace PowerPlannerAndroid.Views
             return Resource.Menu.class_basic_menu;
         }
 
-        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

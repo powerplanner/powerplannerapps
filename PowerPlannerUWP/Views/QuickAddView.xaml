@@ -15,22 +15,22 @@
 
         <StackPanel Margin="10,10" VerticalAlignment="Center">
             <Button
-                x:Uid="QuickAddPage_ButtonAddHomework"
+                x:Uid="QuickAddPage_ButtonAddTask"
                     Grid.Row="1"
-                    x:Name="ButtonAddHomework"
+                    x:Name="ButtonAddTask"
                     Style="{StaticResource AddItemStyle}"
-                    Content="add homework"
-                    Click="ButtonAddHomework_Click"
+                    Content="add task"
+                    Click="ButtonAddTask_Click"
                     Margin="0,0,0,5"
                     HorizontalAlignment="Stretch"/>
             
             <Button
-                x:Uid="QuickAddPage_ButtonAddExam"
+                x:Uid="QuickAddPage_ButtonAddEvent"
                     Grid.Row="1"
-                    x:Name="ButtonAddExam"
+                    x:Name="ButtonAddEvent"
                     Style="{StaticResource AddItemStyle}"
-                    Content="add exam"
-                    Click="ButtonAddExam_Click"
+                    Content="add event"
+                    Click="ButtonAddEvent_Click"
                     Margin="0,5,0,0"
                     HorizontalAlignment="Stretch"/>
 

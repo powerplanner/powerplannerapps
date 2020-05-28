@@ -94,16 +94,6 @@ namespace PowerPlannerAppDataLibrary
             return GetString("MainMenuItem_" + menuItem);
         }
 
-        public static string GetStringHomework()
-        {
-            return GetString("String_Homework");
-        }
-
-        public static string GetStringExam()
-        {
-            return GetString("String_Exam");
-        }
-
         /// <summary>
         /// Returns something like "Due {x}", where {x} is dueValue
         /// </summary>

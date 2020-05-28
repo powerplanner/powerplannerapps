@@ -413,8 +413,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 HashSet<ItemType> reSyncNeededFor = new HashSet<ItemType>();
                 HashSet<MegaItemType> megaItemReSyncNeededFor = new HashSet<MegaItemType>();
 
-                // This is when we added grade linking to homework/exam, so we need to pull down
-                // the homework/exams, so that we get their updated grade values
+                // This is when we added grade linking to task/event, so we need to pull down
+                // the tasks/events, so that we get their updated grade values
                 if (account.SyncedDataVersion < 2)
                 {
                     // We'll also be pulling in the holidays
@@ -779,13 +779,24 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                     if (response.Settings.SchoolTimeZone != null)
                     {
-                        if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(response.Settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
+                        try
                         {
-                            if (!serverSchoolTimeZone.Equals(account.SchoolTimeZone))
+                            // Sometimes TryGetTimeZoneInfo still throws
+                            if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(response.Settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
                             {
-                                account.SchoolTimeZone = serverSchoolTimeZone;
-                                accountChanged = true;
+                                if (!serverSchoolTimeZone.Equals(account.SchoolTimeZone))
+                                {
+                                    account.SchoolTimeZone = serverSchoolTimeZone;
+                                    accountChanged = true;
+                                }
                             }
+                        }
+                        catch
+                        {
+                            TelemetryExtension.Current?.TrackEvent("FailedParseOnlineTimeZone", new Dictionary<string, string>()
+                            {
+                                { "OnlineTimeZone", response.Settings.SchoolTimeZone }
+                            });
                         }
                     }
 

@@ -45,9 +45,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         public List<Guid> DeletedIdentifiers = new List<Guid>();
 
         /// <summary>
-        /// A list of the AppointmentLocalId's of homeworks or exams that were deleted
+        /// A list of the AppointmentLocalId's of tasks or events that were deleted
         /// </summary>
-        public List<string> DeletedHomeworkExamAppointments = new List<string>();
+        public List<string> DeletedTaskEventAppointments = new List<string>();
 
         public bool DidDeleteHoliday { get; set; }
 
@@ -76,7 +76,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             // There's never any conflicts since items can only be deleted once
             DeletedIdentifiers.AddRange(newer.DeletedIdentifiers);
 
-            DeletedHomeworkExamAppointments.AddRange(newer.DeletedHomeworkExamAppointments);
+            DeletedTaskEventAppointments.AddRange(newer.DeletedTaskEventAppointments);
             DeletedScheduleAppointments.AddRange(newer.DeletedScheduleAppointments);
             DidDeleteHoliday = DidDeleteHoliday || newer.DidDeleteHoliday;
         }
@@ -1792,16 +1792,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private int DeleteMegaItems(Guid[] identifiersToDelete, DeletedItems into)
         {
-            int before = into.DeletedHomeworkExamAppointments.Count;
+            int before = into.DeletedTaskEventAppointments.Count;
 
             // Add the appointment LocalId's of the items we're going to delete
             // Mono has an exception when selecting the string, so first have to create the whole object...
-            into.DeletedHomeworkExamAppointments.AddRange(ActualTableMegaItems.Where(i =>
+            into.DeletedTaskEventAppointments.AddRange(ActualTableMegaItems.Where(i =>
                 (i.MegaItemType != MegaItemType.Holiday)
                 && identifiersToDelete.Contains(i.Identifier))
                 .ToArray().Select(i => i.AppointmentLocalId));
 
-            int after = into.DeletedHomeworkExamAppointments.Count;
+            int after = into.DeletedTaskEventAppointments.Count;
 
             // If there possibly was a deleted holiday
             if (identifiersToDelete.Length != (after - before) && !into.DidDeleteHoliday)

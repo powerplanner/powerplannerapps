@@ -37,6 +37,7 @@
           style="@style/BorderlessButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:textColor="@color/foregroundFull"
           local:Binding="{Source=StartTime, Target=Text, Converter=TimeSpanToStringConverter}" />
       <TextView
           android:text="{TextBlock_To.Text}"
@@ -47,6 +48,7 @@
           style="@style/BorderlessButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:textColor="@color/foregroundFull"
           local:Binding="{Source=EndTime, Target=Text, Converter=TimeSpanToStringConverter}" />
     </LinearLayout>
     <View

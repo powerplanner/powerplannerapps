@@ -11,15 +11,14 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using InterfacesDroid.Views;
-using Android.Support.V7.Widget;
 using PowerPlannerAndroid.Adapters;
-using Android.Support.Design.Widget;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewItems;
 using InterfacesDroid.Decorations;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using InterfacesDroid.Themes;
 using PowerPlannerAndroid.Views.Controls;
+using AndroidX.RecyclerView.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -34,8 +33,8 @@ namespace PowerPlannerAndroid.Views
         public override void OnViewModelLoadedOverride()
         {
             _addItemControl = FindViewById<FloatingAddItemControl>(Resource.Id.FloatingAddItemControl);
-            _addItemControl.OnRequestAddExam += _addItemControl_OnRequestAddExam;
-            _addItemControl.OnRequestAddHomework += _addItemControl_OnRequestAddHomework;
+            _addItemControl.OnRequestAddEvent += _addItemControl_OnRequestAddEvent;
+            _addItemControl.OnRequestAddTask += _addItemControl_OnRequestAddTask;
             RecyclerView recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerViewAgenda);
             
             //recyclerView.AddItemDecoration(new DividerItemDecoration(Context));
@@ -49,7 +48,7 @@ namespace PowerPlannerAndroid.Views
             recyclerView.SetLayoutManager(layoutManager);
 
             // Specify the adapter
-            var adapter = new AgendaHomeworkAdapter()
+            var adapter = new AgendaTasksOrEventsAdapter()
             {
                 ItemsSource = ViewModel.ItemsWithHeaders
             };
@@ -57,17 +56,17 @@ namespace PowerPlannerAndroid.Views
             recyclerView.SetAdapter(adapter);
         }
 
-        private void _addItemControl_OnRequestAddHomework(object sender, EventArgs e)
+        private void _addItemControl_OnRequestAddTask(object sender, EventArgs e)
         {
-            ViewModel.AddHomework();
+            ViewModel.AddTask();
         }
 
-        private void _addItemControl_OnRequestAddExam(object sender, EventArgs e)
+        private void _addItemControl_OnRequestAddEvent(object sender, EventArgs e)
         {
-            ViewModel.AddExam();
+            ViewModel.AddEvent();
         }
 
-        private void Adapter_ItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void Adapter_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
         }

@@ -3,7 +3,7 @@ using InterfacesUWP.CalendarFolder;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.PPEventArgs;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerUWPLibrary;
 using System;
@@ -22,9 +22,9 @@ namespace PowerPlannerUWP.Views.CalendarViews
     {
         public class ItemSelectedEventArgs : EventArgs
         {
-            public BaseViewItemHomeworkExam Item { get; private set; }
+            public ViewItemTaskOrEvent Item { get; private set; }
 
-            public ItemSelectedEventArgs(BaseViewItemHomeworkExam item)
+            public ItemSelectedEventArgs(ViewItemTaskOrEvent item)
             {
                 Item = item;
             }

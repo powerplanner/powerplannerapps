@@ -12,7 +12,6 @@ using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.Views.Controls;
-using Android.Support.Design.Widget;
 using InterfacesDroid.Helpers;
 using Android.Graphics.Drawables;
 using Android.Graphics;
@@ -24,10 +23,11 @@ using Android.Content.Res;
 using Android.Graphics.Drawables.Shapes;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System.Collections.Specialized;
+using PowerPlannerAppDataLibrary.ViewItems;
+using AndroidX.Core.Content;
+using AndroidX.Core.View;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -53,8 +53,8 @@ namespace PowerPlannerAndroid.Views
 
             var addItemControl = FindViewById<FloatingAddItemControl>(Resource.Id.FloatingAddItemControl);
             addItemControl.SupportsAddHoliday = true;
-            addItemControl.OnRequestAddExam += AddItemControl_OnRequestAddExam;
-            addItemControl.OnRequestAddHomework += AddItemControl_OnRequestAddHomework;
+            addItemControl.OnRequestAddEvent += AddItemControl_OnRequestAddEvent;
+            addItemControl.OnRequestAddTask += AddItemControl_OnRequestAddTask;
             addItemControl.OnRequestAddHoliday += AddItemControl_OnRequestAddHoliday;
 
             _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
@@ -87,14 +87,14 @@ namespace PowerPlannerAndroid.Views
             ViewModel.ViewClass(e.Class);
         }
 
-        private void AddItemControl_OnRequestAddHomework(object sender, EventArgs e)
+        private void AddItemControl_OnRequestAddTask(object sender, EventArgs e)
         {
-            ViewModel.AddHomework();
+            ViewModel.AddTask();
         }
 
-        private void AddItemControl_OnRequestAddExam(object sender, EventArgs e)
+        private void AddItemControl_OnRequestAddEvent(object sender, EventArgs e)
         {
-            ViewModel.AddExam();
+            ViewModel.AddEvent();
         }
 
         private void _calendarView_SelectedDateChanged(object sender, EventArgs e)
@@ -191,7 +191,7 @@ namespace PowerPlannerAndroid.Views
                 private View _backgroundOverlayView;
                 private TextView _tv;
                 private ColorStateList _defaultTextColors;
-                private MyHomeworkCircles _myHomeworkCircles;
+                private MyTaskOrEventCircles _myTaskOrEventCircles;
                 private HolidaysOnDay _holidaysOnDay;
                 private NotifyCollectionChangedEventHandler _holidaysChangedHandler;
 
@@ -238,7 +238,7 @@ namespace PowerPlannerAndroid.Views
 
                     var padding = ThemeHelper.AsPx(Context, 4);
 
-                    _myHomeworkCircles = new MyHomeworkCircles(Context)
+                    _myTaskOrEventCircles = new MyTaskOrEventCircles(Context)
                     {
                         LayoutParameters = new FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.MatchParent,
@@ -250,7 +250,7 @@ namespace PowerPlannerAndroid.Views
                             RightMargin = padding
                         }
                     };
-                    this.AddView(_myHomeworkCircles);
+                    this.AddView(_myTaskOrEventCircles);
 
                     _tv = new TextView(Context)
                     {
@@ -275,7 +275,7 @@ namespace PowerPlannerAndroid.Views
                         Visibility = ViewStates.Gone
                     };
                     _selectedRectangleView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.CalendarSelectedDayBorder);
-                    ViewCompat.SetBackgroundTintList(_selectedRectangleView, new ColorStateList(new int[][] { new int[0] }, new int[] { new Color(46, 54, 109) }));
+                    ViewCompat.SetBackgroundTintList(_selectedRectangleView, new ColorStateList(new int[][] { new int[0] }, new int[] { ColorTools.GetColor(this.Context, Resource.Color.accent) }));
                     this.AddView(_selectedRectangleView);
 
                     this.Click += MyCalendarDayView_Click;
@@ -313,18 +313,18 @@ namespace PowerPlannerAndroid.Views
 
                     if (isToday)
                     {
-                        _backgroundView.Background = new ColorDrawable(Color.Argb(255, 117, 117, 117));
+                        _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundToday);
                     }
                     else
                     {
                         switch (dayType)
                         {
                             case DayType.ThisMonth:
-                                _backgroundView.Background = new ColorDrawable(Color.Argb(255, 240, 240, 240));
+                                _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundThisMonth);
                                 break;
 
                             default:
-                                _backgroundView.Background = new ColorDrawable(Color.Argb(255, 228, 228, 228));
+                                _backgroundView.SetBackgroundResource(Resource.Color.calendarBackgroundOther);
                                 break;
                         }
                     }
@@ -333,7 +333,7 @@ namespace PowerPlannerAndroid.Views
 
                     if (isToday)
                     {
-                        _tv.SetTextColor(Color.White);
+                        _tv.SetTextColor(ColorTools.GetColor(this.Context, Resource.Color.calendarTextToday));
                     }
                     else
                     {
@@ -342,7 +342,7 @@ namespace PowerPlannerAndroid.Views
 
                     UpdateSelectedStatus();
 
-                    _myHomeworkCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is BaseViewItemHomeworkExam && i.Date.Date == date.Date && !(i as BaseViewItemHomeworkExam).IsComplete()));
+                    _myTaskOrEventCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is ViewItemTaskOrEvent && i.Date.Date == date.Date && !(i as ViewItemTaskOrEvent).IsComplete));
 
                     if (_holidaysOnDay != null && _holidaysChangedHandler != null)
                     {
@@ -374,24 +374,24 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private class MyHomeworkCircles : LinearLayout
+        private class MyTaskOrEventCircles : LinearLayout
         {
             private ItemsControlWrapper _itemsControlWrapper;
 
-            public MyHomeworkCircles(Context context) : base(context)
+            public MyTaskOrEventCircles(Context context) : base(context)
             {
                 _itemsControlWrapper = new ItemsControlWrapper(this)
                 {
-                    ItemTemplate = new CustomDataTemplate<BaseViewItemHomeworkExamGrade>(CreateCircle)
+                    ItemTemplate = new CustomDataTemplate<BaseViewItemMegaItem>(CreateCircle)
                 };
             }
 
-            public void SetItemsSource(MyObservableList<BaseViewItemHomeworkExamGrade> items)
+            public void SetItemsSource(MyObservableList<BaseViewItemMegaItem> items)
             {
                 _itemsControlWrapper.ItemsSource = items;
             }
 
-            private View CreateCircle(ViewGroup root, BaseViewItemHomeworkExamGrade item)
+            private View CreateCircle(ViewGroup root, BaseViewItemMegaItem item)
             {
                 View view = new View(root.Context)
                 {
@@ -404,7 +404,7 @@ namespace PowerPlannerAndroid.Views
                     }
                 };
 
-                if (item is BaseViewItemHomeworkExam)
+                if (item is ViewItemTaskOrEvent)
                 {
                     ViewCompat.SetBackgroundTintList(view, new ColorStateList(new int[][]
                     {
@@ -412,7 +412,7 @@ namespace PowerPlannerAndroid.Views
                     },
                     new int[]
                     {
-                        ColorTools.GetColor((item as BaseViewItemHomeworkExam).GetClassOrNull().Color).ToArgb()
+                        ColorTools.GetColor((item as ViewItemTaskOrEvent).Class.Color).ToArgb()
                     }));
                 }
 
@@ -444,7 +444,7 @@ namespace PowerPlannerAndroid.Views
             ViewModel.SelectedDate = e;
         }
 
-        private void _dayPagerControl_ItemClick(object sender, PowerPlannerAppDataLibrary.ViewItems.BaseViewItems.BaseViewItemHomeworkExam e)
+        private void _dayPagerControl_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
         }

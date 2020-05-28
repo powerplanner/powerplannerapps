@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!--DayNight theme requires 1.1.0 of Material library, which currently is in release candidate stage-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primaryDark</item>
         <item name="android:colorAccent">@color/accent</item>
@@ -9,9 +10,21 @@
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+        <item name="materialButtonStyle">@style/ButtonDefault</item>
     </style>
 
-    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <style name="ButtonDefault" parent="Widget.MaterialComponents.Button">
+      <item name="materialThemeOverlay">@style/ButtonStyleTextColor</item>
+    </style>
+
+  <style name="ButtonStyleTextColor">
+    <!-- For filled buttons, your theme's colorPrimary provides the default background color of the component, and -->
+    <!--the text color is colorOnPrimary. We keep it all white always. -->
+    <item name="colorOnPrimary">#ffffff</item>
+
+  </style>
+
+  <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
       <item name="tint">@android:color/white</item>
     </style>
 

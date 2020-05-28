@@ -9,13 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using Android.Graphics.Drawables;
 using InterfacesDroid.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
 using InterfacesDroid.Themes;
 using Android.Graphics;
 using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -24,7 +24,7 @@ namespace PowerPlannerAndroid.Views
         private View _viewIsComplete;
         private TextView _textViewTitle;
 
-        public Action AfterOpenedHomeworkAction { get; set; }
+        public Action AfterOpenedTaskOrEventAction { get; set; }
 
         public const int TOTAL_HEIGHT_IN_DP = 31; // 29 + 2dp margin at bottom
 
@@ -68,7 +68,7 @@ namespace PowerPlannerAndroid.Views
 
             try
             {
-                AfterOpenedHomeworkAction?.Invoke();
+                AfterOpenedTaskOrEventAction?.Invoke();
             }
             catch (Exception ex)
             {
@@ -76,8 +76,8 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private BaseViewItemHomeworkExam _item;
-        public BaseViewItemHomeworkExam Item
+        private ViewItemTaskOrEvent _item;
+        public ViewItemTaskOrEvent Item
         {
             get { return _item; }
             set
@@ -96,10 +96,10 @@ namespace PowerPlannerAndroid.Views
 
             try
             {
-                base.Background = new ColorDrawable(ColorTools.GetColor(Item.GetClassOrNull().Color));
+                base.Background = new ColorDrawable(ColorTools.GetColor(Item.Class.Color));
                 _textViewTitle.Text = Item.Name;
 
-                if (Item.IsComplete())
+                if (Item.IsComplete)
                 {
                     _viewIsComplete.Visibility = ViewStates.Visible;
                     _textViewTitle.Alpha = 0.7f;

@@ -34,7 +34,7 @@
     android:layout_height="wrap_content"
     android:textSize="18sp"
     android:lines="1"
-    android:textColor="@android:color/black"
+    android:textColor="@color/foregroundFull"
     android:paddingLeft="18dp"
     android:layout_gravity="center_vertical"
     local:Binding="{Source=Name, Target=Text}"/>

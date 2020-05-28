@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     xmlns:local="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
@@ -10,7 +10,7 @@
         android:id="@+id/FloatingAddItemExpandedBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CCFFFFFF"
+        android:background="@color/transparentBackground"
         android:visibility="gone"
         android:clickable="true"/>
 
@@ -36,14 +36,14 @@
                 android:layout_gravity="center_vertical"/>
         </FrameLayout>
         
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FloatingActionButton"
             android:id="@+id/FloatingActionButtonAddHoliday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android.support.design:fabSize="mini"
+            app:fabSize="mini"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="16dp"
             android:src="@android:drawable/ic_input_add"/>
     
@@ -51,7 +51,7 @@
 
     <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
     <LinearLayout
-        android:id="@+id/FloadingAddItemAddExamSection"
+        android:id="@+id/FloadingAddItemAddEventSection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -64,21 +64,21 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp">
             <TextView
-                android:id="@+id/FloatingAddItemAddExamText"
+                android:id="@+id/FloatingAddItemAddEventText"
                 android:text="{String_AddEvent}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
         </FrameLayout>
         
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FloatingActionButton"
-            android:id="@+id/FloatingActionButtonAddExam"
+            android:id="@+id/FloatingActionButtonAddEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android.support.design:fabSize="mini"
+            app:fabSize="mini"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="16dp"
             android:src="@android:drawable/ic_input_add"/>
     
@@ -87,7 +87,7 @@
 
     <!--https://guides.codepath.com/android/Floating-Action-Buttons-->
     <LinearLayout
-        android:id="@+id/FloadingAddItemAddHomeworkSection"
+        android:id="@+id/FloadingAddItemAddTaskSection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
@@ -98,7 +98,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp">
             <TextView
-                android:id="@+id/FloatingAddItemAddHomeworkText"
+                android:id="@+id/FloatingAddItemAddTaskText"
                 android:text="{String_AddTask}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                 android:layout_gravity="center_vertical"/>
         </FrameLayout>
             
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FloatingActionButton"
             android:id="@+id/FloatingActionButtonAdd"
             android:layout_width="wrap_content"
@@ -118,4 +118,4 @@
     
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

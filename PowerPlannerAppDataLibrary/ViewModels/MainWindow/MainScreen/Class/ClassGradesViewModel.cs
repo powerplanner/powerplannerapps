@@ -2,7 +2,7 @@
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -91,18 +91,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     else
                     {
                         _itemsWithHeaders = new MyAppendedObservableLists<object>(
-                            new ListWithItemSelector(new MySublistsToFlatHeaderedList<ViewItemWeightCategory, BaseViewItemHomeworkExamGrade>(Class.WeightCategories, SelectGrades, this), (item) =>
+                            new ListWithItemSelector(new MySublistsToFlatHeaderedList<ViewItemWeightCategory, BaseViewItemMegaItem>(Class.WeightCategories, SelectGrades, this), (item) =>
                             {
-                                if (item is BaseViewItemHomeworkExam)
+                                if (item is ViewItemTaskOrEvent)
                                 {
-                                    (item as BaseViewItemHomeworkExam).IsUnassignedItem = false;
+                                    (item as ViewItemTaskOrEvent).IsUnassignedItem = false;
                                 }
                                 return item;
                             }),
                             new ListWithItemSelector(new UnassignedItemsHeaderList(ClassViewModel.ViewItemsGroupClass.UnassignedItems)),
                             new ListWithItemSelector(ClassViewModel.ViewItemsGroupClass.UnassignedItems, (item) =>
                             {
-                                (item as BaseViewItemHomeworkExam).IsUnassignedItem = true;
+                                (item as ViewItemTaskOrEvent).IsUnassignedItem = true;
                                 return item;
                             }));
                     }
@@ -114,7 +114,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         private class UnassignedItemsHeaderList : ObservableCollection<string>
         {
-            public UnassignedItemsHeaderList(MyObservableList<BaseViewItemHomeworkExam> unassignedItems)
+            public UnassignedItemsHeaderList(MyObservableList<ViewItemTaskOrEvent> unassignedItems)
             {
                 unassignedItems.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(UnassignedItems_CollectionChanged).Handler;
 
@@ -123,7 +123,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             private void UnassignedItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
             {
-                if ((sender as MyObservableList<BaseViewItemHomeworkExam>).Count > 0)
+                if ((sender as MyObservableList<ViewItemTaskOrEvent>).Count > 0)
                 {
                     if (Count == 0)
                     {
@@ -140,7 +140,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 }
             }
 
-            private void Update(MyObservableList<BaseViewItemHomeworkExam> list)
+            private void Update(MyObservableList<ViewItemTaskOrEvent> list)
             {
                 if (list.Count > 0)
                 {
@@ -160,7 +160,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        private MyObservableList<BaseViewItemHomeworkExamGrade> SelectGrades(ViewItemWeightCategory weightCategory)
+        private MyObservableList<BaseViewItemMegaItem> SelectGrades(ViewItemWeightCategory weightCategory)
         {
             return weightCategory.Grades;
         }
@@ -184,14 +184,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             });
         }
 
-        public void ShowItem(BaseViewItemHomeworkExamGrade e)
+        public void ShowItem(BaseViewItemMegaItem e)
         {
             MainScreenViewModel.ShowPopup(ViewGradeViewModel.Create(MainScreenViewModel, e));
         }
 
-        public void ShowUnassignedItem(BaseViewItemHomeworkExam item)
+        public void ShowUnassignedItem(ViewItemTaskOrEvent item)
         {
-            MainScreenViewModel.ShowPopup(ViewHomeworkViewModel.CreateForUnassigned(MainScreenViewModel, item));
+            MainScreenViewModel.ShowPopup(ViewTaskOrEventViewModel.CreateForUnassigned(MainScreenViewModel, item));
         }
 
         public void OpenWhatIf()

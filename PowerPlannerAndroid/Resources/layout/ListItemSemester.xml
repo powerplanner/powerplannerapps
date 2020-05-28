@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:clickable="true"
-    android:background="#F5F5F5"
+    android:background="@color/semesterBackground"
     android:padding="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp">

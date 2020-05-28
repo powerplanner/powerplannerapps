@@ -9,31 +9,31 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Support.Design.Widget;
 using InterfacesDroid.Views;
 using Android.Util;
 using InterfacesDroid.Themes;
 using BareMvvm.Core.App;
 using ToolsPortable;
 using System.ComponentModel;
+using Google.Android.Material.FloatingActionButton;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
     public class FloatingAddItemControl : InflatedView
     {
-        public event EventHandler OnRequestAddHomework;
-        public event EventHandler OnRequestAddExam;
+        public event EventHandler OnRequestAddTask;
+        public event EventHandler OnRequestAddEvent;
         public event EventHandler OnRequestAddHoliday;
 
         private FloatingActionButton _actionButtonAdd;
-        private FloatingActionButton _actionButtonAddExam;
+        private FloatingActionButton _actionButtonAddEvent;
         private FloatingActionButton _actionButtonAddHoliday;
 
-        private View _sectionExam;
-        private View _sectionHomework;
+        private View _sectionEvent;
+        private View _sectionTask;
         private View _sectionHoliday;
-        private TextView _textViewAddHomework;
-        private TextView _textViewAddExam;
+        private TextView _textViewAddTask;
+        private TextView _textViewAddEvent;
         private TextView _textViewAddHoliday;
         private View _expandedBackground;
 
@@ -54,18 +54,18 @@ namespace PowerPlannerAndroid.Views.Controls
             _actionButtonAdd = FindViewById<FloatingActionButton>(Resource.Id.FloatingActionButtonAdd);
             _actionButtonAdd.Click += _actionButtonAdd_Click;
 
-            _sectionExam = FindViewById<View>(Resource.Id.FloadingAddItemAddExamSection);
-            _sectionExam.Click += _actionButtonAddExam_Click;
-            _sectionHomework = FindViewById<View>(Resource.Id.FloadingAddItemAddHomeworkSection);
-            _sectionHomework.Click += _sectionHomework_Click;
+            _sectionEvent = FindViewById<View>(Resource.Id.FloadingAddItemAddEventSection);
+            _sectionEvent.Click += _actionButtonAddEvent_Click;
+            _sectionTask = FindViewById<View>(Resource.Id.FloadingAddItemAddTaskSection);
+            _sectionTask.Click += _sectionTask_Click;
             _sectionHoliday = FindViewById<View>(Resource.Id.FloadingAddItemAddHolidaySection);
             _sectionHoliday.Click += _actionButtonAddHoliday_Click;
-            _textViewAddHomework = FindViewById<TextView>(Resource.Id.FloatingAddItemAddHomeworkText);
-            _textViewAddExam = FindViewById<TextView>(Resource.Id.FloatingAddItemAddExamText);
+            _textViewAddTask = FindViewById<TextView>(Resource.Id.FloatingAddItemAddTaskText);
+            _textViewAddEvent = FindViewById<TextView>(Resource.Id.FloatingAddItemAddEventText);
             _textViewAddHoliday = FindViewById<TextView>(Resource.Id.FloatingAddItemAddHolidayText);
 
-            _actionButtonAddExam = FindViewById<FloatingActionButton>(Resource.Id.FloatingActionButtonAddExam);
-            _actionButtonAddExam.Click += _actionButtonAddExam_Click;
+            _actionButtonAddEvent = FindViewById<FloatingActionButton>(Resource.Id.FloatingActionButtonAddEvent);
+            _actionButtonAddEvent.Click += _actionButtonAddEvent_Click;
 
             _actionButtonAddHoliday = FindViewById<FloatingActionButton>(Resource.Id.FloatingActionButtonAddHoliday);
             _actionButtonAddHoliday.Click += _actionButtonAddHoliday_Click;
@@ -76,9 +76,9 @@ namespace PowerPlannerAndroid.Views.Controls
             CollapseExpanded();
         }
 
-        private void _sectionHomework_Click(object sender, EventArgs e)
+        private void _sectionTask_Click(object sender, EventArgs e)
         {
-            OnRequestAddHomework?.Invoke(this, new EventArgs());
+            OnRequestAddTask?.Invoke(this, new EventArgs());
             CollapseExpanded();
         }
 
@@ -109,9 +109,9 @@ namespace PowerPlannerAndroid.Views.Controls
             CollapseExpanded();
         }
 
-        private void _actionButtonAddExam_Click(object sender, EventArgs e)
+        private void _actionButtonAddEvent_Click(object sender, EventArgs e)
         {
-            OnRequestAddExam?.Invoke(this, new EventArgs());
+            OnRequestAddEvent?.Invoke(this, new EventArgs());
             CollapseExpanded();
         }
 
@@ -119,7 +119,7 @@ namespace PowerPlannerAndroid.Views.Controls
         {
             if (_isExpanded)
             {
-                OnRequestAddHomework?.Invoke(this, new EventArgs());
+                OnRequestAddTask?.Invoke(this, new EventArgs());
                 CollapseExpanded();
             }
 
@@ -152,10 +152,10 @@ namespace PowerPlannerAndroid.Views.Controls
             }
 
             _isExpanded = true;
-            _sectionExam.Visibility = ViewStates.Visible;
-            _sectionExam.Animate().TranslationY(0).Start();
-            ShowItem(_actionButtonAddExam);
-            ShowItem(_textViewAddExam);
+            _sectionEvent.Visibility = ViewStates.Visible;
+            _sectionEvent.Animate().TranslationY(0).Start();
+            ShowItem(_actionButtonAddEvent);
+            ShowItem(_textViewAddEvent);
 
             if (SupportsAddHoliday)
             {
@@ -165,8 +165,8 @@ namespace PowerPlannerAndroid.Views.Controls
                 ShowItem(_textViewAddHoliday);
             }
 
-            _textViewAddHomework.Visibility = ViewStates.Visible;
-            _textViewAddHomework.Animate().Alpha(1).Start();
+            _textViewAddTask.Visibility = ViewStates.Visible;
+            _textViewAddTask.Animate().Alpha(1).Start();
             _expandedBackground.Visibility = ViewStates.Visible;
             _expandedBackground.Animate().Alpha(1).Start();
         }
@@ -179,9 +179,9 @@ namespace PowerPlannerAndroid.Views.Controls
             }
 
             _isExpanded = false;
-            HideAddExamItems();
+            HideAddEventItems();
             HideAddHolidayItems();
-            HideAddHomeworkText();
+            HideAddTaskText();
             _expandedBackground.Alpha = 0;
             _expandedBackground.Visibility = ViewStates.Gone;
         }
@@ -200,12 +200,12 @@ namespace PowerPlannerAndroid.Views.Controls
             view.Visibility = ViewStates.Gone;
         }
 
-        private void HideAddExamItems()
+        private void HideAddEventItems()
         {
-            _sectionExam.Visibility = ViewStates.Gone;
-            _sectionExam.TranslationY = ThemeHelper.AsPx(Context, 40);
-            HideItem(_textViewAddExam);
-            HideItem(_actionButtonAddExam);
+            _sectionEvent.Visibility = ViewStates.Gone;
+            _sectionEvent.TranslationY = ThemeHelper.AsPx(Context, 40);
+            HideItem(_textViewAddEvent);
+            HideItem(_actionButtonAddEvent);
         }
 
         private void HideAddHolidayItems()
@@ -216,10 +216,10 @@ namespace PowerPlannerAndroid.Views.Controls
             HideItem(_actionButtonAddHoliday);
         }
 
-        private void HideAddHomeworkText()
+        private void HideAddTaskText()
         {
-            _textViewAddHomework.Alpha = 0;
-            _textViewAddHomework.Visibility = ViewStates.Gone;
+            _textViewAddTask.Alpha = 0;
+            _textViewAddTask.Visibility = ViewStates.Gone;
         }
     }
 }

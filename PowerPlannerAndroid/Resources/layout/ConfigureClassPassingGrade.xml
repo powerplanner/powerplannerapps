@@ -11,17 +11,17 @@
       android:layout_height="wrap_content"
       android:padding="16dp">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-      <android.support.design.widget.TextInputEditText
+      <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/EditTextPassingGrade"
           android:inputType="number|numberDecimal"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="{Settings_GradeOptions_ListItemPassingGrade.Title}"
           local:Binding="{Source=PassingGrade, Target=Text, Mode=TwoWay}"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
       android:text="{Settings_GradeOptions_PassingGrade_Explanation.Text}"

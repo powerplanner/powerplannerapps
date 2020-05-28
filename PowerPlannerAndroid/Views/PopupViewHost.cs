@@ -17,7 +17,7 @@ namespace PowerPlannerAndroid.Views
 {
     public class PopupViewHost<TViewModel> : InterfacesDroid.Views.PopupViewHost<TViewModel> where TViewModel : BaseViewModel
     {
-        public Android.Support.V7.Widget.Toolbar Toolbar { get; private set; }
+        public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
 
         public PopupViewHost(int resourceId, ViewGroup root) : base(resourceId, root)
         {
@@ -26,7 +26,7 @@ namespace PowerPlannerAndroid.Views
         protected override View CreateView(LayoutInflater inflater, int resourceId, ViewGroup root)
         {
             View popupView = inflater.Inflate(Resource.Layout.PopupView, null);
-            Toolbar = popupView.FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.Toolbar);
+            Toolbar = popupView.FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
             Toolbar.MenuItemClick += Toolbar_MenuItemClick;
 
             Toolbar.SetNavigationIcon(Resource.Drawable.ic_arrow_back_black_24dp);
@@ -40,7 +40,7 @@ namespace PowerPlannerAndroid.Views
             return popupView;
         }
 
-        private void Toolbar_MenuItemClick(object sender, Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        private void Toolbar_MenuItemClick(object sender, AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             OnMenuItemClicked(e);
         }
@@ -60,7 +60,7 @@ namespace PowerPlannerAndroid.Views
             LocalizationHelper.LocalizeMenu(Toolbar.Menu);
         }
 
-        public virtual void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public virtual void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             // Nothing
         }

@@ -32,9 +32,9 @@ namespace PowerPlannerAndroid.Views.ListItems
         {
             var barView = FindViewById<View>(Resource.Id.ListItemGradeColorBar);
 
-            if (DataContext is BaseViewItemHomeworkExamGrade)
+            if (DataContext is BaseViewItemMegaItem)
             {
-                var g = DataContext as BaseViewItemHomeworkExamGrade;
+                var g = DataContext as BaseViewItemMegaItem;
                 
                 if (g.IsDropped)
                 {

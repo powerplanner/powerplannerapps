@@ -36,19 +36,19 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
         public ViewItemClass(
             DataItemClass dataItem,
-            Func<DataItemMegaItem, BaseViewItemHomeworkExam> createHomeworkOrExamMethod = null,
+            Func<DataItemMegaItem, ViewItemTaskOrEvent> createTaskOrEventMethod = null,
             Func<DataItemSchedule, ViewItemSchedule> createScheduleMethod = null,
             Func<DataItemWeightCategory, ViewItemWeightCategory> createWeightMethod = null,
-            Func<DataItemMegaItem, bool> isHomeworkOrExamChildMethod = null) : base(dataItem)
+            Func<DataItemMegaItem, bool> isTaskOrEventChildMethod = null) : base(dataItem)
         {
             if (dataItem.Identifier == dataItem.UpperIdentifier)
             {
                 IsNoClassClass = true;
             }
 
-            if (createHomeworkOrExamMethod != null)
+            if (createTaskOrEventMethod != null)
             {
-                AddHomeworkAndExamChildrenHelper(createHomeworkOrExamMethod, isHomeworkOrExamChildMethod);
+                AddTasksAndEventsChildrenHelper(createTaskOrEventMethod, isTaskOrEventChildMethod);
             }
 
             if (createScheduleMethod != null)
@@ -81,16 +81,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 children: WeightCategories));
         }
 
-        public void AddHomeworkAndExamChildrenHelper(Func<DataItemMegaItem, BaseViewItemHomeworkExam> createItemMethod, Func<DataItemMegaItem, bool> isChildMethod = null)
+        public void AddTasksAndEventsChildrenHelper(Func<DataItemMegaItem, ViewItemTaskOrEvent> createItemMethod, Func<DataItemMegaItem, bool> isChildMethod = null)
         {
-            HomeworkAndExams = new MyObservableList<BaseViewItems.BaseViewItemHomeworkExam>();
+            TasksAndEvents = new MyObservableList<ViewItemTaskOrEvent>();
 
-            AddChildrenHelper(new ViewItemChildrenHelper<DataItemMegaItem, BaseViewItemHomeworkExam>(
-                isChild: isChildMethod != null ? isChildMethod : IsHomeworkOrExamChild,
+            AddChildrenHelper(new ViewItemChildrenHelper<DataItemMegaItem, ViewItemTaskOrEvent>(
+                isChild: isChildMethod != null ? isChildMethod : IsTaskOrEventChild,
                 addMethod: Add,
                 removeMethod: Remove,
                 createChildMethod: createItemMethod,
-                children: HomeworkAndExams));
+                children: TasksAndEvents));
         }
 
         private bool _hasGrades = false;
@@ -166,7 +166,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             return dataChild.UpperIdentifier == Identifier;
         }
 
-        private bool IsHomeworkOrExamChild(DataItemMegaItem dataChild)
+        private bool IsTaskOrEventChild(DataItemMegaItem dataChild)
         {
             return (dataChild.MegaItemType == MegaItemType.Homework || dataChild.MegaItemType == MegaItemType.Homework)
                 && dataChild.UpperIdentifier == Identifier;
@@ -393,28 +393,21 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
         public MyObservableList<ViewItemWeightCategory> WeightCategories { get; private set; }
 
-        internal void Add(BaseViewItemHomeworkExam viewItemHomeworkOrExam)
+        internal void Add(ViewItemTaskOrEvent viewItemTaskOrEvent)
         {
-            if (viewItemHomeworkOrExam is ViewItemHomework)
-            {
-                (viewItemHomeworkOrExam as ViewItemHomework).Class = this;
-            }
-            else if (viewItemHomeworkOrExam is ViewItemExam)
-            {
-                (viewItemHomeworkOrExam as ViewItemExam).Class = this;
-            }
+            viewItemTaskOrEvent.Class = this;
 
-            HandleWeightCategoryForHomeworkExam(viewItemHomeworkOrExam);
+            HandleWeightCategoryForTaskOrEvent(viewItemTaskOrEvent);
 
-            if (HomeworkAndExams != null)
+            if (TasksAndEvents != null)
             {
-                HomeworkAndExams.InsertSorted(viewItemHomeworkOrExam);
+                TasksAndEvents.InsertSorted(viewItemTaskOrEvent);
             }
         }
 
-        internal void Remove(BaseViewItemHomeworkExam viewItemHomeworkOrExam)
+        internal void Remove(ViewItemTaskOrEvent viewItemTaskOrEvent)
         {
-            HomeworkAndExams?.Remove(viewItemHomeworkOrExam);
+            TasksAndEvents?.Remove(viewItemTaskOrEvent);
         }
 
         internal void Add(ViewItemWeightCategory viewItemWeightCategory)
@@ -438,9 +431,9 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// <summary>
         /// List is already sorted
         /// </summary>
-        public MyObservableList<BaseViewItemHomeworkExam> HomeworkAndExams { get; private set; }
+        public MyObservableList<ViewItemTaskOrEvent> TasksAndEvents { get; private set; }
 
-        private void HandleWeightCategoryForHomeworkExam(BaseViewItemHomeworkExam item)
+        private void HandleWeightCategoryForTaskOrEvent(ViewItemTaskOrEvent item)
         {
             if (item.WeightCategoryIdentifier == PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_UNASSIGNED)
             {
@@ -669,7 +662,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         //sorted by biggest importance first
         private class SortedGradeItem : IComparable<SortedGradeItem>, IComparer<SortedGradeItem>
         {
-            public BaseViewItemHomeworkExamGrade Grade;
+            public BaseViewItemMegaItem Grade;
             public double Importance;
 
             public int Compare(SortedGradeItem x, SortedGradeItem y)
@@ -864,7 +857,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// </summary>
         /// <param name="grade"></param>
         /// <param name="percentNeeded"></param>
-        private static void setBaseGrade(BaseViewItemHomeworkExamGrade grade, double percentNeeded)
+        private static void setBaseGrade(BaseViewItemMegaItem grade, double percentNeeded)
         {
             //set grade to the lower option
             grade.GradeReceived = Math.Floor(percentNeeded * grade.GradeTotal);
@@ -877,7 +870,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// </summary>
         /// <param name="grade"></param>
         /// <returns>Returns true if the class grade is now greater than or equal to the desired grade, else false.</returns>
-        private bool incrementGrade(BaseViewItemHomeworkExamGrade grade, double desiredGrade)
+        private bool incrementGrade(BaseViewItemMegaItem grade, double desiredGrade)
         {
             grade.GradeReceived++;
             grade.WasChanged = true;
@@ -894,7 +887,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// Will increase grade received by 1 if it doesn't make the class' grade higher than the desired grade (also calculates grade)
         /// </summary>
         /// <param name="grade"></param>
-        private void tryIncrementGrade(BaseViewItemHomeworkExamGrade grade, double desiredGrade)
+        private void tryIncrementGrade(BaseViewItemMegaItem grade, double desiredGrade)
         {
             grade.GradeReceived++;
             grade.WeightCategory.NeedsRecalc = true;

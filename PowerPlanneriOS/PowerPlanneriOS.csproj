@@ -121,7 +121,7 @@
     <Compile Include="Controllers\AddClassViewController.cs" />
     <Compile Include="Controllers\AddGradeViewController.cs" />
     <Compile Include="Controllers\AddHolidayViewController.cs" />
-    <Compile Include="Controllers\AddHomeworkViewController.cs" />
+    <Compile Include="Controllers\AddTaskOrEventViewController.cs" />
     <Compile Include="Controllers\AddSemesterViewController.cs" />
     <Compile Include="Controllers\AddYearViewController.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />
@@ -131,7 +131,7 @@
     <Compile Include="Controllers\ClassViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\ClassDetailsViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\ClassGradesViewController.cs" />
-    <Compile Include="Controllers\ClassViewControllers\ClassHomeworkOrExamsViewController.cs" />
+    <Compile Include="Controllers\ClassViewControllers\ClassTasksOrEventsViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\ClassTimesViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\EditClassDetailsViewController.cs" />
     <Compile Include="Controllers\InitialSyncViewController.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="Controllers\Settings\UpdateCredentialsViewController.cs" />
     <Compile Include="Controllers\SyncErrorsViewController.cs" />
     <Compile Include="Controllers\ViewGradeViewController.cs" />
-    <Compile Include="Controllers\ViewHomeworkViewController.cs" />
+    <Compile Include="Controllers\ViewTaskOrEventViewController.cs" />
     <Compile Include="Controllers\Welcome\ConnectAccountViewController.cs" />
     <Compile Include="Controllers\Welcome\CreateAccountViewController.cs" />
     <Compile Include="Controllers\Welcome\ExistingUserViewController.cs" />
@@ -305,6 +305,18 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-60.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json">

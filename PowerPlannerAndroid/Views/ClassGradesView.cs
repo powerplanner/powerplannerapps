@@ -10,11 +10,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
-using Android.Support.V7.Widget;
-using Android.Support.Design.Widget;
 using PowerPlannerAndroid.Adapters;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using AndroidX.RecyclerView.Widget;
+using Google.Android.Material.FloatingActionButton;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -56,12 +56,12 @@ namespace PowerPlannerAndroid.Views
             ViewModel.OpenWhatIf();
         }
 
-        private void Adapter_UnassignedItemClick(object sender, BaseViewItemHomeworkExam e)
+        private void Adapter_UnassignedItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowUnassignedItem(e);
         }
 
-        private void Adapter_ItemClick(object sender, BaseViewItemHomeworkExamGrade e)
+        private void Adapter_ItemClick(object sender, BaseViewItemMegaItem e)
         {
             ViewModel.ShowItem(e);
         }

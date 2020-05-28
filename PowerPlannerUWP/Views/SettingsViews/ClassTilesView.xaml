@@ -21,7 +21,7 @@
 
                 <TextBlock
                     x:Uid="Settings_Tiles_ClassTiles_Description"
-                    Text="You can pin a tile for every class, and it'll display your upcoming homework and exams for that class. Plus, it'll launch straight into that class when you click it."
+                    Text="You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it."
                     Style="{ThemeResource BodyTextBlockStyle}"/>
 
                 <TextBlock

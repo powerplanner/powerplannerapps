@@ -7,7 +7,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using InterfacesDroid.Adapters;
@@ -18,6 +17,7 @@ using PowerPlannerAndroid.Views.ListItemHeaders;
 using PowerPlannerAndroid.Views;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using AndroidX.RecyclerView.Widget;
 
 namespace PowerPlannerAndroid.Adapters
 {
@@ -27,7 +27,7 @@ namespace PowerPlannerAndroid.Adapters
         private const int TOP_HEADER_ITEM_TYPE = 1;
         private const int SECTION_HEADER_ITEM_TYPE = 2;
 
-        public event EventHandler<BaseViewItemHomeworkExamGrade> ItemClick;
+        public event EventHandler<BaseViewItemMegaItem> ItemClick;
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
@@ -52,7 +52,7 @@ namespace PowerPlannerAndroid.Adapters
 
         private void GradeView_Click(object sender, EventArgs e)
         {
-            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemHomeworkExamGrade);
+            ItemClick?.Invoke(this, (sender as ListItemGradeView).DataContext as BaseViewItemMegaItem);
         }
 
         protected override int GetItemViewType(object item)
@@ -63,7 +63,7 @@ namespace PowerPlannerAndroid.Adapters
             if (item is ViewItemWeightCategory)
                 return SECTION_HEADER_ITEM_TYPE;
 
-            if (item is BaseViewItemHomeworkExam)
+            if (item is ViewItemTaskOrEvent)
             {
                 return GRADE_ITEM_TYPE;
             }

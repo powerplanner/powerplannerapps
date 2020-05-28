@@ -9,4 +9,4 @@
   android:paddingTop="1dp"
   android:paddingBottom="3dp"
   android:textSize="12sp"
-  android:textColor="#666666"/>
+  android:textColor="@color/widgetTextColorSecondary"/>

@@ -24,10 +24,10 @@ using InterfacesDroid.Views;
 using InterfacesDroid.DataTemplates;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
 using System.ComponentModel;
 using BareMvvm.Core.App;
+using AndroidX.Core.Content;
+using AndroidX.Core.View;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -55,7 +55,7 @@ namespace PowerPlannerAndroid.Views
 
         public DayScheduleSnapshotView(Context context) : base(context)
         {
-            this.Background = new ColorDrawable(Color.Argb(255, 240, 240, 240));
+            this.SetBackgroundResource(Resource.Color.controlBackground);
             this.Orientation = Orientation.Vertical;
 
             TimeIndicatorSize = ThemeHelper.AsPx(context, TIME_INDICATOR_SIZE);
@@ -131,7 +131,7 @@ namespace PowerPlannerAndroid.Views
                     _arrangedItems.OnItemsChanged -= _arrangedItemsOnItemsChangedHandler;
                 }
 
-                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, TIME_INDICATOR_SIZE + GAP_SIZE, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeHomeworkAndHolidays: true);
+                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), ViewModel, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, Date, TIME_INDICATOR_SIZE + GAP_SIZE, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
                 _arrangedItems.OnItemsChanged += _arrangedItemsOnItemsChangedHandler;
 
                 render();
@@ -287,7 +287,6 @@ namespace PowerPlannerAndroid.Views
             //put in the vertical gap divider
             View verticalGap = new View(Context)
             {
-                Background = new ColorDrawable(Color.White),
                 LayoutParameters = new RelativeLayout.LayoutParams(
                     GapSize,
                     RelativeLayout.LayoutParams.MatchParent)
@@ -295,6 +294,7 @@ namespace PowerPlannerAndroid.Views
                     LeftMargin = TimeIndicatorSize + GapSize
                 }
             };
+            verticalGap.SetBackgroundResource(Resource.Color.scheduleSnapshotDividers);
             _schedulesContent.AddView(verticalGap);
 
             int row = 0;
@@ -318,7 +318,7 @@ namespace PowerPlannerAndroid.Views
                 //if not last row, add the divider
                 if (time + TimeSpan.FromHours(1) <= _arrangedItems.EndTime)
                 {
-                    _schedulesContent.AddView(new View(Context)
+                    var v = new View(Context)
                     {
                         Background = new ColorDrawable(Color.White),
                         LayoutParameters = new RelativeLayout.LayoutParams(
@@ -327,7 +327,9 @@ namespace PowerPlannerAndroid.Views
                         {
                             TopMargin = startHeight + TimeIndicatorSize
                         }
-                    });
+                    };
+                    v.SetBackgroundResource(Resource.Color.scheduleSnapshotDividers);
+                    _schedulesContent.AddView(v);
                 }
             }
 
@@ -739,10 +741,10 @@ namespace PowerPlannerAndroid.Views
             {
                 Item = item.Item,
 
-                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the homework
+                // After opened, we hide this popup, otherwise when the user presses back, it'll close the popup rather than the task
                 // Ideally we would implement the back handling as part of the view model like we did for UWP, but for simplicity we're going
                 // to leave it like this for now
-                AfterOpenedHomeworkAction = delegate { HideFull(); }
+                AfterOpenedTaskOrEventAction = delegate { HideFull(); }
             });
             if (item.AdditionalItems != null)
             {
@@ -751,7 +753,7 @@ namespace PowerPlannerAndroid.Views
                     sp.AddView(new MainCalendarItemView(Context)
                     {
                         Item = i,
-                        AfterOpenedHomeworkAction = delegate { HideFull(); }
+                        AfterOpenedTaskOrEventAction = delegate { HideFull(); }
                     });
                 }
             }
@@ -790,7 +792,7 @@ namespace PowerPlannerAndroid.Views
                 Text = item.Item.Name
             };
             tb.SetTextColor(Color.White);
-            if (item.Item.IsComplete())
+            if (item.Item.IsComplete)
             {
                 tb.SetStrikethrough(true);
             }
@@ -799,7 +801,7 @@ namespace PowerPlannerAndroid.Views
             return grid;
         }
 
-        public static Android.Content.Res.ColorStateList GetBackgroundColorStateList(BaseViewItemHomeworkExam item)
+        public static Android.Content.Res.ColorStateList GetBackgroundColorStateList(ViewItemTaskOrEvent item)
         {
             return new Android.Content.Res.ColorStateList(new int[][]
             {
@@ -807,7 +809,7 @@ namespace PowerPlannerAndroid.Views
             },
             new int[]
             {
-                item.IsComplete() ? new Color(180, 180, 180).ToArgb() : ColorTools.GetColor(item.GetClassOrNull().Color).ToArgb()
+                item.IsComplete ? new Color(180, 180, 180).ToArgb() : ColorTools.GetColor(item.Class.Color).ToArgb()
             });
         }
     }
@@ -855,8 +857,8 @@ namespace PowerPlannerAndroid.Views
             Visibility = ViewStates.Gone;
         }
 
-        private IEnumerable<BaseViewItemHomeworkExam> _additionalItems;
-        public IEnumerable<BaseViewItemHomeworkExam> AdditionalItems
+        private IEnumerable<ViewItemTaskOrEvent> _additionalItems;
+        public IEnumerable<ViewItemTaskOrEvent> AdditionalItems
         {
             get { return _additionalItems; }
             set
@@ -878,7 +880,7 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private View CreateCircle(ViewGroup root, BaseViewItemHomeworkExamGrade item)
+        private View CreateCircle(ViewGroup root, BaseViewItemMegaItem item)
         {
             View view = new View(root.Context)
             {
@@ -891,9 +893,9 @@ namespace PowerPlannerAndroid.Views
                 }
             };
 
-            if (item is BaseViewItemHomeworkExam)
+            if (item is ViewItemTaskOrEvent)
             {
-                ViewCompat.SetBackgroundTintList(view, MyFullEventItem.GetBackgroundColorStateList(item as BaseViewItemHomeworkExam));
+                ViewCompat.SetBackgroundTintList(view, MyFullEventItem.GetBackgroundColorStateList(item as ViewItemTaskOrEvent));
             }
 
             return view;

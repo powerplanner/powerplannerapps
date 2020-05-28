@@ -22,16 +22,6 @@ namespace PowerPlannerUWP
 
         public static class Common
         {
-            public static string GetStringHomework()
-            {
-                return GetString("String_Homework");
-            }
-
-            public static string GetStringExam()
-            {
-                return GetString("String_Exam");
-            }
-
             public static string GetStringHoliday()
             {
                 return GetString("String_Holiday");

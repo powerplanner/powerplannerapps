@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    xmlns:homeworkViews="using:PowerPlannerUWP.Views.HomeworkViews"
+    xmlns:taskOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews"
     xmlns:scheduleViews="using:PowerPlannerUWP.Views.ScheduleViews">
 
 
@@ -21,7 +21,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <homeworkViews:HomeworkListHeader
+            <taskOrEventViews:TasksOrEventsListHeader
                     x:Name="listHeader"
                     AllowHolidays="True"/>
 
@@ -37,7 +37,7 @@
 
                     <ItemsControl
                             x:Name="listControl"
-                            ItemTemplate="{StaticResource DataTemplateHomeworkWithoutDate}">
+                            ItemTemplate="{StaticResource DataTemplateTaskOrEventWithoutDate}">
 
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

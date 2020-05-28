@@ -22,7 +22,7 @@ using PowerPlannerAndroid.Views;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
@@ -88,8 +88,8 @@ namespace PowerPlannerAndroid.App
                 { typeof(CalendarViewModel), typeof(CalendarMainView) },
                 { typeof(AddClassTimeViewModel), typeof(AddClassTimeView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
-                { typeof(AddHomeworkViewModel), typeof(AddHomeworkView) },
-                { typeof(ViewHomeworkViewModel), typeof(ViewHomeworkView) },
+                { typeof(AddTaskOrEventViewModel), typeof(AddTaskOrEventView) },
+                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(DayViewModel), typeof(DayView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },

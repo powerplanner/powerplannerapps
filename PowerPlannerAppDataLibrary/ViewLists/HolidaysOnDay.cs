@@ -33,7 +33,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             base.InsertSorted(holidaysList);
         }
 
-        public static HolidaysOnDay Create(MyObservableList<BaseViewItemHomeworkExamGrade> mainList, DateTime date)
+        public static HolidaysOnDay Create(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date)
         {
             return new HolidaysOnDay(mainList.OfTypeObservable<ViewItemHoliday>(), date);
         }

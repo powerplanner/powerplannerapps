@@ -159,7 +159,7 @@ namespace PowerPlannerAppDataLibrary.App
             if (mainWindow != null)
             {
                 // For iOS, we get the currently visible view model and then find its closest popup host, so that this works
-                // when there's already a popup visible (like adding homework -> repeating requires premium).
+                // when there's already a popup visible (like adding semester -> repeating requires premium).
                 // I think it has to do with only being able to show one modal popup controller at a time.
                 // For Windows, we do NOT want that, since we want the popup shown on a separate layer, rather than in the same page stack as the current popup
                 if (SyncExtensions.GetPlatform() == "iOS")

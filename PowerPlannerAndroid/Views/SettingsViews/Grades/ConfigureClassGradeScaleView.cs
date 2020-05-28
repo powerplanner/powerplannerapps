@@ -54,7 +54,7 @@ namespace PowerPlannerAndroid.Views.SettingsViews.Grades
             ViewModel.RemoveGradeScale(e);
         }
 
-        public override void OnMenuItemClicked(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {

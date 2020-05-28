@@ -6,7 +6,6 @@ using PowerPlannerUWP.ViewModel;
 using PowerPlannerUWP.Views;
 using PowerPlannerUWP.Views.ClassViews;
 using PowerPlannerUWP.Views.GradeViews;
-using PowerPlannerUWP.Views.HomeworkViews;
 using PowerPlannerUWP.Views.SettingsViews;
 using PowerPlannerUWP.Views.YearViews;
 using PowerPlannerUWP.WindowHosts;
@@ -65,7 +64,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Homework;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
@@ -132,7 +131,7 @@ namespace PowerPlannerUWP
                 { typeof(AddClassViewModel), typeof(AddClassView) },
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
-                { typeof(AddHomeworkViewModel), typeof(AddHomeworkView) },
+                { typeof(AddTaskOrEventViewModel), typeof(AddTaskOrEventView) },
                 { typeof(AddSemesterViewModel), typeof(AddSemesterView) },
                 { typeof(AddYearViewModel), typeof(AddYearView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
@@ -158,7 +157,7 @@ namespace PowerPlannerUWP
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
-                { typeof(ViewHomeworkViewModel), typeof(ViewHomeworkView) },
+                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
                 { typeof(YearsViewModel), typeof(YearsView) },
@@ -310,26 +309,6 @@ namespace PowerPlannerUWP
 
                         switch (data.ItemType)
                         {
-                            case ItemType.Homework:
-                                finalArgs = new ViewHomeworkArguments()
-                                {
-                                    LocalAccountId = data.LocalAccountId,
-                                    ItemId = data.Identifier
-                                }.SerializeToString();
-                                break;
-
-                            case ItemType.Exam:
-                                finalArgs = new ViewExamArguments()
-                                {
-                                    LocalAccountId = data.LocalAccountId,
-                                    ItemId = data.Identifier
-                                }.SerializeToString();
-                                break;
-
-                            case ItemType.Task:
-                                // TODO: Not supported yet
-                                break;
-
                             case ItemType.Schedule:
                                 finalArgs = new ViewScheduleArguments()
                                 {
@@ -338,6 +317,11 @@ namespace PowerPlannerUWP
                                 break;
 
                             case ItemType.MegaItem:
+                                finalArgs = new ViewTaskArguments()
+                                {
+                                    LocalAccountId = data.LocalAccountId,
+                                    ItemId = data.Identifier
+                                }.SerializeToString();
                                 break;
                         }
 
@@ -449,18 +433,18 @@ namespace PowerPlannerUWP
                     await viewModel.HandleViewClassActivation(viewClassArgs.LocalAccountId, viewClassArgs.ItemId);
                 }
 
-                else if (args is ViewHomeworkArguments)
+                else if (args is ViewTaskArguments)
                 {
-                    TrackLaunch(args, launchContext, "HomeworkExam");
-                    var viewHomeworkArgs = args as ViewHomeworkArguments;
-                    await viewModel.HandleViewHomeworkActivation(viewHomeworkArgs.LocalAccountId, viewHomeworkArgs.ItemId);
+                    TrackLaunch(args, launchContext, "Task");
+                    var viewTaskArgs = args as ViewTaskArguments;
+                    await viewModel.HandleViewTaskActivation(viewTaskArgs.LocalAccountId, viewTaskArgs.ItemId);
                 }
 
-                else if (args is ViewExamArguments)
+                else if (args is ViewEventArguments)
                 {
-                    TrackLaunch(args, launchContext, "HomeworkExam");
-                    var viewExamArgs = args as ViewExamArguments;
-                    await viewModel.HandleViewExamActivation(viewExamArgs.LocalAccountId, viewExamArgs.ItemId);
+                    TrackLaunch(args, launchContext, "Event");
+                    var viewEventArgs = args as ViewEventArguments;
+                    await viewModel.HandleViewEventActivation(viewEventArgs.LocalAccountId, viewEventArgs.ItemId);
                 }
 
                 else if (args is ViewHolidayArguments)
@@ -478,26 +462,26 @@ namespace PowerPlannerUWP
                     await viewModel.HandleQuickAddActivation(quickAddArgs.LocalAccountId);
                 }
 
-                else if (args is QuickAddHomeworkToCurrentAccountArguments)
+                else if (args is QuickAddTaskToCurrentAccountArguments)
                 {
                     // Jump list was created before we included the launch surface, so we'll manually port it
                     if (launchContext == LaunchSurface.Normal)
                     {
                         launchContext = LaunchSurface.JumpList;
                     }
-                    TrackLaunch(args, launchContext, "QuickAddHomework");
-                    await viewModel.HandleQuickAddHomework();
+                    TrackLaunch(args, launchContext, "QuickAddTask");
+                    await viewModel.HandleQuickAddTask();
                 }
 
-                else if (args is QuickAddExamToCurrentAccountArguments)
+                else if (args is QuickAddEventToCurrentAccountArguments)
                 {
                     // Jump list was created before we included the launch surface, so we'll manually port it
                     if (launchContext == LaunchSurface.Normal)
                     {
                         launchContext = LaunchSurface.JumpList;
                     }
-                    TrackLaunch(args, launchContext, "QuickAddExam");
-                    await viewModel.HandleQuickAddExam();
+                    TrackLaunch(args, launchContext, "QuickAddEvent");
+                    await viewModel.HandleQuickAddEvent();
                 }
 
                 else
@@ -545,13 +529,13 @@ namespace PowerPlannerUWP
                     {
                         jumpList.SystemGroupKind = Windows.UI.StartScreen.JumpListSystemGroupKind.Frequent;
 
-                        var addHomeworkItem = Windows.UI.StartScreen.JumpListItem.CreateWithArguments(new QuickAddHomeworkToCurrentAccountArguments().SerializeToString(), "New task");
-                        addHomeworkItem.Logo = new Uri("ms-appx:///Assets/JumpList/Add.png");
-                        jumpList.Items.Add(addHomeworkItem);
+                        var addTaskItem = Windows.UI.StartScreen.JumpListItem.CreateWithArguments(new QuickAddTaskToCurrentAccountArguments().SerializeToString(), "New task");
+                        addTaskItem.Logo = new Uri("ms-appx:///Assets/JumpList/Add.png");
+                        jumpList.Items.Add(addTaskItem);
 
-                        var addExamItem = Windows.UI.StartScreen.JumpListItem.CreateWithArguments(new QuickAddExamToCurrentAccountArguments().SerializeToString(), "New event");
-                        addExamItem.Logo = new Uri("ms-appx:///Assets/JumpList/Add.png");
-                        jumpList.Items.Add(addExamItem);
+                        var addEventItem = Windows.UI.StartScreen.JumpListItem.CreateWithArguments(new QuickAddEventToCurrentAccountArguments().SerializeToString(), "New event");
+                        addEventItem.Logo = new Uri("ms-appx:///Assets/JumpList/Add.png");
+                        jumpList.Items.Add(addEventItem);
 
                         await jumpList.SaveAsync();
                     }
@@ -734,9 +718,15 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2005, 3, 1, 99))
+                    {
+                        changedText += "\n - You can now convert tasks to events and vice versa!";
+                    }
+
                     if (v <= new Version(2005, 1, 2, 99))
                     {
                         changedText += "\n - Language setting added to allow overriding system selected language!";
+                        changedText += "\n - Fixed hyperlink detection bug with upper case characters";
                     }
 
                     if (v <= new Version(2004, 30, 1, 99))
@@ -747,13 +737,8 @@ namespace PowerPlannerUWP
                         }
                         else
                         {
-                            changedText += "\n - You can now toggle showing past complete items on the calendar view! Use the filter button in the top right.";
+                            changedText += "\n - Past complete items hidden from calendar by default. You can now toggle showing past complete items by using the filter button in the top right.";
                         }
-                    }
-
-                    if (v <= new Version(2004, 26, 1, 99))
-                    {
-                        changedText += "\n - Past completed items will no longer appear on the main calendar view to help focus on what's due";
                     }
 
                     if (v <= new Version(2004, 24, 2, 99))
@@ -852,93 +837,6 @@ namespace PowerPlannerUWP
                     if (v < new Version(5, 3, 0, 0))
                     {
                         changedText += "\n - You can now assign times to tasks/events!\n - You can add generic tasks/events that aren't under a specific class!\n - Incomplete items now appear on schedule views\n - Setting the first day of the week in two week schedule settings now updates the weekly schedule so that it starts on the same day";
-                    }
-
-                    if (v < new Version(5, 2, 16, 0))
-                    {
-                        changedText += "\n - Added start/end dates to classes!";
-                    }
-
-                    if (v < new Version(5, 2, 0, 0))
-                    {
-                        changedText += "\n - You can now add holidays!";
-                        changedText += "\n - Bug fixes for overall GPA calculation and Live Tile displaying completed exams";
-                    }
-
-                    if (v < new Version(5, 1, 28, 0))
-                        changedText += "\n - Drag/drop items between dates in the large Calendar view!";
-
-                    if (v < new Version(5, 1, 14, 0))
-                        changedText += "\n - App respects your system 24hr time settings now!";
-
-                    if (v < new Version(5, 1, 8, 0))
-                        changedText += "\n - Convert your homework/exams to grades! Open a class, go to the grades page, and you'll see your \"unassigned\" homework and exams!";
-
-                    if (v < new Version(5, 1, 0, 0))
-                        changedText += "\n - Universal Dismiss (requires Anniversary Update)\n - Intelligently picks current class and next class date when adding homework/exam";
-
-                    if (v < new Version(5, 0, 15, 0))
-                        changedText += "\n - Ability to view old completed homework and exams on class page\n - When adding homework, default date automatically set to your next class";
-
-                    if (v < new Version(5, 0, 13, 0))
-                        changedText += "\n - Improved schedule editor! Open the Schedule page and click the edit button.";
-
-                    if (v < new Version(5, 0, 12, 0))
-                        changedText += "\n - Visual refresh of welcome screen/login/free version popup";
-
-                    if (v < new Version(5, 0, 11, 0))
-                        changedText += "\n - Start/end dates on semesters!";
-
-                    if (v < new Version(5, 0, 10, 0))
-                        changedText += "\n - Hola! The app has been translated to Spanish, contact me if you'd like to help translate to your language!";
-
-                    if (v < new Version(5, 0, 5, 0))
-                        changedText += "\n - Dark theme support added!";
-
-                    if (v < new Version(5, 0, 4, 0))
-                        changedText += "\n - Outlook Calendar integration added!";
-
-                    if (v < new Version(5, 0, 3, 0))
-                        changedText += "\n - Jump list actions, right click Power Planner on the taskbar and instantly add homework/exam!\n - Quick Add tile, pin it and quickly add homework/exams";
-
-                    if (v < new Version(5, 0, 1, 0))
-                        changedText += "\n - Image attachment symbol on items in list view";
-
-                    if (v < new Version(3, 2, 0, 0))
-                        changedText += "\n - App instantly syncs when you make a change on another device, even when not open!\n - Detailed lock screen status added. See your homework on your lock screen, or select the Schedule tile to see your upcoming class.\n - Settings for live tiles added";
-
-                    if (v < new Version(3, 1, 4, 0))
-                        changedText += "\n - Settings for sync options added";
-
-                    if (v < new Version(3, 1, 2, 0))
-                        changedText += "\n - Secondary tiles for classes added! Open a class and click the pin button!\n - Primary tile now displays multiple days of content on larger sizes";
-
-                    if (v < new Version(3, 1, 1, 0))
-                        changedText += "\n - Schedule tile added! Open your schedule and click the pin button!";
-
-                    if (v < new Version(3, 1, 0, 0))
-                        changedText += "\n - What If? feature for grades!";
-
-                    if (v < new Version(3, 0, 9, 0))
-                        changedText += "\n - Settings for automatic reminders added";
-
-                    if (v < new Version(3, 0, 0, 0))
-                        changedText += "\n - REWRITTEN FOR WINDOWS 10!!!\n - The entire underlying structure of Power Planner has been re-written for Windows 10";
-
-                    if (v < new Version(2, 2, 0, 0))
-                        changedText += "\n - Added percent complete slider to homework items\n - Added class color rectangles in side menu bar";
-
-                    if (v < new Version(2, 1, 1, 0))
-                        changedText += "\n - Image attachments added!";
-
-                    if (v < new Version(2, 1, 0, 1))
-                    {
-                        changedText += "\n - Ability to drop grades!";
-                    }
-
-                    if (v < new Version(2, 1, 0, 0))
-                    {
-                        changedText += "\n - Grades added! Open a class and scroll to the right.";
                     }
 
 
@@ -1080,26 +978,26 @@ namespace PowerPlannerUWP
         /// Simply shows a popup, doesn't do any view model logic
         /// </summary>
         /// <param name="elToCenterFrom"></param>
-        /// <param name="addHomeworkAction"></param>
-        /// <param name="addExamAction"></param>
-        public static void ShowFlyoutAddHomeworkOrExam(FrameworkElement elToCenterFrom, Action addHomeworkAction, Action addExamAction, Action addHolidayAction = null)
+        /// <param name="addTaskAction"></param>
+        /// <param name="addEventAction"></param>
+        public static void ShowFlyoutAddTaskOrEvent(FrameworkElement elToCenterFrom, Action addTaskAction, Action addEventAction, Action addHolidayAction = null)
         {
-            MenuFlyoutItem menuItemHomework = new MenuFlyoutItem()
+            MenuFlyoutItem menuItemTask = new MenuFlyoutItem()
             {
                 Text = LocalizedResources.Common.GetStringTask()
             };
-            menuItemHomework.Click += delegate
+            menuItemTask.Click += delegate
             {
-                addHomeworkAction();
+                addTaskAction();
             };
 
-            MenuFlyoutItem menuItemExam = new MenuFlyoutItem()
+            MenuFlyoutItem menuItemEvent = new MenuFlyoutItem()
             {
                 Text = LocalizedResources.Common.GetStringEvent()
             };
-            menuItemExam.Click += delegate
+            menuItemEvent.Click += delegate
             {
-                addExamAction();
+                addEventAction();
             };
 
             MenuFlyoutItem menuItemHoliday = null;
@@ -1116,8 +1014,8 @@ namespace PowerPlannerUWP
             {
                 Items =
                 {
-                    menuItemHomework,
-                    menuItemExam
+                    menuItemTask,
+                    menuItemEvent
                 }
             };
 

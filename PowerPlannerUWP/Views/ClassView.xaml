@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:classViews="using:PowerPlannerUWP.Views.ClassViews"
-    xmlns:homeworkViews="using:PowerPlannerUWP.Views.HomeworkViews"
+    xmlns:taskOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews"
     xmlns:gradeViews="using:PowerPlannerUWP.Views.GradeViews"
     xmlns:interfaces="using:InterfacesUWP"
     xmlns:localConverters="using:PowerPlannerUWP.Converters"
@@ -38,8 +38,8 @@
             <Setter Property="Padding" Value="12"/>
         </Style>
 
-        <DataTemplate x:Key="DataTemplateHomeworkForGrid">
-            <ContentPresenter ContentTemplate="{StaticResource DataTemplateHomework}" Margin="0,0,6,0"/>
+        <DataTemplate x:Key="DataTemplateTaskOrEventForGrid">
+            <ContentPresenter ContentTemplate="{StaticResource DataTemplateTaskOrEvent}" Margin="0,0,6,0"/>
         </DataTemplate>
 
         <Style x:Key="HeaderStyle" TargetType="Button" BasedOn="{StaticResource SubitemContainerStyle}">
@@ -95,7 +95,7 @@
                 TextTrimming="CharacterEllipsis"/>
         </DataTemplate>
 
-        <Style x:Key="HomeworkPreviewItemsControlStyle" TargetType="ItemsControl">
+        <Style x:Key="TasksOrEventsPreviewItemsControlStyle" TargetType="ItemsControl">
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -105,14 +105,14 @@
                             Style="{StaticResource CaptionTextBlockStyle}"
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"/>
-                        
+
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <localConverters:IsPastCompletedHomeworkDisplayedToButtonContentConverter x:Key="IsPastCompletedHomeworkDisplayedToButtonContentConverter"/>
-        <localConverters:IsPastCompletedExamsDisplayedToButtonContentConverter x:Key="IsPastCompletedExamsDisplayedToButtonContentConverter"/>
+        <localConverters:IsPastCompletedTasksDisplayedToButtonContentConverter x:Key="IsPastCompletedTasksDisplayedToButtonContentConverter"/>
+        <localConverters:IsPastCompletedEventsDisplayedToButtonContentConverter x:Key="IsPastCompletedEventsDisplayedToButtonContentConverter"/>
 
     </local:MainScreenContentViewHostGeneric.Resources>
     
@@ -216,11 +216,11 @@
 
 
                         <Button
-                                x:Name="tileHomework"
+                                x:Name="tileTasks"
                                 Style="{StaticResource TileStyle}"
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Click="tileHomework_Click">
+                                Click="tileTasks_Click">
 
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -229,14 +229,14 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockHomework"
-                                        Text="HOMEWORK"
+                                    x:Uid="ClassPage_TextBlockTasks"
+                                        Text="TASKS"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
-                                        ItemsSource="{Binding ViewItemsGroupClass.Homework}"
+                                        ItemsSource="{Binding ViewItemsGroupClass.Tasks}"
                                         Grid.Row="1"
-                                        Style="{StaticResource HomeworkPreviewItemsControlStyle}">
+                                        Style="{StaticResource TasksOrEventsPreviewItemsControlStyle}">
                                 </ItemsControl>
 
                             </Grid>
@@ -245,11 +245,11 @@
 
 
                         <Button
-                                x:Name="tileExams"
+                                x:Name="tileEvents"
                                 Style="{StaticResource TileStyle}"
                                 Grid.Row="2"
                                 Grid.Column="1"
-                                Click="tileExams_Click">
+                                Click="tileEvents_Click">
 
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -258,14 +258,14 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockExams"
-                                        Text="EXAMS"
+                                    x:Uid="ClassPage_TextBlockEvents"
+                                        Text="EVENTS"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
-                                        ItemsSource="{Binding ViewItemsGroupClass.Exams}"
+                                        ItemsSource="{Binding ViewItemsGroupClass.Events}"
                                         Grid.Row="1"
-                                        Style="{StaticResource HomeworkPreviewItemsControlStyle}">
+                                        Style="{StaticResource TasksOrEventsPreviewItemsControlStyle}">
                                 </ItemsControl>
 
                             </Grid>
@@ -377,13 +377,13 @@
                 
             </PivotItem>
 
-            <!--Homework-->
-            <PivotItem x:Uid="ClassPage_PivotItemHomework" Header="Homework">
+            <!--Tasks-->
+            <PivotItem x:Uid="ClassPage_PivotItemTasks" Header="Tasks">
 
                 <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
                     <StackPanel Style="{StaticResource PageStackPanelStyle}">
 
-                        <ItemsControl ItemsSource="{Binding ViewItemsGroupClass.Homework}" ItemTemplate="{StaticResource DataTemplateHomeworkForGrid}" Margin="0,0,-6,0">
+                        <ItemsControl ItemsSource="{Binding ViewItemsGroupClass.Tasks}" ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}" Margin="0,0,-6,0">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <interfaces:MyAdaptiveGridPanel MinColumnWidth="300" VerticalAlignment="Top">
@@ -398,20 +398,20 @@
                         </ItemsControl>
 
                         <StackPanel
-                            Visibility="{Binding ViewItemsGroupClass.HasPastCompletedHomework, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Visibility="{Binding ViewItemsGroupClass.HasPastCompletedTasks, Converter={StaticResource BoolToVisibilityConverter}}"
                             Margin="0,12,0,0">
 
                             <Button
-                                x:Name="ButtonToggleShowPastCompletedHomework"
+                                x:Name="ButtonToggleShowPastCompletedTasks"
                                 Style="{StaticResource SubitemButtonStyle}"
-                                Content="{Binding ViewItemsGroupClass.IsPastCompletedHomeworkDisplayed, Converter={StaticResource IsPastCompletedHomeworkDisplayedToButtonContentConverter}}"
+                                Content="{Binding ViewItemsGroupClass.IsPastCompletedTasksDisplayed, Converter={StaticResource IsPastCompletedTasksDisplayedToButtonContentConverter}}"
                                 HorizontalAlignment="Stretch"
-                                Click="ButtonToggleShowPastCompletedHomework_Click"/>
+                                Click="ButtonToggleShowPastCompletedTasks_Click"/>
 
                             <ItemsControl
-                                ItemsSource="{Binding ViewItemsGroupClass.PastCompletedHomework}"
-                                ItemTemplate="{StaticResource DataTemplateHomeworkForGrid}"
-                                Visibility="{Binding ViewItemsGroupClass.IsPastCompletedHomeworkDisplayed, Converter={StaticResource BoolToVisibilityConverter}}"
+                                ItemsSource="{Binding ViewItemsGroupClass.PastCompletedTasks}"
+                                ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}"
+                                Visibility="{Binding ViewItemsGroupClass.IsPastCompletedTasksDisplayed, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Margin="0,3,-6,0">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -433,13 +433,13 @@
 
             </PivotItem>
 
-            <!--Exams-->
-            <PivotItem x:Uid="ClassPage_PivotItemExams" Header="Exams">
+            <!--Events-->
+            <PivotItem x:Uid="ClassPage_PivotItemEvents" Header="Events">
 
                 <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
                     <StackPanel Style="{StaticResource PageStackPanelStyle}">
 
-                        <ItemsControl ItemsSource="{Binding ViewItemsGroupClass.Exams}" ItemTemplate="{StaticResource DataTemplateHomeworkForGrid}" Margin="0,0,-6,0">
+                        <ItemsControl ItemsSource="{Binding ViewItemsGroupClass.Events}" ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}" Margin="0,0,-6,0">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <interfaces:MyAdaptiveGridPanel MinColumnWidth="300" VerticalAlignment="Top">
@@ -454,20 +454,20 @@
                         </ItemsControl>
 
                         <StackPanel
-                            Visibility="{Binding ViewItemsGroupClass.HasPastCompletedExams, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Visibility="{Binding ViewItemsGroupClass.HasPastCompletedEvents, Converter={StaticResource BoolToVisibilityConverter}}"
                             Margin="0,12,0,0">
 
                             <Button
-                                x:Name="ButtonToggleShowPastCompletedExams"
+                                x:Name="ButtonToggleShowPastCompletedEvents"
                                 Style="{StaticResource SubitemButtonStyle}"
-                                Content="{Binding ViewItemsGroupClass.IsPastCompletedExamsDisplayed, Converter={StaticResource IsPastCompletedExamsDisplayedToButtonContentConverter}}"
+                                Content="{Binding ViewItemsGroupClass.IsPastCompletedEventsDisplayed, Converter={StaticResource IsPastCompletedEventsDisplayedToButtonContentConverter}}"
                                 HorizontalAlignment="Stretch"
-                                Click="ButtonToggleShowPastCompletedExams_Click"/>
+                                Click="ButtonToggleShowPastCompletedEvents_Click"/>
 
                             <ItemsControl
-                                ItemsSource="{Binding ViewItemsGroupClass.PastCompletedExams}"
-                                ItemTemplate="{StaticResource DataTemplateHomeworkForGrid}"
-                                Visibility="{Binding ViewItemsGroupClass.IsPastCompletedExamsDisplayed, Converter={StaticResource BoolToVisibilityConverter}}"
+                                ItemsSource="{Binding ViewItemsGroupClass.PastCompletedEvents}"
+                                ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}"
+                                Visibility="{Binding ViewItemsGroupClass.IsPastCompletedEventsDisplayed, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Margin="0,3,-6,0">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -638,9 +638,9 @@
 
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <homeworkViews:HomeworkListViewItem
+                                        <taskOrEventViews:TaskOrEventListViewItem
                                             Margin="0,6,6,0"
-                                            OnClickItem="HomeworkListViewItem_OnClickItem"/>
+                                            OnClickItem="TaskOrEventListViewItem_OnClickItem"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                                 
@@ -693,10 +693,10 @@
 
 
 
-                <VisualState x:Name="Homework">
+                <VisualState x:Name="Tasks">
                 </VisualState>
 
-                <VisualState x:Name="Exams">
+                <VisualState x:Name="Events">
                 </VisualState>
 
                 <VisualState x:Name="Grades">

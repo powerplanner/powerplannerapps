@@ -14,7 +14,7 @@
     <TextView
       android:text="{RepeatingEntry_TextBlockRepeatEvery.Text}"
       android:textSize="16sp"
-      android:textColor="#000000"
+      android:textColor="@color/foregroundFull"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:gravity="center_vertical"
@@ -40,7 +40,7 @@
     android:id="@+id/TextViewRepeatOnHeader"
     android:text="{RepeatingEntry_TextBlockRepeatOn.Text}"
     android:textSize="16sp"
-    android:textColor="#000000"
+    android:textColor="@color/foregroundFull"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"
@@ -72,7 +72,7 @@
   <TextView
     android:text="{RepeatingEntry_TextBlockEnds.Text}"
     android:textSize="16sp"
-    android:textColor="#000000"
+    android:textColor="@color/foregroundFull"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"/>
@@ -91,7 +91,7 @@
         android:id="@+id/RadioButtonEndsOn"
         android:text="{RepeatingEntry_RadioButtonEndsOn.Content}"
         android:textSize="16sp"
-        android:textColor="#000000"
+        android:textColor="@color/foregroundFull"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -113,7 +113,7 @@
         android:id="@+id/RadioButtonEndsAfter"
         android:text="{RepeatingEntry_RadioButtonEndsAfter.Content}"
         android:textSize="16sp"
-        android:textColor="#000000"
+        android:textColor="@color/foregroundFull"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -130,7 +130,7 @@
         android:layout_height="wrap_content"
         android:text="{RepeatingEntry_TextBlockOccurrences.Text}"
         android:textSize="16sp"
-        android:textColor="#000000"
+        android:textColor="@color/foregroundFull"
         android:layout_marginLeft="4dp"/>
     
     </LinearLayout>

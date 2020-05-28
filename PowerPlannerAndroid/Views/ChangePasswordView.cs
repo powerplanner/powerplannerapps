@@ -10,9 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
-using Android.Support.Design.Widget;
 using InterfacesDroid.Helpers;
 using PowerPlannerAppDataLibrary;
+using Google.Android.Material.TextField;
 
 namespace PowerPlannerAndroid.Views
 {

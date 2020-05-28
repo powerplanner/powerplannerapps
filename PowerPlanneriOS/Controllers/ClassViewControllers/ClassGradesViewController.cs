@@ -330,15 +330,15 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             {
                 object item = GetItem(indexPath);
 
-                if (item is BaseViewItemHomeworkExamGrade)
+                if (item is BaseViewItemMegaItem)
                 {
                     if (indexPath.Section < _class.WeightCategories.Count)
                     {
-                        _viewModel.ShowItem(item as BaseViewItemHomeworkExamGrade);
+                        _viewModel.ShowItem(item as BaseViewItemMegaItem);
                     }
-                    else if (item is BaseViewItemHomeworkExam)
+                    else if (item is ViewItemTaskOrEvent taskOrEvent)
                     {
-                        _viewModel.ShowUnassignedItem(item as BaseViewItemHomeworkExam);
+                        _viewModel.ShowUnassignedItem(taskOrEvent);
                     }
 
                     // Immediately unselect it

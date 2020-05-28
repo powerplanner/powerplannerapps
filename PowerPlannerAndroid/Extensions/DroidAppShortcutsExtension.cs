@@ -36,12 +36,12 @@ namespace PowerPlannerAndroid.Extensions
 
             // Add task shortcut
             var addTaskIntent = new Intent(Application.Context, typeof(MainActivity));
-            addTaskIntent.SetData(Android.Net.Uri.Parse("powerplanner:?" + new QuickAddHomeworkToCurrentAccountArguments().SerializeToString()));
+            addTaskIntent.SetData(Android.Net.Uri.Parse("powerplanner:?" + new QuickAddTaskToCurrentAccountArguments().SerializeToString()));
             addTaskIntent.SetAction(Intent.ActionView);
 
             ShortcutInfo addTaskShortcut = new ShortcutInfo.Builder(Application.Context, "add-task")
                 .SetShortLabel(PowerPlannerResources.GetString("String_Task")) // "Task"
-                .SetLongLabel(PowerPlannerResources.GetString("String_AddHomework")) // "Add task" (this one is almost always used)
+                .SetLongLabel(PowerPlannerResources.GetString("String_AddTask")) // "Add task" (this one is almost always used)
                 .SetIcon(Icon.CreateWithResource(Application.Context, Resource.Drawable.ic_add_24px))
                 .SetIntent(addTaskIntent)
                 .Build();
@@ -50,12 +50,12 @@ namespace PowerPlannerAndroid.Extensions
 
             // Add event shortcut
             var addEventIntent = new Intent(Application.Context, typeof(MainActivity));
-            addEventIntent.SetData(Android.Net.Uri.Parse("powerplanner:?" + new QuickAddExamToCurrentAccountArguments().SerializeToString()));
+            addEventIntent.SetData(Android.Net.Uri.Parse("powerplanner:?" + new QuickAddEventToCurrentAccountArguments().SerializeToString()));
             addEventIntent.SetAction(Intent.ActionView);
 
             ShortcutInfo addEventShortcut = new ShortcutInfo.Builder(Application.Context, "add-event")
                 .SetShortLabel(PowerPlannerResources.GetString("String_Event")) // "Event"
-                .SetLongLabel(PowerPlannerResources.GetString("String_AddExam")) // "Add event"
+                .SetLongLabel(PowerPlannerResources.GetString("String_AddEvent")) // "Add event"
                 .SetIcon(Icon.CreateWithResource(Application.Context, Resource.Drawable.ic_add_24px))
                 .SetIntent(addEventIntent)
                 .Build();

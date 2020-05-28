@@ -17,15 +17,14 @@ using PowerPlannerAndroid.Views.ListItems;
 using InterfacesDroid.Themes;
 using ToolsPortable;
 using PowerPlannerAndroid.ViewHosts;
-using Android.Support.V7.Widget;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System.ComponentModel;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using Android.Support.V4.Content;
 using PowerPlannerAndroid.Views.Controls;
 using InterfacesDroid.Helpers;
+using AndroidX.Core.Content;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -39,7 +38,7 @@ namespace PowerPlannerAndroid.Views
         private View _editingContent;
         private View _welcomeContent;
         private ItemsControlWrapper _itemsWrapperEditingClasses;
-        private Android.Support.V7.Widget.Toolbar _weekToolbar;
+        private AndroidX.AppCompat.Widget.Toolbar _weekToolbar;
 
         private LinearLayout _scheduleHost;
 
@@ -49,7 +48,7 @@ namespace PowerPlannerAndroid.Views
             _editingContent = FindViewById(Resource.Id.EditingContent);
             _welcomeContent = FindViewById(Resource.Id.WelcomeContent);
 
-            _weekToolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.WeekToolbar);
+            _weekToolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.WeekToolbar);
             MenuInflater inflater = new MenuInflater(Context);
             inflater.Inflate(Resource.Menu.schedule_week_menu, _weekToolbar.Menu);
             _weekToolbar.MenuItemClick += _weekToolbar_MenuItemClick;
@@ -104,7 +103,7 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private void _weekToolbar_MenuItemClick(object sender, Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        private void _weekToolbar_MenuItemClick(object sender, AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {
@@ -588,7 +587,7 @@ namespace PowerPlannerAndroid.Views
             return base.GetMenuResource();
         }
 
-        public override void OnMenuItemClick(Android.Support.V7.Widget.Toolbar.MenuItemClickEventArgs e)
+        public override void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {
@@ -616,11 +615,11 @@ namespace PowerPlannerAndroid.Views
 
                 foreach (var i in items)
                 {
-                    if (i is BaseViewItemHomeworkExam)
+                    if (i is ViewItemTaskOrEvent)
                     {
                         var itemView = new MainCalendarItemView(Context)
                         {
-                            Item = i as BaseViewItemHomeworkExam
+                            Item = i as ViewItemTaskOrEvent
                         };
                         (itemView.LayoutParameters as LinearLayout.LayoutParams).RightMargin = ThemeHelper.AsPx(Context, 2);
                         base.AddView(itemView);

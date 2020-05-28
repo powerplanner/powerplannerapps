@@ -208,7 +208,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        public void ShowItem(BaseViewItemHomeworkExamGrade e)
+        public void ShowItem(BaseViewItemMegaItem e)
         {
             MainScreenViewModel.ShowPopup(ViewGradeViewModel.Create(MainScreenViewModel, e, isInWhatIfMode: true));
         }
@@ -225,7 +225,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         _itemsWithHeaders = new List<object>();
                     else
                     {
-                        _itemsWithHeaders = new MySublistsToFlatHeaderedList<ViewItemWeightCategory, BaseViewItemHomeworkExamGrade>(Class.WeightCategories, SelectGrades, this);
+                        _itemsWithHeaders = new MySublistsToFlatHeaderedList<ViewItemWeightCategory, BaseViewItemMegaItem>(Class.WeightCategories, SelectGrades, this);
                     }
                 }
 
@@ -233,7 +233,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        private MyObservableList<BaseViewItemHomeworkExamGrade> SelectGrades(ViewItemWeightCategory weightCategory)
+        private MyObservableList<BaseViewItemMegaItem> SelectGrades(ViewItemWeightCategory weightCategory)
         {
             return weightCategory.Grades;
         }
