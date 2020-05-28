@@ -77,6 +77,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         public static ViewTaskOrEventViewModel Create(BaseViewModel parent, ViewItemTaskOrEvent item)
         {
+            BareMvvm.Core.Snackbar.BareSnackbar.Make("Opened task").Show();
             return new ViewTaskOrEventViewModel(parent, item);
         }
 
