@@ -566,6 +566,12 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                     || !this.Class.WeightCategories.Any(i => i.Identifier == item.WeightCategoryIdentifier));
         }
 
+        private TaskCompletionSource<bool> _loadPastCompleteTasksAndEventsCompletionSource = new TaskCompletionSource<bool>();
+        public Task LoadPastCompleteTasksAndEventsTask
+        {
+            get { return _loadPastCompleteTasksAndEventsCompletionSource.Task; }
+        }
+
         private bool _hasLoadedPastCompletedTasksAndEvents;
         private async void LoadPastCompletedTasksAndEvents()
         {
@@ -597,10 +603,13 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 // Include the opposite of the other function
                 PastCompletedTasks = new PastCompletedTasksList(this.Class.TasksAndEvents.Sublist(i => i.Type == TaskOrEventType.Task), TodayAsUtc);
                 PastCompletedEvents = new PastCompletedEventsList(this.Class.TasksAndEvents.Sublist(i => i.Type == TaskOrEventType.Event), TodayAsUtc);
+
+                _loadPastCompleteTasksAndEventsCompletionSource.SetResult(true);
             }
 
             catch (Exception ex)
             {
+                _loadPastCompleteTasksAndEventsCompletionSource.SetException(ex);
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }

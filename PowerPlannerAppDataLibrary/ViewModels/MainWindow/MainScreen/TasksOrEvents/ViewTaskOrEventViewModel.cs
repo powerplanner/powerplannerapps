@@ -14,6 +14,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using ToolsPortable;
 using System.ComponentModel;
 using PowerPlannerSending;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -77,7 +78,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         public static ViewTaskOrEventViewModel Create(BaseViewModel parent, ViewItemTaskOrEvent item)
         {
-            BareMvvm.Core.Snackbar.BareSnackbar.Make("Opened task").Show();
             return new ViewTaskOrEventViewModel(parent, item);
         }
 
@@ -203,8 +203,46 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 // Go back immediately before 
                 if (percentComplete == 1)
+                {
+                    BareSnackbar.Make("Task completed", "Add grade", AddGradeAfterCompletingTask).Show();
+
                     this.GoBack();
+                }
             });
+        }
+
+        private async void AddGradeAfterCompletingTask()
+        {
+            try
+            {
+                // We need to load the class with the weight categories
+                var ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(MainScreenViewModel.CurrentLocalAccountId, Item.Class.Identifier, DateTime.Today, MainScreenViewModel.CurrentSemester);
+
+                ViewItemsGroupClass.LoadTasksAndEvents();
+                ViewItemsGroupClass.LoadGrades();
+                await ViewItemsGroupClass.LoadTasksAndEventsTask;
+                await ViewItemsGroupClass.LoadGradesTask;
+
+                var loadedTask = ViewItemsGroupClass.Tasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
+                if (loadedTask == null)
+                {
+                    ViewItemsGroupClass.ShowPastCompletedTasks();
+                    await ViewItemsGroupClass.LoadPastCompleteTasksAndEventsTask;
+
+                    loadedTask = ViewItemsGroupClass.PastCompletedTasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
+                    if (loadedTask == null)
+                    {
+                        return;
+                    }
+                }
+
+                var viewModel = CreateForUnassigned(MainScreenViewModel, loadedTask);
+                viewModel.ConvertToGrade();
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public async void ConvertToGrade()
