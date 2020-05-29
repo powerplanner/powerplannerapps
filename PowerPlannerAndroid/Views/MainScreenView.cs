@@ -36,7 +36,7 @@ using AndroidX.DrawerLayout.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, IOnClickListener
+    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, IOnClickListener, InterfacesDroid.Views.IGetSnackbarAnchorView
     {
         private DrawerLayout _drawerLayout;
         private PagedViewModelPresenter _contentPresenter;
@@ -95,6 +95,17 @@ namespace PowerPlannerAndroid.Views
         private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
 
         private BottomNavigationView _bottomNav;
+
+        public View GetSnackbarAnchorView()
+        {
+            var fab = FindViewById(Resource.Id.FloatingActionButtonAdd);
+            if (fab != null)
+            {
+                return fab;
+            }
+
+            return _bottomNav;
+        }
 
         public override void OnViewModelLoadedOverride()
         {
