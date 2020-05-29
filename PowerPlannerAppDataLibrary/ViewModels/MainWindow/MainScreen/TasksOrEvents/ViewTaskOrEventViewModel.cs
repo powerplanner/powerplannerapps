@@ -15,6 +15,7 @@ using ToolsPortable;
 using System.ComponentModel;
 using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using BareMvvm.Core.Snackbar;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
