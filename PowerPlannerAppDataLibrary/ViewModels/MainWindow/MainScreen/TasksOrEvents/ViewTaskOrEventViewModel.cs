@@ -205,7 +205,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 // Go back immediately before 
                 if (percentComplete == 1)
                 {
-                    BareSnackbar.Make("Task completed", "Add grade", AddGradeAfterCompletingTask).Show();
+                    try
+                    {
+                        // Don't prompt for non-class tasks
+                        if (!task.Class.IsNoClassClass)
+                        {
+                            BareSnackbar.Make("Task completed", "Add grade", AddGradeAfterCompletingTask).Show();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
 
                     this.GoBack();
                 }
@@ -216,6 +227,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             try
             {
+                TelemetryExtension.Current?.TrackEvent("ClickedSnackbarAddGrade");
+
                 // We need to load the class with the weight categories
                 var ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(MainScreenViewModel.CurrentLocalAccountId, Item.Class.Identifier, DateTime.Today, MainScreenViewModel.CurrentSemester);
 
