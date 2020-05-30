@@ -8,6 +8,7 @@ using UIKit;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary.Converters;
+using PowerPlannerSending;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -58,6 +59,11 @@ namespace PowerPlanneriOS.Controllers
                     // TODO: Wire up Next button on keyboard by using ShouldReturn
                 };
                 BindingHost.SetTextFieldTextBinding<double>(textFieldReceived, nameof(ViewModel.GradeReceived), converter: GradeToTextBoxTextConverter.Convert, backConverter: GradeToTextBoxTextConverter.ConvertBack);
+                if (ViewModel.State == AddGradeViewModel.OperationState.Editing && ViewModel.GradeReceived == Grade.UNGRADED)
+                {
+                    // When assigning grades to tasks, the empty grade becomes the first responder
+                    textFieldReceived.BecomeFirstResponder();
+                }
                 gradesView.Add(textFieldReceived);
                 textFieldReceived.StretchHeight(gradesView);
 

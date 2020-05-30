@@ -191,6 +191,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         /// </summary>
         public BaseViewModel CurrentViewModel { get; set; }
 
+        public enum ClassPages
+        {
+            Overview = 0,
+            Details = 1,
+            Times = 2,
+            Tasks = 3,
+            Events = 4,
+            Grades = 5
+        }
+
+        /// <summary>
+        /// The initial page that should be displayed
+        /// </summary>
+        public ClassPages? InitialPage { get; set; }
+
         public void EditClass()
         {
             MainScreenViewModel.ShowPopup(AddClassViewModel.CreateForEdit(MainScreenViewModel, ViewItemsGroupClass.Class));

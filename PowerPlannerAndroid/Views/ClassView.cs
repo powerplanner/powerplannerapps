@@ -77,7 +77,18 @@ namespace PowerPlannerAndroid.Views
         {
             _viewPager.Adapter = new ClassPagerAdapter(this);
 
-            _viewPager.SetCurrentItem(LastSelectedPage, false);
+            int page = LastSelectedPage;
+            if (ViewModel.InitialPage != null)
+            {
+                page = (int)ViewModel.InitialPage;
+                page--; // Don't have Overview so decrement
+                if (page < 0)
+                {
+                    page = 0;
+                }
+            }
+
+            _viewPager.SetCurrentItem(page, false);
             _viewPager.PageSelected += _viewPager_PageSelected;
 
             _tabLayout.SetupWithViewPager(_viewPager);

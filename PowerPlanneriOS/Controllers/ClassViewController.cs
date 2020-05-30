@@ -23,7 +23,7 @@ namespace PowerPlanneriOS.Controllers
 
         private ClassDetailsViewController _detailsViewController;
         private ClassTimesViewController _timesViewController;
-        private ClassTasksOrEventsViewController _tasksOrEventsViewController;
+        private ClassTasksOrEventsViewController _tasksViewController;
         private ClassTasksOrEventsViewController _eventsViewController;
         private ClassGradesViewController _gradesViewController;
         private CAPSPageMenuController _pageMenuController;
@@ -74,7 +74,7 @@ namespace PowerPlanneriOS.Controllers
             {
                 ViewModel = ViewModel.TimesViewModel
             };
-            _tasksOrEventsViewController = new ClassTasksOrEventsViewController()
+            _tasksViewController = new ClassTasksOrEventsViewController()
             {
                 Title = "Tasks",
                 ViewModel = ViewModel.TasksViewModel
@@ -89,24 +89,51 @@ namespace PowerPlanneriOS.Controllers
                 ViewModel = ViewModel.GradesViewModel
             };
 
+            int initialPageIndex = ViewModel.InitialPage != null ? (int)ViewModel.InitialPage : 0;
+            initialPageIndex--; // Subtract one since don't have the overview view
+            if (initialPageIndex < 0)
+            {
+                initialPageIndex = 0;
+            }
             _pageMenuController = new CAPSPageMenuController(new UIViewController[]
             {
                 _detailsViewController,
                 _timesViewController,
-                _tasksOrEventsViewController,
+                _tasksViewController,
                 _eventsViewController,
                 _gradesViewController
             }, new CAPSPageMenuConfiguration()
             {
                 SelectedMenuItemLabelColor = ColorResources.PowerPlannerAccentBlue,
                 SelectionIndicatorColor = ColorResources.PowerPlannerAccentBlue
-            });
-            _pageMenuController.SelectionChanged += new WeakEventHandler<CAPSPageMenuSelectionChangedEventArgs>(_pageMenuController_SelectionChanged).Handler;
+            }, initialPageIndex);
             _pageMenuController.View.TranslatesAutoresizingMaskIntoConstraints = false;
             AddChildViewController(_pageMenuController);
             ContentView.Add(_pageMenuController.View);
             _pageMenuController.View.StretchWidthAndHeight(ContentView);
-            UpdatePage(_detailsViewController);
+            switch (ViewModel.InitialPage)
+            {
+                case ClassViewModel.ClassPages.Times:
+                    UpdatePage(_timesViewController);
+                    break;
+
+                case ClassViewModel.ClassPages.Tasks:
+                    UpdatePage(_tasksViewController);
+                    break;
+
+                case ClassViewModel.ClassPages.Events:
+                    UpdatePage(_eventsViewController);
+                    break;
+
+                case ClassViewModel.ClassPages.Grades:
+                    UpdatePage(_gradesViewController);
+                    break;
+
+                default:
+                    UpdatePage(_detailsViewController);
+                    break;
+            }
+            _pageMenuController.SelectionChanged += new WeakEventHandler<CAPSPageMenuSelectionChangedEventArgs>(_pageMenuController_SelectionChanged).Handler;
 
             _classBindingHost.BindingObject = ViewModel.ViewItemsGroupClass.Class;
             _classBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), (name) =>
@@ -133,7 +160,7 @@ namespace PowerPlanneriOS.Controllers
                         // Task
                         if (_pageMenuController.CurrentPageIndex == 2)
                         {
-                            _tasksOrEventsViewController.ScrollToItem(changedItem);
+                            _tasksViewController.ScrollToItem(changedItem);
                         }
 
                         // Event
@@ -179,7 +206,7 @@ namespace PowerPlanneriOS.Controllers
             {
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonEditTimes };
             }
-            else if (currentController == _tasksOrEventsViewController)
+            else if (currentController == _tasksViewController)
             {
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddTask };
                 ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();

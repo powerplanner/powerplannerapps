@@ -16,6 +16,7 @@ using System.ComponentModel;
 using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using BareMvvm.Core.Snackbar;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -251,7 +252,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
 
                 var viewModel = CreateForUnassigned(MainScreenViewModel, loadedTask);
-                viewModel.ConvertToGrade();
+                viewModel.ConvertToGrade(showViewGradeSnackbarAfterSaving: MainScreenViewModel.SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
             }
             catch (Exception ex)
             {
@@ -259,7 +260,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
         }
 
-        public async void ConvertToGrade()
+        public async void ConvertToGrade(bool showViewGradeSnackbarAfterSaving = false)
         {
             await TryHandleUserInteractionAsync("ConvertToGrade", async (cancellationToken) =>
             {
@@ -277,7 +278,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 {
                     Item = Item,
                     OnSaved = delegate { this.RemoveViewModel(); },
-                    IsUnassignedItem = true
+                    IsUnassignedItem = true,
+                    ShowViewGradeSnackbarAfterSaving = showViewGradeSnackbarAfterSaving
                 });
 
                 MainScreenViewModel.ShowPopup(model);

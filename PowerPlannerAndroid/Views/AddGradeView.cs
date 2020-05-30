@@ -14,6 +14,7 @@ using InterfacesDroid.Helpers;
 using PowerPlannerAndroid.Adapters;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerSending;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -61,6 +62,10 @@ namespace PowerPlannerAndroid.Views
             if (ViewModel.Name.Length == 0)
             {
                 KeyboardHelper.FocusAndShow(FindViewById<EditText>(Resource.Id.EditTextName));
+            }
+            else if (ViewModel.GradeReceived == Grade.UNGRADED)
+            {
+                KeyboardHelper.FocusAndShow(FindViewById<EditText>(Resource.Id.EditTextGradeReceived));
             }
         }
 

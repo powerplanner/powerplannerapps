@@ -26,6 +26,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/EditTextGradeReceived"
                 style="@style/FullWidthEditText"
                 android:layout_width="wrap_content"
                 android:textSize="20sp"

@@ -159,12 +159,12 @@ namespace PowerPlannerUWP.Views
 
             HeaderUnassignedItems.Content = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader");
             ButtonEditGrades.Content = PowerPlannerResources.GetString("AppBarButtonEdit.Label");
-
-            PivotMain.SelectedIndex = _prevSelectedIndex;
         }
 
         public override async void OnViewModelLoadedOverride()
         {
+            PivotMain.SelectedIndex = ViewModel.InitialPage != null ? (int)ViewModel.InitialPage : _prevSelectedIndex;
+
             base.OnViewModelLoadedOverride();
 
             try

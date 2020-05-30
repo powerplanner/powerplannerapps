@@ -1176,19 +1176,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
-        public void ViewClass(ViewItemClass c)
+        public void ViewClass(ViewItemClass c, ClassViewModel.ClassPages? initialPage = null)
         {
             if (PowerPlannerApp.ShowClassesAsPopups)
             {
-                OpenClassAsPopup(c);
+                OpenClassAsPopup(c, initialPage);
             }
             else
             {
-                Navigate(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester));
+                Navigate(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester)
+                {
+                    InitialPage = initialPage
+                });
             }
         }
 
-        private void OpenClassAsPopup(ViewItemClass c)
+        private void OpenClassAsPopup(ViewItemClass c, ClassViewModel.ClassPages? initialPage = null)
         {
             try
             {
@@ -1207,7 +1210,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     throw new InvalidOperationException("CurrentSemester was null");
                 }
 
-                ShowPopup(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester));
+                ShowPopup(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester)
+                {
+                    InitialPage = initialPage
+                });
             }
             catch (Exception ex)
             {
