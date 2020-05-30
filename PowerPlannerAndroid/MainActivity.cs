@@ -366,6 +366,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2005, 22, 1, 99))
+                    {
+                        changedText += "\n - Add a grade immediately after completing a task!";
+                    }
+
                     if (v <= new Version(2005, 19, 1, 0))
                     {
                         changedText += "\n - You can now convert tasks to events and vice versa!";

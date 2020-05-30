@@ -12,6 +12,8 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using BareMvvm.Core.Snackbar;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
@@ -62,6 +64,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
             public bool IsInWhatIfMode { get; set; }
 
             public bool IsUnassignedItem { get; set; }
+
+            public bool ShowViewGradeSnackbarAfterSaving { get; set; }
         }
 
         public static AddGradeViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
@@ -136,12 +140,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                 _editingGrade = editParams.Item,
                 _onSaved = editParams.OnSaved,
                 IsUnassignedItem = editParams.IsUnassignedItem,
-                _originalDateOffset = editParams.Item.Date.TimeOfDay
+                _originalDateOffset = editParams.Item.Date.TimeOfDay,
+                _showViewGradeSnackbarAfterSaving = editParams.ShowViewGradeSnackbarAfterSaving
             };
         }
 
         private Action _onSaved;
         private BaseViewItemMegaItem _editingGrade;
+        private bool _showViewGradeSnackbarAfterSaving;
 
         private string _name = "";
         public string Name
@@ -337,6 +343,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                 {
                     _onSaved?.Invoke();
                     this.RemoveViewModel();
+
+                    if (_showViewGradeSnackbarAfterSaving)
+                    {
+                        try
+                        {
+                            BareSnackbar.Make(PowerPlannerResources.GetString("String_GradeAdded"), PowerPlannerResources.GetString("String_ViewGrades"), delegate
+                            {
+                                try
+                                {
+                                    TelemetryExtension.Current?.TrackEvent("ClickedSnackbarViewGrades");
+
+                                    MainScreenViewModel.ViewClass(SelectedWeightCategory.Class, ClassViewModel.ClassPages.Grades);
+                                }
+                                catch (Exception ex)
+                                {
+                                    TelemetryExtension.Current?.TrackException(ex);
+                                }
+                            }).Show();
+                        }
+                        catch (Exception ex)
+                        {
+                            TelemetryExtension.Current?.TrackException(ex);
+                        }
+                    }
                 });
             });
         }

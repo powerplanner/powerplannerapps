@@ -76,6 +76,7 @@ namespace PowerPlanneriOS.Controllers
             if (TAB_BAR_HEIGHT != newHeight)
             {
                 TAB_BAR_HEIGHT = newHeight;
+                BareSnackbarPresenter.BottomOffset = newHeight;
 
                 foreach (var listener in OnTabBarHeightChangedListeners)
                 {

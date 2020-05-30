@@ -14,6 +14,9 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using ToolsPortable;
 using System.ComponentModel;
 using PowerPlannerSending;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using BareMvvm.Core.Snackbar;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -202,11 +205,62 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 // Go back immediately before 
                 if (percentComplete == 1)
+                {
+                    try
+                    {
+                        // Don't prompt for non-class tasks
+                        if (!task.Class.IsNoClassClass)
+                        {
+                            BareSnackbar.Make(PowerPlannerResources.GetString("String_TaskCompleted"), PowerPlannerResources.GetString("String_AddGrade"), AddGradeAfterCompletingTask).Show();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+
                     this.GoBack();
+                }
             });
         }
 
-        public async void ConvertToGrade()
+        private async void AddGradeAfterCompletingTask()
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("ClickedSnackbarAddGrade");
+
+                // We need to load the class with the weight categories
+                var ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(MainScreenViewModel.CurrentLocalAccountId, Item.Class.Identifier, DateTime.Today, MainScreenViewModel.CurrentSemester);
+
+                ViewItemsGroupClass.LoadTasksAndEvents();
+                ViewItemsGroupClass.LoadGrades();
+                await ViewItemsGroupClass.LoadTasksAndEventsTask;
+                await ViewItemsGroupClass.LoadGradesTask;
+
+                var loadedTask = ViewItemsGroupClass.Tasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
+                if (loadedTask == null)
+                {
+                    ViewItemsGroupClass.ShowPastCompletedTasks();
+                    await ViewItemsGroupClass.LoadPastCompleteTasksAndEventsTask;
+
+                    loadedTask = ViewItemsGroupClass.PastCompletedTasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
+                    if (loadedTask == null)
+                    {
+                        return;
+                    }
+                }
+
+                var viewModel = CreateForUnassigned(MainScreenViewModel, loadedTask);
+                viewModel.ConvertToGrade(showViewGradeSnackbarAfterSaving: MainScreenViewModel.SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public async void ConvertToGrade(bool showViewGradeSnackbarAfterSaving = false)
         {
             await TryHandleUserInteractionAsync("ConvertToGrade", async (cancellationToken) =>
             {
@@ -224,7 +278,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 {
                     Item = Item,
                     OnSaved = delegate { this.RemoveViewModel(); },
-                    IsUnassignedItem = true
+                    IsUnassignedItem = true,
+                    ShowViewGradeSnackbarAfterSaving = showViewGradeSnackbarAfterSaving
                 });
 
                 MainScreenViewModel.ShowPopup(model);
