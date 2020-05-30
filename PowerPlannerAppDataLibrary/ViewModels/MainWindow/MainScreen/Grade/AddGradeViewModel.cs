@@ -348,7 +348,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                     {
                         try
                         {
-                            BareSnackbar.Make("Grade added", "View grades", delegate
+                            BareSnackbar.Make(PowerPlannerResources.GetString("String_GradeAdded"), PowerPlannerResources.GetString("String_ViewGrades"), delegate
                             {
                                 try
                                 {

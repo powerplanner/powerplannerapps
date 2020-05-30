@@ -1760,4 +1760,16 @@
   <data name="String_ConvertToTask" xml:space="preserve">
     <value>التحويل إلى مهمة</value>
   </data>
+  <data name="String_AddGrade" xml:space="preserve">
+    <value>إضافة تقدير</value>
+  </data>
+  <data name="String_GradeAdded" xml:space="preserve">
+    <value>تمت إضافة التقدير</value>
+  </data>
+  <data name="String_TaskCompleted" xml:space="preserve">
+    <value>تم إكمال المهمة</value>
+  </data>
+  <data name="String_ViewGrades" xml:space="preserve">
+    <value>عرض التقديرات</value>
+  </data>
 </root>

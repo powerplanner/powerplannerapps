@@ -1863,4 +1863,16 @@ Please think about using an online account instead!</value>
   <data name="String_ConvertToTask" xml:space="preserve">
     <value>Convert to task</value>
   </data>
+  <data name="String_AddGrade" xml:space="preserve">
+    <value>Add grade</value>
+  </data>
+  <data name="String_GradeAdded" xml:space="preserve">
+    <value>Grade added</value>
+  </data>
+  <data name="String_TaskCompleted" xml:space="preserve">
+    <value>Task completed</value>
+  </data>
+  <data name="String_ViewGrades" xml:space="preserve">
+    <value>View grades</value>
+  </data>
 </root>

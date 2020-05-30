@@ -2345,6 +2345,22 @@ Please think about using an online account instead!</source>
           <source>Convert to task</source>
           <target state="final" state-qualifier="mt-suggestion">التحويل إلى مهمة</target>
         </trans-unit>
+        <trans-unit id="String_AddGrade" translate="yes" xml:space="preserve">
+          <source>Add grade</source>
+          <target state="final" state-qualifier="mt-suggestion">إضافة تقدير</target>
+        </trans-unit>
+        <trans-unit id="String_GradeAdded" translate="yes" xml:space="preserve">
+          <source>Grade added</source>
+          <target state="final" state-qualifier="mt-suggestion">تمت إضافة التقدير</target>
+        </trans-unit>
+        <trans-unit id="String_TaskCompleted" translate="yes" xml:space="preserve">
+          <source>Task completed</source>
+          <target state="final" state-qualifier="tm-suggestion">تم إكمال المهمة</target>
+        </trans-unit>
+        <trans-unit id="String_ViewGrades" translate="yes" xml:space="preserve">
+          <source>View grades</source>
+          <target state="final" state-qualifier="mt-suggestion">عرض التقديرات</target>
+        </trans-unit>
       </group>
     </body>
   </file>

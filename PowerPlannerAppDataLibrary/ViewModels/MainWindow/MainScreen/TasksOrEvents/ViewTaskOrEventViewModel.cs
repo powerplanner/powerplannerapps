@@ -211,7 +211,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                         // Don't prompt for non-class tasks
                         if (!task.Class.IsNoClassClass)
                         {
-                            BareSnackbar.Make("Task completed", "Add grade", AddGradeAfterCompletingTask).Show();
+                            BareSnackbar.Make(PowerPlannerResources.GetString("String_TaskCompleted"), PowerPlannerResources.GetString("String_AddGrade"), AddGradeAfterCompletingTask).Show();
                         }
                     }
                     catch (Exception ex)

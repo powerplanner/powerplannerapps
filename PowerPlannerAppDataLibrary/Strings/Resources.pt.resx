@@ -1758,4 +1758,16 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="String_ConvertToTask" xml:space="preserve">
     <value>Converter em tarefa</value>
   </data>
+  <data name="String_AddGrade" xml:space="preserve">
+    <value>Adicionar nota</value>
+  </data>
+  <data name="String_GradeAdded" xml:space="preserve">
+    <value>Nota adicionada</value>
+  </data>
+  <data name="String_TaskCompleted" xml:space="preserve">
+    <value>Tarefa completa</value>
+  </data>
+  <data name="String_ViewGrades" xml:space="preserve">
+    <value>Ver notas</value>
+  </data>
 </root>
