@@ -16,33 +16,51 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             public DateTime Date { get; private set; }
             public DateTime Today { get; private set; }
             public bool ActiveOnly { get; private set; }
+            public bool UseEffectiveDateEvenWhenItemsHaveTimes { get; private set; }
 
-            public DayFilter(DateTime date, DateTime today, bool activeOnly)
+            public DayFilter(DateTime date, DateTime today, bool activeOnly, bool useEffectiveDateEvenWhenItemsHaveTimes)
             {
                 Date = date.Date;
                 Today = today.Date;
                 ActiveOnly = activeOnly;
+                UseEffectiveDateEvenWhenItemsHaveTimes = useEffectiveDateEvenWhenItemsHaveTimes;
             }
 
             public bool ShouldInsert(BaseViewItemMegaItem itemToBeInserted)
             {
-                if ((itemToBeInserted is ViewItemTaskOrEvent)
-                    && itemToBeInserted.Date.Date == Date)
+                if (itemToBeInserted is ViewItemTaskOrEvent taskOrEvent)
                 {
-                    if (ActiveOnly)
+                    bool dateMatches;
+                    if (UseEffectiveDateEvenWhenItemsHaveTimes || taskOrEvent.TimeOption == DataLayer.DataItems.DataItemMegaItem.TimeOptions.AllDay)
                     {
-                        if ((itemToBeInserted as ViewItemTaskOrEvent).IsActive(Today))
+                        dateMatches = itemToBeInserted.EffectiveDateForDisplayInDateBasedGroups.Date == Date;
+                    }
+                    else
+                    {
+                        dateMatches = itemToBeInserted.Date.Date == Date;
+                    }
+
+                    if (dateMatches)
+                    {
+                        if (ActiveOnly)
                         {
-                            return true;
+                            if ((itemToBeInserted as ViewItemTaskOrEvent).IsActive(Today))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
                         else
                         {
-                            return false;
+                            return true;
                         }
                     }
                     else
                     {
-                        return true;
+                        return false;
                     }
                 }
                 else
@@ -51,9 +69,14 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
             }
 
-            public bool Equals(DateTime otherDate, DateTime otherToday, bool otherActiveOnly)
+            public bool Equals(DateTime otherDate, DateTime otherToday, bool otherActiveOnly, bool otherUseEffectiveDateEvenWhenItemsHaveTimes)
             {
                 if (Date != otherDate)
+                {
+                    return false;
+                }
+
+                if (UseEffectiveDateEvenWhenItemsHaveTimes != otherUseEffectiveDateEvenWhenItemsHaveTimes)
                 {
                     return false;
                 }
@@ -92,18 +115,18 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             set => base.Filter = value;
         }
 
-        private TasksOrEventsOnDay(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime today, bool activeOnly)
+        private TasksOrEventsOnDay(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime today, bool activeOnly, bool useEffectiveDateEvenWhenItemsHaveTimes)
         {
             MainList = mainList;
 
-            base.Filter = new DayFilter(date, today, activeOnly);
+            base.Filter = new DayFilter(date, today, activeOnly, useEffectiveDateEvenWhenItemsHaveTimes);
 
             base.InsertSorted(mainList);
         }
 
         private static readonly List<WeakReference<TasksOrEventsOnDay>> _cached = new List<WeakReference<TasksOrEventsOnDay>>();
 
-        public static TasksOrEventsOnDay Get(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime? today = null, bool activeOnly = false)
+        public static TasksOrEventsOnDay Get(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime? today = null, bool activeOnly = false, bool useEffectiveDateEvenWhenItemsHaveTimes = true)
         {
             if (today == null)
             {
@@ -116,7 +139,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 if (_cached[i].TryGetTarget(out answer))
                 {
                     if (answer.MainList == mainList
-                        && answer.Filter.Equals(date, today.Value, activeOnly))
+                        && answer.Filter.Equals(date, today.Value, activeOnly, useEffectiveDateEvenWhenItemsHaveTimes))
                     {
                         return answer;
                     }
@@ -128,7 +151,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
             }
 
-            answer = new TasksOrEventsOnDay(mainList, date, today.Value, activeOnly);
+            answer = new TasksOrEventsOnDay(mainList, date, today.Value, activeOnly, useEffectiveDateEvenWhenItemsHaveTimes);
             _cached.Add(new WeakReference<TasksOrEventsOnDay>(answer));
             return answer;
         }

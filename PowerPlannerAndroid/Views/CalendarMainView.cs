@@ -342,7 +342,7 @@ namespace PowerPlannerAndroid.Views
 
                     UpdateSelectedStatus();
 
-                    _myTaskOrEventCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is ViewItemTaskOrEvent && i.Date.Date == date.Date && !(i as ViewItemTaskOrEvent).IsComplete));
+                    _myTaskOrEventCircles.SetItemsSource(_viewModel.SemesterItemsViewGroup.Items.Sublist(i => i is ViewItemTaskOrEvent && i.EffectiveDateForDisplayInDateBasedGroups.Date == date.Date && !(i as ViewItemTaskOrEvent).IsComplete));
 
                     if (_holidaysOnDay != null && _holidaysChangedHandler != null)
                     {

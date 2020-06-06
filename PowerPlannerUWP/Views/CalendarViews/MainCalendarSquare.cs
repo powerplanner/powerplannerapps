@@ -118,7 +118,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
                 var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
                 if (item != null)
                 {
-                    if (item.Date.Date != this.Date.Date)
+                    if (item.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
                     {
                         e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
                     }

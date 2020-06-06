@@ -218,6 +218,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
         }
 
         private bool _usingLocalTimes = false;
+        /// <summary>
+        /// Converts to local time (so adjusted from school time if living in a different time zone).
+        /// </summary>
+        /// <param name="rawDateTime"></param>
+        /// <returns></returns>
         protected DateTime ToViewItemTime(DateTime rawDateTime)
         {
             if (!_usingLocalTimes)
@@ -228,6 +233,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             return DateHelpers.ToViewItemTime(Account, rawDateTime);
         }
 
+        /// <summary>
+        /// Keeps the time in the school's time (so if it was due 9pm, it's still due 9pm regardless of where they currently are)
+        /// </summary>
+        /// <param name="rawDateTime"></param>
+        /// <returns></returns>
         protected DateTime ToViewItemSchoolTime(DateTime rawDateTime)
         {
             return DateTime.SpecifyKind(rawDateTime, DateTimeKind.Local);

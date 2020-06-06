@@ -372,7 +372,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             try
             {
-                if (item.Date.Date == toDate.Date)
+                if (item.EffectiveDateForDisplayInDateBasedGroups.Date == toDate.Date)
                 {
                     return;
                 }
@@ -380,7 +380,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 DataChanges changes = new DataChanges();
 
                 var editedDataItem = item.CreateBlankDataItem();
-                editedDataItem.Date = DateTime.SpecifyKind(toDate.Date.Add(item.Date.TimeOfDay), DateTimeKind.Utc);
+                editedDataItem.Date = DateTime.SpecifyKind(toDate.Date.Add(item.DateInSchoolTime.TimeOfDay), DateTimeKind.Utc);
                 changes.Add(editedDataItem);
 
                 await PowerPlannerApp.Current.SaveChanges(changes);

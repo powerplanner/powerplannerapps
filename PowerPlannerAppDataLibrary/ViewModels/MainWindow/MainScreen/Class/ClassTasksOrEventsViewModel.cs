@@ -45,7 +45,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         private DateTime ItemToGroupHeader(ViewItemTaskOrEvent item)
         {
-            return item.Date.Date;
+            return item.EffectiveDateForDisplayInDateBasedGroups.Date;
         }
 
         public ClassTasksOrEventsViewModel(ClassViewModel parent, TaskOrEventType type) : base(parent)

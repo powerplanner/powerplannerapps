@@ -92,7 +92,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
 
-                    foreach (var date in e.NewItems.OfType<BaseViewItemMegaItem>().Select(i => i.Date.Date).Distinct())
+                    foreach (var date in e.NewItems.OfType<BaseViewItemMegaItem>().Select(i => i.EffectiveDateForDisplayInDateBasedGroups.Date).Distinct())
                     {
                         setDay(date);
                     }
@@ -102,7 +102,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
 
-                    foreach (var date in e.OldItems.OfType<BaseViewItemMegaItem>().Select(i => i.Date.Date).Distinct())
+                    foreach (var date in e.OldItems.OfType<BaseViewItemMegaItem>().Select(i => i.EffectiveDateForDisplayInDateBasedGroups.Date).Distinct())
                     {
                         setDay(date);
                     }
@@ -130,7 +130,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
                 return;
 
             //now walk through the list and add the items
-            foreach (var date in Items.Select(i => i.Date.Date).Distinct())
+            foreach (var date in Items.Select(i => i.EffectiveDateForDisplayInDateBasedGroups.Date).Distinct())
             {
                 setDay(date);
             }
@@ -187,7 +187,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             foreach (var item in Items)
             {
                 //add the current item to the colors list (don't add complete tasks/events)
-                if (item is ViewItemTaskOrEvent && item.Date.Date == date && ShouldIncludeItem(item))
+                if (item is ViewItemTaskOrEvent && item.EffectiveDateForDisplayInDateBasedGroups.Date == date && ShouldIncludeItem(item))
                     colors.Add(getBrush(item));
             }
 

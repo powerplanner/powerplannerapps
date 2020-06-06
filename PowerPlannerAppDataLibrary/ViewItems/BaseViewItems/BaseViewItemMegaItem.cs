@@ -23,6 +23,9 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
         }
 
         private DateTime _date;
+        /// <summary>
+        /// This will be in the user's local time zone relative to the school's time zone, so if the assignment was due 9pm, this would possibly be 6pm.
+        /// </summary>
         public DateTime Date
         {
             get { return _date; }
@@ -30,10 +33,23 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
         }
 
         private DateTime _dateInSchoolTime;
+        /// <summary>
+        /// This doesn't get converted to local, this is always "9pm" regardless of where the user currently is.
+        /// </summary>
         public DateTime DateInSchoolTime
         {
             get => _dateInSchoolTime;
             set => SetProperty(ref _dateInSchoolTime, value, nameof(DateInSchoolTime));
+        }
+
+        private DateTime _effectiveDateForDisplayInDateBasedGroups;
+        /// <summary>
+        /// This is the date that should be used when deciding what date items should be displayed on in the calendar or day views or within groupings inside Agenda "tomorrow, in two days" groups. This was added for the following scenario: User adds a task that's due Tuesday end of day. However, user is in a time zone one or two hours ahead. So, in their local time, it's actually due Wednesday at 1am. However, if the calendar shows that task as Wednesday, they might postpone completing it till Wednesday, when realistically they had to complete it Tuesday. Therefore, this date will take into account those differences and adjust the date to be back on Tuesday as long as the item is due less than noon.
+        /// </summary>
+        public DateTime EffectiveDateForDisplayInDateBasedGroups
+        {
+            get => _effectiveDateForDisplayInDateBasedGroups;
+            set => SetProperty(ref _effectiveDateForDisplayInDateBasedGroups, value, nameof(EffectiveDateForDisplayInDateBasedGroups));
         }
 
         private double _gradeReceived;
@@ -152,6 +168,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             }
 
             DateInSchoolTime = ToViewItemSchoolTime(i.Date);
+
+            // If, due to user being in different time zone, the task got moved to a later date, and it didn't end up being due at noon or later, we'll adjust the effective date back to the original date
+            if (Date.Date > DateInSchoolTime.Date && Date.Hour < 12)
+            {
+                EffectiveDateForDisplayInDateBasedGroups = new DateTime(DateInSchoolTime.Year, DateInSchoolTime.Month, DateInSchoolTime.Day, 23, 59, 59, DateTimeKind.Local);
+            }
+            else
+            {
+                EffectiveDateForDisplayInDateBasedGroups = Date;
+            }
 
             GradeReceived = i.GradeReceived;
             GradeTotal = i.GradeTotal;

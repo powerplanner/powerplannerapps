@@ -118,7 +118,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             public ItemsGroup GetHeader(ViewItemTaskOrEvent item)
             {
                 DateTime todayAsUtc = DateTime.SpecifyKind(Today, DateTimeKind.Utc);
-                DateTime itemDate = item.Date.Date;
+                DateTime itemDate = item.EffectiveDateForDisplayInDateBasedGroups.Date;
 
                 if (itemDate <= todayAsUtc.AddDays(-1))
                     return ItemsGroup.Overdue;

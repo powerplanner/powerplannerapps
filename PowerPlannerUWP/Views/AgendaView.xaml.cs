@@ -50,7 +50,7 @@ namespace PowerPlannerUWP.Views
 
                 public bool ShouldInsert(ViewItemTaskOrEvent itemToBeInserted)
                 {
-                    return itemToBeInserted.Date.Date >= _min && itemToBeInserted.Date.Date <= _max;
+                    return itemToBeInserted.EffectiveDateForDisplayInDateBasedGroups.Date >= _min && itemToBeInserted.EffectiveDateForDisplayInDateBasedGroups.Date <= _max;
                 }
             }
             
