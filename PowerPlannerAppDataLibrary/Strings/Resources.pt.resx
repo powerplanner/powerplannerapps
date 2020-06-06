@@ -1705,7 +1705,7 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
     <value>Todas as notas</value>
   </data>
   <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
-    <value>Você está atualmente em um fuso horário diferente do fuso horário da sua escola. Esses valores são exibidos no fuso horário da sua escola. Se a escola disse 9 da manhã, basta entrar às 9 da manhã.</value>
+    <value>Você está atualmente em um fuso horário diferente do fuso horário da sua escola. Ao adicionar ou editar, os valores são exibidos no fuso horário da sua escola. Se a escola disse 9 da manhã, basta entrar às 9 da manhã.</value>
   </data>
   <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
     <value>Defina o fuso horário da sua escola</value>

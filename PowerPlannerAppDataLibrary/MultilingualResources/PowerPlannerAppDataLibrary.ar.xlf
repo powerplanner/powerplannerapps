@@ -2274,7 +2274,7 @@ Please think about using an online account instead!</source>
           <target state="final">جميع الدرجات</target>
         </trans-unit>
         <trans-unit id="DifferentTimeZoneWarning.Text" translate="yes" xml:space="preserve">
-          <source>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
+          <source>You are currently in a different time zone than your school's time zone. When adding or editing, values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
           <target state="final" state-qualifier="mt-suggestion">أنت حالياً في منطقة زمنية مختلفة عن المنطقة الزمنية لمدرستك. يتم عرض هذه القيم في المنطقة الزمنية للمدرسة. إذا قالت المدرسة 9 صباحا، ببساطة أدخل 9 صباحا.</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Subtitle" translate="yes" xml:space="preserve">

@@ -2272,8 +2272,8 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <target state="final">Todas as notas</target>
         </trans-unit>
         <trans-unit id="DifferentTimeZoneWarning.Text" translate="yes" xml:space="preserve">
-          <source>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
-          <target state="final" state-qualifier="mt-suggestion">Você está atualmente em um fuso horário diferente do fuso horário da sua escola. Esses valores são exibidos no fuso horário da sua escola. Se a escola disse 9 da manhã, basta entrar às 9 da manhã.</target>
+          <source>You are currently in a different time zone than your school's time zone. When adding or editing, values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
+          <target state="final" state-qualifier="mt-suggestion">Você está atualmente em um fuso horário diferente do fuso horário da sua escola. Ao adicionar ou editar, os valores são exibidos no fuso horário da sua escola. Se a escola disse 9 da manhã, basta entrar às 9 da manhã.</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Set your school's time zone</source>

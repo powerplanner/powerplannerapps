@@ -2273,8 +2273,8 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <target state="final">Alle Klassen</target>
         </trans-unit>
         <trans-unit id="DifferentTimeZoneWarning.Text" translate="yes" xml:space="preserve">
-          <source>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
-          <target state="final" state-qualifier="mt-suggestion">Sie befinden sich derzeit in einer anderen Zeitzone als die Zeitzone Ihrer Schule. Diese Werte werden in der Zeitzone Ihrer Schule angezeigt. Wenn die Schule 9 Uhr morgens sagte, geben Sie einfach 9 Uhr ein.</target>
+          <source>You are currently in a different time zone than your school's time zone. When adding or editing, values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
+          <target state="final" state-qualifier="mt-suggestion">Sie befinden sich derzeit in einer anderen Zeitzone als die Zeitzone Ihrer Schule. Beim Hinzufügen oder Bearbeiten werden Werte in der Zeitzone Ihrer Schule angezeigt. Wenn die Schule 9 Uhr morgens sagte, geben Sie einfach 9 Uhr morgens ein.</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Set your school's time zone</source>

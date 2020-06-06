@@ -1705,7 +1705,7 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
     <value>Todos los notas</value>
   </data>
   <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
-    <value>Actualmente se encuentra en una zona horaria diferente a la zona horaria de su escuela. Estos valores se muestran en la zona horaria de su escuela. Si la escuela dijo 9 AM, simplemente ingrese a las 9 AM.</value>
+    <value>Actualmente se encuentra en una zona horaria diferente a la zona horaria de su escuela. Al agregar o editar, los valores se muestran en la zona horaria de su escuela. Si la escuela dijo 9 AM, simplemente ingrese a las 9 AM.</value>
   </data>
   <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
     <value>Establezca la zona horaria de su escuela</value>

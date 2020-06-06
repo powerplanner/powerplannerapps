@@ -1705,7 +1705,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
     <value>Alle Klassen</value>
   </data>
   <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
-    <value>Sie befinden sich derzeit in einer anderen Zeitzone als die Zeitzone Ihrer Schule. Diese Werte werden in der Zeitzone Ihrer Schule angezeigt. Wenn die Schule 9 Uhr morgens sagte, geben Sie einfach 9 Uhr ein.</value>
+    <value>Sie befinden sich derzeit in einer anderen Zeitzone als die Zeitzone Ihrer Schule. Beim Hinzufügen oder Bearbeiten werden Werte in der Zeitzone Ihrer Schule angezeigt. Wenn die Schule 9 Uhr morgens sagte, geben Sie einfach 9 Uhr morgens ein.</value>
   </data>
   <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
     <value>Festlegen der Zeitzone Ihrer Schule</value>

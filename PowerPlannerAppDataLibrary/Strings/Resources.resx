@@ -1810,7 +1810,7 @@ Please think about using an online account instead!</value>
     <value>Your end time must be greater than your start time.</value>
   </data>
   <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
-    <value>You are currently in a different time zone than your school's time zone. These values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</value>
+    <value>You are currently in a different time zone than your school's time zone. When adding or editing, values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</value>
   </data>
   <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
     <value>Set your school's time zone</value>
