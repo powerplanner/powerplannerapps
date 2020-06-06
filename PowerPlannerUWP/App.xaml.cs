@@ -718,6 +718,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2005, 30, 3, 99))
+                    {
+                        changedText += "\n - Fixes for certain time zone scenarios";
+                    }
+
                     if (v <= new Version(2005, 27, 1, 99))
                     {
                         changedText += "\n - Add a grade immediately after completing a task!";
