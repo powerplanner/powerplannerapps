@@ -150,7 +150,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             // TODO
         }
 
+        private static SimpleAsyncWorkerQueue _normalLaunchActivationWorkerQueue = new SimpleAsyncWorkerQueue();
         public async Task HandleNormalLaunchActivation()
+        {
+            // Use a queue to handle niche concurrency case where new app launched twice in a row and tries to create two default accounts.
+            await _normalLaunchActivationWorkerQueue.QueueAsync(HandleNormalLaunchActivationHelper);
+        }
+
+        private async Task HandleNormalLaunchActivationHelper()
         {
             // Restore previous login
             AccountDataItem lastAccount = await AccountsManager.GetLastLogin();
