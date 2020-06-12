@@ -1500,7 +1500,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 }
             }
 
-            catch (HttpRequestException)
+            catch (Exception ex)
+            when (ex is HttpRequestException
+            || ex is OperationCanceledException // iOS's HttpClient seems to trigger this sometimes
+            )
             {
                 // Nothing, no need to log
             }
