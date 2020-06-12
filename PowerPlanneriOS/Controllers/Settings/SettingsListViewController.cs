@@ -52,11 +52,13 @@ namespace PowerPlanneriOS.Controllers.Settings
             RedrawItems();
         }
 
-        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case nameof(ViewModel.IsOnlineAccount):
+                    // Take a break off this thread to let the other properties we depend on like IsCreateAccountVisible update first
+                    await System.Threading.Tasks.Task.Delay(1);
                     RedrawItems();
                     break;
             }

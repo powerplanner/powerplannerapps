@@ -6,6 +6,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,13 +27,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             HasAccount = Account != null;
             if (HasAccount)
             {
-                Account.PropertyChanged += Account_PropertyChanged;
+                Account.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Account_PropertyChanged).Handler;
                 UpdateFromAccount();
             }
             _pagedViewModel = FindAncestor<PagedViewModel>();
         }
 
-        private void Account_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Account_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
