@@ -1,10 +1,13 @@
 ﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.Helpers
 {
@@ -51,14 +54,21 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
         public static DateTime ToViewItemTime(AccountDataItem account, DateTime rawDateTime)
         {
-            if (account.SchoolTimeZone == null)
+            try
             {
-                return DateTime.SpecifyKind(rawDateTime, DateTimeKind.Local);
+                if (account.SchoolTimeZone == null || DateValues.IsUnassigned(rawDateTime) || rawDateTime == DateValues.NO_DUE_DATE || rawDateTime == SqlDate.MinValue || rawDateTime == SqlDate.MaxValue)
+                {
+                    return DateTime.SpecifyKind(rawDateTime, DateTimeKind.Local);
+                }
+
+                var currentTimeZone = TimeZoneInfo.Local;
+
+                return TimeZoneInfo.ConvertTime(DateTime.SpecifyKind(rawDateTime, DateTimeKind.Unspecified), sourceTimeZone: account.SchoolTimeZone, destinationTimeZone: currentTimeZone);
             }
-
-            var currentTimeZone = TimeZoneInfo.Local;
-
-            return TimeZoneInfo.ConvertTime(DateTime.SpecifyKind(rawDateTime, DateTimeKind.Unspecified), sourceTimeZone: account.SchoolTimeZone, destinationTimeZone: currentTimeZone);
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid date: " + rawDateTime.ToString(), ex);
+            }
         }
     }
 }
