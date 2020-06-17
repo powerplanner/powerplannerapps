@@ -571,7 +571,7 @@ namespace PowerPlannerUWPLibrary.TileHelpers
         {
             return new AdaptiveText()
             {
-                Text = TrimString(item.Name, 200),
+                Text = TrimString(UWPNotificationsHelper.StripInvalidCharacters(item.Name), 200),
                 HintStyle = AdaptiveTextStyle.CaptionSubtle
             };
         }

@@ -358,7 +358,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                 {
                     new AdaptiveText()
                     {
-                        Text = title
+                        Text = UWPNotificationsHelper.StripInvalidCharacters(title)
                     }
                 }
             };
@@ -367,7 +367,7 @@ namespace PowerPlannerUWPLibrary.Extensions
             {
                 binding.Children.Add(new AdaptiveText()
                 {
-                    Text = item1
+                    Text = UWPNotificationsHelper.StripInvalidCharacters(item1)
                 });
             }
 
@@ -375,7 +375,7 @@ namespace PowerPlannerUWPLibrary.Extensions
             {
                 binding.Children.Add(new AdaptiveText()
                 {
-                    Text = item2
+                    Text = UWPNotificationsHelper.StripInvalidCharacters(item2)
                 });
             }
 
