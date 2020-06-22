@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public event EventHandler OnIdentityConfirmed;
         public event EventHandler ActionIncorrectPassword;
 
+        public bool ShowForgotPassword { get; private set; }
+
         public ConfirmIdentityViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
             _currAccount = account;
@@ -25,6 +28,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 throw new InvalidOperationException("There's no current account.");
             }
+
+            ShowForgotPassword = account.IsOnlineAccount;
         }
 
         private string _password = "";
@@ -48,6 +53,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 ActionIncorrectPassword?.Invoke(this, new EventArgs());
             }
+        }
+
+        public void ForgotPassword()
+        {
+            ShowPopup(new ResetPasswordViewModel(GetPopupViewModelHost(), _currAccount.Username));
         }
     }
 }

@@ -73,5 +73,10 @@ namespace PowerPlannerUWP.Views.SettingsViews
         {
             TextBlockError.Visibility = Visibility.Collapsed;
         }
+
+        private void textBlockForgotPassword_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ViewModel.ForgotPassword();
+        }
     }
 }

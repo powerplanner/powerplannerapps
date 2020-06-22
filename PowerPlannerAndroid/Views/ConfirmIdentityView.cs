@@ -26,6 +26,7 @@ namespace PowerPlannerAndroid.Views
             AutofillHelper.EnableForAll(this);
 
             FindViewById<Button>(Resource.Id.ButtonConfirmIdentity).Click += delegate { ViewModel.Continue(); };
+            FindViewById<Button>(Resource.Id.ButtonForgotPassword).Click += delegate { ViewModel.ForgotPassword(); };
         }
 
         public override void OnViewModelLoadedOverride()

@@ -38,6 +38,16 @@
                     Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     PasswordChanged="passwordConfirmCurrentPassword_PasswordChanged"/>
 
+                <TextBlock
+                        x:Uid="LoginPage_TextBlockForgotPassword"
+                    Text="Forgot Password"
+                    x:Name="textBlockForgotPassword"
+                    FontSize="14"
+                    Foreground="{StaticResource PowerPlannerSecondaryBlue}"
+                    Tapped="textBlockForgotPassword_Tapped"
+                    Margin="0,6,0,0"
+                    Visibility="{Binding ShowForgotPassword, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                 <Button
                     x:Uid="Settings_ConfirmIdentityPage_ButtonContinue"
                 x:Name="ButtonContinue"

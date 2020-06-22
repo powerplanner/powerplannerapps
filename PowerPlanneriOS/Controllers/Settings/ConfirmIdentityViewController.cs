@@ -8,6 +8,7 @@ using UIKit;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using InterfacesiOS.Views;
 using ToolsPortable;
+using PowerPlanneriOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers.Settings
 {
@@ -92,7 +93,39 @@ namespace PowerPlanneriOS.Controllers.Settings
             buttonContinue.StretchWidth(StackView);
             buttonContinue.SetHeight(44);
 
-            AddBottomSectionDivider();
+            if (ViewModel.ShowForgotPassword)
+            {
+                AddDivider(fullWidth: true);
+
+                var forgotViews = new UIView()
+                {
+                    TranslatesAutoresizingMaskIntoConstraints = false,
+                    BackgroundColor = ColorResources.InputSectionDividers
+                };
+
+                {
+                    var buttonForgotPassword = new UIButton(UIButtonType.System)
+                    {
+                        TranslatesAutoresizingMaskIntoConstraints = false,
+                        HorizontalAlignment = UIControlContentHorizontalAlignment.Center,
+                        Font = UIFont.PreferredCaption1
+                    };
+                    buttonForgotPassword.TouchUpInside += new WeakEventHandler(delegate { ViewModel.ForgotPassword(); }).Handler;
+                    buttonForgotPassword.SetTitle("Forgot Password", UIControlState.Normal);
+                    forgotViews.Add(buttonForgotPassword);
+                    buttonForgotPassword.StretchWidth(forgotViews);
+                    buttonForgotPassword.StretchHeight(forgotViews, top: 16, bottom: 16);
+                }
+
+                StackView.AddArrangedSubview(forgotViews);
+                forgotViews.StretchWidth(StackView);
+                forgotViews.SetHeight(44);
+            }
+
+            else
+            {
+                AddBottomSectionDivider();
+            }
 
             ViewModel.ActionIncorrectPassword += new WeakEventHandler(ViewModel_ActionIncorrectPassword).Handler;
 
