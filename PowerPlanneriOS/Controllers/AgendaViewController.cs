@@ -16,6 +16,7 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -93,7 +94,7 @@ namespace PowerPlanneriOS.Controllers
                 Lines = 0,
                 Font = UIFont.PreferredCallout,
                 Text = "No tasks! Tap the \"+\" button in the top right to add tasks and events.",
-                TextColor = UIColor.LightGray,
+                TextColor = UIColorCompat.SecondaryLabelColor,
                 TextAlignment = UITextAlignment.Center,
                 Hidden = true
             };
@@ -233,13 +234,13 @@ namespace PowerPlanneriOS.Controllers
                     // Don't allow clicking on this header cell
                     UserInteractionEnabled = false;
 
-                    ContentView.BackgroundColor = new UIColor(0.95f, 1);
+                    ContentView.BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor;
 
                     _labelText = new UILabel()
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
                         Font = UIFont.PreferredSubheadline,
-                        TextColor = UIColor.DarkGray
+                        TextColor = UIColorCompat.SecondaryLabelColor
                     };
                     ContentView.AddSubview(_labelText);
                     _labelText.StretchWidthAndHeight(ContentView, left: 16, top: 8, bottom: 8);

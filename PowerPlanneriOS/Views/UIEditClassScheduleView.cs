@@ -13,6 +13,7 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.Extensions;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -28,7 +29,7 @@ namespace PowerPlanneriOS.Views
 
         public UIEditClassScheduleView()
         {
-            base.BackgroundColor = new UIColor(235f / 255f, 1);
+            base.BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor;
 
             var headerView = new UIControl()
             {
@@ -183,7 +184,7 @@ namespace PowerPlanneriOS.Views
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Font = UIFont.PreferredCaption1,
-                TextColor = UIColor.DarkGray
+                TextColor = UIColorCompat.SecondaryLabelColor
             };
             _visibilityRoom = new BareUIVisibilityContainer()
             {
@@ -196,7 +197,7 @@ namespace PowerPlanneriOS.Views
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Font = UIFont.PreferredCaption1,
-                TextColor = UIColor.DarkGray
+                TextColor = UIColorCompat.SecondaryLabelColor
             };
             _visibilityWeek = new BareUIVisibilityContainer()
             {

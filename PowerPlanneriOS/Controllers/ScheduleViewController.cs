@@ -14,6 +14,7 @@ using InterfacesiOS.Views;
 using System.Globalization;
 using PowerPlannerAppDataLibrary;
 using PowerPlanneriOS.Helpers;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -237,7 +238,7 @@ namespace PowerPlanneriOS.Controllers
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
                         ShowsHorizontalScrollIndicator = false,
-                        BackgroundColor = UIColor.White
+                        BackgroundColor = UIColorCompat.SystemBackgroundColor
                     };
                     var actualEditingView = new UIScheduleEditingView(ViewModel);
                     _editingView.Add(actualEditingView);
@@ -262,7 +263,7 @@ namespace PowerPlanneriOS.Controllers
                     _welcomeView = new UIView()
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
-                        BackgroundColor = UIColor.White
+                        BackgroundColor = UIColorCompat.SystemBackgroundColor
                     };
                     {
                         // New user

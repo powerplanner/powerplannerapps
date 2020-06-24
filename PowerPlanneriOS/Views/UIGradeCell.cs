@@ -9,6 +9,7 @@ using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.Converters;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -28,7 +29,7 @@ namespace PowerPlanneriOS.Views
             var graySideBar = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.FromWhiteAlpha(180 / 255f, 1)
+                BackgroundColor = UIColorCompat.SystemGray2Color
             };
             ContentView.AddSubview(graySideBar);
             graySideBar.SetWidth(8);
@@ -98,7 +99,7 @@ namespace PowerPlanneriOS.Views
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Font = UIFont.PreferredCaption1,
-                TextColor = UIColor.DarkGray
+                TextColor = UIColorCompat.SecondaryLabelColor
             };
             BindingHost.SetLabelTextBinding(_labelDescription, nameof(DataContext.Details));
             _stackView.AddArrangedSubview(_labelDescription);

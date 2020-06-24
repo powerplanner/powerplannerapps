@@ -48,8 +48,6 @@
 	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>

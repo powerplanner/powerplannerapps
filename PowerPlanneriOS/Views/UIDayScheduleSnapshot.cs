@@ -13,6 +13,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -36,7 +37,7 @@ namespace PowerPlanneriOS.Views
             var background = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.FromWhiteAlpha(239 / 255f, 1)
+                BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor
             };
             {
                 var paddingContainer = new UIControl()
@@ -77,7 +78,7 @@ namespace PowerPlanneriOS.Views
                         var verticalDivider = new UIView()
                         {
                             TranslatesAutoresizingMaskIntoConstraints = false,
-                            BackgroundColor = UIColor.White
+                            BackgroundColor = UIColorCompat.SecondaryLabelColor
                         };
                         _timetable.Add(verticalDivider);
                         verticalDivider.StretchHeight(_timetable);
@@ -213,7 +214,8 @@ namespace PowerPlanneriOS.Views
                     Font = UIFont.PreferredHeadline,
                     Lines = 1,
                     Text = text,
-                    TextAlignment = UITextAlignment.Center
+                    TextAlignment = UITextAlignment.Center,
+                    TextColor = UIColorCompat.SecondaryLabelColor
                 };
                 _scheduleTimesColumn.Add(label);
                 label.StretchWidth(_scheduleTimesColumn);
@@ -226,7 +228,7 @@ namespace PowerPlanneriOS.Views
                     var gap = new UIView()
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
-                        BackgroundColor = UIColor.White
+                        BackgroundColor = UIColorCompat.SecondaryLabelColor
                     };
                     _scheduleGapLines.Add(gap);
                     gap.StretchWidth(_scheduleGapLines);

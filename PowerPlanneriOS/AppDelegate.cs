@@ -421,7 +421,7 @@ namespace PowerPlanneriOS
         {
             this.Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
-            Window.BackgroundColor = new UIColor(1, 1);
+            Window.BackgroundColor = UIColorCompat.SystemBackgroundColor;
             Window.TintColor = ColorResources.PowerPlannerAccentBlue;
             this.Window.RootViewController = UIStoryboard.FromName("LaunchScreen", null).InstantiateInitialViewController();
 
