@@ -9,6 +9,7 @@ using InterfacesiOS.Binding;
 using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary.ViewItems;
 using ToolsPortable;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -28,7 +29,7 @@ namespace PowerPlanneriOS.Views
         private void InitializeViews()
         {
             base.TranslatesAutoresizingMaskIntoConstraints = false;
-            base.BackgroundColor = new UIColor(235f/255f, 1);
+            base.BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor;
 
             // [ [labelName] [labelGPA] ]
             // [ semesterView           ]
