@@ -13,6 +13,7 @@ using ToolsPortable;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers.Settings
 {
@@ -318,14 +319,14 @@ namespace PowerPlanneriOS.Controllers.Settings
         {
             cell.TextLabel.Text = text;
             cell.UserInteractionEnabled = false;
-            cell.TextLabel.TextColor = UIColor.LightGray;
+            cell.TextLabel.TextColor = UIColorCompat.SecondaryLabelColor;
         }
 
         private void SetNormal(UITableViewCell cell, string text)
         {
             cell.TextLabel.Text = text;
             cell.UserInteractionEnabled = true;
-            cell.TextLabel.TextColor = UIColor.Black;
+            cell.TextLabel.TextColor = UIColorCompat.LabelColor;
         }
 
         private void SetAttention(UITableViewCell cell, string text)

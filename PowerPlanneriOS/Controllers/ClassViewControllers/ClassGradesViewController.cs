@@ -17,6 +17,7 @@ using PowerPlanneriOS.Views;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using CoreGraphics;
 using PowerPlannerAppDataLibrary.Extensions;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -163,7 +164,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.PreferredCaption1,
-                    TextColor = UIColor.DarkGray
+                    TextColor = UIColorCompat.SecondaryLabelColor
                 };
                 BindingHost.SetLabelTextBinding(labelGrade, nameof(ViewItemWeightCategory.WeightAchievedAndTotalString));
                 Add(labelGrade);

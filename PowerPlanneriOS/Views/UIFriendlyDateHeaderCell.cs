@@ -8,6 +8,7 @@ using UIKit;
 using InterfacesiOS.Views;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -20,13 +21,13 @@ namespace PowerPlanneriOS.Views
             // Don't allow clicking on this header cell
             UserInteractionEnabled = false;
 
-            ContentView.BackgroundColor = new UIColor(0.95f, 1);
+            ContentView.BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor;
 
             _labelText = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Font = UIFont.PreferredSubheadline,
-                TextColor = UIColor.DarkGray
+                TextColor = UIColorCompat.SecondaryLabelColor
             };
             ContentView.AddSubview(_labelText);
             _labelText.StretchWidthAndHeight(ContentView, left: 16, top: 8, bottom: 8);

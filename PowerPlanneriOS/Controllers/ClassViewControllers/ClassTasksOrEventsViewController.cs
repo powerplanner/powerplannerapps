@@ -15,6 +15,7 @@ using System.ComponentModel;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -213,7 +214,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                 public UIShowHideOldItemsCell(string cellId, ClassViewItemsGroup classItemsGroup, TaskOrEventType type) : base(cellId)
                 {
-                    ContentView.BackgroundColor = new UIColor(0.95f, 1);
+                    ContentView.BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor;
 
                     _labelText = new UILabel()
                     {

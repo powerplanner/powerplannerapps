@@ -13,6 +13,7 @@ using PowerPlannerAppDataLibrary.App;
 using CoreGraphics;
 using PowerPlanneriOS.Controllers;
 using System.ComponentModel;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -42,7 +43,7 @@ namespace PowerPlanneriOS.Views
             this.MaximumZoomScale = 1f;
             this.MinimumZoomScale = 0.3f;
             this.ViewForZoomingInScrollView += delegate { return _mainView; };
-            this.BackgroundColor = UIColor.FromWhiteAlpha(245 / 255f, 1);
+            this.BackgroundColor = UIColorCompat.SystemBackgroundColor;
 
             ViewModel = viewModel;
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
@@ -57,7 +58,7 @@ namespace PowerPlanneriOS.Views
             _timesColumn = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.FromWhiteAlpha(250 / 255f, 1)
+                BackgroundColor = UIColorCompat.SystemGray4Color
             };
             _mainView.Add(_timesColumn);
             _timesColumn.StretchHeight(_mainView);
@@ -76,7 +77,7 @@ namespace PowerPlanneriOS.Views
             _daysRow = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.FromWhiteAlpha(250 / 255f, 1)
+                BackgroundColor = UIColorCompat.SystemGray4Color
             };
             _contentColumn.Add(_daysRow);
             _daysRow.StretchWidth(_contentColumn);
@@ -151,18 +152,18 @@ namespace PowerPlanneriOS.Views
                 allDayItemsView = new UIView()
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
-                    BackgroundColor = UIColor.FromWhiteAlpha(239 / 255f, 1)
+                    BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor
                 };
                 allDayItemsView.Add(allDayItemsStackView);
                 allDayItemsStackView.StretchWidthAndHeight(allDayItemsView, right: 1);
                 if (i % 2 != 0)
                 {
                     // Alternate light and dark
-                    allDayItemsView.BackgroundColor = UIColor.FromWhiteAlpha(239 / 255f, 1);
+                    allDayItemsView.BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor;
                 }
                 else
                 {
-                    allDayItemsView.BackgroundColor = UIColor.FromWhiteAlpha(245 / 255f, 1);
+                    allDayItemsView.BackgroundColor = UIColorCompat.SystemBackgroundColor;
                 }
                 _allDayItemsRow.Add(allDayItemsView);
                 if (prevAllDayItems == null)
@@ -185,7 +186,7 @@ namespace PowerPlanneriOS.Views
                 if (i % 2 != 0)
                 {
                     // Alternate light and dark
-                    scheduleColumn.BackgroundColor = UIColor.FromWhiteAlpha(239 / 255f, 1);
+                    scheduleColumn.BackgroundColor = UIColorCompat.SecondarySystemBackgroundColor;
                 }
                 _scheduleRow.Add(scheduleColumn);
                 if (prevScheduleColumn == null)

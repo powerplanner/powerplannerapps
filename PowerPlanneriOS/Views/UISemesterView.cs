@@ -9,6 +9,7 @@ using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.Converters;
 using ToolsPortable;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -26,7 +27,7 @@ namespace PowerPlanneriOS.Views
         private void InitializeViews()
         {
             base.TranslatesAutoresizingMaskIntoConstraints = false;
-            base.BackgroundColor = new UIColor(247f / 255f, 1);
+            base.BackgroundColor = UIColorCompat.TertiarySystemBackgroundColor;
 
             // [ [labelName] [labelDates] ]
             // [ [class] [credits] [gpa]  ]
@@ -74,7 +75,7 @@ namespace PowerPlanneriOS.Views
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.PreferredCaption2,
-                    TextColor = UIColor.DarkGray,
+                    TextColor = UIColorCompat.SecondaryLabelColor,
                     Lines = 0,
                     TextAlignment = UITextAlignment.Right
                 };
@@ -117,7 +118,7 @@ namespace PowerPlanneriOS.Views
                             TranslatesAutoresizingMaskIntoConstraints = false,
                             Text = "Class",
                             Font = UIFont.PreferredCaption2,
-                            TextColor = UIColor.DarkGray
+                            TextColor = UIColorCompat.SecondaryLabelColor
                         };
                         viewClassesTableHeader.AddSubview(labelHeaderClass);
 
@@ -126,7 +127,7 @@ namespace PowerPlanneriOS.Views
                             TranslatesAutoresizingMaskIntoConstraints = false,
                             Font = UIFont.PreferredCaption2,
                             Text = "Credits",
-                            TextColor = UIColor.DarkGray,
+                            TextColor = UIColorCompat.SecondaryLabelColor,
                             TextAlignment = UITextAlignment.Right
                         };
                         viewClassesTableHeader.AddSubview(labelHeaderCredits);
@@ -136,7 +137,7 @@ namespace PowerPlanneriOS.Views
                             TranslatesAutoresizingMaskIntoConstraints = false,
                             Font = UIFont.PreferredCaption2,
                             Text = "GPA",
-                            TextColor = UIColor.DarkGray,
+                            TextColor = UIColorCompat.SecondaryLabelColor,
                             TextAlignment = UITextAlignment.Right
                         };
                         viewClassesTableHeader.AddSubview(labelHeaderGpa);

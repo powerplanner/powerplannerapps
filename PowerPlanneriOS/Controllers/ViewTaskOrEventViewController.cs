@@ -11,6 +11,7 @@ using InterfacesiOS.Views;
 using InterfacesiOS.Binding;
 using PowerPlanneriOS.Helpers;
 using ToolsPortable;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -117,7 +118,7 @@ namespace PowerPlanneriOS.Controllers
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Font = UIFont.PreferredBody,
-                TextColor = UIColor.DarkGray,
+                TextColor = UIColorCompat.SecondaryLabelColor,
                 Editable = false,
                 ScrollEnabled = false,
 

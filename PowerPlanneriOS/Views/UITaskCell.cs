@@ -8,6 +8,7 @@ using UIKit;
 using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItems;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Views
 {
@@ -27,7 +28,7 @@ namespace PowerPlanneriOS.Views
             var graySideBar = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.FromWhiteAlpha(180 / 255f, 1)
+                BackgroundColor = UIColorCompat.SystemGray2Color
             };
             ContentView.AddSubview(graySideBar);
             graySideBar.SetWidth(8);
@@ -73,7 +74,7 @@ namespace PowerPlanneriOS.Views
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.PreferredCaption2,
-                    TextColor = UIColor.DarkGray
+                    TextColor = UIColorCompat.SecondaryLabelColor
                 };
                 titleAndDescription.Add(_labelDescription);
                 _labelDescription.StretchHeight(titleAndDescription);

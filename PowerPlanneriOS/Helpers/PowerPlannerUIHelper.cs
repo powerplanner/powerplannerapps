@@ -8,6 +8,7 @@ using UIKit;
 using ToolsPortable;
 using InterfacesiOS.Controllers;
 using BareMvvm.Core.ViewModels;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Helpers
 {
@@ -77,7 +78,7 @@ namespace PowerPlanneriOS.Helpers
         public static void ConfigureForInputsStyle<T>(BareMvvmUIViewControllerWithScrolling<T> controller) where T : BaseViewModel
         {
             controller.View.BackgroundColor = ColorResources.InputSectionDividers;
-            controller.StackViewContainer.BackgroundColor = UIColor.White;
+            controller.StackViewContainer.BackgroundColor = UIColorCompat.SecondarySystemGroupedBackgroundColor;
         }
     }
 }

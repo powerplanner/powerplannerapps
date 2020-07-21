@@ -9,6 +9,7 @@ using BareMvvm.Core.ViewModels;
 using InterfacesiOS.Views;
 using ToolsPortable;
 using PowerPlanneriOS.Helpers;
+using InterfacesiOS.Helpers;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -56,7 +57,7 @@ namespace PowerPlanneriOS.Controllers
         protected void ConfigureForInputsStyle()
         {
             base.View.BackgroundColor = ColorResources.InputSectionDividers;
-            _stackViewContainer.BackgroundColor = UIColor.White;
+            _stackViewContainer.BackgroundColor = UIColorCompat.SecondarySystemGroupedBackgroundColor;
         }
 
         public UIStackView StackView { get; private set; }
