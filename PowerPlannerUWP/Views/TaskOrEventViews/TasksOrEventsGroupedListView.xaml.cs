@@ -87,6 +87,9 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         }
 
         private const double ColumnSpacing = 20;
+        private const double AfterHeaderSpacing = 8;
+        private const double ItemSpacing = 6;
+        private const double AfterGroupSpacing = 37;
 
         private Size _currMeasuredSize;
         protected override Size MeasureOverride(VirtualizingLayoutContext context, Size availableSize)
@@ -115,7 +118,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                 if (col >= colInfo.NumberOfColumns)
                 {
                     // Start a new row
-                    y += currRowHeight;
+                    y += currRowHeight + AfterGroupSpacing;
                     col = 0;
                     currRowHeight = 0;
                 }
@@ -153,7 +156,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                 header.Height = headerEl.DesiredSize.Height;
             }
 
-            y += header.Height.Value;
+            y += header.Height.Value + AfterHeaderSpacing;
 
             i++;
 
@@ -185,8 +188,14 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                     y += item.Height.Value;
                 }
 
+                // Include item spacing
+                y += ItemSpacing;
+
                 i++;
             }
+
+            // Remove last item spacing (since no item after it)
+            y -= ItemSpacing;
 
             nextHeaderIndex = i;
             return new Size(availableSizeForElements.Width, y - startingY);
@@ -215,7 +224,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                 if (col >= colInfo.NumberOfColumns)
                 {
                     // Start a new row
-                    y += currRowHeight;
+                    y += currRowHeight + AfterGroupSpacing;
                     col = 0;
                     currRowHeight = 0;
                 }
@@ -258,7 +267,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             var header = state.GetItemAt(headerIndex);
             var headerEl = context.GetOrCreateElementAt(headerIndex);
             headerEl.Arrange(new Rect(x, y, colInfo.ColumnWidth, headerEl.DesiredSize.Height));
-            y += headerEl.DesiredSize.Height;
+            y += headerEl.DesiredSize.Height + AfterHeaderSpacing;
 
             i++;
 
@@ -286,8 +295,14 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                     y += el.DesiredSize.Height;
                 }
 
+                // Include item spacing
+                y += ItemSpacing;
+
                 i++;
             }
+
+            // Remove last item spacing (since no item after it)
+            y -= ItemSpacing;
 
             nextHeaderIndex = i;
             return new Size(colInfo.ColumnWidth, y - startingY);
