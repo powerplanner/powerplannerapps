@@ -94,6 +94,9 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         private Size _currMeasuredSize;
         protected override Size MeasureOverride(VirtualizingLayoutContext context, Size availableSize)
         {
+            // Note that you MUST call GetOrCreateElement on any items that are in the realized region... that's how
+            // the control tracks which elements it shouldn't dispose.
+
             // It's easier to not support infinite width, and none of my scenarios need it, so not worth spending time implementing it
             if (double.IsInfinity(availableSize.Width))
                 throw new ArgumentException("This panel doesn't support infinite width");
@@ -104,6 +107,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
             var state = (GroupedLayoutState)context.LayoutState;
             bool widthChanged = state.AvailableWidth != availableSize.Width;
+            state.AvailableWidth = availableSize.Width;
 
             var colInfo = GetColumnInfo(availableSize);
 
@@ -145,6 +149,9 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
         private Size MeasureColumn(VirtualizingLayoutContext context, GroupedLayoutState state, Size availableSizeForElements, int headerIndex, double startingY, bool widthChanged, out int nextHeaderIndex)
         {
+            // Note that you MUST call GetOrCreateElement on any items that are in the realized region... that's how
+            // the control tracks which elements it shouldn't dispose.
+
             double y = startingY;
             int i = headerIndex;
 
@@ -178,6 +185,10 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                 }
                 else
                 {
+                    // Theoretically since tasks/events are removed and then added back when edited, we know they can never change size...
+                    // Therefore we can store their measured size, and only call measure if their width changed or height unknown...
+                    // However this didn't work in reality, not sure why.
+
                     //if (widthChanged || item.Height == null)
                     {
                         var itemEl = context.GetOrCreateElementAt(i);
@@ -203,6 +214,9 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
         protected override Size ArrangeOverride(VirtualizingLayoutContext context, Size finalSize)
         {
+            // Note that you MUST call GetOrCreateElement on any items that are in the realized region... that's how
+            // the control tracks which elements it shouldn't dispose.
+
             // It's easier to not support infinite width, and none of my scenarios need it, so not worth spending time implementing it
             if (double.IsInfinity(finalSize.Width))
                 throw new ArgumentException("This panel doesn't support infinite width");
@@ -213,6 +227,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
             var state = (GroupedLayoutState)context.LayoutState;
             var colInfo = GetColumnInfo(finalSize);
+            bool widthChanged = state.AvailableWidth != finalSize.Width;
 
             double y = 0;
             int i = 0;
@@ -236,6 +251,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                     col,
                     headerIndex: i,
                     startingY: y,
+                    widthChanged: widthChanged,
                     nextHeaderIndex: out i);
 
                 currRowHeight = Math.Max(currRowHeight, colSize.Height);
@@ -258,8 +274,11 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
 
 
-        private Size ArrangeColumn(VirtualizingLayoutContext context, GroupedLayoutState state, ColumnInfo colInfo, int col, int headerIndex, double startingY, out int nextHeaderIndex)
+        private Size ArrangeColumn(VirtualizingLayoutContext context, GroupedLayoutState state, ColumnInfo colInfo, int col, int headerIndex, double startingY, bool widthChanged, out int nextHeaderIndex)
         {
+            // Note that you MUST call GetOrCreateElement on any items that are in the realized region... that's how
+            // the control tracks which elements it shouldn't dispose.
+
             double y = startingY;
             double x = col * colInfo.ColumnWidth + ColumnSpacing * col;
             int i = headerIndex;
@@ -290,7 +309,10 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                 else
                 {
                     var el = context.GetOrCreateElementAt(i);
-                    el.Arrange(new Rect(x, y, colInfo.ColumnWidth, el.DesiredSize.Height));
+                    //if (widthChanged || !item.Arranged)
+                    {
+                        el.Arrange(new Rect(x, y, colInfo.ColumnWidth, el.DesiredSize.Height));
+                    }
 
                     y += el.DesiredSize.Height;
                 }
@@ -361,10 +383,6 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
     internal class GroupedItem
     {
-        public GroupedItem()
-        {
-        }
-
         public double? Height { get; set; }
 
         public Rect? Position { get; internal set; }
