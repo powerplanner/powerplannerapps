@@ -23,48 +23,11 @@ namespace PowerPlannerAndroid.Views.ListItemHeaders
 
         protected override void OnDataContextChanged(object oldValue, object newValue)
         {
-            if (newValue is AgendaViewModel.ItemsGroup)
+            if (newValue is AgendaViewModel.ItemsGroupHeader itemsGroup)
             {
-                var itemsGroup = (AgendaViewModel.ItemsGroup)newValue;
-                string header = GetHeaderText(itemsGroup);
+                string header = itemsGroup.Header;
 
                 FindViewById<TextView>(Resource.Id.TextViewHeaderText).Text = header;
-            }
-        }
-
-        private static string GetHeaderText(AgendaViewModel.ItemsGroup itemsGroup)
-        {
-            switch (itemsGroup)
-            {
-                case AgendaViewModel.ItemsGroup.Overdue:
-                    return PowerPlannerResources.GetRelativeDateInThePast();
-
-                case AgendaViewModel.ItemsGroup.Today:
-                    return PowerPlannerResources.GetRelativeDateToday();
-
-                case AgendaViewModel.ItemsGroup.Tomorrow:
-                    return PowerPlannerResources.GetRelativeDateTomorrow();
-
-                case AgendaViewModel.ItemsGroup.InTwoDays:
-                    return PowerPlannerResources.GetRelativeDateInXDays(2);
-
-                case AgendaViewModel.ItemsGroup.WithinSevenDays:
-                    return PowerPlannerResources.GetRelativeDateWithinXDays(7);
-
-                case AgendaViewModel.ItemsGroup.WithinFourteenDays:
-                    return PowerPlannerResources.GetRelativeDateWithinXDays(14);
-
-                case AgendaViewModel.ItemsGroup.WithinThirtyDays:
-                    return PowerPlannerResources.GetRelativeDateWithinXDays(30);
-
-                case AgendaViewModel.ItemsGroup.WithinSixtyDays:
-                    return PowerPlannerResources.GetRelativeDateWithinXDays(60);
-
-                case AgendaViewModel.ItemsGroup.InTheFuture:
-                    return PowerPlannerResources.GetRelativeDateFuture();
-
-                default:
-                    throw new NotImplementedException();
             }
         }
     }

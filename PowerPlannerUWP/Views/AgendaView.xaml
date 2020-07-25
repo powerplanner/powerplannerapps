@@ -8,20 +8,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:interfaces="using:InterfacesUWP">
+    xmlns:tasksOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews">
 
+    <tasksOrEventViews:TasksOrEventsGroupedListView
+        x:Name="MainGridView"/>
 
-    <ScrollViewer
-        VerticalScrollBarVisibility="Auto"
-        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-        <interfaces:MyAdaptiveGridPanel x:Name="stackPanel" Margin="10" MinColumnWidth="300" VerticalAlignment="Top">
-            <interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                <TransitionCollection>
-                    <AddDeleteThemeTransition />
-                </TransitionCollection>
-            </interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-        </interfaces:MyAdaptiveGridPanel>
-
-    </ScrollViewer>
 </local:MainScreenContentViewHostGeneric>

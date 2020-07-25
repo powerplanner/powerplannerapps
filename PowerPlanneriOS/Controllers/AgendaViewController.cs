@@ -173,7 +173,7 @@ namespace PowerPlanneriOS.Controllers
 
             private string GetCellId(int row)
             {
-                return _viewModel.ItemsWithHeaders[row] is AgendaViewModel.ItemsGroup ? CELL_ID_HEADER : CELL_ID_ITEM;
+                return _viewModel.ItemsWithHeaders[row] is AgendaViewModel.ItemsGroupHeader ? CELL_ID_HEADER : CELL_ID_ITEM;
             }
 
             private object GetItem(int row)
@@ -225,7 +225,7 @@ namespace PowerPlanneriOS.Controllers
                 }
             }
 
-            private class UIHeaderCell : BareUITableViewCell<AgendaViewModel.ItemsGroup>
+            private class UIHeaderCell : BareUITableViewCell<AgendaViewModel.ItemsGroupHeader>
             {
                 private UILabel _labelText;
 
@@ -250,45 +250,9 @@ namespace PowerPlanneriOS.Controllers
 
                 protected override void OnDataContextChanged()
                 {
-                    _labelText.Text = GetHeaderText(DataContext);
+                    _labelText.Text = DataContext.Header;
 
                     base.OnDataContextChanged();
-                }
-
-                private static string GetHeaderText(AgendaViewModel.ItemsGroup itemsGroup)
-                {
-                    switch (itemsGroup)
-                    {
-                        case AgendaViewModel.ItemsGroup.Overdue:
-                            return PowerPlannerResources.GetRelativeDateInThePast();
-
-                        case AgendaViewModel.ItemsGroup.Today:
-                            return PowerPlannerResources.GetRelativeDateToday();
-
-                        case AgendaViewModel.ItemsGroup.Tomorrow:
-                            return PowerPlannerResources.GetRelativeDateTomorrow();
-
-                        case AgendaViewModel.ItemsGroup.InTwoDays:
-                            return PowerPlannerResources.GetRelativeDateInXDays(2);
-
-                        case AgendaViewModel.ItemsGroup.WithinSevenDays:
-                            return PowerPlannerResources.GetRelativeDateWithinXDays(7);
-
-                        case AgendaViewModel.ItemsGroup.WithinFourteenDays:
-                            return PowerPlannerResources.GetRelativeDateWithinXDays(14);
-
-                        case AgendaViewModel.ItemsGroup.WithinThirtyDays:
-                            return PowerPlannerResources.GetRelativeDateWithinXDays(30);
-
-                        case AgendaViewModel.ItemsGroup.WithinSixtyDays:
-                            return PowerPlannerResources.GetRelativeDateWithinXDays(60);
-
-                        case AgendaViewModel.ItemsGroup.InTheFuture:
-                            return PowerPlannerResources.GetRelativeDateFuture();
-
-                        default:
-                            throw new NotImplementedException();
-                    }
                 }
             }
         }
