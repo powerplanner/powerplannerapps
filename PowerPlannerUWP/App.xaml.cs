@@ -718,6 +718,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2007, 30, 1, 99))
+                    {
+                        changedText += "\n - Fixed order of tasks so incomplete tasks are displayed first";
+                    }
+
                     if (v <= new Version(2005, 30, 3, 99))
                     {
                         changedText += "\n - Fixes for certain time zone scenarios";

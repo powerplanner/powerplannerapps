@@ -302,6 +302,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
+        public override int CompareTo(BaseViewItem other)
+        {
+            if (other is ViewItemTaskOrEvent otherTaskOrEvent)
+            {
+                return CompareTo(otherTaskOrEvent);
+            }
+
+            return base.CompareTo(other);
+        }
+
         public int CompareTo(ViewItemTaskOrEvent other)
         {
             // Desired sort order:
