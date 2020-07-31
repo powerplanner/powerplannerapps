@@ -28,6 +28,8 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         public TasksOrEventsGroupedListView()
         {
             this.InitializeComponent();
+
+            VerticalAlignment = VerticalAlignment.Top;
         }
 
         public IEnumerable ItemsSource
