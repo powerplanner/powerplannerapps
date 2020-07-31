@@ -10,7 +10,24 @@
     mc:Ignorable="d"
     xmlns:tasksOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews">
 
-    <tasksOrEventViews:TasksOrEventsGroupedListView
-        x:Name="MainGridView"/>
+    <Grid>
+        <StackPanel
+            Visibility="{Binding HasNoItems, Converter={StaticResource BoolToVisibilityConverter}}"
+            VerticalAlignment="Center"
+            Margin="20">
+            <TextBlock
+                x:Uid="Agenda_NoItemsHeader"
+                TextAlignment="Center"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                TextWrapping="Wrap"/>
+            <TextBlock
+                x:Uid="Agenda_NoItemsDescription"
+                TextAlignment="Center"
+                Style="{ThemeResource BodyTextBlockStyle}"
+                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
+        </StackPanel>
+        <tasksOrEventViews:TasksOrEventsGroupedListView
+            x:Name="MainGridView"/>
+    </Grid>
 
 </local:MainScreenContentViewHostGeneric>
