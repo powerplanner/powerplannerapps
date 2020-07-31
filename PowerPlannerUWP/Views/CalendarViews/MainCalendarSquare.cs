@@ -26,6 +26,7 @@ using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using System.ComponentModel;
+using PowerPlannerUWP.Controls;
 
 namespace PowerPlannerUWP.Views.CalendarViews
 {
@@ -151,7 +152,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
         }
         
         private TextBlock _textBlock;
-        private ItemsControl _itemsControl;
+        private VirtualizedItemsControl _itemsControl;
         private Button _addButton;
         private Rectangle _holidayOverlay;
         private TextBlock _holidayLabel;
@@ -232,7 +233,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
 
 
             // Task and event items
-            _itemsControl = new ItemsControl()
+            _itemsControl = new VirtualizedItemsControl()
             {
                 ItemTemplate = (DataTemplate)App.Current.Resources["MainCalendarItemTemplate"]
             };
