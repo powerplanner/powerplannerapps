@@ -205,6 +205,8 @@ namespace PowerPlannerUWP.Controls
                 el = ItemTemplate.LoadContent() as UIElement;
             }
 
+            SetDataContext(el, item);
+
             Children.Insert(index, el);
 
             if (index < _childrenCopy.Count)
@@ -215,8 +217,6 @@ namespace PowerPlannerUWP.Controls
             {
                 _childrenCopy.Add(el);
             }
-
-            SetDataContext(el, item);
 
             return el;
         }
