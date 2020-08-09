@@ -1,8 +1,6 @@
 ﻿using InterfacesUWP;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
-using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;

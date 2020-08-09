@@ -15,8 +15,8 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using Windows.Foundation.Metadata;
 using ToolsUniversal;
 using Microsoft.Toolkit.Uwp.Notifications;
-using PowerPlannerUWPLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerUWP.Helpers;
 
 namespace PowerPlannerUWP.Extensions
 {

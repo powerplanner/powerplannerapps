@@ -2,7 +2,6 @@
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerUWP.Views.TaskOrEventViews;
-using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
 using System.IO;

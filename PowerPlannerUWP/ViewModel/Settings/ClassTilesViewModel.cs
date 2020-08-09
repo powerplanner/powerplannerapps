@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerUWPLibrary.TileHelpers;
-using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Exceptions;
+using PowerPlannerUWP.TileHelpers;
 
 namespace PowerPlannerUWP.ViewModel.Settings
 {

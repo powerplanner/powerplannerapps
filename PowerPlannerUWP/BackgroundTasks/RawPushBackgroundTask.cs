@@ -2,8 +2,7 @@
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
-using PowerPlannerUWPLibrary;
-using PowerPlannerUWPLibrary.Extensions;
+using PowerPlannerUWP.Extensions;
 using System;
 using System.Linq;
 using System.Threading;

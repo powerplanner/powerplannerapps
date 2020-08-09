@@ -5,7 +5,6 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.PPEventArgs;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;

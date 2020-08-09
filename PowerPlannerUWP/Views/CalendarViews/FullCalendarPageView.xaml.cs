@@ -1,8 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerUWPLibrary;
-
 using System;
 using System.Collections.Generic;
 using System.IO;

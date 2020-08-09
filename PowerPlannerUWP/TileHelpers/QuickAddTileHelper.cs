@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.StartScreen;
-using static PowerPlannerUWPLibrary.TileHelpers.TileHelper;
+using static PowerPlannerUWP.TileHelpers.TileHelper;
 
 namespace PowerPlannerUWP.TileHelpers
 {

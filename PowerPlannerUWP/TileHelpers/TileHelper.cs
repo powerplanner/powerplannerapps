@@ -21,8 +21,8 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerUWPLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerUWP.Helpers;
 
 namespace PowerPlannerUWP.TileHelpers
 {

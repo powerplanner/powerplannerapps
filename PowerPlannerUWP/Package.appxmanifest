@@ -34,16 +34,6 @@
             </uap:AppointmentsProviderLaunchActions>
           </uap:AppointmentsProvider>
         </uap:Extension>
-        <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundTasksProject.InfrequentBackgroundTask">
-          <BackgroundTasks>
-            <Task Type="systemEvent" />
-          </BackgroundTasks>
-        </Extension>
-        <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundTasksProject.RawPushBackgroundTask">
-          <BackgroundTasks>
-            <Task Type="pushNotification" />
-          </BackgroundTasks>
-        </Extension>
         <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="powerplanner" />
         </uap:Extension>

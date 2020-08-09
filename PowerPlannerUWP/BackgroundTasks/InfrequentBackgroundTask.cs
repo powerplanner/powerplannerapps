@@ -1,8 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerUWPLibrary;
-using PowerPlannerUWPLibrary.TileHelpers;
+using PowerPlannerUWP.TileHelpers;
 using System;
 using System.Threading;
 using Windows.ApplicationModel.Activation;

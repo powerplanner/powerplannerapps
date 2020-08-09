@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.DataLayer;
-using PowerPlannerUWPLibrary.TileHelpers;
+using PowerPlannerUWP.TileHelpers;
 
 namespace PowerPlannerUWP.Extensions
 {

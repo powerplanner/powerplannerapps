@@ -219,7 +219,7 @@ namespace PowerPlannerUWP
             OnEntering();
         }
 
-        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             TelemetryExtension.Current?.TrackException(e.Exception);
         }
