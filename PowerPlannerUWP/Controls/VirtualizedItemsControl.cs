@@ -113,7 +113,7 @@ namespace PowerPlannerUWP.Controls
 
                     for (int i = 0; i < e.OldItems.Count; i++)
                     {
-                        if (e.OldStartingIndex + 1 < _childrenCopy.Count)
+                        if (e.OldStartingIndex + i < _childrenCopy.Count)
                         {
                             RecycleElementAt(e.OldStartingIndex + i);
                         }
@@ -132,7 +132,7 @@ namespace PowerPlannerUWP.Controls
                     {
                         if (e.OldStartingIndex + i < _childrenCopy.Count)
                         {
-                            if (_childrenCopy[e.OldStartingIndex + 1] is FrameworkElement frameworkElement)
+                            if (_childrenCopy[e.OldStartingIndex + i] is FrameworkElement frameworkElement)
                             {
                                 frameworkElement.DataContext = e.NewItems[i];
                             }
