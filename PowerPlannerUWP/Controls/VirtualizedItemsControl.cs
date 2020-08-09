@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -189,11 +190,20 @@ namespace PowerPlannerUWP.Controls
 
         private UIElement CreateElement(int index, object item)
         {
-            var el = ItemTemplate.GetElement(new Windows.UI.Xaml.ElementFactoryGetArgs()
+            UIElement el;
+
+            if (ApiInformation.IsMethodPresent("Windows.UI.Xaml.DataTemplate", "GetElement"))
             {
-                Data = item,
-                Parent = this
-            });
+                el = ItemTemplate.GetElement(new Windows.UI.Xaml.ElementFactoryGetArgs()
+                {
+                    Data = item,
+                    Parent = this
+                });
+            }
+            else
+            {
+                el = ItemTemplate.LoadContent() as UIElement;
+            }
 
             Children.Insert(index, el);
 
@@ -225,11 +235,15 @@ namespace PowerPlannerUWP.Controls
 
             if (el != null)
             {
-                ItemTemplate.RecycleElement(new Windows.UI.Xaml.ElementFactoryRecycleArgs()
+
+                if (ApiInformation.IsMethodPresent("Windows.UI.Xaml.DataTemplate", "RecycleElement"))
                 {
-                    Element = el,
-                    Parent = this
-                });
+                    ItemTemplate.RecycleElement(new Windows.UI.Xaml.ElementFactoryRecycleArgs()
+                    {
+                        Element = el,
+                        Parent = this
+                    });
+                }
 
                 if (el is FrameworkElement fEl)
                 {
