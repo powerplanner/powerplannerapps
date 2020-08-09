@@ -46,32 +46,41 @@
                     Margin="0,0,0,12"
                     Visibility="{Binding IsInDifferentTimeZone, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                <controls:EnhancedTimePicker
-                    x:Uid="EditingClassScheduleItemView_TimePickerStart"
-                    Header="Start time"
-                    HorizontalAlignment="Stretch"
-                    SelectedTime="{Binding StartTime, Mode=TwoWay}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <controls:EnhancedEndTimePicker
-                    x:Uid="EditingClassScheduleItemView_TimePickerEnd"
-                    Header="End time"
-                    HorizontalAlignment="Stretch"
-                    Margin="0,24,0,0"
-                    StartTime="{Binding StartTime}"
-                    SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
+
+                    <controls:EnhancedTimePicker
+                        x:Uid="EditingClassScheduleItemView_TimePickerStart"
+                        Header="Start time"
+                        HorizontalAlignment="Stretch"
+                        SelectedTime="{Binding StartTime, Mode=TwoWay}"/>
+
+                    <controls:EnhancedEndTimePicker
+                        Grid.Column="2"
+                        x:Uid="EditingClassScheduleItemView_TimePickerEnd"
+                        Header="End time"
+                        HorizontalAlignment="Stretch"
+                        StartTime="{Binding StartTime}"
+                        SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
+                </Grid>
 
                 <TextBox
                     x:Uid="EditingClassScheduleItemView_TextBoxRoom"
                     x:Name="tbRoom"
                     Header="Room"
                     PlaceholderText="ex: Modern Languages 302"
-                    Margin="0,24,0,0"
+                    Margin="0,12,0,0"
                 IsSpellCheckEnabled="True"
                 IsTextPredictionEnabled="True"
                     Text="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
 
-                <Grid Margin="0,24,0,0">
+                <Grid Margin="0,12,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -129,7 +138,7 @@
                     x:Uid="EditingClassScheduleItemView_WeekComboBox"
                     x:Name="weekComboBox"
                     Header="Week"
-                    Margin="0,24,0,0"
+                    Margin="0,12,0,0"
                     SelectedWeek="{Binding ScheduleWeek, Mode=TwoWay}"/>
 
                 <TextBlock
