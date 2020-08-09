@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -317,7 +316,7 @@ namespace PowerPlannerUWP.Controls
 
                 i++;
 
-                if (i >= _lastVisibleIndex.Value)
+                if (i > _lastVisibleIndex.Value)
                 {
                     break;
                 }
