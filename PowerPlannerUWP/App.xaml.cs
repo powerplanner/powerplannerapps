@@ -721,6 +721,7 @@ namespace PowerPlannerUWP
                     if (v <= new Version(2007, 30, 1, 99))
                     {
                         changedText += "\n - Fixed order of tasks so incomplete tasks are displayed first";
+                        changedText += "\n - Performance improvements for accounts with lots of items!";
                     }
 
                     if (v <= new Version(2005, 30, 3, 99))

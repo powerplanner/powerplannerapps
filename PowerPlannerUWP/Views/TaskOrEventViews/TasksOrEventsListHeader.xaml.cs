@@ -31,23 +31,25 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             this.InitializeComponent();
         }
 
-
-
-        private DateTime? _dateToUseForNewItems;
         public DateTime? DateToUseForNewItems
         {
-            get { return _dateToUseForNewItems; }
-            set
-            {
-                _dateToUseForNewItems = value;
-            }
+            get { return (DateTime?)GetValue(DateToUseForNewItemsProperty); }
+            set { SetValue(DateToUseForNewItemsProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for DateToUseForNewItems.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DateToUseForNewItemsProperty =
+            DependencyProperty.Register(nameof(DateToUseForNewItems), typeof(DateTime?), typeof(TasksOrEventsListHeader), new PropertyMetadata(null));
 
         public string Header
         {
-            get { return header.Content as string; }
-            set { header.Content = value; }
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register(nameof(Header), typeof(string), typeof(TasksOrEventsListHeader), new PropertyMetadata("TODAY"));
 
         public bool AllowHolidays { get; set; }
 

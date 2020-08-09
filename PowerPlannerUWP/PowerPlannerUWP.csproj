@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -128,6 +128,7 @@
     <Compile Include="Controls\TimePickers\TextBasedTimePicker.xaml.cs">
       <DependentUpon>TextBasedTimePicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\VirtualizedItemsControl.cs" />
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
     <Compile Include="Converters\CanBeUsedForWhatIfModeToFontWeightConverter.cs" />
@@ -358,6 +359,9 @@
     </Compile>
     <Compile Include="Views\TaskOrEventViews\TaskOrEventProgressSidebar.xaml.cs">
       <DependentUpon>TaskOrEventProgressSidebar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml.cs">
+      <DependentUpon>TasksOrEventsGroupedListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UpdateCredentialsView.xaml.cs">
       <DependentUpon>UpdateCredentialsView.xaml</DependentUpon>
@@ -850,6 +854,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UpdateCredentialsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1063,7 +1071,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.9</Version>
+      <Version>6.2.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.4.2</Version>
     </PackageReference>
     <PackageReference Include="NotificationsVisualizerLibrary">
       <Version>1.0.5</Version>

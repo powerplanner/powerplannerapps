@@ -17,7 +17,7 @@ using AndroidX.RecyclerView.Widget;
 
 namespace PowerPlannerAndroid.Adapters
 {
-    public class AgendaTasksOrEventsAdapter : GroupedTasksOrEventsAdapter<AgendaViewModel.ItemsGroup>
+    public class AgendaTasksOrEventsAdapter : GroupedTasksOrEventsAdapter<AgendaViewModel.ItemsGroupHeader>
     {
         protected override RecyclerView.ViewHolder OnCreateViewHolderForHeader(ViewGroup parent)
         {

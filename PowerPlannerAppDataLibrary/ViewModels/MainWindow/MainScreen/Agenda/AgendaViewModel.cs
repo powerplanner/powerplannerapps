@@ -100,7 +100,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 if (_itemsWithHeaders == null)
                 {
-                    _itemsWithHeaders = AgendaViewItemsGroup.Items.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, ItemsGroup>(new GroupHeaderProvider(Today).GetHeader);
+                    _itemsWithHeaders = AgendaViewItemsGroup.Items.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, ItemsGroupHeader>(new GroupHeaderProvider(Today, Classes).GetHeader);
                 }
 
                 return _itemsWithHeaders;
@@ -110,41 +110,125 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         private class GroupHeaderProvider
         {
             public DateTime Today { get; private set; }
-            public GroupHeaderProvider(DateTime today)
+            public IEnumerable<ViewItemClass> Classes { get; private set; }
+            public GroupHeaderProvider(DateTime today, IEnumerable<ViewItemClass> classes)
             {
                 Today = today;
+                Classes = classes;
+
+                _overdue = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.Overdue,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateInThePast(),
+                    DateToUseForNewItems = Today.AddDays(-1)
+                };
+
+                _today = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.Today,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateToday(),
+                    DateToUseForNewItems = Today
+                };
+
+                _tomorrow = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.Tomorrow,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateTomorrow(),
+                    DateToUseForNewItems = Today.AddDays(1)
+                };
+
+                _inTwoDays = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.InTwoDays,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateInXDays(2),
+                    DateToUseForNewItems = Today.AddDays(2)
+                };
+
+                _withinSevenDays = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.WithinSevenDays,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateInXDays(7),
+                    DateToUseForNewItems = Today.AddDays(3)
+                };
+
+                _withinFourteenDays = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.WithinFourteenDays,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateInXDays(14),
+                    DateToUseForNewItems = Today.AddDays(8)
+                };
+
+                _withinThirtyDays = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.WithinThirtyDays,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateInXDays(30),
+                    DateToUseForNewItems = Today.AddDays(15)
+                };
+
+                _withinSixtyDays = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.WithinSixtyDays,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateInXDays(60),
+                    DateToUseForNewItems = Today.AddDays(31)
+                };
+
+                _inTheFuture = new ItemsGroupHeader()
+                {
+                    Group = ItemsGroup.InTheFuture,
+                    Classes = Classes,
+                    Header = PowerPlannerResources.GetRelativeDateFuture(),
+                    DateToUseForNewItems = Today.AddDays(61)
+                };
             }
 
-            public ItemsGroup GetHeader(ViewItemTaskOrEvent item)
+            private ItemsGroupHeader _overdue;
+            private ItemsGroupHeader _today;
+            private ItemsGroupHeader _tomorrow;
+            private ItemsGroupHeader _inTwoDays;
+            private ItemsGroupHeader _withinSevenDays;
+            private ItemsGroupHeader _withinFourteenDays;
+            private ItemsGroupHeader _withinThirtyDays;
+            private ItemsGroupHeader _withinSixtyDays;
+            private ItemsGroupHeader _inTheFuture;
+
+            public ItemsGroupHeader GetHeader(ViewItemTaskOrEvent item)
             {
                 DateTime todayAsUtc = DateTime.SpecifyKind(Today, DateTimeKind.Utc);
                 DateTime itemDate = item.EffectiveDateForDisplayInDateBasedGroups.Date;
 
                 if (itemDate <= todayAsUtc.AddDays(-1))
-                    return ItemsGroup.Overdue;
+                    return _overdue;
 
                 if (itemDate <= todayAsUtc)
-                    return ItemsGroup.Today;
+                    return _today;
 
                 if (itemDate <= todayAsUtc.AddDays(1))
-                    return ItemsGroup.Tomorrow;
+                    return _tomorrow;
 
                 if (itemDate <= todayAsUtc.AddDays(2))
-                    return ItemsGroup.InTwoDays;
+                    return _inTwoDays;
 
                 if (itemDate <= todayAsUtc.AddDays(7))
-                    return ItemsGroup.WithinSevenDays;
+                    return _withinSevenDays;
 
                 if (itemDate <= todayAsUtc.AddDays(14))
-                    return ItemsGroup.WithinFourteenDays;
+                    return _withinFourteenDays;
 
                 if (itemDate <= todayAsUtc.AddDays(30))
-                    return ItemsGroup.WithinThirtyDays;
+                    return _withinThirtyDays;
 
                 if (itemDate <= todayAsUtc.AddDays(60))
-                    return ItemsGroup.WithinSixtyDays;
+                    return _withinSixtyDays;
 
-                return ItemsGroup.InTheFuture;
+                return _inTheFuture;
             }
         }
 
@@ -159,6 +243,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             WithinThirtyDays,
             WithinSixtyDays,
             InTheFuture
+        }
+
+        public class ItemsGroupHeader
+        {
+            public ItemsGroup Group { get; set; }
+
+            public string Header { get; set; }
+
+            public DateTime DateToUseForNewItems { get; set; }
+
+            public IEnumerable<ViewItemClass> Classes { get; set; }
         }
 
         public void AddTask()
