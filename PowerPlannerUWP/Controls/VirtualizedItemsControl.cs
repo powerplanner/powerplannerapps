@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -7,12 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace PowerPlannerUWP.Controls
 {
+    /// <summary>
+    /// Only works with items that are all the same height.
+    /// </summary>
     public class VirtualizedItemsControl : Panel
     {
         public VirtualizedItemsControl()
@@ -44,8 +47,6 @@ namespace PowerPlannerUWP.Controls
 
             InvalidateMeasure();
         }
-
-
 
         public object ItemsSource
         {
@@ -85,85 +86,98 @@ namespace PowerPlannerUWP.Controls
             {
                 case NotifyCollectionChangedAction.Reset:
                     RecycleAllElements();
+                    InvalidateMeasure();
                     break;
 
                 case NotifyCollectionChangedAction.Add:
-                    if (_exceededHeight && e.NewStartingIndex >= Children.Count)
+                    if (_lastVisibleIndex != null && e.NewStartingIndex > _lastVisibleIndex.Value)
                     {
                         // Non-visible section, no reason to change anything
-                        return;
+                        break;
                     }
 
                     // If inserting, we need to add the elements so our list matches with the actual list
-                    if (e.NewStartingIndex < Children.Count)
+                    if (e.NewStartingIndex < _childrenCopy.Count)
                     {
-                        int dontRenderIndex = int.MaxValue;
-
-                        if (_exceededHeight)
-                        {
-                            dontRenderIndex = e.NewItems.Count;
-
-                            // If we're pushing some other items off to be non-visible, we can recycle those first so they can be used below
-                            for (int i = 0; i < e.NewItems.Count; i++)
-                            {
-                                RecycleElementAt(Children.Count - 1);
-                            }
-                        }
-
-                        for (int i = 0; i < e.NewItems.Count && i + e.NewStartingIndex < dontRenderIndex; i++)
-                        {
-                            CreateElement(i + e.NewStartingIndex, e.NewItems[i]);
-                        }
+                        _childrenCopy.InsertRange(e.NewStartingIndex, new UIElement[e.NewItems.Count]);
                     }
 
-                    // Otherwise, nothing to recycle, just invalidate below
+                    InvalidateMeasure();
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    if (_exceededHeight && e.OldStartingIndex >= Children.Count)
+                    if (_lastVisibleIndex != null && e.OldStartingIndex > _lastVisibleIndex.Value)
                     {
                         // Non-visible section, no reason to change anything
                         return;
                     }
+
                     for (int i = 0; i < e.OldItems.Count; i++)
                     {
-                        if (e.OldStartingIndex < Children.Count)
+                        if (e.OldStartingIndex + i < _childrenCopy.Count)
                         {
-                            RecycleElementAt(e.OldStartingIndex);
+                            RecycleElementAt(e.OldStartingIndex + i);
                         }
                     }
+
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
-                    if (_exceededHeight && e.NewStartingIndex >= Children.Count)
+                    if (_lastVisibleIndex != null && e.NewStartingIndex > _lastVisibleIndex.Value)
                     {
                         // Non-visible section, no reason to change anything
                         return;
                     }
+
                     for (int i = 0; i < e.OldItems.Count; i++)
                     {
-                        if (e.OldStartingIndex + i < Children.Count)
+                        if (e.OldStartingIndex + i < _childrenCopy.Count)
                         {
-                            if (Children[e.OldStartingIndex + 1] is FrameworkElement frameworkElement)
+                            if (_childrenCopy[e.OldStartingIndex + i] is FrameworkElement frameworkElement)
                             {
                                 frameworkElement.DataContext = e.NewItems[i];
                             }
                         }
                     }
+
                     break;
 
                 case NotifyCollectionChangedAction.Move:
                     throw new NotImplementedException();
             }
-
-            InvalidateMeasure();
         }
+
+        /// <summary>
+        /// This is a temporary copy of the children list which will include null values inserted when new data items are added.
+        /// </summary>
+        private List<UIElement> _childrenCopy = new List<UIElement>();
+        private double? _itemHeight;
+        private int? _lastVisibleIndex;
 
         private UIElement GetOrCreateElementAt(int index, object item)
         {
-            if (index < Children.Count)
+            if (index < _childrenCopy.Count)
             {
-                return Children[index];
+                var el = _childrenCopy[index];
+
+                if (el != null)
+                {
+                    return el;
+                }
+
+                // For example, last visible index is 2, and there's 3 items
+                if (_lastVisibleIndex != null && Children.Count > _lastVisibleIndex.Value)
+                {
+                    el = Children.Last();
+                    Children.RemoveAt(Children.Count - 1);
+                    _childrenCopy.RemoveAt(_childrenCopy.Count - 1);
+                    Children.Insert(index, el);
+                    _childrenCopy[index] = el;
+                    SetDataContext(el, item);
+                    return el;
+                }
+
+                return CreateElement(index, item);
             }
 
             if (index > Children.Count)
@@ -176,36 +190,70 @@ namespace PowerPlannerUWP.Controls
 
         private UIElement CreateElement(int index, object item)
         {
-            var el = ItemTemplate.GetElement(new Windows.UI.Xaml.ElementFactoryGetArgs()
+            UIElement el;
+
+            if (ApiInformation.IsMethodPresent("Windows.UI.Xaml.DataTemplate", "GetElement"))
             {
-                Data = item,
-                Parent = this
-            });
+                el = ItemTemplate.GetElement(new Windows.UI.Xaml.ElementFactoryGetArgs()
+                {
+                    Data = item,
+                    Parent = this
+                });
+            }
+            else
+            {
+                el = ItemTemplate.LoadContent() as UIElement;
+            }
 
             Children.Insert(index, el);
 
-            if (el is FrameworkElement frameworkEl && frameworkEl.DataContext != item)
+            if (index < _childrenCopy.Count)
             {
-                frameworkEl.DataContext = item;
+                _childrenCopy[index] = el;
             }
+            else
+            {
+                _childrenCopy.Add(el);
+            }
+
+            SetDataContext(el, item);
 
             return el;
         }
 
+        private void SetDataContext(UIElement el, object item)
+        {
+            if (el is FrameworkElement frameworkEl && frameworkEl.DataContext != item)
+            {
+                frameworkEl.DataContext = item;
+            }
+        }
+
         private void RecycleElementAt(int index)
         {
-            ItemTemplate.RecycleElement(new Windows.UI.Xaml.ElementFactoryRecycleArgs()
-            {
-                Element = Children[index],
-                Parent = this
-            });
+            var el = _childrenCopy[index];
 
-            if (Children[index] is FrameworkElement fEl)
+            if (el != null)
             {
-                fEl.DataContext = null;
+
+                if (ApiInformation.IsMethodPresent("Windows.UI.Xaml.DataTemplate", "RecycleElement"))
+                {
+                    ItemTemplate.RecycleElement(new Windows.UI.Xaml.ElementFactoryRecycleArgs()
+                    {
+                        Element = el,
+                        Parent = this
+                    });
+                }
+
+                if (el is FrameworkElement fEl)
+                {
+                    fEl.DataContext = null;
+                }
+
+                Children.Remove(el);
             }
 
-            Children.RemoveAt(index);
+            _childrenCopy.RemoveAt(index);
         }
 
         private void RecycleAllElements()
@@ -225,13 +273,18 @@ namespace PowerPlannerUWP.Controls
             }
 
             Children.Clear();
+            _childrenCopy.Clear();
         }
-
-        private bool _exceededHeight;
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            _exceededHeight = false;
+            _itemHeight = null;
+            _lastVisibleIndex = null;
+
+            if (double.IsPositiveInfinity(availableSize.Width))
+            {
+                throw new Exception("Invalid use of VirtualizedItemsControl, it only supports fixed width.");
+            }
 
             if (ItemTemplate == null)
             {
@@ -244,7 +297,7 @@ namespace PowerPlannerUWP.Controls
                 return new Size(availableSize.Width, 0);
             }
 
-            var availableItemSize = new Size(availableSize.Width, double.PositiveInfinity);
+            Size availableItemSize;
 
             double y = 0;
             int i = 0;
@@ -252,70 +305,67 @@ namespace PowerPlannerUWP.Controls
             {
                 var el = GetOrCreateElementAt(i, item);
 
-                el.Measure(availableItemSize);
+                if (_itemHeight == null)
+                {
+                    el.Measure(new Size(availableSize.Width, double.PositiveInfinity));
 
-                y += el.DesiredSize.Height;
+                    _itemHeight = el.DesiredSize.Height;
+
+                    if (double.IsPositiveInfinity(availableSize.Height))
+                    {
+                        _lastVisibleIndex = int.MaxValue;
+                    }
+                    else
+                    {
+                        // If there's only 40 height and items are 50 high, last index would be 0... if there's 80 height and items are 50, last index would be 1, if there's 100 height and items are 50, last index would still be 1
+                        _lastVisibleIndex = (int)Math.Floor(availableSize.Height / _itemHeight.Value);
+                    }
+
+                    availableItemSize = new Size(availableSize.Width, _itemHeight.Value);
+                }
+                else
+                {
+                    el.Measure(availableItemSize);
+                }
 
                 i++;
 
-                if (y >= availableSize.Height)
+                if (i > _lastVisibleIndex.Value)
                 {
-                    _exceededHeight = true;
                     break;
                 }
             }
 
             // Recycle remaining
-            while (i < Children.Count)
+            while (i < _childrenCopy.Count)
             {
                 RecycleElementAt(i);
             }
 
-            return new Size(availableSize.Width, Math.Min(y, availableItemSize.Height));
+            return new Size(availableSize.Width, _lastVisibleIndex.GetValueOrDefault(0) * _itemHeight.GetValueOrDefault(0));
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            if (ItemTemplate == null)
-            {
-                return new Size(finalSize.Width, 0);
-            }
-
-            IEnumerable items = ItemsSource as IEnumerable;
-            if (items == null)
+            if (Children == null)
             {
                 return new Size(finalSize.Width, 0);
             }
 
             double y = 0;
-            int i = 0;
-            foreach (var item in items)
-            {
-                var el = GetOrCreateElementAt(i, item);
 
-                el.Arrange(new Rect(
+            foreach (var child in Children)
+            {
+                child.Arrange(new Rect(
                     x: 0,
                     y: y,
                     width: finalSize.Width,
-                    height: el.DesiredSize.Height));
+                    height: _itemHeight.Value));
 
-                y += el.DesiredSize.Height;
-
-                i++;
-
-                if (y >= finalSize.Height)
-                {
-                    break;
-                }
+                y += _itemHeight.Value;
             }
 
-            // Recycle remaining
-            while (i < Children.Count)
-            {
-                RecycleElementAt(i);
-            }
-
-            return new Size(finalSize.Width, Math.Min(y, finalSize.Height));
+            return new Size(finalSize.Width, y);
         }
     }
 }
