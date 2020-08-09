@@ -7,19 +7,19 @@ using PowerPlannerUWPLibrary.Extensions;
 using System;
 using System.Linq;
 using System.Threading;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.Networking.PushNotifications;
 
-namespace BackgroundTasksProject
+namespace PowerPlannerUWP.BackgroundTasks
 {
-    public sealed class RawPushBackgroundTask : IBackgroundTask
+    public class RawPushBackgroundTask
     {
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public async void Run(IBackgroundTaskInstance taskInstance)
+        public async void Handle(BackgroundActivatedEventArgs args)
         {
-            SharedInitialization.Initialize();
-            InitializeUWP.Initialize();
+            var taskInstance = args.TaskInstance;
 
             taskInstance.Canceled += TaskInstance_Canceled;
 

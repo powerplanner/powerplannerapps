@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.UI.StartScreen;
 using static PowerPlannerUWPLibrary.TileHelpers.TileHelper;
 
-namespace PowerPlannerUWPLibrary.TileHelpers
+namespace PowerPlannerUWP.TileHelpers
 {
     public static class QuickAddTileHelper
     {

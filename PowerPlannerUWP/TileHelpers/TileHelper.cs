@@ -24,7 +24,7 @@ using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerUWPLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
 
-namespace PowerPlannerUWPLibrary.TileHelpers
+namespace PowerPlannerUWP.TileHelpers
 {
     public static class TileHelper
     {

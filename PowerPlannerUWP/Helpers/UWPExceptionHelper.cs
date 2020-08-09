@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
 
-namespace PowerPlannerUWPLibrary.Helpers
+namespace PowerPlannerUWP.Helpers
 {
     public static class UWPExceptionHelper
     {

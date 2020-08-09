@@ -1,5 +1,4 @@
-﻿using BackgroundTasksProject;
-using InterfacesUWP;
+﻿using InterfacesUWP;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerSending;
 using PowerPlannerUWP.ViewModel;
@@ -9,7 +8,6 @@ using PowerPlannerUWP.Views.GradeViews;
 using PowerPlannerUWP.Views.SettingsViews;
 using PowerPlannerUWP.Views.YearViews;
 using PowerPlannerUWP.WindowHosts;
-using PowerPlannerUWPLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.SyncLayer;
@@ -47,7 +45,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
-using PowerPlannerUWPLibrary.Extensions;
+using PowerPlannerUWP.Extensions;
 using StorageEverywhere;
 using InterfacesUWP.ViewModelPresenters;
 using Windows.UI.Xaml.Data;
@@ -76,7 +74,7 @@ using PowerPlannerUWP.ViewModel.Promos;
 using PowerPlannerUWP.Views.Promos;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerUWPLibrary.Helpers;
+using PowerPlannerUWP.Helpers;
 using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using Windows.ApplicationModel.DataTransfer;
 using PowerPlannerAppDataLibrary.Helpers;
@@ -85,6 +83,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
+using PowerPlannerUWP.BackgroundTasks;
 
 namespace PowerPlannerUWP
 {
@@ -952,7 +951,7 @@ namespace PowerPlannerUWP
         {
             try
             {
-                var builder = CreateBackgroundTaskBuilder("RawPushBackgroundTask", typeof(RawPushBackgroundTask));
+                var builder = CreateBackgroundTaskBuilder("RawPushBackgroundTask");
 
                 // Trigger on raw push received
                 builder.SetTrigger(new PushNotificationTrigger());
@@ -973,7 +972,7 @@ namespace PowerPlannerUWP
 
         private static void RegisterInfrequentBackgroundTask()
         {
-            var builder = CreateBackgroundTaskBuilder("InfrequentBackgroundTask", typeof(InfrequentBackgroundTask));
+            var builder = CreateBackgroundTaskBuilder("InfrequentBackgroundTask");
 
             // Run every 4 days
             builder.SetTrigger(new MaintenanceTrigger(5760, false));
@@ -981,12 +980,11 @@ namespace PowerPlannerUWP
             builder.Register();
         }
 
-        private static BackgroundTaskBuilder CreateBackgroundTaskBuilder(string name, Type backgroundTaskClassType)
+        private static BackgroundTaskBuilder CreateBackgroundTaskBuilder(string name)
         {
             return new BackgroundTaskBuilder()
             {
-                Name = name,
-                TaskEntryPoint = backgroundTaskClassType.FullName
+                Name = name
             };
         }
 
@@ -1131,6 +1129,19 @@ namespace PowerPlannerUWP
         public static bool IsMobile()
         {
             return InterfacesUWP.DeviceInfo.GetCurrentDeviceFormFactor() == DeviceFormFactor.Mobile;
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            if (args.TaskInstance.Task.Name == "InfrequentBackgroundTask")
+            {
+                new InfrequentBackgroundTask().Handle(args);
+            }
+
+            else if (args.TaskInstance.Task.Name == "RawPushBackgroundTask")
+            {
+                new RawPushBackgroundTask().Handle(args);
+            }
         }
     }
 }

@@ -5,18 +5,18 @@ using PowerPlannerUWPLibrary;
 using PowerPlannerUWPLibrary.TileHelpers;
 using System;
 using System.Threading;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 
-namespace BackgroundTasksProject
+namespace PowerPlannerUWP.BackgroundTasks
 {
-    public sealed class InfrequentBackgroundTask : IBackgroundTask
+    public class InfrequentBackgroundTask
     {
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public async void Run(IBackgroundTaskInstance taskInstance)
+        public async void Handle(BackgroundActivatedEventArgs args)
         {
-            SharedInitialization.Initialize();
-            InitializeUWP.Initialize();
+            var taskInstance = args.TaskInstance;
 
             taskInstance.Canceled += TaskInstance_Canceled;
 

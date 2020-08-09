@@ -19,7 +19,7 @@ using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using static PowerPlannerUWPLibrary.TileHelpers.TileHelper;
 
-namespace PowerPlannerUWPLibrary.TileHelpers
+namespace PowerPlannerUWP.TileHelpers
 {
     public static class ScheduleTileHelper
     {

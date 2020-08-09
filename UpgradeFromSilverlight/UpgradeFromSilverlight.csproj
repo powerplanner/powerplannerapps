@@ -155,10 +155,6 @@
       <Project>{d5f159b7-addd-4c88-9f45-8a12e37f8052}</Project>
       <Name>PowerPlannerAppDataLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerUWPLibrary\PowerPlannerUWPLibrary.csproj">
-      <Project>{d774c2e4-f876-4dc7-968f-c500cef208d7}</Project>
-      <Name>PowerPlannerUWPLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">

@@ -117,7 +117,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="App\InitializeUWP.cs" />
+    <Compile Include="App\LocalizedResources.cs" />
     <Compile Include="App\PowerPlannerUwpApp.cs" />
+    <Compile Include="App\Secrets.cs" />
+    <Compile Include="App\Secrets.template.cs" />
+    <Compile Include="BackgroundTasks\InfrequentBackgroundTask.cs" />
+    <Compile Include="BackgroundTasks\RawPushBackgroundTask.cs" />
     <Compile Include="Controls\AbTestControl.cs" />
     <Compile Include="Controls\TimePickers\EndTimePicker.cs" />
     <Compile Include="Controls\TimePickers\EnhancedTimePicker.cs" />
@@ -160,8 +166,27 @@
     <Compile Include="Converters\StringToImageThumbnailConverter.cs" />
     <Compile Include="Converters\TimeToShortTimeConverter.cs" />
     <Compile Include="DataTemplateSelectors\ScheduleAllDayItemTemplateSelector.cs" />
+    <Compile Include="Extensions\UWPAppointmentsExtension.cs" />
+    <Compile Include="Extensions\UWPDateTimeFormatterExtension.cs" />
+    <Compile Include="Extensions\UWPImagePickerExtension.cs" />
+    <Compile Include="Extensions\UWPInAppPurchaseExtension.cs" />
+    <Compile Include="Extensions\UWPLanguageExtension.cs" />
+    <Compile Include="Extensions\UWPLocalizationExtension.cs" />
+    <Compile Include="Extensions\UWPNetworkInfoExtension.cs" />
+    <Compile Include="Extensions\UWPPushExtension.cs" />
+    <Compile Include="Extensions\UWPRemindersExtension.cs" />
+    <Compile Include="Extensions\UWPTelemetryExtension.cs" />
+    <Compile Include="Extensions\UWPTilesExtension.cs" />
+    <Compile Include="Helpers\DataPackageHelpers.cs" />
+    <Compile Include="Helpers\QueryStringHelper.cs" />
+    <Compile Include="Helpers\UWPExceptionHelper.cs" />
+    <Compile Include="Helpers\UWPNotificationsHelper.cs" />
     <Compile Include="MenuButtons\CancelAndDelete.cs" />
     <Compile Include="MenuButtons\CancelAndDeleteBlue.cs" />
+    <Compile Include="TileHelpers\ClassTileHelper.cs" />
+    <Compile Include="TileHelpers\QuickAddTileHelper.cs" />
+    <Compile Include="TileHelpers\ScheduleTileHelper.cs" />
+    <Compile Include="TileHelpers\TileHelper.cs" />
     <Compile Include="ViewModel\MainWindow\MainScreen\Schedule\ExportSchedulePopupViewModel.cs" />
     <Compile Include="ViewModel\Promos\PromoOtherPlatformsViewModel.cs" />
     <Compile Include="ViewModel\Settings\ClassTilesPagedHostViewModel.cs" />
@@ -1040,17 +1065,9 @@
       <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
       <Name>ToolsUniversal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BackgroundTasksProject\BackgroundTasksProject.csproj">
-      <Project>{c976870d-f711-46d3-838c-e2dccc77ee31}</Project>
-      <Name>BackgroundTasksProject</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj">
       <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
       <Name>PowerPlannerAppDataLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerUWPLibrary\PowerPlannerUWPLibrary.csproj">
-      <Project>{d774c2e4-f876-4dc7-968f-c500cef208d7}</Project>
-      <Name>PowerPlannerUWPLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\UpgradeFromSilverlight\UpgradeFromSilverlight.csproj">
       <Project>{e8a794f8-2f18-4184-a4a9-ee02ac8d3374}</Project>
@@ -1089,6 +1106,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -11,7 +11,7 @@ using System;
 using ToolsPortable;
 using Windows.ApplicationModel;
 
-namespace PowerPlannerUWPLibrary
+namespace PowerPlannerUWP
 {
     public static class InitializeUWP
     {

@@ -232,4 +232,4 @@ PowerPlannerAppDataLibrary/App/Secrets.cs
 PowerPlannerAndroid/App/Secrets.cs
 PowerPlannerAndroid/google-services.json
 PowerPlanneriOS/App/Secrets.cs
-PowerPlannerUWPLibrary/App/Secrets.cs
+PowerPlannerUWP/App/Secrets.cs
