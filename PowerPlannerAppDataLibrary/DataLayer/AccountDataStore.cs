@@ -280,30 +280,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private ChangedItems _loadedChangedItems;
 
-        private const string WAS_UPDATED_BY_BACKGROUND_TASK = "WasUpdatedByBackground";
-
-        /// <summary>
-        /// If data was updated by background task, clears cached accounts/data, resets flag to false, and returns true.
-        /// </summary>
-        /// <returns></returns>
-        public static bool RetrieveAndResetWasUpdatedByBackgroundTask()
-        {
-            if (Settings.WasUpdatedByBackgroundTask)
-            {
-                _dataStoreCache.Clear();
-                AccountsManager.ClearCachedAccounts();
-                Settings.WasUpdatedByBackgroundTask = false;
-                return true;
-            }
-
-            return false;
-        }
-
-        public static void SetUpdatedByBackgroundTask()
-        {
-            Settings.WasUpdatedByBackgroundTask = true;
-        }
-
         public static event EventHandler<DataChangedEvent> DataChangedEvent;
         private static List<WeakReference<IDataChangedEventHandler>> _dataChangedEventHandlers = new List<WeakReference<IDataChangedEventHandler>>();
         public static void AddDataChangedEventHandler(IDataChangedEventHandler handler)

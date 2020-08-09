@@ -47,13 +47,6 @@ namespace PowerPlannerUWP.BackgroundTasks
 
                     var result = await Sync.SyncAccountAsync(account);
 
-                    // If succeeded
-                    if (result != null && result.Error == null)
-                    {
-                        // Flag as updated by background task so foreground app can update data
-                        AccountDataStore.SetUpdatedByBackgroundTask();
-                    }
-
                     // Need to wait for the tile/toast tasks to finish before we release the deferral
                     if (result != null && result.SaveChangesTask != null)
                     {

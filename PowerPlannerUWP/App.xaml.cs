@@ -228,9 +228,6 @@ namespace PowerPlannerUWP
         {
             try
             {
-                // Always call this just to reset value back to false, since Resuming isn't called all the time
-                AccountDataStore.RetrieveAndResetWasUpdatedByBackgroundTask();
-
 #if DEBUG
                 //if (System.Diagnostics.Debugger.IsAttached)
                 //{

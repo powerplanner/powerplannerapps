@@ -74,7 +74,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
         private const string HAS_ASKED_FOR_RATING = "HasAskedForRating";
         private const string HAS_REVIEWED_OR_EMAILED_DEV = "HasReviewedOrEmailedDev";
-        private const string WAS_UPDATED_BY_BACKGROUND_TASK = "WasUpdatedByBackground";
         private const string LAST_LOGIN_LOCAL_ID = "LastLogin";
         private const string LAST_SELECTED_TIME_OPTION_FOR_TASK_WITHOUT_CLASS = "LastTimeOptionTaskNoClass";
         private const string LAST_SELECTED_TIME_OPTION_FOR_EVENT_WIHTOUT_CLASS = "LastTimeOptionEventNoClass";
@@ -178,22 +177,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 {
                     AppSettings.Remove(HAS_SHOWN_PROMO_CONTRIBUTE);
                 }
-            }
-        }
-
-        public static bool WasUpdatedByBackgroundTask
-        {
-            get
-            {
-                return AppSettings.GetValueOrDefault(WAS_UPDATED_BY_BACKGROUND_TASK, false);
-            }
-
-            set
-            {
-                if (value)
-                    AppSettings.AddOrUpdateValue(WAS_UPDATED_BY_BACKGROUND_TASK, true);
-                else
-                    AppSettings.Remove(WAS_UPDATED_BY_BACKGROUND_TASK);
             }
         }
 

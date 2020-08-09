@@ -446,7 +446,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             _timeLeftAt = DateTime.Now;
 
             // If the day has changed (went from yesterday to today), reset the entire view model
-            if (timeLeftAt.Date != DateTime.Now.Date || AccountDataStore.RetrieveAndResetWasUpdatedByBackgroundTask())
+            if (timeLeftAt.Date != DateTime.Now.Date)
             {
                 await HandleNormalLaunchActivation();
                 return;
