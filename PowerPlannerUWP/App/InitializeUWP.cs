@@ -26,12 +26,14 @@ namespace PowerPlannerUWP
 
             Variables.VERSION = new Version(Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision);
 
+#if !DEBUG
             try
             {
                 AppCenter.Start(APP_CENTER_APP_SECRET, typeof(Crashes), typeof(Analytics));
             }
 
             catch { }
+#endif
 
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for Windows 10"; };
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetPlatform = delegate
