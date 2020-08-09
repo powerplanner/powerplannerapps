@@ -111,6 +111,27 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return account;
         }
 
+        public static async Task<AccountDataItem> GetOrLoadOnlineAccount(long onlineAccountId)
+        {
+            lock (_cachedAccounts)
+            {
+                foreach (var cached in _cachedAccounts.Values)
+                {
+                    var account = cached.Account;
+                    if (account != null)
+                    {
+                        if (account.AccountId == onlineAccountId)
+                        {
+                            return account;
+                        }
+                    }
+                }
+            }
+
+            var allAccounts = await GetAllAccounts();
+            return allAccounts.FirstOrDefault(i => i.AccountId == onlineAccountId);
+        }
+
         private static async Task<AccountDataItem> GetOrLoadHelper(Guid localAccountId)
         {
             Debug.WriteLine("GetOrLoad Account: " + localAccountId);

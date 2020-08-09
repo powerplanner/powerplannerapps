@@ -34,7 +34,7 @@ namespace PowerPlannerUWP.BackgroundTasks
                 if (accountId == 0)
                     return;
 
-                AccountDataItem account = (await AccountsManager.GetAllAccounts()).FirstOrDefault(i => i.AccountId == accountId);
+                AccountDataItem account = await AccountsManager.GetOrLoadOnlineAccount(accountId);
 
                 if (account == null)
                     return;
