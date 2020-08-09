@@ -1,36 +1,19 @@
 ﻿using InterfacesUWP;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerSending;
-using PowerPlannerUWP.ViewModel;
 using PowerPlannerUWP.Views;
-using PowerPlannerUWP.Views.ClassViews;
-using PowerPlannerUWP.Views.GradeViews;
 using PowerPlannerUWP.Views.SettingsViews;
-using PowerPlannerUWP.Views.YearViews;
-using PowerPlannerUWP.WindowHosts;
 using PowerPlannerAppDataLibrary.DataLayer;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems;
-using PowerPlannerAppDataLibrary.SyncLayer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using ToolsPortable;
 using ToolsUniversal;
-using UpgradeFromSilverlight;
-using UpgradeFromWin8;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
-using Windows.ApplicationModel.Core;
-using Windows.ApplicationModel.Email;
-using Windows.ApplicationModel.Resources;
-using Windows.ApplicationModel.Store;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
-using Windows.Globalization;
-using Windows.Networking.PushNotifications;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.UI;
@@ -39,18 +22,10 @@ using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Shapes;
 using PowerPlannerUWP.Extensions;
 using StorageEverywhere;
-using InterfacesUWP.ViewModelPresenters;
-using Windows.UI.Xaml.Data;
 using InterfacesUWP.App;
-using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
@@ -200,30 +175,16 @@ namespace PowerPlannerUWP
             };
         }
 
-        private void OnEntering()
-        {
-            try
-            {
-                // Remove/cancel all background tasks when the app is open
-                UnregisterAllBackgroundTasks();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
         private void OnResuming(object sender, object e)
         {
-            OnEntering();
         }
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             TelemetryExtension.Current?.TrackException(e.Exception);
         }
-        
+
+        private bool _registeredBackgroundTasks = false;
         protected override async System.Threading.Tasks.Task OnLaunchedOrActivated(IActivatedEventArgs e)
         {
             try
@@ -234,8 +195,35 @@ namespace PowerPlannerUWP
                 //    this.DebugSettings.EnableFrameRateCounter = true;
                 //}
 #endif
-                
-                OnEntering();
+
+                // Register background tasks
+                if (!_registeredBackgroundTasks)
+                {
+                    try
+                    {
+                        // Make sure none are registered (they should have already been unregistered)
+                        UnregisterAllBackgroundTasks();
+
+                        RegisterInfrequentBackgroundTask();
+                        RegisterRawPushBackgroundTask();
+                    }
+
+                    catch (Exception ex)
+                    {
+                        if (UWPExceptionHelper.TrackIfRpcServerUnavailable(ex, "RegisterBgTasks"))
+                        {
+                        }
+                        else if (UWPExceptionHelper.TrackIfPathInvalid(ex, "RegisterBgTasks"))
+                        {
+                        }
+                        else
+                        {
+                            TelemetryExtension.Current?.TrackException(ex);
+                        }
+                    }
+
+                    _registeredBackgroundTasks = true;
+                }
 
                 // Wait for initialization to complete, to ensure we don't accidently add multiple windows
                 // Although right now we don't even do any async tasks, so this will be useless
@@ -892,50 +880,6 @@ namespace PowerPlannerUWP
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
-
-            //NotificationsExtensions.Toasts.ToastContent c = new NotificationsExtensions.Toasts.ToastContent()
-            //{
-            //    Visual = new NotificationsExtensions.Toasts.ToastVisual()
-            //    {
-            //        TitleText = new NotificationsExtensions.Toasts.ToastText()
-            //        {
-            //            Text = "Suspended"
-            //        }
-            //    }
-            //};
-
-            //Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier().Show(new Windows.UI.Notifications.ToastNotification(c.GetXml()));
-
-            //TODO: Save application state and stop any background activity
-
-            // TODO: Cancel any current syncs
-
-            // Register the tasks
-            try
-            {
-                // Make sure none are registered (they should have already been unregistered)
-                UnregisterAllBackgroundTasks();
-
-                RegisterInfrequentBackgroundTask();
-                RegisterRawPushBackgroundTask();
-            }
-
-            catch (Exception ex)
-            {
-                if (UWPExceptionHelper.TrackIfRpcServerUnavailable(ex, "RegisterBgTasks"))
-                {
-                }
-                else if (UWPExceptionHelper.TrackIfPathInvalid(ex, "RegisterBgTasks"))
-                {
-                }
-                else
-                {
-                    TelemetryExtension.Current?.TrackException(ex);
-                }
-            }
-
-            deferral.Complete();
         }
 
         private static void UnregisterAllBackgroundTasks()
