@@ -98,6 +98,10 @@ namespace PowerPlannerAndroid.Views.Controls
                 {
                     e.Handled = _snapshot.CloseExpandedEvents();
                 }
+                else
+                {
+                    e.Handled = false;
+                }
             }
             catch { }
         }
@@ -142,7 +146,7 @@ namespace PowerPlannerAndroid.Views.Controls
                                 {
                                     try
                                     {
-                                        _recyclerView.ScrollToPosition(_indexToScrollTo.Value);
+                                        _recyclerView.SmoothScrollToPosition(_indexToScrollTo.Value);
                                     }
                                     catch { }
 
