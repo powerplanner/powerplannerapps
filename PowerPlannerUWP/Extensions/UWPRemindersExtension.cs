@@ -201,7 +201,12 @@ namespace PowerPlannerUWP.Extensions
 #pragma warning restore 0612
                             .SetLocalAccountId(account.LocalAccountId)
                             .SetAction("DayBeforeHomeworkReminder")
-                            .ToString()
+                            .ToString(),
+                            markCompleteArgs: new MarkTasksCompleteArguments()
+                            {
+                                LocalAccountId = account.LocalAccountId,
+                                ItemIds = tasks.Select(i => i.Identifier).ToArray()
+                            }.SerializeToString()
                         );
 
                         string remoteId = null;
@@ -282,7 +287,12 @@ namespace PowerPlannerUWP.Extensions
                         TrimString(h.Name, 200),
                         subtitle,
                         TrimString(h.Details, 200),
-                        ArgumentsHelper.CreateArgumentsForView(h, account.LocalAccountId).SerializeToString()
+                        ArgumentsHelper.CreateArgumentsForView(h, account.LocalAccountId).SerializeToString(),
+                        markCompleteArgs: h.Type == TaskOrEventType.Task ? new MarkTasksCompleteArguments()
+                        {
+                            LocalAccountId = account.LocalAccountId,
+                            ItemIds = new Guid[] { h.Identifier }
+                        }.SerializeToString() : null
                     );
 
                     string remoteId = null;
@@ -350,7 +360,7 @@ namespace PowerPlannerUWP.Extensions
             return notif;
         }
 
-        private static XmlDocument GenerateToastReminder(string title, string item1, string item2, string launch)
+        private static XmlDocument GenerateToastReminder(string title, string item1, string item2, string launch, string markCompleteArgs = null)
         {
             ToastBindingGeneric binding = new ToastBindingGeneric()
             {
@@ -419,10 +429,14 @@ namespace PowerPlannerUWP.Extensions
                 }
             };
 
-            //XmlDocument doc = new XmlDocument();
-            //doc.LoadXml(content.GetContent());
+            if (markCompleteArgs != null)
+            {
+                (content.Actions as ToastActionsCustom).Buttons.Insert(0, new ToastButton("Complete", markCompleteArgs)
+                {
+                    ActivationType = ToastActivationType.Background
+                });
+            }
 
-            //return doc;
             return content.GetXml();
         }
 

@@ -179,6 +179,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private Dictionary<Guid, BaseDataItem> _storage = new Dictionary<Guid, BaseDataItem>();
 
+        /// <summary>
+        /// A collection of ids of items that are purely for editing (if item doesn't exist, don't commit any changes).
+        /// </summary>
+        private HashSet<Guid> _onlyEditItems;
+
         private bool DoesGuidExist(Guid id)
         {
             return _storage.ContainsKey(id);
@@ -188,7 +193,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// Adds a new or edited item
         /// </summary>
         /// <param name="item"></param>
-        public void Add(BaseDataItem item, bool throwIfExists = true)
+        public void Add(BaseDataItem item, bool throwIfExists = true, bool onlyEdit = false)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -207,6 +212,21 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 _storage[item.Identifier] = item;
             }
+
+            if (onlyEdit)
+            {
+                if (_onlyEditItems == null)
+                {
+                    _onlyEditItems = new HashSet<Guid>();
+                }
+
+                _onlyEditItems.Add(item.Identifier);
+            }
+        }
+
+        public bool ShouldCreateNewItem(Guid identifier)
+        {
+            return _onlyEditItems == null || !_onlyEditItems.Contains(identifier);
         }
 
         public void DeleteItem(Guid identifier, bool throwIfExists = true)
@@ -1468,19 +1488,22 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 // If there wasn't an existing data item
                 if (existing == null)
                 {
-                    // We let this edited item become the item to save
-                    BaseDataItem newItem = edited;
+                    if (dataChanges.ShouldCreateNewItem(edited.Identifier))
+                    {
+                        // We let this edited item become the item to save
+                        BaseDataItem newItem = edited;
 
-                    // And we also assign the DateCreated if this is local
-                    if (processType == ProcessType.Local)
-                        newItem.DateCreated = now;
+                        // And we also assign the DateCreated if this is local
+                        if (processType == ProcessType.Local)
+                            newItem.DateCreated = now;
 
-                    // Flag that it's a new item
-                    if (changedItems != null)
-                        changedItems.AddNewItem(newItem.Identifier);
+                        // Flag that it's a new item
+                        if (changedItems != null)
+                            changedItems.AddNewItem(newItem.Identifier);
 
-                    // Add it to our collection of new items to save
-                    newDataItems.Add(newItem);
+                        // Add it to our collection of new items to save
+                        newDataItems.Add(newItem);
+                    }
                 }
 
                 // Otherwise we need to copy properties into the existing

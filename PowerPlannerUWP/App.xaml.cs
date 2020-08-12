@@ -206,6 +206,7 @@ namespace PowerPlannerUWP
 
                         RegisterInfrequentBackgroundTask();
                         RegisterRawPushBackgroundTask();
+                        RegisterToastBackgroundTask();
                     }
 
                     catch (Exception ex)
@@ -921,6 +922,15 @@ namespace PowerPlannerUWP
             builder.Register();
         }
 
+        private static void RegisterToastBackgroundTask()
+        {
+            var builder = CreateBackgroundTaskBuilder("ToastBackgroundTask");
+
+            builder.SetTrigger(new ToastNotificationActionTrigger());
+
+            builder.Register();
+        }
+
         private static BackgroundTaskBuilder CreateBackgroundTaskBuilder(string name)
         {
             return new BackgroundTaskBuilder()
@@ -1082,6 +1092,11 @@ namespace PowerPlannerUWP
             else if (args.TaskInstance.Task.Name == "RawPushBackgroundTask")
             {
                 new RawPushBackgroundTask().Handle(args);
+            }
+
+            else if (args.TaskInstance.Task.Name == "ToastBackgroundTask")
+            {
+                new ToastBackgroundTask().Handle(args);
             }
         }
     }

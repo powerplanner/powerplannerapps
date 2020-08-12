@@ -282,7 +282,7 @@ namespace PowerPlannerAppDataLibrary.App
             return SaveChanges(account, changes);
         }
 
-        public async System.Threading.Tasks.Task SaveChanges(AccountDataItem account, DataChanges changes)
+        public async System.Threading.Tasks.Task SaveChanges(AccountDataItem account, DataChanges changes, bool waitForSaveAndSyncTasks = false)
         {
             if (account == null)
             {
@@ -290,12 +290,34 @@ namespace PowerPlannerAppDataLibrary.App
             }
 
             var dataStore = await AccountDataStore.Get(account.LocalAccountId);
-            await dataStore.ProcessLocalChanges(changes);
+            var saveChangeTasks = await dataStore.ProcessLocalChanges(changes);
+            System.Threading.Tasks.Task<SyncResult> syncTask = null;
 
             // Don't await this, we don't want it blocking
             if (account.IsOnlineAccount)
             {
-                SyncWithoutBlocking(account);
+                if (waitForSaveAndSyncTasks)
+                {
+                    syncTask = Sync.SyncAccountAsync(account);
+                }
+                else
+                {
+                    SyncWithoutBlocking(account);
+                }
+            }
+
+            if (waitForSaveAndSyncTasks)
+            {
+                // Need to wait for the tile/toast tasks to finish
+                await saveChangeTasks.WaitForAllTasksAsync();
+                if (syncTask != null)
+                {
+                    var syncResult = await syncTask;
+                    if (syncResult != null && syncResult.SaveChangesTask != null)
+                    {
+                        await syncResult.SaveChangesTask.WaitForAllTasksAsync();
+                    }
+                }
             }
         }
 
