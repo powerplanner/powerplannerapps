@@ -129,9 +129,6 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                     changed = true;
                 }
 
-                if (changed)
-                    _semester.Classes.Sort();
-
                 return changed;
             }
 
@@ -162,7 +159,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 foreach (var c in e.NewItems.OfType<DataItemClass>().Where(i => _semester.IsChild(i)))
                 {
                     var newViewClass = _semester._createClassMethod.Invoke(c);
-                    _semester.Classes.Add(newViewClass);
+                    _semester.Classes.InsertSorted(newViewClass);
                     changed = true;
                 }
 
@@ -181,7 +178,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                     }
                 }
 
-                // And then re-sort
+                // And then re-sort (for any edited classes)
                 if (changed)
                     _semester.Classes.Sort();
 
@@ -233,7 +230,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             viewClass.Semester = this;
 
             if (Classes != null)
-                Classes.Add(viewClass);
+                Classes.InsertSorted(viewClass);
         }
 
         public void CalculateEverything()
