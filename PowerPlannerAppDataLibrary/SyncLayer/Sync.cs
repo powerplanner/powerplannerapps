@@ -743,7 +743,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     try
                     {
                         Debug.WriteLine("Updating class reminders");
-                        answer.SaveChangesTask.UpdateClassRemindersTask = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account, accountDataStore);
+                        answer.SaveChangesTask.UpdateClassRemindersTask = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account);
                     }
 
                     catch (Exception ex)

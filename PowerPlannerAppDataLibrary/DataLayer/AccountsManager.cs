@@ -297,6 +297,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             account.LocalAccountId = localAccountId;
 
             SyncLayer.Sync.ChangedSetting? changedSettings = null;
+            bool needsClassRemindersReset = false;
 
             // Upgrade account data
             if (account.AccountDataVersion < 2)
@@ -349,6 +350,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 // Set to the default timespan (otherwise this would be null when upgrading)
                 account.ClassRemindersTimeSpan = AccountDataItem.DefaultClassRemindersTimeSpan;
+                needsClassRemindersReset = true;
             }
 
             if (account.AccountDataVersion < AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION)
@@ -360,6 +362,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (changedSettings != null)
             {
                 _ = SyncLayer.Sync.SyncSettings(account, changedSettings.Value);
+            }
+
+            if (needsClassRemindersReset)
+            {
+                _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account);
             }
 
             return account;

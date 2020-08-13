@@ -149,7 +149,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 if (_account.AreClassRemindersEnabled())
                 {
-                    await ClassRemindersExtension.Current?.ResetAllRemindersAsync(_account, await AccountDataStore.Get(_account.LocalAccountId));
+                    await ClassRemindersExtension.Current?.ResetAllRemindersAsync(_account);
                 }
                 else
                 {

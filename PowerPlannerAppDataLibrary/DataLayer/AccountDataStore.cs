@@ -1418,7 +1418,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 try
                 {
                     Debug.WriteLine("Updating class reminders");
-                    pendingTasks.UpdateClassRemindersTask = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account, this);
+                    pendingTasks.UpdateClassRemindersTask = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account);
                 }
 
                 catch (Exception ex)

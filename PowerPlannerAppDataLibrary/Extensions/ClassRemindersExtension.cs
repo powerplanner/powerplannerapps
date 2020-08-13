@@ -13,7 +13,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
         public static ClassRemindersExtension Current { get; set; }
 
         private SimpleAsyncWorkerQueue _workQueue = new SimpleAsyncWorkerQueue();
-        public Task ResetAllRemindersAsync(AccountDataItem account, AccountDataStore data)
+        public Task ResetAllRemindersAsync(AccountDataItem account)
         {
             // If they weren't enabled, we won't do anything. The only time they get disabled is from settings, and we'll clear when that happens.
             if (!account.AreClassRemindersEnabled())

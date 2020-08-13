@@ -255,7 +255,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 AccountDataStore data = await AccountDataStore.Get(this.LocalAccountId);
 
-                _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this, data);
+                _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this);
                 _ = RemindersExtension.Current?.ResetReminders(this, data);
 
                 _ = System.Threading.Tasks.Task.Run(delegate
@@ -283,7 +283,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             AccountDataStore data = await AccountDataStore.Get(this.LocalAccountId);
 
-            _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this, data);
+            _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this);
             _ = RemindersExtension.Current?.ResetReminders(this, data);
 
             _ = System.Threading.Tasks.Task.Run(delegate
@@ -816,7 +816,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             var dataStore = await AccountDataStore.Get(this.LocalAccountId);
 
             AppointmentsExtension.Current?.ResetAll(this, dataStore);
-            _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this, dataStore);
+            _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this);
             _ = RemindersExtension.Current?.ResetReminders(this, dataStore);
 
             _ = TilesExtension.Current?.UpdateTileNotificationsForAccountAsync(this, dataStore);
