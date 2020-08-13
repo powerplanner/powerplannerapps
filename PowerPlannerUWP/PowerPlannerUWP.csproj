@@ -168,6 +168,7 @@
     <Compile Include="Converters\TimeToShortTimeConverter.cs" />
     <Compile Include="DataTemplateSelectors\ScheduleAllDayItemTemplateSelector.cs" />
     <Compile Include="Extensions\UWPAppointmentsExtension.cs" />
+    <Compile Include="Extensions\UWPClassRemindersExtension.cs" />
     <Compile Include="Extensions\UWPDateTimeFormatterExtension.cs" />
     <Compile Include="Extensions\UWPImagePickerExtension.cs" />
     <Compile Include="Extensions\UWPInAppPurchaseExtension.cs" />

@@ -17,6 +17,7 @@ using ToolsUniversal;
 using Microsoft.Toolkit.Uwp.Notifications;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerUWP.Helpers;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerUWP.Extensions
 {
@@ -90,7 +91,7 @@ namespace PowerPlannerUWP.Extensions
 
         private void ClearReminders(Guid localAccountId, CancellationToken token)
         {
-            foreach (var n in ToastNotifier.GetScheduledToastNotifications().Where(i => i.Id.Equals(GetId(localAccountId))).ToArray())
+            foreach (var n in ToastNotifier.GetScheduledToastNotifications().Where(i => i.Id == GetId(localAccountId)).ToArray())
             {
                 token.ThrowIfCancellationRequested();
 
@@ -103,7 +104,7 @@ namespace PowerPlannerUWP.Extensions
             return localAccountId.GetHashCode().ToString();
         }
 
-        private static string GetId(AccountDataItem account)
+        public static string GetId(AccountDataItem account)
         {
             return GetId(account.LocalAccountId);
         }
@@ -133,14 +134,14 @@ namespace PowerPlannerUWP.Extensions
                 AgendaViewItemsGroup viewModel = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, viewModelSchedule.Semester, DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local), trackChanges: true);
 
                 // Data we need to load and hold are...
-                // - Items due today or greater
+                // - Items due today or greater (limit it to 8 days, we'll run background tasks to reschedule)
                 // - All schedules
                 // We don't need to worry about holding a lock though, if the collections change and that breaks us, that's fine,
                 // that implies that the data has been changed anyways and another ResetReminders will come in.
                 // Therefore we should also expect to get some exceptions here.
 
                 allSchedules = viewModelSchedule.Classes.SelectMany(i => i.Schedules).ToArray();
-                itemsDueTodayOrGreater = viewModel.Items.Where(i => i.Date.Date >= DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local)).ToArray();
+                itemsDueTodayOrGreater = viewModel.Items.Where(i => i.Date.Date >= DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local) && i.Date.Date <= DateTime.SpecifyKind(todayAsUtc.AddDays(8), DateTimeKind.Local)).ToArray();
             }
             catch
             {
@@ -406,14 +407,14 @@ namespace PowerPlannerUWP.Extensions
                         {
                             Items =
                             {
-                                new ToastSelectionBoxItem("5", "5 minutes"),
-                                new ToastSelectionBoxItem("15", "15 minutes"),
-                                new ToastSelectionBoxItem("60", "1 hour"),
-                                new ToastSelectionBoxItem("240", "4 hours"),
-                                new ToastSelectionBoxItem("1440", "1 day")
+                                new ToastSelectionBoxItem("5", PowerPlannerResources.GetXMinutes(5)),
+                                new ToastSelectionBoxItem("15", PowerPlannerResources.GetXMinutes(5)),
+                                new ToastSelectionBoxItem("60", PowerPlannerResources.GetXHours(1)),
+                                new ToastSelectionBoxItem("240", PowerPlannerResources.GetXHours(4)),
+                                new ToastSelectionBoxItem("1440", PowerPlannerResources.GetString("String_OneDay"))
                             },
 
-                            DefaultSelectionBoxItemId = "5"
+                            DefaultSelectionBoxItemId = "15"
                         }
                     },
 
@@ -431,7 +432,7 @@ namespace PowerPlannerUWP.Extensions
 
             if (markCompleteArgs != null)
             {
-                (content.Actions as ToastActionsCustom).Buttons.Insert(0, new ToastButton("Complete", markCompleteArgs)
+                (content.Actions as ToastActionsCustom).Buttons.Insert(0, new ToastButton(PowerPlannerResources.GetString("String_Complete"), markCompleteArgs)
                 {
                     ActivationType = ToastActivationType.Background
                 });

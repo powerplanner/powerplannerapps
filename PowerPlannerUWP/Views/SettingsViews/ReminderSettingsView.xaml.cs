@@ -1,4 +1,5 @@
 ﻿using InterfacesUWP.Views;
+using PowerPlannerAppDataLibrary;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -12,6 +13,8 @@ namespace PowerPlannerUWP.Views.SettingsViews
         public ReminderSettingsView()
         {
             this.InitializeComponent();
+
+            TextBlockRemindMe.Text = PowerPlannerResources.GetString("String_RemindMe");
         }
     }
 }

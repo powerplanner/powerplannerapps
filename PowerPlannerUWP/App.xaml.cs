@@ -703,6 +703,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2008, 12, 0))
+                    {
+                        changedText += "\n - Reminders for class schedule!";
+                    }
+
                     if (v <= new Version(2007, 30, 1, 99))
                     {
                         changedText += "\n - Fixed order of tasks so incomplete tasks are displayed first";

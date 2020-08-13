@@ -99,6 +99,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
     {
         public System.Threading.Tasks.Task UpdateTilesTask { get; internal set; }
 
+        public System.Threading.Tasks.Task UpdateClassRemindersTask { get; internal set; }
+
         public System.Threading.Tasks.Task UpdateRemindersTask { get; internal set; }
 
         public bool NeedsAccountToBeSaved { get; internal set; }
@@ -116,6 +118,15 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 try
                 {
                     await UpdateTilesTask;
+                }
+                catch (Exception ex) { TelemetryExtension.Current?.TrackException(ex); }
+            }
+
+            if (UpdateClassRemindersTask != null)
+            {
+                try
+                {
+                    await UpdateClassRemindersTask;
                 }
                 catch (Exception ex) { TelemetryExtension.Current?.TrackException(ex); }
             }
@@ -1400,6 +1411,19 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 catch (Exception ex)
                 {
                     Debug.WriteLine("Failed to update tile notifications");
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+
+                // And update class reminders (don't wait on it)
+                try
+                {
+                    Debug.WriteLine("Updating class reminders");
+                    pendingTasks.UpdateClassRemindersTask = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account, this);
+                }
+
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Failed to update class reminders");
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 

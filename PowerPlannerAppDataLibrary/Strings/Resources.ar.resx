@@ -15,10 +15,10 @@
   <data name="Buttons_Cancel.Content" xml:space="preserve">
     <value>إلغاء الأمر</value>
   </data>
-  <data name="ImageUploadOptions_Always" xml:space="preserve">
+  <data name="String_Always" xml:space="preserve">
     <value>دوماً</value>
   </data>
-  <data name="ImageUploadOptions_Never" xml:space="preserve">
+  <data name="String_Never" xml:space="preserve">
     <value>أبداً</value>
   </data>
   <data name="ImageUploadOptions_WifiOnly" xml:space="preserve">
@@ -1771,5 +1771,38 @@
   </data>
   <data name="String_ViewGrades" xml:space="preserve">
     <value>عرض التقديرات</value>
+  </data>
+  <data name="String_XMinutesBefore" xml:space="preserve">
+    <value>قبل {0} من الدقائق</value>
+  </data>
+  <data name="Settings_RemindersWithClasses_Description.Text" xml:space="preserve">
+    <value>يقوم هذا التطبيق تلقائياً بتعيين التذكيرات للفئات والمهام والأحداث. التذكيرات هي تماما مثل تذكير حدث التقويم ، مع غفوة ورفض الخيار.</value>
+  </data>
+  <data name="Settings_Reminders_ClassRemindersHeader.Text" xml:space="preserve">
+    <value>تذكيرات الفئة</value>
+  </data>
+  <data name="String_RemindMe" xml:space="preserve">
+    <value>‏‏الرجاء تذكيري:</value>
+  </data>
+  <data name="Settings_Reminders_ClassRemindersDescription.Text" xml:space="preserve">
+    <value>هذه الميزة تذكرك حول فئة القادمة ما يصل إلى 60 دقيقة قبل بدء الفصل الدراسي.</value>
+  </data>
+  <data name="Settings_Reminders_TaskEventRemindersHeader.Text" xml:space="preserve">
+    <value>تذكيرات المهمة/الحدث</value>
+  </data>
+  <data name="String_XMinutes" xml:space="preserve">
+    <value>{0} من الدقائق</value>
+  </data>
+  <data name="String_XHours" xml:space="preserve">
+    <value>{0} من الساعات</value>
+  </data>
+  <data name="String_OneHour" xml:space="preserve">
+    <value>ساعة واحدة</value>
+  </data>
+  <data name="String_OneDay" xml:space="preserve">
+    <value>يوم واحد</value>
+  </data>
+  <data name="String_Complete" xml:space="preserve">
+    <value>مكتمل</value>
   </data>
 </root>

@@ -15,10 +15,10 @@
   <data name="Buttons_Cancel.Content" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
-  <data name="ImageUploadOptions_Always" xml:space="preserve">
+  <data name="String_Always" xml:space="preserve">
     <value>Immer</value>
   </data>
-  <data name="ImageUploadOptions_Never" xml:space="preserve">
+  <data name="String_Never" xml:space="preserve">
     <value>Nie</value>
   </data>
   <data name="ImageUploadOptions_WifiOnly" xml:space="preserve">
@@ -1769,5 +1769,38 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   </data>
   <data name="String_ViewGrades" xml:space="preserve">
     <value>Noten anzeigen</value>
+  </data>
+  <data name="String_XMinutesBefore" xml:space="preserve">
+    <value>{0} Minuten vor</value>
+  </data>
+  <data name="Settings_RemindersWithClasses_Description.Text" xml:space="preserve">
+    <value>Diese Anwendung legt automatisch Erinnerungen für Klassen, Aufgaben und Ereignisse fest. Die Erinnerungen sind wie Kalenderereignis-Erinnerungen, mit einer Snooze- und Entlassungsoption.</value>
+  </data>
+  <data name="Settings_Reminders_ClassRemindersHeader.Text" xml:space="preserve">
+    <value>Klassenerinnerungen</value>
+  </data>
+  <data name="String_RemindMe" xml:space="preserve">
+    <value>Erinnern Sie mich:</value>
+  </data>
+  <data name="Settings_Reminders_ClassRemindersDescription.Text" xml:space="preserve">
+    <value>Diese Funktion erinnert Sie an eine kommende Klasse bis zu 60 Minuten vor Unterrichtsbeginn.</value>
+  </data>
+  <data name="Settings_Reminders_TaskEventRemindersHeader.Text" xml:space="preserve">
+    <value>Aufgaben-/Ereigniserinnerungen</value>
+  </data>
+  <data name="String_XMinutes" xml:space="preserve">
+    <value>{0} Minuten</value>
+  </data>
+  <data name="String_XHours" xml:space="preserve">
+    <value>{0} Stunden</value>
+  </data>
+  <data name="String_OneHour" xml:space="preserve">
+    <value>1 Stunde</value>
+  </data>
+  <data name="String_OneDay" xml:space="preserve">
+    <value>1 Tag</value>
+  </data>
+  <data name="String_Complete" xml:space="preserve">
+    <value>Abgeschlossen</value>
   </data>
 </root>

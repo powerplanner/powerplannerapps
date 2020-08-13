@@ -1,6 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerUWP.Extensions;
 using PowerPlannerUWP.TileHelpers;
 using System;
 using System.Threading;
@@ -37,6 +38,8 @@ namespace PowerPlannerUWP.BackgroundTasks
 
                         cancellationToken.ThrowIfCancellationRequested();
 
+                        await ClassRemindersExtension.Current?.ResetAllRemindersAsync(a, data);
+                        await RemindersExtension.Current?.ResetReminders(a, data);
                         await TileHelper.UpdateTileNotificationsForAccountAsync(a, data);
 
                         cancellationToken.ThrowIfCancellationRequested();
@@ -50,8 +53,6 @@ namespace PowerPlannerUWP.BackgroundTasks
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
-
-            // TODO: Re-schedule toast notifications?
 
             finally
             {

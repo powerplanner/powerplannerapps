@@ -10,11 +10,11 @@
           <source>Cancel</source>
           <target state="final">إلغاء الأمر</target>
         </trans-unit>
-        <trans-unit id="ImageUploadOptions_Always" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Always" translate="yes" xml:space="preserve">
           <source>Always</source>
           <target state="final">دوماً</target>
         </trans-unit>
-        <trans-unit id="ImageUploadOptions_Never" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Never" translate="yes" xml:space="preserve">
           <source>Never</source>
           <target state="final">أبداً</target>
         </trans-unit>
@@ -2360,6 +2360,50 @@ Please think about using an online account instead!</source>
         <trans-unit id="String_ViewGrades" translate="yes" xml:space="preserve">
           <source>View grades</source>
           <target state="final" state-qualifier="mt-suggestion">عرض التقديرات</target>
+        </trans-unit>
+        <trans-unit id="String_XMinutesBefore" translate="yes" xml:space="preserve">
+          <source>{0} minutes before</source>
+          <target state="final" state-qualifier="tm-suggestion">قبل {0} من الدقائق</target>
+        </trans-unit>
+        <trans-unit id="Settings_RemindersWithClasses_Description.Text" translate="yes" xml:space="preserve">
+          <source>This application automatically sets reminders for classes, tasks, and events. The reminders are just like calendar event reminders, with a snooze and dismiss option.</source>
+          <target state="final" state-qualifier="mt-suggestion">يقوم هذا التطبيق تلقائياً بتعيين التذكيرات للفئات والمهام والأحداث. التذكيرات هي تماما مثل تذكير حدث التقويم ، مع غفوة ورفض الخيار.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_ClassRemindersHeader.Text" translate="yes" xml:space="preserve">
+          <source>Class reminders</source>
+          <target state="final" state-qualifier="mt-suggestion">تذكيرات الفئة</target>
+        </trans-unit>
+        <trans-unit id="String_RemindMe" translate="yes" xml:space="preserve">
+          <source>Remind me:</source>
+          <target state="final" state-qualifier="tm-suggestion">‏‏الرجاء تذكيري:</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_ClassRemindersDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you about an upcoming class up to 60 minutes before the class starts.</source>
+          <target state="final" state-qualifier="mt-suggestion">هذه الميزة تذكرك حول فئة القادمة ما يصل إلى 60 دقيقة قبل بدء الفصل الدراسي.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_TaskEventRemindersHeader.Text" translate="yes" xml:space="preserve">
+          <source>Task/event reminders</source>
+          <target state="final" state-qualifier="mt-suggestion">تذكيرات المهمة/الحدث</target>
+        </trans-unit>
+        <trans-unit id="String_XMinutes" translate="yes" xml:space="preserve">
+          <source>{0} minutes</source>
+          <target state="final" state-qualifier="tm-suggestion">{0} من الدقائق</target>
+        </trans-unit>
+        <trans-unit id="String_XHours" translate="yes" xml:space="preserve">
+          <source>{0} hours</source>
+          <target state="final" state-qualifier="tm-suggestion">{0} من الساعات</target>
+        </trans-unit>
+        <trans-unit id="String_OneHour" translate="yes" xml:space="preserve">
+          <source>1 hour</source>
+          <target state="final" state-qualifier="tm-suggestion">ساعة واحدة</target>
+        </trans-unit>
+        <trans-unit id="String_OneDay" translate="yes" xml:space="preserve">
+          <source>1 day</source>
+          <target state="final" state-qualifier="tm-suggestion">يوم واحد</target>
+        </trans-unit>
+        <trans-unit id="String_Complete" translate="yes" xml:space="preserve">
+          <source>Complete</source>
+          <target state="final" state-qualifier="tm-suggestion">مكتمل</target>
         </trans-unit>
       </group>
     </body>

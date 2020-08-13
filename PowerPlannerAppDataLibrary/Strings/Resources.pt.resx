@@ -15,10 +15,10 @@
   <data name="Buttons_Cancel.Content" xml:space="preserve">
     <value>Cancelar</value>
   </data>
-  <data name="ImageUploadOptions_Always" xml:space="preserve">
+  <data name="String_Always" xml:space="preserve">
     <value>Sempre</value>
   </data>
-  <data name="ImageUploadOptions_Never" xml:space="preserve">
+  <data name="String_Never" xml:space="preserve">
     <value>Nunca</value>
   </data>
   <data name="ImageUploadOptions_WifiOnly" xml:space="preserve">
@@ -1769,5 +1769,38 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   </data>
   <data name="String_ViewGrades" xml:space="preserve">
     <value>Ver notas</value>
+  </data>
+  <data name="String_XMinutesBefore" xml:space="preserve">
+    <value>{0} minutos antes</value>
+  </data>
+  <data name="Settings_RemindersWithClasses_Description.Text" xml:space="preserve">
+    <value>Este aplicativo define automaticamente lembretes para classes, tarefas e eventos. Os lembretes são como lembretes de eventos de calendário, com uma opção de soneca e dispensa.</value>
+  </data>
+  <data name="Settings_Reminders_ClassRemindersHeader.Text" xml:space="preserve">
+    <value>Lembretes de classe</value>
+  </data>
+  <data name="String_RemindMe" xml:space="preserve">
+    <value>Lembre-me:</value>
+  </data>
+  <data name="Settings_Reminders_ClassRemindersDescription.Text" xml:space="preserve">
+    <value>Este recurso lembra você sobre uma próxima aula até 60 minutos antes do início da aula.</value>
+  </data>
+  <data name="Settings_Reminders_TaskEventRemindersHeader.Text" xml:space="preserve">
+    <value>Lembretes de tarefa/evento</value>
+  </data>
+  <data name="String_XMinutes" xml:space="preserve">
+    <value>{0} minutos</value>
+  </data>
+  <data name="String_XHours" xml:space="preserve">
+    <value>{0} horas</value>
+  </data>
+  <data name="String_OneHour" xml:space="preserve">
+    <value>1 hora</value>
+  </data>
+  <data name="String_OneDay" xml:space="preserve">
+    <value>1 dia</value>
+  </data>
+  <data name="String_Complete" xml:space="preserve">
+    <value>Concluído</value>
   </data>
 </root>

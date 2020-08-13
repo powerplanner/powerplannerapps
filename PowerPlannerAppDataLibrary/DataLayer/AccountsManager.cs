@@ -345,6 +345,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
             }
 
+            if (account.AccountDataVersion < 4)
+            {
+                // Set to the default timespan (otherwise this would be null when upgrading)
+                account.ClassRemindersTimeSpan = AccountDataItem.DefaultClassRemindersTimeSpan;
+            }
+
             if (account.AccountDataVersion < AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION)
             {
                 account.AccountDataVersion = AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION;
