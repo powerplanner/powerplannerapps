@@ -52,6 +52,8 @@ namespace PowerPlannerAndroid.Views.ListItems
             {
                 layout.AddView(new TextView(root.Context)
                 {
+                    // Autolink needs to be set first before setting text
+                    AutoLinkMask = Android.Text.Util.MatchOptions.All,
                     Text = schedule.Room.Trim()
                 });
             }
