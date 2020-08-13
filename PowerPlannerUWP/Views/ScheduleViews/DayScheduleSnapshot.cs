@@ -85,7 +85,6 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                 TextBlock tbRoom = new TextBlock()
                 {
-                    Text = s.Room,
                     Style = Application.Current.Resources["BaseTextBlockStyle"] as Style,
                     Foreground = Brushes.White,
                     FontWeight = FontWeights.SemiBold,
@@ -93,6 +92,8 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                     TextWrapping = Windows.UI.Xaml.TextWrapping.WrapWholeWords,
                     FontSize = 14
                 };
+                TextBlockExtensions.SetHyperlinkColor(tbRoom, Brushes.White);
+                TextBlockExtensions.SetRawText(tbRoom, s.Room);
 
                 if (hours >= 1.1)
                 {
