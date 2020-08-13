@@ -60,23 +60,35 @@ namespace PowerPlanneriOS.Views
             }
             else
             {
-                var labelRoom = new UILabel()
+                var textViewRoom = new UITextView()
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Text = item.Room.Trim(),
                     TextColor = UIColor.White,
+                    //TintColor = UIColor.White, // Link color
+                    WeakLinkTextAttributes = new NSDictionary(UIStringAttributeKey.ForegroundColor, UIColor.White, UIStringAttributeKey.UnderlineStyle, 1), // Underline links and make them white
+                    BackgroundColor = UIColor.Clear,
                     Font = UIFont.PreferredCaption1,
-                    Lines = 0
-                };
-                this.Add(labelRoom);
-                labelRoom.StretchWidth(this, left: 4, right: 4);
+                    Editable = false,
+                    ScrollEnabled = false,
 
-                labelRoom.SetContentCompressionResistancePriority(900, UILayoutConstraintAxis.Vertical);
+                    // Link detection: http://iosdevelopertips.com/user-interface/creating-clickable-hyperlinks-from-a-url-phone-number-or-address.html
+                    DataDetectorTypes = UIDataDetectorType.All
+                };
+
+                // Lose the padding: https://stackoverflow.com/questions/746670/how-to-lose-margin-padding-in-uitextview
+                textViewRoom.TextContainerInset = UIEdgeInsets.Zero;
+                textViewRoom.TextContainer.LineFragmentPadding = 0;
+
+                this.Add(textViewRoom);
+                textViewRoom.StretchWidth(this, left: 4, right: 4);
+
+                textViewRoom.SetContentCompressionResistancePriority(900, UILayoutConstraintAxis.Vertical);
 
                 this.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-2-[labelClass(>={minTextHeight})][labelTime][labelRoom]->=2-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
                     "labelClass", labelClass,
                     "labelTime", labelTime,
-                    "labelRoom", labelRoom)));
+                    "labelRoom", textViewRoom)));
             }
         }
     }
