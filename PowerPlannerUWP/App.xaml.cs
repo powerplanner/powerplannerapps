@@ -703,7 +703,7 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
-                    if (v <= new Version(2008, 12, 0))
+                    if (v <= new Version(2008, 12, 2, 99))
                     {
                         changedText += "\n - Reminders for class schedule!";
                         changedText += "\n - URLs in class schedule room fields are now clickable for supporting Zoom/online links!";
