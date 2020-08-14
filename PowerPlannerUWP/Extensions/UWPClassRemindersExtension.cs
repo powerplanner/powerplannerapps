@@ -24,7 +24,7 @@ namespace PowerPlannerUWP.Extensions
         private static DateTimeFormatter _timeFormatter = new DateTimeFormatter("shorttime");
         private static string _timeToTime = LocalizedResources.GetString("String_TimeToTime");
 
-        protected override void ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
+        protected override Task ResetAllRemindersAsync(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
         {
             var notifier = ToastNotificationManager.CreateToastNotifier();
             var group = ClassRemindersGroupPrefix + "." + UWPRemindersExtension.GetId(account);
@@ -40,7 +40,7 @@ namespace PowerPlannerUWP.Extensions
 
             if (scheduleViewItemsGroup == null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             // This will be initialized
@@ -87,6 +87,8 @@ namespace PowerPlannerUWP.Extensions
                     }
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         private static XmlDocument GeneratePayload(AccountDataItem account, ViewItemSchedule s)

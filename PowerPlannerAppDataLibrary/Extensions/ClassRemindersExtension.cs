@@ -36,7 +36,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
                         scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, currSemesterId, trackChanges: false, includeWeightCategories: false);
                     }
 
-                    ResetAllReminders(account, scheduleViewItemsGroup);
+                    await ResetAllRemindersAsync(account, scheduleViewItemsGroup);
                 }
                 catch (Exception ex)
                 {
@@ -50,14 +50,14 @@ namespace PowerPlannerAppDataLibrary.Extensions
         /// </summary>
         /// <param name="account"></param>
         /// <param name="scheduleViewItemsGroup"></param>
-        protected abstract void ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup);
+        protected abstract Task ResetAllRemindersAsync(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup);
 
         /// <summary>
         /// This is only used when user disables reminders in the settings.
         /// </summary>
-        public void RemoveAllReminders(AccountDataItem account)
+        public Task RemoveAllRemindersAsync(AccountDataItem account)
         {
-            ResetAllReminders(account, null);
+            return ResetAllRemindersAsync(account, null);
         }
     }
 }

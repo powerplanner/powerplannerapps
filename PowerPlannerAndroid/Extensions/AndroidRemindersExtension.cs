@@ -603,7 +603,7 @@ namespace PowerPlannerAndroid.Extensions
         /// </summary>
         /// <param name="notificationManager"></param>
         /// <returns></returns>
-        private static Task InitializeChannelsAsync(NotificationManager notificationManager)
+        public static Task InitializeChannelsAsync(NotificationManager notificationManager)
         {
             Task channelsTaskToAwait;
             lock (_initializeChannelsLock)
@@ -659,6 +659,17 @@ namespace PowerPlannerAndroid.Extensions
             // Update/create channels
             foreach (var a in accounts)
             {
+                var channelClassReminders = new NotificationChannel(GetChannelIdForClassReminders(a.LocalAccountId), "Class reminders", NotificationImportance.High)
+                {
+                    Description = "Class schedule reminders, appears up to 60 minutes before each class starts, configurable in settings.",
+                    Group = a.LocalAccountId.ToString(),
+                    LightColor = new Color(55, 84, 198), // #3754C6 (a bit more vibrant than my other theme colors)
+                    LockscreenVisibility = NotificationVisibility.Public
+                };
+                channelClassReminders.SetShowBadge(true);
+                channelClassReminders.EnableVibration(true);
+                notificationManager.CreateNotificationChannel(channelClassReminders);
+
                 var channelDayBefore = new NotificationChannel(GetChannelIdForDayBefore(a.LocalAccountId), "Day before reminders", NotificationImportance.High)
                 {
                     Description = "Daily reminders that tell you what incomplete tasks or events you have coming up tomorrow.",
@@ -693,6 +704,11 @@ namespace PowerPlannerAndroid.Extensions
             return localAccountId + "_DayOf";
         }
 
+        public static string GetChannelIdForClassReminders(Guid localAccountId)
+        {
+            return localAccountId + "_ClassReminders";
+        }
+
         private static NotificationCompat.Builder CreateReminderBuilderForDayBefore(Context context, Guid localAccountId)
         {
             return CreateReminderBuilder(context, localAccountId, new ViewPageArguments()
@@ -704,7 +720,7 @@ namespace PowerPlannerAndroid.Extensions
             .SetChannelId(GetChannelIdForDayBefore(localAccountId));
         }
 
-        private static NotificationCompat.Builder CreateReminderBuilder(Context context, Guid localAccountId, BaseArguments launchArgs)
+        public static NotificationCompat.Builder CreateReminderBuilder(Context context, Guid localAccountId, BaseArguments launchArgs)
         {
             Intent intent = new Intent(context, typeof(MainActivity))
                 .SetAction(Intent.ActionView)
