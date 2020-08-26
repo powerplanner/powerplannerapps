@@ -159,7 +159,6 @@
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
     <Compile Include="Converters\PercentCompleteToToolTipValueConverter.cs" />
-    <Compile Include="Converters\SchedulesToGroupedDaysConverter.cs" />
     <Compile Include="Converters\ScheduleWeekToStringConverter.cs" />
     <Compile Include="Converters\SemesterToSemesterViewStartEndStringConverter.cs" />
     <Compile Include="Converters\SkipItemsToStringConverter.cs" />
@@ -446,9 +445,6 @@
     </Compile>
     <Compile Include="Views\ClassViews\ClassSchedulesEditing.xaml.cs">
       <DependentUpon>ClassSchedulesEditing.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ClassViews\ClassScheduleView.xaml.cs">
-      <DependentUpon>ClassScheduleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassViews\EditingClassScheduleItemView.xaml.cs">
       <DependentUpon>EditingClassScheduleItemView.xaml</DependentUpon>
@@ -950,10 +946,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClassViews\ClassSchedulesEditing.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassViews\ClassScheduleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

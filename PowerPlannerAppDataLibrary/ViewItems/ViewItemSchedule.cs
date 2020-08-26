@@ -34,6 +34,36 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set { SetProperty(ref _dayOfWeek, value, "DayOfWeek"); }
         }
 
+        /// <summary>
+        /// Only used by UWP for displaying the preview of schedules on the tile. 
+        /// </summary>
+        public DayOfWeek DayOfWeekInLocalTime
+        {
+            get
+            {
+                var date = DateTools.Next(DayOfWeek, DateTime.Today);
+                if (OccursOnDate(date))
+                {
+                    return date.DayOfWeek;
+                }
+
+                // Otherwise, check the next day and the previous day, has to be one of those...
+                date = date.AddDays(1);
+                if (OccursOnDate(date))
+                {
+                    return date.DayOfWeek;
+                }
+
+                date = date.AddDays(-2);
+                if (OccursOnDate(date))
+                {
+                    return date.DayOfWeek;
+                }
+
+                return DayOfWeek;
+            }
+        }
+
         private DateTime _startTime;
         public DateTime StartTime
         {
