@@ -38,7 +38,7 @@ namespace PowerPlannerUWP.Views.DayViews
             listHeader.Classes = calendar.SemesterItemsViewGroup.Classes;
             scheduleSnapshot.Initialize(calendar.SemesterItemsViewGroup, date);
 
-            listControl.ItemsSource = TasksOrEventsOnDay.Get(calendar.SemesterItemsViewGroup.Items, date);
+            listControl.ItemsSource = TasksOrEventsOnDay.Get(calendar.MainScreenViewModel.CurrentAccount, calendar.SemesterItemsViewGroup.Items, date);
 
             var semester = calendar.SemesterItemsViewGroup.Semester;
             if (semester != null && !semester.IsDateDuringThisSemester(date))

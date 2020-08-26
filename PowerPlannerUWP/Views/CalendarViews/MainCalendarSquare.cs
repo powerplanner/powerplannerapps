@@ -66,11 +66,11 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             if (_calendarViewModel.ShowPastCompleteItemsOnFullCalendar)
             {
-                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_calendarViewModel.MainScreenViewModel.CurrentAccount, _allItems, Date);
             }
             else
             {
-                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_calendarViewModel.MainScreenViewModel.CurrentAccount, _allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
             }
         }
 

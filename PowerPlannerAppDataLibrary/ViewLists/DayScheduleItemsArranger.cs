@@ -245,7 +245,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             if (includeTasksAndEventsAndHolidays)
             {
                 // For schedules, if tasks have a specific due time, we don't adjust the dates regardless of time zones causing them to switch to a different day, since they're displayed on the visual schedule. Therefore we set useEffectiveDatesEvenWhenItemsHaveTimes to false.
-                _events = TasksOrEventsOnDay.Get(semesterItems.Items, date, today: null, activeOnly: false, useEffectiveDateEvenWhenItemsHaveTimes: false);
+                _events = TasksOrEventsOnDay.Get(account, semesterItems.Items, date, today: null, activeOnly: false, useEffectiveDateEvenWhenItemsHaveTimes: false);
                 _events.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Events_CollectionChanged).Handler;
             }
             else

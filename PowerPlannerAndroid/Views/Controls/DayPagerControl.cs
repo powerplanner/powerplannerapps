@@ -17,6 +17,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using AndroidX.ViewPager2.Widget;
 using AndroidX.RecyclerView.Widget;
 using InterfacesDroid.Views;
+using PowerPlannerAppDataLibrary.DataLayer;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
@@ -113,7 +114,7 @@ namespace PowerPlannerAndroid.Views.Controls
             }
         }
 
-        public void Initialize(SemesterItemsViewGroup itemsSource, DateTime currentDate)
+        public async void Initialize(SemesterItemsViewGroup itemsSource, DateTime currentDate)
         {
             _itemsSource = itemsSource;
 
@@ -127,7 +128,9 @@ namespace PowerPlannerAndroid.Views.Controls
                 prevAdapter.ScheduleClick -= Adapter_ScheduleClick;
             }
 
-            var adapter = new DayPagerAdapter(itemsSource, currentDate);
+            var account = await AccountsManager.GetOrLoad(itemsSource.LocalAccountId);
+
+            var adapter = new DayPagerAdapter(account, itemsSource, currentDate);
             adapter.ItemClick += Adapter_ItemClick;
             adapter.HolidayItemClick += Adapter_HolidayItemClick;
             adapter.ScheduleItemClick += Adapter_ScheduleItemClick;
@@ -167,11 +170,13 @@ namespace PowerPlannerAndroid.Views.Controls
             public DateTime FirstDate { get; private set; }
 
             public SemesterItemsViewGroup ItemsSource { get; private set; }
+            public AccountDataItem Account { get; private set; }
 
-            public DayPagerAdapter(SemesterItemsViewGroup itemsSource, DateTime currentDate)
+            public DayPagerAdapter(AccountDataItem account, SemesterItemsViewGroup itemsSource, DateTime currentDate)
             {
                 currentDate = currentDate.Date;
 
+                Account = account;
                 ItemsSource = itemsSource;
                 CenterDate = currentDate;
                 FirstDate = currentDate.AddDays(-1000);
@@ -213,7 +218,7 @@ namespace PowerPlannerAndroid.Views.Controls
             {
                 DateTime date = GetDate(position);
 
-                var tasksOrEventsOnDay = TasksOrEventsOnDay.Get(ItemsSource.Items, date);
+                var tasksOrEventsOnDay = TasksOrEventsOnDay.Get(Account, ItemsSource.Items, date);
 
                 (holder.ItemView as SingleDayControl).Initialize(date, tasksOrEventsOnDay, ItemsSource);
             }
