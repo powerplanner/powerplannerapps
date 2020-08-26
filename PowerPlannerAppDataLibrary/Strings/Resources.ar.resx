@@ -1277,7 +1277,7 @@
   <data name="EditTaskOrEventPage_ComboBoxWeightCategory.Header" xml:space="preserve">
     <value>فئة الوزن</value>
   </data>
-  <data name="ViewTaskOrEventPage_ButtonConvertToGrade.Content" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_ButtonAddGrade.Content" xml:space="preserve">
     <value>تحويل إلى الصف</value>
   </data>
   <data name="WeightCategory_Exclude" xml:space="preserve">

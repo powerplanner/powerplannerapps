@@ -1701,9 +1701,9 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Grade Weight Category</source>
           <target state="final">Noten-Gewichtungsklasse</target>
         </trans-unit>
-        <trans-unit id="ViewTaskOrEventPage_ButtonConvertToGrade.Content" translate="yes" xml:space="preserve">
-          <source>Convert to grade</source>
-          <target state="final">In Note umwandeln</target>
+        <trans-unit id="ViewTaskOrEventPage_ButtonAddGrade.Content" translate="yes" xml:space="preserve">
+          <source>Add grade</source>
+          <target state="final" state-qualifier="mt-suggestion">Note hinzufügen</target>
         </trans-unit>
         <trans-unit id="WeightCategory_Exclude" translate="yes" xml:space="preserve">
           <source>Exclude from grades</source>

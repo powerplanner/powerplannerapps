@@ -64,14 +64,14 @@
 
     <Button
       style="@style/PowerPlannerBlueButton"
-      android:id="@+id/ButtonConvertToGrade"
+      android:id="@+id/ButtonAddGrade"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="{ViewTaskOrEventPage_ButtonConvertToGrade.Content}"
+      android:text="{ViewTaskOrEventPage_ButtonAddGrade.Content}"
       android:layout_marginTop="16dp"
       android:layout_marginBottom="16dp"
       android:layout_marginLeft="16dp"
       android:layout_marginRight="16dp"
-      local:Binding="{Source=IsButtonConvertToGradeVisible, Target=Visibility}"/>
+      local:Binding="{Source=IsButtonAddGradeVisible, Target=Visibility}"/>
 
 </LinearLayout>

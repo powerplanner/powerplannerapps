@@ -1700,9 +1700,9 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Grade Weight Category</source>
           <target state="final">Categoría de notas</target>
         </trans-unit>
-        <trans-unit id="ViewTaskOrEventPage_ButtonConvertToGrade.Content" translate="yes" xml:space="preserve">
-          <source>Convert to grade</source>
-          <target state="final">Convertir al nota</target>
+        <trans-unit id="ViewTaskOrEventPage_ButtonAddGrade.Content" translate="yes" xml:space="preserve">
+          <source>Add grade</source>
+          <target state="final" state-qualifier="mt-suggestion">Agregar nota</target>
         </trans-unit>
         <trans-unit id="WeightCategory_Exclude" translate="yes" xml:space="preserve">
           <source>Exclude from grades</source>

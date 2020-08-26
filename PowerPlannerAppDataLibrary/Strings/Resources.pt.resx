@@ -1275,7 +1275,7 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</value>
   <data name="EditTaskOrEventPage_ComboBoxWeightCategory.Header" xml:space="preserve">
     <value>Categoria de peso</value>
   </data>
-  <data name="ViewTaskOrEventPage_ButtonConvertToGrade.Content" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_ButtonAddGrade.Content" xml:space="preserve">
     <value>Converter de grau</value>
   </data>
   <data name="WeightCategory_Exclude" xml:space="preserve">

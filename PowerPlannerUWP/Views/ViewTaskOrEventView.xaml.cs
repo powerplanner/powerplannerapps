@@ -36,16 +36,16 @@ namespace PowerPlannerUWP.Views
             ViewModel.SetPercentComplete(value);
         }
 
-        private void ButtonConvertToGrade_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddGrade_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.ConvertToGrade();
+            ViewModel.AddGrade();
         }
 
-        private void ButtonConvertToGrade_Loaded(object sender, RoutedEventArgs e)
+        private void ButtonAddGrade_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ButtonConvertToGrade.Visibility == Visibility.Visible)
+            if (ButtonAddGrade.Visibility == Visibility.Visible)
             {
-                ButtonConvertToGrade.Focus(FocusState.Programmatic);
+                ButtonAddGrade.Focus(FocusState.Programmatic);
             }
         }
 

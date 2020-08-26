@@ -1702,9 +1702,10 @@ Please think about using an online account instead!</source>
           <source>Grade Weight Category</source>
           <target state="final">فئة الوزن</target>
         </trans-unit>
-        <trans-unit id="ViewTaskOrEventPage_ButtonConvertToGrade.Content" translate="yes" xml:space="preserve">
-          <source>Convert to grade</source>
+        <trans-unit id="ViewTaskOrEventPage_ButtonAddGrade.Content" translate="yes" xml:space="preserve">
+          <source>Add grade</source>
           <target state="final">تحويل إلى الصف</target>
+          <target state="final" state-qualifier="mt-suggestion">إضافة تقدير</target>
         </trans-unit>
         <trans-unit id="WeightCategory_Exclude" translate="yes" xml:space="preserve">
           <source>Exclude from grades</source>

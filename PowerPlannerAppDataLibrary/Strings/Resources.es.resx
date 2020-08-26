@@ -1275,7 +1275,7 @@ Por favor, ¡Piense en usar una cuenta en línea!</value>
   <data name="EditTaskOrEventPage_ComboBoxWeightCategory.Header" xml:space="preserve">
     <value>Categoría de notas</value>
   </data>
-  <data name="ViewTaskOrEventPage_ButtonConvertToGrade.Content" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_ButtonAddGrade.Content" xml:space="preserve">
     <value>Convertir al nota</value>
   </data>
   <data name="WeightCategory_Exclude" xml:space="preserve">

@@ -97,16 +97,16 @@
                 Visibility="{Binding IsCompletionSliderVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"/>
             
             <Button
-                x:Uid="ViewTaskOrEventPage_ButtonConvertToGrade"
-                x:Name="ButtonConvertToGrade"
-                Content="Convert to grade"
-                Click="ButtonConvertToGrade_Click"
+                x:Uid="ViewTaskOrEventPage_ButtonAddGrade"
+                x:Name="ButtonAddGrade"
+                Content="Add grade"
+                Click="ButtonAddGrade_Click"
                 Grid.Row="1"
                 HorizontalAlignment="Stretch"
                 Margin="12"
                 Style="{StaticResource LargeButtonStyle}"
-                Visibility="{Binding IsButtonConvertToGradeVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"
-                Loaded="ButtonConvertToGrade_Loaded"/>
+                Visibility="{Binding IsButtonAddGradeVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"
+                Loaded="ButtonAddGrade_Loaded"/>
 
         </Grid>
     </views:PopupViewHostGeneric.MainContent>

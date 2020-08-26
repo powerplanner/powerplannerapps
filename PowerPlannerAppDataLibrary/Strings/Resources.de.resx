@@ -1275,7 +1275,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</value>
   <data name="EditTaskOrEventPage_ComboBoxWeightCategory.Header" xml:space="preserve">
     <value>Noten-Gewichtungsklasse</value>
   </data>
-  <data name="ViewTaskOrEventPage_ButtonConvertToGrade.Content" xml:space="preserve">
+  <data name="ViewTaskOrEventPage_ButtonAddGrade.Content" xml:space="preserve">
     <value>In Note umwandeln</value>
   </data>
   <data name="WeightCategory_Exclude" xml:space="preserve">

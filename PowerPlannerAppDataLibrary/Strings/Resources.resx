@@ -1443,8 +1443,8 @@ Please think about using an online account instead!</value>
   <data name="EditTaskOrEventPage_ComboBoxWeightCategory.Header" xml:space="preserve">
     <value>Grade Weight Category</value>
   </data>
-  <data name="ViewTaskOrEventPage_ButtonConvertToGrade.Content" xml:space="preserve">
-    <value>Convert to grade</value>
+  <data name="ViewTaskOrEventPage_ButtonAddGrade.Content" xml:space="preserve">
+    <value>Add grade</value>
   </data>
   <data name="WeightCategory_AllGrades" xml:space="preserve">
     <value>All grades</value>
