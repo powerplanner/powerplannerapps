@@ -1,34 +1,22 @@
 ﻿using InterfacesUWP;
 using PowerPlannerSending;
-
 using PowerPlannerUWP.Views.ScheduleViews;
-using PowerPlannerUWPLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems;
-using PowerPlannerUWPLibrary.TileHelpers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
-using ToolsUniversal;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
-using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerAppDataLibrary.App;
 using Windows.Globalization.DateTimeFormatting;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewLists;
@@ -37,6 +25,7 @@ using InterfacesUWP.Converters;
 using System.Globalization;
 using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerUWP.TileHelpers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 

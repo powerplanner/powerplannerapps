@@ -1,8 +1,6 @@
 ﻿using InterfacesUWP;
 using PowerPlannerSending;
 using PowerPlannerUWP.Views;
-using PowerPlannerUWPLibrary;
-using PowerPlannerAppDataLibrary.DataLayer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +17,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238

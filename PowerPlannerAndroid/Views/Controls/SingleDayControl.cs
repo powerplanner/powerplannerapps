@@ -21,6 +21,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewLists;
 using AndroidX.RecyclerView.Widget;
+using System.Threading.Tasks;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
@@ -97,6 +98,10 @@ namespace PowerPlannerAndroid.Views.Controls
                 {
                     e.Handled = _snapshot.CloseExpandedEvents();
                 }
+                else
+                {
+                    e.Handled = false;
+                }
             }
             catch { }
         }
@@ -121,6 +126,7 @@ namespace PowerPlannerAndroid.Views.Controls
             ItemClick?.Invoke(this, e);
         }
 
+        private int? _indexToScrollTo;
         private void ItemsSource_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             try
@@ -130,7 +136,24 @@ namespace PowerPlannerAndroid.Views.Controls
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Move:
                     case NotifyCollectionChangedAction.Replace:
-                        _recyclerView.ScrollToPosition(e.NewStartingIndex);
+                        if (_indexToScrollTo == null)
+                        {
+                            _indexToScrollTo = e.NewStartingIndex;
+
+                            _ = Task.Run(delegate
+                            {
+                                PortableDispatcher.GetCurrentDispatcher().Run(delegate
+                                {
+                                    try
+                                    {
+                                        _recyclerView.SmoothScrollToPosition(_indexToScrollTo.Value);
+                                    }
+                                    catch { }
+
+                                    _indexToScrollTo = null;
+                                });
+                            });
+                        }
                         break;
                 }
             }

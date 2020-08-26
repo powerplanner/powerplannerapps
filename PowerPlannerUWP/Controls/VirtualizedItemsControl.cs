@@ -299,7 +299,6 @@ namespace PowerPlannerUWP.Controls
 
             Size availableItemSize;
 
-            double y = 0;
             int i = 0;
             foreach (var item in items)
             {

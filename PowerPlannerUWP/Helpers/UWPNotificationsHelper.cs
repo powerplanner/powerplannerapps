@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace PowerPlannerUWPLibrary.Helpers
+namespace PowerPlannerUWP.Helpers
 {
     public static class UWPNotificationsHelper
     {

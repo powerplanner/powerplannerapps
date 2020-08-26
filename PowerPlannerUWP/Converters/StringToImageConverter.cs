@@ -1,5 +1,4 @@
 ﻿using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;

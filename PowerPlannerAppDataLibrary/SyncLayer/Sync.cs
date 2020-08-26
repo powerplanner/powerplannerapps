@@ -739,6 +739,19 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         TelemetryExtension.Current?.TrackException(ex);
                     }
 
+                    // And update class reminders (don't wait on it)
+                    try
+                    {
+                        Debug.WriteLine("Updating class reminders");
+                        answer.SaveChangesTask.UpdateClassRemindersTask = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account);
+                    }
+
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("Failed to update class reminders");
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+
                     // And update reminders (don't wait on it)
                     try
                     {

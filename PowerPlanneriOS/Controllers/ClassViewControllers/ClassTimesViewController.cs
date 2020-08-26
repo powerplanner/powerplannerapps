@@ -94,7 +94,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                 private UIStackView _stackView;
                 private UILabel _labelTime;
-                private UILabel _labelRoom;
+                private UITextView _textViewRoom;
 
                 public UITimeView()
                 {
@@ -114,13 +114,24 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                     _stackView.AddArrangedSubview(_labelTime);
                     _labelTime.StretchWidth(_stackView);
 
-                    _labelRoom = new UILabel()
+                    _textViewRoom = new UITextView()
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
-                        Font = UIFont.PreferredCaption1
+                        BackgroundColor = UIColor.Clear,
+                        Font = UIFont.PreferredCaption1,
+                        Editable = false,
+                        ScrollEnabled = false,
+
+                        // Link detection: http://iosdevelopertips.com/user-interface/creating-clickable-hyperlinks-from-a-url-phone-number-or-address.html
+                        DataDetectorTypes = UIDataDetectorType.All
                     };
-                    _stackView.AddArrangedSubview(_labelRoom);
-                    _labelRoom.StretchWidth(_stackView);
+
+                    // Lose the padding: https://stackoverflow.com/questions/746670/how-to-lose-margin-padding-in-uitextview
+                    _textViewRoom.TextContainerInset = UIEdgeInsets.Zero;
+                    _textViewRoom.TextContainer.LineFragmentPadding = 0;
+
+                    _stackView.AddArrangedSubview(_textViewRoom);
+                    _textViewRoom.StretchWidth(_stackView);
 
                     base.AddSubview(_stackView);
                     _stackView.StretchWidthAndHeight(this);
@@ -134,19 +145,19 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
                         if (string.IsNullOrWhiteSpace(Schedule.Room))
                         {
-                            if (_stackView.ArrangedSubviews.Contains(_labelRoom))
+                            if (_stackView.ArrangedSubviews.Contains(_textViewRoom))
                             {
-                                _stackView.ActuallyRemoveArrangedSubview(_labelRoom);
+                                _stackView.ActuallyRemoveArrangedSubview(_textViewRoom);
                             }
                         }
                         else
                         {
-                            if (!_stackView.ArrangedSubviews.Contains(_labelRoom))
+                            if (!_stackView.ArrangedSubviews.Contains(_textViewRoom))
                             {
-                                _stackView.AddArrangedSubview(_labelRoom);
+                                _stackView.AddArrangedSubview(_textViewRoom);
                             }
 
-                            _labelRoom.Text = Schedule.Room.Trim();
+                            _textViewRoom.Text = Schedule.Room.Trim();
                         }
                     }
 

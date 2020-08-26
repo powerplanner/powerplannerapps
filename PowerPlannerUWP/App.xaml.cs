@@ -1,38 +1,19 @@
-﻿using BackgroundTasksProject;
-using InterfacesUWP;
+﻿using InterfacesUWP;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerSending;
-using PowerPlannerUWP.ViewModel;
 using PowerPlannerUWP.Views;
-using PowerPlannerUWP.Views.ClassViews;
-using PowerPlannerUWP.Views.GradeViews;
 using PowerPlannerUWP.Views.SettingsViews;
-using PowerPlannerUWP.Views.YearViews;
-using PowerPlannerUWP.WindowHosts;
-using PowerPlannerUWPLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
-using PowerPlannerAppDataLibrary.DataLayer.DataItems;
-using PowerPlannerAppDataLibrary.SyncLayer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using ToolsPortable;
 using ToolsUniversal;
-using UpgradeFromSilverlight;
-using UpgradeFromWin8;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
-using Windows.ApplicationModel.Core;
-using Windows.ApplicationModel.Email;
-using Windows.ApplicationModel.Resources;
-using Windows.ApplicationModel.Store;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
-using Windows.Globalization;
-using Windows.Networking.PushNotifications;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.UI;
@@ -41,18 +22,10 @@ using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Shapes;
-using PowerPlannerUWPLibrary.Extensions;
+using PowerPlannerUWP.Extensions;
 using StorageEverywhere;
-using InterfacesUWP.ViewModelPresenters;
-using Windows.UI.Xaml.Data;
 using InterfacesUWP.App;
-using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
@@ -76,7 +49,7 @@ using PowerPlannerUWP.ViewModel.Promos;
 using PowerPlannerUWP.Views.Promos;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerUWPLibrary.Helpers;
+using PowerPlannerUWP.Helpers;
 using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using Windows.ApplicationModel.DataTransfer;
 using PowerPlannerAppDataLibrary.Helpers;
@@ -85,6 +58,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
+using PowerPlannerUWP.BackgroundTasks;
 
 namespace PowerPlannerUWP
 {
@@ -201,45 +175,56 @@ namespace PowerPlannerUWP
             };
         }
 
-        private void OnEntering()
-        {
-            try
-            {
-                // Remove/cancel all background tasks when the app is open
-                UnregisterAllBackgroundTasks();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
         private void OnResuming(object sender, object e)
         {
-            OnEntering();
         }
 
-        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             TelemetryExtension.Current?.TrackException(e.Exception);
         }
-        
+
+        private bool _registeredBackgroundTasks = false;
         protected override async System.Threading.Tasks.Task OnLaunchedOrActivated(IActivatedEventArgs e)
         {
             try
             {
-                // Always call this just to reset value back to false, since Resuming isn't called all the time
-                AccountDataStore.RetrieveAndResetWasUpdatedByBackgroundTask();
-
 #if DEBUG
                 //if (System.Diagnostics.Debugger.IsAttached)
                 //{
                 //    this.DebugSettings.EnableFrameRateCounter = true;
                 //}
 #endif
-                
-                OnEntering();
+
+                // Register background tasks
+                if (!_registeredBackgroundTasks)
+                {
+                    try
+                    {
+                        // Make sure none are registered (they should have already been unregistered)
+                        UnregisterAllBackgroundTasks();
+
+                        RegisterInfrequentBackgroundTask();
+                        RegisterRawPushBackgroundTask();
+                        RegisterToastBackgroundTask();
+                    }
+
+                    catch (Exception ex)
+                    {
+                        if (UWPExceptionHelper.TrackIfRpcServerUnavailable(ex, "RegisterBgTasks"))
+                        {
+                        }
+                        else if (UWPExceptionHelper.TrackIfPathInvalid(ex, "RegisterBgTasks"))
+                        {
+                        }
+                        else
+                        {
+                            TelemetryExtension.Current?.TrackException(ex);
+                        }
+                    }
+
+                    _registeredBackgroundTasks = true;
+                }
 
                 // Wait for initialization to complete, to ensure we don't accidently add multiple windows
                 // Although right now we don't even do any async tasks, so this will be useless
@@ -718,6 +703,12 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2008, 12, 2, 99))
+                    {
+                        changedText += "\n - Reminders for class schedule!";
+                        changedText += "\n - URLs in class schedule room fields are now clickable for supporting Zoom/online links!";
+                    }
+
                     if (v <= new Version(2007, 30, 1, 99))
                     {
                         changedText += "\n - Fixed order of tasks so incomplete tasks are displayed first";
@@ -896,50 +887,6 @@ namespace PowerPlannerUWP
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
-
-            //NotificationsExtensions.Toasts.ToastContent c = new NotificationsExtensions.Toasts.ToastContent()
-            //{
-            //    Visual = new NotificationsExtensions.Toasts.ToastVisual()
-            //    {
-            //        TitleText = new NotificationsExtensions.Toasts.ToastText()
-            //        {
-            //            Text = "Suspended"
-            //        }
-            //    }
-            //};
-
-            //Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier().Show(new Windows.UI.Notifications.ToastNotification(c.GetXml()));
-
-            //TODO: Save application state and stop any background activity
-
-            // TODO: Cancel any current syncs
-
-            // Register the tasks
-            try
-            {
-                // Make sure none are registered (they should have already been unregistered)
-                UnregisterAllBackgroundTasks();
-
-                RegisterInfrequentBackgroundTask();
-                RegisterRawPushBackgroundTask();
-            }
-
-            catch (Exception ex)
-            {
-                if (UWPExceptionHelper.TrackIfRpcServerUnavailable(ex, "RegisterBgTasks"))
-                {
-                }
-                else if (UWPExceptionHelper.TrackIfPathInvalid(ex, "RegisterBgTasks"))
-                {
-                }
-                else
-                {
-                    TelemetryExtension.Current?.TrackException(ex);
-                }
-            }
-
-            deferral.Complete();
         }
 
         private static void UnregisterAllBackgroundTasks()
@@ -952,7 +899,7 @@ namespace PowerPlannerUWP
         {
             try
             {
-                var builder = CreateBackgroundTaskBuilder("RawPushBackgroundTask", typeof(RawPushBackgroundTask));
+                var builder = CreateBackgroundTaskBuilder("RawPushBackgroundTask");
 
                 // Trigger on raw push received
                 builder.SetTrigger(new PushNotificationTrigger());
@@ -973,7 +920,7 @@ namespace PowerPlannerUWP
 
         private static void RegisterInfrequentBackgroundTask()
         {
-            var builder = CreateBackgroundTaskBuilder("InfrequentBackgroundTask", typeof(InfrequentBackgroundTask));
+            var builder = CreateBackgroundTaskBuilder("InfrequentBackgroundTask");
 
             // Run every 4 days
             builder.SetTrigger(new MaintenanceTrigger(5760, false));
@@ -981,12 +928,20 @@ namespace PowerPlannerUWP
             builder.Register();
         }
 
-        private static BackgroundTaskBuilder CreateBackgroundTaskBuilder(string name, Type backgroundTaskClassType)
+        private static void RegisterToastBackgroundTask()
+        {
+            var builder = CreateBackgroundTaskBuilder("ToastBackgroundTask");
+
+            builder.SetTrigger(new ToastNotificationActionTrigger());
+
+            builder.Register();
+        }
+
+        private static BackgroundTaskBuilder CreateBackgroundTaskBuilder(string name)
         {
             return new BackgroundTaskBuilder()
             {
-                Name = name,
-                TaskEntryPoint = backgroundTaskClassType.FullName
+                Name = name
             };
         }
 
@@ -1131,6 +1086,24 @@ namespace PowerPlannerUWP
         public static bool IsMobile()
         {
             return InterfacesUWP.DeviceInfo.GetCurrentDeviceFormFactor() == DeviceFormFactor.Mobile;
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            if (args.TaskInstance.Task.Name == "InfrequentBackgroundTask")
+            {
+                new InfrequentBackgroundTask().Handle(args);
+            }
+
+            else if (args.TaskInstance.Task.Name == "RawPushBackgroundTask")
+            {
+                new RawPushBackgroundTask().Handle(args);
+            }
+
+            else if (args.TaskInstance.Task.Name == "ToastBackgroundTask")
+            {
+                new ToastBackgroundTask().Handle(args);
+            }
         }
     }
 }

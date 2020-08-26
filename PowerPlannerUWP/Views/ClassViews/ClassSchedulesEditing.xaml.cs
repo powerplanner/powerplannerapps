@@ -1,5 +1,4 @@
-﻿using PowerPlannerUWPLibrary;
-using PowerPlannerAppDataLibrary.DataLayer;
+﻿using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using System;
 using System.Collections.Generic;

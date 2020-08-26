@@ -102,7 +102,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         /// </summary>
         public bool IsCompletionSliderVisible => Item.Type == TaskOrEventType.Task && !IsUnassigedMode;
 
-        public bool IsButtonConvertToGradeVisible => IsUnassigedMode;
+        public bool IsButtonAddGradeVisible => IsUnassigedMode;
 
         public void Edit()
         {
@@ -252,7 +252,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
 
                 var viewModel = CreateForUnassigned(MainScreenViewModel, loadedTask);
-                viewModel.ConvertToGrade(showViewGradeSnackbarAfterSaving: MainScreenViewModel.SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
+                viewModel.AddGrade(showViewGradeSnackbarAfterSaving: MainScreenViewModel.SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
             }
             catch (Exception ex)
             {
@@ -260,9 +260,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
         }
 
-        public async void ConvertToGrade(bool showViewGradeSnackbarAfterSaving = false)
+        public async void AddGrade(bool showViewGradeSnackbarAfterSaving = false)
         {
-            await TryHandleUserInteractionAsync("ConvertToGrade", async (cancellationToken) =>
+            await TryHandleUserInteractionAsync("AddGradeFromExisting", async (cancellationToken) =>
             {
                 // For free version, block assigning grade if number of graded items exceeds 5
                 if (Item.Class.WeightCategories.SelectMany(i => i.Grades).Where(i => i.GradeReceived != PowerPlannerSending.Grade.UNGRADED).Count() >= 5

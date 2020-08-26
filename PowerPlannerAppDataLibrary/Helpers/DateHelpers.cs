@@ -67,7 +67,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception("Invalid date: " + rawDateTime.ToString(), ex);
+                TelemetryExtension.Current?.TrackException(new Exception("Invalid date: " + rawDateTime.ToString(), ex));
+
+                return DateTime.SpecifyKind(rawDateTime, DateTimeKind.Local);
             }
         }
     }

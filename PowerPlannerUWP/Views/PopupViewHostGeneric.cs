@@ -1,24 +1,13 @@
 ﻿using InterfacesUWP;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using System.Collections;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Data;
-using PowerPlannerUWPLibrary;
-using Windows.UI.Popups;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.ViewManagement;
 using InterfacesUWP.Views;
 using PowerPlannerAppDataLibrary.Extensions;
 

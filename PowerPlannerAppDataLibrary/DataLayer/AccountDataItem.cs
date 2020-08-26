@@ -18,7 +18,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
     [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/PowerPlannerUWPLibrary.DataLayer")]
     public class AccountDataItem : BindableBaseWithPortableDispatcher
     {
-        public const int CURRENT_ACCOUNT_DATA_VERSION = 3;
+        public const int CURRENT_ACCOUNT_DATA_VERSION = 4;
         public const int CURRENT_SYNCED_DATA_VERSION = 5;
 
         /// <summary>
@@ -255,15 +255,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 AccountDataStore data = await AccountDataStore.Get(this.LocalAccountId);
 
-                var dontWait = RemindersExtension.Current?.ResetReminders(this, data);
+                _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this);
+                _ = RemindersExtension.Current?.ResetReminders(this, data);
 
-                var dontWaitThread = System.Threading.Tasks.Task.Run(delegate
+                _ = System.Threading.Tasks.Task.Run(delegate
                 {
                     // Update schedule tile
-                    var dontWaitScheduleTile = ScheduleTileExtension.Current?.UpdateScheduleTile(this, data);
+                    _ = ScheduleTileExtension.Current?.UpdateScheduleTile(this, data);
                 });
 
-                dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.WeekOneStartsOn);
+                _ = Sync.SyncSettings(this, Sync.ChangedSetting.WeekOneStartsOn);
             }
         }
 
@@ -282,15 +283,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             AccountDataStore data = await AccountDataStore.Get(this.LocalAccountId);
 
-            var dontWait = RemindersExtension.Current?.ResetReminders(this, data);
+            _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this);
+            _ = RemindersExtension.Current?.ResetReminders(this, data);
 
-            var dontWaitThread = System.Threading.Tasks.Task.Run(delegate
+            _ = System.Threading.Tasks.Task.Run(delegate
             {
                 // Update schedule tile
-                var dontWaitScheduleTile = ScheduleTileExtension.Current?.UpdateScheduleTile(this, data);
+                _ = ScheduleTileExtension.Current?.UpdateScheduleTile(this, data);
             });
 
-            dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.SchoolTimeZone);
+            _ = Sync.SyncSettings(this, Sync.ChangedSetting.SchoolTimeZone);
         }
 
         /// <summary>
@@ -381,6 +383,24 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             get { return _hasAddedRepeating; }
             set { _hasAddedRepeating = value; }
+        }
+
+        public bool AreClassRemindersEnabled()
+        {
+            return ClassRemindersTimeSpan != null;
+        }
+
+        public static TimeSpan DefaultClassRemindersTimeSpan = TimeSpan.FromMinutes(10);
+
+        private TimeSpan? _classRemindersTimeSpan = DefaultClassRemindersTimeSpan;
+        /// <summary>
+        /// The time span to remind before class. If null, reminders are disabled.
+        /// </summary>
+        [DataMember]
+        public TimeSpan? ClassRemindersTimeSpan
+        {
+            get => _classRemindersTimeSpan;
+            set => SetProperty(ref _classRemindersTimeSpan, value, nameof(ClassRemindersTimeSpan));
         }
 
         private bool _remindersDayBefore = true;
@@ -796,9 +816,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             var dataStore = await AccountDataStore.Get(this.LocalAccountId);
 
             AppointmentsExtension.Current?.ResetAll(this, dataStore);
-            RemindersExtension.Current?.ResetReminders(this, dataStore);
+            _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(this);
+            _ = RemindersExtension.Current?.ResetReminders(this, dataStore);
 
-            TilesExtension.Current?.UpdateTileNotificationsForAccountAsync(this, dataStore);
+            _ = TilesExtension.Current?.UpdateTileNotificationsForAccountAsync(this, dataStore);
         }
 
         /// <summary>

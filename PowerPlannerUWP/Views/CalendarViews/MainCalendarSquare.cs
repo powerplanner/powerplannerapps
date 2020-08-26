@@ -14,12 +14,9 @@ using ToolsPortable;
 using Windows.UI;
 
 using Windows.UI.Xaml.Input;
-using PowerPlannerUWPLibrary;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.App;
-using PowerPlannerUWPLibrary.Helpers;
 using PowerPlannerAppDataLibrary.PPEventArgs;
 using Windows.UI.Xaml.Shapes;
 using System.Collections.Specialized;
@@ -27,6 +24,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using System.ComponentModel;
 using PowerPlannerUWP.Controls;
+using PowerPlannerUWP.Helpers;
 
 namespace PowerPlannerUWP.Views.CalendarViews
 {

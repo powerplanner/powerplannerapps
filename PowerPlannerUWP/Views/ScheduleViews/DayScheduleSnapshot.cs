@@ -6,16 +6,11 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerUWP.Views.CalendarViews;
-using PowerPlannerUWPLibrary;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToolsPortable;
 using ToolsUniversal;
 using Windows.Globalization.DateTimeFormatting;
@@ -90,7 +85,6 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
                 TextBlock tbRoom = new TextBlock()
                 {
-                    Text = s.Room,
                     Style = Application.Current.Resources["BaseTextBlockStyle"] as Style,
                     Foreground = Brushes.White,
                     FontWeight = FontWeights.SemiBold,
@@ -98,6 +92,8 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                     TextWrapping = Windows.UI.Xaml.TextWrapping.WrapWholeWords,
                     FontSize = 14
                 };
+                TextBlockExtensions.SetHyperlinkColor(tbRoom, Brushes.White);
+                TextBlockExtensions.SetRawText(tbRoom, s.Room);
 
                 if (hours >= 1.1)
                 {

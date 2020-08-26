@@ -13,15 +13,16 @@ using Android.Util;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItems;
-using ToolsPortable;
-using AndroidX.ViewPager.Widget;
+using AndroidX.ViewPager2.Widget;
+using AndroidX.RecyclerView.Widget;
+using InterfacesDroid.Views;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
-    public class DayPagerControl : ViewPager
+    public class DayPagerControl : FrameLayout
     {
+        private ViewPager2 _viewPager;
         public event EventHandler<DateTime> CurrentDateChanged;
         public event EventHandler<ViewItemTaskOrEvent> ItemClick;
         public event EventHandler<ViewItemHoliday> HolidayItemClick;
@@ -45,33 +46,49 @@ namespace PowerPlannerAndroid.Views.Controls
 
         private void Initialize()
         {
-            this.OffscreenPageLimit = 3;
+            _viewPager = new ViewPager2(this.Context)
+            {
+                OffscreenPageLimit = 3,
+                LayoutParameters = new FrameLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
+            };
 
-            this.PageSelected += DayPagerControl_PageSelected;
+            _viewPager.RegisterOnPageChangeCallback(new PageChangeCallback(this));
+
+            base.AddView(_viewPager);
         }
 
-        private void DayPagerControl_PageSelected(object sender, PageSelectedEventArgs e)
+        private class PageChangeCallback : ViewPager2.OnPageChangeCallback
         {
-            try
+            private DayPagerControl _dayPagerControl;
+
+            public PageChangeCallback(DayPagerControl dayPagerControl)
             {
-                if (ItemsSource != null && Adapter != null)
-                {
-                    var adapter = this.Adapter as DayPagerAdapter;
-
-                    DateTime date = adapter.GetDate(e.Position);
-
-                    try
-                    {
-                        CurrentDateChanged?.Invoke(this, date);
-                    }
-
-                    catch { }
-                }
+                _dayPagerControl = dayPagerControl;
             }
 
-            catch (Exception ex)
+            public override void OnPageSelected(int position)
             {
-                TelemetryExtension.Current?.TrackException(ex);
+                try
+                {
+                    if (_dayPagerControl.ItemsSource != null && _dayPagerControl._viewPager.Adapter != null)
+                    {
+                        var adapter = _dayPagerControl._viewPager.Adapter as DayPagerAdapter;
+
+                        DateTime date = adapter.GetDate(position);
+
+                        try
+                        {
+                            _dayPagerControl.CurrentDateChanged?.Invoke(this, date);
+                        }
+
+                        catch { }
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
             }
         }
 
@@ -85,14 +102,14 @@ namespace PowerPlannerAndroid.Views.Controls
         {
             get
             {
-                DayPagerAdapter adapter = Adapter as DayPagerAdapter;
+                DayPagerAdapter adapter = _viewPager.Adapter as DayPagerAdapter;
 
                 if (adapter == null)
                 {
                     return DateTime.Today;
                 }
 
-                return adapter.GetDate(this.CurrentItem);
+                return adapter.GetDate(_viewPager.CurrentItem);
             }
         }
 
@@ -101,7 +118,7 @@ namespace PowerPlannerAndroid.Views.Controls
             _itemsSource = itemsSource;
 
             // Unwire events from old one
-            var prevAdapter = Adapter as DayPagerAdapter;
+            var prevAdapter = _viewPager.Adapter as DayPagerAdapter;
             if (prevAdapter != null)
             {
                 prevAdapter.ItemClick -= Adapter_ItemClick;
@@ -115,8 +132,8 @@ namespace PowerPlannerAndroid.Views.Controls
             adapter.HolidayItemClick += Adapter_HolidayItemClick;
             adapter.ScheduleItemClick += Adapter_ScheduleItemClick;
             adapter.ScheduleClick += Adapter_ScheduleClick;
-            this.Adapter = adapter;
-            this.SetCurrentItem(1000, false);
+            _viewPager.Adapter = adapter;
+            _viewPager.SetCurrentItem(1000, false);
         }
 
         private void Adapter_HolidayItemClick(object sender, ViewItemHoliday e)
@@ -139,7 +156,7 @@ namespace PowerPlannerAndroid.Views.Controls
             ItemClick?.Invoke(this, e);
         }
 
-        private class DayPagerAdapter : PagerAdapter
+        private class DayPagerAdapter : RecyclerView.Adapter
         {
             public event EventHandler<ViewItemTaskOrEvent> ItemClick;
             public event EventHandler<ViewItemHoliday> HolidayItemClick;
@@ -160,60 +177,7 @@ namespace PowerPlannerAndroid.Views.Controls
                 FirstDate = currentDate.AddDays(-1000);
             }
 
-            public override int Count
-            {
-                get
-                {
-                    return 2001;
-                }
-            }
-
-            public override bool IsViewFromObject(View view, Java.Lang.Object objectValue)
-            {
-                return view == objectValue;
-            }
-
-            public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
-            {
-                DateTime date = GetDate(position);
-
-                var tasksOrEventsOnDay = TasksOrEventsOnDay.Get(ItemsSource.Items, date);
-
-                SingleDayControl control = _destroyedControls.FirstOrDefault();
-
-                if (control != null)
-                {
-                    _destroyedControls.Remove(control);
-
-                    try
-                    {
-                        control.Initialize(date, tasksOrEventsOnDay, ItemsSource);
-                    }
-
-                    // ObjectDisposedException actually shouldn't ever occur here. If it does, we should analyze why.
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
-                    }
-
-                    // So we'll fall back to creating a new one
-                    control = null;
-                }
-
-                if (control == null)
-                {
-                    control = new SingleDayControl(container);
-                    control.ItemClick += SingleDayControl_ItemClick;
-                    control.HolidayItemClick += SingleDayControl_HolidayItemClick;
-                    control.ScheduleItemClick += SingleDayControl_ScheduleItemClick;
-                    control.ScheduleClick += SingleDayControl_ScheduleClick;
-                    control.Initialize(date, tasksOrEventsOnDay, ItemsSource);
-                }
-
-                container.AddView(control);
-
-                return control;
-            }
+            public override int ItemCount => 2001;
 
             private void SingleDayControl_HolidayItemClick(object sender, ViewItemHoliday e)
             {
@@ -235,18 +199,6 @@ namespace PowerPlannerAndroid.Views.Controls
                 ItemClick?.Invoke(sender, e);
             }
 
-            // Using a strong reference list so that neither the Java nor the C# object gets disposed (Java shouldn't get disposed
-            // since the C# one has a strong reference).
-            private List<SingleDayControl> _destroyedControls = new List<SingleDayControl>();
-
-            public override void DestroyItem(ViewGroup container, int position, Java.Lang.Object objectValue)
-            {
-                var control = (SingleDayControl)objectValue;
-                control.Deinitialize();
-                container.RemoveView(control);
-                _destroyedControls.Add(control);
-            }
-
             public DateTime GetDate(int position)
             {
                 return FirstDate.AddDays(position);
@@ -255,6 +207,29 @@ namespace PowerPlannerAndroid.Views.Controls
             public int GetPosition(DateTime date)
             {
                 return (date.Date - FirstDate.Date).Days;
+            }
+
+            public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+            {
+                DateTime date = GetDate(position);
+
+                var tasksOrEventsOnDay = TasksOrEventsOnDay.Get(ItemsSource.Items, date);
+
+                (holder.ItemView as SingleDayControl).Initialize(date, tasksOrEventsOnDay, ItemsSource);
+            }
+
+            public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+            {
+                var control = new SingleDayControl(parent)
+                {
+                    LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
+                };
+                control.ItemClick += SingleDayControl_ItemClick;
+                control.HolidayItemClick += SingleDayControl_HolidayItemClick;
+                control.ScheduleItemClick += SingleDayControl_ScheduleItemClick;
+                control.ScheduleClick += SingleDayControl_ScheduleClick;
+
+                return new GenericRecyclerViewHolder(control);
             }
         }
     }

@@ -160,6 +160,11 @@ namespace PowerPlannerAppDataLibrary
             return GetString("RelativeDate_Future");
         }
 
+        public static string GetXMinutes(int minutes)
+        {
+            return string.Format(GetString("String_XMinutes"), minutes);
+        }
+
         /// <summary>
         /// Returns "This Monday"
         /// </summary>
@@ -320,6 +325,16 @@ namespace PowerPlannerAppDataLibrary
             }
 
             return answer + "\n\n" + lastDescription;
+        }
+
+        public static string GetXHours(int hours)
+        {
+            if (hours == 1)
+            {
+                return GetString("String_OneHour");
+            }
+
+            return string.Format(GetString("String_XHours"), hours);
         }
     }
 }

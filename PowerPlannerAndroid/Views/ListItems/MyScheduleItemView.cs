@@ -55,7 +55,7 @@ namespace PowerPlannerAndroid.Views.ListItems
 
             if (!string.IsNullOrWhiteSpace(s.Room))
             {
-                base.AddView(CreateTextView(s.Room));
+                base.AddView(CreateTextView(s.Room, autoLink: true));
             }
         }
 
@@ -64,12 +64,18 @@ namespace PowerPlannerAndroid.Views.ListItems
             return PowerPlannerResources.GetStringTimeToTime(DateHelper.ToShortTimeString(s.StartTime), DateHelper.ToShortTimeString(s.EndTime));
         }
 
-        private TextView CreateTextView(string text)
+        private TextView CreateTextView(string text, bool autoLink = false)
         {
-            var view = new TextView(Context)
+            var view = new TextView(Context);
+
+            if (autoLink)
             {
-                Text = text
-            };
+                // Auto link needs to be set first before setting text
+                view.AutoLinkMask = Android.Text.Util.MatchOptions.All;
+                view.SetLinkTextColor(Color.White);
+            }
+
+            view.Text = text;
 
             view.SetTextColor(new Color(255, 255, 255));
 

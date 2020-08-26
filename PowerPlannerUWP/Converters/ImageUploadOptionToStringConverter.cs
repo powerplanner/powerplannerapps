@@ -17,13 +17,13 @@ namespace PowerPlannerUWP.Converters
                 switch ((ImageUploadOptions)value)
                 {
                     case ImageUploadOptions.Always:
-                        return LocalizedResources.GetString("ImageUploadOptions_Always");
+                        return LocalizedResources.GetString("String_Always");
 
                     case ImageUploadOptions.WifiOnly:
                         return LocalizedResources.GetString("ImageUploadOptions_WifiOnly");
 
                     case ImageUploadOptions.Never:
-                        return LocalizedResources.GetString("ImageUploadOptions_Never");
+                        return LocalizedResources.GetString("String_Never");
 
                     default:
                         return value.ToString();

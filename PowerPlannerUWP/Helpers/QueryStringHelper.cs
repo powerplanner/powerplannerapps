@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerPlannerUWPLibrary
+namespace PowerPlannerUWP
 {
     /// <summary>
     /// TODO: I should deprecate this!!!!

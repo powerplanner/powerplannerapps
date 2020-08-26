@@ -21,6 +21,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 _remindersDayBefore = _account.RemindersDayBefore;
                 _remindersDayOf = _account.RemindersDayOf;
+
+                _selectedClassReminderOption = _timeSpanToStringMappings.FirstOrDefault(i => i.Key == _account.ClassRemindersTimeSpan).Value ?? ClassReminderOptions.First();
+
                 IsEnabled = true;
             }
         }
@@ -31,6 +34,46 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             get { return _isEnabled; }
             set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
         }
+
+        private string _selectedClassReminderOption;
+        public string SelectedClassReminderOption
+        {
+            get => _selectedClassReminderOption;
+            set
+            {
+                if (_selectedClassReminderOption != value)
+                {
+                    _selectedClassReminderOption = value;
+                    OnPropertyChanged(nameof(SelectedClassReminderOption));
+                }
+
+                var timeSpan = _timeSpanToStringMappings.FirstOrDefault(i => i.Value == value).Key;
+
+                if (_account.ClassRemindersTimeSpan != timeSpan)
+                {
+                    _account.ClassRemindersTimeSpan = timeSpan;
+                    SaveAndUpdateClassReminders();
+                }
+            }
+        }
+
+        private static KeyValuePair<TimeSpan?, string>[] _timeSpanToStringMappings = new KeyValuePair<TimeSpan?, string>[]
+        {
+            new KeyValuePair<TimeSpan?, string>(null, PowerPlannerResources.GetString("String_Never")),
+            GenerateMapping(0),
+            GenerateMapping(5),
+            GenerateMapping(10),
+            GenerateMapping(15),
+            GenerateMapping(30),
+            GenerateMapping(60)
+        };
+
+        private static KeyValuePair<TimeSpan?, string> GenerateMapping(int minutesBefore)
+        {
+            return new KeyValuePair<TimeSpan?, string>(TimeSpan.FromMinutes(minutesBefore), string.Format(PowerPlannerResources.GetString("String_XMinutesBefore"), minutesBefore));
+        }
+
+        public string[] ClassReminderOptions { get; private set; } = _timeSpanToStringMappings.Select(i => i.Value).ToArray();
 
         private bool _remindersDayOf;
         public bool RemindersDayOf
@@ -80,9 +123,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 
                 Debug.WriteLine("Reminder settings changed, saving...");
                 await AccountsManager.Save(_account);
+                await RemindersExtension.Current?.ResetReminders(_account, await AccountDataStore.Get(_account.LocalAccountId));
                 Debug.WriteLine("Reminder settings changed, saved.");
+            }
 
-                var dontWait = RemindersExtension.Current?.ResetReminders(_account, await AccountDataStore.Get(_account.LocalAccountId));
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+
+            finally
+            {
+                IsEnabled = true;
+            }
+        }
+
+        private async void SaveAndUpdateClassReminders()
+        {
+            try
+            {
+                IsEnabled = false;
+
+                Debug.WriteLine("Class reminder settings changed, saving...");
+                await AccountsManager.Save(_account);
+
+                if (_account.AreClassRemindersEnabled())
+                {
+                    await ClassRemindersExtension.Current?.ResetAllRemindersAsync(_account);
+                }
+                else
+                {
+                    ClassRemindersExtension.Current?.RemoveAllReminders(_account);
+                }
+
+                Debug.WriteLine("Class reminder settings changed, saved.");
             }
 
             catch (Exception ex)

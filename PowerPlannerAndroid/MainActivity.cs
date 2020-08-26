@@ -366,6 +366,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2008, 12, 2, 0))
+                    {
+                        changedText += "\n - URLs in class schedule room fields are now clickable for supporting Zoom/online links!";
+                    }
+
                     if (v <= new Version(2007, 30, 1, 99))
                     {
                         changedText += "\n - Fixed order of tasks so incomplete tasks are displayed first";

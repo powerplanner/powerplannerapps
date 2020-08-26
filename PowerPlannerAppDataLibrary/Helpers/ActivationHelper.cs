@@ -84,6 +84,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 case ArgumentsAction.ViewHoliday:
                     answer = new ViewHolidayArguments();
                     break;
+
+                case ArgumentsAction.MarkTasksCompleteArgument:
+                    answer = new MarkTasksCompleteArguments();
+                    break;
             }
 
             if (answer != null)
@@ -246,6 +250,45 @@ namespace PowerPlannerAppDataLibrary.Helpers
         }
     }
 
+    public abstract class BaseArgumentsWithAccountAndItems : BaseArgumentsWithAccount
+    {
+        public const string KEY_ITEMS = "items";
+
+        public Guid[] ItemIds { get; set; }
+
+        protected override void InjectValues(QueryString qs)
+        {
+            qs.Add(KEY_ITEMS, string.Join(",", ItemIds));
+
+            base.InjectValues(qs);
+        }
+
+        internal override bool TryParse(QueryString qs)
+        {
+            string val;
+
+            if (!(qs.TryGetValue(KEY_ITEMS, out val)))
+                return false;
+
+            string[] vals = val.Split(',');
+
+            ItemIds = new Guid[vals.Length];
+            for (int i = 0; i < vals.Length; i++)
+            {
+                if (Guid.TryParse(vals[i], out Guid result))
+                {
+                    ItemIds[i] = result;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return base.TryParse(qs);
+        }
+    }
+
     public class ViewPageArguments : BaseArgumentsWithAccount
     {
         private const string KEY_PAGE = "page";
@@ -320,6 +363,11 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 return ArgumentsAction.ViewHomework;
             }
         }
+    }
+
+    public class MarkTasksCompleteArguments : BaseArgumentsWithAccountAndItems
+    {
+        internal override ArgumentsAction Action => ArgumentsAction.MarkTasksCompleteArgument;
     }
 
     public class ViewEventArguments : BaseArgumentsWithAccountAndItem
@@ -401,6 +449,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         OpenAccount,
         ViewHoliday,
         ViewPage,
-        QuickAddToCurrentAccount
+        QuickAddToCurrentAccount,
+        MarkTasksCompleteArgument
     }
 }

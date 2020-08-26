@@ -7,7 +7,7 @@
     <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Debug (Android);Release (Android)</Configurations>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
@@ -30,10 +30,9 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
-    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.200114.3" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.200810.2" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1" />
-    <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />
     <PackageReference Include="TimeZoneConverter" Version="3.2.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
   </ItemGroup>

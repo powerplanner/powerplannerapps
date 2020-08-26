@@ -111,6 +111,27 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return account;
         }
 
+        public static async Task<AccountDataItem> GetOrLoadOnlineAccount(long onlineAccountId)
+        {
+            lock (_cachedAccounts)
+            {
+                foreach (var cached in _cachedAccounts.Values)
+                {
+                    var account = cached.Account;
+                    if (account != null)
+                    {
+                        if (account.AccountId == onlineAccountId)
+                        {
+                            return account;
+                        }
+                    }
+                }
+            }
+
+            var allAccounts = await GetAllAccounts();
+            return allAccounts.FirstOrDefault(i => i.AccountId == onlineAccountId);
+        }
+
         private static async Task<AccountDataItem> GetOrLoadHelper(Guid localAccountId)
         {
             Debug.WriteLine("GetOrLoad Account: " + localAccountId);
@@ -276,6 +297,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             account.LocalAccountId = localAccountId;
 
             SyncLayer.Sync.ChangedSetting? changedSettings = null;
+            bool needsClassRemindersReset = false;
 
             // Upgrade account data
             if (account.AccountDataVersion < 2)
@@ -324,6 +346,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
             }
 
+            if (account.AccountDataVersion < 4)
+            {
+                // Set to the default timespan (otherwise this would be null when upgrading)
+                account.ClassRemindersTimeSpan = AccountDataItem.DefaultClassRemindersTimeSpan;
+                needsClassRemindersReset = true;
+            }
+
             if (account.AccountDataVersion < AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION)
             {
                 account.AccountDataVersion = AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION;
@@ -333,6 +362,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (changedSettings != null)
             {
                 _ = SyncLayer.Sync.SyncSettings(account, changedSettings.Value);
+            }
+
+            if (needsClassRemindersReset)
+            {
+                _ = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account);
             }
 
             return account;

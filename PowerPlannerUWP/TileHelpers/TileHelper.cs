@@ -21,10 +21,10 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerUWPLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerUWP.Helpers;
 
-namespace PowerPlannerUWPLibrary.TileHelpers
+namespace PowerPlannerUWP.TileHelpers
 {
     public static class TileHelper
     {

@@ -58,6 +58,7 @@
 
                 <TextBlock
                     Text="{Binding DayOfWeek, Mode=OneTime, Converter={StaticResource DayOfWeekToStringConverter}}"
+                    IsTextSelectionEnabled="True"
                     Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                 <ItemsControl
@@ -66,19 +67,22 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <RichTextBlock
-                                FontSize="14"
-                                Margin="0,0,0,15"
-                                IsTextSelectionEnabled="False">
-                                <Paragraph>
-                                    <Run Text="{Binding StartTime, Converter={StaticResource DateToTimeConverter}, Mode=OneTime}"/>
-                                    <Run x:Uid="TextBlock_To" Text="to"/>
-                                    <Run Text="{Binding EndTime, Converter={StaticResource DateToTimeConverter}, Mode=OneTime}"/>
-                                </Paragraph>
-                                <Paragraph>
-                                    <Run Text="{Binding Room, Mode=OneTime}"/>
-                                </Paragraph>
-                            </RichTextBlock>
+                            <StackPanel>
+                                <RichTextBlock
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True">
+                                    <Paragraph>
+                                        <Run Text="{Binding StartTime, Converter={StaticResource DateToTimeConverter}, Mode=OneTime}"/>
+                                        <Run x:Uid="TextBlock_To" Text="to"/>
+                                        <Run Text="{Binding EndTime, Converter={StaticResource DateToTimeConverter}, Mode=OneTime}"/>
+                                    </Paragraph>
+                                </RichTextBlock>
+                                <TextBlock
+                                    interfaces:TextBlockExtensions.RawText="{Binding Room, Mode=OneTime}"
+                                    FontSize="14"
+                                    Margin="0,0,0,15"
+                                    IsTextSelectionEnabled="True"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
 

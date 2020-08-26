@@ -7,7 +7,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    IsEnabled="{Binding IsEnabled}">
 
     <interfacesViews:ViewHostGeneric.Resources>
 
@@ -47,24 +48,57 @@
                     Margin="0,0,0,12"/>
 
                 <TextBlock
-                    x:Uid="Settings_Reminders_Description"
-                    Text="This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option."
+                    x:Uid="Settings_RemindersWithClasses_Description"
+                    Text="This application automatically sets reminders for classes, tasks, and events. The reminders are just like calendar event reminders, with a snooze and dismiss option."
                     Style="{ThemeResource BodyTextBlockStyle}"/>
-                
-                
+
+                <TextBlock
+                    x:Uid="Settings_Reminders_ClassRemindersHeader"
+                    Text="Class reminders"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Margin="0,24,0,0"/>
+
+                <StackPanel
+                    Orientation="Horizontal"
+                    Margin="0,6,0,0">
+                    <!--Programmatically localized-->
+                    <TextBlock
+                        x:Name="TextBlockRemindMe"
+                        Text="Remind me:"
+                        VerticalAlignment="Center"
+                        Margin="0,0,12,0"/>
+                    <ComboBox
+                        ItemsSource="{Binding ClassReminderOptions}"
+                        SelectedItem="{Binding SelectedClassReminderOption, Mode=TwoWay}"/>
+                </StackPanel>
+                <TextBlock
+                    x:Uid="Settings_Reminders_ClassRemindersDescription"
+                    Text="This feature reminds you about an upcoming class up to 60 minutes before the class starts."
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Margin="0,6,0,0"/>
+
+
+                <TextBlock
+                    x:Uid="Settings_Reminders_TaskEventRemindersHeader"
+                    Text="Task/event reminders"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Margin="0,24,0,0"/>
+
                 <ToggleSwitch
                     x:Uid="Settings_Reminders_ToggleDayBefore"
                     x:Name="ToggleSwitchDayBefore"
                     Header="day before"
                     Style="{StaticResource MyToggleSwitchStyle}"
                     IsOn="{Binding RemindersDayBefore, Mode=TwoWay}"
-                    Margin="0,20,0,0"/>
+                    Margin="0,12,0,0"/>
                 
                 
                 <TextBlock
                     x:Uid="Settings_Reminders_DayBeforeDescription"
                     Text="This feature reminds you the day before your incomplete task or event is due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day."
-                    Style="{ThemeResource CaptionTextBlockStyle}"/>
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
 
 
 
@@ -74,12 +108,13 @@
                     Header="day of"
                     Style="{StaticResource MyToggleSwitchStyle}"
                     IsOn="{Binding RemindersDayOf, Mode=TwoWay}"
-                    Margin="0,20,0,0"/>
+                    Margin="0,12,0,0"/>
 
                 <TextBlock
                     x:Name="Settings_Reminders_DayOfDescription"
                     Text="This feature reminds you on the same day that your incomplete task or event is due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day."
-                    Style="{ThemeResource CaptionTextBlockStyle}"/>
+                    Style="{ThemeResource CaptionTextBlockStyle}"
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
 
 
             </StackPanel>

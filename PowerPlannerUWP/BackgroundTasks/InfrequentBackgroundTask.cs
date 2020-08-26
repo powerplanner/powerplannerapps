@@ -1,22 +1,22 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerUWPLibrary;
-using PowerPlannerUWPLibrary.TileHelpers;
+using PowerPlannerUWP.Extensions;
+using PowerPlannerUWP.TileHelpers;
 using System;
 using System.Threading;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 
-namespace BackgroundTasksProject
+namespace PowerPlannerUWP.BackgroundTasks
 {
-    public sealed class InfrequentBackgroundTask : IBackgroundTask
+    public class InfrequentBackgroundTask
     {
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public async void Run(IBackgroundTaskInstance taskInstance)
+        public async void Handle(BackgroundActivatedEventArgs args)
         {
-            SharedInitialization.Initialize();
-            InitializeUWP.Initialize();
+            var taskInstance = args.TaskInstance;
 
             taskInstance.Canceled += TaskInstance_Canceled;
 
@@ -38,6 +38,8 @@ namespace BackgroundTasksProject
 
                         cancellationToken.ThrowIfCancellationRequested();
 
+                        await ClassRemindersExtension.Current?.ResetAllRemindersAsync(a);
+                        await RemindersExtension.Current?.ResetReminders(a, data);
                         await TileHelper.UpdateTileNotificationsForAccountAsync(a, data);
 
                         cancellationToken.ThrowIfCancellationRequested();
@@ -51,8 +53,6 @@ namespace BackgroundTasksProject
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
-
-            // TODO: Re-schedule toast notifications?
 
             finally
             {

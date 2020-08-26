@@ -10,11 +10,11 @@
           <source>Cancel</source>
           <target state="final">Cancelar</target>
         </trans-unit>
-        <trans-unit id="ImageUploadOptions_Always" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Always" translate="yes" xml:space="preserve">
           <source>Always</source>
           <target state="final">Siempre</target>
         </trans-unit>
-        <trans-unit id="ImageUploadOptions_Never" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Never" translate="yes" xml:space="preserve">
           <source>Never</source>
           <target state="final">Nunca</target>
         </trans-unit>
@@ -1700,9 +1700,9 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Grade Weight Category</source>
           <target state="final">Categoría de notas</target>
         </trans-unit>
-        <trans-unit id="ViewTaskOrEventPage_ButtonConvertToGrade.Content" translate="yes" xml:space="preserve">
-          <source>Convert to grade</source>
-          <target state="final">Convertir al nota</target>
+        <trans-unit id="ViewTaskOrEventPage_ButtonAddGrade.Content" translate="yes" xml:space="preserve">
+          <source>Add grade</source>
+          <target state="final" state-qualifier="mt-suggestion">Agregar nota</target>
         </trans-unit>
         <trans-unit id="WeightCategory_Exclude" translate="yes" xml:space="preserve">
           <source>Exclude from grades</source>
@@ -2358,6 +2358,50 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         <trans-unit id="String_ViewGrades" translate="yes" xml:space="preserve">
           <source>View grades</source>
           <target state="final" state-qualifier="mt-suggestion">Ver notas</target>
+        </trans-unit>
+        <trans-unit id="String_XMinutesBefore" translate="yes" xml:space="preserve">
+          <source>{0} minutes before</source>
+          <target state="final" state-qualifier="mt-suggestion">{0} minutos antes</target>
+        </trans-unit>
+        <trans-unit id="Settings_RemindersWithClasses_Description.Text" translate="yes" xml:space="preserve">
+          <source>This application automatically sets reminders for classes, tasks, and events. The reminders are just like calendar event reminders, with a snooze and dismiss option.</source>
+          <target state="final" state-qualifier="mt-suggestion">Esta aplicación establece automáticamente recordatorios para clases, tareas y eventos. Los recordatorios son como recordatorios de eventos de calendario, con una opción de posponer y descartar.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_ClassRemindersHeader.Text" translate="yes" xml:space="preserve">
+          <source>Class reminders</source>
+          <target state="final" state-qualifier="mt-suggestion">Recordatorios de clase</target>
+        </trans-unit>
+        <trans-unit id="String_RemindMe" translate="yes" xml:space="preserve">
+          <source>Remind me:</source>
+          <target state="final" state-qualifier="tm-suggestion">Avisarme:</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_ClassRemindersDescription.Text" translate="yes" xml:space="preserve">
+          <source>This feature reminds you about an upcoming class up to 60 minutes before the class starts.</source>
+          <target state="final" state-qualifier="mt-suggestion">Esta característica le recuerda acerca de una próxima clase hasta 60 minutos antes de que comience la clase.</target>
+        </trans-unit>
+        <trans-unit id="Settings_Reminders_TaskEventRemindersHeader.Text" translate="yes" xml:space="preserve">
+          <source>Task/event reminders</source>
+          <target state="final" state-qualifier="mt-suggestion">Recordatorios de tareas/eventos</target>
+        </trans-unit>
+        <trans-unit id="String_XMinutes" translate="yes" xml:space="preserve">
+          <source>{0} minutes</source>
+          <target state="final" state-qualifier="tm-suggestion">{0} minutos</target>
+        </trans-unit>
+        <trans-unit id="String_XHours" translate="yes" xml:space="preserve">
+          <source>{0} hours</source>
+          <target state="final" state-qualifier="tm-suggestion">{0} horas</target>
+        </trans-unit>
+        <trans-unit id="String_OneHour" translate="yes" xml:space="preserve">
+          <source>1 hour</source>
+          <target state="final" state-qualifier="tm-suggestion">1 hora</target>
+        </trans-unit>
+        <trans-unit id="String_OneDay" translate="yes" xml:space="preserve">
+          <source>1 day</source>
+          <target state="final" state-qualifier="tm-suggestion">1 día</target>
+        </trans-unit>
+        <trans-unit id="String_Complete" translate="yes" xml:space="preserve">
+          <source>Complete</source>
+          <target state="final" state-qualifier="tm-suggestion">Completado</target>
         </trans-unit>
       </group>
     </body>

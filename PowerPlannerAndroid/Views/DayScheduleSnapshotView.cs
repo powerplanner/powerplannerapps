@@ -489,10 +489,13 @@ namespace PowerPlannerAndroid.Views
 
                 var tvRoom = new TextView(context)
                 {
+                    // Autolink needs to be set before setting text
+                    AutoLinkMask = Android.Text.Util.MatchOptions.All,
                     Text = s.Room,
                     Typeface = Typeface.DefaultBold
                 };
                 tvRoom.SetTextColor(Color.White);
+                tvRoom.SetLinkTextColor(Color.White);
                 tvRoom.SetPadding(marginSides, marginBetween, marginSides, 0);
 
                 if (hours >= 1.1)

@@ -42,4 +42,4 @@ Transform PowerPlannerAndroid\google-services.template.json
 Transform PowerPlanneriOS\App\Secrets.template.cs
 
 # UWP
-Transform PowerPlannerUWPLibrary\App\Secrets.template.cs
+Transform PowerPlannerUWP\App\Secrets.template.cs

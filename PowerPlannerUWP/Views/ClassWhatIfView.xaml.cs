@@ -2,8 +2,6 @@
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerSending;
 using PowerPlannerUWP.Views.GradeViews;
-using PowerPlannerUWPLibrary;
-
 using System;
 using System.Collections.Generic;
 using System.IO;

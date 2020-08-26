@@ -3,7 +3,6 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerUWP.Views;
-using PowerPlannerUWPLibrary;
 using System;
 using System.Collections.Generic;
 using System.IO;

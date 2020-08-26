@@ -6,7 +6,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerUWPLibrary.Helpers;
+using PowerPlannerUWP.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,9 +17,9 @@ using Windows.Data.Xml.Dom;
 using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
-using static PowerPlannerUWPLibrary.TileHelpers.TileHelper;
+using static PowerPlannerUWP.TileHelpers.TileHelper;
 
-namespace PowerPlannerUWPLibrary.TileHelpers
+namespace PowerPlannerUWP.TileHelpers
 {
     public static class ScheduleTileHelper
     {

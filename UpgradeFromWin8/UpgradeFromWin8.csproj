@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -157,10 +157,6 @@
     <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj">
       <Project>{d5f159b7-addd-4c88-9f45-8a12e37f8052}</Project>
       <Name>PowerPlannerAppDataLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerUWPLibrary\PowerPlannerUWPLibrary.csproj">
-      <Project>{d774c2e4-f876-4dc7-968f-c500cef208d7}</Project>
-      <Name>PowerPlannerUWPLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

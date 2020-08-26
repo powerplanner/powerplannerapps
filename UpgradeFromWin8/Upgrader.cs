@@ -1,5 +1,4 @@
 ﻿using PowerPlannerSending;
-using PowerPlannerUWPLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
