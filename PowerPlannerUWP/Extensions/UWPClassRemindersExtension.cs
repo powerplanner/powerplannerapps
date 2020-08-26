@@ -57,7 +57,7 @@ namespace PowerPlannerUWP.Extensions
             for (; today.Date < end.Date; today = today.AddDays(1).Date)
             {
                 // No need to lock changes, if changes occur an exception might occur, but that's fine, reminders would be reset once again anyways
-                var schedulesOnDay = SchedulesOnDay.Get(scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today), trackChanges: false);
+                var schedulesOnDay = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today), trackChanges: false);
 
                 foreach (var s in schedulesOnDay)
                 {

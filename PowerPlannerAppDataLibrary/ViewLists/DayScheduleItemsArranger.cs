@@ -236,7 +236,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
             if (!IsDifferentSemester)
             {
-                schedules = SchedulesOnDay.Get(semesterItems.Classes, date, account.GetWeekOnDifferentDate(date), trackChanges: true);
+                schedules = SchedulesOnDay.Get(account, semesterItems.Classes, date, account.GetWeekOnDifferentDate(date), trackChanges: true);
                 schedules.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Schedules_CollectionChanged).Handler;
             }
 

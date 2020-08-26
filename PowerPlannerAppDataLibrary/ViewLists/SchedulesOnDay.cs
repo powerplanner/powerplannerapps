@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems;
+﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
             public bool ShouldInsert(ViewItemSchedule itemToBeInserted)
             {
-                return itemToBeInserted.Class.IsActiveOnDate(_date) && itemToBeInserted.DayOfWeek == _date.DayOfWeek && (itemToBeInserted.ScheduleWeek == _week || itemToBeInserted.ScheduleWeek == Schedule.Week.BothWeeks);
+                return itemToBeInserted.Class.IsActiveOnDate(_date) && (itemToBeInserted.ScheduleWeek == _week || itemToBeInserted.ScheduleWeek == Schedule.Week.BothWeeks) && itemToBeInserted.OccursOnDate(_date);
             }
         }
 
@@ -37,12 +38,14 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         private Schedule.Week Week { get; set; }
         private DateTime Date { get; set; }
         private IEnumerable<ViewItemClass> Classes { get; set; }
+        private TimeZoneInfo SchoolTimeZone { get; set; }
 
-        private SchedulesOnDay(IEnumerable<ViewItemClass> classes, DateTime date, Schedule.Week week, bool trackChanges = false)
+        private SchedulesOnDay(IEnumerable<ViewItemClass> classes, DateTime date, Schedule.Week week, TimeZoneInfo schoolTimeZone, bool trackChanges = false)
         {
             TrackChanges = trackChanges;
             Week = week;
             Date = date;
+            SchoolTimeZone = schoolTimeZone;
             _classPropertyChangedEventHandler = new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
             base.Filter = new ScheduleFilter(date, week);
 
@@ -70,14 +73,14 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             _cached.Clear();
         }
 
-        public static SchedulesOnDay Get(IEnumerable<ViewItemClass> classes, DateTime date, Schedule.Week week, bool trackChanges = false)
+        public static SchedulesOnDay Get(AccountDataItem account, IEnumerable<ViewItemClass> classes, DateTime date, Schedule.Week week, bool trackChanges = false)
         {
             SchedulesOnDay answer;
             for (int i = 0; i < _cached.Count; i++)
             {
                 if (_cached[i].TryGetTarget(out answer))
                 {
-                    if (answer.Date == date.Date && answer.Classes == classes)
+                    if (answer.Date == date.Date && answer.Classes == classes && object.Equals(answer.SchoolTimeZone, account.SchoolTimeZone))
                     {
                         if (trackChanges)
                         {
@@ -96,7 +99,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
             }
 
-            answer = new SchedulesOnDay(classes, date, week, trackChanges);
+            answer = new SchedulesOnDay(classes, date, week, account.SchoolTimeZone, trackChanges);
             if (trackChanges)
             {
                 _cached.Add(new WeakReference<SchedulesOnDay>(answer));

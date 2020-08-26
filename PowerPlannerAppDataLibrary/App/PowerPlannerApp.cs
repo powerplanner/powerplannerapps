@@ -402,7 +402,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             var currWeek = account.GetWeekOnDifferentDate(date);
 
-            var schedules = SchedulesOnDay.Get(classes, date, currWeek, trackChanges: false);
+            var schedules = SchedulesOnDay.Get(account, classes, date, currWeek, trackChanges: false);
 
             return schedules.FirstOrDefault()?.Class;
         }
@@ -414,7 +414,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             var currWeek = account.GetWeekOnDifferentDate(now);
 
-            var schedules = SchedulesOnDay.Get(classes, now, currWeek, trackChanges: false);
+            var schedules = SchedulesOnDay.Get(account, classes, now, currWeek, trackChanges: false);
 
             ViewItemSchedule closestBefore = null;
             ViewItemSchedule closestAfter = null;
