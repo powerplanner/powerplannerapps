@@ -642,7 +642,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     // Otherwise, we continue to make the next request (the next page has already been passed)
                     partialSyncNumber++;
 
-                    if (partialSyncNumber > 50)
+                    if (partialSyncNumber > 200)
                     {
                         throw new Exception("Partial sync seems to be in an infinite loop. NextPage: " + response.NextPage);
                     }
