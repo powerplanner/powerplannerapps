@@ -21,6 +21,8 @@
 
                 <ResourceDictionary>
 
+                    <!--Temporary bug fix for https://github.com/microsoft/microsoft-ui-xaml/issues/2719-->
+                    <Thickness x:Key="CalendarDatePickerTopHeaderMargin">0,0,0,4</Thickness>
 
                     <Style x:Key="WelcomeButtonStyle" TargetType="Button">
                         <Setter Property="Height" Value="40"/>
