@@ -29,14 +29,23 @@ namespace PowerPlannerUWP.Extensions
             var notifier = ToastNotificationManager.CreateToastNotifier();
             var group = ClassRemindersGroupPrefix + "." + UWPRemindersExtension.GetId(account);
 
-            var scheduled = notifier.GetScheduledToastNotifications();
-            foreach (var s in scheduled)
+            // Clear current scheduled notifications
+            try
             {
-                if (s.Group == group)
+                var scheduled = notifier.GetScheduledToastNotifications();
+                foreach (var s in scheduled)
                 {
-                    notifier.RemoveFromSchedule(s);
+                    try
+                    {
+                        if (s.Group == group)
+                        {
+                            notifier.RemoveFromSchedule(s);
+                        }
+                    }
+                    catch { }
                 }
             }
+            catch { }
 
             if (scheduleViewItemsGroup == null)
             {
@@ -83,7 +92,16 @@ namespace PowerPlannerUWP.Extensions
                             notif.ExpirationTime = today.Add(s.EndTime.TimeOfDay);
                         }
 
-                        notifier.AddToSchedule(notif);
+                        try
+                        {
+                            notifier.AddToSchedule(notif);
+                        }
+                        catch (Exception ex)
+                        {
+                            // If OS is in a bad state, we'll just stop
+                            TelemetryExtension.Current?.TrackException(new Exception("Adding toast to schedule failed: " + ex.Message, ex));
+                            return;
+                        }
                     }
                 }
             }
