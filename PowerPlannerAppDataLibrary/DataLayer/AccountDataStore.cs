@@ -1763,7 +1763,25 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private IEnumerable<BaseDataItem> FindAll<T>(Guid[] identifiersToLookFor, TableQuery<T> table) where T : BaseDataItem
         {
-            return table.Where(i => identifiersToLookFor.Contains(i.Identifier));
+            // Max variables is 999
+            const int max = 900;
+            if (identifiersToLookFor.Length > max)
+            {
+                foreach (var grouped in identifiersToLookFor.BatchAsArrays(900))
+                {
+                    foreach (var item in table.Where(i => grouped.Contains(i.Identifier)))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in table.Where(i => identifiersToLookFor.Contains(i.Identifier)))
+                {
+                    yield return item;
+                }
+            }
         }
 
         private Guid[] FindAllIdentifiersThatAreChildren(Guid[] parentIdentifiers)
