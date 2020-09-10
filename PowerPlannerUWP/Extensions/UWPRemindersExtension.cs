@@ -91,11 +91,27 @@ namespace PowerPlannerUWP.Extensions
 
         private void ClearReminders(Guid localAccountId, CancellationToken token)
         {
-            foreach (var n in ToastNotifier.GetScheduledToastNotifications().Where(i => i.Id == GetId(localAccountId)).ToArray())
+            // UWP seems to throw an Element not found 0x80070490 exception when clearing scheduled notifications sometimes,
+            // so wrapping this all in try/catches.
+            ScheduledToastNotification[] notifsToClear;
+            try
+            {
+                notifsToClear = ToastNotifier.GetScheduledToastNotifications().Where(i => i.Id == GetId(localAccountId)).ToArray();
+            }
+            catch
+            {
+                return;
+            }
+
+            foreach (var n in notifsToClear)
             {
                 token.ThrowIfCancellationRequested();
 
-                ToastNotifier.RemoveFromSchedule(n);
+                try
+                {
+                    ToastNotifier.RemoveFromSchedule(n);
+                }
+                catch { }
             }
         }
 
