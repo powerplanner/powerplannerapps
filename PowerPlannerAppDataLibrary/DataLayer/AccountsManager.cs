@@ -478,33 +478,60 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             catch { }
         }
 
-        public class UsernameWasEmptyException : AccountException { }
+        public class UsernameWasEmptyException : AccountException
+        {
+            public override string FriendlyMessage => "You must provide a username!";
+        }
 
-        public class UsernameInvalidException : AccountException { }
+        public class UsernameInvalidException : AccountException
+        {
+            public UsernameInvalidException(string friendlyMessage)
+            {
+                _friendlyMessage = friendlyMessage;
+            }
+
+            private string _friendlyMessage;
+            public override string FriendlyMessage => _friendlyMessage;
+        }
 
         public class UsernameExistsLocallyException : AccountException
         {
+            public override string FriendlyMessage => "This username already exists on this device.";
         }
 
-        public abstract class AccountException : Exception { }
+        public abstract class AccountException : Exception
+        {
+            public virtual string FriendlyMessage => "";
+        }
 
         /// <summary>
         /// Throws error if no username was entered, invalid characters were used, or if the username is already taken. Otherwise returns null.
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static async Task ValidateUsername(string username)
+        public static async Task ValidateUsernameAsync(string username)
         {
-            if (string.IsNullOrWhiteSpace(username))
-                throw new UsernameWasEmptyException();
+            var ex = await GetUsernameErrorAsync(username);
+            if (ex != null)
+            {
+                throw ex;
+            }
+        }
 
-            if (!Credentials.IsUsernameOkay(username))
-                throw new UsernameInvalidException();
+        public static async Task<AccountException> GetUsernameErrorAsync(string username)
+        {
+            var invalidMessage = Credentials.GetUsernameError(username);
+            if (invalidMessage != null)
+            {
+                return new UsernameInvalidException(invalidMessage);
+            }
 
             var accounts = await GetAllAccounts();
 
             if (accounts.Any(i => i.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)))
-                throw new UsernameExistsLocallyException();
+                return new UsernameExistsLocallyException();
+
+            return null;
         }
 
         /// <summary>
@@ -521,7 +548,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <returns></returns>
         public static async Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId, bool rememberUsername, bool rememberPassword, bool autoLogin, bool needsInitialSync)
         {
-            await ValidateUsername(username);
+            await ValidateUsernameAsync(username);
 
             // Initialize data
             AccountDataItem account = new AccountDataItem(Guid.NewGuid())

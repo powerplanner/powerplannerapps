@@ -9,7 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="CREATE ACCOUNT">
+    Title="CREATE ACCOUNT"
+    xmlns:interfaces="using:InterfacesUWP">
 
     <views:PopupViewHostGeneric.MainContent>
 
@@ -21,45 +22,52 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Margin="20">
-                    <TextBox
+                    <interfaces:BareTextBox
                         x:Uid="CreateAccountPage_TextBoxUsername"
-                            x:Name="createUsername"
-                            Header="Username"
-                            PlaceholderText="Pick a username"
+                        x:Name="createUsername"
+                        Header="Username"
+                        PlaceholderText="Pick a username"
                         InputScope="Default"
                         IsSpellCheckEnabled="False"
                         IsTextPredictionEnabled="False"
-                            KeyUp="createUsername_KeyUp"
+                        EnterPressed="createUsername_EnterPressed"
                         Loaded="createUsername_Loaded"
-                        Text="{Binding Username, Mode=TwoWay}"/>
+                        Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding UsernameState}"
+                        HasFocus="{Binding UsernameHasFocus, Mode=TwoWay}"/>
 
-                    <TextBox
+                    <interfaces:BareTextBox
                         x:Uid="CreateAccountPage_TextBoxEmail"
-                            x:Name="createEmail"
-                            Header="Email address"
-                            Margin="0,15,0,0"
-                            InputScope="EmailSmtpAddress"
-                            PlaceholderText="For recovery purposes"
-                            KeyUp="createEmail_KeyUp"
-                        Text="{Binding Email, Mode=TwoWay}"/>
+                        x:Name="createEmail"
+                        Header="Email address"
+                        Margin="0,15,0,0"
+                        InputScope="EmailSmtpAddress"
+                        PlaceholderText="For recovery purposes"
+                        KeyUp="createEmail_KeyUp"
+                        Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding EmailState}"/>
 
-                    <PasswordBox
+                    <interfaces:BarePasswordBox
                         x:Uid="CreateAccountPage_PasswordBoxPassword"
-                            x:Name="createPassword"
-                            Header="Password"
-                            Margin="0,15,0,0"
-                            PlaceholderText="Create a password"
-                            KeyUp="createPassword_KeyUp"
-                        Password="{Binding Password, Mode=TwoWay}"/>
+                        x:Name="createPassword"
+                        Header="Password"
+                        Margin="0,15,0,0"
+                        PlaceholderText="Create a password"
+                        EnterPressed="createPassword_EnterPressed"
+                        Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding PasswordState}"
+                        HasFocus="{Binding PasswordHasFocus, Mode=TwoWay}"/>
 
-                    <PasswordBox
+                    <interfaces:BarePasswordBox
                         x:Uid="CreateAccountPage_PasswordBoxConfirmPassword"
-                            x:Name="createPasswordConfirm"
-                            Header="Confirm password"
-                            PlaceholderText="Enter your password again"
-                            Margin="0,15,0,0"
-                            KeyUp="createPasswordConfirm_KeyUp"
-                        Password="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        x:Name="createPasswordConfirm"
+                        Header="Confirm password"
+                        PlaceholderText="Enter your password again"
+                        Margin="0,15,0,0"
+                        EnterPressed="createPasswordConfirm_EnterPressed"
+                        Password="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding ConfirmPasswordState}"
+                        HasFocus="{Binding ConfirmPasswordHasFocus, Mode=TwoWay}"/>
 
 
                     <TextBlock
