@@ -168,6 +168,24 @@ public class Grade : BindableBase
 Notice that you have to explicitly reference (via `nameof`) the dependent properties you want to listen to. When one of those properties changes, the computation will run again, and if the result changes, it will trigger a property change event for that property.
 
 
+### Android-specific binding examples
+
+```xml
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/SwitchRepeats"
+      android:text="{RepeatingEntry_CheckBoxRepeats.Content}"
+      android:textSize="16sp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      local:Binding="{Source=Repeats, Target=Checked, Mode=TwoWay}; {Source=IsRepeatsVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+```
+
+Converters are auto-discovered using reflection and their class name.
+
+There are some **implicit converters** which live in **BindingApplicator.SetTargetProperty**.
+
+
 ### iOS-specific binding examples
 
 Within a ViewController, to add a generic binding that can perform any action, do the following... But note there's specific bindings for common tasks like binding text that you should use instead.
