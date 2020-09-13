@@ -1908,31 +1908,10 @@ Please think about using an online account instead!</value>
   <data name="String_Complete" xml:space="preserve">
     <value>Complete</value>
   </data>
-  <data name="ConfirmPasswordInvalid" xml:space="preserve">
-    <value>Doesn't match your password.</value>
-  </data>
-  <data name="PasswordInvalid_TooShort" xml:space="preserve">
-    <value>Too short. Must be at least 5 characters.</value>
-  </data>
   <data name="UsernameInvalid_ContainsSpace" xml:space="preserve">
     <value>Cannot contain spaces.</value>
   </data>
-  <data name="UsernameInvalid_Empty" xml:space="preserve">
-    <value>You must provide a username.</value>
-  </data>
   <data name="UsernameInvalid_InvalidCharacters" xml:space="preserve">
     <value>Contains invalid characters: {0}</value>
-  </data>
-  <data name="UsernameInvalid_TooLong" xml:space="preserve">
-    <value>Too long. Can be at most 50 characters.</value>
-  </data>
-  <data name="EmailInvalid_Empty" xml:space="preserve">
-    <value>You must provide an email.</value>
-  </data>
-  <data name="EmailInvalid_Invalid" xml:space="preserve">
-    <value>You must provide a valid email address.</value>
-  </data>
-  <data name="EmailInvalid_TooLong" xml:space="preserve">
-    <value>Too long. Can be at most 150 characters.</value>
   </data>
 </root>

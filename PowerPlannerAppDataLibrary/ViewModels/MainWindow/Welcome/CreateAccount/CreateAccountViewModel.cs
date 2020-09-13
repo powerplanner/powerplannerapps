@@ -13,6 +13,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using BareMvvm.Core;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 {
@@ -25,7 +26,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         public Action AlertNoUsername = delegate { ShowMessage("You must provide a username!", "No username"); };
         public Action AlertNoEmail = delegate { ShowMessage("You must provide an email!", "No email"); };
 
-        public CreateAccountViewModel(BaseViewModel parent) : base(parent) { }
+        private List<AccountDataItem> _accounts;
+
+        public CreateAccountViewModel(BaseViewModel parent) : base(parent)
+        {
+            Username = new TextField(required: true, maxLength: 50, inputValidator: new CustomInputValidator(ValidateUsername), ignoreOuterSpaces: true, reportValidatorInvalidInstantly: true);
+            Email = new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
+            Password = new TextField(required: true, maxLength: 50, minLength: 5);
+            ConfirmPassword = new TextField(required: true, mustMatch: Password);
+
+            LoadAccounts();
+        }
+
+        private async void LoadAccounts()
+        {
+            try
+            {
+                _accounts = await AccountsManager.GetAllAccounts();
+            }
+            catch
+            {
+                _accounts = new List<AccountDataItem>();
+            }
+        }
 
         public AccountDataItem DefaultAccountToUpgrade { get; private set; }
 
@@ -34,260 +57,52 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         /// </summary>
         public bool IsCreateLocalAccountVisible => DefaultAccountToUpgrade == null;
 
-        private string _username = "";
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value, nameof(Username)); UpdateUsernameState(); }
-        }
+        public TextField Username { get; private set; }
 
-        private bool _usernameHasFocus;
-        public bool UsernameHasFocus
+        private InputValidationState ValidateUsername(string username)
         {
-            get => _usernameHasFocus;
-            set
+            if (username.Contains(' '))
+                return InputValidationState.Invalid(PowerPlannerResources.GetString("UsernameInvalid_ContainsSpace"));
+
+            if (!StringTools.IsStringFilenameSafe(username) || !StringTools.IsStringUrlSafe(username))
             {
-                _usernameHasFocus = value;
+                var characters = username.ToCharArray().Distinct().ToArray();
+                var validSpecialChars = StringTools.VALID_SPECIAL_FILENAME_CHARS.Intersect(StringTools.VALID_SPECIAL_URL_CHARS).ToArray();
 
-                if (!value)
-                {
-                    UpdateUsernameState();
-                }
-            }
-        }
+                var validCharacters = characters.Where(i => Char.IsLetterOrDigit(i) || validSpecialChars.Contains(i)).ToArray();
+                var invalidCharacters = characters.Except(validCharacters).ToArray();
 
-        private InputValidationState _usernameState;
-        public InputValidationState UsernameState
-        {
-            get => _usernameState;
-            set => SetProperty(ref _usernameState, value, nameof(UsernameState));
-        }
-
-        private SimpleAsyncWorkerQueue _updateUsernameErrorsQueue = new SimpleAsyncWorkerQueue();
-        private void UpdateUsernameState()
-        {
-            _updateUsernameErrorsQueue.QueueOrMergeAsync("username", async delegate
-            {
                 try
                 {
-                    var username = Username.Trim();
-                    var ex = await AccountsManager.GetUsernameErrorAsync(username);
-
-                    // If we have focus and currently unset, keep unset till either error kicks in or invalid value typed
-                    if (UsernameHasFocus && UsernameState == null && ex == null)
-                    {
-                        return;
-                    }
-
-                    UsernameState = ex != null ? InputValidationState.Invalid(ex.FriendlyMessage) : InputValidationState.Valid;
+                    return InputValidationState.Invalid(PowerPlannerResources.GetStringWithParameters("UsernameInvalid_InvalidCharacters", string.Join(", ", invalidCharacters)));
                 }
-                catch { }
-            });
-        }
-
-        private string _password = "";
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); UpdatePasswordState(); }
-        }
-
-        private bool _passwordHasFocus;
-        public bool PasswordHasFocus
-        {
-            get => _passwordHasFocus;
-            set
-            {
-                _passwordHasFocus = value;
-
-                if (!value)
+                catch
                 {
-                    UpdatePasswordState();
-                }
-            }
-        }
-
-        private InputValidationState _passwordState;
-        public InputValidationState PasswordState
-        {
-            get => _passwordState;
-            set => SetProperty(ref _passwordState, value, nameof(PasswordState));
-        }
-
-        private void UpdatePasswordState()
-        {
-            if (PasswordHasFocus)
-            {
-                if (PasswordState == null)
-                {
-                    ConfirmPasswordState = null;
-                    return;
-                }
-                else if (PasswordState == InputValidationState.Valid)
-                {
-                    PasswordState = null;
-                    ConfirmPasswordState = null;
-                    return;
+                    return InputValidationState.Invalid("Invalid");
                 }
             }
 
-            if (isPasswordTooShort())
+            if (_accounts == null)
             {
-                PasswordState = InputValidationState.Invalid(PowerPlannerResources.GetString("PasswordInvalid_TooShort"));
-            }
-            else
-            {
-                PasswordState = InputValidationState.Valid;
+                return null;
             }
 
-            if (ConfirmPasswordState != null)
+            if (_accounts.Any(i => i.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)))
             {
-                UpdateConfirmPasswordState();
-            }
-        }
-
-        private string _confirmPassword = "";
-        public string ConfirmPassword
-        {
-            get { return _confirmPassword; }
-            set { SetProperty(ref _confirmPassword, value, nameof(ConfirmPassword)); UpdateConfirmPasswordState(); }
-        }
-
-        private bool _confirmPasswordHasFocus;
-        public bool ConfirmPasswordHasFocus
-        {
-            get => _confirmPasswordHasFocus;
-            set
-            {
-                _confirmPasswordHasFocus = value;
-
-                if (!value)
-                {
-                    UpdateConfirmPasswordState();
-                }
-            }
-        }
-
-        private InputValidationState _confirmPasswordState;
-        public InputValidationState ConfirmPasswordState
-        {
-            get => _confirmPasswordState;
-            set => SetProperty(ref _confirmPasswordState, value, nameof(ConfirmPasswordState));
-        }
-
-        private void UpdateConfirmPasswordState()
-        {
-            if (PasswordState != InputValidationState.Valid)
-            {
-                ConfirmPasswordState = null ;
-            }
-            else
-            {
-                if (Password == ConfirmPassword)
-                {
-                    ConfirmPasswordState = InputValidationState.Valid;
-                }
-                else
-                {
-                    if (ConfirmPasswordHasFocus)
-                    {
-                        if (ConfirmPasswordState == null)
-                        {
-                            return;
-                        }
-                        else if (ConfirmPasswordState == InputValidationState.Valid)
-                        {
-                            ConfirmPasswordState = null;
-                            return;
-                        }
-                    }
-
-                    else
-                    {
-                        ConfirmPasswordState = InputValidationState.Invalid(PowerPlannerResources.GetString("ConfirmPasswordInvalid"));
-                    }
-                }
-            }
-        }
-
-        private string _email = "";
-        public string Email
-        {
-            get { return _email; }
-            set { SetProperty(ref _email, value, nameof(Email)); UpdateEmailState(); }
-        }
-
-        private InputValidationState _emailState;
-        public InputValidationState EmailState
-        {
-            get => _emailState;
-            set => SetProperty(ref _emailState, value, nameof(EmailState));
-        }
-
-        private void UpdateEmailState(bool forceUpdate = false)
-        {
-            if (Email.Length > 150)
-            {
-                EmailState = InputValidationState.Invalid(PowerPlannerResources.GetString("EmailInvalid_TooLong"));
-                return;
+                return InputValidationState.Invalid(PowerPlannerResources.GetString("UsernameInvalid_UsernameExists"));
             }
 
-            if (EmailState == null && !forceUpdate)
-            {
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(Email))
-            {
-                EmailState = InputValidationState.Invalid(PowerPlannerResources.GetString("EmailInvalid_Empty"));
-            }
-            else if (!StringTools.IsEmailValid(Email))
-            {
-                EmailState = InputValidationState.Invalid(PowerPlannerResources.GetString("EmailInvalid_Invalid"));
-            }
-            else
-            {
-                EmailState = InputValidationState.Valid;
-            }
+            return InputValidationState.Valid;
         }
 
-        private bool isPasswordTooShort()
-        {
-            return Password.Length < 5;
-        }
+        public TextField Password { get; private set; }
 
-        private bool isPasswordOkay()
-        {
-            return PasswordState == InputValidationState.Valid && ConfirmPasswordState == InputValidationState.Valid;
-        }
+        public TextField ConfirmPassword { get; private set; }
 
-        private bool isUsernameOkay()
-        {
-            return UsernameState == InputValidationState.Valid;
-        }
-
-        private bool isOkayToCreateLocal()
-        {
-            if (!isUsernameOkay())
-                return false;
-
-            if (!isPasswordOkay())
-                return false;
-
-            return true;
-        }
+        public TextField Email { get; private set; }
 
         private bool isOkayToCreate()
         {
-            if (!isOkayToCreateLocal())
-                return false;
-
-            if (EmailState != InputValidationState.Valid)
-            {
-                AlertNoEmail?.Invoke();
-                return false;
-            }
-
             if (DefaultAccountToUpgrade != null && DefaultAccountToUpgrade.IsOnlineAccount)
             {
                 // This shouldn't ever happen, but would happen if it failed to hide the create account page after successfully creating.
@@ -309,12 +124,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 return;
             }
 
-            if (!isOkayToCreateLocal())
+            if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
+            {
+                // Email isn't required for local accounts
+                { nameof(Email), f => f.Validate(overrideRequired: false) }
+            }))
+            {
                 return;
+            }
 
-            string localToken = PowerPlannerAuth.CreateOfflineAccount(Username, Password);
+            string localToken = PowerPlannerAuth.CreateOfflineAccount(Username.Text.Trim(), Password.Text);
 
-            await FinishCreateAccount(Username, localToken, null, 0, 0, "");
+            await FinishCreateAccount(Username.Text.Trim(), localToken, null, 0, 0, "");
         }
 
         private bool _isCreatingOnlineAccount;
@@ -326,14 +147,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         public async void CreateAccount()
         {
-            UpdateEmailState(forceUpdate: true);
+            if (!ValidateAllInputs())
+            {
+                return;
+            }
 
             if (!isOkayToCreate())
                 return;
 
-            string username = Username.Trim();
-            string password = Password;
-            string email = Email.Trim();
+            string username = Username.Text.Trim();
+            string password = Password.Text;
+            string email = Email.Text.Trim();
 
             IsCreatingOnlineAccount = true;
 

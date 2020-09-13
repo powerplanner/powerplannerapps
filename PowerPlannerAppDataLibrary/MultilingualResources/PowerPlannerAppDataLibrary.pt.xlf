@@ -2,7 +2,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en-US" target-language="pt" original="PowerPlannerAppDataLibrary/Strings/Resources.resx" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
     <header>
-      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6916.0" tool-company="Microsoft" />
     </header>
     <body>
       <group id="PowerPlannerAppDataLibrary/Strings/Resources.resx" datatype="resx">
@@ -2402,6 +2402,14 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         <trans-unit id="String_Complete" translate="yes" xml:space="preserve">
           <source>Complete</source>
           <target state="final" state-qualifier="tm-suggestion">Concluído</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_ContainsSpace" translate="yes" xml:space="preserve">
+          <source>Cannot contain spaces.</source>
+          <target state="final" state-qualifier="mt-suggestion">Não é possível conter espaços.</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_InvalidCharacters" translate="yes" xml:space="preserve">
+          <source>Contains invalid characters: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Contém caracteres inválidos: {0}</target>
         </trans-unit>
       </group>
     </body>

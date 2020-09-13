@@ -27,25 +27,41 @@
                         x:Name="createUsername"
                         Header="Username"
                         PlaceholderText="Pick a username"
-                        InputScope="Default"
                         IsSpellCheckEnabled="False"
                         IsTextPredictionEnabled="False"
                         EnterPressed="createUsername_EnterPressed"
                         Loaded="createUsername_Loaded"
-                        Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        ValidationState="{Binding UsernameState}"
-                        HasFocus="{Binding UsernameHasFocus, Mode=TwoWay}"/>
+                        Text="{Binding Username.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding Username.ValidationState}"
+                        HasFocus="{Binding Username.HasFocus, Mode=TwoWay}">
+                        <interfaces:BareTextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="Default"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </interfaces:BareTextBox.InputScope>
+                    </interfaces:BareTextBox>
 
                     <interfaces:BareTextBox
                         x:Uid="CreateAccountPage_TextBoxEmail"
                         x:Name="createEmail"
                         Header="Email address"
                         Margin="0,15,0,0"
-                        InputScope="EmailSmtpAddress"
                         PlaceholderText="For recovery purposes"
+                        IsSpellCheckEnabled="False"
                         KeyUp="createEmail_KeyUp"
-                        Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        ValidationState="{Binding EmailState}"/>
+                        Text="{Binding Email.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding Email.ValidationState}"
+                        HasFocus="{Binding Email.HasFocus, Mode=TwoWay}">
+                        <interfaces:BareTextBox.InputScope>
+                            <InputScope>
+                                <InputScope.Names>
+                                    <InputScopeName NameValue="EmailSmtpAddress"/>
+                                </InputScope.Names>
+                            </InputScope>
+                        </interfaces:BareTextBox.InputScope>
+                    </interfaces:BareTextBox>
 
                     <interfaces:BarePasswordBox
                         x:Uid="CreateAccountPage_PasswordBoxPassword"
@@ -54,9 +70,9 @@
                         Margin="0,15,0,0"
                         PlaceholderText="Create a password"
                         EnterPressed="createPassword_EnterPressed"
-                        Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        ValidationState="{Binding PasswordState}"
-                        HasFocus="{Binding PasswordHasFocus, Mode=TwoWay}"/>
+                        Password="{Binding Password.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding Password.ValidationState}"
+                        HasFocus="{Binding Password.HasFocus, Mode=TwoWay}"/>
 
                     <interfaces:BarePasswordBox
                         x:Uid="CreateAccountPage_PasswordBoxConfirmPassword"
@@ -65,9 +81,9 @@
                         PlaceholderText="Enter your password again"
                         Margin="0,15,0,0"
                         EnterPressed="createPasswordConfirm_EnterPressed"
-                        Password="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        ValidationState="{Binding ConfirmPasswordState}"
-                        HasFocus="{Binding ConfirmPasswordHasFocus, Mode=TwoWay}"/>
+                        Password="{Binding ConfirmPassword.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ValidationState="{Binding ConfirmPassword.ValidationState}"
+                        HasFocus="{Binding ConfirmPassword.HasFocus, Mode=TwoWay}"/>
 
 
                     <TextBlock
