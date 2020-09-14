@@ -81,22 +81,9 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void createUsername_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void createEmail_EnterPressed(object sender, EventArgs e)
         {
-            if (e.Key == VirtualKey.Enter)
-            {
-                e.Handled = true;
-                createEmail.Focus(FocusState.Programmatic);
-            }
-        }
-
-        private void createEmail_KeyUp(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Enter)
-            {
-                e.Handled = true;
-                createPassword.Focus(FocusState.Programmatic);
-            }
+            createPassword.Focus(FocusState.Programmatic);
         }
 
         private void createPassword_EnterPressed(object sender, EventArgs e)

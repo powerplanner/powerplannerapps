@@ -21,11 +21,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
     {
         protected override bool InitialAllowLightDismissValue => false;
 
-        public Action AlertPasswordTooShort = delegate { ShowMessage("Your password is too short.", "Password too short"); };
-        public Action AlertConfirmationPasswordDidNotMatch = delegate { ShowMessage("Your confirmation password didn't match.", "Invalid password"); };
-        public Action AlertNoUsername = delegate { ShowMessage("You must provide a username!", "No username"); };
-        public Action AlertNoEmail = delegate { ShowMessage("You must provide an email!", "No email"); };
-
         private List<AccountDataItem> _accounts;
 
         public CreateAccountViewModel(BaseViewModel parent) : base(parent)
@@ -284,7 +279,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 if (account != null)
                 {
                     // Take us to the account
-                    var dontWait = FindAncestor<MainWindowViewModel>().SetCurrentAccount(account);
+                    _ = FindAncestor<MainWindowViewModel>().SetCurrentAccount(account);
                 }
             }
         }

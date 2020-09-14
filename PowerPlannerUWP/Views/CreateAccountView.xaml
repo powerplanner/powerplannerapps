@@ -50,7 +50,7 @@
                         Margin="0,15,0,0"
                         PlaceholderText="For recovery purposes"
                         IsSpellCheckEnabled="False"
-                        KeyUp="createEmail_KeyUp"
+                        EnterPressed="createEmail_EnterPressed"
                         Text="{Binding Email.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         ValidationState="{Binding Email.ValidationState}"
                         HasFocus="{Binding Email.HasFocus, Mode=TwoWay}">
