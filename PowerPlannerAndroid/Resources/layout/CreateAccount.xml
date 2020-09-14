@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:hint="{TextBox_Username.Header}"
                 android:id="@+id/EditTextUsername"
-                local:Binding="{Source=Username, Target=Text, Mode=TwoWay}"/>
+                local:Binding="{Source=Username.Text, Target=Text, Mode=TwoWay}; {Source=Username.ValidationState.ErrorMessage, Target=Error}; {Source=Username.HasFocus, Target=HasFocus, Mode=TwoWay}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:hint="{CreateAccountPage_TextBoxEmail.Header}"
                 android:id="@+id/EditTextEmail"
-                local:Binding="{Source=Email, Target=Text, Mode=TwoWay}"/>
+                local:Binding="{Source=Email.Text, Target=Text, Mode=TwoWay}; {Source=Email.ValidationState.ErrorMessage, Target=Error}; {Source=Email.HasFocus, Target=HasFocus, Mode=TwoWay}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:hint="{TextBox_Password.Header}"
                 android:id="@+id/EditTextPassword"
-                local:Binding="{Source=Password, Target=Text, Mode=TwoWay}" />
+                local:Binding="{Source=Password.Text, Target=Text, Mode=TwoWay}; {Source=Password.ValidationState.ErrorMessage, Target=Error}; {Source=Password.HasFocus, Target=HasFocus, Mode=TwoWay}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:hint="{CreateAccountPage_PasswordBoxConfirmPassword.Header}"
                 android:id="@+id/EditTextConfirmPassword"
-                local:Binding="{Source=ConfirmPassword, Target=Text, Mode=TwoWay}" />
+                local:Binding="{Source=ConfirmPassword.Text, Target=Text, Mode=TwoWay}; {Source=ConfirmPassword.ValidationState.ErrorMessage, Target=Error}; {Source=ConfirmPassword.HasFocus, Target=HasFocus, Mode=TwoWay}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
