@@ -145,6 +145,17 @@ namespace PowerPlanneriOS.Controllers
             AddTextField(StackView, textField, textBindingPropertyName: textBindingPropertyName, firstResponder: firstResponder);
         }
 
+        protected void AddTextField(BareUITextField textField, string textFieldBindingPropertyName = null, bool firstResponder = false)
+        {
+            if (textFieldBindingPropertyName != null)
+            {
+                BindingHost.SetTextFieldBinding(textField, textFieldBindingPropertyName);
+            }
+
+            // We don't bind again here, already did binding
+            AddTextField(textField, firstResponder: firstResponder);
+        }
+
         protected void AddUnderVisiblity(UIView view, string propertyName)
         {
             StackView.AddUnderVisiblity(view, BindingHost, propertyName);

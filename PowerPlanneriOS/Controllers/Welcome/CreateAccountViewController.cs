@@ -24,7 +24,7 @@ namespace PowerPlanneriOS
         {
             AddTopSectionDivider();
 
-            AddTextField(new UITextField()
+            AddTextField(new BareUITextField()
             {
                 Placeholder = "Username",
                 AutocapitalizationType = UITextAutocapitalizationType.None,
@@ -36,7 +36,7 @@ namespace PowerPlanneriOS
 
             AddDivider();
 
-            AddTextField(new UITextField()
+            AddTextField(new BareUITextField()
             {
                 Placeholder = "Email address (for recovery purposes)",
                 AutocapitalizationType = UITextAutocapitalizationType.None,
@@ -48,7 +48,7 @@ namespace PowerPlanneriOS
 
             AddDivider();
 
-            AddTextField(new UITextField()
+            AddTextField(new BareUITextField()
             {
                 Placeholder = "Password",
                 SecureTextEntry = true,
@@ -58,7 +58,7 @@ namespace PowerPlanneriOS
 
             AddDivider();
 
-            AddTextField(new UITextField()
+            AddTextField(new BareUITextField()
             {
                 Placeholder = "Confirm password",
                 SecureTextEntry = true,
