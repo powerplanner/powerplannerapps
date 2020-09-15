@@ -43,7 +43,7 @@ namespace PowerPlanneriOS.Controllers.Settings
         {
             _accountBindingHost = new BindingHost()
             {
-                BindingObject = ViewModel.CurrentAccount
+                DataContext = ViewModel.CurrentAccount
             };
 
             InitializeTable();

@@ -30,8 +30,8 @@ namespace PowerPlanneriOS.Views
 
         public ViewItemWeightCategory WeightCategory
         {
-            get { return _bindingHost.BindingObject as ViewItemWeightCategory; }
-            set { _bindingHost.BindingObject = value; }
+            get { return _bindingHost.DataContext as ViewItemWeightCategory; }
+            set { _bindingHost.DataContext = value; }
         }
     }
 }
