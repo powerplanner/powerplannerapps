@@ -341,6 +341,18 @@
     <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortraitRetina.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Resources\Images.xcassets\PowerPlannerIcon.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>

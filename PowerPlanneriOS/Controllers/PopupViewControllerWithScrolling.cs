@@ -152,8 +152,8 @@ namespace PowerPlanneriOS.Controllers
                 BindingHost.SetTextFieldBinding(textField, textFieldBindingPropertyName);
             }
 
-            // We don't bind again here, already did binding
-            AddTextField(textField, firstResponder: firstResponder);
+            // We don't bind again here, already did binding (note need to cast to UITextField so it calls the right method)
+            AddTextField(textField as UITextField, firstResponder: firstResponder);
         }
 
         protected void AddUnderVisiblity(UIView view, string propertyName)
