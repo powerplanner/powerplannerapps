@@ -36,26 +36,19 @@ using AndroidX.DrawerLayout.Widget;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, IOnClickListener, InterfacesDroid.Views.IGetSnackbarAnchorView
+    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView
     {
-        private DrawerLayout _drawerLayout;
         private PagedViewModelPresenter _contentPresenter;
         private PopupsPresenter _popupsPresenter;
         private ProgressBar _syncProgressBar;
-        private Button _buttonIsOffline;
-        private Button _buttonSyncError;
         public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
         {
             Toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
             Toolbar.MenuItemClick += Toolbar_MenuItemClick;
-            Toolbar.SetNavigationIcon(Resource.Drawable.ic_menu_white_24dp);
-            Toolbar.SetNavigationOnClickListener(this);
             _syncProgressBar = FindViewById<ProgressBar>(Resource.Id.SyncProgressBar);
             _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
-            _buttonIsOffline = FindViewById<Button>(Resource.Id.ButtonIsOffline);
-            _buttonSyncError = FindViewById<Button>(Resource.Id.ButtonSyncError);
         }
 
         private void Toolbar_MenuItemClick(object sender, AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
@@ -64,32 +57,6 @@ namespace PowerPlannerAndroid.Views
 
             if (handler != null)
                 handler.OnMenuItemClick(e);
-        }
-
-        protected override void OnAttachedToWindow()
-        {
-            PortableApp.Current.GetCurrentWindow().BackPressed += new WeakEventHandler<System.ComponentModel.CancelEventArgs>(MainScreenView_BackPressed).Handler;
-
-            base.OnAttachedToWindow();
-        }
-
-        private void MainScreenView_BackPressed(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            try
-            {
-                if (_drawerLayout.IsDrawerOpen(_drawerLayout.GetChildAt(1)))
-                {
-                    _drawerLayout.CloseDrawers();
-                    e.Cancel = true;
-                }
-            }
-
-            catch { }
-        }
-
-        protected override void OnViewCreated()
-        {
-            _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.MenuDrawerLayout);
         }
 
         private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
@@ -127,15 +94,8 @@ namespace PowerPlannerAndroid.Views
             UpdateActionBarTitle();
             UpdateBottomNavMenu();
             UpdateSyncBarStatus();
-            UpdateIsOffline();
-            UpdateSyncError();
 
-            _buttonIsOffline.Click += delegate { ViewModel.SyncCurrentAccount(); };
-            _buttonSyncError.Click += delegate { _drawerLayout.CloseDrawers(); ViewModel.ViewSyncErrors(); };
             FindViewById<View>(Resource.Id.ImageViewPowerPlannerMenuIcon).Click += delegate { ViewModel.SyncCurrentAccount(); };
-
-            FindViewById(Resource.Id.MenuItemYears).Click += delegate { CloseDrawer(); ViewModel.OpenYears(); };
-            FindViewById(Resource.Id.MenuItemSettings).Click += delegate { CloseDrawer(); ViewModel.OpenSettings(); };
 
             TryAskingForRatingIfNeeded();
         }
@@ -163,7 +123,6 @@ namespace PowerPlannerAndroid.Views
             if (shouldHaveAll)
             {
                 AddMenuItem(NavigationManager.MainMenuSelections.Calendar, "MainMenuItem_Calendar", Resource.Drawable.ic_icons8_calendar_24);
-                AddMenuItem(NavigationManager.MainMenuSelections.Day, "MainMenuItem_Day", Resource.Drawable.ic_icons8_today_apps_24);
                 AddMenuItem(NavigationManager.MainMenuSelections.Agenda, "MainMenuItem_Agenda", Resource.Drawable.ic_icons8_todo_list_24);
             }
 
@@ -271,16 +230,6 @@ namespace PowerPlannerAndroid.Views
                 Toolbar.Menu.Clear();
         }
 
-        private void UpdateIsOffline()
-        {
-            _buttonIsOffline.Visibility = ViewModel.IsOffline ? ViewStates.Visible : ViewStates.Gone;
-        }
-
-        private void UpdateSyncError()
-        {
-            _buttonSyncError.Visibility = ViewModel.HasSyncErrors ? ViewStates.Visible : ViewStates.Gone;
-        }
-
         private void UpdateSyncBarStatus()
         {
             switch (ViewModel.SyncState)
@@ -350,14 +299,6 @@ namespace PowerPlannerAndroid.Views
                     case nameof(ViewModel.UploadImageProgress):
                         UpdateSyncBarStatus();
                         break;
-
-                    case nameof(ViewModel.IsOffline):
-                        UpdateIsOffline();
-                        break;
-
-                    case nameof(ViewModel.HasSyncErrors):
-                        UpdateSyncError();
-                        break;
                 }
             }
             catch (ObjectDisposedException)
@@ -382,17 +323,6 @@ namespace PowerPlannerAndroid.Views
         private void OnSelectedClassChanged()
         {
             UpdateActionBarTitle();
-        }
-
-        public void OnClick(View v)
-        {
-            // Navigation on click
-            _drawerLayout.OpenDrawer(_drawerLayout.GetChildAt(1));
-        }
-
-        public void CloseDrawer()
-        {
-            _drawerLayout.CloseDrawers();
         }
     }
 }
