@@ -21,6 +21,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
     {
         protected override bool InitialAllowLightDismissValue => false;
 
+        /// <summary>
+        /// Views can set this to false
+        /// </summary>
+        public bool IsUsingConfirmPassword { get; set; } = true;
+
         private List<AccountDataItem> _accounts;
 
         public CreateAccountViewModel(BaseViewModel parent) : base(parent)
@@ -122,7 +127,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
             {
                 // Email isn't required for local accounts
-                { nameof(Email), f => f.Validate(overrideRequired: false) }
+                { nameof(Email), f => f.Validate(overrideRequired: false) },
+                
+                // Confirm password may not be required by some views
+                { nameof(ConfirmPassword), f => f.Validate(overrideRequired: IsUsingConfirmPassword) }
             }))
             {
                 return;
@@ -142,7 +150,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         public async void CreateAccount()
         {
-            if (!ValidateAllInputs())
+            if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
+            {
+                // Confirm password may not be required by some views
+                { nameof(ConfirmPassword), f => f.Validate(overrideRequired: IsUsingConfirmPassword) }
+            }))
             {
                 return;
             }

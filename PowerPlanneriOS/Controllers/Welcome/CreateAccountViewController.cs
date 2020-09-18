@@ -13,57 +13,52 @@ namespace PowerPlanneriOS
 {
     public partial class CreateAccountViewController : PopupViewControllerWithScrolling<CreateAccountViewModel>
     {
+        private BareUIStaticGroupedTableView _tableView;
+
         public CreateAccountViewController()
         {
             Title = "Create Account";
 
-            ConfigureForInputsStyle();
+            _tableView = new BareUIStaticGroupedTableView()
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                ScrollEnabled = false
+            };
+
+            StackView.AddArrangedSubview(_tableView);
+            _tableView.StretchWidthAndHeight(View);
         }
 
         public override void OnViewModelLoadedOverride()
         {
-            AddTopSectionDivider();
+            ViewModel.IsUsingConfirmPassword = false;
 
-            AddTextField(new BareUITextField()
+            _tableView.AddTextFieldCell("Username", BindingHost, nameof(ViewModel.Username), textField =>
             {
-                Placeholder = "Username",
-                AutocapitalizationType = UITextAutocapitalizationType.None,
-                AutocorrectionType = UITextAutocorrectionType.No,
-                KeyboardType = UIKeyboardType.ASCIICapable,
-                ReturnKeyType = UIReturnKeyType.Next,
-                EnablesReturnKeyAutomatically = true
-            }, nameof(ViewModel.Username), firstResponder: true);
+                textField.AutocapitalizationType = UITextAutocapitalizationType.None;
+                textField.AutocorrectionType = UITextAutocorrectionType.No;
+                textField.KeyboardType = UIKeyboardType.ASCIICapable;
+                textField.ReturnKeyType = UIReturnKeyType.Next;
+                textField.EnablesReturnKeyAutomatically = true;
+                textField.BecomeFirstResponder();
+            });
 
-            AddDivider();
-
-            AddTextField(new BareUITextField()
+            _tableView.AddTextFieldCell("Email", BindingHost, nameof(ViewModel.Email), textField =>
             {
-                Placeholder = "Email address (for recovery purposes)",
-                AutocapitalizationType = UITextAutocapitalizationType.None,
-                AutocorrectionType = UITextAutocorrectionType.Yes,
-                KeyboardType = UIKeyboardType.EmailAddress,
-                ReturnKeyType = UIReturnKeyType.Next,
-                EnablesReturnKeyAutomatically = true
-            }, nameof(ViewModel.Email));
+                textField.AutocapitalizationType = UITextAutocapitalizationType.None;
+                textField.AutocorrectionType = UITextAutocorrectionType.Yes;
+                textField.KeyboardType = UIKeyboardType.EmailAddress;
+                textField.ReturnKeyType = UIReturnKeyType.Next;
+                textField.EnablesReturnKeyAutomatically = true;
+            });
 
-            AddDivider();
-
-            AddTextField(new BareUITextField()
+            _tableView.AddTextFieldCell("Password", BindingHost, nameof(ViewModel.Password), textField =>
             {
-                Placeholder = "Password",
-                SecureTextEntry = true,
-                ReturnKeyType = UIReturnKeyType.Next,
-                EnablesReturnKeyAutomatically = true
-            }, nameof(ViewModel.Password));
+                textField.SecureTextEntry = true;
+                textField.ReturnKeyType = UIReturnKeyType.Go;
+            });
 
-            AddDivider();
-
-            AddTextField(new BareUITextField()
-            {
-                Placeholder = "Confirm password",
-                SecureTextEntry = true,
-                ReturnKeyType = UIReturnKeyType.Go
-            }, nameof(ViewModel.ConfirmPassword));
+            _tableView.Compile();
 
             AddSectionDivider();
 
