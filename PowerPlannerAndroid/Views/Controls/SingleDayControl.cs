@@ -31,6 +31,7 @@ namespace PowerPlannerAndroid.Views.Controls
         public event EventHandler<ViewItemHoliday> HolidayItemClick;
         public event EventHandler<ViewItemSchedule> ScheduleItemClick;
         public event EventHandler ScheduleClick;
+        public event EventHandler ExpandClick;
 
         private FlatTasksOrEventsAdapter _adapter;
         private DayScheduleSnapshotView _snapshot;
@@ -38,10 +39,13 @@ namespace PowerPlannerAndroid.Views.Controls
         private SemesterItemsViewGroup _viewItemsGroup;
         private RecyclerView _recyclerView;
         private FrameLayout _differentSemesterOverlayContainer;
+        private ImageButton _buttonExpand;
 
         public SingleDayControl(ViewGroup root) : base(Resource.Layout.SingleDay, root)
         {
             _recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerViewItems);
+            _buttonExpand = FindViewById<ImageButton>(Resource.Id.ButtonExpand);
+            _buttonExpand.Click += _buttonExpand_Click;
 
             // Use a linear layout manager
             var layoutManager = new LinearLayoutManager(Context);
@@ -59,6 +63,11 @@ namespace PowerPlannerAndroid.Views.Controls
             _recyclerView.Touch += _recyclerView_Touch;
 
             _differentSemesterOverlayContainer = FindViewById<FrameLayout>(Resource.Id.FrameLayoutDifferentSemesterOverlayContainer);
+        }
+
+        private void _buttonExpand_Click(object sender, EventArgs e)
+        {
+            ExpandClick?.Invoke(this, new EventArgs());
         }
 
         private GenericRecyclerViewHolder CreateFooterViewHolder(ViewGroup parent, object footer)

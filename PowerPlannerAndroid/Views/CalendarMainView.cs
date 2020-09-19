@@ -28,6 +28,7 @@ using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.ViewItems;
 using AndroidX.Core.Content;
 using AndroidX.Core.View;
+using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar.CalendarViewModel;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -38,13 +39,67 @@ namespace PowerPlannerAndroid.Views
 
         public CalendarMainView(ViewGroup root) : base(Resource.Layout.CalendarMain, root)
         {
+            _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
+            _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
+
+            SetBinding<DisplayStates>(nameof(ViewModel.DisplayState), displayState =>
+            {
+                switch (displayState)
+                {
+                    // Full calendar
+                    case DisplayStates.CompactCalendar:
+                        _dayPagerControl.Visibility = ViewStates.Gone;
+                        _calendarView.Visibility = ViewStates.Visible;
+                        _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            0,
+                            1);
+                        break;
+
+                    // Both
+                    case DisplayStates.Split:
+                        _dayPagerControl.Visibility = ViewStates.Visible;
+                        _calendarView.Visibility = ViewStates.Visible;
+                        _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            ThemeHelper.AsPx(Context, 300));
+                        _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            0,
+                            1);
+                        break;
+
+                    // Full day
+                    case DisplayStates.Day:
+                        _dayPagerControl.Visibility = ViewStates.Visible;
+                        _calendarView.Visibility = ViewStates.Gone;
+                        _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            0,
+                            1);
+                        break;
+                }
+            });
+        }
+
+        protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
+        {
+            base.OnSizeChanged(w, h, oldw, oldh);
+
+            if (h > ThemeHelper.AsPx(Context, 550))
+            {
+                ViewModel.ViewSizeState = ViewSizeStates.Compact;
+            }
+            else
+            {
+                ViewModel.ViewSizeState = ViewSizeStates.FullyCompact;
+            }
         }
 
         public override void OnViewModelLoadedOverride()
         {
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
 
-            _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
             _calendarView.Adapter = new MyCalendarAdapter(ViewModel, ViewModel.DisplayMonth, ViewModel.FirstDayOfWeek);
             _calendarView_DisplayMonthChanged(_calendarView, new EventArgs());
             _calendarView.DisplayMonthChanged += _calendarView_DisplayMonthChanged;
@@ -57,14 +112,18 @@ namespace PowerPlannerAndroid.Views
             addItemControl.OnRequestAddTask += AddItemControl_OnRequestAddTask;
             addItemControl.OnRequestAddHoliday += AddItemControl_OnRequestAddHoliday;
 
-            _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
             _dayPagerControl.Initialize(ViewModel.SemesterItemsViewGroup, ViewModel.SelectedDate);
             _dayPagerControl.ItemClick += _dayPagerControl_ItemClick;
             _dayPagerControl.HolidayItemClick += _dayPagerControl_HolidayItemClick;
             _dayPagerControl.ScheduleItemClick += _dayPagerControl_ScheduleItemClick;
             _dayPagerControl.ScheduleClick += _dayPagerControl_ScheduleClick;
             _dayPagerControl.CurrentDateChanged += _dayPagerControl_CurrentDateChanged;
+            _dayPagerControl.ExpandClick += _dayPagerControl_ExpandClick;
+        }
 
+        private void _dayPagerControl_ExpandClick(object sender, EventArgs e)
+        {
+            ViewModel.ExpandDay();
         }
 
         private void _dayPagerControl_HolidayItemClick(object sender, PowerPlannerAppDataLibrary.ViewItems.ViewItemHoliday e)

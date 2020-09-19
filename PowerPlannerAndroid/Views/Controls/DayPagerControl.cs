@@ -29,6 +29,7 @@ namespace PowerPlannerAndroid.Views.Controls
         public event EventHandler<ViewItemHoliday> HolidayItemClick;
         public event EventHandler<ViewItemSchedule> ScheduleItemClick;
         public event EventHandler ScheduleClick;
+        public event EventHandler ExpandClick;
 
         public DayPagerControl(Context context) : base(context)
         {
@@ -126,6 +127,7 @@ namespace PowerPlannerAndroid.Views.Controls
                 prevAdapter.HolidayItemClick -= Adapter_HolidayItemClick;
                 prevAdapter.ScheduleItemClick -= Adapter_ScheduleItemClick;
                 prevAdapter.ScheduleClick -= Adapter_ScheduleClick;
+                prevAdapter.ExpandClick -= Adapter_ExpandClick;
             }
 
             var account = await AccountsManager.GetOrLoad(itemsSource.LocalAccountId);
@@ -135,8 +137,14 @@ namespace PowerPlannerAndroid.Views.Controls
             adapter.HolidayItemClick += Adapter_HolidayItemClick;
             adapter.ScheduleItemClick += Adapter_ScheduleItemClick;
             adapter.ScheduleClick += Adapter_ScheduleClick;
+            adapter.ExpandClick += Adapter_ExpandClick;
             _viewPager.Adapter = adapter;
             _viewPager.SetCurrentItem(1000, false);
+        }
+
+        private void Adapter_ExpandClick(object sender, EventArgs e)
+        {
+            ExpandClick?.Invoke(this, new EventArgs());
         }
 
         private void Adapter_HolidayItemClick(object sender, ViewItemHoliday e)
@@ -165,6 +173,7 @@ namespace PowerPlannerAndroid.Views.Controls
             public event EventHandler<ViewItemHoliday> HolidayItemClick;
             public event EventHandler<ViewItemSchedule> ScheduleItemClick;
             public event EventHandler ScheduleClick;
+            public event EventHandler ExpandClick;
 
             public DateTime CenterDate { get; private set; }
             public DateTime FirstDate { get; private set; }
@@ -233,8 +242,14 @@ namespace PowerPlannerAndroid.Views.Controls
                 control.HolidayItemClick += SingleDayControl_HolidayItemClick;
                 control.ScheduleItemClick += SingleDayControl_ScheduleItemClick;
                 control.ScheduleClick += SingleDayControl_ScheduleClick;
+                control.ExpandClick += SingleDayControl_ExpandClick;
 
                 return new GenericRecyclerViewHolder(control);
+            }
+
+            private void SingleDayControl_ExpandClick(object sender, EventArgs e)
+            {
+                ExpandClick?.Invoke(this, new EventArgs());
             }
         }
     }

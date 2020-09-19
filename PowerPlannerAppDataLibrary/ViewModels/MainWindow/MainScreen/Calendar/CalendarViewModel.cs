@@ -199,7 +199,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         private DisplayStates _displayState = _lastDisplayState;
 
         /// <summary>
-        /// Only used in iOS right now. The view should listen and display according to this property.
+        /// Only used in iOS and Android. The view should listen and display according to this property.
         /// </summary>
         public DisplayStates DisplayState
         {
