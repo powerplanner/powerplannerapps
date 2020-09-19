@@ -2412,6 +2412,10 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Contains invalid characters: {0}</source>
           <target state="final" state-qualifier="mt-suggestion">Enthält ungültige Zeichen: {0}</target>
         </trans-unit>
+        <trans-unit id="String_More" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="new">More</target>
+        </trans-unit>
       </group>
     </body>
   </file>

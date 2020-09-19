@@ -9,16 +9,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class SyncOptionsSimpleViewModel : BaseViewModel
     {
-        private PagedViewModel _pagedViewModel;
-
         public SyncOptionsSimpleViewModel(BaseViewModel parent) : base(parent)
         {
-            _pagedViewModel = FindAncestor<PagedViewModel>();
         }
 
         public void OpenImageUploadOptions()
         {
-            _pagedViewModel.Navigate(new ImageUploadOptionsViewModel(_pagedViewModel));
+            SettingsListViewModel.Show(new ImageUploadOptionsViewModel(SettingsListViewModel.GetParentForSubviews(this)));
         }
     }
 }

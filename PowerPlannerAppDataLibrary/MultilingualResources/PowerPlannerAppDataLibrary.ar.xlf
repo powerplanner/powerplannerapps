@@ -2414,6 +2414,10 @@ Please think about using an online account instead!</source>
           <source>Contains invalid characters: {0}</source>
           <target state="final">يحتوي على أحرف غير صالحة: {0}</target>
         </trans-unit>
+        <trans-unit id="String_More" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="new">More</target>
+        </trans-unit>
       </group>
     </body>
   </file>

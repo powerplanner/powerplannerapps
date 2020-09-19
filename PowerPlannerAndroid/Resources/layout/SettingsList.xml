@@ -1,117 +1,187 @@
 
 
 <ScrollView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:settingsListItem="http://schemas.android.com/apk/res-auto"
-  xmlns:local="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-    
-  <LinearLayout
-    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    xmlns:settingsListItem="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:layout_height="match_parent">
 
-    <!-- Make sure to include title and subtitle text, not just in the binding, since it will fail at runtime if those properties aren't set-->
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemUpgradeToPremium"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:visibility="gone"
-      settingsListItem:settingIcon="@drawable/ic_shop_black_48dp"
-      settingsListItem:settingTitle="Upgrade to premium version!"
-      settingsListItem:settingSubtitle="Unlock all the features!"
-      local:Binding="{Source=@Settings_MainPage_UpgradeToPremiumItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_UpgradeToPremiumItem.Subtitle, Target=SettingSubtitle}"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemCreateAccount"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_account_circle_black_48dp"
-      settingsListItem:settingTitle="Create account"
-      settingsListItem:settingSubtitle="Use Power Planner across all your devices!"
-      local:Binding="{Source=@Settings_MainPage_CreateAccountItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_CreateAccountItem.Subtitle, Target=SettingSubtitle}; {Source=IsCreateAccountVisible, Target=Visibility}"/>
+        <!--View years and semesters-->
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            local:Binding="{Source=CurrentSemesterText, Target=Text}; {Source=IsViewYearsAndSemestersVisible, Target=Visibility}"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:maxLines="1"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemLogIn"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_input_black_48dp"
-      settingsListItem:settingTitle="Log in"
-      settingsListItem:settingSubtitle="Have an account? Log in!"
-      local:Binding="{Source=@Settings_MainPage_LogInItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_LogInItem.Subtitle, Target=SettingSubtitle}; {Source=IsLogInVisible, Target=Visibility}"/>
+        <Button
+            android:id="@+id/ButtonViewYearsAndSemesters"
+            style="@style/BorderlessButton"
+            android:text="View years &amp; semesters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            local:Binding="{Source=IsViewYearsAndSemestersVisible, Target=Visibility}"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemAccount"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_account_circle_black_48dp"
-      settingsListItem:settingTitle="My account"
-      settingsListItem:settingSubtitle="Logout or manage account"
-      local:Binding="{Source=@Settings_MainPage_MyAccountItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_MyAccountItem.Subtitle, Target=SettingSubtitle}; {Source=IsMyAccountVisible, Target=Visibility}"/>
+        <View
+            style="@style/Divider"
+            android:layout_marginBottom="8dp"
+            local:Binding="{Source=IsViewYearsAndSemestersVisible, Target=Visibility}"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemWidgets"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_dashboard_black_48dp"
-      settingsListItem:settingTitle="Widgets"
-      settingsListItem:settingSubtitle="Customize Android home screen widgets"
-      local:Binding="{Source=@String_Widgets, Target=SettingTitle}; {Source=@Settings_MainPage_Widgets_Subtitle, Target=SettingSubtitle}"/>
+        <!--Sync status and sync now-->
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            local:Binding="{Source=SyncStatusText, Target=Text}; {Source=IsSyncOptionsVisible, Target=Visibility}"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:maxLines="1"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemSyncOptions"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_cached_black_48dp"
-      local:Binding="{Source=@Settings_MainPage_SyncOptionsItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_SyncOptionsItem.Subtitle, Target=SettingSubtitle}; {Source=IsSyncOptionsVisible, Target=Visibility}"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            local:Binding="{Source=IsSyncOptionsVisible, Target=Visibility}">
+            <Button
+                android:id="@+id/ButtonViewSyncErrors"
+                style="@style/BorderlessButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="View errors"
+                local:Binding="{Source=SyncHasError, Target=Visibility}"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemGoogleCalendar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_gcal_black_48dp"
-      settingsListItem:settingTitle="Google Calendar integration"
-      settingsListItem:settingSubtitle="Tasks and classes in Google Calendar"
-      local:Binding="{Source=@Settings_MainPage_GoogleCalendarIntegrationItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle, Target=SettingSubtitle}; {Source=IsGoogleCalendarIntegrationVisible, Target=Visibility}"/>
+            <Button
+                android:id="@+id/ButtonSync"
+                style="@style/BorderlessButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                local:Binding="{Source=SyncButtonText, Target=Text}; {Source=SyncButtonIsEnabled, Target=Enabled}"/>
+        </LinearLayout>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemTwoWeekSchedule"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_date_range_black_48dp"
-      settingsListItem:settingTitle="Two week schedule"
-      settingsListItem:settingSubtitle="Set current week and day week changes"
-      local:Binding="{Source=@Settings_MainPage_TwoWeekScheduleItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_TwoWeekScheduleItem.Subtitle, Target=SettingSubtitle}; {Source=IsTwoWeekScheduleVisible, Target=Visibility}"/>
+        <View
+            style="@style/Divider"
+            android:layout_marginBottom="8dp"
+            local:Binding="{Source=IsSyncOptionsVisible, Target=Visibility}"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemTimeZone"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_access_time_48dp"
-      settingsListItem:settingTitle="Time zone"
-      settingsListItem:settingSubtitle="Set your school's time zone"
-      local:Binding="{Source=@Settings_MainPage_SchoolTimeZoneItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_SchoolTimeZoneItem.Subtitle, Target=SettingSubtitle}; {Source=IsSchoolTimeZoneVisible, Target=Visibility}"/>
+        <!-- Make sure to include title and subtitle text, not just in the binding, since it will fail at runtime if those properties aren't set-->
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemUpgradeToPremium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            settingsListItem:settingIcon="@drawable/ic_shop_black_48dp"
+            settingsListItem:settingTitle="Upgrade to premium version!"
+            settingsListItem:settingSubtitle="Unlock all the features!"
+            local:Binding="{Source=@Settings_MainPage_UpgradeToPremiumItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_UpgradeToPremiumItem.Subtitle, Target=SettingSubtitle}"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemHelp"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/ic_help_black_48dp"
-      settingsListItem:settingTitle="Help"
-      settingsListItem:settingSubtitle="Tutorials and FAQ"
-      local:Binding="{Source=@Settings_MainPage_HelpItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_HelpItem.Subtitle, Target=SettingSubtitle}"/>
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemCreateAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_account_circle_black_48dp"
+            settingsListItem:settingTitle="Create account"
+            settingsListItem:settingSubtitle="Use Power Planner across all your devices!"
+            local:Binding="{Source=@Settings_MainPage_CreateAccountItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_CreateAccountItem.Subtitle, Target=SettingSubtitle}; {Source=IsCreateAccountVisible, Target=Visibility}"/>
 
-    <PowerPlannerAndroid.Views.Controls.SettingsListItem
-      android:id="@+id/SettingsListItemAbout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      settingsListItem:settingIcon="@drawable/outline_info_black_48"
-      settingsListItem:settingTitle="About"
-      settingsListItem:settingSubtitle="BareBones Dev"
-      local:Binding="{Source=@Settings_MainPage_AboutItem.Title, Target=SettingTitle}"/>
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemLogIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_input_black_48dp"
+            settingsListItem:settingTitle="Log in"
+            settingsListItem:settingSubtitle="Have an account? Log in!"
+            local:Binding="{Source=@Settings_MainPage_LogInItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_LogInItem.Subtitle, Target=SettingSubtitle}; {Source=IsLogInVisible, Target=Visibility}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_account_circle_black_48dp"
+            settingsListItem:settingTitle="My account"
+            settingsListItem:settingSubtitle="Logout or manage account"
+            local:Binding="{Source=@Settings_MainPage_MyAccountItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_MyAccountItem.Subtitle, Target=SettingSubtitle}; {Source=IsMyAccountVisible, Target=Visibility}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemWidgets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_dashboard_black_48dp"
+            settingsListItem:settingTitle="Widgets"
+            settingsListItem:settingSubtitle="Customize Android home screen widgets"
+            local:Binding="{Source=@String_Widgets, Target=SettingTitle}; {Source=@Settings_MainPage_Widgets_Subtitle, Target=SettingSubtitle}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemSyncOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_cached_black_48dp"
+            local:Binding="{Source=@Settings_MainPage_SyncOptionsItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_SyncOptionsItem.Subtitle, Target=SettingSubtitle}; {Source=IsSyncOptionsVisible, Target=Visibility}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemGoogleCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_gcal_black_48dp"
+            settingsListItem:settingTitle="Google Calendar integration"
+            settingsListItem:settingSubtitle="Tasks and classes in Google Calendar"
+            local:Binding="{Source=@Settings_MainPage_GoogleCalendarIntegrationItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle, Target=SettingSubtitle}; {Source=IsGoogleCalendarIntegrationVisible, Target=Visibility}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemTwoWeekSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_date_range_black_48dp"
+            settingsListItem:settingTitle="Two week schedule"
+            settingsListItem:settingSubtitle="Set current week and day week changes"
+            local:Binding="{Source=@Settings_MainPage_TwoWeekScheduleItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_TwoWeekScheduleItem.Subtitle, Target=SettingSubtitle}; {Source=IsTwoWeekScheduleVisible, Target=Visibility}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemTimeZone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_access_time_48dp"
+            settingsListItem:settingTitle="Time zone"
+            settingsListItem:settingSubtitle="Set your school's time zone"
+            local:Binding="{Source=@Settings_MainPage_SchoolTimeZoneItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_SchoolTimeZoneItem.Subtitle, Target=SettingSubtitle}; {Source=IsSchoolTimeZoneVisible, Target=Visibility}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemHelp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_help_black_48dp"
+            settingsListItem:settingTitle="Help"
+            settingsListItem:settingSubtitle="Tutorials and FAQ"
+            local:Binding="{Source=@Settings_MainPage_HelpItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_HelpItem.Subtitle, Target=SettingSubtitle}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/outline_info_black_48"
+            settingsListItem:settingTitle="About"
+            settingsListItem:settingSubtitle="BareBones Dev"
+            local:Binding="{Source=@Settings_MainPage_AboutItem.Title, Target=SettingTitle}"/>
 
     </LinearLayout>
 </ScrollView>

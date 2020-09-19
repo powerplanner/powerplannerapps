@@ -1914,4 +1914,7 @@ Please think about using an online account instead!</value>
   <data name="UsernameInvalid_InvalidCharacters" xml:space="preserve">
     <value>Contains invalid characters: {0}</value>
   </data>
+  <data name="String_More" xml:space="preserve">
+    <value>More</value>
+  </data>
 </root>

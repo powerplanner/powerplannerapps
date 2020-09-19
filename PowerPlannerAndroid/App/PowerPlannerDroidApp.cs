@@ -29,9 +29,10 @@ namespace PowerPlannerAndroid.App
     {
         static PowerPlannerDroidApp()
         {
+            UseUnifiedCalendarDayTabItem = true;
             DoNotShowYearsInTabItems = true;
-            DoNotShowSettingsInTabItems = true;
             ShowClassesAsPopups = true;
+            ShowSettingsPagesAsPopups = true;
             UsesIanaTimeZoneIds = true;
         }
 

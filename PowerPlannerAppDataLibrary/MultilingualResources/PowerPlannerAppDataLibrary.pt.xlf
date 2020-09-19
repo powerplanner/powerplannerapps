@@ -2411,6 +2411,10 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Contains invalid characters: {0}</source>
           <target state="final" state-qualifier="mt-suggestion">Contém caracteres inválidos: {0}</target>
         </trans-unit>
+        <trans-unit id="String_More" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="new">More</target>
+        </trans-unit>
       </group>
     </body>
   </file>

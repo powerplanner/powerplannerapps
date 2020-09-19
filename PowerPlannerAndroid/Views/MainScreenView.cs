@@ -95,8 +95,6 @@ namespace PowerPlannerAndroid.Views
             UpdateBottomNavMenu();
             UpdateSyncBarStatus();
 
-            FindViewById<View>(Resource.Id.ImageViewPowerPlannerMenuIcon).Click += delegate { ViewModel.SyncCurrentAccount(); };
-
             TryAskingForRatingIfNeeded();
         }
 
@@ -128,6 +126,7 @@ namespace PowerPlannerAndroid.Views
 
             AddMenuItem(NavigationManager.MainMenuSelections.Schedule, "MainMenuItem_Schedule", Resource.Drawable.ic_icons8_timesheet_24);
             AddMenuItem(NavigationManager.MainMenuSelections.Classes, "MainMenuItem_Classes", Resource.Drawable.ic_icons8_book_shelf_24);
+            AddMenuItem(NavigationManager.MainMenuSelections.Settings, "String_More", Resource.Drawable.ic_student);
 
             UpdateSelectedMenuItem();
         }
@@ -277,7 +276,14 @@ namespace PowerPlannerAndroid.Views
 
             else
             {
-                Toolbar.Title = PowerPlannerResources.GetStringMenuItem(ViewModel.SelectedItem.GetValueOrDefault());
+                if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Settings)
+                {
+                    Toolbar.Title = PowerPlannerResources.GetString("String_More");
+                }
+                else
+                {
+                    Toolbar.Title = PowerPlannerResources.GetStringMenuItem(ViewModel.SelectedItem.GetValueOrDefault());
+                }
             }
         }
 
