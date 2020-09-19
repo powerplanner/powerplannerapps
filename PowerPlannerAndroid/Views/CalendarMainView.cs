@@ -67,6 +67,7 @@ namespace PowerPlannerAndroid.Views
                             LinearLayout.LayoutParams.MatchParent,
                             0,
                             1);
+                        _dayPagerControl.ShowHeader = true;
                         break;
 
                     // Full day
@@ -77,13 +78,14 @@ namespace PowerPlannerAndroid.Views
                             LinearLayout.LayoutParams.MatchParent,
                             0,
                             1);
+                        _dayPagerControl.ShowHeader = false;
                         break;
                 }
             });
         }
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
-        {
+        { 
             base.OnSizeChanged(w, h, oldw, oldh);
 
             if (h > ThemeHelper.AsPx(Context, 550))

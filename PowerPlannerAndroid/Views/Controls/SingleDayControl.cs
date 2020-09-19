@@ -249,5 +249,22 @@ namespace PowerPlannerAndroid.Views.Controls
 
             return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date).ToUpper();
         }
+
+        private bool _showHeader = true;
+        public bool ShowHeader
+        {
+            get => _showHeader;
+            set
+            {
+                if (_showHeader == value)
+                {
+                    return;
+                }
+
+                _showHeader = value;
+
+                FindViewById(Resource.Id.SingleDayHeader).Visibility = value ? ViewStates.Visible : ViewStates.Gone;
+            }
+        }
     }
 }

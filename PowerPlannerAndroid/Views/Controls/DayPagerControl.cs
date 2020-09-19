@@ -18,6 +18,7 @@ using AndroidX.ViewPager2.Widget;
 using AndroidX.RecyclerView.Widget;
 using InterfacesDroid.Views;
 using PowerPlannerAppDataLibrary.DataLayer;
+using ToolsPortable;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
@@ -132,7 +133,10 @@ namespace PowerPlannerAndroid.Views.Controls
 
             var account = await AccountsManager.GetOrLoad(itemsSource.LocalAccountId);
 
-            var adapter = new DayPagerAdapter(account, itemsSource, currentDate);
+            var adapter = new DayPagerAdapter(account, itemsSource, currentDate)
+            {
+                ShowHeader = ShowHeader
+            };
             adapter.ItemClick += Adapter_ItemClick;
             adapter.HolidayItemClick += Adapter_HolidayItemClick;
             adapter.ScheduleItemClick += Adapter_ScheduleItemClick;
@@ -165,6 +169,26 @@ namespace PowerPlannerAndroid.Views.Controls
         private void Adapter_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ItemClick?.Invoke(this, e);
+        }
+
+        private bool _showHeader = true;
+        public bool ShowHeader
+        {
+            get => _showHeader;
+            set
+            {
+                if (_showHeader == value)
+                {
+                    return;
+                }
+
+                _showHeader = value;
+
+                if (_viewPager?.Adapter is DayPagerAdapter dayPagerAdapter)
+                {
+                    dayPagerAdapter.ShowHeader = value;
+                }
+            }
         }
 
         private class DayPagerAdapter : RecyclerView.Adapter
@@ -232,17 +256,21 @@ namespace PowerPlannerAndroid.Views.Controls
                 (holder.ItemView as SingleDayControl).Initialize(date, tasksOrEventsOnDay, ItemsSource);
             }
 
+            private WeakReferenceList<SingleDayControl> _singleDayControls = new WeakReferenceList<SingleDayControl>();
+
             public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
             {
                 var control = new SingleDayControl(parent)
                 {
-                    LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
+                    LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
+                    ShowHeader = ShowHeader
                 };
                 control.ItemClick += SingleDayControl_ItemClick;
                 control.HolidayItemClick += SingleDayControl_HolidayItemClick;
                 control.ScheduleItemClick += SingleDayControl_ScheduleItemClick;
                 control.ScheduleClick += SingleDayControl_ScheduleClick;
                 control.ExpandClick += SingleDayControl_ExpandClick;
+                _singleDayControls.Add(control);
 
                 return new GenericRecyclerViewHolder(control);
             }
@@ -250,6 +278,26 @@ namespace PowerPlannerAndroid.Views.Controls
             private void SingleDayControl_ExpandClick(object sender, EventArgs e)
             {
                 ExpandClick?.Invoke(this, new EventArgs());
+            }
+
+            private bool _showHeader;
+            public bool ShowHeader
+            {
+                get => _showHeader;
+                set
+                {
+                    if (_showHeader == value)
+                    {
+                        return;
+                    }
+
+                    _showHeader = value;
+
+                    foreach (var control in _singleDayControls)
+                    {
+                        control.ShowHeader = value;
+                    }
+                }
             }
         }
     }

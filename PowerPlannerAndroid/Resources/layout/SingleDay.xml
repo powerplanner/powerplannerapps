@@ -14,7 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/SingleDayHeader">
 
             <!--Header text-->
             <TextView
