@@ -25,6 +25,7 @@ using Microsoft.AppCenter.Crashes;
 using System.IO;
 using Android.Webkit;
 using AndroidX.Core.Content;
+using Android.Content.PM;
 
 namespace PowerPlannerAndroid
 {
@@ -40,7 +41,13 @@ namespace PowerPlannerAndroid
 #else
         "com.barebonesdev.powerplanner.MainActivity"
 #endif
-        ,MainLauncher = true, Icon = "@mipmap/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, WindowSoftInputMode = SoftInput.AdjustResize)]
+        ,
+        MainLauncher = true,
+        Icon = "@mipmap/icon",
+        LaunchMode = LaunchMode.SingleInstance,
+        WindowSoftInputMode = SoftInput.AdjustResize,
+        // ConfigurationChanges enables my app to handle orientation changes without re-rendering the views
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout | ConfigChanges.KeyboardHidden)]
     public class MainActivity : BareActivity
     {
         public static MainActivity GetCurrent()
