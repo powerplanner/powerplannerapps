@@ -88,6 +88,17 @@ namespace PowerPlannerAndroid.Views
         { 
             base.OnSizeChanged(w, h, oldw, oldh);
 
+            // If oldh is 0, that means first time we're running this, which in that case we'll still update because focus will be set soon
+            if (ViewModel == null || (!ViewModel.IsFocused && oldh != 0))
+            {
+                return;
+            }
+
+            UpdateViewSizeState(h);
+        }
+
+        private void UpdateViewSizeState(int h)
+        {
             if (h > ThemeHelper.AsPx(Context, 550))
             {
                 ViewModel.ViewSizeState = ViewSizeStates.Compact;
@@ -95,6 +106,21 @@ namespace PowerPlannerAndroid.Views
             else
             {
                 ViewModel.ViewSizeState = ViewSizeStates.FullyCompact;
+            }
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            ViewModel.ViewFocused += ViewModel_ViewFocused;
+
+            base.OnViewModelSetOverride();
+        }
+
+        private void ViewModel_ViewFocused(object sender, EventArgs e)
+        {
+            if (base.Height != 0)
+            {
+                UpdateViewSizeState(base.Height);
             }
         }
 
