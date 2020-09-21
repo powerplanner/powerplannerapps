@@ -54,6 +54,8 @@ namespace PowerPlannerAndroid.Views
                             LinearLayout.LayoutParams.MatchParent,
                             0,
                             1);
+                        _calendarView.RequestLayout();
+                        _calendarView.Parent.RequestLayout();
                         break;
 
                     // Both
@@ -209,7 +211,12 @@ namespace PowerPlannerAndroid.Views
 
             public override MyCalendarMonthView GetView(ViewGroup parent, MyCalendarView calendarView)
             {
-                return new MySmallCalendarMonthView(parent, calendarView, _viewModel, FirstDayOfWeek);
+                return new MySmallCalendarMonthView(parent, calendarView, _viewModel, FirstDayOfWeek)
+                {
+                    LayoutParameters = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MatchParent,
+                        ViewGroup.LayoutParams.MatchParent)
+                };
             }
         }
 

@@ -50,7 +50,7 @@ namespace PowerPlannerAndroid.Views.Controls
             _buttonExpand.Click += _buttonExpand_Click;
 
             _viewPager = FindViewById<ViewPager2>(Resource.Id.DayViewPager);
-            _viewPager.OffscreenPageLimit = 3;
+            _viewPager.OffscreenPageLimit = 1; // This means views on left, so 1 is actually 2 total offscreen views
             _viewPager.RegisterOnPageChangeCallback(new PageChangeCallback(this));
         }
 
