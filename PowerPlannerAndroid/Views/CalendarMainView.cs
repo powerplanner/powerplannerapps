@@ -62,7 +62,7 @@ namespace PowerPlannerAndroid.Views
                         _calendarView.Visibility = ViewStates.Visible;
                         _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MatchParent,
-                            ThemeHelper.AsPx(Context, 300));
+                            ThemeHelper.AsPx(Context, 284));
                         _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MatchParent,
                             0,
@@ -190,7 +190,6 @@ namespace PowerPlannerAndroid.Views
         private class MySmallCalendarMonthView : MyCalendarMonthView
         {
             private CalendarViewModel _viewModel;
-            private TextView _title;
 
             public MySmallCalendarMonthView(ViewGroup parent, MyCalendarView calendarView, CalendarViewModel viewModel, DayOfWeek firstDayOfWeek) : base(parent, calendarView, firstDayOfWeek)
             {
@@ -207,18 +206,17 @@ namespace PowerPlannerAndroid.Views
 
             protected override View CreateTitle()
             {
-                _title = new TextView(Context)
+                // We arent' using a month title, we display the title in the toolbar. But we add some spacing.
+                return new View(Context)
                 {
-                    TextSize = 16
+                    LayoutParameters = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MatchParent,
+                        ThemeHelper.AsPx(Context, 4))
                 };
-                _title.SetPaddingRelative(ThemeHelper.AsPx(Context, 16), ThemeHelper.AsPx(Context, 12), 0, ThemeHelper.AsPx(Context, 12));
-                return _title;
             }
 
             protected override void OnMonthChanged()
             {
-                _title.Text = Month.ToString("MMMM yyyy");
-
                 var semester = _viewModel?.SemesterItemsViewGroup?.Semester;
                 if (semester != null && !semester.IsMonthDuringThisSemester(Month))
                 {

@@ -6,49 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewItems"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:id="@+id/SingleDayHeader">
-
-            <!--Header text-->
-            <TextView
-                android:id="@+id/TextViewHeaderText"
-                style="@android:style/TextAppearance.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="18dp"
-                android:paddingBottom="8dp"
-                android:layout_gravity="bottom"/>
-
-            <!--Expand/collpase button-->
-            <ImageButton
-                android:id="@+id/ButtonExpand"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/baseline_expand_less_black_18"
-                android:tint="@color/powerPlannerBlue"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Expand button"/>
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerViewItems"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
+        android:paddingTop="16dp"
+        android:clipToPadding="false"/>
 
     <FrameLayout
         android:id="@+id/FrameLayoutDifferentSemesterOverlayContainer"

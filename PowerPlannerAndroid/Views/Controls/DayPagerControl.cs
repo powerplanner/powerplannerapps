@@ -19,10 +19,12 @@ using AndroidX.RecyclerView.Widget;
 using InterfacesDroid.Views;
 using PowerPlannerAppDataLibrary.DataLayer;
 using ToolsPortable;
+using Android.Content.Res;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
-    public class DayPagerControl : FrameLayout
+    public class DayPagerControl : InflatedView
     {
         private ViewPager2 _viewPager;
         public event EventHandler<DateTime> CurrentDateChanged;
@@ -32,32 +34,29 @@ namespace PowerPlannerAndroid.Views.Controls
         public event EventHandler ScheduleClick;
         public event EventHandler ExpandClick;
 
-        public DayPagerControl(Context context) : base(context)
+        public DayPagerControl(Context context) : base(context, Resource.Layout.DayPager)
         {
             Initialize();
         }
 
-        public DayPagerControl(Context context, IAttributeSet attrs) : base(context, attrs)
-        {
-            Initialize();
-        }
-
-        protected DayPagerControl(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        public DayPagerControl(Context context, IAttributeSet attrs) : base(context, Resource.Layout.DayPager, attrs)
         {
             Initialize();
         }
 
         private void Initialize()
         {
-            _viewPager = new ViewPager2(this.Context)
-            {
-                OffscreenPageLimit = 3,
-                LayoutParameters = new FrameLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
-            };
+            var _buttonExpand = FindViewById<ImageButton>(Resource.Id.ButtonExpand);
+            _buttonExpand.Click += _buttonExpand_Click;
 
+            _viewPager = FindViewById<ViewPager2>(Resource.Id.DayViewPager);
+            _viewPager.OffscreenPageLimit = 3;
             _viewPager.RegisterOnPageChangeCallback(new PageChangeCallback(this));
+        }
 
-            base.AddView(_viewPager);
+        private void _buttonExpand_Click(object sender, EventArgs e)
+        {
+            ExpandClick?.Invoke(this, new EventArgs());
         }
 
         private class PageChangeCallback : ViewPager2.OnPageChangeCallback
@@ -81,6 +80,7 @@ namespace PowerPlannerAndroid.Views.Controls
 
                         try
                         {
+                            _dayPagerControl.UpdateHeaderText();
                             _dayPagerControl.CurrentDateChanged?.Invoke(this, date);
                         }
 
@@ -128,22 +128,24 @@ namespace PowerPlannerAndroid.Views.Controls
                 prevAdapter.HolidayItemClick -= Adapter_HolidayItemClick;
                 prevAdapter.ScheduleItemClick -= Adapter_ScheduleItemClick;
                 prevAdapter.ScheduleClick -= Adapter_ScheduleClick;
-                prevAdapter.ExpandClick -= Adapter_ExpandClick;
             }
 
             var account = await AccountsManager.GetOrLoad(itemsSource.LocalAccountId);
 
-            var adapter = new DayPagerAdapter(account, itemsSource, currentDate)
-            {
-                ShowHeader = ShowHeader
-            };
+            var adapter = new DayPagerAdapter(account, itemsSource, currentDate);
             adapter.ItemClick += Adapter_ItemClick;
             adapter.HolidayItemClick += Adapter_HolidayItemClick;
             adapter.ScheduleItemClick += Adapter_ScheduleItemClick;
             adapter.ScheduleClick += Adapter_ScheduleClick;
-            adapter.ExpandClick += Adapter_ExpandClick;
             _viewPager.Adapter = adapter;
             _viewPager.SetCurrentItem(1000, false);
+
+            UpdateHeaderText();
+        }
+
+        private void UpdateHeaderText()
+        {
+            FindViewById<TextView>(Resource.Id.TextViewHeaderText).Text = GetHeaderText(CurrentDate);
         }
 
         private void Adapter_ExpandClick(object sender, EventArgs e)
@@ -184,11 +186,22 @@ namespace PowerPlannerAndroid.Views.Controls
 
                 _showHeader = value;
 
-                if (_viewPager?.Adapter is DayPagerAdapter dayPagerAdapter)
-                {
-                    dayPagerAdapter.ShowHeader = value;
-                }
+                FindViewById(Resource.Id.DayPagerHeader).Visibility = value ? ViewStates.Visible : ViewStates.Gone;
             }
+        }
+
+        private string GetHeaderText(DateTime date)
+        {
+            if (date.Date == DateTime.Today)
+                return PowerPlannerResources.GetRelativeDateToday().ToUpper();
+
+            else if (date.Date == DateTime.Today.AddDays(1))
+                return PowerPlannerResources.GetRelativeDateTomorrow().ToUpper();
+
+            else if (date.Date == DateTime.Today.AddDays(-1))
+                return PowerPlannerResources.GetRelativeDateYesterday().ToUpper();
+
+            return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date).ToUpper();
         }
 
         private class DayPagerAdapter : RecyclerView.Adapter
@@ -197,7 +210,6 @@ namespace PowerPlannerAndroid.Views.Controls
             public event EventHandler<ViewItemHoliday> HolidayItemClick;
             public event EventHandler<ViewItemSchedule> ScheduleItemClick;
             public event EventHandler ScheduleClick;
-            public event EventHandler ExpandClick;
 
             public DateTime CenterDate { get; private set; }
             public DateTime FirstDate { get; private set; }
@@ -262,42 +274,15 @@ namespace PowerPlannerAndroid.Views.Controls
             {
                 var control = new SingleDayControl(parent)
                 {
-                    LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
-                    ShowHeader = ShowHeader
+                    LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
                 };
                 control.ItemClick += SingleDayControl_ItemClick;
                 control.HolidayItemClick += SingleDayControl_HolidayItemClick;
                 control.ScheduleItemClick += SingleDayControl_ScheduleItemClick;
                 control.ScheduleClick += SingleDayControl_ScheduleClick;
-                control.ExpandClick += SingleDayControl_ExpandClick;
                 _singleDayControls.Add(control);
 
                 return new GenericRecyclerViewHolder(control);
-            }
-
-            private void SingleDayControl_ExpandClick(object sender, EventArgs e)
-            {
-                ExpandClick?.Invoke(this, new EventArgs());
-            }
-
-            private bool _showHeader;
-            public bool ShowHeader
-            {
-                get => _showHeader;
-                set
-                {
-                    if (_showHeader == value)
-                    {
-                        return;
-                    }
-
-                    _showHeader = value;
-
-                    foreach (var control in _singleDayControls)
-                    {
-                        control.ShowHeader = value;
-                    }
-                }
             }
         }
     }

@@ -31,7 +31,6 @@ namespace PowerPlannerAndroid.Views.Controls
         public event EventHandler<ViewItemHoliday> HolidayItemClick;
         public event EventHandler<ViewItemSchedule> ScheduleItemClick;
         public event EventHandler ScheduleClick;
-        public event EventHandler ExpandClick;
 
         private FlatTasksOrEventsAdapter _adapter;
         private DayScheduleSnapshotView _snapshot;
@@ -39,13 +38,10 @@ namespace PowerPlannerAndroid.Views.Controls
         private SemesterItemsViewGroup _viewItemsGroup;
         private RecyclerView _recyclerView;
         private FrameLayout _differentSemesterOverlayContainer;
-        private ImageButton _buttonExpand;
 
         public SingleDayControl(ViewGroup root) : base(Resource.Layout.SingleDay, root)
         {
             _recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerViewItems);
-            _buttonExpand = FindViewById<ImageButton>(Resource.Id.ButtonExpand);
-            _buttonExpand.Click += _buttonExpand_Click;
 
             // Use a linear layout manager
             var layoutManager = new LinearLayoutManager(Context);
@@ -55,6 +51,7 @@ namespace PowerPlannerAndroid.Views.Controls
             _adapter = new FlatTasksOrEventsAdapter();
             _adapter.ItemClick += Adapter_ItemClick;
 
+            _adapter.CreateViewHolderForEmptyList = CreateEmptyViewHolder;
             _adapter.CreateViewHolderForFooter = CreateFooterViewHolder;
             _adapter.Footer = "footer"; // Don't need an object, but need this so footer counts towards items
             _recyclerView.SetAdapter(_adapter);
@@ -65,9 +62,22 @@ namespace PowerPlannerAndroid.Views.Controls
             _differentSemesterOverlayContainer = FindViewById<FrameLayout>(Resource.Id.FrameLayoutDifferentSemesterOverlayContainer);
         }
 
-        private void _buttonExpand_Click(object sender, EventArgs e)
+        private GenericRecyclerViewHolder CreateEmptyViewHolder(ViewGroup parent, object footer)
         {
-            ExpandClick?.Invoke(this, new EventArgs());
+            var tv = new TextView(Context)
+            {
+                Text = PowerPlannerResources.GetString("String_NothingDue"),
+                LayoutParameters = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MatchParent,
+                    ViewGroup.LayoutParams.WrapContent)
+            };
+            tv.SetPadding(
+                left: ThemeHelper.AsPx(Context, 16),
+                top: 0,
+                right: 0,
+                bottom: ThemeHelper.AsPx(Context, 8));
+
+            return new GenericRecyclerViewHolder(tv);
         }
 
         private GenericRecyclerViewHolder CreateFooterViewHolder(ViewGroup parent, object footer)
@@ -175,9 +185,6 @@ namespace PowerPlannerAndroid.Views.Controls
             _viewItemsGroup = viewGroup;
             _date = date;
 
-            // Set the header text
-            FindViewById<TextView>(Resource.Id.TextViewHeaderText).Text = GetHeaderText(date);
-
             if (_currItemsSourceCollectionChangedHandler != null && _adapter.ItemsSource is INotifyCollectionChanged)
             {
                 (_adapter.ItemsSource as INotifyCollectionChanged).CollectionChanged -= _currItemsSourceCollectionChangedHandler;
@@ -233,37 +240,6 @@ namespace PowerPlannerAndroid.Views.Controls
                         ViewGroup.LayoutParams.MatchParent,
                         ViewGroup.LayoutParams.MatchParent)
                 });
-            }
-        }
-
-        private string GetHeaderText(DateTime date)
-        {
-            if (date.Date == DateTime.Today)
-                return PowerPlannerResources.GetRelativeDateToday().ToUpper();
-
-            else if (date.Date == DateTime.Today.AddDays(1))
-                return PowerPlannerResources.GetRelativeDateTomorrow().ToUpper();
-
-            else if (date.Date == DateTime.Today.AddDays(-1))
-                return PowerPlannerResources.GetRelativeDateYesterday().ToUpper();
-
-            return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date).ToUpper();
-        }
-
-        private bool _showHeader = true;
-        public bool ShowHeader
-        {
-            get => _showHeader;
-            set
-            {
-                if (_showHeader == value)
-                {
-                    return;
-                }
-
-                _showHeader = value;
-
-                FindViewById(Resource.Id.SingleDayHeader).Visibility = value ? ViewStates.Visible : ViewStates.Gone;
             }
         }
     }

@@ -33,6 +33,7 @@ using PowerPlannerAndroid.Helpers;
 using System.Collections.Specialized;
 using Google.Android.Material.BottomNavigation;
 using AndroidX.DrawerLayout.Widget;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -47,8 +48,14 @@ namespace PowerPlannerAndroid.Views
         {
             Toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
             Toolbar.MenuItemClick += Toolbar_MenuItemClick;
+            Toolbar.NavigationClick += Toolbar_NavigationClick;
             _syncProgressBar = FindViewById<ProgressBar>(Resource.Id.SyncProgressBar);
             _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
+        }
+
+        private void Toolbar_NavigationClick(object sender, AndroidX.AppCompat.Widget.Toolbar.NavigationClickEventArgs e)
+        {
+            ViewModel.Content?.GoBack();
         }
 
         private void Toolbar_MenuItemClick(object sender, AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
@@ -57,6 +64,28 @@ namespace PowerPlannerAndroid.Views
 
             if (handler != null)
                 handler.OnMenuItemClick(e);
+        }
+
+        private bool _showBackButton;
+        public bool ShowBackButton
+        {
+            get => _showBackButton;
+            set
+            {
+                if (_showBackButton != value)
+                {
+                    _showBackButton = value;
+
+                    if (value)
+                    {
+                        Toolbar.SetNavigationIcon(Resource.Drawable.ic_arrow_back_black_24dp);
+                    }
+                    else
+                    {
+                        Toolbar.NavigationIcon = null;
+                    }
+                }
+            }
         }
 
         private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
@@ -253,12 +282,26 @@ namespace PowerPlannerAndroid.Views
         }
 
         private BindingInstance _selectedClassNameBinding;
+        private BindingInstance _calendarTitleBinding;
+        private BindingInstance _calendarBackBinding;
         private void UpdateActionBarTitle()
         {
             if (_selectedClassNameBinding != null)
             {
                 _selectedClassNameBinding.Dispose();
                 _selectedClassNameBinding = null;
+            }
+
+            if (_calendarTitleBinding != null)
+            {
+                _calendarTitleBinding.Dispose();
+                _calendarTitleBinding = null;
+            }
+
+            if (_calendarBackBinding != null)
+            {
+                _calendarBackBinding.Dispose();
+                _calendarBackBinding = null;
             }
 
             if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
@@ -272,6 +315,20 @@ namespace PowerPlannerAndroid.Views
                 }
                 else
                     Toolbar.Title = PowerPlannerResources.GetStringMenuItem(NavigationManager.MainMenuSelections.Classes);
+
+                ShowBackButton = false;
+            }
+
+            else if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Calendar)
+            {
+                _calendarTitleBinding = (ViewModel.Content as CalendarViewModel).SetBinding(nameof(CalendarViewModel.Title), viewModel =>
+                {
+                    Toolbar.Title = viewModel.Title;
+                });
+                _calendarBackBinding = (ViewModel.Content as CalendarViewModel).SetBinding(nameof(CalendarViewModel.CanGoBack), viewModel =>
+                {
+                    ShowBackButton = viewModel.CanGoBack;
+                });
             }
 
             else
@@ -284,6 +341,8 @@ namespace PowerPlannerAndroid.Views
                 {
                     Toolbar.Title = PowerPlannerResources.GetStringMenuItem(ViewModel.SelectedItem.GetValueOrDefault());
                 }
+
+                ShowBackButton = false;
             }
         }
 

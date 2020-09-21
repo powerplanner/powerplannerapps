@@ -543,6 +543,9 @@
     <AndroidResource Include="Resources\layout\ConfigureClassGpaType.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\DayPager.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.xml">
@@ -1454,19 +1457,19 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_student.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\baseline_expand_less_black_18.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\baseline_expand_less_black_24.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_expand_less_black_18.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_expand_less_black_24.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\baseline_expand_less_black_18.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\baseline_expand_less_black_24.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\baseline_expand_less_black_18.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\baseline_expand_less_black_24.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\baseline_expand_less_black_18.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\baseline_expand_less_black_24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
