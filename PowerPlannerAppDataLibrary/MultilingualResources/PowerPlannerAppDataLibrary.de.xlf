@@ -2414,7 +2414,43 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_More" translate="yes" xml:space="preserve">
           <source>More</source>
-          <target state="new">More</target>
+          <target state="final" state-qualifier="tm-suggestion">Mehr</target>
+        </trans-unit>
+        <trans-unit id="String_CurrentSemester" translate="yes" xml:space="preserve">
+          <source>Current semester: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Aktuelles Semester: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_ViewYearsAndSemesters" translate="yes" xml:space="preserve">
+          <source>View years &amp; semesters</source>
+          <target state="final" state-qualifier="mt-suggestion">Jahre &amp; Semester anzeigen</target>
+        </trans-unit>
+        <trans-unit id="String_LastSync" translate="yes" xml:space="preserve">
+          <source>Last sync: {0}</source>
+          <target state="final" state-qualifier="tm-suggestion">Letzte Synchronisierung: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNow" translate="yes" xml:space="preserve">
+          <source>Sync now</source>
+          <target state="final" state-qualifier="tm-suggestion">Jetzt synchronisieren</target>
+        </trans-unit>
+        <trans-unit id="String_Syncing" translate="yes" xml:space="preserve">
+          <source>Syncing...</source>
+          <target state="final" state-qualifier="tm-suggestion">Synchronisieren...</target>
+        </trans-unit>
+        <trans-unit id="String_NoAccountToSync" translate="yes" xml:space="preserve">
+          <source>No account to sync</source>
+          <target state="final" state-qualifier="mt-suggestion">Kein zu synchronisierendes Konto</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNeeded" translate="yes" xml:space="preserve">
+          <source>Sync needed</source>
+          <target state="final" state-qualifier="mt-suggestion">Sync erforderlich</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineCouldntSync" translate="yes" xml:space="preserve">
+          <source>Offline, couldn't sync</source>
+          <target state="final" state-qualifier="mt-suggestion">Offline, konnte nicht synchronisiert werden</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineLastSync" translate="yes" xml:space="preserve">
+          <source>Offline, last sync: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Offline, letzte Synchronisierung: {0}</target>
         </trans-unit>
       </group>
     </body>

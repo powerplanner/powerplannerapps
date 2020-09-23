@@ -27,8 +27,6 @@ namespace PowerPlannerAndroid.Views
 
         public SettingsListView(ViewGroup root) : base(Resource.Layout.SettingsList, root)
         {
-            //Title = PowerPlannerResources.GetString("MainMenuItem_Settings");
-
             FindViewById<Button>(Resource.Id.ButtonViewYearsAndSemesters).Click += delegate { ViewModel.OpenYears(); };
             FindViewById<Button>(Resource.Id.ButtonSync).Click += delegate { ViewModel.StartSync(); };
             FindViewById<Button>(Resource.Id.ButtonViewSyncErrors).Click += delegate { ViewModel.ViewSyncErrors(); };
@@ -120,9 +118,6 @@ namespace PowerPlannerAndroid.Views
             }
 
             UpdateUpgradeToPremiumVisibility();
-
-            //FindViewById<Button>(Resource.Id.ButtonLogOut).Click += delegate { var dontWait = ViewModel.FindAncestor<MainWindowViewModel>().SetCurrentAccount(null); };
-            //FindViewById<TextView>(Resource.Id.TextViewSettingsHeader).Text = "Settings - " + ViewModel.FindAncestor<MainWindowViewModel>().CurrentAccount.Username;
         }
 
         private async void UpdateUpgradeToPremiumVisibility()

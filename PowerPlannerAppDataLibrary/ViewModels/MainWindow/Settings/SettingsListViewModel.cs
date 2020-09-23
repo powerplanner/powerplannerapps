@@ -138,7 +138,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public string CurrentSemesterText => CachedComputation(delegate
         {
-            return "Current semester: " + CurrentSemesterName;
+            return PowerPlannerResources.GetStringWithParameters("String_CurrentSemester", CurrentSemesterName);
         }, new string[] { nameof(CurrentSemesterName) });
 
         private void CurrentSemester_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -203,26 +203,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             if (account == null)
             {
-                SyncStatusText = "No account to sync";
-                SyncButtonText = "Sync now";
+                SyncStatusText = PowerPlannerResources.GetString("String_NoAccountToSync");
+                SyncButtonText = PowerPlannerResources.GetString("String_SyncNow");
                 SyncButtonIsEnabled = false;
             }
 
             if (MainScreenViewModel.SyncState == MainScreenViewModel.SyncStates.Done)
             {
-                SyncButtonText = "Sync now";
+                SyncButtonText = PowerPlannerResources.GetString("String_SyncNow");
                 SyncButtonIsEnabled = true;
             }
             else
             {
-                SyncButtonText = "Syncing...";
+                SyncButtonText = PowerPlannerResources.GetString("String_Syncing");
                 SyncButtonIsEnabled = false;
             }
 
             if (MainScreenViewModel.HasSyncErrors)
             {
                 SyncHasError = true;
-                SyncStatusText = "Sync error";
+                SyncStatusText = PowerPlannerResources.GetString("String_SyncError");
             }
             else if (MainScreenViewModel.IsOffline)
             {
@@ -230,11 +230,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 if (account.LastSyncOn != DateTime.MinValue)
                 {
-                    SyncStatusText = "Offline, last sync " + FriendlyLastSyncTime(account.LastSyncOn);
+                    SyncStatusText = PowerPlannerResources.GetStringWithParameters("String_OfflineLastSync", FriendlyLastSyncTime(account.LastSyncOn));
                 }
                 else
                 {
-                    SyncStatusText = "Offline, couldn't sync";
+                    SyncStatusText = PowerPlannerResources.GetString("String_OfflineCouldntSync");
                 }
             }
             else
@@ -243,11 +243,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 if (account.LastSyncOn != DateTime.MinValue)
                 {
-                    SyncStatusText = "Last sync: " + FriendlyLastSyncTime(account.LastSyncOn);
+                    SyncStatusText = PowerPlannerResources.GetStringWithParameters("String_LastSync", FriendlyLastSyncTime(account.LastSyncOn));
                 }
                 else
                 {
-                    SyncStatusText = "Sync needed";
+                    SyncStatusText = PowerPlannerResources.GetString("String_SyncNeeded");
                 }
             }
         }
