@@ -30,6 +30,7 @@ using AndroidX.Core.Content;
 using AndroidX.Core.View;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar.CalendarViewModel;
 using PowerPlannerAndroid.ViewHosts;
+using Android.Views.InputMethods;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -104,6 +105,12 @@ namespace PowerPlannerAndroid.Views
 
         private void UpdateViewSizeState(int h)
         {
+            // Ignore while keyboard visible
+            if ((Context.GetSystemService(Context.InputMethodService) as InputMethodManager).IsAcceptingText)
+            {
+                return;
+            }
+
             if (h > ThemeHelper.AsPx(Context, 550))
             {
                 ViewModel.ViewSizeState = ViewSizeStates.Compact;
