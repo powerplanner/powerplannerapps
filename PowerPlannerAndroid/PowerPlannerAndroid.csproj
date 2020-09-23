@@ -638,6 +638,12 @@
     <AndroidResource Include="Resources\menu\class_times_menu.xml" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\menu\calendar_menu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\classes_menu.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\drawable\circle.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -1355,12 +1361,6 @@
     <AndroidResource Include="Resources\drawable-ldrtl-xxxhdpi\ic_arrow_back_black_24dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\menu\classes_menu.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_add_24px.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1470,6 +1470,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\baseline_expand_less_black_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\baseline_today_white_36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\baseline_today_white_36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\baseline_today_white_36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\baseline_today_white_36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_today_white_36.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

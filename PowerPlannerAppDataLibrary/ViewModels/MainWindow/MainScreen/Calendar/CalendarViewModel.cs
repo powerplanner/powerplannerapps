@@ -449,5 +449,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             MainScreenViewModel.ShowPopup(AddHolidayViewModel.CreateForEdit(MainScreenViewModel, h));
         }
+
+        public void GoToToday()
+        {
+            DisplayMonth = Today;
+            SelectedDate = Today;
+        }
     }
 }

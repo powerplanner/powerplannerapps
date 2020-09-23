@@ -29,10 +29,11 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using AndroidX.Core.Content;
 using AndroidX.Core.View;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar.CalendarViewModel;
+using PowerPlannerAndroid.ViewHosts;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class CalendarMainView : InterfacesDroid.Views.PopupViewHost<CalendarViewModel>
+    public class CalendarMainView : MainScreenViewHostDescendant<CalendarViewModel>
     {
         private MyCalendarView _calendarView;
         private DayPagerControl _dayPagerControl;
@@ -530,6 +531,13 @@ namespace PowerPlannerAndroid.Views
                         _dayPagerControl.Initialize(ViewModel.SemesterItemsViewGroup, ViewModel.SelectedDate);
                     _calendarView.SelectedDate = ViewModel.SelectedDate;
                     break;
+
+                case nameof(ViewModel.DisplayMonth):
+                    if (_calendarView.DisplayMonth != ViewModel.DisplayMonth)
+                    {
+                        _calendarView.Adapter = new MyCalendarAdapter(ViewModel, ViewModel.DisplayMonth, ViewModel.FirstDayOfWeek);
+                    }
+                    break;
             }
         }
 
@@ -541,6 +549,21 @@ namespace PowerPlannerAndroid.Views
         private void _dayPagerControl_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
+        }
+
+        protected override int GetMenuResource()
+        {
+            return Resource.Menu.calendar_menu;
+        }
+
+        public override void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
+        {
+            switch (e.Item.ItemId)
+            {
+                case Resource.Id.MenuItemGoToToday:
+                    ViewModel.GoToToday();
+                    break;
+            }
         }
     }
 }
