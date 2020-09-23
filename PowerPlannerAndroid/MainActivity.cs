@@ -373,6 +373,12 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2009, 17, 5, 0))
+                    {
+                        changedText += "\n - New combined calendar/day view, and Years/Settings moved to \"More\" tab on bottom right";
+                        changedText += "\n - Bug fix for list items sometimes not displaying correctly";
+                    }
+
                     if (v <= new Version(2008, 12, 2, 0))
                     {
                         changedText += "\n - URLs in class schedule room fields are now clickable for supporting Zoom/online links!";
