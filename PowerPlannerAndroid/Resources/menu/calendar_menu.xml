@@ -3,7 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/MenuItemGoToToday"
           android:title="{Calendar_FullCalendarGoToTodayButton.ToolTipService.ToolTip}"
-          android:icon="@drawable/baseline_today_white_36"
+          android:icon="@drawable/baseline_today_white_24"
           app:iconTint="#ffffff"
           android:showAsAction="ifRoom"/>
 </menu>
