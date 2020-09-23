@@ -54,8 +54,6 @@ namespace PowerPlannerAndroid.Views
                             LinearLayout.LayoutParams.MatchParent,
                             0,
                             1);
-                        _calendarView.RequestLayout();
-                        _calendarView.Parent.RequestLayout();
                         break;
 
                     // Both
@@ -96,7 +94,11 @@ namespace PowerPlannerAndroid.Views
                 return;
             }
 
-            UpdateViewSizeState(h);
+            Handler handler = new Handler();
+            handler.Post(delegate
+            {
+                UpdateViewSizeState(base.Height);
+            });
         }
 
         private void UpdateViewSizeState(int h)
