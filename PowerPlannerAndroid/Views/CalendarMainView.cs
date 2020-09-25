@@ -64,7 +64,7 @@ namespace PowerPlannerAndroid.Views
                         _calendarView.Visibility = ViewStates.Visible;
                         _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MatchParent,
-                            ThemeHelper.AsPx(Context, 284));
+                            ThemeHelper.AsPx(Context, 280));
                         _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MatchParent,
                             0,
@@ -111,7 +111,9 @@ namespace PowerPlannerAndroid.Views
                 return;
             }
 
-            if (h > ThemeHelper.AsPx(Context, 550))
+            int breakpoint = ThemeHelper.AsPx(Context, 440);
+
+            if (h > breakpoint)
             {
                 ViewModel.ViewSizeState = ViewSizeStates.Compact;
             }

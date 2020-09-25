@@ -373,6 +373,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2009, 23, 1, 0))
+                    {
+                        changedText += "\n - Fix for displaying calendar+day on shorter devices";
+                    }
+
                     if (v <= new Version(2009, 17, 5, 0))
                     {
                         changedText += "\n - New combined calendar/day view, and Years/Settings moved to \"More\" tab on bottom right";

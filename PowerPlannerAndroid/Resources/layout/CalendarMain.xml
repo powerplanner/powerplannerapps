@@ -16,7 +16,7 @@
         <InterfacesDroid.Views.MyCalendarView
             android:id="@+id/CalendarView"
             android:layout_width="match_parent"
-            android:layout_height="284dp"/>
+            android:layout_height="280dp"/>
 
         <PowerPlannerAndroid.Views.Controls.DayPagerControl
             android:id="@+id/DayPagerControl"
