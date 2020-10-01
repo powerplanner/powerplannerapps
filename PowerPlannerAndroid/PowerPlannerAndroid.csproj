@@ -87,11 +87,13 @@
     <Compile Include="App\Secrets.cs" />
     <None Include="App\Secrets.template.cs" />
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
+    <Compile Include="Converters\CreditsToNullableDoubleConverter.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
     <Compile Include="Converters\FirstLetterConverter.cs" />
     <Compile Include="Converters\GpaToStringConverter.cs" />
     <Compile Include="Converters\GpaToEditViewTextConverter.cs" />
     <Compile Include="Converters\GpaTypeToStringConverter.cs" />
+    <Compile Include="Converters\GradeToNullableDoubleConverter.cs" />
     <Compile Include="Converters\ImageUploadOptionToStringConverter.cs" />
     <Compile Include="Converters\PercentToEditViewTextConverter.cs" />
     <Compile Include="Converters\GradeToEditViewTextConverter.cs" />

@@ -7,24 +7,20 @@
   android:layout_height="wrap_content"
   android:orientation="horizontal">
 
-  <com.google.android.material.textfield.TextInputEditText
-    android:inputType="number|numberDecimal"
+  <InterfacesDroid.Views.BareMaterialEditDecimalNumber
     android:layout_width="0dp"
     android:layout_weight="1"
     android:layout_height="wrap_content"
     android:hint="{String_StartGrade}"
-    android:id="@+id/EditTextStartGrade"
-    local:Binding="{Source=StartGrade, Target=Text, Mode=TwoWay, Converter=DoubleToStringConverter}"
+    local:Binding="{Source=StartGrade, Target=Value, Mode=TwoWay}"
     android:paddingRight="8dp"/>
   
-  <com.google.android.material.textfield.TextInputEditText
-    android:inputType="number|numberDecimal"
+  <InterfacesDroid.Views.BareMaterialEditDecimalNumber
     android:layout_width="0dp"
     android:layout_weight="1"
     android:layout_height="wrap_content"
     android:hint="{ClassPage_EditGrades_TextBlockGPA.Text}"
-    android:id="@+id/EditTextGPA"
-    local:Binding="{Source=GPA, Target=Text, Mode=TwoWay, Converter=DoubleToStringConverter}"/>
+    local:Binding="{Source=GPA, Target=Value, Mode=TwoWay}"/>
 
   <!--Delete button-->
   <ImageButton
