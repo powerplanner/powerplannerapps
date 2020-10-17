@@ -97,5 +97,23 @@
 
         </Grid>
 
+        <!-- Context Menu -->
+        <Button.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Text="Edit" Click="ContextMenu_Edit_Click" />
+                <!--<MenuFlyoutItem Text="Duplicate" Icon="Copy" />-->
+                <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete_Click"/>
+                <!--<MenuFlyoutSeparator/>-->
+                <!--<MenuFlyoutItem Text="Convert to Event" />
+                <MenuFlyoutSeparator/>-->
+                <!--<MenuFlyoutItem Text="Mark as Complete" Icon="Accept" Click="ContextMenu_MarkComplete_Click">-->
+                    <!--<MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="CheckMark" />
+                        <FontIcon glyph="&#xe73e;" />
+                    </MenuFlyoutItem.Icon>-->
+                <!--</MenuFlyoutItem>-->
+            </MenuFlyout>
+        </Button.ContextFlyout>
+        
     </Button>
 </UserControl>

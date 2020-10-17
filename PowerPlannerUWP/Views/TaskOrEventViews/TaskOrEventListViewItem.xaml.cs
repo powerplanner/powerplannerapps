@@ -60,6 +60,21 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             }
         }
 
+        private void ContextMenu_Edit_Click(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(GetCurrentItem());
+        }
+        
+        private void ContextMenu_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(GetCurrentItem());
+        }
+        
+        private void ContextMenu_MarkComplete_Click(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(GetCurrentItem());
+        }
+
         private void UpdateDisplayDetails()
         {
             if (_currItem == null)
