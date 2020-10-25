@@ -65,14 +65,24 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(GetCurrentItem());
         }
         
+        //private void ContextMenu_Duplicate_Click(object sender, RoutedEventArgs e)
+        //{
+        //    PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(GetCurrentItem());
+        //}
+        
         private void ContextMenu_Delete_Click(object sender, RoutedEventArgs e)
         {
             PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(GetCurrentItem());
         }
         
+        private void ContextMenu_ConvertType_Click(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(GetCurrentItem());
+        }
+
         private void ContextMenu_MarkComplete_Click(object sender, RoutedEventArgs e)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(GetCurrentItem());
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(GetCurrentItem(), 1);
         }
 
         private void UpdateDisplayDetails()

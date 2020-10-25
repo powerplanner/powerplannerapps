@@ -1115,6 +1115,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }));
         }
 
+        public void ConvertTaskOrEventType(ViewItemTaskOrEvent item)
+        {
+            ViewTaskOrEventViewModel.Create(this, item).ConvertType();
+        }
+
+        public void SetTaskOrEventPercentComplete(ViewItemTaskOrEvent item, double percentComplete)
+        {
+            ViewTaskOrEventViewModel.Create(this, item).SetPercentComplete(percentComplete);
+        }
+
         public void EditGrade(BaseViewItemMegaItem grade, bool whatIf = false)
         {
             ShowPopup(AddGradeViewModel.CreateForEdit(this, new AddGradeViewModel.EditParameter()
