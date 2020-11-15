@@ -71,6 +71,60 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public DayOfWeek FirstDayOfWeek { get; private set; }
 
+        /// <summary>
+        /// Used by Android to display the correct title
+        /// </summary>
+        public string Title => CachedComputation<string>(delegate
+        {
+            if (DisplayState == DisplayStates.Day)
+            {
+                return GetDateHeaderText(SelectedDate);
+            }
+
+            else
+            {
+                return DisplayMonth.ToString("MMMM yyyy");
+            }
+        }, new string[] { nameof(DisplayState), nameof(SelectedDate), nameof(DisplayMonth) });
+
+        public bool CanGoBack => CachedComputation<bool>(delegate
+        {
+            return DisplayState == DisplayStates.Day;
+        }, new string[] { nameof(DisplayState) });
+
+        public override bool GoBack()
+        {
+            if (DisplayState == DisplayStates.Day)
+            {
+                if (ViewSizeState == ViewSizeStates.Compact)
+                {
+                    DisplayState = DisplayStates.Split;
+                }
+                else
+                {
+                    DisplayState = DisplayStates.CompactCalendar;
+                }
+
+                return true;
+            }
+
+            return base.GoBack();
+        }
+
+        private string GetDateHeaderText(DateTime date)
+        {
+            if (date.Date == DateTime.Today)
+                return PowerPlannerResources.GetRelativeDateToday();
+
+            else if (date.Date == DateTime.Today.AddDays(1))
+                return PowerPlannerResources.GetRelativeDateTomorrow();
+
+            else if (date.Date == DateTime.Today.AddDays(-1))
+                return PowerPlannerResources.GetRelativeDateYesterday();
+
+            return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date);
+        }
+
         private bool _showPastCompleteItemsOnFullCalendar = false;
         public bool ShowPastCompleteItemsOnFullCalendar
         {
@@ -199,7 +253,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         private DisplayStates _displayState = _lastDisplayState;
 
         /// <summary>
-        /// Only used in iOS right now. The view should listen and display according to this property.
+        /// Only used in iOS and Android. The view should listen and display according to this property.
         /// </summary>
         public DisplayStates DisplayState
         {
@@ -394,6 +448,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         public void ViewHoliday(ViewItemHoliday h)
         {
             MainScreenViewModel.ShowPopup(AddHolidayViewModel.CreateForEdit(MainScreenViewModel, h));
+        }
+
+        public void GoToToday()
+        {
+            DisplayMonth = Today;
+            SelectedDate = Today;
         }
     }
 }

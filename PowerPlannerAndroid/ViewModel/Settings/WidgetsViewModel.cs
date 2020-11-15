@@ -15,20 +15,20 @@ namespace PowerPlannerAndroid.ViewModel.Settings
 {
     public class WidgetsViewModel : BaseViewModel
     {
-        private PagedViewModel _pagedParent;
+        private PagedViewModelWithPopups _popupsHost;
         public WidgetsViewModel(PagedViewModel parent) : base(parent)
         {
-            _pagedParent = parent;
+            _popupsHost = GetPopupViewModelHost();
         }
 
         public void OpenAgendaWidgetSettings()
         {
-            _pagedParent.Navigate(new WidgetAgendaViewModel(_pagedParent));
+            _popupsHost.ShowPopup(new WidgetAgendaViewModel(_popupsHost));
         }
 
         public void OpenScheduleWidgetSettings()
         {
-            _pagedParent.Navigate(new WidgetScheduleViewModel(_pagedParent));
+            _popupsHost.ShowPopup(new WidgetScheduleViewModel(_popupsHost));
         }
     }
 }

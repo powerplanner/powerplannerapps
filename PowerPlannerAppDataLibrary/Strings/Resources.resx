@@ -1914,4 +1914,34 @@ Please think about using an online account instead!</value>
   <data name="UsernameInvalid_InvalidCharacters" xml:space="preserve">
     <value>Contains invalid characters: {0}</value>
   </data>
+  <data name="String_More" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="String_CurrentSemester" xml:space="preserve">
+    <value>Current semester: {0}</value>
+  </data>
+  <data name="String_ViewYearsAndSemesters" xml:space="preserve">
+    <value>View years &amp; semesters</value>
+  </data>
+  <data name="String_LastSync" xml:space="preserve">
+    <value>Last sync: {0}</value>
+  </data>
+  <data name="String_SyncNow" xml:space="preserve">
+    <value>Sync now</value>
+  </data>
+  <data name="String_Syncing" xml:space="preserve">
+    <value>Syncing...</value>
+  </data>
+  <data name="String_NoAccountToSync" xml:space="preserve">
+    <value>No account to sync</value>
+  </data>
+  <data name="String_SyncNeeded" xml:space="preserve">
+    <value>Sync needed</value>
+  </data>
+  <data name="String_OfflineCouldntSync" xml:space="preserve">
+    <value>Offline, couldn't sync</value>
+  </data>
+  <data name="String_OfflineLastSync" xml:space="preserve">
+    <value>Offline, last sync: {0}</value>
+  </data>
 </root>

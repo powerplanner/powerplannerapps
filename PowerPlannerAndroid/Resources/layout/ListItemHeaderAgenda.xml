@@ -32,7 +32,7 @@
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="18dp"
+        android:paddingStart="16dp"
         android:paddingBottom="8dp"
         android:layout_gravity="bottom"/>
 

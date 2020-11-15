@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
@@ -16,21 +17,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class SettingsListViewModel : BaseViewModel
     {
-        private PagedViewModel _pagedViewModel;
         public DataLayer.AccountDataItem Account { get; private set; }
 
         public const string HelpUrl = "https://powerplanner.freshdesk.com/support/home";
 
+        /// <summary>
+        /// Android sets this to true to have subpages appear as popups
+        /// </summary>
+        public bool ShowAsPopups { get; set; }
+
         public SettingsListViewModel(BaseViewModel parent) : base(parent)
         {
-            Account = FindAncestor<MainWindowViewModel>()?.CurrentAccount;
+            MainScreenViewModel = FindAncestor<MainScreenViewModel>();
+            Account = MainScreenViewModel?.CurrentAccount;
             HasAccount = Account != null;
             if (HasAccount)
             {
                 Account.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Account_PropertyChanged).Handler;
                 UpdateFromAccount();
             }
-            _pagedViewModel = FindAncestor<PagedViewModel>();
         }
 
         private void Account_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -49,6 +54,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             IsOnlineAccount = Account.IsOnlineAccount;
             IsDefaultOfflineAccount = Account.IsDefaultOfflineAccount;
         }
+
+        public MainScreenViewModel MainScreenViewModel { get; private set; }
 
         /// <summary>
         /// This is only false if they enter the settings page from the login page. This will still be true for default offline accounts.
@@ -104,14 +111,189 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public bool IsSchoolTimeZoneVisible => HasAccount;
 
+        public bool IsViewYearsAndSemestersVisible => HasAccount && MainScreenViewModel != null;
+
+        private bool _initializedCurrentSemesterName;
+        private string _currentSemesterName;
+        public string CurrentSemesterName
+        {
+            private set => SetProperty(ref _currentSemesterName, value, nameof(CurrentSemesterName));
+            get
+            {
+                if (!_initializedCurrentSemesterName)
+                {
+                    _initializedCurrentSemesterName = true;
+
+                    if (MainScreenViewModel != null && MainScreenViewModel.CurrentSemester != null)
+                    {
+                        MainScreenViewModel.CurrentSemester.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(CurrentSemester_PropertyChanged).Handler;
+                    }
+
+                    _currentSemesterName = MainScreenViewModel?.CurrentSemester?.Name;
+                }
+
+                return _currentSemesterName;
+            }
+        }
+
+        public string CurrentSemesterText => CachedComputation(delegate
+        {
+            return PowerPlannerResources.GetStringWithParameters("String_CurrentSemester", CurrentSemesterName);
+        }, new string[] { nameof(CurrentSemesterName) });
+
+        private void CurrentSemester_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewItemSemester.Name))
+            {
+                try
+                {
+                    CurrentSemesterName = MainScreenViewModel.CurrentSemester?.Name;
+                }
+                catch { }
+            }
+        }
+
+        private bool _initializedSyncStatus;
+        private string _syncStatusText;
+        public string SyncStatusText
+        {
+            get
+            {
+                if (!_initializedSyncStatus)
+                {
+                    _initializedSyncStatus = true;
+
+                    if (MainScreenViewModel != null)
+                    {
+                        MainScreenViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(MainScreenViewModel_PropertyChanged).Handler;
+                    }
+
+                    UpdateSyncStatus();
+                }
+
+                return _syncStatusText;
+            }
+            set => SetProperty(ref _syncStatusText, value, nameof(SyncStatusText));
+        }
+
+        private string _syncButtonText;
+        public string SyncButtonText
+        {
+            get => _syncButtonText;
+            set => SetProperty(ref _syncButtonText, value, nameof(SyncButtonText));
+        }
+
+        private bool _syncButtonIsEnabled;
+        public bool SyncButtonIsEnabled
+        {
+            get => _syncButtonIsEnabled;
+            set => SetProperty(ref _syncButtonIsEnabled, value, nameof(SyncButtonIsEnabled));
+        }
+
+        private bool _syncHasError;
+        public bool SyncHasError
+        {
+            get => _syncHasError;
+            set => SetProperty(ref _syncHasError, value, nameof(SyncHasError));
+        }
+
+        private void UpdateSyncStatus()
+        {
+            var account = MainScreenViewModel?.CurrentAccount;
+
+            if (account == null)
+            {
+                SyncStatusText = PowerPlannerResources.GetString("String_NoAccountToSync");
+                SyncButtonText = PowerPlannerResources.GetString("String_SyncNow");
+                SyncButtonIsEnabled = false;
+            }
+
+            if (MainScreenViewModel.SyncState == MainScreenViewModel.SyncStates.Done)
+            {
+                SyncButtonText = PowerPlannerResources.GetString("String_SyncNow");
+                SyncButtonIsEnabled = true;
+            }
+            else
+            {
+                SyncButtonText = PowerPlannerResources.GetString("String_Syncing");
+                SyncButtonIsEnabled = false;
+            }
+
+            if (MainScreenViewModel.HasSyncErrors)
+            {
+                SyncHasError = true;
+                SyncStatusText = PowerPlannerResources.GetString("String_SyncError");
+            }
+            else if (MainScreenViewModel.IsOffline)
+            {
+                SyncHasError = false;
+
+                if (account.LastSyncOn != DateTime.MinValue)
+                {
+                    SyncStatusText = PowerPlannerResources.GetStringWithParameters("String_OfflineLastSync", FriendlyLastSyncTime(account.LastSyncOn));
+                }
+                else
+                {
+                    SyncStatusText = PowerPlannerResources.GetString("String_OfflineCouldntSync");
+                }
+            }
+            else
+            {
+                SyncHasError = false;
+
+                if (account.LastSyncOn != DateTime.MinValue)
+                {
+                    SyncStatusText = PowerPlannerResources.GetStringWithParameters("String_LastSync", FriendlyLastSyncTime(account.LastSyncOn));
+                }
+                else
+                {
+                    SyncStatusText = PowerPlannerResources.GetString("String_SyncNeeded");
+                }
+            }
+        }
+
+        private static string FriendlyLastSyncTime(DateTime time)
+        {
+            if (time.Date == DateTime.Today)
+            {
+                return time.ToString("t");
+            }
+            else
+            {
+                return time.ToString("d");
+            }
+        }
+
+        private void MainScreenViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(MainScreenViewModel.SyncState):
+                case nameof(MainScreenViewModel.HasSyncErrors):
+                case nameof(MainScreenViewModel.IsOffline):
+                    UpdateSyncStatus();
+                    break;
+            }
+        }
+
+        public void OpenYears()
+        {
+            MainScreenViewModel?.OpenYears();
+        }
+
+        public void StartSync()
+        {
+            MainScreenViewModel?.SyncCurrentAccount();
+        }
+
         public void OpenMyAccount()
         {
-            _pagedViewModel.Navigate(MyAccountViewModel.Load(_pagedViewModel));
+            Show(MyAccountViewModel.Load(ParentForSubviews));
         }
 
         public void OpenAbout()
         {
-            _pagedViewModel.Navigate(new AboutViewModel(_pagedViewModel));
+            Show(new AboutViewModel(ParentForSubviews));
         }
 
         public void OpenPremiumVersion()
@@ -121,12 +303,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenReminderSettings()
         {
-            _pagedViewModel.Navigate(new ReminderSettingsViewModel(_pagedViewModel));
+            Show(new ReminderSettingsViewModel(ParentForSubviews));
         }
 
         public void OpenSyncOptions()
         {
-            _pagedViewModel.Navigate(new SyncOptionsViewModel(_pagedViewModel));
+            Show(new SyncOptionsViewModel(ParentForSubviews));
         }
 
         /// <summary>
@@ -134,17 +316,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// </summary>
         public void OpenSyncOptionsSimple()
         {
-            _pagedViewModel.Navigate(new SyncOptionsSimpleViewModel(_pagedViewModel));
+            Show(new SyncOptionsSimpleViewModel(ParentForSubviews));
         }
 
         public void OpenCalendarIntegration()
         {
-            _pagedViewModel.Navigate(new CalendarIntegrationViewModel(_pagedViewModel));
+            Show(new CalendarIntegrationViewModel(ParentForSubviews));
         }
 
         public void OpenTwoWeekScheduleSettings()
         {
-            _pagedViewModel.Navigate(new TwoWeekScheduleSettingsViewModel(_pagedViewModel));
+            Show(new TwoWeekScheduleSettingsViewModel(ParentForSubviews));
         }
 
         public void OpenGoogleCalendarIntegration()
@@ -159,8 +341,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 }
                 else
                 {
-                    var popupHost = GetPopupViewModelHost();
-                    popupHost.ShowPopup(new GoogleCalendarIntegrationViewModel(popupHost, Account));
+                    MainScreenViewModel.ShowPopup(new GoogleCalendarIntegrationViewModel(MainScreenViewModel, Account));
                 }
             }
             catch (Exception ex)
@@ -223,12 +404,46 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenSchoolTimeZone()
         {
-            _pagedViewModel.Navigate(new SchoolTimeZoneSettingsViewModel(_pagedViewModel));
+            Show(new SchoolTimeZoneSettingsViewModel(ParentForSubviews));
         }
 
         public void OpenLanguageSettings()
         {
-            _pagedViewModel.Navigate(new LanguageSettingsViewModel(_pagedViewModel));
+            Show(new LanguageSettingsViewModel(ParentForSubviews));
+        }
+
+        public void ViewSyncErrors()
+        {
+            if (MainScreenViewModel != null && MainScreenViewModel.HasSyncErrors)
+            {
+                MainScreenViewModel.ViewSyncErrors();
+            }
+        }
+
+        private BaseViewModel ParentForSubviews => GetParentForSubviews(this);
+
+        public static BaseViewModel GetParentForSubviews(BaseViewModel thisViewModel)
+        {
+            if (PowerPlannerApp.ShowSettingsPagesAsPopups)
+            {
+                return thisViewModel.FindAncestor<PagedViewModelWithPopups>();
+            }
+            else
+            {
+                return thisViewModel.FindAncestor<PagedViewModel>();
+            }
+        }
+
+        public static void Show(BaseViewModel viewModel)
+        {
+            if (PowerPlannerApp.ShowSettingsPagesAsPopups)
+            {
+                viewModel.Parent.ShowPopup(viewModel);
+            }
+            else
+            {
+                viewModel.Parent.FindAncestorOrSelf<PagedViewModel>()?.Navigate(viewModel);
+            }
         }
     }
 }

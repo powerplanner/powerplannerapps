@@ -2414,6 +2414,46 @@ Please think about using an online account instead!</source>
           <source>Contains invalid characters: {0}</source>
           <target state="final">يحتوي على أحرف غير صالحة: {0}</target>
         </trans-unit>
+        <trans-unit id="String_More" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="final">أكثر</target>
+        </trans-unit>
+        <trans-unit id="String_CurrentSemester" translate="yes" xml:space="preserve">
+          <source>Current semester: {0}</source>
+          <target state="final">الفصل الدراسي الحالي: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_ViewYearsAndSemesters" translate="yes" xml:space="preserve">
+          <source>View years &amp; semesters</source>
+          <target state="final">مشاهدة السنوات والفصول الدراسية</target>
+        </trans-unit>
+        <trans-unit id="String_LastSync" translate="yes" xml:space="preserve">
+          <source>Last sync: {0}</source>
+          <target state="final">تاريخ آخر مزامنة: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNow" translate="yes" xml:space="preserve">
+          <source>Sync now</source>
+          <target state="final">زامن الآن "لنقل البيانات</target>
+        </trans-unit>
+        <trans-unit id="String_Syncing" translate="yes" xml:space="preserve">
+          <source>Syncing...</source>
+          <target state="final">مزامنة ...</target>
+        </trans-unit>
+        <trans-unit id="String_NoAccountToSync" translate="yes" xml:space="preserve">
+          <source>No account to sync</source>
+          <target state="final">لا يوجد حساب للمزامنة</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNeeded" translate="yes" xml:space="preserve">
+          <source>Sync needed</source>
+          <target state="final">مطلوب مزامنة</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineCouldntSync" translate="yes" xml:space="preserve">
+          <source>Offline, couldn't sync</source>
+          <target state="final">بلا اتصال بالإنترنت ، لا يمكن المزامنة</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineLastSync" translate="yes" xml:space="preserve">
+          <source>Offline, last sync: {0}</source>
+          <target state="final">في وضع عدم الاتصال ، آخر مزامنة: {0}</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -4,114 +4,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/MenuDrawerLayout"
+
+    <!--The main content view-->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--The main content view-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/Toolbar"
+            style="@style/ActionBar"/>
+            
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/Toolbar"
-                style="@style/ActionBar"/>
-            
-            <RelativeLayout
+            android:layout_height="match_parent"
+            android:layout_below="@id/Toolbar">
+            <FrameLayout
+                android:id="@+id/ContentFrame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/Toolbar">
-                <FrameLayout
-                    android:id="@+id/ContentFrame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@id/BottomNav"/>
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/BottomNav"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_gravity="start"
-                    android:layout_alignParentBottom="true"
-                    app:elevation="24dp"
-                    android:background="@color/primaryDark"
-                    app:itemIconTint="@color/bottom_nav_foreground"
-                    app:itemTextColor="@color/bottom_nav_foreground"/>
-            </RelativeLayout>
-
+                android:layout_above="@id/BottomNav"/>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/BottomNav"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_gravity="start"
+                android:layout_alignParentBottom="true"
+                app:elevation="24dp"
+                android:background="@color/primaryDark"
+                app:itemIconTint="@color/bottom_nav_foreground"
+                app:itemTextColor="@color/bottom_nav_foreground"/>
         </RelativeLayout>
 
-        <!-- The navigation drawer -->
-        <ScrollView android:id="@+id/MenuDrawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/powerPlannerBlue">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/ButtonIsOffline"
-                    style="@style/FullWidthNonAccentBorderlessButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:drawableLeft="@drawable/ic_signal_wifi_off_white_24dp"
-                    android:textColor="#ffffff"
-                    android:text="Offline"/>
-
-                <Button
-                    android:id="@+id/ButtonSyncError"
-                    style="@style/FullWidthNonAccentBorderlessButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:drawableLeft="@drawable/ic_error_outline_white_24dp"
-                    android:textColor="#ffffff"
-                    android:text="{String_SyncError}"/>
-
-                <ImageView
-                    android:id="@+id/ImageViewPowerPlannerMenuIcon"
-                    android:layout_width="fill_parent"
-                    android:layout_height="80dp"
-                    android:src="@drawable/logo"
-                    android:scaleType="centerInside"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="24dp"/>
-
-                <TextView
-                    android:id="@+id/MenuItemYears"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="{MainMenuItem_Years}"
-                    android:clickable="true"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/white"
-                    android:paddingStart="20dp"
-                    android:paddingTop="11dp"
-                    android:paddingBottom="11dp"/>
-
-                <TextView
-                    android:id="@+id/MenuItemSettings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="{MainMenuItem_Settings}"
-                    android:clickable="true"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/white"
-                    android:paddingStart="20dp"
-                    android:paddingTop="11dp"
-                    android:paddingBottom="11dp"/>
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </androidx.drawerlayout.widget.DrawerLayout>
+    </RelativeLayout>
 
     <InterfacesDroid.ViewModelPresenters.PopupsPresenter
         android:id="@+id/MainScreenPopupsPresenter"
