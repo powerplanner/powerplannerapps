@@ -54,7 +54,7 @@ namespace PowerPlanneriOS.Controllers.Settings.Grades
 
         public override void OnViewModelSetOverride()
         {
-            m_classBindingHost.BindingObject = ViewModel.Class;
+            m_classBindingHost.DataContext = ViewModel.Class;
 
             ViewModel.Class.PropertyChanged += new WeakEventHandler<System.ComponentModel.PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
 

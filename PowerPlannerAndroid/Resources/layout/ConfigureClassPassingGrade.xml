@@ -14,13 +14,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-      <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/EditTextPassingGrade"
-          android:inputType="number|numberDecimal"
+      <InterfacesDroid.Views.BareMaterialEditDecimalNumber
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="{Settings_GradeOptions_ListItemPassingGrade.Title}"
-          local:Binding="{Source=PassingGrade, Target=Text, Mode=TwoWay}"/>
+          local:Binding="{Source=PassingGrade, Target=Value, Mode=TwoWay}"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

@@ -48,6 +48,30 @@
             android:text="{Settings_MyAccount_ButtonChangeEmail.Content}"
             android:layout_marginBottom="8dp"/>
 
+        
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="{Settings_MyAccount_CheckBoxRememberUsername.Content}"
+            android:layout_marginTop="4dp"
+            local:Binding="{Source=RememberUsername, Target=Checked, Mode=TwoWay}"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="{Settings_MyAccount_CheckBoxRememberPassword.Content}"
+            local:Binding="{Source=RememberPassword, Target=Checked, Mode=TwoWay}; {Source=CurrentAccount.IsRememberPasswordPossible, Target=Enabled}"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="{Settings_MyAccount_CheckBoxAutoLogin.Content}"
+            android:layout_marginBottom="8dp"
+            local:Binding="{Source=AutoLogin, Target=Checked, Mode=TwoWay}; {Source=CurrentAccount.IsAutoLoginPossible, Target=Enabled}"/>
+
+
+
         <Button
             android:id="@+id/ButtonDeleteAccount"
             style="@style/PowerPlannerBlueButton"

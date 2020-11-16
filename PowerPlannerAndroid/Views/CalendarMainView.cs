@@ -28,23 +28,120 @@ using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.ViewItems;
 using AndroidX.Core.Content;
 using AndroidX.Core.View;
+using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar.CalendarViewModel;
+using PowerPlannerAndroid.ViewHosts;
+using Android.Views.InputMethods;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class CalendarMainView : InterfacesDroid.Views.PopupViewHost<CalendarViewModel>
+    public class CalendarMainView : MainScreenViewHostDescendant<CalendarViewModel>
     {
         private MyCalendarView _calendarView;
         private DayPagerControl _dayPagerControl;
 
         public CalendarMainView(ViewGroup root) : base(Resource.Layout.CalendarMain, root)
         {
+            _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
+            _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
+
+            SetBinding<DisplayStates>(nameof(ViewModel.DisplayState), displayState =>
+            {
+                switch (displayState)
+                {
+                    // Full calendar
+                    case DisplayStates.CompactCalendar:
+                        _dayPagerControl.Visibility = ViewStates.Gone;
+                        _calendarView.Visibility = ViewStates.Visible;
+                        _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            0,
+                            1);
+                        break;
+
+                    // Both
+                    case DisplayStates.Split:
+                        _dayPagerControl.Visibility = ViewStates.Visible;
+                        _calendarView.Visibility = ViewStates.Visible;
+                        _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            ThemeHelper.AsPx(Context, 280));
+                        _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            0,
+                            1);
+                        _dayPagerControl.ShowHeader = true;
+                        break;
+
+                    // Full day
+                    case DisplayStates.Day:
+                        _dayPagerControl.Visibility = ViewStates.Visible;
+                        _calendarView.Visibility = ViewStates.Gone;
+                        _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MatchParent,
+                            0,
+                            1);
+                        _dayPagerControl.ShowHeader = false;
+                        break;
+                }
+            });
+        }
+
+        protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
+        { 
+            base.OnSizeChanged(w, h, oldw, oldh);
+
+            // If oldh is 0, that means first time we're running this, which in that case we'll still update because focus will be set soon
+            if (ViewModel == null || (!ViewModel.IsFocused && oldh != 0))
+            {
+                return;
+            }
+
+            Handler handler = new Handler();
+            handler.Post(delegate
+            {
+                UpdateViewSizeState(base.Height);
+            });
+        }
+
+        private void UpdateViewSizeState(int h)
+        {
+            // Ignore while keyboard visible
+            if ((Context.GetSystemService(Context.InputMethodService) as InputMethodManager).IsAcceptingText)
+            {
+                return;
+            }
+
+            int breakpoint = ThemeHelper.AsPx(Context, 440);
+
+            if (h > breakpoint)
+            {
+                ViewModel.ViewSizeState = ViewSizeStates.Compact;
+            }
+            else
+            {
+                ViewModel.ViewSizeState = ViewSizeStates.FullyCompact;
+            }
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            ViewModel.ViewFocused += ViewModel_ViewFocused;
+
+            base.OnViewModelSetOverride();
+        }
+
+        private void ViewModel_ViewFocused(object sender, EventArgs e)
+        {
+            if (base.Height != 0)
+            {
+                UpdateViewSizeState(base.Height);
+            }
         }
 
         public override void OnViewModelLoadedOverride()
         {
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
 
-            _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
             _calendarView.Adapter = new MyCalendarAdapter(ViewModel, ViewModel.DisplayMonth, ViewModel.FirstDayOfWeek);
             _calendarView_DisplayMonthChanged(_calendarView, new EventArgs());
             _calendarView.DisplayMonthChanged += _calendarView_DisplayMonthChanged;
@@ -57,14 +154,18 @@ namespace PowerPlannerAndroid.Views
             addItemControl.OnRequestAddTask += AddItemControl_OnRequestAddTask;
             addItemControl.OnRequestAddHoliday += AddItemControl_OnRequestAddHoliday;
 
-            _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
             _dayPagerControl.Initialize(ViewModel.SemesterItemsViewGroup, ViewModel.SelectedDate);
             _dayPagerControl.ItemClick += _dayPagerControl_ItemClick;
             _dayPagerControl.HolidayItemClick += _dayPagerControl_HolidayItemClick;
             _dayPagerControl.ScheduleItemClick += _dayPagerControl_ScheduleItemClick;
             _dayPagerControl.ScheduleClick += _dayPagerControl_ScheduleClick;
             _dayPagerControl.CurrentDateChanged += _dayPagerControl_CurrentDateChanged;
+            _dayPagerControl.ExpandClick += _dayPagerControl_ExpandClick;
+        }
 
+        private void _dayPagerControl_ExpandClick(object sender, EventArgs e)
+        {
+            ViewModel.ExpandDay();
         }
 
         private void _dayPagerControl_HolidayItemClick(object sender, PowerPlannerAppDataLibrary.ViewItems.ViewItemHoliday e)
@@ -122,14 +223,18 @@ namespace PowerPlannerAndroid.Views
 
             public override MyCalendarMonthView GetView(ViewGroup parent, MyCalendarView calendarView)
             {
-                return new MySmallCalendarMonthView(parent, calendarView, _viewModel, FirstDayOfWeek);
+                return new MySmallCalendarMonthView(parent, calendarView, _viewModel, FirstDayOfWeek)
+                {
+                    LayoutParameters = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MatchParent,
+                        ViewGroup.LayoutParams.MatchParent)
+                };
             }
         }
 
         private class MySmallCalendarMonthView : MyCalendarMonthView
         {
             private CalendarViewModel _viewModel;
-            private TextView _title;
 
             public MySmallCalendarMonthView(ViewGroup parent, MyCalendarView calendarView, CalendarViewModel viewModel, DayOfWeek firstDayOfWeek) : base(parent, calendarView, firstDayOfWeek)
             {
@@ -146,18 +251,17 @@ namespace PowerPlannerAndroid.Views
 
             protected override View CreateTitle()
             {
-                _title = new TextView(Context)
+                // We arent' using a month title, we display the title in the toolbar. But we add some spacing.
+                return new View(Context)
                 {
-                    TextSize = 16
+                    LayoutParameters = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MatchParent,
+                        ThemeHelper.AsPx(Context, 4))
                 };
-                _title.SetPaddingRelative(ThemeHelper.AsPx(Context, 16), ThemeHelper.AsPx(Context, 12), 0, ThemeHelper.AsPx(Context, 12));
-                return _title;
             }
 
             protected override void OnMonthChanged()
             {
-                _title.Text = Month.ToString("MMMM yyyy");
-
                 var semester = _viewModel?.SemesterItemsViewGroup?.Semester;
                 if (semester != null && !semester.IsMonthDuringThisSemester(Month))
                 {
@@ -436,6 +540,13 @@ namespace PowerPlannerAndroid.Views
                         _dayPagerControl.Initialize(ViewModel.SemesterItemsViewGroup, ViewModel.SelectedDate);
                     _calendarView.SelectedDate = ViewModel.SelectedDate;
                     break;
+
+                case nameof(ViewModel.DisplayMonth):
+                    if (_calendarView.DisplayMonth != ViewModel.DisplayMonth)
+                    {
+                        _calendarView.Adapter = new MyCalendarAdapter(ViewModel, ViewModel.DisplayMonth, ViewModel.FirstDayOfWeek);
+                    }
+                    break;
             }
         }
 
@@ -447,6 +558,21 @@ namespace PowerPlannerAndroid.Views
         private void _dayPagerControl_ItemClick(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.ShowItem(e);
+        }
+
+        protected override int GetMenuResource()
+        {
+            return Resource.Menu.calendar_menu;
+        }
+
+        public override void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
+        {
+            switch (e.Item.ItemId)
+            {
+                case Resource.Id.MenuItemGoToToday:
+                    ViewModel.GoToToday();
+                    break;
+            }
         }
     }
 }

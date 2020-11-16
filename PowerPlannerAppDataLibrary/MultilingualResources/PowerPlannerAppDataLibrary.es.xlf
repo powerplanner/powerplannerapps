@@ -2,7 +2,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en-US" target-language="es" original="PowerPlannerAppDataLibrary/Strings/Resources.resx" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
     <header>
-      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6916.0" tool-company="Microsoft" />
     </header>
     <body>
       <group id="PowerPlannerAppDataLibrary/Strings/Resources.resx" datatype="resx">
@@ -2402,6 +2402,54 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         <trans-unit id="String_Complete" translate="yes" xml:space="preserve">
           <source>Complete</source>
           <target state="final" state-qualifier="tm-suggestion">Completado</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_ContainsSpace" translate="yes" xml:space="preserve">
+          <source>Cannot contain spaces.</source>
+          <target state="final" state-qualifier="mt-suggestion">No puede contener espacios.</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_InvalidCharacters" translate="yes" xml:space="preserve">
+          <source>Contains invalid characters: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Contiene caracteres no válidos: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_More" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="final" state-qualifier="tm-suggestion">Más</target>
+        </trans-unit>
+        <trans-unit id="String_CurrentSemester" translate="yes" xml:space="preserve">
+          <source>Current semester: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Semestre actual: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_ViewYearsAndSemesters" translate="yes" xml:space="preserve">
+          <source>View years &amp; semesters</source>
+          <target state="final" state-qualifier="mt-suggestion">Ver años y semestres</target>
+        </trans-unit>
+        <trans-unit id="String_LastSync" translate="yes" xml:space="preserve">
+          <source>Last sync: {0}</source>
+          <target state="final" state-qualifier="tm-suggestion">Última sincronización: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNow" translate="yes" xml:space="preserve">
+          <source>Sync now</source>
+          <target state="final" state-qualifier="mt-suggestion">Sincronizar ahora</target>
+        </trans-unit>
+        <trans-unit id="String_Syncing" translate="yes" xml:space="preserve">
+          <source>Syncing...</source>
+          <target state="final" state-qualifier="tm-suggestion">Sincronizando...</target>
+        </trans-unit>
+        <trans-unit id="String_NoAccountToSync" translate="yes" xml:space="preserve">
+          <source>No account to sync</source>
+          <target state="final" state-qualifier="mt-suggestion">No hay cuenta que sincronizar</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNeeded" translate="yes" xml:space="preserve">
+          <source>Sync needed</source>
+          <target state="final" state-qualifier="mt-suggestion">Sincronización necesaria</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineCouldntSync" translate="yes" xml:space="preserve">
+          <source>Offline, couldn't sync</source>
+          <target state="final" state-qualifier="mt-suggestion">Sin conexión, no se podía sincronizar</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineLastSync" translate="yes" xml:space="preserve">
+          <source>Offline, last sync: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Sin conexión, última sincronización: {0}</target>
         </trans-unit>
       </group>
     </body>

@@ -41,7 +41,7 @@ namespace PowerPlanneriOS.Views
                 if (value != null)
                 {
                     _viewModel = value;
-                    _bindingHost.BindingObject = value;
+                    _bindingHost.DataContext = value;
                     InitializeViews();
                 }
             }

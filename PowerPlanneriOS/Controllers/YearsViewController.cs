@@ -50,7 +50,7 @@ namespace PowerPlanneriOS.Controllers
 
             _schoolBindingHost = new BindingHost()
             {
-                BindingObject = ViewModel.YearsViewItemsGroup.School
+                DataContext = ViewModel.YearsViewItemsGroup.School
             };
 
             var overallText = new UILabel()

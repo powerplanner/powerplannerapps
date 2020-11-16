@@ -81,40 +81,19 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void createUsername_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void createEmail_EnterPressed(object sender, EventArgs e)
         {
-            if (e.Key == VirtualKey.Enter)
-            {
-                e.Handled = true;
-                createEmail.Focus(FocusState.Programmatic);
-            }
+            createPassword.Focus(FocusState.Programmatic);
         }
 
-        private void createEmail_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void createPassword_EnterPressed(object sender, EventArgs e)
         {
-            if (e.Key == VirtualKey.Enter)
-            {
-                e.Handled = true;
-                createPassword.Focus(FocusState.Programmatic);
-            }
+            createPasswordConfirm.Focus(FocusState.Programmatic);
         }
 
-        private void createPassword_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void createPasswordConfirm_EnterPressed(object sender, EventArgs e)
         {
-            if (e.Key == VirtualKey.Enter)
-            {
-                e.Handled = true;
-                createPasswordConfirm.Focus(FocusState.Programmatic);
-            }
-        }
-
-        private void createPasswordConfirm_KeyUp(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Enter)
-            {
-                e.Handled = true;
-                ViewModel.CreateAccount();
-            }
+            ViewModel.CreateAccount();
         }
 
         private void createOnlineAccount_Click(object sender, RoutedEventArgs e)
@@ -141,6 +120,11 @@ namespace PowerPlannerUWP.Views
         private void createUsername_Loaded(object sender, RoutedEventArgs e)
         {
             createUsername.Focus(FocusState.Programmatic);
+        }
+
+        private void createUsername_EnterPressed(object sender, EventArgs e)
+        {
+            createEmail.Focus(FocusState.Programmatic);
         }
     }
 }

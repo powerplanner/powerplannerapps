@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:id="@+id/DayPagerHeader">
+
+        <!--Header text-->
+        <TextView
+            android:id="@+id/TextViewHeaderText"
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="16dp"
+            android:layout_gravity="bottom"/>
+
+        <!--Expand/collpase button-->
+        <ImageButton
+            android:id="@+id/ButtonExpand"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/baseline_expand_less_black_24"
+            android:tint="@color/powerPlannerBlue"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Expand"/>
+
+    </LinearLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/DayViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

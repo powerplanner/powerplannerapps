@@ -76,12 +76,12 @@ namespace PowerPlanneriOS.Controllers
 
             _itemBindingHost = new BindingHost()
             {
-                BindingObject = ViewModel.Item
+                DataContext = ViewModel.Item
             };
             _classBindingHost = new BindingHost();
             _itemBindingHost.SetBinding(nameof(ViewItemTaskOrEvent.Class), delegate
             {
-                _classBindingHost.BindingObject = ViewModel.Item.Class;
+                _classBindingHost.DataContext = ViewModel.Item.Class;
             });
 
             var labelTitle = new UILabel()
