@@ -89,6 +89,19 @@
                     Tapped="logo_Tapped"
                     Margin="24"/>
 
+                <AppBarButton
+                    x:Name="ButtonCompactHamburger"
+                    Visibility="Collapsed"
+                    Click="ButtonOpenMenu_Click">
+
+                    <TextBlock
+                        Text="&#xE700;"
+                        FontFamily="Segoe MDL2 Assets"
+                        HorizontalAlignment="Center"
+                        Foreground="White"/>
+
+                </AppBarButton>
+
                 <!--<SymbolIcon Symbol="Important" RequestedTheme="Dark" Grid.Column="1"/>-->
                 <AppBarButton
                     IsCompact="True"
@@ -123,7 +136,8 @@
                 Visibility="Collapsed"
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Tapped="compactSelectedItem_Tapped"/>
+                HorizontalAlignment="Left"
+                Margin="-24,0,0,0"/>
 
         </Grid>
 
@@ -243,9 +257,7 @@
 
 
                         <!--And reduce the height of the top section-->
-                        <Setter Target="rowTop.Height" Value="70"/>
-
-                        <Setter Target="logo.Margin" Value="20,12,12,12"/>
+                        <Setter Target="rowTop.Height" Value="48"/>
 
 
                         <!--Move the menu to the left 16 pixels so that text has a 20 px margin from the left (cheap hack, but it works perfectly)-->
@@ -255,6 +267,9 @@
                         <!--Move the Offline text to the right-->
                         <Setter Target="textBlockOffline.HorizontalAlignment" Value="Right"/>
                         <Setter Target="textBlockOffline.(Grid.Column)" Value="1"/>
+
+                        <Setter Target="logo.Visibility" Value="Collapsed"/>
+                        <Setter Target="ButtonCompactHamburger.Visibility" Value="Visible"/>
 
                     </VisualState.Setters>
 
