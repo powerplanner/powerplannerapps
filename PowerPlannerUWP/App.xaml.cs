@@ -703,6 +703,11 @@ namespace PowerPlannerUWP
                         changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
 
 
+                    if (v <= new Version(2011, 16, 1, 99))
+                    {
+                        changedText += "\n - Collapsable groups in Agenda (so you can collapse overdue items, etc)!";
+                    }
+
                     if (v <= new Version(2008, 12, 2, 99))
                     {
                         changedText += "\n - Reminders for class schedule!";
