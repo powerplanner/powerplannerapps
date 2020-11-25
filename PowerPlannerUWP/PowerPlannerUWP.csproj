@@ -487,9 +487,6 @@
       <DependentUpon>MainScreenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopupViewHostGeneric.cs" />
-    <Compile Include="Views\ScheduleViews\EditingAllSchedulesControl.xaml.cs">
-      <DependentUpon>EditingAllSchedulesControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ScheduleViews\EditingAllSchedulesSingleClassControl.xaml.cs">
       <DependentUpon>EditingAllSchedulesSingleClassControl.xaml</DependentUpon>
     </Compile>
@@ -994,10 +991,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainScreenView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleViews\EditingAllSchedulesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
