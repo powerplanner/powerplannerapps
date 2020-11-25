@@ -245,7 +245,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             InTheFuture
         }
 
-        public class ItemsGroupHeader
+        public class ItemsGroupHeader : BindableBase
         {
             public ItemsGroup Group { get; set; }
 
@@ -254,6 +254,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             public DateTime DateToUseForNewItems { get; set; }
 
             public IEnumerable<ViewItemClass> Classes { get; set; }
+
+            private bool _collapsed;
+            public bool Collapsed
+            {
+                get => _collapsed;
+                set => SetProperty(ref _collapsed, value, nameof(Collapsed));
+            }
         }
 
         public void AddTask()
