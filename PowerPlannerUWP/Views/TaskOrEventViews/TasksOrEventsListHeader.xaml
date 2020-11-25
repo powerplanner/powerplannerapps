@@ -46,12 +46,29 @@
                 Grid.Column="1"
                 Padding="4,4"
                 Width="36"
-                Height="36">
+                Height="36"
+                Visibility="{Binding Collapsed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                 <SymbolIcon Symbol="Add" RenderTransformOrigin="0.5,0.5">
                     <SymbolIcon.RenderTransform>
                         <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
                     </SymbolIcon.RenderTransform>
                 </SymbolIcon>
+            </Button>
+
+            <!--Expand button-->
+            <Button
+                Click="header_Click"
+                Style="{StaticResource HeaderStyle}"
+                Grid.Column="1"
+                Padding="4,4"
+                Width="36"
+                Height="36"
+                Visibility="{Binding Collapsed, Converter={StaticResource BoolToVisibilityConverter}}">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE011;">
+                    <FontIcon.RenderTransform>
+                        <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                    </FontIcon.RenderTransform>
+                </FontIcon>
             </Button>
 
         </Grid>
