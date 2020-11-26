@@ -684,7 +684,7 @@ namespace PowerPlannerUWP.Views
                 if (IsEditing())
                 {
                     // Open the editing for that schedule group
-                    ViewModel.EditTimes(schedule);
+                    ViewModel.EditTimes(schedule, useNewStyle: true);
                 }
 
                 // Otherwise...
@@ -1095,7 +1095,7 @@ namespace PowerPlannerUWP.Views
 
         private void EditingAllSchedulesSingleClassControl_OnRequestAddTime(object sender, ViewItemClass e)
         {
-            ViewModel.AddTime(e);
+            ViewModel.AddTime(e, useNewStyle: true);
         }
 
         private void EditingAllSchedulesSingleClassControl_OnRequestEditClass(object sender, ViewItemClass e)
@@ -1105,7 +1105,7 @@ namespace PowerPlannerUWP.Views
 
         private void EditingAllSchedulesSingleClassControl_OnRequestEditGroup(object sender, ViewItemSchedule[] e)
         {
-            ViewModel.EditTimes(e);
+            ViewModel.EditTimes(e, useNewStyle: true);
         }
 
         private void thisPage_SizeChanged(object sender, SizeChangedEventArgs e)

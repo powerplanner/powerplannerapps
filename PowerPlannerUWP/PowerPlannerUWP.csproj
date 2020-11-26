@@ -254,6 +254,12 @@
     <Compile Include="Views\QuickAddView.xaml.cs">
       <DependentUpon>QuickAddView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScheduleViews\AddClassTimeGroupCollapsed.xaml.cs">
+      <DependentUpon>AddClassTimeGroupCollapsed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScheduleViews\AddClassTimeGroupExpanded.xaml.cs">
+      <DependentUpon>AddClassTimeGroupExpanded.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ScheduleViews\HolidayScheduleItemView.xaml.cs">
       <DependentUpon>HolidayScheduleItemView.xaml</DependentUpon>
     </Compile>
@@ -695,6 +701,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QuickAddView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScheduleViews\AddClassTimeGroupCollapsed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScheduleViews\AddClassTimeGroupExpanded.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

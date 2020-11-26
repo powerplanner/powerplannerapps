@@ -101,7 +101,7 @@ namespace PowerPlannerUWP
 
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(AddClassTimeViewModel), typeof(AddClassTimeView) },
+                { typeof(AddClassTimesViewModel), typeof(AddClassTimeView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },

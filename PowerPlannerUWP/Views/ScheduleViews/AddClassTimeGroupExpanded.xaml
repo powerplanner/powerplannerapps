@@ -1,0 +1,131 @@
+﻿<UserControl
+    x:Class="PowerPlannerUWP.Views.ScheduleViews.AddClassTimeGroupExpanded"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    xmlns:controls="using:PowerPlannerUWP.Controls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views.ScheduleViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Style x:Key="DayCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,6"/>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel x:Name="StackPanel" Margin="12">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <controls:EnhancedTimePicker
+                x:Uid="EditingClassScheduleItemView_TimePickerStart"
+                Header="Start time"
+                HorizontalAlignment="Stretch"
+                SelectedTime="{Binding StartTime, Mode=TwoWay}"/>
+
+            <controls:EnhancedEndTimePicker
+                Grid.Column="2"
+                x:Uid="EditingClassScheduleItemView_TimePickerEnd"
+                Header="End time"
+                HorizontalAlignment="Stretch"
+                StartTime="{Binding StartTime}"
+                SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
+        </Grid>
+
+        <TextBox
+            x:Uid="EditingClassScheduleItemView_TextBoxRoom"
+            x:Name="tbRoom"
+            Header="Room"
+            PlaceholderText="ex: Modern Languages 302"
+            Margin="0,12,0,0"
+            IsSpellCheckEnabled="True"
+            IsTextPredictionEnabled="True"
+            Text="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+        <Grid Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel>
+                <CheckBox
+                    x:Name="checkBoxMonday"
+                    Content="Monday"
+                    Style="{StaticResource DayCheckBoxStyle}"
+                    IsChecked="{Binding IsMondayChecked, Mode=TwoWay}"/>
+
+                <CheckBox
+                            x:Name="checkBoxTuesday"
+                            Content="Tuesday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsTuesdayChecked, Mode=TwoWay}"/>
+
+                <CheckBox
+                            x:Name="checkBoxWednesday"
+                            Content="Wednesday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsWednesdayChecked, Mode=TwoWay}"/>
+
+                <CheckBox
+                            x:Name="checkBoxThursday"
+                            Content="Thursday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsThursdayChecked, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <CheckBox
+                            x:Name="checkBoxFriday"
+                            Content="Friday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsFridayChecked, Mode=TwoWay}"/>
+
+                <CheckBox
+                            x:Name="checkBoxSaturday"
+                            Content="Saturday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsSaturdayChecked, Mode=TwoWay}"/>
+
+                <CheckBox
+                            x:Name="checkBoxSunday"
+                            Content="Sunday"
+                            Style="{StaticResource DayCheckBoxStyle}"
+                            IsChecked="{Binding IsSundayChecked, Mode=TwoWay}"/>
+            </StackPanel>
+
+        </Grid>
+
+        <views:WeekComboBox
+            x:Uid="EditingClassScheduleItemView_WeekComboBox"
+            x:Name="weekComboBox"
+            Header="Week"
+            Margin="0,12,0,0"
+            SelectedWeek="{Binding ScheduleWeek, Mode=TwoWay}"/>
+
+        <TextBlock
+            x:Uid="EditingClassScheduleItemView_TextBlockWeekDescription"
+            Text="Leave this on 'Both Weeks' unless you have a two-week schedule."
+            Style="{StaticResource CaptionTextBlockStyle}"
+            Margin="1,0,0,0"/>
+
+        <Button
+            x:Name="ButtonRemove"
+            Content="Remove this schedule"
+            Margin="0,12,0,0"
+            Click="ButtonRemove_Click"
+            Visibility="{Binding HasOnlyOneGroup, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+
+    </StackPanel>
+</UserControl>
