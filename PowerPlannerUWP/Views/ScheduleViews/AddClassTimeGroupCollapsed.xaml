@@ -15,6 +15,12 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
+        <Border
+            Background="Red"
+            Opacity="0.2"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding IsInvalid, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
         <Button Style="{StaticResource TransparentButtonStyle}" Click="Button_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
 
             <StackPanel Margin="5">

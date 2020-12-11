@@ -50,6 +50,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             if (other != this && other.Expanded)
                             {
                                 other.Expanded = false;
+                                other.Validate();
                             }
                         }
                     }
@@ -142,9 +143,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 internal set { _dayOfWeeks = value; value.CollectionChanged += DayOfWeeks_CollectionChanged; }
             }
 
-            public bool Invalid
+            private bool _isInvalid;
+            public bool IsInvalid
             {
-                get => DayOfWeeks.Count == 0 || EndTime < StartTime;
+                get => _isInvalid;
+                set => SetProperty(ref _isInvalid, value, nameof(IsInvalid));
             }
 
             /// <summary>
@@ -192,6 +195,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 }
 
                 OnPropertyChanged(nameof(DaysString));
+
+                if (IsDaysInvalid)
+                {
+                    if (DayOfWeeks.Count > 0)
+                    {
+                        IsDaysInvalid = false;
+                        if (!IsTimesInvalid)
+                        {
+                            IsInvalid = false;
+                        }
+                    }
+                }
             }
 
             private void SetChecked(DayOfWeek dayOfWeek, bool isChecked)
@@ -324,6 +339,46 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             throw new NotImplementedException();
                     }
                 }
+            }
+
+            internal void Validate()
+            {
+                if (DayOfWeeks.Count == 0)
+                {
+                    IsDaysInvalid = true;
+                }
+                else
+                {
+                    IsDaysInvalid = false;
+                }
+
+                if (EndTime <= StartTime)
+                {
+                    IsTimesInvalid = true;
+                }
+                else
+                {
+                    IsTimesInvalid = false;
+                }
+
+                if (IsDaysInvalid || IsTimesInvalid)
+                {
+                    IsInvalid = true;
+                }
+            }
+
+            private bool _isDaysInvalid;
+            public bool IsDaysInvalid
+            {
+                get => _isDaysInvalid;
+                set => SetProperty(ref _isDaysInvalid, value, nameof(IsDaysInvalid));
+            }
+
+            private bool _isTimesInvalid;
+            public bool IsTimesInvalid
+            {
+                get => _isTimesInvalid;
+                set => SetProperty(ref _isTimesInvalid, value, nameof(IsTimesInvalid));
             }
         }
 
@@ -466,6 +521,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             if (currExpanded != null)
             {
                 currExpanded.Expanded = false;
+                currExpanded.Validate();
             }
 
             Groups.Add(new ClassTimeGroup(this)
@@ -481,17 +537,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public void Save()
         {
-            //if (StartTime >= EndTime)
-            //{
-            //    new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_LowEndTime.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
-            //    return;
-            //}
+            bool hasInvalid = false;
+            ClassTimeGroup groupToExpand = null;
+            bool alreadyHasInvalidExpandedGroup = false;
 
-            //if (DayOfWeeks.Count == 0)
-            //{
-            //    new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Title")).Show();
-            //    return;
-            //}
+            foreach (var group in Groups)
+            {
+                group.Validate();
+
+                if (group.IsInvalid)
+                {
+                    hasInvalid = true;
+
+                    if (groupToExpand == null && !group.Expanded)
+                    {
+                        groupToExpand = group;
+                    }
+
+                    if (group.Expanded)
+                    {
+                        alreadyHasInvalidExpandedGroup = true;
+                    }
+                }
+            }
+
+            if (hasInvalid)
+            {
+                if (!alreadyHasInvalidExpandedGroup && groupToExpand != null)
+                {
+                    groupToExpand.Expanded = true;
+                }
+
+                return;
+            }
 
             TryStartDataOperationAndThenNavigate(async delegate
             {

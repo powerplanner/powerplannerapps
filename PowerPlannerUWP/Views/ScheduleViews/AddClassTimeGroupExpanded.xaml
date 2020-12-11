@@ -59,6 +59,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <Border BorderBrush="Red" BorderThickness="2" Grid.ColumnSpan="2" Margin="-8,0" Visibility="{Binding IsDaysInvalid, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
             <StackPanel>
                 <CheckBox
                     x:Name="checkBoxMonday"
@@ -106,6 +108,14 @@
             </StackPanel>
 
         </Grid>
+
+        <TextBlock
+            x:Name="TextBlockDaysInvalidCaption"
+            Style="{ThemeResource CaptionTextBlockStyle}"
+            Foreground="Red"
+            FontWeight="Bold"
+            TextWrapping="Wrap"
+            Visibility="{Binding IsDaysInvalid, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         <views:WeekComboBox
             x:Uid="EditingClassScheduleItemView_WeekComboBox"

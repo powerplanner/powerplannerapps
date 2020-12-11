@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
+﻿using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,8 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             checkBoxFriday.Content = DateTools.ToLocalizedString(DayOfWeek.Friday);
             checkBoxSaturday.Content = DateTools.ToLocalizedString(DayOfWeek.Saturday);
             checkBoxSunday.Content = DateTools.ToLocalizedString(DayOfWeek.Sunday);
+
+            TextBlockDaysInvalidCaption.Text = PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content");
         }
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
