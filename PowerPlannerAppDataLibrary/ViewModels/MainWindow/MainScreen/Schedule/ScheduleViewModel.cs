@@ -431,30 +431,58 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             MainScreenViewModel.AddClass();
         }
 
-        public void AddTime(ViewItemClass c)
+        public void AddTime(ViewItemClass c, bool useNewStyle = false)
         {
-            MainScreenViewModel.ShowPopup(AddClassTimeViewModel.CreateForAdd(MainScreenViewModel, new AddClassTimeViewModel.AddParameter()
+            BaseViewModel model;
+
+            if (useNewStyle)
             {
-                Class = c
-            }));
+                model = AddClassTimesViewModel.CreateForAdd(MainScreenViewModel, new AddClassTimesViewModel.AddParameter()
+                {
+                    Class = c
+                });
+            }
+            else
+            {
+                model = AddClassTimeViewModel.CreateForAdd(MainScreenViewModel, new AddClassTimeViewModel.AddParameter()
+                {
+                    Class = c
+                });
+            }
+
+            MainScreenViewModel.ShowPopup(model);
         }
 
         /// <summary>
         /// Finds related schedules and edits them as a batch
         /// </summary>
         /// <param name="schedule"></param>
-        public void EditTimes(ViewItemSchedule schedule)
+        public void EditTimes(ViewItemSchedule schedule, bool useNewStyle = false)
         {
             var group = schedule.Class.GetGroupOfSchedulesWithSharedEditingValues(schedule);
-            EditTimes(group);
+            EditTimes(group, useNewStyle);
         }
 
-        public void EditTimes(ViewItemSchedule[] schedules)
+        public void EditTimes(ViewItemSchedule[] schedules, bool useNewStyle = false)
         {
-            MainScreenViewModel.ShowPopup(AddClassTimeViewModel.CreateForEdit(MainScreenViewModel, new AddClassTimeViewModel.EditParameter()
+            BaseViewModel model;
+
+            if (useNewStyle)
             {
-                GroupedSchedules = schedules
-            }));
+                model = AddClassTimesViewModel.CreateForEdit(MainScreenViewModel, new AddClassTimesViewModel.EditParameter()
+                {
+                    GroupedSchedules = schedules
+                });
+            }
+            else
+            {
+                model = AddClassTimeViewModel.CreateForEdit(MainScreenViewModel, new AddClassTimeViewModel.EditParameter()
+                {
+                    GroupedSchedules = schedules
+                });
+            }
+
+            MainScreenViewModel.ShowPopup(model);
         }
 
         public void EditClass(ViewItemClass c)

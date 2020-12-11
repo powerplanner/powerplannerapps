@@ -2451,6 +2451,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Offline, last sync: {0}</source>
           <target state="final" state-qualifier="mt-suggestion">Sin conexión, última sincronización: {0}</target>
         </trans-unit>
+        <trans-unit id="AddClassTime_RemoveThisSchedule.Content" translate="yes" xml:space="preserve">
+          <source>Remove this schedule</source>
+          <target state="final" state-qualifier="mt-suggestion">Elimine este horario</target>
+        </trans-unit>
+        <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
+          <source>add another time</source>
+          <target state="final" state-qualifier="mt-suggestion">añadir otra vez</target>
+        </trans-unit>
       </group>
     </body>
   </file>
