@@ -2451,6 +2451,14 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Offline, last sync: {0}</source>
           <target state="final" state-qualifier="mt-suggestion">Offline, última sincronização: {0}</target>
         </trans-unit>
+        <trans-unit id="AddClassTime_RemoveThisSchedule.Content" translate="yes" xml:space="preserve">
+          <source>Remove this schedule</source>
+          <target state="final" state-qualifier="mt-suggestion">Remova este cronograma</target>
+        </trans-unit>
+        <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
+          <source>add another time</source>
+          <target state="final" state-qualifier="mt-suggestion">adicionar outro tempo</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -2454,6 +2454,14 @@ Please think about using an online account instead!</source>
           <source>Offline, last sync: {0}</source>
           <target state="final">في وضع عدم الاتصال ، آخر مزامنة: {0}</target>
         </trans-unit>
+        <trans-unit id="AddClassTime_RemoveThisSchedule.Content" translate="yes" xml:space="preserve">
+          <source>Remove this schedule</source>
+          <target state="final">إزالة هذا الجدول الزمني</target>
+        </trans-unit>
+        <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
+          <source>add another time</source>
+          <target state="final">أضف وقتًا آخر</target>
+        </trans-unit>
       </group>
     </body>
   </file>
