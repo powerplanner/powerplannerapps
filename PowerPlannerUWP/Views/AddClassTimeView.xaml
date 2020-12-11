@@ -58,8 +58,8 @@
 
 
                 <Button
+                    x:Uid="AddClassTime_AddAnotherTime"
                     Style="{StaticResource AddItemStyle}"
-                    Content="add another time"
                     HorizontalAlignment="Stretch"
                     x:Name="buttonAddTime"
                     Click="buttonAddTime_Click"

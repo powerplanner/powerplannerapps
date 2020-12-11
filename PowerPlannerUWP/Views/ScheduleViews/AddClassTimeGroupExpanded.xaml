@@ -131,8 +131,8 @@
             Margin="1,0,0,0"/>
 
         <Button
+            x:Uid="AddClassTime_RemoveThisSchedule"
             x:Name="ButtonRemove"
-            Content="Remove this schedule"
             Margin="0,12,0,0"
             Click="ButtonRemove_Click"
             Visibility="{Binding HasOnlyOneGroup, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
