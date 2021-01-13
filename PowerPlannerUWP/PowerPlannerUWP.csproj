@@ -112,6 +112,9 @@
     <PRIResource Include="Strings\en-US\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
+    <PRIResource Include="Strings\fr\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -1135,5 +1138,6 @@
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.de.resx" DestinationFiles="Strings\de\Resources.resw" />
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.es.resx" DestinationFiles="Strings\es\Resources.resw" />
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.pt.resx" DestinationFiles="Strings\pt\Resources.resw" />
+    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.fr.resx" DestinationFiles="Strings\fr\Resources.resw" />
   </Target>
 </Project>
