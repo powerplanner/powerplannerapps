@@ -51,14 +51,26 @@ namespace PowerPlannerAndroid.Extensions
             catch { }
         }
 
-        public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null)
+        public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null, IDictionary<string, string> properties = null)
         {
             try
             {
-                Crashes.TrackError(ex, exceptionName == null ? null : new Dictionary<string, string>()
+                Dictionary<string, string> finalProps = new Dictionary<string, string>();
+
+                if (exceptionName != null)
                 {
-                    { "ExceptionName", exceptionName }
-                });
+                    finalProps["ExceptionName"] = exceptionName;
+                }
+
+                if (properties != null)
+                {
+                    foreach (var p in properties.Take(4))
+                    {
+                        finalProps[p.Key] = p.Value;
+                    }
+                }
+
+                Crashes.TrackError(ex, finalProps.Count == 0 ? null : finalProps);
             }
             catch { }
         }
