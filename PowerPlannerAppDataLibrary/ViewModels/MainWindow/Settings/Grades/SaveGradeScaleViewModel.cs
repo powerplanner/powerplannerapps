@@ -9,6 +9,7 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using BareMvvm.Core;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
@@ -22,10 +23,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             MainScreenViewModel = mainScreenViewModel;
             _parameter = parameter;
 
-            if (parameter.Name != null)
+            // Name must be filename safe
+            Name = new TextField(initialText: parameter.Name ?? "", required: true, maxLength: 50, inputValidator: new CustomInputValidator(ValidateName), ignoreOuterSpaces: true, reportValidatorInvalidInstantly: true);
+        }
+
+        private InputValidationState ValidateName(string name)
+        {
+            if (!StringTools.IsStringFilenameSafe(name))
             {
-                Name = parameter.Name;
+                var characters = name.ToCharArray().Distinct().ToArray();
+                var validSpecialChars = StringTools.VALID_SPECIAL_FILENAME_CHARS.ToArray();
+
+                var validCharacters = characters.Where(i => Char.IsLetterOrDigit(i) || validSpecialChars.Contains(i)).ToArray();
+                var invalidCharacters = characters.Except(validCharacters).ToArray();
+
+                try
+                {
+                    return InputValidationState.Invalid(CustomInputValidator.GetInvalidCharactersError(invalidCharacters));
+                }
+                catch
+                {
+                    return InputValidationState.Invalid("Invalid");
+                }
             }
+
+            return InputValidationState.Valid;
         }
 
         private Parameter _parameter;
@@ -39,18 +61,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             public Action OnSaved { get; set; }
         }
 
-        private string _name = "";
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
-        }
+        public TextField Name { get; private set; }
 
         public async void Save()
         {
             try
             {
-                string name = Name.Trim();
+                if (!ValidateAllInputs())
+                {
+                    return;
+                }
+
+                string name = Name.Text.Trim();
 
                 if (name.Length == 0)
                 {
