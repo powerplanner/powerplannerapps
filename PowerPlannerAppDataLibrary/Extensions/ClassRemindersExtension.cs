@@ -1,4 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,11 @@ namespace PowerPlannerAppDataLibrary.Extensions
                         // We don't need to worry about holding a lock though, if the collections change and that breaks us, that's fine,
                         // that implies that the data has been changed anyways and another ResetReminders will come in.
                         // Therefore we should also expect to get some exceptions here.
-                        scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, currSemesterId, trackChanges: false, includeWeightCategories: false);
+                        try
+                        {
+                            scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, currSemesterId, trackChanges: false, includeWeightCategories: false);
+                        }
+                        catch (SemesterNotFoundException) { /* Same as empty semester, continue so we clear */ }
                     }
 
                     ResetAllReminders(account, scheduleViewItemsGroup);
