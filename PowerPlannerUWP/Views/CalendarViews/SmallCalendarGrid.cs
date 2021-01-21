@@ -21,10 +21,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             if (semester == null)
                 return null;
 
-            if (!PowerPlannerSending.DateValues.IsUnassigned(semester.Start) && DisplayMonth.Date < DateTime.SpecifyKind(semester.Start.Date, DateTimeKind.Local))
-                return new DifferentSemesterOverlayControl();
-
-            if (!PowerPlannerSending.DateValues.IsUnassigned(semester.End) && DisplayMonth.Date > DateTime.SpecifyKind(semester.End.Date, DateTimeKind.Local))
+            if (!semester.IsMonthDuringThisSemester(DisplayMonth))
                 return new DifferentSemesterOverlayControl();
 
             return null;
