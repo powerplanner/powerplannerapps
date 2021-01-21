@@ -100,13 +100,13 @@
         <!-- Context Menu -->
         <Button.ContextFlyout>
             <MenuFlyout>
-                <MenuFlyoutItem Text="Edit" Click="ContextMenu_Edit_Click" />
-                <!--<MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate_Click"/>-->
-                <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete_Click"/>
+                <MenuFlyoutItem Text="Edit" Click="ContextMenu_Edit" />
+                <!--<MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate"/>-->
+                <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Convert Task/Event" Click="ContextMenu_ConvertType_Click"/>
+                <MenuFlyoutItem Text="Convert Task/Event" Click="ContextMenu_ConvertType"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Mark as Complete" Icon="Accept" Click="ContextMenu_ToggleComplete_Click">
+                <MenuFlyoutItem Text="Mark as Complete" Icon="Accept" Click="ContextMenu_ToggleComplete">
                     <!--<MenuFlyoutItem.Icon>
                         <SymbolIcon Symbol="CheckMark" />
                         <FontIcon glyph="&#xe73e;" />
