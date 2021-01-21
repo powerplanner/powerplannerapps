@@ -80,9 +80,11 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(GetCurrentItem());
         }
 
-        private void ContextMenu_MarkComplete_Click(object sender, RoutedEventArgs e)
+        private void ContextMenu_ToggleComplete_Click(object sender, RoutedEventArgs e)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(GetCurrentItem(), 1);
+            // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
+            double newPercentComplete = GetCurrentItem().PercentComplete == 0 ? 1 : 0;
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(GetCurrentItem(), newPercentComplete);
         }
 
         private void UpdateDisplayDetails()
