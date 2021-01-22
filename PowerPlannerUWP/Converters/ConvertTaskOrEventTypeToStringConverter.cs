@@ -9,7 +9,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 namespace PowerPlannerUWP.Converters
 {
     // This converter may be able to be simplified using the methods in ViewTaskOrEventViewModel
-    class ConvertTaskOrEventTypeConverter: IValueConverter
+    class ConvertTaskOrEventTypeToStringConverter: IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

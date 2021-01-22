@@ -139,7 +139,7 @@
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
     <Compile Include="Converters\CanBeUsedForWhatIfModeToFontWeightConverter.cs" />
-    <Compile Include="Converters\ConvertTaskOrEventTypeConverter.cs" />
+    <Compile Include="Converters\ConvertTaskOrEventTypeToStringConverter.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
     <Compile Include="Converters\DateToFriendlyShortDateConverter.cs" />
     <Compile Include="Converters\DayOfWeeksToStringConverter.cs" />

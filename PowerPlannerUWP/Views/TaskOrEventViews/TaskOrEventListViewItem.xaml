@@ -16,7 +16,7 @@
 
         <local:IsCompleteToTitleForegroundConverter x:Key="IsCompleteToTitleForegroundConverter"/>
         <localConverters:DateToFriendlyShortDateConverter x:Key="DateToFriendlyShortDateConverter"/>
-        <localConverters:ConvertTaskOrEventTypeConverter x:Key="ConvertTaskOrEventTypeConverter"/>
+        <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeConverter"/>
 
     </UserControl.Resources>
 
