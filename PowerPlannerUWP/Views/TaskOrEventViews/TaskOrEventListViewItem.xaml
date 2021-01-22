@@ -16,6 +16,7 @@
 
         <local:IsCompleteToTitleForegroundConverter x:Key="IsCompleteToTitleForegroundConverter"/>
         <localConverters:DateToFriendlyShortDateConverter x:Key="DateToFriendlyShortDateConverter"/>
+        <localConverters:ConvertTaskOrEventTypeConverter x:Key="ConvertTaskOrEventTypeConverter"/>
 
     </UserControl.Resources>
 
@@ -104,7 +105,7 @@
                 <!--<MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate"/>-->
                 <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Convert Task/Event" Click="ContextMenu_ConvertType"/>
+                <MenuFlyoutItem Text="{Binding Type, Converter={StaticResource ConvertTaskOrEventTypeConverter}}" Click="ContextMenu_ConvertType"/>
                 <MenuFlyoutSeparator/>
                 <MenuFlyoutItem Text="Mark as Complete" Icon="Accept" Click="ContextMenu_ToggleComplete">
                     <!--<MenuFlyoutItem.Icon>
