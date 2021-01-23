@@ -110,11 +110,12 @@
                 <MenuFlyoutSeparator/>
                 <!-- Convert Task/Event -->
                 <MenuFlyoutItem Text="{Binding Type, Converter={StaticResource ConvertTaskOrEventTypeToStringConverter}}" Click="ContextMenu_ConvertType"/>
-                <MenuFlyoutSeparator/>
+                <MenuFlyoutSeparator Visibility="{Binding IsTask, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <!-- Mark Complete/Incomplete -->
                 <MenuFlyoutItem
                     Text="{Binding PercentComplete, Converter={StaticResource ToggleCompleteToStringConverter}}"
                     Icon="{Binding IsComplete, Converter={StaticResource BoolToAcceptRejectIconConverter}, ConverterParameter=Invert}"
+                    Visibility="{Binding IsTask, Converter={StaticResource BoolToVisibilityConverter}}"
                     Click="ContextMenu_ToggleComplete"/>
             </MenuFlyout>
         </Button.ContextFlyout>
