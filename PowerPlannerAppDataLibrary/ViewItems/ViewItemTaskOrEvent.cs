@@ -112,6 +112,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
+        public bool IsTask
+        {
+            get => Type == TaskOrEventType.Task;
+        }
+        
+        public bool IsEvent
+        {
+            get => Type == TaskOrEventType.Event;
+        }
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);
