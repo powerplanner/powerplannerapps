@@ -16,7 +16,10 @@
 
         <local:IsCompleteToTitleForegroundConverter x:Key="IsCompleteToTitleForegroundConverter"/>
         <localConverters:DateToFriendlyShortDateConverter x:Key="DateToFriendlyShortDateConverter"/>
-        <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeConverter"/>
+        <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeToStringConverter"/>
+        <localConverters:ToggleCompleteToStringConverter x:Key="ToggleCompleteToStringConverter"/>
+        <localConverters:BoolToAcceptRejectIconConverter x:Key="BoolToAcceptRejectIconConverter"/>
+        <!--<localConverters:InvertBoolConverter x:Key="InvertBoolConverter"/>-->
 
     </UserControl.Resources>
 
@@ -105,14 +108,14 @@
                 <!--<MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate"/>-->
                 <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="{Binding Type, Converter={StaticResource ConvertTaskOrEventTypeConverter}}" Click="ContextMenu_ConvertType"/>
+                <!-- Convert Task/Event -->
+                <MenuFlyoutItem Text="{Binding Type, Converter={StaticResource ConvertTaskOrEventTypeToStringConverter}}" Click="ContextMenu_ConvertType"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Mark as Complete" Icon="Accept" Click="ContextMenu_ToggleComplete">
-                    <!--<MenuFlyoutItem.Icon>
-                        <SymbolIcon Symbol="CheckMark" />
-                        <FontIcon glyph="&#xe73e;" />
-                    </MenuFlyoutItem.Icon>-->
-                </MenuFlyoutItem>
+                <!-- Mark Complete/Incomplete -->
+                <MenuFlyoutItem
+                    Text="{Binding PercentComplete, Converter={StaticResource ToggleCompleteToStringConverter}}"
+                    Icon="{Binding IsComplete, Converter={StaticResource BoolToAcceptRejectIconConverter}, ConverterParameter=Invert}"
+                    Click="ContextMenu_ToggleComplete"/>
             </MenuFlyout>
         </Button.ContextFlyout>
         
