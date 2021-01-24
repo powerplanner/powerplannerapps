@@ -105,7 +105,7 @@
         <Button.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem Text="Edit" Click="ContextMenu_Edit" />
-                <!--<MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate"/>-->
+                <MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate"/>
                 <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete"/>
                 <MenuFlyoutSeparator/>
                 <!-- Convert Task/Event -->

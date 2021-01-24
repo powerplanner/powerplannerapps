@@ -64,15 +64,15 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         {
             PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(GetCurrentItem());
         }
-        
-        //private void ContextMenu_Duplicate_Click(object sender, RoutedEventArgs e)
-        //{
-        //    PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(GetCurrentItem());
-        //}
-        
+
+        private void ContextMenu_Duplicate(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(_currItem);
+        }
+
         private void ContextMenu_Delete(object sender, RoutedEventArgs e)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(GetCurrentItem());
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_currItem);
         }
         
         private void ContextMenu_ConvertType(object sender, RoutedEventArgs e)
