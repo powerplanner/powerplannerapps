@@ -27,6 +27,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -1113,6 +1114,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             {
                 Item = item
             }));
+        }
+
+        /// /// <summary>
+        /// Duplicates a Task or Event
+        /// </summary>
+        /// <param name="item">The task or event being duplicated</param>
+        /// <param name="date">The date the task or event should be copied to. Defaults to same date as item</param>
+        public void DuplicateTaskOrEvent(ViewItemTaskOrEvent item, DateTime? date = null)
+        {
+            DataChanges changes = new DataChanges();
+
+            DataItemMegaItem copiedDataItem = (DataItemMegaItem)item.DataItem.Clone();
+            copiedDataItem.Identifier = Guid.NewGuid();     // Create new Guid
+            copiedDataItem.DateCreated = DateTime.UtcNow;   // The copy was created now
+            copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
+
+            changes.Add(copiedDataItem);
+
+            PowerPlannerApp.Current.SaveChanges(changes);
         }
 
         public void ConvertTaskOrEventType(ViewItemTaskOrEvent item)

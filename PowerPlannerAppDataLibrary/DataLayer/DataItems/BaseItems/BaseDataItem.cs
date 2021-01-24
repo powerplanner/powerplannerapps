@@ -82,6 +82,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             return Identifier == Guid.Empty;
         }
 
+        public BaseDataItem Clone()
+        {
+            return (BaseDataItem)this.MemberwiseClone();
+        }
+
         private static Dictionary<Type, DataItemProperty[]> _cachedProperties = new Dictionary<Type, DataItemProperty[]>();
         
         internal DataItemProperty[] GetProperties()
