@@ -1908,4 +1908,10 @@ Please think about using an online account instead!</value>
   <data name="String_Complete" xml:space="preserve">
     <value>Complete</value>
   </data>
+  <data name="String_ConfirmDeleteItemHeader" xml:space="preserve">
+    <value>Delete item?</value>
+  </data>
+  <data name="String_ConfirmDeleteItemMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this item?</value>
+  </data>
 </root>
