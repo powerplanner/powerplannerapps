@@ -24,6 +24,7 @@
     </UserControl.Resources>
 
     <Button
+        x:Name="Button"
         Style="{ThemeResource ItemContainerStyle}"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"

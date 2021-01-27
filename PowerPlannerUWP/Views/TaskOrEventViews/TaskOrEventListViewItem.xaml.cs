@@ -72,7 +72,9 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
         private void ContextMenu_Delete(object sender, RoutedEventArgs e)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_currItem);
+            PopupMenuConfirmDelete.Show(Button, delegate { 
+                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_currItem); 
+            });
         }
         
         private void ContextMenu_ConvertType(object sender, RoutedEventArgs e)
