@@ -70,13 +70,14 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(_currItem);
         }
 
-        private void ContextMenu_Delete(object sender, RoutedEventArgs e)
+        private async void ContextMenu_Delete(object sender, RoutedEventArgs e)
         {
-            PopupMenuConfirmDelete.Show(Button, delegate { 
-                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_currItem); 
-            });
+            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteItemMessage"), LocalizedResources.GetString("String_ConfirmDeleteItemHeader")))
+            {
+                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_currItem);
+            }
         }
-        
+
         private void ContextMenu_ConvertType(object sender, RoutedEventArgs e)
         {
             PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(GetCurrentItem());
