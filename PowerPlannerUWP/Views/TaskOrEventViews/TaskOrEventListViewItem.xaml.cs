@@ -86,7 +86,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         private void ContextMenu_ToggleComplete(object sender, RoutedEventArgs e)
         {
             // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
-            double newPercentComplete = GetCurrentItem().PercentComplete == 0 ? 1 : 0;
+            double newPercentComplete = GetCurrentItem().PercentComplete < 1 ? 1 : 0;
             PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(GetCurrentItem(), newPercentComplete);
         }
 
