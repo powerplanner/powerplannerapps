@@ -156,5 +156,12 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                 RunSubtitlePartTwo.Text = _currItem.GetType().GetProperty("SubtitleDueTime").GetValue(_currItem) as string;
             }
         }
+
+        private List<string> testItems { get; } = new List<string>{ "1", "2", "3" };
+
+        private List<MenuFlyoutItem> GradeWeightCategories
+        {
+            get => (List<MenuFlyoutItem>)(from item in testItems select new MenuFlyoutItem { Text = item });
+        }
     }
 }

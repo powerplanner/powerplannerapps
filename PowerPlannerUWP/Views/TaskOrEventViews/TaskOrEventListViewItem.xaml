@@ -19,7 +19,7 @@
         <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeToStringConverter"/>
         <localConverters:ToggleCompleteToStringConverter x:Key="ToggleCompleteToStringConverter"/>
         <localConverters:BoolToAcceptRejectIconConverter x:Key="BoolToAcceptRejectIconConverter"/>
-        <!--<localConverters:InvertBoolConverter x:Key="InvertBoolConverter"/>-->
+        <localConverters:ClassToGradeWeightFlyoutItemListConverter x:Key="ClassToGradeWeightFlyoutItemListConverter"/>
 
     </UserControl.Resources>
 
@@ -107,6 +107,13 @@
                 <MenuFlyoutItem Text="Edit" Click="ContextMenu_Edit" />
                 <MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate"/>
                 <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete"/>
+                <MenuFlyoutSeparator/>
+                <!-- Change grading category -->
+                <MenuFlyoutSubItem
+                    x:Name="GradeCategoryFlyout"
+                    Text="Grade Weight Category"
+                    local:MenuExtension.MyItems="{Binding Class, Converter={StaticResource ClassToGradeWeightFlyoutItemListConverter}}"
+                    />
                 <MenuFlyoutSeparator/>
                 <!-- Convert Task/Event -->
                 <MenuFlyoutItem Text="{Binding Type, Converter={StaticResource ConvertTaskOrEventTypeToStringConverter}}" Click="ContextMenu_ConvertType"/>

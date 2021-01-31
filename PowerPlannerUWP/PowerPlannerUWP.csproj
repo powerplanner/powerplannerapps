@@ -158,6 +158,8 @@
     <Compile Include="Converters\IsPastCompletedTasksDisplayedToButtonContentConverter.cs" />
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
+    <Compile Include="Converters\ClassToGradeWeightFlyoutItemListConverter.cs" />
+    <Compile Include="Views\TaskOrEventViews\MenuExtension.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
     <Compile Include="Converters\PercentCompleteToToolTipValueConverter.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="TileHelpers\ScheduleTileHelper.cs" />
     <Compile Include="TileHelpers\TileHelper.cs" />
     <Compile Include="ViewModel\MainWindow\MainScreen\Schedule\ExportSchedulePopupViewModel.cs" />
+    <Compile Include="ViewModel\MainWindow\MainScreen\TaskOrEvents\TaskOrEventListViewItemViewModel.cs" />
     <Compile Include="ViewModel\Promos\PromoOtherPlatformsViewModel.cs" />
     <Compile Include="ViewModel\Settings\ClassTilesPagedHostViewModel.cs" />
     <Compile Include="ViewModel\Settings\ScheduleTileViewModel.cs" />
