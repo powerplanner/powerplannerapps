@@ -19,7 +19,6 @@
         <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeToStringConverter"/>
         <localConverters:ToggleCompleteToStringConverter x:Key="ToggleCompleteToStringConverter"/>
         <localConverters:BoolToAcceptRejectIconConverter x:Key="BoolToAcceptRejectIconConverter"/>
-        <!--<localConverters:InvertBoolConverter x:Key="InvertBoolConverter"/>-->
 
     </UserControl.Resources>
 
