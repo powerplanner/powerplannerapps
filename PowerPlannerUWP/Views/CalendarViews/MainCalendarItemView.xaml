@@ -17,7 +17,6 @@
         <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeToStringConverter"/>
         <localConverters:ToggleCompleteToStringConverter x:Key="ToggleCompleteToStringConverter"/>
         <localConverters:BoolToAcceptRejectIconConverter x:Key="BoolToAcceptRejectIconConverter"/>
-        <!--<localConverters:InvertBoolConverter x:Key="InvertBoolConverter"/>-->
 
     </UserControl.Resources>
 
@@ -78,6 +77,9 @@
                         Icon="{Binding IsComplete, Converter={StaticResource BoolToAcceptRejectIconConverter}, ConverterParameter=Invert}"
                         Visibility="{Binding IsTask, Converter={StaticResource BoolToVisibilityConverter}}"
                         Click="ContextMenu_ToggleComplete"/>
+                <MenuFlyoutSeparator/>
+                <!-- View Task/Event in class -->
+                <MenuFlyoutItem Text="Go To Class" Click="ContextMenu_GoToClass"/>
             </MenuFlyout>
         </Grid.ContextFlyout>
 

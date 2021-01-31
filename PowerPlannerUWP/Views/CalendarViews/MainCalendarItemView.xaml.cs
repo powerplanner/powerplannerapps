@@ -1,6 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -82,6 +83,17 @@ namespace PowerPlannerUWP.Views.CalendarViews
             // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
             double newPercentComplete = Item.PercentComplete < 1 ? 1 : 0;
             PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(Item, newPercentComplete);
+        }
+
+        private void ContextMenu_GoToClass(object sender, RoutedEventArgs e)
+        {
+            // Get initial page (if it's a task/event, go to that page)
+            ClassViewModel.ClassPages? initialPage = null;
+            if (Item.IsTask) initialPage = ClassViewModel.ClassPages.Tasks;
+            else if (Item.IsTask) initialPage = ClassViewModel.ClassPages.Events;
+
+            // Navigate to class
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.ViewClass(Item.Class, initialPage);
         }
 
         public string TelemetryOnClickEventName { get; set; }
