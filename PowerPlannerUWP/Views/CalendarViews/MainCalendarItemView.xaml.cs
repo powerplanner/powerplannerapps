@@ -54,6 +54,36 @@ namespace PowerPlannerUWP.Views.CalendarViews
             }
         }
 
+        private void ContextMenu_Edit(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(Item);
+        }
+
+        private void ContextMenu_Duplicate(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(Item);
+        }
+
+        private async void ContextMenu_Delete(object sender, RoutedEventArgs e)
+        {
+            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteItemMessage"), LocalizedResources.GetString("String_ConfirmDeleteItemHeader")))
+            {
+                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(Item);
+            }
+        }
+
+        private void ContextMenu_ConvertType(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(Item);
+        }
+
+        private void ContextMenu_ToggleComplete(object sender, RoutedEventArgs e)
+        {
+            // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
+            double newPercentComplete = Item.PercentComplete == 0 ? 1 : 0;
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(Item, newPercentComplete);
+        }
+
         public string TelemetryOnClickEventName { get; set; }
     }
 }
