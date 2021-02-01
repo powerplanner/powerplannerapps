@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PowerPlannerUWP.Views.TaskOrEventViews"
     xmlns:localConverters="using:PowerPlannerUWP.Converters"
+    xmlns:localHelpers="using:PowerPlannerUWP.Helpers"
     xmlns:interfaces="using:InterfacesUWP"
     xmlns:interfacesControls="using:InterfacesUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -111,7 +112,7 @@
                 <MenuFlyoutSubItem
                     x:Name="GradeCategoryFlyout"
                     Text="Grade Weight Category"
-                    local:RadioMenuFlyoutItemExtension.MyItems="{x:Bind localConverters:ClassToGradeWeightFlyoutItemListConverter.GetMenuItems(_currItem)}"
+                    local:RadioMenuFlyoutItemExtension.MyItems="{x:Bind localHelpers:GradeWeightsAsFlyoutItemHelper.GetMenuItems(_currItem)}"
                     />
                 <MenuFlyoutSeparator/>
                 <!-- Convert Task/Event -->

@@ -12,9 +12,9 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.App;
 
-namespace PowerPlannerUWP.Converters
+namespace PowerPlannerUWP.Helpers
 {
-    static class ClassToGradeWeightFlyoutItemListConverter
+    static class GradeWeightsAsFlyoutItemHelper
     {
         // This is so incredibly janky...
         public static List<RadioMenuFlyoutItem> GetMenuItems(ViewItemTaskOrEvent item)
