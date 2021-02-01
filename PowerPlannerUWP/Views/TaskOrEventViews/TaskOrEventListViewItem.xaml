@@ -112,7 +112,7 @@
                 <MenuFlyoutSubItem
                     x:Name="GradeCategoryFlyout"
                     Text="Grade Weight Category"
-                    local:MenuExtension.MyItems="{Binding Class, Converter={StaticResource ClassToGradeWeightFlyoutItemListConverter}}"
+                    local:MenuFlyoutItemExtension.MyItems="{Binding Class, Converter={StaticResource ClassToGradeWeightFlyoutItemListConverter}}"
                     />
                 <MenuFlyoutSeparator/>
                 <!-- Convert Task/Event -->
