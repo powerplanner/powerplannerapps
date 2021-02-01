@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Controls;
+using Windows.UI.Xaml;
 
 namespace PowerPlannerUWP.Converters
 {
@@ -15,15 +16,31 @@ namespace PowerPlannerUWP.Converters
         // This is so incredibly janky...
         public static List<RadioMenuFlyoutItem> GetMenuItems(ViewItemTaskOrEvent item)
         {
+            // Set the new grade weight of item
+            Action<object, RoutedEventArgs> setNewGradeWeight(ViewItemWeightCategory newWeight) 
+            {
+                return delegate (object sender, RoutedEventArgs e)
+                {
+                    item.WeightCategory = newWeight; 
+                };
+            };
 
-            var gradeWeightFlyout = (from weight in GetWeightCategories(item.Class)
-                                     select new RadioMenuFlyoutItem {
-                                         Text = weight.Name, 
-                                         GroupName = "GradeWeightCategories", 
-                                         IsChecked = weight.Identifier == item.WeightCategory.Identifier
-                                     }).ToList();
+            // Map grade weight categories to RadioMenuFlyoutItems
+            return  GetWeightCategories(item.Class)
+                    .Select(weight =>
+                        {
+                            var flyout = new RadioMenuFlyoutItem
+                            {
+                                Text = weight.Name,
+                                GroupName = "GradeWeightCategories",
+                                IsChecked = weight.Identifier == item.WeightCategory.Identifier,
+                            };
 
-            return gradeWeightFlyout;
+                            flyout.Click += new RoutedEventHandler(setNewGradeWeight(weight));
+
+                            return flyout;
+                        }
+                    ).ToList();
         }
 
         // From AddTaskOrEventViewModel. May be able to clean up with a reference
