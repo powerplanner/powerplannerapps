@@ -8,6 +8,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
+using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.App;
 
 namespace PowerPlannerUWP.Converters
 {
@@ -17,11 +20,18 @@ namespace PowerPlannerUWP.Converters
         public static List<RadioMenuFlyoutItem> GetMenuItems(ViewItemTaskOrEvent item)
         {
             // Set the new grade weight of item
-            Action<object, RoutedEventArgs> setNewGradeWeight(ViewItemWeightCategory newWeight) 
+            Action<object, RoutedEventArgs> setNewGradeWeight(ViewItemWeightCategory newWeightCategory) 
             {
                 return delegate (object sender, RoutedEventArgs e)
                 {
-                    item.WeightCategory = newWeight; 
+                    DataChanges changes = new DataChanges();
+
+                    var dataItem = (DataItemMegaItem)item.DataItem;
+                    dataItem.WeightCategoryIdentifier = newWeightCategory.Identifier;
+
+                    changes.Add(dataItem);
+
+                    PowerPlannerApp.Current.SaveChanges(changes);
                 };
             };
 
