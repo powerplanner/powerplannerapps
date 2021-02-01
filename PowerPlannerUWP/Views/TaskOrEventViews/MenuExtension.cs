@@ -12,7 +12,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 {
     // From: https://stackoverflow.com/a/33841544/3721066
     // TODO: Implement as generic (somehow)
-    public static class MenuFlyoutExtension
+    public static class MenuFlyoutItemExtension
     {
         public static List<MenuFlyoutItem> GetMyItems(DependencyObject obj)
         { return (List<MenuFlyoutItem>)obj.GetValue(MyItemsProperty); }
@@ -21,7 +21,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         { obj.SetValue(MyItemsProperty, value); }
 
         public static readonly DependencyProperty MyItemsProperty =
-            DependencyProperty.Register("MyItems", typeof(List<MenuFlyoutItem>), typeof(MenuFlyoutExtension),
+            DependencyProperty.Register("MyItems", typeof(List<MenuFlyoutItem>), typeof(MenuFlyoutItemExtension),
             new PropertyMetadata(new List<MenuFlyoutItem>(), (sender, e) =>
             {
                 Debug.WriteLine("Filling collection");
@@ -31,7 +31,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             }));
     }
     
-    public static class RadioMenuFlyoutExtension
+    public static class RadioMenuFlyoutItemExtension
     {
         public static List<RadioMenuFlyoutItem> GetMyItems(DependencyObject obj)
         { return (List<RadioMenuFlyoutItem>)obj.GetValue(MyItemsProperty); }
@@ -40,7 +40,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         { obj.SetValue(MyItemsProperty, value); }
 
         public static readonly DependencyProperty MyItemsProperty =
-            DependencyProperty.Register("MyItems", typeof(List<RadioMenuFlyoutItem>), typeof(RadioMenuFlyoutExtension),
+            DependencyProperty.Register("MyItems", typeof(List<RadioMenuFlyoutItem>), typeof(RadioMenuFlyoutItemExtension),
             new PropertyMetadata(new List<RadioMenuFlyoutItem>(), (sender, e) =>
             {
                 Debug.WriteLine("Filling collection");
