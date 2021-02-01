@@ -19,7 +19,6 @@
         <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeToStringConverter"/>
         <localConverters:ToggleCompleteToStringConverter x:Key="ToggleCompleteToStringConverter"/>
         <localConverters:BoolToAcceptRejectIconConverter x:Key="BoolToAcceptRejectIconConverter"/>
-        <localConverters:ClassToGradeWeightFlyoutItemListConverter x:Key="ClassToGradeWeightFlyoutItemListConverter"/>
 
     </UserControl.Resources>
 
@@ -112,7 +111,7 @@
                 <MenuFlyoutSubItem
                     x:Name="GradeCategoryFlyout"
                     Text="Grade Weight Category"
-                    local:MenuFlyoutItemExtension.MyItems="{Binding Class, Converter={StaticResource ClassToGradeWeightFlyoutItemListConverter}}"
+                    local:RadioMenuFlyoutItemExtension.MyItems="{x:Bind localConverters:ClassToGradeWeightFlyoutItemListConverter.GetMenuItems(_currItem)}"
                     />
                 <MenuFlyoutSeparator/>
                 <!-- Convert Task/Event -->

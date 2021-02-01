@@ -10,37 +10,24 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace PowerPlannerUWP.Converters
 {
-    class ClassToGradeWeightFlyoutItemListConverter : IValueConverter
+    static class ClassToGradeWeightFlyoutItemListConverter
     {
         // This is so incredibly janky...
-        public object Convert(object value, Type targetType, object parameter, string language)
+        public static List<RadioMenuFlyoutItem> GetMenuItems(ViewItemTaskOrEvent item)
         {
-            // Make sure we have the right types
-            if (!(value is ViewItemClass Class))
-                throw new ArgumentException("'value' is not of type ViewItemClass");
 
-            var weightCategories = GetWeightCategories(Class);
-            //var currentWeightCategory = 
-
-            // value (ViewItemClass)
-            // parameter ()
-            var gradeWeightFlyout = (from weight in weightCategories
-                                                     select new MenuFlyoutItem
-                                                     {
-                                                         Text=weight.Name
-                                                         //GroupName="GradeWeightCategories"
-                                                     }).ToList();
+            var gradeWeightFlyout = (from weight in GetWeightCategories(item.Class)
+                                     select new RadioMenuFlyoutItem {
+                                         Text = weight.Name, 
+                                         GroupName = "GradeWeightCategories", 
+                                         IsChecked = weight.Identifier == item.WeightCategory.Identifier
+                                     }).ToList();
 
             return gradeWeightFlyout;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
-
         // From AddTaskOrEventViewModel. May be able to clean up with a reference
-        private ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c)
+        private static ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c)
         {
             if (c.WeightCategories == null)
             {
