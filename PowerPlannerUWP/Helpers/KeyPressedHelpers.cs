@@ -20,5 +20,14 @@ namespace PowerPlannerUWP.Helpers
             var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);
             return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
+        
+        /// Is the "Shift" key pressed (held down)?
+        /// </summary>
+        /// <returns>True if Shift key is held down</returns>
+        public static bool IsShiftKeyPressed()
+        {
+            var shiftState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift);
+            return (shiftState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
+        }
     }
 }
