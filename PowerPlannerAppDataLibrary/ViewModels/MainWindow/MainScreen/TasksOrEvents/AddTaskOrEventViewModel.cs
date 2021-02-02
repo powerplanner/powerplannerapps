@@ -954,10 +954,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 TryStartDataOperationAndThenNavigate(async delegate
                 {
-                    if (!repeating)
+                    string[] updatedImageNames = await SaveImageAttachmentsAsync();
+                    if (updatedImageNames != null)
                     {
-                        string[] updatedImageNames = await SaveImageAttachmentsAsync();
-                        if (updatedImageNames != null)
+                        if (bulkEntry != null && bulkEntry.Count > 0)
+                        {
+                            foreach (var e in bulkEntry)
+                            {
+                                e.ImageNames = updatedImageNames;
+                            }
+                        }
+                        else
                         {
                             dataItem.ImageNames = updatedImageNames;
                         }
