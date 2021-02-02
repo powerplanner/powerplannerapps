@@ -25,6 +25,9 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerUWP.Controls;
+using Windows.UI.Core;
+using Windows.System;
+using PowerPlannerUWP.Helpers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -183,6 +186,19 @@ namespace PowerPlannerUWP.Views
         private async void EditImages_RequestedAddImage(object sender, EventArgs e)
         {
             await ViewModel.AddNewImageAttachmentAsync();
+        }
+
+        private void Popup_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (KeyPressedHelpers.IsCtrlKeyPressed())
+            {
+                // Ctrl+Enter or Ctrl+S will save the popup
+                if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.S)
+                {
+                    e.Handled = true;
+                    Save();
+                }
+            }
         }
     }
 }
