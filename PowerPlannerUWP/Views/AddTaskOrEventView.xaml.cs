@@ -27,6 +27,7 @@ using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerUWP.Controls;
 using Windows.UI.Core;
 using Windows.System;
+using PowerPlannerUWP.Helpers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -187,16 +188,9 @@ namespace PowerPlannerUWP.Views
             await ViewModel.AddNewImageAttachmentAsync();
         }
 
-        // From: https://docs.microsoft.com/en-us/windows/uwp/design/input/keyboard-events#shortcut-keys-example
-        private static bool IsCtrlKeyPressed()
-        {
-            var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);
-            return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
-        }
-
         private void Popup_KeyUp(object sender, KeyRoutedEventArgs e)
         {
-            if (IsCtrlKeyPressed())
+            if (KeyPressedHelpers.IsCtrlKeyPressed())
             {
                 // Ctrl+Enter or Ctrl+S will save the popup
                 if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.S)
