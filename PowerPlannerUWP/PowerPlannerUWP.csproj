@@ -182,6 +182,7 @@
     <Compile Include="Extensions\UWPTelemetryExtension.cs" />
     <Compile Include="Extensions\UWPTilesExtension.cs" />
     <Compile Include="Helpers\DataPackageHelpers.cs" />
+    <Compile Include="Helpers\KeyPressedHelpers.cs" />
     <Compile Include="Helpers\QueryStringHelper.cs" />
     <Compile Include="Helpers\UWPExceptionHelper.cs" />
     <Compile Include="Helpers\UWPNotificationsHelper.cs" />
