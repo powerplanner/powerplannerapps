@@ -27,7 +27,8 @@
         Style="{ThemeResource ItemContainerStyle}"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
-        Click="Button_Click">
+        Click="Button_Click"
+        ContextRequested="Button_ContextRequested">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -101,31 +102,5 @@
 
         </Grid>
 
-        <!-- Context Menu -->
-        <Button.ContextFlyout>
-            <MenuFlyout>
-                <MenuFlyoutItem Text="Edit" Click="ContextMenu_Edit" />
-                <MenuFlyoutItem Text="Duplicate" Icon="Copy" Click="ContextMenu_Duplicate"/>
-                <MenuFlyoutItem Text="Delete" Icon="Delete" Click="ContextMenu_Delete"/>
-                <MenuFlyoutSeparator/>
-                <!-- Change grading category -->
-                <MenuFlyoutSubItem
-                    x:Name="GradeCategoryFlyout"
-                    Text="Grade Weight Category"
-                    local:RadioMenuFlyoutItemExtension.MyItems="{x:Bind localHelpers:GradeWeightsAsFlyoutItemHelper.GetMenuItems(_currItem)}"
-                    />
-                <MenuFlyoutSeparator/>
-                <!-- Convert Task/Event -->
-                <MenuFlyoutItem Text="{Binding Type, Converter={StaticResource ConvertTaskOrEventTypeToStringConverter}}" Click="ContextMenu_ConvertType"/>
-                <MenuFlyoutSeparator Visibility="{Binding IsTask, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <!-- Mark Complete/Incomplete -->
-                <MenuFlyoutItem
-                    Text="{Binding PercentComplete, Converter={StaticResource ToggleCompleteToStringConverter}}"
-                    Icon="{Binding IsComplete, Converter={StaticResource BoolToAcceptRejectIconConverter}, ConverterParameter=Invert}"
-                    Visibility="{Binding IsTask, Converter={StaticResource BoolToVisibilityConverter}}"
-                    Click="ContextMenu_ToggleComplete"/>
-            </MenuFlyout>
-        </Button.ContextFlyout>
-        
     </Button>
 </UserControl>
