@@ -11,42 +11,22 @@ using Windows.UI.Xaml.Controls;
 namespace PowerPlannerUWP.Views.TaskOrEventViews
 {
     // From: https://stackoverflow.com/a/33841544/3721066
-    // TODO: Implement as generic (somehow)
-    public static class MenuFlyoutItemExtension
+    public static class MenuFlyoutItemExtension<T> where T : MenuFlyoutItemBase
     {
-        public static List<MenuFlyoutItem> GetMyItems(DependencyObject obj)
-        { return (List<MenuFlyoutItem>)obj.GetValue(MyItemsProperty); }
+        public static List<T> GetMyItems(DependencyObject obj)
+        { return (List<T>)obj.GetValue(MyItemsProperty); }
 
-        public static void SetMyItems(DependencyObject obj, List<MenuFlyoutItem> value)
+        public static void SetMyItems(DependencyObject obj, List<T> value)
         { obj.SetValue(MyItemsProperty, value); }
 
         public static readonly DependencyProperty MyItemsProperty =
-            DependencyProperty.Register("MyItems", typeof(List<MenuFlyoutItem>), typeof(MenuFlyoutItemExtension),
-            new PropertyMetadata(new List<MenuFlyoutItem>(), (sender, e) =>
+            DependencyProperty.Register("MyItems", typeof(List<T>), typeof(MenuFlyoutItemExtension<T>),
+            new PropertyMetadata(new List<T>(), (sender, e) =>
             {
                 Debug.WriteLine("Filling collection");
                 var menu = sender as MenuFlyoutSubItem;
                 menu.Items.Clear();
-                foreach (var item in e.NewValue as List<MenuFlyoutItem>) menu.Items.Add(item);
-            }));
-    }
-    
-    public static class RadioMenuFlyoutItemExtension
-    {
-        public static List<RadioMenuFlyoutItem> GetMyItems(DependencyObject obj)
-        { return (List<RadioMenuFlyoutItem>)obj.GetValue(MyItemsProperty); }
-
-        public static void SetMyItems(DependencyObject obj, List<RadioMenuFlyoutItem> value)
-        { obj.SetValue(MyItemsProperty, value); }
-
-        public static readonly DependencyProperty MyItemsProperty =
-            DependencyProperty.Register("MyItems", typeof(List<RadioMenuFlyoutItem>), typeof(RadioMenuFlyoutItemExtension),
-            new PropertyMetadata(new List<RadioMenuFlyoutItem>(), (sender, e) =>
-            {
-                Debug.WriteLine("Filling collection");
-                var menu = sender as MenuFlyoutSubItem;
-                menu.Items.Clear();
-                foreach (var item in e.NewValue as List<RadioMenuFlyoutItem>) menu.Items.Add(item);
+                foreach (var item in e.NewValue as List<T>) menu.Items.Add(item);
             }));
     }
 }
