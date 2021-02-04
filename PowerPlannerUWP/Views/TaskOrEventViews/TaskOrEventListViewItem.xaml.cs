@@ -163,5 +163,33 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         {
             get => (List<MenuFlyoutItem>)(from item in testItems select new MenuFlyoutItem { Text = item });
         }
+
+        private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            // Dynamically create the context menu upon request
+            // (This is to improve performance of large lists, so that
+            // a context menu and all bindings aren't created until actually requested)
+            MenuFlyout flyout = new MenuFlyout();
+            flyout.Items.Add(new MenuFlyoutItem()
+            {
+                Icon = new FontIcon() { Glyph = "\uEC4F" },
+                Text = "Now Playing"
+            });
+            flyout.Items.Add(new MenuFlyoutSeparator());
+            flyout.Items.Add(new MenuFlyoutItem()
+            {
+                Icon = new SymbolIcon(Symbol.Add),
+                Text = "New Playlist"
+            });
+
+            if (args.TryGetPosition(sender, out Point point))
+            {
+                flyout.ShowAt(sender as FrameworkElement, point);
+            }
+            else
+            {
+                flyout.ShowAt(sender as FrameworkElement);
+            }
+        }
     }
 }
