@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PowerPlannerUWP.Views.TaskOrEventViews"
     xmlns:localConverters="using:PowerPlannerUWP.Converters"
-    xmlns:localHelpers="using:PowerPlannerUWP.Helpers"
     xmlns:interfaces="using:InterfacesUWP"
     xmlns:interfacesControls="using:InterfacesUWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,9 +16,6 @@
 
         <local:IsCompleteToTitleForegroundConverter x:Key="IsCompleteToTitleForegroundConverter"/>
         <localConverters:DateToFriendlyShortDateConverter x:Key="DateToFriendlyShortDateConverter"/>
-        <localConverters:ConvertTaskOrEventTypeToStringConverter x:Key="ConvertTaskOrEventTypeToStringConverter"/>
-        <localConverters:ToggleCompleteToStringConverter x:Key="ToggleCompleteToStringConverter"/>
-        <localConverters:BoolToAcceptRejectIconConverter x:Key="BoolToAcceptRejectIconConverter"/>
 
     </UserControl.Resources>
 
