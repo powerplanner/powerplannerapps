@@ -1,5 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerUWP.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -170,18 +171,66 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             // (This is to improve performance of large lists, so that
             // a context menu and all bindings aren't created until actually requested)
             MenuFlyout flyout = new MenuFlyout();
-            flyout.Items.Add(new MenuFlyoutItem()
-            {
-                Icon = new FontIcon() { Glyph = "\uEC4F" },
-                Text = "Now Playing"
-            });
-            flyout.Items.Add(new MenuFlyoutSeparator());
-            flyout.Items.Add(new MenuFlyoutItem()
-            {
-                Icon = new SymbolIcon(Symbol.Add),
-                Text = "New Playlist"
-            });
 
+            // We cannot add items with `Click` bindings directly to `flyout`
+            // because the `Click` property cannot be assigned but is rather appended to
+            var editItem = new MenuFlyoutItem()
+            {
+                Text = "Edit"
+            };
+            editItem.Click += ContextMenu_Edit;
+            flyout.Items.Add(editItem);
+            
+            var duplicateItem = new MenuFlyoutItem()
+            {
+                Text = "Duplicate",
+                Icon = new SymbolIcon(Symbol.Copy)
+            };
+            duplicateItem.Click += ContextMenu_Duplicate;
+            flyout.Items.Add(duplicateItem);
+            
+            var deleteItem = new MenuFlyoutItem()
+            {
+                Text = "Delete",
+                Icon = new SymbolIcon(Symbol.Delete)
+            };
+            deleteItem.Click += ContextMenu_Delete;
+            flyout.Items.Add(deleteItem);
+            
+            flyout.Items.Add(new MenuFlyoutSeparator());
+
+            var gradeWeightFlyout = new MenuFlyoutSubItem
+            {
+                Text = "Grade Weight Category",
+            };
+            
+            // Populate flyout subitem
+            foreach (var item in GradeWeightsAsFlyoutItemHelper.GetMenuItems(_currItem)) { gradeWeightFlyout.Items.Add(item); };
+            flyout.Items.Add(gradeWeightFlyout);
+
+            flyout.Items.Add(new MenuFlyoutSeparator());
+
+            var convertTypeItem = new MenuFlyoutItem
+            {
+                Text = "Convert Type"
+            };
+            convertTypeItem.Click += ContextMenu_ConvertType;
+            flyout.Items.Add(convertTypeItem);
+
+            // Only show "Toggle Complete" item if it's a task
+            if (_currItem.IsTask)
+            {
+                flyout.Items.Add(new MenuFlyoutSeparator());
+
+                var toggleCompleteItem = new MenuFlyoutItem
+                {
+                    Text = "Mark Complete"
+                };
+                toggleCompleteItem.Click += ContextMenu_ToggleComplete;
+                flyout.Items.Add(toggleCompleteItem);
+            }
+            
+            // Show context flyout
             if (args.TryGetPosition(sender, out Point point))
             {
                 flyout.ShowAt(sender as FrameworkElement, point);
