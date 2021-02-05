@@ -113,9 +113,7 @@ namespace PowerPlannerUWP.Helpers
             foreach (var weight in GetGradeWeightItems(_item)) { gradeWeightFlyout.Items.Add(weight); };
             flyout.Items.Add(gradeWeightFlyout);
 
-            flyout.Items.Add(new MenuFlyoutSeparator());
-
-            /* Convert Task/Event*/
+            /* Convert Task/Event */
             var convertTypeItem = new MenuFlyoutItem
             {
                 Text = !_item.IsTask ? LocalizedResources.GetString("String_ConvertToTask") : LocalizedResources.GetString("String_ConvertToEvent")
