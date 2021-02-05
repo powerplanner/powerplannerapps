@@ -14,10 +14,117 @@ using PowerPlannerAppDataLibrary.App;
 
 namespace PowerPlannerUWP.Helpers
 {
-    static class GradeWeightsAsFlyoutItemHelper
+    class TaskOrEventFlyout
     {
-        // This is so incredibly janky...
-        public static List<RadioMenuFlyoutItem> GetMenuItems(ViewItemTaskOrEvent item)
+        private ViewItemTaskOrEvent _item;
+        public TaskOrEventFlyout(ViewItemTaskOrEvent item)
+        {
+            _item = item;
+        }
+
+        /* Actions For Flyout buttons */
+
+        private void Flyout_Edit(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(_item);
+        }
+
+        private void Flyout_Duplicate(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(_item);
+        }
+
+        private async void Flyout_Delete(object sender, RoutedEventArgs e)
+        {
+            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteItemMessage"), LocalizedResources.GetString("String_ConfirmDeleteItemHeader")))
+            {
+                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_item);
+            }
+        }
+
+        private void Flyout_ConvertType(object sender, RoutedEventArgs e)
+        {
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(_item);
+        }
+
+        private void Flyout_ToggleComplete(object sender, RoutedEventArgs e)
+        {
+            // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
+            double newPercentComplete = _item.IsComplete ? 0 : 1;
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(_item, newPercentComplete);
+        }
+
+        /* Generate Flyout Menu */
+
+        public MenuFlyout GetFlyout(bool isInClassView = false)
+        {
+            MenuFlyout flyout = new MenuFlyout();
+
+            // We cannot add items with `Click` bindings directly to `flyout`
+            // because the `Click` property cannot be assigned but is rather appended to
+            var editItem = new MenuFlyoutItem()
+            {
+                Text = "Edit"
+            };
+            editItem.Click += Flyout_Edit;
+            flyout.Items.Add(editItem);
+
+            var duplicateItem = new MenuFlyoutItem()
+            {
+                Text = "Duplicate",
+                Icon = new SymbolIcon(Symbol.Copy)
+            };
+            duplicateItem.Click += Flyout_Duplicate;
+            flyout.Items.Add(duplicateItem);
+
+            var deleteItem = new MenuFlyoutItem()
+            {
+                Text = "Delete",
+                Icon = new SymbolIcon(Symbol.Delete)
+            };
+            deleteItem.Click += Flyout_Delete;
+            flyout.Items.Add(deleteItem);
+
+            flyout.Items.Add(new MenuFlyoutSeparator());
+
+            var gradeWeightFlyout = new MenuFlyoutSubItem
+            {
+                Text = "Grade Weight Category",
+            };
+
+            // Populate flyout subitem
+            foreach (var weight in GetGradeWeightItems(_item)) { gradeWeightFlyout.Items.Add(weight); };
+            flyout.Items.Add(gradeWeightFlyout);
+
+            flyout.Items.Add(new MenuFlyoutSeparator());
+
+            var convertTypeItem = new MenuFlyoutItem
+            {
+                Text = !_item.IsTask ? LocalizedResources.GetString("String_ConvertToTask") : LocalizedResources.GetString("String_ConvertToEvent")
+            };
+            convertTypeItem.Click += Flyout_ConvertType;
+            flyout.Items.Add(convertTypeItem);
+
+            // Only show "Toggle Complete" item if it's a task
+            if (_item.IsTask)
+            {
+                flyout.Items.Add(new MenuFlyoutSeparator());
+
+                var toggleCompleteItem = new MenuFlyoutItem
+                {
+                    // We want to mark something complete only if it isn't complete
+                    Text = !_item.IsComplete ? "Mark Complete" : "Mark Incomplete",
+                    Icon = new SymbolIcon(!_item.IsComplete ? Symbol.Accept : Symbol.Cancel)
+                };
+                toggleCompleteItem.Click += Flyout_ToggleComplete;
+                flyout.Items.Add(toggleCompleteItem);
+            }
+
+            return flyout;
+        }
+
+
+        public static List<RadioMenuFlyoutItem> GetGradeWeightItems(ViewItemTaskOrEvent item)
         {
             // Set the new grade weight of item
             Action<object, RoutedEventArgs> setNewGradeWeight(ViewItemWeightCategory newWeightCategory) 

@@ -61,36 +61,6 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             }
         }
 
-        private void ContextMenu_Edit(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(GetCurrentItem());
-        }
-
-        private void ContextMenu_Duplicate(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(_currItem);
-        }
-
-        private async void ContextMenu_Delete(object sender, RoutedEventArgs e)
-        {
-            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteItemMessage"), LocalizedResources.GetString("String_ConfirmDeleteItemHeader")))
-            {
-                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_currItem);
-            }
-        }
-
-        private void ContextMenu_ConvertType(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(GetCurrentItem());
-        }
-
-        private void ContextMenu_ToggleComplete(object sender, RoutedEventArgs e)
-        {
-            // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
-            double newPercentComplete = GetCurrentItem().PercentComplete == 0 ? 1 : 0;
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(GetCurrentItem(), newPercentComplete);
-        }
-
         private void UpdateDisplayDetails()
         {
             if (_currItem == null)
@@ -158,77 +128,12 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             }
         }
 
-        private List<string> testItems { get; } = new List<string>{ "1", "2", "3" };
-
-        private List<MenuFlyoutItem> GradeWeightCategories
-        {
-            get => (List<MenuFlyoutItem>)(from item in testItems select new MenuFlyoutItem { Text = item });
-        }
-
         private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
         {
             // Dynamically create the context menu upon request
             // (This is to improve performance of large lists, so that
             // a context menu and all bindings aren't created until actually requested)
-            MenuFlyout flyout = new MenuFlyout();
-
-            // We cannot add items with `Click` bindings directly to `flyout`
-            // because the `Click` property cannot be assigned but is rather appended to
-            var editItem = new MenuFlyoutItem()
-            {
-                Text = "Edit"
-            };
-            editItem.Click += ContextMenu_Edit;
-            flyout.Items.Add(editItem);
-            
-            var duplicateItem = new MenuFlyoutItem()
-            {
-                Text = "Duplicate",
-                Icon = new SymbolIcon(Symbol.Copy)
-            };
-            duplicateItem.Click += ContextMenu_Duplicate;
-            flyout.Items.Add(duplicateItem);
-            
-            var deleteItem = new MenuFlyoutItem()
-            {
-                Text = "Delete",
-                Icon = new SymbolIcon(Symbol.Delete)
-            };
-            deleteItem.Click += ContextMenu_Delete;
-            flyout.Items.Add(deleteItem);
-            
-            flyout.Items.Add(new MenuFlyoutSeparator());
-
-            var gradeWeightFlyout = new MenuFlyoutSubItem
-            {
-                Text = "Grade Weight Category",
-            };
-            
-            // Populate flyout subitem
-            foreach (var item in GradeWeightsAsFlyoutItemHelper.GetMenuItems(_currItem)) { gradeWeightFlyout.Items.Add(item); };
-            flyout.Items.Add(gradeWeightFlyout);
-
-            flyout.Items.Add(new MenuFlyoutSeparator());
-
-            var convertTypeItem = new MenuFlyoutItem
-            {
-                Text = "Convert Type"
-            };
-            convertTypeItem.Click += ContextMenu_ConvertType;
-            flyout.Items.Add(convertTypeItem);
-
-            // Only show "Toggle Complete" item if it's a task
-            if (_currItem.IsTask)
-            {
-                flyout.Items.Add(new MenuFlyoutSeparator());
-
-                var toggleCompleteItem = new MenuFlyoutItem
-                {
-                    Text = "Mark Complete"
-                };
-                toggleCompleteItem.Click += ContextMenu_ToggleComplete;
-                flyout.Items.Add(toggleCompleteItem);
-            }
+            MenuFlyout flyout = new TaskOrEventFlyout(_currItem).GetFlyout();
             
             // Show context flyout
             if (args.TryGetPosition(sender, out Point point))
