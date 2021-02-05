@@ -126,7 +126,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             try
             {
                 var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
-                bool duplicate = e.Modifiers == DragDropModifiers.Control;  // Duplicate if holding Ctrl key
+                bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
 
                 if (item != null)
                 {
@@ -137,6 +137,10 @@ namespace PowerPlannerUWP.Views.CalendarViews
                     else if (item.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
                     {
                         e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+                    }
+                    else
+                    {
+                        e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.None;
                     }
                 }
             }
