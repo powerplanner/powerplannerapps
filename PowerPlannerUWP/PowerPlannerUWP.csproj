@@ -156,7 +156,7 @@
     <Compile Include="Converters\IsPastCompletedTasksDisplayedToButtonContentConverter.cs" />
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
-    <Compile Include="Helpers\GradeWeightsAsFlyoutItemHelper.cs" />
+    <Compile Include="Helpers\TaskOrEventFlyout.cs" />
     <Compile Include="Views\TaskOrEventViews\MenuExtension.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
