@@ -139,11 +139,9 @@
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
     <Compile Include="Converters\CanBeUsedForWhatIfModeToFontWeightConverter.cs" />
-    <Compile Include="Converters\ConvertTaskOrEventTypeToStringConverter.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
     <Compile Include="Converters\DateToFriendlyShortDateConverter.cs" />
     <Compile Include="Converters\DayOfWeeksToStringConverter.cs" />
-    <Compile Include="Converters\BoolToAcceptRejectIconConverter.cs" />
     <Compile Include="Converters\GpaToStringConverter.cs" />
     <Compile Include="Converters\GpaTypeToStringConverter.cs" />
     <Compile Include="Converters\GradeToFormatConverter.cs" />
@@ -158,6 +156,7 @@
     <Compile Include="Converters\IsPastCompletedTasksDisplayedToButtonContentConverter.cs" />
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
+    <Compile Include="Helpers\TaskOrEventFlyout.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
     <Compile Include="Converters\PercentCompleteToToolTipValueConverter.cs" />
@@ -167,7 +166,6 @@
     <Compile Include="Converters\StringToImageConverter.cs" />
     <Compile Include="Converters\StringToImageThumbnailConverter.cs" />
     <Compile Include="Converters\TimeToShortTimeConverter.cs" />
-    <Compile Include="Converters\ToggleCompleteToStringConverter.cs" />
     <Compile Include="DataTemplateSelectors\ScheduleAllDayItemTemplateSelector.cs" />
     <Compile Include="Extensions\UWPAppointmentsExtension.cs" />
     <Compile Include="Extensions\UWPClassRemindersExtension.cs" />
@@ -192,6 +190,7 @@
     <Compile Include="TileHelpers\ScheduleTileHelper.cs" />
     <Compile Include="TileHelpers\TileHelper.cs" />
     <Compile Include="ViewModel\MainWindow\MainScreen\Schedule\ExportSchedulePopupViewModel.cs" />
+    <Compile Include="ViewModel\MainWindow\MainScreen\TaskOrEvents\TaskOrEventListViewItemViewModel.cs" />
     <Compile Include="ViewModel\Promos\PromoOtherPlatformsViewModel.cs" />
     <Compile Include="ViewModel\Settings\ClassTilesPagedHostViewModel.cs" />
     <Compile Include="ViewModel\Settings\ScheduleTileViewModel.cs" />

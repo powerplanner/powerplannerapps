@@ -1,5 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerUWP.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,36 +59,6 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             {
                 PowerPlannerApp.Current.GetMainScreenViewModel()?.ShowItem(GetCurrentItem());
             }
-        }
-
-        private void ContextMenu_Edit(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(GetCurrentItem());
-        }
-
-        private void ContextMenu_Duplicate(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(_currItem);
-        }
-
-        private async void ContextMenu_Delete(object sender, RoutedEventArgs e)
-        {
-            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteItemMessage"), LocalizedResources.GetString("String_ConfirmDeleteItemHeader")))
-            {
-                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_currItem);
-            }
-        }
-
-        private void ContextMenu_ConvertType(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(GetCurrentItem());
-        }
-
-        private void ContextMenu_ToggleComplete(object sender, RoutedEventArgs e)
-        {
-            // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
-            double newPercentComplete = GetCurrentItem().PercentComplete < 1 ? 1 : 0;
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(GetCurrentItem(), newPercentComplete);
         }
 
         private void UpdateDisplayDetails()
@@ -154,6 +125,24 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             else
             {
                 RunSubtitlePartTwo.Text = _currItem.GetType().GetProperty("SubtitleDueTime").GetValue(_currItem) as string;
+            }
+        }
+
+        private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            // Dynamically create the context menu upon request
+            // (This is to improve performance of large lists, so that
+            // a context menu and all bindings aren't created until actually requested)
+            MenuFlyout flyout = new TaskOrEventFlyout(_currItem).GetFlyout();
+            
+            // Show context flyout
+            if (args.TryGetPosition(sender, out Point point))
+            {
+                flyout.ShowAt(sender as FrameworkElement, point);
+            }
+            else
+            {
+                flyout.ShowAt(sender as FrameworkElement);
             }
         }
     }
