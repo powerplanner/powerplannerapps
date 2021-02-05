@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using PowerPlannerUWP.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,48 +55,25 @@ namespace PowerPlannerUWP.Views.CalendarViews
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
-
-        private void ContextMenu_Edit(object sender, RoutedEventArgs e)
+        private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(Item);
-        }
+            // Dynamically create the context menu upon request
+            // (This is to improve performance of large lists, so that
+            // a context menu and all bindings aren't created until actually requested)
+            MenuFlyout flyout = new TaskOrEventFlyout(Item).GetFlyout();
 
-        private void ContextMenu_Duplicate(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(Item);
-        }
-
-        private async void ContextMenu_Delete(object sender, RoutedEventArgs e)
-        {
-            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteItemMessage"), LocalizedResources.GetString("String_ConfirmDeleteItemHeader")))
+            // Show context flyout
+            if (args.TryGetPosition(sender, out Point point))
             {
-                PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(Item);
+                flyout.ShowAt(sender as FrameworkElement, point);
+            }
+            else
+            {
+                flyout.ShowAt(sender as FrameworkElement);
             }
         }
 
-        private void ContextMenu_ConvertType(object sender, RoutedEventArgs e)
-        {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(Item);
-        }
-
-        private void ContextMenu_ToggleComplete(object sender, RoutedEventArgs e)
-        {
-            // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
-            double newPercentComplete = Item.PercentComplete < 1 ? 1 : 0;
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(Item, newPercentComplete);
-        }
-
-        private void ContextMenu_GoToClass(object sender, RoutedEventArgs e)
-        {
-            // Get initial page (if it's a task/event, go to that page)
-            ClassViewModel.ClassPages? initialPage = null;
-            if (Item.IsTask) initialPage = ClassViewModel.ClassPages.Tasks;
-            else if (Item.IsTask) initialPage = ClassViewModel.ClassPages.Events;
-
-            // Navigate to class
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.ViewClass(Item.Class, initialPage);
-        }
-
         public string TelemetryOnClickEventName { get; set; }
+
     }
 }
