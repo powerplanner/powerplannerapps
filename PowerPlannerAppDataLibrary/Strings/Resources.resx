@@ -1914,4 +1914,25 @@ Please think about using an online account instead!</value>
   <data name="String_ConfirmDeleteItemMessage" xml:space="preserve">
     <value>Are you sure you want to delete this item?</value>
   </data>
+  <data name="ContextFlyout_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ContextFlyout_Duplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="ContextFlyout_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ContextFlyout_GoToClass" xml:space="preserve">
+    <value>Go To Class</value>
+  </data>
+  <data name="ContextFlyout_GradeWeightCategories" xml:space="preserve">
+    <value>Grade Weight Categories</value>
+  </data>
+  <data name="ContextFlyout_MarkComplete" xml:space="preserve">
+    <value>Mark Complete</value>
+  </data>
+  <data name="ContextFlyout_MarkIncomplete" xml:space="preserve">
+    <value>Mark Incomplete</value>
+  </data>
 </root>

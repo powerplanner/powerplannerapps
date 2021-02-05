@@ -74,24 +74,28 @@ namespace PowerPlannerUWP.Helpers
 
             // We cannot add items with `Click` bindings directly to `flyout`
             // because the `Click` property cannot be assigned but is rather appended to
+
+            /* Edit */
             var editItem = new MenuFlyoutItem()
             {
-                Text = "Edit"
+                Text = LocalizedResources.GetString("ContextFlyout_Edit")
             };
             editItem.Click += Flyout_Edit;
             flyout.Items.Add(editItem);
 
+            /* Duplicate */
             var duplicateItem = new MenuFlyoutItem()
             {
-                Text = "Duplicate",
+                Text = LocalizedResources.GetString("ContextFlyout_Duplicate"),
                 Icon = new SymbolIcon(Symbol.Copy)
             };
             duplicateItem.Click += Flyout_Duplicate;
             flyout.Items.Add(duplicateItem);
 
+            /* Delete */
             var deleteItem = new MenuFlyoutItem()
             {
-                Text = "Delete",
+                Text = LocalizedResources.GetString("ContextFlyout_Delete"),
                 Icon = new SymbolIcon(Symbol.Delete)
             };
             deleteItem.Click += Flyout_Delete;
@@ -99,9 +103,10 @@ namespace PowerPlannerUWP.Helpers
 
             flyout.Items.Add(new MenuFlyoutSeparator());
 
+            /* Grade Weight Category */
             var gradeWeightFlyout = new MenuFlyoutSubItem
             {
-                Text = "Grade Weight Category",
+                Text = LocalizedResources.GetString("ContextFlyout_GradeWeightCategories"),
             };
 
             // Populate flyout subitem
@@ -110,6 +115,7 @@ namespace PowerPlannerUWP.Helpers
 
             flyout.Items.Add(new MenuFlyoutSeparator());
 
+            /* Convert Task/Event*/
             var convertTypeItem = new MenuFlyoutItem
             {
                 Text = !_item.IsTask ? LocalizedResources.GetString("String_ConvertToTask") : LocalizedResources.GetString("String_ConvertToEvent")
@@ -122,10 +128,11 @@ namespace PowerPlannerUWP.Helpers
             {
                 flyout.Items.Add(new MenuFlyoutSeparator());
 
+                /* Toggle complete */
                 var toggleCompleteItem = new MenuFlyoutItem
                 {
                     // We want to mark something complete only if it isn't complete
-                    Text = !_item.IsComplete ? "Mark Complete" : "Mark Incomplete",
+                    Text = !_item.IsComplete ? LocalizedResources.GetString("ContextFlyout_MarkComplete") : LocalizedResources.GetString("ContextFlyout_MarkIncomplete"),
                     Icon = new SymbolIcon(!_item.IsComplete ? Symbol.Accept : Symbol.Cancel)
                 };
                 toggleCompleteItem.Click += Flyout_ToggleComplete;
@@ -134,10 +141,11 @@ namespace PowerPlannerUWP.Helpers
 
             if (showGoToClass)
             {
+                /* Go To Class */
                 flyout.Items.Add(new MenuFlyoutSeparator());
                 var goToClassItem = new MenuFlyoutItem
                 {
-                    Text = "Go To Class"
+                    Text = LocalizedResources.GetString("ContextFlyout_GoToClass")
                 };
                 goToClassItem.Click += Flyout_GoToClass;
                 flyout.Items.Add(goToClassItem);
