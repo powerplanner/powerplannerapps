@@ -157,7 +157,6 @@
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
     <Compile Include="Helpers\TaskOrEventFlyout.cs" />
-    <Compile Include="Views\TaskOrEventViews\MenuExtension.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
     <Compile Include="Converters\PercentCompleteToToolTipValueConverter.cs" />
