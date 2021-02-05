@@ -139,11 +139,9 @@
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
     <Compile Include="Converters\CanBeUsedForWhatIfModeToFontWeightConverter.cs" />
-    <Compile Include="Converters\ConvertTaskOrEventTypeToStringConverter.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
     <Compile Include="Converters\DateToFriendlyShortDateConverter.cs" />
     <Compile Include="Converters\DayOfWeeksToStringConverter.cs" />
-    <Compile Include="Converters\BoolToAcceptRejectIconConverter.cs" />
     <Compile Include="Converters\GpaToStringConverter.cs" />
     <Compile Include="Converters\GpaTypeToStringConverter.cs" />
     <Compile Include="Converters\GradeToFormatConverter.cs" />
@@ -169,7 +167,6 @@
     <Compile Include="Converters\StringToImageConverter.cs" />
     <Compile Include="Converters\StringToImageThumbnailConverter.cs" />
     <Compile Include="Converters\TimeToShortTimeConverter.cs" />
-    <Compile Include="Converters\ToggleCompleteToStringConverter.cs" />
     <Compile Include="DataTemplateSelectors\ScheduleAllDayItemTemplateSelector.cs" />
     <Compile Include="Extensions\UWPAppointmentsExtension.cs" />
     <Compile Include="Extensions\UWPClassRemindersExtension.cs" />
