@@ -174,7 +174,7 @@ namespace PowerPlannerUWP.Helpers
                             {
                                 Text = weight.Name,
                                 GroupName = "GradeWeightCategories",
-                                IsChecked = weight.Identifier == item.WeightCategory.Identifier,
+                                IsChecked = weight.Identifier == item.WeightCategory?.Identifier,
                             };
 
                             flyout.Click += new RoutedEventHandler(setNewGradeWeight(weight));
