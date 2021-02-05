@@ -11,6 +11,7 @@ using Windows.UI.Xaml;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 
 namespace PowerPlannerUWP.Helpers
 {
@@ -54,9 +55,20 @@ namespace PowerPlannerUWP.Helpers
             PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(_item, newPercentComplete);
         }
 
+        private void Flyout_GoToClass(object sender, RoutedEventArgs e)
+        {
+            // Get initial page (if it's a task/event, go to that page)
+            ClassViewModel.ClassPages? initialPage = null;
+            if (_item.IsTask) initialPage = ClassViewModel.ClassPages.Tasks;
+            else if (_item.IsTask) initialPage = ClassViewModel.ClassPages.Events;
+
+            // Navigate to class
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.ViewClass(_item.Class, initialPage);
+        }
+
         /* Generate Flyout Menu */
 
-        public MenuFlyout GetFlyout(bool isInClassView = false)
+        public MenuFlyout GetFlyout(bool showGoToClass = false)
         {
             MenuFlyout flyout = new MenuFlyout();
 
@@ -120,9 +132,21 @@ namespace PowerPlannerUWP.Helpers
                 flyout.Items.Add(toggleCompleteItem);
             }
 
+            if (showGoToClass)
+            {
+                flyout.Items.Add(new MenuFlyoutSeparator());
+                var goToClassItem = new MenuFlyoutItem
+                {
+                    Text = "Go To Class"
+                };
+                goToClassItem.Click += Flyout_GoToClass;
+                flyout.Items.Add(goToClassItem);
+            }
+
             return flyout;
         }
 
+        /* Utilities */
 
         public static List<RadioMenuFlyoutItem> GetGradeWeightItems(ViewItemTaskOrEvent item)
         {
