@@ -12,6 +12,7 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using PowerPlannerAppDataLibrary.Extensions;
 
 namespace PowerPlannerUWP.Helpers
 {
@@ -28,11 +29,13 @@ namespace PowerPlannerUWP.Helpers
         private void Flyout_Edit(object sender, RoutedEventArgs e)
         {
             PowerPlannerApp.Current.GetMainScreenViewModel()?.EditTaskOrEvent(_item);
+            Telemetry_TrackContextEvent("Edit");
         }
 
         private void Flyout_Duplicate(object sender, RoutedEventArgs e)
         {
             PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(_item);
+            Telemetry_TrackContextEvent("Duplicate");
         }
 
         private async void Flyout_Delete(object sender, RoutedEventArgs e)
@@ -41,11 +44,13 @@ namespace PowerPlannerUWP.Helpers
             {
                 PowerPlannerApp.Current.GetMainScreenViewModel()?.DeleteItem(_item);
             }
+            Telemetry_TrackContextEvent("Delete");
         }
 
         private void Flyout_ConvertType(object sender, RoutedEventArgs e)
         {
             PowerPlannerApp.Current.GetMainScreenViewModel()?.ConvertTaskOrEventType(_item);
+            Telemetry_TrackContextEvent("ConvertType");
         }
 
         private void Flyout_ToggleComplete(object sender, RoutedEventArgs e)
@@ -53,6 +58,7 @@ namespace PowerPlannerUWP.Helpers
             // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
             double newPercentComplete = _item.IsComplete ? 0 : 1;
             PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(_item, newPercentComplete);
+            Telemetry_TrackContextEvent("ToggleComplete");
         }
 
         private void Flyout_GoToClass(object sender, RoutedEventArgs e)
@@ -64,6 +70,8 @@ namespace PowerPlannerUWP.Helpers
 
             // Navigate to class
             PowerPlannerApp.Current.GetMainScreenViewModel()?.ViewClass(_item.Class, initialPage);
+
+            Telemetry_TrackContextEvent("GoToClass");
         }
 
         /* Generate Flyout Menu */
@@ -156,7 +164,7 @@ namespace PowerPlannerUWP.Helpers
 
         public static List<RadioMenuFlyoutItem> GetGradeWeightItems(ViewItemTaskOrEvent item)
         {
-            // Set the new grade weight of item
+            // Closure to set the new grade weight of item
             Action<object, RoutedEventArgs> setNewGradeWeight(ViewItemWeightCategory newWeightCategory) 
             {
                 return delegate (object sender, RoutedEventArgs e)
@@ -169,6 +177,8 @@ namespace PowerPlannerUWP.Helpers
                     changes.Add(dataItem);
 
                     PowerPlannerApp.Current.SaveChanges(changes);
+                    
+                    Telemetry_TrackContextEvent("ChangeWeight");
                 };
             };
 
@@ -207,6 +217,15 @@ namespace PowerPlannerUWP.Helpers
             answer.Add(ViewItemWeightCategory.EXCLUDED);
 
             return answer.ToArray();
+        }
+
+        private static void Telemetry_TrackContextEvent(string action)
+        {
+            TelemetryExtension.Current?.TrackEvent("ContextMenuClicked", new Dictionary<string, string>()
+            {
+                ["ItemType"] = "TaskOrEvent", // Yes, leave this as-is. In the future, grades will probably have context menus and ItemType would be Grade in that case
+                ["Action"] = action
+            });
         }
     }
 }
