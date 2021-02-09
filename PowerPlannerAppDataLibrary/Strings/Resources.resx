@@ -1924,15 +1924,15 @@ Please think about using an online account instead!</value>
     <value>Edit</value>
   </data>
   <data name="ContextFlyout_GoToClass" xml:space="preserve">
-    <value>Go To Class</value>
+    <value>Go to class</value>
   </data>
   <data name="ContextFlyout_GradeWeightCategories" xml:space="preserve">
-    <value>Grade Weight Categories</value>
+    <value>Weight categories</value>
   </data>
   <data name="ContextFlyout_MarkComplete" xml:space="preserve">
-    <value>Mark Complete</value>
+    <value>Mark complete</value>
   </data>
   <data name="ContextFlyout_MarkIncomplete" xml:space="preserve">
-    <value>Mark Incomplete</value>
+    <value>Mark incomplete</value>
   </data>
 </root>
