@@ -1124,10 +1124,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         public void DuplicateTaskOrEvent(ViewItemTaskOrEvent item, DateTime? date = null)
         {
             DataChanges changes = new DataChanges();
+            DateTime now = DateTime.UtcNow;
 
             DataItemMegaItem copiedDataItem = (DataItemMegaItem)item.DataItem.Clone();
-            copiedDataItem.Identifier = Guid.NewGuid();     // Create new Guid
-            copiedDataItem.DateCreated = DateTime.UtcNow;   // The copy was created now
+            copiedDataItem.Identifier = Guid.NewGuid(); // Create new Guid
+            copiedDataItem.DateCreated = now;   // The copy was created now
+            copiedDataItem.Updated = now;       // The copy was created now
             copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
 
             changes.Add(copiedDataItem);
