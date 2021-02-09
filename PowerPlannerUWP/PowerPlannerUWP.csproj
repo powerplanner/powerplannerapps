@@ -190,7 +190,6 @@
     <Compile Include="TileHelpers\ScheduleTileHelper.cs" />
     <Compile Include="TileHelpers\TileHelper.cs" />
     <Compile Include="ViewModel\MainWindow\MainScreen\Schedule\ExportSchedulePopupViewModel.cs" />
-    <Compile Include="ViewModel\MainWindow\MainScreen\TaskOrEvents\TaskOrEventListViewItemViewModel.cs" />
     <Compile Include="ViewModel\Promos\PromoOtherPlatformsViewModel.cs" />
     <Compile Include="ViewModel\Settings\ClassTilesPagedHostViewModel.cs" />
     <Compile Include="ViewModel\Settings\ScheduleTileViewModel.cs" />
