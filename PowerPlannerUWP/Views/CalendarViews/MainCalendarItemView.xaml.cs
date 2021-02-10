@@ -60,10 +60,10 @@ namespace PowerPlannerUWP.Views.CalendarViews
             // Dynamically create the context menu upon request
             // (This is to improve performance of large lists, so that
             // a context menu and all bindings aren't created until actually requested)
-            MenuFlyout flyout = new TaskOrEventFlyout(Item).GetFlyout(new TaskOrEventFlyoutOptions
+            MenuFlyout flyout = new TaskOrEventFlyout(Item, new TaskOrEventFlyoutOptions
             {
                 ShowGoToClass = true
-            });
+            }).GetFlyout();
 
             // Show context flyout
             if (args.TryGetPosition(sender, out Point point))

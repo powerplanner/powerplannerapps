@@ -19,10 +19,12 @@ namespace PowerPlannerUWP.Helpers
     class TaskOrEventFlyout
     {
         private ViewItemTaskOrEvent _item;
+        private TaskOrEventFlyoutOptions _options;
 
-        public TaskOrEventFlyout(ViewItemTaskOrEvent item)
+        public TaskOrEventFlyout(ViewItemTaskOrEvent item, TaskOrEventFlyoutOptions options = null)
         {
             _item = item;
+            _options = options ?? new TaskOrEventFlyoutOptions(); // Use default options if none are specified
         }
 
         /* Actions For Flyout buttons */
@@ -77,10 +79,9 @@ namespace PowerPlannerUWP.Helpers
 
         /* Generate Flyout Menu */
 
-        public MenuFlyout GetFlyout(TaskOrEventFlyoutOptions options = null)
+        public MenuFlyout GetFlyout()
         {
             MenuFlyout flyout = new MenuFlyout();
-            TaskOrEventFlyoutOptions _options = options ?? new TaskOrEventFlyoutOptions(); // Use default options if none are specified
 
             // We cannot add items with `Click` bindings directly to `flyout`
             // because the `Click` property cannot be assigned but is rather appended to
