@@ -19,6 +19,7 @@ namespace PowerPlannerUWP.Helpers
     class TaskOrEventFlyout
     {
         private ViewItemTaskOrEvent _item;
+
         public TaskOrEventFlyout(ViewItemTaskOrEvent item)
         {
             _item = item;
@@ -76,9 +77,10 @@ namespace PowerPlannerUWP.Helpers
 
         /* Generate Flyout Menu */
 
-        public MenuFlyout GetFlyout(bool showGoToClass = false)
+        public MenuFlyout GetFlyout(TaskOrEventFlyoutOptions options = null)
         {
             MenuFlyout flyout = new MenuFlyout();
+            TaskOrEventFlyoutOptions _options = options ?? new TaskOrEventFlyoutOptions(); // Use default options if none are specified
 
             // We cannot add items with `Click` bindings directly to `flyout`
             // because the `Click` property cannot be assigned but is rather appended to
@@ -145,7 +147,7 @@ namespace PowerPlannerUWP.Helpers
                 flyout.Items.Add(toggleCompleteItem);
             }
 
-            if (showGoToClass)
+            if (_options.ShowGoToClass)
             {
                 /* Go To Class */
                 flyout.Items.Add(new MenuFlyoutSeparator());
@@ -227,5 +229,11 @@ namespace PowerPlannerUWP.Helpers
                 ["Action"] = action
             });
         }
+    }
+
+    // Options 
+    class TaskOrEventFlyoutOptions
+    {
+        public bool ShowGoToClass { get; set; } = false;
     }
 }
