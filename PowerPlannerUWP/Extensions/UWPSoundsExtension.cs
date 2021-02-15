@@ -20,7 +20,7 @@ namespace PowerPlannerUWP.Extensions
                 if (_mediaElement == null)
                 {
                     _mediaElement = new MediaElement();
-                    _mediaElement.Volume = 0.4;
+                    _mediaElement.Volume = 0.2;
                     var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Sounds/TaskCompleted.mp3"));
                     _mediaElement.SetSource(await file.OpenReadAsync(), file.ContentType);
                 }
