@@ -206,6 +206,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 // Go back immediately before 
                 if (percentComplete == 1)
                 {
+                    SoundsExtension.Current?.TryPlayTaskCompletedSound();
+
                     try
                     {
                         // Don't prompt for non-class tasks

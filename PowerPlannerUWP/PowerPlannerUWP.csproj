@@ -179,6 +179,7 @@
     <Compile Include="Extensions\UWPNetworkInfoExtension.cs" />
     <Compile Include="Extensions\UWPPushExtension.cs" />
     <Compile Include="Extensions\UWPRemindersExtension.cs" />
+    <Compile Include="Extensions\UWPSoundsExtension.cs" />
     <Compile Include="Extensions\UWPTelemetryExtension.cs" />
     <Compile Include="Extensions\UWPTilesExtension.cs" />
     <Compile Include="Helpers\DataPackageHelpers.cs" />
@@ -554,6 +555,7 @@
     <Content Include="Assets\PromoOtherPlatforms\iPhone.png" />
     <Content Include="Assets\QuickAddTile\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\QuickAddTile\Square71x71Logo.scale-200.png" />
+    <Content Include="Assets\Sounds\TaskCompleted.mp3" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
     <Content Include="Assets\Square150x150Logo.scale-125.png" />
     <Content Include="Assets\Square150x150Logo.scale-150.png" />
