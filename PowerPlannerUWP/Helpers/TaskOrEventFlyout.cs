@@ -86,6 +86,22 @@ namespace PowerPlannerUWP.Helpers
             // We cannot add items with `Click` bindings directly to `flyout`
             // because the `Click` property cannot be assigned but is rather appended to
 
+            // Only show "Toggle Complete" item if it's a task
+            if (_item.IsTask)
+            {
+                /* Toggle complete */
+                var toggleCompleteItem = new MenuFlyoutItem
+                {
+                    // We want to mark something complete only if it isn't complete
+                    Text = !_item.IsComplete ? LocalizedResources.GetString("ContextFlyout_MarkComplete") : LocalizedResources.GetString("ContextFlyout_MarkIncomplete"),
+                    Icon = new SymbolIcon(!_item.IsComplete ? Symbol.Accept : Symbol.Cancel)
+                };
+                toggleCompleteItem.Click += Flyout_ToggleComplete;
+                flyout.Items.Add(toggleCompleteItem);
+
+                flyout.Items.Add(new MenuFlyoutSeparator());
+            }
+
             /* Edit */
             var editItem = new MenuFlyoutItem()
             {
@@ -134,22 +150,6 @@ namespace PowerPlannerUWP.Helpers
             };
             convertTypeItem.Click += Flyout_ConvertType;
             flyout.Items.Add(convertTypeItem);
-
-            // Only show "Toggle Complete" item if it's a task
-            if (_item.IsTask)
-            {
-                flyout.Items.Add(new MenuFlyoutSeparator());
-
-                /* Toggle complete */
-                var toggleCompleteItem = new MenuFlyoutItem
-                {
-                    // We want to mark something complete only if it isn't complete
-                    Text = !_item.IsComplete ? LocalizedResources.GetString("ContextFlyout_MarkComplete") : LocalizedResources.GetString("ContextFlyout_MarkIncomplete"),
-                    Icon = new SymbolIcon(!_item.IsComplete ? Symbol.Accept : Symbol.Cancel)
-                };
-                toggleCompleteItem.Click += Flyout_ToggleComplete;
-                flyout.Items.Add(toggleCompleteItem);
-            }
 
             if (_options.ShowGoToClass)
             {
