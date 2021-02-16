@@ -28,6 +28,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using BareMvvm.Core.Snackbar;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -1146,9 +1147,81 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             ViewTaskOrEventViewModel.Create(this, item).ConvertType();
         }
 
-        public void SetTaskOrEventPercentComplete(ViewItemTaskOrEvent item, double percentComplete)
+        public void SetTaskPercentComplete(ViewItemTaskOrEvent task, double percentComplete)
         {
-            ViewTaskOrEventViewModel.Create(this, item).SetPercentComplete(percentComplete);
+            if (task == null || task.PercentComplete == percentComplete || task.Type != TaskOrEventType.Task)
+            {
+                return;
+            }
+
+            BaseMainScreenViewModelDescendant.TryStartDataOperationAndThenNavigate(delegate
+            {
+                DataChanges changes = new DataChanges();
+
+                changes.Add(new DataItemMegaItem()
+                {
+                    Identifier = task.Identifier,
+                    PercentComplete = percentComplete
+                });
+
+                return PowerPlannerApp.Current.SaveChanges(changes);
+
+            }, delegate
+            {
+                if (percentComplete == 1)
+                {
+                    SoundsExtension.Current?.TryPlayTaskCompletedSound();
+
+                    try
+                    {
+                        // Don't prompt for non-class tasks
+                        if (!task.Class.IsNoClassClass)
+                        {
+                            BareSnackbar.Make(PowerPlannerResources.GetString("String_TaskCompleted"), PowerPlannerResources.GetString("String_AddGrade"), delegate { AddGradeAfterCompletingTask(task); }).Show();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+                }
+            });
+        }
+
+        private async void AddGradeAfterCompletingTask(ViewItemTaskOrEvent task)
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("ClickedSnackbarAddGrade");
+
+                // We need to load the class with the weight categories
+                var ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(CurrentLocalAccountId, task.Class.Identifier, DateTime.Today, CurrentSemester);
+
+                ViewItemsGroupClass.LoadTasksAndEvents();
+                ViewItemsGroupClass.LoadGrades();
+                await ViewItemsGroupClass.LoadTasksAndEventsTask;
+                await ViewItemsGroupClass.LoadGradesTask;
+
+                var loadedTask = ViewItemsGroupClass.Tasks.FirstOrDefault(i => i.Identifier == task.Identifier);
+                if (loadedTask == null)
+                {
+                    ViewItemsGroupClass.ShowPastCompletedTasks();
+                    await ViewItemsGroupClass.LoadPastCompleteTasksAndEventsTask;
+
+                    loadedTask = ViewItemsGroupClass.PastCompletedTasks.FirstOrDefault(i => i.Identifier == task.Identifier);
+                    if (loadedTask == null)
+                    {
+                        return;
+                    }
+                }
+
+                var viewModel = ViewTaskOrEventViewModel.CreateForUnassigned(this, loadedTask);
+                viewModel.AddGrade(showViewGradeSnackbarAfterSaving: SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public void EditGrade(BaseViewItemMegaItem grade, bool whatIf = false)

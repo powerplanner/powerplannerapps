@@ -189,76 +189,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 return;
             }
 
-            TryStartDataOperationAndThenNavigate(delegate
+            MainScreenViewModel.SetTaskPercentComplete(task, percentComplete);
+
+            // Go back immediately
+            if (percentComplete == 1)
             {
-                DataChanges changes = new DataChanges();
-
-                changes.Add(new DataItemMegaItem()
-                {
-                    Identifier = task.Identifier,
-                    PercentComplete = percentComplete
-                });
-
-                return PowerPlannerApp.Current.SaveChanges(changes);
-
-            }, delegate
-            {
-                // Go back immediately before 
-                if (percentComplete == 1)
-                {
-                    SoundsExtension.Current?.TryPlayTaskCompletedSound();
-
-                    try
-                    {
-                        // Don't prompt for non-class tasks
-                        if (!task.Class.IsNoClassClass)
-                        {
-                            BareSnackbar.Make(PowerPlannerResources.GetString("String_TaskCompleted"), PowerPlannerResources.GetString("String_AddGrade"), AddGradeAfterCompletingTask).Show();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
-                    }
-
-                    this.GoBack();
-                }
-            });
-        }
-
-        private async void AddGradeAfterCompletingTask()
-        {
-            try
-            {
-                TelemetryExtension.Current?.TrackEvent("ClickedSnackbarAddGrade");
-
-                // We need to load the class with the weight categories
-                var ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(MainScreenViewModel.CurrentLocalAccountId, Item.Class.Identifier, DateTime.Today, MainScreenViewModel.CurrentSemester);
-
-                ViewItemsGroupClass.LoadTasksAndEvents();
-                ViewItemsGroupClass.LoadGrades();
-                await ViewItemsGroupClass.LoadTasksAndEventsTask;
-                await ViewItemsGroupClass.LoadGradesTask;
-
-                var loadedTask = ViewItemsGroupClass.Tasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
-                if (loadedTask == null)
-                {
-                    ViewItemsGroupClass.ShowPastCompletedTasks();
-                    await ViewItemsGroupClass.LoadPastCompleteTasksAndEventsTask;
-
-                    loadedTask = ViewItemsGroupClass.PastCompletedTasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
-                    if (loadedTask == null)
-                    {
-                        return;
-                    }
-                }
-
-                var viewModel = CreateForUnassigned(MainScreenViewModel, loadedTask);
-                viewModel.AddGrade(showViewGradeSnackbarAfterSaving: MainScreenViewModel.SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
+                this.GoBack();
             }
         }
 

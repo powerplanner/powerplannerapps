@@ -60,7 +60,7 @@ namespace PowerPlannerUWP.Helpers
         {
             // New percent complete toggles completion; If there's any progress, remove it, otherwise set it to complete
             double newPercentComplete = _item.IsComplete ? 0 : 1;
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskOrEventPercentComplete(_item, newPercentComplete);
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.SetTaskPercentComplete(_item, newPercentComplete);
             Telemetry_TrackContextEvent("ToggleComplete");
         }
 
