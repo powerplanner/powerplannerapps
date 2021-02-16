@@ -1116,6 +1116,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }));
         }
 
+        public void DuplicateAndEditTaskOrEvent(ViewItemTaskOrEvent item)
+        {
+            ShowPopup(AddTaskOrEventViewModel.CreateForClone(this, new AddTaskOrEventViewModel.CloneParameter()
+            {
+                Item = item,
+                Classes = Classes.ToArray()
+            }));
+        }
+
         /// /// <summary>
         /// Duplicates a Task or Event
         /// </summary>
