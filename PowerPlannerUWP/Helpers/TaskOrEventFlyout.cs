@@ -37,7 +37,7 @@ namespace PowerPlannerUWP.Helpers
 
         private void Flyout_Duplicate(object sender, RoutedEventArgs e)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(_item);
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateAndEditTaskOrEvent(_item);
             Telemetry_TrackContextEvent("Duplicate");
         }
 
