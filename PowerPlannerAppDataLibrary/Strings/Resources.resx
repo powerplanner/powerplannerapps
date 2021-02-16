@@ -1934,6 +1934,7 @@ Please think about using an online account instead!</value>
   </data>
   <data name="ContextFlyout_MarkIncomplete" xml:space="preserve">
     <value>Mark incomplete</value>
+  </data>
   <data name="UsernameInvalid_ContainsSpace" xml:space="preserve">
     <value>Cannot contain spaces.</value>
   </data>
