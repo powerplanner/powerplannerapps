@@ -89,7 +89,8 @@ namespace PowerPlannerUWP.Helpers
             /* Edit */
             var editItem = new MenuFlyoutItem()
             {
-                Text = LocalizedResources.GetString("ContextFlyout_Edit")
+                Text = LocalizedResources.GetString("ContextFlyout_Edit"),
+                Icon = new SymbolIcon(Symbol.Edit)
             };
             editItem.Click += Flyout_Edit;
             flyout.Items.Add(editItem);
@@ -118,6 +119,7 @@ namespace PowerPlannerUWP.Helpers
             var gradeWeightFlyout = new MenuFlyoutSubItem
             {
                 Text = LocalizedResources.GetString("ContextFlyout_GradeWeightCategories"),
+                Icon = new SymbolIcon(Symbol.Calculator)
             };
 
             // Populate flyout subitem
@@ -127,7 +129,8 @@ namespace PowerPlannerUWP.Helpers
             /* Convert Task/Event */
             var convertTypeItem = new MenuFlyoutItem
             {
-                Text = !_item.IsTask ? LocalizedResources.GetString("String_ConvertToTask") : LocalizedResources.GetString("String_ConvertToEvent")
+                Text = !_item.IsTask ? LocalizedResources.GetString("String_ConvertToTask") : LocalizedResources.GetString("String_ConvertToEvent"),
+                Icon = new SymbolIcon(Symbol.Switch)
             };
             convertTypeItem.Click += Flyout_ConvertType;
             flyout.Items.Add(convertTypeItem);
@@ -154,7 +157,8 @@ namespace PowerPlannerUWP.Helpers
                 flyout.Items.Add(new MenuFlyoutSeparator());
                 var goToClassItem = new MenuFlyoutItem
                 {
-                    Text = LocalizedResources.GetString("ContextFlyout_GoToClass")
+                    Text = LocalizedResources.GetString("ContextFlyout_GoToClass"),
+                    Icon = new SymbolIcon(Symbol.Go)
                 };
                 goToClassItem.Click += Flyout_GoToClass;
                 flyout.Items.Add(goToClassItem);
