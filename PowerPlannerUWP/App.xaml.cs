@@ -698,7 +698,7 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
-                    if (v <= new Version(2012, 16, 1, 99))
+                    if (v <= new Version(2102, 16, 3, 99))
                     {
                         changedText += "\n - Right click on tasks/events to quickly mark complete, delete, or edit!";
                     }
