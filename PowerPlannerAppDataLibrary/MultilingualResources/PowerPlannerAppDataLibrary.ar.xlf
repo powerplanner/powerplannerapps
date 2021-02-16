@@ -2,7 +2,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en-US" target-language="ar" original="PowerPlannerAppDataLibrary/Strings/Resources.resx" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
     <header>
-      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6916.0" tool-company="Microsoft" />
     </header>
     <body>
       <group id="PowerPlannerAppDataLibrary/Strings/Resources.resx" datatype="resx">
@@ -2405,6 +2405,62 @@ Please think about using an online account instead!</source>
         <trans-unit id="String_Complete" translate="yes" xml:space="preserve">
           <source>Complete</source>
           <target state="final" state-qualifier="tm-suggestion">مكتمل</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_ContainsSpace" translate="yes" xml:space="preserve">
+          <source>Cannot contain spaces.</source>
+          <target state="final">لا يمكن أن تحتوي على مسافات.</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_InvalidCharacters" translate="yes" xml:space="preserve">
+          <source>Contains invalid characters: {0}</source>
+          <target state="final">يحتوي على أحرف غير صالحة: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_More" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="final">أكثر</target>
+        </trans-unit>
+        <trans-unit id="String_CurrentSemester" translate="yes" xml:space="preserve">
+          <source>Current semester: {0}</source>
+          <target state="final">الفصل الدراسي الحالي: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_ViewYearsAndSemesters" translate="yes" xml:space="preserve">
+          <source>View years &amp; semesters</source>
+          <target state="final">مشاهدة السنوات والفصول الدراسية</target>
+        </trans-unit>
+        <trans-unit id="String_LastSync" translate="yes" xml:space="preserve">
+          <source>Last sync: {0}</source>
+          <target state="final">تاريخ آخر مزامنة: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNow" translate="yes" xml:space="preserve">
+          <source>Sync now</source>
+          <target state="final">زامن الآن "لنقل البيانات</target>
+        </trans-unit>
+        <trans-unit id="String_Syncing" translate="yes" xml:space="preserve">
+          <source>Syncing...</source>
+          <target state="final">مزامنة ...</target>
+        </trans-unit>
+        <trans-unit id="String_NoAccountToSync" translate="yes" xml:space="preserve">
+          <source>No account to sync</source>
+          <target state="final">لا يوجد حساب للمزامنة</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNeeded" translate="yes" xml:space="preserve">
+          <source>Sync needed</source>
+          <target state="final">مطلوب مزامنة</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineCouldntSync" translate="yes" xml:space="preserve">
+          <source>Offline, couldn't sync</source>
+          <target state="final">بلا اتصال بالإنترنت ، لا يمكن المزامنة</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineLastSync" translate="yes" xml:space="preserve">
+          <source>Offline, last sync: {0}</source>
+          <target state="final">في وضع عدم الاتصال ، آخر مزامنة: {0}</target>
+        </trans-unit>
+        <trans-unit id="AddClassTime_RemoveThisSchedule.Content" translate="yes" xml:space="preserve">
+          <source>Remove this schedule</source>
+          <target state="final">إزالة هذا الجدول الزمني</target>
+        </trans-unit>
+        <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
+          <source>add another time</source>
+          <target state="final">أضف وقتًا آخر</target>
         </trans-unit>
       </group>
     </body>

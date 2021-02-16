@@ -33,7 +33,7 @@
       android:layout_height="wrap_content"
       android:alpha="0.6"
       android:maxLines="1"
-      local:Binding="{Source=GPA, Target=Text, Converter=DoubleToStringConverter, ConverterParameter='0.0##'}"/>
+      local:Binding="{Source=GPA, Target=Text, Converter=GpaToStringConverter}"/>
     
   </LinearLayout>
 

@@ -2,7 +2,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en-US" target-language="de" original="PowerPlannerAppDataLibrary/Strings/Resources.resx" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
     <header>
-      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6916.0" tool-company="Microsoft" />
     </header>
     <body>
       <group id="PowerPlannerAppDataLibrary/Strings/Resources.resx" datatype="resx">
@@ -2403,6 +2403,62 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         <trans-unit id="String_Complete" translate="yes" xml:space="preserve">
           <source>Complete</source>
           <target state="final" state-qualifier="tm-suggestion">Abgeschlossen</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_ContainsSpace" translate="yes" xml:space="preserve">
+          <source>Cannot contain spaces.</source>
+          <target state="final" state-qualifier="mt-suggestion">Leerzeichen können nicht enthalten sein.</target>
+        </trans-unit>
+        <trans-unit id="UsernameInvalid_InvalidCharacters" translate="yes" xml:space="preserve">
+          <source>Contains invalid characters: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Enthält ungültige Zeichen: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_More" translate="yes" xml:space="preserve">
+          <source>More</source>
+          <target state="final" state-qualifier="tm-suggestion">Mehr</target>
+        </trans-unit>
+        <trans-unit id="String_CurrentSemester" translate="yes" xml:space="preserve">
+          <source>Current semester: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Aktuelles Semester: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_ViewYearsAndSemesters" translate="yes" xml:space="preserve">
+          <source>View years &amp; semesters</source>
+          <target state="final" state-qualifier="mt-suggestion">Jahre &amp; Semester anzeigen</target>
+        </trans-unit>
+        <trans-unit id="String_LastSync" translate="yes" xml:space="preserve">
+          <source>Last sync: {0}</source>
+          <target state="final" state-qualifier="tm-suggestion">Letzte Synchronisierung: {0}</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNow" translate="yes" xml:space="preserve">
+          <source>Sync now</source>
+          <target state="final" state-qualifier="tm-suggestion">Jetzt synchronisieren</target>
+        </trans-unit>
+        <trans-unit id="String_Syncing" translate="yes" xml:space="preserve">
+          <source>Syncing...</source>
+          <target state="final" state-qualifier="tm-suggestion">Synchronisieren...</target>
+        </trans-unit>
+        <trans-unit id="String_NoAccountToSync" translate="yes" xml:space="preserve">
+          <source>No account to sync</source>
+          <target state="final" state-qualifier="mt-suggestion">Kein zu synchronisierendes Konto</target>
+        </trans-unit>
+        <trans-unit id="String_SyncNeeded" translate="yes" xml:space="preserve">
+          <source>Sync needed</source>
+          <target state="final" state-qualifier="mt-suggestion">Sync erforderlich</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineCouldntSync" translate="yes" xml:space="preserve">
+          <source>Offline, couldn't sync</source>
+          <target state="final" state-qualifier="mt-suggestion">Offline, konnte nicht synchronisiert werden</target>
+        </trans-unit>
+        <trans-unit id="String_OfflineLastSync" translate="yes" xml:space="preserve">
+          <source>Offline, last sync: {0}</source>
+          <target state="final" state-qualifier="mt-suggestion">Offline, letzte Synchronisierung: {0}</target>
+        </trans-unit>
+        <trans-unit id="AddClassTime_RemoveThisSchedule.Content" translate="yes" xml:space="preserve">
+          <source>Remove this schedule</source>
+          <target state="final" state-qualifier="mt-suggestion">Entfernen dieses Zeitplans</target>
+        </trans-unit>
+        <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
+          <source>add another time</source>
+          <target state="final" state-qualifier="mt-suggestion">Hinzufügen eines weiteren Mals</target>
         </trans-unit>
       </group>
     </body>

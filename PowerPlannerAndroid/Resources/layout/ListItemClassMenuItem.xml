@@ -35,7 +35,7 @@
     android:textSize="18sp"
     android:lines="1"
     android:textColor="@color/foregroundFull"
-    android:paddingLeft="18dp"
+    android:paddingLeft="16dp"
     android:layout_gravity="center_vertical"
     local:Binding="{Source=Name, Target=Text}"/>
 

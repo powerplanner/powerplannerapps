@@ -1,4 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using PowerPlannerUWP.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -37,6 +39,19 @@ namespace PowerPlannerUWP.Views
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Save();
+        }
+
+        private void Popup_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (KeyPressedHelpers.IsCtrlKeyPressed())
+            {
+                // Ctrl+Enter or Ctrl+S will save the popup
+                if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.S)
+                {
+                    e.Handled = true;
+                    ViewModel.Save();
+                }
+            }
         }
     }
 }

@@ -1051,11 +1051,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 desiredList.Remove(MainMenuSelections.Years);
             }
 
-            if (PowerPlannerApp.DoNotShowSettingsInTabItems)
-            {
-                desiredList.Remove(MainMenuSelections.Settings);
-            }
-
             bool answer = IListExtensions.MakeListLike(_availableItems, desiredList);
 
             if (PowerPlannerApp.DoNotShowYearsInTabItems && !AvailableItems.Any() && Popups.Count == 0)
@@ -1193,23 +1188,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 }
 
                 ShowPopup(new YearsViewModel(this));
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        public void OpenSettings()
-        {
-            try
-            {
-                if (!PowerPlannerApp.DoNotShowSettingsInTabItems)
-                {
-                    throw new InvalidOperationException("If you're using this, you should have set DoNotShowSettingsInTabItems to true");
-                }
-
-                ShowPopup(new SettingsViewModel(this));
             }
             catch (Exception ex)
             {

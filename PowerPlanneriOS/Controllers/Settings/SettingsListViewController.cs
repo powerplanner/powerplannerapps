@@ -100,7 +100,7 @@ namespace PowerPlanneriOS.Controllers.Settings
                     _tableView.StartNewGroup();
                 }
 
-                if (ViewModel.HasAccount && mainScreenViewModel != null)
+                if (ViewModel.IsViewYearsAndSemestersVisible)
                 {
                     _cellCurrentSemester = new UITableViewCell(UITableViewCellStyle.Default, "TableCellCurrentSemester");
 
@@ -113,7 +113,7 @@ namespace PowerPlanneriOS.Controllers.Settings
                     UpdateCurrentSemesterText(mainScreenViewModel.CurrentSemester);
                     _tableView.AddCell(_cellCurrentSemester, null);
 
-                    _tableView.AddCell("View Years & Semesters", () => mainScreenViewModel.OpenYears());
+                    _tableView.AddCell("View Years & Semesters", () => ViewModel.OpenYears());
 
                     _tableView.StartNewGroup();
                 }
@@ -129,16 +129,13 @@ namespace PowerPlanneriOS.Controllers.Settings
                     _cellSyncStatus = new UITableViewCell(UITableViewCellStyle.Default, "TableCellSyncStatus");
                     _tableView.AddCell(_cellSyncStatus, delegate
                     {
-                        if (mainScreenViewModel.HasSyncErrors)
-                        {
-                            mainScreenViewModel.ViewSyncErrors();
-                        }
+                        ViewModel.ViewSyncErrors();
                     });
 
                     _cellSyncNow = new UITableViewCell(UITableViewCellStyle.Default, "TableCellSyncNow");
                     _tableView.AddCell(_cellSyncNow, delegate
                     {
-                        mainScreenViewModel.SyncCurrentAccount();
+                        ViewModel.StartSync();
                     });
 
                     UpdateSyncStatuses(mainScreenViewModel);

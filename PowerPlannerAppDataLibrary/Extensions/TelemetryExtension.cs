@@ -26,7 +26,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public string UserId { get; private set; }
 
-        public abstract void TrackException(Exception ex, [CallerMemberName]string exceptionName = null);
+        public abstract void TrackException(Exception ex, [CallerMemberName]string exceptionName = null, IDictionary<string, string> properties = null);
 
         public abstract void TrackEvent(string eventName, IDictionary<string, string> properties = null);
 
@@ -140,7 +140,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
             System.Diagnostics.Debug.WriteLine($"Event: {eventName}");
         }
 
-        public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null)
+        public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null, IDictionary<string, string> properties = null)
         {
             System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
         }

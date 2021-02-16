@@ -112,6 +112,9 @@
     <PRIResource Include="Strings\en-US\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
+    <PRIResource Include="Strings\fr\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -177,9 +180,11 @@
     <Compile Include="Extensions\UWPNetworkInfoExtension.cs" />
     <Compile Include="Extensions\UWPPushExtension.cs" />
     <Compile Include="Extensions\UWPRemindersExtension.cs" />
+    <Compile Include="Extensions\UWPSoundsExtension.cs" />
     <Compile Include="Extensions\UWPTelemetryExtension.cs" />
     <Compile Include="Extensions\UWPTilesExtension.cs" />
     <Compile Include="Helpers\DataPackageHelpers.cs" />
+    <Compile Include="Helpers\KeyPressedHelpers.cs" />
     <Compile Include="Helpers\QueryStringHelper.cs" />
     <Compile Include="Helpers\UWPExceptionHelper.cs" />
     <Compile Include="Helpers\UWPNotificationsHelper.cs" />
@@ -254,6 +259,12 @@
     </Compile>
     <Compile Include="Views\QuickAddView.xaml.cs">
       <DependentUpon>QuickAddView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScheduleViews\AddClassTimeGroupCollapsed.xaml.cs">
+      <DependentUpon>AddClassTimeGroupCollapsed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScheduleViews\AddClassTimeGroupExpanded.xaml.cs">
+      <DependentUpon>AddClassTimeGroupExpanded.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScheduleViews\HolidayScheduleItemView.xaml.cs">
       <DependentUpon>HolidayScheduleItemView.xaml</DependentUpon>
@@ -488,9 +499,6 @@
       <DependentUpon>MainScreenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopupViewHostGeneric.cs" />
-    <Compile Include="Views\ScheduleViews\EditingAllSchedulesControl.xaml.cs">
-      <DependentUpon>EditingAllSchedulesControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ScheduleViews\EditingAllSchedulesSingleClassControl.xaml.cs">
       <DependentUpon>EditingAllSchedulesSingleClassControl.xaml</DependentUpon>
     </Compile>
@@ -548,6 +556,7 @@
     <Content Include="Assets\PromoOtherPlatforms\iPhone.png" />
     <Content Include="Assets\QuickAddTile\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\QuickAddTile\Square71x71Logo.scale-200.png" />
+    <Content Include="Assets\Sounds\TaskCompleted.mp3" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
     <Content Include="Assets\Square150x150Logo.scale-125.png" />
     <Content Include="Assets\Square150x150Logo.scale-150.png" />
@@ -699,6 +708,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QuickAddView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScheduleViews\AddClassTimeGroupCollapsed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScheduleViews\AddClassTimeGroupExpanded.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -998,10 +1015,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScheduleViews\EditingAllSchedulesControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ScheduleViews\EditingAllSchedulesSingleClassControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1083,19 +1096,19 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>3.4.0</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>3.4.0</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.10</Version>
+      <Version>6.2.11</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
-      <Version>6.1.0</Version>
+      <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.4.3</Version>
+      <Version>2.5.0</Version>
     </PackageReference>
     <PackageReference Include="NotificationsVisualizerLibrary">
       <Version>1.0.5</Version>
@@ -1129,5 +1142,6 @@
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.de.resx" DestinationFiles="Strings\de\Resources.resw" />
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.es.resx" DestinationFiles="Strings\es\Resources.resw" />
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.pt.resx" DestinationFiles="Strings\pt\Resources.resw" />
+    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.fr.resx" DestinationFiles="Strings\fr\Resources.resw" />
   </Target>
 </Project>

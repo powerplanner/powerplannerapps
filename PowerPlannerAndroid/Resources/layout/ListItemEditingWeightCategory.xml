@@ -13,17 +13,14 @@
     android:layout_weight="1"
     android:layout_height="wrap_content"
     android:hint="{ClassPage_EditGrades_TextBlockName.Text}"
-    android:id="@+id/EditTextName"
     local:Binding="{Source=Name, Target=Text, Mode=TwoWay}"
     android:paddingRight="8dp"/>
   
-  <com.google.android.material.textfield.TextInputEditText
-    android:inputType="number|numberDecimal"
+  <InterfacesDroid.Views.BareMaterialEditDecimalNumber
     android:layout_width="90dp"
     android:layout_height="wrap_content"
     android:hint="{ClassPage_EditGrades_TextBlockWeight}"
-    android:id="@+id/EditTextWeight"
-    local:Binding="{Source=Weight, Target=Text, Mode=TwoWay, Converter=DoubleToStringConverter}"/>
+    local:Binding="{Source=Weight, Target=Value, Mode=TwoWay}"/>
 
   <!--Delete button-->
   <ImageButton

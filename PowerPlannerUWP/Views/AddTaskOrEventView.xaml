@@ -10,7 +10,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:interfaces="using:InterfacesUWP"
     mc:Ignorable="d"
-    xmlns:localControls="using:PowerPlannerUWP.Controls">
+    xmlns:localControls="using:PowerPlannerUWP.Controls"
+    KeyUp="Popup_KeyUp">
 
     <views:PopupViewHostGeneric.PrimaryCommands>
 

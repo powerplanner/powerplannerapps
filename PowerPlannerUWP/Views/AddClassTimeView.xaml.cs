@@ -27,15 +27,35 @@ using PowerPlannerUWP.Controls.TimePickers;
 
 namespace PowerPlannerUWP.Views
 {
+    public class AddClassTimeHasOnlyOneGroupToMarginConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is bool && (bool)value)
+            {
+                return new Thickness(0);
+            }
+            else
+            {
+                return new Thickness(12, 6, 12, 6);
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class AddClassTimeView : PopupViewHostGeneric
     {
 
-        public new AddClassTimeViewModel ViewModel
+        public new AddClassTimesViewModel ViewModel
         {
-            get { return base.ViewModel as AddClassTimeViewModel; }
+            get { return base.ViewModel as AddClassTimesViewModel; }
             set { base.ViewModel = value; }
         }
 
@@ -44,14 +64,6 @@ namespace PowerPlannerUWP.Views
             this.InitializeComponent();
 
             MaxWindowSize = new Size(450, double.MaxValue);
-
-            checkBoxMonday.Content = DateTools.ToLocalizedString(DayOfWeek.Monday);
-            checkBoxTuesday.Content = DateTools.ToLocalizedString(DayOfWeek.Tuesday);
-            checkBoxWednesday.Content = DateTools.ToLocalizedString(DayOfWeek.Wednesday);
-            checkBoxThursday.Content = DateTools.ToLocalizedString(DayOfWeek.Thursday);
-            checkBoxFriday.Content = DateTools.ToLocalizedString(DayOfWeek.Friday);
-            checkBoxSaturday.Content = DateTools.ToLocalizedString(DayOfWeek.Saturday);
-            checkBoxSunday.Content = DateTools.ToLocalizedString(DayOfWeek.Sunday);
         }
 
         public override void OnViewModelSetOverride()
@@ -91,6 +103,11 @@ namespace PowerPlannerUWP.Views
         private void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Delete();
+        }
+
+        private void buttonAddTime_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AddAnotherTime();
         }
     }
 }

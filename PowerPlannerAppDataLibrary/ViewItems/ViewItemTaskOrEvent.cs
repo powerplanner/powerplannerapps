@@ -792,5 +792,10 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 return !IsComplete;
             }
         }
+
+        public override string ToString()
+        {
+            return Name + " - " + Class?.Name;
+        }
     }
 }

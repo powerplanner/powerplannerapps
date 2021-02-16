@@ -350,7 +350,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
         public override void OnViewModelLoadedOverride()
         {
-            _classBindingHost.BindingObject = ViewModel.Class;
+            _classBindingHost.DataContext = ViewModel.Class;
             _tableView.Source = new TableViewSource(_tableView, ViewModel);
             _itemsSourceWeightSummaries.ItemsSource = ViewModel.Class.WeightCategories;
 

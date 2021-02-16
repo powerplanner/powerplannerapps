@@ -102,7 +102,7 @@ namespace PowerPlanneriOS.Controllers
             AddDivider(StackView, fullWidth);
         }
 
-        protected static void AddDivider(UIStackView stackView, bool fullWidth = false) 
+        protected static void AddDivider(UIStackView stackView, bool fullWidth = false)
         {
             stackView.AddDivider(fullWidth);
         }
@@ -143,6 +143,17 @@ namespace PowerPlanneriOS.Controllers
         protected void AddTextField(UITextField textField, string textBindingPropertyName = null, bool firstResponder = false)
         {
             AddTextField(StackView, textField, textBindingPropertyName: textBindingPropertyName, firstResponder: firstResponder);
+        }
+
+        protected void AddTextField(BareUITextField textField, string textFieldBindingPropertyName = null, bool firstResponder = false)
+        {
+            if (textFieldBindingPropertyName != null)
+            {
+                BindingHost.SetTextFieldBinding(textField, textFieldBindingPropertyName);
+            }
+
+            // We don't bind again here, already did binding (note need to cast to UITextField so it calls the right method)
+            AddTextField(textField as UITextField, firstResponder: firstResponder);
         }
 
         protected void AddUnderVisiblity(UIView view, string propertyName)

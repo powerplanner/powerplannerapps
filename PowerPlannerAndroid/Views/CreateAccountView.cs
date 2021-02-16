@@ -31,11 +31,6 @@ namespace PowerPlannerAndroid.Views
             FindViewById<Button>(Resource.Id.ButtonCreateAccount).Click += ButtonCreateAccount_Click;
             FindViewById<Button>(Resource.Id.ButtonCreateOfflineAccount).Click += ButtonCreateOfflineAccount_Click;
 
-            ViewModel.AlertConfirmationPasswordDidNotMatch = AlertConfirmationPasswordDidNotMatch;
-            ViewModel.AlertNoEmail = AlertNoEmail;
-            ViewModel.AlertNoUsername = AlertNoUsername;
-            ViewModel.AlertPasswordTooShort = AlertPasswordTooShort;
-
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
             KeyboardHelper.FocusAndShow(FindViewById<EditText>(Resource.Id.EditTextUsername));
@@ -53,26 +48,6 @@ namespace PowerPlannerAndroid.Views
 
             var dialog = builder.Create();
             dialog.Show();
-        }
-
-        private void AlertConfirmationPasswordDidNotMatch()
-        {
-            ShowMessage(PowerPlannerResources.GetString("String_InvalidConfirmationPasswordExplanation"), PowerPlannerResources.GetString("String_InvalidConfirmationPassword"));
-        }
-
-        private void AlertNoEmail()
-        {
-            ShowMessage(PowerPlannerResources.GetString("String_NoEmailBody"), PowerPlannerResources.GetString("String_NoEmailHeader"));
-        }
-
-        private void AlertNoUsername()
-        {
-            ShowMessage(PowerPlannerResources.GetString("String_NoUsernameBody"), PowerPlannerResources.GetString("String_NoUsernameHeader"));
-        }
-
-        private void AlertPasswordTooShort()
-        {
-            ShowMessage(PowerPlannerResources.GetString("String_InvalidPasswordTooShortExplanation"), PowerPlannerResources.GetString("String_InvalidPassword"));
         }
 
         private void ShowMessage(string message, string title)

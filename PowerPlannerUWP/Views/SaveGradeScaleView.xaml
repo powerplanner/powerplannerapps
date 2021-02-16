@@ -9,7 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="SAVE GRADE SCALE">
+    Title="SAVE GRADE SCALE"
+    xmlns:interfaces="using:InterfacesUWP">
 
     <views:PopupViewHostGeneric.PrimaryCommands>
 
@@ -26,18 +27,27 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="0,0,0,6">
-                <TextBox
+                <interfaces:BareTextBox
                     x:Uid="SaveGradeScalePage_TextBoxName"
                     x:Name="tbName"
                     Grid.Row="1"
                     Header="Name"
                     Margin="9,6"
                     Loaded="tbName_Loaded"
-                    InputScope="NameOrPhoneNumber"
                     IsSpellCheckEnabled="True"
                     IsTextPredictionEnabled="True"
                     KeyUp="tbName_KeyUp"
-                    Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding Name.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ValidationState="{Binding Name.ValidationState}"
+                    HasFocus="{Binding Name.HasFocus, Mode=TwoWay}">
+                    <interfaces:BareTextBox.InputScope>
+                        <InputScope>
+                            <InputScope.Names>
+                                <InputScopeName NameValue="Default"/>
+                            </InputScope.Names>
+                        </InputScope>
+                    </interfaces:BareTextBox.InputScope>
+                </interfaces:BareTextBox>
 
             </StackPanel>
         </ScrollViewer>

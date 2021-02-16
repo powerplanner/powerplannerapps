@@ -17,6 +17,9 @@ using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
+    /// <summary>
+    /// Note that this is the normal version. <see cref="AddClassTimesViewModel"/> is the new version that addresses problems with people not realizing how to add another time.
+    /// </summary>
     public class AddClassTimeViewModel : BaseMainScreenViewModelChild
     {
         protected override bool InitialAllowLightDismissValue => false;

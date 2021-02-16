@@ -25,13 +25,12 @@
             android:layout_height="@dimen/fullWidthItemHeight"
             android:orientation="horizontal">
 
-            <EditText
+            <InterfacesDroid.Views.BareEditDecimalNumber
                 android:id="@+id/EditTextGradeReceived"
                 style="@style/FullWidthEditText"
                 android:layout_width="wrap_content"
                 android:textSize="20sp"
-                android:inputType="number|numberDecimal"
-                local:Binding="{Source=GradeReceived, Target=Text, Mode=TwoWay, Converter=GradeToEditViewTextConverter}"
+                local:Binding="{Source=GradeReceived, Target=Value, Mode=TwoWay, Converter=GradeToNullableDoubleConverter}"
                 android:hint="--"/>
 
             <TextView
@@ -42,13 +41,12 @@
                 android:layout_height="match_parent"
                 android:paddingTop="2dp"
                 android:gravity="center_vertical"/>
-
-            <EditText
+            
+            <InterfacesDroid.Views.BareEditDecimalNumber
                 style="@style/FullWidthEditText"
                 android:layout_width="wrap_content"
                 android:textSize="20sp"
-                android:inputType="number|numberDecimal"
-                local:Binding="{Source=GradeTotal, Target=Text, Mode=TwoWay, Converter=GradeToEditViewTextConverter}"
+                local:Binding="{Source=GradeTotal, Target=Value, Mode=TwoWay, Converter=GradeToNullableDoubleConverter}"
                 android:hint="--"/>
 
             <TextView

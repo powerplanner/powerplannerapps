@@ -135,7 +135,7 @@ namespace PowerPlanneriOS.Controllers
             }
             _pageMenuController.SelectionChanged += new WeakEventHandler<CAPSPageMenuSelectionChangedEventArgs>(_pageMenuController_SelectionChanged).Handler;
 
-            _classBindingHost.BindingObject = ViewModel.ViewItemsGroupClass.Class;
+            _classBindingHost.DataContext = ViewModel.ViewItemsGroupClass.Class;
             _classBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), (name) =>
             {
                 Title = name;
