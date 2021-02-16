@@ -39,7 +39,7 @@
         </Style>
 
         <DataTemplate x:Key="DataTemplateTaskOrEventForGrid">
-            <ContentPresenter ContentTemplate="{StaticResource DataTemplateTaskOrEvent}" Margin="0,0,6,0"/>
+            <ContentPresenter ContentTemplate="{StaticResource DataTemplateTaskOrEventWithoutClass}" Margin="0,0,6,0"/>
         </DataTemplate>
 
         <Style x:Key="HeaderStyle" TargetType="Button" BasedOn="{StaticResource SubitemContainerStyle}">

@@ -62,6 +62,7 @@
                     Grid.Row="1"
                     Margin="0,0,6,6">
                     <TextBlock
+                        x:Name="TextBoxClass"
                         Text="{Binding Class.Name}"
                         TextWrapping="NoWrap"
                         TextTrimming="CharacterEllipsis"

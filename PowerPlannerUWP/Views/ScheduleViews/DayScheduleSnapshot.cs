@@ -6,6 +6,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
+using PowerPlannerUWP.Helpers;
 using PowerPlannerUWP.Views.CalendarViews;
 using System;
 using System.Collections.Generic;
@@ -714,7 +715,10 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
         private void ShowContextFlyout(UIElement sender, Windows.UI.Xaml.Input.ContextRequestedEventArgs args)
         {
-            MenuFlyout flyout = new Helpers.TaskOrEventFlyout(Item.Item).GetFlyout();
+            MenuFlyout flyout = new TaskOrEventFlyout(Item.Item, new TaskOrEventFlyoutOptions
+            {
+                ShowGoToClass = true
+            }).GetFlyout();
 
             // Show context flyout
             if (args.TryGetPosition(sender, out Point point))

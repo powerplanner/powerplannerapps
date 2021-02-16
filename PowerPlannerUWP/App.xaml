@@ -746,6 +746,12 @@
                             IncludeDate="False"/>
                     </DataTemplate>
 
+                    <DataTemplate x:Key="DataTemplateTaskOrEventWithoutClass">
+                        <taskOrEventViews:TaskOrEventListViewItem
+                            Margin="0,3"
+                            IncludeClass="False"/>
+                    </DataTemplate>
+
 
                     <DataTemplate x:Key="MainCalendarItemTemplate">
                         <calendarViews:MainCalendarItemView />
