@@ -131,16 +131,20 @@ namespace PowerPlannerUWP.Flyouts
 
             flyout.Items.Add(new MenuFlyoutSeparator());
 
-            /* Grade Weight Category */
-            var gradeWeightFlyout = new MenuFlyoutSubItem
+            // Only create the grade weight submenu if the item has a Class
+            if (isClassValid())
             {
-                Text = LocalizedResources.GetString("ContextFlyout_GradeWeightCategories"),
-                Icon = new SymbolIcon(Symbol.Calculator)
-            };
+                /* Grade Weight Category */
+                var gradeWeightFlyout = new MenuFlyoutSubItem
+                {
+                    Text = LocalizedResources.GetString("ContextFlyout_GradeWeightCategories"),
+                    Icon = new SymbolIcon(Symbol.Calculator)
+                };
 
-            // Populate flyout subitem
-            foreach (var weight in GetGradeWeightItems(_item)) { gradeWeightFlyout.Items.Add(weight); };
-            flyout.Items.Add(gradeWeightFlyout);
+                // Populate flyout subitem
+                foreach (var weight in GetGradeWeightItems(_item)) { gradeWeightFlyout.Items.Add(weight); };
+                flyout.Items.Add(gradeWeightFlyout);
+            }
 
             /* Convert Task/Event */
             var convertTypeItem = new MenuFlyoutItem
@@ -151,7 +155,7 @@ namespace PowerPlannerUWP.Flyouts
             convertTypeItem.Click += Flyout_ConvertType;
             flyout.Items.Add(convertTypeItem);
 
-            if (_options.ShowGoToClass)
+            if (isClassValid() && _options.ShowGoToClass)
             {
                 /* Go To Class */
                 flyout.Items.Add(new MenuFlyoutSeparator());
@@ -168,6 +172,12 @@ namespace PowerPlannerUWP.Flyouts
         }
 
         /* Utilities */
+
+        // Returns true if _item's Class is a valid class (i.e. not "No Class")
+        private bool isClassValid()
+        {
+            return _item.Class != PowerPlannerApp.Current.GetMainScreenViewModel()?.CurrentSemester.NoClassClass;
+        }
 
         public static List<RadioMenuFlyoutItem> GetGradeWeightItems(ViewItemTaskOrEvent item)
         {
