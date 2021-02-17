@@ -112,48 +112,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         /// <summary>
         /// Toggles the item type. If it's a task, becomes an event, and vice versa.
         /// </summary>
-        public async void ConvertType()
+        public void ConvertType()
         {
-            await TryHandleUserInteractionAsync("ChangeItemType", async (cancellationToken) =>
-            {
-                DataItemMegaItem item = new DataItemMegaItem()
-                {
-                    Identifier = Item.Identifier
-                };
-
-                MegaItemType newMegaItemType;
-
-                switch ((Item.DataItem as DataItemMegaItem).MegaItemType)
-                {
-                    case MegaItemType.Task:
-                        newMegaItemType = MegaItemType.Event;
-                        break;
-
-                    case MegaItemType.Homework:
-                        newMegaItemType = MegaItemType.Exam;
-                        break;
-
-                    case MegaItemType.Event:
-                        newMegaItemType = MegaItemType.Task;
-                        break;
-
-                    case MegaItemType.Exam:
-                        newMegaItemType = MegaItemType.Homework;
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                item.MegaItemType = newMegaItemType;
-
-                DataChanges editChanges = new DataChanges();
-                editChanges.Add(item);
-                await PowerPlannerApp.Current.SaveChanges(editChanges);
-
-                TelemetryExtension.Current?.TrackEvent("ConvertedItemType");
-
-            }, "Failed to change item type. Your error has been reported.");
+            MainScreenViewModel.ConvertTaskOrEventType(Item, this);
         }
         
         public void Delete()

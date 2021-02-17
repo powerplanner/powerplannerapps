@@ -1142,9 +1142,48 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             PowerPlannerApp.Current.SaveChanges(changes);
         }
 
-        public void ConvertTaskOrEventType(ViewItemTaskOrEvent item)
+        public async void ConvertTaskOrEventType(ViewItemTaskOrEvent item, BaseViewModel viewModel = null)
         {
-            ViewTaskOrEventViewModel.Create(this, item).ConvertType();
+            await BaseMainScreenViewModelDescendant.TryHandleUserInteractionAsync(viewModel ?? this, "ChangeItemType", async (cancellationToken) =>
+            {
+                DataItemMegaItem dataItem = new DataItemMegaItem()
+                {
+                    Identifier = item.Identifier
+                };
+
+                PowerPlannerSending.MegaItemType newMegaItemType;
+
+                switch ((item.DataItem as DataItemMegaItem).MegaItemType)
+                {
+                    case PowerPlannerSending.MegaItemType.Task:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Event;
+                        break;
+
+                    case PowerPlannerSending.MegaItemType.Homework:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Exam;
+                        break;
+
+                    case PowerPlannerSending.MegaItemType.Event:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Task;
+                        break;
+
+                    case PowerPlannerSending.MegaItemType.Exam:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Homework;
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+
+                dataItem.MegaItemType = newMegaItemType;
+
+                DataChanges editChanges = new DataChanges();
+                editChanges.Add(dataItem);
+                await PowerPlannerApp.Current.SaveChanges(editChanges);
+
+                TelemetryExtension.Current?.TrackEvent("ConvertedItemType");
+
+            }, "Failed to change item type. Your error has been reported.");
         }
 
         public void SetTaskPercentComplete(ViewItemTaskOrEvent task, double percentComplete)
