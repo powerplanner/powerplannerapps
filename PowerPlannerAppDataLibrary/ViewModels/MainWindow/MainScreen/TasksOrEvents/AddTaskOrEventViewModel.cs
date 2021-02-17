@@ -118,11 +118,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             public ViewItemTaskOrEvent Item { get; set; }
         }
+        
+        public class CloneParameter
+        {
+            public IList<ViewItemClass> Classes { get; set; }
+            public ViewItemTaskOrEvent Item { get; set; }
+        }
 
         public AccountDataItem Account { get; private set; }
 
         public AddParameter AddParams { get; private set; }
         public EditParameter EditParams { get; private set; }
+        public CloneParameter CloneParams { get; private set; }
 
         public bool IsInDifferentTimeZone { get; private set; }
 
@@ -248,6 +255,87 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c // Assign class last, since it also assigns weight categories, and updates time options from remembered times
             };
+        }
+
+        public static AddTaskOrEventViewModel CreateForClone(BaseViewModel parent, CloneParameter cloneParams)
+        {
+            IList<ViewItemClass> classes = GetClassesWithNoClassClass(cloneParams.Classes);
+
+            var account = parent.FindAncestor<MainWindowViewModel>()?.CurrentAccount;
+            if (account == null)
+            {
+                throw new NullReferenceException("CurrentAccount was null");
+            }
+            ViewItemClass c = cloneParams.Item.Class;
+            TaskOrEventType type = cloneParams.Item.Type;
+
+            if (c == null)
+            {
+                throw new NullReferenceException("Class of the item was null. Item id " + cloneParams.Item.Identifier);
+            }
+
+            if (c.Semester == null)
+            {
+                throw new NullReferenceException("Semester of the class was null. Item id " + cloneParams.Item.Identifier);
+            }
+
+            if (c.Semester.Classes == null)
+            {
+                throw new NullReferenceException("Classes of the semester was null. Item id " + cloneParams.Item.Identifier);
+            }
+
+            var model = new AddTaskOrEventViewModel(parent)
+            {
+                Account = account,
+                State = OperationState.Adding,
+                CloneParams = cloneParams,
+                Name = cloneParams.Item.Name,
+                Classes = GetClassesWithNoClassClass(c.Semester.Classes),
+                Date = cloneParams.Item.DateInSchoolTime.Date,
+                Details = cloneParams.Item.Details,
+                Type = type,
+                ImageNames = cloneParams.Item.ImageNames.ToArray(),
+                IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
+                Class = c, // Assign class last, since it also assigns weight categories
+                SelectedWeightCategory = cloneParams.Item.WeightCategory
+            };
+
+            // Assign existing image attachments
+            model.ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(cloneParams.Item.ImageNames.Select(i => new EditingExistingImageAttachmentViewModel(model, i)));
+
+            switch (cloneParams.Item.GetActualTimeOption())
+            {
+                case DataItemMegaItem.TimeOptions.AllDay:
+                    model.SelectedTimeOption = model.TimeOption_AllDay;
+                    break;
+
+                case DataItemMegaItem.TimeOptions.BeforeClass:
+                    model.SelectedTimeOption = model.TimeOption_BeforeClass;
+                    break;
+
+                case DataItemMegaItem.TimeOptions.Custom:
+                    model._startTime = new TimeSpan(cloneParams.Item.DateInSchoolTime.Hour, cloneParams.Item.DateInSchoolTime.Minute, 0);
+                    model._endTime = cloneParams.Item.EndTimeInSchoolTime.TimeOfDay;
+                    model.SelectedTimeOption = model.TimeOption_Custom;
+                    break;
+
+                case DataItemMegaItem.TimeOptions.DuringClass:
+                    model.SelectedTimeOption = model.TimeOption_DuringClass;
+                    break;
+
+                case DataItemMegaItem.TimeOptions.EndOfClass:
+                    model.SelectedTimeOption = model.TimeOption_EndOfClass;
+                    break;
+
+                case DataItemMegaItem.TimeOptions.StartOfClass:
+                    model.SelectedTimeOption = model.TimeOption_StartOfClass;
+                    break;
+            }
+
+            // We don't want to consider setting the initial time option as the user configuring the time option
+            model._userChangedSelectedTimeOption = false;
+
+            return model;
         }
 
         private static IList<ViewItemClass> GetClassesWithNoClassClass(IList<ViewItemClass> normalClasses)
@@ -1184,7 +1272,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     throw new NotImplementedException("Unknown type");
             }
 
-            if (AddParams != null)
+            if (AddParams != null || CloneParams != null)
             {
                 dataItem.Identifier = Guid.NewGuid();
             }

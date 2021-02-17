@@ -6,6 +6,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
+using PowerPlannerUWP.Flyouts;
 using PowerPlannerUWP.Views.CalendarViews;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using ToolsPortable;
 using ToolsUniversal;
+using Windows.Foundation;
 using Windows.Globalization.DateTimeFormatting;
 using Windows.UI;
 using Windows.UI.Text;
@@ -681,6 +683,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
         public MyFullEventItem()
         {
             IsFullItem = true;
+            ContextRequested += ShowContextFlyout;
         }
 
         protected override FrameworkElement GenerateContent(DayScheduleItemsArranger.EventItem item)
@@ -708,6 +711,24 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             grid.Children.Add(tb);
 
             return grid;
+        }
+
+        private void ShowContextFlyout(UIElement sender, Windows.UI.Xaml.Input.ContextRequestedEventArgs args)
+        {
+            MenuFlyout flyout = new TaskOrEventFlyout(Item.Item, new TaskOrEventFlyoutOptions
+            {
+                ShowGoToClass = true
+            }).GetFlyout();
+
+            // Show context flyout
+            if (args.TryGetPosition(sender, out Point point))
+            {
+                flyout.ShowAt(sender as FrameworkElement, point);
+            }
+            else
+            {
+                flyout.ShowAt(sender as FrameworkElement);
+            }
         }
     }
 

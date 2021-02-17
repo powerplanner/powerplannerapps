@@ -2460,6 +2460,42 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>add another time</source>
           <target state="final" state-qualifier="mt-suggestion">Hinzufügen eines weiteren Mals</target>
         </trans-unit>
+        <trans-unit id="String_ConfirmDeleteItemHeader" translate="yes" xml:space="preserve">
+          <source>Delete item?</source>
+          <target state="final" state-qualifier="mt-suggestion">Element löschen?</target>
+        </trans-unit>
+        <trans-unit id="String_ConfirmDeleteItemMessage" translate="yes" xml:space="preserve">
+          <source>Are you sure you want to delete this item?</source>
+          <target state="final" state-qualifier="tm-suggestion">Möchten Sie dieses Element wirklich löschen?</target>
+        </trans-unit>
+        <trans-unit id="ContextFlyout_Delete" translate="yes" xml:space="preserve">
+          <source>Delete</source>
+          <target state="final" state-qualifier="tm-suggestion">Löschen</target>
+        </trans-unit>
+        <trans-unit id="ContextFlyout_Duplicate" translate="yes" xml:space="preserve">
+          <source>Duplicate</source>
+          <target state="final" state-qualifier="tm-suggestion">Duplizieren</target>
+        </trans-unit>
+        <trans-unit id="ContextFlyout_Edit" translate="yes" xml:space="preserve">
+          <source>Edit</source>
+          <target state="final" state-qualifier="tm-suggestion">Bearbeitung</target>
+        </trans-unit>
+        <trans-unit id="ContextFlyout_GoToClass" translate="yes" xml:space="preserve">
+          <source>Go to class</source>
+          <target state="final" state-qualifier="mt-suggestion">Zum Unterricht</target>
+        </trans-unit>
+        <trans-unit id="ContextFlyout_GradeWeightCategories" translate="yes" xml:space="preserve">
+          <source>Weight categories</source>
+          <target state="final" state-qualifier="mt-suggestion">Gewichtskategorien</target>
+        </trans-unit>
+        <trans-unit id="ContextFlyout_MarkComplete" translate="yes" xml:space="preserve">
+          <source>Mark complete</source>
+          <target state="final" state-qualifier="tm-suggestion">Als erledigt markieren</target>
+        </trans-unit>
+        <trans-unit id="ContextFlyout_MarkIncomplete" translate="yes" xml:space="preserve">
+          <source>Mark incomplete</source>
+          <target state="final" state-qualifier="mt-suggestion">Markieren unvollständig</target>
+        </trans-unit>
       </group>
     </body>
   </file>

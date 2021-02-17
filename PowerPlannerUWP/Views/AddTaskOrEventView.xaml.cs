@@ -159,6 +159,12 @@ namespace PowerPlannerUWP.Views
                 return;
 
             tbName.Focus(FocusState.Programmatic);
+
+            if (tbName.Text.Length > 0)
+            {
+                // Only when duplicating should this get hit
+                tbName.SelectAll();
+            }
         }
 
         private void DatePickerDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)

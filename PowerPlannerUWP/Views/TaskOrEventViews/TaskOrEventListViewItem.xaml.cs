@@ -1,5 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerUWP.Flyouts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -94,13 +95,33 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             textBlockDetails.Visibility = Visibility.Visible;
         }
 
+        private bool _includeClass = true;
+        /// <summary>
+        /// Gets or sets whether the class name should be displayed in the subtitle. When viewing from within a class, this should be set to false.
+        /// </summary>
+        public bool IncludeClass
+        {
+            get => _includeClass;
+            set
+            {
+                if (_includeClass == value)
+                {
+                    return;
+                }
+
+                _includeClass = value;
+                TextBoxClass.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+                UpdateSubtitlePartTwo();
+            }
+        }
+
         private bool _includeDate = true;
         public bool IncludeDate
         {
             get { return _includeDate; }
             set
             {
-                if (_includeDate != value)
+                if (_includeDate == value)
                 {
                     return;
                 }
@@ -117,13 +138,43 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
                 return;
             }
 
+            string txt;
+
             if (IncludeDate)
             {
-                RunSubtitlePartTwo.Text = _currItem.GetType().GetProperty("SubtitleDueDate").GetValue(_currItem) as string;
+                txt = _currItem.GetType().GetProperty("SubtitleDueDate").GetValue(_currItem) as string;
             }
             else
             {
-                RunSubtitlePartTwo.Text = _currItem.GetType().GetProperty("SubtitleDueTime").GetValue(_currItem) as string;
+                txt = _currItem.GetType().GetProperty("SubtitleDueTime").GetValue(_currItem) as string;
+            }
+
+            if (!IncludeClass)
+            {
+                txt = txt.Substring(" - ".Length);
+            }
+
+            RunSubtitlePartTwo.Text = txt;
+        }
+
+        private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            // Dynamically create the context menu upon request
+            // (This is to improve performance of large lists, so that
+            // a context menu and all bindings aren't created until actually requested)
+            MenuFlyout flyout = new TaskOrEventFlyout(_currItem, new TaskOrEventFlyoutOptions
+            {
+                ShowGoToClass = IncludeClass
+            }).GetFlyout();
+            
+            // Show context flyout
+            if (args.TryGetPosition(sender, out Point point))
+            {
+                flyout.ShowAt(sender as FrameworkElement, point);
+            }
+            else
+            {
+                flyout.ShowAt(sender as FrameworkElement);
             }
         }
     }

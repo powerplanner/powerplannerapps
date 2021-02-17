@@ -698,10 +698,10 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
-                    // Message about the display scaling issue
-                    if (v < new Version(3, 0, 6, 0))
-                        changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
-
+                    if (v <= new Version(2102, 16, 3, 99))
+                    {
+                        changedText += "\n - Right click on tasks/events to quickly mark complete, delete, or edit!";
+                    }
 
                     if (v <= new Version(2011, 25, 4, 99) && v >= new Version(2011, 25, 4, 0))
                     {

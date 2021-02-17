@@ -1908,6 +1908,33 @@ Please think about using an online account instead!</value>
   <data name="String_Complete" xml:space="preserve">
     <value>Complete</value>
   </data>
+  <data name="String_ConfirmDeleteItemHeader" xml:space="preserve">
+    <value>Delete item?</value>
+  </data>
+  <data name="String_ConfirmDeleteItemMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this item?</value>
+  </data>
+  <data name="ContextFlyout_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ContextFlyout_Duplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="ContextFlyout_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ContextFlyout_GoToClass" xml:space="preserve">
+    <value>Go to class</value>
+  </data>
+  <data name="ContextFlyout_GradeWeightCategories" xml:space="preserve">
+    <value>Weight categories</value>
+  </data>
+  <data name="ContextFlyout_MarkComplete" xml:space="preserve">
+    <value>Mark complete</value>
+  </data>
+  <data name="ContextFlyout_MarkIncomplete" xml:space="preserve">
+    <value>Mark incomplete</value>
+  </data>
   <data name="UsernameInvalid_ContainsSpace" xml:space="preserve">
     <value>Cannot contain spaces.</value>
   </data>

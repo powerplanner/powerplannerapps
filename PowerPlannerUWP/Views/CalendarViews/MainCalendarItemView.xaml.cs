@@ -1,6 +1,8 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using PowerPlannerUWP.Flyouts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -53,7 +55,28 @@ namespace PowerPlannerUWP.Views.CalendarViews
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
+        private void Button_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            // Dynamically create the context menu upon request
+            // (This is to improve performance of large lists, so that
+            // a context menu and all bindings aren't created until actually requested)
+            MenuFlyout flyout = new TaskOrEventFlyout(Item, new TaskOrEventFlyoutOptions
+            {
+                ShowGoToClass = true
+            }).GetFlyout();
+
+            // Show context flyout
+            if (args.TryGetPosition(sender, out Point point))
+            {
+                flyout.ShowAt(sender as FrameworkElement, point);
+            }
+            else
+            {
+                flyout.ShowAt(sender as FrameworkElement);
+            }
+        }
 
         public string TelemetryOnClickEventName { get; set; }
+
     }
 }

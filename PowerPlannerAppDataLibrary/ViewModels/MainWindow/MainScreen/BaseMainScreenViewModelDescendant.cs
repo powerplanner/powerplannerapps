@@ -94,9 +94,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
-        public Task<bool> TryHandleUserInteractionAsync(object identifier, Func<System.Threading.CancellationToken, Task> operation, string errorMessage = null, [CallerMemberName]string callerFunctionName = "", [CallerFilePath]string callerFilePath = "")
+        public static Task<bool> TryHandleUserInteractionAsync(BaseViewModel viewModel, object identifier, Func<System.Threading.CancellationToken, Task> operation, string errorMessage = null, [CallerMemberName] string callerFunctionName = "", [CallerFilePath] string callerFilePath = "")
         {
-            return HandleUserInteractionAsync(identifier, async (cancellationToken) =>
+            return viewModel.HandleUserInteractionAsync(identifier, async (cancellationToken) =>
             {
                 try
                 {
@@ -128,6 +128,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     }
                 }
             });
+        }
+
+        public Task<bool> TryHandleUserInteractionAsync(object identifier, Func<System.Threading.CancellationToken, Task> operation, string errorMessage = null, [CallerMemberName]string callerFunctionName = "", [CallerFilePath]string callerFilePath = "")
+        {
+            return TryHandleUserInteractionAsync(this, identifier, operation, errorMessage, callerFunctionName, callerFilePath);
         }
     }
 }
