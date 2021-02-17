@@ -14,7 +14,7 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.Extensions;
 
-namespace PowerPlannerUWP.Helpers
+namespace PowerPlannerUWP.Flyouts
 {
     class TaskOrEventFlyout
     {
