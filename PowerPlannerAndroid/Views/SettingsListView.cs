@@ -34,6 +34,7 @@ namespace PowerPlannerAndroid.Views
             FindViewById<View>(Resource.Id.SettingsListItemLogIn).Click += delegate { ViewModel.OpenLogIn(); };
             FindViewById<View>(Resource.Id.SettingsListItemAccount).Click += delegate { ViewModel.OpenMyAccount(); };
             FindViewById<View>(Resource.Id.SettingsListItemWidgets).Click += delegate { ShowCustomViewModel<WidgetsViewModel>(); };
+            FindViewById<View>(Resource.Id.SettingsListItemReminders).Click += delegate { ViewModel.OpenReminderSettings(); };
             FindViewById<View>(Resource.Id.SettingsListItemAbout).Click += delegate { ViewModel.OpenAbout(); };
             FindViewById<View>(Resource.Id.SettingsListItemTwoWeekSchedule).Click += delegate { ViewModel.OpenTwoWeekScheduleSettings(); };
             FindViewById<View>(Resource.Id.SettingsListItemSyncOptions).Click += delegate { ViewModel.OpenSyncOptionsSimple(); };

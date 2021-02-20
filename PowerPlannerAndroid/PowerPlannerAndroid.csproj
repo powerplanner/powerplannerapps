@@ -219,6 +219,7 @@
     <Compile Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.cs" />
     <Compile Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.cs" />
     <Compile Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.cs" />
+    <Compile Include="Views\SettingsViews\ReminderSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.cs" />
     <Compile Include="Views\SettingsWidgetAgendaView.cs" />
@@ -1492,6 +1493,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_today_white_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SettingsReminders.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SpinnerItemClassRemindersOptionPreview.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

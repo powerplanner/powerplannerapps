@@ -132,6 +132,15 @@
             local:Binding="{Source=@String_Widgets, Target=SettingTitle}; {Source=@Settings_MainPage_Widgets_Subtitle, Target=SettingSubtitle}"/>
 
         <PowerPlannerAndroid.Views.Controls.SettingsListItem
+            android:id="@+id/SettingsListItemReminders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            settingsListItem:settingIcon="@drawable/ic_dashboard_black_48dp"
+            settingsListItem:settingTitle="Reminders"
+            settingsListItem:settingSubtitle="Change reminder settings"
+            local:Binding="{Source=@Settings_MainPage_RemindersItem.Title, Target=SettingTitle}; {Source=@Settings_MainPage_RemindersItem.Subtitle, Target=SettingSubtitle}"/>
+
+        <PowerPlannerAndroid.Views.Controls.SettingsListItem
             android:id="@+id/SettingsListItemSyncOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
