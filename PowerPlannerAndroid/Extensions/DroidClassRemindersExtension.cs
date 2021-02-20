@@ -194,7 +194,7 @@ namespace PowerPlannerAndroid.Extensions
 
             SchedulesOnDay schedulesToday = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, now.Date, account.GetWeekOnDifferentDate(now.Date), trackChanges: false);
 
-            var currSchedule = schedulesToday.FirstOrDefault(i => now >= now.Date.Add(i.StartTime.TimeOfDay).Subtract(beforeTime) && now <= now.Date.Add(i.EndTime.TimeOfDay));
+            var currSchedule = schedulesToday.OrderByDescending(i => i.StartTime.TimeOfDay).FirstOrDefault(i => now >= now.Date.Add(i.StartTime.TimeOfDay).Subtract(beforeTime) && now <= now.Date.Add(i.EndTime.TimeOfDay));
             if (currSchedule != null)
             {
                 return currSchedule;
