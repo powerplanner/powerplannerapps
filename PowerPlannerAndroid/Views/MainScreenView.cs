@@ -132,29 +132,33 @@ namespace PowerPlannerAndroid.Views
             UpdateBottomNavMenu();
         }
 
-        private bool? _bottomMenuHasAll;
+        private NavigationManager.MainMenuSelections? _bottomMenuFirstItem;
         private void UpdateBottomNavMenu()
         {
-            bool shouldHaveAll = ViewModel.AvailableItems.Contains(NavigationManager.MainMenuSelections.Calendar);
+            var correctFirstItem = ViewModel.AvailableItems.First();
 
-            if (_bottomMenuHasAll != null && _bottomMenuHasAll.Value == shouldHaveAll)
+            if (_bottomMenuFirstItem != null && _bottomMenuFirstItem.Value == correctFirstItem)
             {
                 // If we're already set up correctly
                 return;
             }
 
-            _bottomMenuHasAll = shouldHaveAll;
+            _bottomMenuFirstItem = correctFirstItem;
 
             _bottomNav.Menu.Clear();
 
-            if (shouldHaveAll)
+            if (ViewModel.AvailableItems.Contains(NavigationManager.MainMenuSelections.Schedule))
             {
-                AddMenuItem(NavigationManager.MainMenuSelections.Calendar, "MainMenuItem_Calendar", Resource.Drawable.ic_icons8_calendar_24);
-                AddMenuItem(NavigationManager.MainMenuSelections.Agenda, "MainMenuItem_Agenda", Resource.Drawable.ic_icons8_todo_list_24);
+                if (ViewModel.AvailableItems.Contains(NavigationManager.MainMenuSelections.Calendar))
+                {
+                    AddMenuItem(NavigationManager.MainMenuSelections.Calendar, "MainMenuItem_Calendar", Resource.Drawable.ic_icons8_calendar_24);
+                    AddMenuItem(NavigationManager.MainMenuSelections.Agenda, "MainMenuItem_Agenda", Resource.Drawable.ic_icons8_todo_list_24);
+                }
+
+                AddMenuItem(NavigationManager.MainMenuSelections.Schedule, "MainMenuItem_Schedule", Resource.Drawable.ic_icons8_timesheet_24);
+                AddMenuItem(NavigationManager.MainMenuSelections.Classes, "MainMenuItem_Classes", Resource.Drawable.ic_icons8_book_shelf_24);
             }
 
-            AddMenuItem(NavigationManager.MainMenuSelections.Schedule, "MainMenuItem_Schedule", Resource.Drawable.ic_icons8_timesheet_24);
-            AddMenuItem(NavigationManager.MainMenuSelections.Classes, "MainMenuItem_Classes", Resource.Drawable.ic_icons8_book_shelf_24);
             AddMenuItem(NavigationManager.MainMenuSelections.Settings, "String_More", Resource.Drawable.ic_student);
 
             UpdateSelectedMenuItem();
