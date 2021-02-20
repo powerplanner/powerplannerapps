@@ -58,7 +58,7 @@ namespace PowerPlannerAndroid.Extensions
             // Give ourselves 5 second buffer
             DateTime now = DateTime.Now.AddSeconds(5);
 
-            var currSchedule = FindCurrentSchedule(account, scheduleViewItemsGroup, now);
+            var currSchedule = FindCurrentReminder(account, scheduleViewItemsGroup, now);
             if (currSchedule == null)
             {
                 // Remove any existing
@@ -71,7 +71,8 @@ namespace PowerPlannerAndroid.Extensions
                     var existing = notifManager.GetActiveNotifications().FirstOrDefault(i => i.Id == NotificationIds.CLASS_REMINDER_NOTIFICATION);
                     if (existing != null)
                     {
-                        // TODO: Update
+                        // Update silently
+                        ShowNotification(notifManager, Application.Context, account.LocalAccountId, currSchedule, silentUpdate: true);
                     }
                 }
             }
@@ -145,43 +146,46 @@ namespace PowerPlannerAndroid.Extensions
             else
             {
                 // Show the new notification
-                var builder = AndroidRemindersExtension.CreateReminderBuilder(context, localAccountId, new ViewClassArguments()
-                {
-                    LocalAccountId = localAccountId,
-                    ItemId = currSchedule.Class.Identifier,
-                    LaunchSurface = LaunchSurface.Toast
-                });
-
-                builder.SetChannelId(AndroidRemindersExtension.GetChannelIdForClassReminders(localAccountId));
-
-                builder.SetShowWhen(false);
-                builder.SetContentTitle(currSchedule.Class.Name);
-
-                string summaryText = string.Format(PowerPlannerResources.GetString("String_TimeToTime"), currSchedule.StartTime.ToString("t"), currSchedule.EndTime.ToString("t"));
-                if (!string.IsNullOrWhiteSpace(currSchedule.Room))
-                {
-                    builder.SetContentText(summaryText + " - " + currSchedule.Room);
-                    builder.SetStyle(new NotificationCompat.BigTextStyle()
-                        .BigText(summaryText + "\n" + currSchedule.Room));
-                }
-                else
-                {
-                    builder.SetContentText(summaryText);
-                }
-
-                notifManager.Notify(NotificationIds.CLASS_REMINDER_NOTIFICATION, builder.Build());
+                ShowNotification(notifManager, context, localAccountId, currSchedule);
             }
 
             // Schedule the next change
             ScheduleNext(account, scheduleViewItemsGroup, now, currSchedule);
         }
 
-        private static ViewItemSchedule FindCurrentSchedule(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now)
+        private static void ShowNotification(NotificationManager notifManager, Context context, Guid localAccountId, ViewItemSchedule currSchedule, bool silentUpdate = false)
         {
-            SchedulesOnDay schedulesToday = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, now.Date, account.GetWeekOnDifferentDate(now.Date), trackChanges: false);
+            // Show the new notification
+            var builder = AndroidRemindersExtension.CreateReminderBuilder(context, localAccountId, new ViewClassArguments()
+            {
+                LocalAccountId = localAccountId,
+                ItemId = currSchedule.Class.Identifier,
+                LaunchSurface = LaunchSurface.Toast
+            });
 
-            var currSchedule = schedulesToday.FirstOrDefault(i => now.TimeOfDay >= i.StartTime.TimeOfDay && now.TimeOfDay <= i.EndTime.TimeOfDay);
-            return currSchedule;
+            builder.SetChannelId(AndroidRemindersExtension.GetChannelIdForClassReminders(localAccountId));
+
+            builder.SetShowWhen(false);
+            builder.SetContentTitle(currSchedule.Class.Name);
+
+            string summaryText = string.Format(PowerPlannerResources.GetString("String_TimeToTime"), currSchedule.StartTime.ToString("t"), currSchedule.EndTime.ToString("t"));
+            if (!string.IsNullOrWhiteSpace(currSchedule.Room))
+            {
+                builder.SetContentText(summaryText + " - " + currSchedule.Room);
+                builder.SetStyle(new NotificationCompat.BigTextStyle()
+                    .BigText(summaryText + "\n" + currSchedule.Room));
+            }
+            else
+            {
+                builder.SetContentText(summaryText);
+            }
+
+            if (silentUpdate)
+            {
+                builder.SetNotificationSilent();
+            }
+
+            notifManager.Notify(NotificationIds.CLASS_REMINDER_NOTIFICATION, builder.Build());
         }
 
         private static ViewItemSchedule FindCurrentReminder(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now)
