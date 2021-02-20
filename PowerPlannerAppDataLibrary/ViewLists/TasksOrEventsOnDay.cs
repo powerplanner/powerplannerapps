@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems;
+﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
 using System.Collections.Generic;
@@ -109,15 +110,18 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         public MyObservableList<BaseViewItemMegaItem> MainList { get; private set; }
 
+        public TimeZoneInfo SchoolTimeZone { get; private set; }
+
         public new DayFilter Filter
         {
             get => base.Filter as DayFilter;
             set => base.Filter = value;
         }
 
-        private TasksOrEventsOnDay(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime today, bool activeOnly, bool useEffectiveDateEvenWhenItemsHaveTimes)
+        private TasksOrEventsOnDay(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime today, bool activeOnly, bool useEffectiveDateEvenWhenItemsHaveTimes, TimeZoneInfo schoolTimeZone)
         {
             MainList = mainList;
+            SchoolTimeZone = schoolTimeZone;
 
             base.Filter = new DayFilter(date, today, activeOnly, useEffectiveDateEvenWhenItemsHaveTimes);
 
@@ -126,7 +130,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         private static readonly List<WeakReference<TasksOrEventsOnDay>> _cached = new List<WeakReference<TasksOrEventsOnDay>>();
 
-        public static TasksOrEventsOnDay Get(MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime? today = null, bool activeOnly = false, bool useEffectiveDateEvenWhenItemsHaveTimes = true)
+        public static TasksOrEventsOnDay Get(AccountDataItem account, MyObservableList<BaseViewItemMegaItem> mainList, DateTime date, DateTime? today = null, bool activeOnly = false, bool useEffectiveDateEvenWhenItemsHaveTimes = true)
         {
             if (today == null)
             {
@@ -139,6 +143,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 if (_cached[i].TryGetTarget(out answer))
                 {
                     if (answer.MainList == mainList
+                        && object.Equals(answer.SchoolTimeZone, account.SchoolTimeZone)
                         && answer.Filter.Equals(date, today.Value, activeOnly, useEffectiveDateEvenWhenItemsHaveTimes))
                     {
                         return answer;
@@ -151,7 +156,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
             }
 
-            answer = new TasksOrEventsOnDay(mainList, date, today.Value, activeOnly, useEffectiveDateEvenWhenItemsHaveTimes);
+            answer = new TasksOrEventsOnDay(mainList, date, today.Value, activeOnly, useEffectiveDateEvenWhenItemsHaveTimes, account.SchoolTimeZone);
             _cached.Add(new WeakReference<TasksOrEventsOnDay>(answer));
             return answer;
         }

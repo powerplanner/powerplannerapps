@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
+﻿using InterfacesiOS.Views;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +22,7 @@ namespace PowerPlanneriOS.Controllers.Settings.Grades
 
             AddTopSectionDivider();
 
-            AddTextField(new UITextField()
+            AddTextField(new BareUITextField()
             {
                 Placeholder = "Name",
                 ReturnKeyType = UIReturnKeyType.Done,

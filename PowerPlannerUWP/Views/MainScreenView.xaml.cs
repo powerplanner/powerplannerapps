@@ -397,11 +397,6 @@ namespace PowerPlannerUWP.Views
             compactSelectedItem.Content = content;
         }
 
-        private void compactSelectedItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            ToggleMenu();
-        }
-
         private void ToggleMenu()
         {
             if (this.IsMenuOpen())

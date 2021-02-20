@@ -39,7 +39,7 @@
         </Style>
 
         <DataTemplate x:Key="DataTemplateTaskOrEventForGrid">
-            <ContentPresenter ContentTemplate="{StaticResource DataTemplateTaskOrEvent}" Margin="0,0,6,0"/>
+            <ContentPresenter ContentTemplate="{StaticResource DataTemplateTaskOrEventWithoutClass}" Margin="0,0,6,0"/>
         </DataTemplate>
 
         <Style x:Key="HeaderStyle" TargetType="Button" BasedOn="{StaticResource SubitemContainerStyle}">
@@ -47,10 +47,8 @@
             <Setter Property="FontWeight" Value="SemiLight"/>
         </Style>
 
-        <localConverters:SchedulesToGroupedDaysConverter x:Key="SchedulesToGroupedDaysConverter"/>
-
         <DataTemplate x:Key="DataTemplateDay">
-            <Grid Visibility="{Binding Visibility}">
+            <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -93,7 +91,7 @@
 
         <DataTemplate x:Key="DataTemplateDayPreview">
             <TextBlock
-                Text="{Binding DayOfWeek, Mode=OneTime, Converter={StaticResource DayOfWeekToStringConverter}}"
+                Text="{Binding DayOfWeekInLocalTime, Mode=OneTime, Converter={StaticResource DayOfWeekToStringConverter}}"
                 Style="{ThemeResource CaptionTextBlockStyle}"
                 MaxLines="1"
                 TextTrimming="CharacterEllipsis"/>
@@ -369,7 +367,7 @@
                             </StackPanel>
 
                             <ItemsControl
-                                ItemsSource="{Binding ViewItemsGroupClass.Class.Schedules, Converter={StaticResource SchedulesToGroupedDaysConverter}}"
+                                ItemsSource="{Binding TimesViewModel.TimesGroupedByDay}"
                                 ItemTemplate="{StaticResource DataTemplateDay}"
                                 Margin="8, 0, 8, 20"/>
 

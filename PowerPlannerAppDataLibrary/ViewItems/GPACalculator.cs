@@ -84,7 +84,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 if (usingCredits)
                 {
                     if (creditsAffectingGpa == 0)
-                        answer.GPA = 4;
+                        answer.GPA = -1;
                     else
                         answer.GPA = gradePoints / creditsAffectingGpa;
                 }
@@ -94,7 +94,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
 
             else
-                answer.GPA = 4;
+                answer.GPA = -1;
 
             if (usingCredits)
             {

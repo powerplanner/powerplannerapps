@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.ViewItems
 {
@@ -33,6 +34,36 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set { SetProperty(ref _dayOfWeek, value, "DayOfWeek"); }
         }
 
+        /// <summary>
+        /// Only used by UWP for displaying the preview of schedules on the tile. 
+        /// </summary>
+        public DayOfWeek DayOfWeekInLocalTime
+        {
+            get
+            {
+                var date = DateTools.Next(DayOfWeek, DateTime.Today);
+                if (OccursOnDate(date))
+                {
+                    return date.DayOfWeek;
+                }
+
+                // Otherwise, check the next day and the previous day, has to be one of those...
+                date = date.AddDays(1);
+                if (OccursOnDate(date))
+                {
+                    return date.DayOfWeek;
+                }
+
+                date = date.AddDays(-2);
+                if (OccursOnDate(date))
+                {
+                    return date.DayOfWeek;
+                }
+
+                return DayOfWeek;
+            }
+        }
+
         private DateTime _startTime;
         public DateTime StartTime
         {
@@ -45,6 +76,25 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         {
             get => _startTimeInSchoolTime;
             set => SetProperty(ref _startTimeInSchoolTime, value, nameof(StartTimeInSchoolTime));
+        }
+
+        /// <summary>
+        /// If the schedule instance occurs on the given (local) day, returns true. Accomodates for time zones including when time zone causes schedule that occurs on Wednesdays to actually be on Tuesday. Does NOT take into consideration week settings.
+        /// </summary>
+        /// <param name="date">Date to check in local time</param>
+        /// <param name="startTime"></param>
+        /// <returns></returns>
+        public bool OccursOnDate(DateTime date)
+        {
+            // The start date time in local time
+            var startDateTime = ToViewItemTime(DateTools.Next(DayOfWeek, DateTime.Today).Add(StartTimeInSchoolTime.TimeOfDay));
+
+            if (date.DayOfWeek == startDateTime.DayOfWeek)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private DateTime _endTime;

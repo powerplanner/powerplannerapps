@@ -50,7 +50,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 DayOfWeek = dayOfWeek;
 
-                Times = allSchedules.Sublist(i => i.DayOfWeek == DayOfWeek);
+                var date = DateTools.Next(dayOfWeek, DateTime.Today);
+
+                Times = allSchedules.Sublist(i => i.OccursOnDate(date));
                 Times.CollectionChanged += Schedules_CollectionChanged;
 
                 ResetVisibility();

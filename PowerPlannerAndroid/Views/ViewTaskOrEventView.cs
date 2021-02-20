@@ -23,7 +23,7 @@ namespace PowerPlannerAndroid.Views
     public class ViewTaskOrEventView : PopupViewHost<ViewTaskOrEventViewModel>
     {
         private TaskProgressBarControl _taskProgressBarControl;
-        private Button _buttonConvertToGrade;
+        private Button _buttonAddGrade;
 
         public ViewTaskOrEventView(ViewGroup root) : base(Resource.Layout.ViewTaskOrEvent, root)
         {
@@ -31,13 +31,13 @@ namespace PowerPlannerAndroid.Views
 
             _taskProgressBarControl = FindViewById<TaskProgressBarControl>(Resource.Id.TaskProgressBarControl);
             _taskProgressBarControl.OnProgressChangedByUser += _taskProgressBarControl_OnProgressChangedByUser;
-            _buttonConvertToGrade = FindViewById<Button>(Resource.Id.ButtonConvertToGrade);
-            _buttonConvertToGrade.Click += _buttonConvertToGrade_Click;
+            _buttonAddGrade = FindViewById<Button>(Resource.Id.ButtonAddGrade);
+            _buttonAddGrade.Click += _buttonAddGrade_Click;
         }
 
-        private void _buttonConvertToGrade_Click(object sender, EventArgs e)
+        private void _buttonAddGrade_Click(object sender, EventArgs e)
         {
-            ViewModel.ConvertToGrade();
+            ViewModel.AddGrade();
         }
 
         private void _taskProgressBarControl_OnProgressChangedByUser(object sender, EventArgs e)

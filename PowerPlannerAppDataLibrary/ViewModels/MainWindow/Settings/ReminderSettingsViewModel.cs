@@ -153,7 +153,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 }
                 else
                 {
-                    await ClassRemindersExtension.Current?.RemoveAllRemindersAsync(_account);
+                    ClassRemindersExtension.Current?.RemoveAllReminders(_account);
                 }
 
                 Debug.WriteLine("Class reminder settings changed, saved.");

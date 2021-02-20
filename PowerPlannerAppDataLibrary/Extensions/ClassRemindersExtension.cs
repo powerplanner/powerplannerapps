@@ -1,4 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,14 @@ namespace PowerPlannerAppDataLibrary.Extensions
                         // We don't need to worry about holding a lock though, if the collections change and that breaks us, that's fine,
                         // that implies that the data has been changed anyways and another ResetReminders will come in.
                         // Therefore we should also expect to get some exceptions here.
-                        scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, currSemesterId, trackChanges: false, includeWeightCategories: false);
+                        try
+                        {
+                            scheduleViewItemsGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, currSemesterId, trackChanges: false, includeWeightCategories: false);
+                        }
+                        catch (SemesterNotFoundException) { /* Same as empty semester, continue so we clear */ }
                     }
 
-                    await ResetAllRemindersAsync(account, scheduleViewItemsGroup);
+                    ResetAllReminders(account, scheduleViewItemsGroup);
                 }
                 catch (Exception ex)
                 {
@@ -50,14 +55,14 @@ namespace PowerPlannerAppDataLibrary.Extensions
         /// </summary>
         /// <param name="account"></param>
         /// <param name="scheduleViewItemsGroup"></param>
-        protected abstract Task ResetAllRemindersAsync(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup);
+        protected abstract void ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup);
 
         /// <summary>
         /// This is only used when user disables reminders in the settings.
         /// </summary>
-        public Task RemoveAllRemindersAsync(AccountDataItem account)
+        public void RemoveAllReminders(AccountDataItem account)
         {
-            return ResetAllRemindersAsync(account, null);
+            ResetAllReminders(account, null);
         }
     }
 }

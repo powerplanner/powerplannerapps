@@ -329,7 +329,10 @@ namespace PowerPlannerUWP.Extensions
             }
             catch (Exception ex)
             {
-                TelemetryExtension.Current?.TrackException(ex);
+                TelemetryExtension.Current?.TrackException(ex, exceptionName: null, properties: new Dictionary<string, string>()
+                {
+                    ["ScheduleId"] = schedule.Identifier.ToString()
+                });
             }
         }
 

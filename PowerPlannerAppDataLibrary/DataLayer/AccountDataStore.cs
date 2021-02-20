@@ -586,6 +586,22 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 foreach (var pair in _items)
                     pair.Value.MarkSent();
             }
+
+            public void MarkAllDeletesSent()
+            {
+                foreach (var pair in _items.Where(i => i.Value.Type == ChangedPropertiesOfDataItem.ChangeType.Deleted))
+                {
+                    pair.Value.MarkSent();
+                }
+            }
+
+            public void MarkUpdatesSent(IEnumerable<Guid> identifiers)
+            {
+                foreach (var pair in _items.Where(i => identifiers.Contains(i.Key)))
+                {
+                    pair.Value.MarkSent();
+                }
+            }
         }
 
         public Guid LocalAccountId
@@ -1264,13 +1280,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// This establishes a data lock
         /// </summary>
         /// <returns></returns>
-        public async Task<Tuple<IEnumerable<Dictionary<string, object>>, Guid[]>> GetUpdatesAndDeletesAsync()
+        public async Task<Tuple<IEnumerable<Dictionary<string, object>>, Guid[], bool>> GetUpdatesAndDeletesAsync()
         {
             return await System.Threading.Tasks.Task.Run(async delegate
             {
                 ChangedItems changedItems;
                 Guid[] deletes;
                 IEnumerable<Dictionary<string, object>> updates;
+                bool isBatchingUpdates;
 
                 using (await Locks.LockDataForReadAsync())
                 {
@@ -1282,26 +1299,34 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                     // If nothing changed
                     if (newItemIdentifiers.Length == 0 && editedItems.Length == 0 && deletes.Length == 0)
-                        return new Tuple<IEnumerable<Dictionary<string, object>>, Guid[]>(new Dictionary<string, object>[0], new Guid[0]);
+                        return new Tuple<IEnumerable<Dictionary<string, object>>, Guid[], bool>(new Dictionary<string, object>[0], new Guid[0], false);
 
 
                     // grab all new/edited
                     var timeTracker = TimeTracker.Start();
-                    updates = GetUpdatesBlocking(newItemIdentifiers, editedItems);
+                    updates = GetUpdatesBlocking(newItemIdentifiers, editedItems, out isBatchingUpdates);
                     timeTracker.End(3, $"AccountDataStore.GetUpdatesandDeletesAsync GetUpdatesBlocking, {newItemIdentifiers.Length} new items, {editedItems.Length} edited items");
                 }
 
                 using (await Locks.LockDataForWriteAsync())
                 {
                     // Mark all the properties as sent, so that when sync completes, we can remove them
-                    changedItems.MarkAllSent();
+                    if (isBatchingUpdates)
+                    {
+                        changedItems.MarkUpdatesSent(updates.Select(i => (Guid)i["Identifier"]).ToArray());
+                        changedItems.MarkAllDeletesSent();
+                    }
+                    else
+                    {
+                        changedItems.MarkAllSent();
+                    }
 
                     // And then save that
                     await changedItems.Save();
                 }
                 
 
-                return new Tuple<IEnumerable<Dictionary<string, object>>, Guid[]>(updates, deletes);
+                return new Tuple<IEnumerable<Dictionary<string, object>>, Guid[], bool>(updates, deletes, isBatchingUpdates);
             });
         }
 
@@ -1311,11 +1336,26 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <param name="newItemIdentifiers"></param>
         /// <param name="editedItems"></param>
         /// <returns></returns>
-        private IEnumerable<Dictionary<string, object>> GetUpdatesBlocking(Guid[] newItemIdentifiers, Tuple<Guid, BaseDataItem.SyncPropertyNames[]>[] editedItems)
+        private IEnumerable<Dictionary<string, object>> GetUpdatesBlocking(Guid[] newItemIdentifiers, Tuple<Guid, BaseDataItem.SyncPropertyNames[]>[] editedItems, out bool isBatchingUpdates)
         {
             List<Dictionary<string, object>> answer = new List<Dictionary<string, object>>();
 
-            foreach (var item in FindAll(newItemIdentifiers.Union(editedItems.Select(i => i.Item1)).ToArray()))
+            Guid[] newAndEditedIdentifiers = newItemIdentifiers.Union(editedItems.Select(i => i.Item1)).ToArray();
+            IEnumerable<BaseDataItem> newAndEditedItems;
+            const int MAX_ITEMS = 65; // Server starts batching after 65
+
+            if (newAndEditedIdentifiers.Length > MAX_ITEMS)
+            {
+                newAndEditedItems = FindAllWithLimitAndSorted(newAndEditedIdentifiers, MAX_ITEMS);
+                isBatchingUpdates = true;
+            }
+            else
+            {
+                newAndEditedItems = FindAll(newAndEditedIdentifiers);
+                isBatchingUpdates = false;
+            }
+
+            foreach (var item in newAndEditedItems)
             {
                 BaseDataItem.SyncPropertyNames[] changedProperties = editedItems.Where(i => i.Item1 == item.Identifier).Select(i => i.Item2).FirstOrDefault();
 
@@ -1677,93 +1717,181 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         /// <summary>
-        /// Doesn't enumerate all tables unless necessary. Enumerates item by item so all of them aren't loaded at once.
+        /// Doesn't enumerate all tables unless necessary. Enumerates item by item so all of them aren't loaded at once. Looks in most commonly edited tables first since it will stop if it found everything, so mega items are returned first.
         /// </summary>
         /// <param name="identifiersToLookFor"></param>
         /// <returns></returns>
         private IEnumerable<BaseDataItem> FindAll(Guid[] identifiersToLookFor)
         {
-            int countFound = 0;
+            HashSet<Guid> remainingIdentifiersToLookFor = new HashSet<Guid>(identifiersToLookFor);
+
+            Func<BaseDataItem, BaseDataItem> found = (BaseDataItem i) =>
+            {
+                remainingIdentifiersToLookFor.Remove(i.Identifier);
+                return i;
+            };
+
+            Func<bool> done = () => { return remainingIdentifiersToLookFor.Count == 0; };
+
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableMegaItems))
             {
-                yield return i;
-                countFound++;
+                yield return found(i);
             }
 
-            if (countFound == identifiersToLookFor.Length)
+            if (done())
                 yield break;
 
 
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableGrades))
             {
-                yield return i;
-                countFound++;
+                yield return found(i);
             }
 
-            if (countFound == identifiersToLookFor.Length)
+            if (done())
                 yield break;
 
 
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableClasses))
             {
-                yield return i;
-                countFound++;
+                yield return found(i);
             }
 
-            if (countFound == identifiersToLookFor.Length)
+            if (done())
                 yield break;
 
 
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableSchedules))
             {
-                yield return i;
-                countFound++;
+                yield return found(i);
             }
 
-            if (countFound == identifiersToLookFor.Length)
+            if (done())
                 yield break;
 
 
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableSemesters))
             {
-                yield return i;
-                countFound++;
+                yield return found(i);
             }
 
-            if (countFound == identifiersToLookFor.Length)
+            if (done())
                 yield break;
 
 
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableYears))
             {
-                yield return i;
-                countFound++;
+                yield return found(i);
             }
 
-            if (countFound == identifiersToLookFor.Length)
+            if (done())
                 yield break;
 
 
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableWeightCategories))
             {
-                yield return i;
+                yield return found(i);
+            }
+        }
+
+        /// <summary>
+        /// Finds all items with a limit, looks for top-level items first
+        /// </summary>
+        /// <param name="identifiersToLookFor"></param>
+        /// <param name="maxItemsToReturn"></param>
+        /// <returns></returns>
+        private IEnumerable<BaseDataItem> FindAllWithLimitAndSorted(Guid[] identifiersToLookFor, int maxItemsToReturn)
+        {
+            HashSet<Guid> remainingIdentifiersToLookFor = new HashSet<Guid>(identifiersToLookFor);
+            int countFound = 0;
+
+            Func<BaseDataItem, BaseDataItem> found = (BaseDataItem i) =>
+            {
                 countFound++;
+                remainingIdentifiersToLookFor.Remove(i.Identifier);
+                return i;
+            };
+
+            Func<bool> done = () => { return countFound >= maxItemsToReturn || remainingIdentifiersToLookFor.Count == 0; };
+
+
+            foreach (var i in FindAll(identifiersToLookFor, ActualTableYears))
+            {
+                yield return found(i);
+                if (done())
+                    yield break;
             }
 
-            if (countFound == identifiersToLookFor.Length)
-                yield break;
+            foreach (var i in FindAll(identifiersToLookFor, ActualTableSemesters))
+            {
+                yield return found(i);
+                if (done())
+                    yield break;
+            }
+
+            foreach (var i in FindAll(identifiersToLookFor, ActualTableClasses))
+            {
+                yield return found(i);
+                if (done())
+                    yield break;
+            }
+
+            foreach (var i in FindAll(identifiersToLookFor, ActualTableWeightCategories))
+            {
+                yield return found(i);
+                if (done())
+                    yield break;
+            }
+
+            foreach (var i in FindAll(identifiersToLookFor, ActualTableMegaItems))
+            {
+                yield return found(i);
+                if (done())
+                    yield break;
+            }
+
+            foreach (var i in FindAll(identifiersToLookFor, ActualTableGrades))
+            {
+                yield return found(i);
+                if (done())
+                    yield break;
+            }
+
+            foreach (var i in FindAll(identifiersToLookFor, ActualTableSchedules))
+            {
+                yield return found(i);
+                if (done())
+                    yield break;
+            }
         }
 
         private IEnumerable<BaseDataItem> FindAll<T>(Guid[] identifiersToLookFor, TableQuery<T> table) where T : BaseDataItem
         {
-            return table.Where(i => identifiersToLookFor.Contains(i.Identifier));
+            // Max variables is 999
+            const int max = 900;
+            if (identifiersToLookFor.Length > max)
+            {
+                foreach (var grouped in identifiersToLookFor.BatchAsArrays(900))
+                {
+                    foreach (var item in table.Where(i => grouped.Contains(i.Identifier)))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in table.Where(i => identifiersToLookFor.Contains(i.Identifier)))
+                {
+                    yield return item;
+                }
+            }
         }
 
         private Guid[] FindAllIdentifiersThatAreChildren(Guid[] parentIdentifiers)

@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="{TextBox_Username.Header}"
             android:textStyle="bold"
-        android:layout_marginTop="18dp"/>
+        android:layout_marginTop="16dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="{CreateAccountPage_TextBoxEmail.Header}"
             android:textStyle="bold"
-        android:layout_marginTop="18dp"/>
+        android:layout_marginTop="16dp"/>
 
         <TextView
             android:layout_width="match_parent"

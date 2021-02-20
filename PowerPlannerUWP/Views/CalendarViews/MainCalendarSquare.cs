@@ -25,6 +25,8 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using System.ComponentModel;
 using PowerPlannerUWP.Controls;
 using PowerPlannerUWP.Helpers;
+using Windows.ApplicationModel.DataTransfer.DragDrop;
+using PowerPlannerAppDataLibrary.App;
 
 namespace PowerPlannerUWP.Views.CalendarViews
 {
@@ -66,11 +68,11 @@ namespace PowerPlannerUWP.Views.CalendarViews
         {
             if (_calendarViewModel.ShowPastCompleteItemsOnFullCalendar)
             {
-                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_calendarViewModel.MainScreenViewModel.CurrentAccount, _allItems, Date);
             }
             else
             {
-                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
+                _itemsControl.ItemsSource = TasksOrEventsOnDay.Get(_calendarViewModel.MainScreenViewModel.CurrentAccount, _allItems, Date, today: _calendarViewModel.Today, activeOnly: true);
             }
         }
 
@@ -99,9 +101,18 @@ namespace PowerPlannerUWP.Views.CalendarViews
             try
             {
                 var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
+                bool duplicate = e.Modifiers == DragDropModifiers.Control;  // Duplicate if holding Ctrl key
+
                 if (item != null)
                 {
-                    OnRequestChangeItemDate?.Invoke(this, new ChangeItemDateEventArgs(item, this.Date.Date));
+                    if (duplicate)
+                    {
+                        PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(item, this.Date.Date);
+                    }
+                    else
+                    {
+                        OnRequestChangeItemDate?.Invoke(this, new ChangeItemDateEventArgs(item, this.Date.Date));
+                    }
                 }
             }
             catch (Exception ex)
@@ -115,11 +126,21 @@ namespace PowerPlannerUWP.Views.CalendarViews
             try
             {
                 var item = DataPackageHelpers.GetViewItem<ViewItemTaskOrEvent>(e.DataView);
+                bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+
                 if (item != null)
                 {
-                    if (item.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
+                    if (duplicate)
+                    {
+                        e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
+                    }
+                    else if (item.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
                     {
                         e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+                    }
+                    else
+                    {
+                        e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.None;
                     }
                 }
             }

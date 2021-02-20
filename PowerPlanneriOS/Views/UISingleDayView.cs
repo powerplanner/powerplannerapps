@@ -174,7 +174,7 @@ namespace PowerPlanneriOS.Views
         {
             _title.Text = GetHeaderText(Date);
 
-            _tableViewSource.Items = TasksOrEventsOnDay.Get(SemesterItems.Items, Date);
+            _tableViewSource.Items = TasksOrEventsOnDay.Get(_viewModel.MainScreenViewModel.CurrentAccount, SemesterItems.Items, Date);
 
             _scheduleSnapshot.Initialize(SemesterItems, Date);
 

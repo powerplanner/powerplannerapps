@@ -403,6 +403,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 request.CancellationToken.ThrowIfCancellationRequested();
 
                 var updatesAndDeletes = await accountDataStore.GetUpdatesAndDeletesAsync();
+                bool isBatchingUpdates = updatesAndDeletes.Item3;
 
                 request.CancellationToken.ThrowIfCancellationRequested();
 
@@ -642,7 +643,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     // Otherwise, we continue to make the next request (the next page has already been passed)
                     partialSyncNumber++;
 
-                    if (partialSyncNumber > 50)
+                    if (partialSyncNumber > 200)
                     {
                         throw new Exception("Partial sync seems to be in an infinite loop. NextPage: " + response.NextPage);
                     }
@@ -840,6 +841,12 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                 // Log when last synced
                 account.LastSyncOn = DateTime.Now;
+
+                if (isBatchingUpdates && answer.Error == null)
+                {
+                    // Sync again and wait on it (so that initial account created sync waits on this)
+                    return await ExecuteSync(request);
+                }
 
                 // Queue another sync if it's needed
                 if (needsAnotherSync)

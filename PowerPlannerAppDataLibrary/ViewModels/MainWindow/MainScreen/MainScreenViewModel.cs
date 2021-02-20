@@ -27,6 +27,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using BareMvvm.Core.Snackbar;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -1050,11 +1052,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 desiredList.Remove(MainMenuSelections.Years);
             }
 
-            if (PowerPlannerApp.DoNotShowSettingsInTabItems)
-            {
-                desiredList.Remove(MainMenuSelections.Settings);
-            }
-
             bool answer = IListExtensions.MakeListLike(_availableItems, desiredList);
 
             if (PowerPlannerApp.DoNotShowYearsInTabItems && !AvailableItems.Any() && Popups.Count == 0)
@@ -1115,6 +1112,157 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }));
         }
 
+        public void DuplicateAndEditTaskOrEvent(ViewItemTaskOrEvent item)
+        {
+            ShowPopup(AddTaskOrEventViewModel.CreateForClone(this, new AddTaskOrEventViewModel.CloneParameter()
+            {
+                Item = item,
+                Classes = Classes.ToArray()
+            }));
+        }
+
+        /// /// <summary>
+        /// Duplicates a Task or Event
+        /// </summary>
+        /// <param name="item">The task or event being duplicated</param>
+        /// <param name="date">The date the task or event should be copied to. Defaults to same date as item</param>
+        public void DuplicateTaskOrEvent(ViewItemTaskOrEvent item, DateTime? date = null)
+        {
+            DataChanges changes = new DataChanges();
+            DateTime now = DateTime.UtcNow;
+
+            DataItemMegaItem copiedDataItem = (DataItemMegaItem)item.DataItem.Clone();
+            copiedDataItem.Identifier = Guid.NewGuid(); // Create new Guid
+            copiedDataItem.DateCreated = now;   // The copy was created now
+            copiedDataItem.Updated = now;       // The copy was created now
+            copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
+
+            changes.Add(copiedDataItem);
+
+            PowerPlannerApp.Current.SaveChanges(changes);
+        }
+
+        public async void ConvertTaskOrEventType(ViewItemTaskOrEvent item, BaseViewModel viewModel = null)
+        {
+            await BaseMainScreenViewModelDescendant.TryHandleUserInteractionAsync(viewModel ?? this, "ChangeItemType", async (cancellationToken) =>
+            {
+                DataItemMegaItem dataItem = new DataItemMegaItem()
+                {
+                    Identifier = item.Identifier
+                };
+
+                PowerPlannerSending.MegaItemType newMegaItemType;
+
+                switch ((item.DataItem as DataItemMegaItem).MegaItemType)
+                {
+                    case PowerPlannerSending.MegaItemType.Task:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Event;
+                        break;
+
+                    case PowerPlannerSending.MegaItemType.Homework:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Exam;
+                        break;
+
+                    case PowerPlannerSending.MegaItemType.Event:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Task;
+                        break;
+
+                    case PowerPlannerSending.MegaItemType.Exam:
+                        newMegaItemType = PowerPlannerSending.MegaItemType.Homework;
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+
+                dataItem.MegaItemType = newMegaItemType;
+
+                DataChanges editChanges = new DataChanges();
+                editChanges.Add(dataItem);
+                await PowerPlannerApp.Current.SaveChanges(editChanges);
+
+                TelemetryExtension.Current?.TrackEvent("ConvertedItemType");
+
+            }, "Failed to change item type. Your error has been reported.");
+        }
+
+        public void SetTaskPercentComplete(ViewItemTaskOrEvent task, double percentComplete)
+        {
+            if (task == null || task.PercentComplete == percentComplete || task.Type != TaskOrEventType.Task)
+            {
+                return;
+            }
+
+            BaseMainScreenViewModelDescendant.TryStartDataOperationAndThenNavigate(delegate
+            {
+                DataChanges changes = new DataChanges();
+
+                changes.Add(new DataItemMegaItem()
+                {
+                    Identifier = task.Identifier,
+                    PercentComplete = percentComplete
+                });
+
+                return PowerPlannerApp.Current.SaveChanges(changes);
+
+            }, delegate
+            {
+                if (percentComplete == 1)
+                {
+                    SoundsExtension.Current?.TryPlayTaskCompletedSound();
+
+                    try
+                    {
+                        // Don't prompt for non-class tasks
+                        if (!task.Class.IsNoClassClass)
+                        {
+                            BareSnackbar.Make(PowerPlannerResources.GetString("String_TaskCompleted"), PowerPlannerResources.GetString("String_AddGrade"), delegate { AddGradeAfterCompletingTask(task); }).Show();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+                }
+            });
+        }
+
+        private async void AddGradeAfterCompletingTask(ViewItemTaskOrEvent task)
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("ClickedSnackbarAddGrade");
+
+                // We need to load the class with the weight categories
+                var ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(CurrentLocalAccountId, task.Class.Identifier, DateTime.Today, CurrentSemester);
+
+                ViewItemsGroupClass.LoadTasksAndEvents();
+                ViewItemsGroupClass.LoadGrades();
+                await ViewItemsGroupClass.LoadTasksAndEventsTask;
+                await ViewItemsGroupClass.LoadGradesTask;
+
+                var loadedTask = ViewItemsGroupClass.Tasks.FirstOrDefault(i => i.Identifier == task.Identifier);
+                if (loadedTask == null)
+                {
+                    ViewItemsGroupClass.ShowPastCompletedTasks();
+                    await ViewItemsGroupClass.LoadPastCompleteTasksAndEventsTask;
+
+                    loadedTask = ViewItemsGroupClass.PastCompletedTasks.FirstOrDefault(i => i.Identifier == task.Identifier);
+                    if (loadedTask == null)
+                    {
+                        return;
+                    }
+                }
+
+                var viewModel = ViewTaskOrEventViewModel.CreateForUnassigned(this, loadedTask);
+                viewModel.AddGrade(showViewGradeSnackbarAfterSaving: SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
         public void EditGrade(BaseViewItemMegaItem grade, bool whatIf = false)
         {
             ShowPopup(AddGradeViewModel.CreateForEdit(this, new AddGradeViewModel.EditParameter()
@@ -1152,23 +1300,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 }
 
                 ShowPopup(new YearsViewModel(this));
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        public void OpenSettings()
-        {
-            try
-            {
-                if (!PowerPlannerApp.DoNotShowSettingsInTabItems)
-                {
-                    throw new InvalidOperationException("If you're using this, you should have set DoNotShowSettingsInTabItems to true");
-                }
-
-                ShowPopup(new SettingsViewModel(this));
             }
             catch (Exception ex)
             {

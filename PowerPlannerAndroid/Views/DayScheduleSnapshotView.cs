@@ -429,7 +429,7 @@ namespace PowerPlannerAndroid.Views
                     BottomMargin = ThemeHelper.AsPx(Context, 1)
                 }
             };
-            var px = ThemeHelper.AsPx(Context, 18);
+            var px = ThemeHelper.AsPx(Context, 16);
             textView.SetPadding(px, px, 0, px);
             textView.SetBackgroundColor(HolidayColor);
             textView.SetTextColor(Color.White);

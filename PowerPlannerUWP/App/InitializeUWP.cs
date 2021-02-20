@@ -65,6 +65,7 @@ namespace PowerPlannerUWP
             DateTimeFormatterExtension.Current = new UWPDateTimeFormatterExtension();
             ImagePickerExtension.Current = new UWPImagePickerExtension();
             LanguageExtension.Current = new UWPLanguageExtension();
+            SoundsExtension.Current = new UWPSoundsExtension();
         }
     }
 }

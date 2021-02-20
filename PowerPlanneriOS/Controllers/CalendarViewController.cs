@@ -20,6 +20,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using System.Collections.Specialized;
 using PowerPlanneriOS.Views;
 using System.ComponentModel;
+using PowerPlannerAppDataLibrary.DataLayer;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -75,7 +76,7 @@ namespace PowerPlanneriOS.Controllers
                 SelectedDate = ViewModel.SelectedDate
             };
             _cal.SetSemester(ViewModel.SemesterItemsViewGroup.Semester);
-            _cal.Provider = new MyDataProvider(ViewModel.SemesterItemsViewGroup, _cal);
+            _cal.Provider = new MyDataProvider(ViewModel.MainScreenViewModel.CurrentAccount, ViewModel.SemesterItemsViewGroup, _cal);
             _cal.DateClicked += new WeakEventHandler<DateTime>(Cal_DateClicked).Handler;
             _cal.DisplayMonthChanged += new WeakEventHandler<DateTime>(Cal_DisplayMonthChanged).Handler;
 
@@ -401,8 +402,11 @@ namespace PowerPlanneriOS.Controllers
             private SemesterItemsViewGroup _semesterItems;
             private MyObservableList<BaseViewItemMegaItem> _holidays;
             private MyCalendarView _calendarView;
-            public MyDataProvider(SemesterItemsViewGroup semesterItems, MyCalendarView calendarView)
+            private AccountDataItem _account;
+
+            public MyDataProvider(AccountDataItem account, SemesterItemsViewGroup semesterItems, MyCalendarView calendarView)
             {
+                _account = account;
                 _calendarView = calendarView;
                 _semesterItems = semesterItems;
                 _holidays = semesterItems.Items.Sublist(i => i is ViewItemHoliday);
@@ -416,7 +420,7 @@ namespace PowerPlanneriOS.Controllers
 
             public override IEnumerable GetItemsSource(DateTime date)
             {
-                return TasksOrEventsOnDay.Get(_semesterItems.Items, date)
+                return TasksOrEventsOnDay.Get(_account, _semesterItems.Items, date)
                     .Sublist(i => (i is ViewItemTaskOrEvent) && !(i as ViewItemTaskOrEvent).IsComplete);
             }
 

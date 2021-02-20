@@ -88,7 +88,7 @@ namespace PowerPlannerUWP.Views.CalendarViews
             listHeader.DateToUseForNewItems = date;
             scheduleSnapshot.Initialize(_viewModel.SemesterItemsViewGroup, date);
 
-            listControl.ItemsSource = TasksOrEventsOnDay.Get(_viewModel.SemesterItemsViewGroup.Items, date);
+            listControl.ItemsSource = TasksOrEventsOnDay.Get(_viewModel.MainScreenViewModel.CurrentAccount, _viewModel.SemesterItemsViewGroup.Items, date);
         }
 
         private void setHeaderText(DateTime date)

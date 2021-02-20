@@ -233,3 +233,6 @@ PowerPlannerAndroid/App/Secrets.cs
 PowerPlannerAndroid/google-services.json
 PowerPlanneriOS/App/Secrets.cs
 PowerPlannerUWP/App/Secrets.cs
+
+# Ignore compiled resource translations
+Resources.*.resx

@@ -101,7 +101,7 @@ namespace PowerPlannerUWP
 
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(AddClassTimeViewModel), typeof(AddClassTimeView) },
+                { typeof(AddClassTimesViewModel), typeof(AddClassTimeView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
@@ -698,10 +698,27 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
-                    // Message about the display scaling issue
-                    if (v < new Version(3, 0, 6, 0))
-                        changedText = "\nIf the app is appearing too large, PLEASE EMAIL ME! My email is support@powerplanner.net (you can find it in Settings -> About).";
+                    if (v <= new Version(2102, 16, 3, 99))
+                    {
+                        changedText += "\n - Right click on tasks/events to quickly mark complete, delete, or edit!";
+                    }
 
+                    if (v <= new Version(2011, 25, 4, 99) && v >= new Version(2011, 25, 4, 0))
+                    {
+                        // I temporarily broke these views for one build when introducing collapsable groups
+                        changedText += "\n - Fixed \"+\" buttons on Day views";
+                    }
+
+                    if (v <= new Version(2011, 16, 1, 99))
+                    {
+                        changedText += "\n - Collapsable groups in Agenda (so you can collapse overdue items, etc)!";
+                    }
+
+                    if (v <= new Version(2008, 12, 2, 99))
+                    {
+                        changedText += "\n - Reminders for class schedule!";
+                        changedText += "\n - URLs in class schedule room fields are now clickable for supporting Zoom/online links!";
+                    }
 
                     if (v <= new Version(2008, 12, 2, 99))
                     {

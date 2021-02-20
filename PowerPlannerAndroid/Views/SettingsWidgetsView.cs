@@ -21,17 +21,8 @@ namespace PowerPlannerAndroid.Views
         {
             Title = PowerPlannerResources.GetString("String_Widgets");
 
-            FindViewById<View>(Resource.Id.SettingsWidgetAgenda).Click += delegate { NavigateToCustomViewModel<WidgetAgendaViewModel>(); };
-            FindViewById<View>(Resource.Id.SettingsWidgetSchedule).Click += delegate { NavigateToCustomViewModel<WidgetScheduleViewModel>(); };
-        }
-
-        private void NavigateToCustomViewModel<T>() where T : BaseViewModel
-        {
-            var pagedViewModel = ViewModel.FindAncestor<PagedViewModel>();
-
-            var newViewModel = (T)Activator.CreateInstance(typeof(T), pagedViewModel);
-
-            pagedViewModel.Navigate(newViewModel);
+            FindViewById<View>(Resource.Id.SettingsWidgetAgenda).Click += delegate { ViewModel.OpenAgendaWidgetSettings(); };
+            FindViewById<View>(Resource.Id.SettingsWidgetSchedule).Click += delegate { ViewModel.OpenScheduleWidgetSettings(); };
         }
     }
 }

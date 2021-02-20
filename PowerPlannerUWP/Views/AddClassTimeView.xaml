@@ -5,6 +5,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PowerPlannerUWP.Views"
+    xmlns:scheduleViews="using:PowerPlannerUWP.Views.ScheduleViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:PowerPlannerUWP.Controls"
@@ -15,6 +16,7 @@
         <Style x:Key="DayCheckBoxStyle" TargetType="CheckBox">
             <Setter Property="Margin" Value="0,6"/>
         </Style>
+        <local:AddClassTimeHasOnlyOneGroupToMarginConverter x:Key="AddClassTimeHasOnlyOneGroupToMarginConverter"/>
     </views:PopupViewHostGeneric.Resources>
 
     <views:PopupViewHostGeneric.PrimaryCommands>
@@ -28,125 +30,41 @@
 
         <AppBarButton
             x:Uid="AppBarButtonDelete"
-                x:Name="ButtonDelete"
-                Icon="Delete"
-                Label="Delete"
-                Click="ButtonDelete_Click"/>
+            x:Name="ButtonDelete"
+            Icon="Delete"
+            Label="Delete"
+            Click="ButtonDelete_Click"/>
 
     </views:PopupViewHostGeneric.PrimaryCommands>
 
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel x:Name="StackPanel" Margin="12">
 
-                <TextBlock
-                    x:Uid="DifferentTimeZoneWarning"
-                    Style="{ThemeResource CaptionTextBlockStyle}"
-                    Foreground="Red"
-                    Margin="0,0,0,12"
-                    Visibility="{Binding IsInDifferentTimeZone, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-
-                    <controls:EnhancedTimePicker
-                        x:Uid="EditingClassScheduleItemView_TimePickerStart"
-                        Header="Start time"
-                        HorizontalAlignment="Stretch"
-                        SelectedTime="{Binding StartTime, Mode=TwoWay}"/>
-
-                    <controls:EnhancedEndTimePicker
-                        Grid.Column="2"
-                        x:Uid="EditingClassScheduleItemView_TimePickerEnd"
-                        Header="End time"
-                        HorizontalAlignment="Stretch"
-                        StartTime="{Binding StartTime}"
-                        SelectedTime="{Binding EndTime, Mode=TwoWay}"/>
-                </Grid>
-
-                <TextBox
-                    x:Uid="EditingClassScheduleItemView_TextBoxRoom"
-                    x:Name="tbRoom"
-                    Header="Room"
-                    PlaceholderText="ex: Modern Languages 302"
-                    Margin="0,12,0,0"
-                IsSpellCheckEnabled="True"
-                IsTextPredictionEnabled="True"
-                    Text="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Margin="0,0,0,0">
+                <Border Margin="0,6,0,0" Visibility="{Binding HasOnlyOneGroup, Converter={StaticResource BoolToVisibilityConverter},ConverterParameter=Invert}"/>
+                <ItemsControl ItemsSource="{Binding Groups}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="{Binding HasOnlyOneGroup, Converter={StaticResource AddClassTimeHasOnlyOneGroupToMarginConverter}}">
+                                <Border Background="{ThemeResource ToolTipBackgroundThemeBrush}" BorderThickness="1" BorderBrush="{ThemeResource ButtonBackgroundThemeBrush}" Visibility="{Binding HasOnlyOneGroup, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                <scheduleViews:AddClassTimeGroupExpanded Visibility="{Binding Expanded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <scheduleViews:AddClassTimeGroupCollapsed Visibility="{Binding Expanded, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
 
-                <Grid Margin="0,12,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
 
-                    <StackPanel>
-                        <CheckBox
-                            x:Name="checkBoxMonday"
-                            Content="Monday"
-                            Style="{StaticResource DayCheckBoxStyle}"
-                            IsChecked="{Binding IsMondayChecked, Mode=TwoWay}"/>
 
-                        <CheckBox
-                            x:Name="checkBoxTuesday"
-                            Content="Tuesday"
-                            Style="{StaticResource DayCheckBoxStyle}"
-                            IsChecked="{Binding IsTuesdayChecked, Mode=TwoWay}"/>
-
-                        <CheckBox
-                            x:Name="checkBoxWednesday"
-                            Content="Wednesday"
-                            Style="{StaticResource DayCheckBoxStyle}"
-                            IsChecked="{Binding IsWednesdayChecked, Mode=TwoWay}"/>
-
-                        <CheckBox
-                            x:Name="checkBoxThursday"
-                            Content="Thursday"
-                            Style="{StaticResource DayCheckBoxStyle}"
-                            IsChecked="{Binding IsThursdayChecked, Mode=TwoWay}"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1">
-                        <CheckBox
-                            x:Name="checkBoxFriday"
-                            Content="Friday"
-                            Style="{StaticResource DayCheckBoxStyle}"
-                            IsChecked="{Binding IsFridayChecked, Mode=TwoWay}"/>
-
-                        <CheckBox
-                            x:Name="checkBoxSaturday"
-                            Content="Saturday"
-                            Style="{StaticResource DayCheckBoxStyle}"
-                            IsChecked="{Binding IsSaturdayChecked, Mode=TwoWay}"/>
-
-                        <CheckBox
-                            x:Name="checkBoxSunday"
-                            Content="Sunday"
-                            Style="{StaticResource DayCheckBoxStyle}"
-                            IsChecked="{Binding IsSundayChecked, Mode=TwoWay}"/>
-                    </StackPanel>
-
-                </Grid>
-
-                <views:WeekComboBox
-                    x:Uid="EditingClassScheduleItemView_WeekComboBox"
-                    x:Name="weekComboBox"
-                    Header="Week"
-                    Margin="0,12,0,0"
-                    SelectedWeek="{Binding ScheduleWeek, Mode=TwoWay}"/>
-
-                <TextBlock
-                    x:Uid="EditingClassScheduleItemView_TextBlockWeekDescription"
-                    Text="Leave this on 'Both Weeks' unless you have a two-week schedule."
-                    Style="{StaticResource CaptionTextBlockStyle}"
-                    Margin="1,0,0,0"/>
-
+                <Button
+                    x:Uid="AddClassTime_AddAnotherTime"
+                    Style="{StaticResource AddItemStyle}"
+                    HorizontalAlignment="Stretch"
+                    x:Name="buttonAddTime"
+                    Click="buttonAddTime_Click"
+                    Margin="12,6,12,12"
+                    Visibility="{Binding ShowAddAnotherTime, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </StackPanel>
 
         </ScrollViewer>

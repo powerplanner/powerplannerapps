@@ -112,8 +112,8 @@ namespace PowerPlanneriOS.Controllers
 
         public override void OnViewModelLoadedOverride()
         {
-            _itemBindingHost.BindingObject = ViewModel.Grade;
-            _classBindingHost.BindingObject = ViewModel.Grade.WeightCategory.Class;
+            _itemBindingHost.DataContext = ViewModel.Grade;
+            _classBindingHost.DataContext = ViewModel.Grade.WeightCategory.Class;
 
             base.OnViewModelLoadedOverride();
         }

@@ -21,7 +21,7 @@ namespace PowerPlanneriOS.Views
         public UIScheduleItemView(ViewItemSchedule item)
         {
             Item = item;
-            m_classBindingHost.BindingObject = item.Class;
+            m_classBindingHost.DataContext = item.Class;
 
             m_classBindingHost.SetBackgroundColorBinding(this, nameof(item.Class.Color));
 

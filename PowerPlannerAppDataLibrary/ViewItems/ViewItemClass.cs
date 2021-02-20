@@ -397,8 +397,6 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         {
             viewItemTaskOrEvent.Class = this;
 
-            HandleWeightCategoryForTaskOrEvent(viewItemTaskOrEvent);
-
             if (TasksAndEvents != null)
             {
                 TasksAndEvents.InsertSorted(viewItemTaskOrEvent);
@@ -432,38 +430,6 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// List is already sorted
         /// </summary>
         public MyObservableList<ViewItemTaskOrEvent> TasksAndEvents { get; private set; }
-
-        private void HandleWeightCategoryForTaskOrEvent(ViewItemTaskOrEvent item)
-        {
-            if (item.WeightCategoryIdentifier == PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_UNASSIGNED)
-            {
-                item.WeightCategory = ViewItemWeightCategory.UNASSIGNED;
-            }
-            else if (item.WeightCategoryIdentifier == PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED)
-            {
-                item.WeightCategory = ViewItemWeightCategory.EXCLUDED;
-            }
-            else
-            {
-                if (WeightCategories == null)
-                {
-                    // WeightCategories should only be null in the scenario where the view group was loaded disregarding
-                    // the weight categories (like from the live tile task)
-                    item.WeightCategory = null;
-                    return;
-                }
-
-                var weight = WeightCategories.FirstOrDefault(i => i.Identifier == item.WeightCategoryIdentifier);
-                if (weight != null)
-                {
-                    item.WeightCategory = weight;
-                }
-                else
-                {
-                    item.WeightCategory = ViewItemWeightCategory.UNASSIGNED;
-                }
-            }
-        }
 
         public MyObservableList<ViewItemSchedule> Schedules { get; private set; }
 

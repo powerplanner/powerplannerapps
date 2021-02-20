@@ -102,7 +102,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         /// </summary>
         public bool IsCompletionSliderVisible => Item.Type == TaskOrEventType.Task && !IsUnassigedMode;
 
-        public bool IsButtonConvertToGradeVisible => IsUnassigedMode;
+        public bool IsButtonAddGradeVisible => IsUnassigedMode;
 
         public void Edit()
         {
@@ -112,48 +112,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         /// <summary>
         /// Toggles the item type. If it's a task, becomes an event, and vice versa.
         /// </summary>
-        public async void ConvertType()
+        public void ConvertType()
         {
-            await TryHandleUserInteractionAsync("ChangeItemType", async (cancellationToken) =>
-            {
-                DataItemMegaItem item = new DataItemMegaItem()
-                {
-                    Identifier = Item.Identifier
-                };
-
-                MegaItemType newMegaItemType;
-
-                switch ((Item.DataItem as DataItemMegaItem).MegaItemType)
-                {
-                    case MegaItemType.Task:
-                        newMegaItemType = MegaItemType.Event;
-                        break;
-
-                    case MegaItemType.Homework:
-                        newMegaItemType = MegaItemType.Exam;
-                        break;
-
-                    case MegaItemType.Event:
-                        newMegaItemType = MegaItemType.Task;
-                        break;
-
-                    case MegaItemType.Exam:
-                        newMegaItemType = MegaItemType.Homework;
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                item.MegaItemType = newMegaItemType;
-
-                DataChanges editChanges = new DataChanges();
-                editChanges.Add(item);
-                await PowerPlannerApp.Current.SaveChanges(editChanges);
-
-                TelemetryExtension.Current?.TrackEvent("ConvertedItemType");
-
-            }, "Failed to change item type. Your error has been reported.");
+            MainScreenViewModel.ConvertTaskOrEventType(Item, this);
         }
         
         public void Delete()
@@ -189,80 +150,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 return;
             }
 
-            TryStartDataOperationAndThenNavigate(delegate
+            MainScreenViewModel.SetTaskPercentComplete(task, percentComplete);
+
+            // Go back immediately
+            if (percentComplete == 1)
             {
-                DataChanges changes = new DataChanges();
-
-                changes.Add(new DataItemMegaItem()
-                {
-                    Identifier = task.Identifier,
-                    PercentComplete = percentComplete
-                });
-
-                return PowerPlannerApp.Current.SaveChanges(changes);
-
-            }, delegate
-            {
-                // Go back immediately before 
-                if (percentComplete == 1)
-                {
-                    try
-                    {
-                        // Don't prompt for non-class tasks
-                        if (!task.Class.IsNoClassClass)
-                        {
-                            BareSnackbar.Make(PowerPlannerResources.GetString("String_TaskCompleted"), PowerPlannerResources.GetString("String_AddGrade"), AddGradeAfterCompletingTask).Show();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
-                    }
-
-                    this.GoBack();
-                }
-            });
-        }
-
-        private async void AddGradeAfterCompletingTask()
-        {
-            try
-            {
-                TelemetryExtension.Current?.TrackEvent("ClickedSnackbarAddGrade");
-
-                // We need to load the class with the weight categories
-                var ViewItemsGroupClass = await ClassViewItemsGroup.LoadAsync(MainScreenViewModel.CurrentLocalAccountId, Item.Class.Identifier, DateTime.Today, MainScreenViewModel.CurrentSemester);
-
-                ViewItemsGroupClass.LoadTasksAndEvents();
-                ViewItemsGroupClass.LoadGrades();
-                await ViewItemsGroupClass.LoadTasksAndEventsTask;
-                await ViewItemsGroupClass.LoadGradesTask;
-
-                var loadedTask = ViewItemsGroupClass.Tasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
-                if (loadedTask == null)
-                {
-                    ViewItemsGroupClass.ShowPastCompletedTasks();
-                    await ViewItemsGroupClass.LoadPastCompleteTasksAndEventsTask;
-
-                    loadedTask = ViewItemsGroupClass.PastCompletedTasks.FirstOrDefault(i => i.Identifier == Item.Identifier);
-                    if (loadedTask == null)
-                    {
-                        return;
-                    }
-                }
-
-                var viewModel = CreateForUnassigned(MainScreenViewModel, loadedTask);
-                viewModel.ConvertToGrade(showViewGradeSnackbarAfterSaving: MainScreenViewModel.SelectedItem != NavigationManager.MainMenuSelections.Classes); // Don't show view grades when already on class page
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
+                this.GoBack();
             }
         }
 
-        public async void ConvertToGrade(bool showViewGradeSnackbarAfterSaving = false)
+        public async void AddGrade(bool showViewGradeSnackbarAfterSaving = false)
         {
-            await TryHandleUserInteractionAsync("ConvertToGrade", async (cancellationToken) =>
+            await TryHandleUserInteractionAsync("AddGradeFromExisting", async (cancellationToken) =>
             {
                 // For free version, block assigning grade if number of graded items exceeds 5
                 if (Item.Class.WeightCategories.SelectMany(i => i.Grades).Where(i => i.GradeReceived != PowerPlannerSending.Grade.UNGRADED).Count() >= 5

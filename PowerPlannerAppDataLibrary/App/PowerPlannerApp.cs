@@ -31,14 +31,14 @@ namespace PowerPlannerAppDataLibrary.App
         public static bool DoNotShowYearsInTabItems { get; set; }
 
         /// <summary>
-        /// Android sets this to true, it shows settings in separate menu item and opens as popup.
+        /// Android sets this to true
         /// </summary>
-        public static bool DoNotShowSettingsInTabItems { get; set; }
+        public static bool ShowClassesAsPopups { get; set; }
 
         /// <summary>
         /// Android sets this to true
         /// </summary>
-        public static bool ShowClassesAsPopups { get; set; }
+        public static bool ShowSettingsPagesAsPopups { get; set; }
 
         /// <summary>
         /// Android should set this to true as TimeZoneInfo operates on IANA ids. Windows should keep this false;
@@ -402,7 +402,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             var currWeek = account.GetWeekOnDifferentDate(date);
 
-            var schedules = SchedulesOnDay.Get(classes, date, currWeek, trackChanges: false);
+            var schedules = SchedulesOnDay.Get(account, classes, date, currWeek, trackChanges: false);
 
             return schedules.FirstOrDefault()?.Class;
         }
@@ -414,7 +414,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             var currWeek = account.GetWeekOnDifferentDate(now);
 
-            var schedules = SchedulesOnDay.Get(classes, now, currWeek, trackChanges: false);
+            var schedules = SchedulesOnDay.Get(account, classes, now, currWeek, trackChanges: false);
 
             ViewItemSchedule closestBefore = null;
             ViewItemSchedule closestAfter = null;

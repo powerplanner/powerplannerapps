@@ -21,18 +21,19 @@ using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsListView : PopupViewHost<SettingsListViewModel>
+    public class SettingsListView : InterfacesDroid.Views.PopupViewHost<SettingsListViewModel>
     {
         private View _listItemUpgradeToPremium;
 
         public SettingsListView(ViewGroup root) : base(Resource.Layout.SettingsList, root)
         {
-            Title = PowerPlannerResources.GetString("MainMenuItem_Settings");
-
+            FindViewById<Button>(Resource.Id.ButtonViewYearsAndSemesters).Click += delegate { ViewModel.OpenYears(); };
+            FindViewById<Button>(Resource.Id.ButtonSync).Click += delegate { ViewModel.StartSync(); };
+            FindViewById<Button>(Resource.Id.ButtonViewSyncErrors).Click += delegate { ViewModel.ViewSyncErrors(); };
             FindViewById<View>(Resource.Id.SettingsListItemCreateAccount).Click += delegate { ViewModel.OpenCreateAccount(); };
             FindViewById<View>(Resource.Id.SettingsListItemLogIn).Click += delegate { ViewModel.OpenLogIn(); };
             FindViewById<View>(Resource.Id.SettingsListItemAccount).Click += delegate { ViewModel.OpenMyAccount(); };
-            FindViewById<View>(Resource.Id.SettingsListItemWidgets).Click += delegate { NavigateToCustomViewModel<WidgetsViewModel>(); };
+            FindViewById<View>(Resource.Id.SettingsListItemWidgets).Click += delegate { ShowCustomViewModel<WidgetsViewModel>(); };
             FindViewById<View>(Resource.Id.SettingsListItemAbout).Click += delegate { ViewModel.OpenAbout(); };
             FindViewById<View>(Resource.Id.SettingsListItemTwoWeekSchedule).Click += delegate { ViewModel.OpenTwoWeekScheduleSettings(); };
             FindViewById<View>(Resource.Id.SettingsListItemSyncOptions).Click += delegate { ViewModel.OpenSyncOptionsSimple(); };
@@ -95,13 +96,18 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private void NavigateToCustomViewModel<T>() where T : BaseViewModel
+        private void ShowCustomViewModel<T>() where T : BaseViewModel
         {
-            var pagedViewModel = ViewModel.FindAncestor<PagedViewModel>();
+            var newViewModel = (T)Activator.CreateInstance(typeof(T), SettingsListViewModel.GetParentForSubviews(ViewModel));
 
-            var newViewModel = (T)Activator.CreateInstance(typeof(T), pagedViewModel);
+            SettingsListViewModel.Show(newViewModel);
+        }
 
-            pagedViewModel.Navigate(newViewModel);
+        public override void OnViewModelSetOverride()
+        {
+            ViewModel.ShowAsPopups = true;
+
+            base.OnViewModelSetOverride();
         }
 
         public override void OnViewModelLoadedOverride()
@@ -112,9 +118,6 @@ namespace PowerPlannerAndroid.Views
             }
 
             UpdateUpgradeToPremiumVisibility();
-
-            //FindViewById<Button>(Resource.Id.ButtonLogOut).Click += delegate { var dontWait = ViewModel.FindAncestor<MainWindowViewModel>().SetCurrentAccount(null); };
-            //FindViewById<TextView>(Resource.Id.TextViewSettingsHeader).Text = "Settings - " + ViewModel.FindAncestor<MainWindowViewModel>().CurrentAccount.Username;
         }
 
         private async void UpdateUpgradeToPremiumVisibility()

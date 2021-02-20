@@ -24,8 +24,6 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 {
     public sealed partial class TasksOrEventsListHeader : UserControl
     {
-        public event EventHandler<RoutedEventArgs> OnHeaderClicked;
-
         public TasksOrEventsListHeader()
         {
             this.InitializeComponent();
@@ -124,8 +122,11 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
         private void header_Click(object sender, RoutedEventArgs e)
         {
-            if (OnHeaderClicked != null)
-                OnHeaderClicked(this, e);
+            var collapsedProp = DataContext.GetType().GetProperty("Collapsed");
+            if (collapsedProp != null && collapsedProp.PropertyType == typeof(bool))
+            {
+                collapsedProp.SetValue(DataContext, !(bool)collapsedProp.GetValue(DataContext));
+            }
         }
 
         private bool _isAddTaskEnabled = true;

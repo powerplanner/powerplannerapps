@@ -48,7 +48,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 try
                 {
-                    await AccountsManager.ValidateUsername(Username);
+                    await AccountsManager.ValidateUsernameAsync(Username);
                 }
 
                 catch (AccountsManager.UsernameExistsLocallyException)

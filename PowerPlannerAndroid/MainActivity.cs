@@ -25,6 +25,7 @@ using Microsoft.AppCenter.Crashes;
 using System.IO;
 using Android.Webkit;
 using AndroidX.Core.Content;
+using Android.Content.PM;
 
 namespace PowerPlannerAndroid
 {
@@ -40,7 +41,13 @@ namespace PowerPlannerAndroid
 #else
         "com.barebonesdev.powerplanner.MainActivity"
 #endif
-        ,MainLauncher = true, Icon = "@mipmap/icon", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, WindowSoftInputMode = SoftInput.AdjustResize)]
+        ,
+        MainLauncher = true,
+        Icon = "@mipmap/icon",
+        LaunchMode = LaunchMode.SingleInstance,
+        WindowSoftInputMode = SoftInput.AdjustResize,
+        // ConfigurationChanges enables my app to handle orientation changes without re-rendering the views
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout | ConfigChanges.KeyboardHidden)]
     public class MainActivity : BareActivity
     {
         public static MainActivity GetCurrent()
@@ -365,6 +372,22 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+
+                    if (v <= new Version(2009, 25, 1, 0) && Android.Icu.Text.DecimalFormatSymbols.Instance.DecimalSeparator == ',')
+                    {
+                        changedText += "\n - Fixed decimal entry support for , as decimal!";
+                    }
+
+                    if (v <= new Version(2009, 23, 1, 0))
+                    {
+                        changedText += "\n - Fix for displaying calendar+day on shorter devices";
+                    }
+
+                    if (v <= new Version(2009, 17, 5, 0))
+                    {
+                        changedText += "\n - New combined calendar/day view, and Years/Settings moved to \"More\" tab on bottom right";
+                        changedText += "\n - Bug fix for list items sometimes not displaying correctly";
+                    }
 
                     if (v <= new Version(2008, 12, 2, 0))
                     {

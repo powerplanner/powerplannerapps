@@ -24,23 +24,32 @@ namespace PowerPlannerUWP.Extensions
         private static DateTimeFormatter _timeFormatter = new DateTimeFormatter("shorttime");
         private static string _timeToTime = LocalizedResources.GetString("String_TimeToTime");
 
-        protected override Task ResetAllRemindersAsync(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
+        protected override void ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
         {
             var notifier = ToastNotificationManager.CreateToastNotifier();
             var group = ClassRemindersGroupPrefix + "." + UWPRemindersExtension.GetId(account);
 
-            var scheduled = notifier.GetScheduledToastNotifications();
-            foreach (var s in scheduled)
+            // Clear current scheduled notifications
+            try
             {
-                if (s.Group == group)
+                var scheduled = notifier.GetScheduledToastNotifications();
+                foreach (var s in scheduled)
                 {
-                    notifier.RemoveFromSchedule(s);
+                    try
+                    {
+                        if (s.Group == group)
+                        {
+                            notifier.RemoveFromSchedule(s);
+                        }
+                    }
+                    catch { }
                 }
             }
+            catch { }
 
             if (scheduleViewItemsGroup == null)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             // This will be initialized
@@ -57,7 +66,7 @@ namespace PowerPlannerUWP.Extensions
             for (; today.Date < end.Date; today = today.AddDays(1).Date)
             {
                 // No need to lock changes, if changes occur an exception might occur, but that's fine, reminders would be reset once again anyways
-                var schedulesOnDay = SchedulesOnDay.Get(scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today), trackChanges: false);
+                var schedulesOnDay = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today), trackChanges: false);
 
                 foreach (var s in schedulesOnDay)
                 {
@@ -83,12 +92,19 @@ namespace PowerPlannerUWP.Extensions
                             notif.ExpirationTime = today.Add(s.EndTime.TimeOfDay);
                         }
 
-                        notifier.AddToSchedule(notif);
+                        try
+                        {
+                            notifier.AddToSchedule(notif);
+                        }
+                        catch (Exception ex)
+                        {
+                            // If OS is in a bad state, we'll just stop
+                            TelemetryExtension.Current?.TrackException(new Exception("Adding toast to schedule failed: " + ex.Message, ex));
+                            return;
+                        }
                     }
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         private static XmlDocument GeneratePayload(AccountDataItem account, ViewItemSchedule s)

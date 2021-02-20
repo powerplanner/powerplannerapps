@@ -76,12 +76,12 @@ namespace PowerPlanneriOS.Controllers
 
             _itemBindingHost = new BindingHost()
             {
-                BindingObject = ViewModel.Item
+                DataContext = ViewModel.Item
             };
             _classBindingHost = new BindingHost();
             _itemBindingHost.SetBinding(nameof(ViewItemTaskOrEvent.Class), delegate
             {
-                _classBindingHost.BindingObject = ViewModel.Item.Class;
+                _classBindingHost.DataContext = ViewModel.Item.Class;
             });
 
             var labelTitle = new UILabel()
@@ -136,29 +136,29 @@ namespace PowerPlanneriOS.Controllers
 
             if (ViewModel.IsUnassigedMode)
             {
-                var buttonConvertToGrade = new UIButton(UIButtonType.System)
+                var buttonAddGrade = new UIButton(UIButtonType.System)
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false
                 };
-                buttonConvertToGrade.SetTitle("Convert To Grade", UIControlState.Normal);
-                buttonConvertToGrade.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
-                buttonConvertToGrade.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
-                buttonConvertToGrade.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.ConvertToGrade(); }).Handler;
-                base.ContentView.Add(buttonConvertToGrade);
+                buttonAddGrade.SetTitle("Add Grade", UIControlState.Normal);
+                buttonAddGrade.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
+                buttonAddGrade.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
+                buttonAddGrade.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.AddGrade(); }).Handler;
+                base.ContentView.Add(buttonAddGrade);
 
                 // https://stackoverflow.com/questions/46344381/ios-11-layout-guidance-about-safe-area-for-iphone-x
                 if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
                 {
                     NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[] {
-                        buttonConvertToGrade.LeftAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.LeftAnchor, 16),
-                        buttonConvertToGrade.RightAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.RightAnchor, -16),
-                        buttonConvertToGrade.BottomAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.BottomAnchor, -16)
+                        buttonAddGrade.LeftAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.LeftAnchor, 16),
+                        buttonAddGrade.RightAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.RightAnchor, -16),
+                        buttonAddGrade.BottomAnchor.ConstraintEqualTo(base.ContentView.SafeAreaLayoutGuide.BottomAnchor, -16)
                     });
                 }
                 else
                 {
-                    buttonConvertToGrade.StretchWidth(base.ContentView, left: 16, right: 16);
-                    buttonConvertToGrade.PinToBottom(base.ContentView, bottom: 16);
+                    buttonAddGrade.StretchWidth(base.ContentView, left: 16, right: 16);
+                    buttonAddGrade.PinToBottom(base.ContentView, bottom: 16);
                 }
             }
 

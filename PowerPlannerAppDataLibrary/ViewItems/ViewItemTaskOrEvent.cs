@@ -59,6 +59,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
                 SetProperty(ref _class, value, nameof(Class));
 
+                HandleUpdatingWeightCategory();
+
                 if (_class != null && !_class.IsNoClassClass)
                 {
                     _classPropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(_class_PropertyChanged).Handler;
@@ -69,6 +71,37 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
+        private void HandleUpdatingWeightCategory()
+        {
+            if (WeightCategoryIdentifier == PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_UNASSIGNED)
+            {
+                WeightCategory = ViewItemWeightCategory.UNASSIGNED;
+            }
+            else if (WeightCategoryIdentifier == PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED)
+            {
+                WeightCategory = ViewItemWeightCategory.EXCLUDED;
+            }
+            else
+            {
+                if (Class?.WeightCategories == null)
+                {
+                    // WeightCategories should only be null in the scenario where the view group was loaded disregarding
+                    // the weight categories (like from the live tile task)
+                    WeightCategory = null;
+                    return;
+                }
+
+                var weight = Class.WeightCategories.FirstOrDefault(i => i.Identifier == WeightCategoryIdentifier);
+                if (weight != null)
+                {
+                    WeightCategory = weight;
+                }
+                else
+                {
+                    WeightCategory = ViewItemWeightCategory.UNASSIGNED;
+                }
+            }
+        }
 
         private double _percentComplete;
         public double PercentComplete
@@ -110,6 +143,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                     return false;
                 }
             }
+        }
+
+        public bool IsTask
+        {
+            get => Type == TaskOrEventType.Task;
+        }
+        
+        public bool IsEvent
+        {
+            get => Type == TaskOrEventType.Event;
         }
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
@@ -748,6 +791,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             {
                 return !IsComplete;
             }
+        }
+
+        public override string ToString()
+        {
+            return Name + " - " + Class?.Name;
         }
     }
 }
