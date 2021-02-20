@@ -352,9 +352,6 @@
     <AndroidResource Include="Resources\drawable\CalendarSelectedDayBorder.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Classes.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemSemesterClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -425,9 +422,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemEditingGradeScale.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemClassMenuItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemUnassignedItemsHeader.xml">

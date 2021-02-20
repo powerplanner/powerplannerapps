@@ -13,9 +13,73 @@ using BareMvvm.Core.ViewModels;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.Helpers;
 using PowerPlannerAndroid.Views;
+using PowerPlannerAndroid.Vx;
 
 namespace PowerPlannerAndroid.ViewHosts
 {
+    public class MainScreenVxViewHostDescendant<TViewModel> : VxViewHost<TViewModel>, IMainScreenToolbarHandler where TViewModel : BaseViewModel
+    {
+        private MainScreenView _mainScreenView;
+        public MainScreenView MainScreenView
+        {
+            get
+            {
+                if (_mainScreenView == null)
+                {
+                    var parent = Parent;
+                    while (true)
+                    {
+                        if (parent is MainScreenView mainScreenView)
+                        {
+                            _mainScreenView = mainScreenView;
+                            break;
+                        }
+
+                        if (parent == null)
+                        {
+                            throw new InvalidOperationException("Couldn't find MainScreenView from parent");
+                        }
+
+                        parent = parent.Parent;
+                    }
+                }
+
+                return _mainScreenView;
+            }
+        }
+
+        public MainScreenVxViewHostDescendant(Context context) : base(context)
+        {
+        }
+
+        protected virtual int GetMenuResource()
+        {
+            return 0;
+        }
+
+        public void RequestUpdateMenu()
+        {
+            MainScreenView.Toolbar.Menu.Clear();
+
+            int menuResource = GetMenuResource();
+
+            if (menuResource == 0)
+            {
+                return;
+            }
+
+            MenuInflater inflater = new MenuInflater(Context);
+            inflater.Inflate(menuResource, MainScreenView.Toolbar.Menu);
+
+            LocalizationHelper.LocalizeMenu(MainScreenView.Toolbar.Menu);
+        }
+
+        public virtual void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
+        {
+            // Nothing
+        }
+    }
+
     public class MainScreenViewHostDescendant<TViewModel> : InterfacesDroid.Views.PopupViewHost<TViewModel>, IMainScreenToolbarHandler where TViewModel : BaseViewModel
     {
         public MainScreenView MainScreenView { get; private set; }

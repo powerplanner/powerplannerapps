@@ -1,10 +1,14 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.Res;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using BareMvvm.Core.Binding;
+using InterfacesDroid.Helpers;
 using InterfacesDroid.Themes;
 using PowerPlannerAppDataLibrary;
 using System;
@@ -18,11 +22,28 @@ namespace PowerPlannerAndroid.Vx
     {
         public BindingHost BindingHost { get; private set; }
         public string SourcePropertyPath { get; private set; }
+        public Func<object, object> Converter { get; private set; }
 
-        public VxBinding(BindingHost bindingHost, string sourcePropertyPath)
+        public VxBinding(BindingHost bindingHost, string sourcePropertyPath, Func<object, object> converter = null)
         {
             BindingHost = bindingHost;
             SourcePropertyPath = sourcePropertyPath;
+            Converter = converter;
+        }
+
+        public void SetBinding<T>(Action<T> onValue)
+        {
+            BindingHost.SetBinding(SourcePropertyPath, v =>
+            {
+                if (Converter != null)
+                {
+                    onValue((T)Converter(v));
+                }
+                else
+                {
+                    onValue((T)v);
+                }
+            });
         }
     }
 
@@ -30,7 +51,7 @@ namespace PowerPlannerAndroid.Vx
     {
         public static T VxVisibility<T>(this T view, VxBinding binding) where T : View
         {
-            binding.BindingHost.SetBinding<bool>(binding.SourcePropertyPath, b => view.Visibility = b ? ViewStates.Visible : ViewStates.Gone);
+            binding.SetBinding<bool>(b => view.Visibility = b ? ViewStates.Visible : ViewStates.Gone);
             return view;
         }
 
@@ -40,9 +61,15 @@ namespace PowerPlannerAndroid.Vx
             return view;
         }
 
+        public static T VxBackgroundTintList<T>(this T view, VxBinding binding) where T : View
+        {
+            binding.SetBinding<ColorStateList>(csl => view.BackgroundTintList = csl);
+            return view;
+        }
+
         public static T VxEnabled<T>(this T view, VxBinding binding) where T : View
         {
-            binding.BindingHost.SetBinding<bool>(binding.SourcePropertyPath, b => view.Enabled = b);
+            binding.SetBinding<bool>(b => view.Enabled = b);
             return view;
         }
 
@@ -198,6 +225,41 @@ namespace PowerPlannerAndroid.Vx
             {
                 var lp = new LinearLayout.LayoutParams(_width, _height);
 
+                Apply(lp);
+
+                if (_gravity != null)
+                {
+                    lp.Gravity = _gravity.Value;
+                }
+
+                if (_weight != 0)
+                {
+                    lp.Weight = _weight;
+                }
+
+                _view.LayoutParameters = lp;
+
+                return _view;
+            }
+
+            public T ApplyForFrameLayout()
+            {
+                var lp = new FrameLayout.LayoutParams(_width, _height);
+
+                Apply(lp);
+
+                if (_gravity != null)
+                {
+                    lp.Gravity = _gravity.Value;
+                }
+
+                _view.LayoutParameters = lp;
+
+                return _view;
+            }
+
+            private void Apply(ViewGroup.MarginLayoutParams lp)
+            {
                 if (_marginLeft != 0)
                 {
                     lp.LeftMargin = ThemeHelper.AsPx(_view.Context, _marginLeft);
@@ -217,20 +279,6 @@ namespace PowerPlannerAndroid.Vx
                 {
                     lp.BottomMargin = ThemeHelper.AsPx(_view.Context, _marginBottom);
                 }
-
-                if (_gravity != null)
-                {
-                    lp.Gravity = _gravity.Value;
-                }
-
-                if (_weight != 0)
-                {
-                    lp.Weight = _weight;
-                }
-
-                _view.LayoutParameters = lp;
-
-                return _view;
             }
         }
 
@@ -245,10 +293,37 @@ namespace PowerPlannerAndroid.Vx
             return new LayoutParamsBuilder<T>(view);
         }
 
+        public static T VxBackgroundColor<T>(this T view, Color color) where T : View
+        {
+            view.SetBackgroundColor(color);
+            return view;
+        }
+
+        public static T VxBackgroundResource<T>(this T view, int resourceId) where T : View
+        {
+            view.SetBackgroundResource(resourceId);
+            return view;
+        }
+
         public static T VxElevation<T>(this T view, int elevation) where T : View
         {
             view.Elevation = ThemeHelper.AsPx(view.Context, elevation);
             return view;
+        }
+    }
+
+    public static class VxImageViewExtensions
+    {
+        public static T VxImageResource<T>(this T image, int resId) where T : ImageView
+        {
+            image.SetImageResource(resId);
+            return image;
+        }
+
+        public static T VxScaleType<T>(this T image, ImageView.ScaleType scaleType) where T : ImageView
+        {
+            image.SetScaleType(scaleType);
+            return image;
         }
     }
 
@@ -262,11 +337,17 @@ namespace PowerPlannerAndroid.Vx
             }
             return viewGroup;
         }
+
+        public static T VxClipToPadding<T>(this T view, bool clip) where T : ViewGroup
+        {
+            view.SetClipToPadding(clip);
+            return view;
+        }
     }
 
     public static class VxLinearLayoutExtensions
     {
-        public static T VxOrientation<T>(this T linearLayout, Orientation orientation) where T : LinearLayout
+        public static T VxOrientation<T>(this T linearLayout, Android.Widget.Orientation orientation) where T : LinearLayout
         {
             linearLayout.Orientation = orientation;
             return linearLayout;
@@ -298,7 +379,7 @@ namespace PowerPlannerAndroid.Vx
     {
         public static T VxText<T>(this T textView, VxBinding binding) where T : TextView
         {
-            binding.BindingHost.SetBinding<string>(binding.SourcePropertyPath, s => textView.Text = s);
+            binding.SetBinding<string>(s => textView.Text = s);
             return textView;
         }
 
@@ -317,6 +398,24 @@ namespace PowerPlannerAndroid.Vx
         public static T VxMaxLines<T>(this T textView, int maxLines) where T : TextView
         {
             textView.SetMaxLines(maxLines);
+            return textView;
+        }
+
+        public static T VxTextColor<T>(this T textView, Color color) where T : TextView
+        {
+            textView.SetTextColor(color);
+            return textView;
+        }
+
+        public static T VxTextColorResource<T>(this T textView, int resId) where T : TextView
+        {
+            textView.SetTextColor(new Color(ContextCompat.GetColor(textView.Context, resId)));
+            return textView;
+        }
+
+        public static T VxTextSize<T>(this T textView, float size) where T : TextView
+        {
+            textView.SetTextSize(Android.Util.ComplexUnitType.Sp, size);
             return textView;
         }
     }

@@ -14,36 +14,66 @@ using InterfacesDroid.Adapters;
 using InterfacesDroid.Views;
 using PowerPlannerAndroid.ViewHosts;
 using PowerPlannerAndroid.Views.ListItems;
+using PowerPlannerAndroid.Vx;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class ClassesView : MainScreenViewHostDescendant<ClassesViewModel>
+    public class ClassesView : MainScreenVxViewHostDescendant<ClassesViewModel>
     {
-        public ClassesView(ViewGroup root) : base(Resource.Layout.Classes, root)
+        private RecyclerView _recyclerView;
+
+        public ClassesView(Context context) : base(context)
         {
-            
+            View = new FrameLayout(context)
+                .VxLayoutParams().StretchHeight().Apply()
+                .VxChildren(
+
+                    // Classes
+                    new RecyclerView(context)
+                    {
+                        // Use this setting to improve performance if you know that changes
+                        // in content do not change the layout size of the RecyclerView
+                        HasFixedSize = false
+                    }
+                        .VxLayoutParams().StretchHeight().Apply()
+                        .VxPadding(0, 12, 0, 12)
+                        .VxClipToPadding(false)
+                        .VxReference(ref _recyclerView),
+
+                    // No classes info
+                    new LinearLayout(context)
+                        .VxOrientation(Orientation.Vertical)
+                        .VxLayoutParams().Gravity(GravityFlags.CenterVertical).Margins(16,0,16,0).Apply()
+                        .VxVisibility(Binding<bool, bool>(nameof(ViewModel.HasClasses), c => !c))
+                        .VxChildren(
+
+                            new TextView(context, null, 0, Resource.Style.TextAppearance_AppCompat_Large)
+                                .VxTextLocalized("ClassesPage_TextBlockNoClassesHeader.Text")
+                                .VxLayoutParams().Gravity(GravityFlags.Center).Apply(),
+
+                            new TextView(context, null, 0, Resource.Style.TextAppearance_AppCompat_Small)
+                                .VxTextLocalized("ClassesPage_TextBlockNoClassesDescription.Text")
+                                .VxLayoutParams().Gravity(GravityFlags.Center).Apply()
+
+                        )
+
+                );
         }
 
         public override void OnViewModelLoadedOverride()
         {
-            RecyclerView recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerViewClasses);
-
-            // Use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-            recyclerView.HasFixedSize = true;
-
             // Use a linear layout manager
             var layoutManager = new LinearLayoutManager(Context);
-            recyclerView.SetLayoutManager(layoutManager);
+            _recyclerView.SetLayoutManager(layoutManager);
 
             // Specify the adapter
             var adapter = new ClassesAdapter(ViewModel)
             {
                 ItemsSource = ViewModel.MainScreenViewModel.Classes
             };
-            recyclerView.SetAdapter(adapter);
+            _recyclerView.SetAdapter(adapter);
 
             base.OnViewModelLoadedOverride();
         }
@@ -76,7 +106,7 @@ namespace PowerPlannerAndroid.Views
             {
                 if (viewType == 0)
                 {
-                    var view = new ListItemClassMenuItemView(parent);
+                    var view = new ListItemClassMenuItemView(parent.Context);
 
                     view.Click += View_Click;
 

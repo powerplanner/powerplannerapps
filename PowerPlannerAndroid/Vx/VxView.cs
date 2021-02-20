@@ -126,6 +126,11 @@ namespace PowerPlannerAndroid.Vx
             return new VxBinding(BindingHost, dataContextSourcePropertyName);
         }
 
+        protected VxBinding Binding<S, V>(string dataContextSourcePropertyName, Func<S, V> converter)
+        {
+            return new VxBinding(BindingHost, dataContextSourcePropertyName, s => converter((S)s));
+        }
+
         public void SetBinding(string dataContextSourcePropertyName, object target, string targetPropertyName)
         {
             SetBinding(dataContextSourcePropertyName, delegate
