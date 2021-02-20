@@ -34,23 +34,86 @@ using System.Collections.Specialized;
 using Google.Android.Material.BottomNavigation;
 using AndroidX.DrawerLayout.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
+using PowerPlannerAndroid.Vx;
+using AndroidX.Core.Content;
+using Google.Android.Material.AppBar;
+using PowerPlannerAndroid.Views.Controls;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView
+    public class MainScreenView : VxViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView
     {
         private PagedViewModelPresenter _contentPresenter;
         private PopupsPresenter _popupsPresenter;
         private ProgressBar _syncProgressBar;
+
         public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
 
-        public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
+        public MainScreenView(Context context) : base(context)
         {
-            Toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
+            Toolbar = new PowerPlannerToolbar(context);
+
+            _bottomNav = new BottomNavigationView(context)
+                .VxLayoutParams().Height(56).Apply()
+                .VxElevation(24);
+            _bottomNav.SetBackgroundResource(Resource.Color.primaryDark);
+            _bottomNav.ItemIconTintList = ContextCompat.GetColorStateList(context, Resource.Color.bottom_nav_foreground);
+            _bottomNav.ItemTextColor = ContextCompat.GetColorStateList(context, Resource.Color.bottom_nav_foreground);
+
+            var contentLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
+            contentLayoutParams.AddRule(LayoutRules.Above, _bottomNav.Id);
+
+            _syncProgressBar = new ProgressBar(context, null, Android.Resource.Attribute.ProgressBarStyleHorizontal)
+            {
+                IndeterminateTintList = ColorTools.GetColorStateList(Color.White),
+                ProgressTintList = ColorTools.GetColorStateList(Color.White),
+                ProgressBackgroundTintList = ColorTools.GetColorStateList(new Color(255, 255, 255, 102)),
+                Indeterminate = true,
+                Visibility = ViewStates.Gone
+            }
+                .VxLayoutParams().Margins(0,-6,0,0).Gravity(GravityFlags.Top).Apply()
+                .VxElevation(20);
+
+            View = new FrameLayout(Context)
+                .VxLayoutParams().StretchHeight().Apply()
+                .VxChildren(
+                    
+                    // The main content view
+                    new LinearLayout(context)
+                        .VxOrientation(Orientation.Vertical)
+                        .VxLayoutParams().StretchHeight().Apply()
+                        .VxChildren(
+
+                            // Top toolbar
+                            Toolbar,
+
+                            // Content and bottom nav
+                            new LinearLayout(context)
+                                .VxOrientation(Orientation.Vertical)
+                                .VxLayoutParams().HeightWeight(1).Apply()
+                                .VxChildren(
+                                    
+                                    // Content frame
+                                    new PagedViewModelPresenter(context)
+                                        .VxLayoutParams().HeightWeight(1).Apply()
+                                        .VxReference(ref _contentPresenter),
+
+                                    // Bottom nav
+                                    _bottomNav
+
+                                )
+                        ),
+
+                    // Popups presenter
+                    new PopupsPresenter(context)
+                        .VxLayoutParams().StretchHeight().Apply()
+                        .VxReference(ref _popupsPresenter),
+
+                    _syncProgressBar
+                );
+
             Toolbar.MenuItemClick += Toolbar_MenuItemClick;
             Toolbar.NavigationClick += Toolbar_NavigationClick;
-            _syncProgressBar = FindViewById<ProgressBar>(Resource.Id.SyncProgressBar);
-            _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
         }
 
         private void Toolbar_NavigationClick(object sender, AndroidX.AppCompat.Widget.Toolbar.NavigationClickEventArgs e)
@@ -105,13 +168,10 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnViewModelLoadedOverride()
         {
-            _bottomNav = FindViewById<BottomNavigationView>(Resource.Id.BottomNav);
             _bottomNav.NavigationItemSelected += BottomNav_NavigationItemSelected;
 
-            // Place the content presenter
-            _contentPresenter = new PagedViewModelPresenter(Context);
+            // Load the content presenter
             _contentPresenter.ContentChanged += _contentPresenter_ContentChanged;
-            FindViewById<FrameLayout>(Resource.Id.ContentFrame).AddView(_contentPresenter); // Add view before assigning ViewModel, so that parent can be found
             _contentPresenter.ViewModel = ViewModel;
 
             _popupsPresenter.ViewModel = ViewModel;

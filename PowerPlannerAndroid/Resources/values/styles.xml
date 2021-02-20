@@ -37,14 +37,19 @@
     </style>
 
     <!--There's a corresponding dark style theme too-->
-    <style name="ActionBar">
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?android:actionBarSize</item>
-        <item name="android:elevation">4dp</item>
-        <item name="android:background">@color/powerPlannerBlue</item>
+    <style name="ActionBar" parent="Widget.MaterialComponents.Toolbar.Primary">
+      <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+      <item name="android:layout_width">match_parent</item>
+      <item name="android:layout_height">?android:actionBarSize</item>
+      <item name="android:elevation">4dp</item>
+      <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
     </style>
+  
+  <style name="ThemeOverlay.App.Toolbar" parent="">
+    <item name="colorPrimary">@color/powerPlannerBlue</item>
+    <item name="colorPrimaryVariant">@color/primaryDark</item>
+    <item name="colorOnPrimary">@android:color/white</item>
+  </style>
 
   <style name="MenuButtonAdd">
     <item name="android:title">{Calendar_FullCalendarAddButton.ToolTipService.ToolTip}</item>

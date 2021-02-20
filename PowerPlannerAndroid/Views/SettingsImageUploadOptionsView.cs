@@ -27,47 +27,29 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnViewModelLoadedOverride()
         {
-            View = new ScrollView(Context)
-            {
-                LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent)
-            }
-            .VxChildren(
-                new LinearLayout(Context)
+            View = VxVerticalScrollView(
+
+                new TextView(Context, null, 0, Resource.Style.TextAppearance_AppCompat_Medium)
                 {
-                    LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
-                    Orientation = Orientation.Vertical
+                    Text = PowerPlannerResources.GetString("Settings_ImageUploadOptionsPage_Description.Text")
                 }
-                .VxChildren(
+                .VxPadding(16),
 
-                    new TextView(Context)
-                    {
-                        Text = PowerPlannerResources.GetString("Settings_ImageUploadOptionsPage_Description.Text"),
-                        LayoutParameters = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent)
-                        {
-                            TopMargin = ThemeHelper.AsPx(Context, 16),
-                            BottomMargin = ThemeHelper.AsPx(Context, 16),
-                            LeftMargin = ThemeHelper.AsPx(Context, 16),
-                            RightMargin = ThemeHelper.AsPx(Context, 16)
-                        }
-                        // TODO: Style of Medium
-                    },
+                new Divider(Context),
 
-                    new Divider(Context),
+                new FullWidthSpinner(Context)
+                {
+                    Adapter = ObservableAdapter.Create(
+                        list: ViewModel.UploadOptions,
+                        itemResourceId: Resource.Layout.SpinnerItemCurrentUploadImageViaPreview,
+                        dropDownItemResourceId: Resource.Layout.SpinnerItemUploadImageOption)
+                }
+                .VxSelection(Array.IndexOf(ViewModel.UploadOptions, ViewModel.SelectedUploadOption))
+                .VxItemSelected((s, e) => { ViewModel.SelectedUploadOption = ViewModel.UploadOptions[e.Position]; }),
 
-                    new FullWidthSpinner(Context)
-                    {
-                        Adapter = ObservableAdapter.Create(
-                            list: ViewModel.UploadOptions,
-                            itemResourceId: Resource.Layout.SpinnerItemCurrentUploadImageViaPreview,
-                            dropDownItemResourceId: Resource.Layout.SpinnerItemUploadImageOption)
-                    }
-                    .VxSelection(Array.IndexOf(ViewModel.UploadOptions, ViewModel.SelectedUploadOption))
-                    .VxItemSelected((s, e) => { ViewModel.SelectedUploadOption = ViewModel.UploadOptions[e.Position]; }),
+                new Divider(Context)
 
-                    new Divider(Context)
-
-                    )
-                );
+            );
         }
     }
 }

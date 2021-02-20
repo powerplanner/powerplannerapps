@@ -18,37 +18,185 @@ using PowerPlannerAppDataLibrary.Extensions;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAndroid.ViewModel.Settings;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAndroid.Vx;
+using Google.Android.Material.Button;
+using PowerPlannerAndroid.Views.Controls;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class SettingsListView : InterfacesDroid.Views.PopupViewHost<SettingsListViewModel>
+    public class SettingsListView : VxViewHost<SettingsListViewModel>
     {
         private View _listItemUpgradeToPremium;
 
-        public SettingsListView(ViewGroup root) : base(Resource.Layout.SettingsList, root)
+        public SettingsListView(Context context) : base(context)
         {
-            FindViewById<Button>(Resource.Id.ButtonViewYearsAndSemesters).Click += delegate { ViewModel.OpenYears(); };
-            FindViewById<Button>(Resource.Id.ButtonSync).Click += delegate { ViewModel.StartSync(); };
-            FindViewById<Button>(Resource.Id.ButtonViewSyncErrors).Click += delegate { ViewModel.ViewSyncErrors(); };
-            FindViewById<View>(Resource.Id.SettingsListItemCreateAccount).Click += delegate { ViewModel.OpenCreateAccount(); };
-            FindViewById<View>(Resource.Id.SettingsListItemLogIn).Click += delegate { ViewModel.OpenLogIn(); };
-            FindViewById<View>(Resource.Id.SettingsListItemAccount).Click += delegate { ViewModel.OpenMyAccount(); };
-            FindViewById<View>(Resource.Id.SettingsListItemWidgets).Click += delegate { ShowCustomViewModel<WidgetsViewModel>(); };
-            FindViewById<View>(Resource.Id.SettingsListItemAbout).Click += delegate { ViewModel.OpenAbout(); };
-            FindViewById<View>(Resource.Id.SettingsListItemTwoWeekSchedule).Click += delegate { ViewModel.OpenTwoWeekScheduleSettings(); };
-            FindViewById<View>(Resource.Id.SettingsListItemSyncOptions).Click += delegate { ViewModel.OpenSyncOptionsSimple(); };
-            FindViewById<View>(Resource.Id.SettingsListItemGoogleCalendar).Click += GoogleCalendar_Click;
-            FindViewById<View>(Resource.Id.SettingsListItemTimeZone).Click += delegate { ViewModel.OpenSchoolTimeZone(); };
-            FindViewById<View>(Resource.Id.SettingsListItemHelp).Click += SettingsListView_Click;
-            _listItemUpgradeToPremium = FindViewById<View>(Resource.Id.SettingsListItemUpgradeToPremium);
-            _listItemUpgradeToPremium.Click += delegate { ViewModel.OpenPremiumVersion(); };
+            View = VxVerticalScrollView(0, 8, 0, 8,
+
+                // Current semester text
+                new TextView(Context, null, 0, Resource.Style.TextAppearance_AppCompat_Medium)
+                    .VxText(Binding(nameof(ViewModel.CurrentSemesterText)))
+                    .VxVisibility(Binding(nameof(ViewModel.IsViewYearsAndSemestersVisible)))
+                    .VxMaxLines(1)
+                    .VxPadding(16, 8, 16, 0),
+
+                // Button to view years/semesters
+                new MaterialButton(Context, null, Resource.Attribute.borderlessButtonStyle)
+                    .VxTextLocalized("String_ViewYearsAndSemesters")
+                    .VxLayoutParams().AutoWidth().Gravity(GravityFlags.Start).Margins(8, 0, 8, 8).Apply()
+                    .VxVisibility(Binding(nameof(ViewModel.IsViewYearsAndSemestersVisible)))
+                    .VxClick(delegate { ViewModel.OpenYears(); }),
+
+                new Divider(context)
+                    .VxLayoutParams().Margins(0, 0, 0, 8).Apply()
+                    .VxVisibility(Binding(nameof(ViewModel.IsViewYearsAndSemestersVisible))),
+
+                // Sync status and sync now
+                new TextView(Context, null, 0, Resource.Style.TextAppearance_AppCompat_Medium)
+                    .VxText(Binding(nameof(ViewModel.SyncStatusText)))
+                    .VxVisibility(Binding(nameof(ViewModel.IsSyncOptionsVisible)))
+                    .VxMaxLines(1)
+                    .VxPadding(16, 8, 16, 0),
+
+                new LinearLayout(Context)
+                    .VxLayoutParams().Margins(8, 0, 8, 8).Apply()
+                    .VxVisibility(Binding(nameof(ViewModel.IsSyncOptionsVisible)))
+                    .VxChildren(
+
+                        new MaterialButton(Context, null, Resource.Attribute.borderlessButtonStyle)
+                            .VxText("View errors")
+                            .VxLayoutParams().AutoWidth().Gravity(GravityFlags.Start).Apply()
+                            .VxVisibility(Binding(nameof(ViewModel.SyncHasError)))
+                            .VxClick(delegate { ViewModel.ViewSyncErrors(); }),
+
+                        new MaterialButton(Context, null, Resource.Attribute.borderlessButtonStyle)
+                            .VxText(Binding(nameof(ViewModel.SyncButtonText)))
+                            .VxEnabled(Binding(nameof(ViewModel.SyncButtonIsEnabled)))
+                            .VxClick(delegate { ViewModel.StartSync(); })
+
+                    ),
+
+                new Divider(Context)
+                    .VxLayoutParams().Margins(0, 0, 0, 8).Apply()
+                    .VxVisibility(Binding(nameof(ViewModel.IsSyncOptionsVisible))),
+
+                // SETTINGS ITEMS
+
+                // Upgrade to premium
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_shop_black_48dp,
+                    Visibility = ViewStates.Gone
+                }
+                .VxClick(delegate { ViewModel.OpenPremiumVersion(); })
+                .VxReference(ref _listItemUpgradeToPremium),
+
+                // Create account
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_CreateAccountItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_CreateAccountItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_account_circle_black_48dp
+                }
+                .VxClick(delegate { ViewModel.OpenCreateAccount(); })
+                .VxVisibility(Binding(nameof(ViewModel.IsCreateAccountVisible))),
+
+                // Log in
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_LogInItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_LogInItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_input_black_48dp
+                }
+                .VxClick(delegate { ViewModel.OpenLogIn(); })
+                .VxVisibility(Binding(nameof(ViewModel.IsLogInVisible))),
+
+                // My account
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_account_circle_black_48dp
+                }
+                .VxClick(delegate { ViewModel.OpenMyAccount(); })
+                .VxVisibility(Binding(nameof(ViewModel.IsMyAccountVisible))),
+
+                // Widgets
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("String_Widgets"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_Widgets_Subtitle"),
+                    IconResource = Resource.Drawable.ic_dashboard_black_48dp
+                }
+                .VxClick(delegate { ShowCustomViewModel<WidgetsViewModel>(); })
+                .VxVisibility(Binding(nameof(ViewModel.HasAccount))),
+
+                // Sync options
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_cached_black_48dp
+                }
+                .VxClick(delegate { ViewModel.OpenSyncOptionsSimple(); })
+                .VxVisibility(Binding(nameof(ViewModel.IsSyncOptionsVisible))),
+
+                // Google Calendar
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_GoogleCalendarIntegrationItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_gcal_black_48dp
+                }
+                .VxClick(GoogleCalendar_Click)
+                .VxVisibility(Binding(nameof(ViewModel.IsGoogleCalendarIntegrationVisible))),
+
+                // Two week schedule
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_TwoWeekScheduleItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_TwoWeekScheduleItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_date_range_black_48dp
+                }
+                .VxClick(delegate { ViewModel.OpenTwoWeekScheduleSettings(); })
+                .VxVisibility(Binding(nameof(ViewModel.IsTwoWeekScheduleVisible))),
+
+                // School time zone
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_SchoolTimeZoneItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_SchoolTimeZoneItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_access_time_48dp
+                }
+                .VxClick(delegate { ViewModel.OpenSchoolTimeZone(); })
+                .VxVisibility(Binding(nameof(ViewModel.IsSchoolTimeZoneVisible))),
+
+                // Help
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_HelpItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_HelpItem.Subtitle"),
+                    IconResource = Resource.Drawable.ic_help_black_48dp
+                }
+                .VxClick(Help_Click),
+
+                // About
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_AboutItem.Title"),
+                    SettingSubtitle = "BareBones Dev",
+                    IconResource = Resource.Drawable.outline_info_black_48
+                }
+                .VxClick(delegate { ViewModel.OpenAbout(); })
+                );
 
 #if DEBUG
             GC.Collect();
 #endif
         }
 
-        private void SettingsListView_Click(object sender, EventArgs e)
+        private void Help_Click(object sender, EventArgs e)
         {
             try
             {
@@ -112,11 +260,6 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnViewModelLoadedOverride()
         {
-            if (!ViewModel.HasAccount)
-            {
-                FindViewById<View>(Resource.Id.SettingsListItemWidgets).Visibility = ViewStates.Gone;
-            }
-
             UpdateUpgradeToPremiumVisibility();
         }
 

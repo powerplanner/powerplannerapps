@@ -53,6 +53,33 @@ namespace PowerPlannerAndroid.Vx
             }
         }
 
+        public ScrollView VxVerticalScrollView(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom, params View[] views)
+        {
+            return new ScrollView(Context)
+            {
+                LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent)
+            }
+            .VxChildren(
+                new LinearLayout(Context)
+                {
+                    LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
+                    Orientation = Orientation.Vertical
+                }
+                .VxPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+                .VxChildren(views)
+            );
+        }
+
+        public ScrollView VxVerticalScrollView(int padding, params View[] views)
+        {
+            return VxVerticalScrollView(padding, padding, padding, padding, views);
+        }
+
+        public ScrollView VxVerticalScrollView(params View[] views)
+        {
+            return VxVerticalScrollView(0, views);
+        }
+
         private object _dataContext;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -92,6 +119,11 @@ namespace PowerPlannerAndroid.Vx
         protected virtual void OnDataContextChanged(object oldValue, object newValue)
         {
             // Nothing
+        }
+
+        protected VxBinding Binding(string dataContextSourcePropertyName)
+        {
+            return new VxBinding(BindingHost, dataContextSourcePropertyName);
         }
 
         public void SetBinding(string dataContextSourcePropertyName, object target, string targetPropertyName)

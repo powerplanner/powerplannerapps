@@ -21,73 +21,89 @@ namespace PowerPlannerAndroid.Views.Controls
     {
         private const string NAMESPACE = "settingsListItem";
 
+        private ImageView _icon;
         private TextView _textViewTitle;
         private TextView _textViewSubtitle;
 
-        public SettingsListItem(Context context, IAttributeSet attrs) : base(context, attrs)
+        private void Initialize()
         {
-            Android.Content.Res.TypedArray a = context.Theme.ObtainStyledAttributes(attrs, Resource.Styleable.SettingsListItem, 0, 0);
+            base.SetPaddingRelative(ThemeHelper.AsPx(Context, 16), ThemeHelper.AsPx(Context, 8), ThemeHelper.AsPx(Context, 16), ThemeHelper.AsPx(Context, 8));
+
+            _icon = new ImageView(Context)
+            {
+                LayoutParameters = new LinearLayout.LayoutParams(
+                    ThemeHelper.AsPx(Context, 48),
+                    ThemeHelper.AsPx(Context, 48))
+                {
+                    Gravity = GravityFlags.CenterVertical
+                }
+            };
+
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            {
+                _icon.ImageTintList = new Android.Content.Res.ColorStateList(new int[][] { new int[0] }, new int[] {
+                            ColorTools.IsInNightMode(this.Context) ? new Color(84, 107, 199) : new Color(46, 54, 109) });
+            }
+
+            base.AddView(_icon);
+
+            LinearLayout texts = new LinearLayout(Context)
+            {
+                Orientation = Orientation.Vertical,
+                LayoutParameters = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WrapContent,
+                    LinearLayout.LayoutParams.WrapContent)
+                {
+                    Gravity = GravityFlags.CenterVertical
+                }
+            };
+            texts.SetPaddingRelative(ThemeHelper.AsPx(Context, 8), 0, 0, 0);
+
+            _textViewTitle = new TextView(Context)
+            {
+                Ellipsize = Android.Text.TextUtils.TruncateAt.End
+            };
+            _textViewTitle.SetTypeface(_textViewTitle.Typeface, Android.Graphics.TypefaceStyle.Bold);
+            _textViewTitle.SetSingleLine(true);
+            _textViewTitle.SetTextColor(ColorTools.GetColor(this.Context, Resource.Color.foregroundFull));
+            texts.AddView(_textViewTitle);
+
+            _textViewSubtitle = new TextView(Context)
+            {
+                Ellipsize = Android.Text.TextUtils.TruncateAt.End
+            };
+            _textViewSubtitle.SetSingleLine(true);
+            texts.AddView(_textViewSubtitle);
+
+            base.AddView(texts);
+        }
+
+        public SettingsListItem(Context Context) : base(Context)
+        {
+            Initialize();
+        }
+
+        public SettingsListItem(Context Context, IAttributeSet attrs) : base(Context, attrs)
+        {
+            Initialize();
+
+            Android.Content.Res.TypedArray a = Context.Theme.ObtainStyledAttributes(attrs, Resource.Styleable.SettingsListItem, 0, 0);
 
             try
             {
-                base.SetPaddingRelative(ThemeHelper.AsPx(context, 16), ThemeHelper.AsPx(context, 8), ThemeHelper.AsPx(context, 16), ThemeHelper.AsPx(context, 8));
-
-                ImageView icon = new ImageView(context)
-                {
-                    LayoutParameters = new LinearLayout.LayoutParams(
-                        ThemeHelper.AsPx(context, 48),
-                        ThemeHelper.AsPx(context, 48))
-                    {
-                        Gravity = GravityFlags.CenterVertical
-                    }
-                };
+                base.SetPaddingRelative(ThemeHelper.AsPx(Context, 16), ThemeHelper.AsPx(Context, 8), ThemeHelper.AsPx(Context, 16), ThemeHelper.AsPx(Context, 8));
 
                 Drawable iconDrawable = a.GetDrawable(Resource.Styleable.SettingsListItem_settingIcon);
                 if (iconDrawable != null)
                 {
-                    icon.SetImageDrawable(iconDrawable);
-                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-                    {
-                        icon.ImageTintList = new Android.Content.Res.ColorStateList(new int[][] { new int[0] }, new int[] {
-                            ColorTools.IsInNightMode(this.Context) ? new Color(84, 107, 199) : new Color(46, 54, 109) });
-                    }
+                    _icon.SetImageDrawable(iconDrawable);
                 }
 
-                base.AddView(icon);
-
-                LinearLayout texts = new LinearLayout(context)
-                {
-                    Orientation = Orientation.Vertical,
-                    LayoutParameters = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WrapContent,
-                        LinearLayout.LayoutParams.WrapContent)
-                    {
-                        Gravity = GravityFlags.CenterVertical
-                    }
-                };
-                texts.SetPaddingRelative(ThemeHelper.AsPx(context, 8), 0, 0, 0);
-
                 string title = a.GetString(Resource.Styleable.SettingsListItem_settingTitle);
-                _textViewTitle = new TextView(context)
-                {
-                    Text = title ?? "title",
-                    Ellipsize = Android.Text.TextUtils.TruncateAt.End
-                };
-                _textViewTitle.SetTypeface(_textViewTitle.Typeface, Android.Graphics.TypefaceStyle.Bold);
-                _textViewTitle.SetSingleLine(true);
-                _textViewTitle.SetTextColor(ColorTools.GetColor(this.Context, Resource.Color.foregroundFull));
-                texts.AddView(_textViewTitle);
+                _textViewTitle.Text = title ?? "title";
 
                 string subtitle = a.GetString(Resource.Styleable.SettingsListItem_settingSubtitle);
-                _textViewSubtitle = new TextView(context)
-                {
-                    Text = subtitle ?? "",
-                    Ellipsize = Android.Text.TextUtils.TruncateAt.End
-                };
-                _textViewSubtitle.SetSingleLine(true);
-                texts.AddView(_textViewSubtitle);
-
-                base.AddView(texts);
+                _textViewSubtitle.Text = subtitle ?? "";
             }
 
 #if DEBUG
@@ -110,6 +126,12 @@ namespace PowerPlannerAndroid.Views.Controls
         {
             get { return _textViewSubtitle?.Text; }
             set { if (_textViewSubtitle != null) _textViewSubtitle.Text = value; }
+        }
+
+        public int IconResource
+        {
+            get => 0;
+            set => _icon.SetImageResource(value);
         }
     }
 }

@@ -170,6 +170,7 @@
     <Compile Include="Views\Controls\Divider.cs" />
     <Compile Include="Views\Controls\FloatingAddItemControl.cs" />
     <Compile Include="Views\Controls\FullWidthSpinner.cs" />
+    <Compile Include="Views\Controls\PowerPlannerToolbar.cs" />
     <Compile Include="Views\Controls\TaskProgressBarControl.cs" />
     <Compile Include="Views\Controls\ImageAttachmentsWrapGrid.cs" />
     <Compile Include="Views\Controls\ImagesPagerControl.cs" />
@@ -258,13 +259,7 @@
     <AndroidResource Include="Resources\layout\Welcome.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\MainScreen.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\Years.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsList.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemYear.xml">
@@ -1131,12 +1126,6 @@
     <AndroidResource Include="Resources\drawable\ImageOffline.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsImageUploadOptions.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\SpinnerItemCurrentUploadImageViaPreview.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -1407,12 +1396,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\outline_info_black_48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsSchoolTimeZoneSettings.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\SpinnerItemSelectedSchoolTimeZonePreview.xml">
