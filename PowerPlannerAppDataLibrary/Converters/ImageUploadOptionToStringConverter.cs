@@ -11,7 +11,20 @@ namespace PowerPlannerAppDataLibrary.Converters
     {
         public static string Convert(ImageUploadOptions option)
         {
-            return PowerPlannerResources.GetString($"ImageUploadOptions_{option.ToString()}");
+            switch (option)
+            {
+                case ImageUploadOptions.Always:
+                    return PowerPlannerResources.GetString("String_Always");
+
+                case ImageUploadOptions.Never:
+                    return PowerPlannerResources.GetString("String_Never");
+
+                case ImageUploadOptions.WifiOnly:
+                    return PowerPlannerResources.GetString($"ImageUploadOptions_WifiOnly");
+
+                default:
+                    return option.ToString();
+            }
         }
     }
 }
