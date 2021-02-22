@@ -105,6 +105,7 @@
     <Compile Include="Converters\StartOrEndDateToStringConverter.cs" />
     <Compile Include="Converters\WeekDateToStringConverter.cs" />
     <Compile Include="Extensions\DroidAppShortcutsExtension.cs" />
+    <Compile Include="Extensions\DroidClassRemindersExtension.cs" />
     <Compile Include="Extensions\DroidDateTimeFormatterExtension.cs" />
     <Compile Include="Extensions\DroidImagePickerExtension.cs" />
     <Compile Include="Extensions\DroidNetworkInfoExtension.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Helpers\IntentHelpers.cs" />
     <Compile Include="Helpers\NotificationIds.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Receivers\UpdateClassReminderReceiver.cs" />
     <Compile Include="Receivers\UpdateDayBeforeNotificationReceiver.cs" />
     <Compile Include="Receivers\UpdateWidgetScheduleReceiver.cs" />
     <Compile Include="Receivers\UpdateWidgetAgendaReceiver.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.cs" />
     <Compile Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.cs" />
     <Compile Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.cs" />
+    <Compile Include="Views\SettingsViews\ReminderSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.cs" />
     <Compile Include="Views\SettingsWidgetAgendaView.cs" />
@@ -1490,6 +1493,33 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_today_white_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SettingsReminders.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SpinnerItemClassRemindersOptionPreview.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\baseline_notifications_black_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\baseline_notifications_black_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\baseline_notifications_black_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\baseline_notifications_black_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_notifications_black_48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

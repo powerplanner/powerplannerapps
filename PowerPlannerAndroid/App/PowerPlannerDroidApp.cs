@@ -51,6 +51,7 @@ namespace PowerPlannerAndroid.App
 
             DateTimeFormatterExtension.Current = new DroidDateTimeFormatterExtension();
             InAppPurchaseExtension.Current = new AndroidInAppPurchaseExtension();
+            ClassRemindersExtension.Current = new DroidClassRemindersExtension();
             RemindersExtension.Current = new AndroidRemindersExtension();
             TilesExtension.Current = new DroidTilesExtension();
             PushExtension.Current = new DroidPushExtension();
