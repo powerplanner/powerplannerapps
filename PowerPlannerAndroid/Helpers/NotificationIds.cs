@@ -16,5 +16,6 @@ namespace PowerPlannerAndroid.Helpers
     {
         public const int DAY_BEFORE_NOTIFICATION = 0;
         public const int DAY_OF_NOTIFICATIONS = 1;
+        public const int CLASS_REMINDER_NOTIFICATION = 2;
     }
 }

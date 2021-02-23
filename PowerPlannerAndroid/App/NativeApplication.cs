@@ -132,7 +132,8 @@ namespace PowerPlannerAndroid.App
 
                 // Settings
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
+                { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsView) }
             };
         }
 

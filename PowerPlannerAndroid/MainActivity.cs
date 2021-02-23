@@ -373,6 +373,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2102, 20, 1, 99))
+                    {
+                        changedText += "\n - Reminders for class schedule! See the settings to configure how soon before classes to be reminded.";
+                    }
+
                     if (v <= new Version(2009, 25, 1, 0) && Android.Icu.Text.DecimalFormatSymbols.Instance.DecimalSeparator == ',')
                     {
                         changedText += "\n - Fixed decimal entry support for , as decimal!";

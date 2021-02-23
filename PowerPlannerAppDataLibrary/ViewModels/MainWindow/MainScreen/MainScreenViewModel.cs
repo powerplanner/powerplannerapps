@@ -793,7 +793,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             if (c != null)
             {
-                SetContent(new ClassViewModel(this, CurrentLocalAccountId, classId, DateTime.Today, CurrentSemester), preserveBack: allowGoingBack);
+                if (PowerPlannerApp.ShowClassesAsPopups)
+                {
+                    ViewClass(c);
+                }
+                else
+                {
+                    SetContent(new ClassViewModel(this, CurrentLocalAccountId, classId, DateTime.Today, CurrentSemester), preserveBack: allowGoingBack);
+                }
             }
             else
             {

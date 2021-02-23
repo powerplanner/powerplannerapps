@@ -41,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
                         catch (SemesterNotFoundException) { /* Same as empty semester, continue so we clear */ }
                     }
 
-                    ResetAllReminders(account, scheduleViewItemsGroup);
+                    await ResetAllReminders(account, scheduleViewItemsGroup);
                 }
                 catch (Exception ex)
                 {
@@ -55,14 +55,14 @@ namespace PowerPlannerAppDataLibrary.Extensions
         /// </summary>
         /// <param name="account"></param>
         /// <param name="scheduleViewItemsGroup"></param>
-        protected abstract void ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup);
+        protected abstract Task ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup);
 
         /// <summary>
         /// This is only used when user disables reminders in the settings.
         /// </summary>
-        public void RemoveAllReminders(AccountDataItem account)
+        public async void RemoveAllReminders(AccountDataItem account)
         {
-            ResetAllReminders(account, null);
+            await ResetAllReminders(account, null);
         }
     }
 }

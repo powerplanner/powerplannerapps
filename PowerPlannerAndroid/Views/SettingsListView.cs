@@ -132,6 +132,16 @@ namespace PowerPlannerAndroid.Views
                 .VxClick(delegate { ShowCustomViewModel<WidgetsViewModel>(); })
                 .VxVisibility(Binding(nameof(ViewModel.HasAccount))),
 
+                // Reminders
+                new SettingsListItem(Context)
+                {
+                    SettingTitle = PowerPlannerResources.GetString("Settings_MainPage_RemindersItem.Title"),
+                    SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_RemindersItem.Subtitle"),
+                    IconResource = Resource.Drawable.baseline_notifications_black_48
+                }
+                .VxClick(delegate { ViewModel.OpenReminderSettings() })
+                .VxVisibility(Binding(nameof(ViewModel.IsRemindersVisible))),
+
                 // Sync options
                 new SettingsListItem(Context)
                 {
