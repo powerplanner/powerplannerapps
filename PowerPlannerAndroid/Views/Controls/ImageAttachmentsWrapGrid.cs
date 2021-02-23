@@ -65,6 +65,12 @@ namespace PowerPlannerAndroid.Views.Controls
             }
         }
 
+        public EditingImageAttachmentsWrapGrid VxRequestedAddImage(EventHandler handler)
+        {
+            RequestedAddImage += handler;
+            return this;
+        }
+
         private View CreateImageView(ViewGroup parent, object imageObj)
         {
             View answer;

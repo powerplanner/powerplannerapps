@@ -4,6 +4,7 @@ using Android.Content.Res;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -155,9 +156,15 @@ namespace PowerPlannerAndroid.Vx
                 return this;
             }
 
-            public LayoutParamsBuilder<T> Height(int dp)
+            public LayoutParamsBuilder<T> Height(float dp)
             {
                 _height = ThemeHelper.AsPx(_view.Context, dp);
+                return this;
+            }
+
+            public LayoutParamsBuilder<T> HeightAsPx(int px)
+            {
+                _height = px;
                 return this;
             }
 
@@ -385,7 +392,16 @@ namespace PowerPlannerAndroid.Vx
     {
         public static T VxText<T>(this T textView, VxBinding binding) where T : TextView
         {
-            binding.SetBinding<string>(s => textView.Text = s);
+            var reg = binding.SetBinding<string>(s => textView.Text = s);
+
+            if (textView is EditText)
+            {
+                textView.TextChanged += delegate
+                {
+                    reg.SetSourceValue(textView.Text);
+                };
+            }
+
             return textView;
         }
 
@@ -407,6 +423,31 @@ namespace PowerPlannerAndroid.Vx
             return textView;
         }
 
+        public static T VxMinLines<T>(this T textView, int minLines) where T : TextView
+        {
+            textView.SetMinLines(minLines);
+            return textView;
+        }
+
+        public static T VxTextStyle<T>(this T textView, Typeface typeface) where T : TextView
+        {
+            textView.Typeface = typeface;
+            return textView;
+        }
+
+        /// <summary>
+        /// Gravity for the text itself
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="textView"></param>
+        /// <param name="gravity"></param>
+        /// <returns></returns>
+        public static T VxGravity<T>(this T textView, GravityFlags gravity) where T : TextView
+        {
+            textView.Gravity = gravity;
+            return textView;
+        }
+
         public static T VxTextColor<T>(this T textView, Color color) where T : TextView
         {
             textView.SetTextColor(color);
@@ -423,6 +464,32 @@ namespace PowerPlannerAndroid.Vx
         {
             textView.SetTextSize(Android.Util.ComplexUnitType.Sp, size);
             return textView;
+        }
+
+        public static T VxHint<T>(this T textView, string hint) where T : TextView
+        {
+            textView.Hint = hint;
+            return textView;
+        }
+
+        public static T VxHintLocalized<T>(this T textView, string textId) where T : TextView
+        {
+            return textView.VxHint(PowerPlannerResources.GetString(textId));
+        }
+    }
+
+    public static class VxEditTextExtensions
+    {
+        public static T VxInputType<T>(this T editText, InputTypes inputTypes) where T : EditText
+        {
+            editText.InputType = inputTypes;
+            return editText;
+        }
+
+        public static T VxImeOptions<T>(this T editText, Android.Views.InputMethods.ImeAction imeActions) where T : EditText
+        {
+            editText.ImeOptions = imeActions;
+            return editText;
         }
     }
 

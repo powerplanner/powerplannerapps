@@ -167,10 +167,13 @@
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ConfirmIdentityView.cs" />
     <Compile Include="Views\Controls\AddTaskOrEventRepeatsSubControl.cs" />
+    <Compile Include="Views\Controls\BorderlessButton.cs" />
     <Compile Include="Views\Controls\DayPagerControl.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
     <Compile Include="Views\Controls\Divider.cs" />
     <Compile Include="Views\Controls\FloatingAddItemControl.cs" />
+    <Compile Include="Views\Controls\FullWidthButton.cs" />
+    <Compile Include="Views\Controls\FullWidthEditText.cs" />
     <Compile Include="Views\Controls\FullWidthSpinner.cs" />
     <Compile Include="Views\Controls\PowerPlannerToolbar.cs" />
     <Compile Include="Views\Controls\TaskProgressBarControl.cs" />
@@ -309,9 +312,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemTaskOrEvent.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddTaskOrEvent.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SpinnerItemClass.xml">

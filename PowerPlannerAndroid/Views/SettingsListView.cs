@@ -40,7 +40,7 @@ namespace PowerPlannerAndroid.Views
                     .VxPadding(16, 8, 16, 0),
 
                 // Button to view years/semesters
-                new MaterialButton(Context, null, Resource.Attribute.borderlessButtonStyle)
+                new BorderlessButton(Context)
                     .VxTextLocalized("String_ViewYearsAndSemesters")
                     .VxLayoutParams().AutoWidth().Gravity(GravityFlags.Start).Margins(8, 0, 8, 8).Apply()
                     .VxVisibility(Binding(nameof(ViewModel.IsViewYearsAndSemestersVisible)))
@@ -62,13 +62,13 @@ namespace PowerPlannerAndroid.Views
                     .VxVisibility(Binding(nameof(ViewModel.IsSyncOptionsVisible)))
                     .VxChildren(
 
-                        new MaterialButton(Context, null, Resource.Attribute.borderlessButtonStyle)
+                        new BorderlessButton(Context)
                             .VxText("View errors")
                             .VxLayoutParams().AutoWidth().Gravity(GravityFlags.Start).Apply()
                             .VxVisibility(Binding(nameof(ViewModel.SyncHasError)))
                             .VxClick(delegate { ViewModel.ViewSyncErrors(); }),
 
-                        new MaterialButton(Context, null, Resource.Attribute.borderlessButtonStyle)
+                        new BorderlessButton(Context)
                             .VxText(Binding(nameof(ViewModel.SyncButtonText)))
                             .VxEnabled(Binding(nameof(ViewModel.SyncButtonIsEnabled)))
                             .VxClick(delegate { ViewModel.StartSync(); })
