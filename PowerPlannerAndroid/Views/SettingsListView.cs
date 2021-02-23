@@ -139,7 +139,7 @@ namespace PowerPlannerAndroid.Views
                     SettingSubtitle = PowerPlannerResources.GetString("Settings_MainPage_RemindersItem.Subtitle"),
                     IconResource = Resource.Drawable.baseline_notifications_black_48
                 }
-                .VxClick(delegate { ViewModel.OpenReminderSettings() })
+                .VxClick(delegate { ViewModel.OpenReminderSettings(); })
                 .VxVisibility(Binding(nameof(ViewModel.IsRemindersVisible))),
 
                 // Sync options

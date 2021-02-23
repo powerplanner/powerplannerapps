@@ -37,38 +37,30 @@ namespace PowerPlannerAndroid.Views
             }
 
             View = VxVerticalScrollView(
-                new TextView(Context, null, 0, Resource.Style.TextAppearance_AppCompat_Medium)
-                {
-                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_Description.Text")
-                }
-                .VxPadding(16),
+                new VxTextView(Context, VxTextStyle.Medium)
+                    .VxTextLocalized("Settings_SchoolTimeZone_Description.Text")
+                    .VxPadding(16),
 
                 new Divider(Context),
 
                 new FullWidthSpinner(Context)
-                {
-                    Adapter = ObservableAdapter.Create(
-                        list: items,
-                        itemResourceId: Resource.Layout.SpinnerItemSelectedSchoolTimeZonePreview,
-                        dropDownItemResourceId: Resource.Layout.SpinnerItemTimeZone)
-                }
-                .VxSelection(ViewModel.SelectedSchoolTimeZone == null ? 0 : ViewModel.AvailableTimeZones.IndexOf(ViewModel.SelectedSchoolTimeZone))
-                .VxItemSelected(SpinnerSelectedSchoolTimeZone_ItemSelected),
+                    .VxAdapter(ObservableAdapter.Create(
+                            list: items,
+                            itemResourceId: Resource.Layout.SpinnerItemSelectedSchoolTimeZonePreview,
+                            dropDownItemResourceId: Resource.Layout.SpinnerItemTimeZone))
+                    .VxSelection(ViewModel.SelectedSchoolTimeZone == null ? 0 : ViewModel.AvailableTimeZones.IndexOf(ViewModel.SelectedSchoolTimeZone))
+                    .VxItemSelected(SpinnerSelectedSchoolTimeZone_ItemSelected),
 
                 new Divider(Context),
 
                 new MaterialButton(Context)
-                {
-                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ButtonSave.Content")
-                }
-                .VxLayoutParams().Margins(16, 16, 16, 0).Apply()
-                .VxClick(delegate { ViewModel.Save(); }),
+                    .VxTextLocalized("Settings_SchoolTimeZone_ButtonSave.Content")
+                    .VxLayoutParams().Margins(16, 16, 16, 0).Apply()
+                    .VxClick(delegate { ViewModel.Save(); }),
 
-                new TextView(Context, null, 0, Resource.Style.TextAppearance_AppCompat_Small)
-                {
-                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_RestartNote.Text")
-                }
-                .VxPadding(16, 4, 16, 16));
+                new VxTextView(Context, VxTextStyle.Small)
+                    .VxTextLocalized("Settings_SchoolTimeZone_RestartNote.Text")
+                    .VxPadding(16, 4, 16, 16));
         }
 
         private void SpinnerSelectedSchoolTimeZone_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)

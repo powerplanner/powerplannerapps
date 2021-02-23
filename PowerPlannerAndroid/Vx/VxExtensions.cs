@@ -31,9 +31,9 @@ namespace PowerPlannerAndroid.Vx
             Converter = converter;
         }
 
-        public void SetBinding<T>(Action<T> onValue)
+        public BindingRegistration SetBinding<T>(Action<T> onValue)
         {
-            BindingHost.SetBinding(SourcePropertyPath, v =>
+            return BindingHost.SetBinding(SourcePropertyPath, v =>
             {
                 if (Converter != null)
                 {
@@ -373,6 +373,12 @@ namespace PowerPlannerAndroid.Vx
             spinner.ItemSelected += handler;
             return spinner;
         }
+
+        public static T VxAdapter<T>(this T spinner, ISpinnerAdapter adapter) where T : Spinner
+        {
+            spinner.Adapter = adapter;
+            return spinner;
+        }
     }
 
     public static class VsTextViewExtensions
@@ -417,6 +423,31 @@ namespace PowerPlannerAndroid.Vx
         {
             textView.SetTextSize(Android.Util.ComplexUnitType.Sp, size);
             return textView;
+        }
+    }
+
+    public static class VxCompoundButtonExtensions
+    {
+        /// <summary>
+        /// Does two-way binding
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="compoundButton"></param>
+        /// <param name="binding"></param>
+        /// <returns></returns>
+        public static T VxChecked<T>(this T compoundButton, VxBinding binding) where T : CompoundButton
+        {
+            var reg = binding.SetBinding<bool>(value =>
+            {
+                compoundButton.Checked = value;
+            });
+
+            compoundButton.CheckedChange += delegate
+            {
+                reg.SetSourceValue(compoundButton.Checked);
+            };
+
+            return compoundButton;
         }
     }
 }

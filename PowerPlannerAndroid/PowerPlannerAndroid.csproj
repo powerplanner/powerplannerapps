@@ -242,6 +242,7 @@
     <Compile Include="Views\YearsView.cs" />
     <Compile Include="Vx\VxExtensions.cs" />
     <Compile Include="Vx\VxPopupViewHost.cs" />
+    <Compile Include="Vx\VxTextView.cs" />
     <Compile Include="Vx\VxView.cs" />
     <Compile Include="Vx\VxViewHost.cs" />
     <Compile Include="Vx\VxViewHostGeneric.cs" />
