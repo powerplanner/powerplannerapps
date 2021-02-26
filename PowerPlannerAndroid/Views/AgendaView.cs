@@ -19,23 +19,57 @@ using Android.Graphics;
 using InterfacesDroid.Themes;
 using PowerPlannerAndroid.Views.Controls;
 using AndroidX.RecyclerView.Widget;
+using PowerPlannerAndroid.ViewHosts;
+using AndroidX.CoordinatorLayout.Widget;
+using PowerPlannerAndroid.Vx;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class AgendaView : InterfacesDroid.Views.PopupViewHost<AgendaViewModel>
+    public class AgendaView : MainScreenVxViewHostDescendant<AgendaViewModel>
     {
         private FloatingAddItemControl _addItemControl;
+        private RecyclerView _recyclerView;
 
-        public AgendaView(ViewGroup root) : base(Resource.Layout.Agenda, root)
+        public AgendaView(Context context) : base(context)
         {
+            View = new CoordinatorLayout(context)
+                .VxLayoutParams().StretchHeight().Apply()
+                .VxChildren(
+
+                    new VxRecyclerView(context)
+                        .VxLayoutParams().StretchHeight().Apply()
+                        .VxPadding(0, 0, 0, 90)
+                        .VxClipToPadding(false)
+                        .VxReference(ref _recyclerView),
+
+                    // No items text
+                    new LinearLayout(context)
+                        .VxLayoutParams().Gravity(GravityFlags.CenterVertical).Margins(16, 0, 16, 0).ApplyForCoordinatorLayout()
+                        .VxOrientation(Android.Widget.Orientation.Vertical)
+                        .VxVisibility(Binding(nameof(ViewModel.HasNoItems)))
+                        .VxChildren(
+
+                            new VxTextView(context, VxTextStyle.Large)
+                                .VxTextLocalized("Agenda_NoItemsHeader.Text")
+                                .VxGravity(GravityFlags.CenterHorizontal),
+
+                            new TextView(context)
+                                .VxTextLocalized("Agenda_NoItemsDescription.Text")
+                                .VxGravity(GravityFlags.CenterHorizontal)
+
+                        ),
+
+                    new FloatingAddItemControl(context)
+                        .VxLayoutParams().StretchHeight().Apply()
+                        .VxReference(ref _addItemControl)
+
+                );
         }
 
         public override void OnViewModelLoadedOverride()
         {
-            _addItemControl = FindViewById<FloatingAddItemControl>(Resource.Id.FloatingAddItemControl);
             _addItemControl.OnRequestAddEvent += _addItemControl_OnRequestAddEvent;
             _addItemControl.OnRequestAddTask += _addItemControl_OnRequestAddTask;
-            RecyclerView recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerViewAgenda);
             
             //recyclerView.AddItemDecoration(new DividerItemDecoration(Context));
 
@@ -45,7 +79,7 @@ namespace PowerPlannerAndroid.Views
 
             // Use a linear layout manager
             var layoutManager = new LinearLayoutManager(Context);
-            recyclerView.SetLayoutManager(layoutManager);
+            _recyclerView.SetLayoutManager(layoutManager);
 
             // Specify the adapter
             var adapter = new AgendaTasksOrEventsAdapter()
@@ -53,7 +87,7 @@ namespace PowerPlannerAndroid.Views
                 ItemsSource = ViewModel.ItemsWithHeaders
             };
             adapter.ItemClick += Adapter_ItemClick;
-            recyclerView.SetAdapter(adapter);
+            _recyclerView.SetAdapter(adapter);
         }
 
         private void _addItemControl_OnRequestAddTask(object sender, EventArgs e)

@@ -26,6 +26,11 @@
       <item name="iconTint">@color/accent</item>
     </style>
 
+  <!--Scrollbars property needs to be set via XML: https://stackoverflow.com/a/41937476/1454643-->
+  <style name="ScrollbarRecyclerView" parent="android:Widget">
+    <item name="android:scrollbars">vertical</item>
+  </style>
+
   <style name="AddItemButtonTopLevel" parent="AddItemButtonContained">
   </style>
 

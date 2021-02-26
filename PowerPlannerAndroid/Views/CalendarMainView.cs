@@ -31,18 +31,46 @@ using AndroidX.Core.View;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar.CalendarViewModel;
 using PowerPlannerAndroid.ViewHosts;
 using Android.Views.InputMethods;
+using AndroidX.CoordinatorLayout.Widget;
+using PowerPlannerAndroid.Vx;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class CalendarMainView : MainScreenViewHostDescendant<CalendarViewModel>
+    public class CalendarMainView : MainScreenVxViewHostDescendant<CalendarViewModel>
     {
         private MyCalendarView _calendarView;
         private DayPagerControl _dayPagerControl;
+        private FloatingAddItemControl _floatingAddItemControl;
 
-        public CalendarMainView(ViewGroup root) : base(Resource.Layout.CalendarMain, root)
+        public CalendarMainView(Context context) : base(context)
         {
-            _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
-            _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
+            View = new CoordinatorLayout(context)
+                .VxLayoutParams().StretchHeight().Apply()
+                .VxChildren(
+
+                    new LinearLayout(context)
+                        .VxLayoutParams().StretchHeight().Apply()
+                        .VxOrientation(Android.Widget.Orientation.Vertical)
+                        .VxChildren(
+
+                            new MyCalendarView(context)
+                                .VxLayoutParams().Height(280).Apply()
+                                .VxReference(ref _calendarView),
+
+                            new DayPagerControl(context)
+                                .VxLayoutParams().HeightWeight(1).Apply()
+                                .VxReference(ref _dayPagerControl)
+
+                        ),
+
+                    new FloatingAddItemControl(context)
+                    {
+                        SupportsAddHoliday = true
+                    }
+                        .VxLayoutParams().StretchHeight().Apply()
+                        .VxReference(ref _floatingAddItemControl)
+
+                );
 
             SetBinding<DisplayStates>(nameof(ViewModel.DisplayState), displayState =>
             {
@@ -148,11 +176,9 @@ namespace PowerPlannerAndroid.Views
             _calendarView.SelectedDateChanged += _calendarView_SelectedDateChanged;
             _calendarView.SelectedDate = ViewModel.SelectedDate;
 
-            var addItemControl = FindViewById<FloatingAddItemControl>(Resource.Id.FloatingAddItemControl);
-            addItemControl.SupportsAddHoliday = true;
-            addItemControl.OnRequestAddEvent += AddItemControl_OnRequestAddEvent;
-            addItemControl.OnRequestAddTask += AddItemControl_OnRequestAddTask;
-            addItemControl.OnRequestAddHoliday += AddItemControl_OnRequestAddHoliday;
+            _floatingAddItemControl.OnRequestAddEvent += AddItemControl_OnRequestAddEvent;
+            _floatingAddItemControl.OnRequestAddTask += AddItemControl_OnRequestAddTask;
+            _floatingAddItemControl.OnRequestAddHoliday += AddItemControl_OnRequestAddHoliday;
 
             _dayPagerControl.Initialize(ViewModel.SemesterItemsViewGroup, ViewModel.SelectedDate);
             _dayPagerControl.ItemClick += _dayPagerControl_ItemClick;

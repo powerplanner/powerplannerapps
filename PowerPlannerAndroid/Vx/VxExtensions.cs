@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using BareMvvm.Core.Binding;
 using InterfacesDroid.Helpers;
@@ -258,6 +259,22 @@ namespace PowerPlannerAndroid.Vx
                 if (_gravity != null)
                 {
                     lp.Gravity = _gravity.Value;
+                }
+
+                _view.LayoutParameters = lp;
+
+                return _view;
+            }
+
+            public T ApplyForCoordinatorLayout()
+            {
+                var lp = new CoordinatorLayout.LayoutParams(_width, _height);
+
+                Apply(lp);
+
+                if (_gravity != null)
+                {
+                    lp.Gravity = (int)_gravity.Value;
                 }
 
                 _view.LayoutParameters = lp;

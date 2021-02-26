@@ -245,6 +245,7 @@
     <Compile Include="Views\YearsView.cs" />
     <Compile Include="Vx\VxExtensions.cs" />
     <Compile Include="Vx\VxPopupViewHost.cs" />
+    <Compile Include="Vx\VxRecyclerView.cs" />
     <Compile Include="Vx\VxTextView.cs" />
     <Compile Include="Vx\VxView.cs" />
     <Compile Include="Vx\VxViewHost.cs" />
@@ -296,16 +297,10 @@
     <AndroidResource Include="Resources\layout\ListItemSemester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\CalendarMain.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\AddClassTime.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemEditingScheduleClassTime.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\Agenda.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemHeaderAgenda.xml">
