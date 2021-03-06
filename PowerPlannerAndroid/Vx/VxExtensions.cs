@@ -12,6 +12,7 @@ using AndroidX.Core.Content;
 using BareMvvm.Core.Binding;
 using InterfacesDroid.Helpers;
 using InterfacesDroid.Themes;
+using InterfacesDroid.Views;
 using PowerPlannerAppDataLibrary;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,9 @@ namespace PowerPlannerAndroid.Vx
             return view;
         }
 
-        public static T VxReference<T>(this T view, ref T reference) where T : View
+        public static T VxReference<T, R>(this T view, ref R reference)
+            where T : R
+            where R : View
         {
             reference = view;
             return view;
@@ -532,6 +535,15 @@ namespace PowerPlannerAndroid.Vx
             };
 
             return compoundButton;
+        }
+    }
+
+    public static class VxMyZoomAndPanViewExtensions
+    {
+        public static T VxViewChanging<T>(this T view, EventHandler handler) where T : MyZoomAndPanView
+        {
+            view.ViewChanging += handler;
+            return view;
         }
     }
 }

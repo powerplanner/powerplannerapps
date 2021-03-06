@@ -16,7 +16,7 @@ namespace PowerPlannerAndroid.Converters
 {
     public class WeekDateToStringConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public static string Convert(DateTime value)
         {
             string formatString;
 
@@ -29,9 +29,14 @@ namespace PowerPlannerAndroid.Converters
                 formatString = "d";
             }
 
-            if (value is DateTime)
+            return (value).ToString(formatString);
+        }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is DateTime dateTime)
             {
-                return ((DateTime)value).ToString(formatString);
+                return Convert(dateTime);
             }
 
             return value;

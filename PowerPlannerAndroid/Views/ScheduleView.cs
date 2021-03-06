@@ -25,10 +25,14 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAndroid.Views.Controls;
 using InterfacesDroid.Helpers;
 using AndroidX.Core.Content;
+using PowerPlannerAndroid.Vx;
+using Google.Android.Material.AppBar;
+using PowerPlannerAndroid.Converters;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class ScheduleView : MainScreenViewHostDescendant<ScheduleViewModel>
+    public class ScheduleView : MainScreenVxViewHostDescendant<ScheduleViewModel>
     {
         private const int INITIAL_MARGIN = 50;
         public const int HEIGHT_OF_HOUR = 120;
@@ -42,13 +46,87 @@ namespace PowerPlannerAndroid.Views
 
         private LinearLayout _scheduleHost;
 
-        public ScheduleView(ViewGroup root) : base(Resource.Layout.Schedule, root)
+        public ScheduleView(Context context) : base(context)
         {
+            View = new LinearLayout(context)
+                .VxLayoutParams().StretchHeight().Apply()
+                .VxOrientation(Orientation.Vertical)
+                .VxChildren(
+
+                    // Visual schedule goes up here
+                    new LinearLayout(context)
+                        .VxReference(ref _normalContent)
+                        .VxLayoutParams().HeightWeight(1).Apply()
+                        .VxOrientation(Orientation.Vertical)
+                        .VxVisibility(ViewStates.Gone)
+                        .VxChildren(
+
+                            new MyZoomAndPanView(context)
+                                .VxLayoutParams().StretchHeight().Apply()
+                                .VxViewChanging(ScrollViewSchedule_ViewChanging)
+                                .VxChildren(
+
+                                    // Schedule host
+                                    new LinearLayout(context)
+                                        .VxLayoutParams().AutoWidth().Apply()
+                                        .VxReference(ref _scheduleHost)
+
+                                ),
+
+                            // Week and change week bar
+                            new PowerPlannerToolbar(context)
+                                .VxReference(ref _weekToolbar)
+                                .VxChildren(
+
+                                    new LinearLayout(context)
+                                        .VxPadding(0, 0, 0, 3)
+                                        .VxChildren(
+
+                                            new VxTextView(context, VxTextStyle.Medium)
+                                                .VxLayoutParams().AutoWidth().Apply()
+                                                .VxGravity(GravityFlags.Bottom)
+                                                .VxTextColor(Color.White)
+                                                .VxText(Binding<DateTime, string>(nameof(ViewModel.DisplayStartDate), d => WeekDateToStringConverter.Convert(d))),
+
+                                            new VxTextView(context, VxTextStyle.Medium)
+                                                .VxLayoutParams().Margins(5, 0, 5, 0).AutoWidth().Apply()
+                                                .VxGravity(GravityFlags.Bottom)
+                                                .VxTextColor(Color.White)
+                                                .VxText("-"),
+
+                                            new VxTextView(context, VxTextStyle.Medium)
+                                                .VxLayoutParams().AutoWidth().Apply()
+                                                .VxGravity(GravityFlags.Bottom)
+                                                .VxTextColor(Color.White)
+                                                .VxText(Binding<DateTime, string>(nameof(ViewModel.DisplayEndDate), d => WeekDateToStringConverter.Convert(d))),
+
+                                            new VxTextView(context, VxTextStyle.Small)
+                                                .VxLayoutParams().AutoWidth().Margins(8, 0, 0, 0).Apply()
+                                                .VxGravity(GravityFlags.Bottom)
+                                                .VxTextColor(Color.White)
+                                                .VxText(Binding<DateTime, string>(nameof(ViewModel.DisplayStartDate), d => d.ToString("yyyy"))),
+
+                                            new VxTextView(context, VxTextStyle.Small)
+                                                .VxLayoutParams().AutoWidth().Apply()
+                                                .VxGravity(GravityFlags.Bottom)
+                                                .VxTextColor(Color.White)
+                                                .VxText(Binding<PowerPlannerSending.Schedule.Week, string>(nameof(ViewModel.CurrentWeek), w => $", {PowerPlannerResources.GetLocalizedWeek((PowerPlannerSending.Schedule.Week)w)}"))
+
+                                        )
+
+                                )
+
+                        ),
+
+                    // Editing section is down here
+                    new ScrollView(context)
+
+                );
+
             _normalContent = FindViewById(Resource.Id.NormalContent);
             _editingContent = FindViewById(Resource.Id.EditingContent);
             _welcomeContent = FindViewById(Resource.Id.WelcomeContent);
 
-            _weekToolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.WeekToolbar);
             MenuInflater inflater = new MenuInflater(Context);
             inflater.Inflate(Resource.Menu.schedule_week_menu, _weekToolbar.Menu);
             _weekToolbar.MenuItemClick += _weekToolbar_MenuItemClick;
@@ -137,7 +215,6 @@ namespace PowerPlannerAndroid.Views
             UpdateLayoutMode();
 
             // First prepare the schedule host
-            _scheduleHost = FindViewById<LinearLayout>(Resource.Id.ScheduleHost);
             _scheduleHost.Click += ScheduleHost_Click;
             _scheduleHost.AddView(CreateColumn(0));
             DayOfWeek dayOfWeek = ViewModel.FirstDayOfWeek;
