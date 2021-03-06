@@ -598,7 +598,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         /// <returns></returns>
         public bool IsValid()
         {
-            return EndTime >= StartTime && (ScheduleItems.Length > 0 || EventItems.Length > 0);
+            return EndTime >= StartTime && HasItems();
         }
 
         /// <summary>
