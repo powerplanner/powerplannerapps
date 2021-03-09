@@ -60,7 +60,7 @@ namespace PowerPlanneriOS.Views
                     var mainScreenViewModel = PowerPlannerApp.Current.GetMainScreenViewModel();
                     if (mainScreenViewModel != null)
                     {
-                        mainScreenViewModel.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Years;
+                        mainScreenViewModel.OpenYears();
                     }
                 }).Handler;
             }

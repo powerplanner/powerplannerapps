@@ -50,7 +50,7 @@ namespace PowerPlannerAndroid.Views.Controls
             {
                 var model = PowerPlannerApp.Current.GetMainScreenViewModel();
 
-                model.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Years;
+                model.OpenYears();
             }
             catch (Exception ex)
             {
