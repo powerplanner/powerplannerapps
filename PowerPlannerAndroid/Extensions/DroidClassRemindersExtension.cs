@@ -82,7 +82,14 @@ namespace PowerPlannerAndroid.Extensions
 
         private static void ScheduleNext(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now, ViewItemSchedule currSchedule)
         {
-            var nextSchedule = FindNextSchedule(account, scheduleViewItemsGroup, now, now.Date.AddDays(15)); // 15 days should cover week a/b
+            var startTimeToLookFrom = now;
+            if (currSchedule != null && currSchedule.StartTime.TimeOfDay > now.TimeOfDay)
+            {
+                // Handling case where updating from the pre-class reminder, so we don't then pick up that class again as the "next" class
+                startTimeToLookFrom = now.Date.Add(currSchedule.StartTime.TimeOfDay).AddSeconds(1);
+            }
+
+            var nextSchedule = FindNextSchedule(account, scheduleViewItemsGroup, startTimeToLookFrom, now.Date.AddDays(15)); // 15 days should cover week a/b
 
             DateTime? nextUpdateTime = null;
 
@@ -101,7 +108,7 @@ namespace PowerPlannerAndroid.Extensions
                 }
             }
 
-            if (nextUpdateTime != null)
+            if (nextUpdateTime != null && nextUpdateTime.Value > DateTime.Now)
             {
                 AlarmManagerHelper.Schedule(
                     context: Application.Context,
