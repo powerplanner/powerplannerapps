@@ -51,6 +51,8 @@ namespace PowerPlannerAppDataLibrary.Helpers
         /// </summary>
         public static bool ParseComboBoxItem(DateTime startTime, string itemText, out TimeSpan timeSpan)
         {
+            timeSpan = default(TimeSpan);
+
             if (itemText == null || itemText.Length == 0)
                 return false; // Fail
 

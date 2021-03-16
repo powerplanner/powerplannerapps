@@ -29,4 +29,10 @@
     <SharedImage Include="Resources\Images\*" />
     <SharedFont Include="Resources\Fonts\*" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PortableLibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj" />
+    <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
+    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj" />
+    <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj" />
+  </ItemGroup>
 </Project>
