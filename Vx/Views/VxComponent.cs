@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Vx.Views
@@ -9,6 +10,27 @@ namespace Vx.Views
         private Action<object> _onTopNativeViewChanged;
         private VxView _current;
         private VxNativeView _currentNativeView;
+
+        public VxComponent()
+        {
+            SubscribeToStates();
+        }
+
+        private void SubscribeToStates()
+        {
+            var stateType = typeof(VxState);
+            foreach (var prop in this.GetType().GetProperties().Where(i => stateType.IsAssignableFrom(i.PropertyType)))
+            {
+                var state = prop.GetValue(this) as VxState;
+                state.ValueChanged += State_ValueChanged;
+            }
+        }
+
+        private void State_ValueChanged(object sender, EventArgs e)
+        {
+            // TODO: Send to dispatcher first to bulk the state changes
+            RenderActual();
+        }
 
         protected abstract VxView Render();
 

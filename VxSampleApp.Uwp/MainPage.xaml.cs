@@ -48,6 +48,11 @@ namespace VxSampleApp.Uwp
 
         public VxState<bool> SigningIn { get; set; } = new VxState<bool>(false);
 
+        public LoginView()
+        {
+            Updater();
+        }
+
         protected override VxView Render()
         {
             return new VxTextBlock()
@@ -79,6 +84,16 @@ namespace VxSampleApp.Uwp
             //}
 
             //return content;
+        }
+
+        private async void Updater()
+        {
+            while (true)
+            {
+                await Task.Delay(1000);
+
+                Username.Value += "a";
+            }
         }
 
         private async void Login()
