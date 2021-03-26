@@ -28,8 +28,7 @@ namespace Vx.Views
 
         private void State_ValueChanged(object sender, EventArgs e)
         {
-            // TODO: Send to dispatcher first to bulk the state changes
-            RenderActual();
+            MarkDirty();
         }
 
         protected abstract VxView Render();
@@ -37,6 +36,26 @@ namespace Vx.Views
         protected void ShowPopup(VxComponent view)
         {
 
+        }
+
+        private bool _dirty;
+
+        /// <summary>
+        /// Marks this component for re-render on next UI cycle
+        /// </summary>
+        protected void MarkDirty()
+        {
+            lock (this)
+            {
+                if (_dirty)
+                {
+                    return;
+                }
+
+                _dirty = true;
+            }
+
+            VxDispatcher.RunAsync(RenderActual);
         }
 
         public void SetOnTopNativeViewChanged(Action<object> onTopNativeViewChanged)
@@ -47,6 +66,11 @@ namespace Vx.Views
 
         private void RenderActual()
         {
+            lock (this)
+            {
+                _dirty = false;
+            }
+
             VxView newView = Render();
             VxView oldView = _current;
             _current = newView;

@@ -57,7 +57,7 @@ namespace VxSampleApp.Uwp
         {
             return new VxTextBlock()
             {
-                Text = "Username: " + Username.Value
+                Text = "Username: " + Username.Value + "\nSigning in: " + SigningIn.Value
             };
 
             //var content = new VxStackPanel()
@@ -93,6 +93,8 @@ namespace VxSampleApp.Uwp
                 await Task.Delay(1000);
 
                 Username.Value += "a";
+
+                SigningIn.Value = !SigningIn.Value;
             }
         }
 

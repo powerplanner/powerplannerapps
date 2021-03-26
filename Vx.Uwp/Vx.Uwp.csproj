@@ -125,6 +125,7 @@
     <Compile Include="VxAppExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VxNative.cs" />
+    <Compile Include="VxUwpDispatcher.cs" />
     <Compile Include="VxViewExtensions.cs" />
     <EmbeddedResource Include="Properties\Vx.Uwp.rd.xml" />
   </ItemGroup>
