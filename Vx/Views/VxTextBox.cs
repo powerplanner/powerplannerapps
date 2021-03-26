@@ -4,27 +4,39 @@ using System.Text;
 
 namespace Vx.Views
 {
-    public class VxTextBox : VxView
+    public interface IVxTextBox
     {
-        public string Header()
+        VxState<string> Text { set; }
+        string Header { set; }
+    }
+
+    public class VxTextBox : VxView, IVxTextBox
+    {
+        public VxState<string> Text
         {
-            return GetProperty<string>();
+            get => GetProperty<VxState<string>>();
+            set => SetProperty(value);
         }
 
-        public VxTextBox Header(string value)
+        public string Header
         {
-            SetProperty(value);
-            return this;
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
 
-        public VxTextBox TextBinding(VxState<string> textState)
-        {
-            return this;
-        }
         public VxTextBox Error(string value)
         {
             SetProperty(value);
             return this;
+        }
+    }
+
+    public static class VxTextBoxExtensions
+    {
+        public static T Text<T>(this T textBlock, VxState<string> value) where T : VxTextBox
+        {
+            textBlock.Text = value;
+            return textBlock;
         }
     }
 }

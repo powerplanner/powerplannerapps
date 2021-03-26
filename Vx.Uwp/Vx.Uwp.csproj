@@ -121,6 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="NativeViews\VxNativeTextBlock.cs" />
+    <Compile Include="NativeViews\VxNativeTextBox.cs" />
     <Compile Include="ViewRenderers\VxTextBlockRenderer.cs" />
     <Compile Include="VxAppExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

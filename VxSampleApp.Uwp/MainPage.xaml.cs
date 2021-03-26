@@ -50,14 +50,15 @@ namespace VxSampleApp.Uwp
 
         public LoginView()
         {
-            Updater();
+            //Updater();
         }
 
         protected override VxView Render()
         {
-            return new VxTextBlock()
+            return new VxTextBox()
             {
-                Text = "Username: " + Username.Value + "\nSigning in: " + SigningIn.Value
+                Text = Username,
+                Header = "Username: " + Username.Value
             };
 
             //var content = new VxStackPanel()

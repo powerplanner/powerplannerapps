@@ -13,6 +13,7 @@ namespace Vx.Uwp
         public static void Initialize()
         {
             VxNativeView.Mappings[typeof(VxTextBlock)] = typeof(VxNativeTextBlock);
+            VxNativeView.Mappings[typeof(VxTextBox)] = typeof(VxNativeTextBox);
 
             VxDispatcher.Current = new VxUwpDispatcher();
         }
