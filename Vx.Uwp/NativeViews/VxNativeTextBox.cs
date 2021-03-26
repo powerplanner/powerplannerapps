@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Vx.Views;
@@ -22,17 +23,7 @@ namespace Vx.Uwp.NativeViews
 
         public VxState<string> Text
         {
-            set
-            {
-                NativeView.Text = value.Value;
-
-                value.ValueChanged += Value_ValueChanged;
-            }
-        }
-
-        private void Value_ValueChanged(object sender, EventArgs e)
-        {
-            NativeView.Text = (sender as VxState<string>).Value;
+            set => SetBindable(value, (s) => NativeView.Text = s);
         }
 
         public string Header { set => NativeView.Header = value; }

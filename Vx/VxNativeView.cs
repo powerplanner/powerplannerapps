@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Vx.Views;
 
@@ -71,5 +72,52 @@ namespace Vx
         public new N NativeView => (N)base.NativeView;
 
         public VxNativeView(V view, N nativeView) : base(view, nativeView) { }
+
+        private Dictionary<string, VxStateRegistration> _binded = new Dictionary<string, VxStateRegistration>();
+
+        protected void SetBindable<T>(VxState<T> value, Action<T> onSet, [CallerMemberName] string callerName = null)
+        {
+            if (_binded.TryGetValue(callerName, out VxStateRegistration old))
+            {
+                if (object.ReferenceEquals(old, value))
+                {
+                    return;
+                }
+
+                if (old.State != null)
+                {
+                    old.State.ValueChanged -= old.EventHandler;
+                }
+
+                value.ValueChanged += old.EventHandler;
+                old.State = value;
+            }
+            else
+            {
+                EventHandler eventHandler = (object sender, EventArgs e) =>
+                {
+                    onSet(value.Value);
+                };
+
+                value.ValueChanged += eventHandler;
+
+                _binded[callerName] = new VxStateRegistration()
+                {
+                    State = value,
+                    EventHandler = eventHandler
+                };
+            }
+        }
+
+        private void Value_ValueChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private class VxStateRegistration
+        {
+            public VxState State { get; set; }
+            public EventHandler EventHandler { get; set; }
+        }
     }
 }
