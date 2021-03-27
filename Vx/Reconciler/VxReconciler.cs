@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Vx.Views;
 
@@ -11,7 +13,7 @@ namespace Vx.Reconciler
         //{
         //    if (oldTree == null && newTree == null)
         //    {
-                
+
         //    }
 
         //    if (oldTree.GetType() == newTree.GetType())
@@ -27,6 +29,195 @@ namespace Vx.Reconciler
         //        }
         //    }
         //}
+
+        public static List<VxReconcilerBaseListChange> ReconcileList(IList<VxView> oldList, IList<VxView> newList)
+        {
+            var answer = new List<VxReconcilerBaseListChange>();
+
+            if (oldList == null || oldList.Count == 0)
+            {
+                foreach (var n in newList)
+                {
+                    answer.Add(new VxReconcilerInsertListItem(newList.Count, n));
+                }
+
+                return answer;
+            }
+
+            int i = 0;
+            VxView oldItem;
+            VxView newItem;
+
+            for (; i < oldList.Count; i++)
+            {
+                oldItem = oldList[i];
+                newItem = newList.ElementAtOrDefault(i);
+
+                if (newItem == null)
+                {
+                    answer.Add(new VxReconcilerRemoveListItem(i));
+                }
+                else if (oldItem.GetType() == newItem.GetType())
+                {
+                    answer.Add(new VxReconcilerUpdateListItem(oldItem, newItem));
+                }
+                else
+                {
+                    // Hmmmm
+                }
+            }
+
+            if (oldList.Count < newList.Count)
+            {
+                for (; i < newList.Count; i++)
+                {
+                    answer.Add(new VxReconcilerInsertListItem(i, newList[i]));
+                }
+            }
+
+            return answer;
+        }
+    }
+
+    public class VxReconcilerBaseListChange
+    {
+    }
+
+    public class VxReconcilerUpdateListItem : VxReconcilerBaseListChange, IEquatable<VxReconcilerUpdateListItem>
+    {
+        public VxView OldView { get; set; }
+
+        public VxView NewView { get; set; }
+
+        public VxReconcilerUpdateListItem(VxView oldView, VxView newView)
+        {
+            OldView = oldView;
+            NewView = newView;
+        }
+
+        public bool Equals(VxReconcilerUpdateListItem other)
+        {
+            return object.ReferenceEquals(OldView, other.OldView) && object.ReferenceEquals(NewView, other.NewView);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VxReconcilerUpdateListItem other)
+            {
+                return Equals(other);
+            }
+
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+    }
+
+    public class VxReconcilerReplaceListItem : VxReconcilerBaseListChange, IEquatable<VxReconcilerReplaceListItem>
+    {
+        public int Index { get; set; }
+
+        public VxView NewView { get; set; }
+
+        public VxReconcilerReplaceListItem(int index, VxView newView)
+        {
+            Index = index;
+            NewView = newView;
+        }
+
+        public bool Equals(VxReconcilerReplaceListItem other)
+        {
+            return Index == other.Index && object.ReferenceEquals(NewView, other.NewView);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VxReconcilerReplaceListItem other)
+            {
+                return Equals(other);
+            }
+
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+    }
+
+    public class VxReconcilerInsertListItem : VxReconcilerBaseListChange, IEquatable<VxReconcilerInsertListItem>
+    {
+        public int Index { get; set; }
+
+        public VxView NewView { get; set; }
+
+        public VxReconcilerInsertListItem(int index, VxView newView)
+        {
+            Index = index;
+            NewView = newView;
+        }
+
+        public bool Equals(VxReconcilerInsertListItem other)
+        {
+            return Index == other.Index && object.ReferenceEquals(NewView, other.NewView);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VxReconcilerInsertListItem other)
+            {
+                return Equals(other);
+            }
+
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+    }
+
+    public class VxReconcilerRemoveListItem : VxReconcilerBaseListChange, IEquatable<VxReconcilerRemoveListItem>
+    {
+        public int Index { get; set; }
+
+        public VxReconcilerRemoveListItem(int index)
+        {
+            Index = index;
+        }
+
+        public bool Equals(VxReconcilerRemoveListItem other)
+        {
+            return Index == other.Index;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VxReconcilerRemoveListItem other)
+            {
+                return Equals(other);
+            }
+
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+    }
+
+    public enum VxReconcilerListChangeType
+    {
+        Insert,
+        Remove,
+        Replace,
+        Update
     }
 
     public class VxReconcilerPropertyChange

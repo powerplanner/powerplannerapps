@@ -47,12 +47,34 @@ namespace Vx
                 if (!newView.Properties.ContainsKey(prop.Key))
                 {
                     // TODO: Remove
+                    throw new NotImplementedException();
                 }
             }
 
             foreach (var prop in newView.Properties)
             {
-                if (!oldView.Properties.TryGetValue(prop.Key, out object oldValue) || !object.Equals(oldValue, prop.Value))
+                if (prop.Value is IEnumerable<VxView> newViews)
+                {
+                    oldView.Properties.TryGetValue(prop.Key, out object oldValue);
+                    IEnumerable<VxView> oldViews = oldValue as IEnumerable<VxView>;
+
+                    VxView currOldView = null;
+                    VxView currNewView = null;
+                    IEnumerator<VxView> newViewsEnumerator = newViews.GetEnumerator();
+                    IEnumerator<VxView> oldViewsEnumerator = oldViews?.GetEnumerator();
+
+                    while (newViewsEnumerator.MoveNext())
+                    {
+                        oldViewsEnumerator?.MoveNext();
+
+                        if (oldViewsEnumerator.Current == null || oldViewsEnumerator.Current.GetType() != newViewsEnumerator.Current.GetType())
+                        {
+
+                        }
+                    }
+                }
+
+                else if (!oldView.Properties.TryGetValue(prop.Key, out object oldValue) || !object.Equals(oldValue, prop.Value))
                 {
                     SetProperty(prop.Key, prop.Value);
                 }
