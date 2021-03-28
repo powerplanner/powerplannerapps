@@ -48,6 +48,11 @@ namespace Vx.Reconciler
             VxView oldItem;
             VxView newItem;
 
+            if (oldList.Count < newList.Count)
+            {
+                oldList = new List<VxView>(oldList);
+            }
+
             for (; i < oldList.Count; i++)
             {
                 oldItem = oldList[i];
@@ -61,9 +66,14 @@ namespace Vx.Reconciler
                 {
                     answer.Add(new VxReconcilerUpdateListItem(oldItem, newItem));
                 }
+                else if (oldList.Count < newList.Count)
+                {
+                    answer.Add(new VxReconcilerInsertListItem(i, newItem));
+                    oldList.Insert(i, newItem);
+                }
                 else
                 {
-                    // Hmmmm
+                    answer.Add(new VxReconcilerReplaceListItem(i, newItem));
                 }
             }
 
