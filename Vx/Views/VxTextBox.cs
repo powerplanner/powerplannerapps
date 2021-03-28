@@ -38,5 +38,11 @@ namespace Vx.Views
             textBlock.Text = value;
             return textBlock;
         }
+
+        public static T Header<T>(this T textBlock, string value) where T : VxTextBox
+        {
+            textBlock.Header = value;
+            return textBlock;
+        }
     }
 }

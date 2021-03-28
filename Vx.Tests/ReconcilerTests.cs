@@ -55,7 +55,7 @@ namespace Vx.Tests
             AssertListChanges(new List<VxReconcilerBaseListChange>()
             {
                 new VxReconcilerInsertListItem(0, newView),
-                new VxReconcilerUpdateListItem(oldViewTextBox, newViewTextBox)
+                new VxReconcilerUpdateListItem(1, oldViewTextBox, newViewTextBox)
             }, changes);
         }
 
@@ -80,8 +80,8 @@ namespace Vx.Tests
 
             AssertListChanges(new List<VxReconcilerBaseListChange>()
             {
-                new VxReconcilerUpdateListItem(oldView, newView),
-                new VxReconcilerUpdateListItem(oldViewTb, newViewTb)
+                new VxReconcilerUpdateListItem(0, oldView, newView),
+                new VxReconcilerUpdateListItem(1, oldViewTb, newViewTb)
             }, changes);
         }
 
@@ -108,7 +108,7 @@ namespace Vx.Tests
             AssertListChanges(new List<VxReconcilerBaseListChange>()
             {
                 new VxReconcilerReplaceListItem(0, newViewComboBox),
-                new VxReconcilerUpdateListItem(oldViewTextBox, newViewTextBox)
+                new VxReconcilerUpdateListItem(1, oldViewTextBox, newViewTextBox)
             }, changes);
         }
 
@@ -134,7 +134,7 @@ namespace Vx.Tests
 
             AssertListChanges(new List<VxReconcilerBaseListChange>()
             {
-                new VxReconcilerUpdateListItem(oldViewTextBlock, newViewTextBlock),
+                new VxReconcilerUpdateListItem(1, oldViewTextBlock, newViewTextBlock),
                 new VxReconcilerReplaceListItem(1, newViewComboBox)
             }, changes);
         }

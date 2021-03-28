@@ -36,9 +36,11 @@ namespace Vx.Reconciler
 
             if (oldList == null || oldList.Count == 0)
             {
+                int newI = 0;
                 foreach (var n in newList)
                 {
-                    answer.Add(new VxReconcilerInsertListItem(newList.Count, n));
+                    answer.Add(new VxReconcilerInsertListItem(newI, n));
+                    newI++;
                 }
 
                 return answer;
@@ -64,7 +66,7 @@ namespace Vx.Reconciler
                 }
                 else if (oldItem.GetType() == newItem.GetType())
                 {
-                    answer.Add(new VxReconcilerUpdateListItem(oldItem, newItem));
+                    answer.Add(new VxReconcilerUpdateListItem(i, oldItem, newItem));
                 }
                 else if (oldList.Count < newList.Count)
                 {
@@ -95,11 +97,13 @@ namespace Vx.Reconciler
 
     public class VxReconcilerUpdateListItem : VxReconcilerBaseListChange, IEquatable<VxReconcilerUpdateListItem>
     {
+        public int Index { get; set; }
+
         public VxView OldView { get; set; }
 
         public VxView NewView { get; set; }
 
-        public VxReconcilerUpdateListItem(VxView oldView, VxView newView)
+        public VxReconcilerUpdateListItem(int index, VxView oldView, VxView newView)
         {
             OldView = oldView;
             NewView = newView;
@@ -107,7 +111,7 @@ namespace Vx.Reconciler
 
         public bool Equals(VxReconcilerUpdateListItem other)
         {
-            return object.ReferenceEquals(OldView, other.OldView) && object.ReferenceEquals(NewView, other.NewView);
+            return Index == other.Index && object.ReferenceEquals(OldView, other.OldView) && object.ReferenceEquals(NewView, other.NewView);
         }
 
         public override bool Equals(object obj)

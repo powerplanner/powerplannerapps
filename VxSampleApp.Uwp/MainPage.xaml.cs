@@ -55,25 +55,33 @@ namespace VxSampleApp.Uwp
 
         protected override VxView Render()
         {
-            return new VxTextBox()
-            {
-                Text = Username,
-                Header = "Username: " + Username.Value
-            };
+            //return new VxTextBox()
+            //{
+            //    Text = Username,
+            //    Header = "Username: " + Username.Value
+            //};
+
+            return new VxStackPanel()
+                .Children(
+                    new VxTextBox()
+                        .Header("Username")
+                        .Text(Username),
+
+                    new VxTextBox()
+                        .Header("Password")
+                        .Text(Password)
+                );
 
             //var content = new VxStackPanel()
             //    .Children(
             //        new VxTextBox()
             //            .Header("Username")
             //            .Error(UsernameError.Value)
-            //            .TextBinding(Username),
+            //            .Text(Username),
 
             //        new VxTextBox()
             //            .Header("Password")
-            //            .TextBinding(Password),
-
-            //        new VxButton("Login")
-            //            .Click(Login)
+            //            .Text(Password)
             //    );
 
             //if (SigningIn.Value)

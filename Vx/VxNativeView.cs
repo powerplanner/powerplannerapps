@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Vx.Reconciler;
 using Vx.Views;
 
 namespace Vx
@@ -31,6 +33,10 @@ namespace Vx
             {
                 return Activator.CreateInstance(nativeType, new object[] { view }) as VxNativeView;
             }
+
+#if DEBUG
+            Debugger.Break();
+#endif
 
             throw new NotImplementedException();
         }
@@ -131,9 +137,64 @@ namespace Vx
             }
         }
 
-        private void Value_ValueChanged(object sender, EventArgs e)
+        private Dictionary<string, VxView[]> _currListsOfViews = new Dictionary<string, VxView[]>();
+        private Dictionary<string, List<VxNativeView>> _listsOfNativeViews = new Dictionary<string, List<VxNativeView>>();
+
+        protected void SetListOfViews(VxView[] views, Action<VxNativeViewListItemChange, int, VxNativeView> onChange, [CallerMemberName] string callerName = null)
         {
-            throw new NotImplementedException();
+            _currListsOfViews.TryGetValue(callerName, out VxView[] oldViews);
+
+            var changes = VxReconciler.ReconcileList(oldViews, views);
+
+            // TODO: Create the native views here and then call back with the actual native views to add/change
+            _listsOfNativeViews.TryGetValue(callerName, out List<VxNativeView> nativeViews);
+            if (nativeViews == null)
+            {
+                nativeViews = new List<VxNativeView>();
+                _listsOfNativeViews[callerName] = nativeViews;
+            }
+
+            foreach (var change in changes)
+            {
+                if (change is VxReconcilerInsertListItem insert)
+                {
+                    var newView = VxNativeView.Create(insert.NewView);
+                    nativeViews.Insert(insert.Index, newView);
+                    onChange(VxNativeViewListItemChange.Insert, insert.Index, newView);
+                }
+
+                else if (change is VxReconcilerUpdateListItem update)
+                {
+                    nativeViews[update.Index].ApplyDifferentView(update.NewView);
+                }
+
+                else if (change is VxReconcilerReplaceListItem replace)
+                {
+                    var newView = VxNativeView.Create(replace.NewView);
+                    nativeViews[replace.Index] = newView;
+                    onChange(VxNativeViewListItemChange.Replace, replace.Index, newView);
+                }
+
+                else if (change is VxReconcilerRemoveListItem remove)
+                {
+                    nativeViews.RemoveAt(remove.Index);
+                    onChange(VxNativeViewListItemChange.Remove, remove.Index, null);
+                }
+
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            _currListsOfViews[callerName] = views;
+        }
+
+        protected enum VxNativeViewListItemChange
+        {
+            Insert,
+            Replace,
+            Remove
         }
 
         private class VxStateRegistration

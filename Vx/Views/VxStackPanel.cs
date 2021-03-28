@@ -4,17 +4,26 @@ using System.Text;
 
 namespace Vx.Views
 {
+    public interface IVxStackPanel
+    {
+        VxView[] Children { set; }
+    }
+
     public class VxStackPanel : VxView
     {
-        public VxView[] Children()
+        public VxView[] Children
         {
-            return GetProperty<VxView[]>();
+            get => GetProperty<VxView[]>();
+            set => SetProperty(value);
         }
+    }
 
-        public VxStackPanel Children(params VxView[] value)
+    public static class VxStackPanelExtensions
+    {
+        public static T Children<T>(this T stackPanel, params VxView[] value) where T : VxStackPanel
         {
-            SetProperty(value);
-            return this;
+            stackPanel.Children = value;
+            return stackPanel;
         }
     }
 }
