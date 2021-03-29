@@ -18,7 +18,10 @@ namespace Vx.Uwp.NativeViews
 
         private void NativeView_TextChanged(object sender, TextChangedEventArgs e)
         {
-            View.Text.Value = NativeView.Text;
+            if (View.Text != null)
+            {
+                View.Text.Value = NativeView.Text;
+            }
         }
 
         public VxState<string> Text

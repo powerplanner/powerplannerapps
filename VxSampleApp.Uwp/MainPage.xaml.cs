@@ -67,6 +67,8 @@ namespace VxSampleApp.Uwp
                         .Header("Username")
                         .Text(Username),
 
+                    Username.Value.Length < 5 ? new VxTextBlock("Username must be at least 5 characters") : null,
+
                     new VxTextBox()
                         .Header("Password")
                         .Text(Password)

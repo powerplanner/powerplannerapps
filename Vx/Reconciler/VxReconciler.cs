@@ -105,6 +105,7 @@ namespace Vx.Reconciler
 
         public VxReconcilerUpdateListItem(int index, VxView oldView, VxView newView)
         {
+            Index = index;
             OldView = oldView;
             NewView = newView;
         }

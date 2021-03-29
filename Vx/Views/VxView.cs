@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -11,6 +12,12 @@ namespace Vx.Views
 
         protected void SetProperty(object value, [CallerMemberName]string propertyName = null)
         {
+            if (value is VxView[] views)
+            {
+                Properties[propertyName] = views.Where(i => i != null).ToArray();
+                return;
+            }
+
             Properties[propertyName] = value;
         }
 
