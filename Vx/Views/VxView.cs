@@ -15,6 +15,8 @@ namespace Vx.Views
         VxHorizontalAlignment HorizontalAlignment { set; }
 
         VxVerticalAlignment VerticalAlignment { set; }
+
+        VxThickness Margin { set; }
     }
 
     public class VxView : IVxView
@@ -65,6 +67,12 @@ namespace Vx.Views
             set => SetProperty(value);
         }
 
+        public VxThickness Margin
+        {
+            get => GetProperty<VxThickness>();
+            set => SetProperty(value);
+        }
+
         internal void SetAttachedProperty(string propertyName, object value)
         {
             AttachedProperties[propertyName] = value;
@@ -111,6 +119,24 @@ namespace Vx.Views
             view.VerticalAlignment = value;
             return view;
         }
+
+        public static T Margin<T>(this T view, VxThickness value) where T : VxView
+        {
+            view.Margin = value;
+            return view;
+        }
+
+        public static T Margin<T>(this T view, double value) where T : VxView
+        {
+            view.Margin = new VxThickness(value);
+            return view;
+        }
+
+        public static T Margin<T>(this T view, double left, double top, double right, double bottom) where T : VxView
+        {
+            view.Margin = new VxThickness(left, top, right, bottom);
+            return view;
+        }
     }
 
     public enum VxHorizontalAlignment
@@ -127,5 +153,66 @@ namespace Vx.Views
         Center,
         Bottom,
         Stretch
+    }
+
+    public struct VxThickness
+    {
+        public VxThickness(double uniformLength)
+        {
+            Bottom = uniformLength;
+            Top = uniformLength;
+            Left = uniformLength;
+            Right = uniformLength;
+        }
+
+        public VxThickness(double left, double top, double right, double bottom)
+        {
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
+        }
+
+        public double Bottom { get; set; }
+        public double Left { get; set; }
+        public double Right { get; set; }
+        public double Top { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VxThickness other)
+            {
+                return Equals(other);
+            }
+
+            return base.Equals(obj);
+        }
+        public bool Equals(VxThickness thickness)
+        {
+            return Bottom == thickness.Bottom
+                && Left == thickness.Left
+                && Right == thickness.Right
+                && Top == thickness.Top;
+        }
+
+        public override int GetHashCode()
+        {
+            return (Bottom + Left + Right + Top).GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"{Left}, {Top}, {Right}, {Bottom}";
+        }
+
+        public static bool operator ==(VxThickness t1, VxThickness t2)
+        {
+            return t1.Equals(t2);
+        }
+
+        public static bool operator !=(VxThickness t1, VxThickness t2)
+        {
+            return !t1.Equals(t2);
+        }
     }
 }

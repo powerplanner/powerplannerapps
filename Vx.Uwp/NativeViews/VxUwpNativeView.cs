@@ -47,5 +47,7 @@ namespace Vx.Uwp.NativeViews
         public VxHorizontalAlignment HorizontalAlignment { set => NativeView.HorizontalAlignment = (HorizontalAlignment)value; }
 
         public VxVerticalAlignment VerticalAlignment { set => NativeView.VerticalAlignment = (VerticalAlignment)value; }
+
+        public VxThickness Margin { set => NativeView.Margin = new Thickness(value.Left, value.Top, value.Right, value.Bottom); }
     }
 }

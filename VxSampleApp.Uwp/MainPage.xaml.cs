@@ -54,7 +54,8 @@ namespace VxSampleApp.Uwp
                         .VerticalAlignment(VxVerticalAlignment.Center)
                         .Children(
                             new VxTextBlock("Power Planner")
-                                .HorizontalAlignment(VxHorizontalAlignment.Center),
+                                .HorizontalAlignment(VxHorizontalAlignment.Center)
+                                .Margin(0, 0, 0, 12),
                             new VxTextBlock("The ultimate homework planner")
                                 .HorizontalAlignment(VxHorizontalAlignment.Center)
                         ),
@@ -67,10 +68,12 @@ namespace VxSampleApp.Uwp
                         )
                         .Children(
                             new VxButton("Log in")
-                                .HorizontalAlignment(VxHorizontalAlignment.Stretch),
+                                .HorizontalAlignment(VxHorizontalAlignment.Stretch)
+                                .Margin(12),
                             new VxButton("Create account")
                                 .HorizontalAlignment(VxHorizontalAlignment.Stretch)
                                 .GridColumn(1)
+                                .Margin(12)
                         )
                 );
         }
