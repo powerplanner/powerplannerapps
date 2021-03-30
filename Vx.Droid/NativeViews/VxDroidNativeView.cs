@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using System;
@@ -119,10 +120,14 @@ namespace Vx.Droid.NativeViews
             return 0;
         }
 
-        private int AsPixels(double dp)
+        public static int AsPx(double dp)
         {
-            // TODO: Fix this
-            return (int)dp;
+            return (int)AsPxPrecise(dp);
+        }
+
+        public static float AsPxPrecise(double dp)
+        {
+            return TypedValue.ApplyDimension(ComplexUnitType.Dip, (float)dp, VxDroidNative.Context.Resources.DisplayMetrics);
         }
 
         private int GetGridWidth()
@@ -164,7 +169,7 @@ namespace Vx.Droid.NativeViews
 
             if (row.Height.IsAbsolute)
             {
-                return GridLayout.InvokeSpec(View.GridRow, AsPixels(row.Height.Value));
+                return GridLayout.InvokeSpec(View.GridRow, AsPx(row.Height.Value));
             }
 
             return GridLayout.InvokeSpec(View.GridRow, (float)row.Height.Value);
@@ -180,7 +185,7 @@ namespace Vx.Droid.NativeViews
 
             if (col.Width.IsAbsolute)
             {
-                return GridLayout.InvokeSpec(View.GridColumn, AsPixels(col.Width.Value));
+                return GridLayout.InvokeSpec(View.GridColumn, AsPx(col.Width.Value));
             }
 
             return GridLayout.InvokeSpec(View.GridColumn, (float)col.Width.Value);
@@ -190,9 +195,10 @@ namespace Vx.Droid.NativeViews
         {
             if (NativeView.LayoutParameters is ViewGroup.MarginLayoutParams marginParams)
             {
-                // Need to transform to DP
-                //marginParams.BottomMargin = View.Margin.Bottom;
-                //marginParams.
+                marginParams.LeftMargin = AsPx(View.Margin.Left);
+                marginParams.TopMargin = AsPx(View.Margin.Top);
+                marginParams.RightMargin = AsPx(View.Margin.Right);
+                marginParams.BottomMargin = AsPx(View.Margin.Bottom);
             }
         }
 

@@ -23,8 +23,7 @@ namespace Vx.Droid
             MainActivity = mainActivity;
             Context = mainActivity.ApplicationContext;
 
-            VxNativeView.Mappings[typeof(VxTextBlock)] = typeof(VxDroidTextBlock);
-            VxNativeView.Mappings[typeof(VxGrid)] = typeof(VxDroidGrid);
+            VxNativeView.UiAssembly = typeof(VxDroidNative).Assembly;
 
             VxDispatcher.Current = new VxDroidDispatcher();
         }

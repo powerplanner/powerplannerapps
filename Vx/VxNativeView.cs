@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Vx.Reconciler;
@@ -10,7 +12,7 @@ namespace Vx
 {
     public abstract class VxNativeView
     {
-        public static Dictionary<Type, Type> Mappings { get; private set; } = new Dictionary<Type, Type>();
+        public static Assembly UiAssembly { get; set; }
 
         public VxView View { get; private set; }
 
@@ -38,9 +40,21 @@ namespace Vx
             OnFinishedApplyingProperties();
         }
 
+        private static Dictionary<Type, Type> _mappings;
+
         public static VxNativeView Create(VxView view, VxView parentView)
         {
-            if (Mappings.TryGetValue(view.GetType(), out Type nativeType))
+            if (_mappings == null)
+            {
+                _mappings = new Dictionary<Type, Type>();
+
+                foreach (var type in UiAssembly.GetTypes().Where(i => i.IsClass && !i.IsAbstract && i.GenericTypeArguments.Length == 0 && i.IsSubclassOf(typeof(VxNativeView))))
+                {
+                    _mappings[type.BaseType.GenericTypeArguments[0]] = type;
+                }
+            }
+
+            if (_mappings.TryGetValue(view.GetType(), out Type nativeType))
             {
                 VxNativeView nativeView = Activator.CreateInstance(nativeType) as VxNativeView;
                 nativeView.SetInitialView(view, parentView);

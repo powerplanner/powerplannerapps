@@ -12,11 +12,7 @@ namespace Vx.Uwp
     {
         public static void Initialize()
         {
-            VxNativeView.Mappings[typeof(VxTextBlock)] = typeof(VxNativeTextBlock);
-            VxNativeView.Mappings[typeof(VxTextBox)] = typeof(VxNativeTextBox);
-            VxNativeView.Mappings[typeof(VxStackPanel)] = typeof(VxUwpStackPanel);
-            VxNativeView.Mappings[typeof(VxButton)] = typeof(VxUwpButton);
-            VxNativeView.Mappings[typeof(VxGrid)] = typeof(VxUwpGrid);
+            VxNativeView.UiAssembly = typeof(VxNative).Assembly;
 
             VxDispatcher.Current = new VxUwpDispatcher();
         }

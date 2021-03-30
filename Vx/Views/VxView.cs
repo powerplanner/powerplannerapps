@@ -25,7 +25,8 @@ namespace Vx.Views
 
         internal Dictionary<string, object> Properties { get; } = new Dictionary<string, object>()
         {
-            { nameof(HorizontalAlignment), VxHorizontalAlignment.Stretch }
+            { nameof(HorizontalAlignment), VxHorizontalAlignment.Stretch },
+            { nameof(Margin), new VxThickness(0) }
         };
 
         protected void SetProperty(object value, [CallerMemberName]string propertyName = null)

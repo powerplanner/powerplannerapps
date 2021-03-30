@@ -19,7 +19,7 @@ namespace VxSampleApp.Droid
 
             VxDroidNative.Initialize(this);
 
-            var loginView = new LoginView();
+            var loginView = new WelcomeView();
             loginView.SetOnTopNativeViewChanged(newNativeView =>
             {
                 (newNativeView as View).LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
@@ -31,6 +31,46 @@ namespace VxSampleApp.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public class WelcomeView : VxComponent
+    {
+        protected override VxView Render()
+        {
+            return new VxGrid()
+                .RowDefinitions(
+                    new VxRowDefinition(VxGridLength.Star(1)),
+                    new VxRowDefinition(VxGridLength.Auto)
+                )
+                .Children(
+                    new VxStackPanel()
+                        .GridRow(0)
+                        .VerticalAlignment(VxVerticalAlignment.Center)
+                        .Children(
+                            new VxTextBlock("Power Planner")
+                                .HorizontalAlignment(VxHorizontalAlignment.Center)
+                                .Margin(0, 0, 0, 12),
+                            new VxTextBlock("The ultimate homework planner")
+                                .HorizontalAlignment(VxHorizontalAlignment.Center)
+                        ),
+
+                    new VxGrid()
+                        .GridRow(1)
+                        .ColumnDefinitions(
+                            new VxColumnDefinition(VxGridLength.Star(1)),
+                            new VxColumnDefinition(VxGridLength.Star(1))
+                        )
+                        .Children(
+                            new VxButton("Log in")
+                                .HorizontalAlignment(VxHorizontalAlignment.Stretch)
+                                .Margin(12), // The margins make it go wacky for some reason
+                            new VxButton("Create account")
+                                .HorizontalAlignment(VxHorizontalAlignment.Stretch)
+                                .GridColumn(1)
+                                .Margin(12)
+                        )
+                );
         }
     }
 

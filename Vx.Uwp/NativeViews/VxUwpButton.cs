@@ -10,14 +10,19 @@ namespace Vx.Uwp.NativeViews
 {
     public class VxUwpButton : VxUwpNativeView<VxButton, Button>, IVxButton
     {
-        private Action _click;
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            NativeView.Click += NativeView_Click;
+        }
 
         private void NativeView_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            _click?.Invoke();
+            View.ClickAction?.Invoke();
         }
 
         public string Text { set => NativeView.Content = value; }
-        public Action ClickAction { set => _click = value; }
+        public Action ClickAction { set { } }
     }
 }
