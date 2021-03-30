@@ -67,11 +67,14 @@ namespace VxSampleApp.Uwp
                         .Header("Username")
                         .Text(Username),
 
-                    Username.Value.Length < 5 ? new VxTextBlock("Username must be at least 5 characters") : null,
+                    UsernameError.Value != null ? new VxTextBlock(UsernameError.Value) : null,
 
                     new VxTextBox()
                         .Header("Password")
-                        .Text(Password)
+                        .Text(Password),
+
+                    new VxButton(SigningIn.Value ? "Logging in..." : "Log in")
+                        .Click(Login)
                 );
 
             //var content = new VxStackPanel()
@@ -121,14 +124,7 @@ namespace VxSampleApp.Uwp
 
             await Task.Delay(2000);
 
-            if (true)
-            {
-                // Close popup, navigate
-            }
-            else
-            {
                 SigningIn.Value = false;
-            }
         }
     }
 }

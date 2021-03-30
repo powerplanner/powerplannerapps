@@ -29,7 +29,7 @@ namespace Vx.Tests
 
             AssertListChanges(new List<VxReconcilerBaseListChange>()
             {
-                new VxReconcilerUpdateListItem(oldViewTextBlock, newViewTextBlock),
+                new VxReconcilerUpdateListItem(0, oldViewTextBlock, newViewTextBlock),
                 new VxReconcilerInsertListItem(1, newView)
             }, changes);
         }
@@ -134,8 +134,34 @@ namespace Vx.Tests
 
             AssertListChanges(new List<VxReconcilerBaseListChange>()
             {
-                new VxReconcilerUpdateListItem(1, oldViewTextBlock, newViewTextBlock),
+                new VxReconcilerUpdateListItem(0, oldViewTextBlock, newViewTextBlock),
                 new VxReconcilerReplaceListItem(1, newViewComboBox)
+            }, changes);
+        }
+
+
+
+        [TestMethod]
+        public void TestRemovedAtTop()
+        {
+            var oldViewTextBlock = new VxTextBlock("Enter your name:");
+            var oldViewTextBox = new VxTextBox();
+
+            var newViewTextBox = new VxTextBox();
+
+            var changes = VxReconciler.ReconcileList(new List<VxView>()
+            {
+                oldViewTextBlock,
+                oldViewTextBox
+            }, new List<VxView>()
+            {
+                newViewTextBox
+            });
+
+            AssertListChanges(new List<VxReconcilerBaseListChange>()
+            {
+                new VxReconcilerRemoveListItem(0),
+                new VxReconcilerUpdateListItem(0, oldViewTextBox, newViewTextBox)
             }, changes);
         }
 
