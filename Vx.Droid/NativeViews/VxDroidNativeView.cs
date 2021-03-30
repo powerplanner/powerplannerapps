@@ -29,6 +29,33 @@ namespace Vx.Droid.NativeViews
             return Activator.CreateInstance(typeof(N), new object[] { VxDroidNative.Context });
         }
 
+        protected override void BeforeApplyingProperties()
+        {
+            base.BeforeApplyingProperties();
+
+            if (View is VxGrid grid && ParentView is VxGrid parentGrid)
+            {
+                // Need to apply fixup for when a grid is contained in an auto-height parent... in those cases, change the Star hights to Auto heights
+                if (GetRowDefinition().Height.IsAuto)
+                {
+                    if (grid.RowDefinitions == null || grid.RowDefinitions.Length == 0)
+                    {
+                        grid.RowDefinitions = new VxRowDefinition[] { new VxRowDefinition(VxGridLength.Auto) };
+                    }
+                    else
+                    {
+                        foreach (var def in grid.RowDefinitions)
+                        {
+                            if (def.Height.IsStar)
+                            {
+                                def.Height = VxGridLength.Auto;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private bool _layoutParamsNeedsUpdating;
 
         private void MarkLayoutParamsNeedsUpdating()

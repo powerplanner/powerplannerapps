@@ -28,6 +28,8 @@ namespace Vx
 
             Initialize();
 
+            BeforeApplyingProperties();
+
             foreach (var prop in view.Properties)
             {
                 SetProperty(prop.Key, prop.Value);
@@ -65,6 +67,8 @@ namespace Vx
             View = view;
             ParentView = parentView;
 
+            BeforeApplyingProperties();
+
             foreach (var prop in oldView.Properties)
             {
                 if (!newView.Properties.ContainsKey(prop.Key))
@@ -88,6 +92,14 @@ namespace Vx
             }
 
             OnFinishedApplyingProperties();
+        }
+
+        /// <summary>
+        /// Called after View, NativeView, and ParentView have been set, but before any properties are applied
+        /// </summary>
+        protected virtual void BeforeApplyingProperties()
+        {
+
         }
 
         protected virtual void OnFinishedApplyingProperties()
