@@ -10,22 +10,5 @@
 
     <Grid>
         <Border x:Name="Content"/>
-        <Grid Background="Red">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="Blue">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Cool"/>
-                <TextBlock Text="Second" Grid.Row="1"/>
-            </Grid>
-            <Grid Grid.Row="1" Background="Green">
-                <TextBlock Text="Cool"/>
-            </Grid>
-        </Grid>
     </Grid>
 </Page>
