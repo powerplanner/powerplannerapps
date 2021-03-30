@@ -59,7 +59,10 @@ namespace Vx.Views
 
     public class VxColumnDefinition
     {
-        public VxColumnDefinition() { }
+        public VxColumnDefinition()
+        {
+            Width = new VxGridLength(1, VxGridUnitType.Star);
+        }
 
         public VxColumnDefinition(VxGridLength width)
         {
@@ -71,7 +74,10 @@ namespace Vx.Views
 
     public class VxRowDefinition
     {
-        public VxRowDefinition() { }
+        public VxRowDefinition()
+        {
+            Height = new VxGridLength(1, VxGridUnitType.Star);
+        }
 
         public VxRowDefinition(VxGridLength height)
         {

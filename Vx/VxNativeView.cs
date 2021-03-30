@@ -14,13 +14,16 @@ namespace Vx
 
         public VxView View { get; private set; }
 
+        public VxView ParentView { get; private set; }
+
         public object NativeView { get; private set; }
 
         protected abstract object CreateNativeView();
 
-        internal void SetInitialView(VxView view)
+        internal void SetInitialView(VxView view, VxView parentView)
         {
             View = view;
+            ParentView = parentView;
             NativeView = CreateNativeView();
 
             Initialize();
@@ -29,14 +32,16 @@ namespace Vx
             {
                 SetProperty(prop.Key, prop.Value);
             }
+
+            OnFinishedApplyingProperties();
         }
 
-        public static VxNativeView Create(VxView view)
+        public static VxNativeView Create(VxView view, VxView parentView)
         {
             if (Mappings.TryGetValue(view.GetType(), out Type nativeType))
             {
                 VxNativeView nativeView = Activator.CreateInstance(nativeType) as VxNativeView;
-                nativeView.SetInitialView(view);
+                nativeView.SetInitialView(view, parentView);
                 return nativeView;
             }
 
@@ -52,12 +57,13 @@ namespace Vx
             // Nothing
         }
 
-        public void ApplyDifferentView(VxView view)
+        public void ApplyDifferentView(VxView view, VxView parentView)
         {
             var oldView = View;
             var newView = view;
 
             View = view;
+            ParentView = parentView;
 
             foreach (var prop in oldView.Properties)
             {
@@ -80,6 +86,13 @@ namespace Vx
                     SetProperty(prop.Key, prop.Value);
                 }
             }
+
+            OnFinishedApplyingProperties();
+        }
+
+        protected virtual void OnFinishedApplyingProperties()
+        {
+
         }
 
         private void SetProperty(string propName, object value)
@@ -151,19 +164,19 @@ namespace Vx
             {
                 if (change is VxReconcilerInsertListItem insert)
                 {
-                    var newView = VxNativeView.Create(insert.NewView);
+                    var newView = VxNativeView.Create(insert.NewView, View);
                     nativeViews.Insert(insert.Index, newView);
                     onChange(VxNativeViewListItemChange.Insert, insert.Index, newView);
                 }
 
                 else if (change is VxReconcilerUpdateListItem update)
                 {
-                    nativeViews[update.Index].ApplyDifferentView(update.NewView);
+                    nativeViews[update.Index].ApplyDifferentView(update.NewView, View);
                 }
 
                 else if (change is VxReconcilerReplaceListItem replace)
                 {
-                    var newView = VxNativeView.Create(replace.NewView);
+                    var newView = VxNativeView.Create(replace.NewView, View);
                     nativeViews[replace.Index] = newView;
                     onChange(VxNativeViewListItemChange.Replace, replace.Index, newView);
                 }

@@ -22,6 +22,7 @@ namespace VxSampleApp.Droid
             var loginView = new LoginView();
             loginView.SetOnTopNativeViewChanged(newNativeView =>
             {
+                (newNativeView as View).LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
                 SetContentView((View)newNativeView);
             });
         }
@@ -44,12 +45,109 @@ namespace VxSampleApp.Droid
 
         public LoginView()
         {
-            Updater();
+            //Updater();
         }
 
         protected override VxView Render()
         {
-            return new VxTextBlock("Hello " + Username.Value);
+            //return new VxTextBlock("Hello " + Username.Value);
+
+            // This works
+            //return new VxGrid()
+            //    .RowDefinitions(
+            //        new VxRowDefinition(VxGridLength.Star(1)),
+            //        new VxRowDefinition(VxGridLength.Auto)
+            //    )
+            //    .Children(
+            //        new VxTextBlock("Power Planner"),
+            //        new VxTextBlock("Log in")
+            //            .GridRow(1)
+            //    );
+
+            // This works correctly
+            //return new VxGrid()
+            //    .RowDefinitions(
+            //        new VxRowDefinition(), // 1*
+            //        new VxRowDefinition() // 1*
+            //    )
+            //    .Children(
+            //        new VxTextBlock("Row 0"),
+            //        new VxTextBlock("Row 1")
+            //            .GridRow(1)
+            //    );
+
+            // This works correctly too
+            return new VxGrid()
+                .RowDefinitions(
+                    new VxRowDefinition(VxGridLength.Auto),
+                    new VxRowDefinition(VxGridLength.Auto)
+                )
+                .Children(
+                    new VxTextBlock("Row 0"),
+                    new VxTextBlock("Row 1")
+                        .GridRow(1)
+                );
+
+            return new VxGrid()
+                .RowDefinitions(
+                    new VxRowDefinition(VxGridLength.Auto),
+                    new VxRowDefinition(VxGridLength.Auto)
+                )
+                .Children(
+                    new VxTextBlock("Row 0"),
+                    new VxTextBlock("Row 1")
+                        .GridRow(1)
+                );
+
+            // This doesn't work... problem is the child text block gets a height of 0dp with 1*, but in Android's logic, the text block doesn't keep a min height, 
+            return new VxGrid()
+                .RowDefinitions(
+                    new VxRowDefinition(VxGridLength.Star(1)),
+                    new VxRowDefinition(VxGridLength.Auto)
+                )
+                .Children(
+                    new VxTextBlock("Power Planner"),
+                    new VxGrid()
+                        .GridRow(1)
+                        .Children(
+                            new VxTextBlock("Log in")
+                        )
+                );
+
+            return new VxGrid()
+                .RowDefinitions(
+                    new VxRowDefinition(VxGridLength.Star(1)),
+                    new VxRowDefinition(VxGridLength.Auto)
+                )
+                .Children(
+                    new VxTextBlock("Power Planner"),
+                    new VxGrid()
+                        .GridRow(1)
+                        .ColumnDefinitions(
+                            new VxColumnDefinition(VxGridLength.Star(1)),
+                            new VxColumnDefinition(VxGridLength.Star(1))
+                        )
+                        .Children(
+                            new VxTextBlock("Log in"),
+                            new VxTextBlock("Create account")
+                                .GridColumn(1)
+                        )
+                );
+
+            return new VxGrid()
+                //.RowDefinitions(
+                //    new VxRowDefinition(VxGridLength.Star(1)),
+                //    new VxRowDefinition(VxGridLength.Star(1))
+                //)
+                .ColumnDefinitions(
+                    new VxColumnDefinition(VxGridLength.Star(1)),
+                    new VxColumnDefinition(VxGridLength.Star(1))
+                )
+                .Children(
+                    new VxTextBlock("Left grid"),
+                    new VxTextBlock("Right grid")
+                        .GridColumn(1)
+                );
 
             //return new VxStackPanel()
             //    .Children(

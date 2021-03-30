@@ -10,5 +10,18 @@
 
     <Grid>
         <Border x:Name="Content"/>
+        <Grid Background="Red">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1" Background="Blue">
+                <TextBlock Text="Cool" VerticalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

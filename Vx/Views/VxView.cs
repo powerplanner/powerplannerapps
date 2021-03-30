@@ -23,7 +23,10 @@ namespace Vx.Views
     {
         internal Dictionary<string, object> AttachedProperties = new Dictionary<string, object>();
 
-        internal Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
+        internal Dictionary<string, object> Properties { get; } = new Dictionary<string, object>()
+        {
+            { nameof(HorizontalAlignment), VxHorizontalAlignment.Stretch }
+        };
 
         protected void SetProperty(object value, [CallerMemberName]string propertyName = null)
         {
@@ -38,7 +41,12 @@ namespace Vx.Views
 
         protected T GetProperty<T>([CallerMemberName]string propertyName = null)
         {
-            return (T)Properties[propertyName];
+            if (Properties.TryGetValue(propertyName, out object val))
+            {
+                return (T)val;
+            }
+
+            return default(T);
         }
 
         internal VxNativeView NativeView { get; set; }

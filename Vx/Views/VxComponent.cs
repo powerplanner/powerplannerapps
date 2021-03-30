@@ -77,13 +77,13 @@ namespace Vx.Views
 
             if (oldView == null || oldView.GetType() != newView.GetType())
             {
-                _currentNativeView = VxNativeView.Create(newView);
+                _currentNativeView = VxNativeView.Create(newView, null);
                 _onTopNativeViewChanged?.Invoke(_currentNativeView.NativeView);
             }
 
             else
             {
-                _currentNativeView.ApplyDifferentView(newView);
+                _currentNativeView.ApplyDifferentView(newView, null);
             }
         }
     }

@@ -61,6 +61,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NativeViews\VxDroidGrid.cs" />
     <Compile Include="NativeViews\VxDroidNativeView.cs" />
     <Compile Include="NativeViews\VxDroidTextBlock.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
