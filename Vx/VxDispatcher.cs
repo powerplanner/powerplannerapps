@@ -11,6 +11,12 @@ namespace Vx
 
         public static Task RunAsync(Action action)
         {
+#if DEBUG
+            if (Current == null)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+#endif
             return Current.RunAsync(action);
         }
     }
