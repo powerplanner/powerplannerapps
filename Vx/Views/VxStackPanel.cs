@@ -7,6 +7,8 @@ namespace Vx.Views
     public interface IVxStackPanel
     {
         VxView[] Children { set; }
+
+        VxOrientation Orientation { set; }
     }
 
     public class VxStackPanel : VxView
@@ -14,6 +16,12 @@ namespace Vx.Views
         public VxView[] Children
         {
             get => GetProperty<VxView[]>();
+            set => SetProperty(value);
+        }
+
+        public VxOrientation Orientation
+        {
+            get => GetProperty<VxOrientation>();
             set => SetProperty(value);
         }
     }
@@ -25,5 +33,17 @@ namespace Vx.Views
             stackPanel.Children = value;
             return stackPanel;
         }
+
+        public static T Orientation<T>(this T stackPanel, VxOrientation value) where T : VxStackPanel
+        {
+            stackPanel.Orientation = value;
+            return stackPanel;
+        }
+    }
+
+    public enum VxOrientation
+    {
+        Vertical,
+        Horizontal
     }
 }

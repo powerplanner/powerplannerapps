@@ -123,6 +123,8 @@
     <Compile Include="NativeViews\VxNativeTextBlock.cs" />
     <Compile Include="NativeViews\VxNativeTextBox.cs" />
     <Compile Include="NativeViews\VxUwpButton.cs" />
+    <Compile Include="NativeViews\VxUwpGrid.cs" />
+    <Compile Include="NativeViews\VxUwpNativeView.cs" />
     <Compile Include="NativeViews\VxUwpStackPanel.cs" />
     <Compile Include="ViewRenderers\VxTextBlockRenderer.cs" />
     <Compile Include="VxAppExtensions.cs" />

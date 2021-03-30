@@ -31,11 +31,43 @@ namespace VxSampleApp.Uwp
 
             VxNative.Initialize();
 
-            var loginView = new LoginView();
+            var loginView = new WelcomeView();
             loginView.SetOnTopNativeViewChanged(newNativeView =>
             {
                 Content.Child = (UIElement)newNativeView;
             });
+        }
+    }
+
+    public class WelcomeView : VxComponent
+    {
+        protected override VxView Render()
+        {
+            return new VxGrid()
+                .RowDefinitions(
+                    new VxRowDefinition(VxGridLength.Star(1)),
+                    new VxRowDefinition(VxGridLength.Auto)
+                )
+                .Children(
+                    new VxStackPanel()
+                        .GridRow(0)
+                        .Children(
+                            new VxTextBlock("Power Planner"),
+                            new VxTextBlock("The ultimate homework planner")
+                        ),
+
+                    new VxGrid()
+                        .GridRow(1)
+                        .ColumnDefinitions(
+                            new VxColumnDefinition(VxGridLength.Star(1)),
+                            new VxColumnDefinition(VxGridLength.Star(1))
+                        )
+                        .Children(
+                            new VxButton("Log in"),
+                            new VxButton("Create account")
+                                .GridColumn(1)
+                        )
+                );
         }
     }
 

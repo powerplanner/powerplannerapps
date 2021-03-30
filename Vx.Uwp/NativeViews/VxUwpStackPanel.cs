@@ -10,37 +10,13 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.NativeViews
 {
-    public class VxUwpStackPanel : VxNativeView<VxStackPanel, StackPanel>, IVxStackPanel
+    public class VxUwpStackPanel : VxUwpNativeView<VxStackPanel, StackPanel>, IVxStackPanel
     {
-        public VxUwpStackPanel(VxStackPanel view) : base(view, new StackPanel())
+        public VxUwpStackPanel(VxStackPanel view) : base(view)
         {
         }
 
-        public VxView[] Children
-        {
-            set
-            {
-                SetListOfViews(value, (changeType, index, nativeView) =>
-                {
-                    switch (changeType)
-                    {
-                        case VxNativeViewListItemChange.Insert:
-                            NativeView.Children.Insert(index, nativeView.NativeView as UIElement);
-                            break;
-
-                        case VxNativeViewListItemChange.Replace:
-                            NativeView.Children[index] = nativeView.NativeView as UIElement;
-                            break;
-
-                        case VxNativeViewListItemChange.Remove:
-                            NativeView.Children.RemoveAt(index);
-                            break;
-
-                        default:
-                            throw new NotImplementedException();
-                    }
-                });
-            }
-        }
+        public VxView[] Children { set => SetListOfViewsOnCollection(value, NativeView.Children); }
+        public VxOrientation Orientation { set => NativeView.Orientation = (Orientation)value; }
     }
 }

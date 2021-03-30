@@ -9,9 +9,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.NativeViews
 {
-    public class VxNativeTextBox : VxNativeView<VxTextBox, TextBox>, IVxTextBox
+    public class VxNativeTextBox : VxUwpNativeView<VxTextBox, TextBox>, IVxTextBox
     {
-        public VxNativeTextBox(VxTextBox view) : base(view, new TextBox())
+        public VxNativeTextBox(VxTextBox view) : base(view)
         {
             NativeView.TextChanged += NativeView_TextChanged;
         }

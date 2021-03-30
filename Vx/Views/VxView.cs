@@ -6,8 +6,17 @@ using System.Text;
 
 namespace Vx.Views
 {
-    public class VxView
+    public interface IVxView
     {
+        int GridRow { set; }
+
+        int GridColumn { set; }
+    }
+
+    public class VxView : IVxView
+    {
+        internal Dictionary<string, object> AttachedProperties = new Dictionary<string, object>();
+
         internal Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 
         protected void SetProperty(object value, [CallerMemberName]string propertyName = null)
@@ -27,5 +36,52 @@ namespace Vx.Views
         }
 
         internal VxNativeView NativeView { get; set; }
+
+        public int GridRow
+        {
+            get => GetProperty<int>();
+            set => SetProperty(value);
+        }
+
+        public int GridColumn
+        {
+            get => GetProperty<int>();
+            set => SetProperty(value);
+        }
+
+        internal void SetAttachedProperty(string propertyName, object value)
+        {
+            AttachedProperties[propertyName] = value;
+        }
+
+        internal bool TryGetAttachedProperty(string propertyName, out object obj)
+        {
+            return AttachedProperties.TryGetValue(propertyName, out obj);
+        }
+
+        internal T GetAttachedProperty<T>(string propertyName, T valueIfNull)
+        {
+            if (AttachedProperties.TryGetValue(propertyName, out object val))
+            {
+                return (T)val;
+            }
+
+            return valueIfNull;
+        }
+    }
+
+    public static class VxViewExtensions
+    {
+        public static T GridRow<T>(this T view, int value) where T : VxView
+        {
+            view.GridRow = value;
+            return view;
+        }
+
+        public static T GridColumn<T>(this T view, int value) where T : VxView
+        {
+            view.GridColumn = value;
+            return view;
+        }
     }
 }

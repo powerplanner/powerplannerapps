@@ -8,10 +8,10 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.NativeViews
 {
-    public class VxNativeTextBlock : VxNativeView<VxTextBlock, TextBlock>, IVxTextBlock
+    public class VxNativeTextBlock : VxUwpNativeView<VxTextBlock, TextBlock>, IVxTextBlock
     {
 
-        public VxNativeTextBlock(VxTextBlock view) : base(view, new TextBlock())
+        public VxNativeTextBlock(VxTextBlock view) : base(view)
         {
 
         }

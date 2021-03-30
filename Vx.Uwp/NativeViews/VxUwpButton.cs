@@ -8,11 +8,11 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.NativeViews
 {
-    public class VxUwpButton : VxNativeView<VxButton, Button>, IVxButton
+    public class VxUwpButton : VxUwpNativeView<VxButton, Button>, IVxButton
     {
         private Action _click;
 
-        public VxUwpButton(VxButton view) : base(view, new Button())
+        public VxUwpButton(VxButton view) : base(view)
         {
             NativeView.Click += NativeView_Click;
         }
