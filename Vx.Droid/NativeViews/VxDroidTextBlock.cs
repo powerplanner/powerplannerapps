@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.Widget;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using Vx.Views;
 
 namespace Vx.Droid.NativeViews
 {
-    public class VxDroidTextBlock : VxDroidNativeView<VxTextBlock, TextView>, IVxTextBlock
+    public class VxDroidTextBlock : VxDroidNativeView<VxTextBlock, AppCompatTextView>, IVxTextBlock
     {
         public string Text { set => NativeView.Text = value; }
     }
