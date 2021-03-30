@@ -11,6 +11,10 @@ namespace Vx.Views
         int GridRow { set; }
 
         int GridColumn { set; }
+
+        VxHorizontalAlignment HorizontalAlignment { set; }
+
+        VxVerticalAlignment VerticalAlignment { set; }
     }
 
     public class VxView : IVxView
@@ -49,6 +53,18 @@ namespace Vx.Views
             set => SetProperty(value);
         }
 
+        public VxHorizontalAlignment HorizontalAlignment
+        {
+            get => GetProperty<VxHorizontalAlignment>();
+            set => SetProperty(value);
+        }
+
+        public VxVerticalAlignment VerticalAlignment
+        {
+            get => GetProperty<VxVerticalAlignment>();
+            set => SetProperty(value);
+        }
+
         internal void SetAttachedProperty(string propertyName, object value)
         {
             AttachedProperties[propertyName] = value;
@@ -83,5 +99,33 @@ namespace Vx.Views
             view.GridColumn = value;
             return view;
         }
+
+        public static T HorizontalAlignment<T>(this T view, VxHorizontalAlignment value) where T : VxView
+        {
+            view.HorizontalAlignment = value;
+            return view;
+        }
+
+        public static T VerticalAlignment<T>(this T view, VxVerticalAlignment value) where T : VxView
+        {
+            view.VerticalAlignment = value;
+            return view;
+        }
+    }
+
+    public enum VxHorizontalAlignment
+    {
+        Left,
+        Center,
+        Right,
+        Stretch
+    }
+
+    public enum VxVerticalAlignment
+    {
+        Top,
+        Center,
+        Bottom,
+        Stretch
     }
 }

@@ -10,7 +10,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.NativeViews
 {
-    public class VxUwpNativeView<T, N> : VxNativeView<T, N> where T : VxView, IVxView
+    public class VxUwpNativeView<T, N> : VxNativeView<T, N>, IVxView
+        where T : VxView
+        where N : FrameworkElement
     {
         public VxUwpNativeView(T view) : base(view, Activator.CreateInstance<N>()) { }
 
@@ -38,8 +40,12 @@ namespace Vx.Uwp.NativeViews
             }, callerName);
         }
 
-        public int GridRow { set => Grid.SetRow(NativeView as FrameworkElement, value); }
+        public int GridRow { set => Grid.SetRow(NativeView, value); }
 
-        public int GridColumn { set => Grid.SetColumn(NativeView as FrameworkElement, value); }
+        public int GridColumn { set => Grid.SetColumn(NativeView, value); }
+
+        public VxHorizontalAlignment HorizontalAlignment { set => NativeView.HorizontalAlignment = (HorizontalAlignment)value; }
+
+        public VxVerticalAlignment VerticalAlignment { set => NativeView.VerticalAlignment = (VerticalAlignment)value; }
     }
 }
