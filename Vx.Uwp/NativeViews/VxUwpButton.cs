@@ -12,11 +12,6 @@ namespace Vx.Uwp.NativeViews
     {
         private Action _click;
 
-        public VxUwpButton(VxButton view) : base(view)
-        {
-            NativeView.Click += NativeView_Click;
-        }
-
         private void NativeView_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             _click?.Invoke();

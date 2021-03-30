@@ -12,10 +12,6 @@ namespace Vx.Uwp.NativeViews
 {
     public class VxUwpStackPanel : VxUwpNativeView<VxStackPanel, StackPanel>, IVxStackPanel
     {
-        public VxUwpStackPanel(VxStackPanel view) : base(view)
-        {
-        }
-
         public VxView[] Children { set => SetListOfViewsOnCollection(value, NativeView.Children); }
         public VxOrientation Orientation { set => NativeView.Orientation = (Orientation)value; }
     }

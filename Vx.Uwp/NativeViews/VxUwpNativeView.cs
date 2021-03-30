@@ -14,7 +14,10 @@ namespace Vx.Uwp.NativeViews
         where T : VxView
         where N : FrameworkElement
     {
-        public VxUwpNativeView(T view) : base(view, Activator.CreateInstance<N>()) { }
+        protected override object CreateNativeView()
+        {
+            return Activator.CreateInstance<N>();
+        }
 
         protected void SetListOfViewsOnCollection(VxView[] views, UIElementCollection collection, [CallerMemberName] string callerName = null)
         {

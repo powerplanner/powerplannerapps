@@ -11,8 +11,10 @@ namespace Vx.Uwp.NativeViews
 {
     public class VxNativeTextBox : VxUwpNativeView<VxTextBox, TextBox>, IVxTextBox
     {
-        public VxNativeTextBox(VxTextBox view) : base(view)
+        protected override void Initialize()
         {
+            base.Initialize();
+
             NativeView.TextChanged += NativeView_TextChanged;
         }
 

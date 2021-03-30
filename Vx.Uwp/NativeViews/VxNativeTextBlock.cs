@@ -10,12 +10,6 @@ namespace Vx.Uwp.NativeViews
 {
     public class VxNativeTextBlock : VxUwpNativeView<VxTextBlock, TextBlock>, IVxTextBlock
     {
-
-        public VxNativeTextBlock(VxTextBlock view) : base(view)
-        {
-
-        }
-
         public string Text { set => NativeView.Text = value; }
     }
 }

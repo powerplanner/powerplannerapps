@@ -10,8 +10,6 @@ namespace Vx.Uwp.NativeViews
 {
     public class VxUwpGrid : VxUwpNativeView<VxGrid, Grid>, IVxGrid
     {
-        public VxUwpGrid(VxGrid grid) : base(grid) { }
-
         public VxView[] Children { set => SetListOfViewsOnCollection(value, NativeView.Children); }
         public VxRowDefinition[] RowDefinitions
         {

@@ -8,7 +8,7 @@ using Vx.Views;
 
 namespace Vx
 {
-    public class VxNativeView
+    public abstract class VxNativeView
     {
         public static Dictionary<Type, Type> Mappings { get; private set; } = new Dictionary<Type, Type>();
 
@@ -16,10 +16,14 @@ namespace Vx
 
         public object NativeView { get; private set; }
 
-        public VxNativeView(VxView view, object nativeView)
+        protected abstract object CreateNativeView();
+
+        internal void SetInitialView(VxView view)
         {
             View = view;
-            NativeView = nativeView;
+            NativeView = CreateNativeView();
+
+            Initialize();
 
             foreach (var prop in view.Properties)
             {
@@ -31,7 +35,9 @@ namespace Vx
         {
             if (Mappings.TryGetValue(view.GetType(), out Type nativeType))
             {
-                return Activator.CreateInstance(nativeType, new object[] { view }) as VxNativeView;
+                VxNativeView nativeView = Activator.CreateInstance(nativeType) as VxNativeView;
+                nativeView.SetInitialView(view);
+                return nativeView;
             }
 
 #if DEBUG
@@ -39,6 +45,11 @@ namespace Vx
 #endif
 
             throw new NotImplementedException();
+        }
+
+        protected virtual void Initialize()
+        {
+            // Nothing
         }
 
         public void ApplyDifferentView(VxView view)
@@ -77,13 +88,11 @@ namespace Vx
         }
     }
 
-    public class VxNativeView<V, N> : VxNativeView where V : VxView
+    public abstract class VxNativeView<V, N> : VxNativeView where V : VxView
     {
         public new V View => base.View as V;
 
         public new N NativeView => (N)base.NativeView;
-
-        public VxNativeView(V view, N nativeView) : base(view, nativeView) { }
 
         private Dictionary<string, VxStateRegistration> _binded = new Dictionary<string, VxStateRegistration>();
 
