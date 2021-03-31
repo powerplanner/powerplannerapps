@@ -15,6 +15,11 @@ namespace Vx.Droid.NativeViews
 {
     public class VxDroidGrid : VxDroidNativeView<VxGrid, GridLayout>, IVxGrid
     {
+        protected override void Initialize()
+        {
+            base.Initialize();
+        }
+
         public VxView[] Children { set => SetListOfViewsOnViewGroup(value); }
 
         public VxRowDefinition[] RowDefinitions

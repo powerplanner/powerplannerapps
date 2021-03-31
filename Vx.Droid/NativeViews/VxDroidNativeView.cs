@@ -34,23 +34,20 @@ namespace Vx.Droid.NativeViews
         {
             base.BeforeApplyingProperties();
 
-            if (View is VxGrid grid && ParentView is VxGrid parentGrid)
+            if (View is VxGrid grid && ((ParentView is VxGrid && GetRowDefinition().Height.IsAuto) || (ParentView is VxStackPanel sp && sp.Orientation == VxOrientation.Vertical)))
             {
                 // Need to apply fixup for when a grid is contained in an auto-height parent... in those cases, change the Star hights to Auto heights
-                if (GetRowDefinition().Height.IsAuto)
+                if (grid.RowDefinitions == null || grid.RowDefinitions.Length == 0)
                 {
-                    if (grid.RowDefinitions == null || grid.RowDefinitions.Length == 0)
+                    grid.RowDefinitions = new VxRowDefinition[] { new VxRowDefinition(VxGridLength.Auto) };
+                }
+                else
+                {
+                    foreach (var def in grid.RowDefinitions)
                     {
-                        grid.RowDefinitions = new VxRowDefinition[] { new VxRowDefinition(VxGridLength.Auto) };
-                    }
-                    else
-                    {
-                        foreach (var def in grid.RowDefinitions)
+                        if (def.Height.IsStar)
                         {
-                            if (def.Height.IsStar)
-                            {
-                                def.Height = VxGridLength.Auto;
-                            }
+                            def.Height = VxGridLength.Auto;
                         }
                     }
                 }
@@ -132,6 +129,11 @@ namespace Vx.Droid.NativeViews
 
         private int GetGridWidth()
         {
+            if (!HasMultipleColumns())
+            {
+                return GridLayout.LayoutParams.MatchParent;
+            }
+
             var col = GetColumnDefinition();
             if (col.Width.IsAuto)
             {
@@ -145,6 +147,28 @@ namespace Vx.Droid.NativeViews
 
             // For stretch, width needs to be set to 0dp so that the weight gets applied
             return 0;
+        }
+
+        private bool HasMultipleColumns()
+        {
+            var cols = (ParentView as VxGrid).ColumnDefinitions;
+            if (cols == null || cols.Length <= 1)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool HasMultipleRows()
+        {
+            var rows = (ParentView as VxGrid).RowDefinitions;
+            if (rows == null || rows.Length <= 1)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private VxRowDefinition GetRowDefinition()
@@ -177,6 +201,11 @@ namespace Vx.Droid.NativeViews
 
         private GridLayout.Spec GetColumnSpec()
         {
+            if (!HasMultipleColumns())
+            {
+                return GridLayout.InvokeSpec(0);
+            }
+
             var col = GetColumnDefinition();
             if (col.Width.IsAuto)
             {
@@ -195,10 +224,7 @@ namespace Vx.Droid.NativeViews
         {
             if (NativeView.LayoutParameters is ViewGroup.MarginLayoutParams marginParams)
             {
-                marginParams.LeftMargin = AsPx(View.Margin.Left);
-                marginParams.TopMargin = AsPx(View.Margin.Top);
-                marginParams.RightMargin = AsPx(View.Margin.Right);
-                marginParams.BottomMargin = AsPx(View.Margin.Bottom);
+                marginParams.SetMargins(AsPx(View.Margin.Left), AsPx(View.Margin.Top), AsPx(View.Margin.Right), AsPx(View.Margin.Bottom));
             }
         }
 

@@ -64,7 +64,7 @@ namespace VxSampleApp.Droid
                         .Children(
                             new VxButton("Log in")
                                 .HorizontalAlignment(VxHorizontalAlignment.Stretch)
-                                .Margin(12), // The margins make it go wacky for some reason
+                                .Margin(12),
                             new VxButton("Create account")
                                 .HorizontalAlignment(VxHorizontalAlignment.Stretch)
                                 .GridColumn(1)
