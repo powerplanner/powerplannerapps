@@ -38,14 +38,10 @@ namespace VxSampleApp.Droid
     {
         protected override VxView Render()
         {
-            return new VxGrid()
-                .RowDefinitions(
-                    new VxRowDefinition(VxGridLength.Star(1)),
-                    new VxRowDefinition(VxGridLength.Auto)
-                )
+            return new VxLinearLayout()
                 .Children(
                     new VxStackPanel()
-                        .GridRow(0)
+                        .LinearLayoutWeight(1)
                         .VerticalAlignment(VxVerticalAlignment.Center)
                         .Children(
                             new VxTextBlock("Power Planner")
@@ -55,19 +51,17 @@ namespace VxSampleApp.Droid
                                 .HorizontalAlignment(VxHorizontalAlignment.Center)
                         ),
 
-                    new VxGrid()
+                    new VxLinearLayout()
+                        .Orientation(VxOrientation.Horizontal)
                         .GridRow(1)
-                        .ColumnDefinitions(
-                            new VxColumnDefinition(VxGridLength.Star(1)),
-                            new VxColumnDefinition(VxGridLength.Star(1))
-                        )
                         .Children(
                             new VxButton("Log in")
+                                .LinearLayoutWeight(1)
                                 .HorizontalAlignment(VxHorizontalAlignment.Stretch)
                                 .Margin(12),
                             new VxButton("Create account")
+                                .LinearLayoutWeight(1)
                                 .HorizontalAlignment(VxHorizontalAlignment.Stretch)
-                                .GridColumn(1)
                                 .Margin(12)
                         )
                 );

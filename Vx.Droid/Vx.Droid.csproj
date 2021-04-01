@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="NativeViews\VxDroidButton.cs" />
     <Compile Include="NativeViews\VxDroidGrid.cs" />
+    <Compile Include="NativeViews\VxDroidLinearLayout.cs" />
     <Compile Include="NativeViews\VxDroidNativeView.cs" />
     <Compile Include="NativeViews\VxDroidStackPanel.cs" />
     <Compile Include="NativeViews\VxDroidTextBlock.cs" />

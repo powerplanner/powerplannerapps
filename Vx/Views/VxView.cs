@@ -17,6 +17,8 @@ namespace Vx.Views
         VxVerticalAlignment VerticalAlignment { set; }
 
         VxThickness Margin { set; }
+
+        float LinearLayoutWeight { set; }
     }
 
     public class VxView : IVxView
@@ -61,6 +63,12 @@ namespace Vx.Views
         public int GridColumn
         {
             get => GetProperty<int>();
+            set => SetProperty(value);
+        }
+
+        public float LinearLayoutWeight
+        {
+            get => GetProperty<float>();
             set => SetProperty(value);
         }
 
@@ -114,6 +122,12 @@ namespace Vx.Views
         public static T GridColumn<T>(this T view, int value) where T : VxView
         {
             view.GridColumn = value;
+            return view;
+        }
+
+        public static T LinearLayoutWeight<T>(this T view, float value) where T : VxView
+        {
+            view.LinearLayoutWeight = value;
             return view;
         }
 

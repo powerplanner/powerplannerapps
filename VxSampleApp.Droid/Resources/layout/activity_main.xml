@@ -4,21 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <GridLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:text="Stretched section"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button"/>
+    </LinearLayout>
+    <!--<GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="1"
         android:rowCount="2">
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_rowWeight="1"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cool"/>
-        </LinearLayout>
+            android:gravity="center_vertical"
+            android:text="Text"/>
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,5 +54,5 @@
                 android:text="Button 2"
                 android:layout_margin="6dp"/>
         </GridLayout>
-    </GridLayout>
+    </GridLayout>-->
 </RelativeLayout>

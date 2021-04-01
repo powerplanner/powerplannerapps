@@ -23,6 +23,7 @@ namespace Vx.Droid.NativeViews
         public VxHorizontalAlignment HorizontalAlignment { set => MarkLayoutParamsNeedsUpdating(); }
         public VxVerticalAlignment VerticalAlignment { set => MarkLayoutParamsNeedsUpdating(); }
         public VxThickness Margin { set => MarkLayoutParamsNeedsUpdating(); }
+        public float LinearLayoutWeight { set => MarkLayoutParamsNeedsUpdating(); }
 
         protected override object CreateNativeView()
         {
@@ -77,6 +78,15 @@ namespace Vx.Droid.NativeViews
                         Height = GetGridHeight(),
                         RowSpec = GetRowSpec(),
                         ColumnSpec = GetColumnSpec()
+                    };
+                }
+
+                else if (ParentView is VxLinearLayout)
+                {
+                    NativeView.LayoutParameters = new LinearLayout.LayoutParams(GetLinearLayoutParamsWidth(), GetLinearLayoutParamsHeight())
+                    {
+                        Gravity = GetLayoutGravity(),
+                        Weight = View.LinearLayoutWeight
                     };
                 }
 
@@ -228,6 +238,26 @@ namespace Vx.Droid.NativeViews
             }
         }
 
+        private int GetLinearLayoutParamsWidth()
+        {
+            if ((ParentView as VxLinearLayout).Orientation == VxOrientation.Horizontal && View.LinearLayoutWeight != 0)
+            {
+                return 0;
+            }
+
+            return GetLayoutParamsWidth();
+        }
+
+        private int GetLinearLayoutParamsHeight()
+        {
+            if ((ParentView as VxLinearLayout).Orientation == VxOrientation.Vertical && View.LinearLayoutWeight != 0)
+            {
+                return 0;
+            }
+
+            return GetLayoutParamsHeight();
+        }
+
         private int GetLayoutParamsWidth()
         {
             if (View.HorizontalAlignment == VxHorizontalAlignment.Stretch)
@@ -268,6 +298,21 @@ namespace Vx.Droid.NativeViews
 
                 case VxHorizontalAlignment.Right:
                     flags = flags | GravityFlags.End;
+                    break;
+            }
+
+            switch (View.VerticalAlignment)
+            {
+                case VxVerticalAlignment.Top:
+                    flags = flags | GravityFlags.Top;
+                    break;
+
+                case VxVerticalAlignment.Center:
+                    flags = flags | GravityFlags.Center;
+                    break;
+
+                case VxVerticalAlignment.Bottom:
+                    flags = flags | GravityFlags.Bottom;
                     break;
             }
 
