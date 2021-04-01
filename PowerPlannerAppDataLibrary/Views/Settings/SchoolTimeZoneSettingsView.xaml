@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PowerPlannerAppDataLibrary.Views.Settings.SchoolTimeZoneSettingsView">
+    <ContentView.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="School's time zone" />
+                <Label Text="If you're traveling and need to see times relative to your current time zone, you can specify your school's time zone. You should set the below time zone to the time zone of where you attend school, regardless of what your current time zone is."/>
+
+                <Picker
+                    Title="Time zone"
+                    ItemsSource="{Binding AvailableTimeZones}"
+                    SelectedItem="{Binding SelectedSchoolTimeZone, Mode=TwoWay}"
+                    IsEnabled="{Binding IsEnabled}">
+                </Picker>
+
+                <Button
+                    x:Name="ButtonSave"
+                    Text="Save changes"
+                    IsEnabled="{Binding IsEnabled}"
+                    Clicked="ButtonSave_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentView.Content>
+</ContentView>

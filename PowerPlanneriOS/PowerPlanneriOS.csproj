@@ -233,16 +233,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\applibraries\InterfacesiOS\InterfacesiOS\InterfacesiOS.csproj">
-      <Project>{10919459-e353-4f0f-86cd-5e92ca2e6745}</Project>
-      <Name>InterfacesiOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
-    <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
-      <Name>BareMvvm.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
@@ -619,6 +609,9 @@
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>5.0.0.2012</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

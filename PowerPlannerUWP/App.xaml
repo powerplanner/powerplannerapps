@@ -1,4 +1,4 @@
-﻿<interfacesApp:NativeUwpApplication
+﻿<Application
     xmlns:interfacesApp="using:InterfacesUWP.App"
     x:Class="PowerPlannerUWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -888,4 +888,4 @@
     
     
 
-</interfacesApp:NativeUwpApplication>
+</Application>

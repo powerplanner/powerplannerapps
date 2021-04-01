@@ -566,7 +566,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\applibraries\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj">
+    <ProjectReference Include="C:\Users\andre\Documents\GitHub\pp\powerplannerapps\\applibraries\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj">
       <Project>{ce015236-0e8d-4042-b596-6e20bd26e56e}</Project>
       <Name>InterfacesDroid</Name>
     </ProjectReference>
@@ -1249,6 +1249,9 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Messaging">
       <Version>121.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>5.0.0.2012</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Android.Material">
       <Version>1.2.1.1</Version>

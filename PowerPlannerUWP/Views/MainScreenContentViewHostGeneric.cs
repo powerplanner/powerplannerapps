@@ -30,7 +30,7 @@ namespace PowerPlannerUWP.Views
 
         private void UpdateCommandBar()
         {
-            _mainScreenView = (ViewModel.FindAncestor<MainScreenViewModel>().GetNativeView() as MainScreenView);
+            _mainScreenView = (ViewModel.FindAncestor<MainScreenViewModel>().GetOriginalNativeView() as MainScreenView);
             
             if (_isCommandBarHidden)
             {

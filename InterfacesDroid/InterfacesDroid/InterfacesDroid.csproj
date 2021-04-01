@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CE015236-0E8D-4042-B596-6E20BD26E56E}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InterfacesDroid</RootNamespace>
+    <AssemblyName>InterfacesDroid</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28Android%29|AnyCPU'">
+    <OutputPath>bin\Release %28Android%29\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28Android%29|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug %28Android%29\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Java.Interop" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\BareActivity.cs" />
+    <Compile Include="Adapters\ObservableAdapter.cs" />
+    <Compile Include="App\AndroidDispatcher.cs" />
+    <Compile Include="App\NativeDroidApplication.cs" />
+    <Compile Include="Bindings\BindingExpression.cs" />
+    <Compile Include="Bindings\BindingInterceptor.cs" />
+    <Compile Include="Bindings\BindingMode.cs" />
+    <Compile Include="Bindings\IValueConverter.cs" />
+    <Compile Include="Bindings\Programmatic\Binding.cs" />
+    <Compile Include="Bindings\Utilities\DelegateUtility.cs" />
+    <Compile Include="Bindings\Utilities\TypeUtility.cs" />
+    <Compile Include="Bindings\ViewBinding\IViewBinder.cs" />
+    <Compile Include="Bindings\ViewBinding\ViewBinderRegistry.cs" />
+    <Compile Include="Bindings\ViewBinding\ViewEventBinder.cs" />
+    <Compile Include="Bindings\ViewBinding\ViewValueChangedHandler.cs" />
+    <Compile Include="Bindings\BindingApplicator.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ColorArrayToColorConverter.cs" />
+    <Compile Include="Converters\ColorArrayToColorStateListConverter.cs" />
+    <Compile Include="Converters\ColorArrayToDrawableConverter.cs" />
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\DayOfWeekToStringConverter.cs" />
+    <Compile Include="Converters\DoubleToStringConverter.cs" />
+    <Compile Include="Converters\EnumToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
+    <Compile Include="Converters\TimeSpanToStringConverter.cs" />
+    <Compile Include="DataTemplates\CustomDataTemplate.cs" />
+    <Compile Include="DataTemplates\IDataTemplate.cs" />
+    <Compile Include="DataTemplates\ResourceDataTemplate.cs" />
+    <Compile Include="DataTemplates\ViewDataTemplate.cs" />
+    <Compile Include="Decorations\DividerItemDecoration.cs" />
+    <Compile Include="Dialogs\CustomColorPickerDialog.cs" />
+    <Compile Include="Helpers\AutofillHelper.cs" />
+    <Compile Include="Helpers\TextViewHelper.cs" />
+    <Compile Include="Views\BareEditDecimalNumber.cs" />
+    <Compile Include="Views\BareMaterialEditDecimalNumber.cs" />
+    <Compile Include="Views\CustomColorPickerView.cs" />
+    <Compile Include="Views\GridViewLayout.cs" />
+    <Compile Include="Views\IGetSnackbarAnchorView.cs" />
+    <Compile Include="Views\InlineDatePicker.cs" />
+    <Compile Include="Views\MyZoomAndPanView.cs" />
+    <Compile Include="Views\ViewGroupExtensionMethods.cs" />
+    <Compile Include="Extensions\AndroidMessageDialog.cs" />
+    <Compile Include="Helpers\ColorTools.cs" />
+    <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Helpers\KeyboardHelper.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Themes\ThemeHelper.cs" />
+    <Compile Include="ViewModelPresenters\GenericViewModelPresenter.cs" />
+    <Compile Include="ViewModelPresenters\PagedViewModelPresenter.cs" />
+    <Compile Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.cs" />
+    <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
+    <Compile Include="Views\AdapterLinearLayout.cs" />
+    <Compile Include="Views\GenericRecyclerViewHolder.cs" />
+    <Compile Include="Views\InflatedView.cs" />
+    <Compile Include="Views\InflatedViewWithBinding.cs" />
+    <Compile Include="Views\ItemsControlWrapper.cs" />
+    <Compile Include="Adapters\ObservableRecyclerViewAdapter.cs" />
+    <Compile Include="Views\MyCalendarMonthView.cs" />
+    <Compile Include="Views\MyCalendarView.cs" />
+    <Compile Include="Views\MyColorPicker.cs" />
+    <Compile Include="Views\MyTextView.cs" />
+    <Compile Include="Views\ViewHost.cs" />
+    <Compile Include="Views\ViewHostGeneric.cs" />
+    <Compile Include="Windows\NativeDroidAppWindow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\AboutResources.txt" />
+    <AndroidResource Include="Resources\layout\CustomColorPickerView.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\CustomColorPickerChannelView.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\PortableLibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
+      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
+      <Name>BareMvvm.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="$(SolutionDir)\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
+      <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
+      <Name>ToolsPortable</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\BindingAttributes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Android.ViewPump">
+      <Version>2.0.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>5.0.0.2012</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Google.Android.Material">
+      <Version>1.2.1.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bindings\Adapters\" />
+    <Folder Include="Bindings\ValueConverters\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

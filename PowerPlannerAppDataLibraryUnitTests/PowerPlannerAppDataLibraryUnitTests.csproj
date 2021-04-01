@@ -61,10 +61,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}</Project>
-      <Name>BareMvvm.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
       <Project>{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}</Project>
       <Name>ToolsPortable</Name>

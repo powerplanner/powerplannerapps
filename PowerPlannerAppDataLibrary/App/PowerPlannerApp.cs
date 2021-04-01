@@ -1,5 +1,6 @@
 ﻿using BareMvvm.Core.App;
 using BareMvvm.Core.ViewModels;
+using BareMvvm.Forms.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
@@ -8,6 +9,8 @@ using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using PowerPlannerAppDataLibrary.Views.Settings;
 using PowerPlannerAppDataLibrary.Windows;
 using PowerPlannerSending;
 using System;
@@ -18,8 +21,13 @@ using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.App
 {
-    public class PowerPlannerApp : PortableApp
+    public class PowerPlannerApp : FormsApp
     {
+        public override Type GetAppShellType()
+        {
+            return typeof(AppShell);
+        }
+
         /// <summary>
         /// iOS sets this to true, it only has a Calendar tab entry that also has days.
         /// </summary>
@@ -505,6 +513,14 @@ namespace PowerPlannerAppDataLibrary.App
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+        }
+
+        public override Dictionary<Type, Type> GetViewModelToViewMappings()
+        {
+            return new Dictionary<Type, Type>()
+            {
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
+            };
         }
     }
 }

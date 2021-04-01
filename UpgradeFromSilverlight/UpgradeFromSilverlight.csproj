@@ -155,6 +155,10 @@
       <Project>{d5f159b7-addd-4c88-9f45-8a12e37f8052}</Project>
       <Name>PowerPlannerAppDataLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
+      <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
+      <Name>ToolsUniversal</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">

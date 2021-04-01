@@ -59,13 +59,19 @@ using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
 using PowerPlannerUWP.BackgroundTasks;
+using ToolsPortable;
+using InterfacesUWP.Extensions;
+using System.Globalization;
+using BareMvvm.Core.App;
+using BareMvvm.Forms.ViewModelPresenters;
+using Xamarin.Forms.Platform.UWP;
 
 namespace PowerPlannerUWP
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : NativeUwpApplication
+    sealed partial class App : Application
     {
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -83,15 +89,22 @@ namespace PowerPlannerUWP
             this.Suspending += OnSuspending;
             this.Resuming += OnResuming;
 
+            // Register message dialog
+            //PortableMessageDialog.Extension = UwpMessageDialog.ShowAsync;
+
+            PortableLocalizedResources.CultureExtension = GetCultureInfo;
+
             var dontWait = ConfigureJumpList();
+
+            PortableApp.InitializeAsync(new PowerPlannerUwpApp());
         }
 
-        public override Type GetPortableAppType()
+        private CultureInfo GetCultureInfo()
         {
-            return typeof(PowerPlannerUwpApp);
+            return CultureInfo.CurrentCulture;
         }
 
-        public override Dictionary<Type, Type> GetViewModelToViewMappings()
+        public Dictionary<Type, Type> GetViewModelToViewMappings()
         {
             return new Dictionary<Type, Type>()
             {
@@ -170,7 +183,7 @@ namespace PowerPlannerUWP
                 { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
+                //{ typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
                 { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }
@@ -184,8 +197,18 @@ namespace PowerPlannerUWP
             TelemetryExtension.Current?.TrackException(e.Exception);
         }
 
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        {
+            _ = OnLaunchedOrActivated(args);
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            _ = OnLaunchedOrActivated(args);
+        }
+
         private bool _registeredBackgroundTasks = false;
-        protected override async System.Threading.Tasks.Task OnLaunchedOrActivated(IActivatedEventArgs e)
+        protected async System.Threading.Tasks.Task OnLaunchedOrActivated(IActivatedEventArgs e)
         {
             try
             {
@@ -236,6 +259,21 @@ namespace PowerPlannerUWP
                 mainAppWindow = PowerPlannerApp.Current.Windows.OfType<MainAppWindow>().FirstOrDefault();
                 if (mainAppWindow == null)
                 {
+                    // Register the view model to view mappings
+                    foreach (var mapping in GetViewModelToViewMappings())
+                    {
+                        ViewModelToViewConverter.AddMapping(mapping.Key, mapping.Value);
+                    }
+
+                    ViewModelToViewConverter.NativeViewWrapper = (nativeUwpView) =>
+                    {
+                        var uiElement = nativeUwpView as FrameworkElement;
+
+                        return uiElement.ToView();
+                    };
+
+                    Xamarin.Forms.Forms.Init(e);
+
                     // This configures the view models, does NOT call Activate yet
                     var nativeWindow = new NativeUwpAppWindow();
                     mainAppWindow = new MainAppWindow();
