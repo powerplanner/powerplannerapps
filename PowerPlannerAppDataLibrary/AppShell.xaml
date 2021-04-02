@@ -7,7 +7,15 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="Primary">#2E366D</Color>
+            <Color x:Key="SidebarBackgroundColor">#F4F4F4</Color>
+            <SolidColorBrush Color="{StaticResource SidebarBackgroundColor}" x:Key="SidebarBackground"/>
+            <Color x:Key="PowerPlannerBlueColor">#2E366D</Color>
+            <SolidColorBrush Color="{StaticResource PowerPlannerBlueColor}" x:Key="PowerPlannerBlue"/>
+            <SolidColorBrush x:Key="PowerPlannerSecondaryBlue" Color="#546BC7"/>
+            <SolidColorBrush x:Key="PowerPlannerBlueSelected" Color="#546BC7"/>
+            <SolidColorBrush x:Key="PowerPlannerBlueHover" Color="#4B60B3"/>
+            <SolidColorBrush x:Key="PowerPlannerDarkerBlue">#1F2656</SolidColorBrush>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"></Setter>
                 <Setter Property="VisualStateManager.VisualStateGroups">

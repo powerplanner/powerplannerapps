@@ -10,6 +10,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using PowerPlannerAppDataLibrary.Views;
 using PowerPlannerAppDataLibrary.Views.Settings;
 using PowerPlannerAppDataLibrary.Windows;
 using PowerPlannerSending;
@@ -519,6 +520,7 @@ namespace PowerPlannerAppDataLibrary.App
         {
             return new Dictionary<Type, Type>()
             {
+                { typeof(MainScreenViewModel), typeof(MainScreenView) },
                 { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
             };
         }
