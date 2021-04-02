@@ -31,6 +31,7 @@
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1" />
     <PackageReference Include="TimeZoneConverter" Version="3.3.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.1.0" />
     <PackageReference Include="XliffCompiler" Version="1.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -50,9 +51,6 @@
   <ItemGroup>
     <EmbeddedResource Update="AppShell.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Settings\SchoolTimeZoneSettingsView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
 </Project>
