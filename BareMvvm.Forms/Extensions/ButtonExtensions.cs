@@ -17,4 +17,16 @@ namespace BareMvvm.Forms.Extensions
             return button;
         }
     }
+    public static class ImageButtonExtensions
+    {
+        public static T Click<T>(this T button, Action value) where T : ImageButton
+        {
+            button.Clicked += delegate
+            {
+                value();
+            };
+
+            return button;
+        }
+    }
 }

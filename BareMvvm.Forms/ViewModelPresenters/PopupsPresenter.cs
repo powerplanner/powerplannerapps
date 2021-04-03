@@ -2,15 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Text;
 using ToolsPortable;
+using Xamarin.CommunityToolkit.Markup;
 using Xamarin.Forms;
 
 namespace BareMvvm.Forms.ViewModelPresenters
 {
     public class PopupsPresenter : Grid
     {
-        private PagedViewModelPresenter _popupsPresenter;
+        private ContentView _popupsPresenter;
 
         public PopupsPresenter()
         {
@@ -28,9 +30,11 @@ namespace BareMvvm.Forms.ViewModelPresenters
                 }
             };
 
-            _popupsPresenter = new PagedViewModelPresenter();
-
             Children.Add(backdrop);
+
+            // TODO: Should create an ItemsControl and have this keep the previously created views just like UWP does so when closing one popup we don't have to re-create the prev view
+            _popupsPresenter = new ContentView();
+
             Children.Add(_popupsPresenter);
         }
 
@@ -86,6 +90,10 @@ namespace BareMvvm.Forms.ViewModelPresenters
             else
             {
                 base.IsVisible = true;
+                _popupsPresenter.Content = new GenericViewModelPresenter()
+                {
+                    ViewModel = ViewModel.Popups.Last()
+                };
             }
         }
 

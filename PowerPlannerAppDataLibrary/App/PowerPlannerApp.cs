@@ -9,6 +9,7 @@ using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary.Views;
 using PowerPlannerAppDataLibrary.Views.Settings;
@@ -521,6 +522,7 @@ namespace PowerPlannerAppDataLibrary.App
             return new Dictionary<Type, Type>()
             {
                 { typeof(MainScreenViewModel), typeof(MainScreenView) },
+                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) }, // Note that UWP is currently overriding this one
                 { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
             };
         }
