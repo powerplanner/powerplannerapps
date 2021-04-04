@@ -252,6 +252,12 @@ namespace Vx.Views
             {
                 VxInputViewExtensions.SetBindText(oldEntry, VxInputViewExtensions.GetBindText(newEntry));
             }
+
+            // Transfer attached properties
+            Grid.SetRow(oldView, Grid.GetRow(newView));
+            Grid.SetColumn(oldView, Grid.GetColumn(newView));
+            Grid.SetRowSpan(oldView, Grid.GetRowSpan(newView));
+            Grid.SetColumnSpan(oldView, Grid.GetColumnSpan(newView));
         }
 
         private static void ReconcileList(IList<View> oldList, IList<View> newList)

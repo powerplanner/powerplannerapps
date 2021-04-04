@@ -79,9 +79,16 @@ namespace VxSampleApp
 
         protected override View Render()
         {
+            bool swap = Title.Length % 2 == 1;
+
             return new Grid
             {
                 BackgroundColor = Color.DarkBlue,
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition { Width = GridLength.Star },
+                    new ColumnDefinition { Width = GridLength.Auto }
+                },
                 Children =
                 {
                     new Label
@@ -89,7 +96,11 @@ namespace VxSampleApp
                         TextColor = Color.White,
                         Margin = new Thickness(12),
                         Text = Title
-                    }
+                    }.Column(swap ? 1 : 0),
+                    new Button
+                    {
+                        Text = "Close"
+                    }.Column(swap ? 0 : 1)
                 }
             };
         }
