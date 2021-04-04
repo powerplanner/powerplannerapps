@@ -14,6 +14,7 @@ namespace VxSampleApp
         private VxState<string> _username = new VxState<string>("");
         private Entry _entry;
         private Label _label;
+        private PopupTitleBar _titleBar = new PopupTitleBar();
 
         public MainPage()
         {
@@ -37,10 +38,28 @@ namespace VxSampleApp
             //    }
             //};
 
-            Content = new LoginComponent()
+            //Content = new LoginComponent()
+            //{
+            //    Margin = new Thickness(24)
+            //};
+
+            _titleBar = new PopupTitleBar()
             {
-                Margin = new Thickness(24)
+                Title = "Window A"
             };
+
+            Content = _titleBar;
+
+            Updater();
+        }
+
+        private async void Updater()
+        {
+            while (true)
+            {
+                await Task.Delay(1000);
+                _titleBar.Title += "A";
+            }
         }
 
         //private void _username_ValueChanged(object sender, EventArgs e)
@@ -48,6 +67,32 @@ namespace VxSampleApp
         //    _label.Text = _username.Value;
         //    _entry.BindText(_username);
         //}
+    }
+
+    public class PopupTitleBar : VxComponentForms
+    {
+        public string Title
+        {
+            get => GetProperty<string>();
+            set => SetProperty(value);
+        }
+
+        protected override View Render()
+        {
+            return new Grid
+            {
+                BackgroundColor = Color.DarkBlue,
+                Children =
+                {
+                    new Label
+                    {
+                        TextColor = Color.White,
+                        Margin = new Thickness(12),
+                        Text = Title
+                    }
+                }
+            };
+        }
     }
 
     public class LoginComponent : VxComponentForms

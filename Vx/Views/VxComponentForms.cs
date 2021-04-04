@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -14,6 +15,30 @@ namespace Vx.Views
         public VxComponentForms()
         {
             SubscribeToStates();
+        }
+
+        private Dictionary<string, object> _properties = new Dictionary<string, object>();
+
+        public T GetProperty<T>(T defaultValue = default(T), [CallerMemberName]string propertyName = null)
+        {
+            if (_properties.TryGetValue(propertyName, out object val))
+            {
+                return (T)val;
+            }
+
+            return defaultValue;
+        }
+
+        public void SetProperty<T>(T value, [CallerMemberName]string propertyName = null)
+        {
+            if (_properties.TryGetValue(propertyName, out object existingVal) && object.Equals(existingVal, value))
+            {
+                return;
+            }
+
+            _properties[propertyName] = value;
+
+            MarkDirty();
         }
 
         protected override void OnParentSet()
