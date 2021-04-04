@@ -220,16 +220,21 @@ namespace Vx.Views
 
                         var newVal = prop.GetValue(newView);
 
+                        // If a View property
                         if (_viewType.IsAssignableFrom(propType))
                         {
-                            var oldVal = prop.GetValue(oldView);
-                            if (oldVal == null || oldVal.GetType() != newVal.GetType())
+                            // If the view is a VxComponent, we want to apply its properties like margin or background color, but NOT reconcile its content... since that'll be updated by the VxComponent itself
+                            if (!(newView is VxComponentForms))
                             {
-                                prop.SetValue(oldView, newVal);
-                            }
-                            else
-                            {
-                                ReconcileViewOfSameType(oldVal as View, newVal as View);
+                                var oldVal = prop.GetValue(oldView);
+                                if (oldVal == null || oldVal.GetType() != newVal.GetType())
+                                {
+                                    prop.SetValue(oldView, newVal);
+                                }
+                                else
+                                {
+                                    ReconcileViewOfSameType(oldVal as View, newVal as View);
+                                }
                             }
                         }
                         else

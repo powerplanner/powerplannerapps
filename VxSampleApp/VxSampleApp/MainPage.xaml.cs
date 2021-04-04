@@ -14,7 +14,7 @@ namespace VxSampleApp
         private VxState<string> _username = new VxState<string>("");
         private Entry _entry;
         private Label _label;
-        private PopupTitleBar _titleBar = new PopupTitleBar();
+        private PopupWindow _popupWindow = new PopupWindow();
 
         public MainPage()
         {
@@ -43,12 +43,9 @@ namespace VxSampleApp
             //    Margin = new Thickness(24)
             //};
 
-            _titleBar = new PopupTitleBar()
-            {
-                Title = "Window A"
-            };
+            _popupWindow.TitleBar.Title = "Window A";
 
-            Content = _titleBar;
+            Content = _popupWindow;
 
             Updater();
         }
@@ -58,7 +55,7 @@ namespace VxSampleApp
             while (true)
             {
                 await Task.Delay(1000);
-                _titleBar.Title += "A";
+                _popupWindow.TitleBar.Title += "A";
             }
         }
 
@@ -67,6 +64,46 @@ namespace VxSampleApp
         //    _label.Text = _username.Value;
         //    _entry.BindText(_username);
         //}
+    }
+
+    public class PopupWindow : VxComponentForms
+    {
+        public PopupTitleBar TitleBar { get; private set; } = new PopupTitleBar();
+        private VxState<string> _contentText = new VxState<string>("Content");
+
+        protected override View Render()
+        {
+            return new StackLayout()
+            {
+                //RowDefinitions =
+                //{
+                //    new RowDefinition { Height = GridLength.Auto },
+                //    new RowDefinition { Height = GridLength.Star }
+                //},
+                Children =
+                {
+                    TitleBar,
+                    new Label
+                    {
+                        Text = _contentText.Value
+                    }.Row(1)
+                }
+            };
+        }
+
+        public PopupWindow()
+        {
+            Updater();
+        }
+
+        private async void Updater()
+        {
+            while (true)
+            {
+                await Task.Delay(1000);
+                _contentText.Value += ".";
+            }
+        }
     }
 
     public class PopupTitleBar : VxComponentForms
