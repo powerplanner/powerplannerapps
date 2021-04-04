@@ -14,7 +14,10 @@ namespace VxSampleApp
         private VxState<string> _username = new VxState<string>("");
         private Entry _entry;
         private Label _label;
-        private PopupWindow _popupWindow = new PopupWindow();
+        private PopupWindow _popupWindow = new PopupWindow()
+        {
+            Title = "Window A"
+        };
 
         public MainPage()
         {
@@ -43,7 +46,7 @@ namespace VxSampleApp
             //    Margin = new Thickness(24)
             //};
 
-            _popupWindow.TitleBar.Title = "Window A";
+            //_popupWindow.TitleBar.Title = "Window A";
 
             Content = _popupWindow;
 
@@ -55,7 +58,7 @@ namespace VxSampleApp
             while (true)
             {
                 await Task.Delay(1000);
-                _popupWindow.TitleBar.Title += "A";
+                _popupWindow.Title += "A";
             }
         }
 
@@ -68,21 +71,31 @@ namespace VxSampleApp
 
     public class PopupWindow : VxComponentForms
     {
-        public PopupTitleBar TitleBar { get; private set; } = new PopupTitleBar();
+        //public PopupTitleBar TitleBar { get; private set; } = new PopupTitleBar();
         private VxState<string> _contentText = new VxState<string>("Content");
+
+        public string Title
+        {
+            get => GetProperty("");
+            set => SetProperty(value);
+        }
 
         protected override View Render()
         {
-            return new StackLayout()
+            return new Grid()
             {
-                //RowDefinitions =
-                //{
-                //    new RowDefinition { Height = GridLength.Auto },
-                //    new RowDefinition { Height = GridLength.Star }
-                //},
+                RowDefinitions =
+                {
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Star }
+                },
                 Children =
                 {
-                    TitleBar,
+                    // The problem is when we set this title bar, since it's an existing view reference it removes the existing view from the existing displayed view, since views can only have one parent... We have to return new references...
+                    new PopupTitleBar
+                    {
+                        Title = Title
+                    },
                     new Label
                     {
                         Text = _contentText.Value
