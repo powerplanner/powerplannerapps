@@ -69,7 +69,7 @@ namespace VxSampleApp
         //}
     }
 
-    public class PopupWindow : VxComponentForms
+    public class PopupWindow : VxComponent
     {
         //public PopupTitleBar TitleBar { get; private set; } = new PopupTitleBar();
         private VxState<string> _contentText = new VxState<string>("Content");
@@ -119,7 +119,7 @@ namespace VxSampleApp
         }
     }
 
-    public class PopupTitleBar : VxComponentForms
+    public class PopupTitleBar : VxComponent
     {
         public string Title
         {
@@ -156,7 +156,7 @@ namespace VxSampleApp
         }
     }
 
-    public class LoginComponent : VxComponentForms
+    public class LoginComponent : VxComponent
     {
         private VxState<string> _username = new VxState<string>("");
         private VxState<string> _password = new VxState<string>("");
@@ -211,7 +211,7 @@ namespace VxSampleApp
         }
     }
 
-    public class WelcomeComponent : VxComponentForms
+    public class WelcomeComponent : VxComponent
     {
         private VxState<string> _username = new VxState<string>("");
         private VxState<bool> _darkBlue = new VxState<bool>(true);
@@ -254,14 +254,14 @@ namespace VxSampleApp
                 BackgroundColor = _darkBlue.Value ? Color.DarkBlue : Color.Blue,
                 Content = new Label
                 {
-                    Text = "Milliseconds: " + VxComponentForms.LastMillisecondsToRender + ", Username: " + _username.Value + ", DarkBlue: " + _darkBlue.Value,
+                    Text = "Milliseconds: " + VxComponent.LastMillisecondsToRender + ", Username: " + _username.Value + ", DarkBlue: " + _darkBlue.Value,
                     TextColor = Color.White
                 }
             };
 
             return new Label
             {
-                Text = "Milliseconds: " + VxComponentForms.LastMillisecondsToRender
+                Text = "Milliseconds: " + VxComponent.LastMillisecondsToRender
             };
         }
 
