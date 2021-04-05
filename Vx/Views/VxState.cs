@@ -10,7 +10,7 @@ namespace Vx.Views
 
         public VxState(object value)
         {
-            Value = value;
+            _value = value;
         }
 
         private object _value;
@@ -30,7 +30,7 @@ namespace Vx.Views
 
     public class VxState<T> : VxState
     {
-        public VxState(T value) : base(value)
+        public VxState(T value = default(T)) : base(value)
         {
 
         }

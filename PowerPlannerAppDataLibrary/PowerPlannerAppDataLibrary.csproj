@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BareMvvm.Forms\BareMvvm.Forms.csproj" />
-    <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj" />
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj" />
   </ItemGroup>

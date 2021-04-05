@@ -149,6 +149,10 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
+      <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
+      <Name>ToolsPortable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Vx\Vx.csproj">
       <Project>{5853496a-9502-4281-974f-e548bd1f6951}</Project>
       <Name>Vx</Name>

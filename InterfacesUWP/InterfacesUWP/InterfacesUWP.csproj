@@ -322,10 +322,6 @@
       <Project>{20fafed2-34f6-4c81-a069-65f3577ca331}</Project>
       <Name>BareMvvm.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{6d1c785b-6b6c-4249-bfa4-a7ae109e9437}</Project>
-      <Name>BareMvvm.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="C:\Users\andre\Documents\GitHub\pp\powerplannerapps\\PortableLibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
       <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
       <Name>BareMvvm.Core</Name>

@@ -1061,10 +1061,6 @@
       <Project>{4a105de9-fb7d-446f-88b5-01338b38c920}</Project>
       <Name>InterfacesUWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{6d1c785b-6b6c-4249-bfa4-a7ae109e9437}</Project>
-      <Name>BareMvvm.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
       <Project>{B04E5040-2DBB-4D91-A5C8-FA21841D6372}</Project>
       <Name>ToolsUniversal</Name>

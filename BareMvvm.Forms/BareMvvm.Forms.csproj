@@ -11,8 +11,4 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj" />
-  </ItemGroup>
-
 </Project>

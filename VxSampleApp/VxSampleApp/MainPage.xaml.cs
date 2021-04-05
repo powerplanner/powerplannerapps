@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vx.Views;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace VxSampleApp
 {
@@ -14,10 +16,10 @@ namespace VxSampleApp
         private VxState<string> _username = new VxState<string>("");
         private Entry _entry;
         private Label _label;
-        private PopupWindow _popupWindow = new PopupWindow()
-        {
-            Title = "Window A"
-        };
+        //private PopupWindow _popupWindow = new PopupWindow()
+        //{
+        //    Title = "Window A"
+        //};
 
         public MainPage()
         {
@@ -48,18 +50,78 @@ namespace VxSampleApp
 
             //_popupWindow.TitleBar.Title = "Window A";
 
-            Content = _popupWindow;
+            //Content = _popupWindow;
+            //_popupWindow.PropertyChanged += _popupWindow_PropertyChanged;
 
-            Updater();
+            Content = new VxMainPage();
+
+            //var listView = new ListView()
+            //{
+            //    ItemsSource = new MenuItems[]
+            //            {
+            //                MenuItems.Calendar,
+            //                MenuItems.Agenda,
+            //                MenuItems.Settings
+            //            },
+            //    Margin = new Thickness(24),
+            //    SelectedItem = MenuItems.Calendar
+            //};
+            //listView.ItemSelected += ListView_ItemSelected;
+
+            //Content = listView;
+
+            //RunLater(listView);
+
+            //Updater();
+        }
+
+        private async void RunLater(ListView listView)
+        {
+            await Task.Delay(1000);
+
+            listView.SelectedItem = "Calendar";
+            listView.ItemsSource = new string[] { "Contacts", "Calendar", "Events" };
+        }
+
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            Debug.WriteLine("SelectedItem: " + e.SelectedItem);
+
+            //MainThread.BeginInvokeOnMainThread(delegate
+            //{
+            //    (sender as ListView).ItemsSource = new MenuItems[]
+            //            {
+            //                MenuItems.Calendar,
+            //                MenuItems.Agenda,
+            //                MenuItems.Settings
+            //            };
+            //    (sender as ListView).SelectedItem = MenuItems.Agenda;
+            //});
+
+            await Task.Delay(1000);
+
+            (sender as ListView).ItemsSource = new MenuItems[]
+                    {
+                            MenuItems.Calendar,
+                            MenuItems.Agenda,
+                            MenuItems.Settings
+                    };
         }
 
         private async void Updater()
         {
-            while (true)
-            {
-                await Task.Delay(1000);
-                _popupWindow.Title += "A";
-            }
+            //while (true)
+            //{
+            //    await Task.Delay(1000);
+            //    _popupWindow.Title += "A";
+            //}
+        }
+
+        private enum MenuItems
+        {
+            Calendar,
+            Agenda,
+            Settings
         }
 
         //private void _username_ValueChanged(object sender, EventArgs e)
@@ -67,6 +129,116 @@ namespace VxSampleApp
         //    _label.Text = _username.Value;
         //    _entry.BindText(_username);
         //}
+    }
+
+    public class VxMainPage : VxComponent
+    {
+        private enum MenuItems
+        {
+            Calendar,
+            Agenda,
+            Settings
+        }
+
+        private VxState<MenuItems> _selectedMenuItem = new VxState<MenuItems>(MenuItems.Settings);
+        private MenuItems[] _availableMenuItems = new MenuItems[]
+                        {
+                            MenuItems.Calendar,
+                            MenuItems.Agenda,
+                            MenuItems.Settings
+                        };
+
+        protected override View Render()
+        {
+            return new Grid
+            {
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition { Width = 200 },
+                    new ColumnDefinition { Width = GridLength.Star }
+                },
+                Children =
+                {
+                    new ListView
+                    {
+                        ItemsSource = new MenuItems[]
+                        {
+                            MenuItems.Calendar,
+                            MenuItems.Agenda,
+                            MenuItems.Settings
+                        }
+                    }.BindSelectedItem(_selectedMenuItem),
+
+                    new Label { Text = _selectedMenuItem.Value.ToString(), Margin = new Thickness(24) }.Column(1)
+                    //CreateContent(_selectedMenuItem.Value).Column(1)
+                }
+            };
+        }
+
+        private View CreateContent(MenuItems menuItem)
+        {
+            switch (menuItem)
+            {
+                case MenuItems.Calendar:
+                    return new CalendarPage();
+
+                case MenuItems.Agenda:
+                    return new AgendaPage();
+
+                case MenuItems.Settings:
+                    return new SettingsPage();
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+    }
+
+    public class CalendarPage : VxComponent
+    {
+        protected override View Render()
+        {
+            return new Label
+            {
+                Text = "Calendar",
+                Margin = new Thickness(24)
+            };
+        }
+    }
+
+    public class AgendaPage : VxComponent
+    {
+        protected override View Render()
+        {
+            return new Label
+            {
+                Text = "Agenda",
+                Margin = new Thickness(24)
+            };
+        }
+    }
+
+    public class SettingsPage : VxComponent
+    {
+        protected override View Render()
+        {
+            return new Label
+            {
+                Text = "Settings",
+                Margin = new Thickness(24)
+            };
+        }
+    }
+
+    public class Page : VxPage
+    {
+        protected override View Render()
+        {
+            return new Label
+            {
+                Text = "Calendar"
+            };
+        }
     }
 
     public class PopupWindow : VxComponent
