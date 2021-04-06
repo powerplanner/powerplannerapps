@@ -53,7 +53,10 @@ namespace VxSampleApp
             //Content = _popupWindow;
             //_popupWindow.PropertyChanged += _popupWindow_PropertyChanged;
 
-            Content = new VxMainPage();
+            Content = new VxMainPage()
+            {
+                IsRootComponent = true
+            };
 
             //var listView = new ListView()
             //{
@@ -148,31 +151,41 @@ namespace VxSampleApp
                             MenuItems.Settings
                         };
 
+        private VxState<int> _width = new VxState<int>(200);
+
+        protected override void Initialize()
+        {
+            Updater();
+        }
+
         protected override View Render()
         {
             return new Grid
             {
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition { Width = 200 },
+                    new ColumnDefinition { Width = _width.Value },
                     new ColumnDefinition { Width = GridLength.Star }
                 },
                 Children =
                 {
                     new ListView
                     {
-                        ItemsSource = new MenuItems[]
-                        {
-                            MenuItems.Calendar,
-                            MenuItems.Agenda,
-                            MenuItems.Settings
-                        }
+                        ItemsSource = _availableMenuItems
                     }.BindSelectedItem(_selectedMenuItem),
 
-                    new Label { Text = _selectedMenuItem.Value.ToString(), Margin = new Thickness(24) }.Column(1)
-                    //CreateContent(_selectedMenuItem.Value).Column(1)
+                    CreateContent(_selectedMenuItem.Value).Column(1)
                 }
             };
+        }
+
+        private async void Updater()
+        {
+            while (true)
+            {
+                await Task.Delay(1000);
+                _width.Value = new Random().Next(150, 250);
+            }
         }
 
         private View CreateContent(MenuItems menuItem)

@@ -13,6 +13,60 @@ namespace Vx.Views
 {
     public abstract class VxComponent : ContentView
     {
+        private bool _isRootComponent;
+        /// <summary>
+        /// When adding a VxComponent to normal Xamarin Forms view, you must set this so that it displays
+        /// </summary>
+        public bool IsRootComponent
+        {
+            get => _isRootComponent;
+            set
+            {
+                if (_isRootComponent && value == false)
+                {
+                    throw new NotSupportedException("Cannot change from root element to not root");
+                }
+
+                _isRootComponent = value;
+
+                if (value)
+                {
+                    InitializeRootComponent();
+                }
+            }
+        }
+
+        private void InitializeRootComponent()
+        {
+            if (_hasInitializedForDisplay)
+            {
+                throw new NotSupportedException("You must set IsRootComponent before placing the component in your views.");
+            }
+
+            base.DescendantAdded += VxComponent_DescendantAdded;
+        }
+
+        private List<VxComponent> _additionalComponentsToInitialize;
+
+        private void VxComponent_DescendantAdded(object sender, ElementEventArgs e)
+        {
+            if (e.Element is VxComponent component)
+            {
+                if (_hasInitializedForDisplay)
+                {
+                    component.InitializeForDisplay();
+                }
+                else
+                {
+                    if (_additionalComponentsToInitialize == null)
+                    {
+                        _additionalComponentsToInitialize = new List<VxComponent>();
+                    }
+                    _additionalComponentsToInitialize.Add(component);
+                }
+            }
+        }
+
         public VxComponent()
         {
             SubscribeToStates();
@@ -45,15 +99,48 @@ namespace Vx.Views
 
         protected override void OnParentSet()
         {
-            lock (this)
+            // Only the root component renders at this time
+            // When a root component is rendering views that contain another nested component, the final parent will only be the immediate parent, not the root component
+            if (!IsRootComponent)
             {
-                if (!_dirty)
+                return;
+            }
+
+            InitializeForDisplay();
+        }
+
+        private bool _hasInitializedForDisplay;
+        private void InitializeForDisplay()
+        {
+            if (_hasInitializedForDisplay)
+            {
+                return;
+            }
+
+            _hasInitializedForDisplay = true;
+
+            Initialize();
+
+            if (IsRootComponent && _additionalComponentsToInitialize != null)
+            {
+                foreach (var c in _additionalComponentsToInitialize)
                 {
-                    return;
+                    c.InitializeForDisplay();
                 }
             }
 
             RenderActual();
+        }
+
+        private Element GetFinalParent()
+        {
+            Element view = this;
+            while (view.Parent != null)
+            {
+                view = view.Parent;
+            }
+
+            return view;
         }
 
         private class VxCommand : ICommand
@@ -171,6 +258,14 @@ namespace Vx.Views
             }
 
             LastMillisecondsToRender = (DateTime.Now - now).Milliseconds;
+        }
+
+        /// <summary>
+        /// This is called only once, before Render is called, and only called when the component is actually going to be displayed (not called for the virtual components that will be discarded). No need to call base.Initialize().
+        /// </summary>
+        protected virtual void Initialize()
+        {
+            // Nothing
         }
 
         private static void ReconcileViewOfSameType(View oldView, View newView)
