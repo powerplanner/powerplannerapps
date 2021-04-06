@@ -67,16 +67,12 @@ namespace Vx.Views
             }
         }
 
-        public VxComponent()
-        {
-            SubscribeToStates();
-        }
+        private Dictionary<string, object> _states = new Dictionary<string, object>();
 
-        private Dictionary<string, object> _properties = new Dictionary<string, object>();
-
-        public T GetProperty<T>(T defaultValue = default(T), [CallerMemberName]string propertyName = null)
+        [Obsolete("Use VxState instead")]
+        public T GetState<T>(T defaultValue = default(T), [CallerMemberName]string propertyName = null)
         {
-            if (_properties.TryGetValue(propertyName, out object val))
+            if (_states.TryGetValue(propertyName, out object val))
             {
                 return (T)val;
             }
@@ -84,14 +80,15 @@ namespace Vx.Views
             return defaultValue;
         }
 
-        public void SetProperty<T>(T value, [CallerMemberName]string propertyName = null)
+        [Obsolete("Use VxState instead")]
+        public void SetState<T>(T value, [CallerMemberName]string propertyName = null)
         {
-            if (_properties.TryGetValue(propertyName, out object existingVal) && object.Equals(existingVal, value))
+            if (_states.TryGetValue(propertyName, out object existingVal) && object.Equals(existingVal, value))
             {
                 return;
             }
 
-            _properties[propertyName] = value;
+            _states[propertyName] = value;
             OnPropertyChanged(propertyName);
 
             MarkDirty();
@@ -127,7 +124,11 @@ namespace Vx.Views
                 {
                     c.InitializeForDisplay();
                 }
+
+                _additionalComponentsToInitialize = null;
             }
+
+            SubscribeToStates();
 
             RenderActual();
         }
@@ -172,7 +173,7 @@ namespace Vx.Views
         private void SubscribeToStates()
         {
             var stateType = typeof(VxState);
-            foreach (var prop in this.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).Where(i => stateType.IsAssignableFrom(i.PropertyType)))
+            foreach (var prop in this.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).Where(i => i.CanRead && stateType.IsAssignableFrom(i.PropertyType)))
             {
                 var state = prop.GetValue(this) as VxState;
                 state.ValueChanged += State_ValueChanged;
@@ -220,6 +221,7 @@ namespace Vx.Views
         private static Type _entryType = typeof(Entry);
         private static Type _listViewType = typeof(ListView);
         private static Type _resourceDictionaryType = typeof(ResourceDictionary);
+        private static Type _vxComponentType = typeof(VxComponent);
 
         /// <summary>
         ///  Properties that shouldn't be set (for internal renderer use only)
@@ -397,7 +399,26 @@ namespace Vx.Views
                         }
                         else
                         {
-                            prop.SetValue(oldView, newVal);
+                            // For updating properties... if this was a component's property...
+                            if (oldView is VxComponent existingComponent && _vxComponentType.IsAssignableFrom(prop.DeclaringType))
+                            {
+                                // First get the existing value
+                                var oldVal = prop.GetValue(oldView);
+
+                                // If it's new
+                                if (!object.Equals(oldVal, newVal))
+                                {
+                                    // Transfer the value and mark dirty
+                                    prop.SetValue(oldView, newVal);
+                                    existingComponent.MarkDirty();
+                                }
+                            }
+                            else
+                            {
+                                // Just set the value like normal
+                                prop.SetValue(oldView, newVal);
+                            }
+
                         }
                     }
 #if DEBUG

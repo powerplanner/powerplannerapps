@@ -26,12 +26,12 @@ namespace Vx.Views
         /// </summary>
         public virtual bool AllowLightDismiss
         {
-            get => GetProperty<bool>(InitialAllowLightDismissValue);
+            get => GetState<bool>(InitialAllowLightDismissValue);
             set
             {
                 if (value != AllowLightDismiss)
                 {
-                    SetProperty(value);
+                    SetState(value);
                     AllowLightDismissChanged?.Invoke(this, value);
                 }
             }
@@ -69,13 +69,13 @@ namespace Vx.Views
         /// </summary>
         public RequestedBackButtonVisibility ThisBackButtonVisibility
         {
-            get => GetProperty(RequestedBackButtonVisibility.Inherit);
+            get => GetState(RequestedBackButtonVisibility.Inherit);
 
             set
             {
                 if (ThisBackButtonVisibility != value)
                 {
-                    SetProperty(value);
+                    SetState(value);
                     FinalBackButtonVisibility = GetFinalBackButtonVisibility();
                 }
             }
@@ -86,14 +86,14 @@ namespace Vx.Views
         /// </summary>
         public RequestedBackButtonVisibility FinalBackButtonVisibility
         {
-            get => GetProperty(RequestedBackButtonVisibility.Inherit);
-            set => SetProperty(value);
+            get => GetState(RequestedBackButtonVisibility.Inherit);
+            set => SetState(value);
         }
 
         public bool IsLoaded
         {
-            get => GetProperty(false);
-            private set => SetProperty(value);
+            get => GetState(false);
+            private set => SetState(value);
         }
 
         private Task _loadAsyncTask;
@@ -234,8 +234,8 @@ namespace Vx.Views
         /// </summary>
         public VxPage FinalContent
         {
-            get => GetProperty<VxPage>();
-            set => SetProperty(value);
+            get => GetState<VxPage>();
+            set => SetState(value);
         }
 
         public virtual IEnumerable<VxPage> GetChildren()

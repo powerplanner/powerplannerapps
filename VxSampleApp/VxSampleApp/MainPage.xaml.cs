@@ -236,11 +236,7 @@ namespace VxSampleApp
 
     public class SettingsPage : VxComponent
     {
-        public int SidebarWidth
-        {
-            get => GetProperty<int>();
-            set => SetProperty(value);
-        }
+        public int SidebarWidth { get; set; }
 
         protected override View Render()
         {
@@ -257,8 +253,9 @@ namespace VxSampleApp
                     },
                     new SettingsItem
                     {
-                        Title = "My Account"
-                    }
+                        Title = "My Account... Sidebar width: " + SidebarWidth
+                    },
+                    new SettingsUsername()
                 }
             };
         }
@@ -266,17 +263,37 @@ namespace VxSampleApp
 
     public class SettingsItem : VxComponent
     {
-        public string Title
-        {
-            get => GetProperty<string>();
-            set => SetProperty(value);
-        }
+        public string Title { get; set; }
 
         protected override View Render()
         {
             Debug.WriteLine("Render SettingsItem");
 
             return new Label { Text = "SettingsItem: " + Title };
+        }
+    }
+
+    public class SettingsUsername : VxComponent
+    {
+        private VxState<string> _username = new VxState<string>("");
+
+        protected override View Render()
+        {
+            return new StackLayout
+            {
+                Children =
+                {
+                    new Entry
+                    {
+                        Placeholder = "Username"
+                    }.BindText(_username),
+
+                    new Label
+                    {
+                        Text = "Username: " + _username.Value
+                    }
+                }
+            };
         }
     }
 
@@ -298,8 +315,8 @@ namespace VxSampleApp
 
         public string Title
         {
-            get => GetProperty("");
-            set => SetProperty(value);
+            get => GetState("");
+            set => SetState(value);
         }
 
         protected override View Render()
@@ -345,8 +362,8 @@ namespace VxSampleApp
     {
         public string Title
         {
-            get => GetProperty<string>();
-            set => SetProperty(value);
+            get => GetState<string>();
+            set => SetState(value);
         }
 
         protected override View Render()
