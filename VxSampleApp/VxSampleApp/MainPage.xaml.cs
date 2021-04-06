@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Vx.Views;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Collections.ObjectModel;
 
 namespace VxSampleApp
 {
@@ -41,6 +42,29 @@ namespace VxSampleApp
 
     public class VxMainPage : VxComponent
     {
+        public static VxMainPage Current { get; private set; }
+
+        public static ObservableCollection<ViewItemTask> Tasks { get; } = new ObservableCollection<ViewItemTask>()
+        {
+            new ViewItemTask()
+            {
+                Title = "Task 1",
+                ClassName = "Class A"
+            },
+
+            new ViewItemTask()
+            {
+                Title = "Task 2",
+                ClassName = "Class A"
+            },
+
+            new ViewItemTask()
+            {
+                Title = "Task 3",
+                ClassName = "Class B"
+            }
+        };
+
         private enum MenuItems
         {
             Calendar,
@@ -60,7 +84,13 @@ namespace VxSampleApp
 
         protected override void Initialize()
         {
+            Current = this;
             Updater();
+        }
+
+        public void ShowAddTask()
+        {
+
         }
 
         protected override View Render()
@@ -76,7 +106,8 @@ namespace VxSampleApp
                 {
                     new ListView
                     {
-                        ItemsSource = _availableMenuItems
+                        ItemsSource = _availableMenuItems,
+                        Margin = new Thickness(24)
                     }.BindSelectedItem(_selectedMenuItem),
 
                     CreateContent(_selectedMenuItem.Value).Column(1)
@@ -127,15 +158,49 @@ namespace VxSampleApp
         }
     }
 
+    public class ViewItemTask
+    {
+        public string Title { get; set; }
+        public string ClassName { get; set; }
+
+        public override string ToString()
+        {
+            return Title + " - " + ClassName;
+        }
+    }
+
     public class AgendaPage : VxComponent
     {
+        private VxState<ViewItemTask> _selectedTask = new VxState<ViewItemTask>();
+
         protected override View Render()
         {
-            return new Label
+            return new Grid
             {
-                Text = "Agenda",
-                Margin = new Thickness(24)
+                RowDefinitions =
+                {
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Star }
+                },
+                Children =
+                {
+                    new Button
+                    {
+                        Text = "Add task",
+                        Command = CreateCommand(AddTask)
+                    },
+
+                    new ListView
+                    {
+                        ItemsSource = VxMainPage.Tasks
+                    }.BindSelectedItem(_selectedTask).Row(1)
+                }
             };
+        }
+
+        private void AddTask()
+        {
+            VxMainPage.Current.ShowAddTask();
         }
     }
 
