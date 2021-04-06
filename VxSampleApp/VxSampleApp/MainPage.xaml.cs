@@ -245,11 +245,38 @@ namespace VxSampleApp
         protected override View Render()
         {
             Debug.WriteLine("Render SettingsPage");
-            return new Label
+
+            return new StackLayout
             {
-                Text = "Settings... Sidebar width: " + SidebarWidth,
-                Margin = new Thickness(24)
+                Margin = new Thickness(24),
+                Children =
+                {
+                    new Label
+                    {
+                        Text = "Settings... Sidebar width: " + SidebarWidth
+                    },
+                    new SettingsItem
+                    {
+                        Title = "My Account"
+                    }
+                }
             };
+        }
+    }
+
+    public class SettingsItem : VxComponent
+    {
+        public string Title
+        {
+            get => GetProperty<string>();
+            set => SetProperty(value);
+        }
+
+        protected override View Render()
+        {
+            Debug.WriteLine("Render SettingsItem");
+
+            return new Label { Text = "SettingsItem: " + Title };
         }
     }
 
