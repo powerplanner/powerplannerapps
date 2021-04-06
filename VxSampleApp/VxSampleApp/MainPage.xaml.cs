@@ -25,99 +25,10 @@ namespace VxSampleApp
         {
             InitializeComponent();
 
-            //_username.ValueChanged += _username_ValueChanged;
-
-            //_entry = new Entry
-            //{
-            //    Placeholder = "Username"
-            //}.BindText(_username);
-
-            //_label = new Label();
-
-            //Content = new StackLayout
-            //{
-            //    Children =
-            //    {
-            //        _label,
-            //        _entry
-            //    }
-            //};
-
-            //Content = new LoginComponent()
-            //{
-            //    Margin = new Thickness(24)
-            //};
-
-            //_popupWindow.TitleBar.Title = "Window A";
-
-            //Content = _popupWindow;
-            //_popupWindow.PropertyChanged += _popupWindow_PropertyChanged;
-
             Content = new VxMainPage()
             {
                 IsRootComponent = true
             };
-
-            //var listView = new ListView()
-            //{
-            //    ItemsSource = new MenuItems[]
-            //            {
-            //                MenuItems.Calendar,
-            //                MenuItems.Agenda,
-            //                MenuItems.Settings
-            //            },
-            //    Margin = new Thickness(24),
-            //    SelectedItem = MenuItems.Calendar
-            //};
-            //listView.ItemSelected += ListView_ItemSelected;
-
-            //Content = listView;
-
-            //RunLater(listView);
-
-            //Updater();
-        }
-
-        private async void RunLater(ListView listView)
-        {
-            await Task.Delay(1000);
-
-            listView.SelectedItem = "Calendar";
-            listView.ItemsSource = new string[] { "Contacts", "Calendar", "Events" };
-        }
-
-        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            Debug.WriteLine("SelectedItem: " + e.SelectedItem);
-
-            //MainThread.BeginInvokeOnMainThread(delegate
-            //{
-            //    (sender as ListView).ItemsSource = new MenuItems[]
-            //            {
-            //                MenuItems.Calendar,
-            //                MenuItems.Agenda,
-            //                MenuItems.Settings
-            //            };
-            //    (sender as ListView).SelectedItem = MenuItems.Agenda;
-            //});
-
-            await Task.Delay(1000);
-
-            (sender as ListView).ItemsSource = new MenuItems[]
-                    {
-                            MenuItems.Calendar,
-                            MenuItems.Agenda,
-                            MenuItems.Settings
-                    };
-        }
-
-        private async void Updater()
-        {
-            //while (true)
-            //{
-            //    await Task.Delay(1000);
-            //    _popupWindow.Title += "A";
-            //}
         }
 
         private enum MenuItems
@@ -126,12 +37,6 @@ namespace VxSampleApp
             Agenda,
             Settings
         }
-
-        //private void _username_ValueChanged(object sender, EventArgs e)
-        //{
-        //    _label.Text = _username.Value;
-        //    _entry.BindText(_username);
-        //}
     }
 
     public class VxMainPage : VxComponent
@@ -313,11 +218,7 @@ namespace VxSampleApp
         //public PopupTitleBar TitleBar { get; private set; } = new PopupTitleBar();
         private VxState<string> _contentText = new VxState<string>("Content");
 
-        public string Title
-        {
-            get => GetState("");
-            set => SetState(value);
-        }
+        public string Title { get; set; }
 
         protected override View Render()
         {
@@ -343,7 +244,7 @@ namespace VxSampleApp
             };
         }
 
-        public PopupWindow()
+        protected override void Initialize()
         {
             Updater();
         }
@@ -360,11 +261,7 @@ namespace VxSampleApp
 
     public class PopupTitleBar : VxComponent
     {
-        public string Title
-        {
-            get => GetState<string>();
-            set => SetState(value);
-        }
+        public string Title { get; set; }
 
         protected override View Render()
         {
