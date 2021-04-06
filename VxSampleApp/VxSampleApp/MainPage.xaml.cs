@@ -199,7 +199,10 @@ namespace VxSampleApp
                     return new AgendaPage();
 
                 case MenuItems.Settings:
-                    return new SettingsPage();
+                    return new SettingsPage()
+                    {
+                        SidebarWidth = _width.Value
+                    };
 
                 default:
                     throw new NotImplementedException();
@@ -233,11 +236,18 @@ namespace VxSampleApp
 
     public class SettingsPage : VxComponent
     {
+        public int SidebarWidth
+        {
+            get => GetProperty<int>();
+            set => SetProperty(value);
+        }
+
         protected override View Render()
         {
+            Debug.WriteLine("Render SettingsPage");
             return new Label
             {
-                Text = "Settings",
+                Text = "Settings... Sidebar width: " + SidebarWidth,
                 Margin = new Thickness(24)
             };
         }
