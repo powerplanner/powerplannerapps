@@ -9,6 +9,7 @@ using Vx.Views;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using System.Collections.ObjectModel;
+using ToolsPortable;
 
 namespace VxSampleApp
 {
@@ -86,11 +87,6 @@ namespace VxSampleApp
         {
             Current = this;
             Updater();
-        }
-
-        public void ShowAddTask()
-        {
-
         }
 
         protected override View Render()
@@ -200,7 +196,65 @@ namespace VxSampleApp
 
         private void AddTask()
         {
-            VxMainPage.Current.ShowAddTask();
+        }
+    }
+
+    public class AddTaskPage : VxComponent
+    {
+        private VxState<string> _title = new VxState<string>("");
+        private VxState<string> _className = new VxState<string>("");
+
+        protected override View Render()
+        {
+            return new PopupWindow
+            {
+                Title = "Add task",
+                Content = new StackLayout
+                {
+                    Children =
+                    {
+                        new Label { Text = "Title" },
+                        new Entry
+                        {
+                            
+                        }.BindText(_title),
+
+                        new Label { Text = "Class name", Margin = new Thickness(0,12,0,0) },
+                        new Entry
+                        {
+
+                        }.BindText(_className),
+
+                        new Button
+                        {
+                            Text = "Save",
+                            Command = CreateCommand(Save),
+                            Margin = new Thickness(0,12,0,0)
+                        }
+                    }
+                }
+            };
+        }
+
+        private void Save()
+        {
+            if (string.IsNullOrWhiteSpace(_title.Value))
+            {
+                new PortableMessageDialog("Title is required").Show();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(_className.Value))
+            {
+                new PortableMessageDialog("Class name is required").Show();
+                return;
+            }
+
+            VxMainPage.Tasks.Add(new ViewItemTask
+            {
+                Title = _title.Value,
+                ClassName = _className.Value
+            });
         }
     }
 
@@ -280,10 +334,9 @@ namespace VxSampleApp
 
     public class PopupWindow : VxComponent
     {
-        //public PopupTitleBar TitleBar { get; private set; } = new PopupTitleBar();
-        private VxState<string> _contentText = new VxState<string>("Content");
-
         public string Title { get; set; }
+
+        public new View Content { get; set; }
 
         protected override View Render()
         {
@@ -296,39 +349,14 @@ namespace VxSampleApp
                 },
                 Children =
                 {
-                    // The problem is when we set this title bar, since it's an existing view reference it removes the existing view from the existing displayed view, since views can only have one parent... We have to return new references...
-                    new PopupTitleBar
-                    {
-                        Title = Title
-                    },
-                    new Label
-                    {
-                        Text = _contentText.Value
-                    }.Row(1)
+                    RenderTitleBar(),
+
+                    Content.Row(1)
                 }
             };
         }
 
-        protected override void Initialize()
-        {
-            Updater();
-        }
-
-        private async void Updater()
-        {
-            while (true)
-            {
-                await Task.Delay(1000);
-                _contentText.Value += ".";
-            }
-        }
-    }
-
-    public class PopupTitleBar : VxComponent
-    {
-        public string Title { get; set; }
-
-        protected override View Render()
+        private View RenderTitleBar()
         {
             bool swap = Title.Length % 2 == 1;
 
