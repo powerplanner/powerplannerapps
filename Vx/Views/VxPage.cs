@@ -375,11 +375,6 @@ namespace Vx.Views
             FinalBackButtonVisibility = GetFinalBackButtonVisibility();
         }
 
-        public virtual void ShowPopup(VxPage viewModel)
-        {
-            //GetPopupViewModelHost().ShowPopup(viewModel);
-        }
-
         //public PagedViewModelWithPopups GetPopupViewModelHost()
         //{
         //    return FindAncestor<PagedViewModelWithPopups>();

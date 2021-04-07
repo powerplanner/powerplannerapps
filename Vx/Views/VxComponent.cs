@@ -128,9 +128,21 @@ namespace Vx.Views
                 _additionalComponentsToInitialize = null;
             }
 
+            var renderedContentContainer = PrepRenderedContentContainer();
+            if (renderedContentContainer != null)
+            {
+                base.Content = renderedContentContainer;
+            }
+
             SubscribeToStates();
 
             RenderActual();
+        }
+
+        protected virtual View PrepRenderedContentContainer()
+        {
+            // Nothing in this case since we just set content directly
+            return null;
         }
 
         private Element GetFinalParent()
@@ -246,11 +258,11 @@ namespace Vx.Views
             var now = DateTime.Now;
 
             View newView = Render();
-            View oldView = Content;
+            View oldView = RenderedContent;
 
             if (oldView == null || oldView.GetType() != newView.GetType())
             {
-                Content = newView;
+                RenderedContent = newView;
             }
 
             else
@@ -260,6 +272,24 @@ namespace Vx.Views
             }
 
             LastMillisecondsToRender = (DateTime.Now - now).Milliseconds;
+        }
+
+        /// <summary>
+        /// Can override if you want to wrap rendered content in something else
+        /// </summary>
+        protected virtual View RenderedContent
+        {
+            get => base.Content;
+            set => base.Content = value;
+        }
+
+        /// <summary>
+        /// Do NOT get or set this
+        /// </summary>
+        public new View Content
+        {
+            get => throw new InvalidOperationException("Don't call VxComponent.Content");
+            set => throw new InvalidOperationException("Don't call VxComponent.Content");
         }
 
         /// <summary>
@@ -378,14 +408,14 @@ namespace Vx.Views
                             }
                         }
 
-                        var newVal = prop.GetValue(newView);
-
                         // If a View property
                         if (_viewType.IsAssignableFrom(propType))
                         {
-                            // If the view is a VxComponent, we want to apply its properties like margin or background color, but NOT reconcile its content... since that'll be updated by the VxComponent itself
+                            // If the view is a VxComponent, we want to apply its properties like margin or background color, but NOT reconcile its Content or RenderedContent... since that'll be updated by the VxComponent itself
                             if (!(newView is VxComponent))
                             {
+                                var newVal = prop.GetValue(newView);
+
                                 var oldVal = prop.GetValue(oldView);
                                 if (oldVal == null || oldVal.GetType() != newVal.GetType())
                                 {
@@ -399,6 +429,8 @@ namespace Vx.Views
                         }
                         else
                         {
+                            var newVal = prop.GetValue(newView);
+
                             // For updating properties... if this was a component's property...
                             if (oldView is VxComponent existingComponent && _vxComponentType.IsAssignableFrom(prop.DeclaringType))
                             {
@@ -549,6 +581,77 @@ namespace Vx.Views
                     oldList.Add(newList[i]);
                 }
             }
+        }
+
+        protected virtual void ShowPopup(VxPage page)
+        {
+            // VxComponentWithPopups will override this
+            GetParentComponent().ShowPopup(page);
+        }
+
+        protected void RemoveThisPage()
+        {
+            var page = FindAncestor<VxPage>();
+            RemovePage(page);
+        }
+
+        protected virtual void RemovePage(VxPage page)
+        {
+            // VxComponentWithPopups will override this
+            GetParentComponent().RemovePage(page);
+        }
+
+        protected T FindAncestor<T>() where T : VxComponent
+        {
+            VxComponent comp = GetParentComponent();
+            while (comp != null)
+            {
+                if (comp is T compT)
+                {
+                    return compT;
+                }
+
+                comp = comp.GetParentComponent();
+            }
+
+            throw new InvalidOperationException("Couldn't find a component ancestor of the specified type.");
+        }
+
+        protected VxComponent GetParentComponent()
+        {
+            Element el = Parent;
+            while (el != null)
+            {
+                if (el is VxComponent comp)
+                {
+                    return comp;
+                }
+
+                el = el.Parent;
+            }
+
+            throw new InvalidOperationException("Component didn't have a parent component, you might have called a method in an incorrect manner.");
+        }
+
+        private VxComponent GetRootComponent()
+        {
+            if (IsRootComponent)
+            {
+                return this;
+            }
+
+            Element el = Parent;
+            while (el != null)
+            {
+                if (el is VxComponent comp && comp.IsRootComponent)
+                {
+                    return comp;
+                }
+
+                el = el.Parent;
+            }
+
+            throw new InvalidOperationException("Component didn't have a parent, you might have called ShowPopup in an incorrect manner.");
         }
     }
 }

@@ -41,7 +41,7 @@ namespace VxSampleApp
         }
     }
 
-    public class VxMainPage : VxComponent
+    public class VxMainPage : VxPageWithPopups
     {
         public static VxMainPage Current { get; private set; }
 
@@ -196,10 +196,11 @@ namespace VxSampleApp
 
         private void AddTask()
         {
+            ShowPopup(new AddTaskPage());
         }
     }
 
-    public class AddTaskPage : VxComponent
+    public class AddTaskPage : VxPage
     {
         private VxState<string> _title = new VxState<string>("");
         private VxState<string> _className = new VxState<string>("");
@@ -255,6 +256,8 @@ namespace VxSampleApp
                 Title = _title.Value,
                 ClassName = _className.Value
             });
+
+            RemoveThisPage();
         }
     }
 
@@ -340,18 +343,34 @@ namespace VxSampleApp
 
         protected override View Render()
         {
-            return new Grid()
+            return new Grid
             {
-                RowDefinitions =
-                {
-                    new RowDefinition { Height = GridLength.Auto },
-                    new RowDefinition { Height = GridLength.Star }
-                },
                 Children =
                 {
-                    RenderTitleBar(),
+                    new Xamarin.Forms.Shapes.Rectangle
+                    {
+                        Fill = new SolidColorBrush(new Color(0, 0, 0, 0.3))
+                    }.Tap(() => RemoveThisPage()),
 
-                    Content.Row(1)
+                    new Grid()
+                    {
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center,
+                        MinimumHeightRequest = 300,
+                        WidthRequest = 400,
+                        BackgroundColor = Color.White,
+                        RowDefinitions =
+                        {
+                            new RowDefinition { Height = GridLength.Auto },
+                            new RowDefinition { Height = GridLength.Star }
+                        },
+                        Children =
+                        {
+                            RenderTitleBar(),
+
+                            Content.Row(1)
+                        }
+                    }
                 }
             };
         }
@@ -378,7 +397,9 @@ namespace VxSampleApp
                     }.Column(swap ? 1 : 0),
                     new Button
                     {
-                        Text = "Close"
+                        Text = "Close",
+                        TextColor = Color.White,
+                        Command = CreateCommand(RemoveThisPage)
                     }.Column(swap ? 0 : 1)
                 }
             };
