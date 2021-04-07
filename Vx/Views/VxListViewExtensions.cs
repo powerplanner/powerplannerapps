@@ -75,5 +75,14 @@ namespace Vx.Views
                 item.Value = e.SelectedItem;
             }
         }
+
+        public static T ItemTap<T>(this T listView, Action<ItemTappedEventArgs> itemTapped) where T : ListView
+        {
+            listView.ItemTapped += (s, e) =>
+            {
+                itemTapped(e);
+            };
+            return listView;
+        }
     }
 }

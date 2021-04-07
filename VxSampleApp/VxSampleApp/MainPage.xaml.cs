@@ -167,8 +167,6 @@ namespace VxSampleApp
 
     public class AgendaPage : VxComponent
     {
-        private VxState<ViewItemTask> _selectedTask = new VxState<ViewItemTask>();
-
         protected override View Render()
         {
             return new Grid
@@ -188,10 +186,19 @@ namespace VxSampleApp
 
                     new ListView
                     {
-                        ItemsSource = VxMainPage.Tasks
-                    }.BindSelectedItem(_selectedTask).Row(1)
+                        ItemsSource = VxMainPage.Tasks,
+                        SelectionMode = ListViewSelectionMode.None
+                    }.ItemTap(TaskItemTap).Row(1)
                 }
             };
+        }
+
+        private void TaskItemTap(ItemTappedEventArgs e)
+        {
+            ShowPopup(new ViewTaskPage()
+            {
+                Task = (ViewItemTask)e.Item
+            });
         }
 
         private void AddTask()
