@@ -200,18 +200,53 @@ namespace VxSampleApp
         }
     }
 
-    public class AddTaskPage : VxPage
+    public class ViewTaskPage : VxPage
     {
-        private VxState<string> _title = new VxState<string>("");
-        private VxState<string> _className = new VxState<string>("");
+        public ViewItemTask Task { get; set; }
 
         protected override View Render()
         {
             return new PopupWindow
             {
-                Title = "Add task",
+                Title = "View task",
                 Content = new StackLayout
                 {
+                    Margin = new Thickness(24),
+                    Children =
+                    {
+                        new Label { Text = Task.Title },
+                        new Label { Text = Task.ClassName },
+                        new Button { Text = "Edit task", Command = CreateCommand(() => ShowPopup(new AddTaskPage { TaskToEdit = Task }))}
+                    }
+                }
+            };
+        }
+    }
+
+    public class AddTaskPage : VxPage
+    {
+        private VxState<string> _title;
+        private VxState<string> _titleError = new VxState<string>(null);
+        private VxState<string> _className;
+
+        public ViewItemTask TaskToEdit { get; set; }
+
+        protected override void Initialize()
+        {
+            _title = new VxState<string>(TaskToEdit?.Title ?? "");
+            _className = new VxState<string>(TaskToEdit?.ClassName ?? "");
+
+            base.Initialize();
+        }
+
+        protected override View Render()
+        {
+            return new PopupWindow
+            {
+                Title = TaskToEdit != null ? "Edit task" : "Add task",
+                Content = new StackLayout
+                {
+                    Margin = new Thickness(24),
                     Children =
                     {
                         new Label { Text = "Title" },
@@ -219,6 +254,7 @@ namespace VxSampleApp
                         {
                             
                         }.BindText(_title),
+                        new Label { Text = _titleError.Value, TextColor = Color.Red, IsVisible = _titleError.Value != null },
 
                         new Label { Text = "Class name", Margin = new Thickness(0,12,0,0) },
                         new Entry
@@ -241,7 +277,7 @@ namespace VxSampleApp
         {
             if (string.IsNullOrWhiteSpace(_title.Value))
             {
-                new PortableMessageDialog("Title is required").Show();
+                _titleError.Value = "Title is required.";
                 return;
             }
 

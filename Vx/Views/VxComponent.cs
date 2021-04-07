@@ -289,7 +289,6 @@ namespace Vx.Views
         public new View Content
         {
             get => throw new InvalidOperationException("Don't call VxComponent.Content");
-            set => throw new InvalidOperationException("Don't call VxComponent.Content");
         }
 
         /// <summary>
@@ -409,22 +408,20 @@ namespace Vx.Views
                         }
 
                         // If a View property
-                        if (_viewType.IsAssignableFrom(propType))
+                        // If the view is a VxComponent, we want to apply its properties like margin or background color, but NOT reconcile its Content... since that'll be updated by the VxComponent itself... Note that this is already handled by VxComponent declaring a new Content property that's get-only (and so the underneath properties get caught above earlier)
+                        // Also note that we DO want to transfer over view properties on VxComponent if they're properties of the component, like a custom component can declare a view as a property that parent components can set... that DOES need to be transferred over (which will later be reconciled in the render)... we'll let the else transfer it over since that also calls mark dirty
+                        if (_viewType.IsAssignableFrom(propType) && !(oldView is VxComponent))
                         {
-                            // If the view is a VxComponent, we want to apply its properties like margin or background color, but NOT reconcile its Content or RenderedContent... since that'll be updated by the VxComponent itself
-                            if (!(newView is VxComponent))
-                            {
-                                var newVal = prop.GetValue(newView);
+                            var newVal = prop.GetValue(newView);
 
-                                var oldVal = prop.GetValue(oldView);
-                                if (oldVal == null || oldVal.GetType() != newVal.GetType())
-                                {
-                                    prop.SetValue(oldView, newVal);
-                                }
-                                else
-                                {
-                                    ReconcileViewOfSameType(oldVal as View, newVal as View);
-                                }
+                            var oldVal = prop.GetValue(oldView);
+                            if (oldVal == null || oldVal.GetType() != newVal.GetType())
+                            {
+                                prop.SetValue(oldView, newVal);
+                            }
+                            else
+                            {
+                                ReconcileViewOfSameType(oldVal as View, newVal as View);
                             }
                         }
                         else
@@ -591,7 +588,7 @@ namespace Vx.Views
 
         protected void RemoveThisPage()
         {
-            var page = FindAncestor<VxPage>();
+            var page = FindAncestorOrSelf<VxPage>();
             RemovePage(page);
         }
 
@@ -599,6 +596,16 @@ namespace Vx.Views
         {
             // VxComponentWithPopups will override this
             GetParentComponent().RemovePage(page);
+        }
+
+        protected T FindAncestorOrSelf<T>() where T : VxComponent
+        {
+            if (this is T expected)
+            {
+                return expected;
+            }
+
+            return FindAncestor<T>();
         }
 
         protected T FindAncestor<T>() where T : VxComponent
