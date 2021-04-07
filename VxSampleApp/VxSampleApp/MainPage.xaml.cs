@@ -253,14 +253,14 @@ namespace VxSampleApp
                         new Entry
                         {
                             
-                        }.BindText(_title),
+                        }.BindText(_title, VxBindingMode.Silent),
                         new Label { Text = _titleError.Value, TextColor = Color.Red, IsVisible = _titleError.Value != null },
 
                         new Label { Text = "Class name", Margin = new Thickness(0,12,0,0) },
                         new Entry
                         {
 
-                        }.BindText(_className),
+                        }.BindText(_className, VxBindingMode.Silent),
 
                         new Button
                         {

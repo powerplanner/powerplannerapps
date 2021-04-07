@@ -7,20 +7,24 @@ namespace Vx.Views
 {
     public static class VxInputViewExtensions
     {
-        public static T BindText<T>(this T entry, VxState<string> value) where T : InputView
+        public static T BindText<T>(this T entry, VxState<string> value, VxBindingMode bindingMode = VxBindingMode.Default) where T : InputView
         {
-            SetBindText(entry, value);
+            SetBindText(entry, new VxBinding<string>
+            {
+                State = value,
+                BindingMode = bindingMode
+            });
             return entry;
         }
 
-        public static readonly BindableProperty BindTextProperty = BindableProperty.CreateAttached("BindText", typeof(VxState<string>), typeof(InputView), null, defaultBindingMode: BindingMode.OneTime, propertyChanged: TextPropertyChanged);
+        public static readonly BindableProperty BindTextProperty = BindableProperty.CreateAttached("BindText", typeof(VxBinding<string>), typeof(InputView), null, defaultBindingMode: BindingMode.OneTime, propertyChanged: TextPropertyChanged);
 
-        public static VxState<string> GetBindText(BindableObject target)
+        public static VxBinding<string> GetBindText(BindableObject target)
         {
-            return target.GetValue(BindTextProperty) as VxState<string>;
+            return target.GetValue(BindTextProperty) as VxBinding<string>;
         }
 
-        public static void SetBindText(BindableObject target, VxState<string> value)
+        public static void SetBindText(BindableObject target, VxBinding<string> value)
         {
             target.SetValue(BindTextProperty, value);
         }
@@ -31,7 +35,7 @@ namespace Vx.Views
 
             if (newVal != null)
             {
-                entry.Text = (newVal as VxState<string>).Value;
+                entry.Text = (newVal as VxBinding<string>).State?.Value;
             }
 
             if (oldVal == null)
@@ -44,11 +48,7 @@ namespace Vx.Views
         {
             var entry = sender as Entry;
 
-            var textState = GetBindText(entry);
-            if (textState != null)
-            {
-                textState.Value = e.NewTextValue;
-            }
+            GetBindText(entry)?.SetValue(e.NewTextValue);
         }
     }
 }

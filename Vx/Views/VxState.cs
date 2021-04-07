@@ -26,6 +26,11 @@ namespace Vx.Views
                 }
             }
         }
+
+        public void SetValueSilently(object value)
+        {
+            _value = value;
+        }
     }
 
     public class VxState<T> : VxState
@@ -39,6 +44,11 @@ namespace Vx.Views
         {
             get => (T)base.Value;
             set => base.Value = value;
+        }
+
+        public void SetValueSilently(T value)
+        {
+            base.SetValueSilently(value);
         }
     }
 }
