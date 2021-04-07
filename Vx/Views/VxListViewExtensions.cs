@@ -78,6 +78,7 @@ namespace Vx.Views
 
         public static T ItemTap<T>(this T listView, Action<ItemTappedEventArgs> itemTapped) where T : ListView
         {
+            // TODO: Need to support this in a VxComponent-manner-way. Right now this only works if the initial render returns it, but if this happens via reconciliation, it won't work. Not a big issue though, very unlikely that'd happen.
             listView.ItemTapped += (s, e) =>
             {
                 itemTapped(e);
