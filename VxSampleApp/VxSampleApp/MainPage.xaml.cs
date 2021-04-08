@@ -154,10 +154,18 @@ namespace VxSampleApp
         }
     }
 
-    public class ViewItemTask
+    public class ViewItemTask : BindableBase
     {
-        public string Title { get; set; }
-        public string ClassName { get; set; }
+        public string Title
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
+        public string ClassName
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
 
         public override string ToString()
         {
@@ -209,6 +217,7 @@ namespace VxSampleApp
 
     public class ViewTaskPage : VxPage
     {
+        [VxSubscribe]
         public ViewItemTask Task { get; set; }
 
         protected override View Render()
@@ -294,11 +303,19 @@ namespace VxSampleApp
                 return;
             }
 
-            VxMainPage.Tasks.Add(new ViewItemTask
+            if (TaskToEdit != null)
             {
-                Title = _title.Value,
-                ClassName = _className.Value
-            });
+                TaskToEdit.Title = _title.Value;
+                TaskToEdit.ClassName = _className.Value;
+            }
+            else
+            {
+                VxMainPage.Tasks.Add(new ViewItemTask
+                {
+                    Title = _title.Value,
+                    ClassName = _className.Value
+                });
+            }
 
             RemoveThisPage();
         }

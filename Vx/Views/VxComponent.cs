@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
+using ToolsPortable;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -135,6 +136,7 @@ namespace Vx.Views
             }
 
             SubscribeToStates();
+            SubscribeToProperties();
 
             RenderActual();
         }
@@ -195,6 +197,33 @@ namespace Vx.Views
                 var state = prop.GetValue(this) as VxState;
                 state.ValueChanged += State_ValueChanged;
             }
+        }
+
+        private PropertyChangedEventHandler _propertyValuePropertyChangedHandler;
+        private static Type _iNotifyPropertyChangedType = typeof(INotifyPropertyChanged);
+
+        private void SubscribeToProperties()
+        {
+            _propertyValuePropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(PropertyValue_PropertyChanged).Handler;
+
+            foreach (var prop in this.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && _iNotifyPropertyChangedType.IsAssignableFrom(i.PropertyType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
+            {
+                var propVal = prop.GetValue(this) as INotifyPropertyChanged;
+                if (propVal != null)
+                {
+                    SubscribeToPropertyValue(propVal);
+                }
+            }
+        }
+
+        private void SubscribeToPropertyValue(INotifyPropertyChanged propertyValue)
+        {
+            propertyValue.PropertyChanged += _propertyValuePropertyChangedHandler;
+        }
+
+        private void PropertyValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            MarkDirty();
         }
 
         protected abstract View Render();
@@ -440,6 +469,12 @@ namespace Vx.Views
                                     // Transfer the value and mark dirty
                                     prop.SetValue(oldView, newVal);
                                     existingComponent.MarkDirty();
+                                    
+                                    // And subscribe to that property
+                                    if (newVal is INotifyPropertyChanged newValPropChanged && prop.GetCustomAttribute<VxSubscribeAttribute>() != null)
+                                    {
+                                        existingComponent.SubscribeToPropertyValue(newValPropChanged);
+                                    }
                                 }
                             }
                             else
