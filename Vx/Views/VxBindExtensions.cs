@@ -17,5 +17,16 @@ namespace Vx.Views
 
             return entry;
         }
+
+        public static T BindSelectedItem<T>(this T picker, VxState state, VxBindingMode mode = VxBindingMode.Default) where T : Picker
+        {
+            VxBindings.SetBinding(picker, Picker.SelectedItemProperty, new VxBinding()
+            {
+                State = state,
+                BindingMode = mode
+            });
+
+            return picker;
+        }
     }
 }

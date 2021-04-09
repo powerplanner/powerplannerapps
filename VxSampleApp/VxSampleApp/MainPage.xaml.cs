@@ -244,13 +244,15 @@ namespace VxSampleApp
         private VxState<string> _title;
         private VxState<string> _titleError = new VxState<string>(null);
         private VxState<string> _className;
+        private string[] _classes = new string[] { "No class", "Math", "Science", "CSC 121" };
+        private bool IsNoClassClass => _className.Value == "No class";
 
         public ViewItemTask TaskToEdit { get; set; }
 
         protected override void Initialize()
         {
             _title = new VxState<string>(TaskToEdit?.Title ?? "");
-            _className = new VxState<string>(TaskToEdit?.ClassName ?? "");
+            _className = new VxState<string>(TaskToEdit?.ClassName ?? "Math");
 
             base.Initialize();
         }
@@ -276,8 +278,10 @@ namespace VxSampleApp
                         {
                             Title = "Class name",
                             Margin = new Thickness(0,12,0,0),
-                            ItemsSource = new string[] { "Math", "Science", "CSC 121" }
-                        },
+                            ItemsSource = _classes
+                        }.BindSelectedItem(_className),
+
+                        new Label { Text = "Include no class options", IsVisible = IsNoClassClass },
 
                         new Button
                         {
