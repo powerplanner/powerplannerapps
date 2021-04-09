@@ -53,6 +53,11 @@ namespace Vx.Views
 
             if (BindingContext is INotifyPropertyChanged newValPropChanged)
             {
+                if (_propertyValuePropertyChangedHandler == null)
+                {
+                    _propertyValuePropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(PropertyValue_PropertyChanged).Handler;
+                }
+
                 SubscribeToPropertyValue(newValPropChanged);
             }
 
