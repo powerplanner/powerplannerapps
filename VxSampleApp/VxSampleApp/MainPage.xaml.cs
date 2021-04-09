@@ -177,6 +177,11 @@ namespace VxSampleApp
             get => GetValue<ViewItemClass>();
             set => SetValue(value);
         }
+        public DateTime Date
+        {
+            get => GetValueOrDefault<DateTime>(DateTime.Today);
+            set => SetValue(value);
+        }
 
         public override string ToString()
         {
@@ -268,7 +273,7 @@ namespace VxSampleApp
                                         HeightRequest = 20
                                     },
 
-                                    new Label { Text = task.Title + " - " + task.Class.Name }
+                                    new Label { Text = task.Title + " - " + task.Class.Name + " due "+ task.Date }
                                 },
                                 Margin = new Thickness(12)
                             };
@@ -321,6 +326,7 @@ namespace VxSampleApp
         private VxSilentState<string> _title;
         private VxState<string> _titleError = new VxState<string>(null);
         private VxState<ViewItemClass> _class;
+        private VxSilentState<DateTime> _date;
         private bool IsNoClassClass => _class.Value?.Name == "No class";
 
         public ViewItemTask TaskToEdit { get; set; }
@@ -329,6 +335,7 @@ namespace VxSampleApp
         {
             _title = new VxSilentState<string>(TaskToEdit?.Title ?? "");
             _class = new VxState<ViewItemClass>(TaskToEdit?.Class ?? Classes.Value[1]);
+            _date = new VxSilentState<DateTime>(TaskToEdit?.Date ?? DateTime.Today);
 
             base.Initialize();
         }
@@ -365,6 +372,12 @@ namespace VxSampleApp
 
                         new Label { Text = "Include no class options", IsVisible = IsNoClassClass },
 
+                        new Label { Text = "Date", Margin = new Thickness(0,12,0,0) },
+                        new DatePicker
+                        {
+                            
+                        }.BindDate(_date),
+
                         new Button
                         {
                             Text = "Save",
@@ -394,13 +407,15 @@ namespace VxSampleApp
             {
                 TaskToEdit.Title = _title.Value;
                 TaskToEdit.Class = _class.Value;
+                TaskToEdit.Date = _date.Value;
             }
             else
             {
                 VxMainPage.Tasks.Add(new ViewItemTask
                 {
                     Title = _title.Value,
-                    Class = _class.Value
+                    Class = _class.Value,
+                    Date = _date.Value
                 });
             }
 

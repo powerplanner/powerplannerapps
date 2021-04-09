@@ -28,5 +28,15 @@ namespace Vx.Views
 
             return picker;
         }
+
+        public static T BindDate<T>(this T picker, VxState<DateTime> state) where T : DatePicker
+        {
+            VxBindings.SetBinding(picker, DatePicker.DateProperty, new VxBinding()
+            {
+                State = state
+            });
+
+            return picker;
+        }
     }
 }
