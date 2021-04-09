@@ -13,7 +13,7 @@ namespace Vx.Views
             return listView;
         }
 
-        public static readonly BindableProperty BindSelectedItemProperty = BindableProperty.CreateAttached(nameof(BindSelectedItem), typeof(VxState), typeof(VxListViewExtensions), null, defaultBindingMode: BindingMode.OneTime, propertyChanged: BindSelectedItemChanged);
+        public static readonly BindableProperty BindSelectedItemProperty = BindableProperty.CreateAttached(nameof(BindSelectedItem), typeof(VxState), typeof(VxListViewExtensions), null, propertyChanged: BindSelectedItemChanged);
 
         public static VxState GetBindSelectedItem(BindableObject target)
         {

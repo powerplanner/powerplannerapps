@@ -272,11 +272,12 @@ namespace VxSampleApp
                         }.BindText(_title, VxBindingMode.Silent),
                         new Label { Text = _titleError.Value, TextColor = Color.Red, IsVisible = _titleError.Value != null },
 
-                        new Label { Text = "Class name", Margin = new Thickness(0,12,0,0) },
-                        new Entry
+                        new Picker
                         {
-
-                        }.BindText(_className, VxBindingMode.Silent),
+                            Title = "Class name",
+                            Margin = new Thickness(0,12,0,0),
+                            ItemsSource = new string[] { "Math", "Science", "CSC 121" }
+                        },
 
                         new Button
                         {

@@ -496,10 +496,8 @@ namespace Vx.Views
 #endif
             }
 
-            if (oldView is Entry oldEntry && newView is Entry newEntry)
-            {
-                VxInputViewExtensions.SetBindText(oldEntry, VxInputViewExtensions.GetBindText(newEntry));
-            }
+            // Transfer bindings
+            VxBindings.TransferBindings(newView, oldView);
 
             // Handle ListView ItemSelected
             //if (newView is ListView newListView)
