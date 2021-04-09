@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PowerPlannerApp.Exceptions
+{
+    public class SemesterNotFoundException : Exception
+    {
+        public SemesterNotFoundException() : base("Semester couldn't be found") { }
+    }
+}

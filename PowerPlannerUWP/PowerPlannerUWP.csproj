@@ -1053,10 +1053,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BareMvvm.Forms\BareMvvm.Forms.csproj">
-      <Project>{20FAFED2-34F6-4C81-A069-65F3577CA331}</Project>
-      <Name>BareMvvm.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InterfacesUWP\InterfacesUWP\InterfacesUWP.csproj">
       <Project>{4a105de9-fb7d-446f-88b5-01338b38c920}</Project>
       <Name>InterfacesUWP</Name>

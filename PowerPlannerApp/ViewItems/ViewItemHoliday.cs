@@ -1,0 +1,41 @@
+﻿using PowerPlannerApp.ViewItems.BaseViewItems;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using PowerPlannerApp.DataLayer.DataItems.BaseItems;
+using PowerPlannerApp.DataLayer.DataItems;
+
+namespace PowerPlannerApp.ViewItems
+{
+    public class ViewItemHoliday : BaseViewItemMegaItem
+    {
+        public ViewItemHoliday(BaseDataItemHomeworkExamGrade dataItem) : base(dataItem)
+        {
+
+        }
+
+        private DateTime _endTime;
+        public DateTime EndTime
+        {
+            get { return _endTime; }
+            private set { SetProperty(ref _endTime, value, nameof(EndTime)); }
+        }
+
+        public bool IsOnDay(DateTime day)
+        {
+            return day <= EndTime.Date && day >= Date.Date;
+        }
+
+        protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
+        {
+            var megaItem = dataItem as DataItemMegaItem;
+
+            // We don't localize holidays since they're just raw dates
+            EndTime = DateTime.SpecifyKind(megaItem.EndTime, DateTimeKind.Local);
+
+            base.PopulateFromDataItemOverride(dataItem);
+        }
+    }
+}
