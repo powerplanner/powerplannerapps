@@ -322,6 +322,7 @@ namespace Vx.Views
         private static Type _pickerType = typeof(Picker);
         private static Type _resourceDictionaryType = typeof(ResourceDictionary);
         private static Type _vxComponentType = typeof(VxComponent);
+        private static Type _imageSourceType = typeof(ImageSource);
 
         /// <summary>
         ///  Properties that shouldn't be set (for internal renderer use only)
@@ -488,6 +489,12 @@ namespace Vx.Views
                                     }
                                     break;
                             }
+                        }
+
+                        // Don't re-assign ImageSources
+                        if (prop.PropertyType == _imageSourceType)
+                        {
+                            continue;
                         }
 
                         // For ListView, if ItemsSource was set, and is changing to a different list and had a currently selected item
