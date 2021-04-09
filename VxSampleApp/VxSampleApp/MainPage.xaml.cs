@@ -206,6 +206,48 @@ namespace VxSampleApp
 
     public class AgendaPage : VxComponent
     {
+        private Lazy<DataTemplate> _taskDataTemplate = new Lazy<DataTemplate>(() => new DataTemplate(() =>
+        {
+            var rect = new Xamarin.Forms.Shapes.Rectangle
+            {
+                WidthRequest = 20,
+                HeightRequest = 20
+            };
+            rect.SetBinding(Xamarin.Forms.Shapes.Rectangle.FillProperty, new Binding()
+            {
+                Path = "Class.Color"
+            });
+
+            var tb = new Label();
+            tb.SetBinding(Label.TextProperty, new Binding()
+            {
+                Path = nameof(ViewItemTask.Title)
+            });
+
+            var c = new Label();
+            c.SetBinding(Label.TextProperty, new Binding()
+            {
+                Path = "Class.Name"
+            });
+
+            var sp = new StackLayout
+            {
+                Orientation = StackOrientation.Horizontal,
+                Children =
+                                {
+                                    rect,
+                                    tb,
+                                    c
+                                },
+                Margin = new Thickness(12)
+            };
+
+            return new ViewCell()
+            {
+                View = sp
+            };
+        }));
+
         protected override View Render()
         {
             return new Grid
@@ -226,7 +268,8 @@ namespace VxSampleApp
                     new ListView
                     {
                         ItemsSource = VxMainPage.Tasks,
-                        SelectionMode = ListViewSelectionMode.None
+                        SelectionMode = ListViewSelectionMode.None,
+                        ItemTemplate = _taskDataTemplate.Value
                     }.ItemTap(TaskItemTap).Row(1)
                 }
             };
@@ -287,10 +330,10 @@ namespace VxSampleApp
             base.Initialize();
         }
 
-        private Binding _pickerDisplayBinding = new Binding()
+        private Lazy<Binding> _pickerDisplayBinding = new Lazy<Binding>(() => new Binding()
         {
             Path = nameof(ViewItemClass.Name)
-        };
+        });
 
         protected override View Render()
         {
@@ -314,7 +357,7 @@ namespace VxSampleApp
                             Title = "Class name",
                             Margin = new Thickness(0,12,0,0),
                             ItemsSource = Classes.Value,
-                            ItemDisplayBinding = _pickerDisplayBinding
+                            ItemDisplayBinding = _pickerDisplayBinding.Value
                         }.BindSelectedItem(_class),
 
                         new Label { Text = "Include no class options", IsVisible = IsNoClassClass },
