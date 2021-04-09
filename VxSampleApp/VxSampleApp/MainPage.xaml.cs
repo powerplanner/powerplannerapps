@@ -204,50 +204,35 @@ namespace VxSampleApp
         }
     }
 
-    public class AgendaPage : VxComponent
+    public class ListItemTask : VxComponent
     {
-        private Lazy<DataTemplate> _taskDataTemplate = new Lazy<DataTemplate>(() => new DataTemplate(() =>
+        private ViewItemTask Task => BindingContext as ViewItemTask;
+
+        protected override bool IsDependentOnBindingContext => true;
+
+        protected override View Render()
         {
-            var rect = new Xamarin.Forms.Shapes.Rectangle
-            {
-                WidthRequest = 20,
-                HeightRequest = 20
-            };
-            rect.SetBinding(Xamarin.Forms.Shapes.Rectangle.FillProperty, new Binding()
-            {
-                Path = "Class.Color"
-            });
-
-            var tb = new Label();
-            tb.SetBinding(Label.TextProperty, new Binding()
-            {
-                Path = nameof(ViewItemTask.Title)
-            });
-
-            var c = new Label();
-            c.SetBinding(Label.TextProperty, new Binding()
-            {
-                Path = "Class.Name"
-            });
-
-            var sp = new StackLayout
+            return new StackLayout
             {
                 Orientation = StackOrientation.Horizontal,
                 Children =
-                                {
-                                    rect,
-                                    tb,
-                                    c
-                                },
+                {
+                    new Xamarin.Forms.Shapes.Rectangle
+                    {
+                        Fill = new SolidColorBrush(Task.Class.Color),
+                        WidthRequest = 20,
+                        HeightRequest = 20
+                    },
+
+                    new Label { Text = Task.Title + " - " + Task.Class.Name }
+                },
                 Margin = new Thickness(12)
             };
+        }
+    }
 
-            return new ViewCell()
-            {
-                View = sp
-            };
-        }));
-
+    public class AgendaPage : VxComponent
+    {
         protected override View Render()
         {
             return new Grid
@@ -269,7 +254,25 @@ namespace VxSampleApp
                     {
                         ItemsSource = VxMainPage.Tasks,
                         SelectionMode = ListViewSelectionMode.None,
-                        ItemTemplate = _taskDataTemplate.Value
+                        ItemTemplate = CreateViewCellItemTemplate<ViewItemTask>("taskItemTemplate", task =>
+                        {
+                            return new StackLayout
+                            {
+                                Orientation = StackOrientation.Horizontal,
+                                Children =
+                                {
+                                    new Xamarin.Forms.Shapes.Rectangle
+                                    {
+                                        Fill = new SolidColorBrush(task.Class.Color),
+                                        WidthRequest = 20,
+                                        HeightRequest = 20
+                                    },
+
+                                    new Label { Text = task.Title + " - " + task.Class.Name }
+                                },
+                                Margin = new Thickness(12)
+                            };
+                        })
                     }.ItemTap(TaskItemTap).Row(1)
                 }
             };

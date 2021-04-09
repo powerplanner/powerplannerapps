@@ -37,6 +37,31 @@ namespace Vx.Views
             }
         }
 
+        protected virtual bool IsDependentOnBindingContext => false;
+
+        private object _oldBindingContext;
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+
+            if (_oldBindingContext is INotifyPropertyChanged oldValPropChanged)
+            {
+                UnsubscribeToPropertyValue(oldValPropChanged);
+            }
+
+            _oldBindingContext = BindingContext;
+
+            if (BindingContext is INotifyPropertyChanged newValPropChanged)
+            {
+                SubscribeToPropertyValue(newValPropChanged);
+            }
+
+            if (IsDependentOnBindingContext && BindingContext != null)
+            {
+                InitializeForDisplay();
+            }
+        }
+
         private void InitializeRootComponent()
         {
             if (_hasInitializedForDisplay)
@@ -110,6 +135,11 @@ namespace Vx.Views
         private bool _hasInitializedForDisplay;
         private void InitializeForDisplay()
         {
+            if (IsDependentOnBindingContext && BindingContext == null)
+            {
+                return;
+            }
+
             if (_hasInitializedForDisplay)
             {
                 return;
@@ -184,6 +214,24 @@ namespace Vx.Views
             return new VxCommand(action);
         }
 
+        private Dictionary<string, DataTemplate> _dataTemplates;
+        protected DataTemplate CreateViewCellItemTemplate<T>(string templateName, Func<T, View> render)
+        {
+            if (_dataTemplates == null)
+            {
+                _dataTemplates = new Dictionary<string, DataTemplate>();
+            }
+
+            if (_dataTemplates.TryGetValue(templateName, out DataTemplate existing))
+            {
+                return existing;
+            }
+
+            var newTemplate = new VxViewCellItemTemplate<T>(render);
+            _dataTemplates[templateName] = newTemplate;
+            return newTemplate;
+        }
+
         private void SubscribeToStates()
         {
             var stateType = typeof(VxState);
@@ -219,6 +267,11 @@ namespace Vx.Views
         private void SubscribeToPropertyValue(INotifyPropertyChanged propertyValue)
         {
             propertyValue.PropertyChanged += _propertyValuePropertyChangedHandler;
+        }
+
+        private void UnsubscribeToPropertyValue(INotifyPropertyChanged propertyValue)
+        {
+            propertyValue.PropertyChanged -= _propertyValuePropertyChangedHandler;
         }
 
         private void PropertyValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -491,11 +544,20 @@ namespace Vx.Views
                                     // Transfer the value and mark dirty
                                     prop.SetValue(oldView, newVal);
                                     existingComponent.MarkDirty();
-                                    
-                                    // And subscribe to that property
-                                    if (newVal is INotifyPropertyChanged newValPropChanged && prop.GetCustomAttribute<VxSubscribeAttribute>() != null)
+
+                                    if (prop.GetCustomAttribute<VxSubscribeAttribute>() != null)
                                     {
-                                        existingComponent.SubscribeToPropertyValue(newValPropChanged);
+                                        // Unsubscribe from old property
+                                        if (oldVal is INotifyPropertyChanged oldValPropChanged)
+                                        {
+                                            existingComponent.UnsubscribeToPropertyValue(oldValPropChanged);
+                                        }
+
+                                        // And subscribe to that property
+                                        if (newVal is INotifyPropertyChanged newValPropChanged)
+                                        {
+                                            existingComponent.SubscribeToPropertyValue(newValPropChanged);
+                                        }
                                     }
                                 }
                             }
