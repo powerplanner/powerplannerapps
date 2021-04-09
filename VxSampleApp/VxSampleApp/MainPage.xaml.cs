@@ -41,6 +41,17 @@ namespace VxSampleApp
         }
     }
 
+    public static class Classes
+    {
+        public static ObservableCollection<ViewItemClass> Value = new ObservableCollection<ViewItemClass>
+        {
+            new ViewItemClass() { Name = "No class", Color = Color.Blue },
+            new ViewItemClass() { Name = "Math", Color = Color.DarkBlue },
+            new ViewItemClass() { Name = "Science", Color = Color.Red },
+            new ViewItemClass { Name = "CSC 121", Color = Color.Green }
+        };
+    }
+
     public class VxMainPage : VxPageWithPopups
     {
         public static VxMainPage Current { get; private set; }
@@ -50,19 +61,19 @@ namespace VxSampleApp
             new ViewItemTask()
             {
                 Title = "Task 1",
-                ClassName = "Class A"
+                Class = Classes.Value[1]
             },
 
             new ViewItemTask()
             {
                 Title = "Task 2",
-                ClassName = "Class A"
+                Class = Classes.Value[1]
             },
 
             new ViewItemTask()
             {
                 Title = "Task 3",
-                ClassName = "Class B"
+                Class = Classes.Value[2]
             }
         };
 
@@ -161,15 +172,35 @@ namespace VxSampleApp
             get => GetValue<string>();
             set => SetValue(value);
         }
-        public string ClassName
+        public ViewItemClass Class
         {
-            get => GetValue<string>();
+            get => GetValue<ViewItemClass>();
             set => SetValue(value);
         }
 
         public override string ToString()
         {
-            return Title + " - " + ClassName;
+            return Title + " - " + Class.Name;
+        }
+    }
+
+    public class ViewItemClass : BindableBase
+    {
+        public string Name
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
+
+        public Color Color
+        {
+            get => GetValue<Color>();
+            set => SetValue(value);
+        }
+
+        public override string ToString()
+        {
+            return Name + " (ToString)";
         }
     }
 
@@ -231,7 +262,7 @@ namespace VxSampleApp
                     Children =
                     {
                         new Label { Text = Task.Title },
-                        new Label { Text = Task.ClassName },
+                        new Label { Text = Task.Class.Name },
                         new Button { Text = "Edit task", Command = CreateCommand(() => ShowPopup(new AddTaskPage { TaskToEdit = Task }))}
                     }
                 }
@@ -241,21 +272,25 @@ namespace VxSampleApp
 
     public class AddTaskPage : VxPage
     {
-        private VxState<string> _title;
+        private VxSilentState<string> _title;
         private VxState<string> _titleError = new VxState<string>(null);
-        private VxState<string> _className;
-        private string[] _classes = new string[] { "No class", "Math", "Science", "CSC 121" };
-        private bool IsNoClassClass => _className.Value == "No class";
+        private VxState<ViewItemClass> _class;
+        private bool IsNoClassClass => _class.Value?.Name == "No class";
 
         public ViewItemTask TaskToEdit { get; set; }
 
         protected override void Initialize()
         {
-            _title = new VxState<string>(TaskToEdit?.Title ?? "");
-            _className = new VxState<string>(TaskToEdit?.ClassName ?? "Math");
+            _title = new VxSilentState<string>(TaskToEdit?.Title ?? "");
+            _class = new VxState<ViewItemClass>(TaskToEdit?.Class ?? Classes.Value[1]);
 
             base.Initialize();
         }
+
+        private Binding _pickerDisplayBinding = new Binding()
+        {
+            Path = nameof(ViewItemClass.Name)
+        };
 
         protected override View Render()
         {
@@ -271,15 +306,16 @@ namespace VxSampleApp
                         new Entry
                         {
                             
-                        }.BindText(_title, VxBindingMode.Silent),
+                        }.BindText(_title),
                         new Label { Text = _titleError.Value, TextColor = Color.Red, IsVisible = _titleError.Value != null },
 
                         new Picker
                         {
                             Title = "Class name",
                             Margin = new Thickness(0,12,0,0),
-                            ItemsSource = _classes
-                        }.BindSelectedItem(_className),
+                            ItemsSource = Classes.Value,
+                            ItemDisplayBinding = _pickerDisplayBinding
+                        }.BindSelectedItem(_class),
 
                         new Label { Text = "Include no class options", IsVisible = IsNoClassClass },
 
@@ -302,23 +338,23 @@ namespace VxSampleApp
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(_className.Value))
+            if (_class.Value == null)
             {
-                new PortableMessageDialog("Class name is required").Show();
+                new PortableMessageDialog("Class is required").Show();
                 return;
             }
 
             if (TaskToEdit != null)
             {
                 TaskToEdit.Title = _title.Value;
-                TaskToEdit.ClassName = _className.Value;
+                TaskToEdit.Class = _class.Value;
             }
             else
             {
                 VxMainPage.Tasks.Add(new ViewItemTask
                 {
                     Title = _title.Value,
-                    ClassName = _className.Value
+                    Class = _class.Value
                 });
             }
 

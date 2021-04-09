@@ -261,6 +261,7 @@ namespace Vx.Views
         private static Type _iVisualType = typeof(IVisual);
         private static Type _entryType = typeof(Entry);
         private static Type _listViewType = typeof(ListView);
+        private static Type _pickerType = typeof(Picker);
         private static Type _resourceDictionaryType = typeof(ResourceDictionary);
         private static Type _vxComponentType = typeof(VxComponent);
 
@@ -400,13 +401,34 @@ namespace Vx.Views
                             }
                         }
 
-                        // Don't assign ListView ItemSelected
+                        // Don't assign ListView SelectedItem
                         if (prop.DeclaringType == _listViewType)
                         {
                             switch (prop.Name)
                             {
                                 case nameof(ListView.SelectedItem):
                                     continue;
+                            }
+                        }
+
+                        // Don't assign Picker SelectedItem or SelectedIndex
+                        if (prop.DeclaringType == _pickerType)
+                        {
+                            switch (prop.Name)
+                            {
+                                case nameof(Picker.SelectedItem):
+                                case nameof(Picker.SelectedIndex):
+                                    continue;
+
+                                case nameof(Picker.ItemDisplayBinding):
+                                    if (!object.ReferenceEquals(prop.GetValue(oldView), prop.GetValue(newView)))
+                                    {
+#if DEBUG
+                                        System.Diagnostics.Debugger.Break();
+#endif
+                                        throw new InvalidOperationException("Changing ItemDisplayBinding isn't supported. You should define this as a field and re-use the same value in each Render.");
+                                    }
+                                    break;
                             }
                         }
 

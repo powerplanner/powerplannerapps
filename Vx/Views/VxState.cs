@@ -22,7 +22,11 @@ namespace Vx.Views
                 if (!object.Equals(_value, value))
                 {
                     _value = value;
-                    ValueChanged?.Invoke(this, new EventArgs());
+
+                    if (!Silent)
+                    {
+                        ValueChanged?.Invoke(this, new EventArgs());
+                    }
                 }
             }
         }
@@ -31,6 +35,8 @@ namespace Vx.Views
         {
             _value = value;
         }
+
+        protected virtual bool Silent { get => false; }
     }
 
     public class VxState<T> : VxState
@@ -49,6 +55,16 @@ namespace Vx.Views
         public void SetValueSilently(T value)
         {
             base.SetValueSilently(value);
+        }
+    }
+
+    public class VxSilentState<T> : VxState<T>
+    {
+        protected override bool Silent => true;
+
+        public VxSilentState(T value = default(T)) : base(value)
+        {
+
         }
     }
 }
