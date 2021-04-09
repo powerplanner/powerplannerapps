@@ -63,5 +63,20 @@ namespace Vx.Views
             // Otherwise continue with sending it upward
             base.RemovePage(page);
         }
+
+        protected virtual void ClearPopups()
+        {
+            if (_hasRenderedContent)
+            {
+                while (_rootGrid.Children.Count > 1)
+                {
+                    _rootGrid.Children.RemoveAt(1);
+                }
+            }
+            else
+            {
+                _rootGrid.Children.Clear();
+            }
+        }
     }
 }
