@@ -1,4 +1,5 @@
-﻿using PowerPlannerApp.ViewItems;
+﻿using MaterialDesign;
+using PowerPlannerApp.ViewItems;
 using PowerPlannerApp.Views;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,26 @@ namespace PowerPlannerApp.Pages
             return new PopupWindow
             {
                 Title = PageTitle,
+                Commands = new PopupWindowCommand[]
+                {
+                    new PopupWindowCommand
+                    {
+                        Glyph = MaterialDesignIcons.Edit,
+                        Title = "Edit",
+                        Action = Edit
+                    }
+                },
+                SecondaryCommands = new PopupWindowCommand[]
+                {
+                    new PopupWindowCommand
+                    {
+                        Title = "Convert to event"
+                    },
+                    new PopupWindowCommand
+                    {
+                        Title = "Delete"
+                    }
+                },
                 Content = new Grid
                 {
                     RowDefinitions =
