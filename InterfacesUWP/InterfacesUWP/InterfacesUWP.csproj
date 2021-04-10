@@ -98,6 +98,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AppWindows\NativeUwpAppWindow.cs" />
     <Compile Include="ArrowButtonFolder\ArrowButtonBase.cs" />
     <Compile Include="Brushes.cs" />
     <Compile Include="ButtonGenerator.cs" />
@@ -221,6 +222,20 @@
       <DependentUpon>VerticalProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewLifetimeControl.cs" />
+    <Compile Include="ViewModelPresenters\GenericViewModelPresenter.xaml.cs">
+      <DependentUpon>GenericViewModelPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\PagedViewModelPresenter.xaml.cs">
+      <DependentUpon>PagedViewModelPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.xaml.cs">
+      <DependentUpon>PagedViewModelWithPopupsPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\PopupsPresenter.xaml.cs">
+      <DependentUpon>PopupsPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
+    <Compile Include="Views\ViewHostGeneric.cs" />
     <Compile Include="WeakTypedEventHandler.cs" />
     <Compile Include="WebOverlay.cs" />
     <Compile Include="ZoomableImageFolder\ZoomableImage.xaml.cs">
@@ -273,6 +288,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ViewModelPresenters\GenericViewModelPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModelPresenters\PagedViewModelPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModelPresenters\PopupsPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ZoomableImageFolder\ZoomableImage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -282,6 +313,14 @@
     <ProjectReference Include="$(SolutionDir)\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BareMvvm.Forms\BareMvvm.Forms.csproj">
+      <Project>{20fafed2-34f6-4c81-a069-65f3577ca331}</Project>
+      <Name>BareMvvm.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
+      <Project>{09c954a6-b487-422c-9240-4a82a83ce09c}</Project>
+      <Name>BareMvvm.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
       <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>

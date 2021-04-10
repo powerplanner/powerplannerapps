@@ -25,7 +25,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using PowerPlannerUWP.Extensions;
 using StorageEverywhere;
-using InterfacesUWP.App;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
@@ -273,6 +272,8 @@ namespace PowerPlannerUWP
                     };
 
                     Xamarin.Forms.Forms.Init(e);
+
+                    var frame = new Frame();
 
                     // This configures the view models, does NOT call Activate yet
                     var nativeWindow = new NativeUwpAppWindow();

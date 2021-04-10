@@ -1,5 +1,4 @@
 ﻿using InterfacesUWP;
-using InterfacesUWP.App;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -49,7 +48,7 @@ namespace PowerPlannerUWP
             };
 
             // Have to initialize dispatcher so that some sort of dispatcher is registered for background task
-            PortableDispatcher.ObtainDispatcherFunction = () => { return new UwpDispatcher(); };
+            //PortableDispatcher.ObtainDispatcherFunction = () => { return new UwpDispatcher(); };
             LocalizationExtension.Current = new UWPLocalizationExtension();
             TelemetryExtension.Current = new UWPTelemetryExtension();
             InAppPurchaseExtension.Current = new UWPInAppPurchaseExtension();
