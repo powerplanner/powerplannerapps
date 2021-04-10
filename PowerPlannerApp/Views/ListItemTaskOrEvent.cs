@@ -1,4 +1,5 @@
-﻿using PowerPlannerApp.ViewItems;
+﻿using PowerPlannerApp.Pages;
+using PowerPlannerApp.ViewItems;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,16 +24,25 @@ namespace PowerPlannerApp.Views
                 {
                     new StackLayout
                     {
+                        Spacing = 0,
                         Children =
                         {
-                            new Label { Text = BindingContext.Name },
-                            new Label { Text = BindingContext.Subtitle },
-                            new Label { Text = BindingContext.Details, IsVisible = !string.IsNullOrWhiteSpace(BindingContext.Details) }
+                            new Label { Text = BindingContext.Name, MaxLines = 1, FontAttributes = FontAttributes.Bold },
+                            new Label { Text = BindingContext.Subtitle, MaxLines = 1 },
+                            new Label { Text = BindingContext.Details, IsVisible = !string.IsNullOrWhiteSpace(BindingContext.Details), MaxLines = 1 }
                         }
 
                     }.Column(1)
                 }
-            };
+            }.Tap(ShowItem);
+        }
+
+        private void ShowItem()
+        {
+            ShowPopup(new ViewTaskOrEventPage()
+            {
+                Item = BindingContext
+            });
         }
     }
 }
