@@ -2,6 +2,7 @@
 using PowerPlannerApp.Extensions;
 using PowerPlannerApp.SyncLayer;
 using PowerPlannerApp.ViewItems;
+using PowerPlannerApp.ViewLists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,6 +103,119 @@ namespace PowerPlannerApp.App
             return c.Schedules.Any(s =>
                     s.DayOfWeek == date.DayOfWeek
                     && (s.ScheduleWeek == PowerPlannerSending.Schedule.Week.BothWeeks || s.ScheduleWeek == currWeek));
+        }
+
+        /// <summary>
+        /// Finds the next date that the class occurs on. If the class already started today, returns the
+        /// NEXT instance of that class.
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static DateTime? GetNextClassDate(AccountDataItem account, ViewItemClass c)
+        {
+            if (c.Schedules == null || c.Schedules.Count == 0)
+            {
+                return null;
+            }
+
+            var now = DateTime.Now;
+            DateTime date = now.Date;
+
+            // Look up to 2 weeks (and one day) in advance
+            // We include the extra one day since if the class is currently going on, we want the NEXT instance of that class,
+            // which could possibly be 2 weeks out
+            for (int i = 0; i < 15; i++, date = date.AddDays(1))
+            {
+                var currWeek = account.GetWeekOnDifferentDate(date);
+
+                // If there's a schedule on that day
+                // (If it's not today, then we're good... otherwise if it's today,
+                // make sure that the class hasn't started yet - if it started, we want the NEXT instance of the class)
+                if (c.Schedules.Any(s =>
+                    s.DayOfWeek == date.DayOfWeek
+                    && (s.ScheduleWeek == PowerPlannerSending.Schedule.Week.BothWeeks || s.ScheduleWeek == currWeek)
+                    && (date.Date != now.Date || s.StartTime.TimeOfDay > now.TimeOfDay)))
+                {
+                    return date;
+                }
+            }
+
+            return null;
+        }
+
+        public static ViewItemClass GetFirstClassOnDay(DateTime date, AccountDataItem account, IEnumerable<ViewItemClass> classes)
+        {
+            if (classes == null)
+                return null;
+
+            var currWeek = account.GetWeekOnDifferentDate(date);
+
+            var schedules = SchedulesOnDay.Get(account, classes, date, currWeek, trackChanges: false);
+
+            return schedules.FirstOrDefault()?.Class;
+        }
+
+        public static ViewItemClass GetClosestClassBasedOnSchedule(DateTime now, AccountDataItem account, IEnumerable<ViewItemClass> classes)
+        {
+            if (classes == null)
+                return null;
+
+            var currWeek = account.GetWeekOnDifferentDate(now);
+
+            var schedules = SchedulesOnDay.Get(account, classes, now, currWeek, trackChanges: false);
+
+            ViewItemSchedule closestBefore = null;
+            ViewItemSchedule closestAfter = null;
+
+            //look through all schedules
+            foreach (var s in schedules)
+            {
+                //if the class is currently going on
+                if (now.TimeOfDay >= s.StartTime.TimeOfDay && now.TimeOfDay <= s.EndTime.TimeOfDay)
+                {
+                    return s.Class;
+                }
+
+                //else if the class is in the future, we instantly select it for the after class since it's sorted from earliest to latest
+                else if (s.StartTime.TimeOfDay >= now.TimeOfDay)
+                {
+                    // Make sure it's only 10 mins after
+                    if ((s.StartTime.TimeOfDay - now.TimeOfDay) < TimeSpan.FromMinutes(10))
+                    {
+                        closestAfter = s;
+                    }
+
+                    // Regardless we break
+                    break;
+                }
+
+                else
+                {
+                    // Make sure it's only 10 mins before
+                    if ((now.TimeOfDay - s.EndTime.TimeOfDay) < TimeSpan.FromMinutes(10))
+                    {
+                        closestBefore = s;
+                    }
+                }
+            }
+
+            if (closestAfter == null && closestBefore == null)
+            {
+                return null;
+            }
+
+            else if (closestAfter == null)
+                return closestBefore.Class;
+
+            else if (closestBefore == null)
+                return closestAfter.Class;
+
+            else if ((now.TimeOfDay - closestBefore.EndTime.TimeOfDay) < (closestAfter.StartTime.TimeOfDay - now.TimeOfDay))
+                return closestBefore.Class;
+
+            else
+                return closestAfter.Class;
         }
     }
 }
