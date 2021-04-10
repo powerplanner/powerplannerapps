@@ -22,7 +22,7 @@ namespace Vx.Views
             };
         }
 
-        private class ViewCellComponent : VxComponent
+        private class ViewCellComponent : VxBindingComponent<T>
         {
             private Func<T, View> _render;
             public ViewCellComponent(Func<T, View> render)
@@ -30,12 +30,28 @@ namespace Vx.Views
                 _render = render;
             }
 
-            protected override bool IsDependentOnBindingContext => true;
-
             protected override View Render()
             {
-                return _render((T)BindingContext);
+                return _render(BindingContext);
             }
+        }
+    }
+
+    internal class VxViewCellItemTemplateComponent<T, V> : DataTemplate where V : VxBindingComponent<T>
+    {
+        public VxViewCellItemTemplateComponent() : base(() => LoadTemplate())
+        {
+        }
+
+        private static ViewCell LoadTemplate()
+        {
+            var comp = Activator.CreateInstance<V>();
+            comp.IsRootComponent = true;
+
+            return new ViewCell
+            {
+                View = comp
+            };
         }
     }
 }

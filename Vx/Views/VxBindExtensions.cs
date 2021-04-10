@@ -38,5 +38,25 @@ namespace Vx.Views
 
             return picker;
         }
+
+        public static T BindCurrentItem<T>(this T carouselView, VxState state) where T : CarouselView
+        {
+            VxBindings.SetBinding(carouselView, CarouselView.CurrentItemProperty, new VxBinding
+            {
+                State = state
+            });
+
+            return carouselView;
+        }
+
+        public static T BindPosition<T>(this T carouselView, VxState<int> state) where T : CarouselView
+        {
+            VxBindings.SetBinding(carouselView, CarouselView.PositionProperty, new VxBinding
+            {
+                State = state
+            });
+
+            return carouselView;
+        }
     }
 }

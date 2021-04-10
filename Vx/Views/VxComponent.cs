@@ -237,6 +237,42 @@ namespace Vx.Views
             return newTemplate;
         }
 
+        protected DataTemplate CreateViewCellItemTemplate<T, V>() where V : VxBindingComponent<T>
+        {
+            if (_dataTemplates == null)
+            {
+                _dataTemplates = new Dictionary<string, DataTemplate>();
+            }
+
+            var templateName = typeof(V).FullName;
+
+            if (_dataTemplates.TryGetValue(templateName, out DataTemplate existing))
+            {
+                return existing;
+            }
+
+            var newTemplate = new VxViewCellItemTemplateComponent<T, V>();
+            _dataTemplates[templateName] = newTemplate;
+            return newTemplate;
+        }
+
+        protected DataTemplate CreateItemTemplate<T>(string templateName, Func<T, View> render)
+        {
+            if (_dataTemplates == null)
+            {
+                _dataTemplates = new Dictionary<string, DataTemplate>();
+            }
+
+            if (_dataTemplates.TryGetValue(templateName, out DataTemplate existing))
+            {
+                return existing;
+            }
+
+            var newTemplate = new VxItemTemplate<T>(render);
+            _dataTemplates[templateName] = newTemplate;
+            return newTemplate;
+        }
+
         private void SubscribeToStates()
         {
             var stateType = typeof(VxState);
@@ -323,6 +359,7 @@ namespace Vx.Views
         private static Type _resourceDictionaryType = typeof(ResourceDictionary);
         private static Type _vxComponentType = typeof(VxComponent);
         private static Type _imageSourceType = typeof(ImageSource);
+        private static Type _carouselViewType = typeof(CarouselView);
 
         /// <summary>
         ///  Properties that shouldn't be set (for internal renderer use only)
@@ -488,6 +525,17 @@ namespace Vx.Views
                                         throw new InvalidOperationException("Changing ItemDisplayBinding isn't supported. You should define this as a field and re-use the same value in each Render.");
                                     }
                                     break;
+                            }
+                        }
+
+                        // Don't assign CarouselView Position or CurrentItem
+                        if (prop.DeclaringType == _carouselViewType)
+                        {
+                            switch (prop.Name)
+                            {
+                                case nameof(CarouselView.Position):
+                                case nameof(CarouselView.CurrentItem):
+                                    continue;
                             }
                         }
 
