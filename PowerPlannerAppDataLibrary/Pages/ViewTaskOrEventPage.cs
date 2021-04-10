@@ -8,56 +8,57 @@ using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.Pages
 {
-    public class ViewTaskOrEventPage : VxViewModelPage<ViewTaskOrEventViewModel>
+    public class ViewTaskOrEventPage : VxPopupWindowPage<ViewTaskOrEventViewModel>
     {
-        protected override View Render()
+        protected override string Title => ViewModel.PageTitle;
+
+        protected override PopupWindowCommand[] Commands => new PopupWindowCommand[]
         {
-            return new PopupWindow
+            new PopupWindowCommand
             {
-                Title = ViewModel.PageTitle,
-                Commands = new PopupWindowCommand[]
-                {
-                    new PopupWindowCommand
-                    {
-                        Glyph = MaterialDesignIcons.Edit,
-                        Title = "Edit",
-                        Action = ViewModel.Edit
-                    }
-                },
-                SecondaryCommands = new PopupWindowCommand[]
-                {
-                    new PopupWindowCommand
-                    {
-                        Title = "Convert to event"
-                    },
-                    new PopupWindowCommand
-                    {
-                        Title = "Delete"
-                    }
-                },
-                Content = new Grid
-                {
-                    RowDefinitions =
-                    {
-                        new RowDefinition { Height = GridLength.Star },
-                        new RowDefinition { Height = GridLength.Auto }
-                    },
+                Glyph = MaterialDesignIcons.Edit,
+                Title = "Edit",
+                Action = ViewModel.Edit
+            }
+        };
 
-                    Children =
+        protected override PopupWindowCommand[] SecondaryCommands => new PopupWindowCommand[]
+        {
+            new PopupWindowCommand
+            {
+                Title = "Convert to event",
+                Action = ViewModel.ConvertType
+            },
+            new PopupWindowCommand
+            {
+                Title = "Delete"
+            }
+        };
+
+        protected override View RenderContent()
+        {
+            return new Grid
+            {
+                RowDefinitions =
+                {
+                    new RowDefinition { Height = GridLength.Star },
+                    new RowDefinition { Height = GridLength.Auto }
+                },
+
+                Children =
+                {
+                    new ScrollView
                     {
-                        new ScrollView
+                        Content = new StackLayout
                         {
-                            Content = new StackLayout
+                            Margin = new Thickness(12),
+                            Children =
                             {
-                                Margin = new Thickness(12),
-                                Children =
-                                {
-                                    new Label { Text = ViewModel.Item.Name, FontSize = 20 },
+                                new Label { Text = ViewModel.Item.Name, FontSize = 20 },
 
-                                    new Label { Text = ViewModel.Item.Subtitle },
+                                new Label { Text = ViewModel.Item.Subtitle },
 
-                                    new Label { Text = ViewModel.Item.Details }
-                                }
+                                new Label { Text = ViewModel.Item.Details }
                             }
                         }
                     }

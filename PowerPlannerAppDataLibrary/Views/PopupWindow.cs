@@ -34,32 +34,32 @@ namespace PowerPlannerAppDataLibrary.Views
                 return new Grid
                 {
                     Children =
-                {
-                    new Xamarin.Forms.Shapes.Rectangle
                     {
-                        Fill = new SolidColorBrush(new Color(0, 0, 0, 0.3))
-                    }.Tap(RemoveViewModel),
-
-                    new Grid()
-                    {
-                        HorizontalOptions = LayoutOptions.Center,
-                        VerticalOptions = LayoutOptions.Center,
-                        MinimumHeightRequest = 300,
-                        WidthRequest = 400,
-                        BackgroundColor = Color.White,
-                        RowDefinitions =
+                        new Xamarin.Forms.Shapes.Rectangle
                         {
-                            new RowDefinition { Height = GridLength.Auto },
-                            new RowDefinition { Height = GridLength.Star }
-                        },
-                        Children =
-                        {
-                            RenderTitleBar(),
+                            Fill = new SolidColorBrush(new Color(0, 0, 0, 0.3))
+                        }.Tap(RemoveViewModel),
 
-                            RenderContent().Row(1)
+                        new Grid()
+                        {
+                            HorizontalOptions = LayoutOptions.Center,
+                            VerticalOptions = LayoutOptions.Center,
+                            MinimumHeightRequest = 300,
+                            WidthRequest = 400,
+                            BackgroundColor = Color.White,
+                            RowDefinitions =
+                            {
+                                new RowDefinition { Height = GridLength.Auto },
+                                new RowDefinition { Height = GridLength.Star }
+                            },
+                            Children =
+                            {
+                                RenderTitleBar(),
+
+                                RenderContent().Row(1)
+                            }
                         }
                     }
-                }
                 };
             }
 
