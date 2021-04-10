@@ -143,7 +143,7 @@ namespace PowerPlannerUWP
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
-                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
+                // { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
                 { typeof(YearsViewModel), typeof(YearsView) },

@@ -1089,6 +1089,10 @@
       <Project>{48ddeb76-0fa6-47c7-801e-f9c1bc584649}</Project>
       <Name>UpgradeFromWin8</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{5853496a-9502-4281-974f-e548bd1f6951}</Project>
+      <Name>Vx</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="WindowsMobile, Version=10.0.18362.0">

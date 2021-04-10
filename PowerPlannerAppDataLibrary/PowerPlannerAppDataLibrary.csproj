@@ -21,6 +21,14 @@
     <Compile Remove="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
+    <None Remove="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\MaterialIcons-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup>

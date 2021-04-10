@@ -326,6 +326,10 @@
       <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
       <Name>ToolsUniversal</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Vx\Vx.csproj">
+      <Project>{5853496a-9502-4281-974f-e548bd1f6951}</Project>
+      <Name>Vx</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">

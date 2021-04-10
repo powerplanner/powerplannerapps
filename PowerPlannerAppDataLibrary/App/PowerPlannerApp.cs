@@ -3,6 +3,7 @@ using BareMvvm.Core.ViewModels;
 using BareMvvm.Forms.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Pages;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
@@ -522,7 +523,7 @@ namespace PowerPlannerAppDataLibrary.App
             return new Dictionary<Type, Type>()
             {
                 { typeof(MainScreenViewModel), typeof(MainScreenView) },
-                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) }, // Note that UWP is currently overriding this one
+                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventPage) },
                 { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) }
             };
         }

@@ -42,6 +42,11 @@ namespace BareMvvm.Forms.ViewModelPresenters
                 if (rawView is View formsView)
                 {
                     view = formsView;
+                    var rootProp = viewType.GetProperty("IsRootComponent");
+                    if (rootProp != null)
+                    {
+                        rootProp.SetValue(formsView, true);
+                    }
                 }
 
                 else
