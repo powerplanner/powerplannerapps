@@ -1,11 +1,15 @@
-﻿using PowerPlannerAppDataLibrary.App;
+﻿using BareMvvm.Core.ViewModels;
+using MaterialDesign;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
 using Vx.Views;
 using Xamarin.Forms;
 
@@ -107,6 +111,27 @@ namespace PowerPlannerAppDataLibrary.Pages.SettingsPages
                 });
             }
 
+            if (true)
+            {
+                stackLayout.Children.Add(new SettingsListItem
+                {
+                    Title = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Title"),
+                    Subtitle = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Subtitle"),
+                    IconGlyph = MaterialDesignIcons.Shop
+                });
+            }
+
+            if (HasAccount)
+            {
+                stackLayout.Children.Add(new SettingsListItem
+                {
+                    Title = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Title"),
+                    Subtitle = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Subtitle"),
+                    IconGlyph = MaterialDesignIcons.AccountCircle,
+                    Command = CreateCommand(OpenMyAccount)
+                });
+            }
+
             stackLayout.Children.Add(new Button
             {
                 Text = "Log out",
@@ -117,6 +142,71 @@ namespace PowerPlannerAppDataLibrary.Pages.SettingsPages
             {
                 Content = stackLayout
             };
+        }
+
+        public void OpenMyAccount()
+        {
+            Show(MyAccountViewModel.Load(ViewModel));
+        }
+
+        public void Show(BaseViewModel viewModel)
+        {
+            ViewModel.ShowPopup(viewModel);
+        }
+
+        private class SettingsListItem : VxComponent
+        {
+            public string Title { get; set; }
+
+            public string Subtitle { get; set; }
+
+            public string IconGlyph { get; set; }
+
+            public ICommand Command { get; set; }
+
+            protected override View Render()
+            {
+                return new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition { Width = 60 },
+                        new ColumnDefinition { Width = GridLength.Star }
+                    },
+                    RowDefinitions =
+                    {
+                        new RowDefinition { Height = GridLength.Auto },
+                        new RowDefinition { Height = GridLength.Auto }
+                    },
+
+                    Children =
+                    {
+                        new Image
+                        {
+                            Source = new FontImageSource
+                            {
+                                Glyph = IconGlyph,
+                                FontFamily = "MaterialIconsOutlined",
+                                Color = PowerPlannerColors.PowerPlannerBlue
+                            },
+                            Aspect = Aspect.AspectFit
+                        }.RowSpan(2),
+
+                        new Label
+                        {
+                            Text = Title,
+                            MaxLines = 1,
+                            FontAttributes = FontAttributes.Bold
+                        }.Column(1),
+
+                        new Label
+                        {
+                            Text = Subtitle,
+                            MaxLines = 1
+                        }.Column(1).Row(1)
+                    }
+                }.Tap(() => Command?.Execute(null));
+            }
         }
 
         public async void LogOut()
