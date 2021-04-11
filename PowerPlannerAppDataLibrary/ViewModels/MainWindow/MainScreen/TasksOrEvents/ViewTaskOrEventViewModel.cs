@@ -17,6 +17,9 @@ using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using BareMvvm.Core.Snackbar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using Xamarin.Forms;
+using PowerPlannerAppDataLibrary.Views.PowerPlannerAppDataLibrary.Views;
+using MaterialDesign;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -39,6 +42,63 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     return PowerPlannerResources.GetString("String_ViewEvent").ToUpper();
                 }
             }
+        }
+
+        protected override View Render()
+        {
+            return new PopupWindow
+            {
+                Title = PageTitle + " (ViewModel rendered)",
+                Commands = new PopupWindowCommand[]
+                {
+                    new PopupWindowCommand
+                    {
+                        Glyph = MaterialDesignIcons.Edit,
+                        Title = "Edit",
+                        Action = Edit
+                    }
+                },
+                SecondaryCommands = new PopupWindowCommand[]
+                {
+                    new PopupWindowCommand
+                    {
+                        Title = ConvertTypeButtonText,
+                        Action = ConvertType
+                    },
+                    new PopupWindowCommand
+                    {
+                        Title = "Delete",
+                        Action = Delete
+                    }
+                },
+                Content = new Grid
+                {
+                    RowDefinitions =
+                    {
+                        new RowDefinition { Height = GridLength.Star },
+                        new RowDefinition { Height = GridLength.Auto }
+                    },
+
+                    Children =
+                    {
+                        new ScrollView
+                        {
+                            Content = new StackLayout
+                            {
+                                Margin = new Thickness(12),
+                                Children =
+                                {
+                                    new Label { Text = Item.Name, FontSize = 20 },
+
+                                    new Label { Text = Item.Subtitle },
+
+                                    new Label { Text = Item.Details }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         private ViewTaskOrEventViewModel(BaseViewModel parent, ViewItemTaskOrEvent item) : base(parent)

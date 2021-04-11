@@ -4,6 +4,7 @@ using System.Text;
 
 namespace PowerPlannerAppDataLibrary.Views
 {
+    using BareMvvm.Core.ViewModels;
     using global::PowerPlannerAppDataLibrary.App;
     using global::PowerPlannerAppDataLibrary.Pages;
     using MaterialDesign;
@@ -81,6 +82,7 @@ namespace PowerPlannerAppDataLibrary.Views
                 }
             }
 
+            private View _secondaryButton;
             private View RenderTitleBar()
             {
                 var grid = new Grid
@@ -107,19 +109,20 @@ namespace PowerPlannerAppDataLibrary.Views
 
                 var cmds = new List<PopupWindowCommand>();
 
-                if (SecondaryCommands != null && SecondaryCommands.Length > 0)
+                bool hasSecondary = SecondaryCommands != null && SecondaryCommands.Length > 0;
+                if (hasSecondary)
                 {
-                    var popupMenu = new PopupMenu();
-                    popupMenu.ItemsSource = SecondaryCommands.Select(i => i.ToString()).ToList();
-                    popupMenu.OnItemSelected += PopupMenu_OnItemSelected;
-
                     cmds.Add(new PopupWindowCommand
                     {
                         Glyph = MaterialDesignIcons.MoreVert,
                         Title = "More",
                         Action = delegate
                         {
-                            popupMenu.ShowPopup(grid.Children[1]);
+                            var popupMenu = new PopupMenu();
+                            popupMenu.ItemsSource = SecondaryCommands.Select(i => i.ToString()).ToList();
+                            popupMenu.OnItemSelected += PopupMenu_OnItemSelected;
+
+                            popupMenu.ShowPopup(_secondaryButton);
                         }
                     });
                 }
@@ -140,6 +143,11 @@ namespace PowerPlannerAppDataLibrary.Views
                 {
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                     grid.Children.Add(CreatePrimaryCommand(cmd).Column(grid.ColumnDefinitions.Count - 1));
+
+                    if (hasSecondary && _secondaryButton == null)
+                    {
+                        _secondaryButton = grid.Children[1];
+                    }
                 }
 
                 return grid;
@@ -147,7 +155,7 @@ namespace PowerPlannerAppDataLibrary.Views
 
             private void RemoveViewModel()
             {
-                var viewModel = FindAncestor<VxViewModelPage>()?.ViewModel;
+                var viewModel = FindAncestor<BaseViewModel>();
 
                 if (viewModel == null)
                 {

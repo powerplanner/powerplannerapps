@@ -13,8 +13,12 @@ using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class MyAccountViewModel : BaseViewModel
+    public class MyAccountViewModel : PopupWindowViewModel
     {
+        protected override string Title => "My account";
+
+        protected override bool AutoScrollAndPad => true;
+
         private static DateTime _timeLastConfirmed = DateTime.MinValue;
         private static Guid _lastConfrimedAccountId;
 
@@ -25,7 +29,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         }
 
-        protected override View Render()
+        protected override View RenderContent()
         {
             return new StackLayout
             {
