@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
+using MaterialDesign;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
@@ -11,7 +12,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ToolsPortable;
+using Vx.Views;
+using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
@@ -24,7 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// <summary>
         /// Android sets this to true to have subpages appear as popups
         /// </summary>
-        public bool ShowAsPopups { get; set; }
+        public bool ShowAsPopups { get; set; } = true;
 
         public SettingsListViewModel(BaseViewModel parent) : base(parent)
         {
@@ -36,6 +40,167 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 Account.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Account_PropertyChanged).Handler;
                 UpdateFromAccount();
             }
+        }
+
+        protected override View Render()
+        {
+            var stackLayout = new StackLayout
+            {
+                Margin = new Thickness(20),
+                Spacing = 0
+            };
+
+            var followingItemMargin = new Thickness(0, 6, 0, 0);
+
+            if (HasAccount)
+            {
+                stackLayout.Children.Add(new Label
+                {
+                    Text = Account.Username,
+                    FontAttributes = FontAttributes.Bold
+                });
+
+                stackLayout.Children.Add(Separator());
+
+                stackLayout.Children.Add(new Label
+                {
+                    Text = CurrentSemesterText,
+                    MaxLines = 1,
+                    Margin = followingItemMargin
+                });
+
+                stackLayout.Children.Add(new Button
+                {
+                    Text = PowerPlannerResources.GetString("String_ViewYearsAndSemesters"),
+                    HorizontalOptions = LayoutOptions.Start,
+                    Command = CreateCommand(OpenYears),
+                    Margin = followingItemMargin
+                });
+
+                stackLayout.Children.Add(Separator());
+            }
+
+            if (IsOnlineAccount)
+            {
+                stackLayout.Children.Add(new Label
+                {
+                    Text = SyncStatusText,
+                    Margin = followingItemMargin
+                });
+
+                stackLayout.Children.Add(new StackLayout
+                {
+                    Orientation = StackOrientation.Horizontal,
+                    Children =
+                    {
+                        new Button
+                        {
+                            Text = "View errors",
+                            Command = CreateCommand(ViewSyncErrors),
+                            IsVisible = SyncHasError
+                        },
+
+                        new Button
+                        {
+                            Text = SyncButtonText,
+                            IsEnabled = SyncButtonIsEnabled,
+                            Command = CreateCommand(StartSync)
+                        }
+                    },
+                    Margin = followingItemMargin
+                });
+            }
+
+            if (true)
+            {
+                stackLayout.Children.Add(new SettingsListItem
+                {
+                    Title = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Title"),
+                    Subtitle = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Subtitle"),
+                    IconGlyph = MaterialDesignIcons.Shop,
+                    Command = CreateCommand(OpenPremiumVersion)
+                });
+            }
+
+            if (HasAccount)
+            {
+                stackLayout.Children.Add(new SettingsListItem
+                {
+                    Title = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Title"),
+                    Subtitle = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Subtitle"),
+                    IconGlyph = MaterialDesignIcons.AccountCircle,
+                    Command = CreateCommand(OpenMyAccount)
+                });
+            }
+
+            return new ScrollView
+            {
+                Content = stackLayout
+            };
+        }
+        private class SettingsListItem : VxComponent
+        {
+            public string Title { get; set; }
+
+            public string Subtitle { get; set; }
+
+            public string IconGlyph { get; set; }
+
+            public ICommand Command { get; set; }
+
+            protected override View Render()
+            {
+                return new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition { Width = 60 },
+                        new ColumnDefinition { Width = GridLength.Star }
+                    },
+                    RowDefinitions =
+                    {
+                        new RowDefinition { Height = GridLength.Auto },
+                        new RowDefinition { Height = GridLength.Auto }
+                    },
+
+                    Children =
+                    {
+                        new Image
+                        {
+                            Source = new FontImageSource
+                            {
+                                Glyph = IconGlyph,
+                                FontFamily = "MaterialIconsOutlined",
+                                Color = PowerPlannerColors.PowerPlannerBlue
+                            },
+                            Aspect = Aspect.AspectFit
+                        }.RowSpan(2),
+
+                        new Label
+                        {
+                            Text = Title,
+                            MaxLines = 1,
+                            FontAttributes = FontAttributes.Bold
+                        }.Column(1),
+
+                        new Label
+                        {
+                            Text = Subtitle,
+                            MaxLines = 1
+                        }.Column(1).Row(1)
+                    }
+                }.Tap(() => Command?.Execute(null));
+            }
+        }
+
+        private View Separator()
+        {
+            return new Xamarin.Forms.Shapes.Rectangle
+            {
+                Fill = new SolidColorBrush(PowerPlannerColors.PowerPlannerBlue),
+                HeightRequest = 1,
+                Margin = new Thickness(0, 6, 0, 0)
+            };
         }
 
         private void Account_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -436,14 +601,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public static void Show(BaseViewModel viewModel)
         {
-            if (PowerPlannerApp.ShowSettingsPagesAsPopups)
-            {
-                viewModel.Parent.ShowPopup(viewModel);
-            }
-            else
-            {
-                viewModel.Parent.FindAncestorOrSelf<PagedViewModel>()?.Navigate(viewModel);
-            }
+            viewModel.Parent.ShowPopup(viewModel);
         }
     }
 }

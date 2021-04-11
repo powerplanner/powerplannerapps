@@ -442,8 +442,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             { typeof(ClassViewModel), MainMenuSelections.Classes },
             { typeof(ClassesViewModel), MainMenuSelections.Classes },
             { typeof(YearsViewModel), MainMenuSelections.Years },
-            //{ typeof(SettingsViewModel), MainMenuSelections.Settings },
-            { typeof(FormsViewViewModel), MainMenuSelections.Settings },
+            { typeof(SettingsViewModel), MainMenuSelections.Settings },
             { typeof(ClassWhatIfViewModel), MainMenuSelections.Classes }
         };
 
@@ -867,7 +866,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     break;
 
                 case MainMenuSelections.Settings:
-                    SetContent(new FormsViewViewModel(this, new SettingsPage() { IsRootComponent = true }));
+                    SetContent(new SettingsViewModel(this));
                     break;
             }
         }
