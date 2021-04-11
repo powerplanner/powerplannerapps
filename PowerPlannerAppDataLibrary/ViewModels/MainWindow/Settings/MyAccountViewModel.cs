@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class MyAccountViewModel : BaseVxViewModel
+    public class MyAccountViewModel : BaseViewModel
     {
         private static DateTime _timeLastConfirmed = DateTime.MinValue;
         private static Guid _lastConfrimedAccountId;

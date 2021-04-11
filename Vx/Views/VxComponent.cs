@@ -326,7 +326,10 @@ namespace Vx.Views
             MarkDirty();
         }
 
-        protected abstract View Render();
+        protected virtual View Render()
+        {
+            return null;
+        }
 
         private void State_ValueChanged(object sender, EventArgs e)
         {

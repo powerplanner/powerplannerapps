@@ -28,6 +28,14 @@ namespace BareMvvm.Forms.ViewModelPresenters
                 return formsViewViewModel.View;
             }
 
+            // If we've actually implemented the Render method
+            var renderMethod = viewModel.GetType().GetMethod("Render", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (renderMethod.DeclaringType != typeof(Vx.Views.VxComponent))
+            {
+                viewModel.PrepareComponentForDisplay();
+                return viewModel;
+            }
+
             var cached = viewModel.GetCachedNativeView() as View;
             if (cached != null)
             {
