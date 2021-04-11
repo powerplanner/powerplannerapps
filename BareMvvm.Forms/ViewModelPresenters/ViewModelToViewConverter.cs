@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Forms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,6 +23,11 @@ namespace BareMvvm.Forms.ViewModelPresenters
 
         public static View Convert(BaseViewModel viewModel)
         {
+            if (viewModel is FormsViewViewModel formsViewViewModel)
+            {
+                return formsViewViewModel.View;
+            }
+
             var cached = viewModel.GetCachedNativeView() as View;
             if (cached != null)
             {

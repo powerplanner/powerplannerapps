@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Vx.Views
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class VxSubscribeAttribute : Attribute
     {
 

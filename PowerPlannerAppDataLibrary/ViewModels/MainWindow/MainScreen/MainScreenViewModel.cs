@@ -29,6 +29,8 @@ using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using BareMvvm.Core.Snackbar;
+using BareMvvm.Forms.ViewModels;
+using PowerPlannerAppDataLibrary.Pages.SettingsPages;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -440,7 +442,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             { typeof(ClassViewModel), MainMenuSelections.Classes },
             { typeof(ClassesViewModel), MainMenuSelections.Classes },
             { typeof(YearsViewModel), MainMenuSelections.Years },
-            { typeof(SettingsViewModel), MainMenuSelections.Settings },
+            //{ typeof(SettingsViewModel), MainMenuSelections.Settings },
+            { typeof(FormsViewViewModel), MainMenuSelections.Settings },
             { typeof(ClassWhatIfViewModel), MainMenuSelections.Classes }
         };
 
@@ -864,7 +867,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     break;
 
                 case MainMenuSelections.Settings:
-                    SetContent(new SettingsViewModel(this));
+                    SetContent(new FormsViewViewModel(this, new SettingsPage() { IsRootComponent = true }));
                     break;
             }
         }
