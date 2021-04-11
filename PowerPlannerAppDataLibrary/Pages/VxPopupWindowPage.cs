@@ -76,6 +76,8 @@ namespace PowerPlannerAppDataLibrary.Pages
             }
         }
 
+        private View _secondaryButton;
+
         private View RenderTitleBar()
         {
             var grid = new Grid
@@ -102,19 +104,21 @@ namespace PowerPlannerAppDataLibrary.Pages
 
             var cmds = new List<PopupWindowCommand>();
 
+            bool hasSecondary = SecondaryCommands != null && SecondaryCommands.Length > 0;
+
             if (SecondaryCommands != null && SecondaryCommands.Length > 0)
             {
-                var popupMenu = new PopupMenu();
-                popupMenu.ItemsSource = SecondaryCommands.Select(i => i.ToString()).ToList();
-                popupMenu.OnItemSelected += PopupMenu_OnItemSelected;
-
                 cmds.Add(new PopupWindowCommand
                 {
                     Glyph = MaterialDesignIcons.MoreVert,
                     Title = "More",
                     Action = delegate
                     {
-                        popupMenu.ShowPopup(grid.Children[1]);
+                        var popupMenu = new PopupMenu();
+                        popupMenu.ItemsSource = SecondaryCommands.Select(i => i.ToString()).ToList();
+                        popupMenu.OnItemSelected += PopupMenu_OnItemSelected;
+
+                        popupMenu.ShowPopup(_secondaryButton);
                     }
                 });
             }
@@ -135,6 +139,11 @@ namespace PowerPlannerAppDataLibrary.Pages
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                 grid.Children.Add(CreatePrimaryCommand(cmd).Column(grid.ColumnDefinitions.Count - 1));
+
+                if (hasSecondary && _secondaryButton == null)
+                {
+                    _secondaryButton = grid.Children[1];
+                }
             }
 
             return grid;

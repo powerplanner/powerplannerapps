@@ -26,12 +26,13 @@ namespace PowerPlannerAppDataLibrary.Pages
         {
             new PopupWindowCommand
             {
-                Title = "Convert to event",
+                Title = ViewModel.ConvertTypeButtonText,
                 Action = ViewModel.ConvertType
             },
             new PopupWindowCommand
             {
-                Title = "Delete"
+                Title = "Delete",
+                Action = ViewModel.Delete
             }
         };
 

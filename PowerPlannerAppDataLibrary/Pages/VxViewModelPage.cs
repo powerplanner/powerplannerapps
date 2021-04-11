@@ -8,11 +8,13 @@ namespace PowerPlannerAppDataLibrary.Pages
 {
     public abstract class VxViewModelPage : VxPage
     {
+        [VxSubscribe]
         public BaseViewModel ViewModel { get; set; }
     }
 
     public abstract class VxViewModelPage<T> : VxViewModelPage where T : BaseViewModel
     {
+        [VxSubscribe]
         public new T ViewModel
         {
             get => base.ViewModel as T;
