@@ -29,6 +29,18 @@ namespace Vx.Views
             return picker;
         }
 
+        public static T BindSelectedItem<T>(this T picker, string propertyPath, object source, VxBindingMode mode = VxBindingMode.Default) where T : Picker
+        {
+            VxBindings.SetBinding(picker, Picker.SelectedItemProperty, new VxBinding()
+            {
+                PropertyPath = propertyPath,
+                Source = source,
+                BindingMode = mode
+            });
+
+            return picker;
+        }
+
         public static T BindDate<T>(this T picker, VxState<DateTime> state) where T : DatePicker
         {
             VxBindings.SetBinding(picker, DatePicker.DateProperty, new VxBinding()

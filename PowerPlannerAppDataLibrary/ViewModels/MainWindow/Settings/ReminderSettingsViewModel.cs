@@ -1,12 +1,15 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Views.PowerPlannerAppDataLibrary.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Views;
+using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
@@ -28,8 +31,51 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
         }
 
+        protected override View Render()
+        {
+            return new PopupWindow
+            {
+                Title = "Reminders",
+                AutoScrollAndPad = true,
+                Content = new StackLayout
+                {
+                    Children =
+                    {
+                        new Label
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_RemindersWithClasses_Description.Text")
+                        },
+
+                        new Label
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersHeader.Text"),
+                            FontSize = 20
+                        },
+
+                        new StackLayout
+                        {
+                            Orientation = StackOrientation.Horizontal,
+                            Children =
+                            {
+                                new Label
+                                {
+                                    Text = "Remind me:"
+                                },
+
+                                new Picker
+                                {
+                                    ItemsSource = ClassReminderOptions,
+                                    IsEnabled = IsEnabled
+                                }.BindSelectedItem(nameof(SelectedClassReminderOption), this)
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
         private bool _isEnabled;
-        public bool IsEnabled
+        public new bool IsEnabled
         {
             get { return _isEnabled; }
             set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }

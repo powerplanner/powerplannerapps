@@ -131,6 +131,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     IconGlyph = MaterialDesignIcons.AccountCircle,
                     Command = CreateCommand(OpenMyAccount)
                 });
+
+                stackLayout.Children.Add(new SettingsListItem
+                {
+                    Title = "Reminders",
+                    Subtitle = "Reminder settings",
+                    IconGlyph = MaterialDesignIcons.Alarm,
+                    Command = CreateCommand(OpenReminderSettings)
+                });
             }
 
             return new ScrollView

@@ -6,10 +6,12 @@ using Xamarin.Forms;
 
 namespace Vx.Views
 {
-    public class VxBinding
+    public class VxBinding : IEquatable<VxBinding>
     {
         public VxState State { get; set; }
         public VxBindingMode BindingMode { get; set; }
+        public string PropertyPath { get; set; }
+        public object Source { get; set; }
 
         public void SetValue(object value)
         {
@@ -21,6 +23,19 @@ namespace Vx.Views
             {
                 State.Value = value;
             }
+        }
+
+        public bool Equals(VxBinding other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return object.ReferenceEquals(State, other.State)
+                && BindingMode == other.BindingMode
+                && PropertyPath == other.PropertyPath
+                && object.ReferenceEquals(Source, other.Source);
         }
 
         public object BindingValue

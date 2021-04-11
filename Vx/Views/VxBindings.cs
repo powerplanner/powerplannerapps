@@ -37,13 +37,25 @@ namespace Vx.Views
             }
             else
             {
-                target.SetValue(property, binding.State.Value);
-                target.SetBinding(property, new Binding()
+                if (binding.PropertyPath != null)
                 {
-                    Path = nameof(binding.BindingValue),
-                    Source = binding,
-                    Mode = BindingMode.OneWayToSource
-                });
+                    target.SetBinding(property, new Binding()
+                    {
+                        Path = binding.PropertyPath,
+                        Source = binding.Source,
+                        Mode = BindingMode.TwoWay
+                    });
+                }
+                else
+                {
+                    target.SetValue(property, binding.State.Value);
+                    target.SetBinding(property, new Binding()
+                    {
+                        Path = nameof(binding.BindingValue),
+                        Source = binding,
+                        Mode = BindingMode.OneWayToSource
+                    });
+                }
             }
         }
 
@@ -76,10 +88,25 @@ namespace Vx.Views
 
                 if (renderedBindings.TryGetValue(virtualBinding.Key, out VxBinding renderedBinding))
                 {
+                    bool changed = !renderedBinding.Equals(virtualBinding);
+
                     // Update binding
                     renderedBinding.State = virtualBinding.Value.State;
                     renderedBinding.BindingMode = virtualBinding.Value.BindingMode;
-                    renderedView.SetValue(virtualBinding.Key, virtualBinding.Value.State.Value);
+                    renderedBinding.PropertyPath = virtualBinding.Value.PropertyPath;
+                    renderedBinding.Source = virtualBinding.Value.Source;
+
+                    if (renderedBinding.PropertyPath != null)
+                    {
+                        if (changed)
+                        {
+                            ApplyBinding(renderedView, virtualBinding.Key, renderedBinding);
+                        }
+                    }
+                    else
+                    {
+                        renderedView.SetValue(virtualBinding.Key, virtualBinding.Value.State.Value);
+                    }
                 }
                 else
                 {
@@ -97,6 +124,12 @@ namespace Vx.Views
                     renderedBindings.Remove(renderedBinding.Key);
                     renderedView.RemoveBinding(renderedBinding.Key);
                 }
+            }
+
+            // Remove bindings from virtual view to clean up
+            foreach (var virtualBinding in virtualBindings)
+            {
+                virtualView.RemoveBinding(virtualBinding.Key);
             }
 
             // Clear virtual view bindings just to clean up
