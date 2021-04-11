@@ -8,7 +8,7 @@ namespace BareMvvm.Forms.ViewModels
 {
     public class FormsViewViewModel : BaseViewModel
     {
-        public View View { get; private set; }
+        public View View { get; internal set; }
 
         public FormsViewViewModel(BaseViewModel parent, View view) : base(parent)
         {
@@ -19,6 +19,11 @@ namespace BareMvvm.Forms.ViewModels
             {
                 viewModelProp.SetValue(view, this);
             }
+        }
+
+        internal FormsViewViewModel(BaseViewModel parent) : base(parent)
+        {
+
         }
     }
 }

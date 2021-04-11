@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj" />
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
+    <ProjectReference Include="..\Vx\Vx.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Forms.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerSending;
@@ -8,10 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class MyAccountViewModel : BaseViewModel
+    public class MyAccountViewModel : BaseVxViewModel
     {
         private static DateTime _timeLastConfirmed = DateTime.MinValue;
         private static Guid _lastConfrimedAccountId;
@@ -21,6 +23,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private MyAccountViewModel(BaseViewModel parent) : base(parent)
         {
 
+        }
+
+        protected override View Render()
+        {
+            return new StackLayout
+            {
+                Children =
+                {
+                    new Label { Text = CurrentAccount.Username },
+
+                    new Button
+                    {
+                        Text = "Log out",
+                        Command = CreateCommand(LogOut)
+                    },
+
+                    new Button
+                    {
+                        Text = "Change username",
+                        Command = CreateCommand(ChangeUsername)
+                    }
+                }
+            };
         }
 
         public static MyAccountViewModel Load(BaseViewModel parent)
