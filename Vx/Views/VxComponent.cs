@@ -295,12 +295,18 @@ namespace Vx.Views
         {
             _propertyValuePropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(PropertyValue_PropertyChanged).Handler;
 
+            var seenProps = new HashSet<string>();
+
             foreach (var prop in this.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && _iNotifyPropertyChangedType.IsAssignableFrom(i.PropertyType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
             {
-                var propVal = prop.GetValue(this) as INotifyPropertyChanged;
-                if (propVal != null)
+                // Avoid subscribing to properties overridden by "new" keyword
+                if (seenProps.Add(prop.Name))
                 {
-                    SubscribeToPropertyValue(propVal);
+                    var propVal = prop.GetValue(this) as INotifyPropertyChanged;
+                    if (propVal != null)
+                    {
+                        SubscribeToPropertyValue(propVal);
+                    }
                 }
             }
         }
