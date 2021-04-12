@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -61,79 +62,91 @@ namespace Vx.Views
 
         public static void TransferBindings(BindableObject virtualView, BindableObject renderedView)
         {
-            var virtualBindings = GetVxBindings(virtualView);
-            var renderedBindings = GetVxBindings(renderedView);
-
-            if ((virtualBindings == null || virtualBindings.Count == 0) && (renderedBindings == null || renderedBindings.Count == 0))
+#if DEBUG
+            try
             {
-                return;
-            }
+#endif
+                var virtualBindings = GetVxBindings(virtualView);
+                var renderedBindings = GetVxBindings(renderedView);
 
-            if (virtualBindings == null)
-            {
-                virtualBindings = new VxBindings();
-            }
-
-            if (renderedBindings == null)
-            {
-                renderedBindings = new VxBindings();
-                SetVxBindings(renderedView, renderedBindings);
-            }
-
-            // Update or add new bindings
-            foreach (var virtualBinding in virtualBindings)
-            {
-                // Clear binding from virtual view just to keep things clean
-                virtualView.RemoveBinding(virtualBinding.Key);
-
-                if (renderedBindings.TryGetValue(virtualBinding.Key, out VxBinding renderedBinding))
+                if ((virtualBindings == null || virtualBindings.Count == 0) && (renderedBindings == null || renderedBindings.Count == 0))
                 {
-                    bool changed = !renderedBinding.Equals(virtualBinding);
+                    return;
+                }
 
-                    // Update binding
-                    renderedBinding.State = virtualBinding.Value.State;
-                    renderedBinding.BindingMode = virtualBinding.Value.BindingMode;
-                    renderedBinding.PropertyPath = virtualBinding.Value.PropertyPath;
-                    renderedBinding.Source = virtualBinding.Value.Source;
+                if (virtualBindings == null)
+                {
+                    virtualBindings = new VxBindings();
+                }
 
-                    if (renderedBinding.PropertyPath != null)
+                if (renderedBindings == null)
+                {
+                    renderedBindings = new VxBindings();
+                    SetVxBindings(renderedView, renderedBindings);
+                }
+
+                // Update or add new bindings
+                foreach (var virtualBinding in virtualBindings.ToArray())
+                {
+                    // Clear binding from virtual view just to keep things clean
+                    virtualView.RemoveBinding(virtualBinding.Key);
+
+                    if (renderedBindings.TryGetValue(virtualBinding.Key, out VxBinding renderedBinding))
                     {
-                        if (changed)
+                        bool changed = !renderedBinding.Equals(virtualBinding);
+
+                        // Update binding
+                        renderedBinding.State = virtualBinding.Value.State;
+                        renderedBinding.BindingMode = virtualBinding.Value.BindingMode;
+                        renderedBinding.PropertyPath = virtualBinding.Value.PropertyPath;
+                        renderedBinding.Source = virtualBinding.Value.Source;
+
+                        if (renderedBinding.PropertyPath != null)
                         {
-                            ApplyBinding(renderedView, virtualBinding.Key, renderedBinding);
+                            if (changed)
+                            {
+                                ApplyBinding(renderedView, virtualBinding.Key, renderedBinding);
+                            }
+                        }
+                        else
+                        {
+                            renderedView.SetValue(virtualBinding.Key, virtualBinding.Value.State.Value);
                         }
                     }
                     else
                     {
-                        renderedView.SetValue(virtualBinding.Key, virtualBinding.Value.State.Value);
+                        // Add binding
+                        renderedBindings[virtualBinding.Key] = virtualBinding.Value;
+                        ApplyBinding(renderedView, virtualBinding.Key, virtualBinding.Value);
                     }
                 }
-                else
+
+                // Remove bindings
+                foreach (var renderedBinding in renderedBindings.ToArray())
                 {
-                    // Add binding
-                    renderedBindings[virtualBinding.Key] = virtualBinding.Value;
-                    ApplyBinding(renderedView, virtualBinding.Key, virtualBinding.Value);
+                    if (!virtualBindings.ContainsKey(renderedBinding.Key))
+                    {
+                        renderedBindings.Remove(renderedBinding.Key);
+                        renderedView.RemoveBinding(renderedBinding.Key);
+                    }
                 }
-            }
 
-            // Remove bindings
-            foreach (var renderedBinding in renderedBindings)
-            {
-                if (!virtualBindings.ContainsKey(renderedBinding.Key))
+                // Remove bindings from virtual view to clean up
+                foreach (var virtualBinding in virtualBindings.ToArray())
                 {
-                    renderedBindings.Remove(renderedBinding.Key);
-                    renderedView.RemoveBinding(renderedBinding.Key);
+                    virtualView.RemoveBinding(virtualBinding.Key);
                 }
-            }
 
-            // Remove bindings from virtual view to clean up
-            foreach (var virtualBinding in virtualBindings)
+                // Clear virtual view bindings just to clean up
+                virtualBindings.Clear();
+#if DEBUG
+            }
+            catch (Exception ex)
             {
-                virtualView.RemoveBinding(virtualBinding.Key);
+                System.Diagnostics.Debug.WriteLine(ex);
+                System.Diagnostics.Debugger.Break();
             }
-
-            // Clear virtual view bindings just to clean up
-            virtualBindings.Clear();
+#endif
         }
 
         public static VxBindings GetVxBindings(BindableObject target)

@@ -726,62 +726,74 @@ namespace Vx.Views
 
         private static void ReconcileList(IList<View> oldList, IList<View> newList)
         {
-            if (oldList.Count == 0)
+#if DEBUG
+            try
             {
-                foreach (var val in newList)
+#endif
+                if (oldList.Count == 0)
                 {
-                    oldList.Add(val);
+                    foreach (var val in newList)
+                    {
+                        oldList.Add(val);
+                    }
+
+                    return;
                 }
 
-                return;
-            }
+                if (newList.Count == 0)
+                {
+                    oldList.Clear();
+                    return;
+                }
 
-            if (newList.Count == 0)
+                // Need to copy list since if I add any views from this list, it auto-removes the view from the other view
+                newList = new List<View>(newList);
+
+                int i = 0;
+
+                for (; i < oldList.Count; i++)
+                {
+                    var oldItem = oldList[i];
+                    var newItem = newList.ElementAtOrDefault(i);
+
+                    if (newItem == null)
+                    {
+                        oldList.RemoveAt(i);
+                    }
+                    else if (oldItem.GetType() == newItem.GetType())
+                    {
+                        ReconcileViewOfSameType(oldItem, newItem);
+                    }
+                    else if (oldList.Count < newList.Count)
+                    {
+                        oldList.Insert(i, newItem);
+                    }
+                    else if (oldList.Count > newList.Count)
+                    {
+                        oldList.RemoveAt(i);
+                        i--;
+                    }
+                    else
+                    {
+                        oldList[i] = newItem;
+                    }
+                }
+
+                if (oldList.Count < newList.Count)
+                {
+                    for (; i < newList.Count; i++)
+                    {
+                        oldList.Add(newList[i]);
+                    }
+                }
+#if DEBUG
+            }
+            catch (Exception ex)
             {
-                oldList.Clear();
-                return;
+                System.Diagnostics.Debug.WriteLine(ex);
+                System.Diagnostics.Debugger.Break();
             }
-
-            // Need to copy list since if I add any views from this list, it auto-removes the view from the other view
-            newList = new List<View>(newList);
-
-            int i = 0;
-
-            for (; i < oldList.Count; i++)
-            {
-                var oldItem = oldList[i];
-                var newItem = newList.ElementAtOrDefault(i);
-
-                if (newItem == null)
-                {
-                    oldList.RemoveAt(i);
-                }
-                else if (oldItem.GetType() == newItem.GetType())
-                {
-                    ReconcileViewOfSameType(oldItem, newItem);
-                }
-                else if (oldList.Count < newList.Count)
-                {
-                    oldList.Insert(i, newItem);
-                }
-                else if (oldList.Count > newList.Count)
-                {
-                    oldList.RemoveAt(i);
-                    i--;
-                }
-                else
-                {
-                    oldList[i] = newItem;
-                }
-            }
-
-            if (oldList.Count < newList.Count)
-            {
-                for (; i < newList.Count; i++)
-                {
-                    oldList.Add(newList[i]);
-                }
-            }
+#endif
         }
 
         protected virtual void ShowPopup(VxPage page)
