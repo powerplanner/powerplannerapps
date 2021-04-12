@@ -4,21 +4,21 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace BareMvvm.Forms.ViewModelPresenters
+namespace BareMvvm.Core.ViewModelPresenters
 {
     public class PagedViewModelWithPopupsPresenter : Grid
     {
         public PagedViewModelWithPopupsPresenter()
         {
             var pagedPresenter = new PagedViewModelPresenter();
-            pagedPresenter.SetBinding(PagedViewModelPresenter.ViewModelProperty, new Binding()
+            pagedPresenter.SetBinding(PagedViewModelPresenter.ViewModelProperty, new Xamarin.Forms.Binding()
             {
                 Path = nameof(ViewModel),
                 Source = this
             });
 
             var popupsPresenter = new PopupsPresenter();
-            popupsPresenter.SetBinding(PopupsPresenter.ViewModelProperty, new Binding()
+            popupsPresenter.SetBinding(PopupsPresenter.ViewModelProperty, new Xamarin.Forms.Binding()
             {
                 Path = nameof(ViewModel),
                 Source = this

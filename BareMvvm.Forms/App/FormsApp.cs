@@ -1,5 +1,5 @@
 ﻿using BareMvvm.Core.App;
-using BareMvvm.Forms.ViewModelPresenters;
+using BareMvvm.Core.ViewModelPresenters;
 using System;
 using System.Collections.Generic;
 using System.Text;

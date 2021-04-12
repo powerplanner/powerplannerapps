@@ -62,7 +62,7 @@ using ToolsPortable;
 using InterfacesUWP.Extensions;
 using System.Globalization;
 using BareMvvm.Core.App;
-using BareMvvm.Forms.ViewModelPresenters;
+using BareMvvm.Core.ViewModelPresenters;
 using Xamarin.Forms.Platform.UWP;
 
 namespace PowerPlannerUWP

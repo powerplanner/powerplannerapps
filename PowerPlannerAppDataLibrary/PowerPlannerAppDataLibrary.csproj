@@ -49,8 +49,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BareMvvm.Forms\BareMvvm.Forms.csproj" />
-    <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj" />
+    <ProjectReference Include="..\BareMvvm.Core\BareMvvm.Core.csproj" />
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj" />
     <ProjectReference Include="..\Vx\Vx.csproj" />
@@ -68,9 +67,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MainScreenView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ViewTaskOrEventView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

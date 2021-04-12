@@ -20,13 +20,13 @@ namespace InterfacesUWP.AppWindows
     {
         public MainPageAlt()
         {
-            LoadApplication(Activator.CreateInstance(BareMvvm.Forms.App.FormsApp.Current.GetAppShellType()) as Xamarin.Forms.Application);
+            LoadApplication(Activator.CreateInstance(BareMvvm.Core.App.PortableApp.Current.GetAppShellType()) as Xamarin.Forms.Application);
         }
     }
 
     public class NativeUwpAppWindow : ContentPage, INativeAppWindow
     {
-        private BareMvvm.Forms.ViewModelPresenters.GenericViewModelPresenter _presenter;
+        private BareMvvm.Core.ViewModelPresenters.GenericViewModelPresenter _presenter;
         private BareSnackbarPresenter _snackbarPresenter = new BareSnackbarPresenter();
         private SystemNavigationManagerEnhanced _navigationManager;
 

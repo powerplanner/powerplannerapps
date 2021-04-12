@@ -1,6 +1,5 @@
 ﻿using BareMvvm.Core.App;
 using BareMvvm.Core.ViewModels;
-using BareMvvm.Forms.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Pages;
@@ -24,7 +23,7 @@ using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.App
 {
-    public class PowerPlannerApp : FormsApp
+    public class PowerPlannerApp : PortableApp
     {
         public override Type GetAppShellType()
         {

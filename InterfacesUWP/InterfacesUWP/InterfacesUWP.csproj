@@ -314,12 +314,8 @@
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\BareMvvm.Forms\BareMvvm.Forms.csproj">
-      <Project>{20fafed2-34f6-4c81-a069-65f3577ca331}</Project>
-      <Name>BareMvvm.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{09c954a6-b487-422c-9240-4a82a83ce09c}</Project>
+    <ProjectReference Include="..\..\BareMvvm.Core\BareMvvm.Core.csproj">
+      <Project>{3156c4de-3760-4316-ba6e-72c72095c0f0}</Project>
       <Name>BareMvvm.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">

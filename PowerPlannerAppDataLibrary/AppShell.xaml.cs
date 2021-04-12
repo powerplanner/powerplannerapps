@@ -1,4 +1,4 @@
-﻿using BareMvvm.Forms.ViewModelPresenters;
+﻿using BareMvvm.Core.ViewModelPresenters;
 using PowerPlannerAppDataLibrary.App;
 using System;
 using Xamarin.Forms;

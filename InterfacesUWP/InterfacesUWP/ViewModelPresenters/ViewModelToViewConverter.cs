@@ -35,7 +35,7 @@ namespace InterfacesUWP.ViewModelPresenters
 
             object view = null;
 
-            if (BareMvvm.Forms.ViewModelPresenters.ViewModelToViewConverter.ViewModelToViewMappings.TryGetValue(value.GetType(), out viewType))
+            if (BareMvvm.Core.ViewModelPresenters.ViewModelToViewConverter.ViewModelToViewMappings.TryGetValue(value.GetType(), out viewType))
             {
                 if (viewType.IsSubclassOf(typeof(UIElement)))
                 {
@@ -59,7 +59,7 @@ namespace InterfacesUWP.ViewModelPresenters
 
             if (view == null)
             {
-                var formsView = BareMvvm.Forms.ViewModelPresenters.ViewModelToViewConverter.Convert(value as BaseViewModel);
+                var formsView = BareMvvm.Core.ViewModelPresenters.ViewModelToViewConverter.Convert(value as BaseViewModel);
 
                 var formsPage = new Xamarin.Forms.ContentPage()
                 {

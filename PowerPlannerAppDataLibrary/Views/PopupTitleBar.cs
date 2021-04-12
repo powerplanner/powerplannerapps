@@ -1,5 +1,4 @@
-﻿using BareMvvm.Forms.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -146,8 +145,8 @@ namespace PowerPlannerAppDataLibrary.Views
             return new Button()
             {
                 Text = item.Title
-            }
-            .Click(() => item.InvokeClicked());
+            };
+            //.Click(() => item.InvokeClicked());
         }
 
         /// <summary>

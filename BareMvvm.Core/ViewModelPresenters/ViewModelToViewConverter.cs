@@ -1,5 +1,4 @@
 ﻿using BareMvvm.Core.ViewModels;
-using BareMvvm.Forms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using Xamarin.Forms;
 
-namespace BareMvvm.Forms.ViewModelPresenters
+namespace BareMvvm.Core.ViewModelPresenters
 {
     public class ViewModelToViewConverter : IValueConverter
     {
@@ -23,11 +22,6 @@ namespace BareMvvm.Forms.ViewModelPresenters
 
         public static View Convert(BaseViewModel viewModel)
         {
-            if (viewModel is FormsViewViewModel formsViewViewModel)
-            {
-                return formsViewViewModel.View;
-            }
-
             // If we've actually implemented the Render method
             var renderMethod = viewModel.GetType().GetMethod("Render", BindingFlags.Instance | BindingFlags.NonPublic);
             if (renderMethod.DeclaringType != typeof(Vx.Views.VxComponent))

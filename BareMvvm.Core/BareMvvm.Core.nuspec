@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>BareMvvm.Core</id>
+        <version>1.0.0</version>
+        <title>BareMvvm.Core</title>
+        <authors>BareBones Dev</authors>
+        <owners>BareBones Dev</owners>
+        <projectUrl>https://github.com/barebonesdev/portablelibraries/tree/master/ToolsPortable</projectUrl>
+        <licenseUrl>https://github.com/barebonesdev/portablelibraries/blob/master/LICENSE</licenseUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Core library for BareMvvm</description>
+        <copyright>Copyright ©  2012</copyright>
+    </metadata>
+</package>

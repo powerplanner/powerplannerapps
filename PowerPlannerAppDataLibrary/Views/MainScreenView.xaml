@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <bareMvvmViews:ViewModelView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:bareMvvmViews="clr-namespace:BareMvvm.Forms.Views;assembly=BareMvvm.Forms"
-                             xmlns:presenters="clr-namespace:BareMvvm.Forms.ViewModelPresenters;assembly=BareMvvm.Forms"
+             xmlns:bareMvvmViews="clr-namespace:BareMvvm.Core.Views;assembly=BareMvvm.Core"
+                             xmlns:presenters="clr-namespace:BareMvvm.Core.ViewModelPresenters;assembly=BareMvvm.Core"
              x:Class="PowerPlannerAppDataLibrary.Views.MainScreenView"
                              SizeChanged="ViewModelView_SizeChanged">
     <bareMvvmViews:ViewModelView.Content>

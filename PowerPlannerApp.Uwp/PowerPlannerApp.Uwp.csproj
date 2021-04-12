@@ -170,10 +170,6 @@
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerApp\PowerPlannerApp.csproj">
-      <Project>{bebb6f53-ba12-40c5-8f99-53074a93c3f1}</Project>
-      <Name>PowerPlannerApp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
       <Name>PowerPlannerSending</Name>

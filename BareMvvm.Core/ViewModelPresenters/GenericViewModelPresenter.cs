@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace BareMvvm.Forms.ViewModelPresenters
+namespace BareMvvm.Core.ViewModelPresenters
 {
     public class GenericViewModelPresenter : ContentView
     {
@@ -13,7 +13,7 @@ namespace BareMvvm.Forms.ViewModelPresenters
             HorizontalOptions = LayoutOptions.FillAndExpand;
             VerticalOptions = LayoutOptions.FillAndExpand;
 
-            SetBinding(ContentProperty, new Binding()
+            SetBinding(ContentProperty, new Xamarin.Forms.Binding()
             {
                 Path = nameof(ViewModel),
                 Source = this,

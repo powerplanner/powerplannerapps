@@ -29,7 +29,6 @@ using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using BareMvvm.Core.Snackbar;
-using BareMvvm.Forms.ViewModels;
 using PowerPlannerAppDataLibrary.Pages.SettingsPages;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen

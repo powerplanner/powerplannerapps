@@ -8,7 +8,7 @@ using ToolsPortable;
 using Xamarin.CommunityToolkit.Markup;
 using Xamarin.Forms;
 
-namespace BareMvvm.Forms.ViewModelPresenters
+namespace BareMvvm.Core.ViewModelPresenters
 {
     public class PopupsPresenter : Grid
     {
@@ -86,14 +86,12 @@ namespace BareMvvm.Forms.ViewModelPresenters
             if (ViewModel == null || ViewModel.Popups.Count == 0)
             {
                 base.IsVisible = false;
+                _popupsPresenter.Content = null;
             }
             else
             {
                 base.IsVisible = true;
-                _popupsPresenter.Content = new GenericViewModelPresenter()
-                {
-                    ViewModel = ViewModel.Popups.Last()
-                };
+                _popupsPresenter.Content = ViewModelToViewConverter.Convert(ViewModel.Popups.Last());
             }
         }
 

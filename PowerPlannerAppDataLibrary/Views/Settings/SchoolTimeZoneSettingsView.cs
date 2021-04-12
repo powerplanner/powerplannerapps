@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 using Xamarin.CommunityToolkit.Markup;
-using BareMvvm.Forms.Extensions;
 
 namespace PowerPlannerAppDataLibrary.Views.Settings
 {
@@ -33,8 +32,7 @@ namespace PowerPlannerAppDataLibrary.Views.Settings
                 {
                     Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ButtonSave.Content")
                 }
-                .Bind(Picker.IsEnabledProperty, nameof(ViewModel.IsEnabled))
-                .Click(ViewModel.Save),
+                .Bind(Picker.IsEnabledProperty, nameof(ViewModel.IsEnabled)),
 
                 new Label
                 {

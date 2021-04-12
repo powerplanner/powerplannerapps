@@ -1,4 +1,4 @@
-﻿using BareMvvm.Forms.Views;
+﻿using BareMvvm.Core.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,4 @@
 ﻿using BareMvvm.Core.ViewModels;
-using BareMvvm.Forms.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerSending;
