@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary
             if (_resourceManager == null)
             {
                 //_resourceManager = Strings.Resources.ResourceManager;
-                _resourceManager = new ResourceManager("PowerPlannerAppDataLibrary.Strings.Resources", typeof(PowerPlannerResources).GetTypeInfo().Assembly);
+                _resourceManager = new ResourceManager("PowerPlannerAppDataLibrary.Resources.Strings", typeof(PowerPlannerResources).GetTypeInfo().Assembly);
             }
 
             if (_cultureInfo == null)

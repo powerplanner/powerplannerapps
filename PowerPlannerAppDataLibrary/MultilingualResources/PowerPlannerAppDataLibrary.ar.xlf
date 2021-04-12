@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en-US" target-language="ar" original="PowerPlannerAppDataLibrary/Strings/Resources.resx" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+  <file datatype="xml" source-language="en-US" target-language="ar" original="PowerPlannerAppDataLibrary/Resources/Strings.resx" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
     <header>
       <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6916.0" tool-company="Microsoft" />
     </header>
     <body>
-      <group id="PowerPlannerAppDataLibrary/Strings/Resources.resx" datatype="resx">
+      <group id="PowerPlannerAppDataLibrary/Resources/Strings.resx" datatype="resx">
         <trans-unit id="Buttons_Cancel.Content" translate="yes" xml:space="preserve">
           <source>Cancel</source>
           <target state="final">إلغاء الأمر</target>
@@ -264,63 +264,63 @@ Click Continue to login (which might cause duplicates).</source>
           <source>IMAGE UPLOAD OPTIONS</source>
           <target state="final">خيارات تحميل الصور</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_AboutItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_AboutItem_Title" translate="yes" xml:space="preserve">
           <source>About</source>
           <target state="final">حول</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_CalendarIntegrationItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Tasks and classes in native Calendar app</source>
           <target state="final">الواجبات المدرسية والصفوفالدراسية في تطبيق تقويم Outlook</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_CalendarIntegrationItem_Title" translate="yes" xml:space="preserve">
           <source>Calendar integration</source>
           <target state="final">دمج التطبيق والتقويم</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_LiveTilesItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_LiveTilesItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Edit Live Tile settings</source>
           <target state="final">تحرير إعدادات البلاطة الحية</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_LiveTilesItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_LiveTilesItem_Title" translate="yes" xml:space="preserve">
           <source>Live Tiles</source>
           <target state="final">البلاطات الحية</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_MyAccountItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_MyAccountItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Logout or manage account</source>
           <target state="final">تسجيل الخروج أو إدارة الحساب</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_MyAccountItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_MyAccountItem_Title" translate="yes" xml:space="preserve">
           <source>My account</source>
           <target state="final">حسابي</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_RemindersItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_RemindersItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Change reminder settings</source>
           <target state="final">تغيير إعدادات التذكير</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_RemindersItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_RemindersItem_Title" translate="yes" xml:space="preserve">
           <source>Reminders</source>
           <target state="final">التذكيرات</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_SyncOptionsItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_SyncOptionsItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Upload options, push</source>
           <target state="final">خيارات التحميل والإشعارات</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_SyncOptionsItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_SyncOptionsItem_Title" translate="yes" xml:space="preserve">
           <source>Sync options</source>
           <target state="final">خيارات المزامنة</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_TwoWeekScheduleItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Set current week and day week changes</source>
           <target state="final">اعداد الاسبوع الحالي ويوم تغييرات الاسبوع</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_TwoWeekScheduleItem_Title" translate="yes" xml:space="preserve">
           <source>Two week schedule</source>
           <target state="final">جدول نظام الأسبوعين</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_UpgradeToPremiumItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_UpgradeToPremiumItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Unlock all the features!</source>
           <target state="final">فتح كافة الميزات!</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_UpgradeToPremiumItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_UpgradeToPremiumItem_Title" translate="yes" xml:space="preserve">
           <source>Upgrade to premium version!</source>
           <target state="final">الترقية إلى الإصدار الكامل!</target>
         </trans-unit>
@@ -2005,11 +2005,11 @@ Please think about using an online account instead!</source>
           <source>These are the sync errors since your last sync. You can tap the Power Planner icon in the main menu to trigger a new sync.</source>
           <target state="final" state-qualifier="mt-suggestion">هذه هي أخطاء المزامنة منذ آخر مزامنة. يمكنك النقر على الرمز في القائمة الرئيسية لتشغيل مزامنة جديدة.</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Tasks and classes in Google Calendar</source>
           <target state="final" state-qualifier="mt-suggestion">المهام والفئات في تقويم جوجل</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem_Title" translate="yes" xml:space="preserve">
           <source>Google Calendar integration</source>
           <target state="final" state-qualifier="mt-suggestion">دمج جوجل التقويم</target>
         </trans-unit>
@@ -2146,11 +2146,11 @@ Please think about using an online account instead!</source>
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">مرفقات الصور</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_ContributeItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Are you a developer? Help add some features!</source>
           <target state="final" state-qualifier="mt-suggestion">هل أنت مطور؟ مساعدة إضافة بعض الميزات!</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_ContributeItem_Title" translate="yes" xml:space="preserve">
           <source>Contribute to Power Planner</source>
           <target state="final" state-qualifier="mt-suggestion">المساهمة في تخطيط الطاقة</target>
         </trans-unit>
@@ -2166,19 +2166,19 @@ Please think about using an online account instead!</source>
           <source>Returning user?</source>
           <target state="final" state-qualifier="mt-suggestion">إرجاع المستخدم؟</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_CreateAccountItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_CreateAccountItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Use Power Planner across multiple devices!</source>
           <target state="final">استخدام Power Planner عبر أجهزة متعددة!</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_CreateAccountItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_CreateAccountItem_Title" translate="yes" xml:space="preserve">
           <source>Create account</source>
           <target state="final" state-qualifier="tm-suggestion">إنشاء حساب</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_LogInItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_LogInItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Already have an account? Log in!</source>
           <target state="final" state-qualifier="mt-suggestion">لديك حساب؟ تسجيل الدخول!</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_LogInItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_LogInItem_Title" translate="yes" xml:space="preserve">
           <source>Log in</source>
           <target state="final" state-qualifier="tm-suggestion">تسجيل الدخول</target>
         </trans-unit>
@@ -2234,11 +2234,11 @@ Please think about using an online account instead!</source>
           <source>All done!</source>
           <target state="final" state-qualifier="tm-suggestion">تمت جميع الإجراءات!</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_HelpItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_HelpItem_Title" translate="yes" xml:space="preserve">
           <source>Help</source>
           <target state="final" state-qualifier="tm-suggestion">التعليمات</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_HelpItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_HelpItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Tutorials and FAQ</source>
           <target state="final" state-qualifier="mt-suggestion">الدروس والاسئله الشائعة</target>
         </trans-unit>
@@ -2278,11 +2278,11 @@ Please think about using an online account instead!</source>
           <source>You are currently in a different time zone than your school's time zone. When adding or editing, values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</source>
           <target state="final" state-qualifier="mt-suggestion">أنت حالياً في منطقة زمنية مختلفة عن المنطقة الزمنية لمدرستك. يتم عرض هذه القيم في المنطقة الزمنية للمدرسة. إذا قالت المدرسة 9 صباحا، ببساطة أدخل 9 صباحا.</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Set your school's time zone</source>
           <target state="final" state-qualifier="mt-suggestion">تعيين المنطقة الزمنية لمدرستك</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_SchoolTimeZoneItem_Title" translate="yes" xml:space="preserve">
           <source>Time zone</source>
           <target state="final" state-qualifier="mt-suggestion">المنطقة الزمنية</target>
         </trans-unit>
@@ -2326,11 +2326,11 @@ Please think about using an online account instead!</source>
           <source>LANGUAGE SETTINGS</source>
           <target state="final" state-qualifier="mt-suggestion">إعدادات اللغة</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_LanguageItem.Subtitle" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_LanguageItem_Subtitle" translate="yes" xml:space="preserve">
           <source>Change the current display language</source>
           <target state="final" state-qualifier="mt-suggestion">تغيير لغة العرض الحالية</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_LanguageItem.Title" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_MainPage_LanguageItem_Title" translate="yes" xml:space="preserve">
           <source>Language</source>
           <target state="final" state-qualifier="tm-suggestion">اللغة</target>
         </trans-unit>

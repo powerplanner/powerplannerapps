@@ -219,6 +219,24 @@ namespace Vx.Views
             return new VxCommand(action);
         }
 
+        private Dictionary<string, Binding> _itemDisplayBindings;
+        protected Binding CreateItemDisplayBinding(string propertyPath)
+        {
+            if (_itemDisplayBindings == null)
+            {
+                _itemDisplayBindings = new Dictionary<string, Binding>();
+            }
+
+            if (_itemDisplayBindings.TryGetValue(propertyPath, out Binding existing))
+            {
+                return existing;
+            }
+
+            var binding = new Binding { Path = propertyPath };
+            _itemDisplayBindings[propertyPath] = binding;
+            return binding;
+        }
+
         private Dictionary<string, DataTemplate> _dataTemplates;
         protected DataTemplate CreateViewCellItemTemplate<T>(string templateName, Func<T, View> render)
         {

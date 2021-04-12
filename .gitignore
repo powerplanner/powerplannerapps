@@ -236,3 +236,4 @@ PowerPlannerUWP/App/Secrets.cs
 
 # Ignore compiled resource translations
 Resources.*.resx
+Strings.*.resx

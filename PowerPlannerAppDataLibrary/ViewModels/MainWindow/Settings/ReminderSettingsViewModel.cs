@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Resources;
 using PowerPlannerAppDataLibrary.Views.PowerPlannerAppDataLibrary.Views;
 using System;
 using System.Collections.Generic;
@@ -43,12 +44,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     {
                         new Label
                         {
-                            Text = PowerPlannerResources.GetString("Settings_RemindersWithClasses_Description.Text")
+                            Text = Strings.Settings_RemindersWithClasses_Description_Text
                         },
 
                         new Label
                         {
-                            Text = PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersHeader.Text"),
+                            Text = Strings.Settings_Reminders_ClassRemindersHeader_Text,
                             FontSize = 20
                         },
 
@@ -59,7 +60,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                             {
                                 new Label
                                 {
-                                    Text = "Remind me:"
+                                    Text = Strings.String_RemindMe
                                 },
 
                                 new Picker

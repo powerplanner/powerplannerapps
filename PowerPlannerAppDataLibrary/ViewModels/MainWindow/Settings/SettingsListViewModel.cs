@@ -2,6 +2,7 @@
 using MaterialDesign;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Resources;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
@@ -71,7 +72,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 stackLayout.Children.Add(new Button
                 {
-                    Text = PowerPlannerResources.GetString("String_ViewYearsAndSemesters"),
+                    Text = Strings.String_ViewYearsAndSemesters,
                     HorizontalOptions = LayoutOptions.Start,
                     Command = CreateCommand(OpenYears),
                     Margin = followingItemMargin
@@ -115,8 +116,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 stackLayout.Children.Add(new SettingsListItem
                 {
-                    Title = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Title"),
-                    Subtitle = PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Subtitle"),
+                    Title = Strings.Settings_MainPage_UpgradeToPremiumItem_Title,
+                    Subtitle = Strings.Settings_MainPage_UpgradeToPremiumItem_Subtitle,
                     IconGlyph = MaterialDesignIcons.Shop,
                     Command = CreateCommand(OpenPremiumVersion)
                 });
@@ -126,20 +127,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 stackLayout.Children.Add(new SettingsListItem
                 {
-                    Title = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Title"),
-                    Subtitle = PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Subtitle"),
+                    Title = Strings.Settings_MainPage_MyAccountItem_Title,
+                    Subtitle = Strings.Settings_MainPage_MyAccountItem_Subtitle,
                     IconGlyph = MaterialDesignIcons.AccountCircle,
                     Command = CreateCommand(OpenMyAccount)
                 });
 
                 stackLayout.Children.Add(new SettingsListItem
                 {
-                    Title = "Reminders",
-                    Subtitle = "Reminder settings",
+                    Title = Strings.Settings_MainPage_RemindersItem_Title,
+                    Subtitle = Strings.Settings_MainPage_RemindersItem_Subtitle,
                     IconGlyph = MaterialDesignIcons.Alarm,
                     Command = CreateCommand(OpenReminderSettings)
                 });
             }
+
+            stackLayout.Children.Add(new SettingsListItem
+            {
+                Title = Strings.Settings_MainPage_LanguageItem_Title,
+                Subtitle = Strings.Settings_MainPage_LanguageItem_Subtitle,
+                IconGlyph = MaterialDesignIcons.Language,
+                Command = CreateCommand(OpenLanguageSettings)
+            });
 
             return new ScrollView
             {

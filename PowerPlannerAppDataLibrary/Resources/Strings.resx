@@ -307,61 +307,61 @@ Click Continue to login (which might cause duplicates).</value>
   <data name="Settings_ImageUploadOptionsPage_Header.Text" xml:space="preserve">
     <value>IMAGE UPLOAD OPTIONS</value>
   </data>
-  <data name="Settings_MainPage_HelpItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_HelpItem_Title" xml:space="preserve">
     <value>Help</value>
   </data>
-  <data name="Settings_MainPage_HelpItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_HelpItem_Subtitle" xml:space="preserve">
     <value>Tutorials and FAQ</value>
   </data>
-  <data name="Settings_MainPage_AboutItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_AboutItem_Title" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="Settings_MainPage_CalendarIntegrationItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_CalendarIntegrationItem_Subtitle" xml:space="preserve">
     <value>Tasks and classes in native Calendar app</value>
   </data>
-  <data name="Settings_MainPage_CalendarIntegrationItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_CalendarIntegrationItem_Title" xml:space="preserve">
     <value>Calendar integration</value>
   </data>
-  <data name="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_GoogleCalendarIntegrationItem_Subtitle" xml:space="preserve">
     <value>Tasks and classes in Google Calendar</value>
   </data>
-  <data name="Settings_MainPage_GoogleCalendarIntegrationItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_GoogleCalendarIntegrationItem_Title" xml:space="preserve">
     <value>Google Calendar integration</value>
   </data>
-  <data name="Settings_MainPage_LiveTilesItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_LiveTilesItem_Subtitle" xml:space="preserve">
     <value>Edit Live Tile settings</value>
   </data>
-  <data name="Settings_MainPage_LiveTilesItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_LiveTilesItem_Title" xml:space="preserve">
     <value>Live Tiles</value>
   </data>
-  <data name="Settings_MainPage_MyAccountItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_MyAccountItem_Subtitle" xml:space="preserve">
     <value>Logout or manage account</value>
   </data>
-  <data name="Settings_MainPage_MyAccountItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_MyAccountItem_Title" xml:space="preserve">
     <value>My account</value>
   </data>
-  <data name="Settings_MainPage_RemindersItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_RemindersItem_Subtitle" xml:space="preserve">
     <value>Change reminder settings</value>
   </data>
-  <data name="Settings_MainPage_RemindersItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_RemindersItem_Title" xml:space="preserve">
     <value>Reminders</value>
   </data>
-  <data name="Settings_MainPage_SyncOptionsItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_SyncOptionsItem_Subtitle" xml:space="preserve">
     <value>Upload options, push</value>
   </data>
-  <data name="Settings_MainPage_SyncOptionsItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_SyncOptionsItem_Title" xml:space="preserve">
     <value>Sync options</value>
   </data>
-  <data name="Settings_MainPage_TwoWeekScheduleItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_TwoWeekScheduleItem_Subtitle" xml:space="preserve">
     <value>Set current week and day week changes</value>
   </data>
-  <data name="Settings_MainPage_TwoWeekScheduleItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_TwoWeekScheduleItem_Title" xml:space="preserve">
     <value>Two week schedule</value>
   </data>
-  <data name="Settings_MainPage_UpgradeToPremiumItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_UpgradeToPremiumItem_Subtitle" xml:space="preserve">
     <value>Unlock all the features!</value>
   </data>
-  <data name="Settings_MainPage_UpgradeToPremiumItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_UpgradeToPremiumItem_Title" xml:space="preserve">
     <value>Upgrade to premium version!</value>
   </data>
   <data name="Settings_MyAccount_ButtonChangeEmail.Content" xml:space="preserve">
@@ -1758,10 +1758,10 @@ Please think about using an online account instead!</value>
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>Image attachments</value>
   </data>
-  <data name="Settings_MainPage_ContributeItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_ContributeItem_Subtitle" xml:space="preserve">
     <value>Are you a developer? Help add some features!</value>
   </data>
-  <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_ContributeItem_Title" xml:space="preserve">
     <value>Contribute to Power Planner</value>
   </data>
   <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
@@ -1773,16 +1773,16 @@ Please think about using an online account instead!</value>
   <data name="Settings_LogInFromDefaultAccountMessage" xml:space="preserve">
     <value>By logging in to an account, all information you've currently entered will be DELETED. If you want to keep your information, create an account instead.</value>
   </data>
-  <data name="Settings_MainPage_CreateAccountItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_CreateAccountItem_Subtitle" xml:space="preserve">
     <value>Use Power Planner across multiple devices!</value>
   </data>
-  <data name="Settings_MainPage_CreateAccountItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_CreateAccountItem_Title" xml:space="preserve">
     <value>Create account</value>
   </data>
-  <data name="Settings_MainPage_LogInItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_LogInItem_Subtitle" xml:space="preserve">
     <value>Already have an account? Log in!</value>
   </data>
-  <data name="Settings_MainPage_LogInItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_LogInItem_Title" xml:space="preserve">
     <value>Log in</value>
   </data>
   <data name="Settings_SuccessfullyCreatedAccountPage.Title" xml:space="preserve">
@@ -1842,10 +1842,10 @@ Please think about using an online account instead!</value>
   <data name="DifferentTimeZoneWarning.Text" xml:space="preserve">
     <value>You are currently in a different time zone than your school's time zone. When adding or editing, values are displayed in your school's time zone. If the school said 9 AM, simply enter 9 AM.</value>
   </data>
-  <data name="Settings_MainPage_SchoolTimeZoneItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_SchoolTimeZoneItem_Subtitle" xml:space="preserve">
     <value>Set your school's time zone</value>
   </data>
-  <data name="Settings_MainPage_SchoolTimeZoneItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_SchoolTimeZoneItem_Title" xml:space="preserve">
     <value>Time zone</value>
   </data>
   <data name="Settings_SchoolTimeZone_ButtonSave.Content" xml:space="preserve">
@@ -1881,10 +1881,10 @@ Please think about using an online account instead!</value>
   <data name="Settings_LanguageSettings_Header.Text" xml:space="preserve">
     <value>LANGUAGE SETTINGS</value>
   </data>
-  <data name="Settings_MainPage_LanguageItem.Subtitle" xml:space="preserve">
+  <data name="Settings_MainPage_LanguageItem_Subtitle" xml:space="preserve">
     <value>Change the current display language</value>
   </data>
-  <data name="Settings_MainPage_LanguageItem.Title" xml:space="preserve">
+  <data name="Settings_MainPage_LanguageItem_Title" xml:space="preserve">
     <value>Language</value>
   </data>
   <data name="String_ConvertToEvent" xml:space="preserve">

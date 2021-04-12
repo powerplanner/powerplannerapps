@@ -1,10 +1,14 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Resources;
+using PowerPlannerAppDataLibrary.Views.PowerPlannerAppDataLibrary.Views;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Vx.Views;
+using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
@@ -22,6 +26,47 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             var overriddenLanguageCode = LanguageExtension.Current.GetLanguageOverrideCode();
             var matching = Options.FirstOrDefault(i => i.LanguageCode == overriddenLanguageCode);
             _selectedOption = matching;
+        }
+
+        protected override View Render()
+        {
+            return new PopupWindow
+            {
+                Title = Strings.Settings_LanguageSettings_Header_Text,
+                AutoScrollAndPad = true,
+                Content = new StackLayout
+                {
+                    Children =
+                    {
+                        new Label
+                        {
+                            Text = Strings.Settings_LanguageSettings_Description_Text
+                        },
+
+                        new Label
+                        {
+                            Text = "Language"
+                        },
+
+                        new Picker
+                        {
+                            ItemsSource = Options,
+                            ItemDisplayBinding = CreateItemDisplayBinding(nameof(LanguageOption.DisplayName))
+                        }.BindSelectedItem(nameof(SelectedOption), this),
+
+                        new Button
+                        {
+                            Text = "Save changes",
+                            Command = CreateCommand(SaveChanges)
+                        },
+
+                        new Label
+                        {
+                            Text = "Saving changes will restart Power Planner so that changes can be applied."
+                        }
+                    }
+                }
+            };
         }
 
         public LanguageOption[] Options { get; private set; } = new LanguageOption[]
