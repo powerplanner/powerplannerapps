@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolsPortable", "portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj", "{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BareMvvm.Core", "portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj", "{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BareMvvm.Core", "BareMvvm.Core\BareMvvm.Core.csproj", "{AB6AC1B2-91FB-4EFB-B601-A795FBAB4575}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfacesDroid", "applibraries\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj", "{CE015236-0E8D-4042-B596-6E20BD26E56E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfacesDroid", "InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj", "{CE015236-0E8D-4042-B596-6E20BD26E56E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerPlannerAppDataLibrary", "PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj", "{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}"
 EndProject
