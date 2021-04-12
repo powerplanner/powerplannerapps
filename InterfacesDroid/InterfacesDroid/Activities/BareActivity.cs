@@ -15,9 +15,9 @@ using IO.Github.Inflationx.Viewpump;
 
 namespace InterfacesDroid.Activities
 {
-    public class BareActivity : AppCompatActivity
+    public class BareActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        public event EventHandler<CancelEventArgs> BackPressed;
+        public new event EventHandler<CancelEventArgs> BackPressed;
 
         // Need to override within activity since overriding Application.AttachBaseContext isn't supported from Xamarin: https://xamarin.github.io/bugzilla-archives/11/11182/bug.html
         protected override void AttachBaseContext(Context @base)

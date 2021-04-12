@@ -147,9 +147,13 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\PortableLibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
+    <ProjectReference Include="..\..\BareMvvm.Core\BareMvvm.Core.csproj">
+      <Project>{3156c4de-3760-4316-ba6e-72c72095c0f0}</Project>
       <Name>BareMvvm.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Vx\Vx.csproj">
+      <Project>{5853496a-9502-4281-974f-e548bd1f6951}</Project>
+      <Name>Vx</Name>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>

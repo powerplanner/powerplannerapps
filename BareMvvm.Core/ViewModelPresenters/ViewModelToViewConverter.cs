@@ -11,6 +11,7 @@ namespace BareMvvm.Core.ViewModelPresenters
 {
     public class ViewModelToViewConverter : IValueConverter
     {
+        public static Func<Type, object> NativeViewCreator { get; set; }
         public static Func<object, View> NativeViewWrapper { get; set; }
 
         public static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
@@ -43,7 +44,15 @@ namespace BareMvvm.Core.ViewModelPresenters
 
             if (ViewModelToViewMappings.TryGetValue(viewModel.GetType(), out Type viewType))
             {
-                object rawView = Activator.CreateInstance(viewType);
+                object rawView;
+                if (NativeViewCreator == null)
+                {
+                    rawView = Activator.CreateInstance(viewType);
+                }
+                else
+                {
+                    rawView = NativeViewCreator(viewType);
+                }
 
                 viewModel.SetOriginalNativeView(rawView);
 

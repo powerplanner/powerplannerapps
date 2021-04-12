@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using Xamarin.Forms;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome
 {

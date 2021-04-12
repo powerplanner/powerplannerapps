@@ -20,7 +20,7 @@ namespace PowerPlannerAppDataLibrary.Views
 
         private void ViewModelView_SizeChanged(object sender, EventArgs e)
         {
-            if (base.Width > 550)
+            if (base.Width > 0) // 550
             {
                 if (FullSizeSideMenuContainer.Content == null)
                 {

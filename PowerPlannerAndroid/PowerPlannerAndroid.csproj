@@ -566,13 +566,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\andre\Documents\GitHub\pp\powerplannerapps\\applibraries\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj">
+    <ProjectReference Include="..\BareMvvm.Core\BareMvvm.Core.csproj">
+      <Project>{3156c4de-3760-4316-ba6e-72c72095c0f0}</Project>
+      <Name>BareMvvm.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj">
       <Project>{ce015236-0e8d-4042-b596-6e20bd26e56e}</Project>
       <Name>InterfacesDroid</Name>
     </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
-      <Name>BareMvvm.Core</Name>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{5853496a-9502-4281-974f-e548bd1f6951}</Project>
+      <Name>Vx</Name>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>

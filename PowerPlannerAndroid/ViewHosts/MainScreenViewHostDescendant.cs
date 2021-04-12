@@ -18,26 +18,26 @@ namespace PowerPlannerAndroid.ViewHosts
 {
     public class MainScreenViewHostDescendant<TViewModel> : InterfacesDroid.Views.PopupViewHost<TViewModel>, IMainScreenToolbarHandler where TViewModel : BaseViewModel
     {
-        public MainScreenView MainScreenView { get; private set; }
+        //public MainScreenView MainScreenView { get; private set; }
 
         public MainScreenViewHostDescendant(int resourceId, ViewGroup root) : base(resourceId, root)
         {
-            View v = root;
-            while (true)
-            {
-                if (v == null)
-                {
-                    throw new InvalidOperationException("Couldn't find MainScreenView from parent");
-                }
+            //View v = root;
+            //while (true)
+            //{
+            //    if (v == null)
+            //    {
+            //        throw new InvalidOperationException("Couldn't find MainScreenView from parent");
+            //    }
 
-                if (v is MainScreenView)
-                {
-                    MainScreenView = v as MainScreenView;
-                    break;
-                }
+            //    if (v is MainScreenView)
+            //    {
+            //        MainScreenView = v as MainScreenView;
+            //        break;
+            //    }
 
-                v = v.Parent as View;
-            }
+            //    v = v.Parent as View;
+            //}
         }
 
         protected virtual int GetMenuResource()
@@ -47,19 +47,19 @@ namespace PowerPlannerAndroid.ViewHosts
 
         public void RequestUpdateMenu()
         {
-            MainScreenView.Toolbar.Menu.Clear();
+            //MainScreenView.Toolbar.Menu.Clear();
 
-            int menuResource = GetMenuResource();
+            //int menuResource = GetMenuResource();
 
-            if (menuResource == 0)
-            {
-                return;
-            }
+            //if (menuResource == 0)
+            //{
+            //    return;
+            //}
 
-            MenuInflater inflater = new MenuInflater(Context);
-            inflater.Inflate(menuResource, MainScreenView.Toolbar.Menu);
+            //MenuInflater inflater = new MenuInflater(Context);
+            //inflater.Inflate(menuResource, MainScreenView.Toolbar.Menu);
 
-            LocalizationHelper.LocalizeMenu(MainScreenView.Toolbar.Menu);
+            //LocalizationHelper.LocalizeMenu(MainScreenView.Toolbar.Menu);
         }
 
         public virtual void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)

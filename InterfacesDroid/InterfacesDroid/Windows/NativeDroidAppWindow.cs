@@ -33,20 +33,20 @@ namespace InterfacesDroid.Windows
         public NativeDroidAppWindow(BareActivity activity)
         {
             Activity = activity;
-            _presenter = new GenericViewModelPresenter(activity)
-            {
-                LayoutParameters = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MatchParent, CoordinatorLayout.LayoutParams.MatchParent)
-            };
+            //_presenter = new GenericViewModelPresenter(activity)
+            //{
+            //    LayoutParameters = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.MatchParent, CoordinatorLayout.LayoutParams.MatchParent)
+            //};
 
             // CoordinatorLayout is needed so snackbars can be swipeable
-            _coordinatorLayout = new CoordinatorLayout(activity);
-            _coordinatorLayout.AddView(_presenter);
-            activity.SetContentView(_coordinatorLayout);
+            //_coordinatorLayout = new CoordinatorLayout(activity);
+            //_coordinatorLayout.AddView(_presenter);
+            //activity.SetContentView(_coordinatorLayout);
 
-            activity.BackPressed += Activity_BackPressed;
+            //activity.BackPressed += Activity_BackPressed;
 
-            SnackbarManager.OnShow += SnackbarManager_OnShow;
-            SnackbarManager.OnClose += SnackbarManager_OnClose;
+            //SnackbarManager.OnShow += SnackbarManager_OnShow;
+            //SnackbarManager.OnClose += SnackbarManager_OnClose;
         }
 
         private void SnackbarManager_OnShow(object sender, BareSnackbar snackbar)
@@ -95,9 +95,9 @@ namespace InterfacesDroid.Windows
 
         public void Register(PortableAppWindow portableWindow)
         {
-            portableWindow.PropertyChanged += PortableWindow_PropertyChanged;
-            if (portableWindow.ViewModel != null)
-                _presenter.ViewModel = portableWindow.ViewModel;
+            //portableWindow.PropertyChanged += PortableWindow_PropertyChanged;
+            //if (portableWindow.ViewModel != null)
+            //    _presenter.ViewModel = portableWindow.ViewModel;
         }
 
         private void PortableWindow_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

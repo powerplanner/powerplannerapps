@@ -85,12 +85,22 @@ namespace PowerPlannerAndroid
             }
 
             // Register the window
+            Xamarin.Essentials.Platform.Init(this, bundle);
+            global::Xamarin.Forms.Forms.Init(this, bundle);
+            LoadApplication(Activator.CreateInstance(PowerPlannerDroidApp.Current.GetAppShellType()) as Xamarin.Forms.Application);
             _mainAppWindow = new MainAppWindow();
             await PowerPlannerDroidApp.Current.RegisterWindowAsync(_mainAppWindow, new NativeDroidAppWindow(this));
 
             HandleIntent();
 
             HandleVersionChange();
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
 #if DEBUG
