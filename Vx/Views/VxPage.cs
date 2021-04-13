@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ToolsPortable;
-using Vx.InputValidation;
 
 namespace Vx.Views
 {
@@ -417,38 +416,6 @@ namespace Vx.Views
         {
             IsCurrentNavigatedPage = false;
             NavigatedFrom?.Invoke(this, new EventArgs());
-        }
-
-        protected bool ValidateAllInputs(bool showValidationErrorMessage = true, Dictionary<string, Action<TextField>> customValidators = null)
-        {
-            var props = this.GetType().GetRuntimeProperties().Where(i => i.PropertyType == typeof(TextField));
-
-            bool isValid = true;
-
-            foreach (var p in props)
-            {
-                TextField field = p.GetValue(this) as TextField;
-                if (field != null)
-                {
-                    if (customValidators != null && customValidators.TryGetValue(p.Name, out Action<TextField> customValidator))
-                    {
-                        customValidator(field);
-                    }
-                    else
-                    {
-                        field.Validate();
-                    }
-
-                    isValid = isValid && field.ValidationState == InputValidationState.Valid;
-                }
-            }
-
-            if (!isValid && showValidationErrorMessage)
-            {
-                new PortableMessageDialog(Vx.Strings.Resources.InvalidInputs_Content, Vx.Strings.Resources.InvalidInputs_Title).Show();
-            }
-
-            return isValid;
         }
 
         private class AsyncUserInteraction
