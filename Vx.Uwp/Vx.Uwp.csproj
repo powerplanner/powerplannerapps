@@ -125,6 +125,7 @@
     <Compile Include="Views\UwpButton.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpTextBlock.cs" />
+    <Compile Include="Views\UwpTextBox.cs" />
     <Compile Include="Views\UwpView.cs" />
     <Compile Include="VxUwpExtensions.cs" />
     <EmbeddedResource Include="Properties\Vx.Uwp.rd.xml" />

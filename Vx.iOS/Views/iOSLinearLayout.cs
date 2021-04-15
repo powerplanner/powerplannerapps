@@ -79,5 +79,21 @@ namespace Vx.iOS.Views
                 y += size.Height;
             }
         }
+
+        public override CoreGraphics.CGSize SystemLayoutSizeFittingSize(CoreGraphics.CGSize size)
+        {
+            double height = 0;
+            double width = 0;
+            foreach (var subview in Subviews)
+            {
+                var subviewSize = subview.SystemLayoutSizeFittingSize(size);
+
+                height += subviewSize.Height;
+                width = Math.Max(subviewSize.Width, width);
+            }
+
+            return new CoreGraphics.CGSize(width, height);
+            return base.SystemLayoutSizeFittingSize(size);
+        }
     }
 }

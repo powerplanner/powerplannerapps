@@ -30,6 +30,11 @@ namespace Vx.Uwp
                     return new UwpButton();
                 }
 
+                if (view is Vx.Views.TextBox)
+                {
+                    return new UwpTextBox();
+                }
+
                 throw new NotImplementedException();
             };
         }
