@@ -8,7 +8,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSLinearLayout : iOSView<LinearLayout, UIView>
+    public class iOSLinearLayout : iOSView<LinearLayout, UILinearLayout>
     {
         protected override void ApplyProperties(LinearLayout oldView, LinearLayout newView)
         {
@@ -35,40 +35,48 @@ namespace Vx.iOS.Views
                 }
                 );
 
-            View.RemoveConstraints(View.Constraints);
+            //View.RemoveConstraints(View.Constraints);
 
-            UIView prevView = null;
+            //UIView prevView = null;
 
-            for (int i = 0; i < newView.Children.Count; i++)
-            {
-                var uiView = View.Subviews[i];
-                var vxView = newView.Children[i];
+            //for (int i = 0; i < newView.Children.Count; i++)
+            //{
+            //    var uiView = View.Subviews[i];
+            //    var vxView = newView.Children[i];
 
-                if (prevView == null)
-                {
-                    uiView.PinToTop(View);
-                }
-                else
-                {
-                    uiView.SetBelow(prevView, View);
-                }
+            //    if (prevView == null)
+            //    {
+            //        uiView.PinToTop(View);
+            //    }
+            //    else
+            //    {
+            //        uiView.SetBelow(prevView, View);
+            //    }
 
-                if (i == newView.Children.Count - 1)
-                {
-                    uiView.PinToBottom(View);
-                }
+            //    if (i == newView.Children.Count - 1)
+            //    {
+            //        uiView.PinToBottom(View);
+            //    }
 
-                uiView.StretchWidth(View);
+            //    uiView.StretchWidth(View);
 
-                prevView = uiView;
-            }
+            //    prevView = uiView;
+            //}
         }
+    }
 
-        public class UILinearLayout : UIView
+
+    public class UILinearLayout : UIView
+    {
+        public override void LayoutSubviews()
         {
-            public override void LayoutSubviews()
+            double y = 0;
+
+            foreach (var subview in Subviews)
             {
-                base.LayoutSubviews();
+                var size = subview.SystemLayoutSizeFittingSize(UIView.UILayoutFittingCompressedSize);
+                subview.Frame = new CoreGraphics.CGRect(0, y, Frame.Width, size.Height);
+                y += size.Height;
             }
         }
     }

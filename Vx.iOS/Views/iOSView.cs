@@ -13,13 +13,13 @@ namespace Vx.iOS.Views
         public iOSView()
         {
             View = Activator.CreateInstance<N>();
-            View.TranslatesAutoresizingMaskIntoConstraints = false;
+            //View.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
         public iOSView(N view)
         {
             View = view;
-            view.TranslatesAutoresizingMaskIntoConstraints = false;
+            //view.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
         protected override void ApplyProperties(V oldView, V newView)
