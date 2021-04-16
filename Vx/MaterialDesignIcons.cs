@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace MaterialDesign
 {
@@ -12,11 +12,39 @@ namespace MaterialDesign
     public static partial class MaterialDesignIcons
     {
         /// <summary>
+        /// 360 unicode value ("\ue577").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=360
+        /// </summary>
+        public const string Icon360 = "\ue577";
+
+        /// <summary>
         /// 3d_rotation unicode value ("\ue84d").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=3d_rotation
         /// </summary>
         public const string Rotation3D = "\ue84d";
+
+        /// <summary>
+        /// 4k unicode value ("\ue072").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=4k
+        /// </summary>
+        public const string Icon4k = "\ue072";
+
+        /// <summary>
+        /// 5g unicode value ("\uef38").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=5g
+        /// </summary>
+        public const string Icon5g = "\uef38";
+
+        /// <summary>
+        /// 6_ft_apart unicode value ("\uf21e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=6_ft_apart
+        /// </summary>
+        public const string Icon6FtApart = "\uf21e";
 
         /// <summary>
         /// ac_unit unicode value ("\ueb3b").
@@ -54,11 +82,25 @@ namespace MaterialDesign
         public const string Accessibility = "\ue84e";
 
         /// <summary>
+        /// accessibility_new unicode value ("\ue92c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=accessibility_new
+        /// </summary>
+        public const string AccessibilityNew = "\ue92c";
+
+        /// <summary>
         /// accessible unicode value ("\ue914").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=accessible
         /// </summary>
         public const string Accessible = "\ue914";
+
+        /// <summary>
+        /// accessible_forward unicode value ("\ue934").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=accessible_forward
+        /// </summary>
+        public const string AccessibleForward = "\ue934";
 
         /// <summary>
         /// account_balance unicode value ("\ue84f").
@@ -87,6 +129,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=account_circle
         /// </summary>
         public const string AccountCircle = "\ue853";
+
+        /// <summary>
+        /// account_tree unicode value ("\ue97a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=account_tree
+        /// </summary>
+        public const string AccountTree = "\ue97a";
+
+        /// <summary>
+        /// ad_units unicode value ("\uef39").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=ad_units
+        /// </summary>
+        public const string AdUnits = "\uef39";
 
         /// <summary>
         /// adb unicode value ("\ue60e").
@@ -131,6 +187,13 @@ namespace MaterialDesign
         public const string AddBox = "\ue146";
 
         /// <summary>
+        /// add_business unicode value ("\ue729").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_business
+        /// </summary>
+        public const string AddBusiness = "\ue729";
+
+        /// <summary>
         /// add_circle unicode value ("\ue147").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=add_circle
@@ -145,6 +208,20 @@ namespace MaterialDesign
         public const string AddCircleOutline = "\ue148";
 
         /// <summary>
+        /// add_comment unicode value ("\ue266").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_comment
+        /// </summary>
+        public const string AddComment = "\ue266";
+
+        /// <summary>
+        /// add_ic_call unicode value ("\ue97c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_ic_call
+        /// </summary>
+        public const string AddIcCall = "\ue97c";
+
+        /// <summary>
         /// add_location unicode value ("\ue567").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=add_location
@@ -152,11 +229,46 @@ namespace MaterialDesign
         public const string AddLocation = "\ue567";
 
         /// <summary>
+        /// add_location_alt unicode value ("\uef3a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_location_alt
+        /// </summary>
+        public const string AddLocationAlt = "\uef3a";
+
+        /// <summary>
+        /// add_photo_alternate unicode value ("\ue43e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_photo_alternate
+        /// </summary>
+        public const string AddPhotoAlternate = "\ue43e";
+
+        /// <summary>
+        /// add_road unicode value ("\uef3b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_road
+        /// </summary>
+        public const string AddRoad = "\uef3b";
+
+        /// <summary>
         /// add_shopping_cart unicode value ("\ue854").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=add_shopping_cart
         /// </summary>
         public const string AddShoppingCart = "\ue854";
+
+        /// <summary>
+        /// add_task unicode value ("\uf23a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_task
+        /// </summary>
+        public const string AddTask = "\uf23a";
+
+        /// <summary>
+        /// add_to_home_screen unicode value ("\ue1fe").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=add_to_home_screen
+        /// </summary>
+        public const string AddToHomeScreen = "\ue1fe";
 
         /// <summary>
         /// add_to_photos unicode value ("\ue39d").
@@ -173,11 +285,32 @@ namespace MaterialDesign
         public const string AddToQueue = "\ue05c";
 
         /// <summary>
+        /// addchart unicode value ("\uef3c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=addchart
+        /// </summary>
+        public const string Addchart = "\uef3c";
+
+        /// <summary>
         /// adjust unicode value ("\ue39e").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=adjust
         /// </summary>
         public const string Adjust = "\ue39e";
+
+        /// <summary>
+        /// admin_panel_settings unicode value ("\uef3d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=admin_panel_settings
+        /// </summary>
+        public const string AdminPanelSettings = "\uef3d";
+
+        /// <summary>
+        /// agriculture unicode value ("\uea79").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=agriculture
+        /// </summary>
+        public const string Agriculture = "\uea79";
 
         /// <summary>
         /// airline_seat_flat unicode value ("\ue630").
@@ -250,6 +383,20 @@ namespace MaterialDesign
         public const string AirplanemodeInactive = "\ue194";
 
         /// <summary>
+        /// airplanemode_off unicode value ("\ue194").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=airplanemode_off
+        /// </summary>
+        public const string AirplanemodeOff = "\ue194";
+
+        /// <summary>
+        /// airplanemode_on unicode value ("\ue195").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=airplanemode_on
+        /// </summary>
+        public const string AirplanemodeOn = "\ue195";
+
+        /// <summary>
         /// airplay unicode value ("\ue055").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=airplay
@@ -299,6 +446,55 @@ namespace MaterialDesign
         public const string Album = "\ue019";
 
         /// <summary>
+        /// align_horizontal_center unicode value ("\ue00f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=align_horizontal_center
+        /// </summary>
+        public const string AlignHorizontalCenter = "\ue00f";
+
+        /// <summary>
+        /// align_horizontal_left unicode value ("\ue00d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=align_horizontal_left
+        /// </summary>
+        public const string AlignHorizontalLeft = "\ue00d";
+
+        /// <summary>
+        /// align_horizontal_right unicode value ("\ue010").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=align_horizontal_right
+        /// </summary>
+        public const string AlignHorizontalRight = "\ue010";
+
+        /// <summary>
+        /// align_vertical_bottom unicode value ("\ue015").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=align_vertical_bottom
+        /// </summary>
+        public const string AlignVerticalBottom = "\ue015";
+
+        /// <summary>
+        /// align_vertical_center unicode value ("\ue011").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=align_vertical_center
+        /// </summary>
+        public const string AlignVerticalCenter = "\ue011";
+
+        /// <summary>
+        /// align_vertical_top unicode value ("\ue00c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=align_vertical_top
+        /// </summary>
+        public const string AlignVerticalTop = "\ue00c";
+
+        /// <summary>
+        /// all_inbox unicode value ("\ue97f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=all_inbox
+        /// </summary>
+        public const string AllInbox = "\ue97f";
+
+        /// <summary>
         /// all_inclusive unicode value ("\ueb3d").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=all_inclusive
@@ -311,6 +507,41 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=all_out
         /// </summary>
         public const string AllOut = "\ue90b";
+
+        /// <summary>
+        /// alt_route unicode value ("\uf184").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=alt_route
+        /// </summary>
+        public const string AltRoute = "\uf184";
+
+        /// <summary>
+        /// alternate_email unicode value ("\ue0e6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=alternate_email
+        /// </summary>
+        public const string AlternateEmail = "\ue0e6";
+
+        /// <summary>
+        /// amp_stories unicode value ("\uea13").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=amp_stories
+        /// </summary>
+        public const string AmpStories = "\uea13";
+
+        /// <summary>
+        /// analytics unicode value ("\uef3e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=analytics
+        /// </summary>
+        public const string Analytics = "\uef3e";
+
+        /// <summary>
+        /// anchor unicode value ("\uf1cd").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=anchor
+        /// </summary>
+        public const string Anchor = "\uf1cd";
 
         /// <summary>
         /// android unicode value ("\ue859").
@@ -327,11 +558,46 @@ namespace MaterialDesign
         public const string Announcement = "\ue85a";
 
         /// <summary>
+        /// apartment unicode value ("\uea40").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=apartment
+        /// </summary>
+        public const string Apartment = "\uea40";
+
+        /// <summary>
+        /// api unicode value ("\uf1b7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=api
+        /// </summary>
+        public const string Api = "\uf1b7";
+
+        /// <summary>
+        /// app_blocking unicode value ("\uef3f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=app_blocking
+        /// </summary>
+        public const string AppBlocking = "\uef3f";
+
+        /// <summary>
+        /// app_settings_alt unicode value ("\uef41").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=app_settings_alt
+        /// </summary>
+        public const string AppSettingsAlt = "\uef41";
+
+        /// <summary>
         /// apps unicode value ("\ue5c3").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=apps
         /// </summary>
         public const string Apps = "\ue5c3";
+
+        /// <summary>
+        /// architecture unicode value ("\uea3b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=architecture
+        /// </summary>
+        public const string Architecture = "\uea3b";
 
         /// <summary>
         /// archive unicode value ("\ue149").
@@ -346,6 +612,27 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=arrow_back
         /// </summary>
         public const string ArrowBack = "\ue5c4";
+
+        /// <summary>
+        /// arrow_back_ios unicode value ("\ue5e0").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=arrow_back_ios
+        /// </summary>
+        public const string ArrowBackIos = "\ue5e0";
+
+        /// <summary>
+        /// arrow_circle_down unicode value ("\uf181").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=arrow_circle_down
+        /// </summary>
+        public const string ArrowCircleDown = "\uf181";
+
+        /// <summary>
+        /// arrow_circle_up unicode value ("\uf182").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=arrow_circle_up
+        /// </summary>
+        public const string ArrowCircleUp = "\uf182";
 
         /// <summary>
         /// arrow_downward unicode value ("\ue5db").
@@ -383,6 +670,34 @@ namespace MaterialDesign
         public const string ArrowForward = "\ue5c8";
 
         /// <summary>
+        /// arrow_forward_ios unicode value ("\ue5e1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=arrow_forward_ios
+        /// </summary>
+        public const string ArrowForwardIos = "\ue5e1";
+
+        /// <summary>
+        /// arrow_left unicode value ("\ue5de").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=arrow_left
+        /// </summary>
+        public const string ArrowLeft = "\ue5de";
+
+        /// <summary>
+        /// arrow_right unicode value ("\ue5df").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=arrow_right
+        /// </summary>
+        public const string ArrowRight = "\ue5df";
+
+        /// <summary>
+        /// arrow_right_alt unicode value ("\ue941").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=arrow_right_alt
+        /// </summary>
+        public const string ArrowRightAlt = "\ue941";
+
+        /// <summary>
         /// arrow_upward unicode value ("\ue5d8").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=arrow_upward
@@ -395,6 +710,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=art_track
         /// </summary>
         public const string ArtTrack = "\ue060";
+
+        /// <summary>
+        /// article unicode value ("\uef42").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=article
+        /// </summary>
+        public const string Article = "\uef42";
 
         /// <summary>
         /// aspect_ratio unicode value ("\ue85b").
@@ -467,6 +789,20 @@ namespace MaterialDesign
         public const string AssistantPhoto = "\ue3a0";
 
         /// <summary>
+        /// atm unicode value ("\ue573").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=atm
+        /// </summary>
+        public const string Atm = "\ue573";
+
+        /// <summary>
+        /// attach_email unicode value ("\uea5e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=attach_email
+        /// </summary>
+        public const string AttachEmail = "\uea5e";
+
+        /// <summary>
         /// attach_file unicode value ("\ue226").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=attach_file
@@ -488,11 +824,25 @@ namespace MaterialDesign
         public const string Attachment = "\ue2bc";
 
         /// <summary>
+        /// attribution unicode value ("\uefdb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=attribution
+        /// </summary>
+        public const string Attribution = "\uefdb";
+
+        /// <summary>
         /// audiotrack unicode value ("\ue3a1").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=audiotrack
         /// </summary>
         public const string Audiotrack = "\ue3a1";
+
+        /// <summary>
+        /// auto_delete unicode value ("\uea4c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=auto_delete
+        /// </summary>
+        public const string AutoDelete = "\uea4c";
 
         /// <summary>
         /// autorenew unicode value ("\ue863").
@@ -509,6 +859,20 @@ namespace MaterialDesign
         public const string AvTimer = "\ue01b";
 
         /// <summary>
+        /// baby_changing_station unicode value ("\uf19b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=baby_changing_station
+        /// </summary>
+        public const string BabyChangingStation = "\uf19b";
+
+        /// <summary>
+        /// backpack unicode value ("\uf19c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=backpack
+        /// </summary>
+        public const string Backpack = "\uf19c";
+
+        /// <summary>
         /// backspace unicode value ("\ue14a").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=backspace
@@ -521,6 +885,41 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=backup
         /// </summary>
         public const string Backup = "\ue864";
+
+        /// <summary>
+        /// backup_table unicode value ("\uef43").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=backup_table
+        /// </summary>
+        public const string BackupTable = "\uef43";
+
+        /// <summary>
+        /// ballot unicode value ("\ue172").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=ballot
+        /// </summary>
+        public const string Ballot = "\ue172";
+
+        /// <summary>
+        /// bar_chart unicode value ("\ue26b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=bar_chart
+        /// </summary>
+        public const string BarChart = "\ue26b";
+
+        /// <summary>
+        /// batch_prediction unicode value ("\uf0f5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=batch_prediction
+        /// </summary>
+        public const string BatchPrediction = "\uf0f5";
+
+        /// <summary>
+        /// bathtub unicode value ("\uea41").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=bathtub
+        /// </summary>
+        public const string Bathtub = "\uea41";
 
         /// <summary>
         /// battery_alert unicode value ("\ue19c").
@@ -565,11 +964,39 @@ namespace MaterialDesign
         public const string BeachAccess = "\ueb3e";
 
         /// <summary>
+        /// bedtime unicode value ("\uef44").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=bedtime
+        /// </summary>
+        public const string Bedtime = "\uef44";
+
+        /// <summary>
         /// beenhere unicode value ("\ue52d").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=beenhere
         /// </summary>
         public const string Beenhere = "\ue52d";
+
+        /// <summary>
+        /// bento unicode value ("\uf1f4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=bento
+        /// </summary>
+        public const string Bento = "\uf1f4";
+
+        /// <summary>
+        /// bike_scooter unicode value ("\uef45").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=bike_scooter
+        /// </summary>
+        public const string BikeScooter = "\uef45";
+
+        /// <summary>
+        /// biotech unicode value ("\uea3a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=biotech
+        /// </summary>
+        public const string Biotech = "\uea3a";
 
         /// <summary>
         /// block unicode value ("\ue14b").
@@ -649,6 +1076,13 @@ namespace MaterialDesign
         public const string Book = "\ue865";
 
         /// <summary>
+        /// book_online unicode value ("\uf217").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=book_online
+        /// </summary>
+        public const string BookOnline = "\uf217";
+
+        /// <summary>
         /// bookmark unicode value ("\ue866").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=bookmark
@@ -661,6 +1095,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=bookmark_border
         /// </summary>
         public const string BookmarkBorder = "\ue867";
+
+        /// <summary>
+        /// bookmark_outline unicode value ("\ue867").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=bookmark_outline
+        /// </summary>
+        public const string BookmarkOutline = "\ue867";
+
+        /// <summary>
+        /// bookmarks unicode value ("\ue98b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=bookmarks
+        /// </summary>
+        public const string Bookmarks = "\ue98b";
 
         /// <summary>
         /// border_all unicode value ("\ue228").
@@ -682,13 +1130,6 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=border_clear
         /// </summary>
         public const string BorderClear = "\ue22a";
-
-        /// <summary>
-        /// border_color unicode value ("\ue22b").
-        /// <para/>
-        /// See https://material.io/resources/icons/?icon=border_color
-        /// </summary>
-        public const string BorderColor = "\ue22b";
 
         /// <summary>
         /// border_horizontal unicode value ("\ue22c").
@@ -838,6 +1279,13 @@ namespace MaterialDesign
         public const string BrokenImage = "\ue3ad";
 
         /// <summary>
+        /// browser_not_supported unicode value ("\uef47").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=browser_not_supported
+        /// </summary>
+        public const string BrowserNotSupported = "\uef47";
+
+        /// <summary>
         /// brush unicode value ("\ue3ae").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=brush
@@ -864,6 +1312,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=build
         /// </summary>
         public const string Build = "\ue869";
+
+        /// <summary>
+        /// build_circle unicode value ("\uef48").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=build_circle
+        /// </summary>
+        public const string BuildCircle = "\uef48";
 
         /// <summary>
         /// burst_mode unicode value ("\ue43c").
@@ -899,6 +1354,27 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=cake
         /// </summary>
         public const string Cake = "\ue7e9";
+
+        /// <summary>
+        /// calculate unicode value ("\uea5f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=calculate
+        /// </summary>
+        public const string Calculate = "\uea5f";
+
+        /// <summary>
+        /// calendar_today unicode value ("\ue935").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=calendar_today
+        /// </summary>
+        public const string CalendarToday = "\ue935";
+
+        /// <summary>
+        /// calendar_view_day unicode value ("\ue936").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=calendar_view_day
+        /// </summary>
+        public const string CalendarViewDay = "\ue936";
 
         /// <summary>
         /// call unicode value ("\ue0b0").
@@ -1006,11 +1482,32 @@ namespace MaterialDesign
         public const string CameraRoll = "\ue3b3";
 
         /// <summary>
+        /// campaign unicode value ("\uef49").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=campaign
+        /// </summary>
+        public const string Campaign = "\uef49";
+
+        /// <summary>
         /// cancel unicode value ("\ue5c9").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=cancel
         /// </summary>
         public const string Cancel = "\ue5c9";
+
+        /// <summary>
+        /// cancel_presentation unicode value ("\ue0e9").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=cancel_presentation
+        /// </summary>
+        public const string CancelPresentation = "\ue0e9";
+
+        /// <summary>
+        /// cancel_schedule_send unicode value ("\uea39").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=cancel_schedule_send
+        /// </summary>
+        public const string CancelScheduleSend = "\uea39";
 
         /// <summary>
         /// card_giftcard unicode value ("\ue8f6").
@@ -1034,6 +1531,13 @@ namespace MaterialDesign
         public const string CardTravel = "\ue8f8";
 
         /// <summary>
+        /// carpenter unicode value ("\uf1f8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=carpenter
+        /// </summary>
+        public const string Carpenter = "\uf1f8";
+
+        /// <summary>
         /// casino unicode value ("\ueb40").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=casino
@@ -1055,6 +1559,20 @@ namespace MaterialDesign
         public const string CastConnected = "\ue308";
 
         /// <summary>
+        /// cast_for_education unicode value ("\uefec").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=cast_for_education
+        /// </summary>
+        public const string CastForEducation = "\uefec";
+
+        /// <summary>
+        /// category unicode value ("\ue574").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=category
+        /// </summary>
+        public const string Category = "\ue574";
+
+        /// <summary>
         /// center_focus_strong unicode value ("\ue3b4").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=center_focus_strong
@@ -1074,6 +1592,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=change_history
         /// </summary>
         public const string ChangeHistory = "\ue86b";
+
+        /// <summary>
+        /// charging_station unicode value ("\uf19d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=charging_station
+        /// </summary>
+        public const string ChargingStation = "\uf19d";
 
         /// <summary>
         /// chat unicode value ("\ue0b7").
@@ -1125,6 +1650,20 @@ namespace MaterialDesign
         public const string CheckCircle = "\ue86c";
 
         /// <summary>
+        /// check_circle_outline unicode value ("\ue92d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=check_circle_outline
+        /// </summary>
+        public const string CheckCircleOutline = "\ue92d";
+
+        /// <summary>
+        /// checkroom unicode value ("\uf19e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=checkroom
+        /// </summary>
+        public const string Checkroom = "\uf19e";
+
+        /// <summary>
         /// chevron_left unicode value ("\ue5cb").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=chevron_left
@@ -1167,6 +1706,20 @@ namespace MaterialDesign
         public const string Class = "\ue86e";
 
         /// <summary>
+        /// clean_hands unicode value ("\uf21f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=clean_hands
+        /// </summary>
+        public const string CleanHands = "\uf21f";
+
+        /// <summary>
+        /// cleaning_services unicode value ("\uf0ff").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=cleaning_services
+        /// </summary>
+        public const string CleaningServices = "\uf0ff";
+
+        /// <summary>
         /// clear unicode value ("\ue14c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=clear
@@ -1188,11 +1741,25 @@ namespace MaterialDesign
         public const string Close = "\ue5cd";
 
         /// <summary>
+        /// close_fullscreen unicode value ("\uf1cf").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=close_fullscreen
+        /// </summary>
+        public const string CloseFullscreen = "\uf1cf";
+
+        /// <summary>
         /// closed_caption unicode value ("\ue01c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=closed_caption
         /// </summary>
         public const string ClosedCaption = "\ue01c";
+
+        /// <summary>
+        /// closed_caption_disabled unicode value ("\uf1dc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=closed_caption_disabled
+        /// </summary>
+        public const string ClosedCaptionDisabled = "\uf1dc";
 
         /// <summary>
         /// cloud unicode value ("\ue2bd").
@@ -1286,6 +1853,20 @@ namespace MaterialDesign
         public const string Comment = "\ue0b9";
 
         /// <summary>
+        /// comment_bank unicode value ("\uea4e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=comment_bank
+        /// </summary>
+        public const string CommentBank = "\uea4e";
+
+        /// <summary>
+        /// commute unicode value ("\ue940").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=commute
+        /// </summary>
+        public const string Commute = "\ue940";
+
+        /// <summary>
         /// compare unicode value ("\ue3b9").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=compare
@@ -1300,11 +1881,25 @@ namespace MaterialDesign
         public const string CompareArrows = "\ue915";
 
         /// <summary>
+        /// compass_calibration unicode value ("\ue57c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=compass_calibration
+        /// </summary>
+        public const string CompassCalibration = "\ue57c";
+
+        /// <summary>
         /// computer unicode value ("\ue30a").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=computer
         /// </summary>
         public const string Computer = "\ue30a";
+
+        /// <summary>
+        /// confirmation_num unicode value ("\ue638").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=confirmation_num
+        /// </summary>
+        public const string ConfirmationNum = "\ue638";
 
         /// <summary>
         /// confirmation_number unicode value ("\ue638").
@@ -1314,11 +1909,32 @@ namespace MaterialDesign
         public const string ConfirmationNumber = "\ue638";
 
         /// <summary>
+        /// connect_without_contact unicode value ("\uf223").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=connect_without_contact
+        /// </summary>
+        public const string ConnectWithoutContact = "\uf223";
+
+        /// <summary>
+        /// construction unicode value ("\uea3c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=construction
+        /// </summary>
+        public const string Construction = "\uea3c";
+
+        /// <summary>
         /// contact_mail unicode value ("\ue0d0").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=contact_mail
         /// </summary>
         public const string ContactMail = "\ue0d0";
+
+        /// <summary>
+        /// contact_page unicode value ("\uf22e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=contact_page
+        /// </summary>
+        public const string ContactPage = "\uf22e";
 
         /// <summary>
         /// contact_phone unicode value ("\ue0cf").
@@ -1328,6 +1944,20 @@ namespace MaterialDesign
         public const string ContactPhone = "\ue0cf";
 
         /// <summary>
+        /// contact_support unicode value ("\ue94c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=contact_support
+        /// </summary>
+        public const string ContactSupport = "\ue94c";
+
+        /// <summary>
+        /// contactless unicode value ("\uea71").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=contactless
+        /// </summary>
+        public const string Contactless = "\uea71";
+
+        /// <summary>
         /// contacts unicode value ("\ue0ba").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=contacts
@@ -1335,25 +1965,32 @@ namespace MaterialDesign
         public const string Contacts = "\ue0ba";
 
         /// <summary>
-        /// content_copy unicode value ("\ue14d").
+        /// content_copy unicode value ("\uf08a").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=content_copy
         /// </summary>
-        public const string ContentCopy = "\ue14d";
+        public const string ContentCopy = "\uf08a";
 
         /// <summary>
-        /// content_cut unicode value ("\ue14e").
+        /// content_cut unicode value ("\uf08b").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=content_cut
         /// </summary>
-        public const string ContentCut = "\ue14e";
+        public const string ContentCut = "\uf08b";
 
         /// <summary>
-        /// content_paste unicode value ("\ue14f").
+        /// content_paste unicode value ("\uf098").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=content_paste
         /// </summary>
-        public const string ContentPaste = "\ue14f";
+        public const string ContentPaste = "\uf098";
+
+        /// <summary>
+        /// control_camera unicode value ("\ue074").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=control_camera
+        /// </summary>
+        public const string ControlCamera = "\ue074";
 
         /// <summary>
         /// control_point unicode value ("\ue3ba").
@@ -1370,11 +2007,39 @@ namespace MaterialDesign
         public const string ControlPointDuplicate = "\ue3bb";
 
         /// <summary>
+        /// copy unicode value ("\uf08a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=copy
+        /// </summary>
+        public const string Copy = "\uf08a";
+
+        /// <summary>
         /// copyright unicode value ("\ue90c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=copyright
         /// </summary>
         public const string Copyright = "\ue90c";
+
+        /// <summary>
+        /// coronavirus unicode value ("\uf221").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=coronavirus
+        /// </summary>
+        public const string Coronavirus = "\uf221";
+
+        /// <summary>
+        /// corporate_fare unicode value ("\uf1d0").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=corporate_fare
+        /// </summary>
+        public const string CorporateFare = "\uf1d0";
+
+        /// <summary>
+        /// countertops unicode value ("\uf1f7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=countertops
+        /// </summary>
+        public const string Countertops = "\uf1f7";
 
         /// <summary>
         /// create unicode value ("\ue150").
@@ -1482,6 +2147,13 @@ namespace MaterialDesign
         public const string CropSquare = "\ue3c6";
 
         /// <summary>
+        /// cut unicode value ("\uf08b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=cut
+        /// </summary>
+        public const string Cut = "\uf08b";
+
+        /// <summary>
         /// dashboard unicode value ("\ue871").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=dashboard
@@ -1501,6 +2173,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=date_range
         /// </summary>
         public const string DateRange = "\ue916";
+
+        /// <summary>
+        /// deck unicode value ("\uea42").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=deck
+        /// </summary>
+        public const string Deck = "\uea42";
 
         /// <summary>
         /// dehaze unicode value ("\ue3c7").
@@ -1524,6 +2203,13 @@ namespace MaterialDesign
         public const string DeleteForever = "\ue92b";
 
         /// <summary>
+        /// delete_outline unicode value ("\ue92e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=delete_outline
+        /// </summary>
+        public const string DeleteOutline = "\ue92e";
+
+        /// <summary>
         /// delete_sweep unicode value ("\ue16c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=delete_sweep
@@ -1531,11 +2217,32 @@ namespace MaterialDesign
         public const string DeleteSweep = "\ue16c";
 
         /// <summary>
+        /// departure_board unicode value ("\ue576").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=departure_board
+        /// </summary>
+        public const string DepartureBoard = "\ue576";
+
+        /// <summary>
         /// description unicode value ("\ue873").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=description
         /// </summary>
         public const string Description = "\ue873";
+
+        /// <summary>
+        /// design_services unicode value ("\uf10a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=design_services
+        /// </summary>
+        public const string DesignServices = "\uf10a";
+
+        /// <summary>
+        /// desktop_access_disabled unicode value ("\ue99d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=desktop_access_disabled
+        /// </summary>
+        public const string DesktopAccessDisabled = "\ue99d";
 
         /// <summary>
         /// desktop_mac unicode value ("\ue30b").
@@ -1578,6 +2285,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=device_hub
         /// </summary>
         public const string DeviceHub = "\ue335";
+
+        /// <summary>
+        /// device_unknown unicode value ("\ue339").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=device_unknown
+        /// </summary>
+        public const string DeviceUnknown = "\ue339";
 
         /// <summary>
         /// devices unicode value ("\ue1b1").
@@ -1643,6 +2357,20 @@ namespace MaterialDesign
         public const string DirectionsCar = "\ue531";
 
         /// <summary>
+        /// directions_ferry unicode value ("\ue532").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=directions_ferry
+        /// </summary>
+        public const string DirectionsFerry = "\ue532";
+
+        /// <summary>
+        /// directions_off unicode value ("\uf10f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=directions_off
+        /// </summary>
+        public const string DirectionsOff = "\uf10f";
+
+        /// <summary>
         /// directions_railway unicode value ("\ue534").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=directions_railway
@@ -1664,6 +2392,13 @@ namespace MaterialDesign
         public const string DirectionsSubway = "\ue533";
 
         /// <summary>
+        /// directions_train unicode value ("\ue534").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=directions_train
+        /// </summary>
+        public const string DirectionsTrain = "\ue534";
+
+        /// <summary>
         /// directions_transit unicode value ("\ue535").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=directions_transit
@@ -1676,6 +2411,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=directions_walk
         /// </summary>
         public const string DirectionsWalk = "\ue536";
+
+        /// <summary>
+        /// disabled_by_default unicode value ("\uf230").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=disabled_by_default
+        /// </summary>
+        public const string DisabledByDefault = "\uf230";
 
         /// <summary>
         /// disc_full unicode value ("\ue610").
@@ -1692,32 +2434,46 @@ namespace MaterialDesign
         public const string Dns = "\ue875";
 
         /// <summary>
-        /// do_not_disturb unicode value ("\ue612").
+        /// do_disturb unicode value ("\uf08c").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=do_not_disturb
+        /// See https://material.io/resources/icons/?icon=do_disturb
         /// </summary>
-        public const string DoNotDisturb = "\ue612";
+        public const string DoDisturb = "\uf08c";
 
         /// <summary>
-        /// do_not_disturb_alt unicode value ("\ue611").
+        /// do_disturb_alt unicode value ("\uf08d").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=do_not_disturb_alt
+        /// See https://material.io/resources/icons/?icon=do_disturb_alt
         /// </summary>
-        public const string DoNotDisturbAlt = "\ue611";
+        public const string DoDisturbAlt = "\uf08d";
 
         /// <summary>
-        /// do_not_disturb_off unicode value ("\ue643").
+        /// do_disturb_off unicode value ("\uf08e").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=do_not_disturb_off
+        /// See https://material.io/resources/icons/?icon=do_disturb_off
         /// </summary>
-        public const string DoNotDisturbOff = "\ue643";
+        public const string DoDisturbOff = "\uf08e";
 
         /// <summary>
-        /// do_not_disturb_on unicode value ("\ue644").
+        /// do_disturb_on unicode value ("\uf08f").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=do_not_disturb_on
+        /// See https://material.io/resources/icons/?icon=do_disturb_on
         /// </summary>
-        public const string DoNotDisturbOn = "\ue644";
+        public const string DoDisturbOn = "\uf08f";
+
+        /// <summary>
+        /// do_not_step unicode value ("\uf19f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=do_not_step
+        /// </summary>
+        public const string DoNotStep = "\uf19f";
+
+        /// <summary>
+        /// do_not_touch unicode value ("\uf1b0").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=do_not_touch
+        /// </summary>
+        public const string DoNotTouch = "\uf1b0";
 
         /// <summary>
         /// dock unicode value ("\ue30e").
@@ -1734,6 +2490,20 @@ namespace MaterialDesign
         public const string Domain = "\ue7ee";
 
         /// <summary>
+        /// domain_disabled unicode value ("\ue0ef").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=domain_disabled
+        /// </summary>
+        public const string DomainDisabled = "\ue0ef";
+
+        /// <summary>
+        /// domain_verification unicode value ("\uef4c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=domain_verification
+        /// </summary>
+        public const string DomainVerification = "\uef4c";
+
+        /// <summary>
         /// done unicode value ("\ue876").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=done
@@ -1746,6 +2516,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=done_all
         /// </summary>
         public const string DoneAll = "\ue877";
+
+        /// <summary>
+        /// done_outline unicode value ("\ue92f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=done_outline
+        /// </summary>
+        public const string DoneOutline = "\ue92f";
 
         /// <summary>
         /// donut_large unicode value ("\ue917").
@@ -1762,6 +2539,27 @@ namespace MaterialDesign
         public const string DonutSmall = "\ue918";
 
         /// <summary>
+        /// double_arrow unicode value ("\uea50").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=double_arrow
+        /// </summary>
+        public const string DoubleArrow = "\uea50";
+
+        /// <summary>
+        /// download unicode value ("\uf090").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=download
+        /// </summary>
+        public const string Download = "\uf090";
+
+        /// <summary>
+        /// download_done unicode value ("\uf091").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=download_done
+        /// </summary>
+        public const string DownloadDone = "\uf091";
+
+        /// <summary>
         /// drafts unicode value ("\ue151").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=drafts
@@ -1776,11 +2574,32 @@ namespace MaterialDesign
         public const string DragHandle = "\ue25d";
 
         /// <summary>
+        /// drag_indicator unicode value ("\ue945").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=drag_indicator
+        /// </summary>
+        public const string DragIndicator = "\ue945";
+
+        /// <summary>
         /// drive_eta unicode value ("\ue613").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=drive_eta
         /// </summary>
         public const string DriveEta = "\ue613";
+
+        /// <summary>
+        /// dry unicode value ("\uf1b3").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=dry
+        /// </summary>
+        public const string Dry = "\uf1b3";
+
+        /// <summary>
+        /// duo unicode value ("\ue9a5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=duo
+        /// </summary>
+        public const string Duo = "\ue9a5";
 
         /// <summary>
         /// dvr unicode value ("\ue1b2").
@@ -1790,11 +2609,46 @@ namespace MaterialDesign
         public const string Dvr = "\ue1b2";
 
         /// <summary>
+        /// dynamic_feed unicode value ("\uea14").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=dynamic_feed
+        /// </summary>
+        public const string DynamicFeed = "\uea14";
+
+        /// <summary>
+        /// dynamic_form unicode value ("\uf1bf").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=dynamic_form
+        /// </summary>
+        public const string DynamicForm = "\uf1bf";
+
+        /// <summary>
+        /// east unicode value ("\uf1df").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=east
+        /// </summary>
+        public const string East = "\uf1df";
+
+        /// <summary>
+        /// eco unicode value ("\uea35").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=eco
+        /// </summary>
+        public const string Eco = "\uea35";
+
+        /// <summary>
         /// edit unicode value ("\ue3c9").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=edit
         /// </summary>
         public const string Edit = "\ue3c9";
+
+        /// <summary>
+        /// edit_attributes unicode value ("\ue578").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=edit_attributes
+        /// </summary>
+        public const string EditAttributes = "\ue578";
 
         /// <summary>
         /// edit_location unicode value ("\ue568").
@@ -1804,6 +2658,13 @@ namespace MaterialDesign
         public const string EditLocation = "\ue568";
 
         /// <summary>
+        /// edit_road unicode value ("\uef4d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=edit_road
+        /// </summary>
+        public const string EditRoad = "\uef4d";
+
+        /// <summary>
         /// eject unicode value ("\ue8fb").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=eject
@@ -1811,11 +2672,137 @@ namespace MaterialDesign
         public const string Eject = "\ue8fb";
 
         /// <summary>
+        /// elderly unicode value ("\uf21a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=elderly
+        /// </summary>
+        public const string Elderly = "\uf21a";
+
+        /// <summary>
+        /// electric_bike unicode value ("\ueb1b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=electric_bike
+        /// </summary>
+        public const string ElectricBike = "\ueb1b";
+
+        /// <summary>
+        /// electric_car unicode value ("\ueb1c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=electric_car
+        /// </summary>
+        public const string ElectricCar = "\ueb1c";
+
+        /// <summary>
+        /// electric_moped unicode value ("\ueb1d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=electric_moped
+        /// </summary>
+        public const string ElectricMoped = "\ueb1d";
+
+        /// <summary>
+        /// electric_scooter unicode value ("\ueb1f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=electric_scooter
+        /// </summary>
+        public const string ElectricScooter = "\ueb1f";
+
+        /// <summary>
+        /// electrical_services unicode value ("\uf102").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=electrical_services
+        /// </summary>
+        public const string ElectricalServices = "\uf102";
+
+        /// <summary>
+        /// elevator unicode value ("\uf1a0").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=elevator
+        /// </summary>
+        public const string Elevator = "\uf1a0";
+
+        /// <summary>
         /// email unicode value ("\ue0be").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=email
         /// </summary>
         public const string Email = "\ue0be";
+
+        /// <summary>
+        /// emoji_emotions unicode value ("\uea22").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_emotions
+        /// </summary>
+        public const string EmojiEmotions = "\uea22";
+
+        /// <summary>
+        /// emoji_events unicode value ("\uea23").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_events
+        /// </summary>
+        public const string EmojiEvents = "\uea23";
+
+        /// <summary>
+        /// emoji_flags unicode value ("\uea1a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_flags
+        /// </summary>
+        public const string EmojiFlags = "\uea1a";
+
+        /// <summary>
+        /// emoji_food_beverage unicode value ("\uea1b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_food_beverage
+        /// </summary>
+        public const string EmojiFoodBeverage = "\uea1b";
+
+        /// <summary>
+        /// emoji_nature unicode value ("\uea1c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_nature
+        /// </summary>
+        public const string EmojiNature = "\uea1c";
+
+        /// <summary>
+        /// emoji_objects unicode value ("\uea24").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_objects
+        /// </summary>
+        public const string EmojiObjects = "\uea24";
+
+        /// <summary>
+        /// emoji_people unicode value ("\uea1d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_people
+        /// </summary>
+        public const string EmojiPeople = "\uea1d";
+
+        /// <summary>
+        /// emoji_symbols unicode value ("\uea1e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_symbols
+        /// </summary>
+        public const string EmojiSymbols = "\uea1e";
+
+        /// <summary>
+        /// emoji_transportation unicode value ("\uea1f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=emoji_transportation
+        /// </summary>
+        public const string EmojiTransportation = "\uea1f";
+
+        /// <summary>
+        /// engineering unicode value ("\uea3d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=engineering
+        /// </summary>
+        public const string Engineering = "\uea3d";
+
+        /// <summary>
+        /// enhance_photo_translate unicode value ("\ue8fc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=enhance_photo_translate
+        /// </summary>
+        public const string EnhancePhotoTranslate = "\ue8fc";
 
         /// <summary>
         /// enhanced_encryption unicode value ("\ue63f").
@@ -1844,6 +2831,27 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=error_outline
         /// </summary>
         public const string ErrorOutline = "\ue001";
+
+        /// <summary>
+        /// escalator unicode value ("\uf1a1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=escalator
+        /// </summary>
+        public const string Escalator = "\uf1a1";
+
+        /// <summary>
+        /// escalator_warning unicode value ("\uf1ac").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=escalator_warning
+        /// </summary>
+        public const string EscalatorWarning = "\uf1ac";
+
+        /// <summary>
+        /// euro unicode value ("\uea15").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=euro
+        /// </summary>
+        public const string Euro = "\uea15";
 
         /// <summary>
         /// euro_symbol unicode value ("\ue926").
@@ -1930,11 +2938,32 @@ namespace MaterialDesign
         public const string Explore = "\ue87a";
 
         /// <summary>
+        /// explore_off unicode value ("\ue9a8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=explore_off
+        /// </summary>
+        public const string ExploreOff = "\ue9a8";
+
+        /// <summary>
         /// exposure unicode value ("\ue3ca").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=exposure
         /// </summary>
         public const string Exposure = "\ue3ca";
+
+        /// <summary>
+        /// exposure_minus_1 unicode value ("\ue3cb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=exposure_minus_1
+        /// </summary>
+        public const string ExposureMinus1 = "\ue3cb";
+
+        /// <summary>
+        /// exposure_minus_2 unicode value ("\ue3cc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=exposure_minus_2
+        /// </summary>
+        public const string ExposureMinus2 = "\ue3cc";
 
         /// <summary>
         /// exposure_neg_1 unicode value ("\ue3cb").
@@ -1986,6 +3015,34 @@ namespace MaterialDesign
         public const string Face = "\ue87c";
 
         /// <summary>
+        /// face_unlock unicode value ("\uf008").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=face_unlock
+        /// </summary>
+        public const string FaceUnlock = "\uf008";
+
+        /// <summary>
+        /// facebook unicode value ("\uf234").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=facebook
+        /// </summary>
+        public const string Facebook = "\uf234";
+
+        /// <summary>
+        /// fact_check unicode value ("\uf0c5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=fact_check
+        /// </summary>
+        public const string FactCheck = "\uf0c5";
+
+        /// <summary>
+        /// family_restroom unicode value ("\uf1a2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=family_restroom
+        /// </summary>
+        public const string FamilyRestroom = "\uf1a2";
+
+        /// <summary>
         /// fast_forward unicode value ("\ue01f").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=fast_forward
@@ -2000,6 +3057,13 @@ namespace MaterialDesign
         public const string FastRewind = "\ue020";
 
         /// <summary>
+        /// fastfood unicode value ("\ue57a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=fastfood
+        /// </summary>
+        public const string Fastfood = "\ue57a";
+
+        /// <summary>
         /// favorite unicode value ("\ue87d").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=favorite
@@ -2012,6 +3076,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=favorite_border
         /// </summary>
         public const string FavoriteBorder = "\ue87e";
+
+        /// <summary>
+        /// favorite_outline unicode value ("\ue87e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=favorite_outline
+        /// </summary>
+        public const string FavoriteOutline = "\ue87e";
 
         /// <summary>
         /// featured_play_list unicode value ("\ue06d").
@@ -2033,6 +3104,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=feedback
         /// </summary>
         public const string Feedback = "\ue87f";
+
+        /// <summary>
+        /// fence unicode value ("\uf1f6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=fence
+        /// </summary>
+        public const string Fence = "\uf1f6";
 
         /// <summary>
         /// fiber_dvr unicode value ("\ue05d").
@@ -2070,18 +3148,11 @@ namespace MaterialDesign
         public const string FiberSmartRecord = "\ue062";
 
         /// <summary>
-        /// file_download unicode value ("\ue2c4").
+        /// file_copy unicode value ("\ue173").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=file_download
+        /// See https://material.io/resources/icons/?icon=file_copy
         /// </summary>
-        public const string FileDownload = "\ue2c4";
-
-        /// <summary>
-        /// file_upload unicode value ("\ue2c6").
-        /// <para/>
-        /// See https://material.io/resources/icons/?icon=file_upload
-        /// </summary>
-        public const string FileUpload = "\ue2c6";
+        public const string FileCopy = "\ue173";
 
         /// <summary>
         /// filter unicode value ("\ue3d3").
@@ -2159,6 +3230,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=filter_9_plus
         /// </summary>
         public const string Filter9Plus = "\ue3da";
+
+        /// <summary>
+        /// filter_alt unicode value ("\uef4f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=filter_alt
+        /// </summary>
+        public const string FilterAlt = "\uef4f";
 
         /// <summary>
         /// filter_b_and_w unicode value ("\ue3db").
@@ -2245,6 +3323,20 @@ namespace MaterialDesign
         public const string Fingerprint = "\ue90d";
 
         /// <summary>
+        /// fire_extinguisher unicode value ("\uf1d8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=fire_extinguisher
+        /// </summary>
+        public const string FireExtinguisher = "\uf1d8";
+
+        /// <summary>
+        /// fireplace unicode value ("\uea43").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=fireplace
+        /// </summary>
+        public const string Fireplace = "\uea43";
+
+        /// <summary>
         /// first_page unicode value ("\ue5dc").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=first_page
@@ -2264,6 +3356,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=flag
         /// </summary>
         public const string Flag = "\ue153";
+
+        /// <summary>
+        /// flaky unicode value ("\uef50").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=flaky
+        /// </summary>
+        public const string Flaky = "\uef50";
 
         /// <summary>
         /// flare unicode value ("\ue3e4").
@@ -2322,6 +3421,20 @@ namespace MaterialDesign
         public const string Flip = "\ue3e8";
 
         /// <summary>
+        /// flip_camera_android unicode value ("\uea37").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=flip_camera_android
+        /// </summary>
+        public const string FlipCameraAndroid = "\uea37";
+
+        /// <summary>
+        /// flip_camera_ios unicode value ("\uea38").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=flip_camera_ios
+        /// </summary>
+        public const string FlipCameraIos = "\uea38";
+
+        /// <summary>
         /// flip_to_back unicode value ("\ue882").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=flip_to_back
@@ -2364,11 +3477,25 @@ namespace MaterialDesign
         public const string FolderSpecial = "\ue617";
 
         /// <summary>
+        /// follow_the_signs unicode value ("\uf222").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=follow_the_signs
+        /// </summary>
+        public const string FollowTheSigns = "\uf222";
+
+        /// <summary>
         /// font_download unicode value ("\ue167").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=font_download
         /// </summary>
         public const string FontDownload = "\ue167";
+
+        /// <summary>
+        /// food_bank unicode value ("\uf1f2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=food_bank
+        /// </summary>
+        public const string FoodBank = "\uf1f2";
 
         /// <summary>
         /// format_align_center unicode value ("\ue234").
@@ -2413,25 +3540,11 @@ namespace MaterialDesign
         public const string FormatClear = "\ue239";
 
         /// <summary>
-        /// format_color_fill unicode value ("\ue23a").
-        /// <para/>
-        /// See https://material.io/resources/icons/?icon=format_color_fill
-        /// </summary>
-        public const string FormatColorFill = "\ue23a";
-
-        /// <summary>
         /// format_color_reset unicode value ("\ue23b").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=format_color_reset
         /// </summary>
         public const string FormatColorReset = "\ue23b";
-
-        /// <summary>
-        /// format_color_text unicode value ("\ue23c").
-        /// <para/>
-        /// See https://material.io/resources/icons/?icon=format_color_text
-        /// </summary>
-        public const string FormatColorText = "\ue23c";
 
         /// <summary>
         /// format_indent_decrease unicode value ("\ue23d").
@@ -2474,6 +3587,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=format_list_numbered
         /// </summary>
         public const string FormatListNumbered = "\ue242";
+
+        /// <summary>
+        /// format_list_numbered_rtl unicode value ("\ue267").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=format_list_numbered_rtl
+        /// </summary>
+        public const string FormatListNumberedRtl = "\ue267";
 
         /// <summary>
         /// format_paint unicode value ("\ue243").
@@ -2525,6 +3645,13 @@ namespace MaterialDesign
         public const string FormatTextdirectionRToL = "\ue248";
 
         /// <summary>
+        /// format_underline unicode value ("\ue249").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=format_underline
+        /// </summary>
+        public const string FormatUnderline = "\ue249";
+
+        /// <summary>
         /// format_underlined unicode value ("\ue249").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=format_underlined
@@ -2565,6 +3692,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=forward_5
         /// </summary>
         public const string Forward5 = "\ue058";
+
+        /// <summary>
+        /// forward_to_inbox unicode value ("\uf187").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=forward_to_inbox
+        /// </summary>
+        public const string ForwardToInbox = "\uf187";
+
+        /// <summary>
+        /// foundation unicode value ("\uf200").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=foundation
+        /// </summary>
+        public const string Foundation = "\uf200";
 
         /// <summary>
         /// free_breakfast unicode value ("\ueb44").
@@ -2686,6 +3827,13 @@ namespace MaterialDesign
         public const string Gradient = "\ue3e9";
 
         /// <summary>
+        /// grading unicode value ("\uea4f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=grading
+        /// </summary>
+        public const string Grading = "\uea4f";
+
+        /// <summary>
         /// grain unicode value ("\ue3ea").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=grain
@@ -2698,6 +3846,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=graphic_eq
         /// </summary>
         public const string GraphicEq = "\ue1b8";
+
+        /// <summary>
+        /// grass unicode value ("\uf205").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=grass
+        /// </summary>
+        public const string Grass = "\uf205";
 
         /// <summary>
         /// grid_off unicode value ("\ue3eb").
@@ -2733,6 +3888,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=group_work
         /// </summary>
         public const string GroupWork = "\ue886";
+
+        /// <summary>
+        /// groups unicode value ("\uf233").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=groups
+        /// </summary>
+        public const string Groups = "\uf233";
+
+        /// <summary>
+        /// handyman unicode value ("\uf10b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=handyman
+        /// </summary>
+        public const string Handyman = "\uf10b";
 
         /// <summary>
         /// hd unicode value ("\ue052").
@@ -2798,11 +3967,32 @@ namespace MaterialDesign
         public const string Hearing = "\ue023";
 
         /// <summary>
+        /// hearing_disabled unicode value ("\uf104").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=hearing_disabled
+        /// </summary>
+        public const string HearingDisabled = "\uf104";
+
+        /// <summary>
+        /// height unicode value ("\uea16").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=height
+        /// </summary>
+        public const string Height = "\uea16";
+
+        /// <summary>
         /// help unicode value ("\ue887").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=help
         /// </summary>
         public const string Help = "\ue887";
+
+        /// <summary>
+        /// help_center unicode value ("\uf1c0").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=help_center
+        /// </summary>
+        public const string HelpCenter = "\uf1c0";
 
         /// <summary>
         /// help_outline unicode value ("\ue8fd").
@@ -2826,11 +4016,25 @@ namespace MaterialDesign
         public const string Highlight = "\ue25f";
 
         /// <summary>
+        /// highlight_alt unicode value ("\uef52").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=highlight_alt
+        /// </summary>
+        public const string HighlightAlt = "\uef52";
+
+        /// <summary>
         /// highlight_off unicode value ("\ue888").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=highlight_off
         /// </summary>
         public const string HighlightOff = "\ue888";
+
+        /// <summary>
+        /// highlight_remove unicode value ("\ue888").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=highlight_remove
+        /// </summary>
+        public const string HighlightRemove = "\ue888";
 
         /// <summary>
         /// history unicode value ("\ue889").
@@ -2840,11 +4044,60 @@ namespace MaterialDesign
         public const string History = "\ue889";
 
         /// <summary>
+        /// history_edu unicode value ("\uea3e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=history_edu
+        /// </summary>
+        public const string HistoryEdu = "\uea3e";
+
+        /// <summary>
+        /// history_toggle_off unicode value ("\uf17d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=history_toggle_off
+        /// </summary>
+        public const string HistoryToggleOff = "\uf17d";
+
+        /// <summary>
         /// home unicode value ("\ue88a").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=home
         /// </summary>
         public const string Home = "\ue88a";
+
+        /// <summary>
+        /// home_repair_service unicode value ("\uf100").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=home_repair_service
+        /// </summary>
+        public const string HomeRepairService = "\uf100";
+
+        /// <summary>
+        /// home_work unicode value ("\uea09").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=home_work
+        /// </summary>
+        public const string HomeWork = "\uea09";
+
+        /// <summary>
+        /// horizontal_distribute unicode value ("\ue014").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=horizontal_distribute
+        /// </summary>
+        public const string HorizontalDistribute = "\ue014";
+
+        /// <summary>
+        /// horizontal_rule unicode value ("\uf108").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=horizontal_rule
+        /// </summary>
+        public const string HorizontalRule = "\uf108";
+
+        /// <summary>
+        /// horizontal_split unicode value ("\ue947").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=horizontal_split
+        /// </summary>
+        public const string HorizontalSplit = "\ue947";
 
         /// <summary>
         /// hot_tub unicode value ("\ueb46").
@@ -2861,6 +4114,20 @@ namespace MaterialDesign
         public const string Hotel = "\ue53a";
 
         /// <summary>
+        /// hourglass_bottom unicode value ("\uea5c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=hourglass_bottom
+        /// </summary>
+        public const string HourglassBottom = "\uea5c";
+
+        /// <summary>
+        /// hourglass_disabled unicode value ("\uef53").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=hourglass_disabled
+        /// </summary>
+        public const string HourglassDisabled = "\uef53";
+
+        /// <summary>
         /// hourglass_empty unicode value ("\ue88b").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=hourglass_empty
@@ -2873,6 +4140,41 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=hourglass_full
         /// </summary>
         public const string HourglassFull = "\ue88c";
+
+        /// <summary>
+        /// hourglass_top unicode value ("\uea5b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=hourglass_top
+        /// </summary>
+        public const string HourglassTop = "\uea5b";
+
+        /// <summary>
+        /// house unicode value ("\uea44").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=house
+        /// </summary>
+        public const string House = "\uea44";
+
+        /// <summary>
+        /// house_siding unicode value ("\uf202").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=house_siding
+        /// </summary>
+        public const string HouseSiding = "\uf202";
+
+        /// <summary>
+        /// how_to_reg unicode value ("\ue174").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=how_to_reg
+        /// </summary>
+        public const string HowToReg = "\ue174";
+
+        /// <summary>
+        /// how_to_vote unicode value ("\ue175").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=how_to_vote
+        /// </summary>
+        public const string HowToVote = "\ue175";
 
         /// <summary>
         /// http unicode value ("\ue902").
@@ -2889,6 +4191,13 @@ namespace MaterialDesign
         public const string Https = "\ue88d";
 
         /// <summary>
+        /// hvac unicode value ("\uf10e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=hvac
+        /// </summary>
+        public const string Hvac = "\uf10e";
+
+        /// <summary>
         /// image unicode value ("\ue3f4").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=image
@@ -2901,6 +4210,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=image_aspect_ratio
         /// </summary>
         public const string ImageAspectRatio = "\ue3f5";
+
+        /// <summary>
+        /// image_not_supported unicode value ("\uf116").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=image_not_supported
+        /// </summary>
+        public const string ImageNotSupported = "\uf116";
+
+        /// <summary>
+        /// image_search unicode value ("\ue43f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=image_search
+        /// </summary>
+        public const string ImageSearch = "\ue43f";
 
         /// <summary>
         /// import_contacts unicode value ("\ue0e0").
@@ -2945,13 +4268,6 @@ namespace MaterialDesign
         public const string Info = "\ue88e";
 
         /// <summary>
-        /// info_outline unicode value ("\ue88f").
-        /// <para/>
-        /// See https://material.io/resources/icons/?icon=info_outline
-        /// </summary>
-        public const string InfoOutline = "\ue88f";
-
-        /// <summary>
         /// input unicode value ("\ue890").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=input
@@ -2964,6 +4280,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=insert_chart
         /// </summary>
         public const string InsertChart = "\ue24b";
+
+        /// <summary>
+        /// insert_chart_outlined unicode value ("\ue26a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=insert_chart_outlined
+        /// </summary>
+        public const string InsertChartOutlined = "\ue26a";
 
         /// <summary>
         /// insert_comment unicode value ("\ue24c").
@@ -3008,6 +4331,20 @@ namespace MaterialDesign
         public const string InsertPhoto = "\ue251";
 
         /// <summary>
+        /// insights unicode value ("\uf092").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=insights
+        /// </summary>
+        public const string Insights = "\uf092";
+
+        /// <summary>
+        /// integration_instructions unicode value ("\uef54").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=integration_instructions
+        /// </summary>
+        public const string IntegrationInstructions = "\uef54";
+
+        /// <summary>
         /// invert_colors unicode value ("\ue891").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=invert_colors
@@ -3020,6 +4357,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=invert_colors_off
         /// </summary>
         public const string InvertColorsOff = "\ue0c4";
+
+        /// <summary>
+        /// invert_colors_on unicode value ("\ue891").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=invert_colors_on
+        /// </summary>
+        public const string InvertColorsOn = "\ue891";
 
         /// <summary>
         /// iso unicode value ("\ue3f6").
@@ -3078,6 +4422,13 @@ namespace MaterialDesign
         public const string KeyboardCapslock = "\ue318";
 
         /// <summary>
+        /// keyboard_control unicode value ("\ue5d3").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=keyboard_control
+        /// </summary>
+        public const string KeyboardControl = "\ue5d3";
+
+        /// <summary>
         /// keyboard_hide unicode value ("\ue31a").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=keyboard_hide
@@ -3106,6 +4457,13 @@ namespace MaterialDesign
         public const string KeyboardVoice = "\ue31d";
 
         /// <summary>
+        /// king_bed unicode value ("\uea45").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=king_bed
+        /// </summary>
+        public const string KingBed = "\uea45";
+
+        /// <summary>
         /// kitchen unicode value ("\ueb47").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=kitchen
@@ -3120,11 +4478,18 @@ namespace MaterialDesign
         public const string Label = "\ue892";
 
         /// <summary>
-        /// label_outline unicode value ("\ue893").
+        /// label_important unicode value ("\ue937").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=label_outline
+        /// See https://material.io/resources/icons/?icon=label_important
         /// </summary>
-        public const string LabelOutline = "\ue893";
+        public const string LabelImportant = "\ue937";
+
+        /// <summary>
+        /// label_off unicode value ("\ue9b6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=label_off
+        /// </summary>
+        public const string LabelOff = "\ue9b6";
 
         /// <summary>
         /// landscape unicode value ("\ue3f7").
@@ -3197,6 +4562,13 @@ namespace MaterialDesign
         public const string LayersClear = "\ue53c";
 
         /// <summary>
+        /// leaderboard unicode value ("\uf20c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=leaderboard
+        /// </summary>
+        public const string Leaderboard = "\uf20c";
+
+        /// <summary>
         /// leak_add unicode value ("\ue3f8").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=leak_add
@@ -3209,6 +4581,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=leak_remove
         /// </summary>
         public const string LeakRemove = "\ue3f9";
+
+        /// <summary>
+        /// leave_bags_at_home unicode value ("\uf23b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=leave_bags_at_home
+        /// </summary>
+        public const string LeaveBagsAtHome = "\uf23b";
+
+        /// <summary>
+        /// legend_toggle unicode value ("\uf11b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=legend_toggle
+        /// </summary>
+        public const string LegendToggle = "\uf11b";
 
         /// <summary>
         /// lens unicode value ("\ue3fa").
@@ -3225,6 +4611,13 @@ namespace MaterialDesign
         public const string LibraryAdd = "\ue02e";
 
         /// <summary>
+        /// library_add_check unicode value ("\ue9b7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=library_add_check
+        /// </summary>
+        public const string LibraryAddCheck = "\ue9b7";
+
+        /// <summary>
         /// library_books unicode value ("\ue02f").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=library_books
@@ -3239,11 +4632,11 @@ namespace MaterialDesign
         public const string LibraryMusic = "\ue030";
 
         /// <summary>
-        /// lightbulb_outline unicode value ("\ue90f").
+        /// lightbulb unicode value ("\ue0f0").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=lightbulb_outline
+        /// See https://material.io/resources/icons/?icon=lightbulb
         /// </summary>
-        public const string LightbulbOutline = "\ue90f";
+        public const string Lightbulb = "\ue0f0";
 
         /// <summary>
         /// line_style unicode value ("\ue919").
@@ -3274,6 +4667,13 @@ namespace MaterialDesign
         public const string Link = "\ue157";
 
         /// <summary>
+        /// link_off unicode value ("\ue16f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=link_off
+        /// </summary>
+        public const string LinkOff = "\ue16f";
+
+        /// <summary>
         /// linked_camera unicode value ("\ue438").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=linked_camera
@@ -3286,6 +4686,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=list
         /// </summary>
         public const string List = "\ue896";
+
+        /// <summary>
+        /// list_alt unicode value ("\ue0ee").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=list_alt
+        /// </summary>
+        public const string ListAlt = "\ue0ee";
 
         /// <summary>
         /// live_help unicode value ("\ue0c6").
@@ -3321,6 +4728,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=local_atm
         /// </summary>
         public const string LocalAtm = "\ue53e";
+
+        /// <summary>
+        /// local_attraction unicode value ("\ue53f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=local_attraction
+        /// </summary>
+        public const string LocalAttraction = "\ue53f";
 
         /// <summary>
         /// local_bar unicode value ("\ue540").
@@ -3363,6 +4777,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=local_drink
         /// </summary>
         public const string LocalDrink = "\ue544";
+
+        /// <summary>
+        /// local_fire_department unicode value ("\uef55").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=local_fire_department
+        /// </summary>
+        public const string LocalFireDepartment = "\uef55";
 
         /// <summary>
         /// local_florist unicode value ("\ue545").
@@ -3470,6 +4891,13 @@ namespace MaterialDesign
         public const string LocalPlay = "\ue553";
 
         /// <summary>
+        /// local_police unicode value ("\uef56").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=local_police
+        /// </summary>
+        public const string LocalPolice = "\uef56";
+
+        /// <summary>
         /// local_post_office unicode value ("\ue554").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=local_post_office
@@ -3477,11 +4905,25 @@ namespace MaterialDesign
         public const string LocalPostOffice = "\ue554";
 
         /// <summary>
+        /// local_print_shop unicode value ("\ue555").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=local_print_shop
+        /// </summary>
+        public const string LocalPrintShop = "\ue555";
+
+        /// <summary>
         /// local_printshop unicode value ("\ue555").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=local_printshop
         /// </summary>
         public const string LocalPrintshop = "\ue555";
+
+        /// <summary>
+        /// local_restaurant unicode value ("\ue556").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=local_restaurant
+        /// </summary>
+        public const string LocalRestaurant = "\ue556";
 
         /// <summary>
         /// local_see unicode value ("\ue557").
@@ -3519,6 +4961,13 @@ namespace MaterialDesign
         public const string LocationDisabled = "\ue1b6";
 
         /// <summary>
+        /// location_history unicode value ("\ue55a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=location_history
+        /// </summary>
+        public const string LocationHistory = "\ue55a";
+
+        /// <summary>
         /// location_off unicode value ("\ue0c7").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=location_off
@@ -3554,11 +5003,11 @@ namespace MaterialDesign
         public const string LockOpen = "\ue898";
 
         /// <summary>
-        /// lock_outline unicode value ("\ue899").
+        /// login unicode value ("\uea77").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=lock_outline
+        /// See https://material.io/resources/icons/?icon=login
         /// </summary>
-        public const string LockOutline = "\ue899";
+        public const string Login = "\uea77";
 
         /// <summary>
         /// looks unicode value ("\ue3fc").
@@ -3638,6 +5087,13 @@ namespace MaterialDesign
         public const string Loyalty = "\ue89a";
 
         /// <summary>
+        /// luggage unicode value ("\uf235").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=luggage
+        /// </summary>
+        public const string Luggage = "\uf235";
+
+        /// <summary>
         /// mail unicode value ("\ue158").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=mail
@@ -3659,6 +5115,41 @@ namespace MaterialDesign
         public const string Map = "\ue55b";
 
         /// <summary>
+        /// maps_ugc unicode value ("\uef58").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=maps_ugc
+        /// </summary>
+        public const string MapsUgc = "\uef58";
+
+        /// <summary>
+        /// mark_chat_read unicode value ("\uf18b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mark_chat_read
+        /// </summary>
+        public const string MarkChatRead = "\uf18b";
+
+        /// <summary>
+        /// mark_chat_unread unicode value ("\uf189").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mark_chat_unread
+        /// </summary>
+        public const string MarkChatUnread = "\uf189";
+
+        /// <summary>
+        /// mark_email_read unicode value ("\uf18c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mark_email_read
+        /// </summary>
+        public const string MarkEmailRead = "\uf18c";
+
+        /// <summary>
+        /// mark_email_unread unicode value ("\uf18a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mark_email_unread
+        /// </summary>
+        public const string MarkEmailUnread = "\uf18a";
+
+        /// <summary>
         /// markunread unicode value ("\ue159").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=markunread
@@ -3671,6 +5162,41 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=markunread_mailbox
         /// </summary>
         public const string MarkunreadMailbox = "\ue89b";
+
+        /// <summary>
+        /// masks unicode value ("\uf218").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=masks
+        /// </summary>
+        public const string Masks = "\uf218";
+
+        /// <summary>
+        /// maximize unicode value ("\ue930").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=maximize
+        /// </summary>
+        public const string Maximize = "\ue930";
+
+        /// <summary>
+        /// mediation unicode value ("\uefa7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mediation
+        /// </summary>
+        public const string Mediation = "\uefa7";
+
+        /// <summary>
+        /// medical_services unicode value ("\uf109").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=medical_services
+        /// </summary>
+        public const string MedicalServices = "\uf109";
+
+        /// <summary>
+        /// meeting_room unicode value ("\ueb4f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=meeting_room
+        /// </summary>
+        public const string MeetingRoom = "\ueb4f";
 
         /// <summary>
         /// memory unicode value ("\ue322").
@@ -3687,6 +5213,20 @@ namespace MaterialDesign
         public const string Menu = "\ue5d2";
 
         /// <summary>
+        /// menu_book unicode value ("\uea19").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=menu_book
+        /// </summary>
+        public const string MenuBook = "\uea19";
+
+        /// <summary>
+        /// menu_open unicode value ("\ue9bd").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=menu_open
+        /// </summary>
+        public const string MenuOpen = "\ue9bd";
+
+        /// <summary>
         /// merge_type unicode value ("\ue252").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=merge_type
@@ -3699,6 +5239,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=message
         /// </summary>
         public const string Message = "\ue0c9";
+
+        /// <summary>
+        /// messenger unicode value ("\ue0ca").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=messenger
+        /// </summary>
+        public const string Messenger = "\ue0ca";
+
+        /// <summary>
+        /// messenger_outline unicode value ("\ue0cb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=messenger_outline
+        /// </summary>
+        public const string MessengerOutline = "\ue0cb";
 
         /// <summary>
         /// mic unicode value ("\ue029").
@@ -3722,11 +5276,74 @@ namespace MaterialDesign
         public const string MicOff = "\ue02b";
 
         /// <summary>
+        /// microwave unicode value ("\uf204").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=microwave
+        /// </summary>
+        public const string Microwave = "\uf204";
+
+        /// <summary>
+        /// military_tech unicode value ("\uea3f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=military_tech
+        /// </summary>
+        public const string MilitaryTech = "\uea3f";
+
+        /// <summary>
+        /// minimize unicode value ("\ue931").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=minimize
+        /// </summary>
+        public const string Minimize = "\ue931";
+
+        /// <summary>
+        /// miscellaneous_services unicode value ("\uf10c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=miscellaneous_services
+        /// </summary>
+        public const string MiscellaneousServices = "\uf10c";
+
+        /// <summary>
+        /// missed_video_call unicode value ("\ue073").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=missed_video_call
+        /// </summary>
+        public const string MissedVideoCall = "\ue073";
+
+        /// <summary>
         /// mms unicode value ("\ue618").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=mms
         /// </summary>
         public const string Mms = "\ue618";
+
+        /// <summary>
+        /// mobile_friendly unicode value ("\ue200").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mobile_friendly
+        /// </summary>
+        public const string MobileFriendly = "\ue200";
+
+        /// <summary>
+        /// mobile_off unicode value ("\ue201").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mobile_off
+        /// </summary>
+        public const string MobileOff = "\ue201";
+
+        /// <summary>
+        /// mobile_screen_share unicode value ("\ue0e7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mobile_screen_share
+        /// </summary>
+        public const string MobileScreenShare = "\ue0e7";
+
+        /// <summary>
+        /// mode unicode value ("\uf097").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=mode
+        /// </summary>
+        public const string Mode = "\uf097";
 
         /// <summary>
         /// mode_comment unicode value ("\ue253").
@@ -3736,11 +5353,11 @@ namespace MaterialDesign
         public const string ModeComment = "\ue253";
 
         /// <summary>
-        /// mode_edit unicode value ("\ue254").
+        /// model_training unicode value ("\uf0cf").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=mode_edit
+        /// See https://material.io/resources/icons/?icon=model_training
         /// </summary>
-        public const string ModeEdit = "\ue254";
+        public const string ModelTraining = "\uf0cf";
 
         /// <summary>
         /// monetization_on unicode value ("\ue263").
@@ -3750,11 +5367,25 @@ namespace MaterialDesign
         public const string MonetizationOn = "\ue263";
 
         /// <summary>
+        /// money unicode value ("\ue57d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=money
+        /// </summary>
+        public const string Money = "\ue57d";
+
+        /// <summary>
         /// money_off unicode value ("\ue25c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=money_off
         /// </summary>
         public const string MoneyOff = "\ue25c";
+
+        /// <summary>
+        /// money_off_csred unicode value ("\uf038").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=money_off_csred
+        /// </summary>
+        public const string MoneyOffCsred = "\uf038";
 
         /// <summary>
         /// monochrome_photos unicode value ("\ue403").
@@ -3778,6 +5409,13 @@ namespace MaterialDesign
         public const string MoodBad = "\ue7f3";
 
         /// <summary>
+        /// moped unicode value ("\ueb28").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=moped
+        /// </summary>
+        public const string Moped = "\ueb28";
+
+        /// <summary>
         /// more unicode value ("\ue619").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=more
@@ -3792,11 +5430,39 @@ namespace MaterialDesign
         public const string MoreHoriz = "\ue5d3";
 
         /// <summary>
+        /// more_time unicode value ("\uea5d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=more_time
+        /// </summary>
+        public const string MoreTime = "\uea5d";
+
+        /// <summary>
         /// more_vert unicode value ("\ue5d4").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=more_vert
         /// </summary>
         public const string MoreVert = "\ue5d4";
+
+        /// <summary>
+        /// motion_photos_on unicode value ("\ue9c1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=motion_photos_on
+        /// </summary>
+        public const string MotionPhotosOn = "\ue9c1";
+
+        /// <summary>
+        /// motion_photos_pause unicode value ("\uf227").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=motion_photos_pause
+        /// </summary>
+        public const string MotionPhotosPause = "\uf227";
+
+        /// <summary>
+        /// motion_photos_paused unicode value ("\ue9c2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=motion_photos_paused
+        /// </summary>
+        public const string MotionPhotosPaused = "\ue9c2";
 
         /// <summary>
         /// motorcycle unicode value ("\ue91b").
@@ -3848,11 +5514,39 @@ namespace MaterialDesign
         public const string MultilineChart = "\ue6df";
 
         /// <summary>
+        /// multiple_stop unicode value ("\uf1b9").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=multiple_stop
+        /// </summary>
+        public const string MultipleStop = "\uf1b9";
+
+        /// <summary>
+        /// multitrack_audio unicode value ("\ue1b8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=multitrack_audio
+        /// </summary>
+        public const string MultitrackAudio = "\ue1b8";
+
+        /// <summary>
+        /// museum unicode value ("\uea36").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=museum
+        /// </summary>
+        public const string Museum = "\uea36";
+
+        /// <summary>
         /// music_note unicode value ("\ue405").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=music_note
         /// </summary>
         public const string MusicNote = "\ue405";
+
+        /// <summary>
+        /// music_off unicode value ("\ue440").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=music_off
+        /// </summary>
+        public const string MusicOff = "\ue440";
 
         /// <summary>
         /// music_video unicode value ("\ue063").
@@ -3862,11 +5556,39 @@ namespace MaterialDesign
         public const string MusicVideo = "\ue063";
 
         /// <summary>
+        /// my_library_add unicode value ("\ue02e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=my_library_add
+        /// </summary>
+        public const string MyLibraryAdd = "\ue02e";
+
+        /// <summary>
+        /// my_library_books unicode value ("\ue02f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=my_library_books
+        /// </summary>
+        public const string MyLibraryBooks = "\ue02f";
+
+        /// <summary>
+        /// my_library_music unicode value ("\ue030").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=my_library_music
+        /// </summary>
+        public const string MyLibraryMusic = "\ue030";
+
+        /// <summary>
         /// my_location unicode value ("\ue55c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=my_location
         /// </summary>
         public const string MyLocation = "\ue55c";
+
+        /// <summary>
+        /// nat unicode value ("\uef5c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=nat
+        /// </summary>
+        public const string Nat = "\uef5c";
 
         /// <summary>
         /// nature unicode value ("\ue406").
@@ -3911,11 +5633,11 @@ namespace MaterialDesign
         public const string NearMe = "\ue569";
 
         /// <summary>
-        /// network_cell unicode value ("\ue1b9").
+        /// near_me_disabled unicode value ("\uf1ef").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=network_cell
+        /// See https://material.io/resources/icons/?icon=near_me_disabled
         /// </summary>
-        public const string NetworkCell = "\ue1b9";
+        public const string NearMeDisabled = "\uf1ef";
 
         /// <summary>
         /// network_check unicode value ("\ue640").
@@ -3932,18 +5654,18 @@ namespace MaterialDesign
         public const string NetworkLocked = "\ue61a";
 
         /// <summary>
-        /// network_wifi unicode value ("\ue1ba").
-        /// <para/>
-        /// See https://material.io/resources/icons/?icon=network_wifi
-        /// </summary>
-        public const string NetworkWifi = "\ue1ba";
-
-        /// <summary>
         /// new_releases unicode value ("\ue031").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=new_releases
         /// </summary>
         public const string NewReleases = "\ue031";
+
+        /// <summary>
+        /// next_plan unicode value ("\uef5d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=next_plan
+        /// </summary>
+        public const string NextPlan = "\uef5d";
 
         /// <summary>
         /// next_week unicode value ("\ue16a").
@@ -3960,11 +5682,95 @@ namespace MaterialDesign
         public const string Nfc = "\ue1bb";
 
         /// <summary>
+        /// night_shelter unicode value ("\uf1f1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=night_shelter
+        /// </summary>
+        public const string NightShelter = "\uf1f1";
+
+        /// <summary>
+        /// nights_stay unicode value ("\uea46").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=nights_stay
+        /// </summary>
+        public const string NightsStay = "\uea46";
+
+        /// <summary>
+        /// no_backpack unicode value ("\uf237").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_backpack
+        /// </summary>
+        public const string NoBackpack = "\uf237";
+
+        /// <summary>
+        /// no_cell unicode value ("\uf1a4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_cell
+        /// </summary>
+        public const string NoCell = "\uf1a4";
+
+        /// <summary>
+        /// no_drinks unicode value ("\uf1a5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_drinks
+        /// </summary>
+        public const string NoDrinks = "\uf1a5";
+
+        /// <summary>
         /// no_encryption unicode value ("\ue641").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=no_encryption
         /// </summary>
         public const string NoEncryption = "\ue641";
+
+        /// <summary>
+        /// no_encryption_gmailerrorred unicode value ("\uf03f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_encryption_gmailerrorred
+        /// </summary>
+        public const string NoEncryptionGmailerrorred = "\uf03f";
+
+        /// <summary>
+        /// no_flash unicode value ("\uf1a6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_flash
+        /// </summary>
+        public const string NoFlash = "\uf1a6";
+
+        /// <summary>
+        /// no_food unicode value ("\uf1a7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_food
+        /// </summary>
+        public const string NoFood = "\uf1a7";
+
+        /// <summary>
+        /// no_luggage unicode value ("\uf23b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_luggage
+        /// </summary>
+        public const string NoLuggage = "\uf23b";
+
+        /// <summary>
+        /// no_meals unicode value ("\uf1d6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_meals
+        /// </summary>
+        public const string NoMeals = "\uf1d6";
+
+        /// <summary>
+        /// no_meeting_room unicode value ("\ueb4e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_meeting_room
+        /// </summary>
+        public const string NoMeetingRoom = "\ueb4e";
+
+        /// <summary>
+        /// no_photography unicode value ("\uf1a8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_photography
+        /// </summary>
+        public const string NoPhotography = "\uf1a8";
 
         /// <summary>
         /// no_sim unicode value ("\ue0cc").
@@ -3974,11 +5780,67 @@ namespace MaterialDesign
         public const string NoSim = "\ue0cc";
 
         /// <summary>
+        /// no_stroller unicode value ("\uf1af").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_stroller
+        /// </summary>
+        public const string NoStroller = "\uf1af";
+
+        /// <summary>
+        /// no_transfer unicode value ("\uf1d5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=no_transfer
+        /// </summary>
+        public const string NoTransfer = "\uf1d5";
+
+        /// <summary>
+        /// north unicode value ("\uf1e0").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=north
+        /// </summary>
+        public const string North = "\uf1e0";
+
+        /// <summary>
+        /// north_east unicode value ("\uf1e1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=north_east
+        /// </summary>
+        public const string NorthEast = "\uf1e1";
+
+        /// <summary>
+        /// north_west unicode value ("\uf1e2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=north_west
+        /// </summary>
+        public const string NorthWest = "\uf1e2";
+
+        /// <summary>
+        /// not_accessible unicode value ("\uf0fe").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=not_accessible
+        /// </summary>
+        public const string NotAccessible = "\uf0fe";
+
+        /// <summary>
         /// not_interested unicode value ("\ue033").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=not_interested
         /// </summary>
         public const string NotInterested = "\ue033";
+
+        /// <summary>
+        /// not_listed_location unicode value ("\ue575").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=not_listed_location
+        /// </summary>
+        public const string NotListedLocation = "\ue575";
+
+        /// <summary>
+        /// not_started unicode value ("\uf0d1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=not_started
+        /// </summary>
+        public const string NotStarted = "\uf0d1";
 
         /// <summary>
         /// note unicode value ("\ue06f").
@@ -3993,6 +5855,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=note_add
         /// </summary>
         public const string NoteAdd = "\ue89c";
+
+        /// <summary>
+        /// notes unicode value ("\ue26c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=notes
+        /// </summary>
+        public const string Notes = "\ue26c";
+
+        /// <summary>
+        /// notification_important unicode value ("\ue004").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=notification_important
+        /// </summary>
+        public const string NotificationImportant = "\ue004";
 
         /// <summary>
         /// notifications unicode value ("\ue7f4").
@@ -4023,11 +5899,39 @@ namespace MaterialDesign
         public const string NotificationsOff = "\ue7f6";
 
         /// <summary>
+        /// notifications_on unicode value ("\ue7f7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=notifications_on
+        /// </summary>
+        public const string NotificationsOn = "\ue7f7";
+
+        /// <summary>
         /// notifications_paused unicode value ("\ue7f8").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=notifications_paused
         /// </summary>
         public const string NotificationsPaused = "\ue7f8";
+
+        /// <summary>
+        /// now_wallpaper unicode value ("\ue1bc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=now_wallpaper
+        /// </summary>
+        public const string NowWallpaper = "\ue1bc";
+
+        /// <summary>
+        /// now_widgets unicode value ("\ue1bd").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=now_widgets
+        /// </summary>
+        public const string NowWidgets = "\ue1bd";
+
+        /// <summary>
+        /// offline_bolt unicode value ("\ue932").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=offline_bolt
+        /// </summary>
+        public const string OfflineBolt = "\ue932";
 
         /// <summary>
         /// offline_pin unicode value ("\ue90a").
@@ -4044,6 +5948,13 @@ namespace MaterialDesign
         public const string OndemandVideo = "\ue63a";
 
         /// <summary>
+        /// online_prediction unicode value ("\uf0eb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=online_prediction
+        /// </summary>
+        public const string OnlinePrediction = "\uf0eb";
+
+        /// <summary>
         /// opacity unicode value ("\ue91c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=opacity
@@ -4058,6 +5969,13 @@ namespace MaterialDesign
         public const string OpenInBrowser = "\ue89d";
 
         /// <summary>
+        /// open_in_full unicode value ("\uf1ce").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=open_in_full
+        /// </summary>
+        public const string OpenInFull = "\uf1ce";
+
+        /// <summary>
         /// open_in_new unicode value ("\ue89e").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=open_in_new
@@ -4070,6 +5988,34 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=open_with
         /// </summary>
         public const string OpenWith = "\ue89f";
+
+        /// <summary>
+        /// outbond unicode value ("\uf228").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=outbond
+        /// </summary>
+        public const string Outbond = "\uf228";
+
+        /// <summary>
+        /// outdoor_grill unicode value ("\uea47").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=outdoor_grill
+        /// </summary>
+        public const string OutdoorGrill = "\uea47";
+
+        /// <summary>
+        /// outlet unicode value ("\uf1d4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=outlet
+        /// </summary>
+        public const string Outlet = "\uf1d4";
+
+        /// <summary>
+        /// outlined_flag unicode value ("\ue16e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=outlined_flag
+        /// </summary>
+        public const string OutlinedFlag = "\ue16e";
 
         /// <summary>
         /// pages unicode value ("\ue7f9").
@@ -4114,6 +6060,13 @@ namespace MaterialDesign
         public const string PanoramaFishEye = "\ue40c";
 
         /// <summary>
+        /// panorama_fisheye unicode value ("\ue40c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=panorama_fisheye
+        /// </summary>
+        public const string PanoramaFisheye = "\ue40c";
+
+        /// <summary>
         /// panorama_horizontal unicode value ("\ue40d").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=panorama_horizontal
@@ -4142,6 +6095,13 @@ namespace MaterialDesign
         public const string PartyMode = "\ue7fa";
 
         /// <summary>
+        /// paste unicode value ("\uf098").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=paste
+        /// </summary>
+        public const string Paste = "\uf098";
+
+        /// <summary>
         /// pause unicode value ("\ue034").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=pause
@@ -4163,6 +6123,13 @@ namespace MaterialDesign
         public const string PauseCircleOutline = "\ue036";
 
         /// <summary>
+        /// pause_presentation unicode value ("\ue0ea").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=pause_presentation
+        /// </summary>
+        public const string PausePresentation = "\ue0ea";
+
+        /// <summary>
         /// payment unicode value ("\ue8a1").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=payment
@@ -4170,11 +6137,46 @@ namespace MaterialDesign
         public const string Payment = "\ue8a1";
 
         /// <summary>
+        /// payments unicode value ("\uef63").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=payments
+        /// </summary>
+        public const string Payments = "\uef63";
+
+        /// <summary>
+        /// pedal_bike unicode value ("\ueb29").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=pedal_bike
+        /// </summary>
+        public const string PedalBike = "\ueb29";
+
+        /// <summary>
+        /// pending unicode value ("\uef64").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=pending
+        /// </summary>
+        public const string Pending = "\uef64";
+
+        /// <summary>
+        /// pending_actions unicode value ("\uf1bb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=pending_actions
+        /// </summary>
+        public const string PendingActions = "\uf1bb";
+
+        /// <summary>
         /// people unicode value ("\ue7fb").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=people
         /// </summary>
         public const string People = "\ue7fb";
+
+        /// <summary>
+        /// people_alt unicode value ("\uea21").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=people_alt
+        /// </summary>
+        public const string PeopleAlt = "\uea21";
 
         /// <summary>
         /// people_outline unicode value ("\ue7fc").
@@ -4191,6 +6193,13 @@ namespace MaterialDesign
         public const string PermCameraMic = "\ue8a2";
 
         /// <summary>
+        /// perm_contact_cal unicode value ("\ue8a3").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=perm_contact_cal
+        /// </summary>
+        public const string PermContactCal = "\ue8a3";
+
+        /// <summary>
         /// perm_contact_calendar unicode value ("\ue8a3").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=perm_contact_calendar
@@ -4203,6 +6212,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=perm_data_setting
         /// </summary>
         public const string PermDataSetting = "\ue8a4";
+
+        /// <summary>
+        /// perm_device_info unicode value ("\ue8a5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=perm_device_info
+        /// </summary>
+        public const string PermDeviceInfo = "\ue8a5";
 
         /// <summary>
         /// perm_device_information unicode value ("\ue8a5").
@@ -4254,6 +6270,20 @@ namespace MaterialDesign
         public const string PersonAdd = "\ue7fe";
 
         /// <summary>
+        /// person_add_alt_1 unicode value ("\uef65").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=person_add_alt_1
+        /// </summary>
+        public const string PersonAddAlt1 = "\uef65";
+
+        /// <summary>
+        /// person_add_disabled unicode value ("\ue9cb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=person_add_disabled
+        /// </summary>
+        public const string PersonAddDisabled = "\ue9cb";
+
+        /// <summary>
         /// person_outline unicode value ("\ue7ff").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=person_outline
@@ -4275,11 +6305,46 @@ namespace MaterialDesign
         public const string PersonPinCircle = "\ue56a";
 
         /// <summary>
+        /// person_remove unicode value ("\uef66").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=person_remove
+        /// </summary>
+        public const string PersonRemove = "\uef66";
+
+        /// <summary>
+        /// person_remove_alt_1 unicode value ("\uef67").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=person_remove_alt_1
+        /// </summary>
+        public const string PersonRemoveAlt1 = "\uef67";
+
+        /// <summary>
+        /// person_search unicode value ("\uf106").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=person_search
+        /// </summary>
+        public const string PersonSearch = "\uf106";
+
+        /// <summary>
         /// personal_video unicode value ("\ue63b").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=personal_video
         /// </summary>
         public const string PersonalVideo = "\ue63b";
+
+        /// <summary>
+        /// pest_control unicode value ("\uf0fa").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=pest_control
+        /// </summary>
+        public const string PestControl = "\uf0fa";
+
+        /// <summary>
+        /// pest_control_rodent unicode value ("\uf0fd").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=pest_control_rodent
+        /// </summary>
+        public const string PestControlRodent = "\uf0fd";
 
         /// <summary>
         /// pets unicode value ("\ue91d").
@@ -4308,6 +6373,27 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=phone_bluetooth_speaker
         /// </summary>
         public const string PhoneBluetoothSpeaker = "\ue61b";
+
+        /// <summary>
+        /// phone_callback unicode value ("\ue649").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=phone_callback
+        /// </summary>
+        public const string PhoneCallback = "\ue649";
+
+        /// <summary>
+        /// phone_disabled unicode value ("\ue9cc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=phone_disabled
+        /// </summary>
+        public const string PhoneDisabled = "\ue9cc";
+
+        /// <summary>
+        /// phone_enabled unicode value ("\ue9cd").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=phone_enabled
+        /// </summary>
+        public const string PhoneEnabled = "\ue9cd";
 
         /// <summary>
         /// phone_forwarded unicode value ("\ue61c").
@@ -4478,11 +6564,11 @@ namespace MaterialDesign
         public const string PieChart = "\ue6c4";
 
         /// <summary>
-        /// pie_chart_outlined unicode value ("\ue6c5").
+        /// pie_chart_outline unicode value ("\uf044").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=pie_chart_outlined
+        /// See https://material.io/resources/icons/?icon=pie_chart_outline
         /// </summary>
-        public const string PieChartOutlined = "\ue6c5";
+        public const string PieChartOutline = "\uf044";
 
         /// <summary>
         /// pin_drop unicode value ("\ue55e").
@@ -4499,11 +6585,25 @@ namespace MaterialDesign
         public const string Place = "\ue55f";
 
         /// <summary>
+        /// plagiarism unicode value ("\uea5a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=plagiarism
+        /// </summary>
+        public const string Plagiarism = "\uea5a";
+
+        /// <summary>
         /// play_arrow unicode value ("\ue037").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=play_arrow
         /// </summary>
         public const string PlayArrow = "\ue037";
+
+        /// <summary>
+        /// play_circle_fill unicode value ("\ue038").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=play_circle_fill
+        /// </summary>
+        public const string PlayCircleFill = "\ue038";
 
         /// <summary>
         /// play_circle_filled unicode value ("\ue038").
@@ -4548,11 +6648,32 @@ namespace MaterialDesign
         public const string PlaylistPlay = "\ue05f";
 
         /// <summary>
+        /// plumbing unicode value ("\uf107").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=plumbing
+        /// </summary>
+        public const string Plumbing = "\uf107";
+
+        /// <summary>
         /// plus_one unicode value ("\ue800").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=plus_one
         /// </summary>
         public const string PlusOne = "\ue800";
+
+        /// <summary>
+        /// point_of_sale unicode value ("\uf17e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=point_of_sale
+        /// </summary>
+        public const string PointOfSale = "\uf17e";
+
+        /// <summary>
+        /// policy unicode value ("\uea17").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=policy
+        /// </summary>
+        public const string Policy = "\uea17";
 
         /// <summary>
         /// poll unicode value ("\ue801").
@@ -4590,6 +6711,13 @@ namespace MaterialDesign
         public const string Portrait = "\ue416";
 
         /// <summary>
+        /// post_add unicode value ("\uea20").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=post_add
+        /// </summary>
+        public const string PostAdd = "\uea20";
+
+        /// <summary>
         /// power unicode value ("\ue63c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=power
@@ -4604,11 +6732,25 @@ namespace MaterialDesign
         public const string PowerInput = "\ue336";
 
         /// <summary>
+        /// power_off unicode value ("\ue646").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=power_off
+        /// </summary>
+        public const string PowerOff = "\ue646";
+
+        /// <summary>
         /// power_settings_new unicode value ("\ue8ac").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=power_settings_new
         /// </summary>
         public const string PowerSettingsNew = "\ue8ac";
+
+        /// <summary>
+        /// precision_manufacturing unicode value ("\uf049").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=precision_manufacturing
+        /// </summary>
+        public const string PrecisionManufacturing = "\uf049";
 
         /// <summary>
         /// pregnant_woman unicode value ("\ue91e").
@@ -4625,11 +6767,25 @@ namespace MaterialDesign
         public const string PresentToAll = "\ue0df";
 
         /// <summary>
+        /// preview unicode value ("\uf1c5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=preview
+        /// </summary>
+        public const string Preview = "\uf1c5";
+
+        /// <summary>
         /// print unicode value ("\ue8ad").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=print
         /// </summary>
         public const string Print = "\ue8ad";
+
+        /// <summary>
+        /// print_disabled unicode value ("\ue9cf").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=print_disabled
+        /// </summary>
+        public const string PrintDisabled = "\ue9cf";
 
         /// <summary>
         /// priority_high unicode value ("\ue645").
@@ -4639,6 +6795,20 @@ namespace MaterialDesign
         public const string PriorityHigh = "\ue645";
 
         /// <summary>
+        /// privacy_tip unicode value ("\uf0dc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=privacy_tip
+        /// </summary>
+        public const string PrivacyTip = "\uf0dc";
+
+        /// <summary>
+        /// psychology unicode value ("\uea4a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=psychology
+        /// </summary>
+        public const string Psychology = "\uea4a";
+
+        /// <summary>
         /// public unicode value ("\ue80b").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=public
@@ -4646,11 +6816,53 @@ namespace MaterialDesign
         public const string Public = "\ue80b";
 
         /// <summary>
+        /// public_off unicode value ("\uf1ca").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=public_off
+        /// </summary>
+        public const string PublicOff = "\uf1ca";
+
+        /// <summary>
         /// publish unicode value ("\ue255").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=publish
         /// </summary>
         public const string Publish = "\ue255";
+
+        /// <summary>
+        /// published_with_changes unicode value ("\uf232").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=published_with_changes
+        /// </summary>
+        public const string PublishedWithChanges = "\uf232";
+
+        /// <summary>
+        /// push_pin unicode value ("\uf10d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=push_pin
+        /// </summary>
+        public const string PushPin = "\uf10d";
+
+        /// <summary>
+        /// qr_code unicode value ("\uef6b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=qr_code
+        /// </summary>
+        public const string QrCode = "\uef6b";
+
+        /// <summary>
+        /// qr_code_2 unicode value ("\ue00a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=qr_code_2
+        /// </summary>
+        public const string QrCode2 = "\ue00a";
+
+        /// <summary>
+        /// qr_code_scanner unicode value ("\uf206").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=qr_code_scanner
+        /// </summary>
+        public const string QrCodeScanner = "\uf206";
 
         /// <summary>
         /// query_builder unicode value ("\ue8ae").
@@ -4688,6 +6900,27 @@ namespace MaterialDesign
         public const string QueuePlayNext = "\ue066";
 
         /// <summary>
+        /// quick_contacts_dialer unicode value ("\ue0cf").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=quick_contacts_dialer
+        /// </summary>
+        public const string QuickContactsDialer = "\ue0cf";
+
+        /// <summary>
+        /// quick_contacts_mail unicode value ("\ue0d0").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=quick_contacts_mail
+        /// </summary>
+        public const string QuickContactsMail = "\ue0d0";
+
+        /// <summary>
+        /// quickreply unicode value ("\uef6c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=quickreply
+        /// </summary>
+        public const string Quickreply = "\uef6c";
+
+        /// <summary>
         /// radio unicode value ("\ue03e").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=radio
@@ -4700,6 +6933,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=radio_button_checked
         /// </summary>
         public const string RadioButtonChecked = "\ue837";
+
+        /// <summary>
+        /// radio_button_off unicode value ("\ue836").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=radio_button_off
+        /// </summary>
+        public const string RadioButtonOff = "\ue836";
+
+        /// <summary>
+        /// radio_button_on unicode value ("\ue837").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=radio_button_on
+        /// </summary>
+        public const string RadioButtonOn = "\ue837";
 
         /// <summary>
         /// radio_button_unchecked unicode value ("\ue836").
@@ -4716,11 +6963,25 @@ namespace MaterialDesign
         public const string RateReview = "\ue560";
 
         /// <summary>
+        /// read_more unicode value ("\uef6d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=read_more
+        /// </summary>
+        public const string ReadMore = "\uef6d";
+
+        /// <summary>
         /// receipt unicode value ("\ue8b0").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=receipt
         /// </summary>
         public const string Receipt = "\ue8b0";
+
+        /// <summary>
+        /// receipt_long unicode value ("\uef6e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=receipt_long
+        /// </summary>
+        public const string ReceiptLong = "\uef6e";
 
         /// <summary>
         /// recent_actors unicode value ("\ue03f").
@@ -4749,6 +7010,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=redo
         /// </summary>
         public const string Redo = "\ue15a";
+
+        /// <summary>
+        /// reduce_capacity unicode value ("\uf21c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=reduce_capacity
+        /// </summary>
+        public const string ReduceCapacity = "\uf21c";
 
         /// <summary>
         /// refresh unicode value ("\ue5d5").
@@ -4870,11 +7138,39 @@ namespace MaterialDesign
         public const string Report = "\ue160";
 
         /// <summary>
+        /// report_gmailerrorred unicode value ("\uf052").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=report_gmailerrorred
+        /// </summary>
+        public const string ReportGmailerrorred = "\uf052";
+
+        /// <summary>
+        /// report_off unicode value ("\ue170").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=report_off
+        /// </summary>
+        public const string ReportOff = "\ue170";
+
+        /// <summary>
         /// report_problem unicode value ("\ue8b2").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=report_problem
         /// </summary>
         public const string ReportProblem = "\ue8b2";
+
+        /// <summary>
+        /// request_page unicode value ("\uf22c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=request_page
+        /// </summary>
+        public const string RequestPage = "\uf22c";
+
+        /// <summary>
+        /// request_quote unicode value ("\uf1b6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=request_quote
+        /// </summary>
+        public const string RequestQuote = "\uf1b6";
 
         /// <summary>
         /// restaurant unicode value ("\ue56c").
@@ -4898,11 +7194,25 @@ namespace MaterialDesign
         public const string Restore = "\ue8b3";
 
         /// <summary>
+        /// restore_from_trash unicode value ("\ue938").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=restore_from_trash
+        /// </summary>
+        public const string RestoreFromTrash = "\ue938";
+
+        /// <summary>
         /// restore_page unicode value ("\ue929").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=restore_page
         /// </summary>
         public const string RestorePage = "\ue929";
+
+        /// <summary>
+        /// rice_bowl unicode value ("\uf1f5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=rice_bowl
+        /// </summary>
+        public const string RiceBowl = "\uf1f5";
 
         /// <summary>
         /// ring_volume unicode value ("\ue0d1").
@@ -4912,11 +7222,25 @@ namespace MaterialDesign
         public const string RingVolume = "\ue0d1";
 
         /// <summary>
+        /// roofing unicode value ("\uf201").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=roofing
+        /// </summary>
+        public const string Roofing = "\uf201";
+
+        /// <summary>
         /// room unicode value ("\ue8b4").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=room
         /// </summary>
         public const string Room = "\ue8b4";
+
+        /// <summary>
+        /// room_preferences unicode value ("\uf1b8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=room_preferences
+        /// </summary>
+        public const string RoomPreferences = "\uf1b8";
 
         /// <summary>
         /// room_service unicode value ("\ueb49").
@@ -4975,11 +7299,39 @@ namespace MaterialDesign
         public const string RssFeed = "\ue0e5";
 
         /// <summary>
+        /// rule unicode value ("\uf1c2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=rule
+        /// </summary>
+        public const string Rule = "\uf1c2";
+
+        /// <summary>
+        /// rule_folder unicode value ("\uf1c9").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=rule_folder
+        /// </summary>
+        public const string RuleFolder = "\uf1c9";
+
+        /// <summary>
+        /// run_circle unicode value ("\uef6f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=run_circle
+        /// </summary>
+        public const string RunCircle = "\uef6f";
+
+        /// <summary>
         /// rv_hookup unicode value ("\ue642").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=rv_hookup
         /// </summary>
         public const string RvHookup = "\ue642";
+
+        /// <summary>
+        /// sanitizer unicode value ("\uf21d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sanitizer
+        /// </summary>
+        public const string Sanitizer = "\uf21d";
 
         /// <summary>
         /// satellite unicode value ("\ue562").
@@ -4996,11 +7348,25 @@ namespace MaterialDesign
         public const string Save = "\ue161";
 
         /// <summary>
+        /// save_alt unicode value ("\ue171").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=save_alt
+        /// </summary>
+        public const string SaveAlt = "\ue171";
+
+        /// <summary>
         /// scanner unicode value ("\ue329").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=scanner
         /// </summary>
         public const string Scanner = "\ue329";
+
+        /// <summary>
+        /// scatter_plot unicode value ("\ue268").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=scatter_plot
+        /// </summary>
+        public const string ScatterPlot = "\ue268";
 
         /// <summary>
         /// schedule unicode value ("\ue8b5").
@@ -5015,6 +7381,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=school
         /// </summary>
         public const string School = "\ue80c";
+
+        /// <summary>
+        /// science unicode value ("\uea4b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=science
+        /// </summary>
+        public const string Science = "\uea4b";
+
+        /// <summary>
+        /// score unicode value ("\ue269").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=score
+        /// </summary>
+        public const string Score = "\ue269";
 
         /// <summary>
         /// screen_lock_landscape unicode value ("\ue1be").
@@ -5059,6 +7439,13 @@ namespace MaterialDesign
         public const string SdCard = "\ue623";
 
         /// <summary>
+        /// sd_card_alert unicode value ("\uf057").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sd_card_alert
+        /// </summary>
+        public const string SdCardAlert = "\uf057";
+
+        /// <summary>
         /// sd_storage unicode value ("\ue1c2").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=sd_storage
@@ -5071,6 +7458,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=search
         /// </summary>
         public const string Search = "\ue8b6";
+
+        /// <summary>
+        /// search_off unicode value ("\uea76").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=search_off
+        /// </summary>
+        public const string SearchOff = "\uea76";
 
         /// <summary>
         /// security unicode value ("\ue32a").
@@ -5087,11 +7481,32 @@ namespace MaterialDesign
         public const string SelectAll = "\ue162";
 
         /// <summary>
+        /// self_improvement unicode value ("\uea78").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=self_improvement
+        /// </summary>
+        public const string SelfImprovement = "\uea78";
+
+        /// <summary>
         /// send unicode value ("\ue163").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=send
         /// </summary>
         public const string Send = "\ue163";
+
+        /// <summary>
+        /// sensor_door unicode value ("\uf1b5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sensor_door
+        /// </summary>
+        public const string SensorDoor = "\uf1b5";
+
+        /// <summary>
+        /// sensor_window unicode value ("\uf1b4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sensor_window
+        /// </summary>
+        public const string SensorWindow = "\uf1b4";
 
         /// <summary>
         /// sentiment_dissatisfied unicode value ("\ue811").
@@ -5115,6 +7530,13 @@ namespace MaterialDesign
         public const string SentimentSatisfied = "\ue813";
 
         /// <summary>
+        /// sentiment_satisfied_alt unicode value ("\ue0ed").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sentiment_satisfied_alt
+        /// </summary>
+        public const string SentimentSatisfiedAlt = "\ue0ed";
+
+        /// <summary>
         /// sentiment_very_dissatisfied unicode value ("\ue814").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=sentiment_very_dissatisfied
@@ -5127,6 +7549,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=sentiment_very_satisfied
         /// </summary>
         public const string SentimentVerySatisfied = "\ue815";
+
+        /// <summary>
+        /// set_meal unicode value ("\uf1ea").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=set_meal
+        /// </summary>
+        public const string SetMeal = "\uf1ea";
 
         /// <summary>
         /// settings unicode value ("\ue8b8").
@@ -5169,6 +7598,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=settings_cell
         /// </summary>
         public const string SettingsCell = "\ue8bc";
+
+        /// <summary>
+        /// settings_display unicode value ("\ue8bd").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=settings_display
+        /// </summary>
+        public const string SettingsDisplay = "\ue8bd";
 
         /// <summary>
         /// settings_ethernet unicode value ("\ue8be").
@@ -5276,6 +7712,13 @@ namespace MaterialDesign
         public const string ShopTwo = "\ue8ca";
 
         /// <summary>
+        /// shopping_bag unicode value ("\uf1cc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=shopping_bag
+        /// </summary>
+        public const string ShoppingBag = "\uf1cc";
+
+        /// <summary>
         /// shopping_basket unicode value ("\ue8cb").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=shopping_basket
@@ -5311,11 +7754,32 @@ namespace MaterialDesign
         public const string Shuffle = "\ue043";
 
         /// <summary>
+        /// shutter_speed unicode value ("\ue43d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=shutter_speed
+        /// </summary>
+        public const string ShutterSpeed = "\ue43d";
+
+        /// <summary>
+        /// sick unicode value ("\uf220").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sick
+        /// </summary>
+        public const string Sick = "\uf220";
+
+        /// <summary>
         /// signal_cellular_4_bar unicode value ("\ue1c8").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=signal_cellular_4_bar
         /// </summary>
         public const string SignalCellular4Bar = "\ue1c8";
+
+        /// <summary>
+        /// signal_cellular_alt unicode value ("\ue202").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=signal_cellular_alt
+        /// </summary>
+        public const string SignalCellularAlt = "\ue202";
 
         /// <summary>
         /// signal_cellular_connected_no_internet_4_bar unicode value ("\ue1cd").
@@ -5374,11 +7838,11 @@ namespace MaterialDesign
         public const string SimCard = "\ue32b";
 
         /// <summary>
-        /// sim_card_alert unicode value ("\ue624").
+        /// single_bed unicode value ("\uea48").
         /// <para/>
-        /// See https://material.io/resources/icons/?icon=sim_card_alert
+        /// See https://material.io/resources/icons/?icon=single_bed
         /// </summary>
-        public const string SimCardAlert = "\ue624";
+        public const string SingleBed = "\uea48";
 
         /// <summary>
         /// skip_next unicode value ("\ue044").
@@ -5407,6 +7871,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=slow_motion_video
         /// </summary>
         public const string SlowMotionVideo = "\ue068";
+
+        /// <summary>
+        /// smart_button unicode value ("\uf1c1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=smart_button
+        /// </summary>
+        public const string SmartButton = "\uf1c1";
 
         /// <summary>
         /// smartphone unicode value ("\ue32c").
@@ -5444,11 +7915,25 @@ namespace MaterialDesign
         public const string SmsFailed = "\ue626";
 
         /// <summary>
+        /// snippet_folder unicode value ("\uf1c7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=snippet_folder
+        /// </summary>
+        public const string SnippetFolder = "\uf1c7";
+
+        /// <summary>
         /// snooze unicode value ("\ue046").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=snooze
         /// </summary>
         public const string Snooze = "\ue046";
+
+        /// <summary>
+        /// soap unicode value ("\uf1b2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=soap
+        /// </summary>
+        public const string Soap = "\uf1b2";
 
         /// <summary>
         /// sort unicode value ("\ue164").
@@ -5463,6 +7948,34 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=sort_by_alpha
         /// </summary>
         public const string SortByAlpha = "\ue053";
+
+        /// <summary>
+        /// source unicode value ("\uf1c4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=source
+        /// </summary>
+        public const string Source = "\uf1c4";
+
+        /// <summary>
+        /// south unicode value ("\uf1e3").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=south
+        /// </summary>
+        public const string South = "\uf1e3";
+
+        /// <summary>
+        /// south_east unicode value ("\uf1e4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=south_east
+        /// </summary>
+        public const string SouthEast = "\uf1e4";
+
+        /// <summary>
+        /// south_west unicode value ("\uf1e5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=south_west
+        /// </summary>
+        public const string SouthWest = "\uf1e5";
 
         /// <summary>
         /// spa unicode value ("\ueb4c").
@@ -5514,11 +8027,158 @@ namespace MaterialDesign
         public const string SpeakerPhone = "\ue0d2";
 
         /// <summary>
+        /// speed unicode value ("\ue9e4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=speed
+        /// </summary>
+        public const string Speed = "\ue9e4";
+
+        /// <summary>
         /// spellcheck unicode value ("\ue8ce").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=spellcheck
         /// </summary>
         public const string Spellcheck = "\ue8ce";
+
+        /// <summary>
+        /// sports unicode value ("\uea30").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports
+        /// </summary>
+        public const string Sports = "\uea30";
+
+        /// <summary>
+        /// sports_bar unicode value ("\uf1f3").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_bar
+        /// </summary>
+        public const string SportsBar = "\uf1f3";
+
+        /// <summary>
+        /// sports_baseball unicode value ("\uea51").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_baseball
+        /// </summary>
+        public const string SportsBaseball = "\uea51";
+
+        /// <summary>
+        /// sports_basketball unicode value ("\uea26").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_basketball
+        /// </summary>
+        public const string SportsBasketball = "\uea26";
+
+        /// <summary>
+        /// sports_cricket unicode value ("\uea27").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_cricket
+        /// </summary>
+        public const string SportsCricket = "\uea27";
+
+        /// <summary>
+        /// sports_esports unicode value ("\uea28").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_esports
+        /// </summary>
+        public const string SportsEsports = "\uea28";
+
+        /// <summary>
+        /// sports_football unicode value ("\uea29").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_football
+        /// </summary>
+        public const string SportsFootball = "\uea29";
+
+        /// <summary>
+        /// sports_golf unicode value ("\uea2a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_golf
+        /// </summary>
+        public const string SportsGolf = "\uea2a";
+
+        /// <summary>
+        /// sports_handball unicode value ("\uea33").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_handball
+        /// </summary>
+        public const string SportsHandball = "\uea33";
+
+        /// <summary>
+        /// sports_hockey unicode value ("\uea2b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_hockey
+        /// </summary>
+        public const string SportsHockey = "\uea2b";
+
+        /// <summary>
+        /// sports_kabaddi unicode value ("\uea34").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_kabaddi
+        /// </summary>
+        public const string SportsKabaddi = "\uea34";
+
+        /// <summary>
+        /// sports_mma unicode value ("\uea2c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_mma
+        /// </summary>
+        public const string SportsMma = "\uea2c";
+
+        /// <summary>
+        /// sports_motorsports unicode value ("\uea2d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_motorsports
+        /// </summary>
+        public const string SportsMotorsports = "\uea2d";
+
+        /// <summary>
+        /// sports_rugby unicode value ("\uea2e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_rugby
+        /// </summary>
+        public const string SportsRugby = "\uea2e";
+
+        /// <summary>
+        /// sports_soccer unicode value ("\uea2f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_soccer
+        /// </summary>
+        public const string SportsSoccer = "\uea2f";
+
+        /// <summary>
+        /// sports_tennis unicode value ("\uea32").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_tennis
+        /// </summary>
+        public const string SportsTennis = "\uea32";
+
+        /// <summary>
+        /// sports_volleyball unicode value ("\uea31").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sports_volleyball
+        /// </summary>
+        public const string SportsVolleyball = "\uea31";
+
+        /// <summary>
+        /// square_foot unicode value ("\uea49").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=square_foot
+        /// </summary>
+        public const string SquareFoot = "\uea49";
+
+        /// <summary>
+        /// stacked_line_chart unicode value ("\uf22b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=stacked_line_chart
+        /// </summary>
+        public const string StackedLineChart = "\uf22b";
+
+        /// <summary>
+        /// stairs unicode value ("\uf1a9").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=stairs
+        /// </summary>
+        public const string Stairs = "\uf1a9";
 
         /// <summary>
         /// star unicode value ("\ue838").
@@ -5535,11 +8195,39 @@ namespace MaterialDesign
         public const string StarBorder = "\ue83a";
 
         /// <summary>
+        /// star_border_purple500 unicode value ("\uf099").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=star_border_purple500
+        /// </summary>
+        public const string StarBorderPurple500 = "\uf099";
+
+        /// <summary>
         /// star_half unicode value ("\ue839").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=star_half
         /// </summary>
         public const string StarHalf = "\ue839";
+
+        /// <summary>
+        /// star_outline unicode value ("\uf06f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=star_outline
+        /// </summary>
+        public const string StarOutline = "\uf06f";
+
+        /// <summary>
+        /// star_purple500 unicode value ("\uf09a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=star_purple500
+        /// </summary>
+        public const string StarPurple500 = "\uf09a";
+
+        /// <summary>
+        /// star_rate unicode value ("\uf0ec").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=star_rate
+        /// </summary>
+        public const string StarRate = "\uf0ec";
 
         /// <summary>
         /// stars unicode value ("\ue8d0").
@@ -5577,11 +8265,25 @@ namespace MaterialDesign
         public const string StayPrimaryPortrait = "\ue0d6";
 
         /// <summary>
+        /// sticky_note_2 unicode value ("\uf1fc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sticky_note_2
+        /// </summary>
+        public const string StickyNote2 = "\uf1fc";
+
+        /// <summary>
         /// stop unicode value ("\ue047").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=stop
         /// </summary>
         public const string Stop = "\ue047";
+
+        /// <summary>
+        /// stop_circle unicode value ("\uef71").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=stop_circle
+        /// </summary>
+        public const string StopCircle = "\uef71";
 
         /// <summary>
         /// stop_screen_share unicode value ("\ue0e3").
@@ -5612,6 +8314,13 @@ namespace MaterialDesign
         public const string StoreMallDirectory = "\ue563";
 
         /// <summary>
+        /// storefront unicode value ("\uea12").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=storefront
+        /// </summary>
+        public const string Storefront = "\uea12";
+
+        /// <summary>
         /// straighten unicode value ("\ue41c").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=straighten
@@ -5631,6 +8340,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=strikethrough_s
         /// </summary>
         public const string StrikethroughS = "\ue257";
+
+        /// <summary>
+        /// stroller unicode value ("\uf1ae").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=stroller
+        /// </summary>
+        public const string Stroller = "\uf1ae";
 
         /// <summary>
         /// style unicode value ("\ue41d").
@@ -5661,6 +8377,13 @@ namespace MaterialDesign
         public const string Subject = "\ue8d2";
 
         /// <summary>
+        /// subscript unicode value ("\uf111").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=subscript
+        /// </summary>
+        public const string Subscript = "\uf111";
+
+        /// <summary>
         /// subscriptions unicode value ("\ue064").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=subscriptions
@@ -5675,6 +8398,13 @@ namespace MaterialDesign
         public const string Subtitles = "\ue048";
 
         /// <summary>
+        /// subtitles_off unicode value ("\uef72").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=subtitles_off
+        /// </summary>
+        public const string SubtitlesOff = "\uef72";
+
+        /// <summary>
         /// subway unicode value ("\ue56f").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=subway
@@ -5682,11 +8412,39 @@ namespace MaterialDesign
         public const string Subway = "\ue56f";
 
         /// <summary>
+        /// superscript unicode value ("\uf112").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=superscript
+        /// </summary>
+        public const string Superscript = "\uf112";
+
+        /// <summary>
+        /// supervised_user_circle unicode value ("\ue939").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=supervised_user_circle
+        /// </summary>
+        public const string SupervisedUserCircle = "\ue939";
+
+        /// <summary>
         /// supervisor_account unicode value ("\ue8d3").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=supervisor_account
         /// </summary>
         public const string SupervisorAccount = "\ue8d3";
+
+        /// <summary>
+        /// support unicode value ("\uef73").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=support
+        /// </summary>
+        public const string Support = "\uef73";
+
+        /// <summary>
+        /// support_agent unicode value ("\uf0e2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=support_agent
+        /// </summary>
+        public const string SupportAgent = "\uf0e2";
 
         /// <summary>
         /// surround_sound unicode value ("\ue049").
@@ -5710,11 +8468,25 @@ namespace MaterialDesign
         public const string SwapHoriz = "\ue8d4";
 
         /// <summary>
+        /// swap_horizontal_circle unicode value ("\ue933").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=swap_horizontal_circle
+        /// </summary>
+        public const string SwapHorizontalCircle = "\ue933";
+
+        /// <summary>
         /// swap_vert unicode value ("\ue8d5").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=swap_vert
         /// </summary>
         public const string SwapVert = "\ue8d5";
+
+        /// <summary>
+        /// swap_vert_circle unicode value ("\ue8d6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=swap_vert_circle
+        /// </summary>
+        public const string SwapVertCircle = "\ue8d6";
 
         /// <summary>
         /// swap_vertical_circle unicode value ("\ue8d6").
@@ -5731,6 +8503,20 @@ namespace MaterialDesign
         public const string SwitchCamera = "\ue41e";
 
         /// <summary>
+        /// switch_left unicode value ("\uf1d1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=switch_left
+        /// </summary>
+        public const string SwitchLeft = "\uf1d1";
+
+        /// <summary>
+        /// switch_right unicode value ("\uf1d2").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=switch_right
+        /// </summary>
+        public const string SwitchRight = "\uf1d2";
+
+        /// <summary>
         /// switch_video unicode value ("\ue41f").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=switch_video
@@ -5743,6 +8529,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=sync
         /// </summary>
         public const string Sync = "\ue627";
+
+        /// <summary>
+        /// sync_alt unicode value ("\uea18").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=sync_alt
+        /// </summary>
+        public const string SyncAlt = "\uea18";
 
         /// <summary>
         /// sync_disabled unicode value ("\ue628").
@@ -5773,6 +8566,13 @@ namespace MaterialDesign
         public const string SystemUpdateAlt = "\ue8d7";
 
         /// <summary>
+        /// system_update_tv unicode value ("\ue8d7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=system_update_tv
+        /// </summary>
+        public const string SystemUpdateTv = "\ue8d7";
+
+        /// <summary>
         /// tab unicode value ("\ue8d8").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=tab
@@ -5785,6 +8585,27 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=tab_unselected
         /// </summary>
         public const string TabUnselected = "\ue8d9";
+
+        /// <summary>
+        /// table_chart unicode value ("\ue265").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=table_chart
+        /// </summary>
+        public const string TableChart = "\ue265";
+
+        /// <summary>
+        /// table_rows unicode value ("\uf101").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=table_rows
+        /// </summary>
+        public const string TableRows = "\uf101";
+
+        /// <summary>
+        /// table_view unicode value ("\uf1be").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=table_view
+        /// </summary>
+        public const string TableView = "\uf1be";
 
         /// <summary>
         /// tablet unicode value ("\ue32f").
@@ -5822,6 +8643,13 @@ namespace MaterialDesign
         public const string TapAndPlay = "\ue62b";
 
         /// <summary>
+        /// tapas unicode value ("\uf1e9").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=tapas
+        /// </summary>
+        public const string Tapas = "\uf1e9";
+
+        /// <summary>
         /// terrain unicode value ("\ue564").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=terrain
@@ -5841,6 +8669,55 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=text_format
         /// </summary>
         public const string TextFormat = "\ue165";
+
+        /// <summary>
+        /// text_rotate_up unicode value ("\ue93a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=text_rotate_up
+        /// </summary>
+        public const string TextRotateUp = "\ue93a";
+
+        /// <summary>
+        /// text_rotate_vertical unicode value ("\ue93b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=text_rotate_vertical
+        /// </summary>
+        public const string TextRotateVertical = "\ue93b";
+
+        /// <summary>
+        /// text_rotation_angledown unicode value ("\ue93c").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=text_rotation_angledown
+        /// </summary>
+        public const string TextRotationAngledown = "\ue93c";
+
+        /// <summary>
+        /// text_rotation_angleup unicode value ("\ue93d").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=text_rotation_angleup
+        /// </summary>
+        public const string TextRotationAngleup = "\ue93d";
+
+        /// <summary>
+        /// text_rotation_down unicode value ("\ue93e").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=text_rotation_down
+        /// </summary>
+        public const string TextRotationDown = "\ue93e";
+
+        /// <summary>
+        /// text_rotation_none unicode value ("\ue93f").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=text_rotation_none
+        /// </summary>
+        public const string TextRotationNone = "\ue93f";
+
+        /// <summary>
+        /// text_snippet unicode value ("\uf1c6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=text_snippet
+        /// </summary>
+        public const string TextSnippet = "\uf1c6";
 
         /// <summary>
         /// textsms unicode value ("\ue0d8").
@@ -5864,6 +8741,13 @@ namespace MaterialDesign
         public const string Theaters = "\ue8da";
 
         /// <summary>
+        /// thermostat unicode value ("\uf076").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=thermostat
+        /// </summary>
+        public const string Thermostat = "\uf076";
+
+        /// <summary>
         /// thumb_down unicode value ("\ue8db").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=thumb_down
@@ -5871,11 +8755,25 @@ namespace MaterialDesign
         public const string ThumbDown = "\ue8db";
 
         /// <summary>
+        /// thumb_down_alt unicode value ("\ue816").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=thumb_down_alt
+        /// </summary>
+        public const string ThumbDownAlt = "\ue816";
+
+        /// <summary>
         /// thumb_up unicode value ("\ue8dc").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=thumb_up
         /// </summary>
         public const string ThumbUp = "\ue8dc";
+
+        /// <summary>
+        /// thumb_up_alt unicode value ("\ue817").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=thumb_up_alt
+        /// </summary>
+        public const string ThumbUpAlt = "\ue817";
 
         /// <summary>
         /// thumbs_up_down unicode value ("\ue8dd").
@@ -5955,6 +8853,20 @@ namespace MaterialDesign
         public const string Today = "\ue8df";
 
         /// <summary>
+        /// toggle_off unicode value ("\ue9f5").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=toggle_off
+        /// </summary>
+        public const string ToggleOff = "\ue9f5";
+
+        /// <summary>
+        /// toggle_on unicode value ("\ue9f6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=toggle_on
+        /// </summary>
+        public const string ToggleOn = "\ue9f6";
+
+        /// <summary>
         /// toll unicode value ("\ue8e0").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=toll
@@ -5969,11 +8881,25 @@ namespace MaterialDesign
         public const string Tonality = "\ue427";
 
         /// <summary>
+        /// topic unicode value ("\uf1c8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=topic
+        /// </summary>
+        public const string Topic = "\uf1c8";
+
+        /// <summary>
         /// touch_app unicode value ("\ue913").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=touch_app
         /// </summary>
         public const string TouchApp = "\ue913";
+
+        /// <summary>
+        /// tour unicode value ("\uef75").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=tour
+        /// </summary>
+        public const string Tour = "\uef75";
 
         /// <summary>
         /// toys unicode value ("\ue332").
@@ -6025,6 +8951,13 @@ namespace MaterialDesign
         public const string Transform = "\ue428";
 
         /// <summary>
+        /// transit_enterexit unicode value ("\ue579").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=transit_enterexit
+        /// </summary>
+        public const string TransitEnterexit = "\ue579";
+
+        /// <summary>
         /// translate unicode value ("\ue8e2").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=translate
@@ -6046,11 +8979,32 @@ namespace MaterialDesign
         public const string TrendingFlat = "\ue8e4";
 
         /// <summary>
+        /// trending_neutral unicode value ("\ue8e4").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=trending_neutral
+        /// </summary>
+        public const string TrendingNeutral = "\ue8e4";
+
+        /// <summary>
         /// trending_up unicode value ("\ue8e5").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=trending_up
         /// </summary>
         public const string TrendingUp = "\ue8e5";
+
+        /// <summary>
+        /// trip_origin unicode value ("\ue57b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=trip_origin
+        /// </summary>
+        public const string TripOrigin = "\ue57b";
+
+        /// <summary>
+        /// tty unicode value ("\uf1aa").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=tty
+        /// </summary>
+        public const string Tty = "\uf1aa";
 
         /// <summary>
         /// tune unicode value ("\ue429").
@@ -6081,6 +9035,27 @@ namespace MaterialDesign
         public const string Tv = "\ue333";
 
         /// <summary>
+        /// tv_off unicode value ("\ue647").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=tv_off
+        /// </summary>
+        public const string TvOff = "\ue647";
+
+        /// <summary>
+        /// two_wheeler unicode value ("\ue9f9").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=two_wheeler
+        /// </summary>
+        public const string TwoWheeler = "\ue9f9";
+
+        /// <summary>
+        /// umbrella unicode value ("\uf1ad").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=umbrella
+        /// </summary>
+        public const string Umbrella = "\uf1ad";
+
+        /// <summary>
         /// unarchive unicode value ("\ue169").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=unarchive
@@ -6109,6 +9084,20 @@ namespace MaterialDesign
         public const string UnfoldMore = "\ue5d7";
 
         /// <summary>
+        /// unpublished unicode value ("\uf236").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=unpublished
+        /// </summary>
+        public const string Unpublished = "\uf236";
+
+        /// <summary>
+        /// unsubscribe unicode value ("\ue0eb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=unsubscribe
+        /// </summary>
+        public const string Unsubscribe = "\ue0eb";
+
+        /// <summary>
         /// update unicode value ("\ue923").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=update
@@ -6116,11 +9105,39 @@ namespace MaterialDesign
         public const string Update = "\ue923";
 
         /// <summary>
+        /// update_disabled unicode value ("\ue075").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=update_disabled
+        /// </summary>
+        public const string UpdateDisabled = "\ue075";
+
+        /// <summary>
+        /// upgrade unicode value ("\uf0fb").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=upgrade
+        /// </summary>
+        public const string Upgrade = "\uf0fb";
+
+        /// <summary>
+        /// upload unicode value ("\uf09b").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=upload
+        /// </summary>
+        public const string Upload = "\uf09b";
+
+        /// <summary>
         /// usb unicode value ("\ue1e0").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=usb
         /// </summary>
         public const string Usb = "\ue1e0";
+
+        /// <summary>
+        /// verified unicode value ("\uef76").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=verified
+        /// </summary>
+        public const string Verified = "\uef76";
 
         /// <summary>
         /// verified_user unicode value ("\ue8e8").
@@ -6151,6 +9168,20 @@ namespace MaterialDesign
         public const string VerticalAlignTop = "\ue25a";
 
         /// <summary>
+        /// vertical_distribute unicode value ("\ue076").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=vertical_distribute
+        /// </summary>
+        public const string VerticalDistribute = "\ue076";
+
+        /// <summary>
+        /// vertical_split unicode value ("\ue949").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=vertical_split
+        /// </summary>
+        public const string VerticalSplit = "\ue949";
+
+        /// <summary>
         /// vibration unicode value ("\ue62d").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=vibration
@@ -6165,6 +9196,13 @@ namespace MaterialDesign
         public const string VideoCall = "\ue070";
 
         /// <summary>
+        /// video_collection unicode value ("\ue04a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=video_collection
+        /// </summary>
+        public const string VideoCollection = "\ue04a";
+
+        /// <summary>
         /// video_label unicode value ("\ue071").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=video_label
@@ -6177,6 +9215,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=video_library
         /// </summary>
         public const string VideoLibrary = "\ue04a";
+
+        /// <summary>
+        /// video_settings unicode value ("\uea75").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=video_settings
+        /// </summary>
+        public const string VideoSettings = "\uea75";
 
         /// <summary>
         /// videocam unicode value ("\ue04b").
@@ -6228,6 +9273,13 @@ namespace MaterialDesign
         public const string ViewColumn = "\ue8ec";
 
         /// <summary>
+        /// view_comfortable unicode value ("\ue42a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=view_comfortable
+        /// </summary>
+        public const string ViewComfortable = "\ue42a";
+
+        /// <summary>
         /// view_comfy unicode value ("\ue42a").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=view_comfy
@@ -6277,6 +9329,13 @@ namespace MaterialDesign
         public const string ViewQuilt = "\ue8f1";
 
         /// <summary>
+        /// view_sidebar unicode value ("\uf114").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=view_sidebar
+        /// </summary>
+        public const string ViewSidebar = "\uf114";
+
+        /// <summary>
         /// view_stream unicode value ("\ue8f2").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=view_stream
@@ -6317,6 +9376,13 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=voice_chat
         /// </summary>
         public const string VoiceChat = "\ue62e";
+
+        /// <summary>
+        /// voice_over_off unicode value ("\ue94a").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=voice_over_off
+        /// </summary>
+        public const string VoiceOverOff = "\ue94a";
 
         /// <summary>
         /// voicemail unicode value ("\ue0d9").
@@ -6368,6 +9434,27 @@ namespace MaterialDesign
         public const string VpnLock = "\ue62f";
 
         /// <summary>
+        /// wallet_giftcard unicode value ("\ue8f6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wallet_giftcard
+        /// </summary>
+        public const string WalletGiftcard = "\ue8f6";
+
+        /// <summary>
+        /// wallet_membership unicode value ("\ue8f7").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wallet_membership
+        /// </summary>
+        public const string WalletMembership = "\ue8f7";
+
+        /// <summary>
+        /// wallet_travel unicode value ("\ue8f8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wallet_travel
+        /// </summary>
+        public const string WalletTravel = "\ue8f8";
+
+        /// <summary>
         /// wallpaper unicode value ("\ue1bc").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=wallpaper
@@ -6382,6 +9469,20 @@ namespace MaterialDesign
         public const string Warning = "\ue002";
 
         /// <summary>
+        /// warning_amber unicode value ("\uf083").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=warning_amber
+        /// </summary>
+        public const string WarningAmber = "\uf083";
+
+        /// <summary>
+        /// wash unicode value ("\uf1b1").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wash
+        /// </summary>
+        public const string Wash = "\uf1b1";
+
+        /// <summary>
         /// watch unicode value ("\ue334").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=watch
@@ -6394,6 +9495,20 @@ namespace MaterialDesign
         /// See https://material.io/resources/icons/?icon=watch_later
         /// </summary>
         public const string WatchLater = "\ue924";
+
+        /// <summary>
+        /// water_damage unicode value ("\uf203").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=water_damage
+        /// </summary>
+        public const string WaterDamage = "\uf203";
+
+        /// <summary>
+        /// waves unicode value ("\ue176").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=waves
+        /// </summary>
+        public const string Waves = "\ue176";
 
         /// <summary>
         /// wb_auto unicode value ("\ue42c").
@@ -6459,11 +9574,32 @@ namespace MaterialDesign
         public const string Weekend = "\ue16b";
 
         /// <summary>
+        /// west unicode value ("\uf1e6").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=west
+        /// </summary>
+        public const string West = "\uf1e6";
+
+        /// <summary>
         /// whatshot unicode value ("\ue80e").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=whatshot
         /// </summary>
         public const string Whatshot = "\ue80e";
+
+        /// <summary>
+        /// wheelchair_pickup unicode value ("\uf1ab").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wheelchair_pickup
+        /// </summary>
+        public const string WheelchairPickup = "\uf1ab";
+
+        /// <summary>
+        /// where_to_vote unicode value ("\ue177").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=where_to_vote
+        /// </summary>
+        public const string WhereToVote = "\ue177";
 
         /// <summary>
         /// widgets unicode value ("\ue1bd").
@@ -6480,11 +9616,32 @@ namespace MaterialDesign
         public const string Wifi = "\ue63e";
 
         /// <summary>
+        /// wifi_calling unicode value ("\uef77").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wifi_calling
+        /// </summary>
+        public const string WifiCalling = "\uef77";
+
+        /// <summary>
         /// wifi_lock unicode value ("\ue1e1").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=wifi_lock
         /// </summary>
         public const string WifiLock = "\ue1e1";
+
+        /// <summary>
+        /// wifi_off unicode value ("\ue648").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wifi_off
+        /// </summary>
+        public const string WifiOff = "\ue648";
+
+        /// <summary>
+        /// wifi_protected_setup unicode value ("\uf0fc").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wifi_protected_setup
+        /// </summary>
+        public const string WifiProtectedSetup = "\uf0fc";
 
         /// <summary>
         /// wifi_tethering unicode value ("\ue1e2").
@@ -6494,6 +9651,13 @@ namespace MaterialDesign
         public const string WifiTethering = "\ue1e2";
 
         /// <summary>
+        /// wine_bar unicode value ("\uf1e8").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wine_bar
+        /// </summary>
+        public const string WineBar = "\uf1e8";
+
+        /// <summary>
         /// work unicode value ("\ue8f9").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=work
@@ -6501,11 +9665,39 @@ namespace MaterialDesign
         public const string Work = "\ue8f9";
 
         /// <summary>
+        /// work_off unicode value ("\ue942").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=work_off
+        /// </summary>
+        public const string WorkOff = "\ue942";
+
+        /// <summary>
+        /// work_outline unicode value ("\ue943").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=work_outline
+        /// </summary>
+        public const string WorkOutline = "\ue943";
+
+        /// <summary>
         /// wrap_text unicode value ("\ue25b").
         /// <para/>
         /// See https://material.io/resources/icons/?icon=wrap_text
         /// </summary>
         public const string WrapText = "\ue25b";
+
+        /// <summary>
+        /// wrong_location unicode value ("\uef78").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wrong_location
+        /// </summary>
+        public const string WrongLocation = "\uef78";
+
+        /// <summary>
+        /// wysiwyg unicode value ("\uf1c3").
+        /// <para/>
+        /// See https://material.io/resources/icons/?icon=wysiwyg
+        /// </summary>
+        public const string Wysiwyg = "\uf1c3";
 
         /// <summary>
         /// youtube_searched_for unicode value ("\ue8fa").

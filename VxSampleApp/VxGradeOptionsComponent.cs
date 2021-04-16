@@ -27,7 +27,7 @@ namespace VxSampleApp
             {
                 Children =
                 {
-                    RenderItem("Grade scale", "Edit the grade scale", MaterialDesign.MaterialDesignIcons.Dashboard),
+                    RenderItem("Grade scale", "Edit the grade scale", MaterialDesign.MaterialDesignIcons.Calculate),
                     RenderItem("Average grades", "Disabled", MaterialDesign.MaterialDesignIcons.Refresh),
                     RenderItem("Round grades up", "Enabled", MaterialDesign.MaterialDesignIcons.ArrowUpward),
 

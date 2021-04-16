@@ -124,11 +124,11 @@
     <Compile Include="UwpNativeComponent.cs" />
     <Compile Include="Views\UwpButton.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
-    <Compile Include="Views\UwpGlyphButton.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
     <Compile Include="Views\UwpTextBlock.cs" />
     <Compile Include="Views\UwpTextBox.cs" />
+    <Compile Include="Views\UwpTransparentContentButton.cs" />
     <Compile Include="Views\UwpView.cs" />
     <Compile Include="VxUwpExtensions.cs" />
     <Compile Include="VxUwpTheme.cs" />

@@ -60,9 +60,13 @@ namespace VxSampleApp
                 }, new TextBox
                 {
                     Text = Bind<string>(nameof(entry.Gpa), entry)
-                }, new Button
+                }, new TransparentContentButton
                 {
-                    Text = "X",
+                    Content = new FontIcon
+                    {
+                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                        FontSize = 20
+                    },
                     Click = () => { _gradeScaleEntries.Remove(entry); MarkDirty(); }
                 }));
             }

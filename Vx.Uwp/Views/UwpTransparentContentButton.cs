@@ -8,9 +8,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.Views
 {
-    public class UwpListItemButton : UwpView<Vx.Views.ListItemButton, TransparentButtonWithHoverBorder>
+    public class UwpTransparentContentButton : UwpView<Vx.Views.TransparentContentButton, TransparentButton>
     {
-        public UwpListItemButton()
+        public UwpTransparentContentButton()
         {
             View.Click += View_Click;
         }
@@ -20,7 +20,7 @@ namespace Vx.Uwp.Views
             VxView.Click?.Invoke();
         }
 
-        protected override void ApplyProperties(Vx.Views.ListItemButton oldView, Vx.Views.ListItemButton newView)
+        protected override void ApplyProperties(Vx.Views.TransparentContentButton oldView, Vx.Views.TransparentContentButton newView)
         {
             base.ApplyProperties(oldView, newView);
 
@@ -28,11 +28,11 @@ namespace Vx.Uwp.Views
         }
     }
 
-    public class TransparentButtonWithHoverBorder : Button
+    public class TransparentButton : Button
     {
-        public TransparentButtonWithHoverBorder()
+        public TransparentButton()
         {
-            DefaultStyleKey = typeof(TransparentButtonWithHoverBorder);
+            DefaultStyleKey = typeof(TransparentButton);
         }
     }
 }

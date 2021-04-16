@@ -9,7 +9,7 @@ namespace Vx.Views
     {
         public string Glyph { get; set; }
 
-        public Color Color { get; set; }
+        public Color Color { get; set; } = Theme.Current.ForegroundColor;
 
         public double FontSize { get; set; }
     }

@@ -33,6 +33,11 @@ namespace Vx.Uwp
                     return new UwpListItemButton();
                 }
 
+                if (view is Vx.Views.TransparentContentButton)
+                {
+                    return new UwpTransparentContentButton();
+                }
+
                 if (view is Vx.Views.Button)
                 {
                     return new UwpButton();
@@ -61,6 +66,11 @@ namespace Vx.Uwp
 
         internal static FrameworkElement CreateFrameworkElement(this View view)
         {
+            if (view == null)
+            {
+                return null;
+            }
+
             return view.CreateNativeView(null).View as FrameworkElement;
         }
 
