@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Vx.Uwp.Views;
 using Vx.Views;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 
 namespace Vx.Uwp
 {
@@ -13,6 +14,8 @@ namespace Vx.Uwp
     {
         static VxUwpExtensions()
         {
+            Theme.Current = new VxUwpTheme();
+
             NativeView.CreateNativeView = view =>
             {
                 if (view is Vx.Views.TextBlock)
@@ -25,6 +28,11 @@ namespace Vx.Uwp
                     return new UwpLinearLayout();
                 }
 
+                if (view is Vx.Views.ListItemButton)
+                {
+                    return new UwpListItemButton();
+                }
+
                 if (view is Vx.Views.Button)
                 {
                     return new UwpButton();
@@ -35,7 +43,12 @@ namespace Vx.Uwp
                     return new UwpTextBox();
                 }
 
-                throw new NotImplementedException();
+                if (view is Vx.Views.FontIcon)
+                {
+                    return new UwpFontIcon();
+                }
+
+                throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
         }
 
@@ -49,6 +62,31 @@ namespace Vx.Uwp
         internal static FrameworkElement CreateFrameworkElement(this View view)
         {
             return view.CreateNativeView(null).View as FrameworkElement;
+        }
+
+        internal static Windows.UI.Color ToUwpColor(this System.Drawing.Color color)
+        {
+            return Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
+
+        internal static SolidColorBrush ToUwpBrush(this System.Drawing.Color color)
+        {
+            return new SolidColorBrush(color.ToUwpColor());
+        }
+
+        internal static Windows.UI.Text.FontWeight ToUwp(this FontWeights fontWeight)
+        {
+            switch (fontWeight)
+            {
+                case FontWeights.Bold:
+                    return Windows.UI.Text.FontWeights.Bold;
+
+                case FontWeights.SemiBold:
+                    return Windows.UI.Text.FontWeights.SemiBold;
+
+                default:
+                    return Windows.UI.Text.FontWeights.Normal;
+            }
         }
     }
 }

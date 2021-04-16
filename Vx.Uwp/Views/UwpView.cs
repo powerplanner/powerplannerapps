@@ -30,6 +30,10 @@ namespace Vx.Uwp.Views
         protected override void ApplyProperties(V oldView, V newView)
         {
             View.Margin = new Windows.UI.Xaml.Thickness(newView.Margin.Left, newView.Margin.Top, newView.Margin.Right, newView.Margin.Bottom);
+            View.Width = newView.Width;
+            View.Height = newView.Height;
+
+            LinearLayout.SetWeight(View, Vx.Views.LinearLayout.GetWeight(newView));
         }
     }
 }

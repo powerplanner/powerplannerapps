@@ -4,12 +4,10 @@ using System.Text;
 
 namespace Vx.Views
 {
-    public interface IStackLayout
+    public class LinearLayout : View
     {
-        List<View> Children { get; }
-    }
-    public class LinearLayout : View, IStackLayout
-    {
+        public Orientation Orientation { get; set; }
+
         public List<View> Children { get; } = new List<View>();
 
         public static void SetWeight(View view, float weight)
@@ -19,7 +17,16 @@ namespace Vx.Views
 
         public static float GetWeight(View view)
         {
-            return view.GetAttachedProperty("LinearLayout.Weight", 0);
+            return view.GetAttachedProperty("LinearLayout.Weight", 0f);
+        }
+    }
+
+    public static class LinearLayoutExtensions
+    {
+        public static T LinearLayoutWeight<T>(this T view, float weight) where T : View
+        {
+            LinearLayout.SetWeight(view, weight);
+            return view;
         }
     }
 }

@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
+    <None Remove="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\MaterialIcons-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
   </ItemGroup>
 

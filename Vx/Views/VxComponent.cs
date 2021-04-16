@@ -134,5 +134,12 @@ namespace Vx.Views
         }
 
         private View RenderedContent { get; set; }
+
+        protected VxState<T> Bind<T>(string propertyName, object source)
+        {
+            var bound = VxState<T>.CreateBound(propertyName, source);
+            bound.ValueChanged += State_ValueChanged;
+            return bound;
+        }
     }
 }

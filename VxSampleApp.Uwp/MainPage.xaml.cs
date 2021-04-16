@@ -28,11 +28,13 @@ namespace VxSampleApp.Uwp
         {
             this.InitializeComponent();
 
-            ComboBoxComponents.ItemsSource = new Type[]
+            ComboBoxComponents.ItemsSource = new Choice[]
             {
-                typeof(VxSampleComponent),
-                typeof(VxAddingComponent),
-                typeof(VxCombinedComponent)
+                new Choice<VxSampleComponent>(),
+                new Choice<VxAddingComponent>(),
+                new Choice<VxCombinedComponent>(),
+                new Choice<VxGradeScalesComponent>(),
+                new Choice<VxGradeOptionsComponent>()
             };
 
             ComboBoxComponents.SelectionChanged += ComboBoxComponents_SelectionChanged;
@@ -41,8 +43,19 @@ namespace VxSampleApp.Uwp
         private void ComboBoxComponents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Container.Children.Clear();
-            var comp = Activator.CreateInstance(ComboBoxComponents.SelectedItem as Type) as VxComponent;
+            var comp = Activator.CreateInstance((ComboBoxComponents.SelectedItem as Choice).Type) as VxComponent;
             Container.Children.Add(comp.Render());
+        }
+
+        private abstract class Choice
+        {
+            public abstract Type Type { get; }
+        }
+
+        private class Choice<T> : Choice
+        {
+            public override Type Type => typeof(T);
+            public string Name => Type.Name;
         }
     }
 }

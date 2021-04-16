@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Vx.Views
@@ -13,6 +14,9 @@ namespace Vx.Views
             _value = value;
         }
 
+        protected PropertyInfo _sourceProperty;
+        protected object _source;
+
         private object _value;
         public object Value
         {
@@ -22,6 +26,11 @@ namespace Vx.Views
                 if (!object.Equals(_value, value))
                 {
                     _value = value;
+
+                    if (_source != null)
+                    {
+                        _sourceProperty.SetValue(_source, value);
+                    }
 
                     if (!Silent)
                     {
@@ -55,6 +64,18 @@ namespace Vx.Views
         public void SetValueSilently(T value)
         {
             base.SetValueSilently(value);
+        }
+
+        internal static VxState<T> CreateBound(string propertyName, object source)
+        {
+            var prop = source.GetType().GetProperty(propertyName);
+            var val = (T)prop.GetValue(source);
+
+            return new VxState<T>(val)
+            {
+                _source = source,
+                _sourceProperty = prop
+            };
         }
     }
 

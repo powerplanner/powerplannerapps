@@ -5,21 +5,27 @@ using System.Text;
 
 namespace Vx.Views
 {
-    public class Theme
+    public abstract class Theme
     {
-        public static Theme CurrentTheme { get; set; } = Light;
-
-        public static readonly Theme Light = new Theme()
+        private static Theme _currentTheme;
+        public static Theme Current
         {
-            ForegroundColor = Color.Black,
-            BackgroundColor = Color.White,
-            ButtonBackgroundColor = Color.Gray
-        };
+            get
+            {
+#if DEBUG
+                if (_currentTheme == null)
+                {
+                    throw new NotImplementedException("Native platform needs to initialize Theme");
+                }
+#endif
 
-        public Color ForegroundColor { get; set; }
+                return _currentTheme;
+            }
+            set => _currentTheme = value;
+        }
 
-        public Color BackgroundColor { get; set; }
+        public abstract Color ForegroundColor { get; }
 
-        public Color ButtonBackgroundColor { get; set; }
+        public abstract Color SubtleForegroundColor { get; }
     }
 }

@@ -14,6 +14,8 @@ namespace Vx.Uwp.Views
             base.ApplyProperties(oldView, newView);
 
             View.Text = newView.Text;
+            View.FontWeight = newView.FontWeight.ToUwp();
+            View.Foreground = newView.TextColor.ToUwpBrush();
         }
     }
 }

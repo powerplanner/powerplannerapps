@@ -14,7 +14,7 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            //View.Axis = UILayoutConstraintAxis.Vertical;
+            View.Orientation = newView.Orientation;
 
             ReconcileList(
                 oldView?.Children,
@@ -68,15 +68,43 @@ namespace Vx.iOS.Views
 
     public class UILinearLayout : UIView
     {
+        private Orientation _orientation;
+        public Orientation Orientation
+        {
+            get => _orientation;
+            set
+            {
+                if (value != _orientation)
+                {
+                    _orientation = value;
+                    SetNeedsLayout();
+                }
+            }
+        }
+
         public override void LayoutSubviews()
         {
-            double y = 0;
-
-            foreach (var subview in Subviews)
+            if (Orientation == Orientation.Vertical)
             {
-                var size = subview.SystemLayoutSizeFittingSize(UIView.UILayoutFittingCompressedSize);
-                subview.Frame = new CoreGraphics.CGRect(0, y, Frame.Width, size.Height);
-                y += size.Height;
+                double y = 0;
+
+                foreach (var subview in Subviews)
+                {
+                    var size = subview.SystemLayoutSizeFittingSize(UIView.UILayoutFittingCompressedSize);
+                    subview.Frame = new CoreGraphics.CGRect(0, y, Frame.Width, size.Height);
+                    y += size.Height;
+                }
+            }
+            else
+            {
+                double x = 0;
+
+                foreach (var subview in Subviews)
+                {
+                    var size = subview.SystemLayoutSizeFittingSize(UIView.UILayoutFittingCompressedSize);
+                    subview.Frame = new CoreGraphics.CGRect(x, 0, Frame.Width, size.Height);
+                    x += size.Width;
+                }
             }
         }
 
@@ -88,12 +116,19 @@ namespace Vx.iOS.Views
             {
                 var subviewSize = subview.SystemLayoutSizeFittingSize(size);
 
-                height += subviewSize.Height;
-                width = Math.Max(subviewSize.Width, width);
+                if (Orientation == Orientation.Vertical)
+                {
+                    height += subviewSize.Height;
+                    width = Math.Max(subviewSize.Width, width);
+                }
+                else
+                {
+                    height = Math.Max(subviewSize.Height, height);
+                    width += subviewSize.Width;
+                }
             }
 
             return new CoreGraphics.CGSize(width, height);
-            return base.SystemLayoutSizeFittingSize(size);
         }
     }
 }

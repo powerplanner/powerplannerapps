@@ -15,6 +15,10 @@
         </Grid.RowDefinitions>
 
         <ComboBox Header="Components" x:Name="ComboBoxComponents" DisplayMemberPath="Name"/>
-        <Grid x:Name="Container" Grid.Row="1"/>
+        <Grid x:Name="Container" Grid.Row="1">
+            <!--<Button Style="{ThemeResource ItemContainerStyle}">
+                Tacos
+            </Button>-->
+        </Grid>
     </Grid>
 </Page>
