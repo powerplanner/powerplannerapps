@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Vx.Views
@@ -9,6 +10,11 @@ namespace Vx.Views
         public Orientation Orientation { get; set; }
 
         public List<View> Children { get; } = new List<View>();
+
+        public float TotalWeight()
+        {
+            return Children.Sum(i => GetWeight(i));
+        }
 
         public static void SetWeight(View view, float weight)
         {

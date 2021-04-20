@@ -83,7 +83,7 @@ namespace Vx.iOS
             return view;
         }
 
-        public static UIView PinToBottom(this UIView view, UIView parentView, int bottom = 0)
+        public static UIView PinToBottom(this UIView view, UIView parentView, float bottom = 0)
         {
             // http://commandshift.co.uk/blog/2013/01/31/visual-format-language-for-autolayout/
             parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-({bottom})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
@@ -175,7 +175,7 @@ namespace Vx.iOS
             return view;
         }
 
-        public static UIView StretchWithToReadableContentGuide(this UIView view, UIView parentView, int fallbackLeft = 16, int fallbackRight = 16)
+        public static UIView StretchWidthToReadableContentGuide(this UIView view, UIView parentView, int fallbackLeft = 16, int fallbackRight = 16)
         {
             if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
             {

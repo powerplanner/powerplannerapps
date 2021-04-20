@@ -14,6 +14,8 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            // Temp background color for debugging purposes
+            View.BackgroundColor = UIColor.FromRGBA(0, 0, 255, 15);
             //View.Orientation = newView.Orientation;
 
             ReconcileList(
@@ -47,6 +49,9 @@ namespace Vx.iOS.Views
 
             UIView prevView = null;
             Vx.Views.View prevVxView = null;
+            var totalWeight = newView.TotalWeight();
+            UIView firstWeighted = null;
+            float firstWeightedValue = 0;
 
             for (int i = 0; i < newView.Children.Count; i++)
             {
@@ -62,9 +67,42 @@ namespace Vx.iOS.Views
                     uiView.SetBelow(prevView, View, vxView.Margin.Top + prevVxView.Margin.Bottom);
                 }
 
+                var weight = LinearLayout.GetWeight(vxView);
+                if (weight > 0)
+                {
+                    uiView.SetContentHuggingPriority(0, UILayoutConstraintAxis.Vertical);
+
+                    if (firstWeighted == null)
+                    {
+                        firstWeighted = uiView;
+                        firstWeightedValue = weight;
+                    }
+                    else
+                    {
+                        View.AddConstraint(NSLayoutConstraint.Create(
+                            uiView,
+                            NSLayoutAttribute.Height,
+                            NSLayoutRelation.Equal,
+                            firstWeighted,
+                            NSLayoutAttribute.Height,
+                            weight / firstWeightedValue, 0));
+                    }
+                }
+                else
+                {
+                    uiView.SetContentHuggingPriority(250, UILayoutConstraintAxis.Vertical);
+                }
+
                 if (i == newView.Children.Count - 1)
                 {
-                    View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>={vxView.Margin.Bottom})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
+                    if (totalWeight == 0)
+                    {
+                        View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>={vxView.Margin.Bottom})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
+                    }
+                    else
+                    {
+                        uiView.PinToBottom(View, vxView.Margin.Bottom);
+                    }
                 }
 
                 uiView.StretchWidth(View, vxView.Margin.Left, vxView.Margin.Right);

@@ -28,6 +28,9 @@ namespace VxSampleApp
                 case "margins":
                     return RenderSubpage(RenderMargins());
 
+                case "verticalStretched":
+                    return RenderSubpage(RenderVerticalStretchedLayout());
+
                 default:
                     return RenderHome();
             }
@@ -64,6 +67,13 @@ namespace VxSampleApp
                         Text = "Margins",
                         Click = () => _page.Value = "margins",
                         Margin = new Thickness(0, 12, 0, 0)
+                    },
+
+                    new Button
+                    {
+                        Text = "Vertical stretched",
+                        Click = () => _page.Value = "verticalStretched",
+                        Margin = new Thickness(0, 12, 0, 0)
                     }
                 }
             };
@@ -82,7 +92,7 @@ namespace VxSampleApp
                         Margin = new Thickness(0, 0, 0, 12)
                     },
 
-                    subpage
+                    subpage.LinearLayoutWeight(1)
                 }
             };
         }
@@ -155,6 +165,30 @@ namespace VxSampleApp
                         Text = "12px margin above",
                         Margin = new Thickness(0, 12, 0, 0)
                     }
+                }
+            };
+        }
+
+        private View RenderVerticalStretchedLayout()
+        {
+            return new LinearLayout
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "Weight = 1"
+                    }.LinearLayoutWeight(1),
+
+                    new TextBlock
+                    {
+                        Text = "Weight = 1"
+                    }.LinearLayoutWeight(1),
+
+                    new TextBlock
+                    {
+                        Text = "Weight = 2"
+                    }.LinearLayoutWeight(2),
                 }
             };
         }
