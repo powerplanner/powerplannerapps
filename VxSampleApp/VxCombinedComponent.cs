@@ -25,6 +25,9 @@ namespace VxSampleApp
                 case "textBoxes":
                     return RenderSubpage(RenderTextBoxes());
 
+                case "margins":
+                    return RenderSubpage(RenderMargins());
+
                 default:
                     return RenderHome();
             }
@@ -53,6 +56,13 @@ namespace VxSampleApp
                     {
                         Text = "Text boxes",
                         Click = () => _page.Value = "textBoxes",
+                        Margin = new Thickness(0, 12, 0, 0)
+                    },
+
+                    new Button
+                    {
+                        Text = "Margins",
+                        Click = () => _page.Value = "margins",
                         Margin = new Thickness(0, 12, 0, 0)
                     }
                 }
@@ -115,6 +125,38 @@ namespace VxSampleApp
             });
 
             return sl;
+        }
+
+        private View RenderMargins()
+        {
+            return new LinearLayout
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "This item has 12px margin below",
+                        Margin = new Thickness(0, 0, 0, 12)
+                    },
+
+                    new TextBlock
+                    {
+                        Text = "Left margin 12px",
+                        Margin = new Thickness(12, 0, 0, 0)
+                    },
+
+                    new TextBlock
+                    {
+                        Text = "No margins"
+                    },
+
+                    new TextBlock
+                    {
+                        Text = "12px margin above",
+                        Margin = new Thickness(0, 12, 0, 0)
+                    }
+                }
+            };
         }
 
         private VxState<string> _username = new VxState<string>("");

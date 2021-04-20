@@ -6,7 +6,7 @@ namespace Vx.Views
 {
     public struct Thickness
     {
-        public Thickness(double uniformLength)
+        public Thickness(float uniformLength)
         {
             Left = uniformLength;
             Top = uniformLength;
@@ -14,7 +14,7 @@ namespace Vx.Views
             Bottom = uniformLength;
         }
 
-        public Thickness(double left, double top, double right, double bottom)
+        public Thickness(float left, float top, float right, float bottom)
         {
             Left = left;
             Top = top;
@@ -22,10 +22,10 @@ namespace Vx.Views
             Bottom = bottom;
         }
 
-        public double Bottom { get; set; }
-        public double Left { get; set; }
-        public double Right { get; set; }
-        public double Top { get; set; }
+        public float Bottom { get; set; }
+        public float Left { get; set; }
+        public float Right { get; set; }
+        public float Top { get; set; }
 
         public override bool Equals(object obj)
         {

@@ -46,6 +46,7 @@ namespace Vx.iOS.Views
             View.RemoveConstraints(View.Constraints);
 
             UIView prevView = null;
+            Vx.Views.View prevVxView = null;
 
             for (int i = 0; i < newView.Children.Count; i++)
             {
@@ -54,21 +55,22 @@ namespace Vx.iOS.Views
 
                 if (prevView == null)
                 {
-                    uiView.PinToTop(View);
+                    uiView.PinToTop(View, vxView.Margin.Top);
                 }
                 else
                 {
-                    uiView.SetBelow(prevView, View);
+                    uiView.SetBelow(prevView, View, vxView.Margin.Top + prevVxView.Margin.Bottom);
                 }
 
                 if (i == newView.Children.Count - 1)
                 {
-                    View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>=0)-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
+                    View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>={vxView.Margin.Bottom})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
                 }
 
-                uiView.StretchWidth(View);
+                uiView.StretchWidth(View, vxView.Margin.Left, vxView.Margin.Right);
 
                 prevView = uiView;
+                prevVxView = vxView;
             }
         }
     }

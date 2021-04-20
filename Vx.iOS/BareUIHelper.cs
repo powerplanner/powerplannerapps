@@ -110,7 +110,7 @@ namespace Vx.iOS
             return view;
         }
 
-        public static UIView PinToLeft(this UIView view, UIView parentView, int left = 0)
+        public static UIView PinToLeft(this UIView view, UIView parentView, float left = 0)
         {
             parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-({left})-[view]", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
 
@@ -124,7 +124,7 @@ namespace Vx.iOS
         /// <param name="viewToTheLeft"></param>
         /// <param name="parentView"></param>
         /// <returns></returns>
-        public static UIView SetToRightOf(this UIView view, UIView viewToTheLeft, UIView parentView, int spacing = 0)
+        public static UIView SetToRightOf(this UIView view, UIView viewToTheLeft, UIView parentView, float spacing = 0)
         {
             foreach (var c in parentView.Constraints)
             {
@@ -154,7 +154,7 @@ namespace Vx.iOS
         /// <param name="parentView"></param>
         /// <param name="spacing"></param>
         /// <returns></returns>
-        public static UIView SetBelow(this UIView view, UIView viewAbove, UIView parentView, int spacing = 0)
+        public static UIView SetBelow(this UIView view, UIView viewAbove, UIView parentView, float spacing = 0)
         {
             parentView.AddConstraint(NSLayoutConstraint.Create(
                 view,
@@ -168,7 +168,7 @@ namespace Vx.iOS
             return view;
         }
 
-        public static UIView PinToRight(this UIView view, UIView parentView, int right = 0)
+        public static UIView PinToRight(this UIView view, UIView parentView, float right = 0)
         {
             parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:[view]-({right})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
 
