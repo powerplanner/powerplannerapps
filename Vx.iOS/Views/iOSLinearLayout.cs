@@ -64,7 +64,6 @@ namespace Vx.iOS.Views
                 if (i == newView.Children.Count - 1)
                 {
                     View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>=0)-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
-                    //uiView.PinToBottom(View);
                 }
 
                 uiView.StretchWidth(View);

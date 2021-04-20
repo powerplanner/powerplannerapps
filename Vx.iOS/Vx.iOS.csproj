@@ -63,6 +63,7 @@
     <Compile Include="Views\iOSButton.cs" />
     <Compile Include="Views\iOSLinearLayout.cs" />
     <Compile Include="Views\iOSTextBlock.cs" />
+    <Compile Include="Views\iOSTextBox.cs" />
     <Compile Include="Views\iOSView.cs" />
     <Compile Include="Views\iOSViewExtensions.cs" />
     <Compile Include="VxiOSExtensions.cs" />

@@ -32,6 +32,15 @@ namespace Vx.iOS
                     return new iOSButton();
                 }
 
+                if (view is Vx.Views.TextBox)
+                {
+                    return new iOSTextBox();
+                }
+
+#if DEBUG
+                // Control not implemented
+                System.Diagnostics.Debugger.Break();
+#endif
                 throw new NotImplementedException();
             };
         }
