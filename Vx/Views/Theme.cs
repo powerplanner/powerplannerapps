@@ -15,6 +15,7 @@ namespace Vx.Views
 #if DEBUG
                 if (_currentTheme == null)
                 {
+                    System.Diagnostics.Debugger.Break();
                     throw new NotImplementedException("Native platform needs to initialize Theme");
                 }
 #endif

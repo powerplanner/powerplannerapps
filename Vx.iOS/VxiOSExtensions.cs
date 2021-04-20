@@ -13,6 +13,8 @@ namespace Vx.iOS
     {
         static VxiOSExtensions()
         {
+            Theme.Current = new VxiOSTheme();
+
             NativeView.CreateNativeView = view =>
             {
                 if (view is Vx.Views.TextBlock)

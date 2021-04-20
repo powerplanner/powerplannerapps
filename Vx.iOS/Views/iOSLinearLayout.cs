@@ -8,23 +8,31 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSLinearLayout : iOSView<LinearLayout, UILinearLayout>
+    public class iOSLinearLayout : iOSView<LinearLayout, UIView>
     {
         protected override void ApplyProperties(LinearLayout oldView, LinearLayout newView)
         {
             base.ApplyProperties(oldView, newView);
 
-            View.Orientation = newView.Orientation;
+            //View.Orientation = newView.Orientation;
 
             ReconcileList(
                 oldView?.Children,
                 newView.Children,
-                insert: (i, v) => View.InsertSubview(v.CreateUIView(VxParentView), (nint)i),
+                insert: (i, v) =>
+                {
+                    var childView = v.CreateUIView(VxParentView);
+                    childView.TranslatesAutoresizingMaskIntoConstraints = false;
+                    View.InsertSubview(childView, (nint)i);
+                },
                 remove: (i) => View.Subviews.ElementAt(i).RemoveFromSuperview(),
                 replace: (i, v) =>
                 {
                     View.Subviews.ElementAt(i).RemoveFromSuperview();
-                    View.InsertSubview(v.CreateUIView(VxParentView), (nint)i);
+
+                    var childView = v.CreateUIView(VxParentView);
+                    childView.TranslatesAutoresizingMaskIntoConstraints = false;
+                    View.InsertSubview(childView, (nint)i);
                 },
                 clear: () =>
                 {
@@ -35,33 +43,34 @@ namespace Vx.iOS.Views
                 }
                 );
 
-            //View.RemoveConstraints(View.Constraints);
+            View.RemoveConstraints(View.Constraints);
 
-            //UIView prevView = null;
+            UIView prevView = null;
 
-            //for (int i = 0; i < newView.Children.Count; i++)
-            //{
-            //    var uiView = View.Subviews[i];
-            //    var vxView = newView.Children[i];
+            for (int i = 0; i < newView.Children.Count; i++)
+            {
+                var uiView = View.Subviews[i];
+                var vxView = newView.Children[i];
 
-            //    if (prevView == null)
-            //    {
-            //        uiView.PinToTop(View);
-            //    }
-            //    else
-            //    {
-            //        uiView.SetBelow(prevView, View);
-            //    }
+                if (prevView == null)
+                {
+                    uiView.PinToTop(View);
+                }
+                else
+                {
+                    uiView.SetBelow(prevView, View);
+                }
 
-            //    if (i == newView.Children.Count - 1)
-            //    {
-            //        uiView.PinToBottom(View);
-            //    }
+                if (i == newView.Children.Count - 1)
+                {
+                    View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>=0)-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
+                    //uiView.PinToBottom(View);
+                }
 
-            //    uiView.StretchWidth(View);
+                uiView.StretchWidth(View);
 
-            //    prevView = uiView;
-            //}
+                prevView = uiView;
+            }
         }
     }
 
@@ -80,6 +89,29 @@ namespace Vx.iOS.Views
                     SetNeedsLayout();
                 }
             }
+        }
+
+        public override CoreGraphics.CGSize SystemLayoutSizeFittingSize(CoreGraphics.CGSize size)
+        {
+            double height = 0;
+            double width = 0;
+            foreach (var subview in Subviews)
+            {
+                var subviewSize = subview.SystemLayoutSizeFittingSize(size);
+
+                if (Orientation == Orientation.Vertical)
+                {
+                    height += subviewSize.Height;
+                    width = Math.Max(subviewSize.Width, width);
+                }
+                else
+                {
+                    height = Math.Max(subviewSize.Height, height);
+                    width += subviewSize.Width;
+                }
+            }
+
+            return new CoreGraphics.CGSize(width, height);
         }
 
         public override void LayoutSubviews()
@@ -108,27 +140,18 @@ namespace Vx.iOS.Views
             }
         }
 
-        public override CoreGraphics.CGSize SystemLayoutSizeFittingSize(CoreGraphics.CGSize size)
+        public override void SubviewAdded(UIView uiview)
         {
-            double height = 0;
-            double width = 0;
-            foreach (var subview in Subviews)
-            {
-                var subviewSize = subview.SystemLayoutSizeFittingSize(size);
+            base.SubviewAdded(uiview);
 
-                if (Orientation == Orientation.Vertical)
-                {
-                    height += subviewSize.Height;
-                    width = Math.Max(subviewSize.Width, width);
-                }
-                else
-                {
-                    height = Math.Max(subviewSize.Height, height);
-                    width += subviewSize.Width;
-                }
-            }
+            base.SetNeedsLayout();
+        }
 
-            return new CoreGraphics.CGSize(width, height);
+        public override void WillRemoveSubview(UIView uiview)
+        {
+            base.WillRemoveSubview(uiview);
+
+            base.InvalidateIntrinsicContentSize();
         }
     }
 }
