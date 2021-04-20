@@ -1,6 +1,7 @@
 ﻿using Foundation;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using UIKit;
@@ -55,6 +56,11 @@ namespace Vx.iOS
         internal static UIView CreateUIView(this Vx.Views.View view, Vx.Views.View parentView)
         {
             return view.CreateNativeView(parentView).View as UIView;
+        }
+
+        internal static UIColor ToUI(this Color color)
+        {
+            return UIColor.FromRGBA(color.R, color.G, color.B, color.A);
         }
     }
 }

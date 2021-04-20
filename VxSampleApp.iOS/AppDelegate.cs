@@ -55,6 +55,7 @@ namespace VxSampleApp.iOS
             // create a new window instance based on the screen size
             Window = new UIWindow(UIScreen.MainScreen.Bounds);
             Window.RootViewController = new UIViewController();
+            Window.RootViewController.View.BackgroundColor = UIColor.SystemBackgroundColor;
 
             var view = new VxCombinedComponent().Render();
             view.TranslatesAutoresizingMaskIntoConstraints = false;

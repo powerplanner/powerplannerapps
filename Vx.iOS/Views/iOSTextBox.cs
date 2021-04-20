@@ -12,8 +12,11 @@ namespace Vx.iOS.Views
     {
         public iOSTextBox()
         {
+            View.EditingChanged += View_EditingDidEnd;
             View.EditingDidEnd += View_EditingDidEnd;
             View.EditingDidEndOnExit += View_EditingDidEnd;
+            View.TextColor = Theme.Current.ForegroundColor.ToUI();
+            View.SetHeight(44);
         }
 
         private void View_EditingDidEnd(object sender, EventArgs e)

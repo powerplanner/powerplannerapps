@@ -15,7 +15,7 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
 
             View.Text = newView.Text;
-            View.TextColor = UIColor.White;
+            View.TextColor = newView.TextColor.ToUI();
         }
     }
 }
