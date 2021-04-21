@@ -22,8 +22,8 @@ namespace Vx
         public void Apply(View newView)
         {
             var oldView = VxView;
-            ApplyProperties(oldView, newView);
             VxView = newView;
+            ApplyProperties(oldView, newView);
 
             if (oldView != null)
             {

@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.OS;
 using Android.Runtime;
+using Android.Views;
 using AndroidX.AppCompat.App;
 using System;
 using System.Threading.Tasks;
@@ -20,7 +21,9 @@ namespace VxSampleApp.Droid
             PortableDispatcher.ObtainDispatcherFunction = () => new DroidDispatcher(this);
             VxDroidExtensions.ApplicationContext = this;
 
-            SetContentView(new VxCombinedComponent().Render());
+            var nativeView = new VxCombinedComponent().Render();
+            nativeView.LayoutParameters = new Android.Views.ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
+            SetContentView(nativeView);
         }
 
         private class DroidDispatcher : PortableDispatcher

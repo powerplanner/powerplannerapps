@@ -21,14 +21,20 @@ namespace Vx.Droid.Views
 
         protected override void ApplyProperties(V oldView, V newView)
         {
-            if (VxParentView is Vx.Views.LinearLayout)
+            if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
             {
-                View.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent)
+                var weight = Vx.Views.LinearLayout.GetWeight(newView);
+                var isVertical = parentLinearLayout.Orientation == Vx.Views.Orientation.Vertical;
+
+                View.LayoutParameters = new LinearLayout.LayoutParams(
+                    width: isVertical ? LinearLayout.LayoutParams.MatchParent : (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0),
+                    height: isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : LinearLayout.LayoutParams.MatchParent)
                 {
                     MarginStart = AsPx(newView.Margin.Left),
                     TopMargin = AsPx(newView.Margin.Top),
                     MarginEnd = AsPx(newView.Margin.Right),
-                    BottomMargin = AsPx(newView.Margin.Bottom)
+                    BottomMargin = AsPx(newView.Margin.Bottom),
+                    Weight = weight
                 };
             }
         }
