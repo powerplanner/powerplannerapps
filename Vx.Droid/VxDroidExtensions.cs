@@ -42,6 +42,11 @@ namespace Vx.Droid
                     return new DroidButton();
                 }
 
+                if (view is Vx.Views.TextBox)
+                {
+                    return new DroidTextBox();
+                }
+
                 throw new NotImplementedException();
             };
         }
