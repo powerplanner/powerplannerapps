@@ -19,6 +19,7 @@ namespace Vx.Droid.Views
             base.ApplyProperties(oldView, newView);
 
             View.Text = newView.Text;
+            View.SetTextColor(newView.TextColor.ToDroid());
         }
     }
 }

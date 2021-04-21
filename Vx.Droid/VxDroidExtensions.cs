@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Vx.Droid.Views;
@@ -22,6 +23,8 @@ namespace Vx.Droid
 
         static VxDroidExtensions()
         {
+            Theme.Current = new VxDroidTheme();
+
             NativeView.CreateNativeView = view =>
             {
                 if (view is Vx.Views.TextBlock)
@@ -53,6 +56,11 @@ namespace Vx.Droid
         internal static Android.Views.View CreateDroidView(this Vx.Views.View view, Vx.Views.View parentView)
         {
             return view.CreateNativeView(parentView).View as Android.Views.View;
+        }
+
+        internal static Android.Graphics.Color ToDroid(this Color color)
+        {
+            return new Android.Graphics.Color(color.ToArgb());
         }
     }
 }
