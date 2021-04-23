@@ -9,6 +9,7 @@ namespace VxSampleApp
     public class VxGradeOptionsComponent : VxComponent
     {
         private VxState<int> _count = new VxState<int>(0);
+        private VxState<string> _selectedItem = new VxState<string>("Nothing selected");
 
         protected override async void Initialize()
         {
@@ -35,7 +36,7 @@ namespace VxSampleApp
                     {
                         Content = new TextBlock
                         {
-                            Text = "Count: " + _count.Value
+                            Text = "Count: " + _count.Value + ". Selected: " + _selectedItem.Value
                         }
                     },
 
@@ -95,7 +96,8 @@ namespace VxSampleApp
                         }.LinearLayoutWeight(1)
                     }
                 },
-                Click = click
+                Margin = new Thickness(0, 0, 0, 12),
+                Click = click ?? (() => _selectedItem.Value = title)
             };
         }
     }

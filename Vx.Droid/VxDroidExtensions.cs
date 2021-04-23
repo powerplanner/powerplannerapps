@@ -52,6 +52,19 @@ namespace Vx.Droid
                     return new DroidFontIcon();
                 }
 
+                if (view is Vx.Views.ListItemButton)
+                {
+                    return new DroidListItemButton();
+                }
+
+                if (view is Vx.Views.TransparentContentButton)
+                {
+                    return new DroidTransparentContentButton();
+                }
+
+#if DEBUG
+                System.Diagnostics.Debugger.Break();
+#endif
                 throw new NotImplementedException();
             };
         }

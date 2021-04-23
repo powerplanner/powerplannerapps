@@ -20,6 +20,18 @@ namespace Vx.Droid.Views
 
             View.Text = newView.Text;
             View.SetTextColor(newView.TextColor.ToDroid());
+
+            switch (newView.FontWeight)
+            {
+                case FontWeights.Bold:
+                case FontWeights.SemiBold:
+                    View.SetTypeface(null, Android.Graphics.TypefaceStyle.Bold);
+                    break;
+
+                default:
+                    View.SetTypeface(null, Android.Graphics.TypefaceStyle.Normal);
+                    break;
+            }
         }
     }
 }
