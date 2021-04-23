@@ -11,6 +11,6 @@ namespace Vx.Views
 
         public Color Color { get; set; } = Theme.Current.ForegroundColor;
 
-        public double FontSize { get; set; }
+        public float FontSize { get; set; }
     }
 }

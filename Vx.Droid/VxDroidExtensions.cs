@@ -47,6 +47,11 @@ namespace Vx.Droid
                     return new DroidTextBox();
                 }
 
+                if (view is Vx.Views.FontIcon)
+                {
+                    return new DroidFontIcon();
+                }
+
                 throw new NotImplementedException();
             };
         }

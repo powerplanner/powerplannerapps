@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Vx.Views;
@@ -30,6 +31,9 @@ namespace VxSampleApp
 
                 case "verticalStretched":
                     return RenderSubpage(RenderVerticalStretchedLayout());
+
+                case "fontIcons":
+                    return RenderSubpage(RenderFontIcons());
 
                 default:
                     return RenderHome();
@@ -73,6 +77,13 @@ namespace VxSampleApp
                     {
                         Text = "Vertical stretched",
                         Click = () => _page.Value = "verticalStretched",
+                        Margin = new Thickness(0, 12, 0, 0)
+                    },
+
+                    new Button
+                    {
+                        Text = "Font icons",
+                        Click = () => _page.Value = "fontIcons",
                         Margin = new Thickness(0, 12, 0, 0)
                     }
                 }
@@ -222,6 +233,27 @@ namespace VxSampleApp
                     new TextBlock
                     {
                         Text = "Your email: " + _email.Value
+                    }
+                }
+            };
+        }
+
+        private View RenderFontIcons()
+        {
+            return new LinearLayout
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "Save icon"
+                    },
+
+                    new FontIcon
+                    {
+                        Glyph = MaterialDesign.MaterialDesignIcons.Save,
+                        FontSize = 20,
+                        Color = Color.Blue
                     }
                 }
             };
