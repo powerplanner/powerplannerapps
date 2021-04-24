@@ -50,6 +50,22 @@ namespace Vx.iOS.Views
             _bottomLine.BackgroundColor = Theme.Current.SubtleForegroundColor.ToUI().CGColor;
             BorderStyle = UITextBorderStyle.None;
             Layer.AddSublayer(_bottomLine);
+
+            base.EditingDidBegin += UITextFieldWithUnderline_FocusChanged;
+            base.EditingDidEnd += UITextFieldWithUnderline_FocusChanged;
+            base.EditingDidEndOnExit += UITextFieldWithUnderline_FocusChanged;
+        }
+
+        private void UITextFieldWithUnderline_FocusChanged(object sender, EventArgs e)
+        {
+            if (base.IsEditing)
+            {
+                _bottomLine.BackgroundColor = Theme.Current.AccentColor.ToUI().CGColor;
+            }
+            else
+            {
+                _bottomLine.BackgroundColor = Theme.Current.SubtleForegroundColor.ToUI().CGColor;
+            }
         }
 
         public override void LayoutSubviews()
@@ -57,6 +73,20 @@ namespace Vx.iOS.Views
             base.LayoutSubviews();
 
             _bottomLine.Frame = new CoreGraphics.CGRect(0, Frame.Height - 1, Frame.Width, 1);
+        }
+
+        public override void DidUpdateFocus(UIFocusUpdateContext context, UIFocusAnimationCoordinator coordinator)
+        {
+            base.DidUpdateFocus(context, coordinator);
+
+            if (Focused)
+            {
+                _bottomLine.BackgroundColor = Theme.Current.AccentColor.ToUI().CGColor;
+            }
+            else
+            {
+                _bottomLine.BackgroundColor = Theme.Current.SubtleForegroundColor.ToUI().CGColor;
+            }
         }
     }
 }

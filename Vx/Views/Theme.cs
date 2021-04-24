@@ -25,8 +25,12 @@ namespace Vx.Views
             set => _currentTheme = value;
         }
 
+        public static Color DefaultAccentColor { get; set; } = Color.Blue;
+
         public abstract Color ForegroundColor { get; }
 
         public abstract Color SubtleForegroundColor { get; }
+
+        public Color AccentColor => DefaultAccentColor;
     }
 }
