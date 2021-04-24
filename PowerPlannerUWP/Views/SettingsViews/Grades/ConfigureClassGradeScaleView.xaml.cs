@@ -58,7 +58,7 @@ namespace PowerPlannerUWP.Views.SettingsViews.Grades
 
         private void IconDeleteGradeScale_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            ViewModel.RemoveGradeScale((sender as FrameworkElement).DataContext as PowerPlannerSending.GradeScale);
+            //ViewModel.RemoveGradeScale((sender as FrameworkElement).DataContext as PowerPlannerSending.GradeScale);
         }
 
         private void ButtonAddGradeScale_Click(object sender, RoutedEventArgs e)

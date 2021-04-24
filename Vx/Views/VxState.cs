@@ -7,11 +7,13 @@ namespace Vx.Views
 {
     public class VxState
     {
+        private Action _onChanged;
         public event EventHandler ValueChanged;
 
-        public VxState(object value)
+        public VxState(object value, Action onChanged)
         {
             _value = value;
+            _onChanged = onChanged;
         }
 
         protected PropertyInfo _sourceProperty;
@@ -32,6 +34,8 @@ namespace Vx.Views
                         _sourceProperty.SetValue(_source, value);
                     }
 
+                    _onChanged?.Invoke();
+
                     if (!Silent)
                     {
                         ValueChanged?.Invoke(this, new EventArgs());
@@ -50,9 +54,8 @@ namespace Vx.Views
 
     public class VxState<T> : VxState
     {
-        public VxState(T value = default(T)) : base(value)
+        public VxState(T value = default(T), Action onChanged = null) : base(value, onChanged)
         {
-
         }
 
         public new T Value

@@ -41,9 +41,9 @@ namespace Vx.iOS.Views
 
         private void _switch_ValueChanged(object sender, EventArgs e)
         {
-            if (VxView.IsOnChanged != null)
+            if (VxView.IsOn != null)
             {
-                VxView.IsOnChanged(_switch.On);
+                VxView.IsOn.Value = _switch.On;
             }
         }
 
@@ -51,9 +51,9 @@ namespace Vx.iOS.Views
         {
             _switch.On = !_switch.On;
 
-            if (VxView.IsOnChanged != null)
+            if (VxView.IsOn != null)
             {
-                VxView.IsOnChanged(_switch.On);
+                VxView.IsOn.Value = _switch.On;
             }
         }
 
@@ -63,7 +63,10 @@ namespace Vx.iOS.Views
 
             _label.Text = newView.Title;
 
-            _switch.On = newView.IsOn;
+            if (newView.IsOn != null)
+            {
+                _switch.On = newView.IsOn.Value;
+            }
 
             _switch.Enabled = newView.IsEnabled;
         }

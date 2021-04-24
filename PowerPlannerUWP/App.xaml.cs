@@ -59,6 +59,7 @@ using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
 using PowerPlannerUWP.BackgroundTasks;
+using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlannerUWP
 {
@@ -89,6 +90,14 @@ namespace PowerPlannerUWP
         public override Type GetPortableAppType()
         {
             return typeof(PowerPlannerUwpApp);
+        }
+
+        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        {
+            return new Dictionary<Type, Type>
+            {
+                { typeof(PopupComponentViewModel), typeof(PopupComponentView) }
+            };
         }
 
         public override Dictionary<Type, Type> GetViewModelToViewMappings()
@@ -160,14 +169,6 @@ namespace PowerPlannerUWP
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
                 { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) },
-                { typeof(ConfigureClassGradesListViewModel), typeof(ConfigureClassGradesListView) },
-                { typeof(ConfigureClassCreditsViewModel), typeof(ConfigureClassCreditsView) },
-                { typeof(ConfigureClassWeightCategoriesViewModel), typeof(ConfigureClassWeightCategoriesView) },
-                { typeof(ConfigureClassGradeScaleViewModel), typeof(ConfigureClassGradeScaleView) },
-                { typeof(ConfigureClassAverageGradesViewModel), typeof(ConfigureClassAverageGradesView) },
-                { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
-                { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
-                { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
                 { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },

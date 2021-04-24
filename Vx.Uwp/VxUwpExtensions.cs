@@ -58,6 +58,16 @@ namespace Vx.Uwp
                     return new UwpScrollView();
                 }
 
+                if (view is Vx.Views.NumberTextBox)
+                {
+                    return new UwpNumberTextBox();
+                }
+
+                if (view is Vx.Views.Switch)
+                {
+                    return new UwpSwitch();
+                }
+
                 throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
         }

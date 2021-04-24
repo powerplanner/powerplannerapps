@@ -18,6 +18,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassRoundGradesUpViewModel : PopupComponentViewModel
     {
+        private VxState<bool> _roundGradesUp;
         private VxState<bool> _isEnabled = new VxState<bool>(true);
 
         [VxSubscribe]
@@ -27,6 +28,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             Class = c;
             Title = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text");
+
+            _roundGradesUp = new VxState<bool>(c.DoesRoundGradesUp, Save);
         }
 
         protected override View Render()
@@ -39,8 +42,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new Switch
                     {
                         Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
-                        IsOn = Class.DoesRoundGradesUp,
-                        IsOnChanged = Save,
+                        IsOn = _roundGradesUp,
                         IsEnabled = _isEnabled.Value
                     },
 
@@ -55,7 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             };
         }
 
-        private async void Save(bool roundGradesUp)
+        private async void Save()
         {
             try
             {
@@ -67,7 +69,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    DoesRoundGradesUp = roundGradesUp
+                    DoesRoundGradesUp = _roundGradesUp.Value
                 };
 
                 changes.Add(c);

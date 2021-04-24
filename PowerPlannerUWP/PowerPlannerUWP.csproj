@@ -245,6 +245,7 @@
     <Compile Include="Views\InitialSyncView.xaml.cs">
       <DependentUpon>InitialSyncView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PopupComponentView.cs" />
     <Compile Include="Views\Promos\PromoContributeView.xaml.cs">
       <DependentUpon>PromoContributeView.xaml</DependentUpon>
     </Compile>
@@ -1053,9 +1054,21 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
+    <ProjectReference Include="..\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
+      <Project>{3c5cb8db-f891-4add-8f1f-8d2989d219bf}</Project>
       <Name>BareMvvm.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InterfacesUWP\InterfacesUWP\InterfacesUWP.csproj">
+      <Project>{4a105de9-fb7d-446f-88b5-01338b38c920}</Project>
+      <Name>InterfacesUWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx.Uwp\Vx.Uwp.csproj">
+      <Project>{81903242-5242-48df-a80d-b1b52316283b}</Project>
+      <Name>Vx.Uwp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{9fa79801-7ced-4608-8acb-a5c4746325ae}</Project>
+      <Name>Vx</Name>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
@@ -1064,10 +1077,6 @@
     <ProjectReference Include="$(SolutionDir)\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\applibraries\InterfacesUWP\InterfacesUWP\InterfacesUWP.csproj">
-      <Project>{4a105de9-fb7d-446f-88b5-01338b38c920}</Project>
-      <Name>InterfacesUWP</Name>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\applibraries\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
       <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>

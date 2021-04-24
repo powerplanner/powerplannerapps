@@ -32,6 +32,7 @@ namespace Vx.Uwp.Views
             View.Margin = new Windows.UI.Xaml.Thickness(newView.Margin.Left, newView.Margin.Top, newView.Margin.Right, newView.Margin.Bottom);
             View.Width = newView.Width;
             View.Height = newView.Height;
+            View.Opacity = newView.Opacity;
 
             LinearLayout.SetWeight(View, Vx.Views.LinearLayout.GetWeight(newView));
         }

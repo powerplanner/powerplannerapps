@@ -53,7 +53,7 @@ namespace BareMvvm.Core.ViewModels
     }
 #endif
 
-    public abstract class BaseViewModel : VxComponent
+    public abstract class BaseViewModel : VxComponent, INotifyPropertyChanged
     {
         public event EventHandler NavigatedTo;
         public event EventHandler NavigatedFrom;

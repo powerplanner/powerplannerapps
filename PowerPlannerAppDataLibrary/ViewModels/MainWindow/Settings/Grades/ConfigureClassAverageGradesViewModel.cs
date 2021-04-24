@@ -18,6 +18,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassAverageGradesViewModel : PopupComponentViewModel
     {
+        private VxState<bool> _averageGrades;
         private VxState<bool> _isEnabled = new VxState<bool>(true);
 
         [VxSubscribe]
@@ -26,6 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassAverageGradesViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+            _averageGrades = new VxState<bool>(c.ShouldAverageGradeTotals, Save);
 
             Title = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text");
         }
@@ -40,8 +42,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new Switch
                     {
                         Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
-                        IsOn = Class.ShouldAverageGradeTotals,
-                        IsOnChanged = Save,
+                        IsOn = _averageGrades,
                         IsEnabled = _isEnabled.Value
                     },
 
@@ -56,7 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             };
         }
 
-        private async void Save(bool averageGrades)
+        private async void Save()
         {
             try
             {
@@ -68,7 +69,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    ShouldAverageGradeTotals = averageGrades
+                    ShouldAverageGradeTotals = _averageGrades.Value
                 };
 
                 changes.Add(c);
