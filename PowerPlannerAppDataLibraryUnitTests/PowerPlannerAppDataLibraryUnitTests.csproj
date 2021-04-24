@@ -69,9 +69,9 @@
       <Project>{175ABC4A-4F7B-4CDB-AF1A-9CBF67A0601C}</Project>
       <Name>ToolsPortable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj">
+    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
       <Project>{d5f159b7-addd-4c88-9f45-8a12e37f8052}</Project>
-      <Name>PowerPlannerAppDataLibrary</Name>
+      <Name>PowerPlanner</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

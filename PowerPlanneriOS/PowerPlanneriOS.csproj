@@ -230,9 +230,9 @@
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj">
+    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
       <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
-      <Name>PowerPlannerAppDataLibrary</Name>
+      <Name>PowerPlanner</Name>
     </ProjectReference>
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
@@ -241,18 +241,12 @@
     <ProjectReference Include="..\Vx.iOS\Vx.iOS.csproj">
       <Project>{A9593895-1AA2-451D-8865-28DE0E2DFFB1}</Project>
       <Name>Vx.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\Vx\Vx.csproj">
-      <Project>{9FA79801-7CED-4608-8ACB-A5C4746325AE}</Project>
+      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
       <Name>Vx</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{3C5CB8DB-F891-4ADD-8F1F-8D2989D219BF}</Project>
-      <Name>BareMvvm.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InterfacesiOS\InterfacesiOS\InterfacesiOS.csproj">
-      <Project>{10919459-E353-4F0F-86CD-5E92CA2E6745}</Project>
-      <Name>InterfacesiOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -620,10 +614,7 @@
       <Version>3.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\Fonts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BundleResource Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
   </ItemGroup>

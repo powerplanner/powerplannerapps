@@ -1054,21 +1054,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{3c5cb8db-f891-4add-8f1f-8d2989d219bf}</Project>
-      <Name>BareMvvm.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InterfacesUWP\InterfacesUWP\InterfacesUWP.csproj">
-      <Project>{4a105de9-fb7d-446f-88b5-01338b38c920}</Project>
-      <Name>InterfacesUWP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vx.Uwp\Vx.Uwp.csproj">
       <Project>{81903242-5242-48df-a80d-b1b52316283b}</Project>
       <Name>Vx.Uwp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Vx\Vx.csproj">
-      <Project>{9fa79801-7ced-4608-8acb-a5c4746325ae}</Project>
-      <Name>Vx</Name>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
@@ -1082,9 +1070,9 @@
       <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
       <Name>ToolsUniversal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj">
+    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
       <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
-      <Name>PowerPlannerAppDataLibrary</Name>
+      <Name>PowerPlanner</Name>
     </ProjectReference>
     <ProjectReference Include="..\UpgradeFromSilverlight\UpgradeFromSilverlight.csproj">
       <Project>{e8a794f8-2f18-4184-a4a9-ee02ac8d3374}</Project>
@@ -1093,6 +1081,10 @@
     <ProjectReference Include="..\UpgradeFromWin8\UpgradeFromWin8.csproj">
       <Project>{48ddeb76-0fa6-47c7-801e-f9c1bc584649}</Project>
       <Name>UpgradeFromWin8</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
+      <Name>Vx</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

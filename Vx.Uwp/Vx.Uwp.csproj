@@ -120,8 +120,147 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AppWindows\NativeUwpAppWindow.cs" />
+    <Compile Include="App\NativeUwpApplication.cs" />
+    <Compile Include="App\UwpDispatcher.cs" />
+    <Compile Include="ArrowButtonFolder\ArrowButtonBase.cs" />
+    <Compile Include="CalendarFolder\DefaultCalendarGrid.cs" />
+    <Compile Include="CalendarFolder\DefaultCalendarSquare.cs" />
+    <Compile Include="CalendarFolder\DefaultCalendarView.cs" />
+    <Compile Include="CalendarFolder\DefaultSmallCalendarGrid.cs" />
+    <Compile Include="CalendarFolder\DefaultSmallCalendarSquare.cs" />
+    <Compile Include="CalendarFolder\DefaultSmallCalendarView.cs" />
+    <Compile Include="CalendarFolder\EventArgsCalendar.cs" />
+    <Compile Include="CalendarFolder\TCalendarGrid.cs" />
+    <Compile Include="CalendarFolder\TCalendarSquare.cs" />
+    <Compile Include="CalendarFolder\TCalendarView.cs" />
+    <Compile Include="Controls\BarePasswordBox.xaml.cs">
+      <DependentUpon>BarePasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BareTextBox.xaml.cs">
+      <DependentUpon>BareTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ComboBoxWithActions.xaml.cs">
+      <DependentUpon>ComboBoxWithActions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NumberTextBox.cs" />
+    <Compile Include="Controls\PopupsPanel.cs" />
+    <Compile Include="Controls\StackPanelWithImportances.cs" />
+    <Compile Include="Controls\TextBlockCompat.cs" />
+    <Compile Include="Controls\TextBlockExtensions.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ColorArrayToBrushConverter.cs" />
+    <Compile Include="Converters\ColorArrayToColorConverter.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\DateTimeFormatterToStringConverter.cs" />
+    <Compile Include="Converters\DateTimeToDateTimeOffsetConverter.cs" />
+    <Compile Include="Converters\DateToLongDateConverter.cs" />
+    <Compile Include="Converters\DateToStringConverter.cs" />
+    <Compile Include="Converters\DateToTimeConverter.cs" />
+    <Compile Include="Converters\DayOfWeekToStringConverter.cs" />
+    <Compile Include="Converters\DaysListToStringConverter.cs" />
+    <Compile Include="Converters\DoubleToBlankStringConverter.cs" />
+    <Compile Include="Converters\EnumToVisibilityConverter.cs" />
+    <Compile Include="Converters\InvertBoolConverter.cs" />
+    <Compile Include="Converters\ListToVisibilityConverter.cs" />
+    <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="Converters\NumberMultiplierConverter.cs" />
+    <Compile Include="Converters\NumberToFormatConverter.cs" />
+    <Compile Include="Converters\StringToUpperCaseConverter.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
+    <Compile Include="Converters\TimeSpanToDateTimeConverter.cs" />
+    <Compile Include="Converters\TimeSpanToStringConverter.cs" />
+    <Compile Include="CustomMessageBox\CustomMessageBox.cs" />
+    <Compile Include="CustomMessageBox\CustomMessageBoxBase.cs" />
+    <Compile Include="CustomMessageBox\CustomMessageBoxWithContent.cs" />
+    <Compile Include="CustomMessageBox\MessageBox.cs" />
+    <Compile Include="CustomMessageBox\MessageBoxWithPasswordBox.cs" />
+    <Compile Include="CustomMessageBox\MessageBoxWithTextBox.cs" />
+    <Compile Include="CustomMessageBox\MessageGenerator.cs" />
+    <Compile Include="CustomScrollViewerFolder\CustomScrollViewer.cs" />
+    <Compile Include="DynamicFlipViewFolder\DynamicFlipView.cs" />
+    <Compile Include="Extensions\UwpMessageDialog.cs" />
+    <Compile Include="GroupGridView\GroupGridView.xaml.cs">
+      <DependentUpon>GroupGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Grouping\DefaultGroupFooter.cs" />
+    <Compile Include="Grouping\IGroupAdapter.cs" />
+    <Compile Include="Grouping\IGroupFooter.cs" />
+    <Compile Include="Grouping\IGroupHeader.cs" />
+    <Compile Include="Helpers\TextToRichInlinesHelper.cs" />
+    <Compile Include="Legacy\Brushes.cs" />
+    <Compile Include="Legacy\ButtonGenerator.cs" />
+    <Compile Include="Legacy\CalendarPicker.cs" />
+    <Compile Include="Legacy\Class1.cs" />
+    <Compile Include="Legacy\ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Legacy\DayOfWeekComboBox.cs" />
+    <Compile Include="Legacy\DeviceInfo.cs" />
+    <Compile Include="Legacy\FrameAndPopupHost.cs" />
+    <Compile Include="Legacy\FrameworkElementExtender.cs" />
+    <Compile Include="Legacy\ImageDownloader.cs" />
+    <Compile Include="Legacy\IRenderable.cs" />
+    <Compile Include="Legacy\ListViewWithoutKeyboard.cs" />
+    <Compile Include="Legacy\LoadingPopup.cs" />
+    <Compile Include="Legacy\MyAdaptiveGridPanel.cs" />
+    <Compile Include="Legacy\MyAutoCompleteTextBox.cs" />
+    <Compile Include="Legacy\MyCanvas.cs" />
+    <Compile Include="Legacy\MyContentControl.cs" />
+    <Compile Include="Legacy\MyControl.cs" />
+    <Compile Include="Legacy\MyEqualColumnsPanel.cs" />
+    <Compile Include="Legacy\MyGrid.cs" />
+    <Compile Include="Legacy\MyGridView.cs" />
+    <Compile Include="Legacy\MyPage.cs" />
+    <Compile Include="Legacy\MyProgressIndicator.cs" />
+    <Compile Include="Legacy\MyScrollViewerExtensions.cs" />
+    <Compile Include="Legacy\MySquaresGrid.cs" />
+    <Compile Include="Legacy\MyStackPanel.cs" />
+    <Compile Include="Legacy\MyStackPanelWithLimits.cs" />
+    <Compile Include="Legacy\MyUserControl1.xaml.cs">
+      <DependentUpon>MyUserControl1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Legacy\MyWrapPanel.cs" />
+    <Compile Include="Legacy\RenderTargetBitmapHelper.cs" />
+    <Compile Include="Legacy\ShowHideContentControl.cs" />
+    <Compile Include="Legacy\SlideView.cs" />
+    <Compile Include="Legacy\SquareContentControl.cs" />
+    <Compile Include="Legacy\SystemNavigationManagerEnhanced.cs" />
+    <Compile Include="Legacy\TestingStackPanel.cs" />
+    <Compile Include="Legacy\UIGenerator.cs" />
+    <Compile Include="Legacy\ViewLifetimeControl.cs" />
+    <Compile Include="Legacy\WeakTypedEventHandler.cs" />
+    <Compile Include="Legacy\WebOverlay.cs" />
+    <Compile Include="MultiDayBoxFolder\MultiDayBox.cs" />
+    <Compile Include="MultiPicker\MultiPicker.cs" />
+    <Compile Include="PivotFolder\Pivot.xaml.cs">
+      <DependentUpon>Pivot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PivotFolder\PivotItem.xaml.cs">
+      <DependentUpon>PivotItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PivotFolder\PivotItemsPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Snackbar\BareSnackbarPresenter.xaml.cs">
+      <DependentUpon>BareSnackbarPresenter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UwpNativeComponent.cs" />
+    <Compile Include="VerticalProgressBarFolder\VerticalProgressBar.xaml.cs">
+      <DependentUpon>VerticalProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\GenericViewModelPresenter.xaml.cs">
+      <DependentUpon>GenericViewModelPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\PagedViewModelPresenter.xaml.cs">
+      <DependentUpon>PagedViewModelPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.xaml.cs">
+      <DependentUpon>PagedViewModelWithPopupsPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\PopupsPresenter.xaml.cs">
+      <DependentUpon>PopupsPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
     <Compile Include="Views\UwpButton.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
@@ -133,8 +272,12 @@
     <Compile Include="Views\UwpTextBox.cs" />
     <Compile Include="Views\UwpTransparentContentButton.cs" />
     <Compile Include="Views\UwpView.cs" />
+    <Compile Include="Views\ViewHostGeneric.cs" />
     <Compile Include="VxUwpExtensions.cs" />
     <Compile Include="VxUwpTheme.cs" />
+    <Compile Include="ZoomableImageFolder\ZoomableImage.xaml.cs">
+      <DependentUpon>ZoomableImage.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Vx.Uwp.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -143,22 +286,90 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vx\Vx.csproj">
-      <Project>{9fa79801-7ced-4608-8acb-a5c4746325ae}</Project>
-      <Name>Vx</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Fonts\MaterialIcons-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\BarePasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BareTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ComboBoxWithActions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GroupGridView\GroupGridView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Legacy\ColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Legacy\MyUserControl1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PivotFolder\Pivot.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PivotFolder\PivotItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Snackbar\BareSnackbarPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="VerticalProgressBarFolder\VerticalProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModelPresenters\GenericViewModelPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModelPresenters\PagedViewModelPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModelPresenters\PopupsPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ZoomableImageFolder\ZoomableImage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\applibraries\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
+      <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
+      <Name>ToolsUniversal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
+      <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
+      <Name>ToolsPortable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
+      <Name>Vx</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

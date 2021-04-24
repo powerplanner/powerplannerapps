@@ -113,14 +113,6 @@
       <Project>{a6c20220-69c5-48f7-92cb-9ac9c6ac27de}</Project>
       <Name>Vx.Droid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VxSampleApp\VxSampleApp.csproj">
-      <Project>{1a97a2df-fcad-4593-ac97-8a4205aa62f6}</Project>
-      <Name>VxSampleApp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Vx\Vx.csproj">
-      <Project>{9fa79801-7ced-4608-8acb-a5c4746325ae}</Project>
-      <Name>Vx</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
