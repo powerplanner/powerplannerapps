@@ -16,6 +16,7 @@ namespace Vx.iOS.Views
 
             View.Text = newView.Text;
             View.TextColor = newView.TextColor.ToUI();
+            View.Lines = newView.WrapText ? 0 : 1;
         }
     }
 }

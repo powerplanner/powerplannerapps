@@ -38,6 +38,11 @@ namespace Vx.iOS
                     return new iOSTextBox();
                 }
 
+                if (view is Vx.Views.ScrollView)
+                {
+                    return new iOSScrollView();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

@@ -62,6 +62,11 @@ namespace Vx.Droid
                     return new DroidTransparentContentButton();
                 }
 
+                if (view is Vx.Views.ScrollView)
+                {
+                    return new DroidScrollView();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

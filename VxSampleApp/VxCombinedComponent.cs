@@ -35,6 +35,9 @@ namespace VxSampleApp
                 case "fontIcons":
                     return RenderSubpage(RenderFontIcons());
 
+                case "scrollView":
+                    return RenderSubpage(RenderScrollView());
+
                 default:
                     return RenderHome();
             }
@@ -46,47 +49,24 @@ namespace VxSampleApp
             {
                 Children =
                 {
-                    new Button
-                    {
-                        Text = "Times clicked",
-                        Click = () => _page.Value = "timesClicked"
-                    },
-
-                    new Button
-                    {
-                        Text = "Adding",
-                        Click = () => _page.Value = "adding",
-                        Margin = new Thickness(0, 12, 0, 0)
-                    },
-
-                    new Button
-                    {
-                        Text = "Text boxes",
-                        Click = () => _page.Value = "textBoxes",
-                        Margin = new Thickness(0, 12, 0, 0)
-                    },
-
-                    new Button
-                    {
-                        Text = "Margins",
-                        Click = () => _page.Value = "margins",
-                        Margin = new Thickness(0, 12, 0, 0)
-                    },
-
-                    new Button
-                    {
-                        Text = "Vertical stretched",
-                        Click = () => _page.Value = "verticalStretched",
-                        Margin = new Thickness(0, 12, 0, 0)
-                    },
-
-                    new Button
-                    {
-                        Text = "Font icons",
-                        Click = () => _page.Value = "fontIcons",
-                        Margin = new Thickness(0, 12, 0, 0)
-                    }
+                    RenderButton("Times clicked", "timesClicked"),
+                    RenderButton("Adding", "adding"),
+                    RenderButton("Text boxes", "textBoxes"),
+                    RenderButton("Margins", "margins"),
+                    RenderButton("Vertical stretched", "verticalStretched"),
+                    RenderButton("Font icons", "fontIcons"),
+                    RenderButton("Scroll view", "scrollView")
                 }
+            };
+        }
+
+        private Button RenderButton(string text, string page)
+        {
+            return new Button
+            {
+                Text = text,
+                Click = () => _page.Value = page,
+                Margin = new Thickness(0, 12, 0, 0)
             };
         }
 
@@ -255,6 +235,19 @@ namespace VxSampleApp
                         FontSize = 20,
                         Color = Color.Blue
                     }
+                }
+            };
+        }
+
+        private View RenderScrollView()
+        {
+            return new ScrollView
+            {
+                Content = new TextBlock
+                {
+                    Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet urna in tempor molestie. Aliquam bibendum quam diam. Cras quis feugiat magna. Mauris pellentesque ex vitae nulla euismod, a pretium neque auctor. Fusce at enim varius, blandit sapien ac, viverra diam. Proin ultrices a ligula eu congue. Nulla quis tellus tristique, lobortis augue non, rhoncus ipsum. Aenean consequat accumsan libero et luctus. Donec dignissim mollis risus a semper. Morbi maximus elit vel urna maximus rhoncus. Suspendisse consequat ullamcorper urna a auctor. In sed tortor justo. Vivamus consectetur eu leo in volutpat. Praesent accumsan, ipsum nec pharetra vulputate, nunc arcu accumsan elit, non luctus dui diam a felis. Phasellus iaculis arcu aliquam cursus elementum. Vivamus lobortis urna id mollis consequat.\n\nNunc sed lectus sollicitudin nisl rutrum dapibus.Aliquam quis sapien magna.In posuere luctus enim,\n\nNunc sed lectus sollicitudin nisl rutrum dapibus. Aliquam quis sapien magna. In posuere luctus enim, ac dapibus orci fringilla id. Sed lacinia lectus eget condimentum venenatis. Ut tincidunt pretium turpis, eget porta diam tristique nec. Sed lacinia efficitur justo. Duis gravida gravida velit, semper dapibus erat vestibulum sit amet. Aliquam erat volutpat. Morbi consectetur odio convallis, tempor orci ac, ultrices ipsum. Curabitur maximus faucibus mauris ac aliquam. Fusce facilisis, felis a dignissim pretium, est libero tincidunt erat, ut tincidunt urna elit et enim. In ultricies leo ante. Nunc ac sagittis ex, a congue purus. In in dui a orci mollis dignissim et eget ipsum. Maecenas id libero in tellus scelerisque pellentesque.\n\nNulla porta sodales luctus. Sed dapibus tellus sit amet nibh sagittis, pretium rhoncus turpis vestibulum. Nunc eros ipsum, elementum a libero vel, ullamcorper scelerisque dui. Donec fringilla molestie ipsum. Quisque a diam odio. Proin a magna urna. Phasellus ultricies condimentum finibus. Cras egestas eget felis in lobortis. Nam vel gravida eros. Donec dictum, erat a facilisis efficitur, nulla ante viverra sem, non tincidunt eros orci a enim. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce porttitor gravida risus, at volutpat ante cursus pulvinar.",
+                    Margin = new Thickness(12),
+                    WrapText = true
                 }
             };
         }

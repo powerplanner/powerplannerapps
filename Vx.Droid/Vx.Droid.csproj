@@ -62,6 +62,7 @@
     <Compile Include="Views\DroidFontIcon.cs" />
     <Compile Include="Views\DroidLinearLayout.cs" />
     <Compile Include="Views\DroidListItemButton.cs" />
+    <Compile Include="Views\DroidScrollView.cs" />
     <Compile Include="Views\DroidTextBlock.cs" />
     <Compile Include="Views\DroidTextBox.cs" />
     <Compile Include="Views\DroidTransparentContentButton.cs" />

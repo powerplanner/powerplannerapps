@@ -12,5 +12,7 @@ namespace Vx.Views
         public FontWeights FontWeight { get; set; }
 
         public Color TextColor { get; set; } = Theme.Current.ForegroundColor;
+
+        public bool WrapText { get; set; }
     }
 }

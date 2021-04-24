@@ -32,6 +32,8 @@ namespace Vx.Droid.Views
                     View.SetTypeface(null, Android.Graphics.TypefaceStyle.Normal);
                     break;
             }
+
+            View.SetSingleLine(!newView.WrapText);
         }
     }
 }

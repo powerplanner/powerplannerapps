@@ -16,6 +16,7 @@ namespace Vx.Uwp.Views
             View.Text = newView.Text;
             View.FontWeight = newView.FontWeight.ToUwp();
             View.Foreground = newView.TextColor.ToUwpBrush();
+            View.TextWrapping = newView.WrapText ? Windows.UI.Xaml.TextWrapping.Wrap : Windows.UI.Xaml.TextWrapping.NoWrap;
         }
     }
 }

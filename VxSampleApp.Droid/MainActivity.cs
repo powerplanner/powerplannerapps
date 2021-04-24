@@ -21,7 +21,7 @@ namespace VxSampleApp.Droid
             PortableDispatcher.ObtainDispatcherFunction = () => new DroidDispatcher(this);
             VxDroidExtensions.ApplicationContext = this;
 
-            var nativeView = new VxGradeOptionsComponent().Render();
+            var nativeView = new VxCombinedComponent().Render();
             nativeView.LayoutParameters = new Android.Views.ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             SetContentView(nativeView);
         }

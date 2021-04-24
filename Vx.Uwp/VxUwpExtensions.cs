@@ -53,6 +53,11 @@ namespace Vx.Uwp
                     return new UwpFontIcon();
                 }
 
+                if (view is Vx.Views.ScrollView)
+                {
+                    return new UwpScrollView();
+                }
+
                 throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
         }

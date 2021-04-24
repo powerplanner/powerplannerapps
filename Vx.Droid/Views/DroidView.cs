@@ -37,6 +37,17 @@ namespace Vx.Droid.Views
                     Weight = weight
                 };
             }
+
+            else if (VxParentView is Vx.Views.ScrollView)
+            {
+                View.LayoutParameters = new ScrollView.LayoutParams(ScrollView.LayoutParams.MatchParent, ScrollView.LayoutParams.MatchParent)
+                {
+                    MarginStart = AsPx(newView.Margin.Left),
+                    TopMargin = AsPx(newView.Margin.Top),
+                    MarginEnd = AsPx(newView.Margin.Right),
+                    BottomMargin = AsPx(newView.Margin.Bottom)
+                };
+            }
         }
 
         /// <summary>
