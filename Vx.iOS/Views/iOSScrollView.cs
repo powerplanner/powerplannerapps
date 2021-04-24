@@ -20,8 +20,9 @@ namespace Vx.iOS.Views
                 View.ClearAllSubviews();
 
                 var child = view.CreateUIView(VxView);
+                child.TranslatesAutoresizingMaskIntoConstraints = false;
                 View.AddSubview(child);
-                child.ConfigureForVerticalScrolling(View, newView.Margin.Left, newView.Margin.Top, newView.Margin.Right, newView.Margin.Bottom);
+                child.ConfigureForVerticalScrolling(View, view.Margin.Left, view.Margin.Top, view.Margin.Right, view.Margin.Bottom);
             });
         }
     }

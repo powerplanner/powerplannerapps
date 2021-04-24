@@ -24,11 +24,7 @@ namespace Vx.iOS.Views
 
         protected override void ApplyProperties(V oldView, V newView)
         {
-            var parentUiView = VxParentView?.NativeView?.View as UIView;
-            if (parentUiView != null)
-            {
-                View.StretchWidth(parentUiView);
-            }
+            // Nothing yet
         }
     }
 }
