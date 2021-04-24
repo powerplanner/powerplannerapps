@@ -18,6 +18,11 @@ namespace InterfacesiOS.App
             ViewModelToViewConverter.AddMapping(viewModelType, viewControllerType);
         }
 
+        public void AddGenericMapping(Type viewModelType, Type viewControllerType)
+        {
+            ViewModelToViewConverter.AddGenericMapping(viewModelType, viewControllerType);
+        }
+
         public RootViewController RootViewController { get; private set; }
 
         private BaseViewModel _rootViewModel;

@@ -13,10 +13,31 @@ namespace InterfacesiOS.ViewModelPresenters
     public static class ViewModelToViewConverter
     {
         private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
+        private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
 
         public static void AddMapping(Type viewModelType, Type viewType)
         {
             ViewModelToViewMappings[viewModelType] = viewType;
+        }
+
+        public static void AddGenericMapping(Type genericViewModelType, Type genericViewType)
+        {
+            GenericViewModelToViewMappings[genericViewModelType] = genericViewType;
+        }
+
+        private static bool TryFindGeneric(Type viewModelType, out Type genericViewType)
+        {
+            foreach (var pair in GenericViewModelToViewMappings)
+            {
+                if (pair.Key.IsAssignableFrom(viewModelType))
+                {
+                    genericViewType = pair.Value;
+                    return true;
+                }
+            }
+
+            genericViewType = null;
+            return false;
         }
 
         public static UIViewController Convert(BaseViewModel viewModel)
@@ -39,6 +60,21 @@ namespace InterfacesiOS.ViewModelPresenters
             if (ViewModelToViewMappings.TryGetValue(viewModel.GetType(), out viewType))
             {
                 view = Activator.CreateInstance(viewType) as UIViewController;
+                if (view == null)
+                {
+#if DEBUG
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+#endif
+                    throw new InvalidOperationException("Created view instance must be of type UIViewController");
+                }
+            }
+
+            else if (TryFindGeneric(viewModel.GetType(), out Type genericViewType))
+            {
+                view = Activator.CreateInstance(genericViewType) as UIViewController;
                 if (view == null)
                 {
 #if DEBUG

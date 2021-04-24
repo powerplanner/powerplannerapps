@@ -78,6 +78,11 @@ namespace InterfacesiOS.App
                 ViewManager.AddMapping(mapping.Key, mapping.Value);
             }
 
+            foreach (var genericMapping in GetGenericViewModelToViewMappings())
+            {
+                ViewManager.AddGenericMapping(genericMapping.Key, genericMapping.Value);
+            }
+
             // Register the obtain dispatcher function
             PortableDispatcher.ObtainDispatcherFunction = () => { return new IOSDispatcher(); };
 
@@ -125,6 +130,8 @@ namespace InterfacesiOS.App
         }
 
         public abstract Dictionary<Type, Type> GetViewModelToViewMappings();
+
+        public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
 
         public abstract Type GetPortableAppType();
     }

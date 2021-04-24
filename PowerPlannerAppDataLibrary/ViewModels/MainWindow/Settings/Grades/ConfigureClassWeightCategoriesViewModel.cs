@@ -16,7 +16,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassWeightCategoriesViewModel : BaseMainScreenViewModelDescendant
+    public class ConfigureClassWeightCategoriesViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -25,6 +25,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassWeightCategoriesViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+            Title = PowerPlannerResources.GetString("ConfigureClassGrades_Items_WeightCategories.Title");
+            UseCancelForBack();
+            PrimaryCommand = PopupCommand.Save(Save);
 
             WeightCategories = new MyObservableList<EditingWeightCategoryViewModel>(c.WeightCategories.Select(
                 i => new EditingWeightCategoryViewModel()
@@ -91,7 +94,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 Click = () => { AddWeightCategory(); }
             });
 
-            return layout;
+            return new ScrollView(layout);
         }
 
         private static View RenderRow(View first, View second, View third)

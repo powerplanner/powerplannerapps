@@ -17,7 +17,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassGpaTypeViewModel : BaseMainScreenViewModelChild
+    public class ConfigureClassGpaTypeViewModel : PopupComponentViewModel
     {
         [VxSubscribe]
         public ViewItemClass Class { get; private set; }
@@ -27,11 +27,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassGpaTypeViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+            Title = PowerPlannerResources.GetString("Settings_GradeOptions_GpaType");
         }
 
         protected override View Render()
         {
-            return new LinearLayout
+            var layout = new LinearLayout
             {
                 Children =
                 {
@@ -48,6 +49,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                         () => Save(GpaType.PassFail))
                 }
             };
+
+            return new ScrollView(layout);
         }
 
         private View RenderOption(string title, string subtitle, bool isChecked, Action checkedAction)

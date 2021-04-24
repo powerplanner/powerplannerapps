@@ -13,7 +13,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassCreditsViewModel : BaseMainScreenViewModelChild
+    public class ConfigureClassCreditsViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -22,6 +22,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassCreditsViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+
+            Title = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header");
+            UseCancelForBack();
+            PrimaryCommand = PopupCommand.Save(Save);
 
             if (c.Credits == PowerPlannerSending.Grade.NO_CREDITS)
             {

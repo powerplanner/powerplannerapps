@@ -17,7 +17,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassGradeScaleViewModel : BaseMainScreenViewModelDescendant
+    public class ConfigureClassGradeScaleViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -33,6 +33,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassGradeScaleViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+            Title = PowerPlannerResources.GetString("Settings_GradeOptions_GpaType");
+            UseCancelForBack();
+            PrimaryCommand = PopupCommand.Save(Save);
 
             GradeScales = new MyObservableList<EditingGradeScale>(c.GradeScales.Select(
                 i => new EditingGradeScale()
@@ -107,7 +110,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 Click = () => { AddGradeScale(); }
             });
 
-            return layout;
+            return new ScrollView(layout);
         }
 
         private static View RenderRow(View first, View second, View third)

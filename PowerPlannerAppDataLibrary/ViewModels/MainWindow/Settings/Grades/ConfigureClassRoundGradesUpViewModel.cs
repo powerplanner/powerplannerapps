@@ -16,7 +16,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassRoundGradesUpViewModel : BaseMainScreenViewModelDescendant
+    public class ConfigureClassRoundGradesUpViewModel : PopupComponentViewModel
     {
         private VxState<bool> _isEnabled = new VxState<bool>(true);
 
@@ -26,6 +26,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassRoundGradesUpViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+            Title = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text");
         }
 
         protected override View Render()

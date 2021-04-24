@@ -14,7 +14,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassPassingGradeViewModel : BaseMainScreenViewModelChild
+    public class ConfigureClassPassingGradeViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -23,6 +23,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassPassingGradeViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+            Title = PowerPlannerResources.GetString("Settings_GradeOptions_ListItemPassingGrade.Title");
+            UseCancelForBack();
+            PrimaryCommand = PopupCommand.Save(Save);
 
             _passingGrade = new VxState<double?>(c.PassingGrade * 100);
         }

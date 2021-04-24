@@ -12,7 +12,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassGradesListViewModel : BaseMainScreenViewModelDescendant
+    public class ConfigureClassGradesListViewModel : PopupComponentViewModel
     {
         [VxSubscribe]
         public ViewItemClass Class { get; private set; }
@@ -20,6 +20,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassGradesListViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+
+            // Technically I should bind to this but I currently don't, that's okay though, super rare that class name will be changed.
+            Title = c.Name;
         }
 
         protected override View Render()

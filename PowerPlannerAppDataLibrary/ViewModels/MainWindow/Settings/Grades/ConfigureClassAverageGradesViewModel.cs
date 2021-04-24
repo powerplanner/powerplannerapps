@@ -16,7 +16,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassAverageGradesViewModel : BaseMainScreenViewModelDescendant
+    public class ConfigureClassAverageGradesViewModel : PopupComponentViewModel
     {
         private VxState<bool> _isEnabled = new VxState<bool>(true);
 
@@ -26,6 +26,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassAverageGradesViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+
+            Title = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text");
         }
 
         protected override View Render()
