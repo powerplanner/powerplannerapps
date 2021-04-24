@@ -43,6 +43,11 @@ namespace Vx.iOS
                     return new iOSScrollView();
                 }
 
+                if (view is Vx.Views.FontIcon)
+                {
+                    return new iOSFontIcon();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectGuid>{A9593895-1AA2-451D-8865-28DE0E2DFFB1}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{440aa056-593a-4519-8708-27081dee632f}</TemplateGuid>
@@ -69,6 +69,7 @@
     <Compile Include="Views\iOSViewExtensions.cs" />
     <Compile Include="VxiOSExtensions.cs" />
     <Compile Include="VxiOSTheme.cs" />
+    <Compile Include="Views\iOSFontIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
