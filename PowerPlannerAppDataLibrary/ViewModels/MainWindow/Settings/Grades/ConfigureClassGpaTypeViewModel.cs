@@ -55,7 +55,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             return new TransparentContentButton
             {
                 Opacity = _isEnabled.Value ? 1 : 0.7f,
-                Margin = new Thickness(12),
+                Margin = new Thickness(Theme.Current.PageMargin),
                 Content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,

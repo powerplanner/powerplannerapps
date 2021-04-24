@@ -20,6 +20,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
     {
         private VxState<bool> _isEnabled = new VxState<bool>(true);
 
+        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
         public ConfigureClassAverageGradesViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
@@ -31,7 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             return new LinearLayout
             {
-                Margin = new Thickness(12),
+                Margin = new Thickness(Theme.Current.PageMargin),
                 Children =
                 {
                     new Switch

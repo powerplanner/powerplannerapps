@@ -26,11 +26,14 @@ namespace Vx.Views
         }
 
         public static Color DefaultAccentColor { get; set; } = Color.Blue;
+        public static float DefaultPageMargin { get; set; } = 20;
 
         public abstract Color ForegroundColor { get; }
 
         public abstract Color SubtleForegroundColor { get; }
 
         public Color AccentColor => DefaultAccentColor;
+
+        public float PageMargin => DefaultPageMargin;
     }
 }

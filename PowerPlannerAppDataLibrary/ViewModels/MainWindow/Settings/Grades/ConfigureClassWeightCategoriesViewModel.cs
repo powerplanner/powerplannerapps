@@ -41,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             var layout = new LinearLayout
             {
-                Margin = new Thickness(12),
+                Margin = new Thickness(Theme.Current.PageMargin),
                 Children =
                 {
                     RenderRow(new TextBlock

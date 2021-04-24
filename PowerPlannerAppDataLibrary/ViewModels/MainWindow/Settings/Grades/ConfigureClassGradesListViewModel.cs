@@ -28,6 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 Content = new LinearLayout
                 {
+                    Margin = new Thickness(0, Theme.Current.PageMargin - 12, 0, Theme.Current.PageMargin - 12),
                     Children =
                         {
                             RenderOption(
@@ -86,7 +87,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 Content = new LinearLayout
                 {
-                    Margin = new Thickness(12),
+                    Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12),
                     Orientation = Orientation.Horizontal,
                     Children =
                         {

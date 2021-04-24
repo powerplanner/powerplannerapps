@@ -12,57 +12,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassRoundGradesUpViewModel : BaseMainScreenViewModelDescendant
     {
-        private bool m_roundGradesUp;
-        public bool RoundGradesUp
-        {
-            get { return m_roundGradesUp; }
-            set
-            {
-                if (m_roundGradesUp != value)
-                {
-                    m_roundGradesUp = value;
-                    OnPropertyChanged(nameof(RoundGradesUp));
-                    Save();
-                }
-            }
-        }
+        private VxState<bool> _isEnabled = new VxState<bool>(true);
 
-        private bool _isEnabled = true;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
-        }
-
+        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
         public ConfigureClassRoundGradesUpViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
-            c.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
-            m_roundGradesUp = c.DoesRoundGradesUp;
         }
 
-        private void Class_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override View Render()
         {
-            switch (e.PropertyName)
+            return new LinearLayout
             {
-                case nameof(Class.DoesRoundGradesUp):
-                    SetProperty(ref m_roundGradesUp, Class.DoesRoundGradesUp, nameof(RoundGradesUp));
-                    break;
-            }
+                Margin = new Thickness(Theme.Current.PageMargin),
+                Children =
+                {
+                    new Switch
+                    {
+                        Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
+                        IsOn = Class.DoesRoundGradesUp,
+                        IsOnChanged = Save,
+                        IsEnabled = _isEnabled.Value
+                    },
+
+                    new TextBlock
+                    {
+                        Margin = new Thickness(0, 12, 0, 0),
+                        Text = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpBody.Text"),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = true
+                    }
+                }
+            };
         }
 
-        private async void Save()
+        private async void Save(bool roundGradesUp)
         {
             try
             {
-                IsEnabled = false;
+                _isEnabled.Value = false;
 
                 var changes = new DataChanges();
 
@@ -70,7 +66,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    DoesRoundGradesUp = RoundGradesUp
+                    DoesRoundGradesUp = roundGradesUp
                 };
 
                 changes.Add(c);
@@ -90,7 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
             finally
             {
-                IsEnabled = true;
+                _isEnabled.Value = true;
             }
         }
     }

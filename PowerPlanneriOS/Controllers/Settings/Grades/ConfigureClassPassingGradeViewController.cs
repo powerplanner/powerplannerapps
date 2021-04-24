@@ -13,6 +13,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlanneriOS.Helpers;
 using ToolsPortable;
 using UIKit;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers.Settings.Grades
 {
@@ -37,34 +38,20 @@ namespace PowerPlanneriOS.Controllers.Settings.Grades
             };
             saveButton.Clicked += new WeakEventHandler<EventArgs>(SaveButton_Clicked).Handler;
             NavigationItem.RightBarButtonItem = saveButton;
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            base.OnViewModelSetOverride();
 
             StackView.AddSectionDivider();
 
-            var textFieldPassingGrade = new UITextField()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                KeyboardType = UIKeyboardType.DecimalPad,
-                AdjustsFontSizeToFitWidth = true,
-                Placeholder = PowerPlannerResources.GetExamplePlaceholderString(60.ToString())
-            };
-            BindingHost.SetTextFieldTextBinding<double>(textFieldPassingGrade, nameof(ViewModel.PassingGrade), converter: TextToDoubleConverter.Convert, backConverter: TextToDoubleConverter.ConvertBack);
-            AddTextField(StackView, textFieldPassingGrade, firstResponder: true);
+            var renderedComponent = ViewModel.Render();
+            renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
+            StackView.AddArrangedSubview(renderedComponent);
+            renderedComponent.StretchWidthAndHeight(StackView);
 
             StackView.AddSectionDivider();
-            StackView.AddSpacing(16);
-
-            var labelDescription = new UILabel()
-            {
-                Text = PowerPlannerResources.GetString("Settings_GradeOptions_PassingGrade_Explanation.Text"),
-                Lines = 0,
-                Font = UIFont.PreferredCaption1,
-                TextColor = UIColor.LightGray
-            };
-            StackView.AddArrangedSubview(labelDescription);
-            labelDescription.StretchWidth(StackView, left: 16, right: 16);
-
-            StackView.AddSpacing(16);
-            StackView.AddBottomSectionDivider();
         }
 
         private void SaveButton_Clicked(object sender, EventArgs e)
