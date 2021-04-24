@@ -48,6 +48,11 @@ namespace Vx.iOS
                     return new iOSFontIcon();
                 }
 
+                if (view is Vx.Views.ListItemButton)
+                {
+                    return new iOSListItemButton();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

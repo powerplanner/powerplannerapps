@@ -70,6 +70,7 @@
     <Compile Include="VxiOSExtensions.cs" />
     <Compile Include="VxiOSTheme.cs" />
     <Compile Include="Views\iOSFontIcon.cs" />
+    <Compile Include="Views\iOSListItemButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

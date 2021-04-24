@@ -26,5 +26,27 @@ namespace Vx.iOS.Views
         {
             // Nothing yet
         }
+
+        protected void ReconcileContent(View oldContent, View newContent, Action<UIView> afterSubviewAddedAction)
+        {
+            VxReconciler.Reconcile(oldContent, newContent, view =>
+            {
+                View.RemoveAllConstraints();
+                View.ClearAllSubviews();
+
+                var child = view.CreateUIView(VxView);
+                child.TranslatesAutoresizingMaskIntoConstraints = false;
+                View.AddSubview(child);
+                afterSubviewAddedAction(child);
+            });
+        }
+
+        protected void ReconcileContent(View oldContent, View newContent)
+        {
+            ReconcileContent(oldContent, newContent, subview =>
+            {
+                subview.StretchWidthAndHeight(View, newContent.Margin.Left, newContent.Margin.Top, newContent.Margin.Right, newContent.Margin.Bottom);
+            });
+        }
     }
 }

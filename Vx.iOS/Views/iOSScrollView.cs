@@ -14,15 +14,9 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            VxReconciler.Reconcile(oldView?.Content, newView.Content, view =>
+            ReconcileContent(oldView?.Content, newView.Content, subview =>
             {
-                View.RemoveAllConstraints();
-                View.ClearAllSubviews();
-
-                var child = view.CreateUIView(VxView);
-                child.TranslatesAutoresizingMaskIntoConstraints = false;
-                View.AddSubview(child);
-                child.ConfigureForVerticalScrolling(View, view.Margin.Left, view.Margin.Top, view.Margin.Right, view.Margin.Bottom);
+                subview.ConfigureForVerticalScrolling(View, newView.Content.Margin.Left, newView.Content.Margin.Top, newView.Content.Margin.Right, newView.Content.Margin.Bottom);
             });
         }
     }
