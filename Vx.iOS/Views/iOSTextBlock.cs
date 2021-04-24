@@ -17,6 +17,18 @@ namespace Vx.iOS.Views
             View.Text = newView.Text;
             View.TextColor = newView.TextColor.ToUI();
             View.Lines = newView.WrapText ? 0 : 1;
+
+            switch (newView.FontWeight)
+            {
+                case FontWeights.Bold:
+                case FontWeights.SemiBold:
+                    View.Font = View.Font.Bold();
+                    break;
+
+                default:
+                    View.Font = View.Font.WithTraits(0);
+                    break;
+            }
         }
     }
 }
