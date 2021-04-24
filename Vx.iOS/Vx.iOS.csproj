@@ -71,6 +71,7 @@
     <Compile Include="VxiOSTheme.cs" />
     <Compile Include="Views\iOSFontIcon.cs" />
     <Compile Include="Views\iOSListItemButton.cs" />
+    <Compile Include="Views\iOSTransparentContentButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

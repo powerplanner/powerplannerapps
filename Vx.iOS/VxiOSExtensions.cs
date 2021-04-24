@@ -53,6 +53,11 @@ namespace Vx.iOS
                     return new iOSListItemButton();
                 }
 
+                if (view is Vx.Views.TransparentContentButton)
+                {
+                    return new iOSTransparentContentButton();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

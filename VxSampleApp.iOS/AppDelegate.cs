@@ -57,7 +57,7 @@ namespace VxSampleApp.iOS
             Window.RootViewController = new UIViewController();
             Window.RootViewController.View.BackgroundColor = UIColor.SystemBackgroundColor;
 
-            var view = new VxCombinedComponent().Render();
+            var view = new VxGradeScalesComponent().Render();
             view.TranslatesAutoresizingMaskIntoConstraints = false;
             Window.RootViewController.View.AddSubview(view);
             view.StretchWidthAndHeight(Window.RootViewController.View, 48, 48, 48, 48);
