@@ -18,7 +18,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassAverageGradesViewModel : BaseMainScreenViewModelDescendant
     {
-        private VxState<bool> _averageGrades;
         private VxState<bool> _isEnabled = new VxState<bool>(true);
 
         public ViewItemClass Class { get; private set; }
@@ -26,28 +25,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassAverageGradesViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
-            c.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
-            _averageGrades = new VxState<bool>(c.ShouldAverageGradeTotals);
-
-            _averageGrades.ValueChanged += _averageGrades_ValueChanged;
-        }
-
-        private void _averageGrades_ValueChanged(object sender, EventArgs e)
-        {
-            if (Class.ShouldAverageGradeTotals != _averageGrades.Value)
-            {
-                Save();
-            }
-        }
-
-        private void Class_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(Class.ShouldAverageGradeTotals):
-                    _averageGrades.Value = Class.ShouldAverageGradeTotals;
-                    break;
-            }
         }
 
         protected override View Render()
@@ -60,7 +37,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new Switch
                     {
                         Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
-                        IsOn = _averageGrades,
+                        IsOn = Class.ShouldAverageGradeTotals,
+                        IsOnChanged = Save,
                         IsEnabled = _isEnabled.Value
                     },
 
@@ -75,7 +53,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             };
         }
 
-        private async void Save()
+        private async void Save(bool averageGrades)
         {
             try
             {
@@ -87,7 +65,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    ShouldAverageGradeTotals = _averageGrades.Value
+                    ShouldAverageGradeTotals = averageGrades
                 };
 
                 changes.Add(c);
