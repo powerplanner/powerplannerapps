@@ -8,7 +8,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSLinearLayout : iOSView<LinearLayout, UIView>
+    public class iOSLinearLayout : iOSView<LinearLayout, StretchingUIView>
     {
         protected override void ApplyProperties(LinearLayout oldView, LinearLayout newView)
         {
@@ -52,6 +52,7 @@ namespace Vx.iOS.Views
             var totalWeight = newView.TotalWeight();
             UIView firstWeighted = null;
             float firstWeightedValue = 0;
+            var isVertical = newView.Orientation == Orientation.Vertical;
 
             for (int i = 0; i < newView.Children.Count; i++)
             {
@@ -60,17 +61,36 @@ namespace Vx.iOS.Views
 
                 if (prevView == null)
                 {
-                    uiView.PinToTop(View, vxView.Margin.Top);
+                    if (isVertical)
+                    {
+                        uiView.PinToTop(View, vxView.Margin.Top);
+                    }
+                    else
+                    {
+                        uiView.PinToLeft(View, vxView.Margin.Left);
+                    }
                 }
                 else
                 {
-                    uiView.SetBelow(prevView, View, vxView.Margin.Top + prevVxView.Margin.Bottom);
+                    if (isVertical)
+                    {
+                        uiView.SetBelow(prevView, View, vxView.Margin.Top + prevVxView.Margin.Bottom);
+                    }
+                    else
+                    {
+                        uiView.SetToRightOf(prevView, View, vxView.Margin.Left + prevVxView.Margin.Right);
+                    }
                 }
 
                 var weight = LinearLayout.GetWeight(vxView);
                 if (weight > 0)
                 {
-                    uiView.SetContentHuggingPriority(0, UILayoutConstraintAxis.Vertical);
+                    uiView.SetContentHuggingPriority(0, isVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+
+                    if (uiView is StretchingUIView stretchingUIView)
+                    {
+                        stretchingUIView.StretchingOrientation = newView.Orientation;
+                    }
 
                     if (firstWeighted == null)
                     {
@@ -79,36 +99,112 @@ namespace Vx.iOS.Views
                     }
                     else
                     {
-                        View.AddConstraint(NSLayoutConstraint.Create(
-                            uiView,
-                            NSLayoutAttribute.Height,
-                            NSLayoutRelation.Equal,
-                            firstWeighted,
-                            NSLayoutAttribute.Height,
-                            weight / firstWeightedValue, 0));
+                        if (isVertical)
+                        {
+                            View.AddConstraint(NSLayoutConstraint.Create(
+                                uiView,
+                                NSLayoutAttribute.Height,
+                                NSLayoutRelation.Equal,
+                                firstWeighted,
+                                NSLayoutAttribute.Height,
+                                weight / firstWeightedValue, 0));
+                        }
+                        else
+                        {
+                            View.AddConstraint(NSLayoutConstraint.Create(
+                                uiView,
+                                NSLayoutAttribute.Width,
+                                NSLayoutRelation.Equal,
+                                firstWeighted,
+                                NSLayoutAttribute.Width,
+                                weight / firstWeightedValue, 0));
+                        }
                     }
                 }
                 else
                 {
-                    uiView.SetContentHuggingPriority(250, UILayoutConstraintAxis.Vertical);
+                    uiView.SetContentHuggingPriority(250, isVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+
+                    if (uiView is StretchingUIView stretchingUIView)
+                    {
+                        stretchingUIView.StretchingOrientation = null;
+                    }
                 }
 
                 if (i == newView.Children.Count - 1)
                 {
                     if (totalWeight == 0)
                     {
-                        View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>={vxView.Margin.Bottom})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
+                        if (isVertical)
+                        {
+                            View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:[view]-(>={vxView.Margin.Bottom})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
+                        }
+                        else
+                        {
+                            View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:[view]-(>={vxView.Margin.Right})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", uiView)));
+                        }
                     }
                     else
                     {
-                        uiView.PinToBottom(View, vxView.Margin.Bottom);
+                        if (isVertical)
+                        {
+                            uiView.PinToBottom(View, vxView.Margin.Bottom);
+                        }
+                        else
+                        {
+                            uiView.PinToRight(View, vxView.Margin.Right);
+                        }
                     }
                 }
 
-                uiView.StretchWidth(View, vxView.Margin.Left, vxView.Margin.Right);
+                if (isVertical)
+                {
+                    uiView.StretchWidth(View, vxView.Margin.Left, vxView.Margin.Right);
+                }
+                else
+                {
+                    uiView.StretchHeight(View, vxView.Margin.Top, vxView.Margin.Bottom);
+                }
 
                 prevView = uiView;
                 prevVxView = vxView;
+            }
+        }
+    }
+
+    public class StretchingUIView : UIView
+    {
+        private Orientation? _stretchingOrientation;
+        public Orientation? StretchingOrientation
+        {
+            get => _stretchingOrientation;
+            set
+            {
+                if (!object.Equals(_stretchingOrientation, value))
+                {
+                    _stretchingOrientation = value;
+                    InvalidateIntrinsicContentSize();
+                }
+            }
+        }
+
+        public override CoreGraphics.CGSize IntrinsicContentSize
+        {
+            get
+            {
+                if (StretchingOrientation == null)
+                {
+                    return new CoreGraphics.CGSize(-1, -1);
+                }
+
+                if (StretchingOrientation == Orientation.Vertical)
+                {
+                    return new CoreGraphics.CGSize(0, 50000);
+                }
+                else
+                {
+                    return new CoreGraphics.CGSize(50000, 0);
+                }
             }
         }
     }

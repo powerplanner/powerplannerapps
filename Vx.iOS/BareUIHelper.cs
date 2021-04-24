@@ -126,14 +126,6 @@ namespace Vx.iOS
         /// <returns></returns>
         public static UIView SetToRightOf(this UIView view, UIView viewToTheLeft, UIView parentView, float spacing = 0)
         {
-            foreach (var c in parentView.Constraints)
-            {
-                if (c.FirstItem == view && c.FirstAttribute == NSLayoutAttribute.Left && c.Relation == NSLayoutRelation.Equal && c.SecondItem == viewToTheLeft && c.SecondAttribute == NSLayoutAttribute.Right)
-                {
-                    parentView.RemoveConstraint(c);
-                }
-            }
-
             parentView.AddConstraint(NSLayoutConstraint.Create(
                 view,
                 NSLayoutAttribute.Left,
@@ -208,15 +200,6 @@ namespace Vx.iOS
 
         public static UIView SetWidth(this UIView view, float width)
         {
-            // Remove any existing duplicative constraint
-            foreach (var c in view.Constraints)
-            {
-                if (c.FirstAttribute == NSLayoutAttribute.Width && c.Relation == NSLayoutRelation.Equal)
-                {
-                    view.RemoveConstraint(c);
-                }
-            }
-
             view.AddConstraint(NSLayoutConstraint.Create(
                 view,
                 NSLayoutAttribute.Width,
@@ -229,15 +212,6 @@ namespace Vx.iOS
 
         public static UIView SetHeight(this UIView view, float height)
         {
-            // Remove any existing duplicative constraint
-            foreach (var c in view.Constraints)
-            {
-                if (c.FirstAttribute == NSLayoutAttribute.Height && c.Relation == NSLayoutRelation.Equal)
-                {
-                    view.RemoveConstraint(c);
-                }
-            }
-
             view.AddConstraint(NSLayoutConstraint.Create(
                 view,
                 NSLayoutAttribute.Height,
