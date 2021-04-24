@@ -71,5 +71,9 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fonts/MaterialIconsOutlined-Regular.otf</string>
+	</array>
 </dict>
 </plist>

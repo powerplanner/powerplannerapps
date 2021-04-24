@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,7 +10,10 @@ namespace Vx.Views
 {
     public abstract class VxComponent
     {
-        protected abstract View Render();
+        protected virtual View Render()
+        {
+            return null;
+        }
 
         public INativeComponent NativeComponent { get; set; }
 
@@ -53,7 +57,7 @@ namespace Vx.Views
             //}
 
             SubscribeToStates();
-            //SubscribeToProperties();
+            SubscribeToProperties();
 
             RenderActual();
         }
@@ -72,16 +76,68 @@ namespace Vx.Views
             foreach (var prop in this.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).Where(i => i.CanRead && stateType.IsAssignableFrom(i.PropertyType)))
             {
                 var state = prop.GetValue(this) as VxState;
+                if (state == null)
+                {
+#if DEBUG
+                    System.Diagnostics.Debugger.Break();
+#endif
+                    throw new NullReferenceException("VxState was null");
+                }
                 state.ValueChanged += State_ValueChanged;
             }
             foreach (var prop in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(i => stateType.IsAssignableFrom(i.FieldType)))
             {
                 var state = prop.GetValue(this) as VxState;
+                if (state == null)
+                {
+#if DEBUG
+                    System.Diagnostics.Debugger.Break();
+#endif
+                    throw new NullReferenceException("VxState was null");
+                }
                 state.ValueChanged += State_ValueChanged;
             }
         }
 
         private void State_ValueChanged(object sender, EventArgs e)
+        {
+            MarkDirty();
+        }
+
+        private PropertyChangedEventHandler _propertyValuePropertyChangedHandler;
+        private static Type _iNotifyPropertyChangedType = typeof(INotifyPropertyChanged);
+
+        private void SubscribeToProperties()
+        {
+            _propertyValuePropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(PropertyValue_PropertyChanged).Handler;
+
+            var seenProps = new HashSet<string>();
+
+            foreach (var prop in this.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && _iNotifyPropertyChangedType.IsAssignableFrom(i.PropertyType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
+            {
+                // Avoid subscribing to properties overridden by "new" keyword
+                if (seenProps.Add(prop.Name))
+                {
+                    var propVal = prop.GetValue(this) as INotifyPropertyChanged;
+                    if (propVal != null)
+                    {
+                        SubscribeToPropertyValue(propVal);
+                    }
+                }
+            }
+        }
+
+        private void SubscribeToPropertyValue(INotifyPropertyChanged propertyValue)
+        {
+            propertyValue.PropertyChanged += _propertyValuePropertyChangedHandler;
+        }
+
+        private void UnsubscribeToPropertyValue(INotifyPropertyChanged propertyValue)
+        {
+            propertyValue.PropertyChanged -= _propertyValuePropertyChangedHandler;
+        }
+
+        private void PropertyValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             MarkDirty();
         }

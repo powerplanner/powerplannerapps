@@ -72,6 +72,8 @@
     <Compile Include="Views\iOSFontIcon.cs" />
     <Compile Include="Views\iOSListItemButton.cs" />
     <Compile Include="Views\iOSTransparentContentButton.cs" />
+    <Compile Include="Views\iOSNumberTextBox.cs" />
+    <Compile Include="Views\iOSSwitch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

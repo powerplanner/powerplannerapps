@@ -12,32 +12,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassAverageGradesViewModel : BaseMainScreenViewModelDescendant
     {
-        private bool m_averageGrades;
-        public bool AverageGrades
-        {
-            get { return m_averageGrades; }
-            set
-            {
-                if (m_averageGrades != value)
-                {
-                    m_averageGrades = value;
-                    OnPropertyChanged(nameof(AverageGrades));
-                    Save();
-                }
-            }
-        }
-
-        private bool _isEnabled = true;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
-        }
+        private VxState<bool> _averageGrades;
+        private VxState<bool> _isEnabled = new VxState<bool>(true);
 
         public ViewItemClass Class { get; private set; }
 
@@ -45,7 +27,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             Class = c;
             c.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
-            m_averageGrades = c.ShouldAverageGradeTotals;
+            _averageGrades = new VxState<bool>(c.ShouldAverageGradeTotals);
+
+            _averageGrades.ValueChanged += _averageGrades_ValueChanged;
+        }
+
+        private void _averageGrades_ValueChanged(object sender, EventArgs e)
+        {
+            if (Class.ShouldAverageGradeTotals != _averageGrades.Value)
+            {
+                Save();
+            }
         }
 
         private void Class_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -53,16 +45,41 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             switch (e.PropertyName)
             {
                 case nameof(Class.ShouldAverageGradeTotals):
-                    SetProperty(ref m_averageGrades, Class.ShouldAverageGradeTotals, nameof(AverageGrades));
+                    _averageGrades.Value = Class.ShouldAverageGradeTotals;
                     break;
             }
+        }
+
+        protected override View Render()
+        {
+            return new LinearLayout
+            {
+                Margin = new Thickness(12),
+                Children =
+                {
+                    new Switch
+                    {
+                        Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
+                        IsOn = _averageGrades,
+                        IsEnabled = _isEnabled.Value
+                    },
+
+                    new TextBlock
+                    {
+                        Margin = new Thickness(0, 12, 0, 0),
+                        Text = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpBody.Text"),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = true
+                    }
+                }
+            };
         }
 
         private async void Save()
         {
             try
             {
-                IsEnabled = false;
+                _isEnabled.Value = false;
 
                 var changes = new DataChanges();
 
@@ -70,7 +87,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    ShouldAverageGradeTotals = AverageGrades
+                    ShouldAverageGradeTotals = _averageGrades.Value
                 };
 
                 changes.Add(c);
@@ -90,7 +107,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
             finally
             {
-                IsEnabled = true;
+                _isEnabled.Value = true;
             }
         }
     }

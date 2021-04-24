@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using ToolsPortable;
 using UIKit;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers.Settings.Grades
 {
@@ -36,97 +37,95 @@ namespace PowerPlanneriOS.Controllers.Settings.Grades
 
             PowerPlannerUIHelper.ConfigureForInputsStyle(this);
 
-            StackView.AddTopSectionDivider();
+            
 
-            var savedScalesContainer = new UIView()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-            {
-                var pickerSavedScales = new BareUIInlinePickerView(this, left: 16, right: 16)
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    HeaderText = "Scale"
-                };
-                BindingHost.SetItemsSourceBinding(pickerSavedScales, nameof(ViewModel.SavedGradeScales));
-                BindingHost.SetSelectedItemBinding(pickerSavedScales, nameof(ViewModel.SelectedSavedGradeScale));
-                savedScalesContainer.AddSubview(pickerSavedScales);
-                pickerSavedScales.StretchHeight(savedScalesContainer);
+            //var savedScalesContainer = new UIView()
+            //{
+            //    TranslatesAutoresizingMaskIntoConstraints = false
+            //};
+            //{
+            //    var pickerSavedScales = new BareUIInlinePickerView(this, left: 16, right: 16)
+            //    {
+            //        TranslatesAutoresizingMaskIntoConstraints = false,
+            //        HeaderText = "Scale"
+            //    };
+            //    BindingHost.SetItemsSourceBinding(pickerSavedScales, nameof(ViewModel.SavedGradeScales));
+            //    BindingHost.SetSelectedItemBinding(pickerSavedScales, nameof(ViewModel.SelectedSavedGradeScale));
+            //    savedScalesContainer.AddSubview(pickerSavedScales);
+            //    pickerSavedScales.StretchHeight(savedScalesContainer);
 
-                var buttonSaveScale = new UIButton(UIButtonType.Custom)
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    //TintColor = UIColor.
-                };
-                buttonSaveScale.SetImage(UIImage.FromBundle("SaveAsIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
-                buttonSaveScale.TouchUpInside += new WeakEventHandler(ButtonSaveScale_TouchUpInside).Handler;
-                savedScalesContainer.Add(buttonSaveScale);
-                buttonSaveScale.StretchHeight(savedScalesContainer, bottom: 1);
+            //    var buttonSaveScale = new UIButton(UIButtonType.Custom)
+            //    {
+            //        TranslatesAutoresizingMaskIntoConstraints = false,
+            //        //TintColor = UIColor.
+            //    };
+            //    buttonSaveScale.SetImage(UIImage.FromBundle("SaveAsIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
+            //    buttonSaveScale.TouchUpInside += new WeakEventHandler(ButtonSaveScale_TouchUpInside).Handler;
+            //    savedScalesContainer.Add(buttonSaveScale);
+            //    buttonSaveScale.StretchHeight(savedScalesContainer, bottom: 1);
 
-                savedScalesContainer.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[picker][save(44)]-16-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                    "picker", pickerSavedScales,
-                    "save", buttonSaveScale));
+            //    savedScalesContainer.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[picker][save(44)]-16-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            //        "picker", pickerSavedScales,
+            //        "save", buttonSaveScale));
 
-                savedScalesContainer.SetHeight(44);
-            }
-            StackView.AddArrangedSubview(savedScalesContainer);
-            savedScalesContainer.StretchWidth(StackView);
+            //    savedScalesContainer.SetHeight(44);
+            //}
+            //StackView.AddArrangedSubview(savedScalesContainer);
+            //savedScalesContainer.StretchWidth(StackView);
 
-            StackView.AddSectionDivider();
+            //StackView.AddSectionDivider();
 
-            var headerView = new UIView()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-            {
-                var labelStartingGrade = new UILabel()
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    Text = "Starting Grade",
-                    Font = UIFont.PreferredBody.Bold()
-                };
-                headerView.Add(labelStartingGrade);
-                labelStartingGrade.StretchHeight(headerView, top: 8, bottom: 8);
+            //var headerView = new UIView()
+            //{
+            //    TranslatesAutoresizingMaskIntoConstraints = false
+            //};
+            //{
+            //    var labelStartingGrade = new UILabel()
+            //    {
+            //        TranslatesAutoresizingMaskIntoConstraints = false,
+            //        Text = "Starting Grade",
+            //        Font = UIFont.PreferredBody.Bold()
+            //    };
+            //    headerView.Add(labelStartingGrade);
+            //    labelStartingGrade.StretchHeight(headerView, top: 8, bottom: 8);
 
-                var labelGpa = new UILabel()
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    Text = "GPA",
-                    Font = UIFont.PreferredBody.Bold()
-                };
-                headerView.Add(labelGpa);
-                labelGpa.StretchHeight(headerView, top: 8, bottom: 8);
+            //    var labelGpa = new UILabel()
+            //    {
+            //        TranslatesAutoresizingMaskIntoConstraints = false,
+            //        Text = "GPA",
+            //        Font = UIFont.PreferredBody.Bold()
+            //    };
+            //    headerView.Add(labelGpa);
+            //    labelGpa.StretchHeight(headerView, top: 8, bottom: 8);
 
-                headerView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[startingGrade][gpa(==startingGrade)]-52-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                    "startingGrade", labelStartingGrade,
-                    "gpa", labelGpa));
-            }
-            StackView.AddArrangedSubview(headerView);
-            headerView.StretchWidth(StackView, left: 16, right: 16);
+            //    headerView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[startingGrade][gpa(==startingGrade)]-52-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            //        "startingGrade", labelStartingGrade,
+            //        "gpa", labelGpa));
+            //}
+            //StackView.AddArrangedSubview(headerView);
+            //headerView.StretchWidth(StackView, left: 16, right: 16);
 
-            StackView.AddDivider();
+            //StackView.AddDivider();
 
-            var scalesView = new UIView()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-            {
-                _itemsSourceGradeScales = new BareUIViewItemsSourceAdapterAsStackPanel(scalesView, (w) => { return new UIEditingGradeScaleView(this) { DataContext = w }; });
-            }
-            StackView.AddArrangedSubview(scalesView);
-            scalesView.StretchWidth(StackView, left: 16);
+            //var scalesView = new UIView()
+            //{
+            //    TranslatesAutoresizingMaskIntoConstraints = false
+            //};
+            //{
+            //    _itemsSourceGradeScales = new BareUIViewItemsSourceAdapterAsStackPanel(scalesView, (w) => { return new UIEditingGradeScaleView(this) { DataContext = w }; });
+            //}
+            //StackView.AddArrangedSubview(scalesView);
+            //scalesView.StretchWidth(StackView, left: 16);
 
-            var buttonAdd = new UIButton(UIButtonType.System)
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-            buttonAdd.SetTitle("Add Grade Scale", UIControlState.Normal);
-            buttonAdd.TouchUpInside += new WeakEventHandler(delegate { ViewModel.AddGradeScale(); }).Handler;
-            StackView.AddArrangedSubview(buttonAdd);
-            buttonAdd.StretchWidth(StackView);
-            buttonAdd.SetHeight(44);
-
-            StackView.AddBottomSectionDivider();
+            //var buttonAdd = new UIButton(UIButtonType.System)
+            //{
+            //    TranslatesAutoresizingMaskIntoConstraints = false
+            //};
+            //buttonAdd.SetTitle("Add Grade Scale", UIControlState.Normal);
+            //buttonAdd.TouchUpInside += new WeakEventHandler(delegate { ViewModel.AddGradeScale(); }).Handler;
+            //StackView.AddArrangedSubview(buttonAdd);
+            //buttonAdd.StretchWidth(StackView);
+            //buttonAdd.SetHeight(44);
         }
 
         private void ButtonSaveScale_TouchUpInside(object sender, EventArgs e)
@@ -146,7 +145,14 @@ namespace PowerPlanneriOS.Controllers.Settings.Grades
 
         public override void OnViewModelLoadedOverride()
         {
-            _itemsSourceGradeScales.ItemsSource = ViewModel.GradeScales;
+            StackView.AddTopSectionDivider();
+
+            var renderedComponent = ViewModel.Render();
+            renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
+            StackView.AddArrangedSubview(renderedComponent);
+            renderedComponent.StretchWidth(StackView);
+
+            StackView.AddBottomSectionDivider();
 
             base.OnViewModelLoadedOverride();
         }
@@ -217,7 +223,7 @@ namespace PowerPlanneriOS.Controllers.Settings.Grades
                 {
                     if (_controller.TryGetTarget(out ConfigureClassGradeScaleViewController controller))
                     {
-                        controller.ViewModel.RemoveGradeScale(gradeScale);
+                        //controller.ViewModel.RemoveGradeScale(gradeScale);
                     }
                 }
             }

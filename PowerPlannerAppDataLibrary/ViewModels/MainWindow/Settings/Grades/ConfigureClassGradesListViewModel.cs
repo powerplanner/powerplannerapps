@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.Converters;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
@@ -7,16 +8,117 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassGradesListViewModel : BaseMainScreenViewModelDescendant
     {
+        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
         public ConfigureClassGradesListViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+        }
+
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Children =
+                        {
+                            RenderOption(
+                                MaterialDesign.MaterialDesignIcons.Star,
+                                PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
+                                CreditsToStringConverter.ConvertWithCredits(Class.Credits).ToLower(),
+                                ConfigureCredits),
+
+                            RenderOption(
+                                MaterialDesign.MaterialDesignIcons.FilterAlt,
+                                PowerPlannerResources.GetString("ConfigureClassGrades_Items_WeightCategories.Title"),
+                                PowerPlannerResources.GetString("ConfigureClassGrades_Items_WeightCategories.Subtitle"),
+                                ConfigureWeightCategories),
+
+                            RenderOption(
+                                MaterialDesign.MaterialDesignIcons.SwapHoriz,
+                                PowerPlannerResources.GetString("Settings_GradeOptions_ListItemGpaType.Title"),
+                                GpaTypeToStringConverter.Convert(Class.GpaType),
+                                ConfigureGpaType),
+
+                            RenderOption(
+                                MaterialDesign.MaterialDesignIcons.Calculate,
+                                PowerPlannerResources.GetString(Class.GpaType == PowerPlannerSending.GpaType.Standard ? "ConfigureClassGrades_Items_GradeScale.Title" : "Settings_GradeOptions_ListItemPassingGrade.Title"),
+                                Class.GpaType == PowerPlannerSending.GpaType.Standard ? PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Subtitle") : Class.PassingGrade.ToString("0.##%"),
+                                () =>
+                                {
+                                    if (Class.GpaType == PowerPlannerSending.GpaType.Standard)
+                                    {
+                                        ConfigureGradeScale();
+                                    }
+                                    else
+                                    {
+                                        ConfigurePassingGrade();
+                                    }
+                                }),
+
+                            RenderOption(
+                                MaterialDesign.MaterialDesignIcons.Refresh,
+                                PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text"),
+                                BoolToEnabledStringConverter.Convert(Class.ShouldAverageGradeTotals),
+                                ConfigureAverageGrades),
+
+                            RenderOption(
+                                MaterialDesign.MaterialDesignIcons.ArrowUpward,
+                                PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text"),
+                                BoolToEnabledStringConverter.Convert(Class.DoesRoundGradesUp),
+                                ConfigureRoundGradesUp)
+                        }
+                }
+            };
+        }
+
+        private View RenderOption(string icon, string title, string subtitle, Action action)
+        {
+            return new ListItemButton
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(12),
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                        {
+                            new FontIcon
+                            {
+                                Glyph = icon,
+                                FontSize = 40,
+                                Color = Theme.Current.AccentColor
+                            },
+
+                            new LinearLayout
+                            {
+                                Margin = new Thickness(6, 0, 0, 0),
+                                Children =
+                                {
+                                    new TextBlock
+                                    {
+                                        Text = title,
+                                        FontWeight = FontWeights.Bold
+                                    },
+
+                                    new TextBlock
+                                    {
+                                        Text = subtitle,
+                                        TextColor = Theme.Current.SubtleForegroundColor
+                                    }
+                                }
+                            }.LinearLayoutWeight(1)
+                        }
+                },
+                Click = action
+            };
         }
 
         public void ConfigureCredits()

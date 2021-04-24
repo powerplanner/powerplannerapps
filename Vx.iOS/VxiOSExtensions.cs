@@ -58,6 +58,16 @@ namespace Vx.iOS
                     return new iOSTransparentContentButton();
                 }
 
+                if (view is Vx.Views.NumberTextBox)
+                {
+                    return new iOSNumberTextBox();
+                }
+
+                if (view is Vx.Views.Switch)
+                {
+                    return new iOSSwitch();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

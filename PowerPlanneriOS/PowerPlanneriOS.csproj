@@ -233,16 +233,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\applibraries\InterfacesiOS\InterfacesiOS\InterfacesiOS.csproj">
-      <Project>{10919459-e353-4f0f-86cd-5e92ca2e6745}</Project>
-      <Name>InterfacesiOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
-    <ProjectReference Include="..\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
-      <Name>BareMvvm.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
@@ -254,6 +244,22 @@
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
       <Name>PowerPlannerSending</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx.iOS\Vx.iOS.csproj">
+      <Project>{A9593895-1AA2-451D-8865-28DE0E2DFFB1}</Project>
+      <Name>Vx.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{9FA79801-7CED-4608-8ACB-A5C4746325AE}</Project>
+      <Name>Vx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
+      <Project>{3C5CB8DB-F891-4ADD-8F1F-8D2989D219BF}</Project>
+      <Name>BareMvvm.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InterfacesiOS\InterfacesiOS\InterfacesiOS.csproj">
+      <Project>{10919459-E353-4F0F-86CD-5E92CA2E6745}</Project>
+      <Name>InterfacesiOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -623,6 +629,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Resources\Fonts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

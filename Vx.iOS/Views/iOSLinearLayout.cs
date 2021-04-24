@@ -15,7 +15,7 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
 
             // Temp background color for debugging purposes
-            View.BackgroundColor = UIColor.FromRGBA(0, 0, 255, 15);
+            //View.BackgroundColor = UIColor.FromRGBA(0, 0, 255, 15);
             //View.Orientation = newView.Orientation;
 
             ReconcileList(

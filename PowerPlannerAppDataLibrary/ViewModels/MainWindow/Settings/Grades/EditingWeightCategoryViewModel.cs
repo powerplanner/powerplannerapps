@@ -18,8 +18,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             set { SetProperty(ref _name, value, nameof(Name), nameof(IsNameValid)); }
         }
 
-        private double _weight = 0;
-        public double Weight
+        private double? _weight = 0;
+        public double? Weight
         {
             get { return _weight; }
             set { SetProperty(ref _weight, value, nameof(Weight), nameof(IsWeightValueValid)); }
@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public bool IsWeightValueValid
         {
-            get { return Weight >= 0; }
+            get { return Weight != null && Weight.Value >= 0; }
         }
 
         public bool IsValid

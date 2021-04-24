@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
@@ -22,7 +23,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public ViewItemClass Class { get; private set; }
 
-        public MyObservableList<GradeScale> GradeScales { get; private set; }
+        public MyObservableList<EditingGradeScale> GradeScales { get; private set; }
 
         /// <summary>
         /// Windows version should set this to true, so that the previous content remains visible
@@ -33,16 +34,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             Class = c;
 
-            GradeScales = new MyObservableList<GradeScale>(c.GradeScales.Select(
-                i => new GradeScale()
+            GradeScales = new MyObservableList<EditingGradeScale>(c.GradeScales.Select(
+                i => new EditingGradeScale()
                 {
-                    StartGrade = i.StartGrade,
+                    StartingGrade = i.StartGrade,
                     GPA = i.GPA
                 }));
-            foreach (var gradeScale in GradeScales)
-            {
-                gradeScale.PropertyChanged += GradeScale_PropertyChanged;
-            }
+            //foreach (var gradeScale in GradeScales)
+            //{
+            //    gradeScale.PropertyChanged += GradeScale_PropertyChanged;
+            //}
         }
 
         protected override async System.Threading.Tasks.Task LoadAsyncOverride()
@@ -52,6 +53,88 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             await base.LoadAsyncOverride();
         }
 
+        protected override View Render()
+        {
+            var layout = new LinearLayout
+            {
+                Margin = new Thickness(12),
+                Children =
+                {
+                    RenderRow(new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockStartingGrade.Text"),
+                        FontWeight = FontWeights.Bold
+                    }, new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockGPA.Text"),
+                        FontWeight = FontWeights.Bold
+                    }, new TransparentContentButton
+                    {
+                        Opacity = 0,
+                        Content = new FontIcon
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                            FontSize = 20
+                        }
+                    })
+                }
+            };
+
+            foreach (var entry in GradeScales)
+            {
+                layout.Children.Add(RenderRow(new NumberTextBox
+                {
+                    Number = Bind<double?>(nameof(entry.StartingGrade), entry)
+                }, new NumberTextBox
+                {
+                    Number = Bind<double?>(nameof(entry.GPA), entry)
+                }, new TransparentContentButton
+                {
+                    Content = new FontIcon
+                    {
+                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                        FontSize = 20,
+                        Color = System.Drawing.Color.Red
+                    },
+                    Click = () => { RemoveGradeScale(entry); }
+                }));
+            }
+
+            layout.Children.Add(new Button
+            {
+                Text = PowerPlannerResources.GetString("ClassPage_ButtonAddGradeScale.Content"),
+                Margin = new Thickness(0, 12, 0, 0),
+                Click = () => { AddGradeScale(); }
+            });
+
+            return layout;
+        }
+
+        private static View RenderRow(View first, View second, View third)
+        {
+            first.Margin = new Thickness(0, 0, 6, 0);
+            second.Margin = new Thickness(6, 0, 0, 0);
+
+            var layout = new LinearLayout
+            {
+                Orientation = Orientation.Horizontal,
+                Children =
+                {
+                    first.LinearLayoutWeight(1),
+                    second.LinearLayoutWeight(1)
+                },
+                Margin = new Thickness(0, 0, 0, 6)
+            };
+
+            if (third != null)
+            {
+                third.Margin = new Thickness(12, 0, 0, 0);
+                layout.Children.Add(third);
+            }
+
+            return layout;
+        }
+
         private void GradeScale_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             UpdateSelectedSavedGradeScale();
@@ -59,16 +142,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public void AddGradeScale()
         {
-            GradeScales.Add(new GradeScale());
-            GradeScales.Last().PropertyChanged += GradeScale_PropertyChanged;
+            GradeScales.Add(new EditingGradeScale()
+            {
+                StartingGrade = 0,
+                GPA = 0
+            });
             UpdateSelectedSavedGradeScale();
+            MarkDirty();
         }
 
-        public void RemoveGradeScale(GradeScale scale)
+        public void RemoveGradeScale(EditingGradeScale scale)
         {
-            scale.PropertyChanged -= GradeScale_PropertyChanged;
             GradeScales.Remove(scale);
             UpdateSelectedSavedGradeScale();
+            MarkDirty();
+        }
+
+        public class EditingGradeScale
+        {
+            public double? StartingGrade { get; set; }
+
+            public double? GPA { get; set; }
         }
 
         public void SaveGradeScale()
@@ -87,15 +181,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     popupHost = GetPopupViewModelHost();
                 }
 
-                popupHost.ShowPopup(new SaveGradeScaleViewModel(popupHost, MainScreenViewModel, new SaveGradeScaleViewModel.Parameter()
-                {
-                    Name = "",
-                    OnSaved = delegate
-                    {
-                        var dontWait = ReloadSavedGradeScalesPicker();
-                    },
-                    Scales = GradeScales.ToArray()
-                }));
+                //popupHost.ShowPopup(new SaveGradeScaleViewModel(popupHost, MainScreenViewModel, new SaveGradeScaleViewModel.Parameter()
+                //{
+                //    Name = "",
+                //    OnSaved = delegate
+                //    {
+                //        var dontWait = ReloadSavedGradeScalesPicker();
+                //    },
+                //    Scales = GradeScales.ToArray()
+                //}));
             }
 
             catch (Exception ex)
@@ -106,9 +200,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private bool AreScalesValid()
         {
+            if (GradeScales.Any(i => i.StartingGrade == null || i.GPA == null))
+            {
+                return false;
+            }
+
             //check that the numbers are valid
             for (int i = 1; i < GradeScales.Count; i++)
-                if (GradeScales[i].StartGrade >= GradeScales[i - 1].StartGrade) //if the current starting grade is equal to or greater than the previous starting grade
+                if (GradeScales[i].StartingGrade.Value >= GradeScales[i - 1].StartingGrade.Value) //if the current starting grade is equal to or greater than the previous starting grade
                     return false;
 
             return true;
@@ -133,7 +232,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     return true;
                 }
 
-                if (GradeScales[i].StartGrade != Class.GradeScales[i].StartGrade)
+                if (GradeScales[i].StartingGrade != Class.GradeScales[i].StartGrade)
                 {
                     return true;
                 }
@@ -152,7 +251,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     return;
                 }
 
-                GradeScale[] newScales = GradeScales.ToArray();
+                GradeScale[] newScales = GradeScales.Select(i => new GradeScale { StartGrade = i.StartingGrade.Value, GPA = i.GPA.Value }).ToArray();
 
                 DataChanges changes = new DataChanges();
 
@@ -212,21 +311,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void OnSelectedSavedGradeScaleChanged()
         {
-            SavedGradeScale savedScale = SelectedSavedGradeScale;
+            //SavedGradeScale savedScale = SelectedSavedGradeScale;
 
-            if (savedScale == null || savedScale.GradeScales == null)
-                return;
+            //if (savedScale == null || savedScale.GradeScales == null)
+            //    return;
 
-            foreach (var s in GradeScales)
-            {
-                s.PropertyChanged -= GradeScale_PropertyChanged;
-            }
-            GradeScales.Clear();
-            GradeScales.AddRange(savedScale.GradeScales.Select(i => new GradeScale(i.StartGrade, i.GPA)));
-            foreach (var s in GradeScales)
-            {
-                s.PropertyChanged += GradeScale_PropertyChanged;
-            }
+            //foreach (var s in GradeScales)
+            //{
+            //    s.PropertyChanged -= GradeScale_PropertyChanged;
+            //}
+            //GradeScales.Clear();
+            //GradeScales.AddRange(savedScale.GradeScales.Select(i => new GradeScale(i.StartGrade, i.GPA)));
+            //foreach (var s in GradeScales)
+            //{
+            //    s.PropertyChanged += GradeScale_PropertyChanged;
+            //}
         }
 
         private async System.Threading.Tasks.Task ReloadSavedGradeScalesPicker()
@@ -299,18 +398,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 if (scales == null)
                     return;
 
-                GradeScale[] curr = GradeScales.ToArray();
+                //GradeScale[] curr = GradeScales.ToArray();
 
-                var matching = scales.Where(i => i.GradeScales != null).FirstOrDefault(i => i.GradeScales.SequenceEqual(curr));
+                //var matching = scales.Where(i => i.GradeScales != null).FirstOrDefault(i => i.GradeScales.SequenceEqual(curr));
 
-                // If no match, we use the Custom (not saved) last item
-                if (matching == null)
-                    matching = scales.Last();
+                //// If no match, we use the Custom (not saved) last item
+                //if (matching == null)
+                //    matching = scales.Last();
 
-                if (SelectedSavedGradeScale == matching)
-                    return;
+                //if (SelectedSavedGradeScale == matching)
+                //    return;
 
-                SetSelectedGradeScaleWithoutChangingExistingScales(matching);
+                //SetSelectedGradeScaleWithoutChangingExistingScales(matching);
             }
 
             catch { }

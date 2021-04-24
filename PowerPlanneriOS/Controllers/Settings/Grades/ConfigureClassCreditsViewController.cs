@@ -11,6 +11,7 @@ using InterfacesiOS.Controllers;
 using PowerPlanneriOS.Helpers;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -35,18 +36,18 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             };
             saveButton.Clicked += new WeakEventHandler<EventArgs>(SaveButton_Clicked).Handler;
             NavigationItem.RightBarButtonItem = saveButton;
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            base.OnViewModelSetOverride();
 
             StackView.AddSectionDivider();
 
-            var textFieldCredits = new UITextField()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                KeyboardType = UIKeyboardType.DecimalPad,
-                AdjustsFontSizeToFitWidth = true,
-                Placeholder = "ex: 3"
-            };
-            BindingHost.SetTextFieldTextBinding<double>(textFieldCredits, nameof(ViewModel.Credits), converter: CreditsToTextBoxTextConverter.Convert, backConverter: CreditsToTextBoxTextConverter.ConvertBack);
-            AddTextField(StackView, textFieldCredits, firstResponder: true);
+            var renderedComponent = ViewModel.Render();
+            renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
+            StackView.AddArrangedSubview(renderedComponent);
+            renderedComponent.StretchWidthAndHeight(StackView);
 
             StackView.AddSectionDivider();
         }

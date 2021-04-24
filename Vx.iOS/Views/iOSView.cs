@@ -24,7 +24,7 @@ namespace Vx.iOS.Views
 
         protected override void ApplyProperties(V oldView, V newView)
         {
-            // Nothing yet
+            View.Alpha = newView.Opacity;
         }
 
         protected void ReconcileContent(View oldContent, View newContent, Action<UIView> afterSubviewAddedAction)

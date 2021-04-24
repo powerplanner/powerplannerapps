@@ -20,11 +20,11 @@ namespace VxSampleApp
         {
             _gradeScaleEntries = new List<GradeScaleEntry>()
             {
-                new GradeScaleEntry { StartingGrade = "90", Gpa = "4"},
-                new GradeScaleEntry { StartingGrade = "80", Gpa = "3"},
-                new GradeScaleEntry { StartingGrade = "70", Gpa = "2"},
-                new GradeScaleEntry { StartingGrade = "60", Gpa = "1"},
-                new GradeScaleEntry { StartingGrade = "0", Gpa = "0"},
+                new GradeScaleEntry { StartingGrade = 90, Gpa = 4},
+                new GradeScaleEntry { StartingGrade = 80, Gpa = 3},
+                new GradeScaleEntry { StartingGrade = 70, Gpa = 2},
+                new GradeScaleEntry { StartingGrade = 60, Gpa = 1},
+                new GradeScaleEntry { StartingGrade = 0, Gpa = 0},
             };
 
             MarkDirty();
@@ -54,12 +54,12 @@ namespace VxSampleApp
 
             foreach (var entry in _gradeScaleEntries)
             {
-                layout.Children.Add(RenderRow(new TextBox
+                layout.Children.Add(RenderRow(new NumberTextBox
                 {
-                    Text = Bind<string>(nameof(entry.StartingGrade), entry)
-                }, new TextBox
+                    Number = Bind<double?>(nameof(entry.StartingGrade), entry)
+                }, new NumberTextBox
                 {
-                    Text = Bind<string>(nameof(entry.Gpa), entry)
+                    Number = Bind<double?>(nameof(entry.Gpa), entry)
                 }, new TransparentContentButton
                 {
                     Content = new FontIcon
@@ -74,18 +74,18 @@ namespace VxSampleApp
             layout.Children.Add(new Button
             {
                 Text = "Add grade scale",
-                Click = () => { _gradeScaleEntries.Add(new GradeScaleEntry() { StartingGrade = "0", Gpa = "0" }); MarkDirty(); }
+                Click = () => { _gradeScaleEntries.Add(new GradeScaleEntry() { StartingGrade = 0, Gpa = 0 }); MarkDirty(); }
             });
 
             foreach (var entry in _gradeScaleEntries)
             {
                 layout.Children.Add(RenderRow(new TextBlock
                 {
-                    Text = entry.StartingGrade,
+                    Text = entry.StartingGrade.ToString(),
                     FontWeight = FontWeights.Bold
                 }, new TextBlock
                 {
-                    Text = entry.Gpa,
+                    Text = entry.Gpa.ToString(),
                     FontWeight = FontWeights.Bold
                 }, null));
             }
@@ -95,8 +95,8 @@ namespace VxSampleApp
 
         private class GradeScaleEntry
         {
-            public string StartingGrade { get; set; }
-            public string Gpa { get; set; }
+            public double? StartingGrade { get; set; }
+            public double? Gpa { get; set; }
         }
 
         private static View RenderRow(View first, View second, View third)

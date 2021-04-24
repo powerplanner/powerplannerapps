@@ -9,6 +9,7 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
@@ -22,21 +23,45 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             Class = c;
 
-            Credits = c.Credits;
+            if (c.Credits == PowerPlannerSending.Grade.NO_CREDITS)
+            {
+                _credits = new VxState<double?>(null);
+            }
+            else
+            {
+                _credits = new VxState<double?>(c.Credits);
+            }
         }
 
-        private double _credits;
-        public double Credits
+        private VxState<double?> _credits;
+
+        protected override View Render()
         {
-            get { return _credits; }
-            set { SetProperty(ref _credits, value, nameof(Credits)); }
+            return new LinearLayout
+            {
+                Margin = new Thickness(12),
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
+                        FontWeight = FontWeights.Bold
+                    },
+
+                    new NumberTextBox
+                    {
+                        Number = _credits,
+                        PlaceholderText = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.PlaceholderText")
+                    }
+                }
+            };
         }
 
         public void Save()
         {
             TryStartDataOperationAndThenNavigate(delegate
             {
-                double credits = Credits;
+                double credits = _credits.Value != null ? _credits.Value.Value : PowerPlannerSending.Grade.NO_CREDITS;
 
                 DataChanges changes = new DataChanges();
 

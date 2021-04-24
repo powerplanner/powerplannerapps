@@ -25,7 +25,7 @@ namespace Vx.iOS
 
             base.Add(uiView);
 
-            uiView.StretchWidthAndHeight(this);
+            uiView.StretchWidthAndHeight(this, view.Margin.Left, view.Margin.Top, view.Margin.Right, view.Margin.Bottom);
         }
     }
 }

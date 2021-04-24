@@ -12,6 +12,7 @@ using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
@@ -36,14 +37,98 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public MyObservableList<EditingWeightCategoryViewModel> WeightCategories { get; private set; }
 
+        protected override View Render()
+        {
+            var layout = new LinearLayout
+            {
+                Margin = new Thickness(12),
+                Children =
+                {
+                    RenderRow(new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockName.Text"),
+                        FontWeight = FontWeights.Bold
+                    }, new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockWeight.Text"),
+                        FontWeight = FontWeights.Bold
+                    }, new TransparentContentButton
+                    {
+                        Opacity = 0,
+                        Content = new FontIcon
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                            FontSize = 20
+                        }
+                    })
+                }
+            };
+
+            foreach (var entry in WeightCategories)
+            {
+                layout.Children.Add(RenderRow(new TextBox
+                {
+                    Text = Bind<string>(nameof(entry.Name), entry)
+                }, new NumberTextBox
+                {
+                    Number = Bind<double?>(nameof(entry.Weight), entry)
+                }, new TransparentContentButton
+                {
+                    Content = new FontIcon
+                    {
+                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                        FontSize = 20,
+                        Color = System.Drawing.Color.Red
+                    },
+                    Click = () => { RemoveWeightCategory(entry); }
+                }));
+            }
+
+            layout.Children.Add(new Button
+            {
+                Text = PowerPlannerResources.GetString("ClassPage_ButtonAddWeightCategory.Content"),
+                Margin = new Thickness(0, 12, 0, 0),
+                Click = () => { AddWeightCategory(); }
+            });
+
+            return layout;
+        }
+
+        private static View RenderRow(View first, View second, View third)
+        {
+            first.Margin = new Thickness(0, 0, 6, 0);
+            second.Margin = new Thickness(6, 0, 0, 0);
+
+            var layout = new LinearLayout
+            {
+                Orientation = Orientation.Horizontal,
+                Children =
+                {
+                    first.LinearLayoutWeight(1),
+                    second.LinearLayoutWeight(1)
+                },
+                Margin = new Thickness(0, 0, 0, 6)
+            };
+
+            if (third != null)
+            {
+                third.Margin = new Thickness(12, 0, 0, 0);
+                layout.Children.Add(third);
+            }
+
+            return layout;
+        }
+
         public void AddWeightCategory()
         {
             WeightCategories.Add(new EditingWeightCategoryViewModel());
+            MarkDirty();
         }
 
         public void RemoveWeightCategory(EditingWeightCategoryViewModel weightCategory)
         {
             WeightCategories.Remove(weightCategory);
+            MarkDirty();
         }
 
         /// <summary>
@@ -168,7 +253,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     }
 
                     w.Name = changed.Name;
-                    w.WeightValue = changed.Weight;
+                    w.WeightValue = changed.Weight.Value;
 
                     changes.Add(w);
                 }

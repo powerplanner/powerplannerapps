@@ -12,6 +12,7 @@ namespace VxSampleApp
         private VxState<int> _timesClicked = new VxState<int>(0);
         private VxState<string[]> _items = new VxState<string[]>(new string[0]);
         private VxState<string> _page = new VxState<string>("home");
+        private VxState<double?> _number = new VxState<double?>(0);
 
         protected override View Render()
         {
@@ -41,6 +42,9 @@ namespace VxSampleApp
                 case "horizontalWeights":
                     return RenderSubpage(RenderHorizontalWeights());
 
+                case "numberTextBox":
+                    return RenderSubpage(RenderNumberTextBox());
+
                 default:
                     return RenderHome();
             }
@@ -59,7 +63,8 @@ namespace VxSampleApp
                     RenderButton("Vertical stretched", "verticalStretched"),
                     RenderButton("Font icons", "fontIcons"),
                     RenderButton("Scroll view", "scrollView"),
-                    RenderButton("Horizontal weights", "horizontalWeights")
+                    RenderButton("Horizontal weights", "horizontalWeights"),
+                    RenderButton("Number text box", "numberTextBox")
                 }
             };
         }
@@ -436,6 +441,32 @@ namespace VxSampleApp
                                 }
                             }.LinearLayoutWeight(1)
                         }
+                    }
+                }
+            };
+        }
+
+        private View RenderNumberTextBox()
+        {
+            return new LinearLayout
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "Enter a number...",
+                        FontWeight = FontWeights.Bold
+                    },
+
+                    new NumberTextBox
+                    {
+                        Number = _number,
+                    },
+
+                    new TextBlock
+                    {
+                        Text = _number.Value == null ? "Must enter a number" : "You entered: " + _number.Value,
+                        Margin = new Thickness(0, 12, 0, 0)
                     }
                 }
             };

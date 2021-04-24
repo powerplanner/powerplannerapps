@@ -35,6 +35,11 @@ namespace Vx.Views
 
         public Thickness Margin { get; set; }
 
+        /// <summary>
+        /// Value from 0.0 to 1.0 (defaults to 1.0).
+        /// </summary>
+        public float Opacity { get; set; } = 1;
+
         public double Width { get; set; } = double.NaN;
         public double Height { get; set; } = double.NaN;
 
