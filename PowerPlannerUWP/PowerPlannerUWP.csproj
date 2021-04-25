@@ -224,6 +224,7 @@
     <Compile Include="Views\ClassWhatIfView.xaml.cs">
       <DependentUpon>ClassWhatIfView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\CreateAccountView.xaml.cs">
       <DependentUpon>CreateAccountView.xaml</DependentUpon>
     </Compile>

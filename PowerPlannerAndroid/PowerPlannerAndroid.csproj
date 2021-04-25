@@ -165,6 +165,7 @@
     <Compile Include="Views\ClassTasksOrEventsView.cs" />
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
+    <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\ConfirmIdentityView.cs" />
     <Compile Include="Views\Controls\AddTaskOrEventRepeatsSubControl.cs" />
     <Compile Include="Views\Controls\DayPagerControl.cs" />
@@ -187,10 +188,8 @@
     <Compile Include="Views\ListItemHeaders\ListItemHeaderWeightCategoryView.cs" />
     <Compile Include="Views\ListItems\ListItemClassGroupedTimesView.cs" />
     <Compile Include="Views\ListItems\ListItemClassMenuItemView.cs" />
-    <Compile Include="Views\ListItems\ListItemEditingGradeScaleView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassTimeView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassView.cs" />
-    <Compile Include="Views\ListItems\ListItemEditingWeightCategoryView.cs" />
     <Compile Include="Views\ListItems\ListItemGradeView.cs" />
     <Compile Include="Views\ListItems\ListItemHolidayScheduleView.cs" />
     <Compile Include="Views\ListItems\ListItemTaskOrEventView.cs" />

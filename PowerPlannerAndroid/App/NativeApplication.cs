@@ -69,7 +69,8 @@ namespace PowerPlannerAndroid.App
         {
             return new Dictionary<Type, Type>()
             {
-                { typeof(PopupComponentViewModel), typeof(PopupComponentView) }
+                { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
+                { typeof(ComponentViewModel), typeof(ComponentView) } // This must be after Popup since Popup is a subclass
             };
         }
 
@@ -102,7 +103,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(MyAccountViewModel), typeof(MyAccountView) },
-                { typeof(SettingsListViewModel), typeof(SettingsListView) },
                 { typeof(AboutViewModel), typeof(AboutView) },
                 { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityView) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailView) },

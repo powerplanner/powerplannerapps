@@ -24,6 +24,7 @@ namespace Vx.Uwp.Views
             base.ApplyProperties(oldView, newView);
 
             View.Content = newView.Text;
+            View.IsEnabled = newView.IsEnabled;
         }
     }
 }

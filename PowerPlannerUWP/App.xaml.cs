@@ -96,7 +96,8 @@ namespace PowerPlannerUWP
         {
             return new Dictionary<Type, Type>
             {
-                { typeof(PopupComponentViewModel), typeof(PopupComponentView) }
+                { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
+                { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
             };
         }
 
@@ -136,7 +137,6 @@ namespace PowerPlannerUWP
                 { typeof(SaveGradeScaleViewModel), typeof(SaveGradeScaleView) },
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
-                { typeof(SettingsListViewModel), typeof(SettingsListView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
