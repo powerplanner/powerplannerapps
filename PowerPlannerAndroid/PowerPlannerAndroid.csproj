@@ -212,14 +212,6 @@
     <Compile Include="Views\ListItems\ListItemSemesterView.cs" />
     <Compile Include="Views\ListItems\ListItemYearView.cs" />
     <Compile Include="Views\SettingsTwoWeekScheduleView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassAverageGradesView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassCreditsView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGpaTypeView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradeScaleView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradesListView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.cs" />
     <Compile Include="Views\SettingsViews\ReminderSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.cs" />
@@ -423,12 +415,6 @@
     <AndroidResource Include="Resources\layout\SpinnerItemWeightCategory.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingWeightCategory.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingGradeScale.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemClassMenuItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -523,30 +509,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGradesList.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassAverageGrades.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassRoundGradesUp.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassCredits.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassWeightCategories.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGradeScale.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassPassingGrade.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGpaType.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DayPager.xml">
