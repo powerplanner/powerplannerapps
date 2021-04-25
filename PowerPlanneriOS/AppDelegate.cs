@@ -227,6 +227,7 @@ namespace PowerPlanneriOS
             TelemetryExtension.Current = new iOSTelemetryExtension();
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
             PushExtension.Current = new iOSPushExtension();
+            BrowserExtension.Current = new iOSBrowserExtension();
 
             if (SdkSupportHelper.IsNotificationsSupported)
             {

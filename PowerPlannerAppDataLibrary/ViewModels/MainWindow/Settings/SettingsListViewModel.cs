@@ -22,6 +22,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         [VxSubscribe]
         public DataLayer.AccountDataItem Account { get; private set; }
 
+        private VxState<bool> _isFullVersion = new VxState<bool>(true);
+
         public const string HelpUrl = "https://powerplanner.freshdesk.com/support/home";
 
         /// <summary>
@@ -35,6 +37,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Account = MainScreenViewModel?.CurrentAccount;
 
             Title = PowerPlannerResources.GetString("String_More");
+
+            UpdateIsFullVersion();
+        }
+
+        private async void UpdateIsFullVersion()
+        {
+            _isFullVersion.Value = await PowerPlannerApp.Current.IsFullVersionAsync();
         }
 
         protected override View Render()
@@ -125,7 +134,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     MaterialDesign.MaterialDesignIcons.Dashboard,
                     PowerPlannerResources.GetString("String_Widgets"),
                     PowerPlannerResources.GetString("Settings_MainPage_Widgets_Subtitle"),
-                    OpenWidgets);
+                    () => OpenWidgets(this));
             }
 
             if (OpenLiveTiles != null)
@@ -135,7 +144,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     MaterialDesign.MaterialDesignIcons.Dashboard,
                     PowerPlannerResources.GetString("Settings_MainPage_LiveTilesItem.Title"),
                     PowerPlannerResources.GetString("Settings_MainPage_LiveTilesItem.Subtitle"),
-                    OpenLiveTiles);
+                    () => OpenLiveTiles(this));
             }
 
             if (IsRemindersVisible)
@@ -148,7 +157,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenReminderSettings);
             }
 
-            if (IsSyncOptionsVisible)
+            if (VxPlatform.Current != Platform.iOS && IsSyncOptionsVisible)
             {
                 RenderOption(
                     layout,
@@ -296,7 +305,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public bool IsLogInVisible => IsDefaultOfflineAccount;
 
-        public bool IsUpgradeToPremiumVisible => true; // TODO
+        public bool IsUpgradeToPremiumVisible => !_isFullVersion.Value;
 
         /// <summary>
         /// We hide when it's the default account, only options for them are create or log in
@@ -474,17 +483,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// <summary>
         /// Android initializes this
         /// </summary>
-        public Action OpenWidgets { get; set; }
+        public static Action<SettingsListViewModel> OpenWidgets { get; set; }
 
         /// <summary>
         /// UWP initializes this
         /// </summary>
-        public Action OpenLiveTiles { get; set; }
+        public static Action<SettingsListViewModel> OpenLiveTiles { get; set; }
 
-        /// <summary>
-        /// Each platform must initialize this?
-        /// </summary>
-        public Action OpenHelp { get; set; }
+        public async void OpenHelp()
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("Action_OpenHelp");
+
+                await BrowserExtension.Current?.OpenUrlAsync(new Uri(HelpUrl));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+                var dontWait = new PortableMessageDialog("Failed to open web browser", "Error").ShowAsync();
+            }
+        }
 
         public void OpenYears()
         {
@@ -539,6 +558,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Show(new TwoWeekScheduleSettingsViewModel(ParentForSubviews));
         }
 
+        /// <summary>
+        /// Android sets this
+        /// </summary>
+        public static Action<SettingsListViewModel> CustomOpenGoogleCalendarIntegration { get; set; }
+
         public void OpenGoogleCalendarIntegration()
         {
             TelemetryExtension.Current?.TrackEvent("Action_OpenGoogleCalendarIntegration");
@@ -551,7 +575,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 }
                 else
                 {
-                    MainScreenViewModel.ShowPopup(new GoogleCalendarIntegrationViewModel(MainScreenViewModel, Account));
+                    if (VxPlatform.Current == Platform.iOS)
+                    {
+                        BrowserExtension.Current.OpenUrlAsync(new Uri(GoogleCalendarIntegrationViewModel.Url));
+                    }
+                    else if (CustomOpenGoogleCalendarIntegration != null)
+                    {
+                        CustomOpenGoogleCalendarIntegration(this);
+                    }
+                    else
+                    {
+                        MainScreenViewModel.ShowPopup(new GoogleCalendarIntegrationViewModel(MainScreenViewModel, Account));
+                    }
                 }
             }
             catch (Exception ex)
@@ -577,11 +612,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// Returns the url, caller must navigate to the url
         /// </summary>
         /// <returns></returns>
-        public string OpenContribute()
+        public async void OpenContribute()
         {
             TelemetryExtension.Current?.TrackEvent("Action_OpenContribute");
 
-            return ContributeUrl;
+            try
+            {
+                await BrowserExtension.Current?.OpenUrlAsync(new Uri(ContributeUrl));
+            }
+            catch { }
         }
 
         public void OpenCreateAccount()
