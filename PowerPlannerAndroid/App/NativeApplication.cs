@@ -35,6 +35,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerAndroid.Views.SettingsViews.Grades;
 using PowerPlannerAndroid.Views.WelcomeViews;
 using PowerPlannerAndroid.Views.SettingsViews;
+using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlannerAndroid.App
 {
@@ -64,6 +65,14 @@ namespace PowerPlannerAndroid.App
         public override void OnCreate()
         {
             base.OnCreate();
+        }
+
+        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        {
+            return new Dictionary<Type, Type>()
+            {
+                { typeof(PopupComponentViewModel), typeof(PopupComponentView) }
+            };
         }
 
         public override Dictionary<Type, Type> GetViewModelToViewMappings()
@@ -118,15 +127,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(WidgetScheduleViewModel), typeof(SettingsWidgetScheduleView) },
                 { typeof(SyncOptionsSimpleViewModel), typeof(SettingsSyncOptionsView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(SettingsImageUploadOptionsView) },
-
-                { typeof(ConfigureClassGradesListViewModel), typeof(ConfigureClassGradesListView) },
-                { typeof(ConfigureClassAverageGradesViewModel), typeof(ConfigureClassAverageGradesView) },
-                { typeof(ConfigureClassCreditsViewModel), typeof(ConfigureClassCreditsView) },
-                { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
-                { typeof(ConfigureClassGradeScaleViewModel), typeof(ConfigureClassGradeScaleView) },
-                { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
-                { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
-                { typeof(ConfigureClassWeightCategoriesViewModel), typeof(ConfigureClassWeightCategoriesView) },
 
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
 

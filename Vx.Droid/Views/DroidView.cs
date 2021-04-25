@@ -48,6 +48,8 @@ namespace Vx.Droid.Views
                     BottomMargin = AsPx(newView.Margin.Bottom)
                 };
             }
+
+            View.Alpha = newView.Opacity;
         }
 
         /// <summary>

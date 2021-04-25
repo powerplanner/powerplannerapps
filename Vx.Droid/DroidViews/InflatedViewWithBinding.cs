@@ -53,6 +53,12 @@ namespace InterfacesDroid.Views
             base.AddView(view);
         }
 
+        public InflatedViewWithBinding(Context context) : base(context)
+        {
+            // By default we disable auto fill. Classes inheriting from this (like LoginView) can choose to re-enable auto fill.
+            AutofillHelper.DisableForAll(this);
+        }
+
         private View _viewForBinding;
         protected virtual View CreateView(LayoutInflater inflater, int resourceId, ViewGroup root)
         {

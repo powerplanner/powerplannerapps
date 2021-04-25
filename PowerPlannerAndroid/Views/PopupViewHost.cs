@@ -23,6 +23,22 @@ namespace PowerPlannerAndroid.Views
         {
         }
 
+        public PopupViewHost(ViewGroup root) : base(root) { }
+
+        protected void AddNonInflatedView(View content)
+        {
+            View popupView = LayoutInflater.FromContext(Context).Inflate(Resource.Layout.PopupView, null);
+            Toolbar = popupView.FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
+            Toolbar.MenuItemClick += Toolbar_MenuItemClick;
+
+            Toolbar.SetNavigationIcon(Resource.Drawable.ic_arrow_back_black_24dp);
+            Toolbar.NavigationClick += delegate { ViewModel.GoBack(); };
+
+            popupView.FindViewById<ViewGroup>(Resource.Id.ContentFrame).AddView(content);
+
+            AddView(popupView);
+        }
+
         protected override View CreateView(LayoutInflater inflater, int resourceId, ViewGroup root)
         {
             View popupView = inflater.Inflate(Resource.Layout.PopupView, null);

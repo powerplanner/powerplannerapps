@@ -67,6 +67,16 @@ namespace Vx.Droid
                     return new DroidScrollView();
                 }
 
+                if (view is Vx.Views.NumberTextBox)
+                {
+                    return new DroidNumberTextBox();
+                }
+
+                if (view is Vx.Views.Switch)
+                {
+                    return new DroidSwitch();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

@@ -200,6 +200,7 @@
     <Compile Include="Views\MainCalendarItemView.cs" />
     <Compile Include="Views\MainScreenView.cs" />
     <Compile Include="Views\MyAccountView.cs" />
+    <Compile Include="Views\PopupComponentView.cs" />
     <Compile Include="Views\PopupViewHost.cs" />
     <Compile Include="Views\PremiumVersionView.cs" />
     <Compile Include="Views\QuickAddView.cs" />

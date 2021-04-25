@@ -19,6 +19,7 @@ namespace InterfacesDroid.ViewModelPresenters
     {
         private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
         private static Dictionary<Type, Type> ViewModelToSplashMappings = new Dictionary<Type, Type>();
+        private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
 
         public static void AddMapping(Type viewModelType, Type viewType)
         {
@@ -28,6 +29,26 @@ namespace InterfacesDroid.ViewModelPresenters
         public static void AddSplashMapping(Type viewModelType, Type viewType)
         {
             ViewModelToSplashMappings[viewModelType] = viewType;
+        }
+
+        public static void AddGenericMapping(Type viewModelType, Type viewType)
+        {
+            GenericViewModelToViewMappings[viewModelType] = viewType;
+        }
+
+        private static bool TryFindGeneric(Type viewModelType, out Type genericViewType)
+        {
+            foreach (var pair in GenericViewModelToViewMappings)
+            {
+                if (pair.Key.IsAssignableFrom(viewModelType))
+                {
+                    genericViewType = pair.Value;
+                    return true;
+                }
+            }
+
+            genericViewType = null;
+            return false;
         }
 
         public static View GetSplash(ViewGroup root, object viewModel)
@@ -50,6 +71,18 @@ namespace InterfacesDroid.ViewModelPresenters
             if (value == null)
                 return null;
 
+            if (value is BaseViewModel)
+            {
+                var baseViewModel = value as BaseViewModel;
+                var cached = baseViewModel.GetNativeView();
+                if (cached is View cachedView)
+                {
+                    // If there's already an existing cached native view (like for paging scenarios)
+                    // then use that
+                    return cachedView;
+                }
+            }
+
             Type viewType;
             
             View view = null;
@@ -57,6 +90,11 @@ namespace InterfacesDroid.ViewModelPresenters
             if (ViewModelToViewMappings.TryGetValue(value.GetType(), out viewType))
             {
                 view = CreateView(root, viewType);
+            }
+
+            else if (TryFindGeneric(value.GetType(), out Type genericViewType))
+            {
+                view = CreateView(root, genericViewType);
             }
 
             else if (value is PagedViewModelWithPopups)
@@ -72,6 +110,12 @@ namespace InterfacesDroid.ViewModelPresenters
             else
             {
                 throw new NotImplementedException("ViewModel type was unknown: " + value.GetType());
+            }
+
+            // And assign the native view to the view model
+            if (value is BaseViewModel)
+            {
+                (value as BaseViewModel).SetNativeView(view);
             }
 
             // Get the ViewModel property

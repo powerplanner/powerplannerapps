@@ -72,6 +72,8 @@ namespace InterfacesDroid.Views
 #endif
         }
 
+        public ViewHostGeneric(ViewGroup root) : base(root.Context) { }
+
         public virtual void OnViewModelSetOverride()
         {
             // Nothing

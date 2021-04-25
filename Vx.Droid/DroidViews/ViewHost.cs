@@ -18,6 +18,8 @@ namespace InterfacesDroid.Views
         public PopupViewHost(int resourceId, ViewGroup root) : base(resourceId, root)
         {
         }
+
+        public PopupViewHost(ViewGroup root) : base(root) { }
         
         public new TViewModel ViewModel
         {

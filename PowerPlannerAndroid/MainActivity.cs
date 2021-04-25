@@ -61,6 +61,9 @@ namespace PowerPlannerAndroid
         {
             base.OnCreate(bundle);
 
+            // Initialize Vx (have to initialize here rather than in App so it picks up the right context with the themed context)
+            Vx.Droid.VxDroidExtensions.ApplicationContext = this;
+
 #if DEBUG
             int disposedCount = 0;
             WeakEventHandler.ObjectDisposedAction = delegate

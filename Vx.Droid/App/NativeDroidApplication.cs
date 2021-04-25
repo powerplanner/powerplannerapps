@@ -93,6 +93,11 @@ namespace InterfacesDroid.App
                 ViewModelToViewConverter.AddSplashMapping(mapping.Key, mapping.Value);
             }
 
+            foreach (var mapping in GetGenericViewModelToViewMappings())
+            {
+                ViewModelToViewConverter.AddGenericMapping(mapping.Key, mapping.Value);
+            }
+
             // Register the obtain dispatcher function
             PortableDispatcher.ObtainDispatcherFunction = () => { return new AndroidDispatcher(); };
             
@@ -115,6 +120,7 @@ namespace InterfacesDroid.App
 
         public abstract Dictionary<Type, Type> GetViewModelToViewMappings();
         public abstract Dictionary<Type, Type> GetViewModelToSplashMappings();
+        public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
 
         public abstract Type GetPortableAppType();
 
