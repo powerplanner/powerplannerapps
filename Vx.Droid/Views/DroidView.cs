@@ -49,6 +49,17 @@ namespace Vx.Droid.Views
                 };
             }
 
+            else
+            {
+                View.LayoutParameters = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent)
+                {
+                    MarginStart = AsPx(newView.Margin.Left),
+                    TopMargin = AsPx(newView.Margin.Top),
+                    MarginEnd = AsPx(newView.Margin.Right),
+                    BottomMargin = AsPx(newView.Margin.Bottom)
+                };
+            }
+
             View.Alpha = newView.Opacity;
         }
 

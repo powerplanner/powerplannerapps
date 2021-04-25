@@ -31,7 +31,7 @@ namespace Vx.Droid.Views
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view =>
             {
                 View.RemoveAllViews();
-                View.AddView(view.CreateDroidView(VxView), new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent));
+                View.AddView(view.CreateDroidView(VxView));
             });
         }
     }
