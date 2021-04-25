@@ -25,6 +25,7 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
 
             View.SetTitle(newView.Text, UIControlState.Normal);
+            View.Enabled = newView.IsEnabled;
         }
     }
 }
