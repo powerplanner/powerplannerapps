@@ -63,5 +63,8 @@ namespace Vx.Views
         {
             return !t1.Equals(t2);
         }
+
+        public float Width => Left + Right;
+        public float Height => Top + Bottom;
     }
 }
