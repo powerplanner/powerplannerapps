@@ -66,7 +66,8 @@ namespace PowerPlanneriOS
         {
             return new Dictionary<Type, Type>
             {
-                { typeof(PopupComponentViewModel), typeof(PopupComponentViewController) }
+                { typeof(PopupComponentViewModel), typeof(PopupComponentViewController) },
+                { typeof(ComponentViewModel), typeof(ComponentViewController) } // This needs to be after Popup since Popup is a subclass
             };
         }
 
@@ -104,7 +105,6 @@ namespace PowerPlanneriOS
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) },
-                { typeof(SettingsListViewModel), typeof(SettingsListViewController) },
                 { typeof(MyAccountViewModel), typeof(MyAccountViewController) },
                 { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityViewController) },
                 { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameViewController) },

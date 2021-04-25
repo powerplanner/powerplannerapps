@@ -12,11 +12,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class SettingsListViewModel : BaseViewModel
+    public class SettingsListViewModel : ComponentViewModel
     {
+        [VxSubscribe]
         public DataLayer.AccountDataItem Account { get; private set; }
 
         public const string HelpUrl = "https://powerplanner.freshdesk.com/support/home";
@@ -30,29 +33,252 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             MainScreenViewModel = FindAncestor<MainScreenViewModel>();
             Account = MainScreenViewModel?.CurrentAccount;
-            HasAccount = Account != null;
-            if (HasAccount)
-            {
-                Account.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Account_PropertyChanged).Handler;
-                UpdateFromAccount();
-            }
+
+            Title = PowerPlannerResources.GetString("String_More");
         }
 
-        private void Account_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override View Render()
         {
-            switch (e.PropertyName)
+            var layout = new LinearLayout();
+
+            if (IsViewYearsAndSemestersVisible)
             {
-                case nameof(Account.IsOnlineAccount):
-                case nameof(Account.IsDefaultOfflineAccount):
-                    UpdateFromAccount();
-                    break;
+                layout.Children.Add(new TextBlock
+                {
+                    Text = CurrentSemesterText,
+                    Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, 0)
+                });
+
+                layout.Children.Add(new Button
+                {
+                    Text = PowerPlannerResources.GetString("String_ViewYearsAndSemesters"),
+                    Click = OpenYears,
+                    Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
+                });
+
+                // TODO: Add divider
             }
+
+            if (IsSyncOptionsVisible)
+            {
+                layout.Children.Add(new TextBlock
+                {
+                    Text = SyncStatusText,
+                    Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, 0)
+                });
+
+                layout.Children.Add(new Button
+                {
+                    Text = SyncButtonText,
+                    IsEnabled = SyncButtonIsEnabled,
+                    Click = StartSync,
+                    Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
+                });
+
+                // TODO: Add divider
+            }
+
+            if (IsUpgradeToPremiumVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Shop,
+                    PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_UpgradeToPremiumItem.Subtitle"),
+                    OpenPremiumVersion);
+            }
+
+            if (IsCreateAccountVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.AccountCircle,
+                    PowerPlannerResources.GetString("Settings_MainPage_CreateAccountItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_CreateAccountItem.Subtitle"),
+                    OpenCreateAccount);
+            }
+
+            if (IsLogInVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Input,
+                    PowerPlannerResources.GetString("Settings_MainPage_LogInItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_LogInItem.Subtitle"),
+                    OpenLogIn);
+            }
+
+            if (IsMyAccountVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.AccountCircle,
+                    PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_MyAccountItem.Subtitle"),
+                    OpenMyAccount);
+            }
+
+            if (OpenWidgets != null)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Dashboard,
+                    PowerPlannerResources.GetString("String_Widgets"),
+                    PowerPlannerResources.GetString("Settings_MainPage_Widgets_Subtitle"),
+                    OpenWidgets);
+            }
+
+            if (OpenLiveTiles != null)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Dashboard,
+                    PowerPlannerResources.GetString("Settings_MainPage_LiveTilesItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_LiveTilesItem.Subtitle"),
+                    OpenLiveTiles);
+            }
+
+            if (IsRemindersVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Notifications,
+                    PowerPlannerResources.GetString("Settings_MainPage_RemindersItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_RemindersItem.Subtitle"),
+                    OpenReminderSettings);
+            }
+
+            if (IsSyncOptionsVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Cached,
+                    PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Subtitle"),
+                    OpenSyncOptionsSimple);
+            }
+
+            if (IsGoogleCalendarIntegrationVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.EventAvailable,
+                    PowerPlannerResources.GetString("Settings_MainPage_GoogleCalendarIntegrationItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle"),
+                    OpenGoogleCalendarIntegration);
+            }
+
+            if (HasAccount && VxPlatform.Current == Platform.Uwp)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.CalendarToday,
+                    PowerPlannerResources.GetString("Settings_MainPage_CalendarIntegrationItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_CalendarIntegrationItem.Subtitle"),
+                    OpenCalendarIntegration);
+            }
+
+            if (IsTwoWeekScheduleVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.DateRange,
+                    PowerPlannerResources.GetString("Settings_MainPage_TwoWeekScheduleItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_TwoWeekScheduleItem.Subtitle"),
+                    OpenTwoWeekScheduleSettings);
+            }
+
+            if (IsSchoolTimeZoneVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.AccessTime,
+                    PowerPlannerResources.GetString("Settings_MainPage_SchoolTimeZoneItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_SchoolTimeZoneItem.Subtitle"),
+                    OpenSchoolTimeZone);
+            }
+
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Translate,
+                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
+                    OpenLanguageSettings);
+            }
+
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Code,
+                    PowerPlannerResources.GetString("Settings_MainPage_ContributeItem.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_ContributeItem.Subtitle"),
+                    () => OpenContribute());
+            }
+
+            RenderOption(
+                layout,
+                MaterialDesign.MaterialDesignIcons.Help,
+                PowerPlannerResources.GetString("Settings_MainPage_HelpItem.Title"),
+                PowerPlannerResources.GetString("Settings_MainPage_HelpItem.Subtitle"),
+                OpenHelp);
+
+            RenderOption(
+                layout,
+                MaterialDesign.MaterialDesignIcons.Info,
+                PowerPlannerResources.GetString("Settings_MainPage_AboutItem.Title"),
+                "BareBones Dev",
+                OpenAbout);
+
+            return new ScrollView(layout);
         }
 
-        private void UpdateFromAccount()
+        private void RenderOption(LinearLayout layout, string icon, string title, string subtitle, Action action)
         {
-            IsOnlineAccount = Account.IsOnlineAccount;
-            IsDefaultOfflineAccount = Account.IsDefaultOfflineAccount;
+            layout.Children.Add(RenderOption(icon, title, subtitle, action));
+        }
+
+        internal static View RenderOption(string icon, string title, string subtitle, Action action)
+        {
+            return new ListItemButton
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12),
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                        {
+                            new FontIcon
+                            {
+                                Glyph = icon,
+                                FontSize = 40,
+                                Color = Theme.Current.AccentColor
+                            },
+
+                            new LinearLayout
+                            {
+                                Margin = new Thickness(6, 0, 0, 0),
+                                Children =
+                                {
+                                    new TextBlock
+                                    {
+                                        Text = title,
+                                        FontWeight = FontWeights.Bold
+                                    },
+
+                                    new TextBlock
+                                    {
+                                        Text = subtitle,
+                                        TextColor = Theme.Current.SubtleForegroundColor
+                                    }
+                                }
+                            }.LinearLayoutWeight(1)
+                        }
+                },
+                Click = action
+            };
         }
 
         public MainScreenViewModel MainScreenViewModel { get; private set; }
@@ -60,52 +286,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// <summary>
         /// This is only false if they enter the settings page from the login page. This will still be true for default offline accounts.
         /// </summary>
-        public bool HasAccount { get; private set; }
+        public bool HasAccount => Account != null;
 
-        private bool _isOnlineAccount;
-        public bool IsOnlineAccount
-        {
-            get => _isOnlineAccount;
-            private set => SetProperty(ref _isOnlineAccount, value, nameof(IsOnlineAccount));
-        }
+        public bool IsOnlineAccount => Account.IsOnlineAccount;
 
-        private bool _isDefaultOfflineAccount;
-        public bool IsDefaultOfflineAccount
-        {
-            get => _isDefaultOfflineAccount;
-            private set => SetProperty(ref _isDefaultOfflineAccount, value, nameof(IsDefaultOfflineAccount));
-        }
+        public bool IsDefaultOfflineAccount => Account.IsDefaultOfflineAccount;
 
-        public bool IsCreateAccountVisible => CachedComputation(delegate
-        {
-            return IsDefaultOfflineAccount;
-        }, new string[] { nameof(IsDefaultOfflineAccount) });
+        public bool IsCreateAccountVisible => IsDefaultOfflineAccount;
 
-        public bool IsLogInVisible => CachedComputation(delegate
-        {
-            return IsDefaultOfflineAccount;
-        }, new string[] { nameof(IsDefaultOfflineAccount) });
+        public bool IsLogInVisible => IsDefaultOfflineAccount;
 
-        public bool IsMyAccountVisible => CachedComputation(delegate
-        {
-            // We hide when it's the default account, only options for them are create or log in
-            return HasAccount && !IsDefaultOfflineAccount;
-        }, new string[] { nameof(IsDefaultOfflineAccount) });
+        public bool IsUpgradeToPremiumVisible => true; // TODO
+
+        /// <summary>
+        /// We hide when it's the default account, only options for them are create or log in
+        /// </summary>
+        public bool IsMyAccountVisible => HasAccount && !IsDefaultOfflineAccount;
 
         /// <summary>
         /// Should be visible for default offline account too, clicking it will tell users they need to create an account first
         /// </summary>
-        public bool IsGoogleCalendarIntegrationVisible => CachedComputation(delegate
-        {
-            return IsOnlineAccount || IsDefaultOfflineAccount;
-        }, new string[] { nameof(IsOnlineAccount), nameof(IsDefaultOfflineAccount) });
+        public bool IsGoogleCalendarIntegrationVisible => IsOnlineAccount || IsDefaultOfflineAccount;
 
         public bool IsRemindersVisible => HasAccount;
 
-        public bool IsSyncOptionsVisible => CachedComputation(delegate
-        {
-            return IsOnlineAccount;
-        }, new string[] { nameof(IsOnlineAccount) });
+        public bool IsSyncOptionsVisible => IsOnlineAccount;
 
         public bool IsTwoWeekScheduleVisible => HasAccount;
 
@@ -114,10 +319,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public bool IsViewYearsAndSemestersVisible => HasAccount && MainScreenViewModel != null;
 
         private bool _initializedCurrentSemesterName;
-        private string _currentSemesterName;
         public string CurrentSemesterName
         {
-            private set => SetProperty(ref _currentSemesterName, value, nameof(CurrentSemesterName));
             get
             {
                 if (!_initializedCurrentSemesterName)
@@ -128,28 +331,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     {
                         MainScreenViewModel.CurrentSemester.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(CurrentSemester_PropertyChanged).Handler;
                     }
-
-                    _currentSemesterName = MainScreenViewModel?.CurrentSemester?.Name;
                 }
 
-                return _currentSemesterName;
+                return MainScreenViewModel?.CurrentSemester?.Name;
             }
         }
 
-        public string CurrentSemesterText => CachedComputation(delegate
-        {
-            return PowerPlannerResources.GetStringWithParameters("String_CurrentSemester", CurrentSemesterName);
-        }, new string[] { nameof(CurrentSemesterName) });
+        public string CurrentSemesterText => PowerPlannerResources.GetStringWithParameters("String_CurrentSemester", CurrentSemesterName);
 
         private void CurrentSemester_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ViewItemSemester.Name))
             {
-                try
-                {
-                    CurrentSemesterName = MainScreenViewModel.CurrentSemester?.Name;
-                }
-                catch { }
+                MarkDirty();
             }
         }
 
@@ -272,9 +466,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 case nameof(MainScreenViewModel.HasSyncErrors):
                 case nameof(MainScreenViewModel.IsOffline):
                     UpdateSyncStatus();
+                    MarkDirty();
                     break;
             }
         }
+
+        /// <summary>
+        /// Android initializes this
+        /// </summary>
+        public Action OpenWidgets { get; set; }
+
+        /// <summary>
+        /// UWP initializes this
+        /// </summary>
+        public Action OpenLiveTiles { get; set; }
+
+        /// <summary>
+        /// Each platform must initialize this?
+        /// </summary>
+        public Action OpenHelp { get; set; }
 
         public void OpenYears()
         {

@@ -15,6 +15,7 @@ namespace Vx.iOS
         static VxiOSExtensions()
         {
             Theme.Current = new VxiOSTheme();
+            VxPlatform.Current = Platform.iOS;
 
             NativeView.CreateNativeView = view =>
             {

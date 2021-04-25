@@ -4,10 +4,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 
 namespace PowerPlannerAppDataLibrary.ViewModels
 {
-    public class PopupComponentViewModel : BaseMainScreenViewModelChild
+    public class PopupComponentViewModel : ComponentViewModel
     {
-        public string Title { get; protected set; }
-
         /// <summary>
         /// Optional, if null, typical back behavior will be used. Can use this to specify "Cancel" or other options.
         /// </summary>

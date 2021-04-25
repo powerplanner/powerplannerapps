@@ -211,6 +211,7 @@
       <SubType>Designer</SubType>
     </InterfaceDefinition>
     <Compile Include="Controllers\PopupComponentViewController.cs" />
+    <Compile Include="Controllers\ComponentViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

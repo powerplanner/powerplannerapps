@@ -15,6 +15,7 @@ namespace Vx.Uwp
         static VxUwpExtensions()
         {
             Theme.Current = new VxUwpTheme();
+            VxPlatform.Current = Platform.Uwp;
 
             NativeView.CreateNativeView = view =>
             {

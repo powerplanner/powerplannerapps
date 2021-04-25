@@ -86,43 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private View RenderOption(string icon, string title, string subtitle, Action action)
         {
-            return new ListItemButton
-            {
-                Content = new LinearLayout
-                {
-                    Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12),
-                    Orientation = Orientation.Horizontal,
-                    Children =
-                        {
-                            new FontIcon
-                            {
-                                Glyph = icon,
-                                FontSize = 40,
-                                Color = Theme.Current.AccentColor
-                            },
-
-                            new LinearLayout
-                            {
-                                Margin = new Thickness(6, 0, 0, 0),
-                                Children =
-                                {
-                                    new TextBlock
-                                    {
-                                        Text = title,
-                                        FontWeight = FontWeights.Bold
-                                    },
-
-                                    new TextBlock
-                                    {
-                                        Text = subtitle,
-                                        TextColor = Theme.Current.SubtleForegroundColor
-                                    }
-                                }
-                            }.LinearLayoutWeight(1)
-                        }
-                },
-                Click = action
-            };
+            return SettingsListViewModel.RenderOption(icon, title, subtitle, action);
         }
 
         public void ConfigureCredits()

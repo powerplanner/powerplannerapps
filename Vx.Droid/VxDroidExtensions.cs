@@ -24,6 +24,7 @@ namespace Vx.Droid
         static VxDroidExtensions()
         {
             Theme.Current = new VxDroidTheme();
+            VxPlatform.Current = Platform.Android;
 
             NativeView.CreateNativeView = view =>
             {
