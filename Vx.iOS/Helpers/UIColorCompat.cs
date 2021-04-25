@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using UIKit;
 
-namespace Vx.iOS.Helpers
+namespace InterfacesiOS.Helpers
 {
     /// <summary>
     /// Code converted from Swift code here: https://github.com/noahsark769/ColorCompatibility/blob/master/Sources/ColorCompatibility.swift
     /// </summary>
-    internal static class UIColorCompat
+    public static class UIColorCompat
     {
         private static bool IsSupported = UIDevice.CurrentDevice.CheckSystemVersion(13, 0);
 
