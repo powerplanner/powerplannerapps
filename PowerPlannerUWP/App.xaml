@@ -21,7 +21,7 @@
 
                 <ResourceDictionary>
 
-                    <!--Colors used by buttons-->-->
+                    <!--Colors used by buttons-->
                     <Color x:Key="SystemAccentColor">#546BC7</Color>
                     <Color x:Key="SystemAccentColorLight1">#4B60B3</Color>
                     <Color x:Key="SystemAccentColorDark1">#2E366D</Color>
