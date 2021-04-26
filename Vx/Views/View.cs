@@ -43,6 +43,8 @@ namespace Vx.Views
         public double Width { get; set; } = double.NaN;
         public double Height { get; set; } = double.NaN;
 
+        public HorizontalAlignment HorizontalAlignment { get; set; }
+
         protected T GetProperty<T>([CallerMemberName]string propertyName = null)
         {
             if (_properties.TryGetValue(propertyName, out object val) && val is T)

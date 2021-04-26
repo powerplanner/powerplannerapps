@@ -14,6 +14,9 @@ using UpgradeFromSilverlight;
 using UpgradeFromWin8;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using BareMvvm.Core.ViewModels;
+using PowerPlannerUWP.ViewModel.Settings;
 
 namespace PowerPlannerUWP
 {
@@ -37,6 +40,13 @@ namespace PowerPlannerUWP
             // We register promoting other accounts as one of the first promotions
             PromoRegistrations.Registrations.Insert(0, typeof(PromoOtherPlatformsViewModel.Registration));
             PromoRegistrations.Registrations.Add(typeof(PromoContributeViewModel.Registration));
+
+            // Register settings extensions
+            SettingsListViewModel.OpenLiveTiles = settingsListViewModel =>
+            {
+                var pagedViewModel = settingsListViewModel.FindAncestor<PagedViewModel>();
+                pagedViewModel.Navigate(new TileSettingsViewModel(pagedViewModel));
+            };
 
             // Extensions are registered with InitializeUWP.Initialize, since they're also needed from the background task
 

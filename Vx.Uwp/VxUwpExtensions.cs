@@ -41,6 +41,14 @@ namespace Vx.Uwp
 
                 if (view is Vx.Views.Button)
                 {
+                    if (view is Vx.Views.TextButton)
+                    {
+                        return new UwpTextButton();
+                    }
+                    else if (view is Vx.Views.AccentButton)
+                    {
+                        return new UwpAccentButton();
+                    }
                     return new UwpButton();
                 }
 
@@ -112,6 +120,24 @@ namespace Vx.Uwp
 
                 default:
                     return Windows.UI.Text.FontWeights.Normal;
+            }
+        }
+
+        internal static Windows.UI.Xaml.HorizontalAlignment ToUwp(this Vx.Views.HorizontalAlignment horizontalAlignment)
+        {
+            switch (horizontalAlignment)
+            {
+                case Vx.Views.HorizontalAlignment.Left:
+                    return Windows.UI.Xaml.HorizontalAlignment.Left;
+
+                case Vx.Views.HorizontalAlignment.Center:
+                    return Windows.UI.Xaml.HorizontalAlignment.Center;
+
+                case Vx.Views.HorizontalAlignment.Right:
+                    return Windows.UI.Xaml.HorizontalAlignment.Right;
+
+                default:
+                    return Windows.UI.Xaml.HorizontalAlignment.Stretch;
             }
         }
     }

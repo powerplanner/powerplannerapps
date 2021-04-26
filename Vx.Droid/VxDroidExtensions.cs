@@ -40,6 +40,16 @@ namespace Vx.Droid
 
                 if (view is Vx.Views.Button)
                 {
+                    if (view is Vx.Views.TextButton)
+                    {
+                        return new DroidTextButton();
+                    }
+
+                    if (view is Vx.Views.AccentButton)
+                    {
+                        return new DroidAccentButton();
+                    }
+
                     return new DroidButton();
                 }
 
@@ -100,6 +110,24 @@ namespace Vx.Droid
         internal static Android.Graphics.Color ToDroid(this Color color)
         {
             return new Android.Graphics.Color(color.ToArgb());
+        }
+
+        internal static GravityFlags ToDroid(this HorizontalAlignment horizontalAlignment)
+        {
+            switch (horizontalAlignment)
+            {
+                case HorizontalAlignment.Left:
+                    return GravityFlags.Start;
+
+                case HorizontalAlignment.Center:
+                    return GravityFlags.CenterHorizontal;
+
+                case HorizontalAlignment.Right:
+                    return GravityFlags.End;
+
+                default:
+                    return GravityFlags.FillHorizontal;
+            }
         }
     }
 }

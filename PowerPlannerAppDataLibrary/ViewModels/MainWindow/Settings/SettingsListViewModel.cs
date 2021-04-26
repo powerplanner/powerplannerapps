@@ -58,10 +58,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, 0)
                 });
 
-                layout.Children.Add(new Button
+                layout.Children.Add(new TextButton
                 {
                     Text = PowerPlannerResources.GetString("String_ViewYearsAndSemesters"),
                     Click = OpenYears,
+                    HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
                 });
 
@@ -76,11 +77,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, 0)
                 });
 
-                layout.Children.Add(new Button
+                layout.Children.Add(new TextButton
                 {
                     Text = SyncButtonText,
                     IsEnabled = SyncButtonIsEnabled,
                     Click = StartSync,
+                    HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
                 });
 
@@ -127,7 +129,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenMyAccount);
             }
 
-            if (OpenWidgets != null)
+            if (HasAccount && OpenWidgets != null)
             {
                 RenderOption(
                     layout,
@@ -137,7 +139,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     () => OpenWidgets(this));
             }
 
-            if (OpenLiveTiles != null)
+            if (HasAccount && OpenLiveTiles != null)
             {
                 RenderOption(
                     layout,
@@ -164,7 +166,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     MaterialDesign.MaterialDesignIcons.Cached,
                     PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Title"),
                     PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Subtitle"),
-                    OpenSyncOptionsSimple);
+                    () =>
+                    {
+                        if (VxPlatform.Current == Platform.Uwp)
+                        {
+                            OpenSyncOptions();
+                        }
+                        else
+                        {
+                            OpenSyncOptionsSimple();
+                        }
+                    });
             }
 
             if (IsGoogleCalendarIntegrationVisible)
@@ -507,7 +519,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenYears()
         {
-            MainScreenViewModel?.OpenYears();
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                MainScreenViewModel.SelectedItem = NavigationManager.MainMenuSelections.Years;
+            }
+            else
+            {
+                MainScreenViewModel?.OpenYears();
+            }
         }
 
         public void StartSync()

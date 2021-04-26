@@ -159,6 +159,7 @@
     <Compile Include="Converters\IsPastCompletedTasksDisplayedToButtonContentConverter.cs" />
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
+    <Compile Include="Extensions\UWPBrowserExtension.cs" />
     <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
@@ -418,9 +419,6 @@
     <Compile Include="Views\MainScreenContentViewHostGeneric.cs" />
     <Compile Include="Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsListView.xaml.cs">
-      <DependentUpon>SettingsListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewTaskOrEventView.xaml.cs">
       <DependentUpon>ViewTaskOrEventView.xaml</DependentUpon>
@@ -918,10 +916,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScheduleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SettingsListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

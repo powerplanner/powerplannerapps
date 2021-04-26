@@ -33,6 +33,7 @@ namespace Vx.Uwp.Views
             View.Width = newView.Width;
             View.Height = newView.Height;
             View.Opacity = newView.Opacity;
+            View.HorizontalAlignment = newView.HorizontalAlignment.ToUwp();
 
             LinearLayout.SetWeight(View, Vx.Views.LinearLayout.GetWeight(newView));
         }

@@ -19,6 +19,11 @@ namespace Vx.Droid.Views
             View = Activator.CreateInstance(typeof(N), VxDroidExtensions.ApplicationContext) as N;
         }
 
+        public DroidView(N view)
+        {
+            View = view;
+        }
+
         protected override void ApplyProperties(V oldView, V newView)
         {
             if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
@@ -27,9 +32,10 @@ namespace Vx.Droid.Views
                 var isVertical = parentLinearLayout.Orientation == Vx.Views.Orientation.Vertical;
 
                 View.LayoutParameters = new LinearLayout.LayoutParams(
-                    width: isVertical ? LinearLayout.LayoutParams.MatchParent : (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0),
+                    width: isVertical ? (newView.HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent) : (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0),
                     height: isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : LinearLayout.LayoutParams.MatchParent)
                 {
+                    Gravity = newView.HorizontalAlignment.ToDroid(),
                     MarginStart = AsPx(newView.Margin.Left),
                     TopMargin = AsPx(newView.Margin.Top),
                     MarginEnd = AsPx(newView.Margin.Right),
