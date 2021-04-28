@@ -52,23 +52,35 @@ namespace BareMvvm.Core.ViewModels
             get { return _content; }
             private set
             {
-                var oldContent = _content;
-                SetProperty(ref _content, value, "Content");
-                base.AllowLightDismiss = value != null ? value.AllowLightDismiss : InitialAllowLightDismissValue;
-                TriggerChildContentChanged(value);
-                TriggerVisibleContentChanged();
-                if (oldContent != null)
+#if DEBUG
+                try
                 {
-                    oldContent.AllowLightDismissChanged -= CurrentContent_AllowLightDismissChanged;
-                    oldContent.OnNavigatedFrom();
-                    oldContent.OnViewLostFocus();
+#endif
+                    var oldContent = _content;
+                    SetProperty(ref _content, value, "Content");
+                    base.AllowLightDismiss = value != null ? value.AllowLightDismiss : InitialAllowLightDismissValue;
+                    TriggerChildContentChanged(value);
+                    TriggerVisibleContentChanged();
+                    if (oldContent != null)
+                    {
+                        oldContent.AllowLightDismissChanged -= CurrentContent_AllowLightDismissChanged;
+                        oldContent.OnNavigatedFrom();
+                        oldContent.OnViewLostFocus();
+                    }
+                    if (value != null)
+                    {
+                        value.AllowLightDismissChanged += CurrentContent_AllowLightDismissChanged;
+                        value.OnNavigatedTo();
+                        value.OnViewFocused();
+                    }
+#if DEBUG
                 }
-                if (value != null)
+                catch (Exception ex)
                 {
-                    value.AllowLightDismissChanged += CurrentContent_AllowLightDismissChanged;
-                    value.OnNavigatedTo();
-                    value.OnViewFocused();
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    System.Diagnostics.Debugger.Break();
                 }
+#endif
             }
         }
 

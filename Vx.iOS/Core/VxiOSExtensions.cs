@@ -79,6 +79,11 @@ namespace Vx.iOS
 
         public static UIView Render(this VxComponent component)
         {
+            if (component.NativeComponent != null)
+            {
+                return component.NativeComponent as iOSNativeComponent;
+            }
+
             var nativeComponent = new iOSNativeComponent();
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;

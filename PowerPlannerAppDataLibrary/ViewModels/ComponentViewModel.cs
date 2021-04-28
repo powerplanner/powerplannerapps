@@ -4,7 +4,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 
 namespace PowerPlannerAppDataLibrary.ViewModels
 {
-    public class ComponentViewModel : BaseMainScreenViewModelChild
+    public class ComponentViewModel : BaseMainScreenViewModelDescendant
     {
         public string Title { get; protected set; }
 

@@ -319,7 +319,7 @@ namespace BareMvvm.Core.ViewModels
         public bool IsFocused { get; private set; }
 
         private WeakReference _nativeView;
-        public object GetNativeView()
+        public virtual object GetNativeView()
         {
             return _nativeView?.Target;
         }

@@ -51,8 +51,6 @@ namespace InterfacesUWP.ViewModelPresenters
                 var cached = baseViewModel.GetNativeView();
                 if (cached != null)
                 {
-                    // If there's already an existing cached native view (like for paging scenarios)
-                    // then use that
                     return cached;
                 }
             }

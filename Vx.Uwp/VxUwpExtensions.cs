@@ -77,12 +77,22 @@ namespace Vx.Uwp
                     return new UwpSwitch();
                 }
 
+                if (view is Vx.Views.CheckBox)
+                {
+                    return new UwpCheckBox();
+                }
+
                 throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
         }
 
         public static FrameworkElement Render(this VxComponent component)
         {
+            if (component.NativeComponent != null)
+            {
+                return component.NativeComponent as UwpNativeComponent;
+            }
+
             var nativeComponent = new UwpNativeComponent();
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;

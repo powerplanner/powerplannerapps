@@ -262,6 +262,7 @@
     </Compile>
     <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
     <Compile Include="Views\UwpButton.cs" />
+    <Compile Include="Views\UwpCheckBox.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />

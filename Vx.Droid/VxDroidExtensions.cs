@@ -97,6 +97,11 @@ namespace Vx.Droid
 
         public static Android.Views.View Render(this VxComponent component)
         {
+            if (component.NativeComponent != null)
+            {
+                return component.NativeComponent as DroidNativeComponent;
+            }
+
             var nativeComponent = new DroidNativeComponent(ApplicationContext);
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;

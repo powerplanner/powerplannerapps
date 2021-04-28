@@ -13,6 +13,7 @@ namespace Vx.Uwp.Views
     {
         public UwpButton()
         {
+            View.Click += View_Click;
         }
 
         private void View_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -45,8 +46,6 @@ namespace Vx.Uwp.Views
             var tb = new TextBlock();
             View.Content = tb;
             _tb = tb;
-
-
 
             View.Click += View_Click;
         }

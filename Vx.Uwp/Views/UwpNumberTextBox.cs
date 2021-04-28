@@ -46,7 +46,11 @@ namespace Vx.Uwp.Views
             {
                 if (newView.Number.Value != null)
                 {
-                    View.Text = newView.Number.Value.ToString();
+                    // This is to ensure that when user goes from "1.5" to "1." (deletes the end), it doesn't change it to 1
+                    if (!double.TryParse(View.Text, out double curr) || curr != newView.Number.Value)
+                    {
+                        View.Text = newView.Number.Value.ToString();
+                    }
                 }
                 else
                 {

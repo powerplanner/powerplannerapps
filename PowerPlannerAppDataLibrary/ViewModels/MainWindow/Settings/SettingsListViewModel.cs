@@ -3,6 +3,7 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System;
@@ -33,7 +34,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public SettingsListViewModel(BaseViewModel parent) : base(parent)
         {
-            MainScreenViewModel = FindAncestor<MainScreenViewModel>();
             Account = MainScreenViewModel?.CurrentAccount;
 
             Title = PowerPlannerResources.GetString("String_More");
@@ -157,6 +157,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     PowerPlannerResources.GetString("Settings_MainPage_RemindersItem.Title"),
                     PowerPlannerResources.GetString("Settings_MainPage_RemindersItem.Subtitle"),
                     OpenReminderSettings);
+            }
+
+            // Grade options
+            if (HasAccount)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Calculate,
+                    "Default grade options",
+                    "Set default grade options for all classes",
+                    OpenGradeOptions);
             }
 
             if (VxPlatform.Current != Platform.iOS && IsSyncOptionsVisible)
@@ -301,8 +312,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 Click = action
             };
         }
-
-        public MainScreenViewModel MainScreenViewModel { get; private set; }
 
         /// <summary>
         /// This is only false if they enter the settings page from the login page. This will still be true for default offline accounts.
@@ -542,6 +551,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public void OpenAbout()
         {
             Show(new AboutViewModel(ParentForSubviews));
+        }
+
+        public void OpenGradeOptions()
+        {
+            Show(new ConfigureOverallGradesListViewModel(ParentForSubviews));
         }
 
         public void OpenPremiumVersion()

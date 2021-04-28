@@ -436,6 +436,27 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         [DataMember]
+        private GradeScale[] _defaultGradeScale;
+        public GradeScale[] DefaultGradeScale
+        {
+            get
+            {
+                if (_defaultGradeScale == null)
+                {
+                    _defaultGradeScale = GradeScale.GenerateDefaultScaleWithoutLetters();
+                }
+
+                return _defaultGradeScale;
+            }
+        }
+
+        public async System.Threading.Tasks.Task SaveDefaultGradeScale(GradeScale[] defaultGradeScale)
+        {
+            _defaultGradeScale = defaultGradeScale;
+            await AccountsManager.Save(this);
+        }
+
+        [DataMember]
         private MainTileSettings _mainTileSettings;
         public MainTileSettings MainTileSettings
         {
