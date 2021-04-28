@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ToolsPortable;
+using Vx;
 using Vx.Views;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades.ConfigureClassGradeScaleViewModel;
 
@@ -83,6 +84,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     })
                 }
             };
+
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                layout.Children.Insert(0, new TextBlock
+                {
+                    Text = Title.ToUpper(),
+                    Margin = new Thickness(0, 0, 0, 12)
+                }.TitleStyle());
+            }
 
             foreach (var entry in GradeScales)
             {

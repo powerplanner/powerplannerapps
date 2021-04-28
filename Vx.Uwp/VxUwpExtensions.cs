@@ -128,6 +128,9 @@ namespace Vx.Uwp
                 case FontWeights.SemiBold:
                     return Windows.UI.Text.FontWeights.SemiBold;
 
+                case FontWeights.SemiLight:
+                    return Windows.UI.Text.FontWeights.SemiLight;
+
                 default:
                     return Windows.UI.Text.FontWeights.Normal;
             }

@@ -8,6 +8,7 @@ namespace Vx.Views
     {
         Normal,
         SemiBold,
-        Bold
+        Bold,
+        SemiLight
     }
 }

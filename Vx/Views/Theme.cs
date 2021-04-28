@@ -35,5 +35,9 @@ namespace Vx.Views
         public Color AccentColor => DefaultAccentColor;
 
         public float PageMargin => DefaultPageMargin;
+
+        public float BodyFontSize => 14;
+
+        public float TitleFontSize => 24;
     }
 }
