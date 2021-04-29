@@ -26,7 +26,11 @@ namespace Vx.Views
         }
 
         public static Color DefaultAccentColor { get; set; } = Color.Blue;
-        public static float DefaultPageMargin { get; set; } = 20;
+
+        /// <summary>
+        /// Windows uses 24px for typical page margins, and then sometimes 16px margins between content? And sometimes 12.
+        /// </summary>
+        public static float DefaultPageMargin { get; set; } = 24;
 
         public abstract Color ForegroundColor { get; }
 
