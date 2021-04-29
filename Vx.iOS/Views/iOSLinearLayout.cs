@@ -89,7 +89,7 @@ namespace Vx.iOS.Views
             for (int i = 0; i < newView.Children.Count; i++)
             {
                 View.SetWeight(i, LinearLayout.GetWeight(newView.Children[i]));
-                View.SetMargins(i, newView.Children[i].Margin);
+                View.SetMargins(i, newView.Children[i].Margin.AsModified());
             }
         }
     }

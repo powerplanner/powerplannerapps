@@ -66,5 +66,10 @@ namespace Vx.Views
 
         public float Width => Left + Right;
         public float Height => Top + Bottom;
+
+        public Thickness AsModified()
+        {
+            return new Thickness(Theme.Current.MarginModifier * Left, Theme.Current.MarginModifier * Top, Theme.Current.MarginModifier * Right, Theme.Current.MarginModifier * Bottom);
+        }
     }
 }

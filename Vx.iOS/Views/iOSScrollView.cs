@@ -16,7 +16,8 @@ namespace Vx.iOS.Views
 
             ReconcileContent(oldView?.Content, newView.Content, subview =>
             {
-                subview.ConfigureForVerticalScrolling(View, newView.Content.Margin.Left, newView.Content.Margin.Top, newView.Content.Margin.Right, newView.Content.Margin.Bottom);
+                var modifiedMargin = newView.Content.Margin.AsModified();
+                subview.ConfigureForVerticalScrolling(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
             });
         }
     }

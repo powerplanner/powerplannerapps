@@ -45,7 +45,8 @@ namespace Vx.iOS.Views
         {
             ReconcileContent(oldContent, newContent, subview =>
             {
-                subview.StretchWidthAndHeight(View, newContent.Margin.Left, newContent.Margin.Top, newContent.Margin.Right, newContent.Margin.Bottom);
+                var modifiedMargin = newContent.Margin.AsModified();
+                subview.StretchWidthAndHeight(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
             });
         }
     }
