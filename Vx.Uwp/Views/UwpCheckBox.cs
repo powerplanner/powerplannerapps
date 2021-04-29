@@ -26,7 +26,7 @@ namespace Vx.Uwp.Views
 
             View.IsChecked = newView.IsChecked;
             View.Content = newView.Text;
-            Views.IsEnabled = newView.IsEnabled;
+            View.IsEnabled = newView.IsEnabled;
         }
     }
 }
