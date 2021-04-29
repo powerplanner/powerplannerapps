@@ -19,11 +19,11 @@ namespace Vx.iOS.Views
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
             View.Add(_label);
-            _label.StretchHeight(View);
+            _label.StretchHeight(View, 5, 5); // We pad to match how Windows checkboxes are padded
 
             _switch = new UISwitch() { TranslatesAutoresizingMaskIntoConstraints = false };
             View.Add(_switch);
-            _switch.StretchHeight(View);
+            _switch.StretchHeight(View, 5, 5);
 
             // Idk why, but on the add task page, if the keyboard is up, this doesn't get hit
             // even though on the inline edit controls the same code works. I investigated for 20 mins
