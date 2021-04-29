@@ -183,7 +183,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                                             _selectedClasses.Remove(c);
                                             MarkDirty();
                                         }
-                                    }
+                                    },
+                                    IsEnabled = _state.Value != States.Saving
                                 });
                             }
                         }

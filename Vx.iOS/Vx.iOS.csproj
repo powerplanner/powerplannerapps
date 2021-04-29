@@ -122,6 +122,7 @@
     <Compile Include="Views\iOSNumberTextBox.cs" />
     <Compile Include="Views\iOSSwitch.cs" />
     <Compile Include="Windows\NativeiOSAppWindow.cs" />
+    <Compile Include="Views\iOSCheckBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

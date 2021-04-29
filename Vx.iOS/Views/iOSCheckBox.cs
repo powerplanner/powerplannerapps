@@ -5,12 +5,12 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSSwitch : iOSView<Switch, UIControl>
+    public class iOSCheckBox : iOSView<CheckBox, UIControl>
     {
         private UILabel _label;
         private UISwitch _switch;
 
-        public iOSSwitch()
+        public iOSCheckBox()
         {
             _label = new UILabel()
             {
@@ -41,9 +41,9 @@ namespace Vx.iOS.Views
 
         private void _switch_ValueChanged(object sender, EventArgs e)
         {
-            if (VxView.IsOn != null)
+            if (VxView.IsChecked != _switch.On)
             {
-                VxView.IsOn.Value = _switch.On;
+                VxView.IsCheckedChanged?.Invoke(_switch.On);
             }
         }
 
@@ -56,22 +56,19 @@ namespace Vx.iOS.Views
 
             _switch.On = !_switch.On;
 
-            if (VxView.IsOn != null)
+            if (VxView.IsChecked != _switch.On)
             {
-                VxView.IsOn.Value = _switch.On;
+                VxView.IsCheckedChanged?.Invoke(_switch.On);
             }
         }
 
-        protected override void ApplyProperties(Switch oldView, Switch newView)
+        protected override void ApplyProperties(CheckBox oldView, CheckBox newView)
         {
             base.ApplyProperties(oldView, newView);
 
-            _label.Text = newView.Title;
+            _label.Text = newView.Text;
 
-            if (newView.IsOn != null)
-            {
-                _switch.On = newView.IsOn.Value;
-            }
+            _switch.On = newView.IsChecked;
 
             _switch.Enabled = newView.IsEnabled;
         }

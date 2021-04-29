@@ -9,5 +9,6 @@ namespace Vx.Views
         public string Text { get; set; }
         public bool IsChecked { get; set; }
         public Action<bool> IsCheckedChanged { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }

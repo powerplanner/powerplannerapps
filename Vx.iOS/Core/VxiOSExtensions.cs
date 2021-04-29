@@ -69,6 +69,11 @@ namespace Vx.iOS
                     return new iOSSwitch();
                 }
 
+                if (view is Vx.Views.CheckBox)
+                {
+                    return new iOSCheckBox();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
