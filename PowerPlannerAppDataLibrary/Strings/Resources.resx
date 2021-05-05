@@ -1977,4 +1977,38 @@ Please think about using an online account instead!</value>
   <data name="AddClassTime_AddAnotherTime.Content" xml:space="preserve">
     <value>add another time</value>
   </data>
+  <data name="Settings_DefaultGradeOptions_AverageGrades" xml:space="preserve">
+    <value>Default average grades</value>
+  </data>
+  <data name="Settings_DefaultGradeOptions_Explanation" xml:space="preserve">
+    <value>Configure default grade options, used for all classes unless overridden.</value>
+  </data>
+  <data name="Settings_DefaultGradeOptions_GradeScale" xml:space="preserve">
+    <value>Default grade scale</value>
+  </data>
+  <data name="Settings_DefaultGradeOptions_RoundGradesUp" xml:space="preserve">
+    <value>Default round grades up</value>
+  </data>
+  <data name="Settings_DefaultGradeOptions_SaveAndApply" xml:space="preserve">
+    <value>Save and apply to {0} classes</value>
+  </data>
+  <data name="Settings_MainPage_DefaultGradeOptions.Subtitle" xml:space="preserve">
+    <value>Set default grade options for all classes</value>
+  </data>
+  <data name="Settings_MainPage_DefaultGradeOptions.Title" xml:space="preserve">
+    <value>Default grade options</value>
+  </data>
+  <data name="String_All" xml:space="preserve">
+    <value>all</value>
+    <comment>Used in "Apply to all classes"</comment>
+  </data>
+  <data name="String_Saved" xml:space="preserve">
+    <value>Saved!</value>
+  </data>
+  <data name="String_Saving" xml:space="preserve">
+    <value>Saving...</value>
+  </data>
+  <data name="String_Unsaved" xml:space="preserve">
+    <value>Unsaved</value>
+  </data>
 </root>

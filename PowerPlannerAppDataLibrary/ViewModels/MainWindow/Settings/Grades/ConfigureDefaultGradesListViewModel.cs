@@ -17,7 +17,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public ConfigureDefaultGradesListViewModel(BaseViewModel parent) : base(parent)
         {
-            Title = "Grade options";
+            Title = PowerPlannerResources.GetString("Settings_MainPage_DefaultGradeOptions.Title");
             Account = MainScreenViewModel.CurrentAccount;
         }
 
@@ -30,7 +30,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     new TextBlock
                     {
-                        Text = "Configure the default grade options, applied to all classes unless overridden.",
+                        Text = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_Explanation"),
                         WrapText = true,
                         TextColor = Theme.Current.SubtleForegroundColor,
                         Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12)
@@ -61,6 +61,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 layout.Children.Insert(0, new TextBlock
                 {
                     Text = Title.ToUpper(),
+                    WrapText = true,
                     Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0)
                 }.TitleStyle());
             }

@@ -2498,6 +2498,50 @@ Please think about using an online account instead!</source>
           <source>Mark incomplete</source>
           <target state="final">ضع علامة غير مكتملة</target>
         </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_AverageGrades" translate="yes" xml:space="preserve">
+          <source>Default average grades</source>
+          <target state="final">متوسط التقديرات الافتراضي</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_Explanation" translate="yes" xml:space="preserve">
+          <source>Configure default grade options, used for all classes unless overridden.</source>
+          <target state="final">قم بتكوين خيارات التقدير الافتراضية ، والتي تُستخدم لجميع الفئات ما لم يتم تجاوزها.</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_GradeScale" translate="yes" xml:space="preserve">
+          <source>Default grade scale</source>
+          <target state="final">مقياس التقدير الافتراضي</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_RoundGradesUp" translate="yes" xml:space="preserve">
+          <source>Default round grades up</source>
+          <target state="final">الجولة الافتراضية تصل إلى الدرجات</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_SaveAndApply" translate="yes" xml:space="preserve">
+          <source>Save and apply to {0} classes</source>
+          <target state="final">احفظ وطبق على {0} من الفصول</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Subtitle" translate="yes" xml:space="preserve">
+          <source>Set default grade options for all classes</source>
+          <target state="final">قم بتعيين خيارات التقدير الافتراضية لجميع الفئات</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Title" translate="yes" xml:space="preserve">
+          <source>Default grade options</source>
+          <target state="final">خيارات التقدير الافتراضية</target>
+        </trans-unit>
+        <trans-unit id="String_All" translate="yes" xml:space="preserve">
+          <source>all</source>
+          <target state="final">الكل</target>
+        </trans-unit>
+        <trans-unit id="String_Saved" translate="yes" xml:space="preserve">
+          <source>Saved!</source>
+          <target state="final">تم الحفظ!</target>
+        </trans-unit>
+        <trans-unit id="String_Saving" translate="yes" xml:space="preserve">
+          <source>Saving...</source>
+          <target state="final">إنقاذ...</target>
+        </trans-unit>
+        <trans-unit id="String_Unsaved" translate="yes" xml:space="preserve">
+          <source>Unsaved</source>
+          <target state="final">لم يتم الحفظ</target>
+        </trans-unit>
       </group>
     </body>
   </file>

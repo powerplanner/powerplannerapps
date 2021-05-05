@@ -56,15 +56,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 case States.Loading:
                 case States.Initial:
-                    applyText = $"Save and apply to {(SelectedClasses.Count == _totalClasses ? "all" : SelectedClasses.Count.ToString())} classes";
+                    applyText = PowerPlannerResources.GetStringWithParameters("Settings_DefaultGradeOptions_SaveAndApply", (SelectedClasses.Count == _totalClasses ? PowerPlannerResources.GetString("String_All") : SelectedClasses.Count.ToString()));
                     break;
 
                 case States.Saving:
-                    applyText = "Saving...";
+                    applyText = PowerPlannerResources.GetString("String_Saving");
                     break;
 
                 case States.Applied:
-                    applyText = "Saved!";
+                    applyText = PowerPlannerResources.GetString("String_Saved");
                     break;
 
                 default:

@@ -2496,6 +2496,50 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Mark incomplete</source>
           <target state="final" state-qualifier="mt-suggestion">Markieren unvollständig</target>
         </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_AverageGrades" translate="yes" xml:space="preserve">
+          <source>Default average grades</source>
+          <target state="final" state-qualifier="mt-suggestion">Standarddurchschnittsnoten</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_Explanation" translate="yes" xml:space="preserve">
+          <source>Configure default grade options, used for all classes unless overridden.</source>
+          <target state="final" state-qualifier="mt-suggestion">Konfigurieren Sie Standard-Grade-Optionen, die für alle Klassen verwendet werden, sofern sie nicht überschrieben werden.</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_GradeScale" translate="yes" xml:space="preserve">
+          <source>Default grade scale</source>
+          <target state="final" state-qualifier="mt-suggestion">Standard-Grade-Skala</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_RoundGradesUp" translate="yes" xml:space="preserve">
+          <source>Default round grades up</source>
+          <target state="final" state-qualifier="mt-suggestion">Standard-Rundnoten nach oben</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_SaveAndApply" translate="yes" xml:space="preserve">
+          <source>Save and apply to {0} classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Speichern und Anwenden auf {0} Klassen</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Subtitle" translate="yes" xml:space="preserve">
+          <source>Set default grade options for all classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Festlegen von Standard-Notenoptionen für alle Klassen</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Title" translate="yes" xml:space="preserve">
+          <source>Default grade options</source>
+          <target state="final" state-qualifier="mt-suggestion">Standard-Grade-Optionen</target>
+        </trans-unit>
+        <trans-unit id="String_All" translate="yes" xml:space="preserve">
+          <source>all</source>
+          <target state="final" state-qualifier="tm-suggestion">alle</target>
+        </trans-unit>
+        <trans-unit id="String_Saved" translate="yes" xml:space="preserve">
+          <source>Saved!</source>
+          <target state="final" state-qualifier="mt-suggestion">Gespeichert!</target>
+        </trans-unit>
+        <trans-unit id="String_Saving" translate="yes" xml:space="preserve">
+          <source>Saving...</source>
+          <target state="final" state-qualifier="tm-suggestion">Wird gespeichert…</target>
+        </trans-unit>
+        <trans-unit id="String_Unsaved" translate="yes" xml:space="preserve">
+          <source>Unsaved</source>
+          <target state="final" state-qualifier="tm-suggestion">Nicht gespeichert</target>
+        </trans-unit>
       </group>
     </body>
   </file>

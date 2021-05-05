@@ -19,7 +19,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public ConfigureDefaultRoundGradesUpViewModel(BaseViewModel parent) : base(parent)
         {
-            Title = "Default round grades up";
+            Title = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_RoundGradesUp");
             _roundGradesUp = new VxState<bool>(Account.DefaultDoesRoundGradesUp);
         }
 
@@ -35,6 +35,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 layout.Children.Add(new TextBlock
                 {
                     Text = Title.ToUpper(),
+                    WrapText = true,
                     Margin = new Thickness(0, 0, 0, 12)
                 }.TitleStyle());
             }
@@ -55,7 +56,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 layout.Children.Add(new TextBlock
                 {
-                    Text = _hasUnsavedChanges ? "Unsaved" : "Saved!",
+                    Text = PowerPlannerResources.GetString(_hasUnsavedChanges ? "String_Unsaved" : "String_Saved"),
                     Margin = new Thickness(0, 6, 0, 0),
                     TextColor = Theme.Current.SubtleForegroundColor,
                     FontSize = Theme.Current.CaptionFontSize

@@ -2494,6 +2494,50 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Mark incomplete</source>
           <target state="final" state-qualifier="mt-suggestion">Marque incomplète</target>
         </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_AverageGrades" translate="yes" xml:space="preserve">
+          <source>Default average grades</source>
+          <target state="final" state-qualifier="mt-suggestion">Notes moyennes par défaut</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_Explanation" translate="yes" xml:space="preserve">
+          <source>Configure default grade options, used for all classes unless overridden.</source>
+          <target state="final" state-qualifier="mt-suggestion">Configurez les options de qualité par défaut, utilisées pour toutes les classes à moins qu’elles ne soient remplacées.</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_GradeScale" translate="yes" xml:space="preserve">
+          <source>Default grade scale</source>
+          <target state="final" state-qualifier="mt-suggestion">Échelle de qualité par défaut</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_RoundGradesUp" translate="yes" xml:space="preserve">
+          <source>Default round grades up</source>
+          <target state="final" state-qualifier="mt-suggestion">Notes rondes par défaut vers le haut</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_SaveAndApply" translate="yes" xml:space="preserve">
+          <source>Save and apply to {0} classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Enregistrer et appliquer à {0} classes</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Subtitle" translate="yes" xml:space="preserve">
+          <source>Set default grade options for all classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Définir des options de qualité par défaut pour toutes les classes</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Title" translate="yes" xml:space="preserve">
+          <source>Default grade options</source>
+          <target state="final" state-qualifier="mt-suggestion">Options de qualité par défaut</target>
+        </trans-unit>
+        <trans-unit id="String_All" translate="yes" xml:space="preserve">
+          <source>all</source>
+          <target state="final" state-qualifier="tm-suggestion">toutes</target>
+        </trans-unit>
+        <trans-unit id="String_Saved" translate="yes" xml:space="preserve">
+          <source>Saved!</source>
+          <target state="final" state-qualifier="mt-suggestion">sauvé!</target>
+        </trans-unit>
+        <trans-unit id="String_Saving" translate="yes" xml:space="preserve">
+          <source>Saving...</source>
+          <target state="final" state-qualifier="tm-suggestion">Enregistrement…</target>
+        </trans-unit>
+        <trans-unit id="String_Unsaved" translate="yes" xml:space="preserve">
+          <source>Unsaved</source>
+          <target state="final" state-qualifier="tm-suggestion">Non enregistré</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -24,7 +24,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public ConfigureDefaultGradeScaleViewModel(BaseViewModel parent) : base(parent)
         {
-            Title = "Default grade scale";
+            Title = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_GradeScale");
 
             GradeScales = new MyObservableList<EditingGradeScale>(Account.DefaultGradeScale.Select(i => new EditingGradeScale()
             {
@@ -65,6 +65,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 layout.Children.Insert(0, new TextBlock
                 {
                     Text = Title.ToUpper(),
+                    WrapText = true,
                     Margin = new Thickness(0, 0, 0, 12)
                 }.TitleStyle());
             }

@@ -74,7 +74,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 layout.Children.Add(new TextBlock
                 {
                     Text = SyncStatusText,
-                    Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, 0)
+                    Margin = new Thickness(Theme.Current.PageMargin, layout.Children.Count == 0 ? Theme.Current.PageMargin : 0, Theme.Current.PageMargin, 0)
                 });
 
                 layout.Children.Add(new TextButton
@@ -165,8 +165,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 RenderOption(
                     layout,
                     MaterialDesign.MaterialDesignIcons.Calculate,
-                    "Default grade options",
-                    "Set default grade options for all classes",
+                    PowerPlannerResources.GetString("Settings_MainPage_DefaultGradeOptions.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_DefaultGradeOptions.Subtitle"),
                     OpenGradeOptions);
             }
 
