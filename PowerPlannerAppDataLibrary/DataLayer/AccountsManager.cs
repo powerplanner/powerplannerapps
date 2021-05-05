@@ -353,6 +353,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 needsClassRemindersReset = true;
             }
 
+            if (account.AccountDataVersion < 5)
+            {
+                // Set default does round up (otherwise this would be false when upgrading)
+                account.DefaultDoesRoundGradesUp = true;
+            }
+
             if (account.AccountDataVersion < AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION)
             {
                 account.AccountDataVersion = AccountDataItem.CURRENT_ACCOUNT_DATA_VERSION;
@@ -546,7 +552,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <param name="rememberPassword"></param>
         /// <param name="autoLogin"></param>
         /// <returns></returns>
-        public static async Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId, bool rememberUsername, bool rememberPassword, bool autoLogin, bool needsInitialSync)
+        public static async Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId, bool rememberUsername, bool rememberPassword, bool autoLogin, bool needsInitialSync, PowerPlannerSending.SyncedSettings settings, long currentDefaultGradeScaleIndex)
         {
             await ValidateUsernameAsync(username);
 
@@ -561,10 +567,20 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 RememberUsername = rememberUsername,
                 RememberPassword = rememberPassword,
                 AutoLogin = autoLogin,
-                NeedsToSyncSettings = true, // Needs settings uploaded since we're setting WeekOneStartsOn
-                WeekOneStartsOn = ToolsPortable.DateTools.Last(System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek, DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc)),
                 NeedsInitialSync = needsInitialSync
             };
+
+            if (settings != null)
+            {
+                // Apply existing settings
+                account.ApplySyncedSettings(settings, currentDefaultGradeScaleIndex);
+            }
+            else
+            {
+                // Initialize defaults
+                account.NeedsToSyncSettings = true;
+                account.WeekOneStartsOn = ToolsPortable.DateTools.Last(System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek, DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc));
+            }
 
             // Place it in the cache
             lock (_cachedAccounts)

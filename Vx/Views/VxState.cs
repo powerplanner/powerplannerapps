@@ -80,6 +80,8 @@ namespace Vx.Views
                 _sourceProperty = prop
             };
         }
+
+        public static implicit operator T(VxState<T> v) => v.Value;
     }
 
     public class VxSilentState<T> : VxState<T>

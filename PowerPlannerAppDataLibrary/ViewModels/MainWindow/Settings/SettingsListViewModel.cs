@@ -555,7 +555,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenGradeOptions()
         {
-            Show(new ConfigureOverallGradesListViewModel(ParentForSubviews));
+            Show(new ConfigureDefaultGradesListViewModel(ParentForSubviews));
         }
 
         public void OpenPremiumVersion()

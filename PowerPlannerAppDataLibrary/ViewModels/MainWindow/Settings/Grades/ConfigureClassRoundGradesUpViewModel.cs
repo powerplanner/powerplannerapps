@@ -21,7 +21,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         private VxState<bool> _roundGradesUp;
         private VxState<bool> _isEnabled = new VxState<bool>(true);
 
-        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
         public ConfigureClassRoundGradesUpViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
@@ -29,7 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             Class = c;
             Title = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text");
 
-            _roundGradesUp = new VxState<bool>(c.DoesRoundGradesUp, Save);
+            _roundGradesUp = new VxState<bool>(c.DoesRoundGradesUp);
         }
 
         protected override View Render()
@@ -43,6 +42,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     {
                         Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
                         IsOn = _roundGradesUp,
+                        IsOnChanged = Save,
                         IsEnabled = _isEnabled.Value
                     },
 
@@ -57,10 +57,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             };
         }
 
-        private async void Save()
+        private async void Save(bool roundGradesUp)
         {
             try
             {
+                _roundGradesUp.Value = roundGradesUp;
                 _isEnabled.Value = false;
 
                 var changes = new DataChanges();
@@ -69,7 +70,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    DoesRoundGradesUp = _roundGradesUp.Value
+                    DoesRoundGradesUp = roundGradesUp
                 };
 
                 changes.Add(c);
@@ -85,6 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 TelemetryExtension.Current?.TrackException(ex);
                 await new PortableMessageDialog("Error encountered while saving. Your error report has been sent to the developer.", "Error").ShowAsync();
+                _roundGradesUp.Value = Class.DoesRoundGradesUp;
             }
 
             finally

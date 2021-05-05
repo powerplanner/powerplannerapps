@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Converters;
+using PowerPlannerAppDataLibrary.DataLayer;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +10,15 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureOverallGradesListViewModel : ComponentViewModel
+    public class ConfigureDefaultGradesListViewModel : ComponentViewModel
     {
-        public ConfigureOverallGradesListViewModel(BaseViewModel parent) : base(parent)
+        [VxSubscribe]
+        public AccountDataItem Account { get; private set; }
+
+        public ConfigureDefaultGradesListViewModel(BaseViewModel parent) : base(parent)
         {
             Title = "Grade options";
+            Account = MainScreenViewModel.CurrentAccount;
         }
 
         protected override View Render()
@@ -40,13 +45,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     RenderOption(
                         MaterialDesign.MaterialDesignIcons.Refresh,
                         PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text"),
-                        BoolToEnabledStringConverter.Convert(false),
+                        BoolToEnabledStringConverter.Convert(Account.DefaultDoesAverageGradeTotals),
                         ConfigureAverageGrades),
 
                     RenderOption(
                         MaterialDesign.MaterialDesignIcons.ArrowUpward,
                         PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text"),
-                        BoolToEnabledStringConverter.Convert(true),
+                        BoolToEnabledStringConverter.Convert(Account.DefaultDoesRoundGradesUp),
                         ConfigureRoundGradesUp)
                 }
             };
@@ -73,17 +78,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void ConfigureAverageGrades()
         {
-
+            ShowViewModel<ConfigureDefaultAverageGradesViewModel>();
         }
 
         private void ConfigureRoundGradesUp()
         {
-
+            ShowViewModel<ConfigureDefaultRoundGradesUpViewModel>();
         }
 
         private void ConfigureGradeScale()
         {
-            ShowViewModel<ConfigureOverallGradeScaleViewModel>();
+            ShowViewModel<ConfigureDefaultGradeScaleViewModel>();
         }
 
         private void ShowViewModel<T>() where T : BaseViewModel

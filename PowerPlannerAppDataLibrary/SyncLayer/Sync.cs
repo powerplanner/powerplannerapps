@@ -453,7 +453,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     // SyncVersion 2: if individual item update fails, it'll return error just for that item
                     // SyncVersion 3: MegaItem
                     // SyncVersion 4: Times added to mega items (anything below this version, when editing DateTime1 on MegaItem, the time component will be ignored)
-                    MaxItemsToReturn = 200
+                    MaxItemsToReturn = 200,
+                    CurrentDefaultGradeScaleIndex = account.CurrentDefaultGradeScaleIndex
                 };
 
                 if (reSyncNeededFor.Count > 0)
@@ -779,39 +780,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 // Only apply server settings if we don't have any of our own settings to upload (otherwise we might overwrite settings if the user changed them while sync was happening)
                 if (response.Settings != null && !account.NeedsToSyncSettings)
                 {
-                    if (response.Settings.GpaOption != null && account.GpaOption != response.Settings.GpaOption.Value)
+                    // Apply the synced settings
+                    if (account.ApplySyncedSettings(response.Settings, response.DefaultGradeScaleIndex))
                     {
-                        account.GpaOption = response.Settings.GpaOption.Value;
                         accountChanged = true;
-                    }
-
-                    if (response.Settings.WeekOneStartsOn != null && account.WeekOneStartsOn != response.Settings.WeekOneStartsOn.Value)
-                    {
-                        account.WeekOneStartsOn = response.Settings.WeekOneStartsOn.Value;
-                        accountChanged = true;
-                    }
-
-                    if (response.Settings.SchoolTimeZone != null)
-                    {
-                        try
-                        {
-                            // Sometimes TryGetTimeZoneInfo still throws
-                            if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(response.Settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
-                            {
-                                if (!serverSchoolTimeZone.Equals(account.SchoolTimeZone))
-                                {
-                                    account.SchoolTimeZone = serverSchoolTimeZone;
-                                    accountChanged = true;
-                                }
-                            }
-                        }
-                        catch
-                        {
-                            TelemetryExtension.Current?.TrackEvent("FailedParseOnlineTimeZone", new Dictionary<string, string>()
-                            {
-                                { "OnlineTimeZone", response.Settings.SchoolTimeZone }
-                            });
-                        }
                     }
 
                     // For now we'll just return the semester ID and on initial login the login task can apply it
@@ -832,6 +804,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         account.CurrentChangeNumber = responseChangeNumber;
                         accountChanged = true;
                     }
+                }
+
+                if (account.CurrentDefaultGradeScaleIndex != response.DefaultGradeScaleIndex)
+                {
+                    account.DefaultGradeScale = response.Settings.DefaultGradeScale;
                 }
 
 
@@ -1382,7 +1359,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             GpaOption,
             WeekOneStartsOn,
             SelectedSemesterId,
-            SchoolTimeZone
+            SchoolTimeZone,
+            DefaultGradeScale,
+            DefaultDoesAverageGradeTotals,
+            DefaultDoesRoundGradesUp
         }
 
         public static System.Threading.Tasks.Task SyncSettings(AccountDataItem account)
@@ -1391,7 +1371,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 ChangedSetting.GpaOption |
                 ChangedSetting.WeekOneStartsOn |
                 ChangedSetting.SelectedSemesterId |
-                ChangedSetting.SchoolTimeZone);
+                ChangedSetting.SchoolTimeZone |
+                ChangedSetting.DefaultGradeScale |
+                ChangedSetting.DefaultDoesAverageGradeTotals |
+                ChangedSetting.DefaultDoesRoundGradesUp);
         }
 
         private static SyncSettingsMultiWorkerQueue _syncSettingsMultiWorkerQueue = new SyncSettingsMultiWorkerQueue();
@@ -1440,6 +1423,18 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                             settings.SchoolTimeZone = iana;
                         }
                     }
+                    if (changedSettings.HasFlag(ChangedSetting.DefaultGradeScale))
+                    {
+                        settings.DefaultGradeScale = account.DefaultGradeScale;
+                    }
+                    if (changedSettings.HasFlag(ChangedSetting.DefaultDoesAverageGradeTotals))
+                    {
+                        settings.DefaultDoesAverageGradeTotals = account.DefaultDoesAverageGradeTotals;
+                    }
+                    if (changedSettings.HasFlag(ChangedSetting.DefaultDoesRoundGradesUp))
+                    {
+                        settings.DefaultDoesRoundGradesUp = account.DefaultDoesRoundGradesUp;
+                    }
 
                     try
                     {
@@ -1458,6 +1453,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                         if (!base.IsAnotherQueued)
                         {
+                            account.CurrentDefaultGradeScaleIndex = response.DefaultGradeScaleIndex;
                             account.NeedsToSyncSettings = false;
                             await AccountsManager.Save(account);
                         }

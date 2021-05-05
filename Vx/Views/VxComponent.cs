@@ -73,7 +73,7 @@ namespace Vx.Views
         private void SubscribeToStates()
         {
             var stateType = typeof(VxState);
-            foreach (var prop in this.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).Where(i => i.CanRead && stateType.IsAssignableFrom(i.PropertyType)))
+            foreach (var prop in this.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(i => i.CanRead && stateType.IsAssignableFrom(i.PropertyType)))
             {
                 var state = prop.GetValue(this) as VxState;
                 if (state == null)
@@ -85,7 +85,7 @@ namespace Vx.Views
                 }
                 state.ValueChanged += State_ValueChanged;
             }
-            foreach (var prop in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(i => stateType.IsAssignableFrom(i.FieldType)))
+            foreach (var prop in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(i => stateType.IsAssignableFrom(i.FieldType)))
             {
                 var state = prop.GetValue(this) as VxState;
                 if (state == null)

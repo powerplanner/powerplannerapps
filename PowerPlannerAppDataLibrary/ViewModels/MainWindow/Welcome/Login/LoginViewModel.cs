@@ -346,7 +346,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                 else
                 {
-                    AccountDataItem account = await CreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId);
+                    SyncedSettings syncedSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<SyncedSettings>(Newtonsoft.Json.JsonConvert.SerializeObject(resp.Settings));
+
+                    AccountDataItem account = await CreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId, syncedSettings, resp.DefaultGradeScaleIndex);
 
                     if (account != null)
                     {
@@ -381,9 +383,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
         /// <param name="accountId"></param>
         /// <param name="deviceId"></param>
         /// <returns></returns>
-        public System.Threading.Tasks.Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId)
+        public System.Threading.Tasks.Task<AccountDataItem> CreateAccount(string username, string localToken, string token, long accountId, int deviceId, SyncedSettings syncedSettings, long currentDefaultGradeScaleIndex)
         {
-            return CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId, needsInitialSync: true);
+            return CreateAccountHelper.CreateAccountLocally(username, localToken, token, accountId, deviceId, needsInitialSync: true, settings: syncedSettings, currentDefaultGradeScaleIndex: currentDefaultGradeScaleIndex);
         }
 
         private static async void ShowMessage(string message, string title)

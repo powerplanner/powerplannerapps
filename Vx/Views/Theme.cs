@@ -52,6 +52,8 @@ namespace Vx.Views
         /// </summary>
         public float PageMargin => _pageMargin.Value;
 
+        public float CaptionFontSize => 12;
+
         public float BodyFontSize => 14;
 
         public float TitleFontSize => 24;

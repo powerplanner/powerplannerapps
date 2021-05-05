@@ -2121,7 +2121,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 Identifier = Guid.NewGuid(),
                 UpperIdentifier = semesterId,
                 Credits = Grade.NO_CREDITS,
-                DoesRoundGradesUp = true,
+                DoesRoundGradesUp = account.DefaultDoesRoundGradesUp,
+                ShouldAverageGradeTotals = account.DefaultDoesAverageGradeTotals,
                 Name = name,
                 RawColor = rawColor
             };
