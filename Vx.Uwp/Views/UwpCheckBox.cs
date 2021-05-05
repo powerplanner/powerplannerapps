@@ -17,7 +17,10 @@ namespace Vx.Uwp.Views
 
         private void View_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            VxView.IsCheckedChanged?.Invoke(View.IsChecked.Value);
+            if (VxView.IsChecked != View.IsChecked)
+            {
+                VxView.IsCheckedChanged?.Invoke(View.IsChecked.Value);
+            }
         }
 
         protected override void ApplyProperties(Vx.Views.CheckBox oldView, Vx.Views.CheckBox newView)

@@ -17,7 +17,7 @@ namespace Vx.Uwp.Views
 
         private void View_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (VxView.IsOnChanged != null)
+            if (VxView.IsOnChanged != null && VxView.IsOn != View.IsOn)
             {
                 VxView.IsOnChanged(View.IsOn);
             }

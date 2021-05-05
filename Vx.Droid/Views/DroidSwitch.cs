@@ -22,7 +22,7 @@ namespace Vx.Droid.Views
 
         private void View_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            if (VxView.IsOnChanged != null)
+            if (VxView.IsOnChanged != null && VxView.IsOn != View.Checked)
             {
                 VxView.IsOnChanged(View.Checked);
             }

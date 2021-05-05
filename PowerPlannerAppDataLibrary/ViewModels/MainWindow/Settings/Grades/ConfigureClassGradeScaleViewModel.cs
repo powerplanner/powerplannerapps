@@ -33,7 +33,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ConfigureClassGradeScaleViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
-            Title = PowerPlannerResources.GetString("Settings_GradeOptions_GpaType");
+            Title = PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Title");
             UseCancelForBack();
             PrimaryCommand = PopupCommand.Save(Save);
 
