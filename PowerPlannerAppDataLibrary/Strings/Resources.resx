@@ -2011,4 +2011,16 @@ Please think about using an online account instead!</value>
   <data name="String_Unsaved" xml:space="preserve">
     <value>Unsaved</value>
   </data>
+  <data name="ClassPage_EditAverageGradesForThisClass" xml:space="preserve">
+    <value>Edit average grade options for this class.</value>
+  </data>
+  <data name="ClassPage_EditGrades_EditForAll" xml:space="preserve">
+    <value>Edit for all classes instead</value>
+  </data>
+  <data name="ClassPage_EditGrades_EditGradeScaleForThisClass" xml:space="preserve">
+    <value>Edit the grade scale for this class.</value>
+  </data>
+  <data name="ClassPage_EditRoundGradesUpForThisClass" xml:space="preserve">
+    <value>Edit round grade up options for this class.</value>
+  </data>
 </root>

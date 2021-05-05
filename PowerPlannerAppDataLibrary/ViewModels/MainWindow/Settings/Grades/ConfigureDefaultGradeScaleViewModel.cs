@@ -60,16 +60,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 }
             };
 
-            if (VxPlatform.Current == Platform.Uwp)
-            {
-                layout.Children.Insert(0, new TextBlock
-                {
-                    Text = Title.ToUpper(),
-                    WrapText = true,
-                    Margin = new Thickness(0, 0, 0, 12)
-                }.TitleStyle());
-            }
-
             foreach (var entry in GradeScales)
             {
                 layout.Children.Add(RenderRow(new NumberTextBox

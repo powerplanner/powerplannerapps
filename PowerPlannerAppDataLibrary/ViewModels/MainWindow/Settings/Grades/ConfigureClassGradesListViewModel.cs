@@ -91,85 +91,60 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public void ConfigureCredits()
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(new ConfigureClassCreditsViewModel(FindAncestor<PagedViewModelWithPopups>(), Class));
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(new ConfigureClassCreditsViewModel(FindAncestor<PagedViewModel>(), Class));
-            }
+            ShowClassViewModel<ConfigureClassCreditsViewModel>();
         }
 
         public void ConfigureGradeScale()
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(new ConfigureClassGradeScaleViewModel(FindAncestor<PagedViewModelWithPopups>(), Class));
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(new ConfigureClassGradeScaleViewModel(FindAncestor<PagedViewModel>(), Class));
-            }
+            ShowClassViewModel<ConfigureClassGradeScaleViewModel>();
         }
 
         public void ConfigureWeightCategories()
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(new ConfigureClassWeightCategoriesViewModel(FindAncestor<PagedViewModelWithPopups>(), Class));
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(new ConfigureClassWeightCategoriesViewModel(FindAncestor<PagedViewModel>(), Class));
-            }
+            ShowClassViewModel<ConfigureClassWeightCategoriesViewModel>();
         }
 
         public void ConfigureAverageGrades()
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(new ConfigureClassAverageGradesViewModel(FindAncestor<PagedViewModelWithPopups>(), Class));
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(new ConfigureClassAverageGradesViewModel(FindAncestor<PagedViewModel>(), Class));
-            }
+            ShowClassViewModel<ConfigureClassAverageGradesViewModel>();
         }
 
         public void ConfigureRoundGradesUp()
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(new ConfigureClassRoundGradesUpViewModel(FindAncestor<PagedViewModelWithPopups>(), Class));
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(new ConfigureClassRoundGradesUpViewModel(FindAncestor<PagedViewModel>(), Class));
-            }
+            ShowClassViewModel<ConfigureClassRoundGradesUpViewModel>();
         }
 
         public void ConfigureGpaType()
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(new ConfigureClassGpaTypeViewModel(FindAncestor<PagedViewModelWithPopups>(), Class));
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(new ConfigureClassGpaTypeViewModel(FindAncestor<PagedViewModel>(), Class));
-            }
+            ShowClassViewModel<ConfigureClassGpaTypeViewModel>();
         }
 
         public void ConfigurePassingGrade()
         {
+            ShowClassViewModel<ConfigureClassPassingGradeViewModel>();
+        }
+
+        private void ShowClassViewModel<T>() where T : BaseViewModel
+        {
             if (ConfigureClassGradesViewModel.UsePopups)
             {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(new ConfigureClassPassingGradeViewModel(FindAncestor<PagedViewModelWithPopups>(), Class));
+                FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), FindAncestor<PagedViewModelWithPopups>(), Class) as BaseViewModel);
             }
             else
             {
-                FindAncestor<PagedViewModel>().Navigate(new ConfigureClassPassingGradeViewModel(FindAncestor<PagedViewModel>(), Class));
+                FindAncestor<PagedViewModel>().Navigate(Activator.CreateInstance(typeof(T), FindAncestor<PagedViewModel>(), Class) as BaseViewModel);
+            }
+        }
+
+        public static void ShowViewModel<T>(BaseViewModel current) where T : BaseViewModel
+        {
+            if (ConfigureClassGradesViewModel.UsePopups)
+            {
+                current.FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), current.FindAncestor<PagedViewModelWithPopups>()) as BaseViewModel);
+            }
+            else
+            {
+                current.FindAncestor<PagedViewModel>().Navigate(Activator.CreateInstance(typeof(T), current.FindAncestor<PagedViewModel>()) as BaseViewModel);
             }
         }
     }

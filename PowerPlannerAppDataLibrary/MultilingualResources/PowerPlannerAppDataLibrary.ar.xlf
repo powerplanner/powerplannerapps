@@ -2542,6 +2542,22 @@ Please think about using an online account instead!</source>
           <source>Unsaved</source>
           <target state="final">لم يتم الحفظ</target>
         </trans-unit>
+        <trans-unit id="ClassPage_EditAverageGradesForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit average grade options for this class.</source>
+          <target state="final">تحرير متوسط خيارات التقدير لهذا الفصل.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditForAll" translate="yes" xml:space="preserve">
+          <source>Edit for all classes instead</source>
+          <target state="final">تحرير لجميع الفئات بدلا من ذلك</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditGradeScaleForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit the grade scale for this class.</source>
+          <target state="final">قم بتحرير مقياس التقدير لهذا الفصل.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditRoundGradesUpForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit round grade up options for this class.</source>
+          <target state="final">تحرير خيارات الدرجات التقريبية لهذا الفصل.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

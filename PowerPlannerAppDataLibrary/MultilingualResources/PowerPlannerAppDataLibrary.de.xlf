@@ -2540,6 +2540,22 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Unsaved</source>
           <target state="final" state-qualifier="tm-suggestion">Nicht gespeichert</target>
         </trans-unit>
+        <trans-unit id="ClassPage_EditAverageGradesForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit average grade options for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Bearbeiten Sie die Optionen für durchschnittsnoten für diese Klasse.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditForAll" translate="yes" xml:space="preserve">
+          <source>Edit for all classes instead</source>
+          <target state="final" state-qualifier="mt-suggestion">Bearbeiten für alle Klassen statt</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditGradeScaleForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit the grade scale for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Bearbeiten Sie die Notenskala für diese Klasse.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditRoundGradesUpForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit round grade up options for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Bearbeiten Sie die Optionen für die Rundungsgradprüfung für diese Klasse.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

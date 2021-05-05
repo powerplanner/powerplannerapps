@@ -13,7 +13,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public abstract class BaseConfigureDefaultGradesPageViewModel : ComponentViewModel
+    public abstract class BaseConfigureDefaultGradesPageViewModel : PopupComponentViewModel
     {
         public VxState<States> State { get; private set; } = new VxState<States>(States.Loading);
         public AccountDataItem Account { get; private set; }

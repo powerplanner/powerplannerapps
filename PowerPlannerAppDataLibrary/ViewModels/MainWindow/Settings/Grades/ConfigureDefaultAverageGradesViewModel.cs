@@ -30,16 +30,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 Margin = new Thickness(Theme.Current.PageMargin)
             };
 
-            if (VxPlatform.Current == Platform.Uwp)
-            {
-                layout.Children.Add(new TextBlock
-                {
-                    Text = Title.ToUpper(),
-                    WrapText = true,
-                    Margin = new Thickness(0, 0, 0, 12)
-                }.TitleStyle());
-            }
-
             layout.Children.Add(new Switch
             {
                 Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),

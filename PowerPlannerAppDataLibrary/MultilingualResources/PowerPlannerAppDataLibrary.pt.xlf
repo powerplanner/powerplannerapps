@@ -2539,6 +2539,22 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Unsaved</source>
           <target state="final" state-qualifier="tm-suggestion">Não salvo</target>
         </trans-unit>
+        <trans-unit id="ClassPage_EditAverageGradesForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit average grade options for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Edite opções de notas médias para esta classe.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditForAll" translate="yes" xml:space="preserve">
+          <source>Edit for all classes instead</source>
+          <target state="final" state-qualifier="mt-suggestion">Editar para todas as classes em vez disso</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditGradeScaleForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit the grade scale for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Edite a escala de notas para esta classe.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditRoundGradesUpForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit round grade up options for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Editar opções de classificação redonda para esta classe.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

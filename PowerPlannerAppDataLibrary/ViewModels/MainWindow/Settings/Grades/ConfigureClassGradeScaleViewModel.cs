@@ -24,6 +24,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public ViewItemClass Class { get; private set; }
 
         public MyObservableList<EditingGradeScale> GradeScales { get; private set; }
+        private GradeScale[] _currGradeScale;
 
         /// <summary>
         /// Windows version should set this to true, so that the previous content remains visible
@@ -37,6 +38,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             UseCancelForBack();
             PrimaryCommand = PopupCommand.Save(Save);
 
+            _currGradeScale = c.GradeScales;
             GradeScales = new MyObservableList<EditingGradeScale>(c.GradeScales.Select(
                 i => new EditingGradeScale()
                 {
@@ -56,6 +58,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             await base.LoadAsyncOverride();
         }
 
+        public override void OnViewFocused()
+        {
+            base.OnViewFocused();
+
+            // Update if changed via the default settings
+            if (_currGradeScale != Class.GradeScales)
+            {
+                _currGradeScale = Class.GradeScales;
+                GradeScales = new MyObservableList<EditingGradeScale>(Class.GradeScales.Select(
+                    i => new EditingGradeScale()
+                    {
+                        StartingGrade = i.StartGrade,
+                        GPA = i.GPA
+                    }));
+                MarkDirty();
+            }
+        }
+
         protected override View Render()
         {
             var layout = new LinearLayout
@@ -63,6 +83,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 Margin = new Thickness(Theme.Current.PageMargin),
                 Children =
                 {
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditGradeScaleForThisClass"),
+                        WrapText = true
+                    },
+
+                    new TextButton
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditForAll"),
+                        Click = EditDefaultGradeScale,
+                        Margin = new Thickness(0, 0, 0, 12),
+                        HorizontalAlignment = HorizontalAlignment.Left
+                    },
+
                     RenderRow(new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockStartingGrade.Text"),
@@ -111,6 +145,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             });
 
             return new ScrollView(layout);
+        }
+
+        private void EditDefaultGradeScale()
+        {
+            ConfigureClassGradesListViewModel.ShowViewModel<ConfigureDefaultGradeScaleViewModel>(this);
         }
 
         private static View RenderRow(View first, View second, View third)

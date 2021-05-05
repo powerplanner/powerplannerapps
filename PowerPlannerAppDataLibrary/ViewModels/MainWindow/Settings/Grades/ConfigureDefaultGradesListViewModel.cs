@@ -94,9 +94,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void ShowViewModel<T>() where T : BaseViewModel
         {
-            if (PowerPlannerApp.ShowSettingsPagesAsPopups)
+            if (VxPlatform.Current != Platform.iOS)
             {
-                ShowPopup(this);
+                ShowPopup(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
             }
             else
             {
