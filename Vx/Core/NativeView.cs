@@ -10,6 +10,8 @@ namespace Vx
     {
         public static Func<View, NativeView> CreateNativeView;
 
+        public static Action<ContextMenu, View> ShowContextMenu;
+
         /// <summary>
         /// The native view
         /// </summary>
@@ -19,15 +21,52 @@ namespace Vx
 
         public View VxParentView { get; set; }
 
+        private VxComponent _originalComponent;
         public void Apply(View newView)
         {
             var oldView = VxView;
             VxView = newView;
+
+            if (newView is VxComponent newComponent)
+            {
+                HandleInnerComponent(oldView as VxComponent, newComponent);
+            }
+
+            if (newView.ViewRef != null)
+            {
+                // For components, we always return the original component
+                newView.ViewRef(_originalComponent ?? VxView);
+            }
+
             ApplyProperties(oldView, newView);
 
             if (oldView != null)
             {
                 newView.NativeView = oldView.NativeView;
+            }
+        }
+
+        private void HandleInnerComponent(VxComponent oldView, VxComponent newView)
+        {
+            if (oldView == null)
+            {
+                _originalComponent = newView;
+                return;
+            }
+
+            // Only want properties above the base VxComponent
+            foreach (var p in newView.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && typeof(VxComponent).IsAssignableFrom(i.DeclaringType) && i.Name != nameof(VxComponent.NativeComponent)))
+            {
+                var oldVal = p.GetValue(_originalComponent);
+                var newVal = p.GetValue(newView);
+
+                if (object.ReferenceEquals(_originalComponent, newVal) || object.Equals(_originalComponent, newVal))
+                {
+                    continue;
+                }
+
+                p.SetValue(_originalComponent, newVal);
+                _originalComponent.MarkInternalComponentDirty();
             }
         }
 

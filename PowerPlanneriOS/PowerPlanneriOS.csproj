@@ -150,7 +150,6 @@
     <Compile Include="Controllers\Settings\ConvertToOnlineViewController.cs" />
     <Compile Include="Controllers\Settings\DeleteAccountViewController.cs" />
     <Compile Include="Controllers\Settings\Grades\ConfigureClassGradesViewController.cs" />
-    <Compile Include="Controllers\Settings\Grades\SaveGradeScaleViewController.cs" />
     <Compile Include="Controllers\Settings\MyAccountViewController.cs" />
     <Compile Include="Controllers\Settings\ReminderSettingsViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />

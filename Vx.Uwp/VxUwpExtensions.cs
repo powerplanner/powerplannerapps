@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Vx.Uwp.Views;
 using Vx.Views;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace Vx.Uwp
@@ -19,6 +20,11 @@ namespace Vx.Uwp
 
             NativeView.CreateNativeView = view =>
             {
+                if (view is Vx.Views.VxComponent c)
+                {
+                    return new UwpVxComponent(c);
+                }
+
                 if (view is Vx.Views.TextBlock)
                 {
                     return new UwpTextBlock();
@@ -84,6 +90,30 @@ namespace Vx.Uwp
 
                 throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
+
+            NativeView.ShowContextMenu = ShowContextMenu;
+        }
+
+        private static void ShowContextMenu(ContextMenu contextMenu, View view)
+        {
+            var menuFlyout = new MenuFlyout();
+
+            foreach (var item in contextMenu.Items)
+            {
+                var flyoutItem = new MenuFlyoutItem()
+                {
+                    Text = item.Text
+                };
+
+                flyoutItem.Click += delegate
+                {
+                    item.Click?.Invoke();
+                };
+
+                menuFlyout.Items.Add(flyoutItem);
+            }
+
+            menuFlyout.ShowAt(view.NativeView.View as FrameworkElement);
         }
 
         public static FrameworkElement Render(this VxComponent component)

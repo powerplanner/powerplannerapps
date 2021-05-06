@@ -121,6 +121,7 @@
     <Compile Include="Views\iOSTransparentContentButton.cs" />
     <Compile Include="Views\iOSNumberTextBox.cs" />
     <Compile Include="Views\iOSSwitch.cs" />
+    <Compile Include="Views\iOSVxComponent.cs" />
     <Compile Include="Windows\NativeiOSAppWindow.cs" />
     <Compile Include="Views\iOSCheckBox.cs" />
   </ItemGroup>

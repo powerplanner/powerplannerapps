@@ -19,6 +19,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         public AccountDataItem Account { get; private set; }
         private VxState<MyObservableList<ViewItemYear>> _years = new VxState<MyObservableList<ViewItemYear>>(null);
         protected HashSet<ViewItemClass> SelectedClasses { get; private set; } = new HashSet<ViewItemClass>();
+        public IEnumerable<ViewItemClass> AllClasses => _years.Value.SelectMany(i => i.Semesters).SelectMany(i => i.Classes);
         private int _totalClasses;
         public bool IsEnabled => State == States.Initial || State == States.Applied;
 

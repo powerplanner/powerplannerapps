@@ -299,9 +299,6 @@
     <Compile Include="Views\NothingHerePage.xaml.cs">
       <DependentUpon>NothingHerePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SaveGradeScaleView.xaml.cs">
-      <DependentUpon>SaveGradeScaleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
     </Compile>
@@ -328,30 +325,6 @@
     </Compile>
     <Compile Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml.cs">
       <DependentUpon>GoogleCalendarIntegrationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassAverageGradesView.xaml.cs">
-      <DependentUpon>ConfigureClassAverageGradesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassCreditsView.xaml.cs">
-      <DependentUpon>ConfigureClassCreditsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGpaTypeView.xaml.cs">
-      <DependentUpon>ConfigureClassGpaTypeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradeScaleView.xaml.cs">
-      <DependentUpon>ConfigureClassGradeScaleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradesListView.xaml.cs">
-      <DependentUpon>ConfigureClassGradesListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.xaml.cs">
-      <DependentUpon>ConfigureClassPassingGradeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.xaml.cs">
-      <DependentUpon>ConfigureClassRoundGradesUpView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.xaml.cs">
-      <DependentUpon>ConfigureClassWeightCategoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\ImageUploadOptionsView.xaml.cs">
       <DependentUpon>ImageUploadOptionsView.xaml</DependentUpon>
@@ -759,10 +732,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SaveGradeScaleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ClassesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -796,38 +765,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassAverageGradesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassCreditsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassGpaTypeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassGradeScaleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassGradesListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

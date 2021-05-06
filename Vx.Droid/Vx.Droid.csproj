@@ -133,6 +133,7 @@
     <Compile Include="Views\DroidTextBox.cs" />
     <Compile Include="Views\DroidTransparentContentButton.cs" />
     <Compile Include="Views\DroidView.cs" />
+    <Compile Include="Views\DroidVxComponent.cs" />
     <Compile Include="VxDroidExtensions.cs" />
     <Compile Include="VxDroidTheme.cs" />
     <Compile Include="Windows\NativeDroidAppWindow.cs" />

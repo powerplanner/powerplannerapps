@@ -20,18 +20,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureDefaultGradeScaleViewModel : BaseConfigureDefaultGradesPageViewModel
     {
-        public MyObservableList<EditingGradeScale> GradeScales { get; private set; }
-
         public ConfigureDefaultGradeScaleViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_GradeScale");
-
-            GradeScales = new MyObservableList<EditingGradeScale>(Account.DefaultGradeScale.Select(i => new EditingGradeScale()
-            {
-                StartingGrade = i.StartGrade,
-                GPA = i.GPA
-            }));
         }
+
+        private GradeScaleEditorComponent _gradeScaleEditorComponent;
 
         protected override View Render()
         {
@@ -40,120 +34,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 Margin = new Thickness(Theme.Current.PageMargin),
                 Children =
                 {
-                    RenderRow(new TextBlock
+                    new GradeScaleEditorComponent(() => AllClasses, changed: MarkDirty)
                     {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockStartingGrade.Text"),
-                        FontWeight = FontWeights.Bold
-                    }, new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockGPA.Text"),
-                        FontWeight = FontWeights.Bold
-                    }, new TransparentContentButton
-                    {
-                        Opacity = 0,
-                        Content = new FontIcon
-                        {
-                            Glyph = MaterialDesign.MaterialDesignIcons.Close,
-                            FontSize = 20
-                        }
-                    })
+                        InitialGradeScale = Account.DefaultGradeScale,
+                        IsEnabled = IsEnabled,
+                        ViewRef = view => _gradeScaleEditorComponent = view as GradeScaleEditorComponent
+                    }
                 }
             };
-
-            foreach (var entry in GradeScales)
-            {
-                layout.Children.Add(RenderRow(new NumberTextBox
-                {
-                    Number = Bind<double?>(nameof(entry.StartingGrade), entry)
-                }, new NumberTextBox
-                {
-                    Number = Bind<double?>(nameof(entry.GPA), entry)
-                }, new TransparentContentButton
-                {
-                    Content = new FontIcon
-                    {
-                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
-                        FontSize = 20,
-                        Color = System.Drawing.Color.Red
-                    },
-                    Click = () => { RemoveGradeScale(entry); }
-                }));
-            }
-
-            layout.Children.Add(new Button
-            {
-                Text = PowerPlannerResources.GetString("ClassPage_ButtonAddGradeScale.Content"),
-                Margin = new Thickness(0, 12, 0, 0),
-                Click = AddGradeScale,
-                IsEnabled = IsEnabled
-            });
 
             RenderApplyUI(layout);
 
             return new ScrollView(layout);
         }
 
-        private static View RenderRow(View first, View second, View third)
-        {
-            first.Margin = new Thickness(0, 0, 6, 0);
-            second.Margin = new Thickness(6, 0, 0, 0);
-
-            var layout = new LinearLayout
-            {
-                Orientation = Orientation.Horizontal,
-                Children =
-                {
-                    first.LinearLayoutWeight(1),
-                    second.LinearLayoutWeight(1)
-                },
-                Margin = new Thickness(0, 0, 0, 6)
-            };
-
-            if (third != null)
-            {
-                third.Margin = new Thickness(12, 0, 0, 0);
-                layout.Children.Add(third);
-            }
-
-            return layout;
-        }
-
-        public void AddGradeScale()
-        {
-            GradeScales.Add(new EditingGradeScale()
-            {
-                StartingGrade = 0,
-                GPA = 0
-            });
-            MarkDirty();
-        }
-
-        public void RemoveGradeScale(EditingGradeScale scale)
-        {
-            GradeScales.Remove(scale);
-            MarkDirty();
-        }
-
-        private bool AreScalesValid()
-        {
-            if (GradeScales.Any(i => i.StartingGrade == null || i.GPA == null))
-            {
-                return false;
-            }
-
-            //check that the numbers are valid
-            for (int i = 1; i < GradeScales.Count; i++)
-                if (GradeScales[i].StartingGrade.Value >= GradeScales[i - 1].StartingGrade.Value) //if the current starting grade is equal to or greater than the previous starting grade
-                    return false;
-
-            return true;
-        }
-
         protected override bool CanApply()
         {
-            if (!AreScalesValid())
+            if (!_gradeScaleEditorComponent.CheckIfValid())
             {
-                _ = new PortableMessageDialog(PowerPlannerResources.GetString("String_InvalidGradeScalesMessageBody"), PowerPlannerResources.GetString("String_InvalidGradeScalesMessageHeader")).ShowAsync();
                 return false;
             }
 
@@ -162,7 +60,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override async System.Threading.Tasks.Task Apply()
         {
-            GradeScale[] newScales = GradeScales.Select(i => new GradeScale { StartGrade = i.StartingGrade.Value, GPA = i.GPA.Value }).ToArray();
+            GradeScale[] newScales = _gradeScaleEditorComponent.GetGradeScales();
 
             DataChanges changes = new DataChanges();
 

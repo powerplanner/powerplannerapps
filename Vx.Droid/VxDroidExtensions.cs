@@ -28,6 +28,11 @@ namespace Vx.Droid
 
             NativeView.CreateNativeView = view =>
             {
+                if (view is Vx.Views.VxComponent c)
+                {
+                    return new DroidVxComponent(c);
+                }
+
                 if (view is Vx.Views.TextBlock)
                 {
                     return new DroidTextBlock();

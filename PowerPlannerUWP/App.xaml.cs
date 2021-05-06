@@ -54,8 +54,6 @@ using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using Windows.ApplicationModel.DataTransfer;
 using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
-using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
 using PowerPlannerUWP.BackgroundTasks;
@@ -134,7 +132,6 @@ namespace PowerPlannerUWP
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },
                 { typeof(RecoveredUsernamesViewModel), typeof(RecoveredUsernamesView) },
                 { typeof(ResetPasswordViewModel), typeof(ResetPasswordView) },
-                { typeof(SaveGradeScaleViewModel), typeof(SaveGradeScaleView) },
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },

@@ -19,6 +19,11 @@ namespace Vx.iOS
 
             NativeView.CreateNativeView = view =>
             {
+                if (view is Vx.Views.VxComponent c)
+                {
+                    return new iOSVxComponent(c);
+                }
+
                 if (view is Vx.Views.TextBlock)
                 {
                     return new iOSTextBlock();

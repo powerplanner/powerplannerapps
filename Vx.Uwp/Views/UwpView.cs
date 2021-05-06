@@ -15,6 +15,11 @@ namespace Vx.Uwp.Views
             View = Activator.CreateInstance<N>();
         }
 
+        public UwpView(N view)
+        {
+            View = view;
+        }
+
         internal static void ReconcileList(IList<View> oldList, IList<View> newList, IList<UIElement> nativeList)
         {
             ReconcileList(

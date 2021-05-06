@@ -8,7 +8,7 @@ using ToolsPortable;
 
 namespace Vx.Views
 {
-    public abstract class VxComponent
+    public abstract class VxComponent : View
     {
         protected virtual View Render()
         {
@@ -160,6 +160,11 @@ namespace Vx.Views
             }
 
             PortableDispatcher.GetCurrentDispatcher().Run(RenderActual);
+        }
+
+        internal void MarkInternalComponentDirty()
+        {
+            MarkDirty();
         }
 
         private void RenderActual()

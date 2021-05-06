@@ -123,8 +123,7 @@ namespace PowerPlanneriOS
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) },
                 { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsViewController) },
 
-                { typeof(ConfigureClassGradesViewModel), typeof(ConfigureClassGradesViewController) },
-                { typeof(SaveGradeScaleViewModel), typeof(SaveGradeScaleViewController) }
+                { typeof(ConfigureClassGradesViewModel), typeof(ConfigureClassGradesViewController) }
             };
         }
 
