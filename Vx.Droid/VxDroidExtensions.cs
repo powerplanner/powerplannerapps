@@ -101,8 +101,29 @@ namespace Vx.Droid
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
-                throw new NotImplementedException();
+                throw new NotImplementedException("Unknown view. Droid hasn't implemented this.");
             };
+
+            NativeView.ShowContextMenu = ShowContextMenu;
+        }
+
+        private static void ShowContextMenu(Vx.Views.ContextMenu contextMenu, Vx.Views.View view)
+        {
+            var menu = new PopupMenu(ApplicationContext, view.NativeView.View as Android.Views.View);
+
+            var menuItems = new List<IMenuItem>();
+            foreach (var item in contextMenu.Items)
+            {
+                menuItems.Add(menu.Menu.Add(item.Text));
+            }
+
+            menu.MenuItemClick += (e, args) =>
+            {
+                int index = menuItems.IndexOf(args.Item);
+                contextMenu.Items[index].Click?.Invoke();
+            };
+
+            menu.Show();
         }
 
         public static Android.Views.View Render(this VxComponent component)
