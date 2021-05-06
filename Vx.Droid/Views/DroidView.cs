@@ -44,17 +44,6 @@ namespace Vx.Droid.Views
                 };
             }
 
-            else if (VxParentView is Vx.Views.ScrollView)
-            {
-                View.LayoutParameters = new ScrollView.LayoutParams(ScrollView.LayoutParams.MatchParent, ScrollView.LayoutParams.MatchParent)
-                {
-                    MarginStart = AsPx(newView.Margin.Left),
-                    TopMargin = AsPx(newView.Margin.Top),
-                    MarginEnd = AsPx(newView.Margin.Right),
-                    BottomMargin = AsPx(newView.Margin.Bottom)
-                };
-            }
-
             else
             {
                 View.LayoutParameters = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent)
