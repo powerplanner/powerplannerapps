@@ -914,9 +914,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             await AccountsManager.Save(this);
 
             // Upload their changed setting
-            if (uploadSettings)
+            if (uploadSettings && IsOnlineAccount)
             {
-                var dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.SelectedSemesterId);
+                _ = Sync.SyncSettings(this, Sync.ChangedSetting.SelectedSemesterId);
             }
 
             var dataStore = await AccountDataStore.Get(this.LocalAccountId);

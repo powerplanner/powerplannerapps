@@ -122,6 +122,7 @@
     <Compile Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.cs" />
     <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
     <Compile Include="Views\DroidButton.cs" />
+    <Compile Include="Views\DroidCheckBox.cs" />
     <Compile Include="Views\DroidFontIcon.cs" />
     <Compile Include="Views\DroidLinearLayout.cs" />
     <Compile Include="Views\DroidListItemButton.cs" />

@@ -1381,6 +1381,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
         public static System.Threading.Tasks.Task SyncSettings(AccountDataItem account, ChangedSetting changedSettings)
         {
+            if (!account.IsOnlineAccount)
+            {
+                return System.Threading.Tasks.Task.CompletedTask;
+            }
+
             return _syncSettingsMultiWorkerQueue.Enqueue(account.LocalAccountId, new Tuple<AccountDataItem, ChangedSetting>(account, changedSettings));
         }
 

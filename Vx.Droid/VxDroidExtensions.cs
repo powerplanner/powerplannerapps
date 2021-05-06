@@ -88,6 +88,11 @@ namespace Vx.Droid
                     return new DroidSwitch();
                 }
 
+                if (view is Vx.Views.CheckBox)
+                {
+                    return new DroidCheckBox();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
