@@ -10,7 +10,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureDefaultGradesListViewModel : ComponentViewModel
+    public class ConfigureDefaultGradesListViewModel : PopupComponentViewModel
     {
         [VxSubscribe]
         public AccountDataItem Account { get; private set; }

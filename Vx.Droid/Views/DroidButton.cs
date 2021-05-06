@@ -41,7 +41,7 @@ namespace Vx.Droid.Views
     {
         public DroidTextButton() : base(new MaterialButton(VxDroidExtensions.ApplicationContext, null, Resource.Attribute.materialTextButtonStyle))
         {
-
+            View.SetPadding(0, 0, 0, 0);
         }
     }
 
