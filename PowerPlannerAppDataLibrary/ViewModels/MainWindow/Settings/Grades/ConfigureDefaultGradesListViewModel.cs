@@ -56,16 +56,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 }
             };
 
-            if (VxPlatform.Current == Platform.Uwp)
-            {
-                layout.Children.Insert(0, new TextBlock
-                {
-                    Text = Title.ToUpper(),
-                    WrapText = true,
-                    Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0)
-                }.TitleStyle());
-            }
-
             return new ScrollView
             {
                 Content = layout
