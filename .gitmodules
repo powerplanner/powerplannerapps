@@ -4,6 +4,3 @@
 [submodule "portablelibraries"]
 	path = portablelibraries
 	url = https://github.com/barebonesdev/portablelibraries
-[submodule "applibraries"]
-	path = applibraries
-	url = https://github.com/barebonesdev/applibraries
