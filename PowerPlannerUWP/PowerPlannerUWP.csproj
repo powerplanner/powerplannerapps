@@ -998,10 +998,6 @@
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
     </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\applibraries\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
-      <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
-      <Name>ToolsUniversal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
       <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
       <Name>PowerPlanner</Name>

@@ -21,8 +21,6 @@ namespace UpgradeFromWin8.Model
     public class Store
     {
         private static readonly string UPGRADED_TO_VERSION_2 = "UpgradedToVersion2";
-        
-        private static readonly AsyncLock _lock = new AsyncLock();
 
         private static StorageFolder _accountsFolder;
         public static async Task<StorageFolder> GetAccountsFolder()

@@ -89,31 +89,6 @@
         </Setter>
     </Style>
 
-    <Style TargetType="local:CustomScrollViewer">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local:CustomScrollViewer">
-                    <Grid>
-                        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <ContentPresenter
-                            x:Name="contentPresenter"
-                            Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            Margin="{TemplateBinding Padding}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"/>
-                        </Canvas>
-                        <ScrollBar
-                            x:Name="verticalScrollBar"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Stretch"
-                            IndicatorMode="MouseIndicator"/>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style TargetType="arrowButtonFolder:ArrowButtonBase">
 
         <Setter Property="BackgroundNormal" Value="{ThemeResource ArrowButtonBackgroundNormal}"/>

@@ -177,10 +177,11 @@
     <Compile Include="CustomMessageBox\MessageBoxWithPasswordBox.cs" />
     <Compile Include="CustomMessageBox\MessageBoxWithTextBox.cs" />
     <Compile Include="CustomMessageBox\MessageGenerator.cs" />
-    <Compile Include="CustomScrollViewerFolder\CustomScrollViewer.cs" />
-    <Compile Include="DynamicFlipViewFolder\DynamicFlipView.cs" />
     <Compile Include="Extensions\UwpMessageDialog.cs" />
+    <Compile Include="Helpers\ColorTools.cs" />
     <Compile Include="Helpers\TextToRichInlinesHelper.cs" />
+    <Compile Include="Helpers\VisualTreeExtensions.cs" />
+    <Compile Include="Legacy\AppSettings.cs" />
     <Compile Include="Legacy\Brushes.cs" />
     <Compile Include="Legacy\ButtonGenerator.cs" />
     <Compile Include="Legacy\CalendarPicker.cs" />
@@ -203,8 +204,10 @@
     <Compile Include="Legacy\MySquaresGrid.cs" />
     <Compile Include="Legacy\MyStackPanelWithLimits.cs" />
     <Compile Include="Legacy\MyWrapPanel.cs" />
+    <Compile Include="Legacy\RelayCommand.cs" />
     <Compile Include="Legacy\RenderTargetBitmapHelper.cs" />
     <Compile Include="Legacy\SlideView.cs" />
+    <Compile Include="Legacy\StorageHelper.cs" />
     <Compile Include="Legacy\SystemNavigationManagerEnhanced.cs" />
     <Compile Include="Legacy\UIGenerator.cs" />
     <Compile Include="Legacy\ViewLifetimeControl.cs" />
@@ -212,13 +215,6 @@
     <Compile Include="Legacy\WebOverlay.cs" />
     <Compile Include="MultiDayBoxFolder\MultiDayBox.cs" />
     <Compile Include="MultiPicker\MultiPicker.cs" />
-    <Compile Include="PivotFolder\Pivot.xaml.cs">
-      <DependentUpon>Pivot.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PivotFolder\PivotItem.xaml.cs">
-      <DependentUpon>PivotItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PivotFolder\PivotItemsPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Snackbar\BareSnackbarPresenter.xaml.cs">
       <DependentUpon>BareSnackbarPresenter.xaml</DependentUpon>
@@ -289,14 +285,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PivotFolder\Pivot.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PivotFolder\PivotItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Snackbar\BareSnackbarPresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -331,10 +319,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\applibraries\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
-      <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
-      <Name>ToolsUniversal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
