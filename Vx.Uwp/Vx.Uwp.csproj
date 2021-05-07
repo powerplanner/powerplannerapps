@@ -180,18 +180,10 @@
     <Compile Include="CustomScrollViewerFolder\CustomScrollViewer.cs" />
     <Compile Include="DynamicFlipViewFolder\DynamicFlipView.cs" />
     <Compile Include="Extensions\UwpMessageDialog.cs" />
-    <Compile Include="GroupGridView\GroupGridView.xaml.cs">
-      <DependentUpon>GroupGridView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Grouping\DefaultGroupFooter.cs" />
-    <Compile Include="Grouping\IGroupAdapter.cs" />
-    <Compile Include="Grouping\IGroupFooter.cs" />
-    <Compile Include="Grouping\IGroupHeader.cs" />
     <Compile Include="Helpers\TextToRichInlinesHelper.cs" />
     <Compile Include="Legacy\Brushes.cs" />
     <Compile Include="Legacy\ButtonGenerator.cs" />
     <Compile Include="Legacy\CalendarPicker.cs" />
-    <Compile Include="Legacy\Class1.cs" />
     <Compile Include="Legacy\ColorPicker.xaml.cs">
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
@@ -201,32 +193,19 @@
     <Compile Include="Legacy\FrameworkElementExtender.cs" />
     <Compile Include="Legacy\ImageDownloader.cs" />
     <Compile Include="Legacy\IRenderable.cs" />
-    <Compile Include="Legacy\ListViewWithoutKeyboard.cs" />
     <Compile Include="Legacy\LoadingPopup.cs" />
     <Compile Include="Legacy\MyAdaptiveGridPanel.cs" />
-    <Compile Include="Legacy\MyAutoCompleteTextBox.cs" />
-    <Compile Include="Legacy\MyCanvas.cs" />
     <Compile Include="Legacy\MyContentControl.cs" />
     <Compile Include="Legacy\MyControl.cs" />
     <Compile Include="Legacy\MyEqualColumnsPanel.cs" />
     <Compile Include="Legacy\MyGrid.cs" />
-    <Compile Include="Legacy\MyGridView.cs" />
-    <Compile Include="Legacy\MyPage.cs" />
-    <Compile Include="Legacy\MyProgressIndicator.cs" />
     <Compile Include="Legacy\MyScrollViewerExtensions.cs" />
     <Compile Include="Legacy\MySquaresGrid.cs" />
-    <Compile Include="Legacy\MyStackPanel.cs" />
     <Compile Include="Legacy\MyStackPanelWithLimits.cs" />
-    <Compile Include="Legacy\MyUserControl1.xaml.cs">
-      <DependentUpon>MyUserControl1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Legacy\MyWrapPanel.cs" />
     <Compile Include="Legacy\RenderTargetBitmapHelper.cs" />
-    <Compile Include="Legacy\ShowHideContentControl.cs" />
     <Compile Include="Legacy\SlideView.cs" />
-    <Compile Include="Legacy\SquareContentControl.cs" />
     <Compile Include="Legacy\SystemNavigationManagerEnhanced.cs" />
-    <Compile Include="Legacy\TestingStackPanel.cs" />
     <Compile Include="Legacy\UIGenerator.cs" />
     <Compile Include="Legacy\ViewLifetimeControl.cs" />
     <Compile Include="Legacy\WeakTypedEventHandler.cs" />
@@ -306,15 +285,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GroupGridView\GroupGridView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Legacy\ColorPicker.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Legacy\MyUserControl1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
