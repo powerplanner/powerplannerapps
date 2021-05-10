@@ -159,6 +159,7 @@ namespace Vx.iOS.Views
                 _weights[index] = weight;
                 SetNeedsLayout();
                 InvalidateIntrinsicContentSize();
+                SetNeedsLayout();
             }
         }
 
@@ -179,8 +180,9 @@ namespace Vx.iOS.Views
             foreach (var subview in Subviews)
             {
                 subview.RemoveFromSuperview();
-                InvalidateIntrinsicContentSize();
             }
+            InvalidateIntrinsicContentSize();
+            SetNeedsLayout();
         }
 
         public void RemoveArrangedSubview(int index)
@@ -189,6 +191,7 @@ namespace Vx.iOS.Views
             _margins.RemoveAt(index);
             Subviews[index].RemoveFromSuperview();
             InvalidateIntrinsicContentSize();
+            SetNeedsLayout();
         }
 
         public void InsertArrangedSubview(UIView subview, int index)
@@ -211,6 +214,7 @@ namespace Vx.iOS.Views
             _weights.Insert(index, weight);
             _margins.Insert(index, new Thickness());
             InvalidateIntrinsicContentSize();
+            SetNeedsLayout();
         }
 
         public override CGSize IntrinsicContentSize
@@ -218,6 +222,11 @@ namespace Vx.iOS.Views
             get
             {
                 var sizes = CalculateSizes(new CGSize(double.MaxValue, double.MaxValue));
+
+                if (sizes.Length == 0)
+                {
+                    return new CGSize(0, 0);
+                }
 
                 if (Orientation == Orientation.Vertical)
                 {
@@ -233,6 +242,11 @@ namespace Vx.iOS.Views
         public override CoreGraphics.CGSize SystemLayoutSizeFittingSize(CoreGraphics.CGSize size)
         {
             var sizes = CalculateSizes(size);
+
+            if (sizes.Length == 0)
+            {
+                return new CGSize(0, 0);
+            }
 
             if (Orientation == Orientation.Vertical)
             {
@@ -302,6 +316,16 @@ namespace Vx.iOS.Views
             }
 
             return sizes;
+        }
+
+        public override void SetNeedsLayout()
+        {
+            base.SetNeedsLayout();
+
+            if (Superview != null)
+            {
+                Superview.SetNeedsLayout();
+            }
         }
 
         public override void LayoutSubviews()
