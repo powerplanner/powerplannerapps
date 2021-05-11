@@ -49,6 +49,11 @@ namespace Vx.iOS.Views
      * ContentHugging/Resistance ONLY works when the view has an intrinsic size (which any of the UIViews don't).
      * 
      * Views inside auto layouts need to have an IntrinsicContentSize otherwise auto layout will consider them 0.
+     * 
+     * 
+     * SetNeedsLayout does NOT seem to propogate to parent views. If a child calls SetNeedsLayout, it'll subsequently call LayoutSubviews, but the parent view never gets laid out.
+     * 
+     * When a child UILabel's text changes, both LayoutSubviews() and InvalidateIntrinsicContentSize() gets called... but nothing ever propagates upwards, and I can't figure out how to make that propagate upwards.
      * */
     public class iOSLinearLayout : iOSView<LinearLayout, UILinearLayout>
     {
@@ -143,8 +148,6 @@ namespace Vx.iOS.Views
                 if (value != _orientation)
                 {
                     _orientation = value;
-                    SetNeedsLayout();
-                    InvalidateIntrinsicContentSize();
                 }
             }
         }
@@ -157,9 +160,6 @@ namespace Vx.iOS.Views
             if (_weights[index] != weight)
             {
                 _weights[index] = weight;
-                SetNeedsLayout();
-                InvalidateIntrinsicContentSize();
-                SetNeedsLayout();
             }
         }
 
@@ -168,8 +168,6 @@ namespace Vx.iOS.Views
             if (_margins[index] != margins)
             {
                 _margins[index] = margins;
-                SetNeedsLayout();
-                InvalidateIntrinsicContentSize();
             }
         }
 
@@ -181,8 +179,6 @@ namespace Vx.iOS.Views
             {
                 subview.RemoveFromSuperview();
             }
-            InvalidateIntrinsicContentSize();
-            SetNeedsLayout();
         }
 
         public void RemoveArrangedSubview(int index)
@@ -190,8 +186,6 @@ namespace Vx.iOS.Views
             _weights.RemoveAt(index);
             _margins.RemoveAt(index);
             Subviews[index].RemoveFromSuperview();
-            InvalidateIntrinsicContentSize();
-            SetNeedsLayout();
         }
 
         public void InsertArrangedSubview(UIView subview, int index)
@@ -199,158 +193,178 @@ namespace Vx.iOS.Views
             InsertArrangedSubview(subview, index, 0);
         }
 
+        private class ArrangedSubview
+        {
+            public UILinearLayout Parent { get; set; }
+            public UIView Subview { get; set; }
+            public Thickness Margin { get; set; }
+            public float Weight { get; set; }
+
+            private NSLayoutConstraint _topConstraint;
+            public NSLayoutConstraint TopConstraint
+            {
+                get => _topConstraint;
+                set => SetConstraint(ref _topConstraint, value);
+            }
+
+            private NSLayoutConstraint _rightConstraint;
+            public NSLayoutConstraint RightConstraint
+            {
+                get => _rightConstraint;
+                set => SetConstraint(ref _rightConstraint, value);
+            }
+
+            private NSLayoutConstraint _leftConstraint;
+            public NSLayoutConstraint LeftConstraint
+            {
+                get => _leftConstraint;
+                set => SetConstraint(ref _leftConstraint, value);
+            }
+
+            private NSLayoutConstraint _bottomConstraint;
+            public NSLayoutConstraint BottomConstraint
+            {
+                get => _bottomConstraint;
+                set => SetConstraint(ref _bottomConstraint, value);
+            }
+
+            private void SetConstraint(ref NSLayoutConstraint storage, NSLayoutConstraint value)
+            {
+                // If removing
+                if (storage != null && value == null)
+                {
+                    // Simply remove
+                    Parent.RemoveConstraint(storage);
+                    storage = null;
+                    return;
+                }
+
+                if (storage != null)
+                {
+                    // If identical
+                    if (object.ReferenceEquals(storage.FirstItem, value.FirstItem)
+                        && storage.FirstAttribute == value.FirstAttribute
+                        && storage.Relation == value.Relation
+                        && object.ReferenceEquals(storage.SecondItem, value.SecondItem)
+                        && storage.SecondAttribute == value.SecondAttribute
+                        && storage.Multiplier == value.Multiplier
+                        && storage.Constant == value.Constant)
+                    {
+                        // No need to update
+                        return;
+                    }
+
+                    // Otherwise we need to remove existing constraint to update it
+                    Parent.RemoveConstraint(storage);
+                }
+
+                if (value != null)
+                {
+                    Parent.AddConstraint(value);
+                }
+            }
+
+            public ArrangedSubview Prev { get; set; }
+            public ArrangedSubview Next { get; set; }
+
+            public ArrangedSubview(UILinearLayout parent, UIView subview, Thickness margin, float weight)
+            {
+                Parent = parent;
+                Subview = subview;
+                Margin = margin;
+                Weight = weight;
+            }
+
+            public void UpdateConstraints(ArrangedSubview prev, ArrangedSubview next)
+            {
+                if (prev == null)
+                {
+                    TopConstraint = NSLayoutConstraint.Create(
+                        Subview,
+                        NSLayoutAttribute.Top,
+                        NSLayoutRelation.Equal,
+                        Parent,
+                        NSLayoutAttribute.Top,
+                        multiplier: 1,
+                        constant: Margin.Top);
+                }
+                else
+                {
+                    TopConstraint = NSLayoutConstraint.Create(
+                        Subview,
+                        NSLayoutAttribute.Top,
+                        NSLayoutRelation.Equal,
+                        prev.Subview,
+                        NSLayoutAttribute.Bottom,
+                        multiplier: 1,
+                        constant: prev.Margin.Bottom + Margin.Top);
+                }
+
+                if (next == null)
+                {
+                    BottomConstraint = NSLayoutConstraint.Create(
+                        Subview,
+                        NSLayoutAttribute.Bottom,
+                        NSLayoutRelation.LessThanOrEqual,
+                        Parent,
+                        NSLayoutAttribute.Bottom,
+                        multiplier: 1,
+                        constant: Margin.Bottom);
+                }
+                else
+                {
+                    BottomConstraint = null;
+                }
+
+                LeftConstraint = NSLayoutConstraint.Create(
+                    Subview,
+                    NSLayoutAttribute.Left,
+                    NSLayoutRelation.Equal,
+                    Parent,
+                    NSLayoutAttribute.Left,
+                    multiplier: 1,
+                    constant: Margin.Left);
+
+                RightConstraint = NSLayoutConstraint.Create(
+                    Subview,
+                    NSLayoutAttribute.Right,
+                    NSLayoutRelation.Equal,
+                    Parent,
+                    NSLayoutAttribute.Right,
+                    multiplier: 1,
+                    constant: Margin.Right);
+            }
+        }
+
+        private List<ArrangedSubview> _arrangedSubviews = new List<ArrangedSubview>();
+
         public void InsertArrangedSubview(UIView subview, int index, float weight)
         {
-            if (subview.TranslatesAutoresizingMaskIntoConstraints == false)
-            {
-#if DEBUG
-                System.Diagnostics.Debugger.Break();
-#endif
-
-                throw new InvalidOperationException("TranslatesAutoresizingMaskIntoConstraints cannot be false when view is used inside UILinearLayout.");
-            }
-
+            subview.TranslatesAutoresizingMaskIntoConstraints = false;
             InsertSubview(subview, index);
-            _weights.Insert(index, weight);
-            _margins.Insert(index, new Thickness());
-            InvalidateIntrinsicContentSize();
-            SetNeedsLayout();
+
+            _arrangedSubviews.Insert(index, new ArrangedSubview(this, subview, new Thickness(), weight));
+
+            SetNeedsUpdateConstraints();
         }
 
-        public override CGSize IntrinsicContentSize
+        public override void UpdateConstraints()
         {
-            get
+            ArrangedSubview prev = null;
+            ArrangedSubview curr = null;
+
+            for (int i = 0; i < _arrangedSubviews.Count; i++)
             {
-                var sizes = CalculateSizes(new CGSize(double.MaxValue, double.MaxValue));
+                curr = _arrangedSubviews[i];
+                ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(i + 1);
 
-                if (sizes.Length == 0)
-                {
-                    return new CGSize(0, 0);
-                }
+                curr.UpdateConstraints(prev, next);
 
-                if (Orientation == Orientation.Vertical)
-                {
-                    return new CGSize(sizes.Max(i => i.TotalSize.Width), sizes.Sum(i => i.TotalSize.Height));
-                }
-                else
-                {
-                    return new CGSize(sizes.Sum(i => i.TotalSize.Width), sizes.Max(i => i.TotalSize.Height));
-                }
-            }
-        }
-
-        public override CoreGraphics.CGSize SystemLayoutSizeFittingSize(CoreGraphics.CGSize size)
-        {
-            var sizes = CalculateSizes(size);
-
-            if (sizes.Length == 0)
-            {
-                return new CGSize(0, 0);
+                prev = curr;
             }
 
-            if (Orientation == Orientation.Vertical)
-            {
-                return new CGSize(sizes.Max(i => i.TotalSize.Width), sizes.Sum(i => i.TotalSize.Height));
-            }
-            else
-            {
-                return new CGSize(sizes.Sum(i => i.TotalSize.Width), sizes.Max(i => i.TotalSize.Height));
-            }
-        }
-
-        private class Calculated
-        {
-            public CGSize ViewSize { get; set; }
-
-            public CGSize TotalSize { get; set; }
-
-            public Thickness Margins { get; set; }
-
-            public Calculated(CGSize viewSize, Thickness margins)
-            {
-                ViewSize = viewSize;
-                Margins = margins;
-                TotalSize = new CGSize(viewSize.Width + margins.Width, viewSize.Height + margins.Height);
-            }
-        }
-
-        private Calculated[] CalculateSizes(CGSize frame)
-        {
-            var sizes = new Calculated[Subviews.Length];
-
-            bool isVertical = Orientation == Orientation.Vertical;
-
-            double remainingSpace = isVertical ? frame.Height : frame.Width;
-            double totalWeight = _weights.Sum();
-
-            // First do auto weights
-            for (int i = 0; i < Subviews.Length; i++)
-            {
-                var subview = Subviews[i];
-                var weight = _weights[i];
-                var margins = _margins[i];
-
-                if (weight == 0)
-                {
-                    var size = subview.SystemLayoutSizeFittingSize(isVertical ? new CGSize(frame.Width - margins.Width, remainingSpace - margins.Height) : new CGSize(remainingSpace - margins.Width, frame.Height - margins.Height));
-                    var calculated = new Calculated(size, margins);
-                    sizes[i] = calculated;
-
-                    remainingSpace = Math.Max(0, remainingSpace - (isVertical ? calculated.TotalSize.Height : calculated.TotalSize.Width));
-                }
-            }
-
-            // Then can arrange remaining
-            for (int i = 0; i < Subviews.Length; i++)
-            {
-                var subview = Subviews[i];
-                var weight = _weights[i];
-                var margins = _margins[i];
-
-                if (weight != 0)
-                {
-                    var space = remainingSpace * (weight / totalWeight);
-                    var minSize = subview.SystemLayoutSizeFittingSize(isVertical ? new CGSize(frame.Width - margins.Width, space - margins.Height) : new CGSize(space - margins.Width, frame.Height - margins.Height));
-                    sizes[i] = new Calculated(isVertical ? new CGSize(minSize.Width, space) : new CGSize(space, minSize.Height), margins);
-                }
-            }
-
-            return sizes;
-        }
-
-        public override void SetNeedsLayout()
-        {
-            base.SetNeedsLayout();
-
-            if (Superview != null)
-            {
-                Superview.SetNeedsLayout();
-            }
-        }
-
-        public override void LayoutSubviews()
-        {
-            bool isVertical = Orientation == Orientation.Vertical;
-            var sizes = CalculateSizes(Frame.Size);
-
-            double pos = 0;
-            for (int i = 0; i < Subviews.Length; i++)
-            {
-                var subview = Subviews[i];
-                var size = sizes[i];
-                var margins = size.Margins;
-
-                if (isVertical)
-                {
-                    subview.Frame = new CGRect(margins.Left, pos + margins.Top, Frame.Width - margins.Width, size.ViewSize.Height);
-                    pos += size.TotalSize.Height;
-                }
-                else
-                {
-                    subview.Frame = new CGRect(pos + margins.Left, margins.Top, size.ViewSize.Width, Frame.Height - margins.Width);
-                    pos += size.TotalSize.Width;
-                }
-            }
+            // Need to call base when done
+            base.UpdateConstraints();
         }
     }
 }
