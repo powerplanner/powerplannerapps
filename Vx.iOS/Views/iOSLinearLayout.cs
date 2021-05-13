@@ -290,8 +290,6 @@ namespace Vx.iOS.Views
 
             public void UpdateConstraints(ArrangedSubview prev, ArrangedSubview next, bool usingWeights, ArrangedSubview firstWeighted)
             {
-                Subview.SetContentHuggingPriority(Weight == 0 ? 250 : 0, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
-
                 if (IsVertical)
                 {
                     if (prev == null)
@@ -320,10 +318,10 @@ namespace Vx.iOS.Views
                     if (next == null)
                     {
                         BottomConstraint = NSLayoutConstraint.Create(
-                            Subview,
-                            NSLayoutAttribute.Bottom,
-                            usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.LessThanOrEqual,
                             Parent,
+                            NSLayoutAttribute.Bottom,
+                            usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                            Subview,
                             NSLayoutAttribute.Bottom,
                             multiplier: 1,
                             constant: Margin.Bottom);
@@ -379,10 +377,10 @@ namespace Vx.iOS.Views
                     if (next == null)
                     {
                         RightConstraint = NSLayoutConstraint.Create(
-                            Subview,
-                            NSLayoutAttribute.Right,
-                            usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.LessThanOrEqual,
                             Parent,
+                            NSLayoutAttribute.Right,
+                            usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                            Subview,
                             NSLayoutAttribute.Right,
                             multiplier: 1,
                             constant: Margin.Right);
@@ -436,36 +434,53 @@ namespace Vx.iOS.Views
             subview.TranslatesAutoresizingMaskIntoConstraints = false;
             InsertSubview(subview, index);
 
-            _arrangedSubviews.Insert(index, new ArrangedSubview(this, subview, new Thickness(), weight));
+            ArrangedSubview curr = new ArrangedSubview(this, subview, new Thickness(), weight);
 
-            SetNeedsUpdateConstraints();
-        }
+            _arrangedSubviews.Insert(index, curr);
 
-        public override void UpdateConstraints()
-        {
-            ArrangedSubview prev = null;
-            ArrangedSubview curr = null;
-            ArrangedSubview firstWeighted = null;
+            ArrangedSubview prev = _arrangedSubviews.ElementAtOrDefault(index - 1);
+            ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(index + 1);
 
-            bool usingWeights = _arrangedSubviews.Any(i => i.Weight > 0);
-
-            for (int i = 0; i < _arrangedSubviews.Count; i++)
+            if (prev != null && next == null)
             {
-                curr = _arrangedSubviews[i];
-                ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(i + 1);
-
-                curr.UpdateConstraints(prev, next, usingWeights, firstWeighted);
-
-                if (firstWeighted == null && curr.Weight > 0)
+                if (Orientation == Orientation.Vertical)
                 {
-                    firstWeighted = curr;
+                    prev.BottomConstraint = null;
                 }
-
-                prev = curr;
+                else
+                {
+                    prev.RightConstraint = null;
+                }
             }
 
-            // Need to call base when done
-            base.UpdateConstraints();
+            curr.UpdateConstraints(prev, next, false, null);
         }
+
+        //public override void UpdateConstraints()
+        //{
+        //    ArrangedSubview prev = null;
+        //    ArrangedSubview curr = null;
+        //    ArrangedSubview firstWeighted = null;
+
+        //    bool usingWeights = _arrangedSubviews.Any(i => i.Weight > 0);
+
+        //    for (int i = 0; i < _arrangedSubviews.Count; i++)
+        //    {
+        //        curr = _arrangedSubviews[i];
+        //        ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(i + 1);
+
+        //        curr.UpdateConstraints(prev, next, usingWeights, firstWeighted);
+
+        //        if (firstWeighted == null && curr.Weight > 0)
+        //        {
+        //            firstWeighted = curr;
+        //        }
+
+        //        prev = curr;
+        //    }
+
+        //    // Need to call base when done
+        //    base.UpdateConstraints();
+        //}
     }
 }
