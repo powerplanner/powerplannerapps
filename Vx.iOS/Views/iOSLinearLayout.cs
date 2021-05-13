@@ -64,7 +64,13 @@ namespace Vx.iOS.Views
             // Temp background color for debugging purposes
             //View.BackgroundColor = UIColor.FromRGBA(0, 0, 255, 15);
 
-            View.Orientation = newView.Orientation;
+            bool changed = false;
+
+            if (View.Orientation != newView.Orientation)
+            {
+                View.Orientation = newView.Orientation;
+                changed = true;
+            }
 
             ReconcileList(
                 oldView?.Children,
@@ -73,26 +79,40 @@ namespace Vx.iOS.Views
                 {
                     var childView = v.CreateUIView(VxParentView);
                     View.InsertArrangedSubview(childView, i);
+                    changed = true;
                 },
-                remove: (i) => View.RemoveArrangedSubview(i),
+                remove: (i) =>
+                {
+                    View.RemoveArrangedSubview(i);
+                    changed = true;
+                },
                 replace: (i, v) =>
                 {
                     View.RemoveArrangedSubview(i);
 
                     var childView = v.CreateUIView(VxParentView);
                     View.InsertSubview(childView, i);
+
+                    changed = true;
                 },
                 clear: () =>
                 {
                     View.ClearArrangedSubviews();
+
+                    changed = true;
                 }
                 );
 
 
             for (int i = 0; i < newView.Children.Count; i++)
             {
-                View.SetWeight(i, LinearLayout.GetWeight(newView.Children[i]));
-                View.SetMargins(i, newView.Children[i].Margin.AsModified());
+                changed = View.SetWeight(i, LinearLayout.GetWeight(newView.Children[i])) || changed;
+                changed = View.SetMargins(i, newView.Children[i].Margin.AsModified()) || changed;
+            }
+
+            if (changed)
+            {
+                View.UpdateAllConstraints();
             }
         }
     }
@@ -146,27 +166,30 @@ namespace Vx.iOS.Views
                 if (value != _orientation)
                 {
                     _orientation = value;
-                    SetNeedsUpdateConstraints();
                 }
             }
         }
 
-        public void SetWeight(int index, float weight)
+        public bool SetWeight(int index, float weight)
         {
             if (_arrangedSubviews[index].Weight != weight)
             {
                 _arrangedSubviews[index].Weight = weight;
-                SetNeedsUpdateConstraints();
+                return true;
             }
+
+            return false;
         }
 
-        public void SetMargins(int index, Thickness margins)
+        public bool SetMargins(int index, Thickness margins)
         {
             if (_arrangedSubviews[index].Margin != margins)
             {
                 _arrangedSubviews[index].Margin = margins;
-                SetNeedsUpdateConstraints();
+                return true;
             }
+
+            return false;
         }
 
         public void ClearArrangedSubviews()
@@ -317,14 +340,7 @@ namespace Vx.iOS.Views
 
                     if (next == null)
                     {
-                        BottomConstraint = NSLayoutConstraint.Create(
-                            Parent,
-                            NSLayoutAttribute.Bottom,
-                            usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
-                            Subview,
-                            NSLayoutAttribute.Bottom,
-                            multiplier: 1,
-                            constant: Margin.Bottom);
+                        AssignFinalEndingConstraint(usingWeights);
                     }
                     else
                     {
@@ -376,14 +392,7 @@ namespace Vx.iOS.Views
 
                     if (next == null)
                     {
-                        RightConstraint = NSLayoutConstraint.Create(
-                            Parent,
-                            NSLayoutAttribute.Right,
-                            usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
-                            Subview,
-                            NSLayoutAttribute.Right,
-                            multiplier: 1,
-                            constant: Margin.Right);
+                        AssignFinalEndingConstraint(usingWeights);
                     }
                     else
                     {
@@ -425,6 +434,32 @@ namespace Vx.iOS.Views
                     WeightConstraint = null;
                 }
             }
+
+            public void AssignFinalEndingConstraint(bool usingWeights)
+            {
+                if (IsVertical)
+                {
+                    BottomConstraint = NSLayoutConstraint.Create(
+                        Parent,
+                        NSLayoutAttribute.Bottom,
+                        usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                        Subview,
+                        NSLayoutAttribute.Bottom,
+                        multiplier: 1,
+                        constant: Margin.Bottom);
+                }
+                else
+                {
+                    RightConstraint = NSLayoutConstraint.Create(
+                        Parent,
+                        NSLayoutAttribute.Right,
+                        usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                        Subview,
+                        NSLayoutAttribute.Right,
+                        multiplier: 1,
+                        constant: Margin.Right);
+                }
+            }
         }
 
         private List<ArrangedSubview> _arrangedSubviews = new List<ArrangedSubview>();
@@ -437,23 +472,33 @@ namespace Vx.iOS.Views
             ArrangedSubview curr = new ArrangedSubview(this, subview, new Thickness(), weight);
 
             _arrangedSubviews.Insert(index, curr);
+        }
 
-            ArrangedSubview prev = _arrangedSubviews.ElementAtOrDefault(index - 1);
-            ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(index + 1);
+        /// <summary>
+        /// You must call this after modifying anything
+        /// </summary>
+        public void UpdateAllConstraints()
+        {
+            ArrangedSubview prev = null;
+            ArrangedSubview curr = null;
+            ArrangedSubview firstWeighted = null;
 
-            if (prev != null && next == null)
+            bool usingWeights = _arrangedSubviews.Any(i => i.Weight > 0);
+
+            for (int i = 0; i < _arrangedSubviews.Count; i++)
             {
-                if (Orientation == Orientation.Vertical)
-                {
-                    prev.BottomConstraint = null;
-                }
-                else
-                {
-                    prev.RightConstraint = null;
-                }
-            }
+                curr = _arrangedSubviews[i];
+                ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(i + 1);
 
-            curr.UpdateConstraints(prev, next, false, null);
+                curr.UpdateConstraints(prev, next, usingWeights, firstWeighted);
+
+                if (firstWeighted == null && curr.Weight > 0)
+                {
+                    firstWeighted = curr;
+                }
+
+                prev = curr;
+            }
         }
 
         //public override void UpdateConstraints()
