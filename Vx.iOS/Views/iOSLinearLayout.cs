@@ -284,11 +284,13 @@ namespace Vx.iOS.Views
 
                     // Otherwise we need to remove existing constraint to update it
                     Parent.RemoveConstraint(storage);
+                    storage = null;
                 }
 
                 if (value != null)
                 {
                     Parent.AddConstraint(value);
+                    storage = value;
                 }
             }
 
