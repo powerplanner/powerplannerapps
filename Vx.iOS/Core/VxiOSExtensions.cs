@@ -85,6 +85,34 @@ namespace Vx.iOS
 #endif
                 throw new NotImplementedException();
             };
+
+            NativeView.ShowContextMenu = ShowContextMenu;
+        }
+
+        private static void ShowContextMenu(ContextMenu contextMenu, View view)
+        {
+            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
+            UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+
+            foreach (var item in contextMenu.Items)
+            {
+                actionSheetAlert.AddAction(UIAlertAction.Create(item.Text, UIAlertActionStyle.Default, delegate { item.Click(); }));
+            }
+
+            actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            // Required for iPad - You must specify a source for the Action Sheet since it is
+            // displayed as a popover
+            UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
+            if (presentationPopover != null)
+            {
+                presentationPopover.SourceView = view.NativeView.View as UIView;
+                presentationPopover.SourceRect = (view.NativeView.View as UIView).Frame;
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+            }
+
+            // Display the alert
+            (view.NativeView.View as UIView).GetViewController().PresentViewController(actionSheetAlert, true, null);
         }
 
         public static UIView Render(this VxComponent component)

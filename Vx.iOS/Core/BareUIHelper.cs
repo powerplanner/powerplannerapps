@@ -12,6 +12,22 @@ namespace Vx.iOS
     {
         public const int STATUS_AND_NAV_BAR_HEIGHT = 44;
 
+        public static UIViewController GetViewController(this UIView view)
+        {
+            var nextResponder = view.NextResponder;
+            while (nextResponder != null)
+            {
+                if (nextResponder is UIViewController controller)
+                {
+                    return controller;
+                }
+
+                nextResponder = nextResponder.NextResponder;
+            }
+
+            return null;
+        }
+
         public static UIView ConfigureForVerticalScrolling(this UIView view, UIScrollView parentScrollView, float left = 0, float top = 0, float right = 0, float bottom = 0)
         {
             // https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/WorkingwithScrollViews.html#//apple_ref/doc/uid/TP40010853-CH24-SW1
