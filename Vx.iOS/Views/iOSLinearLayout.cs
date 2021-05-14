@@ -313,7 +313,7 @@ namespace Vx.iOS.Views
 
             public void UpdateConstraints(ArrangedSubview prev, ArrangedSubview next, bool usingWeights, ArrangedSubview firstWeighted)
             {
-                Subview.SetContentHuggingPriority(Weight == 0 ? 250 : 0, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+                Subview.SetContentHuggingPriority(Weight == 0 ? 1000 : 0, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
 
                 if (IsVertical)
                 {
@@ -359,10 +359,10 @@ namespace Vx.iOS.Views
                         constant: Margin.Left);
 
                     RightConstraint = NSLayoutConstraint.Create(
-                        Subview,
+                        Parent,
                         NSLayoutAttribute.Right,
                         NSLayoutRelation.Equal,
-                        Parent,
+                        Subview,
                         NSLayoutAttribute.Right,
                         multiplier: 1,
                         constant: Margin.Right);
@@ -411,10 +411,10 @@ namespace Vx.iOS.Views
                         constant: Margin.Top);
 
                     BottomConstraint = NSLayoutConstraint.Create(
-                        Subview,
+                        Parent,
                         NSLayoutAttribute.Bottom,
                         NSLayoutRelation.Equal,
-                        Parent,
+                        Subview,
                         NSLayoutAttribute.Bottom,
                         multiplier: 1,
                         constant: Margin.Bottom);
