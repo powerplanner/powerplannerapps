@@ -108,6 +108,7 @@ namespace Vx.iOS.Views
             {
                 changed = View.SetWeight(i, LinearLayout.GetWeight(newView.Children[i])) || changed;
                 changed = View.SetMargins(i, newView.Children[i].Margin.AsModified()) || changed;
+                changed = View.SetHorizontalAlignment(i, newView.Children[i].HorizontalAlignment) || changed;
             }
 
             if (changed)
@@ -192,6 +193,17 @@ namespace Vx.iOS.Views
             return false;
         }
 
+        public bool SetHorizontalAlignment(int index, HorizontalAlignment horizontalAlignment)
+        {
+            if (_arrangedSubviews[index].HorizontalAlignment != horizontalAlignment)
+            {
+                _arrangedSubviews[index].HorizontalAlignment = horizontalAlignment;
+                return true;
+            }
+
+            return false;
+        }
+
         public void ClearArrangedSubviews()
         {
             _arrangedSubviews.Clear();
@@ -220,6 +232,7 @@ namespace Vx.iOS.Views
             public UIView Subview { get; set; }
             public Thickness Margin { get; set; }
             public float Weight { get; set; }
+            public HorizontalAlignment HorizontalAlignment { get; set; }
 
             private NSLayoutConstraint _topConstraint;
             public NSLayoutConstraint TopConstraint
@@ -351,23 +364,51 @@ namespace Vx.iOS.Views
                         BottomConstraint = null;
                     }
 
-                    LeftConstraint = NSLayoutConstraint.Create(
-                        Subview,
-                        NSLayoutAttribute.Left,
-                        NSLayoutRelation.Equal,
-                        Parent,
-                        NSLayoutAttribute.Left,
-                        multiplier: 1,
-                        constant: Margin.Left);
+                    if (HorizontalAlignment == HorizontalAlignment.Right)
+                    {
+                        LeftConstraint = NSLayoutConstraint.Create(
+                            Parent,
+                            NSLayoutAttribute.Left,
+                            NSLayoutRelation.LessThanOrEqual,
+                            Subview,
+                            NSLayoutAttribute.Left,
+                            multiplier: 1,
+                            constant: Margin.Left);
+                    }
+                    else
+                    {
+                        LeftConstraint = NSLayoutConstraint.Create(
+                            Subview,
+                            NSLayoutAttribute.Left,
+                            NSLayoutRelation.Equal,
+                            Parent,
+                            NSLayoutAttribute.Left,
+                            multiplier: 1,
+                            constant: Margin.Left);
+                    }
 
-                    RightConstraint = NSLayoutConstraint.Create(
-                        Parent,
-                        NSLayoutAttribute.Right,
-                        NSLayoutRelation.Equal,
-                        Subview,
-                        NSLayoutAttribute.Right,
-                        multiplier: 1,
-                        constant: Margin.Right);
+                    if (HorizontalAlignment == HorizontalAlignment.Left)
+                    {
+                        RightConstraint = NSLayoutConstraint.Create(
+                            Parent,
+                            NSLayoutAttribute.Right,
+                            NSLayoutRelation.GreaterThanOrEqual,
+                            Subview,
+                            NSLayoutAttribute.Right,
+                            multiplier: 1,
+                            constant: Margin.Right);
+                    }
+                    else
+                    {
+                        RightConstraint = NSLayoutConstraint.Create(
+                            Parent,
+                            NSLayoutAttribute.Right,
+                            NSLayoutRelation.Equal,
+                            Subview,
+                            NSLayoutAttribute.Right,
+                            multiplier: 1,
+                            constant: Margin.Right);
+                    }
                 }
                 else
                 {
