@@ -15,7 +15,7 @@ namespace Vx.Droid.Views
 {
     public class DroidNumberTextBox : DroidView<Vx.Views.NumberTextBox, BareMaterialEditDecimalNumber>
     {
-        public DroidNumberTextBox()
+        public DroidNumberTextBox() : base(new BareMaterialEditDecimalNumber(VxDroidExtensions.ApplicationContext))
         {
             View.ValueChanged += View_ValueChanged;
         }

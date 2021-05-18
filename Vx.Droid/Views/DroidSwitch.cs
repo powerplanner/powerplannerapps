@@ -15,7 +15,7 @@ namespace Vx.Droid.Views
 {
     public class DroidSwitch : DroidView<Vx.Views.Switch, SwitchMaterial>
     {
-        public DroidSwitch()
+        public DroidSwitch() : base(new SwitchMaterial(VxDroidExtensions.ApplicationContext))
         {
             View.CheckedChange += View_CheckedChange;
         }

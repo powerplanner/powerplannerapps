@@ -14,7 +14,7 @@ namespace Vx.Droid.Views
 {
     public class DroidCheckBox : DroidView<Vx.Views.CheckBox, MaterialCheckBox>
     {
-        public DroidCheckBox()
+        public DroidCheckBox() : base(new MaterialCheckBox(VxDroidExtensions.ApplicationContext))
         {
             View.CheckedChange += View_CheckedChange;
         }

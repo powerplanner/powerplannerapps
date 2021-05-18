@@ -14,7 +14,7 @@ namespace Vx.Droid.Views
 {
     public class DroidListItemButton : DroidView<Vx.Views.ListItemButton, FrameLayout>
     {
-        public DroidListItemButton()
+        public DroidListItemButton() : base(new FrameLayout(VxDroidExtensions.ApplicationContext))
         {
             View.Click += View_Click;
         }

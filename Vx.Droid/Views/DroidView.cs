@@ -14,13 +14,10 @@ namespace Vx.Droid.Views
 {
     public abstract class DroidView<V, N> : NativeView<V, N> where V : Vx.Views.View where N : View
     {
-        public DroidView()
-        {
-            View = Activator.CreateInstance(typeof(N), VxDroidExtensions.ApplicationContext) as N;
-        }
-
         public DroidView(N view)
         {
+            // Note that we can't use reflection to create views, since in Release mode the constructors
+            // get linked away and creating the views will fail at runtime.
             View = view;
         }
 

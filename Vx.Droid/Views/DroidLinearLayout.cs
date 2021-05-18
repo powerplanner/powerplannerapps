@@ -14,6 +14,11 @@ namespace Vx.Droid.Views
 {
     public class DroidLinearLayout : DroidView<Vx.Views.LinearLayout, Android.Widget.LinearLayout>
     {
+        public DroidLinearLayout() : base(new Android.Widget.LinearLayout(VxDroidExtensions.ApplicationContext))
+        {
+
+        }
+
         protected override void ApplyProperties(Vx.Views.LinearLayout oldView, Vx.Views.LinearLayout newView)
         {
             base.ApplyProperties(oldView, newView);

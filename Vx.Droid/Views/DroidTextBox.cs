@@ -14,7 +14,7 @@ namespace Vx.Droid.Views
 {
     public class DroidTextBox : DroidView<Vx.Views.TextBox, TextInputEditText>
     {
-        public DroidTextBox()
+        public DroidTextBox() : base(new TextInputEditText(VxDroidExtensions.ApplicationContext))
         {
             View.TextChanged += _editText_TextChanged;
         }

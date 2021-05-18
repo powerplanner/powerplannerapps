@@ -14,7 +14,7 @@ namespace Vx.Droid.Views
 {
     public class DroidTransparentContentButton : DroidView<Vx.Views.TransparentContentButton, FrameLayout>
     {
-        public DroidTransparentContentButton()
+        public DroidTransparentContentButton() : base(new FrameLayout(VxDroidExtensions.ApplicationContext))
         {
             View.Click += View_Click;
         }

@@ -17,7 +17,7 @@ namespace Vx.Droid.Views
     public class DroidFontIcon : DroidView<Vx.Views.FontIcon, TextView>
     {
         private static Typeface _typeface = ResourcesCompat.GetFont(VxDroidExtensions.ApplicationContext, Resource.Font.materialiconsoutlined);
-        public DroidFontIcon()
+        public DroidFontIcon() : base(new TextView(VxDroidExtensions.ApplicationContext))
         {
             View.SetTypeface(_typeface, TypefaceStyle.Normal);
         }

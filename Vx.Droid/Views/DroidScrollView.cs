@@ -14,7 +14,7 @@ namespace Vx.Droid.Views
     public class DroidScrollView : DroidView<Vx.Views.ScrollView, ScrollView>
     {
         private FrameLayout _container;
-        public DroidScrollView()
+        public DroidScrollView() : base(new ScrollView(VxDroidExtensions.ApplicationContext))
         {
             // Need to introduce second view so that bottom margin of the child view work correctly inside the scroll view
             _container = new FrameLayout(View.Context);

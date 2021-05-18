@@ -14,6 +14,11 @@ namespace Vx.Droid.Views
 {
     public class DroidTextBlock : DroidView<TextBlock, TextView>
     {
+        public DroidTextBlock() : base(new TextView(VxDroidExtensions.ApplicationContext))
+        {
+
+        }
+
         protected override void ApplyProperties(TextBlock oldView, TextBlock newView)
         {
             base.ApplyProperties(oldView, newView);
