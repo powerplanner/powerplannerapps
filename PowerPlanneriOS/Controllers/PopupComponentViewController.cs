@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BareMvvm.Core.ViewModels;
 using InterfacesiOS.Controllers;
 using InterfacesiOS.Views;
@@ -20,12 +21,15 @@ namespace PowerPlanneriOS.Controllers
             Title = ViewModel.Title;
 
             var backOverride = ViewModel.BackOverride;
-            var cancelButton = new UIBarButtonItem()
+            if (backOverride != null || (ViewModel.Parent is PagedViewModel pagedParent && pagedParent.GetChildren().First() == ViewModel))
             {
-                Title = backOverride != null ? backOverride.Item1 : "Back"
-            };
-            cancelButton.Clicked += new WeakEventHandler<EventArgs>(CancelButton_Clicked).Handler;
-            NavigationItem.LeftBarButtonItem = cancelButton;
+                var cancelButton = new UIBarButtonItem()
+                {
+                    Title = backOverride != null ? backOverride.Item1 : "Back"
+                };
+                cancelButton.Clicked += new WeakEventHandler<EventArgs>(CancelButton_Clicked).Handler;
+                NavigationItem.LeftBarButtonItem = cancelButton;
+            }
 
             var primaryCommand = ViewModel.PrimaryCommand;
             if (primaryCommand != null)
