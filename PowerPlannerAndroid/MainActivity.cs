@@ -376,6 +376,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2105, 17, 1, 0))
+                    {
+                        changedText += "\n - Default grade scales! Go to the settings page to configure default grade options for all classes!";
+                    }
+
                     if (v <= new Version(2102, 20, 1, 99))
                     {
                         changedText += "\n - Reminders for class schedule! See the settings to configure how soon before classes to be reminded.";

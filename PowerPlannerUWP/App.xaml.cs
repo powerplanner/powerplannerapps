@@ -696,6 +696,11 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
+                    if (v <= new Version(2105, 17, 1, 0))
+                    {
+                        changedText += "\n - Default grade scales! Go to the settings page to configure default grade options for all classes!";
+                    }
+
                     if (v <= new Version(2102, 16, 3, 99))
                     {
                         changedText += "\n - Right click on tasks/events to quickly mark complete, delete, or edit!";
