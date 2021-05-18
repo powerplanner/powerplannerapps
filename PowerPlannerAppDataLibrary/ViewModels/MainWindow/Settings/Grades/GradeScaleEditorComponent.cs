@@ -62,7 +62,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     new TextButton
                     {
-                        Text = "Use a preset scale",
+                        Text = PowerPlannerResources.GetString("Settings_GradeOptions_UsePresetScale"),
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(0, 0, 0, 12),
                         ViewRef = view => _presetScaleButton = view,
@@ -215,7 +215,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 }
                 else if (matching.Length > 1)
                 {
-                    name += " (+" + matching.Length + " others)";
+                    name = PowerPlannerResources.GetStringWithParameters("String_ClassPlusXOthers", c.Name, matching.Length);
                 }
 
                 yield return new PresetGradeScale

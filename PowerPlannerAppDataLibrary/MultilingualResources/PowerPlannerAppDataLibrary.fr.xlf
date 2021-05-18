@@ -2554,6 +2554,14 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Edit round grade up options for this class.</source>
           <target state="final" state-qualifier="mt-suggestion">Modifier les options de notes rondes pour cette classe.</target>
         </trans-unit>
+        <trans-unit id="Settings_GradeOptions_UsePresetScale" translate="yes" xml:space="preserve">
+          <source>Use a preset scale</source>
+          <target state="final" state-qualifier="mt-suggestion">Utiliser une échelle prédéfinie</target>
+        </trans-unit>
+        <trans-unit id="String_ClassPlusXOthers" translate="yes" xml:space="preserve">
+          <source>{0} (+{1} others)</source>
+          <target state="final" state-qualifier="mt-suggestion">{0} (+{1} autres)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

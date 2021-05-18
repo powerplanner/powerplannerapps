@@ -2023,4 +2023,10 @@ Please think about using an online account instead!</value>
   <data name="ClassPage_EditRoundGradesUpForThisClass" xml:space="preserve">
     <value>Edit round grade up options for this class.</value>
   </data>
+  <data name="Settings_GradeOptions_UsePresetScale" xml:space="preserve">
+    <value>Use a preset scale</value>
+  </data>
+  <data name="String_ClassPlusXOthers" xml:space="preserve">
+    <value>{0} (+{1} others)</value>
+  </data>
 </root>

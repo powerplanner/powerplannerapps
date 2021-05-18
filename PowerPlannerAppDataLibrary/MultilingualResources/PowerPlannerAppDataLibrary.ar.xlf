@@ -2558,6 +2558,14 @@ Please think about using an online account instead!</source>
           <source>Edit round grade up options for this class.</source>
           <target state="final">تحرير خيارات الدرجات التقريبية لهذا الفصل.</target>
         </trans-unit>
+        <trans-unit id="Settings_GradeOptions_UsePresetScale" translate="yes" xml:space="preserve">
+          <source>Use a preset scale</source>
+          <target state="final">استخدم مقياس تقدير مُعد مسبقًا</target>
+        </trans-unit>
+        <trans-unit id="String_ClassPlusXOthers" translate="yes" xml:space="preserve">
+          <source>{0} (+{1} others)</source>
+          <target state="final">{0} (+ {1} آخرون)</target>
+        </trans-unit>
       </group>
     </body>
   </file>
