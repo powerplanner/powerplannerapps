@@ -16,6 +16,7 @@ namespace Vx.Droid.Views
     {
         public DroidTextBox() : base(new TextInputEditText(VxDroidExtensions.ApplicationContext))
         {
+            View.InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect;
             View.TextChanged += _editText_TextChanged;
         }
 

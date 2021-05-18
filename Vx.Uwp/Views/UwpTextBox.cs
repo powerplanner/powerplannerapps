@@ -11,6 +11,8 @@ namespace Vx.Uwp.Views
     {
         public UwpTextBox()
         {
+            View.IsSpellCheckEnabled = true;
+            View.IsTextPredictionEnabled = true;
             View.TextChanged += View_TextChanged;
         }
 
