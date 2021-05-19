@@ -449,6 +449,11 @@ namespace PowerPlannerUWP.Views
             get => _tbTitle.Text;
             set
             {
+                if (value == null)
+                {
+                    value = "";
+                }
+
                 _tbTitle.Text = value;
                 _tbFullScreenTitle.Text = value;
             }

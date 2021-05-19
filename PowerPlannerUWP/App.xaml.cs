@@ -696,6 +696,11 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
+                    if (v >= new Version(2105, 19, 3, 0) && v <= new Version(2105, 19, 3, 99))
+                    {
+                        changedText += "\n - Fixed viewing tasks/events not working";
+                    }
+
                     if (v <= new Version(2105, 17, 1, 0))
                     {
                         changedText += "\n - Default grade scales! Go to the settings page to configure default grade options for all classes!";
