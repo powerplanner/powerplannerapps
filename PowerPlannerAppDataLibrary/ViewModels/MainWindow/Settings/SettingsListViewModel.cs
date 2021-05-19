@@ -23,6 +23,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         [VxSubscribe]
         public DataLayer.AccountDataItem Account { get; private set; }
 
+        public new MainScreenViewModel MainScreenViewModel { get; set; }
+
         private VxState<bool> _isFullVersion = new VxState<bool>(true);
 
         public const string HelpUrl = "https://powerplanner.freshdesk.com/support/home";
@@ -34,6 +36,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public SettingsListViewModel(BaseViewModel parent) : base(parent)
         {
+            MainScreenViewModel = FindAncestor<MainScreenViewModel>();
             Account = MainScreenViewModel?.CurrentAccount;
 
             Title = PowerPlannerResources.GetString("String_More");
@@ -318,9 +321,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// </summary>
         public bool HasAccount => Account != null;
 
-        public bool IsOnlineAccount => Account.IsOnlineAccount;
+        public bool IsOnlineAccount => HasAccount && Account.IsOnlineAccount;
 
-        public bool IsDefaultOfflineAccount => Account.IsDefaultOfflineAccount;
+        public bool IsDefaultOfflineAccount => HasAccount && Account.IsDefaultOfflineAccount;
 
         public bool IsCreateAccountVisible => IsDefaultOfflineAccount;
 
