@@ -26,9 +26,11 @@ namespace PowerPlannerUWP.Views
         private Border _buttonCloseContainer;
 
         private Grid _topTitleBar;
+        private TextBlock _tbTitle;
         private StackPanel _topPrimaryCommands;
 
         private Border _fullScreenTitle;
+        private TextBlock _tbFullScreenTitle;
 
         private CommandBar _commandBar;
 
@@ -71,11 +73,6 @@ namespace PowerPlannerUWP.Views
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            tbTitle.SetBinding(TextBlock.TextProperty, new Binding()
-            {
-                Source = this,
-                Path = new PropertyPath("Title")
-            });
             Border borderTitle = new Border()
             {
                 Child = tbTitle,
@@ -83,6 +80,7 @@ namespace PowerPlannerUWP.Views
                 Padding = new Thickness(16, 0, 0, 0)
             };
             _topTitleBar.Children.Add(borderTitle);
+            _tbTitle = tbTitle;
 
 
             // Full screen title
@@ -91,11 +89,6 @@ namespace PowerPlannerUWP.Views
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            tbFullScreenTitle.SetBinding(TextBlock.TextProperty, new Binding()
-            {
-                Source = this,
-                Path = new PropertyPath("Title")
-            });
             _fullScreenTitle = new Border()
             {
                 Child = tbFullScreenTitle,
@@ -104,6 +97,7 @@ namespace PowerPlannerUWP.Views
                 Visibility = Visibility.Collapsed,
                 RequestedTheme = ElementTheme.Dark
             };
+            _tbFullScreenTitle = tbFullScreenTitle;
 
 
             // Secondary menu button
@@ -450,12 +444,14 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(PopupViewHostGeneric), new PropertyMetadata(""));
-
         public string Title
         {
-            get { return GetValue(TitleProperty) as string; }
-            set { SetValue(TitleProperty, value); }
+            get => _tbTitle.Text;
+            set
+            {
+                _tbTitle.Text = value;
+                _tbFullScreenTitle.Text = value;
+            }
         }
 
         public ObservableCollection<AppBarButton> PrimaryCommands { get; }
