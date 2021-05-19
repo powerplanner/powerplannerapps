@@ -9,34 +9,70 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassPassingGradeViewModel : BaseMainScreenViewModelChild
+    public class ConfigureClassPassingGradeViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
         public ViewItemClass Class { get; private set; }
 
-        private double m_passingGrade;
-        /// <summary>
-        /// This is represented as 60 rather than 0.6 for easier display purposes on the control.
-        /// </summary>
-        public double PassingGrade
-        {
-            get { return m_passingGrade; }
-            set { SetProperty(ref m_passingGrade, value, nameof(PassingGrade)); }
-        }
-
         public ConfigureClassPassingGradeViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
+            Title = PowerPlannerResources.GetString("Settings_GradeOptions_ListItemPassingGrade.Title");
+            UseCancelForBack();
+            PrimaryCommand = PopupCommand.Save(Save);
 
-            PassingGrade = c.PassingGrade * 100;
+            _passingGrade = new VxState<double?>(c.PassingGrade * 100);
+        }
+
+        /// <summary>
+        /// This is represented as 60 rather than 0.6 for easier display purposes on the control.
+        /// </summary>
+        private VxState<double?> _passingGrade;
+
+        protected override View Render()
+        {
+            return new LinearLayout
+            {
+                Margin = new Thickness(Theme.Current.PageMargin),
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("Settings_GradeOptions_ListItemPassingGrade.Title"),
+                        FontWeight = FontWeights.Bold
+                    },
+
+                    new NumberTextBox
+                    {
+                        Number = _passingGrade,
+                        PlaceholderText = PowerPlannerResources.GetExamplePlaceholderString(60.ToString())
+                    },
+
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("Settings_GradeOptions_PassingGrade_Explanation.Text"),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = true,
+                        Margin = new Thickness(0, 12, 0, 0)
+                    }
+                }
+            };
         }
 
         public void Save()
         {
+            if (_passingGrade.Value == null || _passingGrade.Value.Value < 0)
+            {
+                new PortableMessageDialog("You must enter a valid non-negative number.", "Invalid grade").Show();
+                return;
+            }
+
             TryStartDataOperationAndThenNavigate(delegate
             {
                 DataChanges changes = new DataChanges();
@@ -45,7 +81,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    PassingGrade = PassingGrade / 100
+                    PassingGrade = _passingGrade.Value.Value / 100
                 };
 
                 changes.Add(c);

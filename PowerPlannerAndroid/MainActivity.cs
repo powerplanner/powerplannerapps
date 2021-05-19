@@ -61,6 +61,9 @@ namespace PowerPlannerAndroid
         {
             base.OnCreate(bundle);
 
+            // Initialize Vx (have to initialize here rather than in App so it picks up the right context with the themed context)
+            Vx.Droid.VxDroidExtensions.ApplicationContext = this;
+
 #if DEBUG
             int disposedCount = 0;
             WeakEventHandler.ObjectDisposedAction = delegate
@@ -372,6 +375,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+
+                    if (v <= new Version(2105, 17, 1, 0))
+                    {
+                        changedText += "\n - Default grade scales! Go to the settings page to configure default grade options for all classes!";
+                    }
 
                     if (v <= new Version(2102, 20, 1, 99))
                     {

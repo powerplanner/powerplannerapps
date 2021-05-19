@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{A9593895-1AA2-451D-8865-28DE0E2DFFB1}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{440aa056-593a-4519-8708-27081dee632f}</TemplateGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Vx.iOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>Vx.iOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchArch>x86_64</MtouchArch>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>x86_64</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchArch>ARM64</MtouchArch>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchArch>ARM64</MtouchArch>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App\iOSDispatcher.cs" />
+    <Compile Include="App\NativeiOSApplication.cs" />
+    <Compile Include="App\RootViewController.cs" />
+    <Compile Include="App\ViewManager.cs" />
+    <Compile Include="Core\BareUIHelper.cs" />
+    <Compile Include="BareUIViews\BareSnackbarPresenter.cs" />
+    <Compile Include="BareUIViews\BareUIBlurView.cs" />
+    <Compile Include="BareUIViews\BareUICustomColorPicker.cs" />
+    <Compile Include="BareUIViews\BareUICustomPickerViewModel.cs" />
+    <Compile Include="BareUIViews\BareUIEllipseView.cs" />
+    <Compile Include="BareUIViews\BareUIHelper.cs" />
+    <Compile Include="BareUIViews\BareUIInlineColorPickerView.cs" />
+    <Compile Include="BareUIViews\BareUIInlineDatePicker.cs" />
+    <Compile Include="BareUIViews\BareUIInlineEditView.cs" />
+    <Compile Include="BareUIViews\BareUIInlinePickerView.cs" />
+    <Compile Include="BareUIViews\BareUIInlineTimePicker.cs" />
+    <Compile Include="BareUIViews\BareUIPickerViewItemTextWithColorCircle.cs" />
+    <Compile Include="BareUIViews\BareUISafeView.cs" />
+    <Compile Include="BareUIViews\BareUISimplePickerViewModel.cs" />
+    <Compile Include="BareUIViews\BareUISimplePickerWithMultipleComponentsViewModel.cs" />
+    <Compile Include="BareUIViews\BareUISlideView.cs" />
+    <Compile Include="BareUIViews\BareUIStackViewItemsSourceAdapter.cs" />
+    <Compile Include="BareUIViews\BareUIStaticGroupedTableView.cs" />
+    <Compile Include="BareUIViews\BareUISwitch.cs" />
+    <Compile Include="BareUIViews\BareUITableViewCell.cs" />
+    <Compile Include="BareUIViews\BareUITableViewCellWithTextField.cs" />
+    <Compile Include="BareUIViews\BareUITableViewSource.cs" />
+    <Compile Include="BareUIViews\BareUITextField.cs" />
+    <Compile Include="BareUIViews\BareUITextView.cs" />
+    <Compile Include="BareUIViews\BareUIView.cs" />
+    <Compile Include="BareUIViews\BareUIVisibilityContainer.cs" />
+    <Compile Include="BareUIViews\Calendar\BareUICalendarMonthView.cs" />
+    <Compile Include="BareUIViews\Calendar\BareUICalendarView.cs" />
+    <Compile Include="BareUIViews\CAPSPageMenuController.cs" />
+    <Compile Include="Binding\BindingHost.cs" />
+    <Compile Include="Binding\LabelBinding.cs" />
+    <Compile Include="Binding\TextFieldBinding.cs" />
+    <Compile Include="Controllers\BareMvvmUIViewController.cs" />
+    <Compile Include="Controllers\BareMvvmUIViewControllerWithScrolling.cs" />
+    <Compile Include="Controllers\ModalCustomColorPickerViewController.cs" />
+    <Compile Include="Controllers\ModalEditViewController.cs" />
+    <Compile Include="Converters\TextToDoubleConverter.cs" />
+    <Compile Include="Extensions\iOSMessageDialog.cs" />
+    <Compile Include="Helpers\SdkSupportHelper.cs" />
+    <Compile Include="Helpers\UIColorCompat.cs" />
+    <Compile Include="Core\iOSNativeComponent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModelPresenters\ListOfViewModelsPresenter.cs" />
+    <Compile Include="ViewModelPresenters\PagedViewModelPresenter.cs" />
+    <Compile Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.cs" />
+    <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
+    <Compile Include="Views\iOSButton.cs" />
+    <Compile Include="Views\iOSLinearLayout.cs" />
+    <Compile Include="Views\iOSScrollView.cs" />
+    <Compile Include="Views\iOSTextBlock.cs" />
+    <Compile Include="Views\iOSTextBox.cs" />
+    <Compile Include="Views\iOSView.cs" />
+    <Compile Include="Views\iOSViewExtensions.cs" />
+    <Compile Include="Core\VxiOSExtensions.cs" />
+    <Compile Include="Core\VxiOSTheme.cs" />
+    <Compile Include="Views\iOSFontIcon.cs" />
+    <Compile Include="Views\iOSListItemButton.cs" />
+    <Compile Include="Views\iOSTransparentContentButton.cs" />
+    <Compile Include="Views\iOSNumberTextBox.cs" />
+    <Compile Include="Views\iOSSwitch.cs" />
+    <Compile Include="Views\iOSVxComponent.cs" />
+    <Compile Include="Windows\NativeiOSAppWindow.cs" />
+    <Compile Include="Views\iOSCheckBox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon167.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon120.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon152.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon180.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon29.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon58.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon76.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon80.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
+      <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
+      <Name>ToolsPortable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
+      <Name>Vx</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>

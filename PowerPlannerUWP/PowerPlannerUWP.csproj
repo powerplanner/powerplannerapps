@@ -159,6 +159,7 @@
     <Compile Include="Converters\IsPastCompletedTasksDisplayedToButtonContentConverter.cs" />
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
+    <Compile Include="Extensions\UWPBrowserExtension.cs" />
     <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Views\ClassWhatIfView.xaml.cs">
       <DependentUpon>ClassWhatIfView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\CreateAccountView.xaml.cs">
       <DependentUpon>CreateAccountView.xaml</DependentUpon>
     </Compile>
@@ -245,6 +247,7 @@
     <Compile Include="Views\InitialSyncView.xaml.cs">
       <DependentUpon>InitialSyncView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PopupComponentView.cs" />
     <Compile Include="Views\Promos\PromoContributeView.xaml.cs">
       <DependentUpon>PromoContributeView.xaml</DependentUpon>
     </Compile>
@@ -296,9 +299,6 @@
     <Compile Include="Views\NothingHerePage.xaml.cs">
       <DependentUpon>NothingHerePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SaveGradeScaleView.xaml.cs">
-      <DependentUpon>SaveGradeScaleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
     </Compile>
@@ -325,30 +325,6 @@
     </Compile>
     <Compile Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml.cs">
       <DependentUpon>GoogleCalendarIntegrationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassAverageGradesView.xaml.cs">
-      <DependentUpon>ConfigureClassAverageGradesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassCreditsView.xaml.cs">
-      <DependentUpon>ConfigureClassCreditsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGpaTypeView.xaml.cs">
-      <DependentUpon>ConfigureClassGpaTypeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradeScaleView.xaml.cs">
-      <DependentUpon>ConfigureClassGradeScaleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradesListView.xaml.cs">
-      <DependentUpon>ConfigureClassGradesListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.xaml.cs">
-      <DependentUpon>ConfigureClassPassingGradeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.xaml.cs">
-      <DependentUpon>ConfigureClassRoundGradesUpView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.xaml.cs">
-      <DependentUpon>ConfigureClassWeightCategoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\ImageUploadOptionsView.xaml.cs">
       <DependentUpon>ImageUploadOptionsView.xaml</DependentUpon>
@@ -416,9 +392,6 @@
     <Compile Include="Views\MainScreenContentViewHostGeneric.cs" />
     <Compile Include="Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsListView.xaml.cs">
-      <DependentUpon>SettingsListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewTaskOrEventView.xaml.cs">
       <DependentUpon>ViewTaskOrEventView.xaml</DependentUpon>
@@ -759,10 +732,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SaveGradeScaleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ClassesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -796,38 +765,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassAverageGradesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassCreditsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassGpaTypeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassGradeScaleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassGradesListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -916,10 +853,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScheduleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SettingsListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1053,9 +986,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
-      <Name>BareMvvm.Core</Name>
+    <ProjectReference Include="..\Vx.Uwp\Vx.Uwp.csproj">
+      <Project>{81903242-5242-48df-a80d-b1b52316283b}</Project>
+      <Name>Vx.Uwp</Name>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
@@ -1065,17 +998,9 @@
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
     </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\applibraries\InterfacesUWP\InterfacesUWP\InterfacesUWP.csproj">
-      <Project>{4a105de9-fb7d-446f-88b5-01338b38c920}</Project>
-      <Name>InterfacesUWP</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\applibraries\ToolsUniversal\ToolsUniversal\ToolsUniversal.csproj">
-      <Project>{b04e5040-2dbb-4d91-a5c8-fa21841d6372}</Project>
-      <Name>ToolsUniversal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj">
+    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
       <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
-      <Name>PowerPlannerAppDataLibrary</Name>
+      <Name>PowerPlanner</Name>
     </ProjectReference>
     <ProjectReference Include="..\UpgradeFromSilverlight\UpgradeFromSilverlight.csproj">
       <Project>{e8a794f8-2f18-4184-a4a9-ee02ac8d3374}</Project>
@@ -1084,6 +1009,10 @@
     <ProjectReference Include="..\UpgradeFromWin8\UpgradeFromWin8.csproj">
       <Project>{48ddeb76-0fa6-47c7-801e-f9c1bc584649}</Project>
       <Name>UpgradeFromWin8</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
+      <Name>Vx</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

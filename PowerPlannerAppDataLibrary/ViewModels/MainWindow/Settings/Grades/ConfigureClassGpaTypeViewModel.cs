@@ -13,82 +13,101 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassGpaTypeViewModel : BaseMainScreenViewModelChild
+    public class ConfigureClassGpaTypeViewModel : PopupComponentViewModel
     {
+        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
-        private GpaType m_gpaType;
-        public GpaType GpaType
-        {
-            get { return m_gpaType; }
-            set
-            {
-                if (m_gpaType != value)
-                {
-                    m_gpaType = value;
-                    OnPropertyChanged(nameof(GpaType), nameof(IsStandard), nameof(IsPassFail));
-                    Save();
-                }
-            }
-        }
-
-        public bool IsStandard
-        {
-            get { return GpaType == GpaType.Standard; }
-            set
-            {
-                if (value)
-                {
-                    GpaType = GpaType.Standard;
-                }
-            }
-        }
-
-        public bool IsPassFail
-        {
-            get { return GpaType == GpaType.PassFail; }
-            set
-            {
-                if (value)
-                {
-                    GpaType = GpaType.PassFail;
-                }
-            }
-        }
-
-        private bool _isEnabled = true;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
-        }
+        private VxState<bool> _isEnabled = new VxState<bool>(true);
 
         public ConfigureClassGpaTypeViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
-            Class.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
-            m_gpaType = c.GpaType;
-
+            Title = PowerPlannerResources.GetString("Settings_GradeOptions_GpaType");
         }
 
-        private void Class_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override View Render()
         {
-            switch (e.PropertyName)
+            var layout = new LinearLayout
             {
-                case nameof(Class.GpaType):
-                    SetProperty(ref m_gpaType, Class.GpaType, nameof(GpaType), nameof(IsStandard), nameof(IsPassFail));
-                    break;
-            }
+                Children =
+                {
+                    RenderOption(
+                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_Standard.Text"),
+                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_StandardExplanation.Text"),
+                        Class.GpaType == GpaType.Standard,
+                        () => Save(GpaType.Standard)),
+
+                    RenderOption(
+                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_PassFail.Text"),
+                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_PassFailExplanation.Text"),
+                        Class.GpaType == GpaType.PassFail,
+                        () => Save(GpaType.PassFail))
+                }
+            };
+
+            return new ScrollView(layout);
         }
 
-        private async void Save()
+        private View RenderOption(string title, string subtitle, bool isChecked, Action checkedAction)
+        {
+            return new TransparentContentButton
+            {
+                Opacity = _isEnabled.Value ? 1 : 0.7f,
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new LinearLayout
+                        {
+                            Children =
+                            {
+                                new TextBlock
+                                {
+                                    Text = title,
+                                    FontWeight = FontWeights.Bold
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = subtitle,
+                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                    WrapText = true
+                                }
+                            }
+                        }.LinearLayoutWeight(1),
+
+                        new FontIcon
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.Check,
+                            Color = Theme.Current.AccentColor,
+                            FontSize = 30,
+                            Opacity = isChecked ? 1 : 0
+                        }
+                    }
+                },
+
+                Click = () =>
+                {
+                    if (_isEnabled.Value)
+                    {
+                        checkedAction();
+                    }
+                }
+            };
+        }
+
+        private async void Save(GpaType gpaType)
         {
             try
             {
-                IsEnabled = false;
+                _isEnabled.Value = false;
 
                 var changes = new DataChanges();
 
@@ -96,7 +115,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    GpaType = GpaType
+                    GpaType = gpaType
                 };
 
                 changes.Add(c);
@@ -116,7 +135,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
             finally
             {
-                IsEnabled = true;
+                _isEnabled.Value = true;
             }
         }
     }

@@ -2114,19 +2114,20 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 #endregion
 
 
-        public static BaseDataItem[] GenerateNewDefaultClass(Guid semesterId, string name, byte[] rawColor)
+        public static BaseDataItem[] GenerateNewDefaultClass(AccountDataItem account, Guid semesterId, string name, byte[] rawColor)
         {
             DataItemClass c = new DataItemClass()
             {
                 Identifier = Guid.NewGuid(),
                 UpperIdentifier = semesterId,
                 Credits = Grade.NO_CREDITS,
-                DoesRoundGradesUp = true,
+                DoesRoundGradesUp = account.DefaultDoesRoundGradesUp,
+                ShouldAverageGradeTotals = account.DefaultDoesAverageGradeTotals,
                 Name = name,
                 RawColor = rawColor
             };
             
-            c.SetGradeScales(GradeScale.GenerateDefaultScaleWithoutLetters());
+            c.SetGradeScales(account.DefaultGradeScale);
 
             DataItemWeightCategory weight = CreateDefaultWeightCategory(c.Identifier);
 

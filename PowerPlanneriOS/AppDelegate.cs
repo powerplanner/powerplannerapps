@@ -44,6 +44,7 @@ using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using PowerPlanneriOS.Controllers.Settings.Grades;
+using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlanneriOS
 {
@@ -59,6 +60,15 @@ namespace PowerPlanneriOS
         {
             string versionName = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString") as NSString;
             Variables.VERSION = Version.Parse(versionName);
+        }
+
+        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        {
+            return new Dictionary<Type, Type>
+            {
+                { typeof(PopupComponentViewModel), typeof(PopupComponentViewController) },
+                { typeof(ComponentViewModel), typeof(ComponentViewController) } // This needs to be after Popup since Popup is a subclass
+            };
         }
 
         public override Dictionary<Type, Type> GetViewModelToViewMappings()
@@ -92,12 +102,9 @@ namespace PowerPlanneriOS
                 { typeof(AddHolidayViewModel), typeof(AddHolidayViewController) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeViewController) },
                 { typeof(AddGradeViewModel), typeof(AddGradeViewController) },
-                { typeof(ConfigureClassCreditsViewModel), typeof(EditClassCreditsViewController) },
-                { typeof(ConfigureClassWeightCategoriesViewModel), typeof(EditClassWeightCategoriesViewController) },
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) },
-                { typeof(SettingsListViewModel), typeof(SettingsListViewController) },
                 { typeof(MyAccountViewModel), typeof(MyAccountViewController) },
                 { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityViewController) },
                 { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameViewController) },
@@ -116,14 +123,7 @@ namespace PowerPlanneriOS
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) },
                 { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsViewController) },
 
-                { typeof(ConfigureClassGradesViewModel), typeof(ConfigureClassGradesViewController) },
-                { typeof(ConfigureClassGradesListViewModel), typeof(ConfigureClassGradesListViewController) },
-                { typeof(ConfigureClassAverageGradesViewModel), typeof(ConfigureClassAverageGradesViewController) },
-                { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpViewController) },
-                { typeof(ConfigureClassGradeScaleViewModel), typeof(ConfigureClassGradeScaleViewController) },
-                { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeViewController) },
-                { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeViewController) },
-                { typeof(SaveGradeScaleViewModel), typeof(SaveGradeScaleViewController) }
+                { typeof(ConfigureClassGradesViewModel), typeof(ConfigureClassGradesViewController) }
             };
         }
 
@@ -226,6 +226,7 @@ namespace PowerPlanneriOS
             TelemetryExtension.Current = new iOSTelemetryExtension();
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
             PushExtension.Current = new iOSPushExtension();
+            BrowserExtension.Current = new iOSBrowserExtension();
 
             if (SdkSupportHelper.IsNotificationsSupported)
             {

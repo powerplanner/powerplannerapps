@@ -12,57 +12,91 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassAverageGradesViewModel : BaseMainScreenViewModelDescendant
+    public class ConfigureClassAverageGradesViewModel : PopupComponentViewModel
     {
-        private bool m_averageGrades;
-        public bool AverageGrades
-        {
-            get { return m_averageGrades; }
-            set
-            {
-                if (m_averageGrades != value)
-                {
-                    m_averageGrades = value;
-                    OnPropertyChanged(nameof(AverageGrades));
-                    Save();
-                }
-            }
-        }
-
-        private bool _isEnabled = true;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
-        }
+        private VxState<bool> _averageGrades;
+        private VxState<bool> _isEnabled = new VxState<bool>(true);
 
         public ViewItemClass Class { get; private set; }
+        private bool _currAverageGrades;
 
         public ConfigureClassAverageGradesViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
-            c.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
-            m_averageGrades = c.ShouldAverageGradeTotals;
+            _averageGrades = new VxState<bool>(c.ShouldAverageGradeTotals);
+            _currAverageGrades = c.ShouldAverageGradeTotals;
+
+            Title = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text");
         }
 
-        private void Class_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override View Render()
         {
-            switch (e.PropertyName)
+            return new LinearLayout
             {
-                case nameof(Class.ShouldAverageGradeTotals):
-                    SetProperty(ref m_averageGrades, Class.ShouldAverageGradeTotals, nameof(AverageGrades));
-                    break;
+                Margin = new Thickness(Theme.Current.PageMargin),
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditAverageGradesForThisClass"),
+                        WrapText = true
+                    },
+
+                    new TextButton
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditForAll"),
+                        Click = EditDefaultAverageGrades,
+                        Margin = new Thickness(0, 0, 0, 12),
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        IsEnabled = _isEnabled
+                    },
+
+                    new Switch
+                    {
+                        Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
+                        IsOn = _averageGrades,
+                        IsOnChanged = Save,
+                        IsEnabled = _isEnabled
+                    },
+
+                    new TextBlock
+                    {
+                        Margin = new Thickness(0, 12, 0, 0),
+                        Text = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpBody.Text"),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = true
+                    }
+                }
+            };
+        }
+
+        public override void OnViewFocused()
+        {
+            base.OnViewFocused();
+
+            // Update if changed via the default settings
+            if (_currAverageGrades != Class.ShouldAverageGradeTotals)
+            {
+                _currAverageGrades = Class.ShouldAverageGradeTotals;
+                _averageGrades.Value = Class.ShouldAverageGradeTotals;
             }
         }
 
-        private async void Save()
+        private void EditDefaultAverageGrades()
+        {
+            ConfigureClassGradesListViewModel.ShowViewModel<ConfigureDefaultAverageGradesViewModel>(this);
+        }
+
+        private async void Save(bool averageGrades)
         {
             try
             {
-                IsEnabled = false;
+                _isEnabled.Value = false;
+                _averageGrades.Value = averageGrades;
 
                 var changes = new DataChanges();
 
@@ -70,7 +104,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    ShouldAverageGradeTotals = AverageGrades
+                    ShouldAverageGradeTotals = _averageGrades
                 };
 
                 changes.Add(c);
@@ -78,6 +112,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 await TryHandleUserInteractionAsync("Save", async delegate
                 {
                     await PowerPlannerApp.Current.SaveChanges(changes);
+                    _currAverageGrades = averageGrades;
 
                 }, "Failed to save. Your error has been reported.");
             }
@@ -90,7 +125,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
             finally
             {
-                IsEnabled = true;
+                _isEnabled.Value = true;
             }
         }
     }

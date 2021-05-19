@@ -15,7 +15,7 @@
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -105,6 +105,7 @@
     <Compile Include="Converters\StartOrEndDateToStringConverter.cs" />
     <Compile Include="Converters\WeekDateToStringConverter.cs" />
     <Compile Include="Extensions\DroidAppShortcutsExtension.cs" />
+    <Compile Include="Extensions\DroidBrowserExtension.cs" />
     <Compile Include="Extensions\DroidClassRemindersExtension.cs" />
     <Compile Include="Extensions\DroidDateTimeFormatterExtension.cs" />
     <Compile Include="Extensions\DroidImagePickerExtension.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Views\ClassTasksOrEventsView.cs" />
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
+    <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\ConfirmIdentityView.cs" />
     <Compile Include="Views\Controls\AddTaskOrEventRepeatsSubControl.cs" />
     <Compile Include="Views\Controls\DayPagerControl.cs" />
@@ -187,10 +189,8 @@
     <Compile Include="Views\ListItemHeaders\ListItemHeaderWeightCategoryView.cs" />
     <Compile Include="Views\ListItems\ListItemClassGroupedTimesView.cs" />
     <Compile Include="Views\ListItems\ListItemClassMenuItemView.cs" />
-    <Compile Include="Views\ListItems\ListItemEditingGradeScaleView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassTimeView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassView.cs" />
-    <Compile Include="Views\ListItems\ListItemEditingWeightCategoryView.cs" />
     <Compile Include="Views\ListItems\ListItemGradeView.cs" />
     <Compile Include="Views\ListItems\ListItemHolidayScheduleView.cs" />
     <Compile Include="Views\ListItems\ListItemTaskOrEventView.cs" />
@@ -200,6 +200,7 @@
     <Compile Include="Views\MainCalendarItemView.cs" />
     <Compile Include="Views\MainScreenView.cs" />
     <Compile Include="Views\MyAccountView.cs" />
+    <Compile Include="Views\PopupComponentView.cs" />
     <Compile Include="Views\PopupViewHost.cs" />
     <Compile Include="Views\PremiumVersionView.cs" />
     <Compile Include="Views\QuickAddView.cs" />
@@ -207,18 +208,9 @@
     <Compile Include="Views\ResetPasswordView.cs" />
     <Compile Include="Views\ScheduleView.cs" />
     <Compile Include="Views\SettingsImageUploadOptionsView.cs" />
-    <Compile Include="Views\SettingsListView.cs" />
     <Compile Include="Views\ListItems\ListItemSemesterView.cs" />
     <Compile Include="Views\ListItems\ListItemYearView.cs" />
     <Compile Include="Views\SettingsTwoWeekScheduleView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassAverageGradesView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassCreditsView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGpaTypeView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradeScaleView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassGradesListView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassPassingGradeView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassRoundGradesUpView.cs" />
-    <Compile Include="Views\SettingsViews\Grades\ConfigureClassWeightCategoriesView.cs" />
     <Compile Include="Views\SettingsViews\ReminderSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.cs" />
@@ -258,9 +250,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Years.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsList.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemYear.xml">
@@ -422,12 +411,6 @@
     <AndroidResource Include="Resources\layout\SpinnerItemWeightCategory.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingWeightCategory.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemEditingGradeScale.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemClassMenuItem.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -524,30 +507,6 @@
     <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGradesList.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassAverageGrades.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassRoundGradesUp.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassCredits.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassWeightCategories.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGradeScale.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassPassingGrade.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfigureClassGpaType.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\DayPager.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -566,13 +525,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\applibraries\InterfacesDroid\InterfacesDroid\InterfacesDroid.csproj">
-      <Project>{ce015236-0e8d-4042-b596-6e20bd26e56e}</Project>
-      <Name>InterfacesDroid</Name>
+    <ProjectReference Include="..\Vx.Droid\Vx.Droid.csproj">
+      <Project>{a6c20220-69c5-48f7-92cb-9ac9c6ac27de}</Project>
+      <Name>Vx.Droid</Name>
     </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\portablelibraries\BareMvvm\BareMvvm.Core\BareMvvm.Core.csproj">
-      <Project>{ab6ac1b2-91fb-4efb-b601-a795fbab4575}</Project>
-      <Name>BareMvvm.Core</Name>
+    <ProjectReference Include="..\Vx\Vx.csproj">
+      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
+      <Name>Vx</Name>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
       <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
@@ -582,9 +541,9 @@
       <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
       <Name>ToolsPortable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlannerAppDataLibrary.csproj">
+    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
       <Project>{d5f159b7-addd-4c88-9f45-8a12e37f8052}</Project>
-      <Name>PowerPlannerAppDataLibrary</Name>
+      <Name>PowerPlanner</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

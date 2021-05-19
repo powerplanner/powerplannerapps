@@ -104,7 +104,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 scale = Class.GradeScales;
 
             else
-                scale = PowerPlannerSending.GradeScale.GenerateDefaultScaleWithoutLetters();
+                scale = MainScreenViewModel.CurrentAccount.DefaultGradeScale;
 
 
             //find exact match

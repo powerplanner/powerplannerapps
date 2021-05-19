@@ -2495,6 +2495,74 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Mark incomplete</source>
           <target state="final" state-qualifier="mt-suggestion">Marcar incompleto</target>
         </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_AverageGrades" translate="yes" xml:space="preserve">
+          <source>Default average grades</source>
+          <target state="final" state-qualifier="mt-suggestion">Promediar notas predeterminadas</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_Explanation" translate="yes" xml:space="preserve">
+          <source>Configure default grade options, used for all classes unless overridden.</source>
+          <target state="final" state-qualifier="mt-suggestion">Configure las opciones de notas predeterminadas, utilizadas para todas las clases a menos que se invaliden.</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_GradeScale" translate="yes" xml:space="preserve">
+          <source>Default grade scale</source>
+          <target state="final" state-qualifier="mt-suggestion">Escala de notas predeterminada</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_RoundGradesUp" translate="yes" xml:space="preserve">
+          <source>Default round grades up</source>
+          <target state="final" state-qualifier="mt-suggestion">Redondear notas predeterminadas</target>
+        </trans-unit>
+        <trans-unit id="Settings_DefaultGradeOptions_SaveAndApply" translate="yes" xml:space="preserve">
+          <source>Save and apply to {0} classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Guardar y aplicar a {0} clases</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Subtitle" translate="yes" xml:space="preserve">
+          <source>Set default grade options for all classes</source>
+          <target state="final" state-qualifier="mt-suggestion">Establecer opciones de notas predeterminadas para todas las clases</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_DefaultGradeOptions.Title" translate="yes" xml:space="preserve">
+          <source>Default grade options</source>
+          <target state="final" state-qualifier="mt-suggestion">Opciones de notas predeterminadas</target>
+        </trans-unit>
+        <trans-unit id="String_All" translate="yes" xml:space="preserve">
+          <source>all</source>
+          <target state="final" state-qualifier="tm-suggestion">todas</target>
+        </trans-unit>
+        <trans-unit id="String_Saved" translate="yes" xml:space="preserve">
+          <source>Saved!</source>
+          <target state="final" state-qualifier="mt-suggestion">¡Guardado!</target>
+        </trans-unit>
+        <trans-unit id="String_Saving" translate="yes" xml:space="preserve">
+          <source>Saving...</source>
+          <target state="final" state-qualifier="tm-suggestion">Guardando…</target>
+        </trans-unit>
+        <trans-unit id="String_Unsaved" translate="yes" xml:space="preserve">
+          <source>Unsaved</source>
+          <target state="final" state-qualifier="tm-suggestion">No guardado</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditAverageGradesForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit average grade options for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Edite las opciones de promediar notas para esta clase.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditForAll" translate="yes" xml:space="preserve">
+          <source>Edit for all classes instead</source>
+          <target state="final" state-qualifier="mt-suggestion">Editar para todas las clases en su lugar</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditGrades_EditGradeScaleForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit the grade scale for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Edite la escala de notas de esta clase.</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_EditRoundGradesUpForThisClass" translate="yes" xml:space="preserve">
+          <source>Edit round grade up options for this class.</source>
+          <target state="final" state-qualifier="mt-suggestion">Edite las opciones de redondear notas para esta clase.</target>
+        </trans-unit>
+        <trans-unit id="Settings_GradeOptions_UsePresetScale" translate="yes" xml:space="preserve">
+          <source>Use a preset scale</source>
+          <target state="final" state-qualifier="mt-suggestion">Usar una escala preestablecida</target>
+        </trans-unit>
+        <trans-unit id="String_ClassPlusXOthers" translate="yes" xml:space="preserve">
+          <source>{0} (+{1} others)</source>
+          <target state="final" state-qualifier="mt-suggestion">{0} (+{1} otros)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

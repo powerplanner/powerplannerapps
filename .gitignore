@@ -236,3 +236,6 @@ PowerPlannerUWP/App/Secrets.cs
 
 # Ignore compiled resource translations
 Resources.*.resx
+
+# Ignore Mac files
+.DS_Store

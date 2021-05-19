@@ -22,6 +22,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAndroid.Extensions;
 using ToolsPortable;
+using PowerPlannerAndroid.ViewModel.Settings;
+using BareMvvm.Core.ViewModels;
 
 namespace PowerPlannerAndroid.App
 {
@@ -34,6 +36,29 @@ namespace PowerPlannerAndroid.App
             ShowClassesAsPopups = true;
             ShowSettingsPagesAsPopups = true;
             UsesIanaTimeZoneIds = true;
+
+            SettingsListViewModel.CustomOpenGoogleCalendarIntegration = settingsListViewModel =>
+            {
+                var browserIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse(GoogleCalendarIntegrationViewModel.Url));
+
+                // Pass in headers
+                // https://stackoverflow.com/questions/28868734/open-browser-with-a-url-with-extra-headers-for-android
+                var headersBundle = new Bundle();
+                headersBundle.PutString("AccountId", settingsListViewModel.Account.AccountId.ToString());
+                headersBundle.PutString("Username", settingsListViewModel.Account.Username);
+                headersBundle.PutString("Session", settingsListViewModel.Account.Token);
+
+                browserIntent.PutExtra(Android.Provider.Browser.ExtraHeaders, headersBundle);
+
+                Vx.Droid.VxDroidExtensions.ApplicationContext.StartActivity(browserIntent);
+            };
+
+            SettingsListViewModel.OpenWidgets = settingsListViewModel =>
+            {
+                var newViewModel = new WidgetsViewModel(SettingsListViewModel.GetParentForSubviews(settingsListViewModel) as PagedViewModel);
+
+                SettingsListViewModel.Show(newViewModel);
+            };
         }
 
         public static new PowerPlannerDroidApp Current
@@ -58,6 +83,7 @@ namespace PowerPlannerAndroid.App
             ImagePickerExtension.Current = new DroidImagePickerExtension();
             NetworkInfoExtension.Current = new DroidNetworkInfoExtension();
             AppShortcutsExtension.Current = new DroidAppShortcutsExtension();
+            BrowserExtension.Current = new DroidBrowserExtension();
 
             return base.InitializeAsyncOverride();
         }

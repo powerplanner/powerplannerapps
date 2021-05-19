@@ -66,6 +66,7 @@ namespace PowerPlannerUWP
             ImagePickerExtension.Current = new UWPImagePickerExtension();
             LanguageExtension.Current = new UWPLanguageExtension();
             SoundsExtension.Current = new UWPSoundsExtension();
+            BrowserExtension.Current = new UWPBrowserExtension();
         }
     }
 }

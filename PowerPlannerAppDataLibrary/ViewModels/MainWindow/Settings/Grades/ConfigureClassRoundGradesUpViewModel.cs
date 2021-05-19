@@ -12,57 +12,91 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassRoundGradesUpViewModel : BaseMainScreenViewModelDescendant
+    public class ConfigureClassRoundGradesUpViewModel : PopupComponentViewModel
     {
-        private bool m_roundGradesUp;
-        public bool RoundGradesUp
-        {
-            get { return m_roundGradesUp; }
-            set
-            {
-                if (m_roundGradesUp != value)
-                {
-                    m_roundGradesUp = value;
-                    OnPropertyChanged(nameof(RoundGradesUp));
-                    Save();
-                }
-            }
-        }
-
-        private bool _isEnabled = true;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
-        }
+        private VxState<bool> _roundGradesUp;
+        private VxState<bool> _isEnabled = new VxState<bool>(true);
 
         public ViewItemClass Class { get; private set; }
+        private bool _currRoundGradesUp;
 
         public ConfigureClassRoundGradesUpViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             Class = c;
-            c.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Class_PropertyChanged).Handler;
-            m_roundGradesUp = c.DoesRoundGradesUp;
+            Title = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text");
+
+            _roundGradesUp = new VxState<bool>(c.DoesRoundGradesUp);
+            _currRoundGradesUp = c.DoesRoundGradesUp;
         }
 
-        private void Class_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override View Render()
         {
-            switch (e.PropertyName)
+            return new LinearLayout
             {
-                case nameof(Class.DoesRoundGradesUp):
-                    SetProperty(ref m_roundGradesUp, Class.DoesRoundGradesUp, nameof(RoundGradesUp));
-                    break;
+                Margin = new Thickness(Theme.Current.PageMargin),
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditRoundGradesUpForThisClass"),
+                        WrapText = true
+                    },
+
+                    new TextButton
+                    {
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditForAll"),
+                        Click = EditDefaultRoundGradesUp,
+                        Margin = new Thickness(0, 0, 0, 12),
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        IsEnabled = _isEnabled
+                    },
+
+                    new Switch
+                    {
+                        Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
+                        IsOn = _roundGradesUp,
+                        IsOnChanged = Save,
+                        IsEnabled = _isEnabled
+                    },
+
+                    new TextBlock
+                    {
+                        Margin = new Thickness(0, 12, 0, 0),
+                        Text = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpBody.Text"),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = true
+                    }
+                }
+            };
+        }
+
+        public override void OnViewFocused()
+        {
+            base.OnViewFocused();
+
+            // Update if changed via the default settings
+            if (_currRoundGradesUp != Class.DoesRoundGradesUp)
+            {
+                _currRoundGradesUp = Class.DoesRoundGradesUp;
+                _roundGradesUp.Value = Class.DoesRoundGradesUp;
             }
         }
 
-        private async void Save()
+        private void EditDefaultRoundGradesUp()
+        {
+            ConfigureClassGradesListViewModel.ShowViewModel<ConfigureDefaultRoundGradesUpViewModel>(this);
+        }
+
+        private async void Save(bool roundGradesUp)
         {
             try
             {
-                IsEnabled = false;
+                _roundGradesUp.Value = roundGradesUp;
+                _isEnabled.Value = false;
 
                 var changes = new DataChanges();
 
@@ -70,7 +104,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    DoesRoundGradesUp = RoundGradesUp
+                    DoesRoundGradesUp = roundGradesUp
                 };
 
                 changes.Add(c);
@@ -78,6 +112,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 await TryHandleUserInteractionAsync("Save", async delegate
                 {
                     await PowerPlannerApp.Current.SaveChanges(changes);
+                    _currRoundGradesUp = roundGradesUp;
 
                 }, "Failed to save. Your error has been reported.");
             }
@@ -86,11 +121,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 TelemetryExtension.Current?.TrackException(ex);
                 await new PortableMessageDialog("Error encountered while saving. Your error report has been sent to the developer.", "Error").ShowAsync();
+                _roundGradesUp.Value = Class.DoesRoundGradesUp;
             }
 
             finally
             {
-                IsEnabled = true;
+                _isEnabled.Value = true;
             }
         }
     }

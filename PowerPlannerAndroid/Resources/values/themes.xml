@@ -11,6 +11,9 @@
         <item name="colorAccent">@color/accent</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="materialButtonStyle">@style/ButtonDefault</item>
+
+      <!--Needed for Vx TextButton-->
+        <item name="materialTextButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     </style>
 
     <style name="ButtonDefault" parent="Widget.MaterialComponents.Button">

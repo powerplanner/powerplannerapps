@@ -31,10 +31,9 @@ using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAndroid.ViewModel.Settings;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
-using PowerPlannerAndroid.Views.SettingsViews.Grades;
 using PowerPlannerAndroid.Views.WelcomeViews;
 using PowerPlannerAndroid.Views.SettingsViews;
+using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlannerAndroid.App
 {
@@ -66,6 +65,15 @@ namespace PowerPlannerAndroid.App
             base.OnCreate();
         }
 
+        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        {
+            return new Dictionary<Type, Type>()
+            {
+                { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
+                { typeof(ComponentViewModel), typeof(ComponentView) } // This must be after Popup since Popup is a subclass
+            };
+        }
+
         public override Dictionary<Type, Type> GetViewModelToViewMappings()
         {
             return new Dictionary<Type, Type>()
@@ -95,7 +103,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(MyAccountViewModel), typeof(MyAccountView) },
-                { typeof(SettingsListViewModel), typeof(SettingsListView) },
                 { typeof(AboutViewModel), typeof(AboutView) },
                 { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityView) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailView) },
@@ -118,15 +125,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(WidgetScheduleViewModel), typeof(SettingsWidgetScheduleView) },
                 { typeof(SyncOptionsSimpleViewModel), typeof(SettingsSyncOptionsView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(SettingsImageUploadOptionsView) },
-
-                { typeof(ConfigureClassGradesListViewModel), typeof(ConfigureClassGradesListView) },
-                { typeof(ConfigureClassAverageGradesViewModel), typeof(ConfigureClassAverageGradesView) },
-                { typeof(ConfigureClassCreditsViewModel), typeof(ConfigureClassCreditsView) },
-                { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
-                { typeof(ConfigureClassGradeScaleViewModel), typeof(ConfigureClassGradeScaleView) },
-                { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
-                { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
-                { typeof(ConfigureClassWeightCategoriesViewModel), typeof(ConfigureClassWeightCategoriesView) },
 
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
 

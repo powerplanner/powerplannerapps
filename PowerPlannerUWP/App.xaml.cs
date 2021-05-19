@@ -54,11 +54,10 @@ using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using Windows.ApplicationModel.DataTransfer;
 using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
-using PowerPlannerUWP.Views.SettingsViews.Grades;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.Views.WelcomeViews;
 using PowerPlannerUWP.BackgroundTasks;
+using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlannerUWP
 {
@@ -89,6 +88,15 @@ namespace PowerPlannerUWP
         public override Type GetPortableAppType()
         {
             return typeof(PowerPlannerUwpApp);
+        }
+
+        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        {
+            return new Dictionary<Type, Type>
+            {
+                { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
+                { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
+            };
         }
 
         public override Dictionary<Type, Type> GetViewModelToViewMappings()
@@ -124,10 +132,8 @@ namespace PowerPlannerUWP
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },
                 { typeof(RecoveredUsernamesViewModel), typeof(RecoveredUsernamesView) },
                 { typeof(ResetPasswordViewModel), typeof(ResetPasswordView) },
-                { typeof(SaveGradeScaleViewModel), typeof(SaveGradeScaleView) },
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
-                { typeof(SettingsListViewModel), typeof(SettingsListView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
@@ -160,14 +166,6 @@ namespace PowerPlannerUWP
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
                 { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) },
-                { typeof(ConfigureClassGradesListViewModel), typeof(ConfigureClassGradesListView) },
-                { typeof(ConfigureClassCreditsViewModel), typeof(ConfigureClassCreditsView) },
-                { typeof(ConfigureClassWeightCategoriesViewModel), typeof(ConfigureClassWeightCategoriesView) },
-                { typeof(ConfigureClassGradeScaleViewModel), typeof(ConfigureClassGradeScaleView) },
-                { typeof(ConfigureClassAverageGradesViewModel), typeof(ConfigureClassAverageGradesView) },
-                { typeof(ConfigureClassRoundGradesUpViewModel), typeof(ConfigureClassRoundGradesUpView) },
-                { typeof(ConfigureClassGpaTypeViewModel), typeof(ConfigureClassGpaTypeView) },
-                { typeof(ConfigureClassPassingGradeViewModel), typeof(ConfigureClassPassingGradeView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
                 { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
@@ -697,6 +695,11 @@ namespace PowerPlannerUWP
 
 
                     string changedText = "";
+
+                    if (v <= new Version(2105, 17, 1, 0))
+                    {
+                        changedText += "\n - Default grade scales! Go to the settings page to configure default grade options for all classes!";
+                    }
 
                     if (v <= new Version(2102, 16, 3, 99))
                     {

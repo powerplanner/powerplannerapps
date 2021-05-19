@@ -452,13 +452,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             base.PopulateFromDataItemOverride(dataItem);
 
             DataItemClass i = dataItem as DataItemClass;
+            bool isNoClassClass = i.Identifier == i.UpperIdentifier;
 
             CourseNumber = i.CourseNumber;
             ShouldAverageGradeTotals = i.ShouldAverageGradeTotals;
             DoesRoundGradesUp = i.DoesRoundGradesUp;
             Color = i.RawColor;
             Position = i.Position;
-            GradeScales = i.GetGradeScales() ?? GradeScale.GenerateDefaultScaleWithoutLetters();
+            GradeScales = isNoClassClass ? null : (i.GetGradeScales() ?? Account.DefaultGradeScale);
             Credits = i.Credits;
             StartDate = DateTime.SpecifyKind(i.StartDate, DateTimeKind.Local);
             EndDate = DateTime.SpecifyKind(i.EndDate, DateTimeKind.Local);
@@ -569,7 +570,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             //use default grade scale
             else
             {
-                gradeScales = GradeScale.GenerateDefaultScaleWithoutLetters();
+                gradeScales = Account.DefaultGradeScale;
             }
 
 

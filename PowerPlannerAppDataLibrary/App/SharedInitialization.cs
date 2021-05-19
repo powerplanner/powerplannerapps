@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.App
 {
@@ -28,6 +29,8 @@ namespace PowerPlannerAppDataLibrary.App
 
             // Pipe localizer so it works on Android from portable binding library
             PortableLocalizedResources.LocalizerExtension = PowerPlannerResources.GetString;
+
+            Theme.DefaultAccentColor = System.Drawing.Color.FromArgb(84, 107, 199);
         }
 
         private static void SetUpApiKey()

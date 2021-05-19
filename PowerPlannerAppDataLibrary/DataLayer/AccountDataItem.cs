@@ -18,7 +18,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
     [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/PowerPlannerUWPLibrary.DataLayer")]
     public class AccountDataItem : BindableBaseWithPortableDispatcher
     {
-        public const int CURRENT_ACCOUNT_DATA_VERSION = 4;
+        public const int CURRENT_ACCOUNT_DATA_VERSION = 5;
         public const int CURRENT_SYNCED_DATA_VERSION = 5;
 
         /// <summary>
@@ -53,6 +53,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             get { return _currentChangeNumber; }
             set { SetProperty(ref _currentChangeNumber, value, "CurrentChangeNumber"); }
         }
+
+        /// <summary>
+        /// The last current online DefaultGradeScaleIndex that this client saw. Initially starts as 0 (null), same as a newly created account.
+        /// </summary>
+        [DataMember]
+        public long CurrentDefaultGradeScaleIndex { get; set; }
 
         [DataMember]
         public bool NeedsInitialSync { get; set; }
@@ -436,6 +442,45 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         }
 
         [DataMember]
+        private GradeScale[] _defaultGradeScale;
+        public GradeScale[] DefaultGradeScale
+        {
+            get
+            {
+                if (_defaultGradeScale == null)
+                {
+                    _defaultGradeScale = GradeScale.GenerateDefaultScaleWithoutLetters();
+                }
+
+                return _defaultGradeScale;
+            }
+            internal set => _defaultGradeScale = value;
+        }
+
+        private bool _defaultDoesAverageGradeTotals = false;
+        [DataMember]
+        public bool DefaultDoesAverageGradeTotals
+        {
+            get => _defaultDoesAverageGradeTotals;
+            set => SetProperty(ref _defaultDoesAverageGradeTotals, value, nameof(DefaultDoesAverageGradeTotals));
+        }
+
+        private bool _defaultDoesRoundGradesUp = true;
+        [DataMember]
+        public bool DefaultDoesRoundGradesUp
+        {
+            get => _defaultDoesRoundGradesUp;
+            set => SetProperty(ref _defaultDoesRoundGradesUp, value, nameof(DefaultDoesRoundGradesUp));
+        }
+
+        public async System.Threading.Tasks.Task SaveDefaultGradeScale(GradeScale[] defaultGradeScale)
+        {
+            _defaultGradeScale = defaultGradeScale;
+            NeedsToSyncSettings = true;
+            await SaveOnThread();
+        }
+
+        [DataMember]
         private MainTileSettings _mainTileSettings;
         public MainTileSettings MainTileSettings
         {
@@ -494,6 +539,67 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             // Move the temp file to the actual file
             await temp.MoveAsync(destination.Path + "/" + classId.ToString() + ".dat", NameCollisionOption.ReplaceExisting);
+        }
+
+        public bool ApplySyncedSettings(SyncedSettings settings, long? defaultGradeScaleIndex)
+        {
+            bool accountChanged = false;
+
+            if (settings.GpaOption != null && this.GpaOption != settings.GpaOption.Value)
+            {
+                this.GpaOption = settings.GpaOption.Value;
+                accountChanged = true;
+            }
+
+            if (settings.WeekOneStartsOn != null && this.WeekOneStartsOn != settings.WeekOneStartsOn.Value)
+            {
+                this.WeekOneStartsOn = settings.WeekOneStartsOn.Value;
+                accountChanged = true;
+            }
+
+            if (settings.SchoolTimeZone != null)
+            {
+                try
+                {
+                    // Sometimes TryGetTimeZoneInfo still throws
+                    if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo(settings.SchoolTimeZone, out TimeZoneInfo serverSchoolTimeZone))
+                    {
+                        if (!serverSchoolTimeZone.Equals(this.SchoolTimeZone))
+                        {
+                            this.SchoolTimeZone = serverSchoolTimeZone;
+                            accountChanged = true;
+                        }
+                    }
+                }
+                catch
+                {
+                    TelemetryExtension.Current?.TrackEvent("FailedParseOnlineTimeZone", new Dictionary<string, string>()
+                    {
+                        { "OnlineTimeZone", settings.SchoolTimeZone }
+                    });
+                }
+            }
+
+            if (settings.DefaultGradeScale != null && defaultGradeScaleIndex != null)
+            {
+                this.CurrentDefaultGradeScaleIndex = defaultGradeScaleIndex.Value;
+                this.DefaultGradeScale = settings.DefaultGradeScale;
+                accountChanged = true;
+            }
+
+            if (settings.DefaultDoesAverageGradeTotals != null && this.DefaultDoesAverageGradeTotals != settings.DefaultDoesAverageGradeTotals.Value)
+            {
+                this.DefaultDoesAverageGradeTotals = settings.DefaultDoesAverageGradeTotals.Value;
+                accountChanged = true;
+            }
+
+            if (settings.DefaultDoesRoundGradesUp != null && this.DefaultDoesRoundGradesUp != settings.DefaultDoesRoundGradesUp.Value)
+            {
+                this.DefaultDoesRoundGradesUp = settings.DefaultDoesRoundGradesUp.Value;
+                accountChanged = true;
+            }
+
+            return accountChanged;
         }
 
         private static DataContractSerializer GetClassTileSettingsSerializer()
@@ -808,9 +914,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             await AccountsManager.Save(this);
 
             // Upload their changed setting
-            if (uploadSettings)
+            if (uploadSettings && IsOnlineAccount)
             {
-                var dontWait = Sync.SyncSettings(this, Sync.ChangedSetting.SelectedSemesterId);
+                _ = Sync.SyncSettings(this, Sync.ChangedSetting.SelectedSemesterId);
             }
 
             var dataStore = await AccountDataStore.Get(this.LocalAccountId);

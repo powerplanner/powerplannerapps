@@ -12,6 +12,7 @@ using Windows.UI.Text;
 using ToolsUniversal;
 using ToolsPortable;
 using Windows.UI;
+using Vx.Uwp.Helpers;
 
 using Windows.UI.Xaml.Input;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
