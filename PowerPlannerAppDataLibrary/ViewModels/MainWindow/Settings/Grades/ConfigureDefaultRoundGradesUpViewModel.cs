@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using System;
 using System.Collections.Generic;
@@ -98,6 +99,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     _ = Sync.SyncSettings(Account, Sync.ChangedSetting.DefaultDoesRoundGradesUp);
                 }
+
+                TelemetryExtension.Current?.TrackEvent("AppliedDefaultRoundGradesUp");
             });
 
             _hasUnsavedChanges.Value = false;

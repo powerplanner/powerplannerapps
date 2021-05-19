@@ -91,6 +91,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     _ = Sync.SyncSettings(Account, Sync.ChangedSetting.DefaultGradeScale);
                 }
+
+                TelemetryExtension.Current?.TrackEvent("AppliedDefaultGradeScale");
             });
         }
     }
