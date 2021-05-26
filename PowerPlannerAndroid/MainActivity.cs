@@ -376,6 +376,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v < new Version(2105, 26, 1, 99))
+                    {
+                        changedText += "\n - Class reminders will respect semester end dates (so you won't get reminders after your semester is over)";
+                    }
+
                     if (v <= new Version(2105, 17, 1, 0))
                     {
                         changedText += "\n - Default grade scales! Go to the settings page to configure default grade options for all classes!";
