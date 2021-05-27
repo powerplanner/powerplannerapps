@@ -10,8 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UpgradeFromSilverlight;
-using UpgradeFromWin8;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
@@ -52,10 +50,6 @@ namespace PowerPlannerUWP
 
             try
             {
-                // Only waits if this hasn't run before
-                await HandleUpgradeFromWin8();
-                await HandleUpgradeFromSilverlight();
-
                 try
                 {
                     await BackgroundExecutionManager.RequestAccessAsync();
@@ -72,34 +66,6 @@ namespace PowerPlannerUWP
             }
 
             await base.InitializeAsyncOverride();
-        }
-
-        private static async System.Threading.Tasks.Task HandleUpgradeFromWin8()
-        {
-            const string HANDLED_WIN8_DATA = "HandledWin8Data";
-
-            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey(HANDLED_WIN8_DATA))
-            {
-                Debug.WriteLine("Upgrading accounts from Win8 version");
-
-                await Upgrader.UpgradeAccounts();
-
-                ApplicationData.Current.LocalSettings.Values[HANDLED_WIN8_DATA] = true;
-            }
-        }
-
-        private static async System.Threading.Tasks.Task HandleUpgradeFromSilverlight()
-        {
-            const string HANDLED_SILVERLIGHT_DATA = "HandledSilverlightData";
-
-            if (!ApplicationData.Current.LocalSettings.Values.ContainsKey(HANDLED_SILVERLIGHT_DATA))
-            {
-                Debug.WriteLine("Checking for Silverlight data");
-
-                await SilverlightUpgrader.UpgradeAccounts();
-
-                ApplicationData.Current.LocalSettings.Values[HANDLED_SILVERLIGHT_DATA] = true;
-            }
         }
     }
 }
