@@ -1002,14 +1002,6 @@
       <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
       <Name>PowerPlanner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UpgradeFromSilverlight\UpgradeFromSilverlight.csproj">
-      <Project>{e8a794f8-2f18-4184-a4a9-ee02ac8d3374}</Project>
-      <Name>UpgradeFromSilverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UpgradeFromWin8\UpgradeFromWin8.csproj">
-      <Project>{48ddeb76-0fa6-47c7-801e-f9c1bc584649}</Project>
-      <Name>UpgradeFromWin8</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vx\Vx.csproj">
       <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
       <Name>Vx</Name>
