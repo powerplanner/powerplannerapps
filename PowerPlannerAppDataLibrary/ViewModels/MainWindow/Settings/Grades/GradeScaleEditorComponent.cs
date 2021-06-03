@@ -284,7 +284,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public GradeScale[] GetGradeScales()
         {
-            return GradeScales.Select(i => new GradeScale { StartGrade = i.StartingGrade.Value, GPA = i.GPA.Value }).ToArray();
+            return GradeScales.Select(i => new GradeScale { StartGrade = i.StartingGrade.GetValueOrDefault(-1), GPA = i.GPA.GetValueOrDefault(-1) }).ToArray();
         }
     }
 }

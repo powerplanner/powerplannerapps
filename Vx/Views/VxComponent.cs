@@ -72,6 +72,14 @@ namespace Vx.Views
 
         private void SubscribeToStates()
         {
+            foreach (var state in AllStates())
+            {
+                state.ValueChanged += State_ValueChanged;
+            }
+        }
+
+        private IEnumerable<VxState> AllStates()
+        {
             var stateType = typeof(VxState);
             foreach (var prop in this.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(i => i.CanRead && stateType.IsAssignableFrom(i.PropertyType)))
             {
@@ -83,7 +91,7 @@ namespace Vx.Views
 #endif
                     throw new NullReferenceException("VxState was null");
                 }
-                state.ValueChanged += State_ValueChanged;
+                yield return state;
             }
             foreach (var prop in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(i => stateType.IsAssignableFrom(i.FieldType)))
             {
@@ -95,7 +103,15 @@ namespace Vx.Views
 #endif
                     throw new NullReferenceException("VxState was null");
                 }
-                state.ValueChanged += State_ValueChanged;
+                yield return state;
+            }
+        }
+
+        private void UnsubscribeFromStates()
+        {
+            foreach (var state in AllStates())
+            {
+                state.ValueChanged -= State_ValueChanged;
             }
         }
 
@@ -111,6 +127,27 @@ namespace Vx.Views
         {
             _propertyValuePropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(PropertyValue_PropertyChanged).Handler;
 
+            foreach (var propVal in AllSubscribeablePropertyValues())
+            {
+                SubscribeToPropertyValue(propVal);
+            }
+        }
+
+        private void UnsubscribeFromProperties()
+        {
+            if (_propertyValuePropertyChangedHandler == null)
+            {
+                return;
+            }
+
+            foreach (var propVal in AllSubscribeablePropertyValues())
+            {
+                UnsubscribeToPropertyValue(propVal);
+            }
+        }
+
+        private IEnumerable<INotifyPropertyChanged> AllSubscribeablePropertyValues()
+        {
             var seenProps = new HashSet<string>();
 
             foreach (var prop in this.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && _iNotifyPropertyChangedType.IsAssignableFrom(i.PropertyType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
@@ -121,7 +158,7 @@ namespace Vx.Views
                     var propVal = prop.GetValue(this) as INotifyPropertyChanged;
                     if (propVal != null)
                     {
-                        SubscribeToPropertyValue(propVal);
+                        yield return propVal;
                     }
                 }
             }
@@ -179,19 +216,41 @@ namespace Vx.Views
             View newView = Render();
             View oldView = RenderedContent;
 
-            if (oldView == null || oldView.GetType() != newView.GetType())
+            try
             {
-                RenderedContent = newView;
-                NativeComponent.ChangeView(newView);
+                if (oldView == null || oldView.GetType() != newView.GetType())
+                {
+                    RenderedContent = newView;
+                    NativeComponent.ChangeView(newView);
+                }
+
+                else
+                {
+                    // Transfer over the properties
+                    oldView.NativeView.Apply(newView);
+                }
             }
 
-            else
+            catch (ObjectDisposedException ex)
             {
-                // Transfer over the properties
-                oldView.NativeView.Apply(newView);
+                if (VxPlatform.Current == Platform.Android)
+                {
+                    // Only Android should be throwing this and should be needing to detach
+                    Detach();
+                }
+                else
+                {
+                    throw ex;
+                }
             }
 
             //LastMillisecondsToRender = (DateTime.Now - now).Milliseconds;
+        }
+
+        protected virtual void Detach()
+        {
+            UnsubscribeFromStates();
+            UnsubscribeFromProperties();
         }
 
         private View RenderedContent { get; set; }
