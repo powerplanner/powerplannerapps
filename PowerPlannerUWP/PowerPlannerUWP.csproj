@@ -11,7 +11,7 @@
     <AssemblyName>PowerPlannerUWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -1002,23 +1002,10 @@
       <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
       <Name>PowerPlanner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UpgradeFromSilverlight\UpgradeFromSilverlight.csproj">
-      <Project>{e8a794f8-2f18-4184-a4a9-ee02ac8d3374}</Project>
-      <Name>UpgradeFromSilverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UpgradeFromWin8\UpgradeFromWin8.csproj">
-      <Project>{48ddeb76-0fa6-47c7-801e-f9c1bc584649}</Project>
-      <Name>UpgradeFromWin8</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vx\Vx.csproj">
       <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
       <Name>Vx</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.18362.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -1052,7 +1039,11 @@
       <Version>1.0.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SDKReference Include="WindowsMobile, Version=10.0.19041.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
@@ -1065,7 +1056,7 @@
   </Target>
   -->
   <!--Have to copy the resource files, that's the only way to get the specific file names and types we need for UWP-->
-  <Target Name="BeforeBuild">
+  <Target Name="BeforeCompile">
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.resx" DestinationFiles="Strings\en-US\Resources.resw" />
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.ar.resx" DestinationFiles="Strings\ar\Resources.resw" />
     <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.de.resx" DestinationFiles="Strings\de\Resources.resw" />

@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
             public bool ShouldInsert(ViewItemSchedule itemToBeInserted)
             {
-                return itemToBeInserted.Class.IsActiveOnDate(_date) && (itemToBeInserted.ScheduleWeek == _week || itemToBeInserted.ScheduleWeek == Schedule.Week.BothWeeks) && itemToBeInserted.OccursOnDate(_date);
+                return itemToBeInserted.Class.Semester.IsDateDuringThisSemester(_date) && itemToBeInserted.Class.IsActiveOnDate(_date) && (itemToBeInserted.ScheduleWeek == _week || itemToBeInserted.ScheduleWeek == Schedule.Week.BothWeeks) && itemToBeInserted.OccursOnDate(_date);
             }
         }
 
