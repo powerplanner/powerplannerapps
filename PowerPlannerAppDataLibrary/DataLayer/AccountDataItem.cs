@@ -447,7 +447,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             get
             {
-                if (_defaultGradeScale == null)
+                if (_defaultGradeScale == null || _defaultGradeScale.Length == 0)
                 {
                     _defaultGradeScale = GradeScale.GenerateDefaultScaleWithoutLetters();
                 }
