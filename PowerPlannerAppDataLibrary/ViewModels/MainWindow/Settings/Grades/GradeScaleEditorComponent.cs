@@ -254,6 +254,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private bool AreScalesValid()
         {
+            // Require at least one grade scale
+            if (GradeScales.Count == 0)
+            {
+                return false;
+            }
+
             if (GradeScales.Any(i => i.StartingGrade == null || i.GPA == null))
             {
                 return false;
