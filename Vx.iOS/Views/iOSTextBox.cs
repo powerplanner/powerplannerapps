@@ -37,6 +37,8 @@ namespace Vx.iOS.Views
             {
                 View.Text = newView.Text.Value;
             }
+
+            View.Placeholder = newView.PlaceholderText;
         }
     }
 

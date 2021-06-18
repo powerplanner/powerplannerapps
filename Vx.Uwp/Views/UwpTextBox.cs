@@ -30,6 +30,7 @@ namespace Vx.Uwp.Views
 
             View.Header = newView.Header;
             View.Text = newView.Text?.Value ?? "";
+            View.PlaceholderText = newView.PlaceholderText;
         }
     }
 }

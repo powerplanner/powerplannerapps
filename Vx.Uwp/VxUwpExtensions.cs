@@ -88,6 +88,21 @@ namespace Vx.Uwp
                     return new UwpCheckBox();
                 }
 
+                if (view is Vx.Views.TimePicker)
+                {
+                    if (view is Vx.Views.EndTimePicker)
+                    {
+                        return new UwpEndTimePicker();
+                    }
+
+                    return new UwpTimePicker();
+                }
+
+                if (view is Vx.Views.ComboBox)
+                {
+                    return new UwpComboBox();
+                }
+
                 throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
 

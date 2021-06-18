@@ -8,6 +8,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerUWP.Extensions;
 using System;
 using ToolsPortable;
+using Vx.Extensions;
 using Windows.ApplicationModel;
 
 namespace PowerPlannerUWP

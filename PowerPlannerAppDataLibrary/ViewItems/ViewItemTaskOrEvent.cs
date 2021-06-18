@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Extensions;
 
 namespace PowerPlannerAppDataLibrary.ViewItems
 {

@@ -1,8 +1,4 @@
 ﻿using BareMvvm.Core.ViewModels;
-using PowerPlannerAppDataLibrary;
-using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.Helpers;
-using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
 using Vx.Extensions;
+using Vx.Helpers;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
@@ -24,7 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace PowerPlannerUWP.Controls.TimePickers
+namespace Vx.Uwp.Controls.TimePickers
 {
     public partial class TextBasedTimePicker : UserControl
     {
@@ -183,8 +180,8 @@ namespace PowerPlannerUWP.Controls.TimePickers
                 args.Handled = true;
 
                 var correctString = "EditingClassScheduleItemView_Invalid" + (this is TextBasedEndTimePicker ? "End" : "Start") + "Time";
-                var correctTitle = PowerPlannerResources.GetString(correctString + ".Title");
-                var correctContent = PowerPlannerResources.GetString(correctString + ".Content");
+                var correctTitle = PortableLocalizedResources.GetString(correctString + ".Title");
+                var correctContent = PortableLocalizedResources.GetString(correctString + ".Content");
                 new PortableMessageDialog(correctContent, correctTitle).Show();
             }
         }

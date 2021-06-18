@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Extensions;
 
 namespace PowerPlannerAppDataLibrary.Helpers
 {
