@@ -574,6 +574,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                 Margin = new Thickness(0, 0, 6, 0)
                             }.LinearLayoutWeight(1),
 
+                            new TextBlock
+                            {
+                                Text = PowerPlannerResources.GetString("TextBlock_To.Text")
+                            },
+
                             new EndTimePicker
                             {
                                 Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_TimePickerEnd.Header"),
@@ -721,7 +726,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             group.ScheduleWeekString = val as string;
                             MarkDirty();
                         }
-                    }
+                    },
+
+                    Groups.Count > 1 ? new Button
+                    {
+                        Text = PowerPlannerResources.GetString("AddClassTime_RemoveThisSchedule.Content"),
+                        Margin = new Thickness(0, 12, 0, 0),
+                        Click = () =>
+                        {
+                            Groups.Remove(group);
+                            MarkDirty();
+                        }
+                    } : null
                 }
             };
         }

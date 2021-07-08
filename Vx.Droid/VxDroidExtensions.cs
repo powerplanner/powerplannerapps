@@ -98,6 +98,21 @@ namespace Vx.Droid
                     return new DroidCheckBox();
                 }
 
+                if (view is Vx.Views.Border)
+                {
+                    return new DroidBorder();
+                }
+
+                if (view is Vx.Views.ComboBox)
+                {
+                    return new DroidComboBox();
+                }
+
+                if (view is Vx.Views.TimePicker)
+                {
+                    return new DroidTimePicker();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
