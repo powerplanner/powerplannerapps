@@ -9,6 +9,7 @@ using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -494,6 +495,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             return model;
         }
 
+        private const int SubgroupPadding = 12;
+
         protected override View Render()
         {
             var layout = new LinearLayout()
@@ -503,14 +506,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
             foreach (var g in Groups)
             {
+                View content;
+
                 if (g.Expanded)
                 {
-                    layout.Children.Add(RenderExpanded(g));
+                    var expanded = RenderExpanded(g);
+
+                    if (Groups.Count > 1)
+                    {
+                        content = new Border
+                        {
+                            BackgroundColor = Theme.Current.PopupPageBackgroundAltColor,
+                            BorderColor = Theme.Current.SubtleForegroundColor,
+                            BorderThickness = new Thickness(1),
+                            Padding = new Thickness(SubgroupPadding),
+                            Content = expanded
+                        };
+                    }
+                    else
+                    {
+                        content = expanded;
+                    }
                 }
                 else
                 {
-                    layout.Children.Add(RenderCollapsed(g));
+                    content = RenderCollapsed(g);
                 }
+
+                content.Margin = new Thickness(0, 0, 0, 12);
+
+                layout.Children.Add(content);
             }
 
             layout.Children.Add(new Button
@@ -572,117 +597,129 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         PlaceholderText = PowerPlannerResources.GetString("ex: Modern Languages 302")
                     },
 
-                    new LinearLayout
+                    new Border
                     {
-                        Margin = new Thickness(0, 0, 12, 0),
-                        Orientation = Orientation.Horizontal,
-                        Children =
+                        BorderThickness = group.IsDaysInvalid ? new Thickness(2) : default(Thickness),
+                        BorderColor = group.IsDaysInvalid ? Color.Red : default(Color),
+                        Margin = new Thickness(-6, 6, -6, -6),
+                        Padding = new Thickness(6),
+                        Content = new LinearLayout
                         {
-                            new LinearLayout
+                            Margin = new Thickness(0, 0, 12, 0),
+                            Orientation = Orientation.Horizontal,
+                            Children =
                             {
-                                Children =
+                                new LinearLayout
                                 {
-                                    new CheckBox
+                                    Children =
                                     {
-                                        Text = DateTools.ToLocalizedString(DayOfWeek.Monday),
-                                        IsChecked = group.IsMondayChecked,
-                                        IsCheckedChanged = val =>
+                                        new CheckBox
                                         {
-                                            group.IsMondayChecked = val;
-                                            MarkDirty();
-                                        }
-                                    },
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Monday),
+                                            IsChecked = group.IsMondayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsMondayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
 
-                                    new CheckBox
-                                    {
-                                        Text = DateTools.ToLocalizedString(DayOfWeek.Tuesday),
-                                        IsChecked = group.IsTuesdayChecked,
-                                        IsCheckedChanged = val =>
+                                        new CheckBox
                                         {
-                                            group.IsTuesdayChecked = val;
-                                            MarkDirty();
-                                        }
-                                    },
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Tuesday),
+                                            IsChecked = group.IsTuesdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsTuesdayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
 
-                                    new CheckBox
-                                    {
-                                        Text = DateTools.ToLocalizedString(DayOfWeek.Wednesday),
-                                        IsChecked = group.IsWednesdayChecked,
-                                        IsCheckedChanged = val =>
+                                        new CheckBox
                                         {
-                                            group.IsWednesdayChecked = val;
-                                            MarkDirty();
-                                        }
-                                    },
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Wednesday),
+                                            IsChecked = group.IsWednesdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsWednesdayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
 
-                                    new CheckBox
-                                    {
-                                        Text = DateTools.ToLocalizedString(DayOfWeek.Thursday),
-                                        IsChecked = group.IsThursdayChecked,
-                                        IsCheckedChanged = val =>
+                                        new CheckBox
                                         {
-                                            group.IsThursdayChecked = val;
-                                            MarkDirty();
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Thursday),
+                                            IsChecked = group.IsThursdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsThursdayChecked = val;
+                                                MarkDirty();
+                                            }
                                         }
                                     }
-                                }
-                            }.LinearLayoutWeight(1),
+                                }.LinearLayoutWeight(1),
 
-                            new LinearLayout
-                            {
-                                Children =
+                                new LinearLayout
                                 {
-                                    new CheckBox
+                                    Children =
                                     {
-                                        Text = DateTools.ToLocalizedString(DayOfWeek.Friday),
-                                        IsChecked = group.IsFridayChecked,
-                                        IsCheckedChanged = val =>
+                                        new CheckBox
                                         {
-                                            group.IsFridayChecked = val;
-                                            MarkDirty();
-                                        }
-                                    },
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Friday),
+                                            IsChecked = group.IsFridayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsFridayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
 
-                                    new CheckBox
-                                    {
-                                        Text = DateTools.ToLocalizedString(DayOfWeek.Saturday),
-                                        IsChecked = group.IsSaturdayChecked,
-                                        IsCheckedChanged = val =>
+                                        new CheckBox
                                         {
-                                            group.IsSaturdayChecked = val;
-                                            MarkDirty();
-                                        }
-                                    },
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Saturday),
+                                            IsChecked = group.IsSaturdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsSaturdayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
 
-                                    new CheckBox
-                                    {
-                                        Text = DateTools.ToLocalizedString(DayOfWeek.Sunday),
-                                        IsChecked = group.IsSundayChecked,
-                                        IsCheckedChanged = val =>
+                                        new CheckBox
                                         {
-                                            group.IsSundayChecked = val;
-                                            MarkDirty();
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Sunday),
+                                            IsChecked = group.IsSundayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsSundayChecked = val;
+                                                MarkDirty();
+                                            }
                                         }
                                     }
-                                }
-                            }.LinearLayoutWeight(1)
+                                }.LinearLayoutWeight(1)
+                            }
                         }
                     },
+
+                    group.IsDaysInvalid ? new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content"),
+                        TextColor = Color.Red,
+                        FontWeight = FontWeights.Bold,
+                        WrapText = true,
+                        Margin = new Thickness(0, 6, 0, 0)
+                    } : null,
 
                     new ComboBox
                     {
                         Margin = new Thickness(0, 12, 0, 0),
                         Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_WeekComboBox.Header"),
-                        Items = new string[]
-                        {
-                            "Every week",
-                            "Week A",
-                            "Week B"
-                        },
-                        SelectedItem = "Every week",
+                        Items = group.AvailableScheduleWeekStrings,
+                        SelectedItem = group.ScheduleWeekString,
                         SelectedItemChanged = val =>
                         {
-
+                            group.ScheduleWeekString = val as string;
+                            MarkDirty();
                         }
                     }
                 }
@@ -691,47 +728,59 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private View RenderCollapsed(ClassTimeGroup group)
         {
-            return new LinearLayout
+            return new Border
             {
-                Orientation = Orientation.Horizontal,
-                Children =
+                BackgroundColor = group.IsInvalid ? Color.FromArgb(50, 255, 0, 0) : Theme.Current.PopupPageBackgroundAltColor,
+                BorderThickness = new Thickness(1),
+                BorderColor = Theme.Current.SubtleForegroundColor,
+                Content = new LinearLayout
                 {
-                    new TransparentContentButton
+                    Orientation = Orientation.Horizontal,
+                    Children =
                     {
-                        Click = () =>
+                        new TransparentContentButton
                         {
-                            group.Expanded = true;
-                            MarkDirty();
-                        },
-                        Content = new LinearLayout
-                        {
-                            Children =
+                            Click = () =>
                             {
-                                new TextBlock
+                                group.Expanded = true;
+                                MarkDirty();
+                            },
+                            Content = new LinearLayout
+                            {
+                                Margin = new Thickness(SubgroupPadding),
+                                Children =
                                 {
-                                    Text = group.TimeString
-                                },
+                                    new TextBlock
+                                    {
+                                        Text = group.TimeString
+                                    },
 
-                                new TextBlock
-                                {
-                                    Text = group.DaysString
-                                },
+                                    new TextBlock
+                                    {
+                                        Text = group.DaysString
+                                    },
 
-                                string.IsNullOrWhiteSpace(group.Room) ? null : new TextBlock
-                                {
-                                    Text = group.Room
+                                    string.IsNullOrWhiteSpace(group.Room) ? null : new TextBlock
+                                    {
+                                        Text = group.Room
+                                    }
                                 }
                             }
-                        }
-                    }.LinearLayoutWeight(1),
+                        }.LinearLayoutWeight(1),
 
-                    new Button
-                    {
-                        Text = "Delete",
-                        Click = () =>
+                        new TransparentContentButton
                         {
-                            Groups.Remove(group);
-                            MarkDirty();
+                            Content = new FontIcon
+                            {
+                                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                                FontSize = 24,
+                                Margin = new Thickness(SubgroupPadding)
+                            },
+                            Click = () =>
+                            {
+                                Groups.Remove(group);
+                                MarkDirty();
+                            }
                         }
                     }
                 }

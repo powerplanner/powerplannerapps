@@ -103,6 +103,17 @@ namespace Vx.Uwp
                     return new UwpComboBox();
                 }
 
+                if (view is Vx.Views.Border)
+                {
+                    return new UwpBorder();
+                }
+
+#if DEBUG
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
+#endif
                 throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
 
@@ -197,6 +208,11 @@ namespace Vx.Uwp
                 default:
                     return Windows.UI.Xaml.HorizontalAlignment.Stretch;
             }
+        }
+
+        internal static Windows.UI.Xaml.Thickness ToUwp(this Vx.Views.Thickness thickness)
+        {
+            return new Windows.UI.Xaml.Thickness(thickness.Left, thickness.Top, thickness.Right, thickness.Bottom);
         }
     }
 }
