@@ -77,12 +77,12 @@ namespace PowerPlanneriOS.Views
 
         private void E_OnRequestEditSchedules(object sender, ViewItemSchedule[] e)
         {
-            ViewModel.EditTimes(e);
+            ViewModel.EditTimes(e, true);
         }
 
         private void E_OnRequestAddTime(object sender, ViewItemClass e)
         {
-            ViewModel.AddTime(e);
+            ViewModel.AddTime(e, true);
         }
     }
 }

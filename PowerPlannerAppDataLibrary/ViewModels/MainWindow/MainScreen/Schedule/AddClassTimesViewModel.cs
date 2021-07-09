@@ -553,6 +553,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private View RenderExpanded(ClassTimeGroup group)
         {
+            // TODO: Display time zone warning
             return new LinearLayout
             {
                 Children =

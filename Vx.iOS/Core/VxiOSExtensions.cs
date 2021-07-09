@@ -79,6 +79,21 @@ namespace Vx.iOS
                     return new iOSCheckBox();
                 }
 
+                if (view is Vx.Views.TimePicker)
+                {
+                    return new iOSTimePicker();
+                }
+
+                if (view is Vx.Views.Border)
+                {
+                    return new iOSBorder();
+                }
+
+                if (view is Vx.Views.ComboBox)
+                {
+                    return new iOSComboBox();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
