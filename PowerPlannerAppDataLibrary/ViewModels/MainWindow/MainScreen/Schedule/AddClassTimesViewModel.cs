@@ -779,6 +779,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                     string.IsNullOrWhiteSpace(group.Room) ? null : new TextBlock
                                     {
                                         Text = group.Room
+                                    },
+
+                                    group.ScheduleWeek == PowerPlannerSending.Schedule.Week.BothWeeks ? null : new TextBlock
+                                    {
+                                        Text = group.ScheduleWeekString
                                     }
                                 }
                             }

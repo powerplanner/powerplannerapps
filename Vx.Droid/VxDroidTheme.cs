@@ -1,11 +1,14 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.Res;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
+using AndroidX.Core.Content.Resources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,9 +24,9 @@ namespace Vx.Droid
 
         public override Color SubtleForegroundColor => GetThemeColor(Android.Resource.Attribute.TextColorSecondary);
 
-        public override Color PopupPageBackgroundColor => Color.White;
+        public override Color PopupPageBackgroundColor => GetThemeColor(Android.Resource.Attribute.Background);
 
-        public override Color PopupPageBackgroundAltColor => Color.LightGray;
+        public override Color PopupPageBackgroundAltColor => GetColor(Resource.Color.colorBackgroundSecondary);
 
         private static Color GetThemeColor(int attributeId)
         {
@@ -43,6 +46,34 @@ namespace Vx.Droid
             }
 
             throw new Exception("attributeId not found");
+        }
+
+        private static Color GetColor(int colorId)
+        {
+            //int colorInt = ResourcesCompat.GetColor(VxDroidExtensions.ApplicationContext.Resources, colorId, VxDroidExtensions.ApplicationContext.Theme);
+            int colorInt = ContextCompat.GetColor(VxDroidExtensions.ApplicationContext, colorId);
+
+            return Color.FromArgb(colorInt);
+        }
+
+        private static Color GetNormalColor(int attributeId)
+        {
+            int[] attrs = new int[] { attributeId };
+
+            TypedArray ta = VxDroidExtensions.ApplicationContext.ObtainStyledAttributes(attrs);
+
+            try
+            {
+                var drawable = ta.GetDrawable(0);
+                return Color.FromArgb(((ColorDrawable)drawable).Color.ToArgb());
+                var color = ta.GetColor(0, 0);
+                return Color.FromArgb(color.ToArgb());
+            }
+
+            finally
+            {
+                ta.Recycle();
+            }
         }
     }
 }

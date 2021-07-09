@@ -12,19 +12,28 @@ using System.Text;
 
 namespace Vx.Droid.Views
 {
-    public class DroidTextBox : DroidView<Vx.Views.TextBox, TextInputEditText>
+    public class DroidTextBox : DroidView<Vx.Views.TextBox, TextInputLayout>
     {
-        public DroidTextBox() : base(new TextInputEditText(VxDroidExtensions.ApplicationContext))
+        private TextInputEditText _editText;
+
+        public DroidTextBox() : base(new TextInputLayout(VxDroidExtensions.ApplicationContext, null, Resource.Attribute.materialOutlinedTextBoxStyle))
         {
-            View.InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect;
-            View.TextChanged += _editText_TextChanged;
+            _editText = new TextInputEditText(View.Context)
+            {
+                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
+                InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect
+            };
+
+            View.AddView(_editText);
+
+            _editText.TextChanged += _editText_TextChanged;
         }
 
         private void _editText_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             if (VxView.Text != null)
             {
-                VxView.Text.Value = View.Text;
+                VxView.Text.Value = _editText.Text.ToString();
             }
         }
 
@@ -32,9 +41,9 @@ namespace Vx.Droid.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            if (newView.Text != null && View.Text != newView.Text.Value)
+            if (newView.Text != null && _editText.Text.ToString() != newView.Text.Value)
             {
-                View.Text = newView.Text.Value;
+                _editText.Text = newView.Text.Value;
             }
 
             View.Hint = newView.Header;

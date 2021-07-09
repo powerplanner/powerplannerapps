@@ -20,6 +20,7 @@ namespace Vx.Droid.Views
         public DroidFontIcon() : base(new TextView(VxDroidExtensions.ApplicationContext))
         {
             View.SetTypeface(_typeface, TypefaceStyle.Normal);
+            View.Gravity = GravityFlags.Center;
         }
 
         protected override void ApplyProperties(FontIcon oldView, FontIcon newView)
