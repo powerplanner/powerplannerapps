@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx;
 using Vx.Extensions;
 using Vx.Views;
 
@@ -573,11 +574,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                     MarkDirty();
                                 },
                                 Margin = new Thickness(0, 0, 6, 0)
-                            }.LinearLayoutWeight(1),
+                            }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1),
 
                             new TextBlock
                             {
-                                Text = PowerPlannerResources.GetString("TextBlock_To.Text")
+                                Text = PowerPlannerResources.GetString("TextBlock_To.Text"),
+                                VerticalAlignment = VerticalAlignment.Center
                             },
 
                             new EndTimePicker
@@ -591,7 +593,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                     MarkDirty();
                                 },
                                 Margin = new Thickness(6, 0, 0, 0)
-                            }.LinearLayoutWeight(1)
+                            }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1)
                         }
                     },
 

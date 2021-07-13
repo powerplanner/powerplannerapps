@@ -180,5 +180,23 @@ namespace Vx.Droid
                     return GravityFlags.FillHorizontal;
             }
         }
+
+        internal static GravityFlags ToDroid(this VerticalAlignment verticalAlignment)
+        {
+            switch (verticalAlignment)
+            {
+                case VerticalAlignment.Center:
+                    return GravityFlags.CenterVertical;
+
+                case VerticalAlignment.Bottom:
+                    return GravityFlags.Bottom;
+
+                case VerticalAlignment.Stretch:
+                    return GravityFlags.FillVertical;
+
+                default:
+                    return GravityFlags.Top;
+            }
+        }
     }
 }

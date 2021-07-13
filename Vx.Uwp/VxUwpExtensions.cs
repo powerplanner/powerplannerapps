@@ -210,6 +210,24 @@ namespace Vx.Uwp
             }
         }
 
+        internal static Windows.UI.Xaml.VerticalAlignment ToUwp(this Vx.Views.VerticalAlignment verticalAlignment)
+        {
+            switch (verticalAlignment)
+            {
+                case Vx.Views.VerticalAlignment.Center:
+                    return Windows.UI.Xaml.VerticalAlignment.Center;
+
+                case Vx.Views.VerticalAlignment.Stretch:
+                    return Windows.UI.Xaml.VerticalAlignment.Stretch;
+
+                case Vx.Views.VerticalAlignment.Bottom:
+                    return Windows.UI.Xaml.VerticalAlignment.Bottom;
+
+                default:
+                    return Windows.UI.Xaml.VerticalAlignment.Top;
+            }
+        }
+
         internal static Windows.UI.Xaml.Thickness ToUwp(this Vx.Views.Thickness thickness)
         {
             return new Windows.UI.Xaml.Thickness(thickness.Left, thickness.Top, thickness.Right, thickness.Bottom);

@@ -30,9 +30,9 @@ namespace Vx.Droid.Views
 
                 View.LayoutParameters = new LinearLayout.LayoutParams(
                     width: isVertical ? (newView.HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent) : (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0),
-                    height: isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : LinearLayout.LayoutParams.MatchParent)
+                    height: isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent))
                 {
-                    Gravity = newView.HorizontalAlignment.ToDroid(),
+                    Gravity = isVertical ? newView.HorizontalAlignment.ToDroid() : newView.VerticalAlignment.ToDroid(),
                     MarginStart = AsPx(newView.Margin.Left),
                     TopMargin = AsPx(newView.Margin.Top),
                     MarginEnd = AsPx(newView.Margin.Right),
