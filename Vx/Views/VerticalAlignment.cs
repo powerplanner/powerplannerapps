@@ -12,19 +12,19 @@ namespace Vx.Views
     {
         //
         // Summary:
+        //     The element is stretched to fill the entire layout slot of the parent element.
+        Stretch = 0,
+        //
+        // Summary:
         //     The element is aligned to the top of the parent's layout slot.
-        Top = 0,
+        Top = 1,
         //
         // Summary:
         //     The element is aligned to the center of the parent's layout slot.
-        Center = 1,
+        Center = 2,
         //
         // Summary:
         //     The element is aligned to the bottom of the parent's layout slot.
-        Bottom = 2,
-        //
-        // Summary:
-        //     The element is stretched to fill the entire layout slot of the parent element.
-        Stretch = 3
+        Bottom = 3
     }
 }
