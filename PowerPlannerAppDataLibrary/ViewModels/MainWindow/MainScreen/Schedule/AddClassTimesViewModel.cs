@@ -576,7 +576,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                 Margin = new Thickness(0, 0, 6, 0)
                             }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1),
 
-                            new TextBlock
+                            // UWP doesn't use the "to" text
+                            VxPlatform.Current == Platform.Uwp ? null : new TextBlock
                             {
                                 Text = PowerPlannerResources.GetString("TextBlock_To.Text"),
                                 VerticalAlignment = VerticalAlignment.Center
