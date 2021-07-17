@@ -441,6 +441,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         private AddClassTimesViewModel(BaseViewModel parent) : base(parent)
         {
             Groups.CollectionChanged += Groups_CollectionChanged;
+
+            PrimaryCommand = PopupCommand.Save(Save);
         }
 
         private void Groups_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -539,12 +541,43 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 layout.Children.Add(content);
             }
 
-            layout.Children.Add(new Button
+            if (State == OperationState.Editing && Groups.Count == 1)
             {
-                Text = "Add another time",
-                Margin = new Thickness(0, 12, 0, 0),
-                Click = AddAnotherTime
-            });
+                layout.Children.Add(new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Children =
+                    {
+                        new Button
+                        {
+                            Text = "Add another time",
+                            Margin = new Thickness(0, 0, 6, 0),
+                            Click = AddAnotherTime
+                        }.LinearLayoutWeight(1),
+
+                        new Button
+                        {
+                            Text = "Delete",
+                            Margin = new Thickness(6, 0, 0, 0),
+                            Click = delegate
+                            {
+                                Groups.Remove(Groups[0]);
+                                MarkDirty();
+                            }
+                        }.LinearLayoutWeight(1)
+                    }
+                });
+            }
+            else
+            {
+                layout.Children.Add(new Button
+                {
+                    Text = "Add another time",
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Click = AddAnotherTime
+                });
+            }
 
             return new ScrollView
             {
@@ -892,6 +925,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     groupToExpand.Expanded = true;
                 }
 
+                MarkDirty();
                 return;
             }
 
