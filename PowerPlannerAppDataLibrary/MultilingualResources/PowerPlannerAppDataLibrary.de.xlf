@@ -2457,7 +2457,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <target state="final" state-qualifier="mt-suggestion">Entfernen dieses Zeitplans</target>
         </trans-unit>
         <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
-          <source>add another time</source>
+          <source>Add another time</source>
           <target state="final" state-qualifier="mt-suggestion">Hinzufügen eines weiteren Mals</target>
         </trans-unit>
         <trans-unit id="String_ConfirmDeleteItemHeader" translate="yes" xml:space="preserve">

@@ -2455,8 +2455,8 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <target state="final" state-qualifier="mt-suggestion">Supprimer cet horaire</target>
         </trans-unit>
         <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
-          <source>add another time</source>
-          <target state="final" state-qualifier="mt-suggestion">ajouter une autre fois</target>
+          <source>Add another time</source>
+          <target state="final" state-qualifier="mt-suggestion">Ajouter une autre fois</target>
         </trans-unit>
         <trans-unit id="String_ConfirmDeleteItemHeader" translate="yes" xml:space="preserve">
           <source>Delete item?</source>

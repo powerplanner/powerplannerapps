@@ -500,6 +500,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private const int SubgroupPadding = 12;
 
+        private View _deleteButton;
         protected override View Render()
         {
             var layout = new LinearLayout()
@@ -551,19 +552,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         new Button
                         {
-                            Text = "Add another time",
+                            Text = PowerPlannerResources.GetString("AddClassTime_AddAnotherTime.Content"),
                             Margin = new Thickness(0, 0, 6, 0),
                             Click = AddAnotherTime
                         }.LinearLayoutWeight(1),
 
                         new Button
                         {
-                            Text = "Delete",
+                            Text = PowerPlannerResources.GetString("MenuItemDelete"),
                             Margin = new Thickness(6, 0, 0, 0),
-                            Click = delegate
+                            ViewRef = view => _deleteButton = view,
+                            Click = () =>
                             {
-                                Groups.Remove(Groups[0]);
-                                MarkDirty();
+                                new ContextMenu
+                                {
+                                    Items =
+                                    {
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString("String_YesDelete"),
+                                            Click = Delete
+                                        }
+                                    }
+                                }.Show(_deleteButton);
+
                             }
                         }.LinearLayoutWeight(1)
                     }
@@ -573,7 +585,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             {
                 layout.Children.Add(new Button
                 {
-                    Text = "Add another time",
+                    Text = PowerPlannerResources.GetString("AddClassTime_AddAnotherTime.Content"),
                     Margin = new Thickness(0, 12, 0, 0),
                     Click = AddAnotherTime
                 });

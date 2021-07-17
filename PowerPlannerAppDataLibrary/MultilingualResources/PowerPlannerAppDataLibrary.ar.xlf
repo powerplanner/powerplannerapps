@@ -2459,7 +2459,7 @@ Please think about using an online account instead!</source>
           <target state="final">إزالة هذا الجدول الزمني</target>
         </trans-unit>
         <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
-          <source>add another time</source>
+          <source>Add another time</source>
           <target state="final">أضف وقتًا آخر</target>
         </trans-unit>
         <trans-unit id="String_ConfirmDeleteItemHeader" translate="yes" xml:space="preserve">
