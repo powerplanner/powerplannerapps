@@ -599,7 +599,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private View RenderExpanded(ClassTimeGroup group)
         {
-            // TODO: Display time zone warning
             return new LinearLayout
             {
                 Children =
@@ -642,6 +641,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1)
                         }
                     },
+
+                    // Display time zone warning
+                    IsInDifferentTimeZone ? new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("DifferentTimeZoneWarning.Text"),
+                        FontSize = Theme.Current.CaptionFontSize,
+                        TextColor = Color.Red,
+                        WrapText = true,
+                        Margin = new Thickness(0, 6, 0, 0)
+                    } : null,
 
                     new TextBox
                     {
