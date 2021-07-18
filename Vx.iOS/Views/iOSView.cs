@@ -47,6 +47,9 @@ namespace Vx.iOS.Views
             {
                 var modifiedMargin = newContent.Margin.AsModified();
                 subview.StretchWidthAndHeight(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
+
+                // Prevent this from stretching and filling horizontal width
+                subview.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
             });
         }
     }
