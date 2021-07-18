@@ -28,7 +28,6 @@ namespace Vx.iOS.Views
             View.AddSubview(_datePicker);
 
             _header.StretchWidth(View);
-            //_datePicker.StretchWidth(View);
             View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[datePicker]->=0-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "datePicker", _datePicker));
 

@@ -4,19 +4,15 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSNumberTextBox : iOSView<NumberTextBox, UITextFieldWithUnderline>
+    public class iOSNumberTextBox : iOSView<NumberTextBox, UIRoundedTextFieldWithHeader>
     {
         public iOSNumberTextBox()
         {
-            View.EditingChanged += View_EditingDidEnd;
-            View.EditingDidEnd += View_EditingDidEnd;
-            View.EditingDidEndOnExit += View_EditingDidEnd;
-            View.TextColor = Theme.Current.ForegroundColor.ToUI();
-            View.SetHeight(34);
+            View.TextChanged += View_TextChanged;
             View.KeyboardType = UIKeyboardType.DecimalPad;
         }
 
-        private void View_EditingDidEnd(object sender, EventArgs e)
+        private void View_TextChanged(object sender, string e)
         {
             if (VxView.Number != null)
             {
