@@ -484,5 +484,10 @@ namespace InterfacesiOS.Views
             stackView.AddArrangedSubview(container);
             container.StretchWidth(stackView);
         }
+
+        public static UIView FindFocusedTextBox(this UIView view)
+        {
+            return view.Descendants().FirstOrDefault(i => (i is UITextField || i is UITextView) && i.IsFirstResponder);
+        }
     }
 }

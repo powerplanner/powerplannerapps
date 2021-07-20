@@ -154,22 +154,20 @@ namespace InterfacesiOS.Controllers
             _scrollViewForKeyboardOffset = scrollView;
             _keyboardTopOffset = topOffset;
 
-            scrollView.Scrolled += new WeakEventHandler<EventArgs>(ScrollView_Scrolled).Handler;
+            // Dismiss keyboard when scrolling
+            _scrollViewForKeyboardOffset.KeyboardDismissMode = UIScrollViewKeyboardDismissMode.OnDrag;
 
             _keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, KeyboardWillShow);
             _keyboardObserverWillHide = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, KeyboardWillHide);
         }
 
-        private void ScrollView_Scrolled(object sender, EventArgs e)
-        {
-            // Dismiss keyboard when scrolling
-            this.View.EndEditing(true);
-        }
-
         protected virtual void KeyboardWillShow(NSNotification notification)
         {
-            var keyboardFrame = UIKeyboard.FrameEndFromNotification(notification);
-            OnKeyboardChanged(keyboardFrame.Height);
+            var keyboardSize = (notification.UserInfo?[UIKeyboard.FrameEndUserInfoKey] as NSValue)?.CGRectValue;
+            if (keyboardSize != null)
+            {
+                OnKeyboardChanged(keyboardSize.Value.Height);
+            }
         }
 
         protected virtual void KeyboardWillHide(NSNotification notification)
@@ -179,8 +177,36 @@ namespace InterfacesiOS.Controllers
 
         private void OnKeyboardChanged(nfloat height)
         {
-            _scrollViewForKeyboardOffset.ContentInset = new UIEdgeInsets(
+            var insets = new UIEdgeInsets(
                 _keyboardTopOffset, 0, height, 0);
+            _scrollViewForKeyboardOffset.ContentInset = insets;
+
+            if (SdkSupportHelper.IsVerticalScrollIndicatorInsetsSupported)
+            {
+                _scrollViewForKeyboardOffset.VerticalScrollIndicatorInsets = insets;
+            }
+            else
+            {
+                _scrollViewForKeyboardOffset.ScrollIndicatorInsets = insets;
+            }
+
+            if (height > 0)
+            {
+                // If active text field hidden by keyboard, scroll to it
+                var focusedTextBox = View.FindFocusedTextBox();
+                if (focusedTextBox != null)
+                {
+                    // This is the position of the text box relative to top of the scroll view
+                    var tbRect = focusedTextBox.ConvertRectToView(focusedTextBox.Frame, _scrollViewForKeyboardOffset);
+
+                    // This is the visible region of the scroll view relative to top of the scroll view
+                    var viewport = new CoreGraphics.CGRect(0, _scrollViewForKeyboardOffset.ContentOffset.Y, _scrollViewForKeyboardOffset.ContentSize.Width, _scrollViewForKeyboardOffset.ContentSize.Height - height);
+                    if (!viewport.Contains(tbRect) && tbRect.Y > viewport.Y)
+                    {
+                        _scrollViewForKeyboardOffset.ScrollRectToVisible(tbRect, true);
+                    }
+                }
+            }
         }
 
         private UITapGestureRecognizer _tapGestureRecognizer;

@@ -18,5 +18,7 @@ namespace InterfacesiOS.Helpers
         public static bool IsNotificationsSupported => CheckSystemVersion(10, 0);
 
         public static bool IsUIDatePickerInlineStyleSupported => CheckSystemVersion(14, 0);
+
+        public static bool IsVerticalScrollIndicatorInsetsSupported => CheckSystemVersion(11, 1);
     }
 }
