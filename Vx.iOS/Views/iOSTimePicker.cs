@@ -19,9 +19,12 @@ namespace Vx.iOS.Views
             _datePicker = new UIDatePicker
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Mode = UIDatePickerMode.Time,
-                PreferredDatePickerStyle = UIDatePickerStyle.Inline
+                Mode = UIDatePickerMode.Time
             };
+            if (InterfacesiOS.Helpers.SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
+            {
+                _datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
+            }
             _datePicker.ValueChanged += View_ValueChanged;
 
             View.AddSubview(_header);
