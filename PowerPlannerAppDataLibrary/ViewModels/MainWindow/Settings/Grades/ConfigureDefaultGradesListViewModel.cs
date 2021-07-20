@@ -84,14 +84,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void ShowViewModel<T>() where T : BaseViewModel
         {
-            if (VxPlatform.Current != Platform.iOS)
-            {
-                ShowPopup(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
-            }
+            ShowPopup(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
         }
     }
 }

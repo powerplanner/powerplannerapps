@@ -11,7 +11,7 @@ using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
 {
-    public class PopupComponentViewController : BareMvvmUIViewController<PopupComponentViewModel>
+    public class PopupComponentViewController : PopupViewController<PopupComponentViewModel>
     {
         private object _tabBarHeightListener;
         public override void OnViewModelSetOverride()
@@ -21,41 +21,31 @@ namespace PowerPlanneriOS.Controllers
             Title = ViewModel.Title;
 
             var backOverride = ViewModel.BackOverride;
-            if (backOverride != null || (ViewModel.Parent is PagedViewModel pagedParent && pagedParent.GetChildren().First() == ViewModel))
+            if (backOverride != null)
             {
-                var cancelButton = new UIBarButtonItem()
-                {
-                    Title = backOverride != null ? backOverride.Item1 : "Back"
-                };
-                cancelButton.Clicked += new WeakEventHandler<EventArgs>(CancelButton_Clicked).Handler;
-                NavigationItem.LeftBarButtonItem = cancelButton;
+                BackButtonText = backOverride.Item1;
             }
 
             var primaryCommand = ViewModel.PrimaryCommand;
             if (primaryCommand != null)
             {
-                var saveButton = new UIBarButtonItem()
-                {
-                    Title = primaryCommand.Text
-                };
-                saveButton.Clicked += new WeakEventHandler<EventArgs>(PrimaryButton_Clicked).Handler;
-                NavigationItem.RightBarButtonItem = saveButton;
+                PositiveNavBarButton = new PopupRightNavBarButtonItem(primaryCommand.Text, new WeakEventHandler<EventArgs>(PrimaryButton_Clicked).Handler);
             }
 
             var renderedComponent = ViewModel.Render();
             renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
-            View.Add(renderedComponent);
-            renderedComponent.StretchWidthAndHeight(View);
+            ContentView.Add(renderedComponent);
+            renderedComponent.StretchWidthAndHeight(ContentView);
 
-            if (ViewModel.FindAncestor<SettingsViewModel>() != null)
-            {
-                // Accomodate for bottom bar when in settings
-                MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
-                {
-                    View.RemoveConstraints(View.Constraints);
-                    renderedComponent.StretchWidthAndHeight(View, 0, 0, 0, (float)MainScreenViewController.TAB_BAR_HEIGHT);
-                });
-            }
+            //if (ViewModel.FindAncestor<SettingsViewModel>() != null)
+            //{
+            //    // Accomodate for bottom bar when in settings
+            //    MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
+            //    {
+            //        View.RemoveConstraints(View.Constraints);
+            //        renderedComponent.StretchWidthAndHeight(View, 0, 0, 0, (float)MainScreenViewController.TAB_BAR_HEIGHT);
+            //    });
+            //}
         }
 
         private void PrimaryButton_Clicked(object sender, EventArgs e)
@@ -63,17 +53,18 @@ namespace PowerPlanneriOS.Controllers
             ViewModel.PrimaryCommand.Action?.Invoke();
         }
 
-        private void CancelButton_Clicked(object sender, EventArgs e)
+        protected override void BackButtonClicked()
         {
-            var backOverride = ViewModel.BackOverride;
-            if (backOverride?.Item2 != null)
+            if (ViewModel.BackOverride != null)
             {
-                backOverride.Item2();
+                if (ViewModel.BackOverride.Item2 != null)
+                {
+                    ViewModel.BackOverride.Item2();
+                    return;
+                }
             }
-            else
-            {
-                ViewModel.TryRemoveViewModelViaUserInteraction();
-            }
+
+            base.BackButtonClicked();
         }
     }
 }

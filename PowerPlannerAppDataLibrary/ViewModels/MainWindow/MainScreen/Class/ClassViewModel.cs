@@ -239,14 +239,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void ConfigureGrades()
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                MainScreenViewModel.ShowPopup(new ConfigureClassGradesListViewModel(MainScreenViewModel, ViewItemsGroupClass.Class));
-            }
-            else
-            {
-                MainScreenViewModel.ShowPopup(new ConfigureClassGradesViewModel(MainScreenViewModel, ViewItemsGroupClass.Class));
-            }
+            MainScreenViewModel.ShowPopup(new ConfigureClassGradesListViewModel(MainScreenViewModel, ViewItemsGroupClass.Class));
         }
 
         /// <summary>

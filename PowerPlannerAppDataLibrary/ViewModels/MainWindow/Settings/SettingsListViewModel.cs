@@ -558,14 +558,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenGradeOptions()
         {
-            if (VxPlatform.Current == Platform.iOS)
-            {
-                Show(new ConfigureDefaultGradesListViewModel(ParentForSubviews));
-            }
-            else
-            {
-                ShowPopup(new ConfigureDefaultGradesListViewModel(ParentForSubviews));
-            }
+            ShowPopup(new ConfigureDefaultGradesListViewModel(ParentForSubviews));
         }
 
         public void OpenPremiumVersion()
