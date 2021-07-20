@@ -328,7 +328,7 @@ namespace Vx.iOS.Views
 
             public void UpdateConstraints(ArrangedSubview prev, ArrangedSubview next, bool usingWeights, ArrangedSubview firstWeighted)
             {
-                Subview.SetContentHuggingPriority(Weight == 0 ? 1000 : 0, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+                Subview.SetContentHuggingPriority(Weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
 
                 if (IsVertical)
                 {
