@@ -433,22 +433,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public void AddTime(ViewItemClass c, bool useNewStyle = false)
         {
-            BaseViewModel model;
-
-            if (useNewStyle)
+            BaseViewModel model = AddClassTimesViewModel.CreateForAdd(MainScreenViewModel, new AddClassTimesViewModel.AddParameter()
             {
-                model = AddClassTimesViewModel.CreateForAdd(MainScreenViewModel, new AddClassTimesViewModel.AddParameter()
-                {
-                    Class = c
-                });
-            }
-            else
-            {
-                model = AddClassTimeViewModel.CreateForAdd(MainScreenViewModel, new AddClassTimeViewModel.AddParameter()
-                {
-                    Class = c
-                });
-            }
+                Class = c
+            });
 
             MainScreenViewModel.ShowPopup(model);
         }
@@ -465,22 +453,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public void EditTimes(ViewItemSchedule[] schedules, bool useNewStyle = false)
         {
-            BaseViewModel model;
-
-            if (useNewStyle)
+            BaseViewModel model = AddClassTimesViewModel.CreateForEdit(MainScreenViewModel, new AddClassTimesViewModel.EditParameter()
             {
-                model = AddClassTimesViewModel.CreateForEdit(MainScreenViewModel, new AddClassTimesViewModel.EditParameter()
-                {
-                    GroupedSchedules = schedules
-                });
-            }
-            else
-            {
-                model = AddClassTimeViewModel.CreateForEdit(MainScreenViewModel, new AddClassTimeViewModel.EditParameter()
-                {
-                    GroupedSchedules = schedules
-                });
-            }
+                GroupedSchedules = schedules
+            });
 
             MainScreenViewModel.ShowPopup(model);
         }

@@ -20,12 +20,6 @@ namespace PowerPlannerUWP
 {
     public class PowerPlannerUwpApp : PowerPlannerApp
     {
-        public PowerPlannerUwpApp()
-        {
-            // Use popup style for configuring class grades
-            PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades.ConfigureClassGradesViewModel.UsePopups = true;
-        }
-
         public static new PowerPlannerUwpApp Current
         {
             get { return PortableApp.Current as PowerPlannerUwpApp; }

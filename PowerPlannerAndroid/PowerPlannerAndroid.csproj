@@ -145,7 +145,6 @@
     <Compile Include="ViewModel\Settings\WidgetAgendaViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
     <Compile Include="Views\AboutView.cs" />
-    <Compile Include="Views\AddClassTimeView.cs" />
     <Compile Include="Views\AddClassView.cs" />
     <Compile Include="Views\AddGradeView.cs" />
     <Compile Include="Views\AddHolidayView.cs" />
@@ -280,9 +279,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\CalendarMain.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddClassTime.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemEditingScheduleClassTime.xml">
