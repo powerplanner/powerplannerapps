@@ -27,7 +27,7 @@ namespace Vx.iOS.Views
             View.Alpha = newView.Opacity;
         }
 
-        protected void ReconcileContent(View oldContent, View newContent, Action<UIView> afterSubviewAddedAction)
+        protected void ReconcileContent(View oldContent, View newContent, Action<UIView> afterSubviewAddedAction, Action<UIView> afterTransfer = null)
         {
             VxReconciler.Reconcile(oldContent, newContent, view =>
             {
@@ -38,18 +38,33 @@ namespace Vx.iOS.Views
                 child.TranslatesAutoresizingMaskIntoConstraints = false;
                 View.AddSubview(child);
                 afterSubviewAddedAction(child);
+            }, transferView: view =>
+            {
+                if (afterTransfer != null)
+                {
+                    afterTransfer(view.NativeView.View as UIView);
+                }
             });
         }
 
-        protected void ReconcileContent(View oldContent, View newContent)
+        protected void ReconcileContent(View oldContent, View newContent, Thickness? overriddenChildMargin = null)
         {
             ReconcileContent(oldContent, newContent, subview =>
             {
-                var modifiedMargin = newContent.Margin.AsModified();
+                var modifiedMargin = (overriddenChildMargin ?? newContent.Margin).AsModified();
                 subview.StretchWidthAndHeight(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
 
                 // Prevent this from stretching and filling horizontal width
                 subview.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
+            }, afterTransfer: subview =>
+            {
+                // If we need to change the margins
+                if (overriddenChildMargin != null || oldContent.Margin != newContent.Margin)
+                {
+                    View.RemoveAllConstraintsAffectingSubview(subview);
+                    var modifiedMargin = (overriddenChildMargin ?? newContent.Margin).AsModified();
+                    subview.StretchWidthAndHeight(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
+                }
             });
         }
     }
