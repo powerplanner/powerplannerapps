@@ -788,6 +788,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         }
                     },
 
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("EditingClassScheduleItemView_TextBlockWeekDescription.Text"),
+                        FontSize = Theme.Current.CaptionFontSize,
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = true,
+                        Margin = new Thickness(0, 6, 0, 0)
+                    },
+
                     Groups.Count > 1 ? new Button
                     {
                         Text = PowerPlannerResources.GetString("AddClassTime_RemoveThisSchedule.Content"),
