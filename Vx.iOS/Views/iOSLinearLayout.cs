@@ -91,7 +91,7 @@ namespace Vx.iOS.Views
                     View.RemoveArrangedSubview(i);
 
                     var childView = v.CreateUIView(VxParentView);
-                    View.InsertSubview(childView, i);
+                    View.InsertArrangedSubview(childView, i);
 
                     changed = true;
                 },
