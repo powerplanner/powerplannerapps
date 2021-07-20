@@ -130,14 +130,17 @@ namespace Vx.iOS
             (view.NativeView.View as UIView).GetViewController().PresentViewController(actionSheetAlert, true, null);
         }
 
-        public static UIView Render(this VxComponent component)
+        public static iOSNativeComponent Render(this VxComponent component, Action<UIView> afterViewChanged = null)
         {
             if (component.NativeComponent != null)
             {
                 return component.NativeComponent as iOSNativeComponent;
             }
 
-            var nativeComponent = new iOSNativeComponent();
+            var nativeComponent = new iOSNativeComponent()
+            {
+                AfterViewChanged = afterViewChanged
+            };
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;
         }

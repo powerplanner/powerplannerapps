@@ -154,8 +154,16 @@ namespace InterfacesiOS.Controllers
             _scrollViewForKeyboardOffset = scrollView;
             _keyboardTopOffset = topOffset;
 
+            scrollView.Scrolled += new WeakEventHandler<EventArgs>(ScrollView_Scrolled).Handler;
+
             _keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, KeyboardWillShow);
             _keyboardObserverWillHide = NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, KeyboardWillHide);
+        }
+
+        private void ScrollView_Scrolled(object sender, EventArgs e)
+        {
+            // Dismiss keyboard when scrolling
+            this.View.EndEditing(true);
         }
 
         protected virtual void KeyboardWillShow(NSNotification notification)

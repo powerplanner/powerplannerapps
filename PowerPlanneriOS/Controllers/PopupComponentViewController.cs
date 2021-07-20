@@ -13,7 +13,7 @@ namespace PowerPlanneriOS.Controllers
 {
     public class PopupComponentViewController : PopupViewController<PopupComponentViewModel>
     {
-        private object _tabBarHeightListener;
+        private iOSNativeComponent _nativeComponent;
         public override void OnViewModelSetOverride()
         {
             base.OnViewModelSetOverride();
@@ -32,20 +32,18 @@ namespace PowerPlanneriOS.Controllers
                 PositiveNavBarButton = new PopupRightNavBarButtonItem(primaryCommand.Text, new WeakEventHandler<EventArgs>(PrimaryButton_Clicked).Handler);
             }
 
-            var renderedComponent = ViewModel.Render();
-            renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
-            ContentView.Add(renderedComponent);
-            renderedComponent.StretchWidthAndHeight(ContentView);
+            _nativeComponent = ViewModel.Render(AfterViewChanged);
+            _nativeComponent.TranslatesAutoresizingMaskIntoConstraints = false;
+            ContentView.Add(_nativeComponent);
+            _nativeComponent.StretchWidthAndHeight(ContentView);
+        }
 
-            //if (ViewModel.FindAncestor<SettingsViewModel>() != null)
-            //{
-            //    // Accomodate for bottom bar when in settings
-            //    MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
-            //    {
-            //        View.RemoveConstraints(View.Constraints);
-            //        renderedComponent.StretchWidthAndHeight(View, 0, 0, 0, (float)MainScreenViewController.TAB_BAR_HEIGHT);
-            //    });
-            //}
+        private void AfterViewChanged(UIView view)
+        {
+            if (view is UIScrollView scrollView)
+            {
+                EnableKeyboardScrollOffsetHandling(scrollView, 0);
+            }
         }
 
         private void PrimaryButton_Clicked(object sender, EventArgs e)
