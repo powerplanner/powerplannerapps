@@ -620,12 +620,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                 Margin = new Thickness(0, 0, 6, 0)
                             }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1),
 
-                            // UWP doesn't use the "to" text
-                            VxPlatform.Current == Platform.Uwp ? null : new TextBlock
+                            // Only Android uses the "to"
+                            VxPlatform.Current == Platform.Android ? new TextBlock
                             {
                                 Text = PowerPlannerResources.GetString("TextBlock_To.Text"),
                                 VerticalAlignment = VerticalAlignment.Center
-                            },
+                            } : null,
 
                             new EndTimePicker
                             {
@@ -674,6 +674,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             {
                                 new LinearLayout
                                 {
+                                    Margin = new Thickness(0, 0, 6, 0),
                                     Children =
                                     {
                                         new CheckBox
@@ -724,6 +725,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
                                 new LinearLayout
                                 {
+                                    Margin = new Thickness(6, 0, 0, 0),
                                     Children =
                                     {
                                         new CheckBox

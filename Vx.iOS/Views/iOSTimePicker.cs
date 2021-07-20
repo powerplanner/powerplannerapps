@@ -28,7 +28,9 @@ namespace Vx.iOS.Views
             View.AddSubview(_datePicker);
 
             _header.StretchWidth(View);
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[datePicker]->=0-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+
+            // Date picker has weird built in padding for some reason, move it over and to left
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-(-8)-[datePicker]->=0-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "datePicker", _datePicker));
 
             View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header][datePicker]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,

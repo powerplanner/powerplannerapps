@@ -44,7 +44,7 @@ namespace Vx.iOS.Views
     {
         public UIRoundedTextField()
         {
-            BackgroundColor = UIColor.TertiarySystemFillColor;
+            BackgroundColor = UIColorCompat.TertiarySystemFillColor;
             ClipsToBounds = true;
             Layer.CornerRadius = 10;
 
