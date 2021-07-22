@@ -443,6 +443,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             Groups.CollectionChanged += Groups_CollectionChanged;
 
             PrimaryCommand = PopupCommand.Save(Save);
+            UseCancelForBack();
         }
 
         private void Groups_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
