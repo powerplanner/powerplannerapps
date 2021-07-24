@@ -365,10 +365,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     IsTimesInvalid = false;
                 }
 
-                if (IsDaysInvalid || IsTimesInvalid)
-                {
-                    IsInvalid = true;
-                }
+                IsInvalid = IsDaysInvalid | IsTimesInvalid;
             }
 
             private bool _isDaysInvalid;

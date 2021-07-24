@@ -45,6 +45,22 @@ namespace Vx.iOS.Views
         {
             var newTime = BareUIHelper.NSDateToDateTime(_datePicker.Date).TimeOfDay;
 
+            if (VxView is EndTimePicker endTimePicker)
+            {
+                if (newTime <= endTimePicker.StartTime)
+                {
+                    View.BackgroundColor = UIColor.FromRGBA(255, 0, 0, 20);
+                    View.Layer.BorderColor = UIColor.Red.CGColor;
+                    View.Layer.BorderWidth = 2;
+                }
+                else
+                {
+                    View.BackgroundColor = null;
+                    View.Layer.BorderColor = null;
+                    View.Layer.BorderWidth = 0;
+                }
+            }
+
             if (newTime != VxView.Value && VxView.ValueChanged != null)
             {
                 VxView.ValueChanged(newTime);
@@ -57,6 +73,11 @@ namespace Vx.iOS.Views
 
             _header.Text = newView.Header;
             _datePicker.Date = BareUIHelper.DateTimeToNSDate(DateTime.Today.Add(newView.Value));
+
+            if (VxView is Vx.Views.EndTimePicker endTimePicker)
+            {
+                _datePicker.MinimumDate = BareUIHelper.DateTimeToNSDate(DateTime.Today.Add(endTimePicker.StartTime));
+            }
         }
     }
 }
