@@ -267,19 +267,6 @@ namespace Vx.Uwp.Controls.TimePickers
         {
             UpdateItems();
 
-            TimeSpan changeAmount = (TimeSpan)e.NewValue - (TimeSpan)e.OldValue;
-
-            TimeSpan newSelectedTime = SelectedTime + changeAmount;
-            if (newSelectedTime.Days > 0)
-            {
-                newSelectedTime = new TimeSpan(23, 59, 0);
-            }
-            else if (newSelectedTime.Ticks <= 0)
-            {
-                newSelectedTime = new TimeSpan(0, 1, 0);
-            }
-            SelectedTime = newSelectedTime;
-
             // Update their end times
             foreach (var entry in _timeEntries.OfType<EndTimeEntry>())
             {

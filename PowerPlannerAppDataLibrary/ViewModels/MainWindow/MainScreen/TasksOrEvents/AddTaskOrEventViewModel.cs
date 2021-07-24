@@ -30,11 +30,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         protected override bool InitialAllowLightDismissValue => false;
 
-        /// <summary>
-        /// View should initialize this to false if end times will be managed by the view
-        /// </summary>
-        public bool AutoAdjustEndTimes { get; set; } = true;
-
         private TaskOrEventType _type;
         public TaskOrEventType Type
         {
@@ -649,25 +644,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 if (!_programmaticallyChangingTimeOptions)
                     _userChangedTimeOptions = true;
 
-                if (AutoAdjustEndTimes)
-                {
-                    // If this was an exam, then it has an end time, so, in that case, automatically adjust the end time, maintaining the task as the same size it was before.
-                    var diff = EndTime - StartTime;
-                    SetProperty(ref _startTime, value, nameof(StartTime));
+                // If this was an exam, then it has an end time, so, in that case, automatically adjust the end time, maintaining the task as the same size it was before.
+                var diff = EndTime - StartTime;
+                SetProperty(ref _startTime, value, nameof(StartTime));
 
-                    if (Type == TaskOrEventType.Event)
-                    {
-                        var desiredEndTime = StartTime + diff;
-                        if (desiredEndTime.TotalHours > 24)
-                            desiredEndTime = new TimeSpan(23, 59, 0);
-
-                        _endTime = desiredEndTime;
-                        OnPropertyChanged(nameof(EndTime));
-                    }
-                }
-                else
+                if (Type == TaskOrEventType.Event)
                 {
-                    SetProperty(ref _startTime, value, nameof(StartTime));
+                    var desiredEndTime = StartTime + diff;
+                    if (desiredEndTime.TotalHours > 24)
+                        desiredEndTime = new TimeSpan(23, 59, 0);
+
+                    _endTime = desiredEndTime;
+                    OnPropertyChanged(nameof(EndTime));
                 }
             }
         }
@@ -681,24 +669,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 if (!_programmaticallyChangingTimeOptions)
                     _userChangedSelectedTimeOption = true;
 
-                if (AutoAdjustEndTimes)
-                {
-                    // If the EndTime is less than the StartTime, then push the StartTime back by the difference between the two.
-                    // So, if the EndTime is 10:30 and the StartTime is 10:40, the StartTime will become 10:20.
-                    var diff = StartTime - EndTime;
-                    SetProperty(ref _endTime, value, nameof(EndTime));
+                // If the EndTime is less than the StartTime, then push the StartTime back by the difference between the two.
+                // So, if the EndTime is 10:30 and the StartTime is 10:40, the StartTime will become 10:20.
+                var diff = StartTime - EndTime;
+                SetProperty(ref _endTime, value, nameof(EndTime));
 
-                    if (EndTime < StartTime)
-                    {
-                        _startTime = EndTime + diff;
-                        if (_startTime.TotalHours < 0)
-                            _startTime = TimeSpan.FromHours(0);
-                        OnPropertyChanged(nameof(StartTime));
-                    }
-                }
-                else
+                if (EndTime < StartTime)
                 {
-                    SetProperty(ref _endTime, value, nameof(EndTime));
+                    _startTime = EndTime + diff;
+                    if (_startTime.TotalHours < 0)
+                        _startTime = TimeSpan.FromHours(0);
+                    OnPropertyChanged(nameof(StartTime));
                 }
             }
         }

@@ -93,8 +93,6 @@ namespace PowerPlannerUWP.Views
 
         public override void OnViewModelSetOverride()
         {
-            ViewModel.AutoAdjustEndTimes = false;
-
             StartTimePicker.Header = GetStartTimeText();
             EndTimePicker.Header = LocalizedResources.GetString("String_EndTime");
             ComboBoxTimeOptions.Header = LocalizedResources.GetString("String_Time");
