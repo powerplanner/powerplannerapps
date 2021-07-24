@@ -56,7 +56,7 @@ namespace Vx.iOS.Views
                 else
                 {
                     View.BackgroundColor = null;
-                    View.Layer.BorderColor = null;
+                    // Can't set BorderColor to null (crashes on actual devices), no need to change it anyways though
                     View.Layer.BorderWidth = 0;
                 }
             }
