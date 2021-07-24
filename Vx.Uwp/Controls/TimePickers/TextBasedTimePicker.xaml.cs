@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -11,6 +12,7 @@ using Vx.Helpers;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
+using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,6 +33,9 @@ namespace Vx.Uwp.Controls.TimePickers
         public static bool IsSupported => ApiInformation.IsEventPresent(typeof(ComboBox).FullName, "TextSubmitted");
 
         public const int CUSTOM_TIME_PICKER_DEFAULT_INTERVAL = 30;
+
+        // There's no actual API for checking if 24 hour... this is the best we can do.
+        protected static readonly bool Is24Hour = DateTimeFormatter.LongTime.Format(new DateTime(2000, 1, 1, 15, 0, 0, DateTimeKind.Local)).Contains("15");
 
         public TextBasedTimePicker()
         {
@@ -142,7 +147,7 @@ namespace Vx.Uwp.Controls.TimePickers
 
         protected virtual bool ParseText(string text, out TimeSpan time)
         {
-            return CustomTimePickerHelpers.ParseComboBoxItem(DateTime.MinValue, text, out time);
+            return CustomTimePickerHelpers.ParseComboBoxItem(default(TimeSpan), text, Is24Hour, out time);
         }
 
         private void TimePickerComboBox_TextSubmitted(ComboBox sender, ComboBoxTextSubmittedEventArgs args)
@@ -286,7 +291,7 @@ namespace Vx.Uwp.Controls.TimePickers
 
         protected override bool ParseText(string text, out TimeSpan time)
         {
-            if (CustomTimePickerHelpers.ParseComboBoxItem(new DateTime(StartTime.Ticks), text, out time))
+            if (CustomTimePickerHelpers.ParseComboBoxItem(StartTime, text, Is24Hour, out time))
             {
                 // Time must be greater than start time
                 return time > StartTime;

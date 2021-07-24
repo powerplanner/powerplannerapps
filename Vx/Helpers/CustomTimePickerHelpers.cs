@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Vx.Helpers
 {
@@ -37,14 +38,18 @@ namespace Vx.Helpers
 
         #region Text Parsing
 
+        private static readonly Regex TimeRegex = new Regex(@"^(\d?\d)(?::(\d\d?))?\s*([aApP][mM]?)?");
+
         /// <summary>
         /// This will take some text and convert it into a TimeSpan, and will return true of false depending on success or not.
         /// Supported formats (square brackets are optional): xx:xx [AM/PM], xhx/xhxm/xxhxxm.
         /// In addition to this, if the given time has a "+" at the beginning, it will make the TimeSpan that amount relative to the <paramref name="startTime"/> (typically used on the EndTime).
         /// If the text given contains something in brackets at the end, e.g. "1:23 (+1h)", that will be ignored.
         /// </summary>
-        public static bool ParseComboBoxItem(DateTime startTime, string itemText, out TimeSpan timeSpan)
+        public static bool ParseComboBoxItem(TimeSpan startTime, string itemText, bool is24hour, out TimeSpan timeSpan)
         {
+            itemText = itemText.Trim();
+
             if (itemText == null || itemText.Length == 0)
                 return false; // Fail
 
@@ -52,71 +57,153 @@ namespace Vx.Helpers
 
             // NOTE: We're manually parsing it since not only did "TimeSpan.TryParse" not work with AM/PM, but the text may contain things such as brackets at the end, and we want the option to use relative times (if someone wanted to).
             // Check to see if this begins with a "+", making it a relative time, if it does begin with a plus, we'll remember that and remove it to stop it from causing problems later.
-            var relativeTime = itemText[0] == '+';
-            if (relativeTime)
-                itemText = itemText.Remove(0, 1);
 
-            // Remove anything that might be in brackets at the end, since the end time will probably contain this, e.g. (+30m).
-            var splitByBracket = itemText.Split('(');
-            if (splitByBracket.Length == 0)
-                return false; // Fail
-
-            var withRemovedBracketsAndLower = splitByBracket[0].ToLower().TrimEnd(); // TrimEnd will remove any trailing whitespace.
-            if (withRemovedBracketsAndLower.Length == 0)
-                return false; // Fail
-
-            // Check if there's an AM or PM.
-            CheckFor12Hour(withRemovedBracketsAndLower, out bool is24hour, out bool isPM);
-
-            // Split it up as if it's a "xx:xx".
-            var numberPart = is24hour ? withRemovedBracketsAndLower : withRemovedBracketsAndLower.Substring(0, withRemovedBracketsAndLower.Length - 2).TrimEnd();
-            var numberSplitParts = numberPart.Split(':');
-            if (numberSplitParts.Length == 0)
-                return false;
-
-            // If there was one item, then that means that we either have just one number or it was in the format "xhxm".
-            if (numberSplitParts.Length == 1)
+            // If relative time
+            if (itemText[0] == '+')
             {
-                var successful = HandleSingleNumberSplitParts(ref timeSpan, is24hour, isPM, numberPart);
-                return HandleRelative(ref timeSpan, startTime.TimeOfDay, relativeTime, successful);
-            }
+                itemText = itemText.Substring(1);
 
-            // Otherwise, if there was more than one item - we know that it was definitely "xx:xx", so, we'll just parse those numbers!
-            var wasSuccessful = ParseMinuteANDHour(ref timeSpan, is24hour, isPM, numberSplitParts);
-            return HandleRelative(ref timeSpan, startTime.TimeOfDay, relativeTime, wasSuccessful);
-        }
+                if (!HandleXHXM(ref timeSpan, true, false, itemText))
+                {
+                    // If it's not XHXM, then it's just one number, which we assume is the hour.
+                    if (!ParseMinuteORHour(itemText, ref timeSpan, true, true, false))
+                    {
+                        var hourMinMatch = Regex.Match(itemText, @"^(\d?\d):(\d\d)$");
+                        if (!hourMinMatch.Success)
+                        {
+                            return false;
+                        }
 
-        /// <summary>
-        /// Checks if the <paramref name="str"/> is a 12-hour time and if so, whether it's AM or PM.
-        /// </summary>
-        static bool CheckFor12Hour(string str, out bool is24hour, out bool isPM)
-        {
-            is24hour = true;
-            isPM = false;
+                        int relHour = int.Parse(hourMinMatch.Groups[1].Value);
+                        int relMin = int.Parse(hourMinMatch.Groups[2].Value);
 
-            if (str.EndsWith("am") || str.EndsWith("a"))
-                is24hour = false;
-            else if (str.EndsWith("pm") || str.EndsWith("p"))
-            {
-                is24hour = false;
-                isPM = true;
-            }
+                        timeSpan = new TimeSpan(relHour, relMin, 0);
+                    }
+                }
 
-            return true;
-        }
+                timeSpan = startTime + timeSpan;
+                if (timeSpan > new TimeSpan(23, 59, 0))
+                {
+                    timeSpan = new TimeSpan(23, 59, 0);
+                }
 
-        // xhxm or xx
-        static bool HandleSingleNumberSplitParts(ref TimeSpan timeSpan, bool is24hour, bool isPM, string numberPart)
-        {
-            // Check if it's in the format "xhxm" (or the format "xm").
-            if (HandleXHXM(ref timeSpan, is24hour, isPM, numberPart))
                 return true;
+            }
 
-            // If it's not XHXM, then it's just one number, which we assume is the hour.
-            if (!ParseMinuteORHour(numberPart, ref timeSpan, true, is24hour, isPM))
+            var match = TimeRegex.Match(itemText);
+            if (!match.Success)
+            {
                 return false;
+            }
 
-            return true;
+            string hourStr = match.Groups[1].Value;
+            string minStr = match.Groups[2].Success ? match.Groups[2].Value : null;
+            if (minStr != null && minStr.Length == 1)
+            {
+                minStr += "0";
+            }
+            string amPmStr = match.Groups[3].Success ? match.Groups[3].Value : null;
+
+            int hour = int.Parse(hourStr);
+            int min = minStr != null ? int.Parse(minStr) : 0;
+
+            if (hour > 23 || min > 59)
+            {
+                return false;
+            }
+
+            bool? isAm = null;
+
+            // If in 24-hour mode, or they entered 24-hour style despite not being in 24-hour
+            if (is24hour || (!is24hour && ((hourStr.Length == 2 && hour != 10 && hour != 11 && hour != 12) || hour == 0)))
+            {
+                // And switch to 24hr mode
+                is24hour = true;
+            }
+
+            // If they specified AM/PM (regardless of 12/24 hour), that takes precedent
+            if (amPmStr != null)
+            {
+                isAm = amPmStr.StartsWith("a", StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            // Handle both 24 hour and AM/PM used
+            if (is24hour && amPmStr != null)
+            {
+                if (hour == 0 || hour > 12)
+                {
+                    // Can't use AM/PM with definitively entered 24-hour times
+                    return false;
+                }
+
+                // AM/PM string takes precedent
+                is24hour = false;
+            }
+
+            if (is24hour)
+            {
+                if ((hour == 0 || hour > 12) && amPmStr != null)
+                {
+                    // Can't use AM/PM with definitively entered 24-hour times
+                    return false;
+                }
+
+                timeSpan = new TimeSpan(hour, min, 0);
+            }
+            else
+            {
+                if (isAm == null)
+                {
+                    // If start time is specified, we should pick whichever is closest (and greater)...
+                    // For example, if start time is 3am and they enter 4:00, pick 4am instead of 4pm
+                    if (startTime != default(TimeSpan))
+                    {
+                        var earlierOption = ParseAmPmTime(hour, min, isAm: true);
+                        var laterOption = ParseAmPmTime(hour, min, isAm: false);
+
+                        if (earlierOption > startTime)
+                        {
+                            isAm = true;
+                        }
+                        else
+                        {
+                            isAm = false;
+                        }
+                    }
+                    else
+                    {
+                        // Otherwise pick based on typical reasonable range
+                        isAm = hour >= 6 && hour <= 11;
+                    }
+                }
+
+                timeSpan = ParseAmPmTime(hour, min, isAm.Value);
+            }
+
+            if (timeSpan > startTime || startTime == default(TimeSpan))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static TimeSpan ParseAmPmTime(int hour, int minute, bool isAm)
+        {
+            if (isAm && hour == 12)
+            {
+                hour = 0;
+            }
+
+            else if (!isAm && hour != 12)
+            {
+                // If PM, add 12
+                hour += 12;
+            }
+
+            return new TimeSpan(hour, minute, 0);
         }
 
         static bool HandleXHXM(ref TimeSpan timeSpan, bool is24hour, bool isPM, string numberPart)
@@ -148,19 +235,6 @@ namespace Vx.Helpers
                 else return false;
             }
             return false;
-        }
-
-        static bool HandleRelative(ref TimeSpan before, TimeSpan offset, bool isRelative, bool wasSuccessful)
-        {
-            if (!isRelative)
-                return wasSuccessful;
-
-            before = offset.Add(before);
-
-            if (before.TotalHours >= 24)
-                before = new TimeSpan(23, 59, 0);
-
-            return wasSuccessful;
         }
 
         /// <summary>
