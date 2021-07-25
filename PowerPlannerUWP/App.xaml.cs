@@ -109,7 +109,6 @@ namespace PowerPlannerUWP
 
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(AddClassTimesViewModel), typeof(AddClassTimeView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
@@ -790,7 +789,7 @@ namespace PowerPlannerUWP
                     if (v <= new Version(2002, 3, 1, 0))
                     {
                         // Switched 100% to new time picker, need to show message to the other 50% that are just getting it now
-                        if (Controls.TimePickers.TextBasedTimePicker.IsSupported && !AbTestHelper.Tests.NewTimePicker)
+                        if (Vx.Uwp.Controls.TimePickers.TextBasedTimePicker.IsSupported && !AbTestHelper.Tests.NewTimePicker)
                         {
                             changedText += "\n - New text-based time pickers!";
                         }
@@ -798,7 +797,7 @@ namespace PowerPlannerUWP
 
                     if (v <= new Version(2001, 26, 2, 0))
                     {
-                        if (Controls.TimePickers.TextBasedTimePicker.IsSupported && AbTestHelper.Tests.NewTimePicker)
+                        if (Vx.Uwp.Controls.TimePickers.TextBasedTimePicker.IsSupported && AbTestHelper.Tests.NewTimePicker)
                         {
                             changedText += "\n - New text-based time pickers!";
                         }

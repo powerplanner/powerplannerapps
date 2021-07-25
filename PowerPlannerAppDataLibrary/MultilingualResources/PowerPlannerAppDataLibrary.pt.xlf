@@ -2456,8 +2456,8 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <target state="final" state-qualifier="mt-suggestion">Remova este cronograma</target>
         </trans-unit>
         <trans-unit id="AddClassTime_AddAnotherTime.Content" translate="yes" xml:space="preserve">
-          <source>add another time</source>
-          <target state="final" state-qualifier="mt-suggestion">adicionar outro tempo</target>
+          <source>Add another time</source>
+          <target state="final" state-qualifier="mt-suggestion">Adicionar outro tempo</target>
         </trans-unit>
         <trans-unit id="String_ConfirmDeleteItemHeader" translate="yes" xml:space="preserve">
           <source>Delete item?</source>

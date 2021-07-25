@@ -11,6 +11,7 @@ using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {

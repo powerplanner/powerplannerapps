@@ -91,7 +91,7 @@ namespace Vx.iOS.Views
                     View.RemoveArrangedSubview(i);
 
                     var childView = v.CreateUIView(VxParentView);
-                    View.InsertSubview(childView, i);
+                    View.InsertArrangedSubview(childView, i);
 
                     changed = true;
                 },
@@ -103,12 +103,12 @@ namespace Vx.iOS.Views
                 }
                 );
 
-
-            for (int i = 0; i < newView.Children.Count; i++)
+            var children = newView.Children.Where(i => i != null).ToList();
+            for (int i = 0; i < children.Count; i++)
             {
-                changed = View.SetWeight(i, LinearLayout.GetWeight(newView.Children[i])) || changed;
-                changed = View.SetMargins(i, newView.Children[i].Margin.AsModified()) || changed;
-                changed = View.SetHorizontalAlignment(i, newView.Children[i].HorizontalAlignment) || changed;
+                changed = View.SetWeight(i, LinearLayout.GetWeight(children[i])) || changed;
+                changed = View.SetMargins(i, children[i].Margin.AsModified()) || changed;
+                changed = View.SetHorizontalAlignment(i, children[i].HorizontalAlignment) || changed;
             }
 
             if (changed)
@@ -328,7 +328,7 @@ namespace Vx.iOS.Views
 
             public void UpdateConstraints(ArrangedSubview prev, ArrangedSubview next, bool usingWeights, ArrangedSubview firstWeighted)
             {
-                Subview.SetContentHuggingPriority(Weight == 0 ? 1000 : 0, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+                Subview.SetContentHuggingPriority(Weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
 
                 if (IsVertical)
                 {

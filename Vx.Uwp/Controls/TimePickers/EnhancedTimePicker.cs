@@ -1,6 +1,4 @@
-﻿using PowerPlannerAppDataLibrary.Helpers;
-using PowerPlannerUWP.Controls.TimePickers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +7,12 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
-namespace PowerPlannerUWP.Controls
+namespace Vx.Uwp.Controls.TimePickers
 {
     public class EnhancedTimePicker : UserControl
     {
+        public event EventHandler<TimeSpan> SelectedTimeChanged;
+
         public EnhancedTimePicker()
         {
             if (TextBasedTimePicker.IsSupported)
@@ -88,7 +88,17 @@ namespace PowerPlannerUWP.Controls
         }
 
         public static readonly DependencyProperty SelectedTimeProperty =
-            DependencyProperty.Register(nameof(SelectedTime), typeof(TimeSpan), typeof(EnhancedTimePicker), new PropertyMetadata(new TimeSpan(9, 0, 0)));
+            DependencyProperty.Register(nameof(SelectedTime), typeof(TimeSpan), typeof(EnhancedTimePicker), new PropertyMetadata(new TimeSpan(9, 0, 0), OnSelectedTimeChanged));
+
+        private static void OnSelectedTimeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as EnhancedTimePicker).OnSelectedTimeChanged(e);
+        }
+
+        private void OnSelectedTimeChanged(DependencyPropertyChangedEventArgs e)
+        {
+            SelectedTimeChanged?.Invoke(this, (TimeSpan)e.NewValue);
+        }
     }
 
     public class EnhancedEndTimePicker : EnhancedTimePicker

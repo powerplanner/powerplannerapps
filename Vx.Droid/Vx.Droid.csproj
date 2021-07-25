@@ -121,8 +121,10 @@
     <Compile Include="ViewModelPresenters\PagedViewModelPresenter.cs" />
     <Compile Include="ViewModelPresenters\PagedViewModelWithPopupsPresenter.cs" />
     <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
+    <Compile Include="Views\DroidBorder.cs" />
     <Compile Include="Views\DroidButton.cs" />
     <Compile Include="Views\DroidCheckBox.cs" />
+    <Compile Include="Views\DroidComboBox.cs" />
     <Compile Include="Views\DroidFontIcon.cs" />
     <Compile Include="Views\DroidLinearLayout.cs" />
     <Compile Include="Views\DroidListItemButton.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="Views\DroidSwitch.cs" />
     <Compile Include="Views\DroidTextBlock.cs" />
     <Compile Include="Views\DroidTextBox.cs" />
+    <Compile Include="Views\DroidTimePicker.cs" />
     <Compile Include="Views\DroidTransparentContentButton.cs" />
     <Compile Include="Views\DroidView.cs" />
     <Compile Include="Views\DroidVxComponent.cs" />
@@ -158,8 +161,8 @@
     <PackageReference Include="Xamarin.Android.ViewPump">
       <Version>2.0.3.2</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
-    <PackageReference Include="Xamarin.Google.Android.Material" Version="1.2.1.1" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.3.0" />
+    <PackageReference Include="Xamarin.Google.Android.Material" Version="1.3.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +179,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\colors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values-night\colors.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

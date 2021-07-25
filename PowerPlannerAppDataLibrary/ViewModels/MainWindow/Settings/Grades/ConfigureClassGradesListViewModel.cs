@@ -126,26 +126,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void ShowClassViewModel<T>() where T : BaseViewModel
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), FindAncestor<PagedViewModelWithPopups>(), Class) as BaseViewModel);
-            }
-            else
-            {
-                FindAncestor<PagedViewModel>().Navigate(Activator.CreateInstance(typeof(T), FindAncestor<PagedViewModel>(), Class) as BaseViewModel);
-            }
+            FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), FindAncestor<PagedViewModelWithPopups>(), Class) as BaseViewModel);
         }
 
         public static void ShowViewModel<T>(BaseViewModel current) where T : BaseViewModel
         {
-            if (ConfigureClassGradesViewModel.UsePopups)
-            {
-                current.FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), current.FindAncestor<PagedViewModelWithPopups>()) as BaseViewModel);
-            }
-            else
-            {
-                current.FindAncestor<PagedViewModel>().Navigate(Activator.CreateInstance(typeof(T), current.FindAncestor<PagedViewModel>()) as BaseViewModel);
-            }
+            current.FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), current.FindAncestor<PagedViewModelWithPopups>()) as BaseViewModel);
         }
     }
 }

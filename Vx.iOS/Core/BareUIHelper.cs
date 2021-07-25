@@ -126,6 +126,12 @@ namespace Vx.iOS
             return view;
         }
 
+        public static UIView RemoveAllConstraintsAffectingSubview(this UIView view, UIView subview)
+        {
+            view.RemoveConstraints(view.Constraints.Where(i => i.FirstItem == subview || i.SecondItem == subview).ToArray());
+            return view;
+        }
+
         public static UIView PinToLeft(this UIView view, UIView parentView, float left = 0)
         {
             parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-({left})-[view]", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));

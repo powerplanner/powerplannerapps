@@ -9,5 +9,7 @@ namespace Vx.Views
         public string Header { get; set; }
 
         public VxState<string> Text { get; set; }
+
+        public string PlaceholderText { get; set; }
     }
 }

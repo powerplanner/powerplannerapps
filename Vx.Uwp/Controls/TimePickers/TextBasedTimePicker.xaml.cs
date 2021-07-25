@@ -1,18 +1,18 @@
 ﻿using BareMvvm.Core.ViewModels;
-using PowerPlannerAppDataLibrary;
-using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.Helpers;
-using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
+using Vx.Extensions;
+using Vx.Helpers;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
+using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,7 +23,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace PowerPlannerUWP.Controls.TimePickers
+namespace Vx.Uwp.Controls.TimePickers
 {
     public partial class TextBasedTimePicker : UserControl
     {
@@ -33,6 +33,9 @@ namespace PowerPlannerUWP.Controls.TimePickers
         public static bool IsSupported => ApiInformation.IsEventPresent(typeof(ComboBox).FullName, "TextSubmitted");
 
         public const int CUSTOM_TIME_PICKER_DEFAULT_INTERVAL = 30;
+
+        // There's no actual API for checking if 24 hour... this is the best we can do.
+        protected static readonly bool Is24Hour = DateTimeFormatter.LongTime.Format(new DateTime(2000, 1, 1, 15, 0, 0, DateTimeKind.Local)).Contains("15");
 
         public TextBasedTimePicker()
         {
@@ -144,7 +147,7 @@ namespace PowerPlannerUWP.Controls.TimePickers
 
         protected virtual bool ParseText(string text, out TimeSpan time)
         {
-            return CustomTimePickerHelpers.ParseComboBoxItem(DateTime.MinValue, text, out time);
+            return CustomTimePickerHelpers.ParseComboBoxItem(default(TimeSpan), text, Is24Hour, out time);
         }
 
         private void TimePickerComboBox_TextSubmitted(ComboBox sender, ComboBoxTextSubmittedEventArgs args)
@@ -182,8 +185,8 @@ namespace PowerPlannerUWP.Controls.TimePickers
                 args.Handled = true;
 
                 var correctString = "EditingClassScheduleItemView_Invalid" + (this is TextBasedEndTimePicker ? "End" : "Start") + "Time";
-                var correctTitle = PowerPlannerResources.GetString(correctString + ".Title");
-                var correctContent = PowerPlannerResources.GetString(correctString + ".Content");
+                var correctTitle = PortableLocalizedResources.GetString(correctString + ".Title");
+                var correctContent = PortableLocalizedResources.GetString(correctString + ".Content");
                 new PortableMessageDialog(correctContent, correctTitle).Show();
             }
         }
@@ -269,19 +272,6 @@ namespace PowerPlannerUWP.Controls.TimePickers
         {
             UpdateItems();
 
-            TimeSpan changeAmount = (TimeSpan)e.NewValue - (TimeSpan)e.OldValue;
-
-            TimeSpan newSelectedTime = SelectedTime + changeAmount;
-            if (newSelectedTime.Days > 0)
-            {
-                newSelectedTime = new TimeSpan(23, 59, 0);
-            }
-            else if (newSelectedTime.Ticks <= 0)
-            {
-                newSelectedTime = new TimeSpan(0, 1, 0);
-            }
-            SelectedTime = newSelectedTime;
-
             // Update their end times
             foreach (var entry in _timeEntries.OfType<EndTimeEntry>())
             {
@@ -301,7 +291,7 @@ namespace PowerPlannerUWP.Controls.TimePickers
 
         protected override bool ParseText(string text, out TimeSpan time)
         {
-            if (CustomTimePickerHelpers.ParseComboBoxItem(new DateTime(StartTime.Ticks), text, out time))
+            if (CustomTimePickerHelpers.ParseComboBoxItem(StartTime, text, Is24Hour, out time))
             {
                 // Time must be greater than start time
                 return time > StartTime;

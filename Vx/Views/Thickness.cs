@@ -71,5 +71,14 @@ namespace Vx.Views
         {
             return new Thickness(Theme.Current.MarginModifier * Left, Theme.Current.MarginModifier * Top, Theme.Current.MarginModifier * Right, Theme.Current.MarginModifier * Bottom);
         }
+
+        public Thickness Combine(Thickness other)
+        {
+            return new Thickness(
+                Left + other.Left,
+                Top + other.Top,
+                Right + other.Right,
+                Bottom + other.Bottom);
+        }
     }
 }

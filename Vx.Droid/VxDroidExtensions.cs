@@ -98,6 +98,21 @@ namespace Vx.Droid
                     return new DroidCheckBox();
                 }
 
+                if (view is Vx.Views.Border)
+                {
+                    return new DroidBorder();
+                }
+
+                if (view is Vx.Views.ComboBox)
+                {
+                    return new DroidComboBox();
+                }
+
+                if (view is Vx.Views.TimePicker)
+                {
+                    return new DroidTimePicker();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
@@ -163,6 +178,24 @@ namespace Vx.Droid
 
                 default:
                     return GravityFlags.FillHorizontal;
+            }
+        }
+
+        internal static GravityFlags ToDroid(this VerticalAlignment verticalAlignment)
+        {
+            switch (verticalAlignment)
+            {
+                case VerticalAlignment.Center:
+                    return GravityFlags.CenterVertical;
+
+                case VerticalAlignment.Bottom:
+                    return GravityFlags.Bottom;
+
+                case VerticalAlignment.Stretch:
+                    return GravityFlags.FillVertical;
+
+                default:
+                    return GravityFlags.Top;
             }
         }
     }

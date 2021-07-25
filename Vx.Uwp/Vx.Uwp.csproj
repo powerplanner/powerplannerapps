@@ -148,6 +148,11 @@
     <Compile Include="Controls\StackPanelWithImportances.cs" />
     <Compile Include="Controls\TextBlockCompat.cs" />
     <Compile Include="Controls\TextBlockExtensions.cs" />
+    <Compile Include="Controls\TimePickers\EndTimePicker.cs" />
+    <Compile Include="Controls\TimePickers\EnhancedTimePicker.cs" />
+    <Compile Include="Controls\TimePickers\TextBasedTimePicker.xaml.cs">
+      <DependentUpon>TextBasedTimePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorArrayToBrushConverter.cs" />
     <Compile Include="Converters\ColorArrayToColorConverter.cs" />
@@ -236,8 +241,10 @@
       <DependentUpon>PopupsPresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
+    <Compile Include="Views\UwpBorder.cs" />
     <Compile Include="Views\UwpButton.cs" />
     <Compile Include="Views\UwpCheckBox.cs" />
+    <Compile Include="Views\UwpComboBox.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
@@ -246,6 +253,7 @@
     <Compile Include="Views\UwpSwitch.cs" />
     <Compile Include="Views\UwpTextBlock.cs" />
     <Compile Include="Views\UwpTextBox.cs" />
+    <Compile Include="Views\UwpTimePicker.cs" />
     <Compile Include="Views\UwpTransparentContentButton.cs" />
     <Compile Include="Views\UwpView.cs" />
     <Compile Include="Views\UwpVxComponent.cs" />
@@ -278,6 +286,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ComboBoxWithActions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TimePickers\TextBasedTimePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

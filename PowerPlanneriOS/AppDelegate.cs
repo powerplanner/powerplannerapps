@@ -90,7 +90,6 @@ namespace PowerPlanneriOS
                 { typeof(ClassesViewModel), typeof(ClassesViewController) },
                 { typeof(ClassViewModel), typeof(ClassViewController) },
                 { typeof(AddClassViewModel), typeof(AddClassViewController) },
-                { typeof(AddClassTimeViewModel), typeof(AddClassTimeViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
                 { typeof(YearsViewModel), typeof(YearsViewController) },
                 { typeof(AddYearViewModel), typeof(AddYearViewController) },
@@ -121,9 +120,7 @@ namespace PowerPlanneriOS
                 { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsViewController) },
                 { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsViewController) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsViewController) },
-
-                { typeof(ConfigureClassGradesViewModel), typeof(ConfigureClassGradesViewController) }
+                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsViewController) }
             };
         }
 

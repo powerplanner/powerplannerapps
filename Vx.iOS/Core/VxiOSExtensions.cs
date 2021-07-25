@@ -79,6 +79,21 @@ namespace Vx.iOS
                     return new iOSCheckBox();
                 }
 
+                if (view is Vx.Views.TimePicker)
+                {
+                    return new iOSTimePicker();
+                }
+
+                if (view is Vx.Views.Border)
+                {
+                    return new iOSBorder();
+                }
+
+                if (view is Vx.Views.ComboBox)
+                {
+                    return new iOSComboBox();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
@@ -115,14 +130,17 @@ namespace Vx.iOS
             (view.NativeView.View as UIView).GetViewController().PresentViewController(actionSheetAlert, true, null);
         }
 
-        public static UIView Render(this VxComponent component)
+        public static iOSNativeComponent Render(this VxComponent component, Action<UIView> afterViewChanged = null)
         {
             if (component.NativeComponent != null)
             {
                 return component.NativeComponent as iOSNativeComponent;
             }
 
-            var nativeComponent = new iOSNativeComponent();
+            var nativeComponent = new iOSNativeComponent()
+            {
+                AfterViewChanged = afterViewChanged
+            };
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;
         }

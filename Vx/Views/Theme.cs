@@ -31,6 +31,10 @@ namespace Vx.Views
 
         public abstract Color SubtleForegroundColor { get; }
 
+        public abstract Color PopupPageBackgroundColor { get; }
+
+        public abstract Color PopupPageBackgroundAltColor { get; }
+
         public Color AccentColor => DefaultAccentColor;
 
         private static Lazy<float> _pageMargin = new Lazy<float>(() =>

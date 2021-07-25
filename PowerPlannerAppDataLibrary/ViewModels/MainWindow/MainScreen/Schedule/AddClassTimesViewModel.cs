@@ -9,15 +9,19 @@ using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx;
+using Vx.Extensions;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
-    public class AddClassTimesViewModel : BaseMainScreenViewModelChild
+    public class AddClassTimesViewModel : PopupComponentViewModel
     {
         public class ClassTimeGroup : BindableBase
         {
@@ -361,10 +365,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     IsTimesInvalid = false;
                 }
 
-                if (IsDaysInvalid || IsTimesInvalid)
-                {
-                    IsInvalid = true;
-                }
+                IsInvalid = IsDaysInvalid | IsTimesInvalid;
             }
 
             private bool _isDaysInvalid;
@@ -437,6 +438,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         private AddClassTimesViewModel(BaseViewModel parent) : base(parent)
         {
             Groups.CollectionChanged += Groups_CollectionChanged;
+
+            PrimaryCommand = PopupCommand.Save(Save);
+            UseCancelForBack();
         }
 
         private void Groups_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -448,6 +452,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         {
             var model = new AddClassTimesViewModel(parent)
             {
+                Title = addParams.Class.Name,
                 State = OperationState.Adding,
                 AddParams = addParams,
                 ClassName = addParams.Class.Name,
@@ -471,6 +476,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         {
             var model = new AddClassTimesViewModel(parent)
             {
+                Title = editParams.GroupedSchedules.First().Class.Name,
                 State = OperationState.Editing,
                 EditParams = editParams,
                 ClassName = editParams.GroupedSchedules.First().Class.Name,
@@ -488,6 +494,385 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             });
 
             return model;
+        }
+
+        private const int SubgroupPadding = 12;
+
+        private View _deleteButton;
+        protected override View Render()
+        {
+            var layout = new LinearLayout()
+            {
+                Margin = new Thickness(Theme.Current.PageMargin)
+            };
+
+            foreach (var g in Groups)
+            {
+                View content;
+
+                if (g.Expanded)
+                {
+                    var expanded = RenderExpanded(g);
+
+                    if (Groups.Count > 1)
+                    {
+                        content = new Border
+                        {
+                            BackgroundColor = Theme.Current.PopupPageBackgroundAltColor,
+                            BorderColor = Theme.Current.SubtleForegroundColor,
+                            BorderThickness = new Thickness(1),
+                            Padding = new Thickness(SubgroupPadding),
+                            Content = expanded
+                        };
+                    }
+                    else
+                    {
+                        content = expanded;
+                    }
+                }
+                else
+                {
+                    content = RenderCollapsed(g);
+                }
+
+                content.Margin = new Thickness(0, 0, 0, 12);
+
+                layout.Children.Add(content);
+            }
+
+            if (State == OperationState.Editing && Groups.Count == 1)
+            {
+                layout.Children.Add(new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Children =
+                    {
+                        new Button
+                        {
+                            Text = PowerPlannerResources.GetString("AddClassTime_AddAnotherTime.Content"),
+                            Margin = new Thickness(0, 0, 6, 0),
+                            Click = AddAnotherTime
+                        }.LinearLayoutWeight(1),
+
+                        new Button
+                        {
+                            Text = PowerPlannerResources.GetString("MenuItemDelete"),
+                            Margin = new Thickness(6, 0, 0, 0),
+                            ViewRef = view => _deleteButton = view,
+                            Click = () =>
+                            {
+                                new ContextMenu
+                                {
+                                    Items =
+                                    {
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString("String_YesDelete"),
+                                            Click = Delete
+                                        }
+                                    }
+                                }.Show(_deleteButton);
+
+                            }
+                        }.LinearLayoutWeight(1)
+                    }
+                });
+            }
+            else
+            {
+                layout.Children.Add(new Button
+                {
+                    Text = PowerPlannerResources.GetString("AddClassTime_AddAnotherTime.Content"),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Click = AddAnotherTime
+                });
+            }
+
+            return new ScrollView
+            {
+                Content = layout
+            };
+        }
+
+        private View RenderExpanded(ClassTimeGroup group)
+        {
+            return new LinearLayout
+            {
+                Children =
+                {
+                    new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Children =
+                        {
+                            new TimePicker
+                            {
+                                Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_TimePickerStart.Header"),
+                                Value = group.StartTime,
+                                ValueChanged = val =>
+                                {
+                                    group.StartTime = val;
+                                    MarkDirty();
+                                },
+                                Margin = new Thickness(0, 0, 6, 0)
+                            }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1),
+
+                            // Only Android uses the "to"
+                            VxPlatform.Current == Platform.Android ? new TextBlock
+                            {
+                                Text = PowerPlannerResources.GetString("TextBlock_To.Text"),
+                                VerticalAlignment = VerticalAlignment.Center
+                            } : null,
+
+                            new EndTimePicker
+                            {
+                                Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_TimePickerEnd.Header"),
+                                StartTime = group.StartTime,
+                                Value = group.EndTime,
+                                ValueChanged = val =>
+                                {
+                                    group.EndTime = val;
+                                    MarkDirty();
+                                },
+                                Margin = new Thickness(6, 0, 0, 0)
+                            }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1)
+                        }
+                    },
+
+                    // Display time zone warning
+                    IsInDifferentTimeZone ? new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("DifferentTimeZoneWarning.Text"),
+                        FontSize = Theme.Current.CaptionFontSize,
+                        TextColor = Color.Red,
+                        WrapText = true,
+                        Margin = new Thickness(0, 6, 0, 0)
+                    } : null,
+
+                    new TextBox
+                    {
+                        Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_TextBoxRoom.Header"),
+                        Text = Bind<string>(nameof(group.Room), group),
+                        Margin = new Thickness(0, 12, 0, 0),
+                        PlaceholderText = PowerPlannerResources.GetString("ex: Modern Languages 302")
+                    },
+
+                    new Border
+                    {
+                        BorderThickness = group.IsDaysInvalid ? new Thickness(2) : default(Thickness),
+                        BorderColor = group.IsDaysInvalid ? Color.Red : default(Color),
+                        Margin = new Thickness(-6, 6, -6, -6),
+                        Padding = new Thickness(6),
+                        Content = new LinearLayout
+                        {
+                            Margin = new Thickness(0, 0, 12, 0),
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new LinearLayout
+                                {
+                                    Margin = new Thickness(0, 0, 6, 0),
+                                    Children =
+                                    {
+                                        new CheckBox
+                                        {
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Monday),
+                                            IsChecked = group.IsMondayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsMondayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
+
+                                        new CheckBox
+                                        {
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Tuesday),
+                                            IsChecked = group.IsTuesdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsTuesdayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
+
+                                        new CheckBox
+                                        {
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Wednesday),
+                                            IsChecked = group.IsWednesdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsWednesdayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
+
+                                        new CheckBox
+                                        {
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Thursday),
+                                            IsChecked = group.IsThursdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsThursdayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        }
+                                    }
+                                }.LinearLayoutWeight(1),
+
+                                new LinearLayout
+                                {
+                                    Margin = new Thickness(6, 0, 0, 0),
+                                    Children =
+                                    {
+                                        new CheckBox
+                                        {
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Friday),
+                                            IsChecked = group.IsFridayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsFridayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
+
+                                        new CheckBox
+                                        {
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Saturday),
+                                            IsChecked = group.IsSaturdayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsSaturdayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        },
+
+                                        new CheckBox
+                                        {
+                                            Text = DateTools.ToLocalizedString(DayOfWeek.Sunday),
+                                            IsChecked = group.IsSundayChecked,
+                                            IsCheckedChanged = val =>
+                                            {
+                                                group.IsSundayChecked = val;
+                                                MarkDirty();
+                                            }
+                                        }
+                                    }
+                                }.LinearLayoutWeight(1)
+                            }
+                        }
+                    },
+
+                    group.IsDaysInvalid ? new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content"),
+                        TextColor = Color.Red,
+                        FontWeight = FontWeights.Bold,
+                        WrapText = true,
+                        Margin = new Thickness(0, 6, 0, 0)
+                    } : null,
+
+                    new ComboBox
+                    {
+                        Margin = new Thickness(0, 12, 0, 0),
+                        Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_WeekComboBox.Header"),
+                        Items = group.AvailableScheduleWeekStrings,
+                        SelectedItem = group.ScheduleWeekString,
+                        SelectedItemChanged = val =>
+                        {
+                            group.ScheduleWeekString = val as string;
+                            MarkDirty();
+                        }
+                    },
+
+                    new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("EditingClassScheduleItemView_TextBlockWeekDescription.Text"),
+                        FontSize = Theme.Current.CaptionFontSize,
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = true,
+                        Margin = new Thickness(0, 6, 0, 0)
+                    },
+
+                    Groups.Count > 1 ? new Button
+                    {
+                        Text = PowerPlannerResources.GetString("AddClassTime_RemoveThisSchedule.Content"),
+                        Margin = new Thickness(0, 12, 0, 0),
+                        Click = () =>
+                        {
+                            Groups.Remove(group);
+                            MarkDirty();
+                        }
+                    } : null
+                }
+            };
+        }
+
+        private View RenderCollapsed(ClassTimeGroup group)
+        {
+            return new Border
+            {
+                BackgroundColor = group.IsInvalid ? Color.FromArgb(50, 255, 0, 0) : Theme.Current.PopupPageBackgroundAltColor,
+                BorderThickness = new Thickness(1),
+                BorderColor = Theme.Current.SubtleForegroundColor,
+                Content = new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new TransparentContentButton
+                        {
+                            Click = () =>
+                            {
+                                group.Expanded = true;
+                                MarkDirty();
+                            },
+                            Content = new LinearLayout
+                            {
+                                Margin = new Thickness(SubgroupPadding),
+                                Children =
+                                {
+                                    new TextBlock
+                                    {
+                                        Text = group.TimeString
+                                    },
+
+                                    new TextBlock
+                                    {
+                                        Text = group.DaysString
+                                    },
+
+                                    string.IsNullOrWhiteSpace(group.Room) ? null : new TextBlock
+                                    {
+                                        Text = group.Room
+                                    },
+
+                                    group.ScheduleWeek == PowerPlannerSending.Schedule.Week.BothWeeks ? null : new TextBlock
+                                    {
+                                        Text = group.ScheduleWeekString
+                                    }
+                                }
+                            }
+                        }.LinearLayoutWeight(1),
+
+                        new TransparentContentButton
+                        {
+                            Content = new FontIcon
+                            {
+                                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                                FontSize = 24,
+                                Margin = new Thickness(SubgroupPadding)
+                            },
+                            Click = () =>
+                            {
+                                Groups.Remove(group);
+                                MarkDirty();
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         public string ClassName { get; private set; }
@@ -533,6 +918,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 DayOfWeeks = new MyObservableList<DayOfWeek>(),
                 Expanded = true
             });
+
+            MarkDirty();
         }
 
         public void Save()
@@ -568,6 +955,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     groupToExpand.Expanded = true;
                 }
 
+                MarkDirty();
                 return;
             }
 

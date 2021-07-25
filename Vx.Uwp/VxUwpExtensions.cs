@@ -88,6 +88,32 @@ namespace Vx.Uwp
                     return new UwpCheckBox();
                 }
 
+                if (view is Vx.Views.TimePicker)
+                {
+                    if (view is Vx.Views.EndTimePicker)
+                    {
+                        return new UwpEndTimePicker();
+                    }
+
+                    return new UwpTimePicker();
+                }
+
+                if (view is Vx.Views.ComboBox)
+                {
+                    return new UwpComboBox();
+                }
+
+                if (view is Vx.Views.Border)
+                {
+                    return new UwpBorder();
+                }
+
+#if DEBUG
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
+#endif
                 throw new NotImplementedException("Unknown view. UWP hasn't implemented this.");
             };
 
@@ -182,6 +208,29 @@ namespace Vx.Uwp
                 default:
                     return Windows.UI.Xaml.HorizontalAlignment.Stretch;
             }
+        }
+
+        internal static Windows.UI.Xaml.VerticalAlignment ToUwp(this Vx.Views.VerticalAlignment verticalAlignment)
+        {
+            switch (verticalAlignment)
+            {
+                case Vx.Views.VerticalAlignment.Center:
+                    return Windows.UI.Xaml.VerticalAlignment.Center;
+
+                case Vx.Views.VerticalAlignment.Stretch:
+                    return Windows.UI.Xaml.VerticalAlignment.Stretch;
+
+                case Vx.Views.VerticalAlignment.Bottom:
+                    return Windows.UI.Xaml.VerticalAlignment.Bottom;
+
+                default:
+                    return Windows.UI.Xaml.VerticalAlignment.Top;
+            }
+        }
+
+        internal static Windows.UI.Xaml.Thickness ToUwp(this Vx.Views.Thickness thickness)
+        {
+            return new Windows.UI.Xaml.Thickness(thickness.Left, thickness.Top, thickness.Right, thickness.Bottom);
         }
     }
 }

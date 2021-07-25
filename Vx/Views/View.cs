@@ -47,6 +47,8 @@ namespace Vx.Views
 
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
+        public VerticalAlignment VerticalAlignment { get; set; }
+
         protected T GetProperty<T>([CallerMemberName]string propertyName = null)
         {
             if (_properties.TryGetValue(propertyName, out object val) && val is T)

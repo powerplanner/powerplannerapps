@@ -129,14 +129,9 @@
     <Compile Include="BackgroundTasks\RawPushBackgroundTask.cs" />
     <Compile Include="BackgroundTasks\ToastBackgroundTask.cs" />
     <Compile Include="Controls\AbTestControl.cs" />
-    <Compile Include="Controls\TimePickers\EndTimePicker.cs" />
-    <Compile Include="Controls\TimePickers\EnhancedTimePicker.cs" />
     <Compile Include="Controls\ImageAttachmentControl.cs" />
     <Compile Include="Controls\RecurrenceControl.xaml.cs">
       <DependentUpon>RecurrenceControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TimePickers\TextBasedTimePicker.xaml.cs">
-      <DependentUpon>TextBasedTimePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\VirtualizedItemsControl.cs" />
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
@@ -232,9 +227,6 @@
     <Compile Include="Views\AddSemesterView.xaml.cs">
       <DependentUpon>AddSemesterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddClassTimeView.xaml.cs">
-      <DependentUpon>AddClassTimeView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EditClassDetailsView.xaml.cs">
       <DependentUpon>EditClassDetailsView.xaml</DependentUpon>
     </Compile>
@@ -262,12 +254,6 @@
     </Compile>
     <Compile Include="Views\QuickAddView.xaml.cs">
       <DependentUpon>QuickAddView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScheduleViews\AddClassTimeGroupCollapsed.xaml.cs">
-      <DependentUpon>AddClassTimeGroupCollapsed.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScheduleViews\AddClassTimeGroupExpanded.xaml.cs">
-      <DependentUpon>AddClassTimeGroupExpanded.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScheduleViews\HolidayScheduleItemView.xaml.cs">
       <DependentUpon>HolidayScheduleItemView.xaml</DependentUpon>
@@ -604,10 +590,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TimePickers\TextBasedTimePicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AddClassView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -644,10 +626,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddClassTimeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\EditClassDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -681,14 +659,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QuickAddView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleViews\AddClassTimeGroupCollapsed.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleViews\AddClassTimeGroupExpanded.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

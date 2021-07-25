@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace Vx.Uwp.Views
 {
@@ -16,6 +17,7 @@ namespace Vx.Uwp.Views
             base.ApplyProperties(oldView, newView);
 
             View.Orientation = newView.Orientation;
+            View.Background = newView.BackgroundColor.ToUwpBrush();
 
             ReconcileList(oldView?.Children, newView.Children, View.Children);
         }

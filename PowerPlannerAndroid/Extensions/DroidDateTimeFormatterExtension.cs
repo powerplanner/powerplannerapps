@@ -11,7 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using InterfacesDroid.Helpers;
-using PowerPlannerAppDataLibrary.Extensions;
+using Vx.Extensions;
 
 namespace PowerPlannerAndroid.Extensions
 {

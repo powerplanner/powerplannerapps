@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
-namespace PowerPlannerUWP.Controls.TimePickers
+namespace Vx.Uwp.Controls.TimePickers
 {
     public class EndTimePicker : UserControl
     {

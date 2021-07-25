@@ -10,6 +10,7 @@ using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary;
 using InterfacesiOS.Binding;
 using PowerPlannerAppDataLibrary.Extensions;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS.Views
 {

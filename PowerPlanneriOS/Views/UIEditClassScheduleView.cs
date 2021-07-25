@@ -14,6 +14,7 @@ using PowerPlannerAppDataLibrary;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.Extensions;
 using InterfacesiOS.Helpers;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS.Views
 {

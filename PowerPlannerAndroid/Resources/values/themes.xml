@@ -12,8 +12,10 @@
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="materialButtonStyle">@style/ButtonDefault</item>
 
-      <!--Needed for Vx TextButton-->
+      <!--Needed for Vx controls-->
         <item name="materialTextButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+        <item name="materialOutlinedTextBoxStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+        <item name="materialOutlinedDropdownStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
     </style>
 
     <style name="ButtonDefault" parent="Widget.MaterialComponents.Button">

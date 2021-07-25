@@ -11,6 +11,8 @@ namespace Vx.iOS
 {
     public class iOSNativeComponent : UIView, INativeComponent
     {
+        public Action<UIView> AfterViewChanged { get; set; }
+
         public void ChangeView(View view)
         {
             foreach (var subview in base.Subviews)
@@ -27,6 +29,8 @@ namespace Vx.iOS
 
             var modifiedMargin = view.Margin.AsModified();
             uiView.StretchWidthAndHeight(this, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
+
+            AfterViewChanged?.Invoke(uiView);
         }
     }
 }

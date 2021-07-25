@@ -1,5 +1,7 @@
 ﻿using CoreAnimation;
+using CoreGraphics;
 using Foundation;
+using InterfacesiOS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +11,14 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSTextBox : iOSView<Vx.Views.TextBox, UITextFieldWithUnderline>
+    public class iOSTextBox : iOSView<Vx.Views.TextBox, UIRoundedTextFieldWithHeader>
     {
         public iOSTextBox()
         {
-            View.EditingChanged += View_EditingDidEnd;
-            View.EditingDidEnd += View_EditingDidEnd;
-            View.EditingDidEndOnExit += View_EditingDidEnd;
-            View.TextColor = Theme.Current.ForegroundColor.ToUI();
-            View.SetHeight(34);
-
+            View.TextChanged += View_TextChanged;
         }
 
-        private void View_EditingDidEnd(object sender, EventArgs e)
+        private void View_TextChanged(object sender, string e)
         {
             if (VxView.Text != null)
             {
@@ -37,56 +34,133 @@ namespace Vx.iOS.Views
             {
                 View.Text = newView.Text.Value;
             }
+
+            View.Header = newView.Header;
+            View.Placeholder = newView.PlaceholderText;
         }
     }
 
-    public class UITextFieldWithUnderline : UITextField
+    public class UIRoundedTextField : UITextField
     {
-        private CALayer _bottomLine;
-
-        public UITextFieldWithUnderline()
+        public UIRoundedTextField()
         {
-            _bottomLine = new CALayer();
-            _bottomLine.BackgroundColor = Theme.Current.SubtleForegroundColor.ToUI().CGColor;
-            BorderStyle = UITextBorderStyle.None;
-            Layer.AddSublayer(_bottomLine);
+            BackgroundColor = UIColorCompat.TertiarySystemFillColor;
+            ClipsToBounds = true;
+            Layer.CornerRadius = 10;
 
-            base.EditingDidBegin += UITextFieldWithUnderline_FocusChanged;
-            base.EditingDidEnd += UITextFieldWithUnderline_FocusChanged;
-            base.EditingDidEndOnExit += UITextFieldWithUnderline_FocusChanged;
+            EditingDidBegin += UIRoundedTextField_EditingDidBegin;
+            EditingDidEnd += UIRoundedTextField_EditingDidEnd;
+            EditingDidEndOnExit += UIRoundedTextField_EditingDidEndOnExit;
         }
 
-        private void UITextFieldWithUnderline_FocusChanged(object sender, EventArgs e)
+        private void UIRoundedTextField_EditingDidEndOnExit(object sender, EventArgs e)
         {
-            if (base.IsEditing)
+            UpdateFocus(false);
+        }
+
+        private void UIRoundedTextField_EditingDidEnd(object sender, EventArgs e)
+        {
+            UpdateFocus(false);
+        }
+
+        private void UIRoundedTextField_EditingDidBegin(object sender, EventArgs e)
+        {
+            UpdateFocus(true);
+        }
+
+        public override CGRect TextRect(CGRect forBounds)
+        {
+            return base.TextRect(forBounds).Inset(10, 0);
+        }
+
+        public override CGRect EditingRect(CGRect forBounds)
+        {
+            return base.EditingRect(forBounds).Inset(10, 0);
+        }
+
+        private void UpdateFocus(bool focused)
+        {
+            if (focused)
             {
-                _bottomLine.BackgroundColor = Theme.Current.AccentColor.ToUI().CGColor;
+                Layer.BorderColor = Theme.Current.AccentColor.ToUI().CGColor;
+                Layer.BorderWidth = 2;
             }
             else
             {
-                _bottomLine.BackgroundColor = Theme.Current.SubtleForegroundColor.ToUI().CGColor;
+                Layer.BorderWidth = 0;
+            }
+        }
+    }
+
+    public class UIRoundedTextFieldWithHeader : UIView
+    {
+        public event EventHandler<string> TextChanged;
+
+        private UILabel _header;
+        private UIRoundedTextField _textField;
+
+        public UIRoundedTextFieldWithHeader()
+        {
+            _header = new UILabel
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+
+            _textField = new UIRoundedTextField
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+            _textField.EditingChanged += TextUpdated;
+            _textField.EditingDidEnd += TextUpdated;
+            _textField.EditingDidEndOnExit += TextUpdated;
+
+            Add(_header);
+            Add(_textField);
+
+            _header.StretchWidth(this);
+            _textField.StretchWidth(this);
+
+            this.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[textField(36)]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                "header", _header,
+                "textField", _textField));
+        }
+
+        private void TextUpdated(object sender, EventArgs e)
+        {
+            if (_text != _textField.Text)
+            {
+                _text = _textField.Text;
+                TextChanged?.Invoke(this, _textField.Text);
             }
         }
 
-        public override void LayoutSubviews()
+        public string Header
         {
-            base.LayoutSubviews();
-
-            _bottomLine.Frame = new CoreGraphics.CGRect(0, Frame.Height - 1, Frame.Width, 1);
+            get => _header.Text;
+            set => _header.Text = value;
         }
 
-        public override void DidUpdateFocus(UIFocusUpdateContext context, UIFocusAnimationCoordinator coordinator)
+        public string Placeholder
         {
-            base.DidUpdateFocus(context, coordinator);
+            get => _textField.Placeholder;
+            set => _textField.Placeholder = value;
+        }
 
-            if (Focused)
+        private string _text;
+        public string Text
+        {
+            get => _text;
+            set
             {
-                _bottomLine.BackgroundColor = Theme.Current.AccentColor.ToUI().CGColor;
+                _text = value;
+                _textField.Text = value;
             }
-            else
-            {
-                _bottomLine.BackgroundColor = Theme.Current.SubtleForegroundColor.ToUI().CGColor;
-            }
+        }
+
+        public UIKeyboardType KeyboardType
+        {
+            get => _textField.KeyboardType;
+            set => _textField.KeyboardType = value;
         }
     }
 }

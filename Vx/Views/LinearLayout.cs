@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -10,6 +11,8 @@ namespace Vx.Views
         public Orientation Orientation { get; set; }
 
         public List<View> Children { get; } = new List<View>();
+
+        public Color BackgroundColor { get; set; }
 
         public float TotalWeight()
         {

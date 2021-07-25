@@ -78,6 +78,9 @@ namespace Vx
             try
             {
 #endif
+                // Exclude rendering null items
+                newList = newList.Where(v => v != null).ToList();
+
                 if (oldList == null || oldList.Count == 0)
                 {
                     for (int newI = 0; newI < newList.Count; newI++)
@@ -95,7 +98,7 @@ namespace Vx
                 }
 
                 // Need to copy old list since I'll be modifying it
-                oldList = new List<View>(oldList);
+                oldList = oldList.Where(v => v != null).ToList();
 
                 int i = 0;
 

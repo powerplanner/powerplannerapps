@@ -24,6 +24,7 @@ using PowerPlannerAndroid.Extensions;
 using ToolsPortable;
 using PowerPlannerAndroid.ViewModel.Settings;
 using BareMvvm.Core.ViewModels;
+using Vx.Extensions;
 
 namespace PowerPlannerAndroid.App
 {

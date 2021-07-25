@@ -233,12 +233,12 @@ namespace PowerPlannerAndroid.Views
 
         private void View_OnEditClassTimesRequested(object sender, ViewItemSchedule[] e)
         {
-            ViewModel.EditTimes(e);
+            ViewModel.EditTimes(e, useNewStyle: true);
         }
 
         private void View_OnAddClassTimeRequested(object sender, ViewItemClass e)
         {
-            ViewModel.AddTime(e);
+            ViewModel.AddTime(e, useNewStyle: true);
         }
 
         private void ViewModel_OnChangesOccurred(object sender, PowerPlannerAppDataLibrary.DataLayer.DataChangedEvent e)

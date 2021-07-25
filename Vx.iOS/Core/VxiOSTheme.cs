@@ -15,6 +15,10 @@ namespace Vx.iOS
         public override Color ForegroundColor => UIColorCompat.LabelColor.ToVx();
 
         public override Color SubtleForegroundColor => UIColorCompat.SecondaryLabelColor.ToVx();
+
+        public override Color PopupPageBackgroundColor => UIColorCompat.SystemBackgroundColor.ToVx();
+
+        public override Color PopupPageBackgroundAltColor => UIColorCompat.SystemGroupedBackgroundColor.ToVx();
     }
 
     internal static class iOSThemeExtensions

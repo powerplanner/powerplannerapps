@@ -1975,7 +1975,7 @@ Please think about using an online account instead!</value>
     <value>Remove this schedule</value>
   </data>
   <data name="AddClassTime_AddAnotherTime.Content" xml:space="preserve">
-    <value>add another time</value>
+    <value>Add another time</value>
   </data>
   <data name="Settings_DefaultGradeOptions_AverageGrades" xml:space="preserve">
     <value>Default average grades</value>
