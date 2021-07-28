@@ -1,0 +1,77 @@
+﻿<views:PopupViewHostGeneric
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    x:Class="PowerPlannerUWP.Views.AddSemesterView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <views:PopupViewHostGeneric.PrimaryCommands>
+
+        <AppBarButton
+            x:Uid="AppBarButtonSave"
+            x:Name="ButtonSave"
+            Icon="Save"
+            Label="Save"
+            Click="ButtonSave_Click"/>
+
+        <AppBarButton
+            x:Uid="AppBarButtonDelete"
+            x:Name="ButtonDelete"
+            Icon="Delete"
+            Label="Delete"
+            Click="ButtonDelete_Click"/>
+
+    </views:PopupViewHostGeneric.PrimaryCommands>
+
+    <views:PopupViewHostGeneric.MainContent>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="9,6">
+                <TextBox
+                    x:Uid="EditSemesterPage_TextBoxName"
+                    x:Name="tbName"
+                    Grid.Row="1"
+                    Header="Name"
+                    Loaded="tbName_Loaded"
+                        InputScope="PersonalFullName"
+                    IsSpellCheckEnabled="True"
+                    IsTextPredictionEnabled="True"
+                        KeyUp="tbName_KeyUp"
+                    PlaceholderText="ex: Fall"
+                    Margin="0,0,0,6"
+                    Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Grid Margin="0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <CalendarDatePicker
+                        x:Uid="EditSemesterPage_DatePickerStart"
+                        x:Name="DatePickerStart"
+                        Header="Start date"
+                        HorizontalAlignment="Stretch"
+                        Margin="0,0,6,0"
+                        DateChanged="DatePickerStart_DateChanged"/>
+
+                    <CalendarDatePicker
+                        x:Uid="EditSemesterPage_DatePickerEnd"
+                        x:Name="DatePickerEnd"
+                        Header="End date"
+                        Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        Margin="6,0,0,0"
+                        DateChanged="DatePickerEnd_DateChanged"/>
+
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </views:PopupViewHostGeneric.MainContent>
+</views:PopupViewHostGeneric>

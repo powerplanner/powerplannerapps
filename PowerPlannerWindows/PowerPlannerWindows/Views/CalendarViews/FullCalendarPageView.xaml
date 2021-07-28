@@ -1,0 +1,66 @@
+﻿<UserControl
+    x:Class="PowerPlannerUWP.Views.CalendarViews.FullCalendarPageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views.CalendarViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+
+        <Grid.Transitions>
+            <TransitionCollection>
+                <EntranceThemeTransition />
+            </TransitionCollection>
+        </Grid.Transitions>
+        
+        <Border
+            x:Name="calendarContainer"/>
+
+        <StackPanel
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,16,60,0">
+
+            <AppBarButton
+                x:Uid="Calendar_FullCalendarAddButton"
+                x:Name="buttonAdd"
+                Icon="Add"
+                IsCompact="True"
+                Click="buttonAdd_Click"
+                ToolTipService.ToolTip="Add"/>
+
+            <AppBarButton
+                x:Uid="Calendar_FullCalendarFilterButton"
+                x:Name="buttonFilter"
+                Icon="Filter"
+                IsCompact="True"
+                Click="buttonFilter_Click"
+                ToolTipService.ToolTip="Filter">
+                <FlyoutBase.AttachedFlyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Uid="ShowPastCompleteItems" Text="Show past complete items" IsChecked="{Binding ShowPastCompleteItemsOnFullCalendar, Mode=TwoWay}"/>
+                    </MenuFlyout>
+                </FlyoutBase.AttachedFlyout>
+                <!--<AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem Text="Show past complete items" IsChecked="{Binding ShowPastCompletedItemsOnFullCalendar, Mode=TwoWay}"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>-->
+            </AppBarButton>
+
+            <AppBarButton
+                x:Uid="Calendar_FullCalendarGoToTodayButton"
+                x:Name="buttonToday"
+                Icon="GoToToday"
+                IsCompact="True"
+                Click="buttonToday_Click"
+                ToolTipService.ToolTip="Go To Today"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

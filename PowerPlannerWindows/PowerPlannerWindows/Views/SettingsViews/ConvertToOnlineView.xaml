@@ -1,0 +1,84 @@
+﻿<views:PopupViewHostGeneric
+    x:Uid="Settings_ConvertToOnlinePage"
+    x:Name="ThisPage"
+    xmlns:views="using:PowerPlannerUWP.Views"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.ConvertToOnlineView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="CONVERT TO ONLINE">
+
+    <views:PopupViewHostGeneric.MainContent>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12">
+
+                <TextBox
+                    x:Uid="Settings_ConvertToOnlinePage_TextBoxEmail"
+                x:Name="textBoxEmail"
+                Header="Email"
+                KeyUp="textBoxEmail_KeyUp"
+                PlaceholderText="Provide your email"
+                    Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock
+                x:Name="textBlockError"
+                Foreground="Red"
+                FontWeight="SemiBold"
+                FontSize="13"
+                FontStyle="Italic"
+                Margin="0,4,0,0"
+                TextWrapping="Wrap"
+                    Text="{Binding Error}"
+                    Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                <Button
+                    x:Uid="Settings_ConvertToOnlinePage_ButtonConvert"
+                Content="Convert to online account"
+                x:Name="buttonConvertToOnline"
+                Margin="0,12,0,0"
+                Click="buttonConvertToOnline_Click"/>
+
+
+                <StackPanel x:Name="spConfirmMergeExisting" Margin="0,12,0,0" Visibility="{Binding ShowConfirmMergeExisting, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock
+                        x:Uid="Settings_ConvertToOnline_TextBlockConfirmMergeExisting"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Foreground="Red"
+                    FontWeight="SemiBold"
+                    Text="You are logging into an existing account. This will likely cause duplicate items to be uploaded, since everything currently on this device will be uploaded as new items."/>
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button
+                            x:Uid="Settings_ConfirmIdentityPage_ButtonContinue"
+                        x:Name="buttonMergeExisting"
+                        Content="Continue"
+                        HorizontalAlignment="Stretch"
+                        Background="Red"
+                        Foreground="White"
+                        Click="buttonMergeExisting_Click"/>
+
+                        <Button
+                            x:Uid="Buttons_Cancel"
+                        x:Name="buttonCancelMergeExisting"
+                        Content="Cancel"
+                        HorizontalAlignment="Stretch"
+                        Grid.Column="1"
+                        Click="buttonCancelMergeExisting_Click"/>
+
+                    </Grid>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </views:PopupViewHostGeneric.MainContent>
+    
+</views:PopupViewHostGeneric>

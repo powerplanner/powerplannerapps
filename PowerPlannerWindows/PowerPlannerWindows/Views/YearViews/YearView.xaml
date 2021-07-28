@@ -1,0 +1,116 @@
+﻿<UserControl
+    x:Class="PowerPlannerUWP.Views.YearViews.YearView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views.YearViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    xmlns:menubuttons="using:PowerPlannerUWP.MenuButtons"
+    xmlns:semesters="using:PowerPlannerUWP.Views.SemesterViews">
+
+    <UserControl.Resources>
+
+        <Style x:Key="YearTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
+            <Setter Property="Margin" Value="12,4"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+        </Style>
+
+        <Style x:Key="YearGpaStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
+            <Setter Property="Foreground" Value="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
+            <Setter Property="Margin" Value="12,4"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="container">
+
+        <!--<Border Style="{ThemeResource ItemContainer}">-->
+        <Border Style="{ThemeResource ItemContainer}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                x:Name="normalYearContent">
+
+            <Grid Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button
+                    x:Name="ButtonTitleAndGPA"
+                    Style="{ThemeResource TransparentButtonStyle}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Padding="0,0,0,6"
+                    Click="ButtonTitleAndGPA_Click">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Text="{Binding Name, FallbackValue=[Year]}"
+                            Style="{StaticResource YearTitleStyle}"/>
+
+                        <TextBlock
+                            Text="{Binding GPA, FallbackValue=[GPA], Converter={StaticResource GpaToStringConverter}}"
+                            Grid.Column="1"
+                            Style="{StaticResource YearGpaStyle}"/>
+
+                    </Grid>
+                </Button>
+
+                <ScrollViewer
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    VerticalScrollBarVisibility="Auto">
+
+                    <ItemsControl
+                        Margin="0,6,0,0"
+                        ItemsSource="{Binding Semesters}"
+                        Style="{StaticResource ItemsControlWithAnimationsStyle}">
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <semesters:SemesterView
+                                    Margin="8,4"
+                                    OnRequestEditSemester="SemesterView_OnRequestEditSemester"
+                                    OnRequestOpenSemester="SemesterView_OnRequestOpenSemester"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+                </ScrollViewer>
+
+
+                <!--Footer button-->
+                <Grid
+                    Margin="8,4,8,8"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2">
+
+
+                    <Button
+                        x:Uid="YearView_ButtonAddSemester"
+                                    Style="{StaticResource AddItemStyle}"
+                                    Content="add semester"
+                                    HorizontalAlignment="Stretch"
+                                    x:Name="buttonAddSemester"
+                                    Click="buttonAddSemester_Click"
+                                    Visibility="Visible"/>
+                </Grid>
+            </Grid>
+
+
+            <!--</Border>-->
+        </Border>
+    </Grid>
+</UserControl>

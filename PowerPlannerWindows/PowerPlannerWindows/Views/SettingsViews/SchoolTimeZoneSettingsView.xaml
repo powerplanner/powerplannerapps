@@ -1,0 +1,80 @@
+﻿<interfacesViews:ViewHostGeneric
+    x:Name="ThisView"
+    xmlns:interfacesViews="using:InterfacesUWP.Views"
+    x:Class="PowerPlannerUWP.Views.SettingsViews.SchoolTimeZoneSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:local="using:PowerPlannerUWP.Views.SettingsViews"
+    xmlns:interfaces="using:InterfacesUWP">
+
+    <interfacesViews:ViewHostGeneric.Resources>
+        <local:TimeZoneToStringConverter x:Key="TimeZoneToStringConverter"/>
+    </interfacesViews:ViewHostGeneric.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.Transitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.Transitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel Margin="20">
+                <TextBlock
+                    x:Uid="Settings_SchoolTimeZone_Header"
+                    Text="SCHOOL TIME ZONE"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Margin="0,0,0,12"
+                    TextTrimming="CharacterEllipsis"/>
+
+                <TextBlock
+                    x:Uid="Settings_SchoolTimeZone_Description"
+                    Text="If you're traveling and need to see times relative to your current time zone, you can specify your school's time zone. You should set the below time zone to the time zone of where you attend school, regardless of what your current time zone is."
+                    Style="{ThemeResource BodyTextBlockStyle}"/>
+
+                <ComboBox
+                    x:Uid="Settings_SchoolTimeZone_ComboBoxTimeZone"
+                    x:Name="ComboBoxTimeZone"
+                    HorizontalAlignment="Stretch"
+                    Header="School's time zone"
+                    Margin="0,20,0,0"
+                    ItemsSource="{Binding AvailableTimeZones}"
+                    SelectedItem="{Binding SelectedSchoolTimeZone, Mode=TwoWay}"
+                    IsEnabled="{Binding IsEnabled}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding Converter={StaticResource TimeZoneToStringConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Button
+                    x:Uid="Settings_SchoolTimeZone_ButtonSave"
+                    x:Name="ButtonSave"
+                    Style="{StaticResource SubitemButtonStyle}"
+                    Content="Save changes"
+                    IsEnabled="{Binding IsEnabled}"
+                    Click="ButtonSave_Click"
+                    Margin="0,20,0,0"/>
+
+                <TextBlock
+                    x:Uid="Settings_SchoolTimeZone_RestartNote"
+                    Text="Saving changes will restart Power Planner so that the changes can be applied."
+                    TextWrapping="Wrap"
+                    Margin="0,6,0,0"
+                    Style="{ThemeResource CaptionTextBlockStyle}"/>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</interfacesViews:ViewHostGeneric>

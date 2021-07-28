@@ -1,0 +1,182 @@
+﻿<UserControl
+    x:Name="thisControl"
+    x:Class="PowerPlannerUWP.Views.SideBarViews.SideBarMenuItemsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views.SideBarViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    xmlns:templateSelectors="using:PowerPlannerUWP.TemplateSelectors"
+    xmlns:interfaces="using:InterfacesUWP"
+    xmlns:localConverters="using:PowerPlannerUWP.Converters">
+
+    <UserControl.Resources>
+
+        <localConverters:MainMenuItemToStringConverter x:Key="MainMenuItemToStringConverter"/>
+
+        <Style x:Key="SideBarOptionStyle" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <!--<Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>-->
+        </Style>
+
+        <Style x:Key="SideBarItemContainerStyle" TargetType="ListViewItem">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="TabNavigation" Value="Local"/>
+            <Setter Property="IsHoldingEnabled" Value="True"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ListViewItemPresenter ContentMargin="0" ContentTransitions="{TemplateBinding ContentTransitions}" DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="0" PointerOverBackgroundMargin="0" PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}" ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" SelectionCheckMarkVisualEnabled="False" SelectedForeground="White" SelectedPointerOverBackground="#4B60B3" SelectedBorderThickness="0" SelectedBackground="{StaticResource PowerPlannerBlueSelected}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <Style x:Key="SideBarSubItemContainerStyle" TargetType="ListViewItem">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="TabNavigation" Value="Local"/>
+            <Setter Property="IsHoldingEnabled" Value="True"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ListViewItemPresenter ContentMargin="0" ContentTransitions="{TemplateBinding ContentTransitions}" DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="0" PointerOverBackgroundMargin="0" PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}" ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" SelectionCheckMarkVisualEnabled="False" SelectedForeground="White" SelectedPointerOverBackground="#328FD1" SelectedBorderThickness="0" SelectedBackground="#41A7F0" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="SideBarNormalItemTemplate">
+            <Border Height="48">
+                <TextBlock
+                    Text="{Binding Converter={StaticResource MainMenuItemToStringConverter}}"
+                    Style="{StaticResource SideBarOptionTextStyle}"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SideBarClassesItemTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="48"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Text="{Binding Converter={StaticResource MainMenuItemToStringConverter}}"
+                        Style="{StaticResource SideBarOptionTextStyle}"/>
+                    <Button
+                        Click="ListViewClasses_AddButton_Click"
+                        Loaded="ListViewClasses_AddButton_Loaded"
+                        Style="{StaticResource TransparentButtonStyle}"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Grid.Column="1"
+                        Visibility="Collapsed">
+                        <TextBlock
+                            Text="+"
+                            FontSize="36"
+                            Foreground="White"
+                            FontWeight="SemiLight"
+                            Margin="0,-12,0,-6"
+                            VerticalAlignment="Center"/>
+                    </Button>
+                </Grid>
+
+                <ListView
+                    Loaded="ListViewClasses_Loaded"
+                    ItemContainerStyle="{StaticResource SideBarSubItemContainerStyle}"
+                    ScrollViewer.HorizontalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    Grid.Row="1"
+                    Visibility="Collapsed"
+                    SelectionChanged="ListView_SelectionChanged"
+                    ItemClick="ListViewClasses_ItemClick"
+                    IsItemClickEnabled="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid Margin="36,0,0,0" Height="48">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Rectangle
+                                    Width="14"
+                                    Height="14"
+                                    Stroke="{StaticResource PowerPlannerBlue}"
+                                    StrokeThickness="1"
+                                    Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"
+                                    VerticalAlignment="Center"/>
+
+                                <TextBlock
+                                    Text="{Binding Name}"
+                                    Style="{StaticResource SideBarSubOptionTextStyle}"
+                                    Margin="12,0,0,2"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <!--<ListView.Footer>
+                        <TextBlock
+                            Text="+ add class"
+                            Style="{StaticResource SideBarSubOptionTextStyle}"/>
+                    </ListView.Footer>-->
+
+                </ListView>
+            </Grid>
+        </DataTemplate>
+
+
+
+        <templateSelectors:SideBarTemplateSelector x:Key="SideBarTemplateSelector" NormalTemplate="{StaticResource SideBarNormalItemTemplate}" ClassesTemplate="{StaticResource SideBarClassesItemTemplate}">
+
+        </templateSelectors:SideBarTemplateSelector>
+
+    </UserControl.Resources>
+
+    <Grid Background="{ThemeResource PowerPlannerBlue}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ListView
+            x:Name="listViewMain"
+            ItemContainerStyle="{StaticResource SideBarItemContainerStyle}"
+            ItemTemplateSelector="{StaticResource SideBarTemplateSelector}"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ItemsSource="{Binding MenuItemsModel.AvailableItems, ElementName=thisControl}"
+            SelectedItem="{Binding ElementName=thisControl, Path=MenuItemsModel.SelectedItem, Mode=TwoWay}"
+            ItemClick="listViewMain_ItemClick"
+            IsItemClickEnabled="True">
+
+            <!--SelectionChanged="listViewMain_SelectionChanged"-->
+
+        </ListView>
+
+    </Grid>
+</UserControl>

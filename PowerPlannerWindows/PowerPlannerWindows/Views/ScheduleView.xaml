@@ -1,0 +1,529 @@
+﻿<local:MainScreenContentViewHostGeneric
+    x:Name="thisPage"
+    xmlns:pages="using:PowerPlannerUWP.Pages"
+    x:Class="PowerPlannerUWP.Views.ScheduleView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerPlannerUWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:interfaces="using:InterfacesUWP"
+    xmlns:scheduleViews="using:PowerPlannerUWP.Views.ScheduleViews"
+    SizeChanged="thisPage_SizeChanged"
+    xmlns:calendarViews="using:PowerPlannerUWP.Views.CalendarViews"
+    xmlns:dataTemplateSelectors="using:PowerPlannerUWP.DataTemplateSelectors">
+
+    <local:MainScreenContentViewHostGeneric.Transitions>
+        <TransitionCollection>
+            <EntranceThemeTransition />
+        </TransitionCollection>
+    </local:MainScreenContentViewHostGeneric.Transitions>
+
+    <UserControl.Resources>
+
+        <dataTemplateSelectors:ScheduleAllDayItemTemplateSelector
+            x:Key="AllDayItemTemplateSelector"
+            HolidayTemplate="{StaticResource DataTemplateHolidayScheduleItem}"
+            ItemTemplate="{StaticResource MainCalendarItemTemplate}" />
+
+        <GridLength x:Key="ColumnGridLength">220</GridLength>
+        
+        <Style x:Key="DayHeaderStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="12,3,12,12"/>
+            <Setter Property="FontWeight" Value="SemiLight"/>
+            <Setter Property="FontSize" Value="17"/>
+        </Style>
+        <Style x:Key="TimeStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="12,0,12,0"/>
+            <Setter Property="FontWeight" Value="SemiLight"/>
+            <Setter Property="FontSize" Value="17"/>
+        </Style>
+        <Style x:Key="ScheduleItemTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="12,0,12,0"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        <Style x:Key="ClassNameStyle" TargetType="TextBlock" BasedOn="{StaticResource ScheduleItemTextStyle}">
+
+        </Style>
+        <Style x:Key="ClassTimeStyle" TargetType="TextBlock" BasedOn="{StaticResource ScheduleItemTextStyle}">
+
+        </Style>
+        <Style x:Key="ClassRoomStyle" TargetType="TextBlock" BasedOn="{StaticResource ScheduleItemTextStyle}">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="WeekStyle" TargetType="TextBlock" BasedOn="{StaticResource SubheaderTextBlockStyle}">
+            <Setter Property="Margin" Value="12,4,12,12"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
+        </Style>
+
+        <Style x:Key="SelectedWeekStyle" TargetType="TextBlock" BasedOn="{StaticResource WeekStyle}">
+            <Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </UserControl.Resources>
+
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="RowNormal" Height="*"/>
+            <RowDefinition x:Name="RowEditing" Height="0"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+
+            <Grid x:Name="GridSchedule">
+
+                <ScrollViewer x:Name="ScrollViewerSchedule" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" Grid.Row="0" ViewChanging="ScrollViewerSchedule_ViewChanging" Tapped="ScrollViewerSchedule_Tapped">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="AllDayItemsGrid" SizeChanged="AllDayItemsGrid_SizeChanged" Visibility="{Binding HasAllDayItems, Converter={StaticResource BoolToVisibilityConverter}}" MaxHeight="120">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding Width, ElementName=SchedulesGridTimesColumn}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="1"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"
+                                Grid.Column="2"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="3"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"
+                                Grid.Column="4"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="5"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"
+                                Grid.Column="6"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="7"/>
+
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Column="1">
+                                <ItemsControl
+                                    x:Name="AllDayItemsSunday"
+                                    Margin="1,55,1,0"
+                                    ItemTemplateSelector="{StaticResource AllDayItemTemplateSelector}"/>
+                            </ScrollViewer>
+
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Column="2">
+                                <ItemsControl
+                                    x:Name="AllDayItemsMonday"
+                                    Margin="1,55,1,0"
+                                    ItemTemplateSelector="{StaticResource AllDayItemTemplateSelector}"/>
+                            </ScrollViewer>
+
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Column="3">
+                                <ItemsControl
+                                    x:Name="AllDayItemsTuesday"
+                                    Margin="1,55,1,0"
+                                    ItemTemplateSelector="{StaticResource AllDayItemTemplateSelector}"/>
+                            </ScrollViewer>
+
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Column="4">
+                                <ItemsControl
+                                    x:Name="AllDayItemsWednesday"
+                                    Margin="1,55,1,0"
+                                    ItemTemplateSelector="{StaticResource AllDayItemTemplateSelector}"/>
+                            </ScrollViewer>
+
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Column="5">
+                                <ItemsControl
+                                    x:Name="AllDayItemsThursday"
+                                    Margin="1,55,1,0"
+                                    ItemTemplateSelector="{StaticResource AllDayItemTemplateSelector}"/>
+                            </ScrollViewer>
+
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Column="6">
+                                <ItemsControl
+                                    x:Name="AllDayItemsFriday"
+                                    Margin="1,55,1,0"
+                                    ItemTemplateSelector="{StaticResource AllDayItemTemplateSelector}"/>
+                            </ScrollViewer>
+
+                            <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Column="7">
+                                <ItemsControl
+                                    x:Name="AllDayItemsSaturday"
+                                    Margin="1,55,1,0"
+                                    ItemTemplateSelector="{StaticResource AllDayItemTemplateSelector}"/>
+                            </ScrollViewer>
+
+                            <Rectangle Fill="Gray" Height="3" Grid.Row="1" Grid.ColumnSpan="30" Margin="0, -2, 0, 0" Opacity="0.5"/>
+
+                        </Grid>
+                        <Grid x:Name="grid" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="SchedulesGridTimesColumn" Width="Auto"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                                <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="1"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"
+                                Grid.Column="2"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="3"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"
+                                Grid.Column="4"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="5"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource ItemBackground}"
+                                Grid.Column="6"/>
+
+                            <Rectangle
+                                Fill="{ThemeResource SubitemBackground}"
+                                Grid.Column="7"/>
+
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
+
+
+                <Canvas IsHitTestVisible="False">
+                    <Canvas.Clip>
+                        <RectangleGeometry Rect="0,0,5000,5000"/>
+                    </Canvas.Clip>
+
+                    <Grid
+                        x:Name="GridTimes"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        SizeChanged="GridTimes_SizeChanged">
+
+                        <Grid.RenderTransform>
+                            <CompositeTransform x:Name="TransformStackPanelTimes" />
+                        </Grid.RenderTransform>
+
+                        <Rectangle
+                            x:Name="RectangleGridTimes"
+                            Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                            Opacity="0.6"/>
+
+                    </Grid>
+
+
+                </Canvas>
+
+                <Canvas>
+                    <Canvas.Clip>
+                        <RectangleGeometry
+                            Rect="0,0,5000,5000"/>
+                    </Canvas.Clip>
+                    <Grid x:Name="GridDaysHeader" IsHitTestVisible="False" VerticalAlignment="Top" HorizontalAlignment="Left" SizeChanged="GridDaysHeader_SizeChanged">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="GridDaysHeaderTimesColumn" Width="Auto"/>
+                            <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                            <ColumnDefinition Width="{StaticResource ColumnGridLength}"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RenderTransform>
+                            <CompositeTransform x:Name="TransformGridDaysHeader" />
+                        </Grid.RenderTransform>
+
+                        <Rectangle
+                            Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                            Opacity="0.6"
+                            Grid.ColumnSpan="7"
+                            Grid.Column="1"/>
+
+
+                        <TextBlock
+                            Text="Sunday"
+                            Style="{StaticResource DayHeaderStyle}"
+                            Grid.Column="1"/>
+
+                        <TextBlock
+                            Text="Monday"
+                            Style="{StaticResource DayHeaderStyle}"
+                            Grid.Column="2"/>
+
+                        <TextBlock
+                            Text="Tuesday"
+                            Style="{StaticResource DayHeaderStyle}"
+                            Grid.Column="3"/>
+
+                        <TextBlock
+                            Text="Wednesday"
+                            Style="{StaticResource DayHeaderStyle}"
+                            Grid.Column="4"/>
+
+                        <TextBlock
+                            Text="Thursday"
+                            Style="{StaticResource DayHeaderStyle}"
+                            Grid.Column="5"/>
+
+                        <TextBlock
+                            Text="Friday"
+                            Style="{StaticResource DayHeaderStyle}"
+                            Grid.Column="6"/>
+
+                        <TextBlock
+                            Text="Saturday"
+                            Style="{StaticResource DayHeaderStyle}"
+                            Grid.Column="7"/>
+
+                    </Grid>
+                </Canvas>
+
+
+            </Grid>
+        </Grid>
+
+
+
+        <Grid
+            x:Name="EditingRoot"
+            x:DeferLoadStrategy="Lazy"
+            Visibility="Collapsed"
+            Grid.Row="1"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border
+                x:Name="EditingSliderBar"
+                Background="{StaticResource PowerPlannerDarkerBlue}"
+                Height="15">
+                <!--<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Opacity="0.6">
+                    <Rectangle
+                        Fill="White"
+                        Height="1"
+                        Margin="0,0,0,2"/>
+                    <Rectangle
+                        Fill="White"
+                        Height="1"
+                        Margin="0,2,0,0"/>
+                </StackPanel>-->
+            </Border>
+
+            <ScrollViewer
+                VerticalScrollBarVisibility="Auto"
+                Grid.Row="1">
+
+                <Grid Margin="10,10,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ItemsControl
+                        ItemsSource="{Binding SemesterViewItemsGroup.Classes}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <interfaces:MyAdaptiveGridPanel Margin="10,10,0,0" MinColumnWidth="280" VerticalAlignment="Top">
+                                    <interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
+                                        <TransitionCollection>
+                                            <AddDeleteThemeTransition />
+                                        </TransitionCollection>
+                                    </interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
+                                </interfaces:MyAdaptiveGridPanel>
+
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <scheduleViews:EditingAllSchedulesSingleClassControl
+                                    Margin="0,0,20,20"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    HighlightRequested="EditingAllSchedulesSingleClassControl_HighlightRequested"
+                                    UnhighlightRequested="EditingAllSchedulesSingleClassControl_UnhighlightRequested"
+                                    OnRequestAddTime="EditingAllSchedulesSingleClassControl_OnRequestAddTime"
+                                    OnRequestEditClass="EditingAllSchedulesSingleClassControl_OnRequestEditClass"
+                                    OnRequestEditGroup="EditingAllSchedulesSingleClassControl_OnRequestEditGroup"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Button
+                        x:Uid="SchedulePage_ButtonAddClass"
+                        Grid.Row="1"
+                        x:Name="ButtonAddClass"
+                        Style="{StaticResource AddItemStyle}"
+                        Content="add class"
+                        Click="ButtonAddClass_Click"
+                        Margin="10,0,20,10"
+                        HorizontalAlignment="Stretch"/>
+
+                </Grid>
+            
+            </ScrollViewer>
+        </Grid>
+
+
+        <Grid
+            x:Name="WelcomeRoot"
+            x:DeferLoadStrategy="Lazy"
+            Visibility="Collapsed"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+            Padding="24">
+
+            <StackPanel
+                HorizontalAlignment="Right"
+                Grid.Row="0"
+                Orientation="Vertical"
+                Visibility="{Binding IsReturningUserVisible, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock
+                    x:Uid="SchedulePage_TextBlockReturningUser"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    TextAlignment="Right"/>
+
+                <Button
+                    x:Uid="WelcomePage_ButtonLogin"
+                    x:Name="ButtonLogIn"
+                    Style="{StaticResource WelcomeButtonStyle}"
+                    Margin="0,6,0,0"
+                    HorizontalAlignment="Right"
+                    Click="ButtonLogIn_Click"
+                    MinWidth="120"/>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Center">
+
+                <TextBlock
+                    x:Uid="SchedulePage_TextBlockWelcomeTitle"
+                    Text="Welcome to Power Planner!"
+                    TextWrapping="Wrap"
+                    TextAlignment="Center"
+                    Style="{ThemeResource TitleTextBlockStyle}"/>
+
+                <TextBlock
+                    x:Uid="SchedulePage_TextBlockWelcomeSubtitle"
+                    Text="To get started, add your classes and schedule!"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    TextAlignment="Center"
+                    Margin="0,6,0,0"
+                    Opacity="0.6"/>
+
+                <!--This button will be localized via code-->
+                <Button
+                    x:Name="ButtonWelcomeAddClass"
+                    Style="{StaticResource WelcomeButtonStyle}"
+                    Content="ADD CLASS"
+                    Margin="0,18,0,0"
+                    MaxWidth="300"
+                    Click="ButtonAddClass_Click"/>
+
+            </StackPanel>
+            
+        </Grid>
+
+
+        <Border x:Name="BorderRenderedImage" Opacity="0"/>
+
+
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="EditingGroup">
+
+                <VisualState x:Name="DefaultState"/>
+                
+                <VisualState x:Name="EditingState">
+                    <VisualState.Setters>
+                        <Setter Target="RowEditing.Height" Value="*"/>
+                        <Setter Target="EditingRoot.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="FullEditingState">
+                    <VisualState.Setters>
+                        <Setter Target="RowEditing.Height" Value="*"/>
+                        <Setter Target="RowNormal.Height" Value="0"/>
+                        <Setter Target="EditingRoot.Visibility" Value="Visible"/>
+                        <Setter Target="EditingSliderBar.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="WelcomeState">
+                    <VisualState.Setters>
+                        <Setter Target="WelcomeRoot.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
+        
+        
+    </Grid>
+
+</local:MainScreenContentViewHostGeneric>

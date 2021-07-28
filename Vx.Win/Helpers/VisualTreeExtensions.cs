@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+
+namespace Vx.Uwp.Helpers
+{
+    public static class VisualTreeExtensions
+    {
+        public static T FindParent<T>(this DependencyObject obj)
+        {
+            object parent = VisualTreeHelper.GetParent(obj);
+
+            if (parent == null)
+                return default(T);
+
+            if (parent is T)
+                return (T)parent;
+
+            return FindParent<T>(parent as DependencyObject);
+        }
+    }
+}
