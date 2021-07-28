@@ -60,6 +60,11 @@ namespace Vx.Uwp
 
                 if (view is Vx.Views.TextBox)
                 {
+                    if (view is Vx.Views.PasswordBox)
+                    {
+                        return new UwpPasswordBox();
+                    }
+
                     return new UwpTextBox();
                 }
 

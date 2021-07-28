@@ -140,5 +140,7 @@ namespace InterfacesUWP
         {
             HasFocus = false;
         }
+
+        public PasswordBox NativePasswordBox => this.TextBox;
     }
 }

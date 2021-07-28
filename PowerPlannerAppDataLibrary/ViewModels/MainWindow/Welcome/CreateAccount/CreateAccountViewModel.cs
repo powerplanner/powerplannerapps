@@ -14,10 +14,11 @@ using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using BareMvvm.Core;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 {
-    public class CreateAccountViewModel : BaseViewModel
+    public class CreateAccountViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -30,12 +31,74 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         public CreateAccountViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("CreateAccountPage.Title");
+
             Username = new TextField(required: true, maxLength: 50, inputValidator: new CustomInputValidator(ValidateUsername), ignoreOuterSpaces: true, reportValidatorInvalidInstantly: true);
             Email = new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
             Password = new TextField(required: true, maxLength: 50, minLength: 5);
             ConfirmPassword = new TextField(required: true, mustMatch: Password);
 
             LoadAccounts();
+        }
+
+        protected override View Render()
+        {
+            IsUsingConfirmPassword = false;
+
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBox
+                        {
+                            Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.PlaceholderText"),
+                            Text = Bind<string>(nameof(Username.Text), Username),
+                            ValidationState = Username.ValidationState,
+                            HasFocusChanged = f => Username.HasFocus = f,
+                            AutoFocus = true
+                        },
+
+                        new TextBox
+                        {
+                            Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.PlaceholderText"),
+                            Text = Bind<string>(nameof(Email.Text), Email),
+                            ValidationState = Email.ValidationState,
+                            HasFocusChanged = f => Email.HasFocus = f,
+                            Margin = new Thickness(0, 12, 0, 0)
+                        },
+
+                        new PasswordBox
+                        {
+                            Header = PowerPlannerResources.GetString("CreateAccountPage_PasswordBoxPassword.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_PasswordBoxPassword.PlaceholderText"),
+                            Text = Bind<string>(nameof(Password.Text), Password),
+                            ValidationState = Password.ValidationState,
+                            HasFocusChanged = f => Password.HasFocus = f,
+                            Margin = new Thickness(0, 12, 0, 0)
+                        },
+
+                        IsCreateLocalAccountVisible ? new TextButton
+                        {
+                            Text = PowerPlannerResources.GetString("CreateAccountPage_TextBlockCreateOfflineAccount.Text"),
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            Margin = new Thickness(0, 12, 0, 0),
+                            Click = CreateLocalAccount
+                        } : null,
+
+                        new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("WelcomePage_ButtonCreateAccount.Content"),
+                            Click = CreateAccount,
+                            Margin = new Thickness(0, 24, 0, 0)
+                        }
+                    }
+                }
+            };
         }
 
         private async void LoadAccounts()
@@ -57,6 +120,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         /// </summary>
         public bool IsCreateLocalAccountVisible => DefaultAccountToUpgrade == null;
 
+        [VxSubscribe]
         public TextField Username { get; private set; }
 
         private InputValidationState ValidateUsername(string username)
@@ -95,10 +159,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             return InputValidationState.Valid;
         }
 
+        [VxSubscribe]
         public TextField Password { get; private set; }
 
+        [VxSubscribe]
         public TextField ConfirmPassword { get; private set; }
 
+        [VxSubscribe]
         public TextField Email { get; private set; }
 
         private bool isOkayToCreate()

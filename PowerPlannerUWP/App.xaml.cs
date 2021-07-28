@@ -120,7 +120,6 @@ namespace PowerPlannerUWP
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },
-                { typeof(CreateAccountViewModel), typeof(CreateAccountView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(ForgotUsernameViewModel), typeof(ForgotUsernameView) },
                 { typeof(LoginViewModel), typeof(LoginView) },

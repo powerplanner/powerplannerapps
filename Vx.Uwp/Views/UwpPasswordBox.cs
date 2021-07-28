@@ -8,25 +8,13 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.Views
 {
-    public class UwpTextBox : UwpView<Vx.Views.TextBox, BareTextBox>
+    public class UwpPasswordBox : UwpView<Vx.Views.PasswordBox, BarePasswordBox>
     {
-        public UwpTextBox()
+        public UwpPasswordBox()
         {
-            View.IsSpellCheckEnabled = true;
-            View.IsTextPredictionEnabled = true;
-            View.NativeTextBox.TextChanged += View_TextChanged;
-            View.NativeTextBox.LostFocus += NativeTextBox_LostFocus;
-            View.NativeTextBox.GotFocus += NativeTextBox_GotFocus;
-            View.Loaded += View_Loaded;
-        }
-
-        private void View_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            if (VxView != null && VxView.AutoFocus)
-            {
-                View.NativeTextBox.Focus(Windows.UI.Xaml.FocusState.Programmatic);
-                View.NativeTextBox.SelectAll();
-            }
+            View.NativePasswordBox.PasswordChanged += View_TextChanged;
+            View.NativePasswordBox.LostFocus += NativeTextBox_LostFocus;
+            View.NativePasswordBox.GotFocus += NativeTextBox_GotFocus;
         }
 
         private void NativeTextBox_GotFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -45,20 +33,20 @@ namespace Vx.Uwp.Views
             }
         }
 
-        private void View_TextChanged(object sender, TextChangedEventArgs e)
+        private void View_TextChanged(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (VxView.Text != null)
             {
-                VxView.Text.Value = View.Text;
+                VxView.Text.Value = View.Password;
             }
         }
 
-        protected override void ApplyProperties(Vx.Views.TextBox oldView, Vx.Views.TextBox newView)
+        protected override void ApplyProperties(Vx.Views.PasswordBox oldView, Vx.Views.PasswordBox newView)
         {
             base.ApplyProperties(oldView, newView);
 
             View.Header = newView.Header;
-            View.Text = newView.Text?.Value ?? "";
+            View.Password = newView.Text?.Value ?? "";
             View.PlaceholderText = newView.PlaceholderText;
             View.ValidationState = newView.ValidationState;
         }
