@@ -12,17 +12,31 @@ namespace InterfacesUWP.App
 {
     public class UwpDispatcher : PortableDispatcher
     {
-        public override async Task RunAsync(Action codeToExecute)
+        public override Task RunAsync(Action codeToExecute)
         {
             NativeUwpAppWindow window = PortableApp.Current?.GetCurrentWindow()?.NativeAppWindow as NativeUwpAppWindow;
 
             if (window != null)
             {
-                await window.Window.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate { codeToExecute(); });
+                var taskCompletionSource = new TaskCompletionSource();
+                window.DispatcherQueue.TryEnqueue(delegate
+                {
+                    try
+                    {
+                        codeToExecute();
+                        taskCompletionSource.SetResult();
+                    }
+                    catch (Exception ex)
+                    {
+                        taskCompletionSource.SetException(ex);
+                    }
+                });
+                return taskCompletionSource.Task;
             }
             else
             {
                 codeToExecute();
+                return Task.CompletedTask;
             }
         }
     }

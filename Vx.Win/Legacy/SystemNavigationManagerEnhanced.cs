@@ -15,7 +15,7 @@ namespace InterfacesUWP
         {
             OriginalObject = original;
 
-            original.BackRequested += Original_BackRequested;
+            //original.BackRequested += Original_BackRequested;
         }
 
         private void Original_BackRequested(object sender, BackRequestedEventArgs e)
@@ -33,10 +33,11 @@ namespace InterfacesUWP
         {
             get
             {
+                return AppViewBackButtonVisibility.Disabled;
                 return OriginalObject.AppViewBackButtonVisibility;
             }
 
-            set { OriginalObject.AppViewBackButtonVisibility = value; }
+            set { /*OriginalObject.AppViewBackButtonVisibility = value;*/ }
         }
 
         private List<EventHandler<BackRequestedEventArgs>> _backRequestedEvents = new List<EventHandler<BackRequestedEventArgs>>();
@@ -63,18 +64,19 @@ namespace InterfacesUWP
 
         public static SystemNavigationManagerEnhanced GetForCurrentView()
         {
-            SystemNavigationManagerEnhanced answer;
+            return new SystemNavigationManagerEnhanced(null);
+            //SystemNavigationManagerEnhanced answer;
 
-            var original = SystemNavigationManager.GetForCurrentView();
+            //var original = SystemNavigationManager.GetForCurrentView();
 
-            if (!_cached.TryGetValue(original, out answer))
-            {
-                answer = new SystemNavigationManagerEnhanced(original);
+            //if (!_cached.TryGetValue(original, out answer))
+            //{
+            //    answer = new SystemNavigationManagerEnhanced(original);
 
-                _cached[original] = answer;
-            }
+            //    _cached[original] = answer;
+            //}
 
-            return answer;
+            //return answer;
         }
     }
 }

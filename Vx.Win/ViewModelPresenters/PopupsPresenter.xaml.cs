@@ -33,9 +33,10 @@ namespace InterfacesUWP.ViewModelPresenters
             this.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.VerticalAlignment = VerticalAlignment.Stretch;
 
-            var inputPane = InputPane.GetForCurrentView();
-            inputPane.Showing += InputPane_Changed;
-            inputPane.Hiding += InputPane_Changed;
+            // TODO
+            //var inputPane = InputPane.GetForCurrentView();
+            //inputPane.Showing += InputPane_Changed;
+            //inputPane.Hiding += InputPane_Changed;
 
             UpdateInputPaneOcclusion();
         }

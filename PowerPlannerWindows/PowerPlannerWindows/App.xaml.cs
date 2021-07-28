@@ -78,17 +78,6 @@ namespace PowerPlannerUWP
             this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
-        {
-            m_window = new PowerPlannerWindows.MainWindow();
-            m_window.Activate();
-        }
-
         private Window m_window;
 
         public override Type GetPortableAppType()
@@ -321,10 +310,11 @@ namespace PowerPlannerUWP
                     await mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
                 }
 
-                Window.Current.Activate();
+                // Activate the window
+                (mainAppWindow.NativeAppWindow as NativeUwpAppWindow).Activate();
 
                 // Listen to window activation changes
-                Window.Current.Activated += Current_Activated;
+                (mainAppWindow.NativeAppWindow as NativeUwpAppWindow).Activated += Current_Activated;
 
                 // Set up the default window properties
                 ConfigureWindowProperties();

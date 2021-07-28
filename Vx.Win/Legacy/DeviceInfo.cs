@@ -40,15 +40,16 @@ namespace InterfacesUWP
 
         public static DeviceFormFactor GetCurrentDeviceFormFactor()
         {
-            if (UIViewSettings.GetForCurrentView().UserInteractionMode == UserInteractionMode.Touch)
-            {
-                if (DeviceFamily == DeviceFamily.Mobile)
-                    return DeviceFormFactor.Mobile;
+            // TODO
+            //if (UIViewSettings.GetForCurrentView().UserInteractionMode == UserInteractionMode.Touch)
+            //{
+            //    if (DeviceFamily == DeviceFamily.Mobile)
+            //        return DeviceFormFactor.Mobile;
 
-                return DeviceFormFactor.Tablet;
-            }
+            //    return DeviceFormFactor.Tablet;
+            //}
 
-            else
+            //else
             {
                 return DeviceFormFactor.Desktop;
             }

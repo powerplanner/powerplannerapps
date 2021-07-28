@@ -8,8 +8,8 @@
 
   <Identity
     Name="191bc51c-2315-4564-90d3-ff81b24ce35e"
-    Publisher="CN=andre"
-    Version="1.0.0.0" />
+    Publisher="CN=BareBonesDev"
+    Version="1.0.4.0" />
 
   <Properties>
     <DisplayName>PowerPlannerWindows (Package)</DisplayName>

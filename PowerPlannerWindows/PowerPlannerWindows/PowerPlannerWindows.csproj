@@ -121,7 +121,8 @@
     <PackageReference Include="NotificationsVisualizerLibrary.WinUI" Version="2.0.1" />
     <PackageReference Include="PCLCrypto" Version="2.1.40-alpha" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1" />
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.2-winuibeta3" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="4.1.0-beta" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 

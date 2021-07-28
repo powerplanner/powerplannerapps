@@ -16,26 +16,25 @@ using BareMvvm.Core.Snackbar;
 
 namespace InterfacesUWP.AppWindows
 {
-    public class NativeUwpAppWindow : Grid, INativeAppWindow
+    public class NativeUwpAppWindow : Window, INativeAppWindow
     {
         private GenericViewModelPresenter _presenter;
         private BareSnackbarPresenter _snackbarPresenter = new BareSnackbarPresenter();
         private SystemNavigationManagerEnhanced _navigationManager;
 
-        public Window Window { get; private set; }
+        public Window Window => this;
 
         public BareSnackbarManager SnackbarManager => _snackbarPresenter.Manager;
 
         public NativeUwpAppWindow()
         {
+            var grid = new Grid();
             _presenter = new GenericViewModelPresenter();
-            Children.Add(_presenter);
+            grid.Children.Add(_presenter);
 
-            Children.Add(_snackbarPresenter);
+            grid.Children.Add(_snackbarPresenter);
 
-            Window = Window.Current;
-
-            Window.Content = this;
+            Content = grid;
 
             // Back button
             _navigationManager = SystemNavigationManagerEnhanced.GetForCurrentView();

@@ -13,6 +13,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>PowerPlannerAppDataLibrary</RootNamespace>
     <AssemblyName>PowerPlannerAppDataLibrary</AssemblyName>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Android)|AnyCPU'">
     <DefineConstants>TRACE;ANDROID</DefineConstants>
@@ -31,9 +32,9 @@
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.210505.2" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1" />
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.2-winuibeta3" />
     <PackageReference Include="TimeZoneConverter" Version="3.3.0" />
-    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="4.1.0-beta" />
     <PackageReference Include="XliffCompiler" Version="1.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

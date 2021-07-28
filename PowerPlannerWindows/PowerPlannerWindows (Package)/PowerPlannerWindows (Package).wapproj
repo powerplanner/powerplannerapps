@@ -40,8 +40,33 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <AssetTargetFallback>net5.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\PowerPlannerWindows\PowerPlannerWindows.csproj</EntryPointProjectUniqueName>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <PackageCertificateKeyFile>PowerPlannerWindows %28Package%29_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+    <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -140,6 +165,7 @@
     <Content Include="Images\Wide310x150Logo.scale-150.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
     <Content Include="Images\Wide310x150Logo.scale-400.png" />
+    <None Include="PowerPlannerWindows %28Package%29_TemporaryKey.pfx" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
 </Project>
