@@ -7,16 +7,61 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
-    public class ResetPasswordViewModel : BaseViewModel
+    public class ResetPasswordViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
         public ResetPasswordViewModel(BaseViewModel parent, string username) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text");
             Username = username;
+        }
+
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBox
+                        {
+                            Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxUsername.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxUsername.PlaceholderText"),
+                            Text = Bind<string>(nameof(Username), this),
+                            InputScope = InputScope.Username,
+                            AutoFocus = true,
+                            OnSubmit = ResetPassword,
+                            IsEnabled = !IsResettingPassword
+                        },
+
+                        new TextBox
+                        {
+                            Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.PlaceholderText"),
+                            Text = Bind<string>(nameof(Email), this),
+                            InputScope = InputScope.Email,
+                            Margin = new Thickness(0, 16, 0, 0),
+                            OnSubmit = ResetPassword,
+                            IsEnabled = !IsResettingPassword
+                        },
+
+                        new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("ForgotPassword_ButtonReset.Content"),
+                            Click = ResetPassword,
+                            Margin = new Thickness(0, 24, 0, 0),
+                            IsEnabled = !IsResettingPassword
+                        }
+                    }
+                }
+            };
         }
 
         private string _username;

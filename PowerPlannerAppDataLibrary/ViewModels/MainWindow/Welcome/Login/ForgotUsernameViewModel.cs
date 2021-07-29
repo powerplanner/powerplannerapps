@@ -7,10 +7,11 @@ using BareMvvm.Core.ViewModels;
 using PowerPlannerSending;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.Extensions;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
-    public class ForgotUsernameViewModel : BaseViewModel
+    public class ForgotUsernameViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -18,6 +19,47 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         public ForgotUsernameViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("LoginPage_TextBlockForgotUsername.Text");
+        }
+
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("ForgotUsername_String_EnterEmailAddressExplanation"),
+                            WrapText = true,
+                            TextColor = Theme.Current.SubtleForegroundColor
+                        },
+
+                        new TextBox
+                        {
+                            Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.Header"),
+                            Text = Bind<string>(nameof(Email), this),
+                            InputScope = InputScope.Email,
+                            PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.PlaceholderText"),
+                            OnSubmit = Recover,
+                            Margin = new Thickness(0, 24, 0, 0),
+                            IsEnabled = !IsRecoveringUsernames,
+                            AutoFocus = true
+                        },
+
+                        new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("String_Recover"),
+                            Click = Recover,
+                            Margin = new Thickness(0, 24, 0, 0),
+                            IsEnabled = !IsRecoveringUsernames
+                        }
+                    }
+                }
+            };
         }
 
         private bool _isRecoveringUsernames;

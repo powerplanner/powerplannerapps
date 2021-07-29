@@ -28,6 +28,7 @@ namespace Vx.iOS.Views
 
             View.SetTitle(newView.Text, UIControlState.Normal);
             View.Enabled = newView.IsEnabled;
+            View.Alpha = newView.IsEnabled ? 1.0f : 0.5f;
         }
 
         protected static UIButton CreateRoundedButton(UIColor foregroundColor, UIColor backgroundColor)
@@ -37,10 +38,10 @@ namespace Vx.iOS.Views
             button.BackgroundColor = backgroundColor;
             button.ContentEdgeInsets = new UIEdgeInsets()
             {
-                Left = 8,
-                Right = 8,
-                Top = 8,
-                Bottom = 8
+                Left = 9,
+                Right = 9,
+                Top = 9,
+                Bottom = 9
             };
             button.Layer.CornerRadius = 10;
 

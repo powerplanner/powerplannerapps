@@ -162,9 +162,6 @@
     <Compile Include="Controllers\ViewTaskOrEventViewController.cs" />
     <Compile Include="Controllers\Welcome\ConnectAccountViewController.cs" />
     <Compile Include="Controllers\Welcome\ExistingUserViewController.cs" />
-    <Compile Include="Controllers\Welcome\ResetPasswordViewController.cs" />
-    <Compile Include="Controllers\Welcome\ForgotUsernameViewController.cs" />
-    <Compile Include="Controllers\Welcome\RecoveredUsernamesViewController.cs" />
     <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />
     <Compile Include="Extensions\iOSPushExtension.cs" />
     <Compile Include="Extensions\iOSTelemetryExtension.cs" />
@@ -172,7 +169,6 @@
     <Compile Include="Helpers\ColorResources.cs" />
     <Compile Include="Helpers\InAppPurchaseHelper.cs" />
     <Compile Include="Helpers\PowerPlannerUIHelper.cs" />
-    <Compile Include="Controllers\Welcome\LoginViewController.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="ViewModels\AboutViewModelAsPopup.cs" />
