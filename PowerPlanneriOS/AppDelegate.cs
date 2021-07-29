@@ -34,7 +34,6 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlanneriOS.Extensions;
 using PowerPlannerAppDataLibrary.App;
 using System.Linq;
-using PowerPlanneriOS.Controllers.Welcome;
 using PowerPlanneriOS.ViewModels;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
@@ -100,13 +99,11 @@ namespace PowerPlanneriOS
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) },
-                { typeof(MyAccountViewModel), typeof(MyAccountViewController) },
                 { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityViewController) },
                 { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameViewController) },
                 { typeof(ChangePasswordViewModel), typeof(ChangePasswordViewController) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailViewController) },
                 { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineViewController) },
-                { typeof(DeleteAccountViewModel), typeof(DeleteAccountViewController) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsViewController) },
                 { typeof(AboutViewModel), typeof(AboutViewController) },
                 { typeof(AboutViewModelAsPopup), typeof(AboutViewControllerAsPopup) },

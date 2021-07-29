@@ -68,8 +68,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
                 });
-
-                // TODO: Add divider
             }
 
             if (IsSyncOptionsVisible)
@@ -88,8 +86,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
                 });
-
-                // TODO: Add divider
             }
 
             if (IsUpgradeToPremiumVisible)
@@ -548,7 +544,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenMyAccount()
         {
-            Show(MyAccountViewModel.Load(ParentForSubviews));
+            ShowPopup(MyAccountViewModel.Load(ParentForSubviews));
         }
 
         public void OpenAbout()

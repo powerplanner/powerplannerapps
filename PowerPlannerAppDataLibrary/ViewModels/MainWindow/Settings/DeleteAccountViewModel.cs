@@ -2,23 +2,64 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerSending;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class DeleteAccountViewModel : BaseViewModel
+    public class DeleteAccountViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
         public AccountDataItem Account { get; private set; }
+        private VxState<bool> _isDeleting = new VxState<bool>();
 
         public DeleteAccountViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("Settings_DeleteAccountPage.Title");
             Account = account;
+        }
+
+        protected override View Render()
+        {
+            bool isEnabled = !_isDeleting.Value;
+
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_Description.Text"),
+                            FontSize = Theme.Current.TitleFontSize,
+                            WrapText = true,
+                            Margin = new Thickness(0, 0, 0, 24)
+                        },
+
+                        Account.IsOnlineAccount ? new CheckBox
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_CheckBoxDeleteOnlineToo.Content"),
+                            IsChecked = DeleteOnlineAccountToo,
+                            IsCheckedChanged = v => DeleteOnlineAccountToo = v,
+                            Margin = new Thickness(0, 0, 0, 12),
+                            IsEnabled = isEnabled
+                        } : null,
+
+                        new Button
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_ButtonConfirmDelete.Content"),
+                            Click = () => _ = DeleteAsync(),
+                            IsEnabled = isEnabled
+                        }
+                    }
+                }
+            };
         }
 
         private bool _deleteOnlineAccountToo;
@@ -34,47 +75,56 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         /// <returns></returns>
         public async System.Threading.Tasks.Task DeleteAsync()
         {
-            if (Account.IsOnlineAccount)
+            _isDeleting.Value = true;
+
+            try
             {
-                if (DeleteOnlineAccountToo)
+                if (Account.IsOnlineAccount)
                 {
-                    try
+                    if (DeleteOnlineAccountToo)
                     {
-                        DeleteAccountResponse resp = await Account.PostAuthenticatedAsync<DeleteAccountRequest, DeleteAccountResponse>(Website.URL + "deleteaccountmodern", new DeleteAccountRequest());
-
-                        if (resp.Error != null)
+                        try
                         {
-                            await new PortableMessageDialog(resp.Error, PowerPlannerResources.GetString("Settings_DeleteAccountPage_Errors_ErrorDeletingHeader")).ShowAsync();
+                            DeleteAccountResponse resp = await Account.PostAuthenticatedAsync<DeleteAccountRequest, DeleteAccountResponse>(Website.URL + "deleteaccountmodern", new DeleteAccountRequest());
+
+                            if (resp.Error != null)
+                            {
+                                await new PortableMessageDialog(resp.Error, PowerPlannerResources.GetString("Settings_DeleteAccountPage_Errors_ErrorDeletingHeader")).ShowAsync();
+                            }
+
+                            else
+                            {
+                                await deleteAndFinish();
+                            }
                         }
 
-                        else
-                        {
-                            deleteAndFinish();
-                        }
+                        catch { await new PortableMessageDialog(PowerPlannerResources.GetString("Settings_DeleteAccountPage_Errors_UnknownErrorDeletingOnline"), PowerPlannerResources.GetString("Settings_DeleteAccountPage_Errors_ErrorDeletingHeader")).ShowAsync(); }
                     }
 
-                    catch { await new PortableMessageDialog(PowerPlannerResources.GetString("Settings_DeleteAccountPage_Errors_UnknownErrorDeletingOnline"), PowerPlannerResources.GetString("Settings_DeleteAccountPage_Errors_ErrorDeletingHeader")).ShowAsync(); }
+                    //otherwise just remove device
+                    else
+                    {
+                        //no need to check whether delete device succeeded
+                        try { var dontWait = Account.PostAuthenticatedAsync<DeleteDevicesRequest, DeleteDevicesResponse>(Website.URL + "deletedevicesmodern", new DeleteDevicesRequest() { DeviceIdsToDelete = new List<int>() { Account.DeviceId } }); }
+
+                        catch { }
+
+                        await deleteAndFinish();
+                    }
                 }
 
-                //otherwise just remove device
                 else
                 {
-                    //no need to check whether delete device succeeded
-                    try { var dontWait = Account.PostAuthenticatedAsync<DeleteDevicesRequest, DeleteDevicesResponse>(Website.URL + "deletedevicesmodern", new DeleteDevicesRequest() { DeviceIdsToDelete = new List<int>() { Account.DeviceId } }); }
-
-                    catch { }
-
-                    deleteAndFinish();
+                    await deleteAndFinish();
                 }
             }
-
-            else
+            finally
             {
-                deleteAndFinish();
+                _isDeleting.Value = false;
             }
         }
 
-        private async void deleteAndFinish()
+        private async System.Threading.Tasks.Task deleteAndFinish()
         {
             await AccountsManager.Delete(Account.LocalAccountId);
             RemoveViewModel();

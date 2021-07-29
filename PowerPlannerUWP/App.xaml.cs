@@ -55,7 +55,6 @@ using Windows.ApplicationModel.DataTransfer;
 using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
-using PowerPlannerUWP.Views.WelcomeViews;
 using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
 
@@ -147,10 +146,8 @@ namespace PowerPlannerUWP
                 { typeof(ClassTileViewModel), typeof(ClassTileView) },
                 { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityView) },
                 { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineView) },
-                { typeof(DeleteAccountViewModel), typeof(DeleteAccountView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(ImageUploadOptionsView) },
                 { typeof(MainTileViewModel), typeof(MainTileView) },
-                { typeof(MyAccountViewModel), typeof(MyAccountView) },
                 { typeof(PushSettingsViewModel), typeof(PushSettingsView) },
                 { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
                 { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsView) },

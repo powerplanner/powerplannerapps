@@ -195,7 +195,6 @@
     <Compile Include="Views\ListItems\MyScheduleItemView.cs" />
     <Compile Include="Views\MainCalendarItemView.cs" />
     <Compile Include="Views\MainScreenView.cs" />
-    <Compile Include="Views\MyAccountView.cs" />
     <Compile Include="Views\PopupComponentView.cs" />
     <Compile Include="Views\PopupViewHost.cs" />
     <Compile Include="Views\PremiumVersionView.cs" />
@@ -329,9 +328,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemSemesterClass.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\MyAccount.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\About.xml">
