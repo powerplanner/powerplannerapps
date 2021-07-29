@@ -21,5 +21,11 @@ namespace Vx.Views
         /// Set this to true to have the text box auto focus when first loaded
         /// </summary>
         public bool AutoFocus { get; set; }
+
+        public InputScope InputScope { get; set; } = InputScope.Normal;
+
+        public Action OnSubmit { get; set; }
+
+        public bool IsEnabled { get; set; } = true;
     }
 }

@@ -57,9 +57,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.PlaceholderText"),
                             Text = Bind<string>(nameof(Username.Text), Username),
+                            InputScope = InputScope.Username,
                             ValidationState = Username.ValidationState,
                             HasFocusChanged = f => Username.HasFocus = f,
-                            AutoFocus = true
+                            AutoFocus = true,
+                            OnSubmit = CreateAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
                         },
 
                         new TextBox
@@ -67,9 +70,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.PlaceholderText"),
                             Text = Bind<string>(nameof(Email.Text), Email),
+                            InputScope = InputScope.Email,
                             ValidationState = Email.ValidationState,
                             HasFocusChanged = f => Email.HasFocus = f,
-                            Margin = new Thickness(0, 12, 0, 0)
+                            Margin = new Thickness(0, 12, 0, 0),
+                            OnSubmit = CreateAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
                         },
 
                         new PasswordBox
@@ -79,7 +85,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             Text = Bind<string>(nameof(Password.Text), Password),
                             ValidationState = Password.ValidationState,
                             HasFocusChanged = f => Password.HasFocus = f,
-                            Margin = new Thickness(0, 12, 0, 0)
+                            Margin = new Thickness(0, 12, 0, 0),
+                            OnSubmit = CreateAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
+                        },
+
+                        new AccentButton
+                        {
+                            Text = IsCreatingOnlineAccount ? "CREATING ACCOUNT..." : PowerPlannerResources.GetString("WelcomePage_ButtonCreateAccount.Content"),
+                            Click = CreateAccount,
+                            Margin = new Thickness(0, 24, 0, 0),
+                            IsEnabled = !IsCreatingOnlineAccount
                         },
 
                         IsCreateLocalAccountVisible ? new TextButton
@@ -87,15 +103,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             Text = PowerPlannerResources.GetString("CreateAccountPage_TextBlockCreateOfflineAccount.Text"),
                             HorizontalAlignment = HorizontalAlignment.Right,
                             Margin = new Thickness(0, 12, 0, 0),
-                            Click = CreateLocalAccount
-                        } : null,
-
-                        new AccentButton
-                        {
-                            Text = PowerPlannerResources.GetString("WelcomePage_ButtonCreateAccount.Content"),
-                            Click = CreateAccount,
-                            Margin = new Thickness(0, 24, 0, 0)
-                        }
+                            Click = CreateLocalAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
+                        } : null
                     }
                 }
             };
@@ -203,9 +213,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 return;
             }
 
-            string localToken = PowerPlannerAuth.CreateOfflineAccount(Username.Text.Trim(), Password.Text);
+            bool shouldCreate = await new PortableMessageDialog(
+                PowerPlannerResources.GetString("CreateAccountPage_String_WarningOfflineAccountExplanation"),
+                PowerPlannerResources.GetString("CreateAccountPage_String_WarningOfflineAccount"),
+                PowerPlannerResources.GetString("String_Create"),
+                PowerPlannerResources.GetString("String_GoBack"))
+                .ShowForResultAsync();
 
-            await FinishCreateAccount(Username.Text.Trim(), localToken, null, 0, 0, "");
+            if (shouldCreate)
+            {
+                string localToken = PowerPlannerAuth.CreateOfflineAccount(Username.Text.Trim(), Password.Text);
+
+                await FinishCreateAccount(Username.Text.Trim(), localToken, null, 0, 0, "");
+            }
         }
 
         private bool _isCreatingOnlineAccount;

@@ -221,9 +221,6 @@
       <DependentUpon>ClassWhatIfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\CreateAccountView.xaml.cs">
-      <DependentUpon>CreateAccountView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AddSemesterView.xaml.cs">
       <DependentUpon>AddSemesterView.xaml</DependentUpon>
     </Compile>
@@ -615,10 +612,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClassWhatIfView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CreateAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

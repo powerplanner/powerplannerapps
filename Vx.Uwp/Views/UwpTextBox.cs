@@ -12,12 +12,19 @@ namespace Vx.Uwp.Views
     {
         public UwpTextBox()
         {
-            View.IsSpellCheckEnabled = true;
-            View.IsTextPredictionEnabled = true;
             View.NativeTextBox.TextChanged += View_TextChanged;
             View.NativeTextBox.LostFocus += NativeTextBox_LostFocus;
             View.NativeTextBox.GotFocus += NativeTextBox_GotFocus;
             View.Loaded += View_Loaded;
+            View.EnterPressed += View_EnterPressed;
+        }
+
+        private void View_EnterPressed(object sender, EventArgs e)
+        {
+            if (VxView.OnSubmit != null)
+            {
+                VxView.OnSubmit();
+            }
         }
 
         private void View_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -61,6 +68,49 @@ namespace Vx.Uwp.Views
             View.Text = newView.Text?.Value ?? "";
             View.PlaceholderText = newView.PlaceholderText;
             View.ValidationState = newView.ValidationState;
+            View.IsEnabled = newView.IsEnabled;
+
+            if (oldView == null || oldView.InputScope != newView.InputScope)
+            {
+                switch (newView.InputScope)
+                {
+                    case Vx.Views.InputScope.Normal:
+                        View.IsSpellCheckEnabled = true;
+                        View.IsTextPredictionEnabled = true;
+                        View.InputScope = new Windows.UI.Xaml.Input.InputScope
+                        {
+                            Names =
+                            {
+                                new Windows.UI.Xaml.Input.InputScopeName(Windows.UI.Xaml.Input.InputScopeNameValue.Text)
+                            }
+                        };
+                        break;
+
+                    case Vx.Views.InputScope.Email:
+                        View.IsSpellCheckEnabled = false;
+                        View.IsTextPredictionEnabled = true;
+                        View.InputScope = new Windows.UI.Xaml.Input.InputScope
+                        {
+                            Names =
+                            {
+                                new Windows.UI.Xaml.Input.InputScopeName(Windows.UI.Xaml.Input.InputScopeNameValue.EmailSmtpAddress)
+                            }
+                        };
+                        break;
+
+                    case Vx.Views.InputScope.Username:
+                        View.IsSpellCheckEnabled = false;
+                        View.IsTextPredictionEnabled = true;
+                        View.InputScope = new Windows.UI.Xaml.Input.InputScope
+                        {
+                            Names =
+                            {
+                                new Windows.UI.Xaml.Input.InputScopeName(Windows.UI.Xaml.Input.InputScopeNameValue.EmailNameOrAddress)
+                            }
+                        };
+                        break;
+                }
+            }
         }
     }
 }

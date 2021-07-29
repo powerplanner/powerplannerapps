@@ -178,7 +178,6 @@
     <Compile Include="Views\Controls\RecurrenceControl.cs" />
     <Compile Include="Views\Controls\SettingsListItem.cs" />
     <Compile Include="Views\Controls\SingleDayControl.cs" />
-    <Compile Include="Views\CreateAccountView.cs" />
     <Compile Include="Views\DayScheduleSnapshotView.cs" />
     <Compile Include="Views\DayView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
@@ -252,9 +251,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemYear.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\CreateAccount.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\AddYear.xml">
