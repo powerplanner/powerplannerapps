@@ -21,7 +21,7 @@ namespace Vx.Uwp.Views
 
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view =>
             {
-                View.Content = view.CreateFrameworkElement();
+                View.Content = view?.CreateFrameworkElement();
             });
         }
     }

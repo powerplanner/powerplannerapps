@@ -34,10 +34,13 @@ namespace Vx.iOS.Views
                 View.RemoveAllConstraints();
                 View.ClearAllSubviews();
 
-                var child = view.CreateUIView(VxView);
-                child.TranslatesAutoresizingMaskIntoConstraints = false;
-                View.AddSubview(child);
-                afterSubviewAddedAction(child);
+                if (view != null)
+                {
+                    var child = view.CreateUIView(VxView);
+                    child.TranslatesAutoresizingMaskIntoConstraints = false;
+                    View.AddSubview(child);
+                    afterSubviewAddedAction(child);
+                }
             }, transferView: view =>
             {
                 if (afterTransfer != null)

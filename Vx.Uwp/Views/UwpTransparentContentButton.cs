@@ -24,7 +24,7 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            VxReconciler.Reconcile(oldView?.Content, newView.Content, view => View.Content = view.CreateFrameworkElement());
+            VxReconciler.Reconcile(oldView?.Content, newView.Content, view => View.Content = view?.CreateFrameworkElement());
         }
     }
 

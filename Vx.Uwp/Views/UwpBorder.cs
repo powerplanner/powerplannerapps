@@ -20,7 +20,7 @@ namespace Vx.Uwp.Views
 
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view =>
             {
-                View.Child = view.CreateFrameworkElement();
+                View.Child = view?.CreateFrameworkElement();
             });
         }
     }
