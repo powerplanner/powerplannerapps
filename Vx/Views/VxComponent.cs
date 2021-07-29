@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using ToolsPortable;
 
 namespace Vx.Views
@@ -60,6 +61,28 @@ namespace Vx.Views
             SubscribeToProperties();
 
             RenderActual();
+
+            EnableHotReload();
+        }
+
+        private async void EnableHotReload()
+        {
+#if DEBUG
+            // Enable hot reload by refreshing every second since we can't subscribe to MetadataUpdateHandler yet
+            if (System.Diagnostics.Debugger.IsAttached && VxPlatform.Current == Platform.Uwp)
+            {
+                try
+                {
+                    while (true)
+                    {
+                        await Task.Delay(1000);
+
+                        MarkDirty();
+                    }
+                }
+                catch { }
+            }
+#endif
         }
 
         /// <summary>
