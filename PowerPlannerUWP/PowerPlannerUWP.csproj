@@ -230,9 +230,6 @@
     <Compile Include="Views\ExportSchedulePopupView.xaml.cs">
       <DependentUpon>ExportSchedulePopupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ForgotUsernameView.xaml.cs">
-      <DependentUpon>ForgotUsernameView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\InitialSyncView.xaml.cs">
       <DependentUpon>InitialSyncView.xaml</DependentUpon>
     </Compile>
@@ -242,12 +239,6 @@
     </Compile>
     <Compile Include="Views\Promos\PromoOtherPlatformsView.xaml.cs">
       <DependentUpon>PromoOtherPlatformsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RecoveredUsernamesView.xaml.cs">
-      <DependentUpon>RecoveredUsernamesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ResetPasswordView.xaml.cs">
-      <DependentUpon>ResetPasswordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QuickAddView.xaml.cs">
       <DependentUpon>QuickAddView.xaml</DependentUpon>
@@ -627,10 +618,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ForgotUsernameView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\InitialSyncView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -642,14 +629,6 @@
     <Page Include="Views\Promos\PromoOtherPlatformsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\RecoveredUsernamesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ResetPasswordView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QuickAddView.xaml">
       <SubType>Designer</SubType>
