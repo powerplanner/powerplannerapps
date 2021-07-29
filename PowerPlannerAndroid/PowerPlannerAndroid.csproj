@@ -220,8 +220,6 @@
     <Compile Include="Views\ViewTaskOrEventView.cs" />
     <Compile Include="Views\InitialSyncView.cs" />
     <Compile Include="Views\WelcomeView.cs" />
-    <Compile Include="Views\WelcomeViews\ConnectAccountView.cs" />
-    <Compile Include="Views\WelcomeViews\ExistingUserView.cs" />
     <Compile Include="Views\YearsView.cs" />
     <Compile Include="Widgets\WidgetAgendaProvider.cs" />
     <Compile Include="Widgets\WidgetScheduleProvider.cs" />
@@ -1117,18 +1115,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\SettingsSuccessfullyCreatedAccount.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\WelcomeConnectAccount.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\WelcomeExistingUser.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

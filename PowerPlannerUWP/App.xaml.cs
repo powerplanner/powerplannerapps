@@ -103,10 +103,6 @@ namespace PowerPlannerUWP
         {
             return new Dictionary<Type, Type>()
             {
-                // Welcome views
-                { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
-                { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
-
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },

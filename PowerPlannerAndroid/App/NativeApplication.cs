@@ -80,8 +80,6 @@ namespace PowerPlannerAndroid.App
             {
                 // Welcome views
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
-                { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
-                { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
 
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },

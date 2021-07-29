@@ -160,8 +160,6 @@
     <Compile Include="Controllers\SyncErrorsViewController.cs" />
     <Compile Include="Controllers\ViewGradeViewController.cs" />
     <Compile Include="Controllers\ViewTaskOrEventViewController.cs" />
-    <Compile Include="Controllers\Welcome\ConnectAccountViewController.cs" />
-    <Compile Include="Controllers\Welcome\ExistingUserViewController.cs" />
     <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />
     <Compile Include="Extensions\iOSPushExtension.cs" />
     <Compile Include="Extensions\iOSTelemetryExtension.cs" />

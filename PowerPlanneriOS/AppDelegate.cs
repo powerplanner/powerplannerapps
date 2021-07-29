@@ -77,8 +77,6 @@ namespace PowerPlanneriOS
             {
                 // Welcome views
                 { typeof(WelcomeViewModel), typeof(WelcomeViewController) },
-                { typeof(ExistingUserViewModel), typeof(ExistingUserViewController) },
-                { typeof(ConnectAccountViewModel), typeof(ConnectAccountViewController) },
 
                 { typeof(InitialSyncViewModel), typeof(InitialSyncViewController) },
                 { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
