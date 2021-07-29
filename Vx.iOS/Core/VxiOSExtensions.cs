@@ -36,6 +36,14 @@ namespace Vx.iOS
 
                 if (view is Vx.Views.Button)
                 {
+                    if (view is Vx.Views.AccentButton)
+                    {
+                        return new iOSAccentButton();
+                    }
+                    if (view is Vx.Views.TextButton)
+                    {
+                        return new iOSTextButton();
+                    }
                     return new iOSButton();
                 }
 

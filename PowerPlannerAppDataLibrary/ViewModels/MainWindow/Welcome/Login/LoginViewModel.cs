@@ -69,16 +69,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                             IsEnabled = !IsLoggingInOnline
                         },
 
-                        new Border
-                        {
-                            BackgroundColor = Theme.Current.SubtleForegroundColor,
-                            Height = 1
-                        },
-
                         new LinearLayout
                         {
                             Orientation = Orientation.Horizontal,
-                            Margin = new Thickness(0, 16, 0, 0),
+                            Margin = new Thickness(0, 24, 0, 0),
                             Children =
                             {
                                 new TextButton

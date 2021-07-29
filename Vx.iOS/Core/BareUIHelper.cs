@@ -244,6 +244,26 @@ namespace Vx.iOS
             return view;
         }
 
+        public static UIView ClearHeight(this UIView view)
+        {
+            var matching = view.Constraints.FirstOrDefault(i => i.FirstItem == view && i.FirstAttribute == NSLayoutAttribute.Height && i.Relation == NSLayoutRelation.Equal && i.SecondItem == null && i.Multiplier == 1);
+            if (matching != null)
+            {
+                view.RemoveConstraint(matching);
+            }
+            return view;
+        }
+
+        public static UIView ClearWidth(this UIView view)
+        {
+            var matching = view.Constraints.FirstOrDefault(i => i.FirstItem == view && i.FirstAttribute == NSLayoutAttribute.Width && i.Relation == NSLayoutRelation.Equal && i.SecondItem == null && i.Multiplier == 1);
+            if (matching != null)
+            {
+                view.RemoveConstraint(matching);
+            }
+            return view;
+        }
+
         public static UIView SetMinimumHeight(this UIView view, float minHeight)
         {
             view.AddConstraint(NSLayoutConstraint.Create(
