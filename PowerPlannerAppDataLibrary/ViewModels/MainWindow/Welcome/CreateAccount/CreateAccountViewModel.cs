@@ -73,7 +73,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             InputScope = InputScope.Email,
                             ValidationState = Email.ValidationState,
                             HasFocusChanged = f => Email.HasFocus = f,
-                            Margin = new Thickness(0, 12, 0, 0),
+                            Margin = new Thickness(0, 16, 0, 0),
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },
@@ -85,7 +85,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             Text = Bind<string>(nameof(Password.Text), Password),
                             ValidationState = Password.ValidationState,
                             HasFocusChanged = f => Password.HasFocus = f,
-                            Margin = new Thickness(0, 12, 0, 0),
+                            Margin = new Thickness(0, 16, 0, 0),
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },
@@ -102,7 +102,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                         {
                             Text = PowerPlannerResources.GetString("CreateAccountPage_TextBlockCreateOfflineAccount.Text"),
                             HorizontalAlignment = HorizontalAlignment.Right,
-                            Margin = new Thickness(0, 12, 0, 0),
+                            Margin = new Thickness(0, 16, 0, 0),
                             Click = CreateLocalAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         } : null

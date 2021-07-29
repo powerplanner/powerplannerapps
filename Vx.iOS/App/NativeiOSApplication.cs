@@ -87,7 +87,7 @@ namespace InterfacesiOS.App
             PortableDispatcher.ObtainDispatcherFunction = () => { return new IOSDispatcher(); };
 
             // Register message dialog
-            PortableMessageDialog.Extension = (messageDialog) => { IOSMessageDialog.Show(messageDialog); return Task.FromResult(true); };
+            PortableMessageDialog.Extension = IOSMessageDialog.Show;
 
             //PortableLocalizedResources.CultureExtension = GetCultureInfo;
 
