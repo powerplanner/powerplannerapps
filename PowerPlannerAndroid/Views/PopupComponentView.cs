@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using InterfacesDroid.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,11 @@ namespace PowerPlannerAndroid.Views
             if (ViewModel.PrimaryCommand != null)
             {
                 SetMenu(Resource.Menu.add_class_menu);
+            }
+
+            if (ViewModel.ImportantForAutofill)
+            {
+                AutofillHelper.EnableForAll(nativeView);
             }
         }
 

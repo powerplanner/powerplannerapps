@@ -13,6 +13,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
     public class ConfirmIdentityViewModel : BaseViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         private AccountDataItem _currAccount;
         public event EventHandler OnIdentityConfirmed;

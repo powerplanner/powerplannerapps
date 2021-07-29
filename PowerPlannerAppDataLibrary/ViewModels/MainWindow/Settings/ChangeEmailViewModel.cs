@@ -13,6 +13,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
     public class ChangeEmailViewModel : BaseViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         public AccountDataItem Account { get; private set; }
 

@@ -181,7 +181,6 @@
     <Compile Include="Views\DayScheduleSnapshotView.cs" />
     <Compile Include="Views\DayView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
-    <Compile Include="Views\ForgotUsernameView.cs" />
     <Compile Include="Views\ListItemHeaders\ListItemHeaderAgendaView.cs" />
     <Compile Include="Views\ListItemHeaders\ListItemHeaderDateGroup.cs" />
     <Compile Include="Views\ListItemHeaders\ListItemHeaderWeightCategoryView.cs" />
@@ -194,7 +193,6 @@
     <Compile Include="Views\ListItems\ListItemTaskOrEventView.cs" />
     <Compile Include="Views\ListItems\ListItemWeightCategorySummaryView.cs" />
     <Compile Include="Views\ListItems\MyScheduleItemView.cs" />
-    <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\MainCalendarItemView.cs" />
     <Compile Include="Views\MainScreenView.cs" />
     <Compile Include="Views\MyAccountView.cs" />
@@ -202,8 +200,6 @@
     <Compile Include="Views\PopupViewHost.cs" />
     <Compile Include="Views\PremiumVersionView.cs" />
     <Compile Include="Views\QuickAddView.cs" />
-    <Compile Include="Views\RecoveredUsernamesView.cs" />
-    <Compile Include="Views\ResetPasswordView.cs" />
     <Compile Include="Views\ScheduleView.cs" />
     <Compile Include="Views\SettingsImageUploadOptionsView.cs" />
     <Compile Include="Views\ListItems\ListItemSemesterView.cs" />
@@ -238,9 +234,6 @@
     <None Include="google-services.template.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\Login.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\Welcome.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -362,15 +355,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SplashScreen.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ForgotUsername.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\RecoveredUsernames.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ResetPassword.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PremiumVersion.xml">

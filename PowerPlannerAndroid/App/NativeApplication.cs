@@ -80,7 +80,6 @@ namespace PowerPlannerAndroid.App
             {
                 // Welcome views
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
-                { typeof(LoginViewModel), typeof(LoginView) },
                 { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
                 { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
 
@@ -107,9 +106,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameView) },
                 { typeof(ChangePasswordViewModel), typeof(ChangePasswordView) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
-                { typeof(ForgotUsernameViewModel), typeof(ForgotUsernameView) },
-                { typeof(RecoveredUsernamesViewModel), typeof(RecoveredUsernamesView) },
-                { typeof(ResetPasswordViewModel), typeof(ResetPasswordView) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },

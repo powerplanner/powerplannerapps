@@ -14,6 +14,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
     public class ResetPasswordViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         public ResetPasswordViewModel(BaseViewModel parent, string username) : base(parent)
         {
