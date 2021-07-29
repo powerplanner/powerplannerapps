@@ -22,11 +22,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
     {
         protected override bool InitialAllowLightDismissValue => false;
 
-        /// <summary>
-        /// Views can set this to false
-        /// </summary>
-        public bool IsUsingConfirmPassword { get; set; } = true;
-
         private List<AccountDataItem> _accounts;
 
         public CreateAccountViewModel(BaseViewModel parent) : base(parent)
@@ -36,15 +31,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             Username = new TextField(required: true, maxLength: 50, inputValidator: new CustomInputValidator(ValidateUsername), ignoreOuterSpaces: true, reportValidatorInvalidInstantly: true);
             Email = new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
             Password = new TextField(required: true, maxLength: 50, minLength: 5);
-            ConfirmPassword = new TextField(required: true, mustMatch: Password);
 
             LoadAccounts();
         }
 
         protected override View Render()
         {
-            IsUsingConfirmPassword = false;
-
             return new ScrollView
             {
                 Content = new LinearLayout
@@ -173,9 +165,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         public TextField Password { get; private set; }
 
         [VxSubscribe]
-        public TextField ConfirmPassword { get; private set; }
-
-        [VxSubscribe]
         public TextField Email { get; private set; }
 
         private bool isOkayToCreate()
@@ -204,10 +193,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
             {
                 // Email isn't required for local accounts
-                { nameof(Email), f => f.Validate(overrideRequired: false) },
-                
-                // Confirm password may not be required by some views
-                { nameof(ConfirmPassword), f => f.Validate(overrideRequired: IsUsingConfirmPassword) }
+                { nameof(Email), f => f.Validate(overrideRequired: false) }
             }))
             {
                 return;
@@ -237,11 +223,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         public async void CreateAccount()
         {
-            if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
-            {
-                // Confirm password may not be required by some views
-                { nameof(ConfirmPassword), f => f.Validate(overrideRequired: IsUsingConfirmPassword) }
-            }))
+            if (!ValidateAllInputs())
             {
                 return;
             }
