@@ -2563,6 +2563,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>{0} (+{1} others)</source>
           <target state="final" state-qualifier="mt-suggestion">{0} (+{1} otros)</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_Sound.Title" translate="yes" xml:space="preserve">
+          <source>Sound effects</source>
+          <target state="final">Efectos de sonido</target>
+        </trans-unit>
+        <trans-unit id="Settings_SoundEffects_Description.Text" translate="yes" xml:space="preserve">
+          <source>Enable or disable the sound effect that plays when completing a task!</source>
+          <target state="final">¡Activa o desactiva el efecto de sonido que se reproduce al completar una tarea!</target>
+        </trans-unit>
       </group>
     </body>
   </file>

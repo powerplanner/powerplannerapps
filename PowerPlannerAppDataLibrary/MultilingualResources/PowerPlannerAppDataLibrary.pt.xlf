@@ -444,7 +444,7 @@ Clique em continuar para fazer o login (que pode causar duplicatas).</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
           <source>Display incomplete tasks</source>
-          <target state="final">Exibir taferas incompletas</target>
+          <target state="final">Exibir tarefas incompletas</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_MainTile_Description.Text" translate="yes" xml:space="preserve">
           <source>These settings affect the main tile, which can be pinned by right clicking Power Planner in your app list, and clicking 'Pin to Start'. The Skip items setting will be inherited by your class tiles, unless you've specifically changed your class tile settings.</source>
@@ -460,7 +460,7 @@ Clique em continuar para fazer o login (que pode causar duplicatas).</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_MainTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
           <source>Display incomplete tasks</source>
-          <target state="final">Exibir taferas incompletas</target>
+          <target state="final">Exibir tarefas incompletas</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_QuickAdd_Description.Text" translate="yes" xml:space="preserve">
           <source>The Quick Add Tile allows you to quickly add a new task or event, by instantly opening the options to add those items when tapped.</source>
@@ -936,7 +936,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
         </trans-unit>
         <trans-unit id="ClassPage_TextBlockTasks.Text" translate="yes" xml:space="preserve">
           <source>TASKS</source>
-          <target state="final">TAFERAS</target>
+          <target state="final">TAREFAS</target>
         </trans-unit>
         <trans-unit id="ClassPage_TextBlockRoundGradesUpHelpBody.Text" translate="yes" xml:space="preserve">
           <source>Typically, you should leave this ENABLED. Rounding grades up means that if your total grade is 89.6%, you will still get a 4.0. Most teachers round grades up like this. Disabling this option will mean that even if you got a 89.9%, you're still going home with a 3.0. If your teacher is evil and doesn't round grades, disable this option.</source>
@@ -1651,7 +1651,7 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         </trans-unit>
         <trans-unit id="ClassPage_ButtonHideOldTasksString" translate="yes" xml:space="preserve">
           <source>Hide old tasks</source>
-          <target state="final">Esconder taferas antigas</target>
+          <target state="final">Esconder tarefas antigas</target>
         </trans-unit>
         <trans-unit id="ClassPage_ButtonShowOldEventsString" translate="yes" xml:space="preserve">
           <source>Show old events</source>
@@ -1659,7 +1659,7 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         </trans-unit>
         <trans-unit id="ClassPage_ButtonShowOldTasksString" translate="yes" xml:space="preserve">
           <source>Show old tasks</source>
-          <target state="final">Mostrar taferas antigas</target>
+          <target state="final">Mostrar tarefas antigas</target>
         </trans-unit>
         <trans-unit id="RelativeDate_NextDayOfWeek" translate="yes" xml:space="preserve">
           <source>Next {0}</source>
@@ -2562,6 +2562,14 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         <trans-unit id="String_ClassPlusXOthers" translate="yes" xml:space="preserve">
           <source>{0} (+{1} others)</source>
           <target state="final" state-qualifier="mt-suggestion">{0} (+{1} outros)</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_Sound.Title" translate="yes" xml:space="preserve">
+          <source>Sound effects</source>
+          <target state="final">Efeitos sonoros</target>
+        </trans-unit>
+        <trans-unit id="Settings_SoundEffects_Description.Text" translate="yes" xml:space="preserve">
+          <source>Enable or disable the sound effect that plays when completing a task!</source>
+          <target state="final">Habilite ou desabilite o efeito sonoro que toca ao completar uma tarefa!</target>
         </trans-unit>
       </group>
     </body>

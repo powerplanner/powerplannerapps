@@ -229,6 +229,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSchoolTimeZone);
             }
 
+            if (IsSoundEffectsVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.VolumeUp,
+                    PowerPlannerResources.GetString("Settings_MainPage_Sound.Title"),
+                    PowerPlannerResources.GetEnabledDisabledString(Account.IsSoundEffectsEnabled),
+                    OpenSoundSettings);
+            }
+
             if (VxPlatform.Current == Platform.Uwp)
             {
                 RenderOption(
@@ -344,6 +354,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public bool IsTwoWeekScheduleVisible => HasAccount;
 
         public bool IsSchoolTimeZoneVisible => HasAccount;
+
+        public bool IsSoundEffectsVisible => HasAccount && VxPlatform.Current == Platform.Uwp;
 
         public bool IsViewYearsAndSemestersVisible => HasAccount && MainScreenViewModel != null;
 
@@ -686,6 +698,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public void OpenSchoolTimeZone()
         {
             Show(new SchoolTimeZoneSettingsViewModel(ParentForSubviews));
+        }
+
+        public void OpenSoundSettings()
+        {
+            ShowPopup(new SoundEffectsViewModel(ParentForSubviews));
         }
 
         public void OpenLanguageSettings()

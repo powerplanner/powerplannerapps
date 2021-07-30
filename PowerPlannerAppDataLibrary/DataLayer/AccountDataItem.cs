@@ -473,6 +473,21 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set => SetProperty(ref _defaultDoesRoundGradesUp, value, nameof(DefaultDoesRoundGradesUp));
         }
 
+        /// <summary>
+        /// Negating since this was added later and will default to false for upgraded accounts.
+        /// </summary>
+        [DataMember]
+        private bool _isSoundEffectsDisabled;
+
+        /// <summary>
+        /// Gets or sets whether sound effects are enabled. Does NOT auto-save. True by default.
+        /// </summary>
+        public bool IsSoundEffectsEnabled
+        {
+            get => !_isSoundEffectsDisabled;
+            set => SetProperty(ref _isSoundEffectsDisabled, !value, nameof(IsSoundEffectsEnabled));
+        }
+
         public async System.Threading.Tasks.Task SaveDefaultGradeScale(GradeScale[] defaultGradeScale)
         {
             _defaultGradeScale = defaultGradeScale;
