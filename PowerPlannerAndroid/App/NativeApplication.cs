@@ -31,7 +31,6 @@ using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAndroid.ViewModel.Settings;
-using PowerPlannerAndroid.Views.WelcomeViews;
 using PowerPlannerAndroid.Views.SettingsViews;
 using PowerPlannerAppDataLibrary.ViewModels;
 
