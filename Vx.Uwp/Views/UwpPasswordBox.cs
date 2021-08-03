@@ -15,6 +15,7 @@ namespace Vx.Uwp.Views
             View.NativePasswordBox.PasswordChanged += View_TextChanged;
             View.NativePasswordBox.LostFocus += NativeTextBox_LostFocus;
             View.NativePasswordBox.GotFocus += NativeTextBox_GotFocus;
+            View.Loaded += View_Loaded;
             View.EnterPressed += View_EnterPressed;
         }
 
@@ -23,6 +24,15 @@ namespace Vx.Uwp.Views
             if (VxView.OnSubmit != null)
             {
                 VxView.OnSubmit();
+            }
+        }
+
+        private void View_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (VxView != null && VxView.AutoFocus)
+            {
+                View.NativePasswordBox.Focus(Windows.UI.Xaml.FocusState.Programmatic);
+                View.NativePasswordBox.SelectAll();
             }
         }
 
