@@ -28,8 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome
                     {
                         new TextBlock
                         {
-                            Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_Message.Text"),
-                            WrapText = true
+                            Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_Message.Text")
                         },
 
                         new AccentButton

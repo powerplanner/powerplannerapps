@@ -42,8 +42,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     new TextBlock
                     {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditRoundGradesUpForThisClass"),
-                        WrapText = true
+                        Text = PowerPlannerResources.GetString("ClassPage_EditRoundGradesUpForThisClass")
                     },
 
                     new TextButton
@@ -67,8 +66,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     {
                         Margin = new Thickness(0, 12, 0, 0),
                         Text = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpBody.Text"),
-                        TextColor = Theme.Current.SubtleForegroundColor,
-                        WrapText = true
+                        TextColor = Theme.Current.SubtleForegroundColor
                     }
                 }
             };

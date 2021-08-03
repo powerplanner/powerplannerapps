@@ -13,7 +13,10 @@ namespace Vx.Views
 
         public Color TextColor { get; set; } = Theme.Current.ForegroundColor;
 
-        public bool WrapText { get; set; }
+        /// <summary>
+        /// Wraps (true) by default.
+        /// </summary>
+        public bool WrapText { get; set; } = true;
 
         public float FontSize { get; set; } = Theme.Current.BodyFontSize;
     }

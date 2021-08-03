@@ -96,8 +96,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
-                { typeof(AboutViewModel), typeof(AboutView) },
-                { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityView) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailView) },
                 { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameView) },
                 { typeof(ChangePasswordViewModel), typeof(ChangePasswordView) },
@@ -108,7 +106,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
-                { typeof(TwoWeekScheduleSettingsViewModel), typeof(SettingsTwoWeekScheduleView) },
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },
                 { typeof(WidgetsViewModel), typeof(SettingsWidgetsView) },
                 { typeof(WidgetAgendaViewModel), typeof(SettingsWidgetAgendaView) },
@@ -119,9 +116,7 @@ namespace PowerPlannerAndroid.App
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
 
                 // Settings
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
-                { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsView) }
+                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) }
             };
         }
 

@@ -622,7 +622,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             VxPlatform.Current == Platform.Android ? new TextBlock
                             {
                                 Text = PowerPlannerResources.GetString("TextBlock_To.Text"),
-                                VerticalAlignment = VerticalAlignment.Center
+                                VerticalAlignment = VerticalAlignment.Center,
+                                WrapText = false
                             } : null,
 
                             new EndTimePicker
@@ -646,7 +647,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         Text = PowerPlannerResources.GetString("DifferentTimeZoneWarning.Text"),
                         FontSize = Theme.Current.CaptionFontSize,
                         TextColor = Color.Red,
-                        WrapText = true,
                         Margin = new Thickness(0, 6, 0, 0)
                     } : null,
 
@@ -769,7 +769,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         Text = PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidDaysOfWeek.Content"),
                         TextColor = Color.Red,
                         FontWeight = FontWeights.Bold,
-                        WrapText = true,
                         Margin = new Thickness(0, 6, 0, 0)
                     } : null,
 
@@ -791,7 +790,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         Text = PowerPlannerResources.GetString("EditingClassScheduleItemView_TextBlockWeekDescription.Text"),
                         FontSize = Theme.Current.CaptionFontSize,
                         TextColor = Theme.Current.SubtleForegroundColor,
-                        WrapText = true,
                         Margin = new Thickness(0, 6, 0, 0)
                     },
 
@@ -835,22 +833,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                 {
                                     new TextBlock
                                     {
-                                        Text = group.TimeString
+                                        Text = group.TimeString,
+                                        WrapText = false
                                     },
 
                                     new TextBlock
                                     {
-                                        Text = group.DaysString
+                                        Text = group.DaysString,
+                                        WrapText = false
                                     },
 
                                     string.IsNullOrWhiteSpace(group.Room) ? null : new TextBlock
                                     {
-                                        Text = group.Room
+                                        Text = group.Room,
+                                        WrapText = false
                                     },
 
                                     group.ScheduleWeek == PowerPlannerSending.Schedule.Week.BothWeeks ? null : new TextBlock
                                     {
-                                        Text = group.ScheduleWeekString
+                                        Text = group.ScheduleWeekString,
+                                        WrapText = false
                                     }
                                 }
                             }

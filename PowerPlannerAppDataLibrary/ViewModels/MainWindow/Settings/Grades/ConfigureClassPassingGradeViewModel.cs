@@ -45,7 +45,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("Settings_GradeOptions_ListItemPassingGrade.Title"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     },
 
                     new NumberTextBox
@@ -58,7 +59,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     {
                         Text = PowerPlannerResources.GetString("Settings_GradeOptions_PassingGrade_Explanation.Text"),
                         TextColor = Theme.Current.SubtleForegroundColor,
-                        WrapText = true,
                         Margin = new Thickness(0, 12, 0, 0)
                     }
                 }

@@ -41,7 +41,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         {
                             Text = Message,
                             FontSize = Theme.Current.CaptionFontSize,
-                            WrapText = true,
                             Margin = new Thickness(0, 0, 0, 16)
                         } : null,
 

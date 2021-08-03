@@ -34,6 +34,7 @@ using System.Collections.Specialized;
 using Google.Android.Material.BottomNavigation;
 using AndroidX.DrawerLayout.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -208,7 +209,7 @@ namespace PowerPlannerAndroid.Views
                                 .SetTitle("★ Review App ★")
                                 .SetMessage("Thanks for using Power Planner! If you love the app, please leave a rating in the Store! If you have any suggestions or issues, please email me!")
                                 .SetNeutralButton("Review", delegate { OpenReview(); }) // Neutral is displayed more prominently
-                                .SetPositiveButton("Email Dev", delegate { AboutView.EmailDeveloper(Context, base.ViewModel); })
+                                .SetPositiveButton("Email Dev", delegate { AboutViewModel.EmailDeveloper(); })
                                 .SetNegativeButton("Close", delegate { });
 
                             builder.Create().Show();

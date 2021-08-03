@@ -3,19 +3,22 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ReminderSettingsViewModel : BaseViewModel
+    public class ReminderSettingsViewModel : PopupComponentViewModel
     {
         private AccountDataItem _account;
 
         public ReminderSettingsViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("Settings_Reminders_Header.Text");
+
             _account = base.FindAncestor<MainWindowViewModel>().CurrentAccount;
             if (_account != null)
             {
@@ -26,6 +29,86 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 IsEnabled = true;
             }
+        }
+
+        private bool SupportsClassReminders = VxPlatform.Current != Platform.iOS;
+
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_RemindersWithClasses_Description.Text")
+                        },
+
+                        SupportsClassReminders ? RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersHeader.Text")) : null,
+
+                        SupportsClassReminders ? new ComboBox
+                        {
+                            Header = PowerPlannerResources.GetString("String_RemindMe"),
+                            Items = ClassReminderOptions,
+                            SelectedItem = SelectedClassReminderOption,
+                            SelectedItemChanged = i => SelectedClassReminderOption = i as string,
+                            IsEnabled = IsEnabled,
+                            Margin = new Thickness(0, 6, 0, 0)
+                        } : null,
+
+                        SupportsClassReminders ? RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersDescription.Text")) : null,
+
+                        RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_TaskEventRemindersHeader.Text")),
+
+                        new Switch
+                        {
+                            Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayBefore.Header"),
+                            IsOn = RemindersDayBefore,
+                            IsOnChanged = v => RemindersDayBefore = v,
+                            Margin = new Thickness(0, 12, 0, 0),
+                            IsEnabled = IsEnabled
+                        },
+
+                        RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayBeforeDescription.Text")),
+
+                        new Switch
+                        {
+                            Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayOf.Header"),
+                            IsOn = RemindersDayOf,
+                            IsOnChanged = v => RemindersDayOf = v,
+                            Margin = new Thickness(0, 12, 0, 0),
+                            IsEnabled = IsEnabled
+                        },
+
+                        RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayOfDescription.Text"))
+                    }
+                }
+            };
+        }
+
+        private TextBlock RenderCaption(string text)
+        {
+            return new TextBlock
+            {
+                Text = text,
+                FontSize = Theme.Current.CaptionFontSize,
+                TextColor = Theme.Current.SubtleForegroundColor,
+                Margin = new Thickness(0, 6, 0, 0)
+            };
+        }
+
+        private TextBlock RenderHeader(string text)
+        {
+            return new TextBlock
+            {
+                Text = text,
+                FontSize = Theme.Current.TitleFontSize,
+                FontWeight = FontWeights.SemiBold,
+                Margin = new Thickness(0, 24, 0, 0)
+            };
         }
 
         private bool _isEnabled;
@@ -120,11 +203,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             try
             {
                 IsEnabled = false;
-                
-                Debug.WriteLine("Reminder settings changed, saving...");
+
+                System.Diagnostics.Debug.WriteLine("Reminder settings changed, saving...");
                 await AccountsManager.Save(_account);
                 await RemindersExtension.Current?.ResetReminders(_account, await AccountDataStore.Get(_account.LocalAccountId));
-                Debug.WriteLine("Reminder settings changed, saved.");
+                System.Diagnostics.Debug.WriteLine("Reminder settings changed, saved.");
             }
 
             catch (Exception ex)
@@ -144,7 +227,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 IsEnabled = false;
 
-                Debug.WriteLine("Class reminder settings changed, saving...");
+                System.Diagnostics.Debug.WriteLine("Class reminder settings changed, saving...");
                 await AccountsManager.Save(_account);
 
                 if (_account.AreClassRemindersEnabled())
@@ -156,7 +239,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     ClassRemindersExtension.Current?.RemoveAllReminders(_account);
                 }
 
-                Debug.WriteLine("Class reminder settings changed, saved.");
+                System.Diagnostics.Debug.WriteLine("Class reminder settings changed, saved.");
             }
 
             catch (Exception ex)

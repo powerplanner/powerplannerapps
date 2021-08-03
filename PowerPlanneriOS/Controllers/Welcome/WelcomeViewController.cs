@@ -6,8 +6,8 @@ using UIKit;
 using InterfacesiOS.Views;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
-using PowerPlanneriOS.ViewModels;
 using PowerPlanneriOS.Helpers;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 
 namespace PowerPlanneriOS.Welcome
 {
@@ -141,7 +141,7 @@ namespace PowerPlanneriOS.Welcome
         public void OpenAboutPageAsPopup()
         {
             var mainWindowViewModel = ViewModel.FindAncestor<MainWindowViewModel>();
-            mainWindowViewModel.ShowPopup(new AboutViewModelAsPopup(mainWindowViewModel));
+            mainWindowViewModel.ShowPopup(new AboutViewModel(mainWindowViewModel));
         }
     }
 }

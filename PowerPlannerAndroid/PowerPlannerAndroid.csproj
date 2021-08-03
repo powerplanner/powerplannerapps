@@ -108,6 +108,7 @@
     <Compile Include="Extensions\DroidBrowserExtension.cs" />
     <Compile Include="Extensions\DroidClassRemindersExtension.cs" />
     <Compile Include="Extensions\DroidDateTimeFormatterExtension.cs" />
+    <Compile Include="Extensions\DroidEmailExtension.cs" />
     <Compile Include="Extensions\DroidImagePickerExtension.cs" />
     <Compile Include="Extensions\DroidNetworkInfoExtension.cs" />
     <Compile Include="Extensions\DroidPushExtension.cs" />
@@ -144,7 +145,6 @@
     <Compile Include="ViewModel\Settings\WidgetScheduleViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetAgendaViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
-    <Compile Include="Views\AboutView.cs" />
     <Compile Include="Views\AddClassView.cs" />
     <Compile Include="Views\AddGradeView.cs" />
     <Compile Include="Views\AddHolidayView.cs" />
@@ -166,7 +166,6 @@
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\ConfirmIdentityView.cs" />
     <Compile Include="Views\Controls\AddTaskOrEventRepeatsSubControl.cs" />
     <Compile Include="Views\Controls\DayPagerControl.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
@@ -203,9 +202,6 @@
     <Compile Include="Views\SettingsImageUploadOptionsView.cs" />
     <Compile Include="Views\ListItems\ListItemSemesterView.cs" />
     <Compile Include="Views\ListItems\ListItemYearView.cs" />
-    <Compile Include="Views\SettingsTwoWeekScheduleView.cs" />
-    <Compile Include="Views\SettingsViews\ReminderSettingsView.cs" />
-    <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.cs" />
     <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.cs" />
     <Compile Include="Views\SettingsWidgetAgendaView.cs" />
     <Compile Include="Views\SettingsWidgetScheduleView.cs" />
@@ -330,12 +326,6 @@
     <AndroidResource Include="Resources\layout\ListItemSemesterClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\About.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfirmIdentity.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ChangeEmail.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -397,30 +387,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\AddHoliday.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOptionPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOption.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeekPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeek.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsTwoWeekSchedule.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemCurrentWeekPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemWeekChangesOnPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemDayOfWeek.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\WidgetAgenda.xml">
@@ -1322,24 +1288,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\outline_info_black_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsSchoolTimeZoneSettings.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemSelectedSchoolTimeZonePreview.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeZone.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_access_time_48dp.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1410,18 +1358,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_today_white_24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsReminders.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemClassRemindersOptionPreview.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\baseline_notifications_black_48.png" />

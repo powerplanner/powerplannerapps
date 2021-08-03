@@ -31,8 +31,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     {
                         new TextBlock
                         {
-                            Text = PowerPlannerResources.GetString("Settings_SoundEffects_Description.Text"),
-                            WrapText = true
+                            Text = PowerPlannerResources.GetString("Settings_SoundEffects_Description.Text")
                         },
 
                         new Switch

@@ -74,8 +74,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     new TextBlock
                     {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditGradeScaleForThisClass"),
-                        WrapText = true
+                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditGradeScaleForThisClass")
                     },
 
                     new TextButton

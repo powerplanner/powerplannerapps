@@ -35,7 +35,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         new TextBlock
                         {
                             Text = PowerPlannerResources.GetString("ForgotUsername_String_EnterEmailAddressExplanation"),
-                            WrapText = true,
                             TextColor = Theme.Current.SubtleForegroundColor
                         },
 

@@ -49,7 +49,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     },
 
                     new NumberTextBox

@@ -42,8 +42,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 {
                     new TextBlock
                     {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditAverageGradesForThisClass"),
-                        WrapText = true
+                        Text = PowerPlannerResources.GetString("ClassPage_EditAverageGradesForThisClass")
                     },
 
                     new TextButton
@@ -67,8 +66,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     {
                         Margin = new Thickness(0, 12, 0, 0),
                         Text = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpBody.Text"),
-                        TextColor = Theme.Current.SubtleForegroundColor,
-                        WrapText = true
+                        TextColor = Theme.Current.SubtleForegroundColor
                     }
                 }
             };

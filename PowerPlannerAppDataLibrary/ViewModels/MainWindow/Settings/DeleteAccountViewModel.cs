@@ -38,7 +38,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         {
                             Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_Description.Text"),
                             FontSize = Theme.Current.TitleFontSize,
-                            WrapText = true,
                             Margin = new Thickness(0, 0, 0, 24)
                         },
 

@@ -34,7 +34,6 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlanneriOS.Extensions;
 using PowerPlannerAppDataLibrary.App;
 using System.Linq;
-using PowerPlanneriOS.ViewModels;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using UserNotifications;
@@ -99,18 +98,12 @@ namespace PowerPlanneriOS
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) },
-                { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityViewController) },
                 { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameViewController) },
                 { typeof(ChangePasswordViewModel), typeof(ChangePasswordViewController) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailViewController) },
                 { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineViewController) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsViewController) },
-                { typeof(AboutViewModel), typeof(AboutViewController) },
-                { typeof(AboutViewModelAsPopup), typeof(AboutViewControllerAsPopup) },
-                { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsViewController) },
-                { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsViewController) },
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsViewController) }
+                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) }
             };
         }
 
@@ -214,6 +207,7 @@ namespace PowerPlanneriOS
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
             PushExtension.Current = new iOSPushExtension();
             BrowserExtension.Current = new iOSBrowserExtension();
+            EmailExtension.Current = new iOSEmailExtension();
 
             if (SdkSupportHelper.IsNotificationsSupported)
             {

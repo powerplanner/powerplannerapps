@@ -155,6 +155,7 @@
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
     <Compile Include="Extensions\UWPBrowserExtension.cs" />
+    <Compile Include="Extensions\UWPEmailExtension.cs" />
     <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
@@ -255,9 +256,6 @@
     <Compile Include="Views\SettingsViews\CalendarIntegrationClassesView.xaml.cs">
       <DependentUpon>CalendarIntegrationClassesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ConfirmIdentityView.xaml.cs">
-      <DependentUpon>ConfirmIdentityView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainContentDayView.xaml.cs">
       <DependentUpon>MainContentDayView.xaml</DependentUpon>
     </Compile>
@@ -275,9 +273,6 @@
     </Compile>
     <Compile Include="Views\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\AboutView.xaml.cs">
-      <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\BaseSettingsSplitView.xaml.cs">
       <DependentUpon>BaseSettingsSplitView.xaml</DependentUpon>
@@ -312,9 +307,6 @@
     <Compile Include="Views\SettingsViews\QuickAddTileView.xaml.cs">
       <DependentUpon>QuickAddTileView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ReminderSettingsView.xaml.cs">
-      <DependentUpon>ReminderSettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\ScheduleTileView.xaml.cs">
       <DependentUpon>ScheduleTileView.xaml</DependentUpon>
     </Compile>
@@ -326,9 +318,6 @@
     </Compile>
     <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml.cs">
       <DependentUpon>SchoolTimeZoneSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml.cs">
-      <DependentUpon>TwoWeekScheduleSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\WebContentView.xaml.cs">
       <DependentUpon>WebContentView.xaml</DependentUpon>
@@ -638,10 +627,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\ConfirmIdentityView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MainContentDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -663,10 +648,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClassesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -714,10 +695,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\ReminderSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\ScheduleTileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -733,10 +710,6 @@
     <Page Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\WebContentView.xaml">
       <SubType>Designer</SubType>

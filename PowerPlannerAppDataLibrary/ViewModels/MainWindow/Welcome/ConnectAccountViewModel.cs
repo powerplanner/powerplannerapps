@@ -27,8 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome
                     {
                         new TextBlock
                         {
-                            Text = PowerPlannerResources.GetString("Welcome_ConnectAccountPage_Message.Text"),
-                            WrapText = true
+                            Text = PowerPlannerResources.GetString("Welcome_ConnectAccountPage_Message.Text")
                         },
 
                         new AccentButton
@@ -41,7 +40,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome
                         new TextBlock
                         {
                             Text = PowerPlannerResources.GetString("Welcome_ConnectAccountPage_NeedHelp.Text"),
-                            WrapText = true,
                             FontSize = Theme.Current.CaptionFontSize,
                             Margin = new Thickness(0, 12, 0, 0)
                         }

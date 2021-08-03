@@ -91,7 +91,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                             layout.Children.Add(new TextBlock
                             {
                                 Text = year.Name + " > " + semester.Name,
-                                Margin = new Thickness(0, 12, 0, 0)
+                                Margin = new Thickness(0, 12, 0, 0),
+                                WrapText = false
                             });
 
                             foreach (var c in semester.Classes)

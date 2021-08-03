@@ -93,11 +93,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     RenderRow(new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockStartingGrade.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockGPA.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TransparentContentButton
                     {
                         Opacity = 0,

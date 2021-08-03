@@ -50,11 +50,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     RenderRow(new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockName.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockWeight.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TransparentContentButton
                     {
                         Opacity = 0,

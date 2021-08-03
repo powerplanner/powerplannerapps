@@ -36,14 +36,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         new TextBlock
                         {
                             Text = PowerPlannerResources.GetString("ForgotUsername_String_YourUsernames"),
-                            TextColor = Theme.Current.SubtleForegroundColor,
-                            WrapText = true
+                            TextColor = Theme.Current.SubtleForegroundColor
                         },
 
                         new TextBlock
                         {
                             Text = string.Join("\n", Usernames),
-                            WrapText = true,
                             Margin = new Thickness(0, 6, 0, 0)
                         }
                     }

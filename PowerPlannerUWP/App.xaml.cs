@@ -133,7 +133,6 @@ namespace PowerPlannerUWP
                 { typeof(YearsViewModel), typeof(YearsView) },
 
                 // Settings views
-                { typeof(AboutViewModel), typeof(AboutView) },
                 { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },
                 { typeof(SyncOptionsViewModel), typeof(BaseSettingsSplitView) },
                 { typeof(CalendarIntegrationViewModel), typeof(BaseSettingsSplitView) },
@@ -144,19 +143,15 @@ namespace PowerPlannerUWP
                 { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameView) },
                 { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
                 { typeof(ClassTileViewModel), typeof(ClassTileView) },
-                { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityView) },
                 { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(ImageUploadOptionsView) },
                 { typeof(MainTileViewModel), typeof(MainTileView) },
                 { typeof(PushSettingsViewModel), typeof(PushSettingsView) },
                 { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
-                { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsView) },
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
-                { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
                 { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }
