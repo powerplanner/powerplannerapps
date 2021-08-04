@@ -98,8 +98,6 @@ namespace PowerPlanneriOS
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) },
-                { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameViewController) },
-                { typeof(ChangePasswordViewModel), typeof(ChangePasswordViewController) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailViewController) },
                 { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineViewController) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsViewController) },

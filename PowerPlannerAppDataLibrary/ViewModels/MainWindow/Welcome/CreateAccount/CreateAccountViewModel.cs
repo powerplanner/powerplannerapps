@@ -25,13 +25,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         private List<AccountDataItem> _accounts;
 
+        public static TextField GeneratePasswordTextField()
+        {
+            return new TextField(required: true, maxLength: 50, minLength: 5);
+        }
+
         public CreateAccountViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("CreateAccountPage.Title");
 
             Username = new TextField(required: true, maxLength: 50, inputValidator: new CustomInputValidator(ValidateUsername), ignoreOuterSpaces: true, reportValidatorInvalidInstantly: true);
             Email = new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
-            Password = new TextField(required: true, maxLength: 50, minLength: 5);
+            Password = GeneratePasswordTextField();
 
             LoadAccounts();
         }
@@ -66,7 +71,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             InputScope = InputScope.Email,
                             ValidationState = Email.ValidationState,
                             HasFocusChanged = f => Email.HasFocus = f,
-                            Margin = new Thickness(0, 16, 0, 0),
+                            Margin = new Thickness(0, 18, 0, 0),
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },
@@ -78,7 +83,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             Text = Bind<string>(nameof(Password.Text), Password),
                             ValidationState = Password.ValidationState,
                             HasFocusChanged = f => Password.HasFocus = f,
-                            Margin = new Thickness(0, 16, 0, 0),
+                            Margin = new Thickness(0, 18, 0, 0),
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },

@@ -139,8 +139,6 @@ namespace PowerPlannerUWP
                 { typeof(CalendarIntegrationClassesViewModel), typeof(CalendarIntegrationClassesView) },
                 { typeof(CalendarIntegrationTasksViewModel), typeof(CalendarIntegrationTasksView) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailView) },
-                { typeof(ChangePasswordViewModel), typeof(ChangePasswordView) },
-                { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameView) },
                 { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
                 { typeof(ClassTileViewModel), typeof(ClassTileView) },
                 { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineView) },

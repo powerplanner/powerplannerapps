@@ -154,8 +154,6 @@
     <Compile Include="Views\AgendaView.cs" />
     <Compile Include="Views\CalendarMainView.cs" />
     <Compile Include="Views\ChangeEmailView.cs" />
-    <Compile Include="Views\ChangePasswordView.cs" />
-    <Compile Include="Views\ChangeUsernameView.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
     <Compile Include="Views\ClassWhatIfTopHeaderView.cs" />
@@ -327,12 +325,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ChangeEmail.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangeUsername.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangePassword.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\UpdateCredentials.xml">

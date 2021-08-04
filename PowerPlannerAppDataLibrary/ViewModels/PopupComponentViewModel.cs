@@ -1,6 +1,7 @@
 ﻿using System;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels
 {
@@ -20,6 +21,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         protected void UseCancelForBack()
         {
             BackOverride = new Tuple<string, Action>("Cancel", null);
+        }
+
+        /// <summary>
+        /// Renders a typical scroll view with padding and items arranged vertically
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns>
+        protected View RenderGenericPopupContent(params View[] views)
+        {
+            var linearLayout = new LinearLayout
+            {
+                Margin = new Thickness(Theme.Current.PageMargin)
+            };
+            linearLayout.Children.AddRange(views);
+
+            return new ScrollView
+            {
+                Content = linearLayout
+            };
         }
     }
 

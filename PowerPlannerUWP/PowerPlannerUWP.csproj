@@ -247,12 +247,6 @@
     <Compile Include="Views\ScheduleViews\HolidayScheduleItemView.xaml.cs">
       <DependentUpon>HolidayScheduleItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ChangePasswordView.xaml.cs">
-      <DependentUpon>ChangePasswordView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ChangeUsernameView.xaml.cs">
-      <DependentUpon>ChangeUsernameView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\CalendarIntegrationClassesView.xaml.cs">
       <DependentUpon>CalendarIntegrationClassesView.xaml</DependentUpon>
     </Compile>
@@ -612,14 +606,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScheduleViews\HolidayScheduleItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ChangePasswordView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ChangeUsernameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -97,8 +97,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(ChangeEmailViewModel), typeof(ChangeEmailView) },
-                { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameView) },
-                { typeof(ChangePasswordViewModel), typeof(ChangePasswordView) },
                 { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
