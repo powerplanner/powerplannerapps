@@ -140,7 +140,6 @@
     <Compile Include="Controllers\PopupViewControllerWithScrolling.cs" />
     <Compile Include="Controllers\PremiumVersionViewController.cs" />
     <Compile Include="Controllers\ScheduleViewController.cs" />
-    <Compile Include="Controllers\Settings\ChangeEmailViewController.cs" />
     <Compile Include="Controllers\Settings\ConvertToOnlineViewController.cs" />
     <Compile Include="Controllers\Settings\Grades\ConfigureClassGradesViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />

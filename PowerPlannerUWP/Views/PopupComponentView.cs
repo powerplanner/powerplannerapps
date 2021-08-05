@@ -21,7 +21,7 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelSetOverride();
 
-            Title = ViewModel.Title.ToUpper();
+            Title = ViewModel.Title?.ToUpper();
 
             var primaryCommand = ViewModel.PrimaryCommand;
             if (primaryCommand != null)

@@ -30,12 +30,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             return new TextField(required: true, maxLength: 50, minLength: 5);
         }
 
+        public static TextField GenerateEmailTextField()
+        {
+            return new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
+        }
+
         public CreateAccountViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("CreateAccountPage.Title");
 
             Username = new TextField(required: true, maxLength: 50, inputValidator: new CustomInputValidator(ValidateUsername), ignoreOuterSpaces: true, reportValidatorInvalidInstantly: true);
-            Email = new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
+            Email = GenerateEmailTextField();
             Password = GeneratePasswordTextField();
 
             LoadAccounts();

@@ -45,7 +45,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     Text = PowerPlannerResources.GetString("Settings_ChangeUsernamePage_ButtonUpdateUsername.Content"),
                     Click = Update,
-                    Margin = new Thickness(0, 18, 0, 0)
+                    Margin = new Thickness(0, 24, 0, 0)
                 }
             );
         }

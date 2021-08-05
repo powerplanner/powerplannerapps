@@ -271,9 +271,6 @@
     <Compile Include="Views\SettingsViews\BaseSettingsSplitView.xaml.cs">
       <DependentUpon>BaseSettingsSplitView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ChangeEmailView.xaml.cs">
-      <DependentUpon>ChangeEmailView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\ClassTileView.xaml.cs">
       <DependentUpon>ClassTileView.xaml</DependentUpon>
     </Compile>
@@ -638,10 +635,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\BaseSettingsSplitView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ChangeEmailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
