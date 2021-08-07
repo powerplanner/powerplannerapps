@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
@@ -283,6 +284,37 @@ namespace Vx.Views
             var bound = VxState<T>.CreateBound(propertyName, source);
             bound.ValueChanged += State_ValueChanged;
             return bound;
+        }
+
+        private Dictionary<string, object> _states = new Dictionary<string, object>();
+
+        protected T GetState<T>(T defaultValue = default(T), [CallerMemberName]string stateName = null)
+        {
+            if (_states.TryGetValue(stateName, out object stateValue) && stateValue is T)
+            {
+                return (T)stateValue;
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        protected void SetState<T>(T value, [CallerMemberName]string stateName = null)
+        {
+            bool changed = false;
+
+            if (_states.TryGetValue(stateName, out object stateValue))
+            {
+                changed = !object.Equals(value, stateValue);
+            }
+
+            _states[stateName] = value;
+
+            if (changed)
+            {
+                MarkDirty();
+            }
         }
     }
 }

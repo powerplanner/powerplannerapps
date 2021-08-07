@@ -50,27 +50,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             );
         }
 
-        private string _username = "";
+        public string Username { get => GetState<string>(); set { SetState(value); Error = null; } }
 
-        public string Username
-        {
-            get { return _username; }
-            set { SetProperty(ref _username, value, nameof(Username)); Error = null; }
-        }
+        public bool IsUpdatingUsername { get => GetState<bool>(); set => SetState(value); }
 
-        private bool _isUpdatingUsername;
-        public bool IsUpdatingUsername
-        {
-            get { return _isUpdatingUsername; }
-            set { SetProperty(ref _isUpdatingUsername, value, nameof(IsUpdatingUsername)); }
-        }
-
-        private string _error;
-        public string Error
-        {
-            get => _error;
-            set => SetProperty(ref _error, value, nameof(Error));
-        }
+        public string Error { get => GetState<string>(); set => SetState(value); }
 
         public async void Update()
         {

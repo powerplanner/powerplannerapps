@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerPlannerSending", "shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj", "{B6BD41B2-8886-4E5F-AEA4-4DB5242A2045}"
 EndProject
@@ -31,7 +31,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vx.iOS", "Vx.iOS\Vx.iOS.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vx", "Vx\Vx.csproj", "{EE27EAFC-CF11-4122-A161-6FEC6336B0E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vx.Test", "Tests\Vx.Test\Vx.Test.csproj", "{AA11346D-5CB8-4A24-A30D-2613F2484F9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vx.Test", "Tests\Vx.Test\Vx.Test.csproj", "{AA11346D-5CB8-4A24-A30D-2613F2484F9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "snippets", "snippets", "{C09752FE-1F8D-49AC-B92D-C1F87124EBF1}"
+	ProjectSection(SolutionItems) = preProject
+		snippets\PropVxSnippet.snippet = snippets\PropVxSnippet.snippet
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
