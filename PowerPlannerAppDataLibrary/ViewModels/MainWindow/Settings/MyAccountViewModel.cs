@@ -71,16 +71,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         new CheckBox
                         {
                             Text = PowerPlannerResources.GetString("Settings_MyAccount_CheckBoxRememberUsername.Content"),
-                            IsChecked = RememberUsername,
-                            IsCheckedChanged = v => RememberUsername = v,
+                            IsChecked = VxValue.Create(RememberUsername, v => RememberUsername = v),
                             Margin = new Thickness(0, 24, 0, 0)
                         },
 
                         new CheckBox
                         {
                             Text = PowerPlannerResources.GetString("Settings_MyAccount_CheckBoxRememberPassword.Content"),
-                            IsChecked = RememberPassword,
-                            IsCheckedChanged = v => RememberPassword = v,
+                            IsChecked = VxValue.Create(RememberPassword, v => RememberPassword = v),
                             IsEnabled = CurrentAccount.IsRememberPasswordPossible,
                             Margin = new Thickness(0, 6, 0, 0)
                         },
@@ -88,8 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         new CheckBox
                         {
                             Text = PowerPlannerResources.GetString("Settings_MyAccount_CheckBoxAutoLogin.Content"),
-                            IsChecked = AutoLogin,
-                            IsCheckedChanged = v => AutoLogin = v,
+                            IsChecked = VxValue.Create(AutoLogin, v => AutoLogin = v),
                             IsEnabled = CurrentAccount.IsAutoLoginPossible,
                             Margin = new Thickness(0, 6, 0, 0)
                         },

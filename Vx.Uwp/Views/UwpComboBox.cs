@@ -16,9 +16,9 @@ namespace Vx.Uwp.Views
 
         private void View_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (VxView.SelectedItem != View.SelectedItem)
+            if (VxView.SelectedItem != null && VxView.SelectedItem.Value != View.SelectedItem)
             {
-                VxView.SelectedItemChanged(View.SelectedItem);
+                VxView.SelectedItem.ValueChanged?.Invoke(View.SelectedItem);
             }
         }
 

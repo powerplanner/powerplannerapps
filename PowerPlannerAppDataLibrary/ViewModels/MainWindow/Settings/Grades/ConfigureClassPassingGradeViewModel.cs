@@ -27,13 +27,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             UseCancelForBack();
             PrimaryCommand = PopupCommand.Save(Save);
 
-            _passingGrade = new VxState<double?>(c.PassingGrade * 100);
+            PassingGrade = c.PassingGrade * 100;
         }
 
         /// <summary>
         /// This is represented as 60 rather than 0.6 for easier display purposes on the control.
         /// </summary>
-        private VxState<double?> _passingGrade;
+        public double? PassingGrade { get => GetState<double?>(); set => SetState(value); }
 
         protected override View Render()
         {
@@ -51,7 +51,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                     new NumberTextBox
                     {
-                        Number = _passingGrade,
+                        Number = VxValue.Create(PassingGrade, v => PassingGrade = v),
                         PlaceholderText = PowerPlannerResources.GetExamplePlaceholderString(60.ToString())
                     },
 
@@ -67,7 +67,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public void Save()
         {
-            if (_passingGrade.Value == null || _passingGrade.Value.Value < 0)
+            if (PassingGrade == null || PassingGrade.Value < 0)
             {
                 new PortableMessageDialog("You must enter a valid non-negative number.", "Invalid grade").Show();
                 return;
@@ -81,7 +81,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 var c = new DataItemClass()
                 {
                     Identifier = Class.Identifier,
-                    PassingGrade = _passingGrade.Value.Value / 100
+                    PassingGrade = PassingGrade.Value / 100
                 };
 
                 changes.Add(c);

@@ -54,10 +54,7 @@ namespace Vx.Uwp.Views
 
         private void View_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (VxView.Text != null)
-            {
-                VxView.Text.Value = View.Text;
-            }
+            VxView.Text?.ValueChanged?.Invoke(View.Text);
         }
 
         protected override void ApplyProperties(Vx.Views.TextBox oldView, Vx.Views.TextBox newView)

@@ -55,39 +55,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                     Margin = new Thickness(Theme.Current.PageMargin),
                     Children =
                     {
-                        new TextBox
+                        new TextBox(Username)
                         {
                             Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.PlaceholderText"),
-                            Text = Bind<string>(nameof(Username.Text), Username),
                             InputScope = InputScope.Username,
-                            ValidationState = Username.ValidationState,
-                            HasFocusChanged = f => Username.HasFocus = f,
                             AutoFocus = true,
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },
 
-                        new TextBox
+                        new TextBox(Email)
                         {
                             Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.PlaceholderText"),
-                            Text = Bind<string>(nameof(Email.Text), Email),
                             InputScope = InputScope.Email,
-                            ValidationState = Email.ValidationState,
-                            HasFocusChanged = f => Email.HasFocus = f,
                             Margin = new Thickness(0, 18, 0, 0),
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },
 
-                        new PasswordBox
+                        new PasswordBox(Password)
                         {
                             Header = PowerPlannerResources.GetString("CreateAccountPage_PasswordBoxPassword.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_PasswordBoxPassword.PlaceholderText"),
-                            Text = Bind<string>(nameof(Password.Text), Password),
-                            ValidationState = Password.ValidationState,
-                            HasFocusChanged = f => Password.HasFocus = f,
                             Margin = new Thickness(0, 18, 0, 0),
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount

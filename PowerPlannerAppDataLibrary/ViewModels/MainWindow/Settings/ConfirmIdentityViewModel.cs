@@ -53,7 +53,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                         new PasswordBox
                         {
-                            Text = Bind<string>(nameof(Password), this),
+                            Text = VxValue.Create(Password, t => { Password = t; IncorrectPassword = false; }),
                             Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_TextBoxCurrentPassword.PlaceholderText"),
                             Margin = new Thickness(0, 12, 0, 0),
@@ -81,20 +81,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             };
         }
 
-        private string _password = "";
+        public string Password { get => GetState<string>(); set => SetState(value); }
 
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); IncorrectPassword = false; }
-        }
 
-        private bool _incorrectPassword;
-        public bool IncorrectPassword
-        {
-            get => _incorrectPassword;
-            set => SetProperty(ref _incorrectPassword, value, nameof(IncorrectPassword));
-        }
+        public bool IncorrectPassword { get => GetState<bool>(); set => SetState(value); }
 
         public void Continue()
         {

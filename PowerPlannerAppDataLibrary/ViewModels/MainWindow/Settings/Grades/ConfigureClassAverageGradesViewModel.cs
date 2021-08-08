@@ -57,8 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new Switch
                     {
                         Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
-                        IsOn = _averageGrades,
-                        IsOnChanged = Save,
+                        IsOn = VxValue.Create(_averageGrades.Value, Save),
                         IsEnabled = _isEnabled
                     },
 

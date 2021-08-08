@@ -34,12 +34,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             layout.Children.Add(new Switch
             {
                 Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
-                IsOn = _averageGrades,
-                IsOnChanged = isOn =>
+                IsOn = VxValue.Create(_averageGrades.Value, isOn =>
                 {
                     _averageGrades.Value = isOn;
                     _hasUnsavedChanges.Value = Account.DefaultDoesAverageGradeTotals != isOn;
-                },
+                }),
                 IsEnabled = IsEnabled
             });
 

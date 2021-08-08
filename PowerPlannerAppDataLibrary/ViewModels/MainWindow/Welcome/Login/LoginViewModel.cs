@@ -47,7 +47,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         new TextBox
                         {
                             Header = PowerPlannerResources.GetString("LoginPage_TextBoxUsername.Header"),
-                            Text = Bind<string>(nameof(Username), this),
+                            Text = VxValue.Create(Username, t => Username = t),
                             InputScope = InputScope.Username,
                             AutoFocus = true,
                             IsEnabled = !IsLoggingInOnline
@@ -56,7 +56,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         new PasswordBox
                         {
                             Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
-                            Text = Bind<string>(nameof(Password), this),
+                            Text = VxValue.Create(Password, t => Password = t),
                             Margin = new Thickness(0, 16, 0, 0),
                             IsEnabled = !IsLoggingInOnline
                         },

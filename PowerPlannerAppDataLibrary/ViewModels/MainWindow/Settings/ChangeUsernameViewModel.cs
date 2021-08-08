@@ -34,7 +34,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 new TextBox
                 {
                     Header = PowerPlannerResources.GetString("Settings_ChangeUsernamePage_TextBoxUsername.Header"),
-                    Text = Bind<string>(nameof(Username), this),
+                    Text = VxValue.Create(Username, t => { Username = t; Error = null; }),
                     AutoFocus = true,
                     OnSubmit = Update,
                     IsEnabled = !IsUpdatingUsername,
@@ -50,7 +50,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             );
         }
 
-        public string Username { get => GetState<string>(); set { SetState(value); Error = null; } }
+        public string Username { get => GetState<string>(); set => SetState(value); }
 
         public bool IsUpdatingUsername { get => GetState<bool>(); set => SetState(value); }
 

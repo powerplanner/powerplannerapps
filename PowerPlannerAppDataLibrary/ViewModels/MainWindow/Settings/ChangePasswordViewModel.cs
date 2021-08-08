@@ -40,25 +40,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             bool isEnabled = !IsUpdatingPassword;
 
             return RenderGenericPopupContent(
-                new PasswordBox
+                new PasswordBox(Password)
                 {
                     Header = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxNewPassword.Header"),
                     PlaceholderText = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxNewPassword.PlaceholderText"),
-                    Text = Bind<string>(nameof(Password.Text), Password),
-                    ValidationState = Password.ValidationState,
-                    HasFocusChanged = f => Password.HasFocus = f,
                     AutoFocus = true,
                     IsEnabled = isEnabled,
                     OnSubmit = Update
                 },
 
-                new PasswordBox
+                new PasswordBox(ConfirmPassword)
                 {
                     Header = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxConfirmPassword.Header"),
                     PlaceholderText = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxConfirmPassword.PlaceholderText"),
-                    Text = Bind<string>(nameof(ConfirmPassword.Text), ConfirmPassword),
-                    ValidationState = ConfirmPassword.ValidationState,
-                    HasFocusChanged = f => ConfirmPassword.HasFocus = f,
                     Margin = new Thickness(0, 18, 0, 0),
                     IsEnabled = isEnabled,
                     OnSubmit = Update

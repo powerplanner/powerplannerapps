@@ -41,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         new TextBox
                         {
                             Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.Header"),
-                            Text = Bind<string>(nameof(Email), this),
+                            Text = VxValue.Create(Email, t => Email = t),
                             InputScope = InputScope.Email,
                             PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.PlaceholderText"),
                             OnSubmit = Recover,

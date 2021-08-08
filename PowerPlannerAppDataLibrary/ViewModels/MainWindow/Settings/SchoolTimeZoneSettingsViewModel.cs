@@ -49,8 +49,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         {
                             Header = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ComboBoxTimeZone.Header"),
                             Items = AvailableTimeZones,
-                            SelectedItem = SelectedSchoolTimeZone,
-                            SelectedItemChanged = v => SelectedSchoolTimeZone = v as TimeZoneInfo,
+                            SelectedItem = VxValue.Create<object>(SelectedSchoolTimeZone, v => SelectedSchoolTimeZone = v as TimeZoneInfo),
                             IsEnabled = IsEnabled,
                             Margin = new Thickness(0, 18, 0, 0)
                         },

@@ -609,12 +609,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             new TimePicker
                             {
                                 Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_TimePickerStart.Header"),
-                                Value = group.StartTime,
-                                ValueChanged = val =>
-                                {
-                                    group.StartTime = val;
-                                    MarkDirty();
-                                },
+                                Value = VxValue.Create(group.StartTime, v => group.StartTime = v),
                                 Margin = new Thickness(0, 0, 6, 0)
                             }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1),
 
@@ -630,12 +625,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             {
                                 Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_TimePickerEnd.Header"),
                                 StartTime = group.StartTime,
-                                Value = group.EndTime,
-                                ValueChanged = val =>
-                                {
-                                    group.EndTime = val;
-                                    MarkDirty();
-                                },
+                                Value = VxValue.Create(group.EndTime, v => group.EndTime = v),
                                 Margin = new Thickness(6, 0, 0, 0)
                             }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1)
                         }
@@ -653,7 +643,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     new TextBox
                     {
                         Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_TextBoxRoom.Header"),
-                        Text = Bind<string>(nameof(group.Room), group),
+                        Text = VxValue.Create(group.Room, v => group.Room = v),
                         Margin = new Thickness(0, 12, 0, 0),
                         PlaceholderText = PowerPlannerResources.GetString("ex: Modern Languages 302")
                     },
@@ -678,45 +668,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                         new CheckBox
                                         {
                                             Text = DateTools.ToLocalizedString(DayOfWeek.Monday),
-                                            IsChecked = group.IsMondayChecked,
-                                            IsCheckedChanged = val =>
-                                            {
-                                                group.IsMondayChecked = val;
-                                                MarkDirty();
-                                            }
+                                            IsChecked = VxValue.Create(group.IsMondayChecked, v => group.IsMondayChecked = v)
                                         },
 
                                         new CheckBox
                                         {
                                             Text = DateTools.ToLocalizedString(DayOfWeek.Tuesday),
-                                            IsChecked = group.IsTuesdayChecked,
-                                            IsCheckedChanged = val =>
-                                            {
-                                                group.IsTuesdayChecked = val;
-                                                MarkDirty();
-                                            }
+                                            IsChecked = VxValue.Create(group.IsTuesdayChecked, v => group.IsTuesdayChecked = v)
                                         },
 
                                         new CheckBox
                                         {
                                             Text = DateTools.ToLocalizedString(DayOfWeek.Wednesday),
-                                            IsChecked = group.IsWednesdayChecked,
-                                            IsCheckedChanged = val =>
-                                            {
-                                                group.IsWednesdayChecked = val;
-                                                MarkDirty();
-                                            }
+                                            IsChecked = VxValue.Create(group.IsWednesdayChecked, v => group.IsWednesdayChecked = v)
                                         },
 
                                         new CheckBox
                                         {
                                             Text = DateTools.ToLocalizedString(DayOfWeek.Thursday),
-                                            IsChecked = group.IsThursdayChecked,
-                                            IsCheckedChanged = val =>
-                                            {
-                                                group.IsThursdayChecked = val;
-                                                MarkDirty();
-                                            }
+                                            IsChecked = VxValue.Create(group.IsThursdayChecked, v => group.IsThursdayChecked = v)
                                         }
                                     }
                                 }.LinearLayoutWeight(1),
@@ -729,34 +699,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                         new CheckBox
                                         {
                                             Text = DateTools.ToLocalizedString(DayOfWeek.Friday),
-                                            IsChecked = group.IsFridayChecked,
-                                            IsCheckedChanged = val =>
-                                            {
-                                                group.IsFridayChecked = val;
-                                                MarkDirty();
-                                            }
+                                            IsChecked = VxValue.Create(group.IsFridayChecked, v => group.IsFridayChecked = v)
                                         },
 
                                         new CheckBox
                                         {
                                             Text = DateTools.ToLocalizedString(DayOfWeek.Saturday),
-                                            IsChecked = group.IsSaturdayChecked,
-                                            IsCheckedChanged = val =>
-                                            {
-                                                group.IsSaturdayChecked = val;
-                                                MarkDirty();
-                                            }
+                                            IsChecked = VxValue.Create(group.IsSaturdayChecked, v => group.IsSaturdayChecked = v)
                                         },
 
                                         new CheckBox
                                         {
                                             Text = DateTools.ToLocalizedString(DayOfWeek.Sunday),
-                                            IsChecked = group.IsSundayChecked,
-                                            IsCheckedChanged = val =>
-                                            {
-                                                group.IsSundayChecked = val;
-                                                MarkDirty();
-                                            }
+                                            IsChecked = VxValue.Create(group.IsSundayChecked, v => group.IsSundayChecked = v)
                                         }
                                     }
                                 }.LinearLayoutWeight(1)
@@ -777,12 +732,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         Margin = new Thickness(0, 12, 0, 0),
                         Header = PowerPlannerResources.GetString("EditingClassScheduleItemView_WeekComboBox.Header"),
                         Items = group.AvailableScheduleWeekStrings,
-                        SelectedItem = group.ScheduleWeekString,
-                        SelectedItemChanged = val =>
+                        SelectedItem = VxValue.Create<object>(group.ScheduleWeekString, val =>
                         {
                             group.ScheduleWeekString = val as string;
-                            MarkDirty();
-                        }
+                        })
                     },
 
                     new TextBlock

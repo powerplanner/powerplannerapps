@@ -37,8 +37,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         new Switch
                         {
                             Title = PowerPlannerResources.GetString("Settings_MainPage_Sound.Title"),
-                            IsOn = _isOn.Value,
-                            IsOnChanged = IsOnChanged,
+                            IsOn = VxValue.Create(_isOn.Value, IsOnChanged),
                             IsEnabled = !_saving.Value,
                             Margin = new Thickness(0, 24, 0, 0)
                         }

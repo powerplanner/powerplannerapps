@@ -279,13 +279,6 @@ namespace Vx.Views
 
         private View RenderedContent { get; set; }
 
-        protected VxState<T> Bind<T>(string propertyName, object source)
-        {
-            var bound = VxState<T>.CreateBound(propertyName, source);
-            bound.ValueChanged += State_ValueChanged;
-            return bound;
-        }
-
         private Dictionary<string, object> _states = new Dictionary<string, object>();
 
         protected T GetState<T>(T defaultValue = default(T), [CallerMemberName]string stateName = null)

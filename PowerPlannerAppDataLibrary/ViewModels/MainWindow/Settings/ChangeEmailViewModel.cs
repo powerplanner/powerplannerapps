@@ -34,12 +34,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             return RenderGenericPopupContent(
 
-                new TextBox
+                new TextBox(Email)
                 {
                     Header = PowerPlannerResources.GetString("Settings_ChangeEmailPage_TextBoxEmail.Header"),
-                    Text = Bind<string>(nameof(Email.Text), Email),
-                    ValidationState = Email.ValidationState,
-                    HasFocusChanged = f => Email.HasFocus = f,
                     IsEnabled = isEnabled,
                     AutoFocus = true,
                     OnSubmit = UpdateEmail

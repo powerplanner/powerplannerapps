@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems;
+﻿using Newtonsoft.Json.Linq;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
@@ -116,10 +117,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 layout.Children.Add(RenderRow(new NumberTextBox
                 {
-                    Number = Bind<double?>(nameof(entry.StartingGrade), entry)
+                    Number = VxValue.Create(entry.StartingGrade, v => entry.StartingGrade = v)
                 }, new NumberTextBox
-                {
-                    Number = Bind<double?>(nameof(entry.GPA), entry)
+{
+                    Number = VxValue.Create(entry.GPA, v => entry.GPA = v)
                 }, new TransparentContentButton
                 {
                     Content = new FontIcon

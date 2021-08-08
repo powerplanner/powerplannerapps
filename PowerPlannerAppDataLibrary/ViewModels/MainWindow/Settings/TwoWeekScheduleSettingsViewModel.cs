@@ -44,8 +44,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                             Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxCurrentWeek.Header"),
                             Margin = new Thickness(0, 18, 0, 0),
                             Items = AvailableCurrentWeekStrings,
-                            SelectedItem = CurrentWeekString,
-                            SelectedItemChanged = v => CurrentWeekString = v as string
+                            SelectedItem = VxValue.Create<object>(CurrentWeekString, v => CurrentWeekString = v as string)
                         },
 
                         new ComboBox
@@ -53,8 +52,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                             Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxWeekChangesOn.Header"),
                             Margin = new Thickness(0, 18, 0, 0),
                             Items = AvailableWeekChangesOnStrings,
-                            SelectedItem = WeekChangesOnString,
-                            SelectedItemChanged = v => WeekChangesOnString = v as string
+                            SelectedItem = VxValue.Create<object>(WeekChangesOnString, v => WeekChangesOnString = v as string)
                         }
                     }
                 }

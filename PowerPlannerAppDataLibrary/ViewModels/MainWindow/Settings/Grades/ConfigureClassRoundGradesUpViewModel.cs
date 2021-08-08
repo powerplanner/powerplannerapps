@@ -57,8 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new Switch
                     {
                         Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
-                        IsOn = _roundGradesUp,
-                        IsOnChanged = Save,
+                        IsOn = VxValue.Create(_roundGradesUp.Value, Save),
                         IsEnabled = _isEnabled
                     },
 

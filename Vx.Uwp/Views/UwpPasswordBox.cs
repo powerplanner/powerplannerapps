@@ -54,9 +54,9 @@ namespace Vx.Uwp.Views
 
         private void View_TextChanged(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (VxView.Text != null)
+            if (VxView.Text?.ValueChanged != null)
             {
-                VxView.Text.Value = View.Password;
+                VxView.Text.ValueChanged(View.Password);
             }
         }
 

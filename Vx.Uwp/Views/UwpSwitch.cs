@@ -17,9 +17,9 @@ namespace Vx.Uwp.Views
 
         private void View_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (VxView.IsOnChanged != null && VxView.IsOn != View.IsOn)
+            if (VxView.IsOn != null && VxView.IsOn.Value != View.IsOn)
             {
-                VxView.IsOnChanged(View.IsOn);
+                VxView.IsOn.ValueChanged?.Invoke(View.IsOn);
             }
         }
 
@@ -28,7 +28,7 @@ namespace Vx.Uwp.Views
             base.ApplyProperties(oldView, newView);
 
             View.Header = newView.Title;
-            View.IsOn = newView.IsOn;
+            View.IsOn = newView.IsOn?.Value ?? false;
             View.IsEnabled = newView.IsEnabled;
         }
     }

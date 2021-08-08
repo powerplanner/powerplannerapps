@@ -100,20 +100,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                                 layout.Children.Add(new CheckBox
                                 {
                                     Text = c.Name,
-                                    IsChecked = SelectedClasses.Contains(c),
-                                    IsCheckedChanged = isChecked =>
+                                    IsChecked = VxValue.Create(SelectedClasses.Contains(c), isChecked =>
                                     {
                                         if (isChecked)
                                         {
                                             SelectedClasses.Add(c);
-                                            MarkDirty();
                                         }
                                         else
                                         {
                                             SelectedClasses.Remove(c);
-                                            MarkDirty();
                                         }
-                                    },
+                                    }),
                                     IsEnabled = State.Value != States.Saving
                                 });
                             }

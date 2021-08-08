@@ -53,8 +53,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         {
                             Header = PowerPlannerResources.GetString("String_RemindMe"),
                             Items = ClassReminderOptions,
-                            SelectedItem = SelectedClassReminderOption,
-                            SelectedItemChanged = i => SelectedClassReminderOption = i as string,
+                            SelectedItem = VxValue.Create<object>(SelectedClassReminderOption, i => SelectedClassReminderOption = i as string),
                             IsEnabled = IsEnabled,
                             Margin = new Thickness(0, 6, 0, 0)
                         } : null,
@@ -66,8 +65,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         new Switch
                         {
                             Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayBefore.Header"),
-                            IsOn = RemindersDayBefore,
-                            IsOnChanged = v => RemindersDayBefore = v,
+                            IsOn = VxValue.Create(RemindersDayBefore, v => RemindersDayBefore = v),
                             Margin = new Thickness(0, 12, 0, 0),
                             IsEnabled = IsEnabled
                         },
@@ -77,8 +75,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         new Switch
                         {
                             Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayOf.Header"),
-                            IsOn = RemindersDayOf,
-                            IsOnChanged = v => RemindersDayOf = v,
+                            IsOn = VxValue.Create(RemindersDayOf, v => RemindersDayOf = v),
                             Margin = new Thickness(0, 12, 0, 0),
                             IsEnabled = IsEnabled
                         },

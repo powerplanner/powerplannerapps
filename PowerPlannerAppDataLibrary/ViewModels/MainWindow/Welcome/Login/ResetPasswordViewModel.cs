@@ -35,7 +35,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         {
                             Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxUsername.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxUsername.PlaceholderText"),
-                            Text = Bind<string>(nameof(Username), this),
+                            Text = VxValue.Create(Username, t => Username = t),
                             InputScope = InputScope.Username,
                             AutoFocus = true,
                             OnSubmit = ResetPassword,
@@ -46,7 +46,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         {
                             Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.Header"),
                             PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.PlaceholderText"),
-                            Text = Bind<string>(nameof(Email), this),
+                            Text = VxValue.Create(Email, t => Email = t),
                             InputScope = InputScope.Email,
                             Margin = new Thickness(0, 16, 0, 0),
                             OnSubmit = ResetPassword,

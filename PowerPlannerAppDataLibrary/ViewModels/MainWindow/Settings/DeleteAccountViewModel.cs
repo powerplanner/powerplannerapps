@@ -44,8 +44,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         Account.IsOnlineAccount ? new CheckBox
                         {
                             Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_CheckBoxDeleteOnlineToo.Content"),
-                            IsChecked = DeleteOnlineAccountToo,
-                            IsCheckedChanged = v => DeleteOnlineAccountToo = v,
+                            IsChecked = VxValue.Create(DeleteOnlineAccountToo, v => DeleteOnlineAccountToo = v),
                             Margin = new Thickness(0, 0, 0, 12),
                             IsEnabled = isEnabled
                         } : null,
