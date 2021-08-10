@@ -60,7 +60,7 @@ namespace Vx.iOS.Views
         protected override void ApplyProperties(ComboBox oldView, ComboBox newView)
         {
             _header.Text = newView.Header;
-            _value.Text = newView.SelectedItem?.ToString();
+            _value.Text = newView.SelectedItem?.Value?.ToString();
 
             base.ApplyProperties(oldView, newView);
         }
@@ -93,7 +93,7 @@ namespace Vx.iOS.Views
                 ItemsSource = VxView.Items
             };
             ModalController.PickerView.Model = _pickerViewModel;
-            ModalController.PickerView.Select(VxView.Items.OfType<object>().ToArray().FindIndex(i => i == VxView.SelectedItem), 0, false);
+            ModalController.PickerView.Select(VxView.Items.OfType<object>().ToArray().FindIndex(i => i == VxView.SelectedItem?.Value), 0, false);
         }
 
         private void ModalController_OnModalEditSubmitted(object sender, EventArgs e)
@@ -105,7 +105,7 @@ namespace Vx.iOS.Views
         {
             object newItem = VxView.Items.OfType<object>().ElementAt((int)ModalController.PickerView.SelectedRowInComponent(0));
 
-            VxView.SelectedItemChanged?.Invoke(newItem);
+            VxView.SelectedItem?.ValueChanged?.Invoke(newItem);
         }
     }
 }

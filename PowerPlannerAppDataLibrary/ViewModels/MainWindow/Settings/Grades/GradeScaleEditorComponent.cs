@@ -117,10 +117,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 layout.Children.Add(RenderRow(new NumberTextBox
                 {
-                    Number = VxValue.Create(entry.StartingGrade, v => entry.StartingGrade = v)
+                    Number = VxValue.Create(entry.StartingGrade, v =>
+                    {
+                        entry.StartingGrade = v;
+                        MarkDirty();
+                    })
                 }, new NumberTextBox
 {
-                    Number = VxValue.Create(entry.GPA, v => entry.GPA = v)
+                    Number = VxValue.Create(entry.GPA, v =>
+                    {
+                        entry.GPA = v;
+                        MarkDirty();
+                    })
                 }, new TransparentContentButton
                 {
                     Content = new FontIcon

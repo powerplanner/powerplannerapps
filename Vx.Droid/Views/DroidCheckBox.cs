@@ -17,13 +17,14 @@ namespace Vx.Droid.Views
         public DroidCheckBox() : base(new MaterialCheckBox(VxDroidExtensions.ApplicationContext))
         {
             View.CheckedChange += View_CheckedChange;
+            View.SetMinimumHeight(0);
         }
 
         private void View_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            if (VxView.IsCheckedChanged != null && VxView.IsChecked != View.Checked)
+            if (VxView.IsChecked != null && VxView.IsChecked.Value != View.Checked)
             {
-                VxView.IsCheckedChanged(View.Checked);
+                VxView.IsChecked.ValueChanged?.Invoke(View.Checked);
             }
         }
 
@@ -33,7 +34,7 @@ namespace Vx.Droid.Views
 
             View.Enabled = newView.IsEnabled;
             View.Text = newView.Text;
-            View.Checked = newView.IsChecked;
+            View.Checked = newView.IsChecked?.Value ?? false;
         }
     }
 }

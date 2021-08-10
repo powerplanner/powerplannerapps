@@ -27,10 +27,7 @@ namespace Vx.iOS.Views
 
         private void View_TextChanged(object sender, string e)
         {
-            if (VxView.Text != null)
-            {
-                VxView.Text.Value = View.Text;
-            }
+            VxView.Text?.ValueChanged?.Invoke(View.Text);
         }
 
         protected override void ApplyProperties(TextBox oldView, TextBox newView)

@@ -42,10 +42,7 @@ namespace Vx.Droid.Views
 
         private void _editText_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            if (VxView.Text != null)
-            {
-                VxView.Text.Value = _editText.Text.ToString();
-            }
+            VxView.Text?.ValueChanged?.Invoke(_editText.Text.ToString());
         }
 
         private bool _firstTime = true;

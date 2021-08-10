@@ -22,10 +22,7 @@ namespace Vx.Droid.Views
 
         private void View_ValueChanged(object sender, double? e)
         {
-            if (VxView.Number != null)
-            {
-                VxView.Number.Value = View.Value;
-            }
+            VxView.Number?.ValueChanged(View.Value);
         }
 
         protected override void ApplyProperties(NumberTextBox oldView, NumberTextBox newView)

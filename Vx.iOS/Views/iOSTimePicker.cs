@@ -61,9 +61,9 @@ namespace Vx.iOS.Views
                 }
             }
 
-            if (newTime != VxView.Value && VxView.ValueChanged != null)
+            if (VxView.Value != null && newTime != VxView.Value.Value)
             {
-                VxView.ValueChanged(newTime);
+                VxView.Value.ValueChanged?.Invoke(newTime);
             }
         }
 
@@ -72,7 +72,11 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
 
             _header.Text = newView.Header;
-            _datePicker.Date = BareUIHelper.DateTimeToNSDate(DateTime.Today.Add(newView.Value));
+
+            if (newView.Value != null)
+            {
+                _datePicker.Date = BareUIHelper.DateTimeToNSDate(DateTime.Today.Add(newView.Value.Value));
+            }
 
             if (VxView is Vx.Views.EndTimePicker endTimePicker)
             {

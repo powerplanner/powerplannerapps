@@ -28,24 +28,24 @@ namespace Vx.Droid.Views
             new TimePickerDialog(
                 context: View.Context,
                 callBack: OnTimePicked,
-                hourOfDay: VxView.Value.Hours,
-                minute: VxView.Value.Minutes,
+                hourOfDay: VxView.Value?.Value.Hours ?? 9,
+                minute: VxView.Value?.Value.Minutes ?? 0,
                 is24HourView: Android.Text.Format.DateFormat.Is24HourFormat(View.Context)).Show();
         }
 
         private void OnTimePicked(object sender, TimePickerDialog.TimeSetEventArgs e)
         {
-            if (VxView.ValueChanged != null)
-            {
-                VxView.ValueChanged(new TimeSpan(e.HourOfDay, e.Minute, 0));
-            }
+            VxView.Value?.ValueChanged?.Invoke(new TimeSpan(e.HourOfDay, e.Minute, 0));
         }
 
         protected override void ApplyProperties(Vx.Views.TimePicker oldView, Vx.Views.TimePicker newView)
         {
             base.ApplyProperties(oldView, newView);
 
-            View.Text = DateHelper.ToShortTimeString(DateTime.Today.Add(newView.Value));
+            if (newView.Value != null)
+            {
+                View.Text = DateHelper.ToShortTimeString(DateTime.Today.Add(newView.Value.Value));
+            }
         }
     }
 }

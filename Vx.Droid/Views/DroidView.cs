@@ -66,7 +66,7 @@ namespace Vx.Droid.Views
         /// <returns></returns>
         public static int AsPx(double dp)
         {
-            return (int)AsPxPrecise(dp);
+            return (int)Math.Round(AsPxPrecise(dp));
         }
 
         public static float AsPxPrecise(double dp)

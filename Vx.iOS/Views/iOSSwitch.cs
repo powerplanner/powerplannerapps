@@ -41,10 +41,7 @@ namespace Vx.iOS.Views
 
         private void _switch_ValueChanged(object sender, EventArgs e)
         {
-            if (VxView.IsOnChanged != null)
-            {
-                VxView.IsOnChanged(_switch.On);
-            }
+            VxView.IsOn?.ValueChanged?.Invoke(_switch.On);
         }
 
         private void View_TouchUpInside(object sender, EventArgs e)
@@ -56,10 +53,7 @@ namespace Vx.iOS.Views
 
             _switch.On = !_switch.On;
 
-            if (VxView.IsOnChanged != null)
-            {
-                VxView.IsOnChanged(_switch.On);
-            }
+            VxView.IsOn?.ValueChanged?.Invoke(_switch.On);
         }
 
         protected override void ApplyProperties(Switch oldView, Switch newView)
@@ -67,7 +61,7 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
 
             _label.Text = newView.Title;
-            _switch.On = newView.IsOn;
+            _switch.On = newView.IsOn?.Value ?? false;
             _switch.Enabled = newView.IsEnabled;
         }
     }

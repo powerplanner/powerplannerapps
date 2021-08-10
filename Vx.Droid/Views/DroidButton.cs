@@ -21,6 +21,8 @@ namespace Vx.Droid.Views
         public DroidButton(MaterialButton button) : base(button)
         {
             View.Click += View_Click;
+            View.InsetTop = 0;
+            View.InsetBottom = 0;
         }
 
         private void View_Click(object sender, EventArgs e)
