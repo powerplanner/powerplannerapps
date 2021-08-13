@@ -14,6 +14,7 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems;
 using InterfacesiOS.Helpers;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS.Views
 {
@@ -206,7 +207,7 @@ namespace PowerPlanneriOS.Views
 
             for (TimeSpan time = _arrangedItems.StartTime; time <= _arrangedItems.EndTime; time = time.Add(TimeSpan.FromHours(1)))
             {
-                string text = DateTime.Today.Add(time).ToString("h:").TrimEnd(':');
+                string text = DateTimeFormatterExtension.Current.FormatAsShortTime(DateTime.Today.Add(time)).Split(":")[0];
 
                 var label = new UILabel()
                 {

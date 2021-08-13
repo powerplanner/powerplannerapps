@@ -190,6 +190,7 @@
     <Compile Include="Controllers\PopupComponentViewController.cs" />
     <Compile Include="Controllers\ComponentViewController.cs" />
     <Compile Include="Extensions\iOSBrowserExtension.cs" />
+    <Compile Include="Extensions\iOSDateTimeFormatterExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
