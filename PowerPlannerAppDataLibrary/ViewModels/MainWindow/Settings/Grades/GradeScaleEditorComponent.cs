@@ -123,7 +123,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                         MarkDirty();
                     })
                 }, new NumberTextBox
-{
+                {
                     Number = VxValue.Create(entry.GPA, v =>
                     {
                         entry.GPA = v;

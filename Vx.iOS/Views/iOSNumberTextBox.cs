@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UIKit;
 using Vx.Views;
 
@@ -6,19 +7,33 @@ namespace Vx.iOS.Views
 {
     public class iOSNumberTextBox : iOSView<NumberTextBox, UIRoundedTextFieldWithHeader>
     {
+        private readonly string _decimalSeparator = CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+
         public iOSNumberTextBox()
         {
             View.TextChanged += View_TextChanged;
             View.KeyboardType = UIKeyboardType.DecimalPad;
         }
 
+        private bool _hasEndingSeparator;
+
         private void View_TextChanged(object sender, string e)
         {
+            _hasEndingSeparator = false;
+
             if (VxView.Number?.ValueChanged != null)
             {
                 if (double.TryParse(View.Text, out double result))
                 {
-                    VxView.Number.ValueChanged(result);
+                    if (View.Text.EndsWith(_decimalSeparator))
+                    {
+                        _hasEndingSeparator = true;
+                    }
+
+                    if (result != VxView.Number.Value)
+                    {
+                        VxView.Number.ValueChanged(result);
+                    }
                 }
                 else
                 {
@@ -35,7 +50,14 @@ namespace Vx.iOS.Views
             {
                 if (newView.Number.Value != null)
                 {
-                    View.Text = newView.Number.Value.ToString();
+                    if (_hasEndingSeparator)
+                    {
+                        View.Text = newView.Number.Value.ToString() + _decimalSeparator;
+                    }
+                    else
+                    {
+                        View.Text = newView.Number.Value.ToString();
+                    }
                 }
                 else
                 {
