@@ -8,10 +8,7 @@ using PowerPlannerAppDataLibrary.Windows;
 using BareMvvm.Core.App;
 using InterfacesiOS.Windows;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
@@ -26,7 +23,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlanneriOS.Controllers.ClassViewControllers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary;
-using PowerPlannerAppDataLibrary.SyncLayer;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -40,8 +36,6 @@ using UserNotifications;
 using InterfacesiOS.Helpers;
 using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
-using PowerPlanneriOS.Controllers.Settings.Grades;
 using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlanneriOS
