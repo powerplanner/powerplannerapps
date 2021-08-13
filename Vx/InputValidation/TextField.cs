@@ -181,5 +181,14 @@ namespace BareMvvm.Core
 
             ValidationState = InputValidationState.Valid;
         }
+
+        /// <summary>
+        /// Sets an error like an error from attempting to complete an online action
+        /// </summary>
+        /// <param name="error"></param>
+        public void SetError(string error)
+        {
+            ValidationState = InputValidationState.Invalid(error);
+        }
     }
 }

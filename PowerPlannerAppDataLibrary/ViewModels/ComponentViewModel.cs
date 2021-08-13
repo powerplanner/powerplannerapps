@@ -10,6 +10,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels
 
         public ComponentViewModel(BaseViewModel parent) : base(parent)
         {
+            base.PropertyChanged += ComponentViewModel_PropertyChanged;
+        }
+
+        private void ComponentViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            MarkDirty();
         }
     }
 }

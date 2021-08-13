@@ -177,5 +177,7 @@ namespace InterfacesUWP
         {
             HasFocus = false;
         }
+
+        public TextBox NativeTextBox => this.TextBox;
     }
 }

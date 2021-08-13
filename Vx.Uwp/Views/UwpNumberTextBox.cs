@@ -25,15 +25,15 @@ namespace Vx.Uwp.Views
 
         private void View_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (VxView.Number != null)
+            if (VxView.Number?.ValueChanged != null)
             {
                 if (double.TryParse(View.Text, out double result))
                 {
-                    VxView.Number.Value = result;
+                    VxView.Number.ValueChanged(result);
                 }
                 else
                 {
-                    VxView.Number.Value = null;
+                    VxView.Number.ValueChanged(null);
                 }
             }
         }
@@ -44,18 +44,15 @@ namespace Vx.Uwp.Views
 
             if (newView.Number != null)
             {
-                if (newView.Number.Value != null)
+                // This is to ensure that when user goes from "1.5" to "1." (deletes the end), it doesn't change it to 1
+                if (!double.TryParse(View.Text, out double curr) || curr != newView.Number.Value)
                 {
-                    // This is to ensure that when user goes from "1.5" to "1." (deletes the end), it doesn't change it to 1
-                    if (!double.TryParse(View.Text, out double curr) || curr != newView.Number.Value)
-                    {
-                        View.Text = newView.Number.Value.ToString();
-                    }
+                    View.Text = newView.Number.Value.ToString();
                 }
-                else
-                {
-                    View.Text = "";
-                }
+            }
+            else
+            {
+                View.Text = "";
             }
 
             View.PlaceholderText = newView.PlaceholderText;

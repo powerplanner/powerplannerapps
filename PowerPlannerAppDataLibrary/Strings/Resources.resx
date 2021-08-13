@@ -2029,4 +2029,10 @@ Please think about using an online account instead!</value>
   <data name="String_ClassPlusXOthers" xml:space="preserve">
     <value>{0} (+{1} others)</value>
   </data>
+  <data name="Settings_MainPage_Sound.Title" xml:space="preserve">
+    <value>Sound effects</value>
+  </data>
+  <data name="Settings_SoundEffects_Description.Text" xml:space="preserve">
+    <value>Enable or disable the sound effect that plays when completing a task!</value>
+  </data>
 </root>

@@ -6,9 +6,7 @@ namespace Vx.Views
 {
     public class TimePicker : View
     {
-        public TimeSpan Value { get; set; }
-
-        public Action<TimeSpan> ValueChanged { get; set; }
+        public VxValue<TimeSpan> Value { get; set; }
 
         public bool IsEnabled { get; set; } = true;
 

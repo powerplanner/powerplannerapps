@@ -58,7 +58,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 layout.Children.Add(new TextBlock
                 {
                     Text = CurrentSemesterText,
-                    Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, 0)
+                    Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, 0),
+                    WrapText = false
                 });
 
                 layout.Children.Add(new TextButton
@@ -68,8 +69,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
                 });
-
-                // TODO: Add divider
             }
 
             if (IsSyncOptionsVisible)
@@ -77,7 +76,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 layout.Children.Add(new TextBlock
                 {
                     Text = SyncStatusText,
-                    Margin = new Thickness(Theme.Current.PageMargin, layout.Children.Count == 0 ? Theme.Current.PageMargin : 0, Theme.Current.PageMargin, 0)
+                    Margin = new Thickness(Theme.Current.PageMargin, layout.Children.Count == 0 ? Theme.Current.PageMargin : 0, Theme.Current.PageMargin, 0),
+                    WrapText = false
                 });
 
                 layout.Children.Add(new TextButton
@@ -88,8 +88,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
                 });
-
-                // TODO: Add divider
             }
 
             if (IsUpgradeToPremiumVisible)
@@ -233,6 +231,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSchoolTimeZone);
             }
 
+            if (IsSoundEffectsVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.VolumeUp,
+                    PowerPlannerResources.GetString("Settings_MainPage_Sound.Title"),
+                    PowerPlannerResources.GetEnabledDisabledString(Account.IsSoundEffectsEnabled),
+                    OpenSoundSettings);
+            }
+
             if (VxPlatform.Current == Platform.Uwp)
             {
                 RenderOption(
@@ -300,13 +308,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                                     new TextBlock
                                     {
                                         Text = title,
-                                        FontWeight = FontWeights.Bold
+                                        FontWeight = FontWeights.Bold,
+                                        WrapText = false
                                     },
 
                                     new TextBlock
                                     {
                                         Text = subtitle,
-                                        TextColor = Theme.Current.SubtleForegroundColor
+                                        TextColor = Theme.Current.SubtleForegroundColor,
+                                        WrapText = false
                                     }
                                 }
                             }.LinearLayoutWeight(1)
@@ -348,6 +358,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public bool IsTwoWeekScheduleVisible => HasAccount;
 
         public bool IsSchoolTimeZoneVisible => HasAccount;
+
+        public bool IsSoundEffectsVisible => HasAccount && VxPlatform.Current == Platform.Uwp;
 
         public bool IsViewYearsAndSemestersVisible => HasAccount && MainScreenViewModel != null;
 
@@ -548,12 +560,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenMyAccount()
         {
-            Show(MyAccountViewModel.Load(ParentForSubviews));
+            ShowPopup(MyAccountViewModel.Load(ParentForSubviews));
         }
 
         public void OpenAbout()
         {
-            Show(new AboutViewModel(ParentForSubviews));
+            ShowPopup(new AboutViewModel(ParentForSubviews));
         }
 
         public void OpenGradeOptions()
@@ -568,7 +580,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenReminderSettings()
         {
-            Show(new ReminderSettingsViewModel(ParentForSubviews));
+            ShowPopup(new ReminderSettingsViewModel(ParentForSubviews));
         }
 
         public void OpenSyncOptions()
@@ -591,7 +603,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenTwoWeekScheduleSettings()
         {
-            Show(new TwoWeekScheduleSettingsViewModel(ParentForSubviews));
+            ShowPopup(new TwoWeekScheduleSettingsViewModel(ParentForSubviews));
         }
 
         /// <summary>
@@ -689,7 +701,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenSchoolTimeZone()
         {
-            Show(new SchoolTimeZoneSettingsViewModel(ParentForSubviews));
+            ShowPopup(new SchoolTimeZoneSettingsViewModel(ParentForSubviews));
+        }
+
+        public void OpenSoundSettings()
+        {
+            ShowPopup(new SoundEffectsViewModel(ParentForSubviews));
         }
 
         public void OpenLanguageSettings()

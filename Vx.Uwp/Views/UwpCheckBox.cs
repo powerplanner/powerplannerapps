@@ -17,9 +17,9 @@ namespace Vx.Uwp.Views
 
         private void View_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (VxView.IsChecked != View.IsChecked)
+            if (VxView.IsChecked != null && VxView.IsChecked.Value != View.IsChecked)
             {
-                VxView.IsCheckedChanged?.Invoke(View.IsChecked.Value);
+                VxView.IsChecked.ValueChanged?.Invoke(View.IsChecked.Value);
             }
         }
 
@@ -27,7 +27,7 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            View.IsChecked = newView.IsChecked;
+            View.IsChecked = newView.IsChecked?.Value ?? false;
             View.Content = newView.Text;
             View.IsEnabled = newView.IsEnabled;
         }

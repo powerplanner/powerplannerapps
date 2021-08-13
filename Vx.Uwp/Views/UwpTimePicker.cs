@@ -19,9 +19,9 @@ namespace Vx.Uwp.Views
 
         private void View_SelectedTimeChanged(object sender, TimeSpan e)
         {
-            if (VxView.Value != e)
+            if (VxView.Value != null && VxView.Value.Value != e)
             {
-                VxView.ValueChanged?.Invoke(e);
+                VxView.Value.ValueChanged?.Invoke(e);
             }
         }
 
@@ -29,9 +29,9 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            if (View.SelectedTime != newView.Value)
+            if (newView.Value != null && View.SelectedTime != newView.Value.Value)
             {
-                View.SelectedTime = newView.Value;
+                View.SelectedTime = newView.Value.Value;
             }
 
             View.IsEnabled = newView.IsEnabled;
@@ -48,9 +48,9 @@ namespace Vx.Uwp.Views
 
         private void View_SelectedTimeChanged(object sender, TimeSpan e)
         {
-            if (VxView.Value != e)
+            if (VxView.Value != null && VxView.Value.Value != e)
             {
-                VxView.ValueChanged?.Invoke(e);
+                VxView.Value.ValueChanged?.Invoke(e);
             }
         }
 
@@ -58,9 +58,9 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            if (View.SelectedTime != newView.Value)
+            if (newView.Value != null && View.SelectedTime != newView.Value.Value)
             {
-                View.SelectedTime = newView.Value;
+                View.SelectedTime = newView.Value.Value;
             }
 
             if (View.StartTime != newView.StartTime)

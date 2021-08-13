@@ -71,14 +71,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                                 new TextBlock
                                 {
                                     Text = title,
-                                    FontWeight = FontWeights.Bold
+                                    FontWeight = FontWeights.Bold,
+                                    WrapText = false
                                 },
 
                                 new TextBlock
                                 {
                                     Text = subtitle,
-                                    TextColor = Theme.Current.SubtleForegroundColor,
-                                    WrapText = true
+                                    TextColor = Theme.Current.SubtleForegroundColor
                                 }
                             }
                         }.LinearLayoutWeight(1),

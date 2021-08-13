@@ -16,8 +16,6 @@ namespace Vx.Views
         /// </summary>
         public IEnumerable Items { get; set; }
 
-        public object SelectedItem { get; set; }
-
-        public Action<object> SelectedItemChanged { get; set; }
+        public VxValue<object> SelectedItem { get; set; }
     }
 }

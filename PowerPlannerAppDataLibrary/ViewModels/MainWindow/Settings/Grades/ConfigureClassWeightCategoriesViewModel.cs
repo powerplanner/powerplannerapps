@@ -50,11 +50,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     RenderRow(new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockName.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockWeight.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TransparentContentButton
                     {
                         Opacity = 0,
@@ -71,10 +73,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 layout.Children.Add(RenderRow(new TextBox
                 {
-                    Text = Bind<string>(nameof(entry.Name), entry)
+                    Text = VxValue.Create(entry.Name, v => entry.Name = v)
                 }, new NumberTextBox
                 {
-                    Number = Bind<double?>(nameof(entry.Weight), entry)
+                    Number = VxValue.Create(entry.Weight, v => entry.Weight = v)
                 }, new TransparentContentButton
                 {
                     Content = new FontIcon

@@ -14,6 +14,7 @@ using System.Collections.Specialized;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -353,7 +354,7 @@ namespace PowerPlanneriOS.Controllers
                                 PowerPlannerAppDataLibrary.Helpers.Settings.HasReviewedOrEmailedDev = true;
                                 TelemetryExtension.Current?.TrackEvent("PromptReviewApp_ClickedEmailDev");
 
-                                Settings.AboutViewController.EmailDeveloper();
+                                AboutViewModel.EmailDeveloper();
                             }));
 
                             alert.AddAction(UIAlertAction.Create("No thanks", UIAlertActionStyle.Cancel, delegate

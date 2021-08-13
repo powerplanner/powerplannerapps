@@ -36,9 +36,9 @@ namespace Vx.Droid.Views
             var textVal = e.Text.ToString();
             var matching = VxView.Items.OfType<object>().FirstOrDefault(i => i.ToString() == textVal);
 
-            if (matching != VxView.SelectedItem && VxView.SelectedItemChanged != null)
+            if (VxView.SelectedItem != null && matching != VxView.SelectedItem)
             {
-                VxView.SelectedItemChanged(matching);
+                VxView.SelectedItem.ValueChanged?.Invoke(matching);
             }
         }
 
@@ -57,9 +57,12 @@ namespace Vx.Droid.Views
                 _autoCompleteTextView.Adapter = adapter;
             }
 
-            if (_autoCompleteTextView.Text != newView.SelectedItem.ToString())
+            if (newView.SelectedItem?.Value != null)
             {
-                _autoCompleteTextView.SetText(newView.SelectedItem.ToString(), false);
+                if (_autoCompleteTextView.Text != newView.SelectedItem.Value.ToString())
+                {
+                    _autoCompleteTextView.SetText(newView.SelectedItem.Value.ToString(), false);
+                }
             }
         }
     }

@@ -40,8 +40,8 @@ namespace Vx.Views
         /// </summary>
         public float Opacity { get; set; } = 1;
 
-        public double Width { get; set; } = double.NaN;
-        public double Height { get; set; } = double.NaN;
+        public float Width { get; set; } = float.NaN;
+        public float Height { get; set; } = float.NaN;
 
         public Action<View> ViewRef { get; set; }
 

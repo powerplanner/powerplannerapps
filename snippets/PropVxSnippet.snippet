@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Property VX</Title>
+      <Description>Auto-generates a state-backed property, for use from within VxComponents</Description>
+      <Shortcut>propvx</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp">
+        <![CDATA[public $Type$ $Identifier$ { get => GetState<$Type$>(); set => SetState(value); }]]>
+      </Code>
+      <Declarations>
+        <Literal>
+          <ID>Type</ID>
+          <ToolTip>Type of your property.</ToolTip>
+          <Default>string</Default>
+        </Literal>
+        <Literal>
+          <ID>Identifier</ID>
+          <ToolTip>Identifier for your property.</ToolTip>
+          <Default>MyProperty</Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

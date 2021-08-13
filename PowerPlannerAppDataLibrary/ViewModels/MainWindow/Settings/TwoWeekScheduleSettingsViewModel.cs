@@ -4,17 +4,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerSending;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class TwoWeekScheduleSettingsViewModel : BaseSettingsViewModelWithAccount
+    public class TwoWeekScheduleSettingsViewModel : PopupComponentViewModel
     {
+        public AccountDataItem Account { get; private set; }
+
         public TwoWeekScheduleSettingsViewModel(BaseViewModel parent) : base(parent)
         {
+            Account = MainScreenViewModel.CurrentAccount;
+
+            Title = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_Header.Text");
+
             _currentWeek = Account.CurrentWeek;
             _weekChangesOn = Account.WeekChangesOn;
+        }
+
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_Description.Text")
+                        },
+
+                        new ComboBox
+                        {
+                            Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxCurrentWeek.Header"),
+                            Margin = new Thickness(0, 18, 0, 0),
+                            Items = AvailableCurrentWeekStrings,
+                            SelectedItem = VxValue.Create<object>(CurrentWeekString, v => CurrentWeekString = v as string)
+                        },
+
+                        new ComboBox
+                        {
+                            Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxWeekChangesOn.Header"),
+                            Margin = new Thickness(0, 18, 0, 0),
+                            Items = AvailableWeekChangesOnStrings,
+                            SelectedItem = VxValue.Create<object>(WeekChangesOnString, v => WeekChangesOnString = v as string)
+                        }
+                    }
+                }
+            };
         }
 
         private string[] _availableCurrentWeekStrings;

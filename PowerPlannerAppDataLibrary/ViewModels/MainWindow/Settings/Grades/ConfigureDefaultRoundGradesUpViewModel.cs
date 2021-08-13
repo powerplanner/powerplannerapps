@@ -15,13 +15,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureDefaultRoundGradesUpViewModel : BaseConfigureDefaultGradesPageViewModel
     {
-        private VxState<bool> _roundGradesUp;
-        private VxState<bool> _hasUnsavedChanges = new VxState<bool>(false);
+        private bool _roundGradesUp;
+        private bool _hasUnsavedChanges;
 
         public ConfigureDefaultRoundGradesUpViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_RoundGradesUp");
-            _roundGradesUp = new VxState<bool>(Account.DefaultDoesRoundGradesUp);
+            _roundGradesUp = Account.DefaultDoesRoundGradesUp;
         }
 
         protected override View Render()
@@ -34,12 +34,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             layout.Children.Add(new Switch
             {
                 Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
-                IsOn = _roundGradesUp,
-                IsOnChanged = isOn =>
+                IsOn = VxValue.Create(_roundGradesUp, v => 
                 {
-                    _roundGradesUp.Value = isOn;
-                    _hasUnsavedChanges.Value = Account.DefaultDoesRoundGradesUp != isOn;
-                },
+                    _roundGradesUp = v;
+                    _hasUnsavedChanges = Account.DefaultDoesRoundGradesUp != v;
+                }),
                 IsEnabled = IsEnabled
             });
 
@@ -58,8 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 Margin = new Thickness(0, 12, 0, 0),
                 Text = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpBody.Text"),
-                TextColor = Theme.Current.SubtleForegroundColor,
-                WrapText = true
+                TextColor = Theme.Current.SubtleForegroundColor
             });
 
             RenderApplyUI(layout);
@@ -103,7 +101,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 TelemetryExtension.Current?.TrackEvent("AppliedDefaultRoundGradesUp");
             });
 
-            _hasUnsavedChanges.Value = false;
+            _hasUnsavedChanges = false;
+            MarkDirty();
         }
     }
 }

@@ -4,15 +4,19 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ConfirmIdentityViewModel : BaseViewModel
+    public class ConfirmIdentityViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         private AccountDataItem _currAccount;
         public event EventHandler OnIdentityConfirmed;
@@ -30,20 +34,64 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
 
             ShowForgotPassword = account.IsOnlineAccount;
+            Title = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage.Title");
         }
 
-        private string _password = "";
-
-        public string Password
+        protected override View Render()
         {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); }
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_ConfirmIdentitiyPage_Description.Text")
+                        },
+
+                        new PasswordBox
+                        {
+                            Text = VxValue.Create(Password, t => { Password = t; IncorrectPassword = false; }),
+                            Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_TextBoxCurrentPassword.PlaceholderText"),
+                            Margin = new Thickness(0, 12, 0, 0),
+                            AutoFocus = true,
+                            OnSubmit = Continue,
+                            ValidationState = IncorrectPassword ? InputValidationState.Invalid(PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_Errors_IncorrectPassword")) : null
+                        },
+
+                        ShowForgotPassword ? new TextButton
+                        {
+                            Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
+                            Margin = new Thickness(0, 6, 0, 0),
+                            Click = ForgotPassword,
+                            HorizontalAlignment = HorizontalAlignment.Left
+                        } : null,
+
+                        new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_ButtonContinue.Content"),
+                            Click = Continue,
+                            Margin = new Thickness(0, 12, 0, 0)
+                        }
+                    }
+                }
+            };
         }
+
+        public string Password { get => GetState<string>(); set => SetState(value); }
+
+
+        public bool IncorrectPassword { get => GetState<bool>(); set => SetState(value); }
 
         public void Continue()
         {
             if (PowerPlannerAuth.ValidatePasswordLocally(Password, _currAccount.Username, _currAccount.LocalToken))
             {
+                IncorrectPassword = false;
+
                 OnIdentityConfirmed?.Invoke(this, new EventArgs());
 
                 RemoveViewModel();
@@ -51,7 +99,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             else
             {
-                ActionIncorrectPassword?.Invoke(this, new EventArgs());
+                IncorrectPassword = true;
             }
         }
 

@@ -1216,7 +1216,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             {
                 if (percentComplete == 1)
                 {
-                    SoundsExtension.Current?.TryPlayTaskCompletedSound();
+                    if (CurrentAccount.IsSoundEffectsEnabled)
+                    {
+                        SoundsExtension.Current?.TryPlayTaskCompletedSound();
+                    }
 
                     try
                     {

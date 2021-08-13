@@ -17,7 +17,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAndroid.Views;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
@@ -31,8 +30,6 @@ using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAndroid.ViewModel.Settings;
-using PowerPlannerAndroid.Views.WelcomeViews;
-using PowerPlannerAndroid.Views.SettingsViews;
 using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlannerAndroid.App
@@ -80,15 +77,11 @@ namespace PowerPlannerAndroid.App
             {
                 // Welcome views
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
-                { typeof(LoginViewModel), typeof(LoginView) },
-                { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
-                { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
 
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(MainScreenViewModel), typeof(MainScreenView) },
                 { typeof(YearsViewModel), typeof(YearsView) },
-                { typeof(CreateAccountViewModel), typeof(CreateAccountView) },
                 { typeof(AddYearViewModel), typeof(AddYearView) },
                 { typeof(AddSemesterViewModel), typeof(AddSemesterView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },
@@ -101,23 +94,12 @@ namespace PowerPlannerAndroid.App
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
-                { typeof(MyAccountViewModel), typeof(MyAccountView) },
-                { typeof(AboutViewModel), typeof(AboutView) },
-                { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityView) },
-                { typeof(ChangeEmailViewModel), typeof(ChangeEmailView) },
-                { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameView) },
-                { typeof(ChangePasswordViewModel), typeof(ChangePasswordView) },
-                { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
-                { typeof(ForgotUsernameViewModel), typeof(ForgotUsernameView) },
-                { typeof(RecoveredUsernamesViewModel), typeof(RecoveredUsernamesView) },
-                { typeof(ResetPasswordViewModel), typeof(ResetPasswordView) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
-                { typeof(TwoWeekScheduleSettingsViewModel), typeof(SettingsTwoWeekScheduleView) },
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },
                 { typeof(WidgetsViewModel), typeof(SettingsWidgetsView) },
                 { typeof(WidgetAgendaViewModel), typeof(SettingsWidgetAgendaView) },
@@ -125,12 +107,7 @@ namespace PowerPlannerAndroid.App
                 { typeof(SyncOptionsSimpleViewModel), typeof(SettingsSyncOptionsView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(SettingsImageUploadOptionsView) },
 
-                { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
-
-                // Settings
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
-                { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsView) }
+                { typeof(ShowImagesViewModel), typeof(ShowImagesView) }
             };
         }
 

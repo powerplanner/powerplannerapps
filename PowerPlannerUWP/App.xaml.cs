@@ -55,7 +55,6 @@ using Windows.ApplicationModel.DataTransfer;
 using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
-using PowerPlannerUWP.Views.WelcomeViews;
 using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
 
@@ -103,10 +102,6 @@ namespace PowerPlannerUWP
         {
             return new Dictionary<Type, Type>()
             {
-                // Welcome views
-                { typeof(ExistingUserViewModel), typeof(ExistingUserView) },
-                { typeof(ConnectAccountViewModel), typeof(ConnectAccountView) },
-
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },
@@ -120,21 +115,16 @@ namespace PowerPlannerUWP
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },
-                { typeof(CreateAccountViewModel), typeof(CreateAccountView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
-                { typeof(ForgotUsernameViewModel), typeof(ForgotUsernameView) },
                 { typeof(LoginViewModel), typeof(LoginView) },
                 { typeof(DayViewModel), typeof(MainContentDayView) },
                 { typeof(MainScreenViewModel), typeof(MainScreenView) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
                 { typeof(PromoOtherPlatformsViewModel), typeof(PromoOtherPlatformsView) },
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },
-                { typeof(RecoveredUsernamesViewModel), typeof(RecoveredUsernamesView) },
-                { typeof(ResetPasswordViewModel), typeof(ResetPasswordView) },
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
                 { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
@@ -142,32 +132,20 @@ namespace PowerPlannerUWP
                 { typeof(YearsViewModel), typeof(YearsView) },
 
                 // Settings views
-                { typeof(AboutViewModel), typeof(AboutView) },
                 { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },
                 { typeof(SyncOptionsViewModel), typeof(BaseSettingsSplitView) },
                 { typeof(CalendarIntegrationViewModel), typeof(BaseSettingsSplitView) },
                 { typeof(CalendarIntegrationClassesViewModel), typeof(CalendarIntegrationClassesView) },
                 { typeof(CalendarIntegrationTasksViewModel), typeof(CalendarIntegrationTasksView) },
-                { typeof(ChangeEmailViewModel), typeof(ChangeEmailView) },
-                { typeof(ChangePasswordViewModel), typeof(ChangePasswordView) },
-                { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameView) },
                 { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
                 { typeof(ClassTileViewModel), typeof(ClassTileView) },
-                { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityView) },
-                { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineView) },
-                { typeof(DeleteAccountViewModel), typeof(DeleteAccountView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(ImageUploadOptionsView) },
                 { typeof(MainTileViewModel), typeof(MainTileView) },
-                { typeof(MyAccountViewModel), typeof(MyAccountView) },
                 { typeof(PushSettingsViewModel), typeof(PushSettingsView) },
                 { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
-                { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsView) },
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
-                { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsView) },
                 { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }

@@ -2566,6 +2566,14 @@ Please think about using an online account instead!</source>
           <source>{0} (+{1} others)</source>
           <target state="final">{0} (+ {1} آخرون)</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_Sound.Title" translate="yes" xml:space="preserve">
+          <source>Sound effects</source>
+          <target state="final">مؤثرات صوتية</target>
+        </trans-unit>
+        <trans-unit id="Settings_SoundEffects_Description.Text" translate="yes" xml:space="preserve">
+          <source>Enable or disable the sound effect that plays when completing a task!</source>
+          <target state="final">قم بتمكين أو تعطيل المؤثر الصوتي الذي يتم تشغيله عند إكمال مهمة!</target>
+        </trans-unit>
       </group>
     </body>
   </file>

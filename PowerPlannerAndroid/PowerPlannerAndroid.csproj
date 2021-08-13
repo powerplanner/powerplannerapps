@@ -108,6 +108,7 @@
     <Compile Include="Extensions\DroidBrowserExtension.cs" />
     <Compile Include="Extensions\DroidClassRemindersExtension.cs" />
     <Compile Include="Extensions\DroidDateTimeFormatterExtension.cs" />
+    <Compile Include="Extensions\DroidEmailExtension.cs" />
     <Compile Include="Extensions\DroidImagePickerExtension.cs" />
     <Compile Include="Extensions\DroidNetworkInfoExtension.cs" />
     <Compile Include="Extensions\DroidPushExtension.cs" />
@@ -144,7 +145,6 @@
     <Compile Include="ViewModel\Settings\WidgetScheduleViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetAgendaViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
-    <Compile Include="Views\AboutView.cs" />
     <Compile Include="Views\AddClassView.cs" />
     <Compile Include="Views\AddGradeView.cs" />
     <Compile Include="Views\AddHolidayView.cs" />
@@ -153,9 +153,6 @@
     <Compile Include="Views\AddYearView.cs" />
     <Compile Include="Views\AgendaView.cs" />
     <Compile Include="Views\CalendarMainView.cs" />
-    <Compile Include="Views\ChangeEmailView.cs" />
-    <Compile Include="Views\ChangePasswordView.cs" />
-    <Compile Include="Views\ChangeUsernameView.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
     <Compile Include="Views\ClassWhatIfTopHeaderView.cs" />
@@ -166,7 +163,6 @@
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\ConfirmIdentityView.cs" />
     <Compile Include="Views\Controls\AddTaskOrEventRepeatsSubControl.cs" />
     <Compile Include="Views\Controls\DayPagerControl.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
@@ -178,11 +174,9 @@
     <Compile Include="Views\Controls\RecurrenceControl.cs" />
     <Compile Include="Views\Controls\SettingsListItem.cs" />
     <Compile Include="Views\Controls\SingleDayControl.cs" />
-    <Compile Include="Views\CreateAccountView.cs" />
     <Compile Include="Views\DayScheduleSnapshotView.cs" />
     <Compile Include="Views\DayView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
-    <Compile Include="Views\ForgotUsernameView.cs" />
     <Compile Include="Views\ListItemHeaders\ListItemHeaderAgendaView.cs" />
     <Compile Include="Views\ListItemHeaders\ListItemHeaderDateGroup.cs" />
     <Compile Include="Views\ListItemHeaders\ListItemHeaderWeightCategoryView.cs" />
@@ -195,24 +189,16 @@
     <Compile Include="Views\ListItems\ListItemTaskOrEventView.cs" />
     <Compile Include="Views\ListItems\ListItemWeightCategorySummaryView.cs" />
     <Compile Include="Views\ListItems\MyScheduleItemView.cs" />
-    <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\MainCalendarItemView.cs" />
     <Compile Include="Views\MainScreenView.cs" />
-    <Compile Include="Views\MyAccountView.cs" />
     <Compile Include="Views\PopupComponentView.cs" />
     <Compile Include="Views\PopupViewHost.cs" />
     <Compile Include="Views\PremiumVersionView.cs" />
     <Compile Include="Views\QuickAddView.cs" />
-    <Compile Include="Views\RecoveredUsernamesView.cs" />
-    <Compile Include="Views\ResetPasswordView.cs" />
     <Compile Include="Views\ScheduleView.cs" />
     <Compile Include="Views\SettingsImageUploadOptionsView.cs" />
     <Compile Include="Views\ListItems\ListItemSemesterView.cs" />
     <Compile Include="Views\ListItems\ListItemYearView.cs" />
-    <Compile Include="Views\SettingsTwoWeekScheduleView.cs" />
-    <Compile Include="Views\SettingsViews\ReminderSettingsView.cs" />
-    <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.cs" />
-    <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.cs" />
     <Compile Include="Views\SettingsWidgetAgendaView.cs" />
     <Compile Include="Views\SettingsWidgetScheduleView.cs" />
     <Compile Include="Views\SettingsSyncOptionsView.cs" />
@@ -220,13 +206,10 @@
     <Compile Include="Views\ShowImagesView.cs" />
     <Compile Include="Views\SplashScreenView.cs" />
     <Compile Include="Views\SyncErrorsView.cs" />
-    <Compile Include="Views\UpdateCredentialsView.cs" />
     <Compile Include="Views\ViewGradeView.cs" />
     <Compile Include="Views\ViewTaskOrEventView.cs" />
     <Compile Include="Views\InitialSyncView.cs" />
     <Compile Include="Views\WelcomeView.cs" />
-    <Compile Include="Views\WelcomeViews\ConnectAccountView.cs" />
-    <Compile Include="Views\WelcomeViews\ExistingUserView.cs" />
     <Compile Include="Views\YearsView.cs" />
     <Compile Include="Widgets\WidgetAgendaProvider.cs" />
     <Compile Include="Widgets\WidgetScheduleProvider.cs" />
@@ -239,9 +222,6 @@
     <None Include="google-services.template.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\Login.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\Welcome.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -252,9 +232,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemYear.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\CreateAccount.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\AddYear.xml">
@@ -344,37 +321,7 @@
     <AndroidResource Include="Resources\layout\ListItemSemesterClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\MyAccount.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\About.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ConfirmIdentity.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangeEmail.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangeUsername.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ChangePassword.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\UpdateCredentials.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\SplashScreen.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ForgotUsername.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\RecoveredUsernames.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ResetPassword.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PremiumVersion.xml">
@@ -423,30 +370,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\AddHoliday.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOptionPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOption.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeekPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemScheduleWeek.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SettingsTwoWeekSchedule.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemCurrentWeekPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemWeekChangesOnPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemDayOfWeek.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\WidgetAgenda.xml">
@@ -1136,24 +1059,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_cached_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsSuccessfullyCreatedAccount.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\WelcomeConnectAccount.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\WelcomeExistingUser.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_input_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1360,24 +1265,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\outline_info_black_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsSchoolTimeZoneSettings.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemSelectedSchoolTimeZonePreview.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeZone.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_access_time_48dp.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1450,18 +1337,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_today_white_24.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsReminders.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemClassRemindersOptionPreview.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\baseline_notifications_black_48.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1475,6 +1350,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_notifications_black_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SpinnerItemTimeOption.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SpinnerItemTimeOptionPreview.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

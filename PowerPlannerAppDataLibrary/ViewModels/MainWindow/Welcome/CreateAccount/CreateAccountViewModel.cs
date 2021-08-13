@@ -14,28 +14,95 @@ using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using BareMvvm.Core;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 {
-    public class CreateAccountViewModel : BaseViewModel
+    public class CreateAccountViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
-
-        /// <summary>
-        /// Views can set this to false
-        /// </summary>
-        public bool IsUsingConfirmPassword { get; set; } = true;
+        public override bool ImportantForAutofill => true;
 
         private List<AccountDataItem> _accounts;
 
+        public static TextField GeneratePasswordTextField()
+        {
+            return new TextField(required: true, maxLength: 50, minLength: 5);
+        }
+
+        public static TextField GenerateEmailTextField()
+        {
+            return new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
+        }
+
         public CreateAccountViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("CreateAccountPage.Title");
+
             Username = new TextField(required: true, maxLength: 50, inputValidator: new CustomInputValidator(ValidateUsername), ignoreOuterSpaces: true, reportValidatorInvalidInstantly: true);
-            Email = new TextField(required: true, maxLength: 150, inputValidator: EmailInputValidator.Instance, ignoreOuterSpaces: true);
-            Password = new TextField(required: true, maxLength: 50, minLength: 5);
-            ConfirmPassword = new TextField(required: true, mustMatch: Password);
+            Email = GenerateEmailTextField();
+            Password = GeneratePasswordTextField();
 
             LoadAccounts();
+        }
+
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBox(Username)
+                        {
+                            Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.PlaceholderText"),
+                            InputScope = InputScope.Username,
+                            AutoFocus = true,
+                            OnSubmit = CreateAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
+                        },
+
+                        new TextBox(Email)
+                        {
+                            Header = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.PlaceholderText"),
+                            InputScope = InputScope.Email,
+                            Margin = new Thickness(0, 18, 0, 0),
+                            OnSubmit = CreateAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
+                        },
+
+                        new PasswordBox(Password)
+                        {
+                            Header = PowerPlannerResources.GetString("CreateAccountPage_PasswordBoxPassword.Header"),
+                            PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_PasswordBoxPassword.PlaceholderText"),
+                            Margin = new Thickness(0, 18, 0, 0),
+                            OnSubmit = CreateAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
+                        },
+
+                        new AccentButton
+                        {
+                            Text = IsCreatingOnlineAccount ? "CREATING ACCOUNT..." : PowerPlannerResources.GetString("WelcomePage_ButtonCreateAccount.Content"),
+                            Click = CreateAccount,
+                            Margin = new Thickness(0, 24, 0, 0),
+                            IsEnabled = !IsCreatingOnlineAccount
+                        },
+
+                        IsCreateLocalAccountVisible ? new TextButton
+                        {
+                            Text = PowerPlannerResources.GetString("CreateAccountPage_TextBlockCreateOfflineAccount.Text"),
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            Margin = new Thickness(0, 16, 0, 0),
+                            Click = CreateLocalAccount,
+                            IsEnabled = !IsCreatingOnlineAccount
+                        } : null
+                    }
+                }
+            };
         }
 
         private async void LoadAccounts()
@@ -57,6 +124,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         /// </summary>
         public bool IsCreateLocalAccountVisible => DefaultAccountToUpgrade == null;
 
+        [VxSubscribe]
         public TextField Username { get; private set; }
 
         private InputValidationState ValidateUsername(string username)
@@ -95,10 +163,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             return InputValidationState.Valid;
         }
 
+        [VxSubscribe]
         public TextField Password { get; private set; }
 
-        public TextField ConfirmPassword { get; private set; }
-
+        [VxSubscribe]
         public TextField Email { get; private set; }
 
         private bool isOkayToCreate()
@@ -127,18 +195,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
             {
                 // Email isn't required for local accounts
-                { nameof(Email), f => f.Validate(overrideRequired: false) },
-                
-                // Confirm password may not be required by some views
-                { nameof(ConfirmPassword), f => f.Validate(overrideRequired: IsUsingConfirmPassword) }
+                { nameof(Email), f => f.Validate(overrideRequired: false) }
             }))
             {
                 return;
             }
 
-            string localToken = PowerPlannerAuth.CreateOfflineAccount(Username.Text.Trim(), Password.Text);
+            bool shouldCreate = await new PortableMessageDialog(
+                PowerPlannerResources.GetString("CreateAccountPage_String_WarningOfflineAccountExplanation"),
+                PowerPlannerResources.GetString("CreateAccountPage_String_WarningOfflineAccount"),
+                PowerPlannerResources.GetString("String_Create"),
+                PowerPlannerResources.GetString("String_GoBack"))
+                .ShowForResultAsync();
 
-            await FinishCreateAccount(Username.Text.Trim(), localToken, null, 0, 0, "");
+            if (shouldCreate)
+            {
+                string localToken = PowerPlannerAuth.CreateOfflineAccount(Username.Text.Trim(), Password.Text);
+
+                await FinishCreateAccount(Username.Text.Trim(), localToken, null, 0, 0, "");
+            }
         }
 
         private bool _isCreatingOnlineAccount;
@@ -150,11 +225,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         public async void CreateAccount()
         {
-            if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
-            {
-                // Confirm password may not be required by some views
-                { nameof(ConfirmPassword), f => f.Validate(overrideRequired: IsUsingConfirmPassword) }
-            }))
+            if (!ValidateAllInputs())
             {
                 return;
             }

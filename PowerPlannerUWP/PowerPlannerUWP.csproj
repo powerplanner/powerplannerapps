@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -155,6 +155,7 @@
     <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
     <Compile Include="Extensions\UWPBrowserExtension.cs" />
+    <Compile Include="Extensions\UWPEmailExtension.cs" />
     <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
@@ -221,9 +222,6 @@
       <DependentUpon>ClassWhatIfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\CreateAccountView.xaml.cs">
-      <DependentUpon>CreateAccountView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AddSemesterView.xaml.cs">
       <DependentUpon>AddSemesterView.xaml</DependentUpon>
     </Compile>
@@ -232,9 +230,6 @@
     </Compile>
     <Compile Include="Views\ExportSchedulePopupView.xaml.cs">
       <DependentUpon>ExportSchedulePopupView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ForgotUsernameView.xaml.cs">
-      <DependentUpon>ForgotUsernameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InitialSyncView.xaml.cs">
       <DependentUpon>InitialSyncView.xaml</DependentUpon>
@@ -246,29 +241,14 @@
     <Compile Include="Views\Promos\PromoOtherPlatformsView.xaml.cs">
       <DependentUpon>PromoOtherPlatformsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecoveredUsernamesView.xaml.cs">
-      <DependentUpon>RecoveredUsernamesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ResetPasswordView.xaml.cs">
-      <DependentUpon>ResetPasswordView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\QuickAddView.xaml.cs">
       <DependentUpon>QuickAddView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScheduleViews\HolidayScheduleItemView.xaml.cs">
       <DependentUpon>HolidayScheduleItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ChangePasswordView.xaml.cs">
-      <DependentUpon>ChangePasswordView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ChangeUsernameView.xaml.cs">
-      <DependentUpon>ChangeUsernameView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\CalendarIntegrationClassesView.xaml.cs">
       <DependentUpon>CalendarIntegrationClassesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ConfirmIdentityView.xaml.cs">
-      <DependentUpon>ConfirmIdentityView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainContentDayView.xaml.cs">
       <DependentUpon>MainContentDayView.xaml</DependentUpon>
@@ -288,26 +268,14 @@
     <Compile Include="Views\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\AboutView.xaml.cs">
-      <DependentUpon>AboutView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\BaseSettingsSplitView.xaml.cs">
       <DependentUpon>BaseSettingsSplitView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ChangeEmailView.xaml.cs">
-      <DependentUpon>ChangeEmailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\ClassTileView.xaml.cs">
       <DependentUpon>ClassTileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\ClassTilesView.xaml.cs">
       <DependentUpon>ClassTilesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ConvertToOnlineView.xaml.cs">
-      <DependentUpon>ConvertToOnlineView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\DeleteAccountView.xaml.cs">
-      <DependentUpon>DeleteAccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml.cs">
       <DependentUpon>GoogleCalendarIntegrationView.xaml</DependentUpon>
@@ -321,17 +289,11 @@
     <Compile Include="Views\SettingsViews\MainTileView.xaml.cs">
       <DependentUpon>MainTileView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\MyAccountView.xaml.cs">
-      <DependentUpon>MyAccountView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\PushSettingsView.xaml.cs">
       <DependentUpon>PushSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\QuickAddTileView.xaml.cs">
       <DependentUpon>QuickAddTileView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ReminderSettingsView.xaml.cs">
-      <DependentUpon>ReminderSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\ScheduleTileView.xaml.cs">
       <DependentUpon>ScheduleTileView.xaml</DependentUpon>
@@ -339,14 +301,8 @@
     <Compile Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml.cs">
       <DependentUpon>CalendarIntegrationTasksView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml.cs">
-      <DependentUpon>SuccessfullyCreatedAccountView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml.cs">
       <DependentUpon>SchoolTimeZoneSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml.cs">
-      <DependentUpon>TwoWeekScheduleSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\WebContentView.xaml.cs">
       <DependentUpon>WebContentView.xaml</DependentUpon>
@@ -363,9 +319,6 @@
     <Compile Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml.cs">
       <DependentUpon>TasksOrEventsGroupedListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UpdateCredentialsView.xaml.cs">
-      <DependentUpon>UpdateCredentialsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\PremiumVersionView.xaml.cs">
       <DependentUpon>PremiumVersionView.xaml</DependentUpon>
     </Compile>
@@ -381,12 +334,6 @@
     </Compile>
     <Compile Include="Views\ViewTaskOrEventView.xaml.cs">
       <DependentUpon>ViewTaskOrEventView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WelcomeViews\ConnectAccountView.xaml.cs">
-      <DependentUpon>ConnectAccountView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WelcomeViews\ExistingUserView.xaml.cs">
-      <DependentUpon>ExistingUserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\YearsView.xaml.cs">
       <DependentUpon>YearsView.xaml</DependentUpon>
@@ -618,10 +565,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AddSemesterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -631,10 +574,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExportSchedulePopupView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ForgotUsernameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -650,14 +589,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\RecoveredUsernamesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ResetPasswordView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\QuickAddView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -666,19 +597,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\ChangePasswordView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ChangeUsernameView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\CalendarIntegrationClassesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ConfirmIdentityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -706,15 +625,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\AboutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\BaseSettingsSplitView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ChangeEmailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -723,14 +634,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\ClassTilesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ConvertToOnlineView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\DeleteAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -750,19 +653,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\MyAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\PushSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\QuickAddTileView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ReminderSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -774,17 +669,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SettingsViews\TwoWeekScheduleSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\WebContentView.xaml">
       <SubType>Designer</SubType>
@@ -803,10 +690,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UpdateCredentialsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -829,14 +712,6 @@
     <Page Include="Views\ViewTaskOrEventView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WelcomeViews\ConnectAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WelcomeViews\ExistingUserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\YearsView.xaml">
       <SubType>Designer</SubType>

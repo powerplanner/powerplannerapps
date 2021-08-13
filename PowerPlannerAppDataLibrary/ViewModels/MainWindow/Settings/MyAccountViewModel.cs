@@ -8,19 +8,105 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class MyAccountViewModel : BaseViewModel
+    public class MyAccountViewModel : PopupComponentViewModel
     {
         private static DateTime _timeLastConfirmed = DateTime.MinValue;
         private static Guid _lastConfrimedAccountId;
 
+        [VxSubscribe]
         public AccountDataItem CurrentAccount { get; private set; }
 
         private MyAccountViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("Settings_MyAccount_Header.Text");
+        }
 
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = CurrentAccount.Username,
+                            FontWeight = FontWeights.Bold
+                        },
+
+                        new Button
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_ButtonLogOut.Content"),
+                            Click = LogOut,
+                            Margin = new Thickness(0, 24, 0, 0)
+                        },
+
+                        new Button
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_ButtonChangeUsername.Content"),
+                            Click = ChangeUsername,
+                            Margin = new Thickness(0, 12, 0, 0)
+                        },
+
+                        new Button
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_ButtonChangePassword.Content"),
+                            Click = ChangePassword,
+                            Margin = new Thickness(0, 12, 0, 0)
+                        },
+
+                        CurrentAccount.IsOnlineAccount ? new Button
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_ButtonChangeEmail.Content"),
+                            Click = ChangeEmail,
+                            Margin = new Thickness(0, 12, 0, 0)
+                        } : null,
+
+                        new CheckBox
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_CheckBoxRememberUsername.Content"),
+                            IsChecked = VxValue.Create(RememberUsername, v => RememberUsername = v),
+                            Margin = new Thickness(0, 24, 0, 0)
+                        },
+
+                        new CheckBox
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_CheckBoxRememberPassword.Content"),
+                            IsChecked = VxValue.Create(RememberPassword, v => RememberPassword = v),
+                            IsEnabled = CurrentAccount.IsRememberPasswordPossible,
+                            Margin = new Thickness(0, 6, 0, 0)
+                        },
+
+                        new CheckBox
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_CheckBoxAutoLogin.Content"),
+                            IsChecked = VxValue.Create(AutoLogin, v => AutoLogin = v),
+                            IsEnabled = CurrentAccount.IsAutoLoginPossible,
+                            Margin = new Thickness(0, 6, 0, 0)
+                        },
+
+                        CurrentAccount.IsOnlineAccount ? null : new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_ButtonConvertToOnline.Content"),
+                            Margin = new Thickness(0, 24, 0, 0),
+                            Click = ConvertToOnline
+                        },
+
+                        new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("Settings_MyAccount_ButtonDeleteAccount.Content"),
+                            Margin = new Thickness(0, CurrentAccount.IsOnlineAccount ? 24 : 12, 0, 0),
+                            Click = PromptConfirmDelete
+                        }
+                    }
+                }
+            };
         }
 
         public static MyAccountViewModel Load(BaseViewModel parent)

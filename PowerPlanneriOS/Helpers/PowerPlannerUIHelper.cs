@@ -65,9 +65,10 @@ namespace PowerPlanneriOS.Helpers
             {
                 Left = 8,
                 Right = 8,
-                Top = 6,
-                Bottom = 6
+                Top = 8,
+                Bottom = 8
             };
+            button.Layer.CornerRadius = 10;
 
             return button;
         }

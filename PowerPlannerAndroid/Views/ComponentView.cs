@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using InterfacesDroid.Helpers;
 using InterfacesDroid.Views;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,11 @@ namespace PowerPlannerAndroid.Views
             var nativeView = ViewModel.Render();
             nativeView.LayoutParameters = new Android.Views.ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             AddView(nativeView);
+
+            if (ViewModel.ImportantForAutofill)
+            {
+                AutofillHelper.EnableForAll(nativeView);
+            }
         }
     }
 }

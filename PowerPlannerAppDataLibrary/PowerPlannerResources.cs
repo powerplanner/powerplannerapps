@@ -94,6 +94,11 @@ namespace PowerPlannerAppDataLibrary
             return GetString("MainMenuItem_" + menuItem);
         }
 
+        public static string GetEnabledDisabledString(bool enabled)
+        {
+            return GetString(enabled ? "String_Enabled" : "String_Disabled");
+        }
+
         /// <summary>
         /// Returns something like "Due {x}", where {x} is dueValue
         /// </summary>

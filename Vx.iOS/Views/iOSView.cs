@@ -25,6 +25,30 @@ namespace Vx.iOS.Views
         protected override void ApplyProperties(V oldView, V newView)
         {
             View.Alpha = newView.Opacity;
+
+            // Clearing heights on buttons does some funky things, so keeping this scoped to border for now
+            if (newView is Border)
+            {
+                if (oldView == null || newView.Width != oldView.Width)
+                {
+                    View.ClearWidth();
+
+                    if (!float.IsNaN(newView.Width))
+                    {
+                        View.SetWidth(newView.Width);
+                    }
+                }
+
+                if (oldView == null || newView.Height != oldView.Height)
+                {
+                    View.ClearHeight();
+
+                    if (!float.IsNaN(newView.Height))
+                    {
+                        View.SetHeight(newView.Height);
+                    }
+                }
+            }
         }
 
         protected void ReconcileContent(View oldContent, View newContent, Action<UIView> afterSubviewAddedAction, Action<UIView> afterTransfer = null)
@@ -34,10 +58,13 @@ namespace Vx.iOS.Views
                 View.RemoveAllConstraints();
                 View.ClearAllSubviews();
 
-                var child = view.CreateUIView(VxView);
-                child.TranslatesAutoresizingMaskIntoConstraints = false;
-                View.AddSubview(child);
-                afterSubviewAddedAction(child);
+                if (view != null)
+                {
+                    var child = view.CreateUIView(VxView);
+                    child.TranslatesAutoresizingMaskIntoConstraints = false;
+                    View.AddSubview(child);
+                    afterSubviewAddedAction(child);
+                }
             }, transferView: view =>
             {
                 if (afterTransfer != null)

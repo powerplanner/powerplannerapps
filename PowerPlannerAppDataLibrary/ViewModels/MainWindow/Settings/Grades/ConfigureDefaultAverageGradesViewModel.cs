@@ -34,12 +34,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             layout.Children.Add(new Switch
             {
                 Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
-                IsOn = _averageGrades,
-                IsOnChanged = isOn =>
+                IsOn = VxValue.Create(_averageGrades.Value, isOn =>
                 {
                     _averageGrades.Value = isOn;
                     _hasUnsavedChanges.Value = Account.DefaultDoesAverageGradeTotals != isOn;
-                },
+                }),
                 IsEnabled = IsEnabled
             });
 
@@ -58,8 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 Margin = new Thickness(0, 12, 0, 0),
                 Text = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpBody.Text"),
-                TextColor = Theme.Current.SubtleForegroundColor,
-                WrapText = true
+                TextColor = Theme.Current.SubtleForegroundColor
             });
 
             RenderApplyUI(layout);

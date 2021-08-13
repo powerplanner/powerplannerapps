@@ -1,6 +1,9 @@
-﻿using BareMvvm.Core.ViewModels;
+﻿using BareMvvm.Core;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppAuthLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
@@ -8,12 +11,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ChangePasswordViewModel : BaseViewModel
+    public class ChangePasswordViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         public event EventHandler<string> ActionError;
         public event EventHandler<string> ActionPasswordsDidNotMatch;
@@ -22,24 +27,52 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public ChangePasswordViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("Settings_ChangePasswordPage.Title");
+
             Account = account;
+
+            Password = CreateAccountViewModel.GeneratePasswordTextField();
+            ConfirmPassword = new TextField(required: true, mustMatch: Password);
         }
 
-        private string _password = "";
-
-        public string Password
+        protected override View Render()
         {
-            get { return _password; }
-            set { SetProperty(ref _password, value, nameof(Password)); }
+            bool isEnabled = !IsUpdatingPassword;
+
+            return RenderGenericPopupContent(
+                new PasswordBox(Password)
+                {
+                    Header = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxNewPassword.Header"),
+                    PlaceholderText = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxNewPassword.PlaceholderText"),
+                    AutoFocus = true,
+                    IsEnabled = isEnabled,
+                    OnSubmit = Update
+                },
+
+                new PasswordBox(ConfirmPassword)
+                {
+                    Header = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxConfirmPassword.Header"),
+                    PlaceholderText = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxConfirmPassword.PlaceholderText"),
+                    Margin = new Thickness(0, 18, 0, 0),
+                    IsEnabled = isEnabled,
+                    OnSubmit = Update
+                },
+
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_ChangePasswordPage_ButtonUpdatePassword.Content"),
+                    Click = Update,
+                    Margin = new Thickness(0, 24, 0, 0),
+                    IsEnabled = isEnabled
+                }
+            );
         }
 
-        private string _confirmPassword = "";
+        [VxSubscribe]
+        public TextField Password { get; private set; }
 
-        public string ConfirmPassword
-        {
-            get { return _confirmPassword; }
-            set { SetProperty(ref _confirmPassword, value, nameof(ConfirmPassword)); }
-        }
+        [VxSubscribe]
+        public TextField ConfirmPassword { get; private set; }
 
         private bool _isUpdatingPassword;
 
@@ -55,21 +88,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             try
             {
-                if (string.IsNullOrWhiteSpace(Password))
+                if (!ValidateAllInputs())
                 {
-                    SetError(PowerPlannerResources.GetString("Settings_ChangePasswordPage_Errors_MustEnterPassword"));
-                    return;
-                }
-
-                if (Password.Length < 5)
-                {
-                    SetError(PowerPlannerResources.GetString("String_InvalidPasswordTooShortExplanation"));
-                    return;
-                }
-
-                if (!Password.Equals(ConfirmPassword))
-                {
-                    ActionPasswordsDidNotMatch?.Invoke(this, PowerPlannerResources.GetString("Settings_ChangePasswordPage_Errors_PasswordsDidNotMatch"));
                     return;
                 }
 
@@ -80,7 +100,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         var resp = await PowerPlannerAuth.ChangeOnlineAccountPasswordAsync(
                             accountId: Account.AccountId,
                             username: Account.Username,
-                            newPassword: Password,
+                            newPassword: Password.Text,
                             currentToken: Account.Token);
 
                         if (resp.Error != null)
@@ -99,10 +119,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 else
                 {
-                    var newLocalToken = PowerPlannerAuth.ChangeOfflineAccountPassword(Account.Username, Password, Account.LocalToken);
+                    var newLocalToken = PowerPlannerAuth.ChangeOfflineAccountPassword(Account.Username, Password.Text, Account.LocalToken);
                     await updateToken(Account, newLocalToken, null);
                     GoBack();
                 }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+                SetError("Unknown error");
             }
 
             finally { IsUpdatingPassword = false; }
@@ -110,7 +135,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private void SetError(string error)
         {
-            ActionError?.Invoke(this, error);
+            Password.SetError(error);
         }
 
         private async System.Threading.Tasks.Task updateToken(AccountDataItem account, string newLocalToken, string newToken)

@@ -1,5 +1,7 @@
-﻿using BareMvvm.Core.ViewModels;
+﻿using BareMvvm.Core;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
@@ -7,22 +9,50 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ChangeEmailViewModel : BaseViewModel
+    public class ChangeEmailViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         public AccountDataItem Account { get; private set; }
 
         public ChangeEmailViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("Settings_ChangeEmailPage.Title");
+
             Account = account;
-            Initialize();
+            InitializeEmail();
         }
 
-        private async void Initialize()
+        protected override View Render()
+        {
+            bool isEnabled = !IsRetrievingEmail && !IsUpdatingEmail;
+
+            return RenderGenericPopupContent(
+
+                new TextBox(Email)
+                {
+                    Header = PowerPlannerResources.GetString("Settings_ChangeEmailPage_TextBoxEmail.Header"),
+                    IsEnabled = isEnabled,
+                    AutoFocus = true,
+                    OnSubmit = UpdateEmail
+                },
+
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_ChangeEmailPage_ButtonUpdateEmail.Content"),
+                    Click = UpdateEmail,
+                    Margin = new Thickness(0, 24, 0, 0)
+                }
+
+            );
+        }
+
+        private async void InitializeEmail()
         {
             try
             {
@@ -37,7 +67,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                     else
                     {
-                        Email = response.Email;
+                        Email.Text = response.Email;
                         IsRetrievingEmail = false;
                     }
 
@@ -69,32 +99,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             set { SetProperty(ref _isUpdatingEmail, value, nameof(IsUpdatingEmail)); }
         }
 
-        private string _email = "";
-
-        public string Email
-        {
-            get { return _email; }
-            set { SetProperty(ref _email, value, nameof(Email)); }
-        }
+        [VxSubscribe]
+        public TextField Email { get; private set; } = CreateAccountViewModel.GenerateEmailTextField();
 
         private void SetError(string error)
         {
-            Error = error;
-        }
-
-        private string _error = "";
-
-        public string Error
-        {
-            get { return _error; }
-            set { SetProperty(ref _error, value, nameof(Error)); }
+            Email.SetError(error);
         }
 
         public async void UpdateEmail()
         {
-            if (string.IsNullOrWhiteSpace(Email))
+            if (!ValidateAllInputs())
             {
-                SetError("You must provide an email address!");
                 return;
             }
 
@@ -106,7 +122,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Website.URL + "changeemailmodern",
                     new ChangeEmailRequest()
                     {
-                        NewEmail = Email
+                        NewEmail = Email.Text.Trim()
                     });
 
                 if (response.Error != null)

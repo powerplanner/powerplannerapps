@@ -12,16 +12,97 @@ using ToolsPortable;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppAuthLibrary;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         public LoginViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("LoginPage.Title");
+
             Initialize();
+        }
+
+        protected override View Render()
+        {
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        Message != null ? new TextBlock
+                        {
+                            Text = Message,
+                            FontSize = Theme.Current.CaptionFontSize,
+                            Margin = new Thickness(0, 0, 0, 16)
+                        } : null,
+
+                        new TextBox
+                        {
+                            Header = PowerPlannerResources.GetString("LoginPage_TextBoxUsername.Header"),
+                            Text = VxValue.Create(Username, t => Username = t),
+                            InputScope = InputScope.Username,
+                            AutoFocus = true,
+                            IsEnabled = !IsLoggingInOnline
+                        },
+
+                        new PasswordBox
+                        {
+                            Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
+                            Text = VxValue.Create(Password, t => Password = t),
+                            Margin = new Thickness(0, 16, 0, 0),
+                            IsEnabled = !IsLoggingInOnline
+                        },
+
+                        new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString(IsLoggingInOnline ? "LoginPage_String_LoggingIn" : "WelcomePage_ButtonLogin.Content"),
+                            Click = () => _ = LoginAsync(),
+                            Margin = new Thickness(0, 24, 0, 0),
+                            IsEnabled = !IsLoggingInOnline
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(0, 24, 0, 0),
+                            Children =
+                            {
+                                new TextButton
+                                {
+                                    Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotUsername.Text"),
+                                    Click = ForgotUsername,
+                                    HorizontalAlignment = HorizontalAlignment.Right,
+                                    Margin = new Thickness(0, 0, 12, 0),
+                                    IsEnabled = !IsLoggingInOnline
+                                }.LinearLayoutWeight(1),
+
+                                new Border
+                                {
+                                    BackgroundColor = Theme.Current.SubtleForegroundColor,
+                                    Width = 1
+                                },
+
+                                new TextButton
+                                {
+                                    Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
+                                    Click = ForgotPassword,
+                                    HorizontalAlignment = HorizontalAlignment.Left,
+                                    Margin = new Thickness(12, 0, 0, 0),
+                                    IsEnabled = !IsLoggingInOnline
+                                }.LinearLayoutWeight(1)
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         private const string STORED_PASS = "Stored password, hidden for security";

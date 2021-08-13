@@ -22,9 +22,9 @@ namespace Vx.Droid.Views
 
         private void View_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            if (VxView.IsOnChanged != null && VxView.IsOn != View.Checked)
+            if (VxView.IsOn != null && VxView.IsOn.Value != View.Checked)
             {
-                VxView.IsOnChanged(View.Checked);
+                VxView.IsOn.ValueChanged?.Invoke(View.Checked);
             }
         }
 
@@ -34,7 +34,7 @@ namespace Vx.Droid.Views
 
             View.Enabled = newView.IsEnabled;
             View.Text = newView.Title;
-            View.Checked = newView.IsOn;
+            View.Checked = newView.IsOn?.Value ?? false;
         }
     }
 }

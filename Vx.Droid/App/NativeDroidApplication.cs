@@ -100,9 +100,9 @@ namespace InterfacesDroid.App
 
             // Register the obtain dispatcher function
             PortableDispatcher.ObtainDispatcherFunction = () => { return new AndroidDispatcher(); };
-            
+
             // Register message dialog
-            PortableMessageDialog.Extension = (messageDialog) => { AndroidMessageDialog.Show(messageDialog); return Task.FromResult(true); };
+            PortableMessageDialog.Extension = AndroidMessageDialog.Show;
 
             PortableLocalizedResources.CultureExtension = GetCultureInfo;
 

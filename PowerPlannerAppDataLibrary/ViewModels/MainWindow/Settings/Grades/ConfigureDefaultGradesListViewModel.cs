@@ -31,7 +31,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_Explanation"),
-                        WrapText = true,
                         TextColor = Theme.Current.SubtleForegroundColor,
                         Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12)
                     },

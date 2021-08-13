@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using ToolsPortable;
 
 namespace Vx.Views
@@ -60,6 +62,28 @@ namespace Vx.Views
             SubscribeToProperties();
 
             RenderActual();
+
+            EnableHotReload();
+        }
+
+        private async void EnableHotReload()
+        {
+#if DEBUG
+            // Enable hot reload by refreshing every second since we can't subscribe to MetadataUpdateHandler yet
+            if (System.Diagnostics.Debugger.IsAttached && VxPlatform.Current == Platform.Uwp)
+            {
+                try
+                {
+                    while (true)
+                    {
+                        await Task.Delay(1000);
+
+                        MarkDirty();
+                    }
+                }
+                catch { }
+            }
+#endif
         }
 
         /// <summary>
@@ -255,11 +279,35 @@ namespace Vx.Views
 
         private View RenderedContent { get; set; }
 
-        protected VxState<T> Bind<T>(string propertyName, object source)
+        private Dictionary<string, object> _states = new Dictionary<string, object>();
+
+        protected T GetState<T>(T defaultValue = default(T), [CallerMemberName]string stateName = null)
         {
-            var bound = VxState<T>.CreateBound(propertyName, source);
-            bound.ValueChanged += State_ValueChanged;
-            return bound;
+            if (_states.TryGetValue(stateName, out object stateValue) && stateValue is T)
+            {
+                return (T)stateValue;
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        protected void SetState<T>(T value, [CallerMemberName]string stateName = null)
+        {
+            bool changed = false;
+
+            if (_states.TryGetValue(stateName, out object stateValue))
+            {
+                changed = !object.Equals(value, stateValue);
+            }
+
+            _states[stateName] = value;
+
+            if (changed)
+            {
+                MarkDirty();
+            }
         }
     }
 }

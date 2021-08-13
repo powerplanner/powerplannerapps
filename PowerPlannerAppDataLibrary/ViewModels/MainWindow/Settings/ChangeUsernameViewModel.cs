@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ChangeUsernameViewModel : BaseViewModel
+    public class ChangeUsernameViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
+        public override bool ImportantForAutofill => true;
 
         public event EventHandler<string> ActionError;
 
@@ -20,29 +22,45 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public ChangeUsernameViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("Settings_ChangeUsernamePage.Title");
+
             Account = account;
             Username = account.Username;
         }
 
-        private string _username = "";
-
-        public string Username
+        protected override View Render()
         {
-            get { return _username; }
-            set { SetProperty(ref _username, value, nameof(Username)); }
+            return RenderGenericPopupContent(
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("Settings_ChangeUsernamePage_TextBoxUsername.Header"),
+                    Text = VxValue.Create(Username, t => { Username = t; Error = null; }),
+                    AutoFocus = true,
+                    OnSubmit = Update,
+                    IsEnabled = !IsUpdatingUsername,
+                    ValidationState = Error != null ? InputValidationState.Invalid(Error) : null
+                },
+
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_ChangeUsernamePage_ButtonUpdateUsername.Content"),
+                    Click = Update,
+                    Margin = new Thickness(0, 24, 0, 0)
+                }
+            );
         }
 
-        private bool _isUpdatingUsername;
-        public bool IsUpdatingUsername
-        {
-            get { return _isUpdatingUsername; }
-            set { SetProperty(ref _isUpdatingUsername, value, nameof(IsUpdatingUsername)); }
-        }
+        public string Username { get => GetState<string>(); set => SetState(value); }
+
+        public bool IsUpdatingUsername { get => GetState<bool>(); set => SetState(value); }
+
+        public string Error { get => GetState<string>(); set => SetState(value); }
 
         public async void Update()
         {
             Username = Username.Trim();
             IsUpdatingUsername = true;
+            SetError(null);
 
             try
             {
@@ -122,7 +140,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private void SetError(string error)
         {
-            ActionError?.Invoke(this, error);
+            Error = error;
         }
     }
 }

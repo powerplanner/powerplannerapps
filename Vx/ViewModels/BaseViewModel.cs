@@ -62,6 +62,11 @@ namespace BareMvvm.Core.ViewModels
         public event EventHandler<CancelEventArgs> BackRequested;
         public event EventHandler<bool> AllowLightDismissChanged;
 
+        /// <summary>
+        /// Can override this to true for screens where emails/usernames/etc should be autofilled
+        /// </summary>
+        public virtual bool ImportantForAutofill => false;
+
         private void BindableBase_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             throw new NotImplementedException();

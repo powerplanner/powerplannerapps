@@ -29,15 +29,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
             if (c.Credits == PowerPlannerSending.Grade.NO_CREDITS)
             {
-                _credits = new VxState<double?>(null);
+                Credits = null;
             }
             else
             {
-                _credits = new VxState<double?>(c.Credits);
+                Credits = c.Credits;
             }
         }
 
-        private VxState<double?> _credits;
+        public double? Credits { get => GetState<double?>(); set => SetState(value); }
 
         protected override View Render()
         {
@@ -49,12 +49,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     },
 
                     new NumberTextBox
                     {
-                        Number = _credits,
+                        Number = VxValue.Create(Credits, v => Credits = v),
                         PlaceholderText = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.PlaceholderText")
                     }
                 }
@@ -65,7 +66,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             TryStartDataOperationAndThenNavigate(delegate
             {
-                double credits = _credits.Value != null ? _credits.Value.Value : PowerPlannerSending.Grade.NO_CREDITS;
+                double credits = Credits != null ? Credits.Value : PowerPlannerSending.Grade.NO_CREDITS;
 
                 DataChanges changes = new DataChanges();
 

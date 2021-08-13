@@ -8,10 +8,7 @@ using PowerPlannerAppDataLibrary.Windows;
 using BareMvvm.Core.App;
 using InterfacesiOS.Windows;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
@@ -26,7 +23,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlanneriOS.Controllers.ClassViewControllers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary;
-using PowerPlannerAppDataLibrary.SyncLayer;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -34,16 +30,12 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlanneriOS.Extensions;
 using PowerPlannerAppDataLibrary.App;
 using System.Linq;
-using PowerPlanneriOS.Controllers.Welcome;
-using PowerPlanneriOS.ViewModels;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using UserNotifications;
 using InterfacesiOS.Helpers;
 using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
-using PowerPlanneriOS.Controllers.Settings.Grades;
 using PowerPlannerAppDataLibrary.ViewModels;
 
 namespace PowerPlanneriOS
@@ -77,10 +69,6 @@ namespace PowerPlanneriOS
             {
                 // Welcome views
                 { typeof(WelcomeViewModel), typeof(WelcomeViewController) },
-                { typeof(LoginViewModel), typeof(LoginViewController) },
-                { typeof(CreateAccountViewModel), typeof(CreateAccountViewController) },
-                { typeof(ExistingUserViewModel), typeof(ExistingUserViewController) },
-                { typeof(ConnectAccountViewModel), typeof(ConnectAccountViewController) },
 
                 { typeof(InitialSyncViewModel), typeof(InitialSyncViewController) },
                 { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
@@ -103,24 +91,7 @@ namespace PowerPlanneriOS
                 { typeof(AddGradeViewModel), typeof(AddGradeViewController) },
 
                 // Settings views
-                { typeof(SettingsViewModel), typeof(SettingsViewController) },
-                { typeof(MyAccountViewModel), typeof(MyAccountViewController) },
-                { typeof(ConfirmIdentityViewModel), typeof(ConfirmIdentityViewController) },
-                { typeof(ChangeUsernameViewModel), typeof(ChangeUsernameViewController) },
-                { typeof(ChangePasswordViewModel), typeof(ChangePasswordViewController) },
-                { typeof(ChangeEmailViewModel), typeof(ChangeEmailViewController) },
-                { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineViewController) },
-                { typeof(DeleteAccountViewModel), typeof(DeleteAccountViewController) },
-                { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsViewController) },
-                { typeof(ForgotUsernameViewModel), typeof(ForgotUsernameViewController) },
-                { typeof(RecoveredUsernamesViewModel), typeof(RecoveredUsernamesViewController) },
-                { typeof(ResetPasswordViewModel), typeof(ResetPasswordViewController) },
-                { typeof(AboutViewModel), typeof(AboutViewController) },
-                { typeof(AboutViewModelAsPopup), typeof(AboutViewControllerAsPopup) },
-                { typeof(ReminderSettingsViewModel), typeof(ReminderSettingsViewController) },
-                { typeof(TwoWeekScheduleSettingsViewModel), typeof(TwoWeekScheduleSettingsViewController) },
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) },
-                { typeof(SchoolTimeZoneSettingsViewModel), typeof(SchoolTimeZoneSettingsViewController) }
+                { typeof(SettingsViewModel), typeof(SettingsViewController) }
             };
         }
 
@@ -224,6 +195,7 @@ namespace PowerPlanneriOS
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();
             PushExtension.Current = new iOSPushExtension();
             BrowserExtension.Current = new iOSBrowserExtension();
+            EmailExtension.Current = new iOSEmailExtension();
 
             if (SdkSupportHelper.IsNotificationsSupported)
             {

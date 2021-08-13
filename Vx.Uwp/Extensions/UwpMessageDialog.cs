@@ -10,7 +10,7 @@ namespace InterfacesUWP.Extensions
 {
     public class UwpMessageDialog
     {
-        public static async Task ShowAsync(PortableMessageDialog portableDialog)
+        public static async Task<bool> ShowAsync(PortableMessageDialog portableDialog)
         {
             var dialog = new MessageDialog(portableDialog.Content);
             if (portableDialog.Title != null)
@@ -18,7 +18,20 @@ namespace InterfacesUWP.Extensions
                 dialog.Title = portableDialog.Title;
             }
 
-            await dialog.ShowAsync();
+            IUICommand positiveCommand = null;
+
+            if (portableDialog.PositiveText != null)
+            {
+                positiveCommand = new UICommand(portableDialog.PositiveText);
+                dialog.Commands.Add(positiveCommand);
+            }
+
+            if (portableDialog.NegativeText != null)
+            {
+                dialog.Commands.Add(new UICommand(portableDialog.NegativeText));
+            }
+
+            return await dialog.ShowAsync() == positiveCommand;
         }
     }
 }

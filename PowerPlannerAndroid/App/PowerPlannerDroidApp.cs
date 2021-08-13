@@ -85,6 +85,7 @@ namespace PowerPlannerAndroid.App
             NetworkInfoExtension.Current = new DroidNetworkInfoExtension();
             AppShortcutsExtension.Current = new DroidAppShortcutsExtension();
             BrowserExtension.Current = new DroidBrowserExtension();
+            EmailExtension.Current = new DroidEmailExtension();
 
             return base.InitializeAsyncOverride();
         }

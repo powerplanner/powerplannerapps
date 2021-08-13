@@ -319,7 +319,7 @@ namespace PowerPlannerUWP.Views
 
                     // Email dev
                     case 1:
-                        AboutView.EmailDeveloper(ViewModel);
+                        AboutViewModel.EmailDeveloper();
                         break;
                 }
             }

@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems;
+﻿using Newtonsoft.Json.Linq;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
@@ -93,11 +94,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     RenderRow(new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockStartingGrade.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockGPA.Text"),
-                        FontWeight = FontWeights.Bold
+                        FontWeight = FontWeights.Bold,
+                        WrapText = false
                     }, new TransparentContentButton
                     {
                         Opacity = 0,
@@ -114,10 +117,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 layout.Children.Add(RenderRow(new NumberTextBox
                 {
-                    Number = Bind<double?>(nameof(entry.StartingGrade), entry)
+                    Number = VxValue.Create(entry.StartingGrade, v =>
+                    {
+                        entry.StartingGrade = v;
+                        MarkDirty();
+                    })
                 }, new NumberTextBox
-                {
-                    Number = Bind<double?>(nameof(entry.GPA), entry)
+{
+                    Number = VxValue.Create(entry.GPA, v =>
+                    {
+                        entry.GPA = v;
+                        MarkDirty();
+                    })
                 }, new TransparentContentButton
                 {
                     Content = new FontIcon
