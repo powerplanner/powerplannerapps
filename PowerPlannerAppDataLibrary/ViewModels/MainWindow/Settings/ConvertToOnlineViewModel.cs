@@ -9,10 +9,13 @@ using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
+using BareMvvm.Core;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ConvertToOnlineViewModel : BaseViewModel
+    public class ConvertToOnlineViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -22,21 +25,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public ConvertToOnlineViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
             Account = account;
+
+            Title = PowerPlannerResources.GetString("Settings_ConvertToOnlinePage.Title");
         }
 
-        private string _email;
-        public string Email
+        protected override View Render()
         {
-            get { return _email; }
-            set { SetProperty(ref _email, value, nameof(Email)); }
+            bool isEnabled = !IsConverting;
+
+            return RenderGenericPopupContent(
+
+                new TextBox(Email)
+                {
+                    Header = PowerPlannerResources.GetString("Settings_ConvertToOnlinePage_TextBoxEmail.Header"),
+                    PlaceholderText = PowerPlannerResources.GetString("Settings_ConvertToOnlinePage_TextBoxEmail.PlaceholderText"),
+                    AutoFocus = true,
+                    InputScope = InputScope.Email,
+                    OnSubmit = () => _ = CreateOnlineAccountAsync(),
+                    IsEnabled = isEnabled
+                },
+
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_ConvertToOnlinePage_ButtonConvert.Content"),
+                    Margin = new Thickness(0, 24, 0, 0),
+                    Click = () => _ = CreateOnlineAccountAsync(),
+                    IsEnabled = isEnabled
+                }
+
+            );
         }
 
-        private string _error;
-        public string Error
-        {
-            get { return _error; }
-            set { SetProperty(ref _error, value, nameof(Error)); }
-        }
+        [VxSubscribe]
+        public TextField Email { get; private set; } = CreateAccountViewModel.GenerateEmailTextField();
 
         private bool _showConfirmMergeExisting;
         public bool ShowConfirmMergeExisting
@@ -45,15 +66,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             set { SetProperty(ref _showConfirmMergeExisting, value, nameof(ShowConfirmMergeExisting)); }
         }
 
+        public bool IsConverting { get => GetState<bool>(); set => SetState(value); }
+
         private CreateAccountResponse _response;
         public async System.Threading.Tasks.Task CreateOnlineAccountAsync()
         {
+            if (!ValidateAllInputs())
+            {
+                return;
+            }
+
             var currAccount = Account;
             
-            string email = Email;
+            string email = Email.Text;
 
             try
             {
+                IsConverting = true;
+
                 _response = await WebHelper.Download<CreateAccountRequest, CreateAccountResponse>(
                     Website.URL + "createaccountmodern",
                     new CreateAccountRequest()
@@ -71,7 +101,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         { "Error", _response.Error }
                     });
 
-                    Error = _response.Error;
+                    Email.SetError(_response.Error);
                 }
 
                 else
@@ -92,7 +122,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             catch { }
 
-            Error = PowerPlannerResources.GetString("Settings_ConvertToOnline_Errors_FailedCreateOnline");
+            finally
+            {
+                IsConverting = false;
+            }
+
+            Email.SetError(PowerPlannerResources.GetString("Settings_ConvertToOnline_Errors_FailedCreateOnline"));
         }
 
         public async System.Threading.Tasks.Task MergeExisting()

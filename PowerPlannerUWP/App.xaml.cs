@@ -125,7 +125,6 @@ namespace PowerPlannerUWP
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
                 { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
@@ -140,7 +139,6 @@ namespace PowerPlannerUWP
                 { typeof(CalendarIntegrationTasksViewModel), typeof(CalendarIntegrationTasksView) },
                 { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
                 { typeof(ClassTileViewModel), typeof(ClassTileView) },
-                { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(ImageUploadOptionsView) },
                 { typeof(MainTileViewModel), typeof(MainTileView) },
                 { typeof(PushSettingsViewModel), typeof(PushSettingsView) },
@@ -148,7 +146,6 @@ namespace PowerPlannerUWP
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) },
                 { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) },
                 { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }

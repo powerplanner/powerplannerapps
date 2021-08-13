@@ -140,12 +140,9 @@
     <Compile Include="Controllers\PopupViewControllerWithScrolling.cs" />
     <Compile Include="Controllers\PremiumVersionViewController.cs" />
     <Compile Include="Controllers\ScheduleViewController.cs" />
-    <Compile Include="Controllers\Settings\ConvertToOnlineViewController.cs" />
     <Compile Include="Controllers\Settings\Grades\ConfigureClassGradesViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsViewController.cs" />
-    <Compile Include="Controllers\Settings\SuccessfullyCreatedAccountViewController.cs" />
-    <Compile Include="Controllers\Settings\UpdateCredentialsViewController.cs" />
     <Compile Include="Controllers\SyncErrorsViewController.cs" />
     <Compile Include="Controllers\ViewGradeViewController.cs" />
     <Compile Include="Controllers\ViewTaskOrEventViewController.cs" />

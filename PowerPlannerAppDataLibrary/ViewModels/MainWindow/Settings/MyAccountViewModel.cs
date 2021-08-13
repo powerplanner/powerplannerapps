@@ -94,7 +94,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         CurrentAccount.IsOnlineAccount ? null : new AccentButton
                         {
                             Text = PowerPlannerResources.GetString("Settings_MyAccount_ButtonConvertToOnline.Content"),
-                            Margin = new Thickness(0, 24, 0, 0)
+                            Margin = new Thickness(0, 24, 0, 0),
+                            Click = ConvertToOnline
                         },
 
                         new AccentButton

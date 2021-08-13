@@ -277,9 +277,6 @@
     <Compile Include="Views\SettingsViews\ClassTilesView.xaml.cs">
       <DependentUpon>ClassTilesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ConvertToOnlineView.xaml.cs">
-      <DependentUpon>ConvertToOnlineView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml.cs">
       <DependentUpon>GoogleCalendarIntegrationView.xaml</DependentUpon>
     </Compile>
@@ -304,9 +301,6 @@
     <Compile Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml.cs">
       <DependentUpon>CalendarIntegrationTasksView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml.cs">
-      <DependentUpon>SuccessfullyCreatedAccountView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml.cs">
       <DependentUpon>SchoolTimeZoneSettingsView.xaml</DependentUpon>
     </Compile>
@@ -324,9 +318,6 @@
     </Compile>
     <Compile Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml.cs">
       <DependentUpon>TasksOrEventsGroupedListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UpdateCredentialsView.xaml.cs">
-      <DependentUpon>UpdateCredentialsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PremiumVersionView.xaml.cs">
       <DependentUpon>PremiumVersionView.xaml</DependentUpon>
@@ -646,10 +637,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\ConvertToOnlineView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -682,10 +669,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\SuccessfullyCreatedAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -707,10 +690,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UpdateCredentialsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

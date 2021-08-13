@@ -199,7 +199,6 @@
     <Compile Include="Views\SettingsImageUploadOptionsView.cs" />
     <Compile Include="Views\ListItems\ListItemSemesterView.cs" />
     <Compile Include="Views\ListItems\ListItemYearView.cs" />
-    <Compile Include="Views\SettingsViews\SuccessfullyCreatedAccountView.cs" />
     <Compile Include="Views\SettingsWidgetAgendaView.cs" />
     <Compile Include="Views\SettingsWidgetScheduleView.cs" />
     <Compile Include="Views\SettingsSyncOptionsView.cs" />
@@ -207,7 +206,6 @@
     <Compile Include="Views\ShowImagesView.cs" />
     <Compile Include="Views\SplashScreenView.cs" />
     <Compile Include="Views\SyncErrorsView.cs" />
-    <Compile Include="Views\UpdateCredentialsView.cs" />
     <Compile Include="Views\ViewGradeView.cs" />
     <Compile Include="Views\ViewTaskOrEventView.cs" />
     <Compile Include="Views\InitialSyncView.cs" />
@@ -321,9 +319,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemSemesterClass.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\UpdateCredentials.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SplashScreen.xml">
@@ -1062,12 +1057,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_cached_black_48dp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SettingsSuccessfullyCreatedAccount.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_input_black_48dp.png" />

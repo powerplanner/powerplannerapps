@@ -97,10 +97,7 @@ namespace PowerPlanneriOS
                 { typeof(AddGradeViewModel), typeof(AddGradeViewController) },
 
                 // Settings views
-                { typeof(SettingsViewModel), typeof(SettingsViewController) },
-                { typeof(ConvertToOnlineViewModel), typeof(ConvertToOnlineViewController) },
-                { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsViewController) },
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountViewController) }
+                { typeof(SettingsViewModel), typeof(SettingsViewController) }
             };
         }
 

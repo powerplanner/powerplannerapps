@@ -96,7 +96,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
-                { typeof(UpdateCredentialsViewModel), typeof(UpdateCredentialsView) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
@@ -110,10 +109,7 @@ namespace PowerPlannerAndroid.App
                 { typeof(SyncOptionsSimpleViewModel), typeof(SettingsSyncOptionsView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(SettingsImageUploadOptionsView) },
 
-                { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
-
-                // Settings
-                { typeof(SuccessfullyCreatedAccountViewModel), typeof(SuccessfullyCreatedAccountView) }
+                { typeof(ShowImagesViewModel), typeof(ShowImagesView) }
             };
         }
 
