@@ -73,10 +73,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             {
                 layout.Children.Add(RenderRow(new TextBox
                 {
-                    Text = VxValue.Create(entry.Name, v => entry.Name = v)
+                    Text = VxValue.Create(entry.Name, v =>
+                    {
+                        entry.Name = v;
+                        MarkDirty();
+                    })
                 }, new NumberTextBox
                 {
-                    Number = VxValue.Create(entry.Weight, v => entry.Weight = v)
+                    Number = VxValue.Create(entry.Weight, v =>
+                    {
+                        entry.Weight = v;
+                        MarkDirty();
+                    })
                 }, new TransparentContentButton
                 {
                     Content = new FontIcon
