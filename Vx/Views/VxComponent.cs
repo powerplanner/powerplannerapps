@@ -12,6 +12,8 @@ namespace Vx.Views
 {
     public abstract class VxComponent : View
     {
+        public event EventHandler Rendered;
+
         protected virtual View Render()
         {
             return null;
@@ -268,6 +270,7 @@ namespace Vx.Views
                 }
             }
 
+            Rendered?.Invoke(this, null);
             //LastMillisecondsToRender = (DateTime.Now - now).Milliseconds;
         }
 

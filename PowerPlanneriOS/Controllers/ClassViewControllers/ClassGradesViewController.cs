@@ -32,35 +32,15 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             Title = "Grades";
         }
 
-        public override void OnViewModelSetOverride()
-        {
-            base.OnViewModelSetOverride();
-
-            _tableView = new UITableView()
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                SeparatorInset = UIEdgeInsets.Zero
-            };
-            _tableView.TableHeaderView = ViewModel.SummaryComponent.Render();
-            _tableView.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
-            {
-                // Stretch to full width even on iPad
-                _tableView.CellLayoutMarginsFollowReadableWidth = false;
-            }
-            View.Add(_tableView);
-            _tableView.StretchWidthAndHeight(View);
-
-            MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
-            {
-                _tableView.ContentInset = new UIEdgeInsets(0, 0, MainScreenViewController.TAB_BAR_HEIGHT, 0);
-            });
-        }
-
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
 
+            UpdateHeaderFrame();
+        }
+
+        private void UpdateHeaderFrame()
+        {
             if (_tableView != null && _tableView.TableHeaderView != null)
             {
                 // Support dynamic height table header: https://stackoverflow.com/questions/34661793/setting-tableheaderview-height-dynamically
@@ -71,7 +51,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                 if (height != frame.Size.Height)
                 {
                     _tableView.TableHeaderView.Frame = new CGRect(frame.Location, new CGSize(frame.Width, height));
-                    _tableView.SetNeedsLayout();
+                    _tableView.ReloadData();
                 }
             }
         }
@@ -249,9 +229,34 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
         public override void OnViewModelLoadedOverride()
         {
-            _tableView.Source = new TableViewSource(_tableView, ViewModel);
+            _tableView = new UITableView()
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                SeparatorInset = UIEdgeInsets.Zero,
+                Source = new TableViewSource(_tableView, ViewModel)
+            };
+            _tableView.TableHeaderView = ViewModel.SummaryComponent.Render();
+            ViewModel.SummaryComponent.Rendered += new WeakEventHandler(SummaryComponent_Rendered).Handler;
+            _tableView.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
+            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+            {
+                // Stretch to full width even on iPad
+                _tableView.CellLayoutMarginsFollowReadableWidth = false;
+            }
+            View.Add(_tableView);
+            _tableView.StretchWidthAndHeight(View);
+
+            MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
+            {
+                _tableView.ContentInset = new UIEdgeInsets(0, 0, MainScreenViewController.TAB_BAR_HEIGHT, 0);
+            });
 
             base.OnViewModelLoadedOverride();
+        }
+
+        private void SummaryComponent_Rendered(object sender, EventArgs e)
+        {
+            UpdateHeaderFrame();
         }
     }
 }

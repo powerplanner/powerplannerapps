@@ -215,6 +215,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 Class = viewModel.Class;
                 _viewModel = viewModel;
+
+                Class.WeightCategories.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(WeightCategories_CollectionChanged).Handler;
+            }
+
+            private void WeightCategories_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                MarkDirty();
             }
 
             protected override View Render()
