@@ -322,5 +322,10 @@ namespace Vx.iOS.Views
                 Alpha = value ? 1.0f : 0.5f;
             }
         }
+
+        public void SelectAll()
+        {
+            _textField.PerformSelector(new ObjCRuntime.Selector("selectAll"), null, 0.0f);
+        }
     }
 }

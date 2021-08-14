@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Foundation;
 using UIKit;
 using Vx.Views;
 
@@ -7,12 +8,25 @@ namespace Vx.iOS.Views
 {
     public class iOSNumberTextBox : iOSView<NumberTextBox, UIRoundedTextFieldWithHeader>
     {
-        private readonly string _decimalSeparator = CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+        private readonly NSNumberFormatter _formatter = new NSNumberFormatter()
+        {
+            GeneratesDecimalNumbers = true,
+            NumberStyle = NSNumberFormatterStyle.Decimal
+        };
 
         public iOSNumberTextBox()
         {
             View.TextChanged += View_TextChanged;
             View.KeyboardType = UIKeyboardType.DecimalPad;
+            View.FocusChanged += View_FocusChanged;
+        }
+
+        private void View_FocusChanged(object sender, bool focused)
+        {
+            if (focused)
+            {
+                View.SelectAll();
+            }
         }
 
         private bool _hasEndingSeparator;
@@ -23,16 +37,17 @@ namespace Vx.iOS.Views
 
             if (VxView.Number?.ValueChanged != null)
             {
-                if (double.TryParse(View.Text, out double result))
+                var result = _formatter.NumberFromString(View.Text);
+                if (result != null)
                 {
-                    if (View.Text.EndsWith(_decimalSeparator))
+                    if (View.Text.EndsWith(_formatter.DecimalSeparator))
                     {
                         _hasEndingSeparator = true;
                     }
 
-                    if (result != VxView.Number.Value)
+                    if (result.DoubleValue != VxView.Number.Value)
                     {
-                        VxView.Number.ValueChanged(result);
+                        VxView.Number.ValueChanged(result.DoubleValue);
                     }
                 }
                 else
@@ -52,11 +67,11 @@ namespace Vx.iOS.Views
                 {
                     if (_hasEndingSeparator)
                     {
-                        View.Text = newView.Number.Value.ToString() + _decimalSeparator;
+                        View.Text = _formatter.StringFromNumber(newView.Number.Value.Value) + _formatter.DecimalSeparator;
                     }
                     else
                     {
-                        View.Text = newView.Number.Value.ToString();
+                        View.Text = _formatter.StringFromNumber(newView.Number.Value.Value);
                     }
                 }
                 else
