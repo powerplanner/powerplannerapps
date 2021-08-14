@@ -35,6 +35,7 @@ namespace Vx.Droid.Views
             }
 
             View.Hint = newView.PlaceholderText;
+            View.Enabled = newView.IsEnabled;
         }
     }
 }

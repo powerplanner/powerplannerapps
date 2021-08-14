@@ -5,5 +5,7 @@
         public VxValue<double?> Number { get; set; }
 
         public string PlaceholderText { get; set; } = "";
+
+        public bool IsEnabled { get; set; } = true;
     }
 }

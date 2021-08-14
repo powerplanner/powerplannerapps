@@ -56,6 +56,7 @@ namespace Vx.Uwp.Views
             }
 
             View.PlaceholderText = newView.PlaceholderText;
+            View.IsEnabled = newView.IsEnabled;
         }
     }
 }

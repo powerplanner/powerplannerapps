@@ -78,7 +78,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                                 MaterialDesign.MaterialDesignIcons.ArrowUpward,
                                 PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text"),
                                 BoolToEnabledStringConverter.Convert(Class.DoesRoundGradesUp),
-                                ConfigureRoundGradesUp)
+                                ConfigureRoundGradesUp),
+
+                            RenderOption(
+                                MaterialDesign.MaterialDesignIcons.PublishedWithChanges,
+                                "Override final grade/GPA",
+                                BoolToEnabledStringConverter.Convert(Class.OverriddenGrade != PowerPlannerSending.Grade.UNGRADED || Class.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED),
+                                ConfigureOverrideFinalGradeGpa)
                         }
                 }
             };
@@ -87,6 +93,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         private View RenderOption(string icon, string title, string subtitle, Action action)
         {
             return SettingsListViewModel.RenderOption(icon, title, subtitle, action);
+        }
+
+        public void ConfigureOverrideFinalGradeGpa()
+        {
+            ShowClassViewModel<ConfigureClassFinalGradeGpaViewModel>();
         }
 
         public void ConfigureCredits()
