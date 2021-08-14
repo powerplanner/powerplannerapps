@@ -110,6 +110,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                                         {
                                             SelectedClasses.Remove(c);
                                         }
+
+                                        MarkDirty();
                                     }),
                                     IsEnabled = State.Value != States.Saving
                                 });

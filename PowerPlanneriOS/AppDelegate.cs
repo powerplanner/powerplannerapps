@@ -37,6 +37,7 @@ using InterfacesiOS.Helpers;
 using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS
 {
@@ -196,6 +197,7 @@ namespace PowerPlanneriOS
             PushExtension.Current = new iOSPushExtension();
             BrowserExtension.Current = new iOSBrowserExtension();
             EmailExtension.Current = new iOSEmailExtension();
+            DateTimeFormatterExtension.Current = new iOSDateTimeFormatterExtension();
 
             if (SdkSupportHelper.IsNotificationsSupported)
             {

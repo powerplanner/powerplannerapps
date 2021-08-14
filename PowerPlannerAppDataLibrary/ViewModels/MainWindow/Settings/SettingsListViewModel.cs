@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
 using Vx;
+using Vx.Extensions;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
@@ -495,7 +496,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             if (time.Date == DateTime.Today)
             {
-                return time.ToString("t");
+                return DateTimeFormatterExtension.Current.FormatAsShortTime(time);
             }
             else
             {

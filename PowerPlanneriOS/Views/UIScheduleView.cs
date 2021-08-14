@@ -14,6 +14,7 @@ using CoreGraphics;
 using PowerPlanneriOS.Controllers;
 using System.ComponentModel;
 using InterfacesiOS.Helpers;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS.Views
 {
@@ -282,7 +283,7 @@ namespace PowerPlanneriOS.Views
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.PreferredSubheadline,
                     Lines = 1,
-                    Text = tempClassStartTime.ToString("t").TrimEnd(' ', 'P', 'A', 'M', 'a', 'p', 'm')
+                    Text = DateTimeFormatterExtension.Current.FormatAsShortTimeWithoutAmPm(tempClassStartTime)
                 };
                 _timesColumn.Add(time);
                 time.StretchWidth(_timesColumn, left: 5, right: 5);

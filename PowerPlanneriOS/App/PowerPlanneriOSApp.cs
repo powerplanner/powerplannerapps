@@ -36,10 +36,6 @@ namespace PowerPlanneriOS.App
             // Note that there's several places my code takes a dependency on this to change behavior for iOS version
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetPlatform = delegate { return "iOS"; };
 
-            //InAppPurchaseExtension.Current = new AndroidInAppPurchaseExtension();
-            //RemindersExtension.Current = new AndroidRemindersExtension();
-            //TilesExtension.Current = new DroidTilesExtension();
-
             return base.InitializeAsyncOverride();
         }
     }

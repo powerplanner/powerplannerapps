@@ -177,35 +177,42 @@ namespace InterfacesiOS.Controllers
 
         private void OnKeyboardChanged(nfloat height)
         {
-            var insets = new UIEdgeInsets(
-                _keyboardTopOffset, 0, height, 0);
-            _scrollViewForKeyboardOffset.ContentInset = insets;
+            try
+            {
+                var insets = new UIEdgeInsets(
+                    _keyboardTopOffset, 0, height, 0);
+                _scrollViewForKeyboardOffset.ContentInset = insets;
 
-            if (SdkSupportHelper.IsVerticalScrollIndicatorInsetsSupported)
-            {
-                _scrollViewForKeyboardOffset.VerticalScrollIndicatorInsets = insets;
-            }
-            else
-            {
-                _scrollViewForKeyboardOffset.ScrollIndicatorInsets = insets;
-            }
-
-            if (height > 0)
-            {
-                // If active text field hidden by keyboard, scroll to it
-                var focusedTextBox = View.FindFocusedTextBox();
-                if (focusedTextBox != null)
+                if (SdkSupportHelper.IsVerticalScrollIndicatorInsetsSupported)
                 {
-                    // This is the position of the text box relative to top of the scroll view
-                    var tbRect = focusedTextBox.ConvertRectToView(focusedTextBox.Frame, _scrollViewForKeyboardOffset);
+                    _scrollViewForKeyboardOffset.VerticalScrollIndicatorInsets = insets;
+                }
+                else
+                {
+                    _scrollViewForKeyboardOffset.ScrollIndicatorInsets = insets;
+                }
 
-                    // This is the visible region of the scroll view relative to top of the scroll view
-                    var viewport = new CoreGraphics.CGRect(0, _scrollViewForKeyboardOffset.ContentOffset.Y, _scrollViewForKeyboardOffset.ContentSize.Width, _scrollViewForKeyboardOffset.ContentSize.Height - height);
-                    if (!viewport.Contains(tbRect) && tbRect.Y > viewport.Y)
+                if (height > 0)
+                {
+                    // If active text field hidden by keyboard, scroll to it
+                    var focusedTextBox = View.FindFocusedTextBox();
+                    if (focusedTextBox != null)
                     {
-                        _scrollViewForKeyboardOffset.ScrollRectToVisible(tbRect, true);
+                        // This is the position of the text box relative to top of the scroll view
+                        var tbRect = focusedTextBox.ConvertRectToView(focusedTextBox.Frame, _scrollViewForKeyboardOffset);
+
+                        // This is the visible region of the scroll view relative to top of the scroll view
+                        var viewport = new CoreGraphics.CGRect(0, _scrollViewForKeyboardOffset.ContentOffset.Y, _scrollViewForKeyboardOffset.ContentSize.Width, _scrollViewForKeyboardOffset.ContentSize.Height - height);
+                        if (!viewport.Contains(tbRect) && tbRect.Y > viewport.Y)
+                        {
+                            _scrollViewForKeyboardOffset.ScrollRectToVisible(tbRect, true);
+                        }
                     }
                 }
+            }
+            catch
+            {
+                // Sometimes throws because view disposed, so just catch
             }
         }
 
