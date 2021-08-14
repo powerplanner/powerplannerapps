@@ -18,6 +18,7 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using CoreGraphics;
 using PowerPlannerAppDataLibrary.Extensions;
 using InterfacesiOS.Helpers;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -25,20 +26,22 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
     {
         private UITableView _tableView;
         private object _tabBarHeightListener;
-        private BindingHost _classBindingHost = new BindingHost();
-        //private BareUIStackViewItemsSourceAdapter<UIWeightSummaryView> _itemsSourceWeightSummaries;
-        private BareUIViewItemsSourceAdapterAsStackPanel _itemsSourceWeightSummaries;
 
         public ClassGradesViewController()
         {
             Title = "Grades";
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            base.OnViewModelSetOverride();
 
             _tableView = new UITableView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 SeparatorInset = UIEdgeInsets.Zero
             };
-            _tableView.TableHeaderView = new UIGradesHeaderView(_classBindingHost, this, out _itemsSourceWeightSummaries);
+            _tableView.TableHeaderView = ViewModel.SummaryComponent.Render();
             _tableView.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
             if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
             {
@@ -54,126 +57,22 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             });
         }
 
-        public class UIGradesHeaderView : UIView
+        public override void ViewDidLayoutSubviews()
         {
-            private UILabel _labelPercent;
-            private UILabel _labelGpa;
-            private UILabel _labelCredits;
-            private UIButton _buttonEditCredits;
-            private UIView _summaryCategories;
-            private ClassGradesViewController _viewController;
+            base.ViewDidLayoutSubviews();
 
-            public UIGradesHeaderView(BindingHost classBindingHost, ClassGradesViewController viewController, out BareUIViewItemsSourceAdapterAsStackPanel itemsSourceWeightSummaries)
+            if (_tableView != null && _tableView.TableHeaderView != null)
             {
-                _viewController = viewController;
+                // Support dynamic height table header: https://stackoverflow.com/questions/34661793/setting-tableheaderview-height-dynamically
+                var height = _tableView.TableHeaderView.SystemLayoutSizeFittingSize(UIView.UILayoutFittingCompressedSize).Height;
+                var frame = _tableView.TableHeaderView.Frame;
 
-                _labelPercent = new UILabel()
+                // Avoid infinite loop
+                if (height != frame.Size.Height)
                 {
-                    Font = UIFont.PreferredTitle2
-                };
-                classBindingHost.SetLabelTextBinding<double>(_labelPercent, nameof(ViewItemClass.Grade), converter: GradeToStringConverter.Convert);
-                Add(_labelPercent);
-
-                _labelGpa = new UILabel()
-                {
-                    Font = UIFont.PreferredTitle3,
-                    TextAlignment = UITextAlignment.Right
-                };
-                classBindingHost.SetLabelTextBinding(_labelGpa, nameof(ViewItemClass.GpaString));
-                Add(_labelGpa);
-
-                _labelCredits = new UILabel()
-                {
-                    Font = UIFont.PreferredCaption1,
-                    TextAlignment = UITextAlignment.Right
-                };
-                classBindingHost.SetLabelTextBinding<double>(_labelCredits, nameof(ViewItemClass.Credits), converter: CreditsToStringConverter.ConvertWithCredits);
-                Add(_labelCredits);
-
-                _buttonEditCredits = new UIButton(UIButtonType.System);
-                _buttonEditCredits.SetTitle("Edit", UIControlState.Normal);
-                _buttonEditCredits.TouchUpInside += new WeakEventHandler(delegate { _viewController.ViewModel.ConfigureGrades(); }).Handler;
-                Add(_buttonEditCredits);
-
-                _summaryCategories = new UIView();
-                itemsSourceWeightSummaries = new BareUIViewItemsSourceAdapterAsStackPanel(_summaryCategories, (o) => new UIWeightSummaryView() { DataContext = o });
-                viewController.BindingHost.SetBinding(nameof(ClassGradesViewModel.ShowWeightCategoriesSummary), delegate
-                {
-                    SetNeedsLayout(); // Will invoke LayoutSubviews in next display cycle
-                });
-                Add(_summaryCategories);
-            }
-
-            public override void LayoutSubviews()
-            {
-                nfloat currY = 16;
-
-                CGSize infinityHeightSize = new CGSize(base.Frame.Width, double.MaxValue);
-
-                var percentSize = _labelPercent.SizeThatFits(infinityHeightSize);
-                _labelPercent.Frame = new CGRect(16, 16, percentSize.Width, percentSize.Height);
-
-                var gpaSize = _labelGpa.SizeThatFits(infinityHeightSize);
-                _labelGpa.Frame = new CGRect(base.Frame.Width - gpaSize.Width - 16, currY, gpaSize.Width, gpaSize.Height);
-                currY += gpaSize.Height;
-
-                var creditsSize = _labelCredits.SizeThatFits(infinityHeightSize);
-                _labelCredits.Frame = new CGRect(base.Frame.Width - creditsSize.Width - 16, currY, creditsSize.Width, creditsSize.Height);
-                currY += creditsSize.Height;
-
-                var editCreditsSize = _buttonEditCredits.SizeThatFits(infinityHeightSize);
-                _buttonEditCredits.Frame = new CGRect(base.Frame.Width - editCreditsSize.Width - 16, currY, editCreditsSize.Width, editCreditsSize.Height);
-                currY += editCreditsSize.Height;
-
-                currY += 16;
-
-                if (_viewController.ViewModel != null && _viewController.ViewModel.ShowWeightCategoriesSummary)
-                {
-                    // Show the summary
-                    nfloat summaryRowHeight = UIFont.PreferredCaption1.LineHeight;
-                    nfloat summaryHeight = summaryRowHeight * _summaryCategories.Subviews.Length;
-                    _summaryCategories.Frame = new CGRect(16, currY, base.Frame.Width - 32, summaryHeight);
-                    currY += summaryHeight;
-
-                    currY += 16;
+                    _tableView.TableHeaderView.Frame = new CGRect(frame.Location, new CGSize(frame.Width, height));
+                    _tableView.SetNeedsLayout();
                 }
-                else
-                {
-                    // Hide the summary
-                    _summaryCategories.Frame = new CGRect(16, currY, base.Frame.Width - 32, 0);
-                }
-
-                base.Frame = new CGRect(base.Frame.X, base.Frame.Y, base.Frame.Width, currY);
-            }
-        }
-
-        private class UIWeightSummaryView : BareUIView
-        {
-            public UIWeightSummaryView()
-            {
-                var labelName = new UILabel()
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    Font = UIFont.PreferredCaption1
-                };
-                BindingHost.SetLabelTextBinding(labelName, nameof(ViewItemWeightCategory.Name));
-                Add(labelName);
-                labelName.StretchHeight(this);
-
-                var labelGrade = new UILabel()
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    Font = UIFont.PreferredCaption1,
-                    TextColor = UIColorCompat.SecondaryLabelColor
-                };
-                BindingHost.SetLabelTextBinding(labelGrade, nameof(ViewItemWeightCategory.WeightAchievedAndTotalString));
-                Add(labelGrade);
-                labelGrade.StretchHeight(this);
-
-                this.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[name]->=0-[grade]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                    "name", labelName,
-                    "grade", labelGrade));
-                labelName.SetContentHuggingPriority(499, UILayoutConstraintAxis.Horizontal);
             }
         }
 
@@ -350,20 +249,9 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
         public override void OnViewModelLoadedOverride()
         {
-            _classBindingHost.DataContext = ViewModel.Class;
             _tableView.Source = new TableViewSource(_tableView, ViewModel);
-            _itemsSourceWeightSummaries.ItemsSource = ViewModel.Class.WeightCategories;
-
-            ViewModel.Class.PropertyChanged += new WeakEventHandler(HeaderLayoutAffectingPropertyChanged).Handler;
-            ViewModel.Class.WeightCategories.CollectionChanged += new WeakEventHandler(HeaderLayoutAffectingPropertyChanged).Handler;
 
             base.OnViewModelLoadedOverride();
-        }
-
-        private void HeaderLayoutAffectingPropertyChanged(object sender, EventArgs e)
-        {
-            // Need the header to recalculate its size
-            _tableView.TableHeaderView?.LayoutSubviews();
         }
     }
 }
