@@ -111,6 +111,7 @@ namespace Vx
                     {
                         remove(i);
                         oldList.RemoveAt(i);
+                        i--;
                     }
                     else if (oldItem.GetType() == newItem.GetType())
                     {
