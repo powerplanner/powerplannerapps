@@ -28,10 +28,10 @@ namespace Vx.Droid.Views
                 var weight = Vx.Views.LinearLayout.GetWeight(newView);
                 var isVertical = parentLinearLayout.Orientation == Vx.Views.Orientation.Vertical;
 
-                // For buttons, we need to NOT use MatchParent for height since otherwise they'll drop their padding/etc and go down to like 12px tall
+                // For height, we always use WrapContent, it makes things behave correctly
                 View.LayoutParameters = new LinearLayout.LayoutParams(
                     width: isVertical ? (newView.HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent) : (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0),
-                    height: isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent))
+                    height: isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : LinearLayout.LayoutParams.WrapContent)
                 {
                     Gravity = isVertical ? newView.HorizontalAlignment.ToDroid() : newView.VerticalAlignment.ToDroid(),
                     MarginStart = AsPx(newView.Margin.Left),
