@@ -18,18 +18,20 @@ using Java.Lang;
 
 namespace InterfacesDroid.Views
 {
-    public class BareMaterialEditDecimalNumber : TextInputEditText, ITextWatcher
+    public class BareMaterialEditDecimalNumber : TextInputLayout, ITextWatcher
     {
         public event EventHandler<double?> ValueChanged;
 
         private char _decimalSeparator;
 
-        public BareMaterialEditDecimalNumber(Context context) : base(context)
+        private TextInputEditText _editText;
+
+        public BareMaterialEditDecimalNumber(Context context) : base(context, null, Vx.Droid.Resource.Attribute.materialOutlinedTextBoxStyle)
         {
             Initialize();
         }
 
-        public BareMaterialEditDecimalNumber(Context context, IAttributeSet attrs) : base(context, attrs)
+        public BareMaterialEditDecimalNumber(Context context, IAttributeSet attrs) : base(context, attrs, Vx.Droid.Resource.Attribute.materialOutlinedTextBoxStyle)
         {
             Initialize();
         }
@@ -49,10 +51,18 @@ namespace InterfacesDroid.Views
         /// </summary>
         private void Initialize()
         {
-            _decimalSeparator = DecimalFormatSymbols.Instance.DecimalSeparator;
-            base.KeyListener = DigitsKeyListener.GetInstance("0123456789" + _decimalSeparator);
+            _editText = new TextInputEditText(Context)
+            {
+                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
+                InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect
+            };
 
-            base.AddTextChangedListener(this);
+            AddView(_editText);
+
+            _decimalSeparator = DecimalFormatSymbols.Instance.DecimalSeparator;
+            _editText.KeyListener = DigitsKeyListener.GetInstance("0123456789" + _decimalSeparator);
+
+            _editText.AddTextChangedListener(this);
         }
 
         void ITextWatcher.BeforeTextChanged(ICharSequence s, int start, int count, int after)
@@ -145,11 +155,11 @@ namespace InterfacesDroid.Views
         {
             if (Value == null)
             {
-                Text = "";
+                _editText.Text = "";
             }
             else
             {
-                Text = Value.ToString();
+                _editText.Text = Value.ToString();
             }
         }
     }
