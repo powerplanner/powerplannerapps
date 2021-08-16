@@ -128,7 +128,15 @@ namespace Vx
                             System.Diagnostics.Debugger.Break();
                         }
 #endif
+
                         oldItem.NativeView.Apply(newItem);
+
+#if DEBUG
+                        if (newItem.NativeView == null)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+#endif
                     }
                     else if (oldList.Count < newList.Count)
                     {

@@ -232,11 +232,6 @@ namespace Vx.Views
 
         private void RenderActual()
         {
-            lock (this)
-            {
-                _dirty = false;
-            }
-
             var now = DateTime.Now;
 
             View newView = Render();
@@ -254,6 +249,13 @@ namespace Vx.Views
                 {
                     // Transfer over the properties
                     oldView.NativeView.Apply(newView);
+
+#if DEBUG
+                    if (newView.NativeView == null)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+#endif
                 }
             }
 
@@ -268,6 +270,11 @@ namespace Vx.Views
                 {
                     throw ex;
                 }
+            }
+
+            lock (this)
+            {
+                _dirty = false;
             }
 
             Rendered?.Invoke(this, null);

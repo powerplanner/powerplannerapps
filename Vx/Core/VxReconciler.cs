@@ -36,6 +36,13 @@ namespace Vx
                 // Transfer over the properties
                 oldView.NativeView.Apply(newView);
 
+#if DEBUG
+                if (newView.NativeView == null)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
+#endif
+
                 transferView?.Invoke(newView);
             }
         }
