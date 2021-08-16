@@ -23,10 +23,14 @@ namespace InterfacesUWP
     public sealed partial class BareTextBox : UserControl
     {
         public event EventHandler EnterPressed;
+        private FrameworkElement _headerElement;
 
         public BareTextBox()
         {
             this.InitializeComponent();
+
+            _headerElement = TextBox.Header as FrameworkElement;
+            TextBox.Header = null;
         }
 
         public string Header
@@ -37,7 +41,30 @@ namespace InterfacesUWP
 
         // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register(nameof(Header), typeof(string), typeof(BareTextBox), new PropertyMetadata(""));
+            DependencyProperty.Register(nameof(Header), typeof(string), typeof(BareTextBox), new PropertyMetadata(null, OnUpdateHeader));
+
+        private static void OnUpdateHeader(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as BareTextBox).OnUpdateHeader();
+        }
+
+        private void OnUpdateHeader()
+        {
+            if (!string.IsNullOrWhiteSpace(Header) || ValidationState != null)
+            {
+                if (TextBox.Header == null)
+                {
+                    TextBox.Header = _headerElement;
+                }
+            }
+            else
+            {
+                if (TextBox.Header != null)
+                {
+                    TextBox.Header = null;
+                }
+            }
+        }
 
 
 
@@ -83,6 +110,8 @@ namespace InterfacesUWP
 
                 ValidationSymbolViewbox.Visibility = Visibility.Visible;
             }
+
+            OnUpdateHeader();
         }
 
         public string Text

@@ -21,6 +21,13 @@ namespace Vx.Uwp.Views
                     new InputScopeName(InputScopeNameValue.Number)
                 }
             };
+
+            View.GotFocus += View_GotFocus;
+        }
+
+        private void View_GotFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            View.SelectAll();
         }
 
         private void View_TextChanged(object sender, TextChangedEventArgs e)

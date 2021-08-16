@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
@@ -228,7 +229,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 return new LinearLayout
                 {
-                    Margin = new Thickness(18),
+                    Margin = new Thickness(VxPlatform.Current == Platform.iOS ? 18 : 0),
                     Children =
                     {
                         new LinearLayout
@@ -306,6 +307,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                 }
                             }
                         },
+
+                        VxPlatform.Current == Platform.Uwp ? new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("ClassPage_ButtonWhatIfMode.Content"),
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            Click = _viewModel.OpenWhatIf
+                        } : null,
 
                         RenderWeightCategories()
                     }
