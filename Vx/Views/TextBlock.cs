@@ -19,6 +19,8 @@ namespace Vx.Views
         public bool WrapText { get; set; } = true;
 
         public float FontSize { get; set; } = Theme.Current.BodyFontSize;
+
+        public bool Strikethrough { get; set; }
     }
 
     public static class TextBlockExtensions

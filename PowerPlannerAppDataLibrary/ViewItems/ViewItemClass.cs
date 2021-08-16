@@ -272,7 +272,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
             else
             {
-                return string.Format(PowerPlannerResources.GetString("String_GPA"), GPA.ToString("0.0##"));
+                return GpaToStringConverter.ConvertWithGpa(GPA);
             }
         }, GpaStringDependentOn);
         private static string[] GpaStringDependentOn = new string[] { nameof(GpaType), nameof(IsPassing), nameof(GPA) };

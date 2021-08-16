@@ -236,13 +236,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                             Orientation = Orientation.Horizontal,
                             Children =
                             {
-                                new TextBlock
+                                Class.OverriddenGrade != PowerPlannerSending.Grade.UNGRADED ? new LinearLayout
+                                {
+                                    Children =
+                                    {
+                                        new TextBlock
+                                        {
+                                            Text = GradeToStringConverter.Convert(Class.Grade),
+                                            FontSize = Theme.Current.TitleFontSize,
+                                            WrapText = false
+                                        },
+
+                                        new TextBlock
+                                        {
+                                            Text = GradeToStringConverter.Convert(Class.CalculatedGrade),
+                                            FontSize = Theme.Current.CaptionFontSize,
+                                            TextColor = Theme.Current.SubtleForegroundColor,
+                                            WrapText = false,
+                                            Strikethrough = true
+                                        }
+                                    }
+                                }.LinearLayoutWeight(1) as View : new TextBlock
                                 {
                                     Text = GradeToStringConverter.Convert(Class.Grade),
                                     FontSize = Theme.Current.TitleFontSize,
                                     WrapText = false,
                                     VerticalAlignment = VerticalAlignment.Top
-                                }.LinearLayoutWeight(1),
+                                }.LinearLayoutWeight(1) as View,
 
                                 new LinearLayout
                                 {
@@ -256,6 +276,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                             WrapText = false,
                                             HorizontalAlignment = HorizontalAlignment.Right
                                         },
+
+                                        Class.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED && Class.GpaType == PowerPlannerSending.GpaType.Standard ? new TextBlock
+                                        {
+                                            Text = GpaToStringConverter.ConvertWithGpa(Class.CalculatedGPA),
+                                            FontSize = Theme.Current.CaptionFontSize,
+                                            TextColor = Theme.Current.SubtleForegroundColor,
+                                            WrapText = false,
+                                            Strikethrough = true,
+                                            HorizontalAlignment = HorizontalAlignment.Right
+                                        } : null,
 
                                         new TextBlock
                                         {
