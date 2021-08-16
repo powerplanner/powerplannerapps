@@ -156,7 +156,6 @@
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
     <Compile Include="Views\ClassWhatIfTopHeaderView.cs" />
-    <Compile Include="Views\ClassGradesTopHeaderView.cs" />
     <Compile Include="Views\ClassWhatIfView.cs" />
     <Compile Include="Views\ClassGradesView.cs" />
     <Compile Include="Views\ClassTasksOrEventsView.cs" />
@@ -337,9 +336,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemHeaderWeightCategory.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassGradesTopHeader.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemWeightCategorySummary.xml">

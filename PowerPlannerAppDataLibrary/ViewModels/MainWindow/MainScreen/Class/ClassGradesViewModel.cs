@@ -229,7 +229,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 return new LinearLayout
                 {
-                    Margin = new Thickness(VxPlatform.Current == Platform.iOS ? 18 : 0),
+                    Margin = VxPlatform.Current == Platform.iOS ? new Thickness(18) : VxPlatform.Current == Platform.Uwp ? new Thickness(0) : new Thickness(16, 16, 16, 0),
                     Children =
                     {
                         new LinearLayout

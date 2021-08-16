@@ -20,19 +20,19 @@ namespace PowerPlannerAndroid.Views
 {
     public class ClassWhatIfTopHeaderView : InflatedViewWithBinding
     {
-        private ClassGradesTopHeaderView _gradesTopHeaderView;
+        //private ClassGradesTopHeaderView _gradesTopHeaderView;
 
         public ClassWhatIfTopHeaderView(ViewGroup root) : base(Resource.Layout.ClassWhatIfTopHeader, root)
         {
             var linearLayoutRoot = FindViewById<LinearLayout>(Resource.Id.Root);
 
-            _gradesTopHeaderView = new Views.ClassGradesTopHeaderView(linearLayoutRoot, hideWhatIfModeButton: true);
-            linearLayoutRoot.AddView(_gradesTopHeaderView);
+            //_gradesTopHeaderView = new Views.ClassGradesTopHeaderView(linearLayoutRoot, hideWhatIfModeButton: true);
+            //linearLayoutRoot.AddView(_gradesTopHeaderView);
         }
 
         protected override void OnDataContextChanged(object oldValue, object newValue)
         {
-            _gradesTopHeaderView.DataContext = newValue;
+            //_gradesTopHeaderView.DataContext = newValue;
         }
     }
 }
