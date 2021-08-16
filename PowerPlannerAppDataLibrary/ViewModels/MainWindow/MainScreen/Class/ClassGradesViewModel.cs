@@ -228,7 +228,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 return new LinearLayout
                 {
-                    Margin = new Thickness(12),
+                    Margin = new Thickness(18),
                     Children =
                     {
                         new LinearLayout
