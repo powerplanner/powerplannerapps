@@ -44,6 +44,8 @@ namespace Vx.Droid.Views
         public DroidTextButton() : base(new MaterialButton(VxDroidExtensions.ApplicationContext, null, Resource.Attribute.materialTextButtonStyle))
         {
             View.SetPadding(0, 0, 0, 0);
+            View.SetMinWidth(0); // Set min width to 0 so that text button can have super short text without side padding
+            View.SetMinimumWidth(0); // Both must be called since max of the two is used
         }
     }
 
