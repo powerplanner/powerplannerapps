@@ -63,6 +63,12 @@ namespace InterfacesDroid.Views
             _editText.KeyListener = DigitsKeyListener.GetInstance("0123456789" + _decimalSeparator);
 
             _editText.AddTextChangedListener(this);
+
+            try
+            {
+                _editText.SetSelectAllOnFocus(true);
+            }
+            catch { }
         }
 
         void ITextWatcher.BeforeTextChanged(ICharSequence s, int start, int count, int after)
