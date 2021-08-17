@@ -673,6 +673,11 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
+                    if (v <= new Version(2108, 16, 2, 99))
+                    {
+                        changedText += "\n - Ability to override final grade/GPA on classes";
+                    }
+
                     if (v < new Version(2105, 26, 1, 99))
                     {
                         changedText += "\n - Class reminders will respect semester end dates (so you won't get reminders after your semester is over)";
