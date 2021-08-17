@@ -18,7 +18,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public ConfigureClassFinalGradeGpaViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
-            Title = "Final grade/GPA";
+            Title = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa.Title");
             _class = c;
 
             IsOverrideGradeEnabled = c.OverriddenGrade != PowerPlannerSending.Grade.UNGRADED;
@@ -45,12 +45,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                 new TextBlock
                 {
-                    Text = "You can override your final grade or GPA for your class using the following settings."
+                    Text = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa.Description")
                 },
 
                 new Switch
                 {
-                    Title = "Override grade",
+                    Title = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGrade.Title"),
                     IsOn = VxValue.Create(IsOverrideGradeEnabled, v =>
                     {
                         IsOverrideGradeEnabled = v;
@@ -68,7 +68,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                 new Switch
                 {
-                    Title = "Override GPA",
+                    Title = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGpa.Title"),
                     IsOn = VxValue.Create(IsOverrideGpaEnabled, v =>
                     {
                         IsOverrideGpaEnabled = v;
@@ -92,7 +92,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             if ((IsOverrideGradeEnabled && OverriddenGrade == null)
                 || (IsOverrideGpaEnabled && OverriddenGpa == null))
             {
-                new PortableMessageDialog("You must enter valid numbers!", "Invalid entries").Show();
+                new PortableMessageDialog(PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_Invalid.Content"), PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_Invalid.Title")).Show();
                 return;
             }
 

@@ -2574,6 +2574,34 @@ Please think about using an online account instead!</source>
           <source>Enable or disable the sound effect that plays when completing a task!</source>
           <target state="final">قم بتمكين أو تعطيل المؤثر الصوتي الذي يتم تشغيله عند إكمال مهمة!</target>
         </trans-unit>
+        <trans-unit id="ConfigureClassGrades_Items_FinalGrade.Title" translate="yes" xml:space="preserve">
+          <source>Override final grade/GPA</source>
+          <target state="final">تجاوز الدرجة النهائية / المعدل التراكمي</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa.Description" translate="yes" xml:space="preserve">
+          <source>You can override your final grade or GPA for your class using the following settings.</source>
+          <target state="final">يمكنك تجاوز درجتك النهائية أو المعدل التراكمي لفصلك باستخدام الإعدادات التالية.</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa.Title" translate="yes" xml:space="preserve">
+          <source>Final grade/GPA</source>
+          <target state="final">الدرجة النهائية / المعدل التراكمي</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_Invalid.Content" translate="yes" xml:space="preserve">
+          <source>You must enter valid numbers!</source>
+          <target state="final">يجب عليك إدخال أرقام صحيحة!</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_Invalid.Title" translate="yes" xml:space="preserve">
+          <source>Invalid entries</source>
+          <target state="final">إدخالات غير صحيحة</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_OverrideGpa.Title" translate="yes" xml:space="preserve">
+          <source>Override GPA</source>
+          <target state="final">تجاوز المعدل التراكمي</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_OverrideGrade.Title" translate="yes" xml:space="preserve">
+          <source>Override grade</source>
+          <target state="final">تجاوز الدرجة</target>
+        </trans-unit>
       </group>
     </body>
   </file>

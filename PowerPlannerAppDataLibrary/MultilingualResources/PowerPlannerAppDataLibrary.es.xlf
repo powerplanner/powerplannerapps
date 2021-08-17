@@ -2571,6 +2571,34 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Enable or disable the sound effect that plays when completing a task!</source>
           <target state="final">¡Activa o desactiva el efecto de sonido que se reproduce al completar una tarea!</target>
         </trans-unit>
+        <trans-unit id="ConfigureClassGrades_Items_FinalGrade.Title" translate="yes" xml:space="preserve">
+          <source>Override final grade/GPA</source>
+          <target state="final" state-qualifier="mt-suggestion">Anular la calificación final/GPA</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa.Description" translate="yes" xml:space="preserve">
+          <source>You can override your final grade or GPA for your class using the following settings.</source>
+          <target state="final" state-qualifier="mt-suggestion">Puede anular su calificación final o GPA para su clase utilizando los siguientes ajustes.</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa.Title" translate="yes" xml:space="preserve">
+          <source>Final grade/GPA</source>
+          <target state="final" state-qualifier="mt-suggestion">Calificación final/GPA</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_Invalid.Content" translate="yes" xml:space="preserve">
+          <source>You must enter valid numbers!</source>
+          <target state="final" state-qualifier="mt-suggestion">¡Debes introducir números válidos!</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_Invalid.Title" translate="yes" xml:space="preserve">
+          <source>Invalid entries</source>
+          <target state="final" state-qualifier="mt-suggestion">Entradas no válidas</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_OverrideGpa.Title" translate="yes" xml:space="preserve">
+          <source>Override GPA</source>
+          <target state="final" state-qualifier="mt-suggestion">Invalidar GPA</target>
+        </trans-unit>
+        <trans-unit id="ConfigureClassFinalGradeGpa_OverrideGrade.Title" translate="yes" xml:space="preserve">
+          <source>Override grade</source>
+          <target state="final" state-qualifier="mt-suggestion">Anular la calificación</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -82,7 +82,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                             RenderOption(
                                 MaterialDesign.MaterialDesignIcons.PublishedWithChanges,
-                                "Override final grade/GPA",
+                                PowerPlannerResources.GetString("ConfigureClassGrades_Items_FinalGrade.Title"),
                                 BoolToEnabledStringConverter.Convert(Class.OverriddenGrade != PowerPlannerSending.Grade.UNGRADED || Class.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED),
                                 ConfigureOverrideFinalGradeGpa)
                         }
