@@ -12,6 +12,7 @@ using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerUWP.TileHelpers;
+using Vx.Uwp;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -141,7 +142,6 @@ namespace PowerPlannerUWP.Views
             this.InitializeComponent();
 
             HeaderUnassignedItems.Content = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader");
-            ButtonEditGrades.Content = PowerPlannerResources.GetString("AppBarButtonEdit.Label");
         }
 
         public override async void OnViewModelLoadedOverride()
@@ -152,6 +152,7 @@ namespace PowerPlannerUWP.Views
 
             try
             {
+                GradeSummaryContainer.Content = ViewModel.GradesViewModel.SummaryComponent.Render();
                 ViewModel.ViewItemsGroupClass.Class.Schedules.CollectionChanged += Schedules_CollectionChanged;
                 UpdateNoSchedulesText();
 
@@ -234,9 +235,6 @@ namespace PowerPlannerUWP.Views
                     GoToGradesVisualState();
                     break;
             }
-
-            //if (PivotMain.SelectedIndex != 0)
-            //    PivotHeaders.SelectedIndex = PivotMain.SelectedIndex - 1;
         }
 
         private AppBarButton[] _defaultSecondaryCommands;
@@ -359,15 +357,6 @@ namespace PowerPlannerUWP.Views
             ViewModel.EventsViewModel.Add();
         }
 
-        private void PivotHeaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // If first time, do nothing
-            if (e.RemovedItems.Count == 0)
-                return;
-
-            //PivotMain.SelectedIndex = PivotHeaders.SelectedIndex + 1;
-        }
-
         private void BorderClassName_Tapped(object sender, TappedRoutedEventArgs e)
         {
             PivotMain.SelectedIndex = 0;
@@ -408,11 +397,6 @@ namespace PowerPlannerUWP.Views
             ViewModel.GradesViewModel.Add();
         }
 
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            (sender as TextBox).SelectAll();
-        }
-
         private void appBarEditClass_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.EditClass();
@@ -428,11 +412,6 @@ namespace PowerPlannerUWP.Views
             HomeSquaresGrid.DesiredFitToSize = new Size(
                 e.NewSize.Width - HomeSquaresGrid.Margin.Left - HomeSquaresGrid.Margin.Right - ScrollViewerHome.Padding.Left - ScrollViewerHome.Padding.Right,
                 e.NewSize.Height - HomeSquaresGrid.Margin.Top - HomeSquaresGrid.Margin.Bottom - ScrollViewerHome.Padding.Top - ScrollViewerHome.Padding.Bottom);
-        }
-
-        private void ButtonWhatIfMode_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.GradesViewModel.OpenWhatIf();
         }
 
         private async void appBarPinClass_Click(object sender, RoutedEventArgs e)
@@ -546,11 +525,6 @@ namespace PowerPlannerUWP.Views
         private void TaskOrEventListViewItem_OnClickItem(object sender, ViewItemTaskOrEvent e)
         {
             ViewModel.GradesViewModel.ShowUnassignedItem(e);
-        }
-
-        private void ButtonEditGrades_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.GradesViewModel.ConfigureGrades();
         }
     }
 }

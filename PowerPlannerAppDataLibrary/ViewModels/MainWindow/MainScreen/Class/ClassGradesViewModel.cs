@@ -1,4 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Converters;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
@@ -12,6 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
@@ -21,6 +24,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public ClassGradesViewModel(ClassViewModel parent) : base(parent)
         {
+            SummaryComponent = new GradesSummaryComponent(this);
         }
 
         protected override async Task LoadAsyncOverride()
@@ -197,6 +201,165 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         public void OpenWhatIf()
         {
             MainScreenViewModel.Navigate(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+        }
+
+        public GradesSummaryComponent SummaryComponent { get; private set; }
+
+        public class GradesSummaryComponent : VxComponent
+        {
+            [VxSubscribe]
+            public ViewItemClass Class { get; private set; }
+
+            private ClassGradesViewModel _viewModel;
+
+            public GradesSummaryComponent(ClassGradesViewModel viewModel)
+            {
+                Class = viewModel.Class;
+                _viewModel = viewModel;
+
+                Class.WeightCategories.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(WeightCategories_CollectionChanged).Handler;
+            }
+
+            private void WeightCategories_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                MarkDirty();
+            }
+
+            protected override View Render()
+            {
+                return new LinearLayout
+                {
+                    Margin = VxPlatform.Current == Platform.iOS ? new Thickness(18) : VxPlatform.Current == Platform.Uwp ? new Thickness(0) : new Thickness(16, 16, 16, 0),
+                    Children =
+                    {
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                Class.OverriddenGrade != PowerPlannerSending.Grade.UNGRADED ? new LinearLayout
+                                {
+                                    Children =
+                                    {
+                                        new TextBlock
+                                        {
+                                            Text = GradeToStringConverter.Convert(Class.Grade),
+                                            FontSize = Theme.Current.TitleFontSize,
+                                            WrapText = false
+                                        },
+
+                                        new TextBlock
+                                        {
+                                            Text = GradeToStringConverter.Convert(Class.CalculatedGrade),
+                                            FontSize = Theme.Current.CaptionFontSize,
+                                            TextColor = Theme.Current.SubtleForegroundColor,
+                                            WrapText = false,
+                                            Strikethrough = true
+                                        }
+                                    }
+                                }.LinearLayoutWeight(1) as View : new TextBlock
+                                {
+                                    Text = GradeToStringConverter.Convert(Class.Grade),
+                                    FontSize = Theme.Current.TitleFontSize,
+                                    WrapText = false,
+                                    VerticalAlignment = VerticalAlignment.Top
+                                }.LinearLayoutWeight(1) as View,
+
+                                new LinearLayout
+                                {
+                                    Margin = new Thickness(12, 0, 0, 0),
+                                    Children =
+                                    {
+                                        new TextBlock
+                                        {
+                                            Text = Class.GpaString,
+                                            FontSize = Theme.Current.TitleFontSize,
+                                            WrapText = false,
+                                            HorizontalAlignment = HorizontalAlignment.Right
+                                        },
+
+                                        Class.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED && Class.GpaType == PowerPlannerSending.GpaType.Standard ? new TextBlock
+                                        {
+                                            Text = GpaToStringConverter.ConvertWithGpa(Class.CalculatedGPA),
+                                            FontSize = Theme.Current.CaptionFontSize,
+                                            TextColor = Theme.Current.SubtleForegroundColor,
+                                            WrapText = false,
+                                            Strikethrough = true,
+                                            HorizontalAlignment = HorizontalAlignment.Right
+                                        } : null,
+
+                                        new TextBlock
+                                        {
+                                            Text = CreditsToStringConverter.ConvertWithCredits(Class.Credits),
+                                            FontSize = Theme.Current.CaptionFontSize,
+                                            WrapText = false,
+                                            HorizontalAlignment = HorizontalAlignment.Right
+                                        },
+
+                                        new TextButton
+                                        {
+                                            Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
+                                            HorizontalAlignment = HorizontalAlignment.Right,
+                                            Margin = new Thickness(0, 6, 0, 0),
+                                            Click = _viewModel.ConfigureGrades
+                                        }
+                                    }
+                                }
+                            }
+                        },
+
+                        VxPlatform.Current == Platform.Uwp ? new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString("ClassPage_ButtonWhatIfMode.Content"),
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            Click = _viewModel.OpenWhatIf
+                        } : null,
+
+                        RenderWeightCategories()
+                    }
+                };
+            }
+
+            private View RenderWeightCategories()
+            {
+                if (Class.WeightCategories.Count <= 1)
+                {
+                    return null;
+                }
+
+                var layout = new LinearLayout
+                {
+                    Margin = new Thickness(0, 12, 0, 0)
+                };
+
+                foreach (var weight in Class.WeightCategories)
+                {
+                    layout.Children.Add(new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Children =
+                        {
+                            new TextBlock
+                            {
+                                Text = weight.Name,
+                                WrapText = false,
+                                FontSize = Theme.Current.CaptionFontSize
+                            }.LinearLayoutWeight(1),
+
+                            new TextBlock
+                            {
+                                Text = weight.WeightAchievedAndTotalString,
+                                WrapText = false,
+                                FontSize = Theme.Current.CaptionFontSize,
+                                TextColor = Theme.Current.SubtleForegroundColor,
+                                Margin = new Thickness(12, 0, 0, 0)
+                            }
+                        }
+                    });
+                }
+
+                return layout;
+            }
         }
     }
 }

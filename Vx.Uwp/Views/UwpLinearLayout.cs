@@ -61,7 +61,7 @@ namespace Vx.Uwp.Views
                     }
                 }
 
-                return isVert ? new Size(double.IsPositiveInfinity(availableSize.Width) ? maxOtherDimension : availableSize.Width, consumed) : new Size(consumed, double.IsPositiveInfinity(availableSize.Height) ? maxOtherDimension : availableSize.Height);
+                return isVert ? new Size(maxOtherDimension, consumed) : new Size(consumed, maxOtherDimension);
             }
 
             else

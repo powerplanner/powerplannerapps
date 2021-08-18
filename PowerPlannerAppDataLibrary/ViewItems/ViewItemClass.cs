@@ -272,7 +272,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
             else
             {
-                return string.Format(PowerPlannerResources.GetString("String_GPA"), GPA.ToString("0.0##"));
+                return GpaToStringConverter.ConvertWithGpa(GPA);
             }
         }, GpaStringDependentOn);
         private static string[] GpaStringDependentOn = new string[] { nameof(GpaType), nameof(IsPassing), nameof(GPA) };
@@ -465,6 +465,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             EndDate = DateTime.SpecifyKind(i.EndDate, DateTimeKind.Local);
             GpaType = i.GpaType;
             PassingGrade = i.PassingGrade;
+            OverriddenGrade = i.OverriddenGrade;
+            OverriddenGPA = i.OverriddenGPA;
 
             _needsRecalc = true;
         }
@@ -553,7 +555,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 this.HasGrades = false;
             }
 
-            this.CalculatedGPA = GetGPAForGrade(CalculatedGrade);
+            this.CalculatedGPA = GetGPAForGrade(Grade);
         }
 
         public double GetGPAForGrade(double grade)

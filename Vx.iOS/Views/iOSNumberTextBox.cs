@@ -81,6 +81,7 @@ namespace Vx.iOS.Views
             }
 
             View.Placeholder = newView.PlaceholderText;
+            View.Enabled = newView.IsEnabled;
         }
     }
 }

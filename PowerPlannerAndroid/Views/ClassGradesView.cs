@@ -35,7 +35,7 @@ namespace PowerPlannerAndroid.Views
             recyclerView.SetLayoutManager(layoutManager);
 
             // Specify the adapter
-            var adapter = new GradesAdapter()
+            var adapter = new GradesAdapter(ViewModel)
             {
                 ItemsSource = ViewModel.ItemsWithHeaders
             };

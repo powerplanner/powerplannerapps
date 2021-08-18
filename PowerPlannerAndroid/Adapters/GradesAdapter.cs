@@ -18,6 +18,8 @@ using PowerPlannerAndroid.Views.ListItemHeaders;
 using PowerPlannerAndroid.Views;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using Vx.Droid;
+using AndroidX.Lifecycle;
 
 namespace PowerPlannerAndroid.Adapters
 {
@@ -34,6 +36,13 @@ namespace PowerPlannerAndroid.Adapters
         public event EventHandler ButtonWhatIfModeClick;
         public event EventHandler ButtonEditGradeOptionsClick;
 
+        private ClassGradesViewModel _viewModel;
+
+        public GradesAdapter(ClassGradesViewModel viewModel)
+        {
+            _viewModel = viewModel;
+        }
+
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             switch (viewType)
@@ -44,10 +53,9 @@ namespace PowerPlannerAndroid.Adapters
                     return new GenericRecyclerViewHolder(gradeView);
 
                 case TOP_HEADER_ITEM_TYPE:
-                    var header = new ClassGradesTopHeaderView(parent, hideWhatIfModeButton: false);
-                    header.ButtonEditGradeOptionsClick += Header_ButtonEditGradeOptionsClick;
-                    header.ButtonWhatIfModeClick += Header_ButtonWhatIfModeClick;
-                    return new GenericRecyclerViewHolder(header);
+                    var topHeaderView = new ClassGradesViewModel.GradesSummaryComponent(_viewModel).Render();
+                    topHeaderView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                    return new GenericRecyclerViewHolder(topHeaderView);
 
                 case SECTION_HEADER_ITEM_TYPE:
                     return new GenericRecyclerViewHolder(new ListItemHeaderWeightCategoryView(parent));

@@ -86,6 +86,13 @@ namespace Vx
                     for (int newI = 0; newI < newList.Count; newI++)
                     {
                         insert(newI, newList[newI]);
+
+#if DEBUG
+                        if (newList[newI].NativeView == null)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+#endif
                     }
 
                     return;
@@ -111,15 +118,37 @@ namespace Vx
                     {
                         remove(i);
                         oldList.RemoveAt(i);
+                        i--;
                     }
                     else if (oldItem.GetType() == newItem.GetType())
                     {
+#if DEBUG
+                        if (oldItem.NativeView == null)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+#endif
+
                         oldItem.NativeView.Apply(newItem);
+
+#if DEBUG
+                        if (newItem.NativeView == null)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+#endif
                     }
                     else if (oldList.Count < newList.Count)
                     {
                         insert(i, newItem);
                         oldList.Insert(i, newItem);
+
+#if DEBUG
+                        if (newItem.NativeView == null)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+#endif
                     }
                     else if (oldList.Count > newList.Count)
                     {
@@ -131,6 +160,13 @@ namespace Vx
                     {
                         replace(i, newItem);
                         oldList[i] = newItem;
+
+#if DEBUG
+                        if (newItem.NativeView == null)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+#endif
                     }
                 }
 
@@ -140,6 +176,13 @@ namespace Vx
                     {
                         insert(oldList.Count, newList[i]);
                         oldList.Add(newList[i]);
+
+#if DEBUG
+                        if (newList[i].NativeView == null)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+#endif
                     }
                 }
 #if DEBUG

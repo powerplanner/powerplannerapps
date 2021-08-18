@@ -2035,4 +2035,25 @@ Please think about using an online account instead!</value>
   <data name="Settings_SoundEffects_Description.Text" xml:space="preserve">
     <value>Enable or disable the sound effect that plays when completing a task!</value>
   </data>
+  <data name="ConfigureClassGrades_Items_FinalGrade.Title" xml:space="preserve">
+    <value>Override final grade/GPA</value>
+  </data>
+  <data name="ConfigureClassFinalGradeGpa.Description" xml:space="preserve">
+    <value>You can override your final grade or GPA for your class using the following settings.</value>
+  </data>
+  <data name="ConfigureClassFinalGradeGpa.Title" xml:space="preserve">
+    <value>Final grade/GPA</value>
+  </data>
+  <data name="ConfigureClassFinalGradeGpa_Invalid.Content" xml:space="preserve">
+    <value>You must enter valid numbers!</value>
+  </data>
+  <data name="ConfigureClassFinalGradeGpa_Invalid.Title" xml:space="preserve">
+    <value>Invalid entries</value>
+  </data>
+  <data name="ConfigureClassFinalGradeGpa_OverrideGpa.Title" xml:space="preserve">
+    <value>Override GPA</value>
+  </data>
+  <data name="ConfigureClassFinalGradeGpa_OverrideGrade.Title" xml:space="preserve">
+    <value>Override grade</value>
+  </data>
 </root>

@@ -13,6 +13,7 @@ namespace Vx.Uwp.Views
         public UwpTransparentContentButton()
         {
             View.Click += View_Click;
+            View.HorizontalContentAlignment = HorizontalAlignment.Stretch;
         }
 
         private void View_Click(object sender, RoutedEventArgs e)

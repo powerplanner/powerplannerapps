@@ -109,6 +109,7 @@ namespace Vx.iOS.Views
                 changed = View.SetWeight(i, LinearLayout.GetWeight(children[i])) || changed;
                 changed = View.SetMargins(i, children[i].Margin.AsModified()) || changed;
                 changed = View.SetHorizontalAlignment(i, children[i].HorizontalAlignment) || changed;
+                changed = View.SetVerticalAlignment(i, children[i].VerticalAlignment) || changed;
             }
 
             if (changed)
@@ -204,6 +205,17 @@ namespace Vx.iOS.Views
             return false;
         }
 
+        public bool SetVerticalAlignment(int index, VerticalAlignment verticalAlignment)
+        {
+            if (_arrangedSubviews[index].VerticalAlignment != verticalAlignment)
+            {
+                _arrangedSubviews[index].VerticalAlignment = verticalAlignment;
+                return true;
+            }
+
+            return false;
+        }
+
         public void ClearArrangedSubviews()
         {
             _arrangedSubviews.Clear();
@@ -233,6 +245,7 @@ namespace Vx.iOS.Views
             public Thickness Margin { get; set; }
             public float Weight { get; set; }
             public HorizontalAlignment HorizontalAlignment { get; set; }
+            public VerticalAlignment VerticalAlignment { get; set; }
 
             private NSLayoutConstraint _topConstraint;
             public NSLayoutConstraint TopConstraint
@@ -444,10 +457,11 @@ namespace Vx.iOS.Views
                         RightConstraint = null;
                     }
 
+                    // Note that I treat Center identical to Stretch
                     TopConstraint = NSLayoutConstraint.Create(
                         Subview,
                         NSLayoutAttribute.Top,
-                        NSLayoutRelation.Equal,
+                        VerticalAlignment == VerticalAlignment.Bottom ? NSLayoutRelation.GreaterThanOrEqual : NSLayoutRelation.Equal,
                         Parent,
                         NSLayoutAttribute.Top,
                         multiplier: 1,
@@ -456,7 +470,7 @@ namespace Vx.iOS.Views
                     BottomConstraint = NSLayoutConstraint.Create(
                         Parent,
                         NSLayoutAttribute.Bottom,
-                        NSLayoutRelation.Equal,
+                        VerticalAlignment == VerticalAlignment.Top ? NSLayoutRelation.GreaterThanOrEqual : NSLayoutRelation.Equal,
                         Subview,
                         NSLayoutAttribute.Bottom,
                         multiplier: 1,

@@ -18,6 +18,7 @@ namespace Vx.Uwp.Views
             View.Foreground = newView.TextColor.ToUwpBrush();
             View.TextWrapping = newView.WrapText ? Windows.UI.Xaml.TextWrapping.Wrap : Windows.UI.Xaml.TextWrapping.NoWrap;
             View.FontSize = newView.FontSize;
+            View.TextDecorations = newView.Strikethrough ? Windows.UI.Text.TextDecorations.Strikethrough : Windows.UI.Text.TextDecorations.None;
         }
     }
 }

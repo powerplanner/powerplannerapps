@@ -14,7 +14,17 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            View.Text = newView.Text;
+            if (newView.Strikethrough)
+            {
+                View.Text = null;
+                View.AttributedText = new NSAttributedString(newView.Text, strikethroughStyle: NSUnderlineStyle.Single);
+            }
+            else
+            {
+                View.AttributedText = null;
+                View.Text = newView.Text;
+            }
+
             View.TextColor = newView.TextColor.ToUI();
             View.Lines = newView.WrapText ? 0 : 1;
             View.Font = View.Font.WithSize(newView.FontSize);

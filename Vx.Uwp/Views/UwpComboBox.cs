@@ -35,7 +35,7 @@ namespace Vx.Uwp.Views
                 View.ItemsSource = newView.Items;
             }
 
-            View.SelectedItem = newView.SelectedItem;
+            View.SelectedItem = newView.SelectedItem?.Value;
         }
     }
 }
