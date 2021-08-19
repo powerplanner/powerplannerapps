@@ -232,9 +232,9 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             _tableView = new UITableView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                SeparatorInset = UIEdgeInsets.Zero,
-                Source = new TableViewSource(_tableView, ViewModel)
+                SeparatorInset = UIEdgeInsets.Zero
             };
+            _tableView.Source = new TableViewSource(_tableView, ViewModel);
             _tableView.TableHeaderView = ViewModel.SummaryComponent.Render();
             ViewModel.SummaryComponent.Rendered += new WeakEventHandler(SummaryComponent_Rendered).Handler;
             _tableView.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
