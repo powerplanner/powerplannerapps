@@ -13,7 +13,7 @@ using PowerPlannerAppDataLibrary.Converters;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
-    public class YearsViewModel : ComponentViewModel
+    public class YearsViewModel : PopupComponentViewModel
     {
         private YearsViewItemsGroup _yearsViewItemsGroup;
         public YearsViewItemsGroup YearsViewItemsGroup
@@ -24,6 +24,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public YearsViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = "Years";
         }
 
         protected override View Render()

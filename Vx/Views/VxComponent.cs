@@ -247,7 +247,7 @@ namespace Vx.Views
 
             try
             {
-                if (oldView == null || oldView.GetType() != newView.GetType())
+                if (oldView == null || newView == null || oldView.GetType() != newView.GetType())
                 {
                     RenderedContent = newView;
                     NativeComponent.ChangeView(newView);

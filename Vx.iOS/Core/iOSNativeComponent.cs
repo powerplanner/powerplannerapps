@@ -1,6 +1,7 @@
 ﻿using Foundation;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using UIKit;
@@ -13,6 +14,27 @@ namespace Vx.iOS
     {
         public Action<UIView> AfterViewChanged { get; set; }
 
+        public event EventHandler<SizeF> ComponentSizeChanged;
+
+        public iOSNativeComponent()
+        {
+            
+        }
+
+        private SizeF _currSize;
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            var newSize = new SizeF((float)this.Frame.Width, (float)this.Frame.Height);
+            if (_currSize != newSize)
+            {
+                _currSize = newSize;
+                ComponentSizeChanged?.Invoke(this, newSize);
+            }
+        }
+
         public void ChangeView(View view)
         {
             foreach (var subview in base.Subviews)
@@ -21,6 +43,11 @@ namespace Vx.iOS
             }
 
             base.RemoveConstraints(base.Constraints);
+
+            if (view == null)
+            {
+                return;
+            }
 
             var uiView = view.CreateUIView(null);
             uiView.TranslatesAutoresizingMaskIntoConstraints = false;

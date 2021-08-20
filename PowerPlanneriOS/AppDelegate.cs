@@ -80,7 +80,6 @@ namespace PowerPlanneriOS
                 { typeof(ClassViewModel), typeof(ClassViewController) },
                 { typeof(AddClassViewModel), typeof(AddClassViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
-                { typeof(YearsViewModel), typeof(YearsViewController) },
                 { typeof(AddYearViewModel), typeof(AddYearViewController) },
                 { typeof(AddSemesterViewModel), typeof(AddSemesterViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },

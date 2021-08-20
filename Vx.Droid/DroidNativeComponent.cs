@@ -18,7 +18,11 @@ namespace Vx.Droid
         public void ChangeView(Vx.Views.View view)
         {
             base.RemoveAllViews();
-            base.AddView(view.CreateDroidView(null));
+
+            if (view != null)
+            {
+                base.AddView(view.CreateDroidView(null));
+            }
         }
     }
 }
