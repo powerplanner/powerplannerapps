@@ -162,5 +162,23 @@ namespace Vx.iOS
         {
             return UIColor.FromRGBA(color.R, color.G, color.B, color.A);
         }
+
+        internal static UITextAlignment ToUITextAlignment(this HorizontalAlignment horizontalAlignment)
+        {
+            switch (horizontalAlignment)
+            {
+                case Vx.Views.HorizontalAlignment.Left:
+                    return UITextAlignment.Left;
+
+                case Vx.Views.HorizontalAlignment.Center:
+                    return UITextAlignment.Center;
+
+                case Vx.Views.HorizontalAlignment.Right:
+                    return UITextAlignment.Right;
+
+                default:
+                    return UITextAlignment.Left;
+            }
+        }
     }
 }

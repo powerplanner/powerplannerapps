@@ -181,6 +181,24 @@ namespace Vx.Droid
             }
         }
 
+        internal static TextAlignment ToDroidTextAlignment(this HorizontalAlignment horizontalAlignment)
+        {
+            switch (horizontalAlignment)
+            {
+                case Vx.Views.HorizontalAlignment.Left:
+                    return TextAlignment.ViewStart;
+
+                case Vx.Views.HorizontalAlignment.Center:
+                    return TextAlignment.Center;
+
+                case Vx.Views.HorizontalAlignment.Right:
+                    return TextAlignment.ViewEnd;
+
+                default:
+                    return TextAlignment.ViewStart;
+            }
+        }
+
         internal static GravityFlags ToDroid(this VerticalAlignment verticalAlignment)
         {
             switch (verticalAlignment)

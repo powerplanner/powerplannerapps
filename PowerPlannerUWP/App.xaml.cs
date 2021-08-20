@@ -129,7 +129,6 @@ namespace PowerPlannerUWP
                 { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
-                { typeof(YearsViewModel), typeof(YearsView) },
 
                 // Settings views
                 { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },

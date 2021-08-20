@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -42,6 +43,8 @@ namespace Vx.Views
 
             _hasInitializedForDisplay = true;
 
+            NativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
+
             Initialize();
 
             //if (IsRootComponent && _additionalComponentsToInitialize != null)
@@ -66,6 +69,11 @@ namespace Vx.Views
             RenderActual();
 
             EnableHotReload();
+        }
+
+        private void NativeComponent_ComponentSizeChanged(object sender, SizeF e)
+        {
+            OnSizeChanged(e);
         }
 
         private async void EnableHotReload()
@@ -318,6 +326,15 @@ namespace Vx.Views
             {
                 MarkDirty();
             }
+        }
+
+        /// <summary>
+        /// Components can override this to create adaptive UI, choosing to mark dirty at different sizes
+        /// </summary>
+        /// <param name="size"></param>
+        protected virtual void OnSizeChanged(SizeF size)
+        {
+            // Nothing here
         }
     }
 }

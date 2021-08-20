@@ -154,7 +154,7 @@ namespace Vx.Uwp
                 return component.NativeComponent as UwpNativeComponent;
             }
 
-            var nativeComponent = new UwpNativeComponent();
+            var nativeComponent = new UwpNativeComponent(component);
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;
         }
@@ -212,6 +212,24 @@ namespace Vx.Uwp
 
                 default:
                     return Windows.UI.Xaml.HorizontalAlignment.Stretch;
+            }
+        }
+
+        internal static TextAlignment ToUwpTextAlignment(this Vx.Views.HorizontalAlignment horizontalAlignment)
+        {
+            switch (horizontalAlignment)
+            {
+                case Vx.Views.HorizontalAlignment.Left:
+                    return TextAlignment.Start;
+
+                case Vx.Views.HorizontalAlignment.Center:
+                    return TextAlignment.Center;
+
+                case Vx.Views.HorizontalAlignment.Right:
+                    return TextAlignment.End;
+
+                default:
+                    return TextAlignment.Start;
             }
         }
 
