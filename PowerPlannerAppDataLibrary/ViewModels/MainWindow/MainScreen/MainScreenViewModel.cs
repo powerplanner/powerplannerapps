@@ -485,6 +485,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 selectedItem = model.AvailableItems.First();
             }
 
+#if DEBUG
+            if (VxTestingGroundViewModel.ShowTestingGround)
+            {
+                selectedItem = MainMenuSelections.Settings;
+            }
+#endif
+
             if (!PowerPlannerApp.ShowClassesAsPopups && selectedItem.GetValueOrDefault() == NavigationManager.MainMenuSelections.Classes && model.Classes != null)
             {
                 var c = model.Classes.FirstOrDefault(i => NavigationManager.ClassSelection == i.Identifier);

@@ -237,7 +237,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         FontSize = fontSize,
                         TextColor = isSubtle ? Theme.Current.SubtleForegroundColor : Theme.Current.ForegroundColor,
                         WrapText = false,
-                        HorizontalAlignment = HorizontalAlignment.Right,
+                        TextAlignment = HorizontalAlignment.Right,
                         FontWeight = FontWeights.SemiBold
                     }.LinearLayoutWeight(1),
 
@@ -247,7 +247,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         FontSize = fontSize,
                         TextColor = isSubtle ? Theme.Current.SubtleForegroundColor : Theme.Current.ForegroundColor,
                         WrapText = false,
-                        HorizontalAlignment = HorizontalAlignment.Right,
+                        TextAlignment = HorizontalAlignment.Right,
                         FontWeight = FontWeights.SemiBold
                     }.LinearLayoutWeight(1)
                 }
