@@ -146,7 +146,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 BackgroundColor = Theme.Current.PopupPageBackgroundColor,
                 Content = linearLayout,
-                Margin = new Thickness(0, 24, 0, 0)
+                Margin = new Thickness(0, 24, 0, 0),
+                VerticalAlignment = VerticalAlignment.Top
             };
         }
 

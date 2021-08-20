@@ -9,6 +9,7 @@ namespace Vx
     public interface INativeComponent
     {
         event EventHandler<SizeF> ComponentSizeChanged;
+        SizeF ComponentSize { get; }
         void ChangeView(View view);
     }
 }

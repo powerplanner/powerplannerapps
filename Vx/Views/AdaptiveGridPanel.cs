@@ -11,7 +11,6 @@ namespace Vx.Views
 
         public float MinColumnWidth { get; set; } = 200;
 
-        private SizeF _currentSize;
         private int _renderedCols;
 
         public float ColumnSpacing { get; set; } = 24;
@@ -21,7 +20,7 @@ namespace Vx.Views
             var numOfCols = CalcNumberOfColumns();
             _renderedCols = numOfCols;
 
-            if (numOfCols == 1 || Children.Count <= 1 || _currentSize.Width == 0)
+            if (numOfCols == 1 || Children.Count <= 1 || Size.Width == 0)
             {
                 var layout = new LinearLayout();
                 layout.Children.AddRange(Children);
@@ -83,8 +82,6 @@ namespace Vx.Views
 
         protected override void OnSizeChanged(SizeF size)
         {
-            _currentSize = size;
-
             var calc = CalcNumberOfColumns();
             if (_renderedCols != calc)
             {
@@ -98,7 +95,7 @@ namespace Vx.Views
             // ColWidth * Cols + ColSpacing * Cols - ColSpacing = TotalWidth
             // Cols * (ColWidth + ColSpacing) = TotalWidth - ColSpacing
             // Cols = (TotalWidth - ColSpacing) / (ColWidth + ColSpacing)
-            int cols = (int)((_currentSize.Width - ColumnSpacing) / (MinColumnWidth + ColumnSpacing));
+            int cols = (int)((Size.Width - ColumnSpacing) / (MinColumnWidth + ColumnSpacing));
             return cols >= 1 ? cols : 1;
         }
     }

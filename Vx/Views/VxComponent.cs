@@ -328,6 +328,8 @@ namespace Vx.Views
             }
         }
 
+        public SizeF Size => NativeComponent.ComponentSize;
+
         /// <summary>
         /// Components can override this to create adaptive UI, choosing to mark dirty at different sizes
         /// </summary>

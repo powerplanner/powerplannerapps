@@ -14,6 +14,8 @@ namespace Vx.iOS
     {
         public Action<UIView> AfterViewChanged { get; set; }
 
+        public SizeF ComponentSize => new SizeF((float)this.Frame.Width, (float)this.Frame.Height);
+
         public event EventHandler<SizeF> ComponentSizeChanged;
 
         public iOSNativeComponent()
@@ -27,7 +29,7 @@ namespace Vx.iOS
         {
             base.LayoutSubviews();
 
-            var newSize = new SizeF((float)this.Frame.Width, (float)this.Frame.Height);
+            var newSize = ComponentSize;
             if (_currSize != newSize)
             {
                 _currSize = newSize;
