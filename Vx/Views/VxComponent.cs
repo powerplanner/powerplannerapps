@@ -319,6 +319,10 @@ namespace Vx.Views
             {
                 changed = !object.Equals(value, stateValue);
             }
+            else
+            {
+                changed = true;
+            }
 
             _states[stateName] = value;
 

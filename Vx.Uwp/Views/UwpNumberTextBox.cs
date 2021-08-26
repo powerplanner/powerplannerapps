@@ -36,11 +36,17 @@ namespace Vx.Uwp.Views
             {
                 if (double.TryParse(View.Text, out double result))
                 {
-                    VxView.Number.ValueChanged(result);
+                    if (VxView.Number.Value != result)
+                    {
+                        VxView.Number.ValueChanged(result);
+                    }
                 }
                 else
                 {
-                    VxView.Number.ValueChanged(null);
+                    if (VxView.Number.Value != null)
+                    {
+                        VxView.Number.ValueChanged(null);
+                    }
                 }
             }
         }

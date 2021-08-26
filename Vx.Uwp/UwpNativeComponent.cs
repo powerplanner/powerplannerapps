@@ -12,14 +12,12 @@ namespace Vx.Uwp
 {
     public class UwpNativeComponent : ContentControl, INativeComponent
     {
-        private VxComponent _component;
+        public SizeF ComponentSize => new SizeF(this.ActualSize.X, this.ActualSize.Y);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
 
-        public UwpNativeComponent(VxComponent component)
+        public UwpNativeComponent()
         {
-            _component = component;
-
             HorizontalContentAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
 
             SizeChanged += UwpNativeComponent_SizeChanged;
