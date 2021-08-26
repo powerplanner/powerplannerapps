@@ -64,12 +64,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     new TextBlock
                                     {
                                         Text = GpaToStringConverter.ConvertWithGpa(YearsViewItemsGroup.School.GPA),
-                                        FontWeight = FontWeights.Bold
+                                        FontWeight = FontWeights.Bold,
+                                        TextAlignment = HorizontalAlignment.Right
                                     },
 
                                     new TextBlock
                                     {
-                                        Text = CreditsToStringConverter.ConvertWithCredits(YearsViewItemsGroup.School.CreditsEarned)
+                                        Text = CreditsToStringConverter.ConvertWithCredits(YearsViewItemsGroup.School.CreditsEarned),
+                                        TextAlignment = HorizontalAlignment.Right
                                     }
                                 }
                             }.LinearLayoutWeight(1)
@@ -126,22 +128,61 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     Margin = new Thickness(0, 0, 6, 0)
                                 }.LinearLayoutWeight(1),
 
-                                year.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED && year.CalculatedGPA != -1 ? new TextBlock
+                                new LinearLayout
                                 {
-                                    Text = GpaToStringConverter.Convert(year.CalculatedGPA),
-                                    TextColor = Theme.Current.SubtleForegroundColor,
-                                    TextAlignment = HorizontalAlignment.Right,
-                                    Strikethrough = true,
-                                    VerticalAlignment = VerticalAlignment.Center,
-                                    Margin = new Thickness(0, 0, 6, 0)
-                                } : null,
+                                    Children =
+                                    {
+                                        new LinearLayout
+                                        {
+                                            Orientation = Orientation.Horizontal,
+                                            HorizontalAlignment = HorizontalAlignment.Right,
+                                            Children =
+                                            {
+                                                year.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED && year.CalculatedGPA != -1 ? new TextBlock
+                                                {
+                                                    Text = GpaToStringConverter.Convert(year.CalculatedGPA),
+                                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                                    Strikethrough = true,
+                                                    Margin = new Thickness(0, 0, 6, 0)
+                                                } : null,
 
-                                new TextBlock
-                                {
-                                    Text = GpaToStringConverter.Convert(year.GPA),
-                                    FontSize = Theme.Current.TitleFontSize,
-                                    TextColor = Theme.Current.SubtleForegroundColor
+                                                new TextBlock
+                                                {
+                                                    Text = GpaToStringConverter.Convert(year.GPA, includeGpa: true),
+                                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                                    FontWeight = FontWeights.Bold
+                                                }
+                                            }
+                                        },
+
+
+                                        new LinearLayout
+                                        {
+                                            Orientation = Orientation.Horizontal,
+                                            HorizontalAlignment = HorizontalAlignment.Right,
+                                            Children =
+                                            {
+                                                year.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED && year.CalculatedCreditsEarned != -1 ? new TextBlock
+                                                {
+                                                    Text = CreditsToStringConverter.Convert(year.CalculatedCreditsEarned),
+                                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                                    Strikethrough = true,
+                                                    Margin = new Thickness(0, 0, 6, 0),
+                                                    FontSize = Theme.Current.CaptionFontSize
+                                                } : null,
+
+                                                new TextBlock
+                                                {
+                                                    Text = CreditsToStringConverter.Convert(year.CreditsEarned, includeCredits: true),
+                                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                                    FontSize = Theme.Current.CaptionFontSize
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
+
+                                
                             }
                         }
                     }
@@ -197,7 +238,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
                                 new TextBlock
                                 {
-                                    Text = "TODO date span",
+                                    Text = SemesterToSemesterViewStartEndStringConverter.Convert(semester),
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
                                     TextAlignment = HorizontalAlignment.Right

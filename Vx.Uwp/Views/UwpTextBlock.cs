@@ -9,6 +9,11 @@ namespace Vx.Uwp.Views
 {
     public class UwpTextBlock : UwpView<Vx.Views.TextBlock, TextBlock>
     {
+        public UwpTextBlock()
+        {
+            View.TextTrimming = Windows.UI.Xaml.TextTrimming.CharacterEllipsis;
+        }
+
         protected override void ApplyProperties(Vx.Views.TextBlock oldView, Vx.Views.TextBlock newView)
         {
             base.ApplyProperties(oldView, newView);
