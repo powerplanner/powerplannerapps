@@ -552,7 +552,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             else
             {
                 this.CalculatedGrade = 1;
-                this.HasGrades = false;
+                this.HasGrades = OverriddenGPA != PowerPlannerSending.Grade.UNGRADED || OverriddenGrade != PowerPlannerSending.Grade.UNGRADED;
             }
 
             this.CalculatedGPA = GetGPAForGrade(Grade);

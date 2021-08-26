@@ -121,8 +121,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                 new TextBlock
                                 {
                                     Text = year.Name,
-                                    FontSize = Theme.Current.TitleFontSize
+                                    FontSize = Theme.Current.TitleFontSize,
+                                    WrapText = false,
+                                    Margin = new Thickness(0, 0, 6, 0)
                                 }.LinearLayoutWeight(1),
+
+                                year.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED && year.CalculatedGPA != -1 ? new TextBlock
+                                {
+                                    Text = GpaToStringConverter.Convert(year.CalculatedGPA),
+                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                    TextAlignment = HorizontalAlignment.Right,
+                                    Strikethrough = true,
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    Margin = new Thickness(0, 0, 6, 0)
+                                } : null,
 
                                 new TextBlock
                                 {
@@ -178,7 +190,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                 new TextBlock
                                 {
                                     Text = semester.Name,
-                                    FontSize = 22
+                                    FontSize = 22,
+                                    WrapText = false,
+                                    Margin = new Thickness(0, 0, 6, 0)
                                 }.LinearLayoutWeight(1),
 
                                 new TextBlock
@@ -201,7 +215,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             foreach (var c in semester.Classes)
             {
                 Subscribe(c);
-                linearLayout.Children.Add(RenderClassRow(c.Name, CreditsToStringConverter.Convert(c.Credits), GpaToStringConverter.Convert(c.GPA)));
+                linearLayout.Children.Add(RenderClassRow(c.Name, c.CreditsStringForYearsPage, c.GpaStringForTableDisplay));
             }
 
             // TODO: Localize
