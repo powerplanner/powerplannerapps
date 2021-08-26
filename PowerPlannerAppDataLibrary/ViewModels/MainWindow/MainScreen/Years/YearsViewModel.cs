@@ -34,6 +34,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 return null;
             }
 
+            // Subscribe to the school
+            Subscribe(YearsViewItemsGroup.School);
+
             // TODO: Subscribe to School property changes
             var linearLayout = new LinearLayout
             {
@@ -77,6 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             var adaptiveGridPanel = new AdaptiveGridPanel();
 
+            SubscribeToCollection(YearsViewItemsGroup.School.Years);
             foreach (var year in YearsViewItemsGroup.School.Years)
             {
                 adaptiveGridPanel.Children.Add(RenderYear(year));
@@ -99,6 +103,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         private View RenderYear(ViewItemYear year)
         {
+            Subscribe(year);
+
             var linearLayout = new LinearLayout
             {
                 Children =
@@ -130,6 +136,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 }
             };
 
+            SubscribeToCollection(year.Semesters);
             foreach (var semester in year.Semesters)
             {
                 linearLayout.Children.Add(RenderSemester(semester));
@@ -153,6 +160,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         private View RenderSemester(ViewItemSemester semester)
         {
+            Subscribe(semester);
+
             var linearLayout = new LinearLayout
             {
                 Children =
@@ -188,8 +197,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             // TODO: Localize
             linearLayout.Children.Add(RenderClassRow("Class", "Credits", "GPA", isSubtle: true));
 
+            SubscribeToCollection(semester.Classes);
             foreach (var c in semester.Classes)
             {
+                Subscribe(c);
                 linearLayout.Children.Add(RenderClassRow(c.Name, CreditsToStringConverter.Convert(c.Credits), GpaToStringConverter.Convert(c.GPA)));
             }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -209,6 +210,43 @@ namespace Vx.Views
         }
 
         private void PropertyValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            MarkDirty();
+        }
+
+        private WeakReferenceList<INotifyPropertyChanged> _subscribed;
+        protected void Subscribe(INotifyPropertyChanged obj)
+        {
+            if (_subscribed == null)
+            {
+                _subscribed = new WeakReferenceList<INotifyPropertyChanged>();
+            }
+
+            if (!_subscribed.Contains(obj))
+            {
+                SubscribeToPropertyValue(obj);
+                _subscribed.Add(obj);
+            }
+        }
+
+        private WeakReferenceList<INotifyCollectionChanged> _subscribedCollections;
+        private NotifyCollectionChangedEventHandler _collectionChangedHandler;
+        protected void SubscribeToCollection(INotifyCollectionChanged col)
+        {
+            if (_subscribedCollections == null)
+            {
+                _subscribedCollections = new WeakReferenceList<INotifyCollectionChanged>();
+                _collectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(Collection_CollectionChanged).Handler;
+            }
+
+            if (!_subscribedCollections.Contains(col))
+            {
+                col.CollectionChanged += _collectionChangedHandler;
+                _subscribedCollections.Add(col);
+            }
+        }
+
+        private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             MarkDirty();
         }
