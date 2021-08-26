@@ -109,7 +109,6 @@ namespace PowerPlannerUWP
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
                 { typeof(AddTaskOrEventViewModel), typeof(AddTaskOrEventView) },
-                { typeof(AddSemesterViewModel), typeof(AddSemesterView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
                 { typeof(CalendarViewModel), typeof(CalendarMainView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },

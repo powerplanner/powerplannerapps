@@ -113,6 +113,11 @@ namespace Vx.Uwp
                     return new UwpBorder();
                 }
 
+                if (view is Vx.Views.DatePicker)
+                {
+                    return new UwpDatePicker();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {

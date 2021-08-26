@@ -10,10 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
-    public class AddSemesterViewModel : BaseMainScreenViewModelChild
+    public class AddSemesterViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -33,6 +34,44 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             }
         }
 
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditSemesterPage_TextBoxName.Header"),
+                    PlaceholderText = PowerPlannerResources.GetString("EditSemesterPage_TextBoxName.PlaceholderText"),
+                    Text = VxValue.Create(Name, v => Name = v),
+                    AutoFocus = true,
+                    OnSubmit = Save
+                },
+
+                new LinearLayout
+                {
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new DatePicker
+                        {
+                            Header = PowerPlannerResources.GetString("EditSemesterPage_DatePickerStart.Header"),
+                            Value = VxValue.Create(StartDate, v => StartDate = v),
+                            Margin = new Thickness(0, 0, 9, 0)
+                        }.LinearLayoutWeight(1),
+
+                        new DatePicker
+                        {
+                            Header = PowerPlannerResources.GetString("EditSemesterPage_DatePickerEnd.Header"),
+                            Value = VxValue.Create(EndDate, v => EndDate = v),
+                            Margin = new Thickness(9, 0, 0, 0)
+                        }.LinearLayoutWeight(1)
+                    }
+                }
+
+            );
+        }
+
         public ViewItemSemester SemesterToEdit { get; private set; }
 
         /// <summary>
@@ -49,6 +88,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         private AddSemesterViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = "TODO Semester";
         }
 
         public static AddSemesterViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
