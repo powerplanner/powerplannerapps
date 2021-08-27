@@ -253,7 +253,14 @@ namespace InterfacesiOS.Controllers
 
         private static UIDatePicker CreateDatePicker()
         {
-            return new UIDatePicker(CGRect.Empty);
+            var datePicker = new UIDatePicker(CGRect.Empty);
+
+            if (SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
+            {
+                datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
+            }
+
+            return datePicker;
         }
     }
 
