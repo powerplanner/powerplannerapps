@@ -115,12 +115,70 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             views.Add(new MultilineTextBox
             {
                 Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
-                //MinHeight = 200,
+                Height = 180, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
                 Text = VxValue.Create(Details, v => Details = v),
                 Margin = new Thickness(0, 18, 0, 0)
             });
 
-            // TODO: Repeats
+            if (IsRepeatsVisible)
+            {
+                views.Add(new CheckBox
+                {
+                    Text = PowerPlannerResources.GetString("RepeatingEntry_CheckBoxRepeats.Content"),
+                    Margin = new Thickness(0, 18, 0, 0),
+                    IsChecked = VxValue.Create(Repeats, v => Repeats = v)
+                });
+
+                if (Repeats)
+                {
+                    views.Add(new Border
+                    {
+                        BackgroundColor = Theme.Current.PopupPageBackgroundAltColor,
+                        Padding = new Thickness(18),
+                        Margin = new Thickness(0, 18, 0, 0),
+                        Content = new LinearLayout
+                        {
+                            Children =
+                            {
+                                ShowRepeatingPremiumTrial ? new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockTryForFree.Text"),
+                                    TextColor = Color.Red,
+                                    FontWeight = FontWeights.Bold,
+                                    Margin = new Thickness(0, 0, 0, 18)
+                                } : null,
+
+                                ShowRepeatingMustUpgradeToPremium ? new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockMustUpgrade.Text"),
+                                    TextColor = Color.Red,
+                                    FontWeight = FontWeights.Bold
+                                } : null,
+
+                                ShowRepeatingMustUpgradeToPremium ? new AccentButton
+                                {
+                                    Text = PowerPlannerResources.GetString("Settings_UpgradeToPremium_ButtonUpgrade.Content"),
+                                    Click = UpgradeToPremiumForRepeating,
+                                    Margin = new Thickness(0, 18, 0, 0)
+                                } : null,
+
+                                new TextBlock
+                                {
+                                    Text = "TODO recurrence control"
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockNoteCannotBulkEdit.Text"),
+                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                    FontSize = Theme.Current.CaptionFontSize,
+                                    Margin = new Thickness(0, 18, 0, 0)
+                                }
+                            }
+                        }
+                    });
+                }
+            }
 
             return RenderGenericPopupContent(views.ToArray());
         }

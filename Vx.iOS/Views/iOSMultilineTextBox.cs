@@ -83,6 +83,7 @@ namespace Vx.iOS.Views
             ClipsToBounds = true;
             Layer.CornerRadius = 10;
             Font = UIFont.PreferredBody;
+            TextContainerInset = new UIEdgeInsets(8, 5, 8, 5); // Matches exactly with our single line text field
 
             Editable = true;
 
@@ -100,28 +101,6 @@ namespace Vx.iOS.Views
         {
             UpdateFocus(false);
             return true;
-        }
-
-        public override void DidUpdateFocus(UIFocusUpdateContext context, UIFocusAnimationCoordinator coordinator)
-        {
-            base.DidUpdateFocus(context, coordinator);
-
-            UpdateFocus(Focused);
-        }
-
-        private void UIRoundedTextView_EditingDidEndOnExit(object sender, EventArgs e)
-        {
-            UpdateFocus(false);
-        }
-
-        private void UIRoundedTextView_EditingDidEnd(object sender, EventArgs e)
-        {
-            UpdateFocus(false);
-        }
-
-        private void UIRoundedTextView_EditingDidBegin(object sender, EventArgs e)
-        {
-            UpdateFocus(true);
         }
 
         private void UpdateFocus(bool focused)
@@ -212,7 +191,10 @@ namespace Vx.iOS.Views
             _textField.StretchWidth(this);
             _errorMessageContainer.StretchWidth(this);
 
-            this.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[textField(36)][errorMessage]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            // Ensure text field expands when fixed height
+            _textField.SetContentHuggingPriority(0, UILayoutConstraintAxis.Vertical);
+
+            this.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[textField(>=36)][errorMessage]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "header", headerContainer,
                 "textField", _textField,
                 "errorMessage", _errorMessageContainer));
