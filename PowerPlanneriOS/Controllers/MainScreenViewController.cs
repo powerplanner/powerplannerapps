@@ -373,10 +373,12 @@ namespace PowerPlanneriOS.Controllers
                 {
                     if (UIDevice.CurrentDevice.CheckSystemVersion(10, 3))
                     {
+#if !DEBUG
                         // This will only sometimes show a dialog, at most 3 times a year
                         // It will still display if they already rated, meaning users who previously clicked
                         // No thanks on my own dialog will persistently get this dialog, but that should be ok
                         StoreKit.SKStoreReviewController.RequestReview();
+#endif
                     }
                 }
             }
