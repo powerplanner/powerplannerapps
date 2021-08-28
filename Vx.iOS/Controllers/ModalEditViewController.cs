@@ -60,6 +60,7 @@ namespace InterfacesiOS.Controllers
             HeaderText = headerText;
             _parent = parent;
             ContentView = contentView;
+            contentView.TranslatesAutoresizingMaskIntoConstraints = false;
             DoneButtonText = "Done";
             CancelButtonText = "Cancel";
         }
@@ -88,16 +89,27 @@ namespace InterfacesiOS.Controllers
         {
             base.ViewDidAppear(animated);
 
-            UpdateLayout();
+            //UpdateLayout();
         }
 
         void InitializeControls()
         {
             View.BackgroundColor = UIColor.Clear;
             _slidingView = new UIView();
-            _dialogView = new UIView();
+            _dialogView = new UIView()
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
-            _headerLabel = new UILabel(new CGRect(0, 0, 320 / 2, 44));
+            var header = new UIView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+
+            _headerLabel = new UILabel
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
             _headerLabel.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
             _headerLabel.BackgroundColor = HeaderBackgroundColor;
             _headerLabel.TextColor = HeaderTextColor;
@@ -105,6 +117,7 @@ namespace InterfacesiOS.Controllers
             _headerLabel.TextAlignment = UITextAlignment.Center;
 
             _cancelButton = UIButton.FromType(UIButtonType.System);
+            _cancelButton.TranslatesAutoresizingMaskIntoConstraints = false;
             if (CancelButtonColor != null)
             {
                 _cancelButton.SetTitleColor(CancelButtonColor, UIControlState.Normal);
@@ -114,6 +127,7 @@ namespace InterfacesiOS.Controllers
             _cancelButton.TouchUpInside += new WeakEventHandler(CancelButtonTapped).Handler;
 
             _doneButton = UIButton.FromType(UIButtonType.System);
+            _doneButton.TranslatesAutoresizingMaskIntoConstraints = false;
             if (DoneButtonColor != null)
             {
                 _doneButton.SetTitleColor(DoneButtonColor, UIControlState.Normal);
@@ -128,11 +142,27 @@ namespace InterfacesiOS.Controllers
 
             _dialogView.BackgroundColor = HeaderBackgroundColor;
 
-            _dialogView.AddSubview(_headerLabel);
-            _dialogView.AddSubview(_cancelButton);
-            _dialogView.AddSubview(_doneButton);
+            header.AddSubview(_headerLabel);
+            header.AddSubview(_cancelButton);
+            header.AddSubview(_doneButton);
+            _headerLabel.StretchHeight(header, top: 0);
+            _cancelButton.StretchHeight(header, top: 0);
+            _doneButton.StretchHeight(header, top: 0);
+            _headerLabel.SetContentHuggingPriority(0, UILayoutConstraintAxis.Horizontal);
+            header.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-{Math.Max(16, _parent.View.SafeAreaInsets.Left)}-[cancel][header][done]-{Math.Max(16, _parent.View.SafeAreaInsets.Right)}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                "cancel", _cancelButton,
+                "header", _headerLabel,
+                "done", _doneButton));
+
+            _dialogView.AddSubview(header);
+            header.StretchWidth(_dialogView);
+            ContentView.StretchWidth(_dialogView);
+            _dialogView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-{_parent.View.SafeAreaInsets.Top}-[header(40)][content]-{_parent.View.SafeAreaInsets.Bottom}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                "header", header,
+                "content", ContentView));
 
             _slidingView.Add(_dialogView);
+            _dialogView.StretchWidth(_slidingView);
             Add(_slidingView);
 
             var backgroundTouchTarget = new UIControl()
@@ -148,76 +178,6 @@ namespace InterfacesiOS.Controllers
         }
 
         private nfloat? _originalContentViewHeight;
-
-        private void UpdateLayout(bool onRotate = false)
-        {
-            var buttonSize = new CGSize(71, 30);
-
-            nfloat screenWidth = UIScreen.MainScreen.Bounds.Width;
-            UIEdgeInsets screenEdgeInsets;
-            if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
-            {
-                screenEdgeInsets = _parent.View.SafeAreaInsets;
-            }
-            else
-            {
-                screenEdgeInsets = new UIEdgeInsets(
-                    top: UIApplication.SharedApplication.StatusBarFrame.Height,
-                    left: 0,
-                    bottom: 0,
-                    right: 0);
-            }
-            nfloat screenHeight = UIScreen.MainScreen.Bounds.Height;
-            nfloat screenHeightWithTopPadding = screenHeight - screenEdgeInsets.Top;
-
-            // Stash the original requested height since we might change it
-            if (_originalContentViewHeight == null)
-            {
-                _originalContentViewHeight = ContentView.Frame.Height;
-            }
-
-            // Content view's height can be reduced in order to fit on screen
-            // We include padding for the bottom inserts too
-            nfloat contentViewHeight = _originalContentViewHeight.Value;
-            if (contentViewHeight + _headerBarHeight + screenEdgeInsets.Bottom > screenHeightWithTopPadding)
-            {
-                contentViewHeight = screenHeightWithTopPadding - _headerBarHeight - screenEdgeInsets.Bottom;
-            }
-
-            // Dialog view is the dialog with done/cancel and the content view
-            var dialogViewSize = new CGSize(screenWidth, contentViewHeight + _headerBarHeight + screenEdgeInsets.Bottom);
-
-            _dialogView.Frame = new CGRect(
-                0,
-                screenHeight - dialogViewSize.Height,
-                dialogViewSize.Width,
-                dialogViewSize.Height);
-
-            // We accomodate for left and right edge inserts here (other inserts already taken into account)
-            _cancelButton.Frame = new CGRect(
-                screenEdgeInsets.Left + 10,
-                7,
-                buttonSize.Width,
-                buttonSize.Height);
-
-            _doneButton.Frame = new CGRect(
-                _dialogView.Frame.Width - buttonSize.Width - 10 - screenEdgeInsets.Right,
-                7,
-                buttonSize.Width,
-                buttonSize.Height);
-
-            _headerLabel.Frame = new CGRect(
-                _cancelButton.Frame.Right + 10,
-                4,
-                _doneButton.Frame.Left - _cancelButton.Frame.Right - 20,
-                35);
-
-            ContentView.Frame = new CGRect(
-                screenEdgeInsets.Left,
-                _headerBarHeight,
-                _dialogView.Frame.Width - screenEdgeInsets.Left - screenEdgeInsets.Right,
-                contentViewHeight);
-        }
 
         void DoneButtonTapped(object sender, EventArgs e)
         {
@@ -238,7 +198,7 @@ namespace InterfacesiOS.Controllers
                 InterfaceOrientation == UIInterfaceOrientation.LandscapeLeft ||
                 InterfaceOrientation == UIInterfaceOrientation.LandscapeRight)
             {
-                UpdateLayout(true);
+                //UpdateLayout(true);
                 View.SetNeedsDisplay();
             }
         }
