@@ -49,6 +49,11 @@ namespace Vx.iOS
 
                 if (view is Vx.Views.TextBox)
                 {
+                    if (view is Vx.Views.MultilineTextBox)
+                    {
+                        return new iOSMultilineTextBox();
+                    }
+
                     return new iOSTextBox();
                 }
 

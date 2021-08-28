@@ -112,10 +112,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 });
             }
 
-            views.Add(new TextBox
+            views.Add(new MultilineTextBox
             {
                 Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
-                Height = 200,
+                //MinHeight = 200,
                 Text = VxValue.Create(Details, v => Details = v),
                 Margin = new Thickness(0, 18, 0, 0)
             });
