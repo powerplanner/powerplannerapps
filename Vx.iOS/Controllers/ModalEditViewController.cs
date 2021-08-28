@@ -60,6 +60,7 @@ namespace InterfacesiOS.Controllers
             HeaderText = headerText;
             _parent = parent;
             ContentView = contentView;
+            contentView.TranslatesAutoresizingMaskIntoConstraints = false;
             DoneButtonText = "Done";
             CancelButtonText = "Cancel";
         }
@@ -88,16 +89,27 @@ namespace InterfacesiOS.Controllers
         {
             base.ViewDidAppear(animated);
 
-            UpdateLayout();
+            //UpdateLayout();
         }
 
         void InitializeControls()
         {
             View.BackgroundColor = UIColor.Clear;
             _slidingView = new UIView();
-            _dialogView = new UIView();
+            _dialogView = new UIView()
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
-            _headerLabel = new UILabel(new CGRect(0, 0, 320 / 2, 44));
+            var header = new UIView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+
+            _headerLabel = new UILabel
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
             _headerLabel.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
             _headerLabel.BackgroundColor = HeaderBackgroundColor;
             _headerLabel.TextColor = HeaderTextColor;
@@ -105,6 +117,7 @@ namespace InterfacesiOS.Controllers
             _headerLabel.TextAlignment = UITextAlignment.Center;
 
             _cancelButton = UIButton.FromType(UIButtonType.System);
+            _cancelButton.TranslatesAutoresizingMaskIntoConstraints = false;
             if (CancelButtonColor != null)
             {
                 _cancelButton.SetTitleColor(CancelButtonColor, UIControlState.Normal);
@@ -114,6 +127,7 @@ namespace InterfacesiOS.Controllers
             _cancelButton.TouchUpInside += new WeakEventHandler(CancelButtonTapped).Handler;
 
             _doneButton = UIButton.FromType(UIButtonType.System);
+            _doneButton.TranslatesAutoresizingMaskIntoConstraints = false;
             if (DoneButtonColor != null)
             {
                 _doneButton.SetTitleColor(DoneButtonColor, UIControlState.Normal);
@@ -128,11 +142,27 @@ namespace InterfacesiOS.Controllers
 
             _dialogView.BackgroundColor = HeaderBackgroundColor;
 
-            _dialogView.AddSubview(_headerLabel);
-            _dialogView.AddSubview(_cancelButton);
-            _dialogView.AddSubview(_doneButton);
+            header.AddSubview(_headerLabel);
+            header.AddSubview(_cancelButton);
+            header.AddSubview(_doneButton);
+            _headerLabel.StretchHeight(header, top: 0);
+            _cancelButton.StretchHeight(header, top: 0);
+            _doneButton.StretchHeight(header, top: 0);
+            _headerLabel.SetContentHuggingPriority(0, UILayoutConstraintAxis.Horizontal);
+            header.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-{Math.Max(16, _parent.View.SafeAreaInsets.Left)}-[cancel][header][done]-{Math.Max(16, _parent.View.SafeAreaInsets.Right)}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                "cancel", _cancelButton,
+                "header", _headerLabel,
+                "done", _doneButton));
+
+            _dialogView.AddSubview(header);
+            header.StretchWidth(_dialogView);
+            ContentView.StretchWidth(_dialogView);
+            _dialogView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-{_parent.View.SafeAreaInsets.Top}-[header(40)][content]-{_parent.View.SafeAreaInsets.Bottom}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                "header", header,
+                "content", ContentView));
 
             _slidingView.Add(_dialogView);
+            _dialogView.StretchWidth(_slidingView);
             Add(_slidingView);
 
             var backgroundTouchTarget = new UIControl()
@@ -148,76 +178,6 @@ namespace InterfacesiOS.Controllers
         }
 
         private nfloat? _originalContentViewHeight;
-
-        private void UpdateLayout(bool onRotate = false)
-        {
-            var buttonSize = new CGSize(71, 30);
-
-            nfloat screenWidth = _parent.View.Frame.Width;
-            UIEdgeInsets screenEdgeInsets;
-            if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
-            {
-                screenEdgeInsets = _parent.View.SafeAreaInsets;
-            }
-            else
-            {
-                screenEdgeInsets = new UIEdgeInsets(
-                    top: UIApplication.SharedApplication.StatusBarFrame.Height,
-                    left: 0,
-                    bottom: 0,
-                    right: 0);
-            }
-            nfloat screenHeight = _parent.View.Frame.Height;
-            nfloat screenHeightWithTopPadding = screenHeight - screenEdgeInsets.Top;
-
-            // Stash the original requested height since we might change it
-            if (_originalContentViewHeight == null)
-            {
-                _originalContentViewHeight = ContentView.Frame.Height;
-            }
-
-            // Content view's height can be reduced in order to fit on screen
-            // We include padding for the bottom inserts too
-            nfloat contentViewHeight = _originalContentViewHeight.Value;
-            if (contentViewHeight + _headerBarHeight + screenEdgeInsets.Bottom > screenHeightWithTopPadding)
-            {
-                contentViewHeight = screenHeightWithTopPadding - _headerBarHeight - screenEdgeInsets.Bottom;
-            }
-
-            // Dialog view is the dialog with done/cancel and the content view
-            var dialogViewSize = new CGSize(screenWidth, contentViewHeight + _headerBarHeight + screenEdgeInsets.Bottom);
-
-            _dialogView.Frame = new CGRect(
-                0,
-                screenHeight - dialogViewSize.Height,
-                dialogViewSize.Width,
-                dialogViewSize.Height);
-
-            // We accomodate for left and right edge inserts here (other inserts already taken into account)
-            _cancelButton.Frame = new CGRect(
-                screenEdgeInsets.Left + 10,
-                7,
-                buttonSize.Width,
-                buttonSize.Height);
-
-            _doneButton.Frame = new CGRect(
-                _dialogView.Frame.Width - buttonSize.Width - 10 - screenEdgeInsets.Right,
-                7,
-                buttonSize.Width,
-                buttonSize.Height);
-
-            _headerLabel.Frame = new CGRect(
-                _cancelButton.Frame.Right + 10,
-                4,
-                _doneButton.Frame.Left - _cancelButton.Frame.Right - 20,
-                35);
-
-            ContentView.Frame = new CGRect(
-                screenEdgeInsets.Left,
-                _headerBarHeight,
-                _dialogView.Frame.Width - screenEdgeInsets.Left - screenEdgeInsets.Right,
-                contentViewHeight);
-        }
 
         void DoneButtonTapped(object sender, EventArgs e)
         {
@@ -238,7 +198,7 @@ namespace InterfacesiOS.Controllers
                 InterfaceOrientation == UIInterfaceOrientation.LandscapeLeft ||
                 InterfaceOrientation == UIInterfaceOrientation.LandscapeRight)
             {
-                UpdateLayout(true);
+                //UpdateLayout(true);
                 View.SetNeedsDisplay();
             }
         }
@@ -253,7 +213,14 @@ namespace InterfacesiOS.Controllers
 
         private static UIDatePicker CreateDatePicker()
         {
-            return new UIDatePicker(CGRect.Empty);
+            var datePicker = new UIDatePicker(CGRect.Empty);
+
+            if (SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
+            {
+                datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
+            }
+
+            return datePicker;
         }
     }
 
@@ -325,29 +292,14 @@ namespace InterfacesiOS.Controllers
             var toViewController = transitionContext.GetViewControllerForKey(UITransitionContext.ToViewControllerKey);
 
             var screenBounds = UIScreen.MainScreen.Bounds;
-            var fromFrame = fromViewController._slidingView.Frame;
+            var fromFrame = screenBounds;
 
             UIView.AnimateNotify(_transitionDuration,
                                  () =>
                                  {
                                      //toViewController.View.Alpha = 1.0f;
                                      fromViewController.View.BackgroundColor = UIColor.Clear;
-
-                                     switch (fromViewController.InterfaceOrientation)
-                                     {
-                                         case UIInterfaceOrientation.Portrait:
-                                             fromViewController._slidingView.Frame = new CGRect(0, screenBounds.Height, fromFrame.Width, fromFrame.Height);
-                                             break;
-                                         case UIInterfaceOrientation.LandscapeLeft:
-                                             fromViewController._slidingView.Frame = new CGRect(screenBounds.Width, 0, fromFrame.Width, fromFrame.Height);
-                                             break;
-                                         case UIInterfaceOrientation.LandscapeRight:
-                                             fromViewController._slidingView.Frame = new CGRect(screenBounds.Width * -1, 0, fromFrame.Width, fromFrame.Height);
-                                             break;
-                                         default:
-                                             break;
-                                     }
-
+                                     fromViewController._slidingView.Frame = new CGRect(0, screenBounds.Height, fromFrame.Width, fromFrame.Height);
                                  },
                                  (finished) => transitionContext.CompleteTransition(true));
         }
@@ -376,25 +328,18 @@ namespace InterfacesiOS.Controllers
             var toViewController = transitionContext.GetViewControllerForKey(UITransitionContext.ToViewControllerKey) as ModalEditViewController;
             var fromViewController = transitionContext.GetViewControllerForKey(UITransitionContext.FromViewControllerKey);
 
+            var fromFrame = UIScreen.MainScreen.Bounds;
+
             inView.AddSubview(toViewController.View);
 
             toViewController._slidingView.Frame = CGRect.Empty;
-            toViewController.View.Frame = new CGRect(0, 0, fromViewController.View.Frame.Width,
-                                                             fromViewController.View.Frame.Height);
+            toViewController.View.Frame = new CGRect(0, 0, fromFrame.Width,
+                                                             fromFrame.Height);
 
             var startingPoint = GetStartingPoint(fromViewController.InterfaceOrientation);
-            if (fromViewController.InterfaceOrientation == UIInterfaceOrientation.Portrait)
-            {
-                toViewController._slidingView.Frame = new CGRect(startingPoint.X, startingPoint.Y,
-                                                             fromViewController.View.Frame.Width,
-                                                             fromViewController.View.Frame.Height);
-            }
-            else
-            {
-                toViewController._slidingView.Frame = new CGRect(startingPoint.X, startingPoint.Y,
-                                                             fromViewController.View.Frame.Height,
-                                                             fromViewController.View.Frame.Width);
-            }
+            toViewController._slidingView.Frame = new CGRect(startingPoint.X, startingPoint.Y,
+                                                             fromFrame.Width,
+                                                             fromFrame.Height);
 
             UIView.AnimateNotify(_transitionDuration,
                                  () =>
@@ -402,8 +347,8 @@ namespace InterfacesiOS.Controllers
                                      toViewController.View.BackgroundColor = new UIColor(0, 0.3f);
 
                                      var endingPoint = GetEndingPoint(fromViewController.InterfaceOrientation);
-                                     toViewController._slidingView.Frame = new CGRect(endingPoint.X, endingPoint.Y, fromViewController.View.Frame.Width,
-                                                                                      fromViewController.View.Frame.Height);
+                                     toViewController._slidingView.Frame = new CGRect(endingPoint.X, endingPoint.Y, fromFrame.Width,
+                                                                                      fromFrame.Height);
                                      //fromViewController.View.Alpha = 0.5f;
                                  },
                                  (finished) => transitionContext.CompleteTransition(true)
@@ -413,47 +358,12 @@ namespace InterfacesiOS.Controllers
         CGPoint GetStartingPoint(UIInterfaceOrientation orientation)
         {
             var screenBounds = UIScreen.MainScreen.Bounds;
-            var coordinate = CGPoint.Empty;
-            switch (orientation)
-            {
-                case UIInterfaceOrientation.Portrait:
-                    coordinate = new CGPoint(0, screenBounds.Height);
-                    break;
-                case UIInterfaceOrientation.LandscapeLeft:
-                    coordinate = new CGPoint(screenBounds.Width, 0);
-                    break;
-                case UIInterfaceOrientation.LandscapeRight:
-                    coordinate = new CGPoint(screenBounds.Width * -1, 0);
-                    break;
-                default:
-                    coordinate = new CGPoint(0, screenBounds.Height);
-                    break;
-            }
-
-            return coordinate;
+            return new CGPoint(0, screenBounds.Height);
         }
 
         CGPoint GetEndingPoint(UIInterfaceOrientation orientation)
         {
-            var screenBounds = UIScreen.MainScreen.Bounds;
-            var coordinate = CGPoint.Empty;
-            switch (orientation)
-            {
-                case UIInterfaceOrientation.Portrait:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-                case UIInterfaceOrientation.LandscapeLeft:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-                case UIInterfaceOrientation.LandscapeRight:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-                default:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-            }
-
-            return coordinate;
+            return new CGPoint(0, 0);
         }
     }
 
