@@ -153,7 +153,7 @@ namespace InterfacesiOS.Controllers
         {
             var buttonSize = new CGSize(71, 30);
 
-            nfloat screenWidth = _parent.View.Frame.Width;
+            nfloat screenWidth = UIScreen.MainScreen.Bounds.Width;
             UIEdgeInsets screenEdgeInsets;
             if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
             {
@@ -167,7 +167,7 @@ namespace InterfacesiOS.Controllers
                     bottom: 0,
                     right: 0);
             }
-            nfloat screenHeight = _parent.View.Frame.Height;
+            nfloat screenHeight = UIScreen.MainScreen.Bounds.Height;
             nfloat screenHeightWithTopPadding = screenHeight - screenEdgeInsets.Top;
 
             // Stash the original requested height since we might change it
@@ -332,29 +332,14 @@ namespace InterfacesiOS.Controllers
             var toViewController = transitionContext.GetViewControllerForKey(UITransitionContext.ToViewControllerKey);
 
             var screenBounds = UIScreen.MainScreen.Bounds;
-            var fromFrame = fromViewController._slidingView.Frame;
+            var fromFrame = screenBounds;
 
             UIView.AnimateNotify(_transitionDuration,
                                  () =>
                                  {
                                      //toViewController.View.Alpha = 1.0f;
                                      fromViewController.View.BackgroundColor = UIColor.Clear;
-
-                                     switch (fromViewController.InterfaceOrientation)
-                                     {
-                                         case UIInterfaceOrientation.Portrait:
-                                             fromViewController._slidingView.Frame = new CGRect(0, screenBounds.Height, fromFrame.Width, fromFrame.Height);
-                                             break;
-                                         case UIInterfaceOrientation.LandscapeLeft:
-                                             fromViewController._slidingView.Frame = new CGRect(screenBounds.Width, 0, fromFrame.Width, fromFrame.Height);
-                                             break;
-                                         case UIInterfaceOrientation.LandscapeRight:
-                                             fromViewController._slidingView.Frame = new CGRect(screenBounds.Width * -1, 0, fromFrame.Width, fromFrame.Height);
-                                             break;
-                                         default:
-                                             break;
-                                     }
-
+                                     fromViewController._slidingView.Frame = new CGRect(0, screenBounds.Height, fromFrame.Width, fromFrame.Height);
                                  },
                                  (finished) => transitionContext.CompleteTransition(true));
         }
@@ -383,25 +368,18 @@ namespace InterfacesiOS.Controllers
             var toViewController = transitionContext.GetViewControllerForKey(UITransitionContext.ToViewControllerKey) as ModalEditViewController;
             var fromViewController = transitionContext.GetViewControllerForKey(UITransitionContext.FromViewControllerKey);
 
+            var fromFrame = UIScreen.MainScreen.Bounds;
+
             inView.AddSubview(toViewController.View);
 
             toViewController._slidingView.Frame = CGRect.Empty;
-            toViewController.View.Frame = new CGRect(0, 0, fromViewController.View.Frame.Width,
-                                                             fromViewController.View.Frame.Height);
+            toViewController.View.Frame = new CGRect(0, 0, fromFrame.Width,
+                                                             fromFrame.Height);
 
             var startingPoint = GetStartingPoint(fromViewController.InterfaceOrientation);
-            if (fromViewController.InterfaceOrientation == UIInterfaceOrientation.Portrait)
-            {
-                toViewController._slidingView.Frame = new CGRect(startingPoint.X, startingPoint.Y,
-                                                             fromViewController.View.Frame.Width,
-                                                             fromViewController.View.Frame.Height);
-            }
-            else
-            {
-                toViewController._slidingView.Frame = new CGRect(startingPoint.X, startingPoint.Y,
-                                                             fromViewController.View.Frame.Height,
-                                                             fromViewController.View.Frame.Width);
-            }
+            toViewController._slidingView.Frame = new CGRect(startingPoint.X, startingPoint.Y,
+                                                             fromFrame.Width,
+                                                             fromFrame.Height);
 
             UIView.AnimateNotify(_transitionDuration,
                                  () =>
@@ -409,8 +387,8 @@ namespace InterfacesiOS.Controllers
                                      toViewController.View.BackgroundColor = new UIColor(0, 0.3f);
 
                                      var endingPoint = GetEndingPoint(fromViewController.InterfaceOrientation);
-                                     toViewController._slidingView.Frame = new CGRect(endingPoint.X, endingPoint.Y, fromViewController.View.Frame.Width,
-                                                                                      fromViewController.View.Frame.Height);
+                                     toViewController._slidingView.Frame = new CGRect(endingPoint.X, endingPoint.Y, fromFrame.Width,
+                                                                                      fromFrame.Height);
                                      //fromViewController.View.Alpha = 0.5f;
                                  },
                                  (finished) => transitionContext.CompleteTransition(true)
@@ -420,47 +398,12 @@ namespace InterfacesiOS.Controllers
         CGPoint GetStartingPoint(UIInterfaceOrientation orientation)
         {
             var screenBounds = UIScreen.MainScreen.Bounds;
-            var coordinate = CGPoint.Empty;
-            switch (orientation)
-            {
-                case UIInterfaceOrientation.Portrait:
-                    coordinate = new CGPoint(0, screenBounds.Height);
-                    break;
-                case UIInterfaceOrientation.LandscapeLeft:
-                    coordinate = new CGPoint(screenBounds.Width, 0);
-                    break;
-                case UIInterfaceOrientation.LandscapeRight:
-                    coordinate = new CGPoint(screenBounds.Width * -1, 0);
-                    break;
-                default:
-                    coordinate = new CGPoint(0, screenBounds.Height);
-                    break;
-            }
-
-            return coordinate;
+            return new CGPoint(0, screenBounds.Height);
         }
 
         CGPoint GetEndingPoint(UIInterfaceOrientation orientation)
         {
-            var screenBounds = UIScreen.MainScreen.Bounds;
-            var coordinate = CGPoint.Empty;
-            switch (orientation)
-            {
-                case UIInterfaceOrientation.Portrait:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-                case UIInterfaceOrientation.LandscapeLeft:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-                case UIInterfaceOrientation.LandscapeRight:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-                default:
-                    coordinate = new CGPoint(0, 0);
-                    break;
-            }
-
-            return coordinate;
+            return new CGPoint(0, 0);
         }
     }
 
