@@ -41,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 {
                     Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxName.Header"),
                     Text = VxValue.Create(Name, v => Name = v),
-                    AutoFocus = true,
+                    AutoFocus = State == OperationState.Adding,
                     OnSubmit = Save
                 }
             };
@@ -272,6 +272,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         private AddTaskOrEventViewModel(BaseViewModel parent, string title) : base(parent)
         {
             base.Title = title;
+            
+            base.PrimaryCommand = PopupCommand.Save(Save);
+            UseCancelForBack();
         }
 
         public static AddTaskOrEventViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
