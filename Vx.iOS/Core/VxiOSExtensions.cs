@@ -102,6 +102,11 @@ namespace Vx.iOS
                     return new iOSComboBox();
                 }
 
+                if (view is Vx.Views.DatePicker)
+                {
+                    return new iOSDatePicker();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

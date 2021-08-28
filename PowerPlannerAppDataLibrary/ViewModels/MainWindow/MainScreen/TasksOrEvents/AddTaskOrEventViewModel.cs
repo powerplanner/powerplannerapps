@@ -17,10 +17,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
+using System.Drawing;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
-    public class AddTaskOrEventViewModel : BaseMainScreenViewModelChild
+    public class AddTaskOrEventViewModel : PopupComponentViewModel
     {
         public IList<ViewItemClass> Classes { get; private set; }
 
@@ -29,6 +32,144 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         public OperationState State { get; private set; }
 
         protected override bool InitialAllowLightDismissValue => false;
+
+        protected override View Render()
+        {
+            List<View> views = new List<View>()
+            {
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxName.Header"),
+                    Text = VxValue.Create(Name, v => Name = v),
+                    AutoFocus = true,
+                    OnSubmit = Save
+                }
+            };
+
+            views.AddRange(ControlGroup(
+
+                    IsDatePickerVisible ? new DatePicker
+                    {
+                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_DatePickerDate.Header"),
+                        Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault())
+                    } : null,
+
+                    IsClassPickerVisible ? new ComboBox
+                    {
+                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_ComboBoxClasses.Header"),
+                        Items = Classes,
+                        SelectedItem = VxValue.Create<object>(Class, v => Class = v as ViewItemClass)
+                    } : null
+
+                ));
+
+            views.AddRange(ControlGroup(
+
+                    IsWeightCategoryPickerVisible ? new ComboBox
+                    {
+                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_ComboBoxWeightCategory.Header"),
+                        Items = WeightCategories,
+                        SelectedItem = VxValue.Create<object>(SelectedWeightCategory, v => SelectedWeightCategory = v as ViewItemWeightCategory)
+                    } : null,
+
+                    new ComboBox
+                    {
+                        Header = PowerPlannerResources.GetString("String_Time"),
+                        Items = TimeOptions,
+                        SelectedItem = VxValue.Create<object>(SelectedTimeOption, v => SelectedTimeOption = v as string)
+                    }
+
+                ));
+
+            if (IsStartTimePickerVisible)
+            {
+                views.Add(new TimePicker
+                {
+                    Header = GetStartTimeText(),
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Value = VxValue.Create(StartTime, v => StartTime = v)
+                });
+            }
+
+            if (IsEndTimePickerVisible)
+            {
+                views.Add(new TimePicker
+                {
+                    Header = PowerPlannerResources.GetString("String_EndTime"),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Value = VxValue.Create(EndTime, v => EndTime = v)
+                });
+            }
+
+            if (IsInDifferentTimeZone)
+            {
+                views.Add(new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("DifferentTimeZoneWarning.Text"),
+                    FontSize = Theme.Current.CaptionFontSize,
+                    TextColor = Color.Red,
+                    Margin = new Thickness(0, 6, 0, 6)
+                });
+            }
+
+            views.Add(new TextBox
+            {
+                Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                Height = 200,
+                Text = VxValue.Create(Details, v => Details = v),
+                Margin = new Thickness(0, 18, 0, 0)
+            });
+
+            // TODO: Repeats
+
+            return RenderGenericPopupContent(views.ToArray());
+        }
+
+        private IEnumerable<View> ControlGroup(View control1, View control2)
+        {
+            if (control1 != null && control2 != null)
+            {
+                control1.Margin = new Thickness(0, 0, 9, 0);
+                control2.Margin = new Thickness(9, 0, 0, 0);
+
+                yield return new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Children =
+                    {
+                        control1.LinearLayoutWeight(1),
+                        control2.LinearLayoutWeight(1)
+                    }
+                };
+            }
+
+            else
+            {
+                if (control1 != null)
+                {
+                    control1.Margin = new Thickness(0, 18, 0, 0);
+                    yield return control1;
+                }
+                else if (control2 != null)
+                {
+                    control2.Margin = new Thickness(0, 18, 0, 0);
+                    yield return control2;
+                }
+            }
+        }
+
+        private string GetStartTimeText()
+        {
+            switch (Type)
+            {
+                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Event:
+                    return PowerPlannerResources.GetString("String_StartTime");
+
+                default:
+                    return PowerPlannerResources.GetString("String_DueTime");
+            }
+        }
 
         private TaskOrEventType _type;
         public TaskOrEventType Type
@@ -128,8 +269,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         public bool IsInDifferentTimeZone { get; private set; }
 
-        private AddTaskOrEventViewModel(BaseViewModel parent) : base(parent)
+        private AddTaskOrEventViewModel(BaseViewModel parent, string title) : base(parent)
         {
+            base.Title = title;
         }
 
         public static AddTaskOrEventViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
@@ -236,7 +378,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             }
 
-            return new AddTaskOrEventViewModel(parent)
+            string title = PowerPlannerResources.GetString(addParams.Type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
+
+            return new AddTaskOrEventViewModel(parent, title)
             {
                 Account = account,
                 State = OperationState.Adding,
@@ -279,7 +423,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 throw new NullReferenceException("Classes of the semester was null. Item id " + cloneParams.Item.Identifier);
             }
 
-            var model = new AddTaskOrEventViewModel(parent)
+            string title = PowerPlannerResources.GetString(type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
+
+            var model = new AddTaskOrEventViewModel(parent, title)
             {
                 Account = account,
                 State = OperationState.Adding,
@@ -365,7 +511,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 throw new NullReferenceException("Classes of the semester was null. Item id " + editParams.Item.Identifier);
             }
 
-            var model = new AddTaskOrEventViewModel(parent)
+            string title = PowerPlannerResources.GetString(type == TaskOrEventType.Task ? "String_EditTask" : "String_EditEvent");
+
+            var model = new AddTaskOrEventViewModel(parent, title)
             {
                 Account = account,
                 State = OperationState.Editing,
