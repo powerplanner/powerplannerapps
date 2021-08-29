@@ -26,11 +26,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
             return GetRepeatIntervalAsNumber() > 0;
         }
 
+        public uint? RepeatIntervalAsNumber
+        {
+            get => GetRepeatIntervalAsNumber();
+            set => RepeatIntervalAsString = value.ToString();
+        }
+
         private string _repeatIntervalAsString = "1";
         public string RepeatIntervalAsString
         {
             get { return _repeatIntervalAsString; }
-            set { SetProperty(ref _repeatIntervalAsString, value, nameof(RepeatIntervalAsString)); }
+            set { SetProperty(ref _repeatIntervalAsString, value, nameof(RepeatIntervalAsString), nameof(RepeatIntervalAsNumber)); }
         }
 
         public enum RepeatOptions
@@ -349,7 +355,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
         public string EndOccurrencesAsString
         {
             get { return _endOccurrencesAsString; }
-            set { SetProperty(ref _endOccurrencesAsString, value, nameof(EndOccurrencesAsString)); }
+            set { SetProperty(ref _endOccurrencesAsString, value, nameof(EndOccurrencesAsString), nameof(EndOccurencesAsNumber)); }
+        }
+
+        public uint EndOccurencesAsNumber
+        {
+            get => GetEndOccurrencesAsNumber();
+            set => EndOccurrencesAsString = value.ToString();
         }
 
         public uint GetEndOccurrencesAsNumber()

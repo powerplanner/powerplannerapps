@@ -134,7 +134,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     views.Add(new Border
                     {
                         BackgroundColor = Theme.Current.PopupPageBackgroundAltColor,
-                        Padding = new Thickness(18),
+                        Padding = new Thickness(12),
                         Margin = new Thickness(0, 18, 0, 0),
                         Content = new LinearLayout
                         {
@@ -162,9 +162,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                     Margin = new Thickness(0, 18, 0, 0)
                                 } : null,
 
-                                new TextBlock
+                                new RecurrenceControlComponent
                                 {
-                                    Text = "TODO recurrence control"
+                                    ViewModel = RecurrenceControlViewModel
                                 },
 
                                 new TextBlock
@@ -181,6 +181,162 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
 
             return RenderGenericPopupContent(views.ToArray());
+        }
+
+        private class RecurrenceControlComponent : VxComponent
+        {
+            [VxSubscribe]
+            public RecurrenceControlViewModel ViewModel { get; set; }
+
+            protected override View Render()
+            {
+                LinearLayout dayCheckBoxes = null;
+
+                if (ViewModel.AreDayCheckBoxesVisible)
+                {
+                    dayCheckBoxes = new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(0, 12, 0, 0)
+                    };
+
+                    var leftSide = new LinearLayout
+                    {
+                        Margin = new Thickness(0, 0, 6, 0)
+                    };
+
+                    foreach (var left in ViewModel.DayCheckBoxesLeftSide)
+                    {
+                        leftSide.Children.Add(new CheckBox
+                        {
+                            Text = left.DisplayName,
+                            IsChecked = VxValue.Create(left.IsChecked, v =>
+                            {
+                                left.IsChecked = v;
+                                MarkDirty();
+                            })
+                        });
+                    }
+
+                    dayCheckBoxes.Children.Add(leftSide.LinearLayoutWeight(1));
+
+                    var rightSide = new LinearLayout
+                    {
+                        Margin = new Thickness(6, 0, 0, 0)
+                    };
+
+                    foreach (var right in ViewModel.DayCheckBoxesRightSide)
+                    {
+                        rightSide.Children.Add(new CheckBox
+                        {
+                            Text = right.DisplayName,
+                            IsChecked = VxValue.Create(right.IsChecked, v =>
+                            {
+                                right.IsChecked = v;
+                                MarkDirty();
+                            })
+                        });
+                    }
+
+                    dayCheckBoxes.Children.Add(rightSide.LinearLayoutWeight(1));
+                }
+
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatEvery.Text")
+                                },
+
+                                new NumberTextBox
+                                {
+                                    Number = VxValue.Create<double?>(ViewModel.RepeatIntervalAsNumber, v => ViewModel.RepeatIntervalAsNumber = v != null ? (uint)v : 0)
+                                },
+
+                                new ComboBox
+                                {
+                                    Items = ViewModel.RepeatOptionsAsStrings,
+                                    SelectedItem = VxValue.Create<object>(ViewModel.SelectedRepeatOptionAsString, v => ViewModel.SelectedRepeatOptionAsString = v as string)
+                                }
+                            }
+                        },
+
+                        ViewModel.AreDayCheckBoxesVisible ? new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatOn.Text"),
+                            Margin = new Thickness(0, 12, 0, 0)
+                        } : null,
+
+                        dayCheckBoxes,
+
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockEnds.Text"),
+                            Margin = new Thickness(0, 12, 0, 0)
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(0, 6, 0, 0),
+                            Children =
+                            {
+                                new CheckBox
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_RadioButtonEndsOn.Content"),
+                                    IsChecked = VxValue.Create(ViewModel.IsEndDateChecked, v =>
+                                    {
+                                        ViewModel.IsEndDateChecked = v;
+                                    })
+                                },
+
+                                new DatePicker
+                                {
+                                    IsEnabled = ViewModel.IsEndDateChecked,
+                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault())
+                                }
+                            }
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(0, 12, 0, 0),
+                            Children =
+                            {
+                                new CheckBox
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_RadioButtonEndsAfter.Content"),
+                                    IsChecked = VxValue.Create(ViewModel.IsEndOccurrencesChecked, v =>
+                                    {
+                                        ViewModel.IsEndOccurrencesChecked = v;
+                                    })
+                                },
+
+                                new NumberTextBox
+                                {
+                                    IsEnabled = ViewModel.IsEndOccurrencesChecked,
+                                    Number = VxValue.Create<double?>(ViewModel.EndOccurencesAsNumber, v => ViewModel.EndOccurencesAsNumber = v != null ? (uint)v : 0)
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockOccurrences.Text"),
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    Margin = new Thickness(6, 0, 0, 0)
+                                }
+                            }
+                        }
+                    }
+                };
+            }
         }
 
         private IEnumerable<View> ControlGroup(View control1, View control2)
