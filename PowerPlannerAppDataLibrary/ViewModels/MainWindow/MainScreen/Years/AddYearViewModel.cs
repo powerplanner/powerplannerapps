@@ -72,20 +72,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     Margin = new Thickness(0, 18, 0, 0)
                 },
 
-                IsCustomizeCreditsGpaChecked ? new Switch
+                IsCustomizeCreditsGpaChecked ? new TextBlock
                 {
-                    Title = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGpa.Title"),
-                    IsOn = VxValue.Create(IsOverrideGpaEnabled, v =>
-                    {
-                        IsOverrideGpaEnabled = v;
-                    }),
+                    Text = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGpa.Title"),
                     Margin = new Thickness(0, 18, 0, 0)
                 } : null,
 
                 IsCustomizeCreditsGpaChecked ? new NumberTextBox
                 {
                     Number = VxValue.Create(IsOverrideGpaEnabled ? OverriddenGpa : ActualGpa, v => OverriddenGpa = v),
-                    Margin = new Thickness(0, 12, 0, 0),
+                    Margin = new Thickness(0, 3, 0, 0),
                     IsEnabled = IsOverrideGpaEnabled
                 } : null,
 
