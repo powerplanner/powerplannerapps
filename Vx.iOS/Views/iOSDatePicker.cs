@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using InterfacesiOS.Helpers;
 using UIKit;
 using Vx.Views;
 
@@ -7,7 +9,8 @@ namespace Vx.iOS.Views
     public class iOSDatePicker : iOSView<DatePicker, UIView>
     {
         private UILabel _header;
-        private UIDatePicker _datePicker;
+        private UIControl _valueContainer;
+        private UILabel _value;
 
         public iOSDatePicker()
         {
@@ -16,35 +19,53 @@ namespace Vx.iOS.Views
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
 
-            _datePicker = new UIDatePicker
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                Mode = UIDatePickerMode.Date
-            };
-            if (InterfacesiOS.Helpers.SdkSupportHelper.IsUIDatePickerCompactStyleSupported)
-            {
-                _datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Compact;
-            }
-            _datePicker.ValueChanged += View_ValueChanged;
-
             View.AddSubview(_header);
-            View.AddSubview(_datePicker);
 
             _header.StretchWidth(View);
-            _datePicker.StretchWidth(View);
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header][datePicker]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            _valueContainer = new UIControl
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                ClipsToBounds = true,
+                BackgroundColor = UIColorCompat.TertiarySystemFillColor
+            };
+            _valueContainer.Layer.CornerRadius = 10;
+            _valueContainer.TouchUpInside += _valueContainer_TouchUpInside;
+
+            _value = new UILabel
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Lines = 1
+            };
+            _valueContainer.Add(_value);
+            _value.StretchWidthAndHeight(_valueContainer, 10, 0, 10, 0);
+
+            View.AddSubview(_valueContainer);
+
+            _valueContainer.StretchWidth(View);
+
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[valueContainer(36)]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "header", _header,
-                "datePicker", _datePicker));
+                "valueContainer", _valueContainer));
         }
 
-        private void View_ValueChanged(object sender, EventArgs e)
+        private async void _valueContainer_TouchUpInside(object sender, EventArgs e)
         {
-            var newDate = BareUIHelper.NSDateToDateTime(_datePicker.Date).Date;
+            var resp = await new Controllers.ImprovedModalDatePickerViewController(View, VxView.Value?.Value ?? DateTime.Today).ShowAsync();
 
-            if (VxView.Value != null && newDate != VxView.Value.Value)
+            if (resp != null)
             {
-                VxView.Value.ValueChanged?.Invoke(newDate);
+                var newDate = resp.Value;
+
+                if (_value != null)
+                {
+                    _value.Text = newDate.ToShortDateString();
+                }
+
+                if (VxView.Value != null && newDate != VxView.Value.Value)
+                {
+                    VxView.Value.ValueChanged?.Invoke(newDate);
+                }
             }
         }
 
@@ -56,7 +77,7 @@ namespace Vx.iOS.Views
 
             if (newView.Value?.Value != null)
             {
-                _datePicker.Date = BareUIHelper.DateTimeToNSDate(newView.Value.Value.Value.Date);
+                _value.Text = newView.Value.Value.Value.ToShortDateString();
             }
         }
     }

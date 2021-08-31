@@ -1,23 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CoreGraphics;
 using InterfacesiOS.Helpers;
 using UIKit;
 
 namespace Vx.iOS.Controllers
 {
-    public abstract class ImprovedModalEditViewController<V> : UIViewController where V : UIView
+    public class ImprovedModalResponse<A>
+    {
+        public A Value { get; set; }
+
+        public ImprovedModalResponse(A answer)
+        {
+            Value = answer;
+        }
+    }
+
+    public abstract class ImprovedModalEditViewController<V, A> : UIViewController where V : UIView
     {
         private UIVisualEffectView _blurEffectView;
         private UIView _parentView;
         private V _control;
+        protected V Control => _control;
         private UIView _controlContainer;
         private UIView _replicatedParentView;
+        private TaskCompletionSource<ImprovedModalResponse<A>> _taskCompletionSource = new TaskCompletionSource<ImprovedModalResponse<A>>();
+        protected A InitialValue { get; private set; }
 
         protected virtual nfloat MinControlWidth => 300;
 
-        public ImprovedModalEditViewController(UIView parentView)
+        public ImprovedModalEditViewController(UIView parentView, A initialValue)
         {
+            InitialValue = initialValue;
             _parentView = parentView;
             ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
             ModalPresentationStyle = UIModalPresentationStyle.Custom;
@@ -38,7 +53,7 @@ namespace Vx.iOS.Controllers
             };
             Add(_blurEffectView);
             _blurEffectView.StretchWidthAndHeight(View);
-            _blurEffectView.AddGestureRecognizer(new UITapGestureRecognizer(Close));
+            _blurEffectView.AddGestureRecognizer(new UITapGestureRecognizer(Cancel));
 
             _controlContainer = new UIView
             {
@@ -70,7 +85,7 @@ namespace Vx.iOS.Controllers
                     1, MinControlWidth)),
 
                 // Optionally pin to left and right, with left being more important to pin to
-                Pri(3, _controlContainer.LeftAnchor.ConstraintEqualTo(_replicatedParentView.LeftAnchor, 0)),
+                Pri(3, _controlContainer.LeftAnchor.ConstraintEqualTo(_replicatedParentView.LeftAnchor)),
                 Pri(2, _controlContainer.RightAnchor.ConstraintEqualTo(_replicatedParentView.RightAnchor)),
 
                 // Optionally pin to top, with top being more important to pin to
@@ -84,39 +99,92 @@ namespace Vx.iOS.Controllers
             return c;
         }
 
-        protected void Close()
+        protected void Cancel()
+        {
+            _taskCompletionSource.SetResult(null);
+            Close();
+        }
+
+        private void Close()
         {
             DismissViewController(true, null);
         }
 
-        public void Show()
+        protected void Finish(A answer)
+        {
+            _taskCompletionSource.SetResult(new ImprovedModalResponse<A>(answer));
+            Close();
+        }
+
+        public Task<ImprovedModalResponse<A>> ShowAsync()
         {
             _parentView.GetViewController().PresentViewController(this, true, null);
+            return _taskCompletionSource.Task;
         }
 
         protected abstract V GenerateControl();
     }
 
-    public class ImprovedModalDatePickerViewController : ImprovedModalEditViewController<UIDatePicker>
+    public class ImprovedModalDatePickerViewController : ImprovedModalEditViewController<UIView, DateTime>
     {
-        public ImprovedModalDatePickerViewController(UIView parentView) : base(parentView) { }
+        public ImprovedModalDatePickerViewController(UIView parentView, DateTime currentDate) : base(parentView, currentDate) { }
 
-        protected override UIDatePicker GenerateControl()
+        private UIDatePicker _datePicker;
+
+        protected override UIView GenerateControl()
         {
-            var datePicker = new UIDatePicker
+            _datePicker = new UIDatePicker
             {
                 Mode = UIDatePickerMode.Date,
-                PreferredDatePickerStyle = UIDatePickerStyle.Inline
+                Date = BareUIHelper.DateTimeToNSDate(InitialValue)
             };
 
-            datePicker.ValueChanged += DatePicker_ValueChanged;
+            if (SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
+            {
+                _datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
+            }
 
-            return datePicker;
+            // If calendar type (when wheels property was introduced, that's when calendar type appeared)
+            if (SdkSupportHelper.IsUIDatePickerWheelsStyleSupported)
+            {
+                _datePicker.ValueChanged += DatePicker_ValueChanged;
+                return _datePicker;
+            }
+
+            else
+            {
+                var container = new UIView();
+
+                var buttonDone = new UIButton(UIButtonType.System)
+                {
+                    TranslatesAutoresizingMaskIntoConstraints = false
+                };
+                buttonDone.SetTitle("Done", UIControlState.Normal);
+                buttonDone.TouchUpInside += DatePicker_ValueChanged;
+
+                _datePicker.TranslatesAutoresizingMaskIntoConstraints = false;
+                container.Add(_datePicker);
+                container.Add(buttonDone);
+
+                _datePicker.StretchWidth(container);
+                buttonDone.StretchWidth(container);
+
+                container.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[datePicker]-12-[done]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+                    "datePicker", _datePicker,
+                    "done", buttonDone));
+
+                return container;
+            }
         }
 
         private void DatePicker_ValueChanged(object sender, EventArgs e)
         {
-            Close();
+            Finish(BareUIHelper.NSDateToDateTime(_datePicker.Date).Date);
+        }
+
+        public static Task<ImprovedModalResponse<DateTime>> ShowAsync(UIView parentView, DateTime currentDate)
+        {
+            return new ImprovedModalDatePickerViewController(parentView, currentDate).ShowAsync();
         }
     }
 }
