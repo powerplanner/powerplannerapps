@@ -128,7 +128,8 @@
     <Compile Include="Views\iOSBorder.cs" />
     <Compile Include="Views\iOSComboBox.cs" />
     <Compile Include="Views\iOSDatePicker.cs" />
-    <Compile Include="Views\iOSMultiLineTextBox.cs" />
+    <Compile Include="Views\iOSMultilineTextBox.cs" />
+    <Compile Include="Controllers\ImprovedModalEditViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
