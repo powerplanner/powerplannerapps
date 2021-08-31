@@ -257,7 +257,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                                 new NumberTextBox
                                 {
-                                    Number = VxValue.Create<double?>(ViewModel.RepeatIntervalAsNumber, v => ViewModel.RepeatIntervalAsNumber = v != null ? (uint)v : 0)
+                                    Number = VxValue.Create<double?>(ViewModel.RepeatIntervalAsNumber, v => ViewModel.RepeatIntervalAsNumber = v != null ? (uint)v : 0),
+                                    Margin = new Thickness(6, 0, 6, 0)
                                 },
 
                                 new ComboBox
@@ -271,7 +272,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                         ViewModel.AreDayCheckBoxesVisible ? new TextBlock
                         {
                             Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatOn.Text"),
-                            Margin = new Thickness(0, 12, 0, 0)
+                            Margin = new Thickness(0, 18, 0, 0)
                         } : null,
 
                         dayCheckBoxes,
@@ -279,7 +280,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                         new TextBlock
                         {
                             Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockEnds.Text"),
-                            Margin = new Thickness(0, 12, 0, 0)
+                            Margin = new Thickness(0, 18, 0, 0)
                         },
 
                         new LinearLayout
@@ -300,7 +301,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new DatePicker
                                 {
                                     IsEnabled = ViewModel.IsEndDateChecked,
-                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault())
+                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault()),
+                                    Margin = new Thickness(12, 0, 0, 0)
                                 }
                             }
                         },
@@ -323,7 +325,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new NumberTextBox
                                 {
                                     IsEnabled = ViewModel.IsEndOccurrencesChecked,
-                                    Number = VxValue.Create<double?>(ViewModel.EndOccurencesAsNumber, v => ViewModel.EndOccurencesAsNumber = v != null ? (uint)v : 0)
+                                    Number = VxValue.Create<double?>(ViewModel.EndOccurencesAsNumber, v => ViewModel.EndOccurencesAsNumber = v != null ? (uint)v : 0),
+                                    Margin = new Thickness(12, 0, 0, 0)
                                 },
 
                                 new TextBlock

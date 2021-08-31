@@ -335,13 +335,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
         public bool IsEndDateChecked
         {
             get { return SelectedEndOption == EndOptions.Date; }
-            set { SelectedEndOption = EndOptions.Date; }
+            set { SelectedEndOption = value ? EndOptions.Date : EndOptions.Occurrences; }
         }
 
         public bool IsEndOccurrencesChecked
         {
-            get { return SelectedEndOption == EndOptions.Occurrences; }
-            set { SelectedEndOption = EndOptions.Occurrences; }
+            get => !IsEndDateChecked;
+            set => IsEndDateChecked = !value;
         }
 
         private DateTime _endDate = DateTime.Today.AddMonths(6);
