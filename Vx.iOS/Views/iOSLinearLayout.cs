@@ -107,10 +107,13 @@ namespace Vx.iOS.Views
             var children = newView.Children.Where(i => i != null).ToList();
             for (int i = 0; i < children.Count; i++)
             {
-                changed = View.SetWeight(i, LinearLayout.GetWeight(children[i])) || changed;
-                changed = View.SetMargins(i, children[i].Margin.AsModified()) || changed;
-                changed = View.SetHorizontalAlignment(i, children[i].HorizontalAlignment) || changed;
-                changed = View.SetVerticalAlignment(i, children[i].VerticalAlignment) || changed;
+                var child = children[i];
+
+                changed = View.SetWeight(i, LinearLayout.GetWeight(child)) || changed;
+                changed = View.SetMargins(i, child.Margin.AsModified()) || changed;
+                changed = View.SetHorizontalAlignment(i, child.HorizontalAlignment) || changed;
+                changed = View.SetVerticalAlignment(i, child.VerticalAlignment) || changed;
+                changed = View.SetWidthAndHeight(i, child.Width, child.Height) || changed;
             }
 
             if (changed)
@@ -171,6 +174,19 @@ namespace Vx.iOS.Views
                     _orientation = value;
                 }
             }
+        }
+
+        public bool SetWidthAndHeight(int index, float width, float height)
+        {
+            var subview = _arrangedSubviews[index];
+            if (subview.Width != width || subview.Height != height)
+            {
+                subview.Width = width;
+                subview.Height = height;
+                return true;
+            }
+
+            return false;
         }
 
         public bool SetWeight(int index, float weight)
@@ -247,6 +263,8 @@ namespace Vx.iOS.Views
             public float Weight { get; set; }
             public HorizontalAlignment HorizontalAlignment { get; set; }
             public VerticalAlignment VerticalAlignment { get; set; }
+            public float Width { get; set; } = float.NaN;
+            public float Height { get; set; } = float.NaN;
 
             private NSLayoutConstraint _topConstraint;
             public NSLayoutConstraint TopConstraint
@@ -276,11 +294,32 @@ namespace Vx.iOS.Views
                 set => SetConstraint(ref _bottomConstraint, value);
             }
 
-            private NSLayoutConstraint _weightConstraint;
-            public NSLayoutConstraint WeightConstraint
+            private NSLayoutConstraint _widthConstraint;
+            public NSLayoutConstraint WidthConstraint
             {
-                get => _weightConstraint;
-                set => SetConstraint(ref _weightConstraint, value);
+                get => _widthConstraint;
+                set => SetConstraint(ref _widthConstraint, value);
+            }
+
+            private NSLayoutConstraint _heightConstraint;
+            public NSLayoutConstraint HeightConstraint
+            {
+                get => _heightConstraint;
+                set => SetConstraint(ref _heightConstraint, value);
+            }
+
+            private NSLayoutConstraint _centerXConstraint;
+            public NSLayoutConstraint CenterXConstraint
+            {
+                get => _centerXConstraint;
+                set => SetConstraint(ref _centerXConstraint, value);
+            }
+
+            private NSLayoutConstraint _centerYConstraint;
+            public NSLayoutConstraint CenterYConstraint
+            {
+                get => _centerYConstraint;
+                set => SetConstraint(ref _centerYConstraint, value);
             }
 
             private void SetConstraint(ref NSLayoutConstraint storage, NSLayoutConstraint value)
@@ -327,7 +366,7 @@ namespace Vx.iOS.Views
                 LeftConstraint = null;
                 RightConstraint = null;
                 BottomConstraint = null;
-                WeightConstraint = null;
+                WidthConstraint = null;
             }
 
             public ArrangedSubview(UILinearLayout parent, UIView subview, Thickness margin, float weight)
@@ -458,11 +497,25 @@ namespace Vx.iOS.Views
                         RightConstraint = null;
                     }
 
-                    // Note that I treat Center identical to Stretch
+                    if (VerticalAlignment == VerticalAlignment.Center)
+                    {
+                        CenterYConstraint = NSLayoutConstraint.Create(
+                            Subview,
+                            NSLayoutAttribute.CenterY,
+                            NSLayoutRelation.Equal,
+                            Parent,
+                            NSLayoutAttribute.CenterY,
+                            1, 0);
+                    }
+                    else
+                    {
+                        CenterYConstraint = null;
+                    }
+
                     TopConstraint = NSLayoutConstraint.Create(
                         Subview,
                         NSLayoutAttribute.Top,
-                        VerticalAlignment == VerticalAlignment.Bottom ? NSLayoutRelation.GreaterThanOrEqual : NSLayoutRelation.Equal,
+                        VerticalAlignment == VerticalAlignment.Bottom || VerticalAlignment == VerticalAlignment.Center ? NSLayoutRelation.GreaterThanOrEqual : NSLayoutRelation.Equal,
                         Parent,
                         NSLayoutAttribute.Top,
                         multiplier: 1,
@@ -471,7 +524,7 @@ namespace Vx.iOS.Views
                     BottomConstraint = NSLayoutConstraint.Create(
                         Parent,
                         NSLayoutAttribute.Bottom,
-                        VerticalAlignment == VerticalAlignment.Top ? NSLayoutRelation.GreaterThanOrEqual : NSLayoutRelation.Equal,
+                        VerticalAlignment == VerticalAlignment.Top || VerticalAlignment == VerticalAlignment.Center ? NSLayoutRelation.GreaterThanOrEqual : NSLayoutRelation.Equal,
                         Subview,
                         NSLayoutAttribute.Bottom,
                         multiplier: 1,
@@ -480,18 +533,58 @@ namespace Vx.iOS.Views
 
                 if (usingWeights && firstWeighted != null && Weight > 0)
                 {
-                    WeightConstraint = NSLayoutConstraint.Create(
-                        Subview,
-                        IsVertical ? NSLayoutAttribute.Height : NSLayoutAttribute.Width,
-                        NSLayoutRelation.Equal,
-                        firstWeighted.Subview,
-                        IsVertical ? NSLayoutAttribute.Height : NSLayoutAttribute.Width,
-                        multiplier: Weight / firstWeighted.Weight,
-                        constant: 0);
+                    if (IsVertical)
+                    {
+                        WidthConstraint = null;
+                        HeightConstraint = NSLayoutConstraint.Create(
+                            Subview,
+                            NSLayoutAttribute.Height,
+                            NSLayoutRelation.Equal,
+                            firstWeighted.Subview,
+                            NSLayoutAttribute.Height,
+                            multiplier: Weight / firstWeighted.Weight,
+                            constant: 0);
+                    }
+                    else
+                    {
+                        HeightConstraint = null;
+                        WidthConstraint = NSLayoutConstraint.Create(
+                            Subview,
+                            NSLayoutAttribute.Width,
+                            NSLayoutRelation.Equal,
+                            firstWeighted.Subview,
+                            NSLayoutAttribute.Width,
+                            multiplier: Weight / firstWeighted.Weight,
+                            constant: 0);
+                    }
                 }
                 else
                 {
-                    WeightConstraint = null;
+                    if (float.IsNaN(Width))
+                    {
+                        WidthConstraint = null;
+                    }
+                    else
+                    {
+                        WidthConstraint = NSLayoutConstraint.Create(
+                            Subview,
+                            NSLayoutAttribute.Width,
+                            NSLayoutRelation.Equal,
+                            1, Width);
+                    }
+
+                    if (float.IsNaN(Height))
+                    {
+                        HeightConstraint = null;
+                    }
+                    else
+                    {
+                        HeightConstraint = NSLayoutConstraint.Create(
+                            Subview,
+                            NSLayoutAttribute.Height,
+                            NSLayoutRelation.Equal,
+                            1, Height);
+                    }
                 }
             }
 

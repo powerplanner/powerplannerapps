@@ -10,6 +10,8 @@ namespace Vx
     {
         event EventHandler<SizeF> ComponentSizeChanged;
         SizeF ComponentSize { get; }
+        VxComponent Component { get; }
+
         void ChangeView(View view);
     }
 }

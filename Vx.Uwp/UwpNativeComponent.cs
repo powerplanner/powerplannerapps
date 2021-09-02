@@ -16,8 +16,9 @@ namespace Vx.Uwp
 
         public event EventHandler<SizeF> ComponentSizeChanged;
 
-        public UwpNativeComponent()
+        public UwpNativeComponent(VxComponent component)
         {
+            Component = component;
             HorizontalContentAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
 
             SizeChanged += UwpNativeComponent_SizeChanged;
@@ -27,6 +28,8 @@ namespace Vx.Uwp
         {
             ComponentSizeChanged?.Invoke(this, new SizeF((float)e.NewSize.Width, (float)e.NewSize.Height));
         }
+
+        public VxComponent Component { get; private set; }
 
         public void ChangeView(View view)
         {

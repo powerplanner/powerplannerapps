@@ -148,7 +148,7 @@ namespace Vx.Droid
                 return component.NativeComponent as DroidNativeComponent;
             }
 
-            var nativeComponent = new DroidNativeComponent(ApplicationContext);
+            var nativeComponent = new DroidNativeComponent(ApplicationContext, component);
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;
         }

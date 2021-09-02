@@ -14,14 +14,16 @@ namespace Vx.iOS
     {
         public Action<UIView> AfterViewChanged { get; set; }
 
+        public VxComponent Component { get; private set; }
+
+        public iOSNativeComponent(VxComponent component)
+        {
+            Component = component;
+        }
+
         public SizeF ComponentSize => new SizeF((float)this.Frame.Width, (float)this.Frame.Height);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
-
-        public iOSNativeComponent()
-        {
-            
-        }
 
         private SizeF _currSize;
 
