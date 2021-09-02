@@ -108,22 +108,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
             if (IsStartTimePickerVisible)
             {
-                views.Add(new TimePicker
+                views.AddRange(ControlGroup(new TimePicker
                 {
                     Header = GetStartTimeText(),
                     Margin = new Thickness(0, 18, 0, 0),
                     Value = VxValue.Create(StartTime, v => StartTime = v)
-                });
-            }
-
-            if (IsEndTimePickerVisible)
-            {
-                views.Add(new TimePicker
+                }, IsEndTimePickerVisible ? new EndTimePicker
                 {
                     Header = PowerPlannerResources.GetString("String_EndTime"),
                     Margin = new Thickness(0, 12, 0, 0),
-                    Value = VxValue.Create(EndTime, v => EndTime = v)
-                });
+                    Value = VxValue.Create(EndTime, v => EndTime = v),
+                    StartTime = StartTime
+                } : null));
             }
 
             if (IsInDifferentTimeZone)
