@@ -46,7 +46,7 @@ namespace Vx.iOS.Controllers
             _replicatedParentView = new UIView
             {
                 Hidden = true,
-                Frame = new CGRect(_parentView.ConvertPointToView(_parentView.Frame.Location, null), _parentView.Frame.Size)
+                Frame = _parentView.ConvertRectToView(_parentView.Bounds, null)
             };
             Add(_replicatedParentView);
 

@@ -199,12 +199,18 @@ namespace InterfacesiOS.Controllers
                     if (focusedTextBox != null)
                     {
                         // This is the position of the text box relative to top of the scroll view
-                        var tbRect = focusedTextBox.ConvertRectToView(focusedTextBox.Frame, _scrollViewForKeyboardOffset);
+                        var tbRect = focusedTextBox.ConvertRectToView(focusedTextBox.Bounds, _scrollViewForKeyboardOffset);
 
                         // This is the visible region of the scroll view relative to top of the scroll view
-                        var viewport = new CoreGraphics.CGRect(0, _scrollViewForKeyboardOffset.ContentOffset.Y, _scrollViewForKeyboardOffset.ContentSize.Width, _scrollViewForKeyboardOffset.ContentSize.Height - height);
+                        var viewport = new CoreGraphics.CGRect(0, _scrollViewForKeyboardOffset.ContentOffset.Y, _scrollViewForKeyboardOffset.Frame.Width, _scrollViewForKeyboardOffset.Frame.Height - height);
                         if (!viewport.Contains(tbRect) && tbRect.Y > viewport.Y)
                         {
+                            // If text view is too large for screen, only scroll to top portion
+                            if (tbRect.Height > viewport.Height)
+                            {
+                                tbRect = new CoreGraphics.CGRect(tbRect.Location, new CoreGraphics.CGSize(tbRect.Width, viewport.Height));
+                            }
+
                             _scrollViewForKeyboardOffset.ScrollRectToVisible(tbRect, true);
                         }
                     }
