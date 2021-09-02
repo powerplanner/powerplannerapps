@@ -49,6 +49,11 @@ namespace Vx.iOS
 
                 if (view is Vx.Views.TextBox)
                 {
+                    if (view is Vx.Views.MultilineTextBox)
+                    {
+                        return new iOSMultilineTextBox();
+                    }
+
                     return new iOSTextBox();
                 }
 
@@ -102,6 +107,11 @@ namespace Vx.iOS
                     return new iOSComboBox();
                 }
 
+                if (view is Vx.Views.DatePicker)
+                {
+                    return new iOSDatePicker();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
@@ -145,7 +155,7 @@ namespace Vx.iOS
                 return component.NativeComponent as iOSNativeComponent;
             }
 
-            var nativeComponent = new iOSNativeComponent()
+            var nativeComponent = new iOSNativeComponent(component)
             {
                 AfterViewChanged = afterViewChanged
             };

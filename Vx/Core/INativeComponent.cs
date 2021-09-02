@@ -7,6 +7,8 @@ namespace Vx
 {
     public interface INativeComponent
     {
+        VxComponent Component { get; }
+
         void ChangeView(View view);
     }
 }

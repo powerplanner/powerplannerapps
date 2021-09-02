@@ -17,10 +17,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
+using System.Drawing;
+using Vx;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
-    public class AddTaskOrEventViewModel : BaseMainScreenViewModelChild
+    public class AddTaskOrEventViewModel : PopupComponentViewModel
     {
         public IList<ViewItemClass> Classes { get; private set; }
 
@@ -29,6 +33,381 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         public OperationState State { get; private set; }
 
         protected override bool InitialAllowLightDismissValue => false;
+
+        protected override View Render()
+        {
+            List<View> views = new List<View>()
+            {
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxName.Header"),
+                    Text = VxValue.Create(Name, v => Name = v),
+                    AutoFocus = State == OperationState.Adding,
+                    OnSubmit = Save
+                }
+            };
+
+            views.AddRange(ControlGroup(
+
+                    IsDatePickerVisible ? new DatePicker
+                    {
+                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_DatePickerDate.Header"),
+                        Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault())
+                    } : null,
+
+                    IsClassPickerVisible ? new ComboBox
+                    {
+                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_ComboBoxClasses.Header"),
+                        Items = Classes,
+                        SelectedItem = VxValue.Create<object>(Class, v => Class = v as ViewItemClass),
+                        ItemTemplate = c => new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new Border
+                                {
+                                    Width = 16,
+                                    Height = 16,
+                                    BackgroundColor = (c as ViewItemClass).Color.ToColor(),
+                                    BorderColor = Color.Black,
+                                    BorderThickness = new Thickness(1),
+                                    VerticalAlignment = VerticalAlignment.Center
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = (c as ViewItemClass).Name,
+                                    WrapText = false,
+                                    Margin = new Thickness(10, 0, 0, 0),
+                                    VerticalAlignment = VerticalAlignment.Center
+                                }
+                            }
+                        }
+                    } : null
+
+                ));
+
+            views.AddRange(ControlGroup(
+
+                    IsWeightCategoryPickerVisible ? new ComboBox
+                    {
+                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_ComboBoxWeightCategory.Header"),
+                        Items = WeightCategories,
+                        SelectedItem = VxValue.Create<object>(SelectedWeightCategory, v => SelectedWeightCategory = v as ViewItemWeightCategory)
+                    } : null,
+
+                    new ComboBox
+                    {
+                        Header = PowerPlannerResources.GetString("String_Time"),
+                        Items = TimeOptions,
+                        SelectedItem = VxValue.Create<object>(SelectedTimeOption, v => SelectedTimeOption = v as string)
+                    }
+
+                ));
+
+            if (IsStartTimePickerVisible)
+            {
+                views.AddRange(ControlGroup(new TimePicker
+                {
+                    Header = GetStartTimeText(),
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Value = VxValue.Create(StartTime, v => StartTime = v)
+                }, IsEndTimePickerVisible ? new EndTimePicker
+                {
+                    Header = PowerPlannerResources.GetString("String_EndTime"),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Value = VxValue.Create(EndTime, v => EndTime = v),
+                    StartTime = StartTime
+                } : null));
+            }
+
+            if (IsInDifferentTimeZone)
+            {
+                views.Add(new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("DifferentTimeZoneWarning.Text"),
+                    FontSize = Theme.Current.CaptionFontSize,
+                    TextColor = Color.Red,
+                    Margin = new Thickness(0, 6, 0, 6)
+                });
+            }
+
+            views.Add(new MultilineTextBox
+            {
+                Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                Height = 180, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
+                Text = VxValue.Create(Details, v => Details = v),
+                Margin = new Thickness(0, 18, 0, 0)
+            });
+
+            if (IsRepeatsVisible)
+            {
+                views.Add(new CheckBox
+                {
+                    Text = PowerPlannerResources.GetString("RepeatingEntry_CheckBoxRepeats.Content"),
+                    Margin = new Thickness(0, 18, 0, 0),
+                    IsChecked = VxValue.Create(Repeats, v => Repeats = v)
+                });
+
+                if (Repeats)
+                {
+                    views.Add(new Border
+                    {
+                        BackgroundColor = Theme.Current.PopupPageBackgroundAltColor,
+                        Padding = new Thickness(12),
+                        Margin = new Thickness(0, 18, 0, 0),
+                        Content = new LinearLayout
+                        {
+                            Children =
+                            {
+                                ShowRepeatingPremiumTrial ? new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockTryForFree.Text"),
+                                    TextColor = Color.Red,
+                                    FontWeight = FontWeights.Bold,
+                                    Margin = new Thickness(0, 0, 0, 18)
+                                } : null,
+
+                                ShowRepeatingMustUpgradeToPremium ? new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockMustUpgrade.Text"),
+                                    TextColor = Color.Red,
+                                    FontWeight = FontWeights.Bold
+                                } : null,
+
+                                ShowRepeatingMustUpgradeToPremium ? new AccentButton
+                                {
+                                    Text = PowerPlannerResources.GetString("Settings_UpgradeToPremium_ButtonUpgrade.Content"),
+                                    Click = UpgradeToPremiumForRepeating,
+                                    Margin = new Thickness(0, 18, 0, 0)
+                                } : null,
+
+                                new RecurrenceControlComponent
+                                {
+                                    ViewModel = RecurrenceControlViewModel
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockNoteCannotBulkEdit.Text"),
+                                    TextColor = Theme.Current.SubtleForegroundColor,
+                                    FontSize = Theme.Current.CaptionFontSize,
+                                    Margin = new Thickness(0, 18, 0, 0)
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            return RenderGenericPopupContent(views.ToArray());
+        }
+
+        private class RecurrenceControlComponent : VxComponent
+        {
+            [VxSubscribe]
+            public RecurrenceControlViewModel ViewModel { get; set; }
+
+            protected override View Render()
+            {
+                LinearLayout dayCheckBoxes = null;
+
+                if (ViewModel.AreDayCheckBoxesVisible)
+                {
+                    dayCheckBoxes = new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(0, 12, 0, 0)
+                    };
+
+                    var leftSide = new LinearLayout
+                    {
+                        Margin = new Thickness(0, 0, 6, 0)
+                    };
+
+                    foreach (var left in ViewModel.DayCheckBoxesLeftSide)
+                    {
+                        leftSide.Children.Add(new CheckBox
+                        {
+                            Text = left.DisplayName,
+                            IsChecked = VxValue.Create(left.IsChecked, v =>
+                            {
+                                left.IsChecked = v;
+                                MarkDirty();
+                            })
+                        });
+                    }
+
+                    dayCheckBoxes.Children.Add(leftSide.LinearLayoutWeight(1));
+
+                    var rightSide = new LinearLayout
+                    {
+                        Margin = new Thickness(6, 0, 0, 0)
+                    };
+
+                    foreach (var right in ViewModel.DayCheckBoxesRightSide)
+                    {
+                        rightSide.Children.Add(new CheckBox
+                        {
+                            Text = right.DisplayName,
+                            IsChecked = VxValue.Create(right.IsChecked, v =>
+                            {
+                                right.IsChecked = v;
+                                MarkDirty();
+                            })
+                        });
+                    }
+
+                    dayCheckBoxes.Children.Add(rightSide.LinearLayoutWeight(1));
+                }
+
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatEvery.Text")
+                                },
+
+                                new NumberTextBox
+                                {
+                                    Number = VxValue.Create<double?>(ViewModel.RepeatIntervalAsNumber, v => ViewModel.RepeatIntervalAsNumber = v != null ? (uint)v : 0),
+                                    Margin = new Thickness(6, 0, 6, 0)
+                                },
+
+                                new ComboBox
+                                {
+                                    Items = ViewModel.RepeatOptionsAsStrings,
+                                    SelectedItem = VxValue.Create<object>(ViewModel.SelectedRepeatOptionAsString, v => ViewModel.SelectedRepeatOptionAsString = v as string)
+                                }
+                            }
+                        },
+
+                        ViewModel.AreDayCheckBoxesVisible ? new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatOn.Text"),
+                            Margin = new Thickness(0, 18, 0, 0)
+                        } : null,
+
+                        dayCheckBoxes,
+
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockEnds.Text"),
+                            Margin = new Thickness(0, 18, 0, 0)
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(0, 6, 0, 0),
+                            Children =
+                            {
+                                new CheckBox
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_RadioButtonEndsOn.Content"),
+                                    IsChecked = VxValue.Create(ViewModel.IsEndDateChecked, v =>
+                                    {
+                                        ViewModel.IsEndDateChecked = v;
+                                    })
+                                },
+
+                                new DatePicker
+                                {
+                                    IsEnabled = ViewModel.IsEndDateChecked,
+                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault()),
+                                    Margin = new Thickness(12, 0, 0, 0)
+                                }
+                            }
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(0, 12, 0, 0),
+                            Children =
+                            {
+                                new CheckBox
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_RadioButtonEndsAfter.Content"),
+                                    IsChecked = VxValue.Create(ViewModel.IsEndOccurrencesChecked, v =>
+                                    {
+                                        ViewModel.IsEndOccurrencesChecked = v;
+                                    })
+                                },
+
+                                new NumberTextBox
+                                {
+                                    IsEnabled = ViewModel.IsEndOccurrencesChecked,
+                                    Number = VxValue.Create<double?>(ViewModel.EndOccurencesAsNumber, v => ViewModel.EndOccurencesAsNumber = v != null ? (uint)v : 0),
+                                    Margin = new Thickness(12, 0, 0, 0)
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockOccurrences.Text"),
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    Margin = new Thickness(6, 0, 0, 0)
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
+        private IEnumerable<View> ControlGroup(View control1, View control2)
+        {
+            if (control1 != null && control2 != null)
+            {
+                control1.Margin = new Thickness(0, 0, 9, 0);
+                control2.Margin = new Thickness(9, 0, 0, 0);
+
+                yield return new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Children =
+                    {
+                        control1.LinearLayoutWeight(1),
+                        control2.LinearLayoutWeight(1)
+                    }
+                };
+            }
+
+            else
+            {
+                if (control1 != null)
+                {
+                    control1.Margin = new Thickness(0, 18, 0, 0);
+                    yield return control1;
+                }
+                else if (control2 != null)
+                {
+                    control2.Margin = new Thickness(0, 18, 0, 0);
+                    yield return control2;
+                }
+            }
+        }
+
+        private string GetStartTimeText()
+        {
+            switch (Type)
+            {
+                case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Event:
+                    return PowerPlannerResources.GetString("String_StartTime");
+
+                default:
+                    return PowerPlannerResources.GetString("String_DueTime");
+            }
+        }
 
         private TaskOrEventType _type;
         public TaskOrEventType Type
@@ -128,8 +507,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         public bool IsInDifferentTimeZone { get; private set; }
 
-        private AddTaskOrEventViewModel(BaseViewModel parent) : base(parent)
+        private AddTaskOrEventViewModel(BaseViewModel parent, string title) : base(parent)
         {
+            base.Title = title;
+            
+            base.PrimaryCommand = PopupCommand.Save(Save);
+            UseCancelForBack();
         }
 
         public static AddTaskOrEventViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
@@ -236,7 +619,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             }
 
-            return new AddTaskOrEventViewModel(parent)
+            string title = PowerPlannerResources.GetString(addParams.Type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
+
+            return new AddTaskOrEventViewModel(parent, title)
             {
                 Account = account,
                 State = OperationState.Adding,
@@ -279,7 +664,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 throw new NullReferenceException("Classes of the semester was null. Item id " + cloneParams.Item.Identifier);
             }
 
-            var model = new AddTaskOrEventViewModel(parent)
+            string title = PowerPlannerResources.GetString(type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
+
+            var model = new AddTaskOrEventViewModel(parent, title)
             {
                 Account = account,
                 State = OperationState.Adding,
@@ -365,7 +752,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 throw new NullReferenceException("Classes of the semester was null. Item id " + editParams.Item.Identifier);
             }
 
-            var model = new AddTaskOrEventViewModel(parent)
+            string title = PowerPlannerResources.GetString(type == TaskOrEventType.Task ? "String_EditTask" : "String_EditEvent");
+
+            var model = new AddTaskOrEventViewModel(parent, title)
             {
                 Account = account,
                 State = OperationState.Editing,
