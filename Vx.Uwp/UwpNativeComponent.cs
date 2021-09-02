@@ -11,10 +11,13 @@ namespace Vx.Uwp
 {
     public class UwpNativeComponent : ContentControl, INativeComponent
     {
-        public UwpNativeComponent()
+        public UwpNativeComponent(VxComponent component)
         {
+            Component = component;
             HorizontalContentAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
         }
+
+        public VxComponent Component { get; private set; }
 
         public void ChangeView(View view)
         {

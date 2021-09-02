@@ -154,7 +154,7 @@ namespace Vx.Uwp
                 return component.NativeComponent as UwpNativeComponent;
             }
 
-            var nativeComponent = new UwpNativeComponent();
+            var nativeComponent = new UwpNativeComponent(component);
             component.InitializeForDisplay(nativeComponent);
             return nativeComponent;
         }
