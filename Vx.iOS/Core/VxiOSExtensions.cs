@@ -155,7 +155,7 @@ namespace Vx.iOS
                 return component.NativeComponent as iOSNativeComponent;
             }
 
-            var nativeComponent = new iOSNativeComponent()
+            var nativeComponent = new iOSNativeComponent(component)
             {
                 AfterViewChanged = afterViewChanged
             };

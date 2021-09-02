@@ -20,6 +20,7 @@ using ToolsPortable;
 using Vx.Views;
 using System.Drawing;
 using Vx;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -58,7 +59,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     {
                         Header = PowerPlannerResources.GetString("EditTaskOrEventPage_ComboBoxClasses.Header"),
                         Items = Classes,
-                        SelectedItem = VxValue.Create<object>(Class, v => Class = v as ViewItemClass)
+                        SelectedItem = VxValue.Create<object>(Class, v => Class = v as ViewItemClass),
+                        ItemTemplate = c => new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new Border
+                                {
+                                    Width = 16,
+                                    Height = 16,
+                                    BackgroundColor = (c as ViewItemClass).Color.ToColor(),
+                                    BorderColor = Color.Black,
+                                    BorderThickness = new Thickness(1),
+                                    VerticalAlignment = VerticalAlignment.Center
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = (c as ViewItemClass).Name,
+                                    WrapText = false,
+                                    Margin = new Thickness(10, 0, 0, 0),
+                                    VerticalAlignment = VerticalAlignment.Center
+                                }
+                            }
+                        }
                     } : null
 
                 ));

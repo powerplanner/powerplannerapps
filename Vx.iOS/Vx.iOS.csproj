@@ -130,6 +130,7 @@
     <Compile Include="Views\iOSDatePicker.cs" />
     <Compile Include="Views\iOSMultilineTextBox.cs" />
     <Compile Include="Controllers\ImprovedModalEditViewController.cs" />
+    <Compile Include="BareUIViews\BareUICenteredView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -17,5 +17,7 @@ namespace Vx.Views
         public IEnumerable Items { get; set; }
 
         public VxValue<object> SelectedItem { get; set; }
+
+        public Func<object, View> ItemTemplate { get; set; }
     }
 }

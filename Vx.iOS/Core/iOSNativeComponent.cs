@@ -13,6 +13,13 @@ namespace Vx.iOS
     {
         public Action<UIView> AfterViewChanged { get; set; }
 
+        public VxComponent Component { get; private set; }
+
+        public iOSNativeComponent(VxComponent component)
+        {
+            Component = component;
+        }
+
         public void ChangeView(View view)
         {
             foreach (var subview in base.Subviews)

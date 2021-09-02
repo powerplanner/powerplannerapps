@@ -5,6 +5,7 @@ using InterfacesiOS.Helpers;
 using InterfacesiOS.Views;
 using ToolsPortable;
 using UIKit;
+using Vx.iOS.BareUIViews;
 using Vx.Views;
 
 namespace Vx.iOS.Views
@@ -14,6 +15,7 @@ namespace Vx.iOS.Views
         private UILabel _header;
         private UIView _valueContainer;
         private UILabel _value;
+        private INativeComponent _valueTemplated;
 
         private ModalPickerViewController ModalController;
         private UIPickerViewModel _pickerViewModel;
@@ -32,14 +34,6 @@ namespace Vx.iOS.Views
             _valueContainer.BackgroundColor = UIColorCompat.TertiarySystemFillColor;
             _valueContainer.ClipsToBounds = true;
             _valueContainer.Layer.CornerRadius = 10;
-
-            _value = new UILabel
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                Lines = 1
-            };
-            _valueContainer.Add(_value);
-            _value.StretchWidthAndHeight(_valueContainer, 10, 0, 10, 0);
 
             View.Add(_header);
             View.Add(_valueContainer);
@@ -60,7 +54,44 @@ namespace Vx.iOS.Views
         protected override void ApplyProperties(ComboBox oldView, ComboBox newView)
         {
             _header.Text = newView.Header;
-            _value.Text = newView.SelectedItem?.Value?.ToString();
+
+            if (newView.ItemTemplate != null)
+            {
+                if (_value != null)
+                {
+                    _value.RemoveFromSuperview();
+                    _value = null;
+                }
+
+                if (DataTemplateHelper.ProcessAndIsNewComponent(newView.SelectedItem?.Value, newView.ItemTemplate, _valueTemplated, out VxComponent newComponent))
+                {
+                    _valueTemplated = newComponent.Render();
+                    (_valueTemplated as UIView).TranslatesAutoresizingMaskIntoConstraints = false;
+                    _valueContainer.Add(_valueTemplated as UIView);
+                    (_valueTemplated as UIView).StretchWidthAndHeight(_valueContainer, 10, 10, 10, 10);
+                }
+            }
+            else
+            {
+                if (_valueTemplated != null)
+                {
+                    (_valueTemplated as UIView).RemoveFromSuperview();
+                    _valueTemplated = null;
+                }
+
+                if (_value == null)
+                {
+                    _value = new UILabel
+                    {
+                        TranslatesAutoresizingMaskIntoConstraints = false,
+                        Lines = 1
+                    };
+                    _valueContainer.Add(_value);
+                    _value.StretchWidthAndHeight(_valueContainer, 10, 0, 10, 0);
+                }
+
+                _value.Text = newView.SelectedItem?.Value?.ToString();
+            }
 
             base.ApplyProperties(oldView, newView);
         }
@@ -88,12 +119,34 @@ namespace Vx.iOS.Views
 
         private void PrepareModalControllerValues()
         {
-            _pickerViewModel = new BareUISimplePickerViewModel(ModalController.PickerView)
+            if (VxView.ItemTemplate != null)
             {
-                ItemsSource = VxView.Items
-            };
+                _pickerViewModel = new BareUICustomPickerViewModel(ModalController.PickerView)
+                {
+                    ItemsSource = VxView.Items,
+                    ItemToViewConverter = ConvertItemToView
+                };
+            }
+            else
+            {
+                _pickerViewModel = new BareUISimplePickerViewModel(ModalController.PickerView)
+                {
+                    ItemsSource = VxView.Items
+                };
+            }
             ModalController.PickerView.Model = _pickerViewModel;
             ModalController.PickerView.Select(VxView.Items.OfType<object>().ToArray().FindIndex(i => i == VxView.SelectedItem?.Value), 0, false);
+        }
+
+        private UIView ConvertItemToView(object item, UIView recycledView)
+        {
+            if (DataTemplateHelper.ProcessAndIsNewComponent(item, VxView.ItemTemplate, (recycledView as BareUICenteredView)?.Content as INativeComponent, out VxComponent newComponent))
+            {
+                return new BareUICenteredView(newComponent.Render());
+            }
+
+            // Otherwise recycled and was already updated
+            return recycledView;
         }
 
         private void ModalController_OnModalEditSubmitted(object sender, EventArgs e)
