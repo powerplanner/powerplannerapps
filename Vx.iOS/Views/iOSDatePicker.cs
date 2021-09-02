@@ -51,7 +51,7 @@ namespace Vx.iOS.Views
 
         private async void _valueContainer_TouchUpInside(object sender, EventArgs e)
         {
-            var resp = await new Controllers.ImprovedModalDatePickerViewController(View, VxView.Value?.Value ?? DateTime.Today).ShowAsync();
+            var resp = await new Controllers.ImprovedModalDatePickerViewController(_valueContainer, VxView.Value?.Value ?? DateTime.Today).ShowAsync();
 
             if (resp != null)
             {

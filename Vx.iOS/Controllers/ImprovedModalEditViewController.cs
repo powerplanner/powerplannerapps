@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CoreGraphics;
 using InterfacesiOS.Helpers;
+using InterfacesiOS.Views;
 using UIKit;
 
 namespace Vx.iOS.Controllers
@@ -53,7 +56,7 @@ namespace Vx.iOS.Controllers
             };
             Add(_blurEffectView);
             _blurEffectView.StretchWidthAndHeight(View);
-            _blurEffectView.AddGestureRecognizer(new UITapGestureRecognizer(Cancel));
+            _blurEffectView.AddGestureRecognizer(new UITapGestureRecognizer(Dismiss));
 
             _controlContainer = new UIView
             {
@@ -99,7 +102,7 @@ namespace Vx.iOS.Controllers
             return c;
         }
 
-        protected void Cancel()
+        protected virtual void Dismiss()
         {
             _taskCompletionSource.SetResult(null);
             Close();
@@ -125,15 +128,13 @@ namespace Vx.iOS.Controllers
         protected abstract V GenerateControl();
     }
 
-    public class ImprovedModalDatePickerViewController : ImprovedModalEditViewController<UIView, DateTime>
+    public class ImprovedModalDatePickerViewController : ImprovedModalEditViewController<UIDatePicker, DateTime>
     {
         public ImprovedModalDatePickerViewController(UIView parentView, DateTime currentDate) : base(parentView, currentDate) { }
 
-        private UIDatePicker _datePicker;
-
-        protected override UIView GenerateControl()
+        protected override UIDatePicker GenerateControl()
         {
-            _datePicker = new UIDatePicker
+            var datePicker = new UIDatePicker
             {
                 Mode = UIDatePickerMode.Date,
                 Date = BareUIHelper.DateTimeToNSDate(InitialValue)
@@ -141,50 +142,86 @@ namespace Vx.iOS.Controllers
 
             if (SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
             {
-                _datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
+                datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
             }
 
             // If calendar type (when wheels property was introduced, that's when calendar type appeared)
             if (SdkSupportHelper.IsUIDatePickerWheelsStyleSupported)
             {
-                _datePicker.ValueChanged += DatePicker_ValueChanged;
-                return _datePicker;
+                datePicker.ValueChanged += DatePicker_ValueChanged;
             }
 
-            else
-            {
-                var container = new UIView();
-
-                var buttonDone = new UIButton(UIButtonType.System)
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false
-                };
-                buttonDone.SetTitle("Done", UIControlState.Normal);
-                buttonDone.TouchUpInside += DatePicker_ValueChanged;
-
-                _datePicker.TranslatesAutoresizingMaskIntoConstraints = false;
-                container.Add(_datePicker);
-                container.Add(buttonDone);
-
-                _datePicker.StretchWidth(container);
-                buttonDone.StretchWidth(container);
-
-                container.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[datePicker]-12-[done]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                    "datePicker", _datePicker,
-                    "done", buttonDone));
-
-                return container;
-            }
+            return datePicker;
         }
 
         private void DatePicker_ValueChanged(object sender, EventArgs e)
         {
-            Finish(BareUIHelper.NSDateToDateTime(_datePicker.Date).Date);
+            Finish(BareUIHelper.NSDateToDateTime(Control.Date).Date);
+        }
+
+        protected override void Dismiss()
+        {
+            Finish(BareUIHelper.NSDateToDateTime(Control.Date).Date);
         }
 
         public static Task<ImprovedModalResponse<DateTime>> ShowAsync(UIView parentView, DateTime currentDate)
         {
             return new ImprovedModalDatePickerViewController(parentView, currentDate).ShowAsync();
+        }
+    }
+
+    public class ImprovedModalPickerViewController : ImprovedModalEditViewController<UIPickerView, object>
+    {
+        private IEnumerable _items;
+        private Func<object, UIView, UIView> _itemToViewConverter;
+        private object _initialValue;
+        public ImprovedModalPickerViewController(UIView parentView, IEnumerable items, object initialValue, Func<object, UIView, UIView> itemToViewConverter) : base(parentView, initialValue)
+        {
+            _items = items;
+            _itemToViewConverter = itemToViewConverter;
+            _initialValue = initialValue;
+        }
+
+        protected override UIPickerView GenerateControl()
+        {
+            var pickerView = new UIPickerView
+            {
+            };
+
+            if (_itemToViewConverter != null)
+            {
+                pickerView.Model = new BareUICustomPickerViewModel(pickerView)
+                {
+                    ItemsSource = _items,
+                    ItemToViewConverter = _itemToViewConverter
+                };
+            }
+            else
+            {
+                pickerView.Model = new BareUISimplePickerViewModel(pickerView)
+                {
+                    ItemsSource = _items
+                };
+            }
+
+            pickerView.Select(Array.FindIndex(_items.OfType<object>().ToArray(), i => i == _initialValue), 0, false);
+
+            return pickerView;
+        }
+
+        protected override void Dismiss()
+        {
+            int selectedIndex = (int)Control.SelectedRowInComponent(0);
+
+            var selectedItem = _items.OfType<object>().ElementAtOrDefault(selectedIndex);
+            if (selectedItem != null)
+            {
+                Finish(selectedItem);
+            }
+            else
+            {
+                base.Dismiss();
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using InterfacesiOS.Views;
 using ToolsPortable;
 using UIKit;
 using Vx.iOS.BareUIViews;
+using Vx.iOS.Controllers;
 using Vx.Views;
 
 namespace Vx.iOS.Views
@@ -96,46 +97,17 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
         }
 
-        private void ShowOptions()
+        private async void ShowOptions()
         {
-            if (ModalController == null)
+            var response = await new ImprovedModalPickerViewController(_valueContainer, VxView.Items, VxView.SelectedItem?.Value, VxView.ItemTemplate != null ? ConvertItemToView : null as Func<object, UIView, UIView>).ShowAsync();
+
+            if (response != null)
             {
-                // http://sharpmobilecode.com/a-replacement-for-actionsheet-date-picker/
-                ModalController = CreateModalEditViewController(View.GetViewController());
-
-                ModalController.OnModalEditSubmitted += new WeakEventHandler(ModalController_OnModalEditSubmitted).Handler;
-            }
-
-            PrepareModalControllerValues();
-
-            ModalController.ShowAsModal();
-        }
-
-        private ModalPickerViewController CreateModalEditViewController(UIViewController parent)
-        {
-            var modalPicker = new ModalPickerViewController(_header.Text, parent);
-            return modalPicker;
-        }
-
-        private void PrepareModalControllerValues()
-        {
-            if (VxView.ItemTemplate != null)
-            {
-                _pickerViewModel = new BareUICustomPickerViewModel(ModalController.PickerView)
+                if (response.Value != VxView.SelectedItem?.Value && VxView.SelectedItem?.ValueChanged != null)
                 {
-                    ItemsSource = VxView.Items,
-                    ItemToViewConverter = ConvertItemToView
-                };
+                    VxView.SelectedItem.ValueChanged(response.Value);
+                }
             }
-            else
-            {
-                _pickerViewModel = new BareUISimplePickerViewModel(ModalController.PickerView)
-                {
-                    ItemsSource = VxView.Items
-                };
-            }
-            ModalController.PickerView.Model = _pickerViewModel;
-            ModalController.PickerView.Select(VxView.Items.OfType<object>().ToArray().FindIndex(i => i == VxView.SelectedItem?.Value), 0, false);
         }
 
         private UIView ConvertItemToView(object item, UIView recycledView)
@@ -147,18 +119,6 @@ namespace Vx.iOS.Views
 
             // Otherwise recycled and was already updated
             return recycledView;
-        }
-
-        private void ModalController_OnModalEditSubmitted(object sender, EventArgs e)
-        {
-            UpdateValuesFromModalController();
-        }
-
-        private void UpdateValuesFromModalController()
-        {
-            object newItem = VxView.Items.OfType<object>().ElementAt((int)ModalController.PickerView.SelectedRowInComponent(0));
-
-            VxView.SelectedItem?.ValueChanged?.Invoke(newItem);
         }
     }
 }
