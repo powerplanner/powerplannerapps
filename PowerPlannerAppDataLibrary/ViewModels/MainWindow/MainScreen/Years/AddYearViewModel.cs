@@ -36,8 +36,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public ViewItemYear YearToEdit { get; private set; }
         public bool IsCustomizeCreditsGpaChecked { get => GetState<bool>(); set => SetState(value); }
-        public bool IsOverrideCreditsEnabled { get => GetState<bool>(); set => SetState(value); }
-        public bool IsOverrideGpaEnabled { get => GetState<bool>(); set => SetState(value); }
         public double? OverriddenCredits { get => GetState<double?>(); set => SetState(value); }
         public double? OverriddenGpa { get => GetState<double?>(); set => SetState(value); }
         public double? ActualGpa { get; private set; }
@@ -72,34 +70,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     Margin = new Thickness(0, 18, 0, 0)
                 },
 
-                IsCustomizeCreditsGpaChecked ? new TextBlock
+                IsCustomizeCreditsGpaChecked ? new LinearLayout
                 {
-                    Text = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGpa.Title"),
-                    Margin = new Thickness(0, 18, 0, 0)
-                } : null,
-
-                IsCustomizeCreditsGpaChecked ? new NumberTextBox
-                {
-                    Number = VxValue.Create(IsOverrideGpaEnabled ? OverriddenGpa : ActualGpa, v => OverriddenGpa = v),
-                    Margin = new Thickness(0, 3, 0, 0),
-                    IsEnabled = IsOverrideGpaEnabled
-                } : null,
-
-                IsCustomizeCreditsGpaChecked ? new Switch
-                {
-                    Title = "TODO Override credits",
-                    IsOn = VxValue.Create(IsOverrideCreditsEnabled, v =>
-                    {
-                        IsOverrideCreditsEnabled = v;
-                    }),
-                    Margin = new Thickness(0, 24, 0, 0)
-                } : null,
-
-                IsCustomizeCreditsGpaChecked ? new NumberTextBox
-                {
-                    Number = VxValue.Create(IsOverrideCreditsEnabled ? OverriddenCredits : ActualCredits, v => OverriddenCredits = v),
+                    Orientation = Orientation.Horizontal,
                     Margin = new Thickness(0, 12, 0, 0),
-                    IsEnabled = IsOverrideCreditsEnabled
+                    Children =
+                    {
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create(OverriddenGpa, v => OverriddenGpa = v),
+                            Margin = new Thickness(0, 0, 9, 0),
+                            Header = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGpa.Title")
+                        }.LinearLayoutWeight(1),
+
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create(OverriddenCredits, v => OverriddenCredits = v),
+                            Margin = new Thickness(9, 0, 0, 0),
+                            Header = "TODO Override credits"
+                        }.LinearLayoutWeight(1)
+                    }
                 } : null,
 
                 State == OperationState.Editing ? new Button
@@ -125,21 +115,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 Name = yearToEdit.Name,
                 ActualGpa = yearToEdit.GPA != -1 ? yearToEdit.GPA : (double?)null,
                 ActualCredits = yearToEdit.CreditsEarned != PowerPlannerSending.Grade.NO_CREDITS ? yearToEdit.CreditsEarned : (double?)null,
-                IsOverrideGpaEnabled = yearToEdit.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED,
-                IsOverrideCreditsEnabled = yearToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED
+                OverriddenGpa = yearToEdit.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenGPA : (double?)null,
+                OverriddenCredits = yearToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenCredits : (double?)null
             };
 
-            viewModel.IsCustomizeCreditsGpaChecked = viewModel.IsOverrideCreditsEnabled || viewModel.IsOverrideGpaEnabled;
-
-            if (viewModel.IsOverrideCreditsEnabled)
-            {
-                viewModel.OverriddenCredits = yearToEdit.OverriddenCredits;
-            }
-
-            if (viewModel.IsOverrideGpaEnabled)
-            {
-                viewModel.OverriddenGpa = yearToEdit.OverriddenGPA;
-            }
+            viewModel.IsCustomizeCreditsGpaChecked = viewModel.OverriddenGpa != null || viewModel.OverriddenCredits != null;
             
             viewModel.ListenToItem(yearToEdit.Identifier).Deleted += viewModel.Year_Deleted;
 
@@ -183,8 +163,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     year = new DataItemYear() { Identifier = Guid.NewGuid() };
 
                 year.Name = name;
-                year.OverriddenGPA = IsCustomizeCreditsGpaChecked && IsOverrideGpaEnabled && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
-                year.OverriddenCredits = IsCustomizeCreditsGpaChecked && IsOverrideCreditsEnabled && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
+                year.OverriddenGPA = IsCustomizeCreditsGpaChecked && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
+                year.OverriddenCredits = IsCustomizeCreditsGpaChecked && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
 
                 DataChanges changes = new DataChanges();
                 changes.Add(year);
