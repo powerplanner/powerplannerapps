@@ -264,5 +264,23 @@ namespace Vx.Uwp
         {
             return new Windows.UI.Xaml.Thickness(thickness.Left, thickness.Top, thickness.Right, thickness.Bottom);
         }
+
+        public static Symbol ToUwpSymbol(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.Check:
+                    return Symbol.Accept;
+
+                case MaterialDesign.MaterialDesignIcons.Save:
+                    return Symbol.Save;
+
+                case MaterialDesign.MaterialDesignIcons.Delete:
+                    return Symbol.Delete;
+
+                default:
+                    return Symbol.Refresh;
+            }
+        }
     }
 }

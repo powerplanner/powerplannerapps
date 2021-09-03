@@ -48,7 +48,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             Title = State == OperationState.Adding ? PowerPlannerResources.GetString("AddYearPage_Title_Adding") : PowerPlannerResources.GetString("AddYearPage_Title_Editing");
 
-            PrimaryCommand = PopupCommand.Save(Save);
+            if (State == OperationState.Adding)
+            {
+                PrimaryCommand = PopupCommand.Save(Save);
+            }
+            else
+            {
+                Commands = new PopupCommand[]
+                {
+                    PopupCommand.Save(Save),
+                    PopupCommand.Delete(ConfirmDelete)
+                };
+            }
         }
 
         protected override View Render()
@@ -91,13 +102,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                             Header = PowerPlannerResources.GetString("AddYearPage_OverrideCredits.Header")
                         }.LinearLayoutWeight(1)
                     }
-                } : null,
-
-                State == OperationState.Editing ? new DestructiveButton
-                {
-                    Text = PowerPlannerResources.GetString("AddYearPage_ButtonDeleteYear.Content"),
-                    Margin = new Thickness(0, 24, 0, 0),
-                    Click = ConfirmDelete
                 } : null
 
             );

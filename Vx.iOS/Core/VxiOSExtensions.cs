@@ -190,5 +190,23 @@ namespace Vx.iOS
                     return UITextAlignment.Left;
             }
         }
+
+        public static UIBarButtonSystemItem ToUIBarButtonSystemItem(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.Check:
+                    return UIBarButtonSystemItem.Done;
+
+                case MaterialDesign.MaterialDesignIcons.Save:
+                    return UIBarButtonSystemItem.Save;
+
+                case MaterialDesign.MaterialDesignIcons.Delete:
+                    return UIBarButtonSystemItem.Trash;
+
+                default:
+                    return UIBarButtonSystemItem.Action;
+            }
+        }
     }
 }
