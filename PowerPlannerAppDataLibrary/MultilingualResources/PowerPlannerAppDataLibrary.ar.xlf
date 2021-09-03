@@ -2602,6 +2602,18 @@ Please think about using an online account instead!</source>
           <source>Override grade</source>
           <target state="final">تجاوز الدرجة</target>
         </trans-unit>
+        <trans-unit id="AddYearPage_ButtonDeleteYear.Content" translate="yes" xml:space="preserve">
+          <source>Delete year</source>
+          <target state="final">حذف السنة</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override credits</source>
+          <target state="final">تجاوز الاعتمادات</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideGpaCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override GPA/credits</source>
+          <target state="final">تجاوز المعدل التراكمي / الاعتمادات</target>
+        </trans-unit>
       </group>
     </body>
   </file>

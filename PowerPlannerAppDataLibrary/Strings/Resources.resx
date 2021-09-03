@@ -2056,4 +2056,13 @@ Please think about using an online account instead!</value>
   <data name="ConfigureClassFinalGradeGpa_OverrideGrade.Title" xml:space="preserve">
     <value>Override grade</value>
   </data>
+  <data name="AddYearPage_ButtonDeleteYear.Content" xml:space="preserve">
+    <value>Delete year</value>
+  </data>
+  <data name="AddYearPage_OverrideCredits.Header" xml:space="preserve">
+    <value>Override credits</value>
+  </data>
+  <data name="AddYearPage_OverrideGpaCredits.Header" xml:space="preserve">
+    <value>Override GPA/credits</value>
+  </data>
 </root>

@@ -2600,6 +2600,18 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Override grade</source>
           <target state="final" state-qualifier="mt-suggestion">Grad überschreiben</target>
         </trans-unit>
+        <trans-unit id="AddYearPage_ButtonDeleteYear.Content" translate="yes" xml:space="preserve">
+          <source>Delete year</source>
+          <target state="final" state-qualifier="tm-suggestion">Jahr löschen</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Credits überschreiben</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideGpaCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override GPA/credits</source>
+          <target state="final" state-qualifier="mt-suggestion">GPA/Credits außer Kraft setzen</target>
+        </trans-unit>
       </group>
     </body>
   </file>

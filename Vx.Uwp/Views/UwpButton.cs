@@ -30,6 +30,14 @@ namespace Vx.Uwp.Views
         }
     }
 
+    public class UwpDestructiveButton : UwpButton
+    {
+        public UwpDestructiveButton()
+        {
+            View.Style = Application.Current.Resources["DestructiveButtonStyle"] as Style;
+        }
+    }
+
     public class UwpAccentButton : UwpButton
     {
         public UwpAccentButton()

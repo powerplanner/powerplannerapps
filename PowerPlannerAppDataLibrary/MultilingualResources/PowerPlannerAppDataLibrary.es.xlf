@@ -2599,6 +2599,18 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Override grade</source>
           <target state="final" state-qualifier="mt-suggestion">Anular la calificación</target>
         </trans-unit>
+        <trans-unit id="AddYearPage_ButtonDeleteYear.Content" translate="yes" xml:space="preserve">
+          <source>Delete year</source>
+          <target state="final" state-qualifier="tm-suggestion">Eliminar año</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Anular créditos</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideGpaCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override GPA/credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Anular GPA/créditos</target>
+        </trans-unit>
       </group>
     </body>
   </file>

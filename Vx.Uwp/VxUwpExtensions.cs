@@ -55,6 +55,10 @@ namespace Vx.Uwp
                     {
                         return new UwpAccentButton();
                     }
+                    else if (view is Vx.Views.DestructiveButton)
+                    {
+                        return new UwpDestructiveButton();
+                    }
                     return new UwpButton();
                 }
 

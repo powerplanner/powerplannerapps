@@ -11,6 +11,7 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.App;
 using Vx.Views;
+using PowerPlannerAppDataLibrary.Components;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
@@ -65,7 +66,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
                 new CheckBox
                 {
-                    Text = "Override GPA/credits",
+                    Text = PowerPlannerResources.GetString("AddYearPage_OverrideGpaCredits.Header"),
                     IsChecked = VxValue.Create(IsCustomizeCreditsGpaChecked, v => IsCustomizeCreditsGpaChecked = v),
                     Margin = new Thickness(0, 18, 0, 0)
                 },
@@ -87,16 +88,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         {
                             Number = VxValue.Create(OverriddenCredits, v => OverriddenCredits = v),
                             Margin = new Thickness(9, 0, 0, 0),
-                            Header = "TODO Override credits"
+                            Header = PowerPlannerResources.GetString("AddYearPage_OverrideCredits.Header")
                         }.LinearLayoutWeight(1)
                     }
                 } : null,
 
-                State == OperationState.Editing ? new Button
+                State == OperationState.Editing ? new DestructiveButton
                 {
-                    Text = "TODO Delete Year",
+                    Text = PowerPlannerResources.GetString("AddYearPage_ButtonDeleteYear.Content"),
                     Margin = new Thickness(0, 24, 0, 0),
-                    Click = Delete
+                    Click = ConfirmDelete
                 } : null
 
             );
@@ -174,6 +175,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 this.RemoveViewModel();
             });
+        }
+
+        public async void ConfirmDelete()
+        {
+            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("MessageDeleteYear_Body"), PowerPlannerResources.GetString("MessageDeleteYear_Title")))
+            {
+                Delete();
+            }
         }
 
         public void Delete()

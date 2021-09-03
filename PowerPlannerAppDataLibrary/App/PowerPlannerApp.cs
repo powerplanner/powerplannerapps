@@ -506,5 +506,10 @@ namespace PowerPlannerAppDataLibrary.App
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
+
+        public static async Task<bool> ConfirmDeleteAsync(string message, string title)
+        {
+            return await new PortableMessageDialog(message, title, PowerPlannerResources.GetString("MenuItemDelete"), PowerPlannerResources.GetString("MenuItemCancel")).ShowForResultAsync();
+        }
     }
 }
