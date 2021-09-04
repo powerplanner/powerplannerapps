@@ -22,6 +22,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public OperationState State { get; private set; }
 
+        public bool IsCustomizeCreditsGpaChecked { get => GetState<bool>(); set => SetState(value); }
+        public double? OverriddenCredits { get => GetState<double?>(); set => SetState(value); }
+        public double? OverriddenGpa { get => GetState<double?>(); set => SetState(value); }
+
         public override string GetPageName()
         {
             if (State == OperationState.Adding)
@@ -67,17 +71,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                             Margin = new Thickness(9, 0, 0, 0)
                         }.LinearLayoutWeight(1)
                     }
-                }
+                },
 
+                new CheckBox
+                {
+                    Text = PowerPlannerResources.GetString("AddYearPage_OverrideGpaCredits.Header"),
+                    IsChecked = VxValue.Create(IsCustomizeCreditsGpaChecked, v => IsCustomizeCreditsGpaChecked = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
+
+                IsCustomizeCreditsGpaChecked ? new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Children =
+                    {
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create(OverriddenGpa, v => OverriddenGpa = v),
+                            Margin = new Thickness(0, 0, 9, 0),
+                            Header = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGpa.Title")
+                        }.LinearLayoutWeight(1),
+
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create(OverriddenCredits, v => OverriddenCredits = v),
+                            Margin = new Thickness(9, 0, 0, 0),
+                            Header = PowerPlannerResources.GetString("AddYearPage_OverrideCredits.Header")
+                        }.LinearLayoutWeight(1)
+                    }
+                } : null
             );
         }
 
         public ViewItemSemester SemesterToEdit { get; private set; }
-
-        /// <summary>
-        /// View should set this if start/end is supported (otherwise we won't save start/end)
-        /// </summary>
-        public bool SupportsStartEnd { get; set; }
 
         public class AddParameter
         {
@@ -86,27 +113,42 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public AddParameter AddParams { get; private set; }
 
-        private AddSemesterViewModel(BaseViewModel parent) : base(parent)
+        private AddSemesterViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
-            Title = "TODO Semester";
+            State = state;
+
+            Title = State == OperationState.Adding ? PowerPlannerResources.GetString("EditSemesterPage_Title_Adding") : PowerPlannerResources.GetString("EditSemesterPage_Title_Editing");
+
+            if (State == OperationState.Adding)
+            {
+                PrimaryCommand = PopupCommand.Save(Save);
+            }
+            else
+            {
+                Commands = new PopupCommand[]
+                {
+                    PopupCommand.Save(Save),
+                    PopupCommand.Delete(ConfirmDelete)
+                };
+            }
         }
 
         public static AddSemesterViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
         {
-            return new AddSemesterViewModel(parent)
+            return new AddSemesterViewModel(parent, OperationState.Adding)
             {
-                State = OperationState.Adding,
                 AddParams = addParams
             };
         }
 
         public static AddSemesterViewModel CreateForEdit(BaseViewModel parent, ViewItemSemester semesterToEdit)
         {
-            var viewModel = new AddSemesterViewModel(parent)
+            var viewModel = new AddSemesterViewModel(parent, OperationState.Editing)
             {
-                State = OperationState.Editing,
                 SemesterToEdit = semesterToEdit,
-                Name = semesterToEdit.Name
+                Name = semesterToEdit.Name,
+                OverriddenGpa = semesterToEdit.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED ? semesterToEdit.OverriddenGPA : (double?)null,
+                OverriddenCredits = semesterToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? semesterToEdit.OverriddenCredits : (double?)null
             };
 
             if (!PowerPlannerSending.DateValues.IsUnassigned(semesterToEdit.Start))
@@ -180,43 +222,42 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     throw new NullReferenceException("Either editing semester or add semester param must be initialized.");
 
                 semester.Name = name;
+                semester.OverriddenGPA = IsCustomizeCreditsGpaChecked && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
+                semester.OverriddenCredits = IsCustomizeCreditsGpaChecked && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
 
-                if (SupportsStartEnd)
+                if (StartDate != null)
                 {
-                    if (StartDate != null)
-                    {
-                        semester.Start = DateTime.SpecifyKind(StartDate.Value.Date, DateTimeKind.Utc);
+                    semester.Start = DateTime.SpecifyKind(StartDate.Value.Date, DateTimeKind.Utc);
 
-                        if (!SqlDate.IsValid(semester.Start))
-                            semester.Start = DateTime.Today;
-                    }
+                    if (!SqlDate.IsValid(semester.Start))
+                        semester.Start = DateTime.Today;
+                }
 
-                    else
-                    {
-                        semester.Start = PowerPlannerSending.DateValues.UNASSIGNED;
-                    }
+                else
+                {
+                    semester.Start = PowerPlannerSending.DateValues.UNASSIGNED;
+                }
 
-                    if (EndDate != null)
-                    {
-                        semester.End = DateTime.SpecifyKind(EndDate.Value.Date, DateTimeKind.Utc);
+                if (EndDate != null)
+                {
+                    semester.End = DateTime.SpecifyKind(EndDate.Value.Date, DateTimeKind.Utc);
 
-                        if (!SqlDate.IsValid(semester.End))
-                            semester.End = DateTime.Today;
-                    }
+                    if (!SqlDate.IsValid(semester.End))
+                        semester.End = DateTime.Today;
+                }
 
-                    else
-                    {
-                        semester.End = PowerPlannerSending.DateValues.UNASSIGNED;
-                    }
+                else
+                {
+                    semester.End = PowerPlannerSending.DateValues.UNASSIGNED;
+                }
 
 
-                    if (!PowerPlannerSending.DateValues.IsUnassigned(semester.Start)
-                        && !PowerPlannerSending.DateValues.IsUnassigned(semester.End)
-                        && semester.Start > semester.End)
-                    {
-                        new PortableMessageDialog(PowerPlannerResources.GetString("EditSemesterPage_String_StartDateGreaterThanEndExplanation"), PowerPlannerResources.GetString("EditSemesterPage_String_InvalidStartDate")).Show();
-                        return;
-                    }
+                if (!PowerPlannerSending.DateValues.IsUnassigned(semester.Start)
+                    && !PowerPlannerSending.DateValues.IsUnassigned(semester.End)
+                    && semester.Start > semester.End)
+                {
+                    new PortableMessageDialog(PowerPlannerResources.GetString("EditSemesterPage_String_StartDateGreaterThanEndExplanation"), PowerPlannerResources.GetString("EditSemesterPage_String_InvalidStartDate")).Show();
+                    return;
                 }
 
                 DataChanges changes = new DataChanges();
@@ -227,6 +268,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 this.RemoveViewModel();
             });
+        }
+
+        public async void ConfirmDelete()
+        {
+            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("MessageDeleteSemester_Body"), PowerPlannerResources.GetString("MessageDeleteSemester_Title")))
+            {
+                Delete();
+            }
         }
 
         public void Delete()

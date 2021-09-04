@@ -649,7 +649,7 @@ Once you purchase the premium version, you own the premium version on all your d
     <value>Name</value>
   </data>
   <data name="SemesterView_ButtonOpenSemester.Content" xml:space="preserve">
-    <value>Open Semester</value>
+    <value>Open semester</value>
   </data>
   <data name="SemesterView_HeaderClass.Text" xml:space="preserve">
     <value>Class</value>
