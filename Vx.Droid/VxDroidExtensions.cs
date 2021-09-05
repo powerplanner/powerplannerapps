@@ -113,6 +113,11 @@ namespace Vx.Droid
                     return new DroidTimePicker();
                 }
 
+                if (view is Vx.Views.DatePicker)
+                {
+                    return new DroidDatePicker();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

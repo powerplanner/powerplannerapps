@@ -690,7 +690,7 @@ Once you purchase the premium version, you own the premium version on all your d
           <target state="final">الإسم</target>
         </trans-unit>
         <trans-unit id="SemesterView_ButtonOpenSemester.Content" translate="yes" xml:space="preserve">
-          <source>Open Semester</source>
+          <source>Open semester</source>
           <target state="final">فتح الفصل الدراسي</target>
         </trans-unit>
         <trans-unit id="SemesterView_HeaderClass.Text" translate="yes" xml:space="preserve">

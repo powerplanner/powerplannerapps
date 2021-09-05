@@ -149,8 +149,6 @@
     <Compile Include="Views\AddGradeView.cs" />
     <Compile Include="Views\AddHolidayView.cs" />
     <Compile Include="Views\AddTaskOrEventView.cs" />
-    <Compile Include="Views\AddSemesterView.cs" />
-    <Compile Include="Views\AddYearView.cs" />
     <Compile Include="Views\AgendaView.cs" />
     <Compile Include="Views\CalendarMainView.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
@@ -196,8 +194,6 @@
     <Compile Include="Views\QuickAddView.cs" />
     <Compile Include="Views\ScheduleView.cs" />
     <Compile Include="Views\SettingsImageUploadOptionsView.cs" />
-    <Compile Include="Views\ListItems\ListItemSemesterView.cs" />
-    <Compile Include="Views\ListItems\ListItemYearView.cs" />
     <Compile Include="Views\SettingsWidgetAgendaView.cs" />
     <Compile Include="Views\SettingsWidgetScheduleView.cs" />
     <Compile Include="Views\SettingsSyncOptionsView.cs" />
@@ -209,7 +205,6 @@
     <Compile Include="Views\ViewTaskOrEventView.cs" />
     <Compile Include="Views\InitialSyncView.cs" />
     <Compile Include="Views\WelcomeView.cs" />
-    <Compile Include="Views\YearsView.cs" />
     <Compile Include="Widgets\WidgetAgendaProvider.cs" />
     <Compile Include="Widgets\WidgetScheduleProvider.cs" />
   </ItemGroup>
@@ -227,18 +222,6 @@
     <AndroidResource Include="Resources\layout\MainScreen.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Years.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemYear.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddYear.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddSemester.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemEditingScheduleClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -249,9 +232,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PopupView.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemSemester.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\CalendarMain.xml">
@@ -315,9 +295,6 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Classes.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemSemesterClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SplashScreen.xml">

@@ -688,8 +688,8 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
           <target state="final">Nome</target>
         </trans-unit>
         <trans-unit id="SemesterView_ButtonOpenSemester.Content" translate="yes" xml:space="preserve">
-          <source>Open Semester</source>
-          <target state="final">Abrir Semestre</target>
+          <source>Open semester</source>
+          <target state="final">Abrir semestre</target>
         </trans-unit>
         <trans-unit id="SemesterView_HeaderClass.Text" translate="yes" xml:space="preserve">
           <source>Class</source>

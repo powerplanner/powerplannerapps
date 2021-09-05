@@ -24,7 +24,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public YearsViewModel(BaseViewModel parent) : base(parent)
         {
-            Title = "Years";
+            Title = PowerPlannerResources.GetString("MainMenuItem_Years");
         }
 
         protected override View Render()
@@ -92,7 +92,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             linearLayout.Children.Add(new Button
             {
-                Text = "+ add year",
+                Text = "+ " + PowerPlannerResources.GetString("YearsPage_ButtonAddYear.Content"),
                 Margin = new Thickness(0, 24, 0, 0),
                 Click = AddYear
             });
@@ -197,7 +197,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             linearLayout.Children.Add(new Button
             {
-                Text = "+ add semester",
+                Text = "+ " + PowerPlannerResources.GetString("YearView_ButtonAddSemester.Content"),
                 Margin = new Thickness(12, 0, 12, 12),
                 Click = () => AddSemester(year.Identifier)
             });
@@ -249,8 +249,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 }
             };
 
-            // TODO: Localize
-            linearLayout.Children.Add(RenderClassRow("Class", "Credits", "GPA", isSubtle: true));
+            linearLayout.Children.Add(RenderClassRow(
+                PowerPlannerResources.GetString("SemesterView_HeaderClass.Text"),
+                PowerPlannerResources.GetString("SemesterView_HeaderCredits.Text"),
+                PowerPlannerResources.GetString("SemesterView_HeaderGPA.Text"), isSubtle: true));
 
             SubscribeToCollection(semester.Classes);
             foreach (var c in semester.Classes)
@@ -259,12 +261,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 linearLayout.Children.Add(RenderClassRow(c.Name, c.CreditsStringForYearsPage, c.GpaStringForTableDisplay));
             }
 
-            // TODO: Localize
-            linearLayout.Children.Add(RenderClassRow("Total", CreditsToStringConverter.Convert(semester.CreditsEarned), GpaToStringConverter.Convert(semester.GPA), isBig: true));
+            bool displayCrossedOutCredits = semester.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED;
+            bool displayCrossedOutGpa = semester.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED;
+            if (displayCrossedOutCredits || displayCrossedOutGpa)
+            {
+                linearLayout.Children.Add(RenderClassRow(
+                    PowerPlannerResources.GetString("SemesterView_Total.Text"),
+                    displayCrossedOutCredits ? CreditsToStringConverter.Convert(semester.CalculatedCreditsEarned) : "",
+                    displayCrossedOutGpa ? GpaToStringConverter.Convert(semester.CalculatedGPA) : "",
+                    isSubtle: true,
+                    isBig: true,
+                    strikethrough: true));
+            }
+
+            linearLayout.Children.Add(RenderClassRow(PowerPlannerResources.GetString("SemesterView_Total.Text"), CreditsToStringConverter.Convert(semester.CreditsEarned), GpaToStringConverter.Convert(semester.GPA), isBig: true));
 
             linearLayout.Children.Add(new AccentButton
             {
-                Text = "Open semester",
+                Text = PowerPlannerResources.GetString("SemesterView_ButtonOpenSemester.Content"),
                 Margin = new Thickness(12, 12, 12, 12),
                 Click = () => OpenSemester(semester.Identifier)
             });
@@ -277,7 +291,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             };
         }
 
-        private View RenderClassRow(string str1, string str2, string str3, bool isSubtle = false, bool isBig = false)
+        private View RenderClassRow(string str1, string str2, string str3, bool isSubtle = false, bool isBig = false, bool strikethrough = false)
         {
             var textColor = isSubtle ? Theme.Current.SubtleForegroundColor : Theme.Current.ForegroundColor;
             var fontSize = isBig ? 16 : Theme.Current.CaptionFontSize;
@@ -294,7 +308,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         FontSize = fontSize,
                         TextColor = textColor,
                         WrapText = false,
-                        FontWeight = FontWeights.SemiBold
+                        FontWeight = FontWeights.SemiBold,
+                        Strikethrough = strikethrough
                     }.LinearLayoutWeight(2),
 
                     new TextBlock
@@ -304,7 +319,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         TextColor = isSubtle ? Theme.Current.SubtleForegroundColor : Theme.Current.ForegroundColor,
                         WrapText = false,
                         TextAlignment = HorizontalAlignment.Right,
-                        FontWeight = FontWeights.SemiBold
+                        FontWeight = FontWeights.SemiBold,
+                        Strikethrough = strikethrough
                     }.LinearLayoutWeight(1),
 
                     new TextBlock
@@ -314,7 +330,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         TextColor = isSubtle ? Theme.Current.SubtleForegroundColor : Theme.Current.ForegroundColor,
                         WrapText = false,
                         TextAlignment = HorizontalAlignment.Right,
-                        FontWeight = FontWeights.SemiBold
+                        FontWeight = FontWeights.SemiBold,
+                        Strikethrough = strikethrough
                     }.LinearLayoutWeight(1)
                 }
             };

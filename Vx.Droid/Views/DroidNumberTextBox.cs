@@ -37,7 +37,7 @@ namespace Vx.Droid.Views
                 View.Value = newView.Number.Value;
             }
 
-            View.Hint = newView.PlaceholderText;
+            View.Hint = newView.Header ?? newView.PlaceholderText;
             View.Enabled = newView.IsEnabled;
         }
     }

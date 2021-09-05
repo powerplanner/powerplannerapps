@@ -39,8 +39,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         public bool IsCustomizeCreditsGpaChecked { get => GetState<bool>(); set => SetState(value); }
         public double? OverriddenCredits { get => GetState<double?>(); set => SetState(value); }
         public double? OverriddenGpa { get => GetState<double?>(); set => SetState(value); }
-        public double? ActualGpa { get; private set; }
-        public double? ActualCredits { get; private set; }
 
         private AddYearViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
@@ -118,8 +116,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 YearToEdit = yearToEdit,
                 Name = yearToEdit.Name,
-                ActualGpa = yearToEdit.GPA != -1 ? yearToEdit.GPA : (double?)null,
-                ActualCredits = yearToEdit.CreditsEarned != PowerPlannerSending.Grade.NO_CREDITS ? yearToEdit.CreditsEarned : (double?)null,
                 OverriddenGpa = yearToEdit.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenGPA : (double?)null,
                 OverriddenCredits = yearToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenCredits : (double?)null
             };
