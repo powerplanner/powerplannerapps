@@ -37,7 +37,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             // Subscribe to the school
             Subscribe(YearsViewItemsGroup.School);
 
-            // TODO: Subscribe to School property changes
             var linearLayout = new LinearLayout
             {
                 Margin = new Thickness(Theme.Current.PageMargin),
