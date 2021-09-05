@@ -31,9 +31,17 @@ namespace PowerPlannerAndroid.Views
             // Make sure title and primary commands are called after calling AddNonInflatedView, since that method creates the toolbar/etc
             Title = ViewModel.Title;
 
-            if (ViewModel.PrimaryCommand != null)
+            if (ViewModel.Commands != null && ViewModel.Commands.Length > 0)
             {
-                SetMenu(Resource.Menu.add_class_menu);
+                Toolbar.Menu.Add(ViewModel.Commands[0].Text);
+                var item = Toolbar.Menu.GetItem(0);
+                item.SetIcon(Resource.Drawable.ic_check_white_36dp);
+                item.SetShowAsAction(ShowAsAction.Always | ShowAsAction.WithText);
+
+                foreach (var c in ViewModel.Commands.Skip(1))
+                {
+                    Toolbar.Menu.Add(c.Text);
+                }
             }
 
             if (ViewModel.ImportantForAutofill)
@@ -44,9 +52,9 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
-            if (ViewModel.PrimaryCommand != null)
+            if (ViewModel.Commands != null)
             {
-                ViewModel.PrimaryCommand.Action?.Invoke();
+                ViewModel.Commands.FirstOrDefault(i => i.Text == e.Item.TitleFormatted.ToString())?.Action?.Invoke();
             }
         }
     }
