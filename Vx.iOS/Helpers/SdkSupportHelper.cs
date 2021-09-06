@@ -24,5 +24,10 @@ namespace InterfacesiOS.Helpers
         public static bool IsUIDatePickerWheelsStyleSupported => CheckSystemVersion(13, 4);
 
         public static bool IsVerticalScrollIndicatorInsetsSupported => CheckSystemVersion(11, 1);
+
+        /// <summary>
+        /// https://developer.apple.com/documentation/uikit/uitraitcollection/1651063-userinterfacestyle
+        /// </summary>
+        public static bool IsUserInterfaceStyleSupported => CheckSystemVersion(12, 0);
     }
 }

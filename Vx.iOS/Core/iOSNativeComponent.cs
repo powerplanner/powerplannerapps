@@ -24,6 +24,7 @@ namespace Vx.iOS
         public SizeF ComponentSize => new SizeF((float)this.Frame.Width, (float)this.Frame.Height);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
+        public event EventHandler ThemeChanged;
 
         private SizeF _currSize;
 

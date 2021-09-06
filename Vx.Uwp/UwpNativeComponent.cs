@@ -4,8 +4,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
 using Vx.Uwp.Views;
 using Vx.Views;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp
@@ -15,6 +17,7 @@ namespace Vx.Uwp
         public SizeF ComponentSize => new SizeF(this.ActualSize.X, this.ActualSize.Y);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
+        public event EventHandler ThemeChanged;
 
         public UwpNativeComponent(VxComponent component)
         {
@@ -22,6 +25,12 @@ namespace Vx.Uwp
             HorizontalContentAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
 
             SizeChanged += UwpNativeComponent_SizeChanged;
+            ActualThemeChanged += UwpNativeComponent_ActualThemeChanged;
+        }
+
+        private void UwpNativeComponent_ActualThemeChanged(Windows.UI.Xaml.FrameworkElement sender, object args)
+        {
+            ThemeChanged?.Invoke(this, null);
         }
 
         private void UwpNativeComponent_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)

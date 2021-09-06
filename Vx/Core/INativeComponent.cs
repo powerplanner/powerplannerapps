@@ -9,6 +9,7 @@ namespace Vx
     public interface INativeComponent
     {
         event EventHandler<SizeF> ComponentSizeChanged;
+        event EventHandler ThemeChanged;
         SizeF ComponentSize { get; }
         VxComponent Component { get; }
 

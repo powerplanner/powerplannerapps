@@ -203,7 +203,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             return new Border
             {
-                BackgroundColor = Theme.Current.PopupPageBackgroundColor,
+                BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 Content = linearLayout,
                 Margin = new Thickness(0, 24, 0, 0),
                 VerticalAlignment = VerticalAlignment.Top
@@ -285,7 +285,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             return new Border
             {
                 Margin = new Thickness(12, 0, 12, 12),
-                BackgroundColor = Theme.Current.PopupPageBackgroundAltColor,
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Content = linearLayout
             };
         }

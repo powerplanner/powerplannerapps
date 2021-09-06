@@ -45,6 +45,7 @@ namespace Vx.Views
             _hasInitializedForDisplay = true;
 
             NativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
+            NativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
 
             Initialize();
 
@@ -70,6 +71,11 @@ namespace Vx.Views
             RenderActual();
 
             EnableHotReload();
+        }
+
+        private void NativeComponent_ThemeChanged(object sender, EventArgs e)
+        {
+            MarkDirty();
         }
 
         private void NativeComponent_ComponentSizeChanged(object sender, SizeF e)

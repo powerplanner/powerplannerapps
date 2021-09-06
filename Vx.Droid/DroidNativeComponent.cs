@@ -25,6 +25,7 @@ namespace Vx.Droid
         public SizeF ComponentSize => new SizeF(Width, Height);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
+        public event EventHandler ThemeChanged;
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
         {

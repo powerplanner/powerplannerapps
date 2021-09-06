@@ -28,6 +28,8 @@ namespace Vx.Droid
 
         public override Color PopupPageBackgroundAltColor => GetColor(Resource.Color.colorBackgroundSecondary);
 
+        public override bool IsDarkTheme => VxDroidExtensions.ApplicationContext.Resources.Configuration.UiMode.HasFlag(UiMode.NightYes);
+
         private static Color GetThemeColor(int attributeId)
         {
             var context = VxDroidExtensions.ApplicationContext;
