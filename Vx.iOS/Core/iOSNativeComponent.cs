@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using InterfacesiOS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -37,6 +38,16 @@ namespace Vx.iOS
             {
                 _currSize = newSize;
                 ComponentSizeChanged?.Invoke(this, newSize);
+            }
+        }
+
+        public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
+        {
+            base.TraitCollectionDidChange(previousTraitCollection);
+
+            if (SdkSupportHelper.IsUserInterfaceStyleSupported && previousTraitCollection.UserInterfaceStyle != TraitCollection.UserInterfaceStyle)
+            {
+                ThemeChanged?.Invoke(this, null);
             }
         }
 
