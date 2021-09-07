@@ -376,6 +376,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2109, 6, 1, 99))
+                    {
+                        changedText += "\n - Ability to override final grade/GPA on years/semesters";
+                    }
+
                     if (v <= new Version(2108, 16, 2, 99))
                     {
                         changedText += "\n - Ability to override final grade/GPA on classes";
