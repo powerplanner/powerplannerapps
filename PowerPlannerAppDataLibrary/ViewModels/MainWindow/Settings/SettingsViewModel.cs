@@ -12,6 +12,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
     {
         public SettingsViewModel(BaseViewModel parent) : base(parent)
         {
+#if DEBUG
+            if (VxTestingGroundViewModel.ShowTestingGround)
+            {
+                Navigate(new VxTestingGroundViewModel(this));
+                return;
+            }
+#endif
+
             Navigate(new SettingsListViewModel(this));
         }
     }

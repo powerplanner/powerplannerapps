@@ -9,6 +9,11 @@ namespace Vx.Uwp.Views
 {
     public class UwpTextBlock : UwpView<Vx.Views.TextBlock, TextBlock>
     {
+        public UwpTextBlock()
+        {
+            View.TextTrimming = Windows.UI.Xaml.TextTrimming.CharacterEllipsis;
+        }
+
         protected override void ApplyProperties(Vx.Views.TextBlock oldView, Vx.Views.TextBlock newView)
         {
             base.ApplyProperties(oldView, newView);
@@ -19,6 +24,7 @@ namespace Vx.Uwp.Views
             View.TextWrapping = newView.WrapText ? Windows.UI.Xaml.TextWrapping.Wrap : Windows.UI.Xaml.TextWrapping.NoWrap;
             View.FontSize = newView.FontSize;
             View.TextDecorations = newView.Strikethrough ? Windows.UI.Text.TextDecorations.Strikethrough : Windows.UI.Text.TextDecorations.None;
+            View.TextAlignment = newView.TextAlignment.ToUwpTextAlignment();
         }
     }
 }

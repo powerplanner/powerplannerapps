@@ -25,6 +25,8 @@ namespace Vx.Views
             set => _currentTheme = value;
         }
 
+        public abstract bool IsDarkTheme { get; }
+
         public static Color DefaultAccentColor { get; set; } = Color.Blue;
 
         public abstract Color ForegroundColor { get; }
@@ -36,6 +38,10 @@ namespace Vx.Views
         public abstract Color PopupPageBackgroundAltColor { get; }
 
         public Color AccentColor => DefaultAccentColor;
+
+        public Color BackgroundAlt1Color => IsDarkTheme ? Color.FromArgb(51, 51, 51) : Color.FromArgb(233, 233, 233);
+
+        public Color BackgroundAlt2Color => IsDarkTheme ? Color.FromArgb(22, 22, 22) : Color.FromArgb(245, 245, 245);
 
         private static Lazy<float> _pageMargin = new Lazy<float>(() =>
         {

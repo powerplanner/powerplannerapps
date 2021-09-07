@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -42,6 +44,9 @@ namespace Vx.Views
 
             _hasInitializedForDisplay = true;
 
+            NativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
+            NativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
+
             Initialize();
 
             //if (IsRootComponent && _additionalComponentsToInitialize != null)
@@ -66,6 +71,16 @@ namespace Vx.Views
             RenderActual();
 
             EnableHotReload();
+        }
+
+        private void NativeComponent_ThemeChanged(object sender, EventArgs e)
+        {
+            MarkDirty();
+        }
+
+        private void NativeComponent_ComponentSizeChanged(object sender, SizeF e)
+        {
+            OnSizeChanged(e);
         }
 
         private async void EnableHotReload()
@@ -205,6 +220,43 @@ namespace Vx.Views
             MarkDirty();
         }
 
+        private WeakReferenceList<INotifyPropertyChanged> _subscribed;
+        protected void Subscribe(INotifyPropertyChanged obj)
+        {
+            if (_subscribed == null)
+            {
+                _subscribed = new WeakReferenceList<INotifyPropertyChanged>();
+            }
+
+            if (!_subscribed.Contains(obj))
+            {
+                SubscribeToPropertyValue(obj);
+                _subscribed.Add(obj);
+            }
+        }
+
+        private WeakReferenceList<INotifyCollectionChanged> _subscribedCollections;
+        private NotifyCollectionChangedEventHandler _collectionChangedHandler;
+        protected void SubscribeToCollection(INotifyCollectionChanged col)
+        {
+            if (_subscribedCollections == null)
+            {
+                _subscribedCollections = new WeakReferenceList<INotifyCollectionChanged>();
+                _collectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(Collection_CollectionChanged).Handler;
+            }
+
+            if (!_subscribedCollections.Contains(col))
+            {
+                col.CollectionChanged += _collectionChangedHandler;
+                _subscribedCollections.Add(col);
+            }
+        }
+
+        private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            MarkDirty();
+        }
+
         private bool _dirty = true;
 
         /// <summary>
@@ -239,7 +291,7 @@ namespace Vx.Views
 
             try
             {
-                if (oldView == null || oldView.GetType() != newView.GetType())
+                if (oldView == null || newView == null || oldView.GetType() != newView.GetType())
                 {
                     RenderedContent = newView;
                     NativeComponent.ChangeView(newView);
@@ -311,6 +363,10 @@ namespace Vx.Views
             {
                 changed = !object.Equals(value, stateValue);
             }
+            else
+            {
+                changed = true;
+            }
 
             _states[stateName] = value;
 
@@ -318,6 +374,17 @@ namespace Vx.Views
             {
                 MarkDirty();
             }
+        }
+
+        public SizeF Size => NativeComponent.ComponentSize;
+
+        /// <summary>
+        /// Components can override this to create adaptive UI, choosing to mark dirty at different sizes
+        /// </summary>
+        /// <param name="size"></param>
+        protected virtual void OnSizeChanged(SizeF size)
+        {
+            // Nothing here
         }
     }
 }

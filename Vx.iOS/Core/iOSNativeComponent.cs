@@ -1,6 +1,8 @@
 ﻿using Foundation;
+using InterfacesiOS.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using UIKit;
@@ -20,6 +22,35 @@ namespace Vx.iOS
             Component = component;
         }
 
+        public SizeF ComponentSize => new SizeF((float)this.Frame.Width, (float)this.Frame.Height);
+
+        public event EventHandler<SizeF> ComponentSizeChanged;
+        public event EventHandler ThemeChanged;
+
+        private SizeF _currSize;
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            var newSize = ComponentSize;
+            if (_currSize != newSize)
+            {
+                _currSize = newSize;
+                ComponentSizeChanged?.Invoke(this, newSize);
+            }
+        }
+
+        public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
+        {
+            base.TraitCollectionDidChange(previousTraitCollection);
+
+            if (SdkSupportHelper.IsUserInterfaceStyleSupported && previousTraitCollection.UserInterfaceStyle != TraitCollection.UserInterfaceStyle)
+            {
+                ThemeChanged?.Invoke(this, null);
+            }
+        }
+
         public void ChangeView(View view)
         {
             foreach (var subview in base.Subviews)
@@ -28,6 +59,11 @@ namespace Vx.iOS
             }
 
             base.RemoveConstraints(base.Constraints);
+
+            if (view == null)
+            {
+                return;
+            }
 
             var uiView = view.CreateUIView(null);
             uiView.TranslatesAutoresizingMaskIntoConstraints = false;

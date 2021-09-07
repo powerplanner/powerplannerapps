@@ -11,7 +11,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlanneriOS.Controllers;
@@ -80,9 +79,6 @@ namespace PowerPlanneriOS
                 { typeof(ClassViewModel), typeof(ClassViewController) },
                 { typeof(AddClassViewModel), typeof(AddClassViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
-                { typeof(YearsViewModel), typeof(YearsViewController) },
-                { typeof(AddYearViewModel), typeof(AddYearViewController) },
-                { typeof(AddSemesterViewModel), typeof(AddSemesterViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
                 { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventViewController) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsViewController) },

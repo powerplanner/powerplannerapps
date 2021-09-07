@@ -7,5 +7,7 @@
         public string PlaceholderText { get; set; } = "";
 
         public bool IsEnabled { get; set; } = true;
+
+        public string Header { get; set; }
     }
 }

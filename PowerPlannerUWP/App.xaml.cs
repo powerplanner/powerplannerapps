@@ -32,7 +32,6 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
@@ -93,6 +92,7 @@ namespace PowerPlannerUWP
         {
             return new Dictionary<Type, Type>
             {
+                { typeof(YearsViewModel), typeof(ComponentView) }, // Don't show Years as a popup on Windows
                 { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
                 { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
             };
@@ -108,8 +108,6 @@ namespace PowerPlannerUWP
                 { typeof(AddGradeViewModel), typeof(AddGradeView) },
                 { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
                 { typeof(AddTaskOrEventViewModel), typeof(AddTaskOrEventView) },
-                { typeof(AddSemesterViewModel), typeof(AddSemesterView) },
-                { typeof(AddYearViewModel), typeof(AddYearView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
                 { typeof(CalendarViewModel), typeof(CalendarMainView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
@@ -129,7 +127,6 @@ namespace PowerPlannerUWP
                 { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
-                { typeof(YearsViewModel), typeof(YearsView) },
 
                 // Settings views
                 { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },
@@ -672,6 +669,11 @@ namespace PowerPlannerUWP
 
 
                     string changedText = "";
+
+                    if (v <= new Version(2109, 6, 1, 99))
+                    {
+                        changedText += "\n - Ability to override final grade/GPA on years/semesters";
+                    }
 
                     if (v <= new Version(2108, 16, 2, 99))
                     {

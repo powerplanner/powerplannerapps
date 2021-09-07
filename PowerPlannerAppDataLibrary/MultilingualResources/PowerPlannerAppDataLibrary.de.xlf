@@ -689,7 +689,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <target state="final" state-qualifier="mt-suggestion">Name</target>
         </trans-unit>
         <trans-unit id="SemesterView_ButtonOpenSemester.Content" translate="yes" xml:space="preserve">
-          <source>Open Semester</source>
+          <source>Open semester</source>
           <target state="final">Semester öffnen</target>
         </trans-unit>
         <trans-unit id="SemesterView_HeaderClass.Text" translate="yes" xml:space="preserve">
@@ -2599,6 +2599,18 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         <trans-unit id="ConfigureClassFinalGradeGpa_OverrideGrade.Title" translate="yes" xml:space="preserve">
           <source>Override grade</source>
           <target state="final" state-qualifier="mt-suggestion">Grad überschreiben</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_ButtonDeleteYear.Content" translate="yes" xml:space="preserve">
+          <source>Delete year</source>
+          <target state="final" state-qualifier="tm-suggestion">Jahr löschen</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Credits überschreiben</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideGpaCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override GPA/credits</source>
+          <target state="final" state-qualifier="mt-suggestion">GPA/Credits außer Kraft setzen</target>
         </trans-unit>
       </group>
     </body>

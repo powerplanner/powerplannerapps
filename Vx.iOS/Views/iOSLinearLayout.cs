@@ -63,6 +63,7 @@ namespace Vx.iOS.Views
 
             // Temp background color for debugging purposes
             //View.BackgroundColor = UIColor.FromRGBA(0, 0, 255, 15);
+            View.BackgroundColor = newView.BackgroundColor.ToUI();
 
             bool changed = false;
 
@@ -462,7 +463,7 @@ namespace Vx.iOS.Views
                             constant: Margin.Right);
                     }
                 }
-                else
+                else // Horizontal
                 {
                     if (prev == null)
                     {
@@ -594,7 +595,7 @@ namespace Vx.iOS.Views
                     BottomConstraint = NSLayoutConstraint.Create(
                         Parent,
                         NSLayoutAttribute.Bottom,
-                        usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                        NSLayoutRelation.Equal,
                         Subview,
                         NSLayoutAttribute.Bottom,
                         multiplier: 1,
@@ -605,7 +606,7 @@ namespace Vx.iOS.Views
                     RightConstraint = NSLayoutConstraint.Create(
                         Parent,
                         NSLayoutAttribute.Right,
-                        usingWeights ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                        NSLayoutRelation.Equal,
                         Subview,
                         NSLayoutAttribute.Right,
                         multiplier: 1,

@@ -206,9 +206,6 @@
     <Compile Include="Views\AddHolidayView.xaml.cs">
       <DependentUpon>AddHolidayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddYearView.xaml.cs">
-      <DependentUpon>AddYearView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AgendaView.xaml.cs">
       <DependentUpon>AgendaView.xaml</DependentUpon>
     </Compile>
@@ -222,9 +219,6 @@
       <DependentUpon>ClassWhatIfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\AddSemesterView.xaml.cs">
-      <DependentUpon>AddSemesterView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EditClassDetailsView.xaml.cs">
       <DependentUpon>EditClassDetailsView.xaml</DependentUpon>
     </Compile>
@@ -335,9 +329,6 @@
     <Compile Include="Views\ViewTaskOrEventView.xaml.cs">
       <DependentUpon>ViewTaskOrEventView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\YearsView.xaml.cs">
-      <DependentUpon>YearsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\SideBarTemplateSelector.cs" />
     <Compile Include="Views\BasicPopupView.cs" />
@@ -419,9 +410,6 @@
     </Compile>
     <Compile Include="Views\PopupMenuConfirmDelete.cs" />
     <Compile Include="Views\ScheduleViews\DayScheduleSnapshot.cs" />
-    <Compile Include="Views\SemesterViews\SemesterView.xaml.cs">
-      <DependentUpon>SemesterView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\SettingItem.xaml.cs">
       <DependentUpon>SettingItem.xaml</DependentUpon>
     </Compile>
@@ -432,9 +420,6 @@
     <Compile Include="Views\WeekComboBox.cs" />
     <Compile Include="Views\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\YearViews\YearView.xaml.cs">
-      <DependentUpon>YearView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowHosts\LoggedInWindowHost.cs" />
     <Compile Include="WindowHosts\MainAppWindowHost.cs" />
@@ -545,10 +530,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AddYearView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AgendaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -562,10 +543,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClassWhatIfView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddSemesterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -713,10 +690,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\YearsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -809,10 +782,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SemesterViews\SemesterView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\SettingItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -822,10 +791,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WelcomeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\YearViews\YearView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

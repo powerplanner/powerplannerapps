@@ -172,5 +172,41 @@ namespace Vx.iOS
         {
             return UIColor.FromRGBA(color.R, color.G, color.B, color.A);
         }
+
+        internal static UITextAlignment ToUITextAlignment(this HorizontalAlignment horizontalAlignment)
+        {
+            switch (horizontalAlignment)
+            {
+                case Vx.Views.HorizontalAlignment.Left:
+                    return UITextAlignment.Left;
+
+                case Vx.Views.HorizontalAlignment.Center:
+                    return UITextAlignment.Center;
+
+                case Vx.Views.HorizontalAlignment.Right:
+                    return UITextAlignment.Right;
+
+                default:
+                    return UITextAlignment.Left;
+            }
+        }
+
+        public static UIBarButtonSystemItem ToUIBarButtonSystemItem(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.Check:
+                    return UIBarButtonSystemItem.Done;
+
+                case MaterialDesign.MaterialDesignIcons.Save:
+                    return UIBarButtonSystemItem.Save;
+
+                case MaterialDesign.MaterialDesignIcons.Delete:
+                    return UIBarButtonSystemItem.Trash;
+
+                default:
+                    return UIBarButtonSystemItem.Action;
+            }
+        }
     }
 }

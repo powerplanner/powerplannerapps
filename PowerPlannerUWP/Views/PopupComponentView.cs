@@ -23,24 +23,21 @@ namespace PowerPlannerUWP.Views
 
             Title = ViewModel.Title?.ToUpper();
 
-            var primaryCommand = ViewModel.PrimaryCommand;
-            if (primaryCommand != null)
+            if (ViewModel.Commands != null)
             {
-                var nativeButton = new Windows.UI.Xaml.Controls.AppBarButton()
+                foreach (var c in ViewModel.Commands)
                 {
-                    Label = primaryCommand.Text,
-                    Icon = new SymbolIcon(Symbol.Accept)
-                };
-                nativeButton.Click += NativeButton_Click;
-                PrimaryCommands.Add(nativeButton);
+                    var nativeButton = new AppBarButton()
+                    {
+                        Label = c.Text,
+                        Icon = new SymbolIcon(c.Glyph.ToUwpSymbol())
+                    };
+                    nativeButton.Click += delegate { c.Action(); };
+                    PrimaryCommands.Add(nativeButton);
+                }
             }
 
             MainContent = ViewModel.Render();
-        }
-
-        private void NativeButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            ViewModel.PrimaryCommand.Action?.Invoke();
         }
     }
 }

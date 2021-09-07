@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using InterfacesiOS.App;
 using InterfacesiOS.Helpers;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace Vx.iOS
         public override Color PopupPageBackgroundColor => UIColorCompat.SystemBackgroundColor.ToVx();
 
         public override Color PopupPageBackgroundAltColor => UIColorCompat.SystemGroupedBackgroundColor.ToVx();
+
+        public override bool IsDarkTheme => SdkSupportHelper.IsUserInterfaceStyleSupported ? NativeiOSApplication.Current.Window.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark : false;
     }
 
     internal static class iOSThemeExtensions

@@ -45,6 +45,9 @@ namespace Vx.Views
 
         public Action<View> ViewRef { get; set; }
 
+        /// <summary>
+        /// Note that HorizontalAlignment will be ignored and be Stretch when parent is a *horizontal* LinearLayout
+        /// </summary>
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
         public VerticalAlignment VerticalAlignment { get; set; }

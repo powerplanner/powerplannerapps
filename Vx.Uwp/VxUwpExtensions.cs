@@ -55,6 +55,10 @@ namespace Vx.Uwp
                     {
                         return new UwpAccentButton();
                     }
+                    else if (view is Vx.Views.DestructiveButton)
+                    {
+                        return new UwpDestructiveButton();
+                    }
                     return new UwpButton();
                 }
 
@@ -111,6 +115,11 @@ namespace Vx.Uwp
                 if (view is Vx.Views.Border)
                 {
                     return new UwpBorder();
+                }
+
+                if (view is Vx.Views.DatePicker)
+                {
+                    return new UwpDatePicker();
                 }
 
 #if DEBUG
@@ -215,6 +224,24 @@ namespace Vx.Uwp
             }
         }
 
+        internal static TextAlignment ToUwpTextAlignment(this Vx.Views.HorizontalAlignment horizontalAlignment)
+        {
+            switch (horizontalAlignment)
+            {
+                case Vx.Views.HorizontalAlignment.Left:
+                    return TextAlignment.Start;
+
+                case Vx.Views.HorizontalAlignment.Center:
+                    return TextAlignment.Center;
+
+                case Vx.Views.HorizontalAlignment.Right:
+                    return TextAlignment.End;
+
+                default:
+                    return TextAlignment.Start;
+            }
+        }
+
         internal static Windows.UI.Xaml.VerticalAlignment ToUwp(this Vx.Views.VerticalAlignment verticalAlignment)
         {
             switch (verticalAlignment)
@@ -236,6 +263,24 @@ namespace Vx.Uwp
         internal static Windows.UI.Xaml.Thickness ToUwp(this Vx.Views.Thickness thickness)
         {
             return new Windows.UI.Xaml.Thickness(thickness.Left, thickness.Top, thickness.Right, thickness.Bottom);
+        }
+
+        public static Symbol ToUwpSymbol(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.Check:
+                    return Symbol.Accept;
+
+                case MaterialDesign.MaterialDesignIcons.Save:
+                    return Symbol.Save;
+
+                case MaterialDesign.MaterialDesignIcons.Delete:
+                    return Symbol.Delete;
+
+                default:
+                    return Symbol.Refresh;
+            }
         }
     }
 }

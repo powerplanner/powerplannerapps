@@ -13,9 +13,7 @@ using BareMvvm.Core.App;
 using InterfacesDroid.App;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAndroid.Views;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
@@ -81,9 +79,6 @@ namespace PowerPlannerAndroid.App
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(MainScreenViewModel), typeof(MainScreenView) },
-                { typeof(YearsViewModel), typeof(YearsView) },
-                { typeof(AddYearViewModel), typeof(AddYearView) },
-                { typeof(AddSemesterViewModel), typeof(AddSemesterView) },
                 { typeof(AddClassViewModel), typeof(AddClassView) },
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(CalendarViewModel), typeof(CalendarMainView) },

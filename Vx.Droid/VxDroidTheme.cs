@@ -24,9 +24,11 @@ namespace Vx.Droid
 
         public override Color SubtleForegroundColor => GetThemeColor(Android.Resource.Attribute.TextColorSecondary);
 
-        public override Color PopupPageBackgroundColor => GetThemeColor(Android.Resource.Attribute.Background);
+        public override Color PopupPageBackgroundColor => GetNormalColor(Android.Resource.Attribute.Background);
 
         public override Color PopupPageBackgroundAltColor => GetColor(Resource.Color.colorBackgroundSecondary);
+
+        public override bool IsDarkTheme => VxDroidExtensions.ApplicationContext.Resources.Configuration.UiMode.HasFlag(UiMode.NightYes);
 
         private static Color GetThemeColor(int attributeId)
         {
@@ -64,10 +66,13 @@ namespace Vx.Droid
 
             try
             {
-                var drawable = ta.GetDrawable(0);
-                return Color.FromArgb(((ColorDrawable)drawable).Color.ToArgb());
                 var color = ta.GetColor(0, 0);
                 return Color.FromArgb(color.ToArgb());
+
+                //var drawable = ta.GetDrawable(0);
+                //return Color.FromArgb(((ColorDrawable)drawable).Color.ToArgb());
+                //var color = ta.GetColor(0, 0);
+                //return Color.FromArgb(color.ToArgb());
             }
 
             finally

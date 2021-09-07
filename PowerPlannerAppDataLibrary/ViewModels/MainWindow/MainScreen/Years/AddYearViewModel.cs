@@ -10,10 +10,12 @@ using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.App;
+using Vx.Views;
+using PowerPlannerAppDataLibrary.Components;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
-    public class AddYearViewModel : BaseMainScreenViewModelChild
+    public class AddYearViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -34,27 +36,91 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         }
 
         public ViewItemYear YearToEdit { get; private set; }
+        public bool IsCustomizeCreditsGpaChecked { get => GetState<bool>(); set => SetState(value); }
+        public double? OverriddenCredits { get => GetState<double?>(); set => SetState(value); }
+        public double? OverriddenGpa { get => GetState<double?>(); set => SetState(value); }
 
-        private AddYearViewModel(BaseViewModel parent) : base(parent)
+        private AddYearViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
+            State = state;
+
+            Title = State == OperationState.Adding ? PowerPlannerResources.GetString("AddYearPage_Title_Adding") : PowerPlannerResources.GetString("AddYearPage_Title_Editing");
+
+            if (State == OperationState.Adding)
+            {
+                PrimaryCommand = PopupCommand.Save(Save);
+            }
+            else
+            {
+                Commands = new PopupCommand[]
+                {
+                    PopupCommand.Save(Save),
+                    PopupCommand.Delete(ConfirmDelete)
+                };
+            }
+        }
+
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("AddYearPage_TextBoxName.Header"),
+                    PlaceholderText = PowerPlannerResources.GetString("AddYearPage_TextBoxName.PlaceholderText"),
+                    Text = VxValue.Create(Name, v => Name = v),
+                    AutoFocus = true,
+                    OnSubmit = Save
+                },
+
+                new CheckBox
+                {
+                    Text = PowerPlannerResources.GetString("AddYearPage_OverrideGpaCredits.Header"),
+                    IsChecked = VxValue.Create(IsCustomizeCreditsGpaChecked, v => IsCustomizeCreditsGpaChecked = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
+
+                IsCustomizeCreditsGpaChecked ? new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Children =
+                    {
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create(OverriddenGpa, v => OverriddenGpa = v),
+                            Margin = new Thickness(0, 0, 9, 0),
+                            Header = PowerPlannerResources.GetString("ConfigureClassFinalGradeGpa_OverrideGpa.Title")
+                        }.LinearLayoutWeight(1),
+
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create(OverriddenCredits, v => OverriddenCredits = v),
+                            Margin = new Thickness(9, 0, 0, 0),
+                            Header = PowerPlannerResources.GetString("AddYearPage_OverrideCredits.Header")
+                        }.LinearLayoutWeight(1)
+                    }
+                } : null
+
+            );
         }
 
         public static AddYearViewModel CreateForAdd(BaseViewModel parent)
         {
-            return new AddYearViewModel(parent)
-            {
-                State = OperationState.Adding
-            };
+            return new AddYearViewModel(parent, OperationState.Adding);
         }
 
         public static AddYearViewModel CreateForEdit(BaseViewModel parent, ViewItemYear yearToEdit)
         {
-            var viewModel = new AddYearViewModel(parent)
+            var viewModel = new AddYearViewModel(parent, OperationState.Editing)
             {
-                State = OperationState.Editing,
                 YearToEdit = yearToEdit,
-                Name = yearToEdit.Name
+                Name = yearToEdit.Name,
+                OverriddenGpa = yearToEdit.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenGPA : (double?)null,
+                OverriddenCredits = yearToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenCredits : (double?)null
             };
+
+            viewModel.IsCustomizeCreditsGpaChecked = viewModel.OverriddenGpa != null || viewModel.OverriddenCredits != null;
             
             viewModel.ListenToItem(yearToEdit.Identifier).Deleted += viewModel.Year_Deleted;
 
@@ -98,6 +164,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     year = new DataItemYear() { Identifier = Guid.NewGuid() };
 
                 year.Name = name;
+                year.OverriddenGPA = IsCustomizeCreditsGpaChecked && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
+                year.OverriddenCredits = IsCustomizeCreditsGpaChecked && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
 
                 DataChanges changes = new DataChanges();
                 changes.Add(year);
@@ -107,6 +175,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 this.RemoveViewModel();
             });
+        }
+
+        public async void ConfirmDelete()
+        {
+            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("MessageDeleteYear_Body"), PowerPlannerResources.GetString("MessageDeleteYear_Title")))
+            {
+                Delete();
+            }
         }
 
         public void Delete()

@@ -122,8 +122,6 @@
     <Compile Include="Controllers\AddGradeViewController.cs" />
     <Compile Include="Controllers\AddHolidayViewController.cs" />
     <Compile Include="Controllers\AddTaskOrEventViewController.cs" />
-    <Compile Include="Controllers\AddSemesterViewController.cs" />
-    <Compile Include="Controllers\AddYearViewController.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />
     <Compile Include="Controllers\AgendaViewController.cs" />
     <Compile Include="Controllers\CalendarViewController.cs" />
@@ -171,13 +169,10 @@
     <Compile Include="Views\UIScheduleView.cs" />
     <Compile Include="Views\UIScheduleViewEventItem.cs" />
     <Compile Include="Views\UIWeightHeaderCell.cs" />
-    <Compile Include="Views\UISemesterView.cs" />
     <Compile Include="Views\UISingleDayView.cs" />
     <Compile Include="Views\UIStatusBarView.cs" />
     <Compile Include="Views\UITaskCell.cs" />
-    <Compile Include="Views\UIYearView.cs" />
     <Compile Include="Controllers\Welcome\WelcomeViewController.cs" />
-    <Compile Include="Controllers\YearsViewController.cs" />
     <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="Info.plist">

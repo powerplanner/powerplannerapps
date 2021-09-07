@@ -19,6 +19,8 @@ namespace Vx.Uwp
         public override Color PopupPageBackgroundColor => (Application.Current.Resources["PopupBackground"] as SolidColorBrush).ToVx();
 
         public override Color PopupPageBackgroundAltColor => (Application.Current.Resources["ButtonPointerOverBackgroundThemeBrush"] as SolidColorBrush).ToVx();
+
+        public override bool IsDarkTheme => Application.Current.RequestedTheme == ApplicationTheme.Dark;
     }
 
     internal static class UwpThemeExtensions

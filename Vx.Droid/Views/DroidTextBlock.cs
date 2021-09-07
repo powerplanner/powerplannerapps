@@ -26,6 +26,7 @@ namespace Vx.Droid.Views
             View.Text = newView.Text;
             View.SetTextColor(newView.TextColor.ToDroid());
             View.SetTextSize(Android.Util.ComplexUnitType.Dip, newView.FontSize);
+            View.Gravity = newView.TextAlignment.ToDroid();
 
             switch (newView.FontWeight)
             {

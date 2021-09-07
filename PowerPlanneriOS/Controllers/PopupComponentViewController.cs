@@ -26,10 +26,10 @@ namespace PowerPlanneriOS.Controllers
                 BackButtonText = backOverride.Item1;
             }
 
-            var primaryCommand = ViewModel.PrimaryCommand;
-            if (primaryCommand != null)
+            var commands = ViewModel.Commands;
+            if (commands != null && commands.Length > 0)
             {
-                PositiveNavBarButton = new PopupRightNavBarButtonItem(primaryCommand.Text, new WeakEventHandler<EventArgs>(PrimaryButton_Clicked).Handler);
+                NavItem.RightBarButtonItems = commands.Select(i => new UIBarButtonItem(i.Glyph.ToUIBarButtonSystemItem(), (obj, args) => i.Action())).ToArray();
             }
 
             _nativeComponent = ViewModel.Render(AfterViewChanged);

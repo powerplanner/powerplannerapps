@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using Vx.Views;
@@ -12,7 +13,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         /// </summary>
         public Tuple<string, Action> BackOverride { get; protected set; }
 
-        public PopupCommand PrimaryCommand { get; protected set; }
+        public PopupCommand PrimaryCommand
+        {
+            get => Commands?.FirstOrDefault();
+            set => Commands = new PopupCommand[] { value };
+        }
+
+        public PopupCommand[] Commands { get; protected set; }
 
         public PopupComponentViewModel(BaseViewModel parent) : base(parent)
         {
@@ -55,6 +62,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             {
                 Text = PowerPlannerResources.GetStringSave(),
                 Glyph = MaterialDesign.MaterialDesignIcons.Check,
+                Action = action
+            };
+        }
+
+        public static PopupCommand Delete(Action action)
+        {
+            return new PopupCommand
+            {
+                Text = PowerPlannerResources.GetString("MenuItemDelete"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
                 Action = action
             };
         }

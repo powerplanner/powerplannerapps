@@ -688,8 +688,8 @@ Una vez que compres la versión premium, tienes la versión premium en todos sus
           <target state="final">Nombre</target>
         </trans-unit>
         <trans-unit id="SemesterView_ButtonOpenSemester.Content" translate="yes" xml:space="preserve">
-          <source>Open Semester</source>
-          <target state="final">Abrir Semestre</target>
+          <source>Open semester</source>
+          <target state="final">Abrir semestre</target>
         </trans-unit>
         <trans-unit id="SemesterView_HeaderClass.Text" translate="yes" xml:space="preserve">
           <source>Class</source>
@@ -2598,6 +2598,18 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
         <trans-unit id="ConfigureClassFinalGradeGpa_OverrideGrade.Title" translate="yes" xml:space="preserve">
           <source>Override grade</source>
           <target state="final" state-qualifier="mt-suggestion">Anular la calificación</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_ButtonDeleteYear.Content" translate="yes" xml:space="preserve">
+          <source>Delete year</source>
+          <target state="final" state-qualifier="tm-suggestion">Eliminar año</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Anular créditos</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideGpaCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override GPA/credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Anular GPA/créditos</target>
         </trans-unit>
       </group>
     </body>

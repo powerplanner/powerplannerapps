@@ -21,6 +21,8 @@ namespace Vx.Views
         public float FontSize { get; set; } = Theme.Current.BodyFontSize;
 
         public bool Strikethrough { get; set; }
+
+        public HorizontalAlignment TextAlignment { get; set; } = HorizontalAlignment.Left;
     }
 
     public static class TextBlockExtensions

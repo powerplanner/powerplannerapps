@@ -6,11 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vx.Uwp;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace PowerPlannerUWP.Views
 {
     public class ComponentView : ViewHostGeneric
     {
+        public ComponentView()
+        {
+            Transitions.Add(new EntranceThemeTransition());
+        }
+
         public new ComponentViewModel ViewModel
         {
             get => base.ViewModel as ComponentViewModel;

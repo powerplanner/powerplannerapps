@@ -723,7 +723,7 @@ Une fois que vous achetez la version premium, vous possédez la version premium 
           <target state="final">Nom complet</target>
         </trans-unit>
         <trans-unit id="SemesterView_ButtonOpenSemester.Content" translate="yes" xml:space="preserve">
-          <source>Open Semester</source>
+          <source>Open semester</source>
           <target state="final" state-qualifier="mt-suggestion">Semestre ouvert</target>
         </trans-unit>
         <trans-unit id="SemesterView_HeaderClass.Text" translate="yes" xml:space="preserve">
@@ -2597,6 +2597,18 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
         <trans-unit id="ConfigureClassFinalGradeGpa_OverrideGrade.Title" translate="yes" xml:space="preserve">
           <source>Override grade</source>
           <target state="final" state-qualifier="mt-suggestion">Remplacer la note</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_ButtonDeleteYear.Content" translate="yes" xml:space="preserve">
+          <source>Delete year</source>
+          <target state="final" state-qualifier="tm-suggestion">Supprimer l'exercice</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Remplacer les crédits</target>
+        </trans-unit>
+        <trans-unit id="AddYearPage_OverrideGpaCredits.Header" translate="yes" xml:space="preserve">
+          <source>Override GPA/credits</source>
+          <target state="final" state-qualifier="mt-suggestion">Remplacer GPA/crédits</target>
         </trans-unit>
       </group>
     </body>
