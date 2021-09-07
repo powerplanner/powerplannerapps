@@ -52,7 +52,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                 Text = PowerPlannerResources.GetString("YearsPage_TextBlockOverall.Text"),
                                 Margin = new Thickness(0, 0, 12, 0),
                                 FontSize = Theme.Current.TitleFontSize,
-                                VerticalAlignment = VerticalAlignment.Center
+                                VerticalAlignment = VerticalAlignment.Center,
+                                WrapText = false
                             },
 
                             new LinearLayout
@@ -64,13 +65,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     {
                                         Text = GpaToStringConverter.ConvertWithGpa(YearsViewItemsGroup.School.GPA),
                                         FontWeight = FontWeights.Bold,
-                                        TextAlignment = HorizontalAlignment.Right
+                                        TextAlignment = HorizontalAlignment.Right,
+                                        WrapText = false
                                     },
 
                                     new TextBlock
                                     {
                                         Text = CreditsToStringConverter.ConvertWithCredits(YearsViewItemsGroup.School.CreditsEarned),
-                                        TextAlignment = HorizontalAlignment.Right
+                                        TextAlignment = HorizontalAlignment.Right,
+                                        WrapText = false
                                     }
                                 }
                             }.LinearLayoutWeight(1)
@@ -142,14 +145,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                                     Text = GpaToStringConverter.Convert(year.CalculatedGPA),
                                                     TextColor = Theme.Current.SubtleForegroundColor,
                                                     Strikethrough = true,
-                                                    Margin = new Thickness(0, 0, 6, 0)
+                                                    Margin = new Thickness(0, 0, 6, 0),
+                                                    WrapText = false
                                                 } : null,
 
                                                 new TextBlock
                                                 {
                                                     Text = GpaToStringConverter.Convert(year.GPA, includeGpa: true),
                                                     TextColor = Theme.Current.SubtleForegroundColor,
-                                                    FontWeight = FontWeights.Bold
+                                                    FontWeight = FontWeights.Bold,
+                                                    WrapText = false
                                                 }
                                             }
                                         },
@@ -167,14 +172,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                                     TextColor = Theme.Current.SubtleForegroundColor,
                                                     Strikethrough = true,
                                                     Margin = new Thickness(0, 0, 6, 0),
-                                                    FontSize = Theme.Current.CaptionFontSize
+                                                    FontSize = Theme.Current.CaptionFontSize,
+                                                    WrapText = false
                                                 } : null,
 
                                                 new TextBlock
                                                 {
                                                     Text = CreditsToStringConverter.Convert(year.CreditsEarned, includeCredits: true),
                                                     TextColor = Theme.Current.SubtleForegroundColor,
-                                                    FontSize = Theme.Current.CaptionFontSize
+                                                    FontSize = Theme.Current.CaptionFontSize,
+                                                    WrapText = false
                                                 }
                                             }
                                         }
