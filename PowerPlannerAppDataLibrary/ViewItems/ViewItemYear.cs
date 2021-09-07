@@ -80,7 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             CalculatedCreditsEarned = answer.CreditsEarned;
             CalculatedCreditsAffectingGpa = answer.CreditsAffectingGpa;
             CalculatedGPA = answer.GPA;
-            HasGrades = answer.HasGrades;
+            HasGrades = answer.HasGrades || OverriddenGPA != PowerPlannerSending.Grade.UNGRADED;
         }
 
         public override int CompareTo(BaseViewItem other)
