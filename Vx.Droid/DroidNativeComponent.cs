@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using InterfacesDroid.Themes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,7 +23,7 @@ namespace Vx.Droid
 
         public VxComponent Component { get; private set; }
 
-        public SizeF ComponentSize => new SizeF(Width, Height);
+        public SizeF ComponentSize { get; private set; }
 
         public event EventHandler<SizeF> ComponentSizeChanged;
         public event EventHandler ThemeChanged;
@@ -31,7 +32,8 @@ namespace Vx.Droid
         {
             base.OnSizeChanged(w, h, oldw, oldh);
 
-            ComponentSizeChanged?.Invoke(this, new SizeF(w, h));
+            ComponentSize = new SizeF(ThemeHelper.FromPxPrecise(Context, w), ThemeHelper.FromPxPrecise(Context, h));
+            ComponentSizeChanged?.Invoke(this, ComponentSize);
         }
 
         public void ChangeView(Vx.Views.View view)

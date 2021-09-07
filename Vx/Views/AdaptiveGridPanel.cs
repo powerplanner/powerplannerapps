@@ -20,7 +20,8 @@ namespace Vx.Views
             var numOfCols = CalcNumberOfColumns();
             _renderedCols = numOfCols;
 
-            if (numOfCols == 1 || Children.Count <= 1 || Size.Width == 0)
+            // Android currently doesn't support adaptive width for some reason, leaving as single column for now on Android
+            if (numOfCols == 1 || Children.Count <= 1 || Size.Width == 0 || VxPlatform.Current == Platform.Android)
             {
                 var layout = new LinearLayout();
                 layout.Children.AddRange(Children);

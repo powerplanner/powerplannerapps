@@ -68,5 +68,10 @@ namespace InterfacesDroid.Themes
         {
             return TypedValue.ApplyDimension(ComplexUnitType.Dip, (float)dp, context.Resources.DisplayMetrics);
         }
+
+        public static float FromPxPrecise(Context context, int px)
+        {
+            return px / context.Resources.DisplayMetrics.Density;
+        }
     }
 }
