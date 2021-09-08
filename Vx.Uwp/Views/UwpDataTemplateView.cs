@@ -26,13 +26,6 @@ namespace Vx.Uwp.Views
 
         private DataTemplateHelper.VxDataTemplateComponent _component = new DataTemplateHelper.VxDataTemplateComponent();
 
-        public UwpDataTemplateView()
-        {
-            Content = _component.Render();
-        }
-
-
-
         public object Data
         {
             get { return (object)GetValue(DataProperty); }
@@ -51,9 +44,8 @@ namespace Vx.Uwp.Views
         private void OnDataChanged()
         {
             _component.Data = Data;
+            RenderIfNeeded();
         }
-
-
 
         public Func<object, Vx.Views.View> ItemTemplate
         {
@@ -74,7 +66,15 @@ namespace Vx.Uwp.Views
         private void OnItemTemplateChanged()
         {
             _component.Template = ItemTemplate;
+            RenderIfNeeded();
         }
 
+        private void RenderIfNeeded()
+        {
+            if (Content == null && ItemTemplate != null && Data != null)
+            {
+                Content = _component.Render();
+            }
+        }
     }
 }
