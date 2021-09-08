@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ToolsPortable;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Vx.Uwp.Views
         public UwpComboBox()
         {
             View.SelectionChanged += View_SelectionChanged;
+            View.Name = "ComboBox" + DateTime.Now.Ticks.ToString();
         }
 
         private void View_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -28,11 +30,27 @@ namespace Vx.Uwp.Views
 
             View.IsEnabled = newView.IsEnabled;
             View.Header = newView.Header;
+            View.DataContext = newView.ItemTemplate;
             // ItemsSource and selected item will be tricky...
 
-            if (!object.ReferenceEquals(View.ItemsSource, newView.Items))
+            if (!object.ReferenceEquals(oldView?.Items, newView.Items))
             {
                 View.ItemsSource = newView.Items;
+            }
+
+            if (newView.ItemTemplate != null)
+            {
+                if (View.ItemTemplate == null)
+                {
+                    View.ItemTemplate = UwpDataTemplateView.GetDataTemplate(View.Name);
+                }
+            }
+            else
+            {
+                if (View.ItemTemplate != null)
+                {
+                    View.ItemTemplate = null;
+                }
             }
 
             View.SelectedItem = newView.SelectedItem?.Value;

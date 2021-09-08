@@ -245,6 +245,7 @@
     <Compile Include="Views\UwpButton.cs" />
     <Compile Include="Views\UwpCheckBox.cs" />
     <Compile Include="Views\UwpComboBox.cs" />
+    <Compile Include="Views\UwpDataTemplateView.cs" />
     <Compile Include="Views\UwpDatePicker.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
