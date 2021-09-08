@@ -16,8 +16,16 @@ namespace Vx.Uwp.Views
             View.Name = "ComboBox" + DateTime.Now.Ticks.ToString();
         }
 
+        private bool _ignoreSelectionChanged;
+
         private void View_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_ignoreSelectionChanged)
+            {
+                _ignoreSelectionChanged = false;
+                return;
+            }
+
             if (VxView.SelectedItem != null && VxView.SelectedItem.Value != View.SelectedItem)
             {
                 VxView.SelectedItem.ValueChanged?.Invoke(View.SelectedItem);
@@ -35,6 +43,13 @@ namespace Vx.Uwp.Views
 
             if (!object.ReferenceEquals(oldView?.Items, newView.Items))
             {
+                if (View.SelectedItem != null)
+                {
+                    // Changing the items source while there's currently a selected item will cause the selected item to clear (go to null).
+                    // But we need to ignore that change, since we want to apply whatever selected item we'll have.
+                    _ignoreSelectionChanged = true;
+                }
+
                 View.ItemsSource = newView.Items;
             }
 
