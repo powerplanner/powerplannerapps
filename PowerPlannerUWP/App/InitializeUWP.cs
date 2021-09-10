@@ -5,10 +5,13 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Views;
 using PowerPlannerUWP.Extensions;
+using PowerPlannerUWP.Views;
 using System;
 using ToolsPortable;
 using Vx.Extensions;
+using Vx.Uwp;
 using Windows.ApplicationModel;
 
 namespace PowerPlannerUWP
@@ -69,6 +72,9 @@ namespace PowerPlannerUWP
             SoundsExtension.Current = new UWPSoundsExtension();
             BrowserExtension.Current = new UWPBrowserExtension();
             EmailExtension.Current = new UWPEmailExtension();
+
+            // Register custom Vx views
+            VxUwpExtensions.RegisterCustomView(v => v is EditImagesView, v => new UwpEditImagesView());
         }
     }
 }

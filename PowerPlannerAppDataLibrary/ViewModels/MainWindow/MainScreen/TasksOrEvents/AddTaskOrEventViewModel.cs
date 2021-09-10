@@ -21,6 +21,7 @@ using Vx.Views;
 using System.Drawing;
 using Vx;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -199,6 +200,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                         }
                     });
                 }
+            }
+
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                views.Add(new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("String_ImageAttachments"),
+                    WrapText = false,
+                    Margin = new Thickness(0, 18, 0, 0)
+                });
+
+                views.Add(new EditImagesView
+                {
+                    Attachments = ImageAttachments,
+                    RequestAddImage = () => _ = AddNewImageAttachmentAsync(),
+                    Margin = new Thickness(0, 6, 0, 0)
+                });
             }
 
             return RenderGenericPopupContent(views.ToArray());

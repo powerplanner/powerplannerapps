@@ -16,6 +16,13 @@ namespace Vx.Droid
 {
     public static class VxDroidExtensions
     {
+        private static List<Tuple<Func<Vx.Views.View, bool>, Func<Vx.Views.View, NativeView>>> _customViews = new List<Tuple<Func<Vx.Views.View, bool>, Func<Vx.Views.View, NativeView>>>();
+
+        public static void RegisterCustomView(Func<Vx.Views.View, bool> predicate, Func<Vx.Views.View, NativeView> create)
+        {
+            _customViews.Add(new Tuple<Func<Vx.Views.View, bool>, Func<Vx.Views.View, NativeView>>(predicate, create));
+        }
+
         /// <summary>
         /// Parent app must initialize this
         /// </summary>
@@ -28,6 +35,14 @@ namespace Vx.Droid
 
             NativeView.CreateNativeView = view =>
             {
+                foreach (var customView in _customViews)
+                {
+                    if (customView.Item1(view))
+                    {
+                        return customView.Item2(view);
+                    }
+                }
+
                 if (view is Vx.Views.VxComponent c)
                 {
                     return new DroidVxComponent(c);
