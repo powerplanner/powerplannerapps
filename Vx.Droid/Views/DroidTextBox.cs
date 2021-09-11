@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Text.Method;
 using Android.Views;
+using Android.Webkit;
 using Android.Widget;
 using Google.Android.Material.TextField;
 using InterfacesDroid.Helpers;
@@ -22,14 +23,41 @@ namespace Vx.Droid.Views
         {
             _editText = new TextInputEditText(View.Context)
             {
-                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
-                InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect
+                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent),
+                InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect,
+                Gravity = GravityFlags.Top
             };
+
+            if (this is DroidMultilineTextBox)
+            {
+                // Enable scrolling: https://stackoverflow.com/a/24428854
+                _editText.ScrollBarStyle = ScrollbarStyles.InsideInset;
+                _editText.VerticalScrollBarEnabled = true;
+                _editText.OverScrollMode = OverScrollMode.Always;
+                _editText.Touch += _editText_Touch;
+            }
 
             View.AddView(_editText);
 
             _editText.TextChanged += _editText_TextChanged;
             _editText.FocusChange += _editText_FocusChange;
+        }
+
+        private void _editText_Touch(object sender, View.TouchEventArgs e)
+        {
+            if (_editText.HasFocus)
+            {
+                (sender as View).Parent.RequestDisallowInterceptTouchEvent(true);
+                switch (e.Event.Action & MotionEventActions.Mask)
+                {
+                    case MotionEventActions.Scroll:
+                        (sender as View).Parent.RequestDisallowInterceptTouchEvent(false);
+                        e.Handled = true;
+                        break;
+                }
+            }
+
+            e.Handled = false;
         }
 
         private void _editText_FocusChange(object sender, View.FocusChangeEventArgs e)
@@ -73,20 +101,14 @@ namespace Vx.Droid.Views
             {
                 if (oldView == null || oldView.InputScope != newView.InputScope)
                 {
-                    switch (newView.InputScope)
+                    var inputType = GetInputType(newView.InputScope);
+
+                    if (this is DroidMultilineTextBox)
                     {
-                        case Vx.Views.InputScope.Normal:
-                            _editText.InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect | Android.Text.InputTypes.TextFlagAutoComplete;
-                            break;
-
-                        case Vx.Views.InputScope.Email:
-                            _editText.InputType = Android.Text.InputTypes.TextVariationEmailAddress | Android.Text.InputTypes.TextFlagAutoComplete;
-                            break;
-
-                        case Vx.Views.InputScope.Username:
-                            _editText.InputType = Android.Text.InputTypes.TextVariationNormal | Android.Text.InputTypes.TextFlagAutoComplete;
-                            break;
+                        inputType |= Android.Text.InputTypes.TextFlagMultiLine | Android.Text.InputTypes.ClassText;
                     }
+
+                    _editText.InputType = inputType;
                 }
             }
 
@@ -96,5 +118,26 @@ namespace Vx.Droid.Views
                 KeyboardHelper.FocusAndShow(_editText);
             }
         }
+
+        private Android.Text.InputTypes GetInputType(Vx.Views.InputScope inputScope)
+{
+            switch (inputScope)
+            {
+                case Vx.Views.InputScope.Email:
+                    return Android.Text.InputTypes.TextVariationEmailAddress | Android.Text.InputTypes.TextFlagAutoComplete;
+
+                case Vx.Views.InputScope.Username:
+                    return Android.Text.InputTypes.TextVariationNormal | Android.Text.InputTypes.TextFlagAutoComplete;
+
+                case Vx.Views.InputScope.Normal:
+                default:
+                    return Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect | Android.Text.InputTypes.TextFlagAutoComplete;
+            }
+        }
+    }
+
+    public class DroidMultilineTextBox : DroidTextBox
+    {
+        // Child does all the unique code
     }
 }

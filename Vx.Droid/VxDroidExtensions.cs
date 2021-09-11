@@ -75,6 +75,11 @@ namespace Vx.Droid
 
                 if (view is Vx.Views.TextBox)
                 {
+                    if (view is Vx.Views.MultilineTextBox)
+                    {
+                        return new DroidMultilineTextBox();
+                    }
+
                     return new DroidTextBox();
                 }
 

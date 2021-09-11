@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using InterfacesDroid.Themes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +29,30 @@ namespace Vx.Droid.Views
                 var weight = Vx.Views.LinearLayout.GetWeight(newView);
                 var isVertical = parentLinearLayout.Orientation == Vx.Views.Orientation.Vertical;
 
+                int width;
+                int height;
+
+                if (!float.IsNaN(newView.Width))
+                {
+                    width = ThemeHelper.AsPx(View.Context, newView.Width);
+                }
+                else
+                {
+                    width = isVertical ? (newView.HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent) : (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0);
+                }
+
+                if (!float.IsNaN(newView.Height))
+                {
+                    height = ThemeHelper.AsPx(View.Context, newView.Height);
+                }
+                else
+                {
+                    height = isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) && !(View is LinearLayout) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent);
+                }
+
                 // For height on buttons, we need to NOT use MatchParent for height since otherwise they'll drop their padding/etc and go down to like 12px tall
                 // Same as height on LinearLayouts. Note that someday we might need to improve the height for child linear layouts someday if we want to support a linear layout with vertical weights that's inside a horizontal linear layout.
-                View.LayoutParameters = new LinearLayout.LayoutParams(
-                    width: isVertical ? (newView.HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent) : (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0),
-                    height: isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) && !(View is LinearLayout) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent))
+                View.LayoutParameters = new LinearLayout.LayoutParams(width, height)
                 {
                     Gravity = isVertical ? newView.HorizontalAlignment.ToDroid() : newView.VerticalAlignment.ToDroid(),
                     MarginStart = AsPx(newView.Margin.Left),
