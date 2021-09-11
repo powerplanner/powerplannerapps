@@ -202,7 +202,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             }
 
-            if (VxPlatform.Current == Platform.Uwp)
+            if (VxPlatform.Current == Platform.Uwp || VxPlatform.Current == Platform.Android)
             {
                 views.Add(new TextBlock
                 {
