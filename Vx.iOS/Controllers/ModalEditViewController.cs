@@ -172,9 +172,15 @@ namespace InterfacesiOS.Controllers
             backgroundTouchTarget.TouchUpInside += new WeakEventHandler(DoneButtonTapped).Handler;
             Add(backgroundTouchTarget);
             backgroundTouchTarget.StretchWidth(View);
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|[backgroundTouchTarget][internalView]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
-                "backgroundTouchTarget", backgroundTouchTarget,
-                "internalView", _dialogView)));
+
+            NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
+            {
+                backgroundTouchTarget.TopAnchor.ConstraintEqualTo(View.LayoutMarginsGuide.TopAnchor),
+
+                backgroundTouchTarget.BottomAnchor.ConstraintEqualTo(_dialogView.TopAnchor),
+
+                _dialogView.BottomAnchor.ConstraintEqualTo(View.BottomAnchor)
+            });
         }
 
         private nfloat? _originalContentViewHeight;
