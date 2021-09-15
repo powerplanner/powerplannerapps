@@ -23,42 +23,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            var layout = new LinearLayout
-            {
-                Margin = new Thickness(0, Theme.Current.PageMargin - 12, 0, Theme.Current.PageMargin - 12),
-                Children =
+            return RenderGenericPopupContent(new Thickness(0, Theme.Current.PageMargin - 12, 0, Theme.Current.PageMargin - 12),
+                new TextBlock
                 {
-                    new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_Explanation"),
-                        TextColor = Theme.Current.SubtleForegroundColor,
-                        Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12)
-                    },
+                    Text = PowerPlannerResources.GetString("Settings_DefaultGradeOptions_Explanation"),
+                    TextColor = Theme.Current.SubtleForegroundColor,
+                    Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12)
+                },
 
-                    RenderOption(
-                        MaterialDesign.MaterialDesignIcons.Calculate,
-                        PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Title"),
-                        PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Subtitle"),
-                        ConfigureGradeScale),
+                RenderOption(
+                    MaterialDesign.MaterialDesignIcons.Calculate,
+                    PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Title"),
+                    PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Subtitle"),
+                    ConfigureGradeScale),
 
-                    RenderOption(
-                        MaterialDesign.MaterialDesignIcons.Refresh,
-                        PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text"),
-                        BoolToEnabledStringConverter.Convert(Account.DefaultDoesAverageGradeTotals),
-                        ConfigureAverageGrades),
+                RenderOption(
+                    MaterialDesign.MaterialDesignIcons.Refresh,
+                    PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text"),
+                    BoolToEnabledStringConverter.Convert(Account.DefaultDoesAverageGradeTotals),
+                    ConfigureAverageGrades),
 
-                    RenderOption(
-                        MaterialDesign.MaterialDesignIcons.ArrowUpward,
-                        PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text"),
-                        BoolToEnabledStringConverter.Convert(Account.DefaultDoesRoundGradesUp),
-                        ConfigureRoundGradesUp)
-                }
-            };
-
-            return new ScrollView
-            {
-                Content = layout
-            };
+                RenderOption(
+                    MaterialDesign.MaterialDesignIcons.ArrowUpward,
+                    PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text"),
+                    BoolToEnabledStringConverter.Convert(Account.DefaultDoesRoundGradesUp),
+                    ConfigureRoundGradesUp)
+            );
         }
 
         private View RenderOption(string icon, string title, string subtitle, Action action)

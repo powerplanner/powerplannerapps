@@ -26,12 +26,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            var layout = new LinearLayout
-            {
-                Margin = new Thickness(Theme.Current.PageMargin)
-            };
+            var views = new List<View>();
 
-            layout.Children.Add(new Switch
+            views.Add(new Switch
             {
                 Title = PowerPlannerResources.GetString("ClassPage_ToggleAverageGrades.Header"),
                 IsOn = VxValue.Create(_averageGrades.Value, isOn =>
@@ -44,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
             if (_hasUnsavedChanges || State == States.Applied)
             {
-                layout.Children.Add(new TextBlock
+                views.Add(new TextBlock
                 {
                     Text = PowerPlannerResources.GetString(_hasUnsavedChanges ? "String_Unsaved" : "String_Saved"),
                     Margin = new Thickness(0, 6, 0, 0),
@@ -53,19 +50,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 });
             }
 
-            layout.Children.Add(new TextBlock
+            views.Add(new TextBlock
             {
                 Margin = new Thickness(0, 12, 0, 0),
                 Text = PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpBody.Text"),
                 TextColor = Theme.Current.SubtleForegroundColor
             });
 
-            RenderApplyUI(layout);
+            RenderApplyUI(views);
 
-            return new ScrollView
-            {
-                Content = layout
-            };
+            return RenderGenericPopupContent(views);
         }
 
         protected override async Task Apply()

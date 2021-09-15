@@ -42,36 +42,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            var layout = new LinearLayout
+            var views = new List<View>()
             {
-                Margin = new Thickness(Theme.Current.PageMargin),
-                Children =
+                RenderRow(new TextBlock
                 {
-                    RenderRow(new TextBlock
+                    Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockName.Text"),
+                    FontWeight = FontWeights.Bold,
+                    WrapText = false
+                }, new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockWeight.Text"),
+                    FontWeight = FontWeights.Bold,
+                    WrapText = false
+                }, new TransparentContentButton
+                {
+                    Opacity = 0,
+                    Content = new FontIcon
                     {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockName.Text"),
-                        FontWeight = FontWeights.Bold,
-                        WrapText = false
-                    }, new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_TextBlockWeight.Text"),
-                        FontWeight = FontWeights.Bold,
-                        WrapText = false
-                    }, new TransparentContentButton
-                    {
-                        Opacity = 0,
-                        Content = new FontIcon
-                        {
-                            Glyph = MaterialDesign.MaterialDesignIcons.Close,
-                            FontSize = 20
-                        }
-                    })
-                }
+                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                        FontSize = 20
+                    }
+                })
             };
 
             foreach (var entry in WeightCategories)
             {
-                layout.Children.Add(RenderRow(new TextBox
+                views.Add(RenderRow(new TextBox
                 {
                     Text = VxValue.Create(entry.Name, v =>
                     {
@@ -97,14 +93,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                 }));
             }
 
-            layout.Children.Add(new Button
+            views.Add(new Button
             {
                 Text = PowerPlannerResources.GetString("ClassPage_ButtonAddWeightCategory.Content"),
                 Margin = new Thickness(0, 12, 0, 0),
                 Click = () => { AddWeightCategory(); }
             });
 
-            return new ScrollView(layout);
+            return RenderGenericPopupContent(views);
         }
 
         private static View RenderRow(View first, View second, View third)

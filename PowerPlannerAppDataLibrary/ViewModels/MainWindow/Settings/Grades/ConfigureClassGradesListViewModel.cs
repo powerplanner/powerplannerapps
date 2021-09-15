@@ -27,67 +27,59 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
-                {
-                    Margin = new Thickness(0, Theme.Current.PageMargin - 12, 0, Theme.Current.PageMargin - 12),
-                    Children =
+            return RenderGenericPopupContent(new Thickness(0, Theme.Current.PageMargin - 12, 0, Theme.Current.PageMargin - 12),
+                    RenderOption(
+                        MaterialDesign.MaterialDesignIcons.Star,
+                        PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
+                        CreditsToStringConverter.ConvertWithCredits(Class.Credits).ToLower(),
+                        ConfigureCredits),
+
+                    RenderOption(
+                        MaterialDesign.MaterialDesignIcons.FilterAlt,
+                        PowerPlannerResources.GetString("ConfigureClassGrades_Items_WeightCategories.Title"),
+                        PowerPlannerResources.GetString("ConfigureClassGrades_Items_WeightCategories.Subtitle"),
+                        ConfigureWeightCategories),
+
+                    RenderOption(
+                        MaterialDesign.MaterialDesignIcons.SwapHoriz,
+                        PowerPlannerResources.GetString("Settings_GradeOptions_ListItemGpaType.Title"),
+                        GpaTypeToStringConverter.Convert(Class.GpaType),
+                        ConfigureGpaType),
+
+                    RenderOption(
+                        MaterialDesign.MaterialDesignIcons.Calculate,
+                        PowerPlannerResources.GetString(Class.GpaType == PowerPlannerSending.GpaType.Standard ? "ConfigureClassGrades_Items_GradeScale.Title" : "Settings_GradeOptions_ListItemPassingGrade.Title"),
+                        Class.GpaType == PowerPlannerSending.GpaType.Standard ? PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Subtitle") : Class.PassingGrade.ToString("0.##%"),
+                        () =>
                         {
-                            RenderOption(
-                                MaterialDesign.MaterialDesignIcons.Star,
-                                PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
-                                CreditsToStringConverter.ConvertWithCredits(Class.Credits).ToLower(),
-                                ConfigureCredits),
+                            if (Class.GpaType == PowerPlannerSending.GpaType.Standard)
+                            {
+                                ConfigureGradeScale();
+                            }
+                            else
+                            {
+                                ConfigurePassingGrade();
+                            }
+                        }),
 
-                            RenderOption(
-                                MaterialDesign.MaterialDesignIcons.FilterAlt,
-                                PowerPlannerResources.GetString("ConfigureClassGrades_Items_WeightCategories.Title"),
-                                PowerPlannerResources.GetString("ConfigureClassGrades_Items_WeightCategories.Subtitle"),
-                                ConfigureWeightCategories),
+                    RenderOption(
+                        MaterialDesign.MaterialDesignIcons.Refresh,
+                        PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text"),
+                        BoolToEnabledStringConverter.Convert(Class.ShouldAverageGradeTotals),
+                        ConfigureAverageGrades),
 
-                            RenderOption(
-                                MaterialDesign.MaterialDesignIcons.SwapHoriz,
-                                PowerPlannerResources.GetString("Settings_GradeOptions_ListItemGpaType.Title"),
-                                GpaTypeToStringConverter.Convert(Class.GpaType),
-                                ConfigureGpaType),
+                    RenderOption(
+                        MaterialDesign.MaterialDesignIcons.ArrowUpward,
+                        PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text"),
+                        BoolToEnabledStringConverter.Convert(Class.DoesRoundGradesUp),
+                        ConfigureRoundGradesUp),
 
-                            RenderOption(
-                                MaterialDesign.MaterialDesignIcons.Calculate,
-                                PowerPlannerResources.GetString(Class.GpaType == PowerPlannerSending.GpaType.Standard ? "ConfigureClassGrades_Items_GradeScale.Title" : "Settings_GradeOptions_ListItemPassingGrade.Title"),
-                                Class.GpaType == PowerPlannerSending.GpaType.Standard ? PowerPlannerResources.GetString("ConfigureClassGrades_Items_GradeScale.Subtitle") : Class.PassingGrade.ToString("0.##%"),
-                                () =>
-                                {
-                                    if (Class.GpaType == PowerPlannerSending.GpaType.Standard)
-                                    {
-                                        ConfigureGradeScale();
-                                    }
-                                    else
-                                    {
-                                        ConfigurePassingGrade();
-                                    }
-                                }),
-
-                            RenderOption(
-                                MaterialDesign.MaterialDesignIcons.Refresh,
-                                PowerPlannerResources.GetString("ClassPage_TextBlockAverageGradesHelpHeader.Text"),
-                                BoolToEnabledStringConverter.Convert(Class.ShouldAverageGradeTotals),
-                                ConfigureAverageGrades),
-
-                            RenderOption(
-                                MaterialDesign.MaterialDesignIcons.ArrowUpward,
-                                PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpHeader.Text"),
-                                BoolToEnabledStringConverter.Convert(Class.DoesRoundGradesUp),
-                                ConfigureRoundGradesUp),
-
-                            RenderOption(
-                                MaterialDesign.MaterialDesignIcons.PublishedWithChanges,
-                                PowerPlannerResources.GetString("ConfigureClassGrades_Items_FinalGrade.Title"),
-                                BoolToEnabledStringConverter.Convert(Class.OverriddenGrade != PowerPlannerSending.Grade.UNGRADED || Class.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED),
-                                ConfigureOverrideFinalGradeGpa)
-                        }
-                }
-            };
+                    RenderOption(
+                        MaterialDesign.MaterialDesignIcons.PublishedWithChanges,
+                        PowerPlannerResources.GetString("ConfigureClassGrades_Items_FinalGrade.Title"),
+                        BoolToEnabledStringConverter.Convert(Class.OverriddenGrade != PowerPlannerSending.Grade.UNGRADED || Class.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED),
+                        ConfigureOverrideFinalGradeGpa)
+            );
         }
 
         private View RenderOption(string icon, string title, string subtitle, Action action)

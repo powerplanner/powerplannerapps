@@ -29,23 +29,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            var layout = new LinearLayout
+            var views = new List<View>()
             {
-                Margin = new Thickness(Theme.Current.PageMargin),
-                Children =
+                new GradeScaleEditorComponent(() => AllClasses, changed: MarkDirty)
                 {
-                    new GradeScaleEditorComponent(() => AllClasses, changed: MarkDirty)
-                    {
-                        InitialGradeScale = Account.DefaultGradeScale,
-                        IsEnabled = IsEnabled,
-                        ViewRef = view => _gradeScaleEditorComponent = view as GradeScaleEditorComponent
-                    }
+                    InitialGradeScale = Account.DefaultGradeScale,
+                    IsEnabled = IsEnabled,
+                    ViewRef = view => _gradeScaleEditorComponent = view as GradeScaleEditorComponent
                 }
             };
 
-            RenderApplyUI(layout);
+            RenderApplyUI(views);
 
-            return new ScrollView(layout);
+            return RenderGenericPopupContent(views);
         }
 
         protected override bool CanApply()

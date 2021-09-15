@@ -30,79 +30,71 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                Message != null ? new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Text = Message,
+                    FontSize = Theme.Current.CaptionFontSize,
+                    Margin = new Thickness(0, 0, 0, 16)
+                } : null,
+
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("LoginPage_TextBoxUsername.Header"),
+                    Text = VxValue.Create(Username, t => Username = t),
+                    InputScope = InputScope.Username,
+                    AutoFocus = true,
+                    IsEnabled = !IsLoggingInOnline
+                },
+
+                new PasswordBox
+                {
+                    Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
+                    Text = VxValue.Create(Password, t => Password = t),
+                    Margin = new Thickness(0, 16, 0, 0),
+                    IsEnabled = !IsLoggingInOnline
+                },
+
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString(IsLoggingInOnline ? "LoginPage_String_LoggingIn" : "WelcomePage_ButtonLogin.Content"),
+                    Click = () => _ = LoginAsync(),
+                    Margin = new Thickness(0, 24, 0, 0),
+                    IsEnabled = !IsLoggingInOnline
+                },
+
+                new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 24, 0, 0),
                     Children =
                     {
-                        Message != null ? new TextBlock
+                        new TextButton
                         {
-                            Text = Message,
-                            FontSize = Theme.Current.CaptionFontSize,
-                            Margin = new Thickness(0, 0, 0, 16)
-                        } : null,
-
-                        new TextBox
-                        {
-                            Header = PowerPlannerResources.GetString("LoginPage_TextBoxUsername.Header"),
-                            Text = VxValue.Create(Username, t => Username = t),
-                            InputScope = InputScope.Username,
-                            AutoFocus = true,
+                            Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotUsername.Text"),
+                            Click = ForgotUsername,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            Margin = new Thickness(0, 0, 12, 0),
                             IsEnabled = !IsLoggingInOnline
+                        }.LinearLayoutWeight(1),
+
+                        new Border
+                        {
+                            BackgroundColor = Theme.Current.SubtleForegroundColor,
+                            Width = 1
                         },
 
-                        new PasswordBox
+                        new TextButton
                         {
-                            Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
-                            Text = VxValue.Create(Password, t => Password = t),
-                            Margin = new Thickness(0, 16, 0, 0),
+                            Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
+                            Click = ForgotPassword,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            Margin = new Thickness(12, 0, 0, 0),
                             IsEnabled = !IsLoggingInOnline
-                        },
-
-                        new AccentButton
-                        {
-                            Text = PowerPlannerResources.GetString(IsLoggingInOnline ? "LoginPage_String_LoggingIn" : "WelcomePage_ButtonLogin.Content"),
-                            Click = () => _ = LoginAsync(),
-                            Margin = new Thickness(0, 24, 0, 0),
-                            IsEnabled = !IsLoggingInOnline
-                        },
-
-                        new LinearLayout
-                        {
-                            Orientation = Orientation.Horizontal,
-                            Margin = new Thickness(0, 24, 0, 0),
-                            Children =
-                            {
-                                new TextButton
-                                {
-                                    Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotUsername.Text"),
-                                    Click = ForgotUsername,
-                                    HorizontalAlignment = HorizontalAlignment.Right,
-                                    Margin = new Thickness(0, 0, 12, 0),
-                                    IsEnabled = !IsLoggingInOnline
-                                }.LinearLayoutWeight(1),
-
-                                new Border
-                                {
-                                    BackgroundColor = Theme.Current.SubtleForegroundColor,
-                                    Width = 1
-                                },
-
-                                new TextButton
-                                {
-                                    Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
-                                    Click = ForgotPassword,
-                                    HorizontalAlignment = HorizontalAlignment.Left,
-                                    Margin = new Thickness(12, 0, 0, 0),
-                                    IsEnabled = !IsLoggingInOnline
-                                }.LinearLayoutWeight(1)
-                            }
-                        }
+                        }.LinearLayoutWeight(1)
                     }
                 }
-            };
+            );
         }
 
         private const string STORED_PASS = "Stored password, hidden for security";

@@ -22,28 +22,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_SoundEffects_Description.Text")
-                        },
+                    Text = PowerPlannerResources.GetString("Settings_SoundEffects_Description.Text")
+                },
 
-                        new Switch
-                        {
-                            Title = PowerPlannerResources.GetString("Settings_MainPage_Sound.Title"),
-                            IsOn = VxValue.Create(_isOn.Value, IsOnChanged),
-                            IsEnabled = !_saving.Value,
-                            Margin = new Thickness(0, 24, 0, 0)
-                        }
-                    }
+                new Switch
+                {
+                    Title = PowerPlannerResources.GetString("Settings_MainPage_Sound.Title"),
+                    IsOn = VxValue.Create(_isOn.Value, IsOnChanged),
+                    IsEnabled = !_saving.Value,
+                    Margin = new Thickness(0, 24, 0, 0)
                 }
-            };
+            );
         }
 
         private async void IsOnChanged(bool isOn)

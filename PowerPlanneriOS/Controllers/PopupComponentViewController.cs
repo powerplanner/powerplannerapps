@@ -32,10 +32,28 @@ namespace PowerPlanneriOS.Controllers
                 NavItem.RightBarButtonItems = commands.Select(i => new UIBarButtonItem(i.Glyph.ToUIBarButtonSystemItem(), (obj, args) => i.Action())).ToArray();
             }
 
+            UpdateNookInsets();
+
             _nativeComponent = ViewModel.Render(AfterViewChanged);
             _nativeComponent.TranslatesAutoresizingMaskIntoConstraints = false;
             ContentView.Add(_nativeComponent);
             _nativeComponent.StretchWidthAndHeight(ContentView);
+        }
+
+        /// <summary>
+        /// This method only exists on iOS 11+, not sure if this class will still work on iOS 10/9, but not sure how to dynamically overload a method...
+        /// </summary>
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            if (ViewModel != null)
+            {
+                UpdateNookInsets();
+            }
+        }
+
+        private void UpdateNookInsets()
+        {
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
         }
 
         private void AfterViewChanged(UIView view)

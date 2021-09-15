@@ -28,8 +28,13 @@ namespace Vx.iOS
             return null;
         }
 
-        public static UIView ConfigureForVerticalScrolling(this UIView view, UIScrollView parentScrollView, float left = 0, float top = 0, float right = 0, float bottom = 0)
+        public static UIView ConfigureForVerticalScrolling(this UIView view, UIScrollView parentScrollView, float left = 0, float top = 0, float right = 0, float bottom = 0, bool removeExisting = false)
         {
+            if (removeExisting)
+            {
+                parentScrollView.RemoveAllConstraintsAffectingSubview(view);
+            }
+
             // https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/WorkingwithScrollViews.html#//apple_ref/doc/uid/TP40010853-CH24-SW1
 
             // This define's the scroll view's content area, but doesn't cause the width to match the scroll viewer's width, width and height are still auto at this point
