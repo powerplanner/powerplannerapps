@@ -29,5 +29,10 @@ namespace InterfacesiOS.Helpers
         /// https://developer.apple.com/documentation/uikit/uitraitcollection/1651063-userinterfacestyle
         /// </summary>
         public static bool IsUserInterfaceStyleSupported => CheckSystemVersion(12, 0);
+
+        /// <summary>
+        /// https://developer.apple.com/documentation/uikit/uiview/2891103-safeareainsets
+        /// </summary>
+        public static bool IsSafeAreaInsetsSupported => CheckSystemVersion(11, 0);
     }
 }
