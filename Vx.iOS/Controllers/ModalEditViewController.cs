@@ -26,6 +26,7 @@ using InterfacesiOS.Views;
 using Foundation;
 using ToolsPortable;
 using InterfacesiOS.Helpers;
+using System.Globalization;
 
 namespace InterfacesiOS.Controllers
 {
@@ -152,7 +153,7 @@ namespace InterfacesiOS.Controllers
 
             var safeAreaInsets = SdkSupportHelper.IsSafeAreaInsetsSupported ? _parent.View.SafeAreaInsets : new UIEdgeInsets();
 
-            header.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-{Math.Max(16, safeAreaInsets.Left)}-[cancel][header][done]-{Math.Max(16, safeAreaInsets.Right)}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            header.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-{Math.Max(16, safeAreaInsets.Left).ToString(CultureInfo.InvariantCulture)}-[cancel][header][done]-{Math.Max(16, safeAreaInsets.Right).ToString(CultureInfo.InvariantCulture)}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "cancel", _cancelButton,
                 "header", _headerLabel,
                 "done", _doneButton));
@@ -160,7 +161,7 @@ namespace InterfacesiOS.Controllers
             _dialogView.AddSubview(header);
             header.StretchWidth(_dialogView);
             ContentView.StretchWidth(_dialogView);
-            _dialogView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-{safeAreaInsets.Top}-[header(40)][content]-{safeAreaInsets.Bottom}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            _dialogView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-{safeAreaInsets.Top.ToString(CultureInfo.InvariantCulture)}-[header(40)][content]-{safeAreaInsets.Bottom.ToString(CultureInfo.InvariantCulture)}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "header", header,
                 "content", ContentView));
 

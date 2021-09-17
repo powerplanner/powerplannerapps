@@ -1,6 +1,7 @@
 ﻿using Foundation;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using UIKit;
@@ -23,14 +24,14 @@ namespace Vx.iOS.Views
         }
         public static UIView StretchWidth(this UIView view, UIView parentView, float left = 0, float right = 0)
         {
-            parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-({left})-[view]-({right})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
+            parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-({left.ToString(CultureInfo.InvariantCulture)})-[view]-({right.ToString(CultureInfo.InvariantCulture)})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
 
             return view;
         }
 
         public static UIView StretchHeight(this UIView view, UIView parentView, float top = 0, float bottom = 0)
         {
-            parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-({top})-[view]-({bottom})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
+            parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-({top.ToString(CultureInfo.InvariantCulture)})-[view]-({bottom.ToString(CultureInfo.InvariantCulture)})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
 
             return view;
         }
