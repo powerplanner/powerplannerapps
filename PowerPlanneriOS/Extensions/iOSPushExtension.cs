@@ -45,14 +45,18 @@ namespace PowerPlanneriOS.Extensions
         public static void RegisteredForRemoteNotifications(string channel)
         {
             System.Diagnostics.Debug.WriteLine("PushChannel: " + channel);
-            _channelTaskCompletionSource.SetResult(channel);
+
+            if (!_channelTaskCompletionSource.TrySetResult(channel))
+            {
+                _getPushChannelUriTask = Task.FromResult(channel);
+            }
         }
 
         public static void FailedToRegisterForRemoteNotifications(string error)
         {
             TelemetryExtension.Current?.TrackException(new Exception(error));
 
-            _channelTaskCompletionSource.SetResult(null);
+            _channelTaskCompletionSource.TrySetResult(null);
         }
     }
 }
