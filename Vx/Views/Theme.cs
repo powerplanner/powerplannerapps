@@ -62,11 +62,11 @@ namespace Vx.Views
         /// </summary>
         public float PageMargin => _pageMargin.Value;
 
-        public float CaptionFontSize => 12;
+        public virtual float CaptionFontSize => 12;
 
-        public float BodyFontSize => 14;
+        public virtual float BodyFontSize => 14;
 
-        public float TitleFontSize => 24;
+        public virtual float TitleFontSize => 24;
 
         private static Lazy<float> _marginModifier = new Lazy<float>(() =>
         {
