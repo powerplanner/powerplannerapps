@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using BareMvvm.Core.ViewModels;
 using InterfacesiOS.Controllers;
 using InterfacesiOS.Views;
+using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using PowerPlanneriOS.Helpers;
 using ToolsPortable;
 using UIKit;
 using Vx.iOS;
@@ -26,18 +30,91 @@ namespace PowerPlanneriOS.Controllers
                 BackButtonText = backOverride.Item1;
             }
 
-            var commands = ViewModel.Commands;
-            if (commands != null && commands.Length > 0)
-            {
-                NavItem.RightBarButtonItems = commands.Select(i => new UIBarButtonItem(i.Glyph.ToUIBarButtonSystemItem(), (obj, args) => i.Action())).ToArray();
-            }
-
+            UpdateRightBarButtonItems();
             UpdateNookInsets();
 
             _nativeComponent = ViewModel.Render(AfterViewChanged);
             _nativeComponent.TranslatesAutoresizingMaskIntoConstraints = false;
             ContentView.Add(_nativeComponent);
             _nativeComponent.StretchWidthAndHeight(ContentView);
+
+            ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+        }
+
+        private void UpdateRightBarButtonItems()
+        {
+            NavItem.RightBarButtonItems = GetRightBarButtonItems().ToArray();
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewModel.Title):
+                    Title = ViewModel.Title;
+                    break;
+
+                case nameof(ViewModel.Commands):
+                case nameof(ViewModel.SecondaryCommands):
+                    UpdateRightBarButtonItems();
+                    break;
+            }
+        }
+
+        private IEnumerable<UIBarButtonItem> GetRightBarButtonItems()
+        {
+            if (ViewModel.SecondaryCommands != null && ViewModel.SecondaryCommands.Length > 0)
+            {
+                yield return new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIBarButtonItemStyle.Plain, new WeakEventHandler(ButtonMore_Clicked).Handler);
+            }
+
+            if (ViewModel.Commands != null)
+            {
+                foreach (var command in ViewModel.Commands)
+                {
+                    yield return new UIBarButtonItem(command.Glyph.ToUIBarButtonSystemItem(), (obj, args) => command.Action());
+                }
+            }
+        }
+
+        private void ButtonMore_Clicked(object sender, EventArgs e)
+        {
+            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
+            UIAlertController actionSheetMoreOptions = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+
+            foreach (var option in ViewModel.SecondaryCommands)
+            {
+                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == PopupCommandStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
+                {
+                    if (option.UseQuickConfirmDelete)
+                    {
+                        ConfirmDelete(option.Action);
+                    }
+                    else
+                    {
+                        option.Action();
+                    }
+                }));
+            }
+
+            actionSheetMoreOptions.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            // Required for iPad - You must specify a source for the Action Sheet since it is
+            // displayed as a popover
+            UIPopoverPresentationController presentationPopover = actionSheetMoreOptions.PopoverPresentationController;
+            if (presentationPopover != null)
+            {
+                presentationPopover.BarButtonItem = NavItem.RightBarButtonItems.First();
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+            }
+
+            // Display the alert
+            this.PresentViewController(actionSheetMoreOptions, true, null);
+        }
+
+        private void ConfirmDelete(Action actualDeleteAction)
+        {
+            PowerPlannerUIHelper.ConfirmDeleteQuick(this, NavItem.RightBarButtonItems.First(), actualDeleteAction, PowerPlannerResources.GetString("String_YesDelete"));
         }
 
         /// <summary>

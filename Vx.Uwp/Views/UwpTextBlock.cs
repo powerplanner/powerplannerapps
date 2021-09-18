@@ -25,6 +25,7 @@ namespace Vx.Uwp.Views
             View.FontSize = newView.FontSize;
             View.TextDecorations = newView.Strikethrough ? Windows.UI.Text.TextDecorations.Strikethrough : Windows.UI.Text.TextDecorations.None;
             View.TextAlignment = newView.TextAlignment.ToUwpTextAlignment();
+            View.IsTextSelectionEnabled = newView.IsTextSelectionEnabled;
         }
     }
 }

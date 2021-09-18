@@ -25,7 +25,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
         {
             Commands = new PopupCommand[]
             {
-                PopupCommand.Edit(Edit),
+                PopupCommand.Edit(Edit)
+            };
+
+            SecondaryCommands = new PopupCommand[]
+            {
                 PopupCommand.DeleteWithQuickConfirm(Delete)
             };
         }
@@ -37,14 +41,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                 new TextBlock
                 {
                     Text = Grade.Name,
-                    FontSize = Theme.Current.TitleFontSize
+                    FontSize = Theme.Current.TitleFontSize,
+                    IsTextSelectionEnabled = true
                 },
 
                 new TextBlock
                 {
                     Text = Grade.GradeSubtitle,
                     TextColor = Grade.WeightCategory.Class.Color.ToColor(),
-                    Margin = new Thickness(0, 3, 0, 0)
+                    Margin = new Thickness(0, 3, 0, 0),
+                    IsTextSelectionEnabled = true
                 },
 
                 new TextBlock
@@ -52,7 +58,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                     Text = Grade.WeightCategory.Name + " - " + Grade.Date.ToLongDateString(),
                     TextColor = Theme.Current.SubtleForegroundColor,
                     FontSize = Theme.Current.CaptionFontSize,
-                    Margin = new Thickness(0, 3, 0, 0)
+                    Margin = new Thickness(0, 3, 0, 0),
+                    IsTextSelectionEnabled = true
                 },
 
                 Grade.IsDropped ? new TextBlock
@@ -62,10 +69,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                     Margin = new Thickness(0, 18, 0, 0)
                 } : null,
 
-                new TextBlock
+                new HyperlinkTextBlock
                 {
                     Text = Grade.Details,
-                    Margin = new Thickness(0, 18, 0, 0)
+                    Margin = new Thickness(0, 18, 0, 0),
+                    IsTextSelectionEnabled = true
                 }
 
             );

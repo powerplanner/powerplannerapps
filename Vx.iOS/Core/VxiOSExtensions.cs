@@ -41,6 +41,11 @@ namespace Vx.iOS
 
                 if (view is Vx.Views.TextBlock)
                 {
+                    if (view is Vx.Views.HyperlinkTextBlock)
+                    {
+                        return new iOSHyperlinkTextBlock();
+                    }
+
                     return new iOSTextBlock();
                 }
 
