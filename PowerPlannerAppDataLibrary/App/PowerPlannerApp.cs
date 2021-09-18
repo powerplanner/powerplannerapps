@@ -507,9 +507,9 @@ namespace PowerPlannerAppDataLibrary.App
             }
         }
 
-        public static async Task<bool> ConfirmDeleteAsync(string message, string title)
+        public static async Task<bool> ConfirmDeleteAsync(string message = null, string title = null)
         {
-            return await new PortableMessageDialog(message, title, PowerPlannerResources.GetString("MenuItemDelete"), PowerPlannerResources.GetString("MenuItemCancel")).ShowForResultAsync();
+            return await new PortableMessageDialog(message ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemMessage"), title ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemHeader"), PowerPlannerResources.GetString("MenuItemDelete"), PowerPlannerResources.GetString("MenuItemCancel")).ShowForResultAsync();
         }
     }
 }

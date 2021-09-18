@@ -10,10 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
 {
-    public class AddHolidayViewModel : BaseMainScreenViewModelChild
+    public class AddHolidayViewModel : PopupComponentViewModel
     {
         public enum OperationState { Adding, Editing }
 
@@ -44,15 +45,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
 
         public AddParameter AddParams { get; private set; }
 
-        private AddHolidayViewModel(BaseViewModel parent) : base(parent)
+        private AddHolidayViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
+            State = state;
+
+            base.Title = PowerPlannerResources.GetString(state == OperationState.Adding ? "String_AddHoliday" : "String_EditHoliday");
+
+            if (State == OperationState.Editing)
+            {
+                Commands = new PopupCommand[]
+                {
+                    PopupCommand.Save(Save),
+                    PopupCommand.Delete(ConfirmDelete)
+                };
+            }
+            else
+            {
+                PrimaryCommand = PopupCommand.Save(Save);
+            }
         }
 
         public static AddHolidayViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
         {
-            return new AddHolidayViewModel(parent)
+            return new AddHolidayViewModel(parent, OperationState.Adding)
             {
-                State = OperationState.Adding,
                 AddParams = addParams,
                 _startDate = addParams.StartDate.Date,
                 _endDate = addParams.EndDate.Date
@@ -61,9 +77,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
 
         public static AddHolidayViewModel CreateForEdit(BaseViewModel parent, ViewItemHoliday holidayToEdit)
         {
-            var viewModel = new AddHolidayViewModel(parent)
+            var viewModel = new AddHolidayViewModel(parent, OperationState.Editing)
             {
-                State = OperationState.Editing,
                 HolidayToEdit = holidayToEdit,
                 Name = holidayToEdit.Name
             };
@@ -80,6 +95,43 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
             viewModel.ListenToItem(holidayToEdit.Identifier).Deleted += viewModel.Holiday_Deleted;
 
             return viewModel;
+        }
+
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("AddHolidayView_TextBoxName.Header"),
+                    Text = VxValue.Create(Name, v => Name = v),
+                    AutoFocus = State == OperationState.Adding,
+                    OnSubmit = Save
+                },
+
+                new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Children =
+                    {
+                        new DatePicker
+                        {
+                            Header = PowerPlannerResources.GetString("AddHolidayView_DatePickerStart.Header"),
+                            Value = VxValue.Create<DateTime?>(StartDate, v => StartDate = v.GetValueOrDefault(DateTime.Today)),
+                            Margin = new Thickness(0, 0, 9, 0)
+                        }.LinearLayoutWeight(1),
+
+                        new DatePicker
+                        {
+                            Header = PowerPlannerResources.GetString("AddHolidayView_DatePickerEnd.Header"),
+                            Value = VxValue.Create<DateTime?>(EndDate, v => EndDate = v.GetValueOrDefault(DateTime.Today)),
+                            Margin = new Thickness(9, 0, 0, 0)
+                        }.LinearLayoutWeight(1)
+                    }
+                }
+
+            );
         }
 
         private void Holiday_Deleted(object sender, EventArgs e)
@@ -200,6 +252,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public async void ConfirmDelete()
+        {
+            if (await PowerPlannerApp.ConfirmDeleteAsync())
+            {
+                Delete();
             }
         }
 

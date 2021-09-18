@@ -120,7 +120,6 @@
     <Compile Include="App\Secrets.cs" />
     <Compile Include="Controllers\AddClassViewController.cs" />
     <Compile Include="Controllers\AddGradeViewController.cs" />
-    <Compile Include="Controllers\AddHolidayViewController.cs" />
     <Compile Include="Controllers\AddTaskOrEventViewController.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />
     <Compile Include="Controllers\AgendaViewController.cs" />
