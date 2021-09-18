@@ -73,6 +73,9 @@ namespace Vx.iOS.Views
                 changed = true;
             }
 
+            changed = View.SetHorizontalAlignment(newView.HorizontalAlignment) || changed;
+            changed = View.SetVerticalAlignment(newView.VerticalAlignment) || changed;
+
             ReconcileList(
                 oldView?.Children,
                 newView.Children,
@@ -174,6 +177,42 @@ namespace Vx.iOS.Views
                     _orientation = value;
                 }
             }
+        }
+
+        public HorizontalAlignment HorizontalAlignment { get; private set; }
+
+        /// <summary>
+        /// Sets the horizontal alignment of the linearlayout itself
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool SetHorizontalAlignment(HorizontalAlignment value)
+        {
+            if (HorizontalAlignment != value)
+            {
+                HorizontalAlignment = value;
+                return true;
+            }
+
+            return false;
+        }
+
+        public VerticalAlignment VerticalAlignment { get; private set; }
+
+        /// <summary>
+        /// Sets the vertical alignment of the linearlayout itself
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool SetVerticalAlignment(VerticalAlignment value)
+        {
+            if (VerticalAlignment != value)
+            {
+                VerticalAlignment = value;
+                return true;
+            }
+
+            return false;
         }
 
         public bool SetWidthAndHeight(int index, float width, float height)
@@ -367,6 +406,9 @@ namespace Vx.iOS.Views
                 RightConstraint = null;
                 BottomConstraint = null;
                 WidthConstraint = null;
+                HeightConstraint = null;
+                CenterXConstraint = null;
+                CenterYConstraint = null;
             }
 
             public ArrangedSubview(UILinearLayout parent, UIView subview, Thickness margin, float weight)
@@ -461,6 +503,21 @@ namespace Vx.iOS.Views
                             NSLayoutAttribute.Right,
                             multiplier: 1,
                             constant: Margin.Right);
+                    }
+
+                    if (HorizontalAlignment == HorizontalAlignment.Center)
+                    {
+                        CenterXConstraint = NSLayoutConstraint.Create(
+                            Subview,
+                            NSLayoutAttribute.CenterX,
+                            NSLayoutRelation.Equal,
+                            Parent,
+                            NSLayoutAttribute.CenterX,
+                            1, 0);
+                    }
+                    else
+                    {
+                        CenterXConstraint = null;
                     }
                 }
                 else // Horizontal
@@ -595,7 +652,7 @@ namespace Vx.iOS.Views
                     BottomConstraint = NSLayoutConstraint.Create(
                         Parent,
                         NSLayoutAttribute.Bottom,
-                        NSLayoutRelation.Equal,
+                        (usingWeights || Parent.VerticalAlignment != VerticalAlignment.Stretch) ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
                         Subview,
                         NSLayoutAttribute.Bottom,
                         multiplier: 1,
@@ -606,7 +663,7 @@ namespace Vx.iOS.Views
                     RightConstraint = NSLayoutConstraint.Create(
                         Parent,
                         NSLayoutAttribute.Right,
-                        NSLayoutRelation.Equal,
+                        (usingWeights || Parent.HorizontalAlignment != HorizontalAlignment.Stretch) ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
                         Subview,
                         NSLayoutAttribute.Right,
                         multiplier: 1,
