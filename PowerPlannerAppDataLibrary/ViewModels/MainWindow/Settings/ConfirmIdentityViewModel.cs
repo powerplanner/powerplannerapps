@@ -39,46 +39,38 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_ConfirmIdentitiyPage_Description.Text")
-                        },
+                    Text = PowerPlannerResources.GetString("Settings_ConfirmIdentitiyPage_Description.Text")
+                },
 
-                        new PasswordBox
-                        {
-                            Text = VxValue.Create(Password, t => { Password = t; IncorrectPassword = false; }),
-                            Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
-                            PlaceholderText = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_TextBoxCurrentPassword.PlaceholderText"),
-                            Margin = new Thickness(0, 12, 0, 0),
-                            AutoFocus = true,
-                            OnSubmit = Continue,
-                            ValidationState = IncorrectPassword ? InputValidationState.Invalid(PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_Errors_IncorrectPassword")) : null
-                        },
+                new PasswordBox
+                {
+                    Text = VxValue.Create(Password, t => { Password = t; IncorrectPassword = false; }),
+                    Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
+                    PlaceholderText = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_TextBoxCurrentPassword.PlaceholderText"),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    AutoFocus = true,
+                    OnSubmit = Continue,
+                    ValidationState = IncorrectPassword ? InputValidationState.Invalid(PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_Errors_IncorrectPassword")) : null
+                },
 
-                        ShowForgotPassword ? new TextButton
-                        {
-                            Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
-                            Margin = new Thickness(0, 6, 0, 0),
-                            Click = ForgotPassword,
-                            HorizontalAlignment = HorizontalAlignment.Left
-                        } : null,
+                ShowForgotPassword ? new TextButton
+                {
+                    Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
+                    Margin = new Thickness(0, 6, 0, 0),
+                    Click = ForgotPassword,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                } : null,
 
-                        new AccentButton
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_ButtonContinue.Content"),
-                            Click = Continue,
-                            Margin = new Thickness(0, 12, 0, 0)
-                        }
-                    }
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_ConfirmIdentityPage_ButtonContinue.Content"),
+                    Click = Continue,
+                    Margin = new Thickness(0, 12, 0, 0)
                 }
-            };
+            );
         }
 
         public string Password { get => GetState<string>(); set => SetState(value); }

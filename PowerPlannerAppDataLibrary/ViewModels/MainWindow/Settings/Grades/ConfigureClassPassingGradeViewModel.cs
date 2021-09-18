@@ -37,32 +37,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            return new LinearLayout
-            {
-                Margin = new Thickness(Theme.Current.PageMargin),
-                Children =
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("Settings_GradeOptions_ListItemPassingGrade.Title"),
-                        FontWeight = FontWeights.Bold,
-                        WrapText = false
-                    },
+                    Text = PowerPlannerResources.GetString("Settings_GradeOptions_ListItemPassingGrade.Title"),
+                    FontWeight = FontWeights.Bold,
+                    WrapText = false
+                },
 
-                    new NumberTextBox
-                    {
-                        Number = VxValue.Create(PassingGrade, v => PassingGrade = v),
-                        PlaceholderText = PowerPlannerResources.GetExamplePlaceholderString(60.ToString())
-                    },
+                new NumberTextBox
+                {
+                    Number = VxValue.Create(PassingGrade, v => PassingGrade = v),
+                    PlaceholderText = PowerPlannerResources.GetExamplePlaceholderString(60.ToString())
+                },
 
-                    new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("Settings_GradeOptions_PassingGrade_Explanation.Text"),
-                        TextColor = Theme.Current.SubtleForegroundColor,
-                        Margin = new Thickness(0, 12, 0, 0)
-                    }
+                new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("Settings_GradeOptions_PassingGrade_Explanation.Text"),
+                    TextColor = Theme.Current.SubtleForegroundColor,
+                    Margin = new Thickness(0, 12, 0, 0)
                 }
-            };
+            );
         }
 
         public void Save()

@@ -52,7 +52,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            var layout = new LinearLayout();
+            var layout = new LinearLayout()
+            {
+                Margin = NookInsets
+            };
 
             if (IsViewYearsAndSemestersVisible)
             {

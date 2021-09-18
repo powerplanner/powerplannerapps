@@ -35,40 +35,35 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            return new LinearLayout
-            {
-                Margin = new Thickness(Theme.Current.PageMargin),
-                Children =
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditRoundGradesUpForThisClass")
-                    },
+                    Text = PowerPlannerResources.GetString("ClassPage_EditRoundGradesUpForThisClass")
+                },
 
-                    new TextButton
-                    {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditForAll"),
-                        Click = EditDefaultRoundGradesUp,
-                        Margin = new Thickness(0, 0, 0, 12),
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        IsEnabled = _isEnabled
-                    },
+                new TextButton
+                {
+                    Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditForAll"),
+                    Click = EditDefaultRoundGradesUp,
+                    Margin = new Thickness(0, 0, 0, 12),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    IsEnabled = _isEnabled
+                },
 
-                    new Switch
-                    {
-                        Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
-                        IsOn = VxValue.Create(_roundGradesUp.Value, Save),
-                        IsEnabled = _isEnabled
-                    },
+                new Switch
+                {
+                    Title = PowerPlannerResources.GetString("ClassPage_ToggleRoundGradesUp.Header"),
+                    IsOn = VxValue.Create(_roundGradesUp.Value, Save),
+                    IsEnabled = _isEnabled
+                },
 
-                    new TextBlock
-                    {
-                        Margin = new Thickness(0, 12, 0, 0),
-                        Text = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpBody.Text"),
-                        TextColor = Theme.Current.SubtleForegroundColor
-                    }
+                new TextBlock
+                {
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Text = PowerPlannerResources.GetString("ClassPage_TextBlockRoundGradesUpHelpBody.Text"),
+                    TextColor = Theme.Current.SubtleForegroundColor
                 }
-            };
+            );
         }
 
         public override void OnViewFocused()

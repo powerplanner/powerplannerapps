@@ -67,34 +67,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         private GradeScaleEditorComponent _gradeScaleEditorComponent;
         protected override View Render()
         {
-            var layout = new LinearLayout
-            {
-                Margin = new Thickness(Theme.Current.PageMargin),
-                Children =
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditGradeScaleForThisClass")
-                    },
+                    Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditGradeScaleForThisClass")
+                },
 
-                    new TextButton
-                    {
-                        Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditForAll"),
-                        Click = EditDefaultGradeScale,
-                        Margin = new Thickness(0, 0, 0, 12),
-                        HorizontalAlignment = HorizontalAlignment.Left
-                    },
+                new TextButton
+                {
+                    Text = PowerPlannerResources.GetString("ClassPage_EditGrades_EditForAll"),
+                    Click = EditDefaultGradeScale,
+                    Margin = new Thickness(0, 0, 0, 12),
+                    HorizontalAlignment = HorizontalAlignment.Left
+                },
 
-                    new GradeScaleEditorComponent(() => _allClasses.Value)
-                    {
-                        InitialGradeScale = Class.GradeScales,
-                        IsEnabled = IsEnabled,
-                        ViewRef = view => _gradeScaleEditorComponent = view as GradeScaleEditorComponent
-                    }
+                new GradeScaleEditorComponent(() => _allClasses.Value)
+                {
+                    InitialGradeScale = Class.GradeScales,
+                    IsEnabled = IsEnabled,
+                    ViewRef = view => _gradeScaleEditorComponent = view as GradeScaleEditorComponent
                 }
-            };
-
-            return new ScrollView(layout);
+            );
         }
 
         private void EditDefaultGradeScale()

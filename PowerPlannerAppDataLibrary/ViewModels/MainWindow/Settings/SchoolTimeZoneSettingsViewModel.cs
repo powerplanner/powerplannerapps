@@ -33,45 +33,37 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_Description.Text")
-                        },
+                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_Description.Text")
+                },
 
-                        new ComboBox
-                        {
-                            Header = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ComboBoxTimeZone.Header"),
-                            Items = AvailableTimeZones,
-                            SelectedItem = VxValue.Create<object>(SelectedSchoolTimeZone, v => SelectedSchoolTimeZone = v as TimeZoneInfo),
-                            IsEnabled = IsEnabled,
-                            Margin = new Thickness(0, 18, 0, 0)
-                        },
+                new ComboBox
+                {
+                    Header = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ComboBoxTimeZone.Header"),
+                    Items = AvailableTimeZones,
+                    SelectedItem = VxValue.Create<object>(SelectedSchoolTimeZone, v => SelectedSchoolTimeZone = v as TimeZoneInfo),
+                    IsEnabled = IsEnabled,
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
 
-                        new AccentButton
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ButtonSave.Content"),
-                            IsEnabled = IsEnabled,
-                            Click = Save,
-                            Margin = new Thickness(0, 18, 0, 0)
-                        },
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ButtonSave.Content"),
+                    IsEnabled = IsEnabled,
+                    Click = Save,
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
 
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_RestartNote.Text"),
-                            FontSize = Theme.Current.CaptionFontSize,
-                            TextColor = Theme.Current.SubtleForegroundColor,
-                            Margin = new Thickness(0, 6, 0, 0)
-                        }
-                    }
+                new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_RestartNote.Text"),
+                    FontSize = Theme.Current.CaptionFontSize,
+                    TextColor = Theme.Current.SubtleForegroundColor,
+                    Margin = new Thickness(0, 6, 0, 0)
                 }
-            };
+            );
         }
 
         private bool _isEnabled;

@@ -41,25 +41,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            return new LinearLayout
-            {
-                Margin = new Thickness(Theme.Current.PageMargin),
-                Children =
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    new TextBlock
-                    {
-                        Text = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
-                        FontWeight = FontWeights.Bold,
-                        WrapText = false
-                    },
+                    Text = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.Header"),
+                    FontWeight = FontWeights.Bold,
+                    WrapText = false
+                },
 
-                    new NumberTextBox
-                    {
-                        Number = VxValue.Create(Credits, v => Credits = v),
-                        PlaceholderText = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.PlaceholderText")
-                    }
+                new NumberTextBox
+                {
+                    Number = VxValue.Create(Credits, v => Credits = v),
+                    PlaceholderText = PowerPlannerResources.GetString("ClassPage_TextBoxEditCredits.PlaceholderText")
                 }
-            };
+            );
         }
 
         public void Save()

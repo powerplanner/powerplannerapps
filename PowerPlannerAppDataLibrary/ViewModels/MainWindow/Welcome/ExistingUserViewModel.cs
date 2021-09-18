@@ -19,34 +19,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_Message.Text")
-                        },
+                    Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_Message.Text")
+                },
 
-                        new AccentButton
-                        {
-                            Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_ButtonHasAccount.Content"),
-                            Margin = new Thickness(0, 24, 0, 0),
-                            Click = HasAccount
-                        },
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_ButtonHasAccount.Content"),
+                    Margin = new Thickness(0, 24, 0, 0),
+                    Click = HasAccount
+                },
 
-                        new AccentButton
-                        {
-                            Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_ButtonNoAccount.Content"),
-                            Margin = new Thickness(0, 12, 0, 0),
-                            Click = NoAccount
-                        }
-                    }
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Welcome_ExistingUserPage_ButtonNoAccount.Content"),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    Click = NoAccount
                 }
-            };
+            );
         }
 
         public void HasAccount()
