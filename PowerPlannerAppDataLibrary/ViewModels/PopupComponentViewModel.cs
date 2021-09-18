@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using Vx.Views;
 
@@ -104,6 +105,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels
                 Text = PowerPlannerResources.GetString("MenuItemDelete"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
                 Action = action
+            };
+        }
+
+        public static PopupCommand DeleteWithQuickConfirm(Action actualDeleteAction)
+        {
+            return new PopupCommand
+            {
+                Text = PowerPlannerResources.GetString("MenuItemDelete"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                Action = async () =>
+                {
+                    if (await PowerPlannerApp.ConfirmDeleteAsync())
+                    {
+                        actualDeleteAction();
+                    }
+                }
+            };
+        }
+
+        public static PopupCommand Edit(Action action)
+        {
+            return new PopupCommand
+            {
+                Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Edit,
+                Action = delegate { action?.Invoke(); }
             };
         }
     }

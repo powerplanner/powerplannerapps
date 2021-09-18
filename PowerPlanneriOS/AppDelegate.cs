@@ -81,7 +81,6 @@ namespace PowerPlanneriOS
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
                 { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventViewController) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsViewController) },
-                { typeof(ViewGradeViewModel), typeof(ViewGradeViewController) },
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) }

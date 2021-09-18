@@ -209,6 +209,9 @@ namespace Vx.iOS
                 case MaterialDesign.MaterialDesignIcons.Delete:
                     return UIBarButtonSystemItem.Trash;
 
+                case MaterialDesign.MaterialDesignIcons.Edit:
+                    return UIBarButtonSystemItem.Edit;
+
                 default:
                     return UIBarButtonSystemItem.Action;
             }

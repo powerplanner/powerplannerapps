@@ -138,7 +138,6 @@
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsViewController.cs" />
     <Compile Include="Controllers\SyncErrorsViewController.cs" />
-    <Compile Include="Controllers\ViewGradeViewController.cs" />
     <Compile Include="Controllers\ViewTaskOrEventViewController.cs" />
     <Compile Include="Extensions\iOSEmailExtension.cs" />
     <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />

@@ -10,16 +10,65 @@ using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using Vx.Views;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
-    public class ViewGradeViewModel : BaseMainScreenViewModelChild
+    public class ViewGradeViewModel : PopupComponentViewModel
     {
+        [VxSubscribe]
         public BaseViewItemMegaItem Grade { get; private set; }
         public bool IsInWhatIfMode { get; private set; }
 
         public ViewGradeViewModel(BaseViewModel parent) : base(parent)
         {
+            Commands = new PopupCommand[]
+            {
+                PopupCommand.Edit(Edit),
+                PopupCommand.DeleteWithQuickConfirm(Delete)
+            };
+        }
+
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new TextBlock
+                {
+                    Text = Grade.Name,
+                    FontSize = Theme.Current.TitleFontSize
+                },
+
+                new TextBlock
+                {
+                    Text = Grade.GradeSubtitle,
+                    TextColor = Grade.WeightCategory.Class.Color.ToColor(),
+                    Margin = new Thickness(0, 3, 0, 0)
+                },
+
+                new TextBlock
+                {
+                    Text = Grade.WeightCategory.Name + " - " + Grade.Date.ToLongDateString(),
+                    TextColor = Theme.Current.SubtleForegroundColor,
+                    FontSize = Theme.Current.CaptionFontSize,
+                    Margin = new Thickness(0, 3, 0, 0)
+                },
+
+                Grade.IsDropped ? new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("ViewGradePage_TextBlockDropped.Text"),
+                    FontSize = Theme.Current.TitleFontSize,
+                    Margin = new Thickness(0, 18, 0, 0)
+                } : null,
+
+                new TextBlock
+                {
+                    Text = Grade.Details,
+                    Margin = new Thickness(0, 18, 0, 0)
+                }
+
+            );
         }
 
         public static ViewGradeViewModel Create(BaseViewModel parent, BaseViewItemMegaItem item, bool isInWhatIfMode = false)
@@ -34,6 +83,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
         public void Edit()
         {
             MainScreenViewModel.EditGrade(Grade, IsInWhatIfMode);
+        }
+
+        public void ConfirmDelete()
+        {
+
         }
 
         public void Delete()
