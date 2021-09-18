@@ -77,7 +77,6 @@ namespace PowerPlanneriOS
                 { typeof(ScheduleViewModel), typeof(ScheduleViewController) },
                 { typeof(ClassesViewModel), typeof(ClassesViewController) },
                 { typeof(ClassViewModel), typeof(ClassViewController) },
-                { typeof(AddClassViewModel), typeof(AddClassViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
                 { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventViewController) },

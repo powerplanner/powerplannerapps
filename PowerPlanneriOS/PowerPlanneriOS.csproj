@@ -118,7 +118,6 @@
   <ItemGroup>
     <None Include="App\Secrets.template.cs" />
     <Compile Include="App\Secrets.cs" />
-    <Compile Include="Controllers\AddClassViewController.cs" />
     <Compile Include="Controllers\AddGradeViewController.cs" />
     <Compile Include="Controllers\AddTaskOrEventViewController.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />

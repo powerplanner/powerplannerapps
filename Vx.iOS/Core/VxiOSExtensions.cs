@@ -112,6 +112,11 @@ namespace Vx.iOS
                     return new iOSDatePicker();
                 }
 
+                if (view is Vx.Views.ColorPicker)
+                {
+                    return new iOSColorPicker();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
