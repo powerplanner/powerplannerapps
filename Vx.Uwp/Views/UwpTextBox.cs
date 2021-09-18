@@ -61,6 +61,13 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            // For first time initializing, initialize multi-line
+            if (newView is Vx.Views.MultilineTextBox && oldView == null)
+            {
+                View.NativeTextBox.AcceptsReturn = true;
+                View.NativeTextBox.TextWrapping = Windows.UI.Xaml.TextWrapping.Wrap;
+            }
+
             View.Header = newView.Header;
             View.Text = newView.Text?.Value ?? "";
             View.PlaceholderText = newView.PlaceholderText;

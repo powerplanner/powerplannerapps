@@ -55,6 +55,11 @@ namespace PowerPlannerAndroid.Views.Controls
             get { return _imageAttachments; }
             set
             {
+                if (object.ReferenceEquals(value, _imageAttachments))
+                {
+                    return;
+                }
+
                 if (value == null)
                 {
                     value = new BaseEditingImageAttachmentViewModel[0];

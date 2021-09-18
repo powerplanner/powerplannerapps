@@ -25,6 +25,8 @@ using ToolsPortable;
 using PowerPlannerAndroid.ViewModel.Settings;
 using BareMvvm.Core.ViewModels;
 using Vx.Extensions;
+using Vx.Droid;
+using PowerPlannerAppDataLibrary.Views;
 
 namespace PowerPlannerAndroid.App
 {
@@ -86,6 +88,9 @@ namespace PowerPlannerAndroid.App
             AppShortcutsExtension.Current = new DroidAppShortcutsExtension();
             BrowserExtension.Current = new DroidBrowserExtension();
             EmailExtension.Current = new DroidEmailExtension();
+
+            // Initialize custom views
+            VxDroidExtensions.RegisterCustomView(v => v is EditImagesView, v => new DroidEditImagesView());
 
             return base.InitializeAsyncOverride();
         }
