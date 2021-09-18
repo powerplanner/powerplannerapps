@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ToolsPortable;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,19 @@ namespace Vx.Uwp.Views
         public UwpComboBox()
         {
             View.SelectionChanged += View_SelectionChanged;
+            View.Name = "ComboBox" + DateTime.Now.Ticks.ToString();
         }
+
+        private bool _ignoreSelectionChanged;
 
         private void View_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_ignoreSelectionChanged)
+            {
+                _ignoreSelectionChanged = false;
+                return;
+            }
+
             if (VxView.SelectedItem != null && VxView.SelectedItem.Value != View.SelectedItem)
             {
                 VxView.SelectedItem.ValueChanged?.Invoke(View.SelectedItem);
@@ -28,11 +38,34 @@ namespace Vx.Uwp.Views
 
             View.IsEnabled = newView.IsEnabled;
             View.Header = newView.Header;
+            View.DataContext = newView.ItemTemplate;
             // ItemsSource and selected item will be tricky...
 
-            if (!object.ReferenceEquals(View.ItemsSource, newView.Items))
+            if (!object.ReferenceEquals(oldView?.Items, newView.Items))
             {
+                if (View.SelectedItem != null)
+                {
+                    // Changing the items source while there's currently a selected item will cause the selected item to clear (go to null).
+                    // But we need to ignore that change, since we want to apply whatever selected item we'll have.
+                    _ignoreSelectionChanged = true;
+                }
+
                 View.ItemsSource = newView.Items;
+            }
+
+            if (newView.ItemTemplate != null)
+            {
+                if (View.ItemTemplate == null)
+                {
+                    View.ItemTemplate = UwpDataTemplateView.GetDataTemplate(View.Name);
+                }
+            }
+            else
+            {
+                if (View.ItemTemplate != null)
+                {
+                    View.ItemTemplate = null;
+                }
             }
 
             View.SelectedItem = newView.SelectedItem?.Value;

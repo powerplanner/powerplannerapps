@@ -28,7 +28,7 @@ namespace Vx.Views
             return true;
         }
 
-        private class VxDataTemplateComponent : VxComponent
+        public class VxDataTemplateComponent : VxComponent
         {
             public object Data { get => GetState<object>(); set => SetState(value); }
 
@@ -36,6 +36,11 @@ namespace Vx.Views
 
             protected override View Render()
             {
+                if (Template == null)
+                {
+                    return null;
+                }
+
                 return Template(Data);
             }
         }

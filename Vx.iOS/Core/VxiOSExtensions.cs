@@ -12,6 +12,13 @@ namespace Vx.iOS
 {
     public static class VxiOSExtensions
     {
+        private static List<Tuple<Func<View, bool>, Func<View, NativeView>>> _customViews = new List<Tuple<Func<View, bool>, Func<View, NativeView>>>();
+
+        public static void RegisterCustomView(Func<View, bool> predicate, Func<View, NativeView> create)
+        {
+            _customViews.Add(new Tuple<Func<View, bool>, Func<View, NativeView>>(predicate, create));
+        }
+
         static VxiOSExtensions()
         {
             Theme.Current = new VxiOSTheme();
@@ -19,6 +26,14 @@ namespace Vx.iOS
 
             NativeView.CreateNativeView = view =>
             {
+                foreach (var customView in _customViews)
+                {
+                    if (customView.Item1(view))
+                    {
+                        return customView.Item2(view);
+                    }
+                }
+
                 if (view is Vx.Views.VxComponent c)
                 {
                     return new iOSVxComponent(c);

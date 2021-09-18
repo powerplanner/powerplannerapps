@@ -8,7 +8,8 @@
     xmlns:converters="using:InterfacesUWP.Converters"
     xmlns:taskOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews"
     xmlns:calendarViews="using:PowerPlannerUWP.Views.CalendarViews"
-    xmlns:scheduleViews="using:PowerPlannerUWP.Views.ScheduleViews">
+    xmlns:scheduleViews="using:PowerPlannerUWP.Views.ScheduleViews"
+    xmlns:vxUwpViews="using:Vx.Uwp.Views">
 
 
 
@@ -28,6 +29,11 @@
 
                     <!--Temporary bug fix for https://github.com/microsoft/microsoft-ui-xaml/issues/2719-->
                     <Thickness x:Key="CalendarDatePickerTopHeaderMargin">0,0,0,4</Thickness>
+
+                    <!--Reference UwpDataTemplateView so dynamically loading it with XamlReader works in .NET Native-->
+                    <DataTemplate x:Name="UwpDataTemplateViewRef">
+                        <vxUwpViews:UwpDataTemplateView/>
+                    </DataTemplate>
 
                     <Style x:Key="WelcomeButtonStyle" TargetType="Button">
                         <Setter Property="Height" Value="40"/>
