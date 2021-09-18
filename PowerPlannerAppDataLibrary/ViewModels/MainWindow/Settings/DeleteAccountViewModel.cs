@@ -27,37 +27,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             bool isEnabled = !_isDeleting.Value;
 
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_Description.Text"),
-                            FontSize = Theme.Current.TitleFontSize,
-                            Margin = new Thickness(0, 0, 0, 24)
-                        },
+                    Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_Description.Text"),
+                    FontSize = Theme.Current.TitleFontSize,
+                    Margin = new Thickness(0, 0, 0, 24)
+                },
 
-                        Account.IsOnlineAccount ? new CheckBox
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_CheckBoxDeleteOnlineToo.Content"),
-                            IsChecked = VxValue.Create(DeleteOnlineAccountToo, v => DeleteOnlineAccountToo = v),
-                            Margin = new Thickness(0, 0, 0, 12),
-                            IsEnabled = isEnabled
-                        } : null,
+                Account.IsOnlineAccount ? new CheckBox
+                {
+                    Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_CheckBoxDeleteOnlineToo.Content"),
+                    IsChecked = VxValue.Create(DeleteOnlineAccountToo, v => DeleteOnlineAccountToo = v),
+                    Margin = new Thickness(0, 0, 0, 12),
+                    IsEnabled = isEnabled
+                } : null,
 
-                        new Button
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_ButtonConfirmDelete.Content"),
-                            Click = () => _ = DeleteAsync(),
-                            IsEnabled = isEnabled
-                        }
-                    }
+                new Button
+                {
+                    Text = PowerPlannerResources.GetString("Settings_DeleteAccountPage_ButtonConfirmDelete.Content"),
+                    Click = () => _ = DeleteAsync(),
+                    IsEnabled = isEnabled
                 }
-            };
+            );
         }
 
         private bool _deleteOnlineAccountToo;

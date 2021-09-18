@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
@@ -35,11 +36,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         /// </summary>
         /// <param name="views"></param>
         /// <returns></returns>
-        protected View RenderGenericPopupContent(params View[] views)
+        protected View RenderGenericPopupContent(IEnumerable<View> views, Thickness margin)
         {
             var linearLayout = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin)
+                Margin = margin.Combine(NookInsets)
             };
             linearLayout.Children.AddRange(views);
 
@@ -47,6 +48,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             {
                 Content = linearLayout
             };
+        }
+
+        /// <summary>
+        /// Renders a typical scroll view with padding and items arranged vertically
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns>
+        protected View RenderGenericPopupContent(IEnumerable<View> views)
+        {
+            return RenderGenericPopupContent(views, new Thickness(Theme.Current.PageMargin));
+        }
+
+        /// <summary>
+        /// Renders a typical scroll view with padding and items arranged vertically
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns>
+        protected View RenderGenericPopupContent(params View[] views)
+        {
+            return RenderGenericPopupContent(views as IEnumerable<View>);
+        }
+
+        /// <summary>
+        /// Renders a typical scroll view with padding and items arranged vertically
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns>
+        protected View RenderGenericPopupContent(Thickness margin, params View[] views)
+        {
+            return RenderGenericPopupContent(views, margin);
         }
     }
 

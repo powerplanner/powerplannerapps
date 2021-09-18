@@ -11,6 +11,7 @@ using PowerPlannerAppDataLibrary;
 using InterfacesiOS.Binding;
 using PowerPlannerAppDataLibrary.Extensions;
 using Vx.Extensions;
+using System.Globalization;
 
 namespace PowerPlanneriOS.Views
 {
@@ -55,7 +56,7 @@ namespace PowerPlanneriOS.Views
 
             if (string.IsNullOrWhiteSpace(item.Room))
             {
-                this.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-2-[labelClass(>={minTextHeight})][labelTime]->=2-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
+                this.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-2-[labelClass(>={minTextHeight.ToString(CultureInfo.InvariantCulture)})][labelTime]->=2-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
                     "labelClass", labelClass,
                     "labelTime", labelTime)));
             }
@@ -86,7 +87,7 @@ namespace PowerPlanneriOS.Views
 
                 textViewRoom.SetContentCompressionResistancePriority(900, UILayoutConstraintAxis.Vertical);
 
-                this.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-2-[labelClass(>={minTextHeight})][labelTime][labelRoom]->=2-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
+                this.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-2-[labelClass(>={minTextHeight.ToString(CultureInfo.InvariantCulture)})][labelTime][labelRoom]->=2-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary(
                     "labelClass", labelClass,
                     "labelTime", labelTime,
                     "labelRoom", textViewRoom)));

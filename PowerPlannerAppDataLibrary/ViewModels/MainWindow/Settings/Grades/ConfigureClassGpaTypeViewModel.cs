@@ -32,25 +32,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         protected override View Render()
         {
-            var layout = new LinearLayout
-            {
-                Children =
-                {
-                    RenderOption(
-                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_Standard.Text"),
-                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_StandardExplanation.Text"),
-                        Class.GpaType == GpaType.Standard,
-                        () => Save(GpaType.Standard)),
+            return RenderGenericPopupContent(
+                RenderOption(
+                    PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_Standard.Text"),
+                    PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_StandardExplanation.Text"),
+                    Class.GpaType == GpaType.Standard,
+                    () => Save(GpaType.Standard)),
 
-                    RenderOption(
-                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_PassFail.Text"),
-                        PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_PassFailExplanation.Text"),
-                        Class.GpaType == GpaType.PassFail,
+                RenderOption(
+                    PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_PassFail.Text"),
+                    PowerPlannerResources.GetString("Settings_GradeOptions_GpaType_PassFailExplanation.Text"),
+                    Class.GpaType == GpaType.PassFail,
                         () => Save(GpaType.PassFail))
-                }
-            };
-
-            return new ScrollView(layout);
+            );
         }
 
         private View RenderOption(string title, string subtitle, bool isChecked, Action checkedAction)

@@ -26,27 +26,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("ForgotUsername_String_YourUsernames"),
-                            TextColor = Theme.Current.SubtleForegroundColor
-                        },
+                    Text = PowerPlannerResources.GetString("ForgotUsername_String_YourUsernames"),
+                    TextColor = Theme.Current.SubtleForegroundColor
+                },
 
-                        new TextBlock
-                        {
-                            Text = string.Join("\n", Usernames),
-                            Margin = new Thickness(0, 6, 0, 0)
-                        }
-                    }
+                new TextBlock
+                {
+                    Text = string.Join("\n", Usernames),
+                    Margin = new Thickness(0, 6, 0, 0)
                 }
-            };
+            );
         }
     }
 }

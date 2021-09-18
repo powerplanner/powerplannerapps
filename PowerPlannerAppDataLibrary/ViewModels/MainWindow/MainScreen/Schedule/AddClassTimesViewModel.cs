@@ -501,10 +501,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         private View _deleteButton;
         protected override View Render()
         {
-            var layout = new LinearLayout()
-            {
-                Margin = new Thickness(Theme.Current.PageMargin)
-            };
+            var views = new List<View>();
 
             foreach (var g in Groups)
             {
@@ -537,12 +534,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
                 content.Margin = new Thickness(0, 0, 0, 12);
 
-                layout.Children.Add(content);
+                views.Add(content);
             }
 
             if (State == OperationState.Editing && Groups.Count == 1)
             {
-                layout.Children.Add(new LinearLayout
+                views.Add(new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
                     Margin = new Thickness(0, 12, 0, 0),
@@ -581,7 +578,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             }
             else
             {
-                layout.Children.Add(new Button
+                views.Add(new Button
                 {
                     Text = PowerPlannerResources.GetString("AddClassTime_AddAnotherTime.Content"),
                     Margin = new Thickness(0, 12, 0, 0),
@@ -589,10 +586,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 });
             }
 
-            return new ScrollView
-            {
-                Content = layout
-            };
+            return RenderGenericPopupContent(views);
         }
 
         private View RenderExpanded(ClassTimeGroup group)

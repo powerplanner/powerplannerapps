@@ -25,41 +25,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("ForgotUsername_String_EnterEmailAddressExplanation"),
-                            TextColor = Theme.Current.SubtleForegroundColor
-                        },
+                    Text = PowerPlannerResources.GetString("ForgotUsername_String_EnterEmailAddressExplanation"),
+                    TextColor = Theme.Current.SubtleForegroundColor
+                },
 
-                        new TextBox
-                        {
-                            Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.Header"),
-                            Text = VxValue.Create(Email, t => Email = t),
-                            InputScope = InputScope.Email,
-                            PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.PlaceholderText"),
-                            OnSubmit = Recover,
-                            Margin = new Thickness(0, 24, 0, 0),
-                            IsEnabled = !IsRecoveringUsernames,
-                            AutoFocus = true
-                        },
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.Header"),
+                    Text = VxValue.Create(Email, t => Email = t),
+                    InputScope = InputScope.Email,
+                    PlaceholderText = PowerPlannerResources.GetString("ForgotPassword_TextBoxEmail.PlaceholderText"),
+                    OnSubmit = Recover,
+                    Margin = new Thickness(0, 24, 0, 0),
+                    IsEnabled = !IsRecoveringUsernames,
+                    AutoFocus = true
+                },
 
-                        new AccentButton
-                        {
-                            Text = PowerPlannerResources.GetString("String_Recover"),
-                            Click = Recover,
-                            Margin = new Thickness(0, 24, 0, 0),
-                            IsEnabled = !IsRecoveringUsernames
-                        }
-                    }
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("String_Recover"),
+                    Click = Recover,
+                    Margin = new Thickness(0, 24, 0, 0),
+                    IsEnabled = !IsRecoveringUsernames
                 }
-            };
+            );
         }
 
         private bool _isRecoveringUsernames;

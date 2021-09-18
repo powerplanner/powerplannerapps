@@ -48,7 +48,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             State.Value = States.Initial;
         }
 
-        public void RenderApplyUI(LinearLayout layout)
+        public void RenderApplyUI(List<View> views)
         {
             string applyText;
             var state = State.Value;
@@ -72,7 +72,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     throw new NotImplementedException();
             }
 
-            layout.Children.Add(new AccentButton
+            views.Add(new AccentButton
             {
                 Text = applyText,
                 Margin = new Thickness(0, 24, 0, 0),
@@ -88,7 +88,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     {
                         if (semester.Classes.Count > 0)
                         {
-                            layout.Children.Add(new TextBlock
+                            views.Add(new TextBlock
                             {
                                 Text = year.Name + " > " + semester.Name,
                                 Margin = new Thickness(0, 12, 0, 0),
@@ -97,7 +97,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
                             foreach (var c in semester.Classes)
                             {
-                                layout.Children.Add(new CheckBox
+                                views.Add(new CheckBox
                                 {
                                     Text = c.Name,
                                     IsChecked = VxValue.Create(SelectedClasses.Contains(c), isChecked =>

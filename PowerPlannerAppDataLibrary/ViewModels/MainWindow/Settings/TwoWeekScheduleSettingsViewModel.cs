@@ -27,36 +27,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_Description.Text")
-                        },
+                    Text = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_Description.Text")
+                },
 
-                        new ComboBox
-                        {
-                            Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxCurrentWeek.Header"),
-                            Margin = new Thickness(0, 18, 0, 0),
-                            Items = AvailableCurrentWeekStrings,
-                            SelectedItem = VxValue.Create<object>(CurrentWeekString, v => CurrentWeekString = v as string)
-                        },
+                new ComboBox
+                {
+                    Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxCurrentWeek.Header"),
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Items = AvailableCurrentWeekStrings,
+                    SelectedItem = VxValue.Create<object>(CurrentWeekString, v => CurrentWeekString = v as string)
+                },
 
-                        new ComboBox
-                        {
-                            Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxWeekChangesOn.Header"),
-                            Margin = new Thickness(0, 18, 0, 0),
-                            Items = AvailableWeekChangesOnStrings,
-                            SelectedItem = VxValue.Create<object>(WeekChangesOnString, v => WeekChangesOnString = v as string)
-                        }
-                    }
+                new ComboBox
+                {
+                    Header = PowerPlannerResources.GetString("Settings_TwoWeekSchedule_ComboBoxWeekChangesOn.Header"),
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Items = AvailableWeekChangesOnStrings,
+                    SelectedItem = VxValue.Create<object>(WeekChangesOnString, v => WeekChangesOnString = v as string)
                 }
-            };
+                );
         }
 
         private string[] _availableCurrentWeekStrings;

@@ -16,9 +16,20 @@ namespace Vx.iOS.Views
 
             ReconcileContent(oldView?.Content, newView.Content, subview =>
             {
-                var modifiedMargin = newView.Content.Margin.AsModified();
-                subview.ConfigureForVerticalScrolling(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
+                ApplyMargins(subview, newView.Content);
+            }, afterTransfer: subview =>
+            {
+                if (oldView.Content.Margin != newView.Content.Margin)
+                {
+                    ApplyMargins(subview, newView.Content, removeExisting: true);
+                }
             });
+        }
+
+        private void ApplyMargins(UIView subview, View subVxView, bool removeExisting = false)
+        {
+            var modifiedMargin = subVxView.Margin.AsModified();
+            subview.ConfigureForVerticalScrolling(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom, removeExisting: removeExisting);
         }
     }
 }

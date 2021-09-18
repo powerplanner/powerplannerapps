@@ -35,55 +35,47 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            return new ScrollView
-            {
-                Content = new LinearLayout
+            return RenderGenericPopupContent(
+                new TextBlock
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = PowerPlannerResources.GetString("Settings_RemindersWithClasses_Description.Text")
-                        },
+                    Text = PowerPlannerResources.GetString("Settings_RemindersWithClasses_Description.Text")
+                },
 
-                        SupportsClassReminders ? RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersHeader.Text")) : null,
+                SupportsClassReminders ? RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersHeader.Text")) : null,
 
-                        SupportsClassReminders ? new ComboBox
-                        {
-                            Header = PowerPlannerResources.GetString("String_RemindMe"),
-                            Items = ClassReminderOptions,
-                            SelectedItem = VxValue.Create<object>(SelectedClassReminderOption, i => SelectedClassReminderOption = i as string),
-                            IsEnabled = IsEnabled,
-                            Margin = new Thickness(0, 6, 0, 0)
-                        } : null,
+                SupportsClassReminders ? new ComboBox
+                {
+                    Header = PowerPlannerResources.GetString("String_RemindMe"),
+                    Items = ClassReminderOptions,
+                    SelectedItem = VxValue.Create<object>(SelectedClassReminderOption, i => SelectedClassReminderOption = i as string),
+                    IsEnabled = IsEnabled,
+                    Margin = new Thickness(0, 6, 0, 0)
+                } : null,
 
-                        SupportsClassReminders ? RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersDescription.Text")) : null,
+                SupportsClassReminders ? RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_ClassRemindersDescription.Text")) : null,
 
-                        RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_TaskEventRemindersHeader.Text")),
+                RenderHeader(PowerPlannerResources.GetString("Settings_Reminders_TaskEventRemindersHeader.Text")),
 
-                        new Switch
-                        {
-                            Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayBefore.Header"),
-                            IsOn = VxValue.Create(RemindersDayBefore, v => RemindersDayBefore = v),
-                            Margin = new Thickness(0, 12, 0, 0),
-                            IsEnabled = IsEnabled
-                        },
+                new Switch
+                {
+                    Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayBefore.Header"),
+                    IsOn = VxValue.Create(RemindersDayBefore, v => RemindersDayBefore = v),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    IsEnabled = IsEnabled
+                },
 
-                        RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayBeforeDescription.Text")),
+                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayBeforeDescription.Text")),
 
-                        new Switch
-                        {
-                            Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayOf.Header"),
-                            IsOn = VxValue.Create(RemindersDayOf, v => RemindersDayOf = v),
-                            Margin = new Thickness(0, 12, 0, 0),
-                            IsEnabled = IsEnabled
-                        },
+                new Switch
+                {
+                    Title = PowerPlannerResources.GetString("Settings_Reminders_ToggleDayOf.Header"),
+                    IsOn = VxValue.Create(RemindersDayOf, v => RemindersDayOf = v),
+                    Margin = new Thickness(0, 12, 0, 0),
+                    IsEnabled = IsEnabled
+                },
 
-                        RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayOfDescription.Text"))
-                    }
-                }
-            };
+                RenderCaption(PowerPlannerResources.GetString("Settings_Reminders_DayOfDescription.Text"))
+            );
         }
 
         private TextBlock RenderCaption(string text)

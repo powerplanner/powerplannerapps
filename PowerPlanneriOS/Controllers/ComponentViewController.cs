@@ -19,6 +19,8 @@ namespace PowerPlanneriOS.Controllers
 
             Title = ViewModel.Title;
 
+            UpdateNookInsets();
+
             var renderedComponent = ViewModel.Render();
             renderedComponent.TranslatesAutoresizingMaskIntoConstraints = false;
             View.Add(renderedComponent);
@@ -29,6 +31,22 @@ namespace PowerPlanneriOS.Controllers
                 View.RemoveConstraints(View.Constraints);
                 renderedComponent.StretchWidthAndHeight(View, 0, 0, 0, (float)MainScreenViewController.TAB_BAR_HEIGHT);
             });
+        }
+
+        /// <summary>
+        /// This method only exists on iOS 11+, not sure if this class will still work on iOS 10/9, but not sure how to dynamically overload a method...
+        /// </summary>
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            if (ViewModel != null)
+            {
+                UpdateNookInsets();
+            }
+        }
+
+        private void UpdateNookInsets()
+        {
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
         }
     }
 }

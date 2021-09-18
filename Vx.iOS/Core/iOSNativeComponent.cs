@@ -45,7 +45,7 @@ namespace Vx.iOS
         {
             base.TraitCollectionDidChange(previousTraitCollection);
 
-            if (SdkSupportHelper.IsUserInterfaceStyleSupported && previousTraitCollection.UserInterfaceStyle != TraitCollection.UserInterfaceStyle)
+            if (SdkSupportHelper.IsUserInterfaceStyleSupported && previousTraitCollection != null && previousTraitCollection.UserInterfaceStyle != TraitCollection.UserInterfaceStyle)
             {
                 ThemeChanged?.Invoke(this, null);
             }

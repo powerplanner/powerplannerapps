@@ -31,6 +31,7 @@ using System.Threading;
 using ToolsPortable;
 using System.Threading.Tasks;
 using InterfacesiOS.Helpers;
+using System.Globalization;
 
 namespace InterfacesiOS.Views
 {
@@ -121,7 +122,7 @@ namespace InterfacesiOS.Views
                 this.View.Add(menuBottomHairline);
 
                 this.View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[menuBottomHairline]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("menuBottomHairline", menuBottomHairline)));
-                this.View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-{_configuration.MenuHeight}-[menuBottomHairline(0.5)]", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("menuBottomHairline", menuBottomHairline)));
+                this.View.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-{_configuration.MenuHeight.ToString(CultureInfo.InvariantCulture)}-[menuBottomHairline(0.5)]", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("menuBottomHairline", menuBottomHairline)));
             }
 
             // Disable scroll bars
