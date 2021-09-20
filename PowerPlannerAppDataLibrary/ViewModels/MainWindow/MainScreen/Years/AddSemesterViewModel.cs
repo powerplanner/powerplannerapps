@@ -119,15 +119,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             Title = State == OperationState.Adding ? PowerPlannerResources.GetString("EditSemesterPage_Title_Adding") : PowerPlannerResources.GetString("EditSemesterPage_Title_Editing");
 
-            if (State == OperationState.Adding)
+            PrimaryCommand = PopupCommand.Save(Save);
+
+            if (state == OperationState.Editing)
             {
-                PrimaryCommand = PopupCommand.Save(Save);
-            }
-            else
-            {
-                Commands = new PopupCommand[]
+                SecondaryCommands = new PopupCommand[]
                 {
-                    PopupCommand.Save(Save),
                     PopupCommand.Delete(ConfirmDelete)
                 };
             }

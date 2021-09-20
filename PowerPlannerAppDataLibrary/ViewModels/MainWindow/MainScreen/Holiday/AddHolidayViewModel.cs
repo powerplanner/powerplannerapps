@@ -51,17 +51,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
 
             base.Title = PowerPlannerResources.GetString(state == OperationState.Adding ? "String_AddHoliday" : "String_EditHoliday");
 
-            if (State == OperationState.Editing)
+            PrimaryCommand = PopupCommand.Save(Save);
+
+            if (state == OperationState.Editing)
             {
-                Commands = new PopupCommand[]
+                SecondaryCommands = new PopupCommand[]
                 {
-                    PopupCommand.Save(Save),
-                    PopupCommand.Delete(ConfirmDelete)
+                    PopupCommand.DeleteWithQuickConfirm(Delete)
                 };
-            }
-            else
-            {
-                PrimaryCommand = PopupCommand.Save(Save);
             }
         }
 
@@ -252,14 +249,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        public async void ConfirmDelete()
-        {
-            if (await PowerPlannerApp.ConfirmDeleteAsync())
-            {
-                Delete();
             }
         }
 

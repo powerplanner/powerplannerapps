@@ -53,17 +53,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             Title = PowerPlannerResources.GetString(state == OperationState.Adding ? "AddClassPage_AddTitle" : "AddClassPage_EditTitle");
 
+            PrimaryCommand = PopupCommand.Save(Save);
+
             if (state == OperationState.Editing)
             {
-                Commands = new PopupCommand[]
+                SecondaryCommands = new PopupCommand[]
                 {
-                    PopupCommand.Save(Save),
                     PopupCommand.Delete(ConfirmDelete)
                 };
-            }
-            else
-            {
-                PrimaryCommand = PopupCommand.Save(Save);
             }
 
             _colors.Add(new ColorItem("Pick custom color", new byte[] { 0, 0, 0 }));
