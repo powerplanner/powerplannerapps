@@ -46,5 +46,12 @@ namespace Vx.Views
             textBlock.FontWeight = FontWeights.SemiLight;
             return textBlock;
         }
+
+        public static T CaptionStyle<T>(this T textBlock) where T : TextBlock
+        {
+            textBlock.FontSize = Theme.Current.CaptionFontSize;
+            textBlock.TextColor = Theme.Current.SubtleForegroundColor;
+            return textBlock;
+        }
     }
 }

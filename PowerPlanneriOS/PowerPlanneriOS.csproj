@@ -137,7 +137,6 @@
     <Compile Include="Controllers\Settings\Grades\ConfigureClassGradesViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsViewController.cs" />
-    <Compile Include="Controllers\SyncErrorsViewController.cs" />
     <Compile Include="Extensions\iOSEmailExtension.cs" />
     <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />
     <Compile Include="Extensions\iOSPushExtension.cs" />

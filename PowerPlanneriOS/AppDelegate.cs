@@ -81,7 +81,6 @@ namespace PowerPlanneriOS
                 { typeof(ClassViewModel), typeof(ClassViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
-                { typeof(SyncErrorsViewModel), typeof(SyncErrorsViewController) },
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) }
