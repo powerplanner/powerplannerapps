@@ -1,5 +1,6 @@
 ﻿using System;
 using InterfacesiOS.Controllers;
+using InterfacesiOS.Helpers;
 using InterfacesiOS.Views;
 using PowerPlannerAppDataLibrary.ViewModels;
 using Vx.iOS;
@@ -46,7 +47,10 @@ namespace PowerPlanneriOS.Controllers
 
         private void UpdateNookInsets()
         {
-            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
+            if (SdkSupportHelper.IsSafeAreaInsetsSupported)
+            {
+                ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
+            }
         }
     }
 }
