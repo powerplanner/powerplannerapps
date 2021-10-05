@@ -316,7 +316,9 @@
     <Compile Include="Views\PremiumVersionView.xaml.cs">
       <DependentUpon>PremiumVersionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UwpCompletionSlider.cs" />
     <Compile Include="Views\UwpEditImagesView.cs" />
+    <Compile Include="Views\UwpImagesView.cs" />
     <Compile Include="Views\ViewGradeView.xaml.cs">
       <DependentUpon>ViewGradeView.xaml</DependentUpon>
     </Compile>

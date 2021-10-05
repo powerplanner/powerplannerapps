@@ -293,6 +293,9 @@ namespace Vx.Uwp
                 case MaterialDesign.MaterialDesignIcons.Delete:
                     return Symbol.Delete;
 
+                case MaterialDesign.MaterialDesignIcons.Edit:
+                    return Symbol.Edit;
+
                 default:
                     return Symbol.Refresh;
             }

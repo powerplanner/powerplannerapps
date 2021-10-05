@@ -20,6 +20,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using Vx.Views;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -97,12 +98,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                     IsTextSelectionEnabled = true
                                 },
 
-                                new HyperlinkTextBlock
+                                !string.IsNullOrWhiteSpace(Item.Details) ? new HyperlinkTextBlock
                                 {
                                     Text = Item.Details,
                                     Margin = new Thickness(0, 18, 0, 0),
                                     IsTextSelectionEnabled = true
-                                }
+                                } : null,
+
+                                VxPlatform.Current == Platform.Uwp ? new ImagesView
+                                {
+                                    ImageAttachments = Item.ImageAttachments,
+                                    Margin = new Thickness(0, 18, 0, 0)
+                                } : null
                             }
                         }
                     }.LinearLayoutWeight(1),

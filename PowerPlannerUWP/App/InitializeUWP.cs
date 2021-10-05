@@ -75,6 +75,8 @@ namespace PowerPlannerUWP
 
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is EditImagesView, v => new UwpEditImagesView());
+            VxUwpExtensions.RegisterCustomView(v => v is PowerPlannerAppDataLibrary.Views.CompletionSlider, v => new UwpCompletionSlider());
+            VxUwpExtensions.RegisterCustomView(v => v is ImagesView, v => new UwpImagesView());
         }
     }
 }

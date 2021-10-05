@@ -41,61 +41,28 @@ namespace Vx.Uwp.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            float totalWeight = GetTotalWeight();
+            // MeasureOverride is supposed to report the SMALLEST possible size that will fit the content. If availableSize.Height is 700
+            // but content could fit in 200, then should return 200. This effectively means that the weighted heights are treated as
+            // auto. This ensures that for the ViewTask dialog, even though it uses a weighted height, if the content is smaller, the
+            // window will stay smaller. And I've matched this to the behavior of UWP grids, where when there's less content, the Star row
+            // definitions behave as Auto. If the area can't fit all of the content, the Auto columns get first priority.
+
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
 
-            bool autoHeightsForAll = double.IsPositiveInfinity(isVert ? availableSize.Height : availableSize.Width) || totalWeight == 0;
+            double consumed = 0;
+            double maxOtherDimension = 0;
 
-            if (autoHeightsForAll)
+            foreach (var child in Children)
             {
-                double consumed = 0;
-                double maxOtherDimension = 0;
-
-                foreach (var child in Children)
+                if (child.Visibility == Windows.UI.Xaml.Visibility.Visible)
                 {
-                    if (child.Visibility == Windows.UI.Xaml.Visibility.Visible)
-                    {
-                        child.Measure(isVert ? new Size(availableSize.Width, double.PositiveInfinity) : new Size(double.PositiveInfinity, availableSize.Height));
-                        consumed += isVert ? child.DesiredSize.Height : child.DesiredSize.Width;
-                        maxOtherDimension = Math.Max(maxOtherDimension, isVert ? child.DesiredSize.Width : child.DesiredSize.Height);
-                    }
+                    child.Measure(isVert ? new Size(availableSize.Width, Math.Max(0, availableSize.Height - consumed)) : new Size(Math.Max(0, availableSize.Width - consumed), availableSize.Height));
+                    consumed += isVert ? child.DesiredSize.Height : child.DesiredSize.Width;
+                    maxOtherDimension = Math.Max(maxOtherDimension, isVert ? child.DesiredSize.Width : child.DesiredSize.Height);
                 }
-
-                return isVert ? new Size(maxOtherDimension, consumed) : new Size(consumed, maxOtherDimension);
             }
 
-            else
-            {
-                double remainingAvailable = isVert ? availableSize.Height : availableSize.Width;
-                double maxOtherDimension = 0;
-
-                // First measure the autos
-                foreach (var child in Children.Where(i => i.Visibility == Visibility.Visible))
-                {
-                    var weight = GetWeight(child);
-                    if (weight == 0)
-                    {
-                        child.Measure(isVert ? new Size(availableSize.Width, remainingAvailable) : new Size(remainingAvailable, availableSize.Height));
-
-                        remainingAvailable = Math.Max(0, remainingAvailable - (isVert ? child.DesiredSize.Height : child.DesiredSize.Width));
-                        maxOtherDimension = Math.Max(maxOtherDimension, isVert ? child.DesiredSize.Width : child.DesiredSize.Height);
-                    }
-                }
-
-                // Then measure the weighted
-                foreach (var child in Children.Where(i => i.Visibility == Visibility.Visible))
-                {
-                    var weight = GetWeight(child);
-                    if (weight > 0)
-                    {
-                        var amount = remainingAvailable * (weight / totalWeight);
-                        child.Measure(isVert ? new Size(availableSize.Width, amount) : new Size(amount, availableSize.Height));
-                        maxOtherDimension = Math.Max(maxOtherDimension, isVert ? child.DesiredSize.Width : child.DesiredSize.Height);
-                    }
-                }
-
-                return isVert ? new Size(maxOtherDimension, availableSize.Height) : new Size(availableSize.Width, maxOtherDimension);
-            }
+            return isVert ? new Size(maxOtherDimension, consumed) : new Size(consumed, maxOtherDimension);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
