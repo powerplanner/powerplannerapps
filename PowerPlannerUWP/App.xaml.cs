@@ -40,13 +40,11 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using InterfacesUWP.AppWindows;
 using PowerPlannerAppDataLibrary.Windows;
 using PowerPlannerUWP.ViewModel.Settings;
 using PowerPlannerUWP.ViewModel.Promos;
 using PowerPlannerUWP.Views.Promos;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerUWP.Helpers;
 using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
@@ -104,9 +102,6 @@ namespace PowerPlannerUWP
             {
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(AddClassViewModel), typeof(AddClassView) },
-                { typeof(AddGradeViewModel), typeof(AddGradeView) },
-                { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
                 { typeof(CalendarViewModel), typeof(CalendarMainView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
@@ -122,7 +117,6 @@ namespace PowerPlannerUWP
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
 

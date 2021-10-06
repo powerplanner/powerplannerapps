@@ -200,12 +200,6 @@
     <Compile Include="ViewModel\Settings\MainTileViewModel.cs" />
     <Compile Include="ViewModel\Settings\QuickAddTileViewModel.cs" />
     <Compile Include="ViewModel\Settings\TileSettingsViewModel.cs" />
-    <Compile Include="Views\AddClassView.xaml.cs">
-      <DependentUpon>AddClassView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddHolidayView.xaml.cs">
-      <DependentUpon>AddHolidayView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AgendaView.xaml.cs">
       <DependentUpon>AgendaView.xaml</DependentUpon>
     </Compile>
@@ -246,12 +240,6 @@
     </Compile>
     <Compile Include="Views\MainContentDayView.xaml.cs">
       <DependentUpon>MainContentDayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddGradeView.xaml.cs">
-      <DependentUpon>AddGradeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddTaskOrEventView.xaml.cs">
-      <DependentUpon>AddTaskOrEventView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -319,18 +307,12 @@
     <Compile Include="Views\UwpCompletionSlider.cs" />
     <Compile Include="Views\UwpEditImagesView.cs" />
     <Compile Include="Views\UwpImagesView.cs" />
-    <Compile Include="Views\ViewGradeView.xaml.cs">
-      <DependentUpon>ViewGradeView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ShowImagesView.xaml.cs">
       <DependentUpon>ShowImagesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainScreenContentViewHostGeneric.cs" />
     <Compile Include="Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ViewTaskOrEventView.xaml.cs">
-      <DependentUpon>ViewTaskOrEventView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\SideBarTemplateSelector.cs" />
@@ -525,14 +507,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddClassView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddHolidayView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\AgendaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -582,14 +556,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainContentDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddGradeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddTaskOrEventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -677,19 +643,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ViewGradeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ShowImagesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScheduleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ViewTaskOrEventView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

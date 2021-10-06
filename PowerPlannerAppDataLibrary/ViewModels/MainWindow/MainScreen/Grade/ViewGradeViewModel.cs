@@ -69,12 +69,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                     Margin = new Thickness(0, 18, 0, 0)
                 } : null,
 
-                new HyperlinkTextBlock
+                !string.IsNullOrWhiteSpace(Grade.Details) ? new HyperlinkTextBlock
                 {
                     Text = Grade.Details,
                     Margin = new Thickness(0, 18, 0, 0),
                     IsTextSelectionEnabled = true
-                }
+                } : null
 
             );
         }
