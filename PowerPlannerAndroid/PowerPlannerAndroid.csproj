@@ -145,10 +145,6 @@
     <Compile Include="ViewModel\Settings\WidgetScheduleViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetAgendaViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
-    <Compile Include="Views\AddClassView.cs" />
-    <Compile Include="Views\AddGradeView.cs" />
-    <Compile Include="Views\AddHolidayView.cs" />
-    <Compile Include="Views\AddTaskOrEventView.cs" />
     <Compile Include="Views\AgendaView.cs" />
     <Compile Include="Views\CalendarMainView.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
@@ -203,8 +199,6 @@
     <Compile Include="Views\ShowImagesView.cs" />
     <Compile Include="Views\SplashScreenView.cs" />
     <Compile Include="Views\SyncErrorsView.cs" />
-    <Compile Include="Views\ViewGradeView.cs" />
-    <Compile Include="Views\ViewTaskOrEventView.cs" />
     <Compile Include="Views\InitialSyncView.cs" />
     <Compile Include="Views\WelcomeView.cs" />
     <Compile Include="Widgets\WidgetAgendaProvider.cs" />
@@ -225,9 +219,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemEditingScheduleClass.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Schedule.xml">
@@ -251,13 +242,7 @@
     <AndroidResource Include="Resources\layout\ListItemTaskOrEvent.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddTaskOrEvent.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\SpinnerItemClass.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ViewTaskOrEvent.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SingleDay.xml">
@@ -320,12 +305,6 @@
     <AndroidResource Include="Resources\layout\ListItemWeightCategorySummary.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ViewGrade.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddGrade.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\SpinnerItemWeightCategory.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -342,9 +321,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ClassWhatIfTopHeader.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddHoliday.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\WidgetAgenda.xml">
@@ -393,9 +369,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\RecurrenceControl.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\AddTaskOrEventRepeatsSubControl.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.xml">
