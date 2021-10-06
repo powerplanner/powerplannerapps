@@ -156,7 +156,6 @@
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\Controls\AddTaskOrEventRepeatsSubControl.cs" />
     <Compile Include="Views\Controls\DayPagerControl.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
     <Compile Include="Views\Controls\FloatingAddItemControl.cs" />
@@ -164,7 +163,6 @@
     <Compile Include="Views\Controls\ImageAttachmentsWrapGrid.cs" />
     <Compile Include="Views\Controls\ImagesPagerControl.cs" />
     <Compile Include="Views\Controls\ImageAttachmentView.cs" />
-    <Compile Include="Views\Controls\RecurrenceControl.cs" />
     <Compile Include="Views\Controls\SettingsListItem.cs" />
     <Compile Include="Views\Controls\SingleDayControl.cs" />
     <Compile Include="Views\DayScheduleSnapshotView.cs" />
@@ -366,9 +364,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SettingsWidgetSchedule.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\RecurrenceControl.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.xml">
