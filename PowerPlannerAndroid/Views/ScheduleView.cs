@@ -25,6 +25,7 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAndroid.Views.Controls;
 using InterfacesDroid.Helpers;
 using AndroidX.Core.Content;
+using PowerPlannerAndroid.Helpers;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -51,6 +52,7 @@ namespace PowerPlannerAndroid.Views
             _weekToolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.WeekToolbar);
             MenuInflater inflater = new MenuInflater(Context);
             inflater.Inflate(Resource.Menu.schedule_week_menu, _weekToolbar.Menu);
+            LocalizationHelper.LocalizeMenu(_weekToolbar.Menu);
             _weekToolbar.MenuItemClick += _weekToolbar_MenuItemClick;
 
             var scrollViewSchedule = FindViewById<MyZoomAndPanView>(Resource.Id.ScrollViewSchedule);
