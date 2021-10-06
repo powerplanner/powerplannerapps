@@ -23,6 +23,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 
         public ViewGradeViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = PowerPlannerResources.GetString("ViewGradePage.Title");
+
             Commands = new PopupCommand[]
             {
                 PopupCommand.Edit(Edit)

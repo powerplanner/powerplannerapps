@@ -105,7 +105,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                     IsTextSelectionEnabled = true
                                 } : null,
 
-                                VxPlatform.Current == Platform.Uwp ? new ImagesView
+                                VxPlatform.Current != Platform.iOS ? new ImagesView
                                 {
                                     ImageAttachments = Item.ImageAttachments,
                                     Margin = new Thickness(0, 18, 0, 0)

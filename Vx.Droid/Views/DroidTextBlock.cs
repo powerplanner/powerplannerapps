@@ -23,6 +23,11 @@ namespace Vx.Droid.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            if (oldView == null && newView is HyperlinkTextBlock)
+            {
+                View.AutoLinkMask = Android.Text.Util.MatchOptions.All;
+            }
+
             View.Text = newView.Text;
             View.SetTextColor(newView.TextColor.ToDroid());
             View.SetTextSize(Android.Util.ComplexUnitType.Dip, newView.FontSize);
