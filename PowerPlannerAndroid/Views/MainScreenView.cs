@@ -35,15 +35,18 @@ using Google.Android.Material.BottomNavigation;
 using AndroidX.DrawerLayout.Widget;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using AndroidX.Core.View;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView
+    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView, AndroidX.Core.View.IOnApplyWindowInsetsListener
     {
         private PagedViewModelPresenter _contentPresenter;
         private PopupsPresenter _popupsPresenter;
         private ProgressBar _syncProgressBar;
         public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
+
+        public static WindowInsetsCompat WindowInsets { get; private set; }
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
         {
@@ -52,6 +55,29 @@ namespace PowerPlannerAndroid.Views
             Toolbar.NavigationClick += Toolbar_NavigationClick;
             _syncProgressBar = FindViewById<ProgressBar>(Resource.Id.SyncProgressBar);
             _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
+
+            ViewCompat.SetOnApplyWindowInsetsListener(FindViewById(Resource.Id.MainContentView), this);
+        }
+
+        public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
+        {
+            WindowInsets = windowInsets;
+
+            var insets = windowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
+
+            var statusBarSpacer = FindViewById(Resource.Id.StatusBarSpacer);
+            var statusBarSpacerLp = statusBarSpacer.LayoutParameters;
+            statusBarSpacerLp.Height = insets.Top;
+            statusBarSpacer.LayoutParameters = statusBarSpacerLp;
+
+            var bottomInsets = FindViewById(Resource.Id.BottomInsets);
+            var lp = bottomInsets.LayoutParameters;
+            lp.Height = insets.Bottom;
+            bottomInsets.LayoutParameters = lp;
+
+            // Return CONSUMED if you don't want want the window insets to keep being
+            // passed down to descendant views.
+            return WindowInsetsCompat.Consumed;
         }
 
         private void Toolbar_NavigationClick(object sender, AndroidX.AppCompat.Widget.Toolbar.NavigationClickEventArgs e)

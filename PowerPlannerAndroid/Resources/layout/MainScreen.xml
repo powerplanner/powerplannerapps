@@ -7,12 +7,19 @@
 
     <!--The main content view-->
     <RelativeLayout
+        android:id="@+id/MainContentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:id="@+id/StatusBarSpacer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/Toolbar"
-            style="@style/ActionBar"/>
+            style="@style/ActionBar"
+            android:layout_below="@id/StatusBarSpacer"/>
             
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,13 +33,19 @@
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/BottomNav"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="60dp"
                 android:layout_gravity="start"
-                android:layout_alignParentBottom="true"
-                app:elevation="24dp"
+                app:elevation="0dp"
+                android:layout_above="@id/BottomInsets"
                 android:background="@color/primaryDark"
                 app:itemIconTint="@color/bottom_nav_foreground"
                 app:itemTextColor="@color/bottom_nav_foreground"/>
+            <View
+                android:id="@+id/BottomInsets"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/primaryDark"/>
         </RelativeLayout>
 
     </RelativeLayout>
