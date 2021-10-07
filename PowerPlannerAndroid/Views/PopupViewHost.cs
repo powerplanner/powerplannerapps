@@ -63,8 +63,14 @@ namespace PowerPlannerAndroid.Views
             return popupView;
         }
 
+        private View _keyboardSpacer;
+        private View _statusBarSpacer;
+
         private void InitializePopupView(View popupView)
         {
+            _keyboardSpacer = popupView.FindViewById(Resource.Id.KeyboardSpacer);
+            _statusBarSpacer = popupView.FindViewById(Resource.Id.StatusBarSpacer);
+
             if (MainScreenView.WindowInsets != null)
             {
                 OnApplyWindowInsets(popupView, MainScreenView.WindowInsets);
@@ -73,14 +79,23 @@ namespace PowerPlannerAndroid.Views
             ViewCompat.SetOnApplyWindowInsetsListener(popupView, this);
         }
 
-        public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
+        public virtual WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
         {
+            var imeInsets = windowInsets.GetInsets(WindowInsetsCompat.Type.Ime());
             var insets = windowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
 
-            var statusBarSpacer = v.FindViewById(Resource.Id.StatusBarSpacer);
-            var statusBarSpacerLp = statusBarSpacer.LayoutParameters;
+            var keyboardSpacerLp = _keyboardSpacer.LayoutParameters;
+            keyboardSpacerLp.Height = imeInsets.Bottom;
+            if (!(this is PopupComponentView) && imeInsets.Bottom == 0)
+            {
+                // For the old views (non-Vx), we also handle bottom inset
+                keyboardSpacerLp.Height += insets.Bottom;
+            }
+            _keyboardSpacer.LayoutParameters = keyboardSpacerLp;
+
+            var statusBarSpacerLp = _statusBarSpacer.LayoutParameters;
             statusBarSpacerLp.Height = insets.Top;
-            statusBarSpacer.LayoutParameters = statusBarSpacerLp;
+            _statusBarSpacer.LayoutParameters = statusBarSpacerLp;
 
             // Return CONSUMED if you don't want want the window insets to keep being
             // passed down to descendant views.
