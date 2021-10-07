@@ -138,6 +138,11 @@ namespace Vx.Droid
                     return new DroidDatePicker();
                 }
 
+                if (view is Vx.Views.ColorPicker)
+                {
+                    return new DroidColorPicker();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

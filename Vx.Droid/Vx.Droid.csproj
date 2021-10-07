@@ -124,6 +124,7 @@
     <Compile Include="Views\DroidBorder.cs" />
     <Compile Include="Views\DroidButton.cs" />
     <Compile Include="Views\DroidCheckBox.cs" />
+    <Compile Include="Views\DroidColorPicker.cs" />
     <Compile Include="Views\DroidComboBox.cs" />
     <Compile Include="Views\DroidDatePicker.cs" />
     <Compile Include="Views\DroidFontIcon.cs" />
