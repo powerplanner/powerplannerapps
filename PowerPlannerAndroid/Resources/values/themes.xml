@@ -19,7 +19,7 @@
 
       <!--Make the navigation bar transparent-->
         <item name="android:navigationBarColor">
-          @android:color/transparent
+          @color/navigationBarColor
         </item>
         <!--<item name="android:enforceNavigationBarContrast">false</item>-->
     </style>
