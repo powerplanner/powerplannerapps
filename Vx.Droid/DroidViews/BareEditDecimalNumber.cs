@@ -5,7 +5,6 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
-using Android.Icu.Text;
 using Android.OS;
 using Android.Runtime;
 using Android.Text;
@@ -14,6 +13,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
+using Vx.Droid.Helpers;
 
 namespace InterfacesDroid.Views
 {
@@ -53,7 +53,7 @@ namespace InterfacesDroid.Views
         /// </summary>
         private void Initialize()
         {
-            _decimalSeparator = DecimalFormatSymbols.Instance.DecimalSeparator;
+            _decimalSeparator = DecimalFormatSymbolsCompat.DecimalSeparator;
             base.KeyListener = DigitsKeyListener.GetInstance("0123456789" + _decimalSeparator);
 
             base.AddTextChangedListener(this);

@@ -112,6 +112,7 @@
     <Compile Include="Helpers\AutofillHelper.cs" />
     <Compile Include="Helpers\ColorTools.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Helpers\DecimalFormatSymbolsCompat.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="Helpers\TextViewHelper.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
