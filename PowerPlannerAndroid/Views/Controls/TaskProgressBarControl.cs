@@ -34,6 +34,11 @@ namespace PowerPlannerAndroid.Views.Controls
             Initialize();
         }
 
+        public TaskProgressBarControl(Context context) : base(Resource.Layout.TaskProgressBarControl, context)
+        {
+            Initialize();
+        }
+
         public TaskProgressBarControl(Context context, IAttributeSet attrs) : base(Resource.Layout.TaskProgressBarControl, context, attrs)
         {
             Initialize();

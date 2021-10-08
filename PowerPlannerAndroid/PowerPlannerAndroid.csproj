@@ -167,6 +167,7 @@
     <Compile Include="Views\Controls\SingleDayControl.cs" />
     <Compile Include="Views\DayScheduleSnapshotView.cs" />
     <Compile Include="Views\DayView.cs" />
+    <Compile Include="Views\DroidCompletionSlider.cs" />
     <Compile Include="Views\DroidEditImagesView.cs" />
     <Compile Include="Views\DroidImagesView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />

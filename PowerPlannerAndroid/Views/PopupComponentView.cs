@@ -33,25 +33,15 @@ namespace PowerPlannerAndroid.Views
         {
             base.OnViewModelSetOverride();
 
+
             var nativeView = ViewModel.Render();
             nativeView.LayoutParameters = new Android.Views.ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             AddNonInflatedView(nativeView);
 
-            // Make sure title and primary commands are called after calling AddNonInflatedView, since that method creates the toolbar/etc
-            Title = ViewModel.Title;
-
-            if (ViewModel.Commands != null && ViewModel.Commands.Length > 0)
-            {
-                Toolbar.Menu.Add(ViewModel.Commands[0].Text);
-                var item = Toolbar.Menu.GetItem(0);
-                item.SetIcon(Resource.Drawable.ic_check_white_36dp);
-                item.SetShowAsAction(ShowAsAction.Always | ShowAsAction.WithText);
-
-                foreach (var c in ViewModel.Commands.Skip(1))
-                {
-                    Toolbar.Menu.Add(c.Text);
-                }
-            }
+            // Make sure title and commands are called after calling AddNonInflatedView, since that method creates the toolbar/etc
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            UpdateTitle();
+            UpdateCommands();
 
             if (ViewModel.ImportantForAutofill)
             {
@@ -64,11 +54,100 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewModel.Commands):
+                case nameof(ViewModel.SecondaryCommands):
+                    UpdateCommands();
+                    break;
+
+                case nameof(ViewModel.Title):
+                    UpdateTitle();
+                    break;
+            }
+        }
+
+        private void UpdateCommands()
+        {
+            Toolbar.Menu.Clear();
+
+            if (ViewModel.Commands != null && ViewModel.Commands.Length > 0)
+            {
+                Toolbar.Menu.Add(ViewModel.Commands[0].Text);
+                var item = Toolbar.Menu.GetItem(0);
+                item.SetIcon(ToDroidIconResource(ViewModel.Commands[0].Glyph));
+                item.SetShowAsAction(ShowAsAction.Always | ShowAsAction.WithText);
+
+                foreach (var c in ViewModel.Commands.Skip(1))
+                {
+                    Toolbar.Menu.Add(c.Text);
+                }
+            }
+
+            if (ViewModel.SecondaryCommands != null && ViewModel.SecondaryCommands.Length > 0)
+            {
+                foreach (var c in ViewModel.SecondaryCommands)
+                {
+                    Toolbar.Menu.Add(c.Text);
+                }
+            }
+        }
+
+        private static int ToDroidIconResource(string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.Check:
+                case MaterialDesign.MaterialDesignIcons.Save:
+                    return Resource.Drawable.ic_check_white_36dp;
+
+                case MaterialDesign.MaterialDesignIcons.Delete:
+                    throw new NotImplementedException();
+
+                case MaterialDesign.MaterialDesignIcons.Edit:
+                    return Resource.Drawable.ic_edit_white_24dp;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private void UpdateTitle()
+        {
+            Title = ViewModel.Title;
+        }
+
+        public override async void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
+        {
+            PopupCommand matching = null;
+
             if (ViewModel.Commands != null)
             {
-                ViewModel.Commands.FirstOrDefault(i => i.Text == e.Item.TitleFormatted.ToString())?.Action?.Invoke();
+                matching = ViewModel.Commands.FirstOrDefault(i => i.Text == e.Item.TitleFormatted.ToString());
+            }
+
+            if (matching == null && ViewModel.SecondaryCommands != null)
+            {
+                matching = ViewModel.SecondaryCommands.FirstOrDefault(i => i.Text == e.Item.TitleFormatted.ToString());
+            }
+
+            if (matching != null)
+            {
+                if (matching.UseQuickConfirmDelete)
+                {
+                    // In Android I didn't implement the quick confirm delete
+                    if (await PowerPlannerAppDataLibrary.App.PowerPlannerApp.ConfirmDeleteAsync())
+                    {
+                        matching.Action?.Invoke();
+                    }
+                }
+                else
+                {
+                    matching.Action?.Invoke();
+                }
+                return;
             }
         }
 
