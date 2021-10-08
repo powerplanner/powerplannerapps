@@ -58,9 +58,9 @@ namespace PowerPlannerAndroid.Views
                 AutofillHelper.EnableForAll(nativeView);
             }
 
-            if (MainScreenView.WindowInsets != null)
+            if (InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets != null)
             {
-                UpdateNookInsets(MainScreenView.WindowInsets);
+                UpdateNookInsets(InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets);
             }
         }
 

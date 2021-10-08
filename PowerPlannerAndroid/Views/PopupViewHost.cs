@@ -71,9 +71,9 @@ namespace PowerPlannerAndroid.Views
             _keyboardSpacer = popupView.FindViewById(Resource.Id.KeyboardSpacer);
             _statusBarSpacer = popupView.FindViewById(Resource.Id.StatusBarSpacer);
 
-            if (MainScreenView.WindowInsets != null)
+            if (InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets != null)
             {
-                OnApplyWindowInsets(popupView, MainScreenView.WindowInsets);
+                OnApplyWindowInsets(popupView, InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets);
             }
 
             ViewCompat.SetOnApplyWindowInsetsListener(popupView, this);

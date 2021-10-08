@@ -46,8 +46,6 @@ namespace PowerPlannerAndroid.Views
         private ProgressBar _syncProgressBar;
         public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
 
-        public static WindowInsetsCompat WindowInsets { get; private set; }
-
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
         {
             Toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
@@ -61,8 +59,6 @@ namespace PowerPlannerAndroid.Views
 
         public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
         {
-            WindowInsets = windowInsets;
-
             var insets = windowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
 
             var statusBarSpacer = FindViewById(Resource.Id.StatusBarSpacer);

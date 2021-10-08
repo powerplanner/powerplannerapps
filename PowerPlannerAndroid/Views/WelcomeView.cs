@@ -28,6 +28,7 @@ namespace PowerPlannerAndroid.Views
 
             ViewCompat.SetOnApplyWindowInsetsListener(this, this);
 
+            // For some reason we need this for the welcome view
             await System.Threading.Tasks.Task.Delay(1);
             ViewCompat.RequestApplyInsets(this);
         }
