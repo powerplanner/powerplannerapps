@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  
+  <!--This will be overridden as transparent when on API 30 and up via values-v30 folder to support extending into nav bar-->
+  <color name="navigationBarColor">@android:color/transparent</color>
+
+</resources>

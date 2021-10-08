@@ -4,7 +4,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.View;
 using InterfacesDroid.Helpers;
+using InterfacesDroid.Themes;
 using PowerPlannerAppDataLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,17 @@ using Vx.Droid;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class PopupComponentView : PopupViewHost<PopupComponentViewModel>
+    public class PopupComponentView : PopupViewHost<PopupComponentViewModel>, AndroidX.Core.View.IOnApplyWindowInsetsListener
     {
         public PopupComponentView(ViewGroup root) : base(root)
         {
+        }
+
+        public override WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
+        {
+            UpdateNookInsets(windowInsets);
+
+            return base.OnApplyWindowInsets(v, windowInsets);
         }
 
         public override void OnViewModelSetOverride()
@@ -48,6 +57,11 @@ namespace PowerPlannerAndroid.Views
             {
                 AutofillHelper.EnableForAll(nativeView);
             }
+
+            if (InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets != null)
+            {
+                UpdateNookInsets(InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets);
+            }
         }
 
         public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
@@ -56,6 +70,19 @@ namespace PowerPlannerAndroid.Views
             {
                 ViewModel.Commands.FirstOrDefault(i => i.Text == e.Item.TitleFormatted.ToString())?.Action?.Invoke();
             }
+        }
+
+        private void UpdateNookInsets(WindowInsetsCompat windowInsets)
+        {
+            var imeInsets = windowInsets.GetInsets(WindowInsetsCompat.Type.Ime());
+
+            var insets = windowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
+
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness(
+                ThemeHelper.FromPxPrecise(Context, insets.Left),
+                0,
+                ThemeHelper.FromPxPrecise(Context, insets.Right),
+                imeInsets.Bottom == 0 ? ThemeHelper.FromPxPrecise(Context, insets.Bottom) : 0));
         }
     }
 }

@@ -121,7 +121,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 new ColorPicker
                 {
                     Header = PowerPlannerResources.GetString("AddClassPage_ColorPickerEditClassColor.Header"),
-                    Color = VxValue.Create(Color.ToColor(), v => Color = new byte[] { v.R, v.G, v.B })
+                    Color = VxValue.Create(Color.ToColor(), v => Color = new byte[] { v.R, v.G, v.B }),
+                    Margin = new Thickness(0, 18, 0, 0)
                 },
 
                 new CheckBox

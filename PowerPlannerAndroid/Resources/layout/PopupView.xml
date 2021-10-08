@@ -4,15 +4,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/StatusBarSpacer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
         
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/Toolbar"
-        style="@style/ActionBar"/>
+        style="@style/ActionBar"
+        android:layout_below="@id/StatusBarSpacer"/>
             
     <FrameLayout
         android:id="@+id/ContentFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/Toolbar"/>
+        android:layout_below="@id/Toolbar"
+        android:layout_above="@id/KeyboardSpacer"/>
+
+    <View
+        android:id="@+id/KeyboardSpacer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"/>
         
 </RelativeLayout>

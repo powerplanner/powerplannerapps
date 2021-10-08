@@ -16,9 +16,55 @@ using InterfacesDroid.Themes;
 using Android.Graphics.Drawables;
 using InterfacesDroid.Dialogs;
 using ToolsPortable;
+using Google.Android.Material.TextField;
 
 namespace InterfacesDroid.Views
 {
+    public class MyOutlinedColorPicker : FrameLayout
+    {
+        private TextInputLayout _textInputLayout;
+        private MyColorPicker _colorPicker;
+
+        public event EventHandler<Color> SelectionChanged;
+
+        public MyOutlinedColorPicker(Context context) : base(context)
+        {
+            _textInputLayout = new TextInputLayout(context, null, Vx.Droid.Resource.Attribute.materialOutlinedTextBoxStyle);
+
+            var editText = new TextInputEditText(_textInputLayout.Context)
+            {
+                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent),
+                Text = " "
+            };
+
+            _textInputLayout.AddView(editText);
+
+            _colorPicker = new MyColorPicker(context);
+
+            AddView(_textInputLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
+            AddView(_colorPicker, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
+
+            _colorPicker.ItemSelected += _colorPicker_ItemSelected;
+        }
+
+        private void _colorPicker_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            SelectionChanged?.Invoke(this, _colorPicker.SelectedColor);
+        }
+
+        public Color SelectedColor
+        {
+            get => _colorPicker.SelectedColor;
+            set => _colorPicker.SelectedColor = value;
+        }
+
+        public string Header
+        {
+            get => _textInputLayout.Hint;
+            set => _textInputLayout.Hint = value;
+        }
+    }
+
     public class MyColorPicker : Spinner
     {
         public static readonly List<ColorItem> DefaultColors = new List<ColorItem>()

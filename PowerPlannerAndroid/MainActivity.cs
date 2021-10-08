@@ -26,6 +26,8 @@ using System.IO;
 using Android.Webkit;
 using AndroidX.Core.Content;
 using Android.Content.PM;
+using AndroidX.Core.View;
+using Vx.Droid.Helpers;
 
 namespace PowerPlannerAndroid
 {
@@ -60,6 +62,12 @@ namespace PowerPlannerAndroid
         protected override async void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            // Enable bleeding full screen into status and navigation bar
+            if (WindowInsetsHelper.IsFullySupported)
+            {
+                WindowCompat.SetDecorFitsSystemWindows(Window, false);
+            }
 
             // Initialize Vx (have to initialize here rather than in App so it picks up the right context with the themed context)
             Vx.Droid.VxDroidExtensions.ApplicationContext = this;
