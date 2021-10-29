@@ -18,25 +18,25 @@ using Vx.Views;
 
 namespace Vx.Droid.Views
 {
-    public class DroidComboBox : DroidView<Vx.Views.ComboBox, TextInputLayout>
+    public class DroidComboBox : DroidView<Vx.Views.ComboBox, FrameLayout>
     {
+        private TextInputLayout _blankTextInputLayout;
+        private Spinner _spinner;
+
+        private TextInputLayout _autoCompleteTextInputLayout;
         private MaterialAutoCompleteTextView _autoCompleteTextView;
 
-        public DroidComboBox() : base(new TextInputLayout(VxDroidExtensions.ApplicationContext, null, Resource.Attribute.materialOutlinedDropdownStyle))
+        public DroidComboBox() : base(new FrameLayout(VxDroidExtensions.ApplicationContext))
         {
-            _autoCompleteTextView = new MaterialAutoCompleteTextView(View.Context)
-            {
-                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
-                InputType = Android.Text.InputTypes.Null
-            };
-
-            _autoCompleteTextView.TextChanged += _autoCompleteTextView_TextChanged;
-
-            View.AddView(_autoCompleteTextView);
         }
 
         private void _autoCompleteTextView_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
+            if (_spinner != null)
+            {
+                return;
+            }
+
             var textVal = e.Text.ToString();
             var matching = VxView.Items.OfType<object>().FirstOrDefault(i => i.ToString() == textVal);
 
@@ -51,33 +51,121 @@ namespace Vx.Droid.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            View.Hint = newView.Header;
+            if (newView.ItemTemplate != null)
+            {
+                if (_blankTextInputLayout == null)
+                {
+                    if (_autoCompleteTextInputLayout != null)
+                    {
+                        _autoCompleteTextView.TextChanged -= _autoCompleteTextView_TextChanged;
+                        _autoCompleteTextView.Adapter = null;
+                        _autoCompleteTextView = null;
+
+                        View.RemoveView(_autoCompleteTextInputLayout);
+                        _autoCompleteTextInputLayout = null;
+                    }
+
+                    _blankTextInputLayout = new TextInputLayout(View.Context, null, Resource.Attribute.materialOutlinedTextBoxStyle);
+
+                    var blankEditText = new TextInputEditText(_blankTextInputLayout.Context)
+                    {
+                        LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent),
+                        Text = " "
+                    };
+
+                    _blankTextInputLayout.AddView(blankEditText);
+
+                    View.AddView(_blankTextInputLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
+
+                    _spinner = new Spinner(View.Context);
+                    _spinner.SetPadding(AsPx(2), AsPx(4), 0, 0);
+                    _spinner.ItemSelected += _spinner_ItemSelected;
+
+                    View.AddView(_spinner, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
+                }
+
+                _blankTextInputLayout.Hint = newView.Header;
+            }
+            else
+            {
+                if (_autoCompleteTextView == null)
+                {
+                    if (_blankTextInputLayout != null)
+                    {
+                        _spinner.ItemSelected -= _spinner_ItemSelected;
+                        _spinner.Adapter = null;
+                        _spinner = null;
+
+                        View.RemoveView(_blankTextInputLayout);
+                        _blankTextInputLayout = null;
+                    }
+
+                    _autoCompleteTextInputLayout = new TextInputLayout(View.Context, null, Resource.Attribute.materialOutlinedDropdownStyle);
+
+                    _autoCompleteTextView = new MaterialAutoCompleteTextView(_autoCompleteTextInputLayout.Context)
+                    {
+                        LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
+                        InputType = Android.Text.InputTypes.Null
+                    };
+
+                    _autoCompleteTextView.TextChanged += _autoCompleteTextView_TextChanged;
+
+                    _autoCompleteTextInputLayout.AddView(_autoCompleteTextView);
+
+                    View.AddView(_autoCompleteTextInputLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
+                }
+
+                _autoCompleteTextInputLayout.Hint = newView.Header;
+            }
 
             if (!object.ReferenceEquals(_currentItems, newView.Items) || !object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
             {
                 _currentItems = newView.Items;
 
+                BaseAdapter adapter;
+
                 if (newView.ItemTemplate != null)
                 {
-                    var adapter = new VxDroidAdapter(newView.Items)
+                    adapter = new VxDroidAdapter(newView.Items)
                     {
                         ItemTemplate = newView.ItemTemplate
                     };
-                    _autoCompleteTextView.Adapter = adapter;
                 }
                 else
                 {
-                    var adapter = new ArrayAdapter(View.Context, Android.Resource.Layout.SimpleSpinnerDropDownItem, newView.Items.OfType<object>().Select(i => i.ToString()).ToArray());
+                    adapter = new ArrayAdapter(View.Context, Android.Resource.Layout.SimpleSpinnerDropDownItem, newView.Items.OfType<object>().Select(i => i.ToString()).ToArray());
+                }
+
+                if (_spinner != null)
+                {
+                    _spinner.Adapter = adapter;
+                }
+                else
+                {
                     _autoCompleteTextView.Adapter = adapter;
                 }
             }
 
             if (newView.SelectedItem?.Value != null)
             {
-                if (_autoCompleteTextView.Text != newView.SelectedItem.Value.ToString())
+                if (_spinner != null)
+                {
+                    _spinner.SetSelection(newView.Items.OfType<object>().ToList().IndexOf(newView.SelectedItem));
+                }
+                else if (_autoCompleteTextView.Text != newView.SelectedItem.Value.ToString())
                 {
                     _autoCompleteTextView.SetText(newView.SelectedItem.Value.ToString(), false);
                 }
+            }
+        }
+
+        private void _spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            var matching = VxView.Items.OfType<object>().ElementAtOrDefault(e.Position);
+
+            if (VxView.SelectedItem != null && matching != VxView.SelectedItem)
+            {
+                VxView.SelectedItem.ValueChanged?.Invoke(matching);
             }
         }
 

@@ -40,6 +40,7 @@ namespace InterfacesDroid.Views
             _textInputLayout.AddView(editText);
 
             _colorPicker = new MyColorPicker(context);
+            _colorPicker.SetPadding(ThemeHelper.AsPx(context, 2), ThemeHelper.AsPx(context, 4), 0, 0);
 
             AddView(_textInputLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
             AddView(_colorPicker, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
