@@ -84,6 +84,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string AVERAGE_IMAGE_UPLOAD_SPEED_IN_BYTES_PER_SECOND = "AverageImageUploadSpeedInBytesPerSecond";
         private const string HAS_SHOWN_PROMO_CONTRIBUTE = "HasShownPromoContribute";
         private const string OWNS_IN_APP_PURCHASE = "OwnsInAppPurchase";
+        private const string LANGUAGE_OVERRIDE = "LanguageOverride";
 
         #endregion
 
@@ -244,6 +245,12 @@ namespace PowerPlannerAppDataLibrary.Helpers
             {
                 return AppSettings.AddOrUpdateValue(key, value.Value.ToString());
             }
+        }
+
+        public static string LanguageOverride
+        {
+            get => AppSettings.GetValueOrDefault(LANGUAGE_OVERRIDE, null);
+            set => AppSettings.AddOrUpdateValue(LANGUAGE_OVERRIDE, value);
         }
 
         public static class NavigationManagerSettings

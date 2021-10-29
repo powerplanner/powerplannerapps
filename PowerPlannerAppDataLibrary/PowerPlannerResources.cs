@@ -32,10 +32,27 @@ namespace PowerPlannerAppDataLibrary
 
             if (_cultureInfo == null)
             {
-                _cultureInfo = PortableLocalizedResources.GetCurrentCulture();
+                LoadCultureInfo();
             }
 
             return _resourceManager.GetString(id, _cultureInfo);
+        }
+
+        public static void ResetCultureInfo()
+        {
+            LoadCultureInfo();
+        }
+
+        private static void LoadCultureInfo()
+        {
+            if (Helpers.Settings.LanguageOverride != null)
+            {
+                _cultureInfo = new CultureInfo(Helpers.Settings.LanguageOverride);
+            }
+            else
+            {
+                _cultureInfo = PortableLocalizedResources.GetCurrentCulture();
+            }
         }
 
         public static string GetCapitalizedString(string id)

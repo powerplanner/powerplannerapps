@@ -276,7 +276,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSoundSettings);
             }
 
-            if (VxPlatform.Current == Platform.Uwp)
+            if (VxPlatform.Current != Platform.iOS)
             {
                 RenderOption(
                     layout,
