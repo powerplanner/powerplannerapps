@@ -13,6 +13,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.TextField;
+using InterfacesDroid.Themes;
 using Java.Lang;
 using Vx.Droid.Helpers;
 
@@ -51,6 +52,8 @@ namespace InterfacesDroid.Views
         /// </summary>
         private void Initialize()
         {
+            SetMinimumWidth(ThemeHelper.AsPx(Context, 50));
+
             _editText = new TextInputEditText(Context)
             {
                 LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent)

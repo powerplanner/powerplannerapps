@@ -40,7 +40,7 @@ namespace Vx.Droid.Views
             var textVal = e.Text.ToString();
             var matching = VxView.Items.OfType<object>().FirstOrDefault(i => i.ToString() == textVal);
 
-            if (VxView.SelectedItem != null && matching != VxView.SelectedItem)
+            if (VxView.SelectedItem != null && matching != VxView.SelectedItem.Value)
             {
                 VxView.SelectedItem.ValueChanged?.Invoke(matching);
             }
@@ -150,7 +150,7 @@ namespace Vx.Droid.Views
             {
                 if (_spinner != null)
                 {
-                    _spinner.SetSelection(newView.Items.OfType<object>().ToList().IndexOf(newView.SelectedItem));
+                    _spinner.SetSelection(newView.Items.OfType<object>().ToList().IndexOf(newView.SelectedItem.Value));
                 }
                 else if (_autoCompleteTextView.Text != newView.SelectedItem.Value.ToString())
                 {
@@ -163,7 +163,7 @@ namespace Vx.Droid.Views
         {
             var matching = VxView.Items.OfType<object>().ElementAtOrDefault(e.Position);
 
-            if (VxView.SelectedItem != null && matching != VxView.SelectedItem)
+            if (VxView.SelectedItem != null && matching != VxView.SelectedItem.Value)
             {
                 VxView.SelectedItem.ValueChanged?.Invoke(matching);
             }

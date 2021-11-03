@@ -38,6 +38,7 @@ namespace Vx.Droid.Views
                 Gravity = GravityFlags.Left | GravityFlags.CenterVertical
             };
             _button.SetPadding(AsPx(16), AsPx(4), 0, 0);
+            _button.SetTextColor(Vx.Views.Theme.Current.ForegroundColor.ToDroid());
 
             _button.Click += View_Click;
 
