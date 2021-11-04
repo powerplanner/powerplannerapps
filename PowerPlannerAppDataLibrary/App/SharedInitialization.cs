@@ -31,6 +31,7 @@ namespace PowerPlannerAppDataLibrary.App
             PortableLocalizedResources.LocalizerExtension = PowerPlannerResources.GetString;
 
             Theme.DefaultAccentColor = System.Drawing.Color.FromArgb(84, 107, 199);
+            Theme.DefaultDarkAccentColor = System.Drawing.Color.FromArgb(100, 127, 234); // Lighter than normal so shows up on black backgrounds
         }
 
         private static void SetUpApiKey()

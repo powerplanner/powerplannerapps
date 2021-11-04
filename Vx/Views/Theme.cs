@@ -29,6 +29,8 @@ namespace Vx.Views
 
         public static Color DefaultAccentColor { get; set; } = Color.Blue;
 
+        public static Color DefaultDarkAccentColor { get; set; } = Color.Blue;
+
         public abstract Color ForegroundColor { get; }
 
         public abstract Color SubtleForegroundColor { get; }
@@ -37,7 +39,7 @@ namespace Vx.Views
 
         public abstract Color PopupPageBackgroundAltColor { get; }
 
-        public Color AccentColor => DefaultAccentColor;
+        public Color AccentColor => IsDarkTheme ? DefaultDarkAccentColor : DefaultAccentColor;
 
         public Color BackgroundAlt1Color => IsDarkTheme ? Color.FromArgb(51, 51, 51) : Color.FromArgb(233, 233, 233);
 
