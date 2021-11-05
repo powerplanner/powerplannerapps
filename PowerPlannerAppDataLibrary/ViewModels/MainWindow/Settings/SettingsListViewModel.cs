@@ -45,9 +45,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             UpdateIsFullVersion();
         }
 
+        private bool _updatingIsFullVersion;
         private async void UpdateIsFullVersion()
         {
-            _isFullVersion.Value = await PowerPlannerApp.Current.IsFullVersionAsync();
+            if (_updatingIsFullVersion)
+            {
+                return;
+            }
+
+            _updatingIsFullVersion = true;
+            try
+            {
+                _isFullVersion.Value = await PowerPlannerApp.Current.IsFullVersionAsync();
+            }
+            catch { }
+            _updatingIsFullVersion = false;
+        }
+
+        public override void OnViewFocused()
+        {
+            UpdateIsFullVersion();
+
+            base.OnViewFocused();
         }
 
         protected override View Render()

@@ -635,50 +635,5 @@ namespace PowerPlannerAndroid
             GC.Collect();
             base.OnLowMemory();
         }
-
-        /// <summary>
-        /// Will never throw.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<bool> OwnsInAppPurchase()
-        {
-            MyInAppBillingAssistant billingAssistant = null;
-            try
-            {
-                billingAssistant = new MyInAppBillingAssistant(this);
-                return await new MyInAppBillingAssistant(this).OwnsInAppPurchase();
-            }
-
-            catch
-            {
-                return false;
-            }
-
-            finally
-            {
-                if (billingAssistant != null)
-                    billingAssistant.Disconnect();
-            }
-        }
-
-        /// <summary>
-        /// Throws if failed to prompt.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<bool> PromptPurchase()
-        {
-            MyInAppBillingAssistant billingAssistant = null;
-            try
-            {
-                billingAssistant = new MyInAppBillingAssistant(this);
-                return await new MyInAppBillingAssistant(this).PromptPurchase();
-            }
-
-            finally
-            {
-                if (billingAssistant != null)
-                    billingAssistant.Disconnect();
-            }
-        }
     }
 }
