@@ -1,112 +1,261 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using PowerPlannerAppDataLibrary.Extensions;
-using Xamarin.InAppBilling;
 using System.Threading.Tasks;
+using Android.BillingClient.Api;
+using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.SyncLayer;
 
 namespace PowerPlannerAndroid.Extensions
 {
     public class AndroidInAppPurchaseExtension : InAppPurchaseExtension
     {
-        private const string PublicKey = "";
         public override Task<bool> OwnsInAppPurchaseAsync()
         {
-            MainActivity activity = MainActivity.GetCurrent();
-            if (activity != null)
-            {
-                return activity.OwnsInAppPurchase();
-            }
-
-            return Task.FromResult(false);
+            return AndroidBillingAssistant.Current.OwnsInAppPurchaseAsync();
         }
 
+        /// <summary>
+        /// This SHOULD throw if error like failed to connect occurs. The app will display a generic error message if exception occurs.
+        /// </summary>
+        /// <returns></returns>
         public override Task<bool> PromptPurchase()
         {
-            return MainActivity.GetCurrent()?.PromptPurchase();
+            return AndroidBillingAssistant.Current.PromptPurchase();
         }
     }
 
-    public class MyInAppBillingAssistant
+    public class AndroidBillingAssistant : Java.Lang.Object, IPurchasesResponseListener
     {
-        private Task _connectTask;
-        private InAppBillingServiceConnection _connection;
-        private Activity _activity;
-        private const string PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn+JtIuthU0LU9ykFZkixwHASG2EkGXwWLAn0KdavQV1QmRbz5QtSvmlPqTkjQiZ6Ku2oMvkgUQAsfMhqR7LzJm87ltpSGGePMOWAGn5budmcdJ5bw59MigfeC58HxOv7wAN/yW8ewDOPLDy62OUovh9EvS09PZkL9BjdQWt+CuBu18ny26bXsKDq2OrXAAt/MVNfLIYsYvc+UuQZpFNmZcAgPn1FHwyp16RvRSWj9de73d/djpovIJbcfOaHUwrW2UCO1vNgBt2MtlqQf8x7a0eNLn/SZY3gXREzed3tQK9lGO/7C/QgyP2NLAqSBKHHaFQcjeJcNBJLA1WG9XekJQIDAQAB";
-        private const string ProductId = "barebonesdev.powerplanner.premiumversion";
+        public static AndroidBillingAssistant Current = new AndroidBillingAssistant();
 
+        private static BillingClient _billingClient;
+        private static bool _isConnected;
+        private static object _lock = new object();
+        private static TaskCompletionSource<BillingClient> InitializeTaskCompletionSource;
         private static bool? _cachedOwnsInAppPurchase;
+        private const string ProductId = "barebonesdev.powerplanner.premiumversion";
+        private static TaskCompletionSource<bool> _purchaseTaskCompletionSource;
+        private static TaskCompletionSource<bool> _ownsInAppPurchaseTaskCompletionSource;
 
-        public MyInAppBillingAssistant(Activity activity)
-        {
-            _activity = activity;
-        }
-
-        private Task Connect()
-        {
-            if (_connectTask != null)
-                return _connectTask;
-
-            TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>();
-            _connectTask = completionSource.Task;
-
-            _connection = new InAppBillingServiceConnection(_activity, PublicKey);
-            _activity = null;
-            _connection.OnConnected += delegate
-            {
-                var cs = completionSource;
-                completionSource = null;
-                cs?.SetResult(true);
-            };
-            _connection.OnInAppBillingError += delegate
-            {
-                var cs = completionSource;
-                completionSource = null;
-                cs?.SetException(new Exception("InAppBillingError"));
-            };
-            _connection.Connect();
-            return _connectTask;
-        }
-
-        public async Task<bool> OwnsInAppPurchase()
+        public async Task<bool> OwnsInAppPurchaseAsync()
         {
             if (_cachedOwnsInAppPurchase != null)
+            {
                 return _cachedOwnsInAppPurchase.Value;
+            }
 
-            await Connect();
-            var purchases = _connection.BillingHandler.GetPurchases(ItemType.Product);
+            var client = await GetClientAsync(MainActivity.GetCurrent());
+            if (client == null)
+            {
+                throw new Exception("Failed to get connected billing client.");
+            }
 
-            var answer = purchases.Any(i => i.ProductId.Equals(ProductId) && i.PurchaseState == 0);
-            _cachedOwnsInAppPurchase = answer;
-            return answer;
+            _ownsInAppPurchaseTaskCompletionSource = new TaskCompletionSource<bool>();
+            client.QueryPurchasesAsync(BillingClient.SkuType.Inapp, this);
+            return await _ownsInAppPurchaseTaskCompletionSource.Task;
         }
 
+        public void OnQueryPurchasesResponse(BillingResult result, IList<Purchase> purchases)
+        {
+            PurchasesUpdatedListener(result, purchases);
+        }
+
+        /// <summary>
+        /// This SHOULD throw if error like failed to connect occurs. The app will display a generic error message if exception occurs.
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> PromptPurchase()
         {
-            await Connect();
-            _cachedOwnsInAppPurchase = null;
-            
-            _connection.BillingHandler.BuyProduct(ProductId, ItemType.Product, "");
-            return false; // Couldn't figure out how to get the event response, the event handlers didn't seem to trigger.
-            // So we'll just return false for now, and the user can go back.
+            var mainActivity = MainActivity.GetCurrent();
+            var client = await GetClientAsync(mainActivity);
+
+            if (client == null)
+            {
+                throw new Exception("Failed to get connected billing client.");
+            }
+
+            // First we have to query to get the product details https://developer.android.com/google/play/billing/integrate#show-products
+            var skuDetailsParams = SkuDetailsParams.NewBuilder()
+                .SetSkusList(new List<string>() { ProductId })
+                .SetType(BillingClient.SkuType.Inapp)
+                .Build();
+
+            var skuDetails = await _billingClient.QuerySkuDetailsAsync(skuDetailsParams);
+
+            if (skuDetails.Result.ResponseCode != BillingResponseCode.Ok)
+            {
+                throw new Exception(skuDetails.Result.DebugMessage);
+            }
+
+            var product = skuDetails.SkuDetails.FirstOrDefault();
+            if (product == null)
+            {
+                throw new Exception("Failed to find the product.");
+            }
+
+            // Then we can prompt purchase flow https://developer.android.com/google/play/billing/integrate#launch
+            var billingFlowParams = BillingFlowParams.NewBuilder()
+                .SetSkuDetails(product)
+                .Build();
+
+            _purchaseTaskCompletionSource = new TaskCompletionSource<bool>();
+            var response = client.LaunchBillingFlow(mainActivity, billingFlowParams);
+            if (response.ResponseCode != BillingResponseCode.Ok)
+            {
+                _purchaseTaskCompletionSource = null;
+                throw new Exception("Failed to launch billing flow: " + response.ResponseCode);
+            }
+
+            // PurchasesUpdatedListener will set this 
+            return await _purchaseTaskCompletionSource.Task;
         }
 
-        public void Disconnect()
+        /// <summary>
+        /// Returns null if couldn't connect
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private static Task<BillingClient> GetClientAsync(Context context)
         {
-            if (_connection != null)
+            lock (_lock)
             {
-                _connection.Disconnect();
-                _connection = null;
-                _activity = null;
+                if (InitializeTaskCompletionSource != null)
+                {
+                    if (InitializeTaskCompletionSource.Task.IsCompleted && _isConnected)
+                    {
+                        return InitializeTaskCompletionSource.Task;
+                    }
+
+                    if (!InitializeTaskCompletionSource.Task.IsCompleted)
+                    {
+                        return InitializeTaskCompletionSource.Task;
+                    }
+
+                    // Otherwise it disconnected, we'll re-connect
+                }
+
+                InitializeTaskCompletionSource = new TaskCompletionSource<BillingClient>();
+                GetClientHelperAsync(context);
+                return InitializeTaskCompletionSource.Task;
             }
+        }
+
+        /// <summary>
+        /// This only gets called if billingClient is null, or billingClient has been disconnected. Only need to lock when setting InitializeTaskCompletionSource.
+        /// </summary>
+        /// <param name="context"></param>
+        private static async void GetClientHelperAsync(Context context)
+        {
+            if (_billingClient == null)
+            {
+                var builder = BillingClient.NewBuilder(context);
+                builder.SetListener(PurchasesUpdatedListener);
+                builder.EnablePendingPurchases(); // This is required unfortunately
+                _billingClient = builder.Build();
+            }
+
+            try
+            {
+                var response = await _billingClient.StartConnectionAsync(OnDisconnected);
+                lock (_lock)
+                {
+                    if (response.ResponseCode == BillingResponseCode.Ok)
+                    {
+                        _isConnected = true;
+
+                        InitializeTaskCompletionSource.TrySetResult(_billingClient);
+                    }
+                    else
+                    {
+                        InitializeTaskCompletionSource.TrySetResult(null);
+                    }
+                }
+            }
+            catch
+            {
+                lock (_lock)
+                {
+                    InitializeTaskCompletionSource.TrySetResult(null);
+                }
+            }
+        }
+
+        private static void OnDisconnected()
+        {
+            lock (_lock)
+            {
+                _isConnected = false;
+            }
+        }
+
+        private static async void PurchasesUpdatedListener(BillingResult result, IList<Purchase> purchases)
+        {
+            try
+            {
+                if (result.ResponseCode == BillingResponseCode.Ok || result.ResponseCode == BillingResponseCode.ItemAlreadyOwned)
+                {
+                    var premium = purchases.FirstOrDefault(i => i.Skus.Contains(ProductId));
+
+                    if (premium.PurchaseState == PurchaseState.Purchased)
+                    {
+                        _cachedOwnsInAppPurchase = true;
+
+                        if (_purchaseTaskCompletionSource != null)
+                        {
+                            _purchaseTaskCompletionSource.TrySetResult(true);
+                            _purchaseTaskCompletionSource = null;
+                        }
+
+                        if (_ownsInAppPurchaseTaskCompletionSource != null)
+                        {
+                            _ownsInAppPurchaseTaskCompletionSource.TrySetResult(true);
+                            _ownsInAppPurchaseTaskCompletionSource = null;
+                        }
+
+                        // Purchases need to be acknowledged https://developer.android.com/google/play/billing/integrate#process
+                        if (!premium.IsAcknowledged)
+                        {
+                            var acknowledgePurchaseParams = AcknowledgePurchaseParams.NewBuilder()
+                                .SetPurchaseToken(premium.PurchaseToken)
+                                .Build();
+
+                            await _billingClient.AcknowledgePurchaseAsync(acknowledgePurchaseParams);
+                        }
+
+                        // If their account isn't already premium, update their online account as purchased
+                        try
+                        {
+                            var currAccount = PowerPlannerApp.Current.GetCurrentAccount();
+                            if (currAccount != null && !currAccount.IsLifetimePremiumAccount)
+                            {
+                                var dontBlock = Sync.SetAsPremiumAccount(currAccount);
+                            }
+                        }
+                        catch { }
+
+                        return;
+                    }
+                }
+
+                // In all other cases, we set it to false
+                _cachedOwnsInAppPurchase = false;
+
+                if (_purchaseTaskCompletionSource != null)
+                {
+                    _purchaseTaskCompletionSource.TrySetResult(false);
+                    _purchaseTaskCompletionSource = null;
+                }
+
+                if (_ownsInAppPurchaseTaskCompletionSource != null)
+                {
+                    _ownsInAppPurchaseTaskCompletionSource.TrySetResult(false);
+                    _ownsInAppPurchaseTaskCompletionSource = null;
+                }
+            }
+            catch { }
         }
     }
 }
