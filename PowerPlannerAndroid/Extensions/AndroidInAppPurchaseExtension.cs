@@ -199,7 +199,7 @@ namespace PowerPlannerAndroid.Extensions
                 {
                     var premium = purchases.FirstOrDefault(i => i.Skus.Contains(ProductId));
 
-                    if (premium.PurchaseState == PurchaseState.Purchased)
+                    if (premium != null && premium.PurchaseState == PurchaseState.Purchased)
                     {
                         _cachedOwnsInAppPurchase = true;
 
@@ -239,23 +239,23 @@ namespace PowerPlannerAndroid.Extensions
                         return;
                     }
                 }
-
-                // In all other cases, we set it to false
-                _cachedOwnsInAppPurchase = false;
-
-                if (_purchaseTaskCompletionSource != null)
-                {
-                    _purchaseTaskCompletionSource.TrySetResult(false);
-                    _purchaseTaskCompletionSource = null;
-                }
-
-                if (_ownsInAppPurchaseTaskCompletionSource != null)
-                {
-                    _ownsInAppPurchaseTaskCompletionSource.TrySetResult(false);
-                    _ownsInAppPurchaseTaskCompletionSource = null;
-                }
             }
             catch { }
+
+            // In all other cases, we set it to false
+            _cachedOwnsInAppPurchase = false;
+
+            if (_purchaseTaskCompletionSource != null)
+            {
+                _purchaseTaskCompletionSource.TrySetResult(false);
+                _purchaseTaskCompletionSource = null;
+            }
+
+            if (_ownsInAppPurchaseTaskCompletionSource != null)
+            {
+                _ownsInAppPurchaseTaskCompletionSource.TrySetResult(false);
+                _ownsInAppPurchaseTaskCompletionSource = null;
+            }
         }
     }
 }
