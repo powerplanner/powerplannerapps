@@ -48,10 +48,6 @@ namespace PowerPlannerAndroid.Extensions
             }
 
             var client = await GetClientAsync(MainActivity.GetCurrent());
-            if (client == null)
-            {
-                throw new Exception("Failed to get connected billing client.");
-            }
 
             _ownsInAppPurchaseTaskCompletionSource = new TaskCompletionSource<bool>();
             client.QueryPurchasesAsync(BillingClient.SkuType.Inapp, this);
@@ -71,11 +67,6 @@ namespace PowerPlannerAndroid.Extensions
         {
             var mainActivity = MainActivity.GetCurrent();
             var client = await GetClientAsync(mainActivity);
-
-            if (client == null)
-            {
-                throw new Exception("Failed to get connected billing client.");
-            }
 
             // First we have to query to get the product details https://developer.android.com/google/play/billing/integrate#show-products
             var skuDetailsParams = SkuDetailsParams.NewBuilder()
@@ -170,15 +161,15 @@ namespace PowerPlannerAndroid.Extensions
                     }
                     else
                     {
-                        InitializeTaskCompletionSource.TrySetResult(null);
+                        InitializeTaskCompletionSource.TrySetException(new Exception("BillingClient " + response.ResponseCode + ": " + response.DebugMessage));
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 lock (_lock)
                 {
-                    InitializeTaskCompletionSource.TrySetResult(null);
+                    InitializeTaskCompletionSource.TrySetException(ex);
                 }
             }
         }
