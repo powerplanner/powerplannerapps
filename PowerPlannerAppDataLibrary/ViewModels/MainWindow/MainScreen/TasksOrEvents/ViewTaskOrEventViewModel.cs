@@ -93,7 +93,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new TextBlock
                                 {
                                     Text = Item.Subtitle,
-                                    TextColor = Item.Class.Color.ToColor(),
+
+                                    // Theoretically their class should never be null, but sometimes people have null classes somehow...
+                                    TextColor = Item.Class != null ? Item.Class.Color.ToColor() : Theme.Current.ForegroundColor,
+
                                     Margin = new Thickness(0, 3, 0, 0),
                                     IsTextSelectionEnabled = true
                                 },
