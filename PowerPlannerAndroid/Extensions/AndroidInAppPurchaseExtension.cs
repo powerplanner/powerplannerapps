@@ -246,6 +246,9 @@ namespace PowerPlannerAndroid.Extensions
                 // Track telemetry first
                 switch (result.ResponseCode)
                 {
+                    case BillingResponseCode.Ok:
+                        break;
+
                     case BillingResponseCode.ItemNotOwned:
                         if (_ownsInAppPurchaseTaskCompletionSource != null)
                         {
