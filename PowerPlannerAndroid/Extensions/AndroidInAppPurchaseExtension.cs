@@ -47,6 +47,8 @@ namespace PowerPlannerAndroid.Extensions
                 return _cachedOwnsInAppPurchase.Value;
             }
 
+            TelemetryExtension.Current?.TrackEvent("CheckingInAppPurchase");
+
             var client = await GetClientAsync(MainActivity.GetCurrent());
 
             _ownsInAppPurchaseTaskCompletionSource = new TaskCompletionSource<bool>();
@@ -65,6 +67,8 @@ namespace PowerPlannerAndroid.Extensions
         /// <returns></returns>
         public async Task<bool> PromptPurchase()
         {
+            TelemetryExtension.Current?.TrackEvent("PromptingPurchase");
+
             var mainActivity = MainActivity.GetCurrent();
             var client = await GetClientAsync(mainActivity);
 
@@ -78,7 +82,8 @@ namespace PowerPlannerAndroid.Extensions
 
             if (skuDetails.Result.ResponseCode != BillingResponseCode.Ok)
             {
-                throw new Exception(skuDetails.Result.DebugMessage);
+                TrackBillingError(skuDetails.Result);
+                throw new InAppPurchaseHandledException();
             }
 
             var product = skuDetails.SkuDetails.FirstOrDefault();
@@ -97,7 +102,8 @@ namespace PowerPlannerAndroid.Extensions
             if (response.ResponseCode != BillingResponseCode.Ok)
             {
                 _purchaseTaskCompletionSource = null;
-                throw new Exception("Failed to launch billing flow: " + response.ResponseCode);
+                TrackBillingError(response);
+                throw new InAppPurchaseHandledException();
             }
 
             // PurchasesUpdatedListener will set this 
@@ -161,7 +167,9 @@ namespace PowerPlannerAndroid.Extensions
                     }
                     else
                     {
-                        InitializeTaskCompletionSource.TrySetException(new Exception("BillingClient " + response.ResponseCode + ": " + response.DebugMessage));
+                        TrackBillingError(response);
+
+                        InitializeTaskCompletionSource.TrySetException(new InAppPurchaseHandledException());
                     }
                 }
             }
@@ -202,6 +210,8 @@ namespace PowerPlannerAndroid.Extensions
 
                         if (_ownsInAppPurchaseTaskCompletionSource != null)
                         {
+                            TrackInAppOwnershipStatus(owned: true);
+
                             _ownsInAppPurchaseTaskCompletionSource.TrySetResult(true);
                             _ownsInAppPurchaseTaskCompletionSource = null;
                         }
@@ -214,6 +224,8 @@ namespace PowerPlannerAndroid.Extensions
                                 .Build();
 
                             await _billingClient.AcknowledgePurchaseAsync(acknowledgePurchaseParams);
+
+                            TelemetryExtension.Current?.TrackEvent("PurchasedPremium");
                         }
 
                         // If their account isn't already premium, update their online account as purchased
@@ -230,8 +242,26 @@ namespace PowerPlannerAndroid.Extensions
                         return;
                     }
                 }
+
+                // Track telemetry first
+                switch (result.ResponseCode)
+                {
+                    case BillingResponseCode.ItemNotOwned:
+                        if (_ownsInAppPurchaseTaskCompletionSource != null)
+                        {
+                            TrackInAppOwnershipStatus(owned: false);
+                        }
+                        break;
+
+                    default:
+                        TrackBillingError(result);
+                        break;
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
 
             // In all other cases, we set it to false
             _cachedOwnsInAppPurchase = false;
@@ -247,6 +277,48 @@ namespace PowerPlannerAndroid.Extensions
                 _ownsInAppPurchaseTaskCompletionSource.TrySetResult(false);
                 _ownsInAppPurchaseTaskCompletionSource = null;
             }
+        }
+
+        private static void TrackInAppOwnershipStatus(bool owned)
+        {
+            TelemetryExtension.Current?.TrackEvent("InAppOwnershipStatus", new Dictionary<string, string>()
+            {
+                { "Owned", owned ? "1" : "0" }
+            });
+        }
+
+        private static void TrackBillingError(BillingResult result)
+        {
+            /** There's a few classes of responses...
+               - Errors that are expected and I can't do anything about (they need to sign in to Play Store, etc... I should still track just in case they increase dramatically)
+                 - (3) BILLING_UNAVAILABLE
+                 - (-2) FEATURE_NOT_SUPPORTED
+                 - (-3) SERVICE_TIMEOUT
+                 - (-1) SERVICE_DISCONNECTED
+                 - (2) SERVICE_UNAVAILALBE (Network is down)
+
+               - Errors that are unexpected
+                 - (5) DEVELOPER_ERROR
+                 - (6) ERROR
+                 - (4) ITEM_UNAVAILABLE
+            **/
+
+            Dictionary<string, string> telemParmas = new Dictionary<string, string>()
+            {
+                { "ErrorCode", ((int)result.ResponseCode).ToString() }
+            };
+
+            // Only log error messages for ones that we need the message for, ones that are unexpected
+            switch (result.ResponseCode)
+            {
+                case BillingResponseCode.DeveloperError:
+                case BillingResponseCode.Error:
+                case BillingResponseCode.ItemUnavailable:
+                    telemParmas.Add("ErrorMessage", result.DebugMessage);
+                    break;
+            }
+
+            TelemetryExtension.Current?.TrackEvent("BillingError", telemParmas);
         }
     }
 }

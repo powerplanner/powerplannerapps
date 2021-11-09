@@ -110,6 +110,7 @@ namespace PowerPlannerAppDataLibrary.App
                 }
             }
 
+            catch (InAppPurchaseHandledException) { /* No need to log error, already logged */ }
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
