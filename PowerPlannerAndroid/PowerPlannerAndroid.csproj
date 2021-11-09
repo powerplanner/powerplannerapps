@@ -71,9 +71,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xamarin.InAppBilling">
-      <HintPath>References\Xamarin.InAppBilling.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\AgendaTasksOrEventsAdapter.cs" />
