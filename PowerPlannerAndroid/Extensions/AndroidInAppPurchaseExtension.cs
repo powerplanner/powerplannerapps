@@ -247,8 +247,6 @@ namespace PowerPlannerAndroid.Extensions
                 switch (result.ResponseCode)
                 {
                     case BillingResponseCode.Ok:
-                        break;
-
                     case BillingResponseCode.ItemNotOwned:
                         if (_ownsInAppPurchaseTaskCompletionSource != null)
                         {
