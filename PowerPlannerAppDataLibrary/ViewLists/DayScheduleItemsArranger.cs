@@ -129,12 +129,12 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         {
             public ViewItemSchedule Item { get; private set; }
 
-            public ScheduleItem(DayScheduleItemsArranger arranger, ViewItemSchedule viewItem) : base(arranger)
+            public ScheduleItem(DayScheduleItemsArranger arranger, ViewItemSchedule viewItem, TimeSpan? overriddenStartTime = null, TimeSpan? overriddenEndTime = null) : base(arranger)
             {
                 Item = viewItem;
 
-                StartTime = viewItem.StartTime.TimeOfDay;
-                EndTime = viewItem.EndTime.TimeOfDay;
+                StartTime = overriddenStartTime ?? viewItem.StartTime.TimeOfDay;
+                EndTime = overriddenEndTime ?? viewItem.EndTime.TimeOfDay;
             }
         }
 
@@ -288,7 +288,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         private void Initialize(SchedulesOnDay schedules, MyObservableList<BaseViewItemMegaItem> events, MyObservableList<ViewItemHoliday> holidays)
         {
-            List<ScheduleItem> schedulesCopied;
+            List<ScheduleItem> schedulesCopied = new List<ScheduleItem>();
             if (schedules == null)
             {
                 // Different semester case, so no schedules
@@ -296,7 +296,18 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             }
             else
             {
-                schedulesCopied = schedules.Where(i => i.EndTime.TimeOfDay > i.StartTime.TimeOfDay).Select(i => new ScheduleItem(this, i)).ToList();
+                foreach (var item in schedules)
+                {
+                    if (item.EndTime.TimeOfDay > item.StartTime.TimeOfDay)
+                    {
+                        schedulesCopied.Add(new ScheduleItem(this, item));
+                    }
+                    else
+                    {
+                        // Crosses over midnight
+                        schedulesCopied.Add(new ScheduleItem(this, item, overriddenEndTime: new TimeSpan(23, 59, 59)));
+                    }
+                }
             }
 
             List<EventItem> eventsCopied = new List<EventItem>();
