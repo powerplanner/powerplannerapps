@@ -137,6 +137,11 @@ namespace Vx.Uwp
                     return new UwpDatePicker();
                 }
 
+                if (view is Vx.Views.ColorPicker)
+                {
+                    return new UwpColorPicker();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
