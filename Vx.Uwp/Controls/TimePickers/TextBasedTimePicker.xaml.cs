@@ -27,6 +27,8 @@ namespace Vx.Uwp.Controls.TimePickers
 {
     public partial class TextBasedTimePicker : UserControl
     {
+        public event EventHandler<TimeSpan> SelectedTimeChanged;
+
         /// <summary>
         /// Gets whether the OS supports this control (supported in 17763 and up), which 7% of my users are still lower than that as of 1/25/2020.
         /// </summary>
@@ -96,6 +98,8 @@ namespace Vx.Uwp.Controls.TimePickers
                 // Wasn't in the list, add it and select it
                 TimePickerComboBox.SelectedItem = AddTime(SelectedTime);
             }
+
+            SelectedTimeChanged?.Invoke(this, SelectedTime);
         }
 
         private void TimePickerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
