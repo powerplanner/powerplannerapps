@@ -87,18 +87,6 @@ namespace Vx.Uwp.Controls.TimePickers
             // Update items and remove any non-30 minute interval times that aren't selected
             UpdateItems();
 
-            var matching = _timeEntries.FirstOrDefault(i => i.Time == SelectedTime);
-            if (matching != null)
-            {
-                // Select it
-                TimePickerComboBox.SelectedItem = matching;
-            }
-            else
-            {
-                // Wasn't in the list, add it and select it
-                TimePickerComboBox.SelectedItem = AddTime(SelectedTime);
-            }
-
             SelectedTimeChanged?.Invoke(this, SelectedTime);
         }
 
@@ -118,6 +106,19 @@ namespace Vx.Uwp.Controls.TimePickers
                 desired.Add(CreateTimeEntry(new TimeSpan(23, 59, 0)));
             }
             _timeEntries.MakeListLike(desired);
+
+            // Have to reselect if changed
+            var matching = _timeEntries.FirstOrDefault(i => i.Time == SelectedTime);
+            if (matching != null)
+            {
+                // Select it
+                TimePickerComboBox.SelectedItem = matching;
+            }
+            else
+            {
+                // Wasn't in the list, add it and select it
+                TimePickerComboBox.SelectedItem = AddTime(SelectedTime);
+            }
         }
 
         private IEnumerable<TimeEntry> GenerateEntries()
