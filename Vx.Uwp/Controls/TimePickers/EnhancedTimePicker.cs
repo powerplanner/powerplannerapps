@@ -15,6 +15,7 @@ namespace Vx.Uwp.Controls.TimePickers
 
         public EnhancedTimePicker()
         {
+            // Note that in Power Planner, my min version is now 17763 so the text time pickers are always supported now.
             if (TextBasedTimePicker.IsSupported)
             {
                 var picker = CreateTextBasedTimePicker();

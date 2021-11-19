@@ -52,7 +52,8 @@ namespace Vx.Uwp.Views
             double consumed = 0;
             double maxOtherDimension = 0;
 
-            foreach (var child in Children)
+            // We also have to measure autos FIRST, since those get priority
+            foreach (var child in Children.Where(i => GetWeight(i) == 0).Concat(Children.Where(i => GetWeight(i) != 0)))
             {
                 if (child.Visibility == Windows.UI.Xaml.Visibility.Visible)
                 {
