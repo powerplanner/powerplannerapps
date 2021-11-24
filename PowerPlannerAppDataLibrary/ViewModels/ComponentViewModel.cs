@@ -7,7 +7,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels
 {
     public class ComponentViewModel : BaseMainScreenViewModelDescendant
     {
-        public string Title { get; protected set; }
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            protected set => SetProperty(ref _title, value, nameof(Title));
+        }
 
         public Thickness NookInsets { get; protected set; }
 

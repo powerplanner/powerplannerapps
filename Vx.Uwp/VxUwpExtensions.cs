@@ -137,6 +137,11 @@ namespace Vx.Uwp
                     return new UwpDatePicker();
                 }
 
+                if (view is Vx.Views.ColorPicker)
+                {
+                    return new UwpColorPicker();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
@@ -292,6 +297,9 @@ namespace Vx.Uwp
 
                 case MaterialDesign.MaterialDesignIcons.Delete:
                     return Symbol.Delete;
+
+                case MaterialDesign.MaterialDesignIcons.Edit:
+                    return Symbol.Edit;
 
                 default:
                     return Symbol.Refresh;

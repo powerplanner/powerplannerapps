@@ -112,8 +112,10 @@
     <Compile Include="Helpers\AutofillHelper.cs" />
     <Compile Include="Helpers\ColorTools.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Helpers\DecimalFormatSymbolsCompat.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="Helpers\TextViewHelper.cs" />
+    <Compile Include="Helpers\WindowInsetsHelper.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Themes\ThemeHelper.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Views\DroidBorder.cs" />
     <Compile Include="Views\DroidButton.cs" />
     <Compile Include="Views\DroidCheckBox.cs" />
+    <Compile Include="Views\DroidColorPicker.cs" />
     <Compile Include="Views\DroidComboBox.cs" />
     <Compile Include="Views\DroidDatePicker.cs" />
     <Compile Include="Views\DroidFontIcon.cs" />

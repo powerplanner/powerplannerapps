@@ -17,11 +17,16 @@ using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using BareMvvm.Core.Snackbar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using Vx.Views;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.Views;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
-    public class ViewTaskOrEventViewModel : BaseMainScreenViewModelChild
+    public class ViewTaskOrEventViewModel : PopupComponentViewModel
     {
+        [VxSubscribe]
         public ViewItemTaskOrEvent Item { get; private set; }
 
         public bool IsUnassigedMode { get; private set; }
@@ -45,6 +50,93 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             Item = item;
             Item.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(Item_PropertyChanged).Handler;
+
+            Title = PageTitle;
+
+            PrimaryCommand = PopupCommand.Edit(Edit);
+            UpdateSecondaryCommands();
+        }
+
+        private void UpdateSecondaryCommands()
+        {
+            SecondaryCommands = new PopupCommand[]
+            {
+                new PopupCommand(ConvertTypeButtonText, ConvertType),
+                PopupCommand.DeleteWithQuickConfirm(Delete)
+            };
+        }
+
+        protected override View Render()
+        {
+            return new LinearLayout
+            {
+                Children =
+                {
+                    new ScrollView
+                    {
+                        Content = new LinearLayout
+                        {
+                            Margin = new Thickness(
+                                Theme.Current.PageMargin + NookInsets.Left,
+                                Theme.Current.PageMargin,
+                                Theme.Current.PageMargin + NookInsets.Right,
+                                Theme.Current.PageMargin + (IsCompletionSliderVisible ? 0 : NookInsets.Bottom)),
+                            Children =
+                            {
+                                new TextBlock
+                                {
+                                    Text = Item.Name,
+                                    FontSize = Theme.Current.TitleFontSize,
+                                    IsTextSelectionEnabled = true
+                                },
+
+                                new TextBlock
+                                {
+                                    Text = Item.Subtitle,
+
+                                    // Theoretically their class should never be null, but sometimes people have null classes somehow...
+                                    TextColor = Item.Class != null ? Item.Class.Color.ToColor() : Theme.Current.ForegroundColor,
+
+                                    Margin = new Thickness(0, 3, 0, 0),
+                                    IsTextSelectionEnabled = true
+                                },
+
+                                !string.IsNullOrWhiteSpace(Item.Details) ? new HyperlinkTextBlock
+                                {
+                                    Text = Item.Details,
+                                    Margin = new Thickness(0, 18, 0, 0),
+                                    IsTextSelectionEnabled = true
+                                } : null,
+
+                                VxPlatform.Current != Platform.iOS ? new ImagesView
+                                {
+                                    ImageAttachments = Item.ImageAttachments,
+                                    Margin = new Thickness(0, 18, 0, 0)
+                                } : null
+                            }
+                        }
+                    }.LinearLayoutWeight(1),
+
+                    IsCompletionSliderVisible ? (View)new CompletionSlider
+                    {
+                        PercentComplete = VxValue.Create(Item.PercentComplete, v => SetPercentComplete(v)),
+                        Margin = new Thickness(
+                            Theme.Current.PageMargin + NookInsets.Left,
+                            0,
+                            Theme.Current.PageMargin + NookInsets.Right,
+                            Theme.Current.PageMargin + NookInsets.Bottom)
+                    } : IsButtonAddGradeVisible ? (View)new AccentButton
+                    {
+                        Text = PowerPlannerResources.GetString("ViewTaskOrEventPage_ButtonAddGrade.Content"),
+                        Margin = new Thickness(
+                            Theme.Current.PageMargin + NookInsets.Left,
+                            0,
+                            Theme.Current.PageMargin + NookInsets.Right,
+                            Theme.Current.PageMargin + NookInsets.Bottom),
+                        Click = () => AddGrade()
+                    } : null
+                }
+            };
         }
 
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -57,6 +149,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                         nameof(PageTitle),
                         nameof(IsCompletionSliderVisible),
                         nameof(ConvertTypeButtonText));
+                    Title = PageTitle;
+                    UpdateSecondaryCommands();
                     break;
             }
         }

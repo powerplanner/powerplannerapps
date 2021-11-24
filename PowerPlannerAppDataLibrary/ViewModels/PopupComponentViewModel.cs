@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using Vx.Views;
 
@@ -17,10 +18,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         public PopupCommand PrimaryCommand
         {
             get => Commands?.FirstOrDefault();
-            set => Commands = new PopupCommand[] { value };
+            protected set => Commands = new PopupCommand[] { value };
         }
 
-        public PopupCommand[] Commands { get; protected set; }
+        private PopupCommand[] _commands;
+        public PopupCommand[] Commands
+        {
+            get => _commands;
+            protected set => SetProperty(ref _commands, value, nameof(Commands));
+        }
+
+        private PopupCommand[] _secondaryCommands;
+        public PopupCommand[] SecondaryCommands
+        {
+            get => _secondaryCommands;
+            protected set => SetProperty(ref _secondaryCommands, value, nameof(SecondaryCommands));
+        }
 
         public PopupComponentViewModel(BaseViewModel parent) : base(parent)
         {
@@ -81,11 +94,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         }
     }
 
+    public enum PopupCommandStyle
+    {
+        Default,
+        Destructive
+    }
+
     public class PopupCommand
     {
         public string Text { get; set; }
         public Action Action { get; set; }
         public string Glyph { get; set; }
+        public PopupCommandStyle Style { get; set; }
+        public bool UseQuickConfirmDelete { get; set; }
+
+        public PopupCommand() { }
+
+        public PopupCommand(string text, Action action, PopupCommandStyle style = PopupCommandStyle.Default)
+        {
+            Text = text;
+            Action = action;
+            Style = style;
+        }
 
         public static PopupCommand Save(Action action)
         {
@@ -103,7 +133,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             {
                 Text = PowerPlannerResources.GetString("MenuItemDelete"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
-                Action = action
+                Action = action,
+                Style = PopupCommandStyle.Destructive
+            };
+        }
+
+        public static PopupCommand DeleteWithQuickConfirm(Action actualDeleteAction)
+        {
+            return new PopupCommand
+            {
+                Text = PowerPlannerResources.GetString("MenuItemDelete"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                UseQuickConfirmDelete = true,
+                Action = actualDeleteAction,
+                Style = PopupCommandStyle.Destructive
+            };
+        }
+
+        public static PopupCommand Edit(Action action)
+        {
+            return new PopupCommand
+            {
+                Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Edit,
+                Action = delegate { action?.Invoke(); }
             };
         }
     }

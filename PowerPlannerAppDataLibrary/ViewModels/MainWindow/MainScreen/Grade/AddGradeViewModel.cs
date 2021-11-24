@@ -14,10 +14,12 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using BareMvvm.Core.Snackbar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
+using Vx.Views;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
-    public class AddGradeViewModel : BaseMainScreenViewModelChild
+    public class AddGradeViewModel : PopupComponentViewModel
     {
         /// <summary>
         /// View should set this if it enables editing IsDropped from here
@@ -26,8 +28,134 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 
         protected override bool InitialAllowLightDismissValue => false;
 
-        public AddGradeViewModel(BaseViewModel parent) : base(parent)
+        public AddGradeViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
+            State = state;
+
+            Title = GetTitle(state);
+
+            PrimaryCommand = PopupCommand.Save(Save);
+
+            if (VxPlatform.Current == Platform.iOS)
+            {
+                UsesIsDropped = true;
+            }
+        }
+
+        private static string GetTitle(OperationState state)
+        {
+            switch (state)
+            {
+                case AddGradeViewModel.OperationState.Adding:
+                    return PowerPlannerResources.GetString("EditGradePage_HeaderAddString");
+
+                case AddGradeViewModel.OperationState.AddingWhatIf:
+                    return PowerPlannerResources.GetString("EditGradePage_HeaderAddWhatIfString");
+
+                case AddGradeViewModel.OperationState.Editing:
+                    return PowerPlannerResources.GetString("EditGradePage_HeaderEditString");
+
+                case AddGradeViewModel.OperationState.EditingWhatIf:
+                    return PowerPlannerResources.GetString("EditGradePage_HeaderEditWhatIfString");
+            }
+
+            throw new NotImplementedException();
+        }
+
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditGradePage_TextBoxName.Header"),
+                    Text = VxValue.Create(Name, v => Name = v),
+                    OnSubmit = Save,
+                    AutoFocus = State == OperationState.Adding || State == OperationState.AddingWhatIf
+                },
+
+                new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("EditGradePage_TextBoxGradeReceived.Header"),
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
+
+                new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create<double?>(GradeReceived == PowerPlannerSending.Grade.UNGRADED ? (double?)null : (double?)GradeReceived, v => GradeReceived = v.GetValueOrDefault(PowerPlannerSending.Grade.UNGRADED)),
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("EditGradePage_TextBlockOutOf.Text"),
+                            Margin = new Thickness(6, 0, 6, 0),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            FontSize = Theme.Current.CaptionFontSize,
+                            WrapText = false
+                        },
+
+                        new NumberTextBox
+                        {
+                            Number = VxValue.Create<double?>(GradeTotal, v => GradeTotal = v.GetValueOrDefault(0)),
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+
+                        new TextBlock
+                        {
+                            Text = GradePercent,
+                            TextAlignment = HorizontalAlignment.Right,
+                            WrapText = false,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            FontSize = Theme.Current.TitleFontSize
+                        }.LinearLayoutWeight(1)
+                    }
+                },
+
+                new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Children =
+                    {
+                        new DatePicker
+                        {
+                            Header = PowerPlannerResources.GetString("EditGradePage_DatePickerDate.Header"),
+                            Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault(DateTime.Today)),
+                            Margin = new Thickness(0, 0, 9, 0)
+                        }.LinearLayoutWeight(1),
+
+                        new ComboBox
+                        {
+                            Header = PowerPlannerResources.GetString("EditGradePage_ComboBoxWeightCategories.Header"),
+                            Items = WeightCategories,
+                            SelectedItem = VxValue.Create<object>(SelectedWeightCategory, v => SelectedWeightCategory = v as ViewItemWeightCategory),
+                            Margin = new Thickness(9, 0, 0, 0)
+                        }.LinearLayoutWeight(1)
+                    }
+                },
+
+                UsesIsDropped ? new CheckBox
+                {
+                    Text = "Is dropped?",
+                    Margin = new Thickness(0, 18, 0, 0),
+                    IsChecked = VxValue.Create(IsDropped, v => IsDropped = v)
+                } : null,
+
+                new MultilineTextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditGradePage_TextBoxDetails.Header"),
+                    Height = 180, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
+                    Text = VxValue.Create(Details, v => Details = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                }
+
+            );
         }
 
         public enum OperationState { Adding, Editing, AddingWhatIf, EditingWhatIf }
@@ -82,9 +210,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                 weight = addParams.Class.WeightCategories.First();
             }
 
-            return new AddGradeViewModel(parent)
+            return new AddGradeViewModel(parent, addParams.IsInWhatIfMode ? OperationState.AddingWhatIf : OperationState.Adding)
             {
-                State = addParams.IsInWhatIfMode ? OperationState.AddingWhatIf : OperationState.Adding,
                 Date = date.Value,
                 WeightCategories = addParams.Class.WeightCategories,
                 SelectedWeightCategory = weight
@@ -126,9 +253,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                 }
             }
 
-            return new AddGradeViewModel(parent)
+            return new AddGradeViewModel(parent, editParams.IsInWhatIfMode ? OperationState.EditingWhatIf : OperationState.Editing)
             {
-                State = editParams.IsInWhatIfMode ? OperationState.EditingWhatIf : OperationState.Editing,
                 Name = editParams.Item.Name,
                 Date = editParams.Item.DateInSchoolTime,
                 Details = editParams.Item.Details,

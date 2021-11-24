@@ -5,21 +5,38 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class LanguageSettingsViewModel : BaseViewModel
+    public class LanguageSettingsViewModel : PopupComponentViewModel
     {
         public class LanguageOption
         {
             public string DisplayName { get; set; }
 
             public string LanguageCode { get; set; }
+
+            public override string ToString()
+            {
+                return DisplayName;
+            }
         }
 
         public LanguageSettingsViewModel(BaseViewModel parent) : base(parent)
         {
-            var overriddenLanguageCode = LanguageExtension.Current.GetLanguageOverrideCode();
+            Title = PowerPlannerResources.GetString("Settings_LanguageSettings_Header.Text");
+
+            string overriddenLanguageCode;
+            if (LanguageExtension.Current != null)
+            {
+                overriddenLanguageCode = LanguageExtension.Current?.GetLanguageOverrideCode();
+            }
+            else
+            {
+                overriddenLanguageCode = Helpers.Settings.LanguageOverride ?? "";
+            }
+
             var matching = Options.FirstOrDefault(i => i.LanguageCode == overriddenLanguageCode);
             _selectedOption = matching;
         }
@@ -28,7 +45,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             new LanguageOption()
             {
-                DisplayName = LocalizationExtension.Current.GetString("Settings_LanguageSettings_AutomaticOptionDisplayName"),
+                DisplayName = PowerPlannerResources.GetString("Settings_LanguageSettings_AutomaticOptionDisplayName"),
                 LanguageCode = "" // Empty string represents automatic/no override
             },
             new LanguageOption()
@@ -70,6 +87,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             set => SetProperty(ref _selectedOption, value, nameof(SelectedOption));
         }
 
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("Settings_LanguageSettings_Description.Text")
+                },
+
+                new ComboBox
+                {
+                    Header = PowerPlannerResources.GetString("Settings_LanguageSettings_ComboBoxLanguageOption.Header"),
+                    Items = Options,
+                    SelectedItem = VxValue.Create<object>(SelectedOption, i => SelectedOption = i as LanguageOption),
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
+
+                new AccentButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ButtonSave.Content"),
+                    Click = SaveChanges,
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
+
+                new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_RestartNote.Text"),
+                    Margin = new Thickness(0, 9, 0, 0)
+                }.CaptionStyle()
+
+            );
+        }
+
         public async void SaveChanges()
         {
             if (SelectedOption == null)
@@ -79,7 +129,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             try
             {
-                LanguageExtension.Current.SetLanguageOverrideCode(SelectedOption.LanguageCode);
+                LanguageExtension.Current?.SetLanguageOverrideCode(SelectedOption.LanguageCode);
+                Helpers.Settings.LanguageOverride = SelectedOption.LanguageCode == "" ? null : SelectedOption.LanguageCode;
+                PowerPlannerResources.ResetCultureInfo();
 
                 TelemetryExtension.Current?.TrackEvent("ChangedLanguage", new Dictionary<string, string>()
                 {

@@ -16,10 +16,11 @@ using System.ComponentModel;
 using BareMvvm.Core.Snackbar;
 using Google.Android.Material.Snackbar;
 using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.View;
 
 namespace InterfacesDroid.Windows
 {
-    public class NativeDroidAppWindow : INativeAppWindow
+    public class NativeDroidAppWindow : Java.Lang.Object, INativeAppWindow, AndroidX.Core.View.IOnApplyWindowInsetsListener
     {
         private GenericViewModelPresenter _presenter;
         private CoordinatorLayout _coordinatorLayout;
@@ -29,6 +30,8 @@ namespace InterfacesDroid.Windows
         public BareActivity Activity { get; private set; }
 
         public BareSnackbarManager SnackbarManager { get; private set; } = new BareSnackbarManager();
+
+        public static WindowInsetsCompat WindowInsets { get; private set; }
 
         public NativeDroidAppWindow(BareActivity activity)
         {
@@ -40,6 +43,7 @@ namespace InterfacesDroid.Windows
 
             // CoordinatorLayout is needed so snackbars can be swipeable
             _coordinatorLayout = new CoordinatorLayout(activity);
+            ViewCompat.SetOnApplyWindowInsetsListener(_coordinatorLayout, this);
             _coordinatorLayout.AddView(_presenter);
             activity.SetContentView(_coordinatorLayout);
 
@@ -47,6 +51,15 @@ namespace InterfacesDroid.Windows
 
             SnackbarManager.OnShow += SnackbarManager_OnShow;
             SnackbarManager.OnClose += SnackbarManager_OnClose;
+        }
+
+        public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
+        {
+            WindowInsets = windowInsets;
+
+            // Return CONSUMED if you don't want want the window insets to keep being
+            // passed down to descendant views.
+            return windowInsets;
         }
 
         private void SnackbarManager_OnShow(object sender, BareSnackbar snackbar)

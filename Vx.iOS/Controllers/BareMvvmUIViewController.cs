@@ -238,8 +238,9 @@ namespace InterfacesiOS.Controllers
                 {
                     CancelsTouchesInView = false
                 };
+
+                this.View.AddGestureRecognizer(_tapGestureRecognizer);
             }
-            this.View.AddGestureRecognizer(_tapGestureRecognizer);
 
             foreach (var tf in _textFieldsWithShouldReturnCondition)
             {
@@ -269,6 +270,7 @@ namespace InterfacesiOS.Controllers
             if (_tapGestureRecognizer != null)
             {
                 this.View.RemoveGestureRecognizer(_tapGestureRecognizer);
+                _tapGestureRecognizer = null; // Remove also releases (disposes), so have to reset to null
             }
 
             foreach (var tf in _textFieldsWithShouldReturnCondition)

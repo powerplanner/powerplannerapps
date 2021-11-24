@@ -21,7 +21,36 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelSetOverride();
 
-            Title = ViewModel.Title?.ToUpper();
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+
+            UpdateTitle();
+            UpdateCommands();
+            UpdateSecondaryCommands();
+
+            MainContent = ViewModel.Render();
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewModel.Commands):
+                    UpdateCommands();
+                    break;
+
+                case nameof(ViewModel.SecondaryCommands):
+                    UpdateSecondaryCommands();
+                    break;
+
+                case nameof(ViewModel.Title):
+                    UpdateTitle();
+                    break;
+            }
+        }
+
+        private void UpdateCommands()
+        {
+            PrimaryCommands.Clear();
 
             if (ViewModel.Commands != null)
             {
@@ -36,8 +65,41 @@ namespace PowerPlannerUWP.Views
                     PrimaryCommands.Add(nativeButton);
                 }
             }
+        }
 
-            MainContent = ViewModel.Render();
+        private void UpdateSecondaryCommands()
+        {
+            SecondaryCommands.Clear();
+
+            if (ViewModel.SecondaryCommands != null)
+            {
+                foreach (var c in ViewModel.SecondaryCommands)
+                {
+                    var nativeButton = new AppBarButton()
+                    {
+                        Label = c.Text
+                    };
+
+                    if (c.UseQuickConfirmDelete)
+                    {
+                        nativeButton.Click += delegate
+                        {
+                            PopupMenuConfirmDelete.Show(SecondaryOptionsButtonContainer, c.Action);
+                        };
+                    }
+                    else
+                    {
+                        nativeButton.Click += delegate { c.Action(); };
+                    }
+
+                    SecondaryCommands.Add(nativeButton);
+                }
+            }
+        }
+
+        private void UpdateTitle()
+        {
+            Title = ViewModel.Title?.ToUpper();
         }
     }
 }

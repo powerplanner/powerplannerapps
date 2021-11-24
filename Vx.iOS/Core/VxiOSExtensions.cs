@@ -41,6 +41,11 @@ namespace Vx.iOS
 
                 if (view is Vx.Views.TextBlock)
                 {
+                    if (view is Vx.Views.HyperlinkTextBlock)
+                    {
+                        return new iOSHyperlinkTextBlock();
+                    }
+
                     return new iOSTextBlock();
                 }
 
@@ -125,6 +130,11 @@ namespace Vx.iOS
                 if (view is Vx.Views.DatePicker)
                 {
                     return new iOSDatePicker();
+                }
+
+                if (view is Vx.Views.ColorPicker)
+                {
+                    return new iOSColorPicker();
                 }
 
 #if DEBUG
@@ -218,6 +228,9 @@ namespace Vx.iOS
 
                 case MaterialDesign.MaterialDesignIcons.Delete:
                     return UIBarButtonSystemItem.Trash;
+
+                case MaterialDesign.MaterialDesignIcons.Edit:
+                    return UIBarButtonSystemItem.Edit;
 
                 default:
                     return UIBarButtonSystemItem.Action;

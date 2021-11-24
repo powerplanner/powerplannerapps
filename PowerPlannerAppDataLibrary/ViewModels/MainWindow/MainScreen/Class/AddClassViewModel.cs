@@ -3,17 +3,21 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class AddClassViewModel : BaseMainScreenViewModelChild
+    public class AddClassViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -43,15 +47,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public AddParameter AddParams { get; private set; }
 
-        private AddClassViewModel(BaseViewModel parent) : base(parent)
+        private AddClassViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
+            State = state;
+
+            Title = PowerPlannerResources.GetString(state == OperationState.Adding ? "AddClassPage_AddTitle" : "AddClassPage_EditTitle");
+
+            PrimaryCommand = PopupCommand.Save(Save);
+
+            if (state == OperationState.Editing)
+            {
+                SecondaryCommands = new PopupCommand[]
+                {
+                    PopupCommand.Delete(ConfirmDelete)
+                };
+            }
+
+            _colors.Add(new ColorItem("Pick custom color", new byte[] { 0, 0, 0 }));
         }
 
         public static AddClassViewModel CreateForAdd(BaseViewModel parent, AddParameter addParams)
         {
-            return new AddClassViewModel(parent)
+            return new AddClassViewModel(parent, OperationState.Adding)
             {
-                State = OperationState.Adding,
                 AddParams = addParams,
                 Color = PickUnusedColor(addParams.Classes)
             };
@@ -59,9 +77,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public static AddClassViewModel CreateForEdit(BaseViewModel parent, ViewItemClass classToEdit)
         {
-            var answer = new AddClassViewModel(parent)
+            var answer = new AddClassViewModel(parent, OperationState.Editing)
             {
-                State = OperationState.Editing,
                 ClassToEdit = classToEdit,
                 Name = classToEdit.Name,
                 Color = classToEdit.Color,
@@ -85,6 +102,59 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
 
             return answer;
+        }
+
+        private ObservableCollection<ColorItem> _colors = new ObservableCollection<ColorItem>(ColorItem.DefaultColors);
+
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new TextBox
+                {
+                    Header = PowerPlannerResources.GetString("AddClassPage_TextBoxName.Header"),
+                    Text = VxValue.Create(Name, v => Name = v),
+                    AutoFocus = State == OperationState.Adding,
+                    OnSubmit = Save
+                },
+
+                new ColorPicker
+                {
+                    Header = PowerPlannerResources.GetString("AddClassPage_ColorPickerEditClassColor.Header"),
+                    Color = VxValue.Create(Color.ToColor(), v => Color = new byte[] { v.R, v.G, v.B }),
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
+
+                new CheckBox
+                {
+                    Text = PowerPlannerResources.GetString("String_PartialSemesterClass"),
+                    IsChecked = VxValue.Create(IsPartialSemesterClass, v => IsPartialSemesterClass = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                },
+
+                IsPartialSemesterClass ? new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Children =
+                    {
+                        new DatePicker
+                        {
+                            Header = PowerPlannerResources.GetString("EditSemesterPage_DatePickerStart.Header"),
+                            Value = VxValue.Create(StartDate, v => StartDate = v),
+                            Margin = new Thickness(0, 0, 9, 0)
+                        }.LinearLayoutWeight(1),
+
+                        new DatePicker
+                        {
+                            Header = PowerPlannerResources.GetString("EditSemesterPage_DatePickerEnd.Header"),
+                            Value = VxValue.Create(EndDate, v => EndDate = v),
+                            Margin = new Thickness(9, 0, 0, 0)
+                        }.LinearLayoutWeight(1)
+                    }
+                } : null
+
+            );
         }
 
         private static byte[] PickUnusedColor(IEnumerable<ViewItemClass> currentClasses)
@@ -279,6 +349,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 c.StartDate = SqlDate.MinValue;
                 c.EndDate = SqlDate.MinValue;
+            }
+        }
+
+        public async void ConfirmDelete()
+        {
+            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("String_ConfirmDeleteClassMessage"), PowerPlannerResources.GetString("String_ConfirmDeleteClassHeader")))
+            {
+                Delete();
             }
         }
 

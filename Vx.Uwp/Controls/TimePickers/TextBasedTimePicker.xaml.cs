@@ -27,6 +27,8 @@ namespace Vx.Uwp.Controls.TimePickers
 {
     public partial class TextBasedTimePicker : UserControl
     {
+        public event EventHandler<TimeSpan> SelectedTimeChanged;
+
         /// <summary>
         /// Gets whether the OS supports this control (supported in 17763 and up), which 7% of my users are still lower than that as of 1/25/2020.
         /// </summary>
@@ -85,17 +87,7 @@ namespace Vx.Uwp.Controls.TimePickers
             // Update items and remove any non-30 minute interval times that aren't selected
             UpdateItems();
 
-            var matching = _timeEntries.FirstOrDefault(i => i.Time == SelectedTime);
-            if (matching != null)
-            {
-                // Select it
-                TimePickerComboBox.SelectedItem = matching;
-            }
-            else
-            {
-                // Wasn't in the list, add it and select it
-                TimePickerComboBox.SelectedItem = AddTime(SelectedTime);
-            }
+            SelectedTimeChanged?.Invoke(this, SelectedTime);
         }
 
         private void TimePickerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -114,6 +106,19 @@ namespace Vx.Uwp.Controls.TimePickers
                 desired.Add(CreateTimeEntry(new TimeSpan(23, 59, 0)));
             }
             _timeEntries.MakeListLike(desired);
+
+            // Have to reselect if changed
+            var matching = _timeEntries.FirstOrDefault(i => i.Time == SelectedTime);
+            if (matching != null)
+            {
+                // Select it
+                TimePickerComboBox.SelectedItem = matching;
+            }
+            else
+            {
+                // Wasn't in the list, add it and select it
+                TimePickerComboBox.SelectedItem = AddTime(SelectedTime);
+            }
         }
 
         private IEnumerable<TimeEntry> GenerateEntries()

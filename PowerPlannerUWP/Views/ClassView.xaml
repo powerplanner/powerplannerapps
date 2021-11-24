@@ -501,7 +501,7 @@
                         <StackPanel x:Name="StackPanelGradesNormal">
 
                             <!--Grades info section-->
-                            <ContentControl x:Name="GradeSummaryContainer" Margin="0, 0, 0, 12"/>
+                            <ContentControl x:Name="GradeSummaryContainer" Margin="0, 0, 0, 12" HorizontalContentAlignment="Stretch"/>
 
                             <ItemsControl
                                 ItemsSource="{Binding ViewItemsGroupClass.Class.WeightCategories}" Margin="0,0,-12,0">

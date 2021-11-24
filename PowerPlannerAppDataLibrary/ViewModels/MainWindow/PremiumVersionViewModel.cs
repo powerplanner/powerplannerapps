@@ -28,8 +28,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 }
             }
 
-            catch
+            catch (Exception ex)
             {
+                // Only log error if unknown, unlogged error
+                if (!(ex is InAppPurchaseHandledException))
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+
                 var dontWait = new PortableMessageDialog("Something went wrong. If you can't purchase on this device, try a different device, and it will sync the premium status with your online account.", "Failed to purchase premium version").ShowAsync();
             }
         }

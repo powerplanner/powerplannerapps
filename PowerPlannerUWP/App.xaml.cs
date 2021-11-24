@@ -40,13 +40,11 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using InterfacesUWP.AppWindows;
 using PowerPlannerAppDataLibrary.Windows;
 using PowerPlannerUWP.ViewModel.Settings;
 using PowerPlannerUWP.ViewModel.Promos;
 using PowerPlannerUWP.Views.Promos;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerUWP.Helpers;
 using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
@@ -104,9 +102,6 @@ namespace PowerPlannerUWP
             {
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(AddClassViewModel), typeof(AddClassView) },
-                { typeof(AddGradeViewModel), typeof(AddGradeView) },
-                { typeof(AddHolidayViewModel), typeof(AddHolidayView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
                 { typeof(CalendarViewModel), typeof(CalendarMainView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
@@ -122,8 +117,6 @@ namespace PowerPlannerUWP
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(ViewGradeViewModel), typeof(ViewGradeView) },
-                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventView) },
                 { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
 
@@ -772,19 +765,7 @@ namespace PowerPlannerUWP
 
                     if (v <= new Version(2002, 3, 1, 0))
                     {
-                        // Switched 100% to new time picker, need to show message to the other 50% that are just getting it now
-                        if (Vx.Uwp.Controls.TimePickers.TextBasedTimePicker.IsSupported && !AbTestHelper.Tests.NewTimePicker)
-                        {
-                            changedText += "\n - New text-based time pickers!";
-                        }
-                    }
-
-                    if (v <= new Version(2001, 26, 2, 0))
-                    {
-                        if (Vx.Uwp.Controls.TimePickers.TextBasedTimePicker.IsSupported && AbTestHelper.Tests.NewTimePicker)
-                        {
-                            changedText += "\n - New text-based time pickers!";
-                        }
+                        changedText += "\n - New text-based time pickers!";
                     }
 
                     if (v <= new Version(2001, 9, 1, 0))

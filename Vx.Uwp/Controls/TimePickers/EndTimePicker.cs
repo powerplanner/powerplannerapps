@@ -12,6 +12,7 @@ namespace Vx.Uwp.Controls.TimePickers
     public class EndTimePicker : UserControl
     {
         private TimePicker _timePicker;
+        public event EventHandler<TimeSpan> SelectedTimeChanged;
 
         public EndTimePicker()
         {
@@ -30,6 +31,7 @@ namespace Vx.Uwp.Controls.TimePickers
             if (SelectedTime != _timePicker.Time)
             {
                 SelectedTime = _timePicker.Time;
+                SelectedTimeChanged?.Invoke(this, SelectedTime);
             }
         }
 

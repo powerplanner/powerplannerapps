@@ -91,6 +91,8 @@ namespace PowerPlannerAndroid.App
 
             // Initialize custom views
             VxDroidExtensions.RegisterCustomView(v => v is EditImagesView, v => new DroidEditImagesView());
+            VxDroidExtensions.RegisterCustomView(v => v is ImagesView, v => new DroidImagesView());
+            VxDroidExtensions.RegisterCustomView(v => v is CompletionSlider, v => new DroidCompletionSlider());
 
             return base.InitializeAsyncOverride();
         }

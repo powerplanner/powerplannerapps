@@ -26,6 +26,8 @@ using System.IO;
 using Android.Webkit;
 using AndroidX.Core.Content;
 using Android.Content.PM;
+using AndroidX.Core.View;
+using Vx.Droid.Helpers;
 
 namespace PowerPlannerAndroid
 {
@@ -60,6 +62,12 @@ namespace PowerPlannerAndroid
         protected override async void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            // Enable bleeding full screen into status and navigation bar
+            if (WindowInsetsHelper.IsFullySupported)
+            {
+                WindowCompat.SetDecorFitsSystemWindows(Window, false);
+            }
 
             // Initialize Vx (have to initialize here rather than in App so it picks up the right context with the themed context)
             Vx.Droid.VxDroidExtensions.ApplicationContext = this;
@@ -626,51 +634,6 @@ namespace PowerPlannerAndroid
         {
             GC.Collect();
             base.OnLowMemory();
-        }
-
-        /// <summary>
-        /// Will never throw.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<bool> OwnsInAppPurchase()
-        {
-            MyInAppBillingAssistant billingAssistant = null;
-            try
-            {
-                billingAssistant = new MyInAppBillingAssistant(this);
-                return await new MyInAppBillingAssistant(this).OwnsInAppPurchase();
-            }
-
-            catch
-            {
-                return false;
-            }
-
-            finally
-            {
-                if (billingAssistant != null)
-                    billingAssistant.Disconnect();
-            }
-        }
-
-        /// <summary>
-        /// Throws if failed to prompt.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<bool> PromptPurchase()
-        {
-            MyInAppBillingAssistant billingAssistant = null;
-            try
-            {
-                billingAssistant = new MyInAppBillingAssistant(this);
-                return await new MyInAppBillingAssistant(this).PromptPurchase();
-            }
-
-            finally
-            {
-                if (billingAssistant != null)
-                    billingAssistant.Disconnect();
-            }
         }
     }
 }

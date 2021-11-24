@@ -22,6 +22,12 @@ namespace Vx.iOS
         public override Color PopupPageBackgroundAltColor => UIColorCompat.SystemGroupedBackgroundColor.ToVx();
 
         public override bool IsDarkTheme => SdkSupportHelper.IsUserInterfaceStyleSupported ? NativeiOSApplication.Current.Window.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark : false;
+
+        public override float BodyFontSize => (float)UIFont.PreferredBody.PointSize;
+
+        public override float CaptionFontSize => (float)UIFont.PreferredCaption1.PointSize;
+
+        public override float TitleFontSize => (float)UIFont.PreferredTitle1.PointSize;
     }
 
     internal static class iOSThemeExtensions

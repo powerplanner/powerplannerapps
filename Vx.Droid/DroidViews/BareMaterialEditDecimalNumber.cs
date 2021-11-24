@@ -5,7 +5,6 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
-using Android.Icu.Text;
 using Android.OS;
 using Android.Runtime;
 using Android.Text;
@@ -14,7 +13,9 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.TextField;
+using InterfacesDroid.Themes;
 using Java.Lang;
+using Vx.Droid.Helpers;
 
 namespace InterfacesDroid.Views
 {
@@ -51,15 +52,16 @@ namespace InterfacesDroid.Views
         /// </summary>
         private void Initialize()
         {
+            SetMinimumWidth(ThemeHelper.AsPx(Context, 50));
+
             _editText = new TextInputEditText(Context)
             {
-                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
-                InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect
+                LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent)
             };
 
             AddView(_editText);
 
-            _decimalSeparator = DecimalFormatSymbols.Instance.DecimalSeparator;
+            _decimalSeparator = DecimalFormatSymbolsCompat.DecimalSeparator;
             _editText.KeyListener = DigitsKeyListener.GetInstance("0123456789" + _decimalSeparator);
 
             _editText.AddTextChangedListener(this);

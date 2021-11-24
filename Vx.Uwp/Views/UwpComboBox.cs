@@ -13,7 +13,7 @@ namespace Vx.Uwp.Views
         public UwpComboBox()
         {
             View.SelectionChanged += View_SelectionChanged;
-            View.Name = "ComboBox" + DateTime.Now.Ticks.ToString();
+            View.Name = "ComboBox" + GetHashCode();
         }
 
         private bool _ignoreSelectionChanged;

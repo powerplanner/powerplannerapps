@@ -14,4 +14,9 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public abstract Task<bool> PromptPurchase();
     }
+
+    /// <summary>
+    /// Thrown when there was an in app purchase error but the exception has already been handled and logged. Should still display info to end user though.
+    /// </summary>
+    public class InAppPurchaseHandledException : Exception { }
 }

@@ -68,6 +68,7 @@ namespace InterfacesUWP
     
     public sealed partial class ColorPicker : UserControl
     {
+        public event EventHandler<Color> SelectedColorChanged;
         public static readonly List<ColorItem> DefaultColors;
         public static Color DefaultSelectedColor { get; private set; } = Color.FromArgb(255, 27, 161, 226);
 
@@ -138,6 +139,7 @@ namespace InterfacesUWP
                 if (SelectedColor != c)
                 {
                     SelectedColor = c;
+                    SelectedColorChanged?.Invoke(this, c);
                 }
             }
         }
@@ -229,7 +231,11 @@ namespace InterfacesUWP
 
         private void ButtonConfirmCustomColor_Click(object sender, RoutedEventArgs e)
         {
-            SelectedColor = m_CustomPicker.Color;
+            if (m_CustomPicker.Color != SelectedColor)
+            {
+                SelectedColor = m_CustomPicker.Color;
+                SelectedColorChanged?.Invoke(this, m_CustomColor.Color);
+            }
             FlyoutCustomPicker.Hide();
         }
 

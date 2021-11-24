@@ -16,6 +16,12 @@
         <item name="materialTextButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
         <item name="materialOutlinedTextBoxStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
         <item name="materialOutlinedDropdownStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
+
+      <!--Make the navigation bar transparent-->
+        <item name="android:navigationBarColor">
+          @color/navigationBarColor
+        </item>
+        <!--<item name="android:enforceNavigationBarContrast">false</item>-->
     </style>
 
     <style name="ButtonDefault" parent="Widget.MaterialComponents.Button">

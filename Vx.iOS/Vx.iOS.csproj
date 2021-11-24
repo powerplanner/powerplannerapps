@@ -131,6 +131,7 @@
     <Compile Include="Views\iOSMultilineTextBox.cs" />
     <Compile Include="Controllers\ImprovedModalEditViewController.cs" />
     <Compile Include="BareUIViews\BareUICenteredView.cs" />
+    <Compile Include="Views\iOSColorPicker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -23,6 +23,19 @@ namespace Vx.Views
         public bool Strikethrough { get; set; }
 
         public HorizontalAlignment TextAlignment { get; set; } = HorizontalAlignment.Left;
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether text selection is enabled. False by default. Note that iOS essentially ignores this (on iOS, only HyperlinkTextBlock supports text selection).
+        /// </summary>
+        public bool IsTextSelectionEnabled { get; set; } = false;
+    }
+
+    /// <summary>
+    /// Enables link detection within a text block
+    /// </summary>
+    public class HyperlinkTextBlock : TextBlock
+    {
+
     }
 
     public static class TextBlockExtensions
@@ -31,6 +44,13 @@ namespace Vx.Views
         {
             textBlock.FontSize = Theme.Current.TitleFontSize;
             textBlock.FontWeight = FontWeights.SemiLight;
+            return textBlock;
+        }
+
+        public static T CaptionStyle<T>(this T textBlock) where T : TextBlock
+        {
+            textBlock.FontSize = Theme.Current.CaptionFontSize;
+            textBlock.TextColor = Theme.Current.SubtleForegroundColor;
             return textBlock;
         }
     }

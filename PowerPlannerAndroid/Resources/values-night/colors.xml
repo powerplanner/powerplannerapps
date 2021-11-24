@@ -2,7 +2,7 @@
 <resources>
 
   <!--Lighter than light theme-->
-  <color name="primary">#546BC7</color>
+  <color name="primary">#647FEA</color>
 
   <!--Darker than light theme-->
   <color name="primaryLight">#1F2656</color>

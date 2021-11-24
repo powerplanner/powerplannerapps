@@ -37,6 +37,8 @@ using System.Threading.Tasks;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels;
 using Vx.Extensions;
+using PowerPlannerAppDataLibrary.Views;
+using PowerPlanneriOS.Views;
 
 namespace PowerPlanneriOS
 {
@@ -77,14 +79,8 @@ namespace PowerPlanneriOS
                 { typeof(ScheduleViewModel), typeof(ScheduleViewController) },
                 { typeof(ClassesViewModel), typeof(ClassesViewController) },
                 { typeof(ClassViewModel), typeof(ClassViewController) },
-                { typeof(AddClassViewModel), typeof(AddClassViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
-                { typeof(ViewTaskOrEventViewModel), typeof(ViewTaskOrEventViewController) },
-                { typeof(SyncErrorsViewModel), typeof(SyncErrorsViewController) },
-                { typeof(AddHolidayViewModel), typeof(AddHolidayViewController) },
-                { typeof(ViewGradeViewModel), typeof(ViewGradeViewController) },
-                { typeof(AddGradeViewModel), typeof(AddGradeViewController) },
 
                 // Settings views
                 { typeof(SettingsViewModel), typeof(SettingsViewController) }
@@ -193,6 +189,9 @@ namespace PowerPlanneriOS
             BrowserExtension.Current = new iOSBrowserExtension();
             EmailExtension.Current = new iOSEmailExtension();
             DateTimeFormatterExtension.Current = new iOSDateTimeFormatterExtension();
+
+            // Register custom views
+            Vx.iOS.VxiOSExtensions.RegisterCustomView(v => v is CompletionSlider, v => new iOSCompletionSlider());
 
             if (SdkSupportHelper.IsNotificationsSupported)
             {

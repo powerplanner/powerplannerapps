@@ -18,13 +18,22 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            View.Text = newView.Text;
+            if (newView is Vx.Views.HyperlinkTextBlock)
+            {
+                InterfacesUWP.TextBlockExtensions.SetRawText(View, newView.Text);
+            }
+            else
+            {
+                View.Text = newView.Text;
+            }
+
             View.FontWeight = newView.FontWeight.ToUwp();
             View.Foreground = newView.TextColor.ToUwpBrush();
             View.TextWrapping = newView.WrapText ? Windows.UI.Xaml.TextWrapping.Wrap : Windows.UI.Xaml.TextWrapping.NoWrap;
             View.FontSize = newView.FontSize;
             View.TextDecorations = newView.Strikethrough ? Windows.UI.Text.TextDecorations.Strikethrough : Windows.UI.Text.TextDecorations.None;
             View.TextAlignment = newView.TextAlignment.ToUwpTextAlignment();
+            View.IsTextSelectionEnabled = newView.IsTextSelectionEnabled;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -118,10 +118,6 @@
   <ItemGroup>
     <None Include="App\Secrets.template.cs" />
     <Compile Include="App\Secrets.cs" />
-    <Compile Include="Controllers\AddClassViewController.cs" />
-    <Compile Include="Controllers\AddGradeViewController.cs" />
-    <Compile Include="Controllers\AddHolidayViewController.cs" />
-    <Compile Include="Controllers\AddTaskOrEventViewController.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />
     <Compile Include="Controllers\AgendaViewController.cs" />
     <Compile Include="Controllers\CalendarViewController.cs" />
@@ -141,9 +137,6 @@
     <Compile Include="Controllers\Settings\Grades\ConfigureClassGradesViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsListViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsViewController.cs" />
-    <Compile Include="Controllers\SyncErrorsViewController.cs" />
-    <Compile Include="Controllers\ViewGradeViewController.cs" />
-    <Compile Include="Controllers\ViewTaskOrEventViewController.cs" />
     <Compile Include="Extensions\iOSEmailExtension.cs" />
     <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />
     <Compile Include="Extensions\iOSPushExtension.cs" />
@@ -186,6 +179,7 @@
     <Compile Include="Controllers\ComponentViewController.cs" />
     <Compile Include="Extensions\iOSBrowserExtension.cs" />
     <Compile Include="Extensions\iOSDateTimeFormatterExtension.cs" />
+    <Compile Include="Views\iOSCompletionSlider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

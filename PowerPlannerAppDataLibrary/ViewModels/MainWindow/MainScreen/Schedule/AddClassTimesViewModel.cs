@@ -609,15 +609,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                     MarkDirty();
                                 }),
                                 Margin = new Thickness(0, 0, 6, 0)
-                            }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1),
-
-                            // Only Android uses the "to"
-                            VxPlatform.Current == Platform.Android ? new TextBlock
-                            {
-                                Text = PowerPlannerResources.GetString("TextBlock_To.Text"),
-                                VerticalAlignment = VerticalAlignment.Center,
-                                WrapText = false
-                            } : null,
+                            }.LinearLayoutWeight(1),
 
                             new EndTimePicker
                             {
@@ -629,7 +621,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                     MarkDirty();
                                 }),
                                 Margin = new Thickness(6, 0, 0, 0)
-                            }.LinearLayoutWeight(VxPlatform.Current == Platform.Android ? 0 : 1)
+                            }.LinearLayoutWeight(1)
                         }
                     },
 

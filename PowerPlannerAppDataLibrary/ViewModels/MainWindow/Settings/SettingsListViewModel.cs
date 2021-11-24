@@ -45,9 +45,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             UpdateIsFullVersion();
         }
 
+        private bool _updatingIsFullVersion;
         private async void UpdateIsFullVersion()
         {
-            _isFullVersion.Value = await PowerPlannerApp.Current.IsFullVersionAsync();
+            if (_updatingIsFullVersion)
+            {
+                return;
+            }
+
+            _updatingIsFullVersion = true;
+            try
+            {
+                _isFullVersion.Value = await PowerPlannerApp.Current.IsFullVersionAsync();
+            }
+            catch { }
+            _updatingIsFullVersion = false;
+        }
+
+        public override void OnViewFocused()
+        {
+            UpdateIsFullVersion();
+
+            base.OnViewFocused();
         }
 
         protected override View Render()
@@ -84,14 +103,45 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     WrapText = false
                 });
 
-                layout.Children.Add(new TextButton
+                var syncButton = new TextButton
                 {
                     Text = SyncButtonText,
                     IsEnabled = SyncButtonIsEnabled,
                     Click = StartSync,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin)
-                });
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+
+                if (SyncHasError)
+                {
+                    layout.Children.Add(new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin),
+                        Children =
+                        {
+                            syncButton,
+
+                            new TextBlock
+                            {
+                                Text = "-",
+                                VerticalAlignment = VerticalAlignment.Center,
+                                Margin = new Thickness(6, 0, 6, 0)
+                            }.CaptionStyle(),
+
+                            new TextButton
+                            {
+                                Text = "View sync errors",
+                                IsEnabled = SyncButtonIsEnabled,
+                                Click = ViewSyncErrors
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    syncButton.Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin);
+                    layout.Children.Add(syncButton);
+                }
             }
 
             if (IsUpgradeToPremiumVisible)
@@ -245,7 +295,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSoundSettings);
             }
 
-            if (VxPlatform.Current == Platform.Uwp)
+            if (VxPlatform.Current != Platform.iOS)
             {
                 RenderOption(
                     layout,

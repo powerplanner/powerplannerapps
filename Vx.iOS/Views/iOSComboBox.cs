@@ -55,6 +55,7 @@ namespace Vx.iOS.Views
         protected override void ApplyProperties(ComboBox oldView, ComboBox newView)
         {
             _header.Text = newView.Header;
+            _valueContainer.Alpha = newView.IsEnabled ? 1f : 0.5f;
 
             if (newView.ItemTemplate != null)
             {
@@ -99,6 +100,11 @@ namespace Vx.iOS.Views
 
         private async void ShowOptions()
         {
+            if (!VxView.IsEnabled)
+            {
+                return;
+            }
+
             var response = await new ImprovedModalPickerViewController(_valueContainer, VxView.Items, VxView.SelectedItem?.Value, VxView.ItemTemplate != null ? ConvertItemToView : null as Func<object, UIView, UIView>).ShowAsync();
 
             if (response != null)

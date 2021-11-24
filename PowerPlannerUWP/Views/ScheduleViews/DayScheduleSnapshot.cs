@@ -35,14 +35,15 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
         private class MyScheduleItem : Grid
         {
-            public MyScheduleItem(ViewItemSchedule s)
+            public MyScheduleItem(DayScheduleItemsArranger.ScheduleItem scheduleItem)
             {
+                ViewItemSchedule s = scheduleItem.Item;
                 ViewItemClass c = s.Class as ViewItemClass;
 
                 base.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
                 base.Background = new SolidColorBrush(ColorTools.GetColor(c.Color));
 
-                var timeSpan = s.EndTime.TimeOfDay - s.StartTime.TimeOfDay;
+                var timeSpan = scheduleItem.EndTime - scheduleItem.StartTime;
                 var hours = timeSpan.TotalHours;
                 var showTimeText = timeSpan.TotalMinutes >= 38;
                 
@@ -342,7 +343,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
             foreach (var s in _arrangedItems.ScheduleItems)
             {
-                MyScheduleItem visual = new MyScheduleItem(s.Item);
+                MyScheduleItem visual = new MyScheduleItem(s);
 
                 AddVisualItem(visual, s);
             }
