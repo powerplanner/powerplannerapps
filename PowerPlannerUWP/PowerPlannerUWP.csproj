@@ -147,7 +147,6 @@
     <Compile Include="Converters\ImageUploadOptionToStringConverter.cs" />
     <Compile Include="Converters\IsCompleteToOpacityConverter.cs" />
     <Compile Include="Converters\IsCompleteToVisibilityConverter.cs" />
-    <Compile Include="Converters\IsDroppedToDropStringConverter.cs" />
     <Compile Include="Converters\IsTaskToVisibilityConverter.cs" />
     <Compile Include="Converters\IsNotCompleteToVisibilityConverter.cs" />
     <Compile Include="Converters\IsPastCompletedEventsDisplayedToButtonContentConverter.cs" />
