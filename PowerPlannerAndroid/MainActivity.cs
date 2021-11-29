@@ -384,6 +384,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2111, 29, 1, 99))
+                    {
+                        changedText += "\n - Added back the \"drop grade\" option!";
+                    }
+
                     if (v <= new Version(2109, 6, 1, 99))
                     {
                         changedText += "\n - Ability to override final grade/GPA on years/semesters";

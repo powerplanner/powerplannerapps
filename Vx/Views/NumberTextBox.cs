@@ -1,4 +1,6 @@
-﻿namespace Vx.Views
+﻿using System;
+
+namespace Vx.Views
 {
     public class NumberTextBox : View
     {
@@ -9,5 +11,7 @@
         public bool IsEnabled { get; set; } = true;
 
         public string Header { get; set; }
+
+        public Action OnSubmit { get; set; }
     }
 }

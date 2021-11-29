@@ -21,23 +21,41 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
         public BaseViewItemMegaItem Grade { get; private set; }
         public bool IsInWhatIfMode { get; private set; }
 
-        public ViewGradeViewModel(BaseViewModel parent) : base(parent)
+        private ViewGradeViewModel(BaseViewModel parent, BaseViewItemMegaItem item) : base(parent)
         {
             Title = PowerPlannerResources.GetString("ViewGradePage.Title");
+            Grade = item;
 
             Commands = new PopupCommand[]
             {
                 PopupCommand.Edit(Edit)
             };
 
+            UpdateSecondaryCommands();
+        }
+
+        private bool? _isDropped;
+        private void UpdateSecondaryCommands()
+        {
+            if (_isDropped != null && _isDropped.Value == Grade.IsDropped)
+            {
+                return;
+            }
+
+            _isDropped = Grade.IsDropped;
+
             SecondaryCommands = new PopupCommand[]
             {
+                Grade.IsDropped ? new PopupCommand(PowerPlannerResources.GetString("String_UndropGrade"), UndropGrade) : new PopupCommand(PowerPlannerResources.GetString("String_DropGrade"), DropGrade),
                 PopupCommand.DeleteWithQuickConfirm(Delete)
             };
         }
 
         protected override View Render()
         {
+            // This will be triggered every time property changed, so can use it to update the secondary commands menu too
+            UpdateSecondaryCommands();
+
             return RenderGenericPopupContent(
 
                 new TextBlock
@@ -83,9 +101,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 
         public static ViewGradeViewModel Create(BaseViewModel parent, BaseViewItemMegaItem item, bool isInWhatIfMode = false)
         {
-            return new ViewGradeViewModel(parent)
+            return new ViewGradeViewModel(parent, item)
             {
-                Grade = item,
                 IsInWhatIfMode = isInWhatIfMode
             };
         }

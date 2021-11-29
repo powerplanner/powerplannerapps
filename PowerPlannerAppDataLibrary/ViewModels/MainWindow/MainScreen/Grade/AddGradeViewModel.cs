@@ -88,7 +88,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                         new NumberTextBox
                         {
                             Number = VxValue.Create<double?>(GradeReceived == PowerPlannerSending.Grade.UNGRADED ? (double?)null : (double?)GradeReceived, v => GradeReceived = v.GetValueOrDefault(PowerPlannerSending.Grade.UNGRADED)),
-                            VerticalAlignment = VerticalAlignment.Center
+                            VerticalAlignment = VerticalAlignment.Center,
+                            OnSubmit = Save
                         },
 
                         new TextBlock
@@ -103,7 +104,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                         new NumberTextBox
                         {
                             Number = VxValue.Create<double?>(GradeTotal, v => GradeTotal = v.GetValueOrDefault(0)),
-                            VerticalAlignment = VerticalAlignment.Center
+                            VerticalAlignment = VerticalAlignment.Center,
+                            OnSubmit = Save
                         },
 
                         new TextBlock

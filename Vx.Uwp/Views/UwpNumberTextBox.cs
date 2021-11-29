@@ -23,6 +23,17 @@ namespace Vx.Uwp.Views
             };
 
             View.GotFocus += View_GotFocus;
+
+            View.KeyUp += View_KeyUp;
+        }
+
+        private void View_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter && VxView.OnSubmit != null)
+            {
+                e.Handled = true;
+                VxView.OnSubmit();
+            }
         }
 
         private void View_GotFocus(object sender, Windows.UI.Xaml.RoutedEventArgs e)
