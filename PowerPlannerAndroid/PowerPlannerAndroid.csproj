@@ -10,7 +10,7 @@
     <AssemblyName>PowerPlannerAndroid</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <!--<AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>-->
-    <!--<GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>-->
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
