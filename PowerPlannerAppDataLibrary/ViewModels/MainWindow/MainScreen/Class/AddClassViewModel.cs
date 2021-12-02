@@ -152,6 +152,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                             Margin = new Thickness(9, 0, 0, 0)
                         }.LinearLayoutWeight(1)
                     }
+                } : null,
+
+                IncludesEditingDetails ? new MultilineTextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                    Text = VxValue.Create(Details, v => Details = v),
+                    Height = 180, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
+                    Margin = new Thickness(0, 18, 0, 0)
                 } : null
 
             );
