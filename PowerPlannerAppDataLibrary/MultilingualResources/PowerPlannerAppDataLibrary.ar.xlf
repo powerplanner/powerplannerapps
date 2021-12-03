@@ -2614,6 +2614,14 @@ Please think about using an online account instead!</source>
           <source>Override GPA/credits</source>
           <target state="final">تجاوز المعدل التراكمي / الاعتمادات</target>
         </trans-unit>
+        <trans-unit id="RelativeDate_NextWeek" translate="yes" xml:space="preserve">
+          <source>Next week</source>
+          <target state="final">الاسبوع المقبل</target>
+        </trans-unit>
+        <trans-unit id="RelativeDate_ThisWeek" translate="yes" xml:space="preserve">
+          <source>This week</source>
+          <target state="final">هذا الاسبوع</target>
+        </trans-unit>
       </group>
     </body>
   </file>

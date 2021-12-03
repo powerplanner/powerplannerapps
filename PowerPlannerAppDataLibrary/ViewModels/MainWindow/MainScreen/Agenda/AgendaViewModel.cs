@@ -11,6 +11,7 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System.Collections;
 using System.Collections.Specialized;
+using PowerPlannerAppDataLibrary.DataLayer;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 {
@@ -100,7 +101,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 if (_itemsWithHeaders == null)
                 {
-                    _itemsWithHeaders = AgendaViewItemsGroup.Items.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, ItemsGroupHeader>(new GroupHeaderProvider(Today, Classes).GetHeader);
+                    _itemsWithHeaders = AgendaViewItemsGroup.Items.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, ItemsGroupHeader>(new GroupHeaderProvider(Today, Classes, MainScreenViewModel.CurrentAccount).GetHeader);
                 }
 
                 return _itemsWithHeaders;
@@ -111,10 +112,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         {
             public DateTime Today { get; private set; }
             public IEnumerable<ViewItemClass> Classes { get; private set; }
-            public GroupHeaderProvider(DateTime today, IEnumerable<ViewItemClass> classes)
+            public DateTime NextWeekStartDate { get; private set; }
+            public GroupHeaderProvider(DateTime today, IEnumerable<ViewItemClass> classes, AccountDataItem account)
             {
                 Today = today;
                 Classes = classes;
+                var weekChangesOn = account.WeekChangesOn;
+                if (weekChangesOn == DayOfWeek.Sunday)
+                {
+                    // For Sunday, we use Monday since that's typically when the workweek starts. We don't use Monday for everybody though, since some countries like Afghanistan start their workweek on Wednesday, so they could set their week changes on date for Wednesday and have the weeks work correctly.
+                    weekChangesOn = DayOfWeek.Monday;
+                }
+                NextWeekStartDate = DateTools.Next(weekChangesOn, today.AddDays(1));
 
                 _overdue = new ItemsGroupHeader()
                 {
@@ -148,19 +157,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     DateToUseForNewItems = Today.AddDays(2)
                 };
 
-                _withinSevenDays = new ItemsGroupHeader()
+                _thisWeek = new ItemsGroupHeader()
                 {
                     Group = ItemsGroup.WithinSevenDays,
                     Classes = Classes,
-                    Header = PowerPlannerResources.GetRelativeDateInXDays(7),
+                    Header = PowerPlannerResources.GetRelativeDateThisWeek(),
                     DateToUseForNewItems = Today.AddDays(3)
                 };
 
-                _withinFourteenDays = new ItemsGroupHeader()
+                _nextWeek = new ItemsGroupHeader()
                 {
                     Group = ItemsGroup.WithinFourteenDays,
                     Classes = Classes,
-                    Header = PowerPlannerResources.GetRelativeDateInXDays(14),
+                    Header = PowerPlannerResources.GetRelativeDateNextWeek(),
                     DateToUseForNewItems = Today.AddDays(8)
                 };
 
@@ -168,7 +177,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                 {
                     Group = ItemsGroup.WithinThirtyDays,
                     Classes = Classes,
-                    Header = PowerPlannerResources.GetRelativeDateInXDays(30),
+                    Header = PowerPlannerResources.GetRelativeDateWithinXDays(30),
                     DateToUseForNewItems = Today.AddDays(15)
                 };
 
@@ -176,7 +185,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                 {
                     Group = ItemsGroup.WithinSixtyDays,
                     Classes = Classes,
-                    Header = PowerPlannerResources.GetRelativeDateInXDays(60),
+                    Header = PowerPlannerResources.GetRelativeDateWithinXDays(60),
                     DateToUseForNewItems = Today.AddDays(31)
                 };
 
@@ -193,8 +202,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             private ItemsGroupHeader _today;
             private ItemsGroupHeader _tomorrow;
             private ItemsGroupHeader _inTwoDays;
-            private ItemsGroupHeader _withinSevenDays;
-            private ItemsGroupHeader _withinFourteenDays;
+            private ItemsGroupHeader _thisWeek;
+            private ItemsGroupHeader _nextWeek;
             private ItemsGroupHeader _withinThirtyDays;
             private ItemsGroupHeader _withinSixtyDays;
             private ItemsGroupHeader _inTheFuture;
@@ -216,11 +225,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                 if (itemDate <= todayAsUtc.AddDays(2))
                     return _inTwoDays;
 
-                if (itemDate <= todayAsUtc.AddDays(7))
-                    return _withinSevenDays;
+                if (itemDate < NextWeekStartDate)
+                    return _thisWeek;
 
-                if (itemDate <= todayAsUtc.AddDays(14))
-                    return _withinFourteenDays;
+                if (itemDate < NextWeekStartDate.AddDays(7))
+                    return _nextWeek;
 
                 if (itemDate <= todayAsUtc.AddDays(30))
                     return _withinThirtyDays;
