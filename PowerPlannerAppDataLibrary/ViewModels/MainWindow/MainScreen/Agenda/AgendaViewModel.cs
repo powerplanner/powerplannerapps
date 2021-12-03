@@ -159,7 +159,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
                 _thisWeek = new ItemsGroupHeader()
                 {
-                    Group = ItemsGroup.WithinSevenDays,
+                    Group = ItemsGroup.ThisWeek,
                     Classes = Classes,
                     Header = PowerPlannerResources.GetRelativeDateThisWeek(),
                     DateToUseForNewItems = Today.AddDays(3)
@@ -167,10 +167,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
                 _nextWeek = new ItemsGroupHeader()
                 {
-                    Group = ItemsGroup.WithinFourteenDays,
+                    Group = ItemsGroup.NextWeek,
                     Classes = Classes,
                     Header = PowerPlannerResources.GetRelativeDateNextWeek(),
-                    DateToUseForNewItems = Today.AddDays(8)
+                    DateToUseForNewItems = NextWeekStartDate
                 };
 
                 _withinThirtyDays = new ItemsGroupHeader()
@@ -178,7 +178,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     Group = ItemsGroup.WithinThirtyDays,
                     Classes = Classes,
                     Header = PowerPlannerResources.GetRelativeDateWithinXDays(30),
-                    DateToUseForNewItems = Today.AddDays(15)
+                    DateToUseForNewItems = NextWeekStartDate.AddDays(7)
                 };
 
                 _withinSixtyDays = new ItemsGroupHeader()
@@ -247,8 +247,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             Today,
             Tomorrow,
             InTwoDays,
-            WithinSevenDays,
-            WithinFourteenDays,
+            ThisWeek,
+            NextWeek,
             WithinThirtyDays,
             WithinSixtyDays,
             InTheFuture
