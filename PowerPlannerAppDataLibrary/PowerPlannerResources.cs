@@ -154,6 +154,24 @@ namespace PowerPlannerAppDataLibrary
         }
 
         /// <summary>
+        /// Returns "This week"
+        /// </summary>
+        /// <returns></returns>
+        public static string GetRelativeDateThisWeek()
+        {
+            return GetString("RelativeDate_ThisWeek");
+        }
+
+        /// <summary>
+        /// Returns "Next week"
+        /// </summary>
+        /// <returns></returns>
+        public static string GetRelativeDateNextWeek()
+        {
+            return GetString("RelativeDate_NextWeek");
+        }
+
+        /// <summary>
         /// Returns "In {0} days"
         /// </summary>
         /// <param name="days"></param>

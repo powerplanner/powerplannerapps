@@ -2610,6 +2610,14 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Override GPA/credits</source>
           <target state="final" state-qualifier="mt-suggestion">Remplacer GPA/crédits</target>
         </trans-unit>
+        <trans-unit id="RelativeDate_NextWeek" translate="yes" xml:space="preserve">
+          <source>Next week</source>
+          <target state="final">La semaine prochaine</target>
+        </trans-unit>
+        <trans-unit id="RelativeDate_ThisWeek" translate="yes" xml:space="preserve">
+          <source>This week</source>
+          <target state="final">Cette semaine</target>
+        </trans-unit>
       </group>
     </body>
   </file>

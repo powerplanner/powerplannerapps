@@ -2612,6 +2612,14 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Override GPA/credits</source>
           <target state="final" state-qualifier="mt-suggestion">GPA/Credits außer Kraft setzen</target>
         </trans-unit>
+        <trans-unit id="RelativeDate_NextWeek" translate="yes" xml:space="preserve">
+          <source>Next week</source>
+          <target state="final">Nächste Woche</target>
+        </trans-unit>
+        <trans-unit id="RelativeDate_ThisWeek" translate="yes" xml:space="preserve">
+          <source>This week</source>
+          <target state="final">In dieser Woche</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -2065,4 +2065,10 @@ Please think about using an online account instead!</value>
   <data name="AddYearPage_OverrideGpaCredits.Header" xml:space="preserve">
     <value>Override GPA/credits</value>
   </data>
+  <data name="RelativeDate_NextWeek" xml:space="preserve">
+    <value>Next week</value>
+  </data>
+  <data name="RelativeDate_ThisWeek" xml:space="preserve">
+    <value>This week</value>
+  </data>
 </root>

@@ -2611,6 +2611,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Override GPA/credits</source>
           <target state="final" state-qualifier="mt-suggestion">Anular GPA/créditos</target>
         </trans-unit>
+        <trans-unit id="RelativeDate_NextWeek" translate="yes" xml:space="preserve">
+          <source>Next week</source>
+          <target state="final">La próxima semana</target>
+        </trans-unit>
+        <trans-unit id="RelativeDate_ThisWeek" translate="yes" xml:space="preserve">
+          <source>This week</source>
+          <target state="final">Esta semana</target>
+        </trans-unit>
       </group>
     </body>
   </file>
