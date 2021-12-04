@@ -6,6 +6,7 @@ using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
+using PowerPlannerUWP.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,87 +27,102 @@ namespace PowerPlannerUWP.Extensions
 
         protected override Task ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
         {
-            var notifier = ToastNotificationManager.CreateToastNotifier();
-            var group = ClassRemindersGroupPrefix + "." + UWPRemindersExtension.GetId(account);
-
-            // Clear current scheduled notifications
             try
             {
-                var scheduled = notifier.GetScheduledToastNotifications();
-                foreach (var s in scheduled)
+                var notifier = ToastNotificationManager.CreateToastNotifier();
+                var group = ClassRemindersGroupPrefix + "." + UWPRemindersExtension.GetId(account);
+
+                // Clear current scheduled notifications
+                try
                 {
-                    try
+                    var scheduled = notifier.GetScheduledToastNotifications();
+                    foreach (var s in scheduled)
                     {
-                        if (s.Group == group)
-                        {
-                            notifier.RemoveFromSchedule(s);
-                        }
-                    }
-                    catch { }
-                }
-            }
-            catch { }
-
-            if (scheduleViewItemsGroup == null)
-            {
-                return Task.CompletedTask;
-            }
-
-            // This will be initialized
-            var beforeTime = account.ClassRemindersTimeSpan.GetValueOrDefault();
-
-            // Added in 17134
-            bool isExpirationTimeSupported = ApiInformation.IsPropertyPresent(typeof(ScheduledToastNotification).FullName, "ExpirationTime");
-
-            var today = DateTime.Today;
-            var end = today.AddDays(8); // Schedule out for 8 days
-
-            Dictionary<ViewItemSchedule, XmlDocument> generatedPayloads = new Dictionary<ViewItemSchedule, XmlDocument>();
-
-            for (; today.Date < end.Date; today = today.AddDays(1).Date)
-            {
-                // No need to lock changes, if changes occur an exception might occur, but that's fine, reminders would be reset once again anyways
-                var schedulesOnDay = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today), trackChanges: false);
-
-                foreach (var s in schedulesOnDay)
-                {
-                    var reminderTime = today.Add(s.StartTime.TimeOfDay).Subtract(beforeTime);
-                    if (reminderTime >= DateTime.Now.AddSeconds(5))
-                    {
-                        XmlDocument payload;
-
-                        if (!generatedPayloads.TryGetValue(s, out payload))
-                        {
-                            payload = GeneratePayload(account, s);
-                            generatedPayloads[s] = payload;
-                        }
-
-                        var notif = new ScheduledToastNotification(payload, reminderTime)
-                        {
-                            Group = group,
-                            Tag = s.Identifier.ToString() + "." + today.ToString("yy-dd-MM")
-                        };
-
-                        if (isExpirationTimeSupported)
-                        {
-                            notif.ExpirationTime = today.Add(s.EndTime.TimeOfDay);
-                        }
-
                         try
                         {
-                            notifier.AddToSchedule(notif);
+                            if (s.Group == group)
+                            {
+                                notifier.RemoveFromSchedule(s);
+                            }
                         }
-                        catch (Exception ex)
+                        catch { }
+                    }
+                }
+                catch { }
+
+                if (scheduleViewItemsGroup == null)
+                {
+                    return Task.CompletedTask;
+                }
+
+                // This will be initialized
+                var beforeTime = account.ClassRemindersTimeSpan.GetValueOrDefault();
+
+                // Added in 17134
+                bool isExpirationTimeSupported = ApiInformation.IsPropertyPresent(typeof(ScheduledToastNotification).FullName, "ExpirationTime");
+
+                var today = DateTime.Today;
+                var end = today.AddDays(8); // Schedule out for 8 days
+
+                Dictionary<ViewItemSchedule, XmlDocument> generatedPayloads = new Dictionary<ViewItemSchedule, XmlDocument>();
+
+                for (; today.Date < end.Date; today = today.AddDays(1).Date)
+                {
+                    // No need to lock changes, if changes occur an exception might occur, but that's fine, reminders would be reset once again anyways
+                    var schedulesOnDay = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today), trackChanges: false);
+
+                    foreach (var s in schedulesOnDay)
+                    {
+                        var reminderTime = today.Add(s.StartTime.TimeOfDay).Subtract(beforeTime);
+                        if (reminderTime >= DateTime.Now.AddSeconds(5))
                         {
-                            // If OS is in a bad state, we'll just stop
-                            TelemetryExtension.Current?.TrackException(new Exception("Adding toast to schedule failed: " + ex.Message, ex));
-                            return Task.CompletedTask;
+                            XmlDocument payload;
+
+                            if (!generatedPayloads.TryGetValue(s, out payload))
+                            {
+                                payload = GeneratePayload(account, s);
+                                generatedPayloads[s] = payload;
+                            }
+
+                            var notif = new ScheduledToastNotification(payload, reminderTime)
+                            {
+                                Group = group,
+                                Tag = s.Identifier.ToString() + "." + today.ToString("yy-dd-MM")
+                            };
+
+                            if (isExpirationTimeSupported)
+                            {
+                                notif.ExpirationTime = today.Add(s.EndTime.TimeOfDay);
+                            }
+
+                            try
+                            {
+                                notifier.AddToSchedule(notif);
+                            }
+                            catch (Exception ex)
+                            {
+                                // If OS is in a bad state, we'll just stop
+                                TelemetryExtension.Current?.TrackException(new Exception("Adding toast to schedule failed: " + ex.Message, ex));
+                                return Task.CompletedTask;
+                            }
                         }
                     }
                 }
-            }
 
-            return Task.CompletedTask;
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                if (UWPExceptionHelper.TrackIfNotificationsIssue(ex, "ClassReminders"))
+                {
+                }
+                else
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+
+                return Task.CompletedTask;
+            }
         }
 
         private static XmlDocument GeneratePayload(AccountDataItem account, ViewItemSchedule s)
