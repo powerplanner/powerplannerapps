@@ -175,6 +175,9 @@ namespace PowerPlannerUWP
 
                     catch (Exception ex)
                     {
+                        if (UWPExceptionHelper.TrackIfNotificationsIssue(ex, "RegisterBgTasks"))
+                        {
+                        }
                         if (UWPExceptionHelper.TrackIfRpcServerUnavailable(ex, "RegisterBgTasks"))
                         {
                         }
