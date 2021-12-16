@@ -134,6 +134,7 @@
     <Compile Include="Views\DroidListItemButton.cs" />
     <Compile Include="Views\DroidNumberTextBox.cs" />
     <Compile Include="Views\DroidScrollView.cs" />
+    <Compile Include="Views\DroidSlideView.cs" />
     <Compile Include="Views\DroidSwitch.cs" />
     <Compile Include="Views\DroidTextBlock.cs" />
     <Compile Include="Views\DroidTextBox.cs" />
