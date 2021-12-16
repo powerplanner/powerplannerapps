@@ -1,4 +1,6 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+﻿using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,30 +92,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     for (int c = 0; c < 7; c++)
                     {
                         var date = array[r, c];
-                        DayType dayType;
 
-                        if (DateTools.SameMonth(date, Month))
-                        {
-                            dayType = DayType.ThisMonth;
-                        }
-                        else if (date < Month)
-                        {
-                            dayType = DayType.PrevMonth;
-                        }
-                        else
-                        {
-                            dayType = DayType.NextMonth;
-                        }
-
-                        var itemsOnDay = Items.Where(i => i.Date.Date == date).ToArray();
-
-                        row.Children.Add(new Border
-                        {
-                            Content = new TextBlock
-                            {
-                                Text = date.Day.ToString() + " - " + itemsOnDay.Length
-                            }
-                        }.LinearLayoutWeight(1));
+                        row.Children.Add(RenderDay(date).LinearLayoutWeight(1));
                     }
 
                     grid.Children.Add(row.LinearLayoutWeight(1));
@@ -123,15 +103,64 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 {
                     Children =
                     {
-                        new TextBlock
-                        {
-                            Text = Month.ToString(),
-                            Margin = new Thickness(24)
-                        }.TitleStyle(),
-
                         dayHeaders,
 
                         grid.LinearLayoutWeight(1)
+                    }
+                };
+            }
+
+            private View RenderDay(DateTime date)
+            {
+                DayType dayType;
+
+                if (DateTools.SameMonth(date, Month))
+                {
+                    dayType = DayType.ThisMonth;
+                }
+                else if (date < Month)
+                {
+                    dayType = DayType.PrevMonth;
+                }
+                else
+                {
+                    dayType = DayType.NextMonth;
+                }
+
+                var itemsOnDay = Items.Where(i => i.Date.Date == date).ToArray();
+
+                var linearLayout = new LinearLayout
+                {
+                    BackgroundColor = dayType == DayType.ThisMonth ? Theme.Current.BackgroundAlt1Color : Theme.Current.BackgroundAlt2Color,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = date.Day.ToString(),
+                            Margin = new Thickness(6, 6, 6, 6),
+                            FontSize = 15
+                        }
+                    }
+                };
+
+                foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
+                {
+                    linearLayout.Children.Add(RenderDayItem(item));
+                }
+
+                return linearLayout;
+            }
+
+            private View RenderDayItem(ViewItemTaskOrEvent item)
+            {
+                return new Border
+                {
+                    BackgroundColor = item.Class.Color.ToColor(),
+                    Content = new TextBlock
+                    {
+                        Text = item.Name,
+                        Margin = new Thickness(3),
+                        WrapText = false
                     }
                 };
             }
