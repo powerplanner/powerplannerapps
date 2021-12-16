@@ -21,6 +21,7 @@ using System.Collections.Specialized;
 using PowerPlanneriOS.Views;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary.DataLayer;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -69,35 +70,40 @@ namespace PowerPlanneriOS.Controllers
         {
             UpdateTitle();
 
+            var cal = new FullSizeCalendarComponent(ViewModel).Render();
+            cal.TranslatesAutoresizingMaskIntoConstraints = false;
+            ContentView.Add(cal);
+            cal.StretchWidthAndHeight(ContentView);
+
             // Calendar
             _cal = new MyCalendarView(ViewModel.FirstDayOfWeek)
             {
                 DisplayMonth = ViewModel.DisplayMonth,
                 SelectedDate = ViewModel.SelectedDate
             };
-            _cal.SetSemester(ViewModel.SemesterItemsViewGroup.Semester);
-            _cal.Provider = new MyDataProvider(ViewModel.MainScreenViewModel.CurrentAccount, ViewModel.SemesterItemsViewGroup, _cal);
-            _cal.DateClicked += new WeakEventHandler<DateTime>(Cal_DateClicked).Handler;
-            _cal.DisplayMonthChanged += new WeakEventHandler<DateTime>(Cal_DisplayMonthChanged).Handler;
+            //_cal.SetSemester(ViewModel.SemesterItemsViewGroup.Semester);
+            //_cal.Provider = new MyDataProvider(ViewModel.MainScreenViewModel.CurrentAccount, ViewModel.SemesterItemsViewGroup, _cal);
+            //_cal.DateClicked += new WeakEventHandler<DateTime>(Cal_DateClicked).Handler;
+            //_cal.DisplayMonthChanged += new WeakEventHandler<DateTime>(Cal_DisplayMonthChanged).Handler;
 
             // Day pager
             _pagedDayView = new UIPagedDayView(ViewModel.SemesterItemsViewGroup, ViewModel)
             {
                 Date = ViewModel.SelectedDate
             };
-            _pagedDayView.OnRequestViewClass += new WeakEventHandler<ViewItemClass>(PagedDayView_OnRequestViewClass).Handler;
-            _pagedDayView.DateChanged += new WeakEventHandler<DateTime>(PagedDayView_DateChanged).Handler;
-            _pagedDayView.OnRequestExpand += new WeakEventHandler(PagedDayView_OnRequestExpand).Handler;
+            //_pagedDayView.OnRequestViewClass += new WeakEventHandler<ViewItemClass>(PagedDayView_OnRequestViewClass).Handler;
+            //_pagedDayView.DateChanged += new WeakEventHandler<DateTime>(PagedDayView_DateChanged).Handler;
+            //_pagedDayView.OnRequestExpand += new WeakEventHandler(PagedDayView_OnRequestExpand).Handler;
 
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
 
-            _container = new AdaptiveView(_cal, _pagedDayView, ViewModel)
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
+            //_container = new AdaptiveView(_cal, _pagedDayView, ViewModel)
+            //{
+            //    TranslatesAutoresizingMaskIntoConstraints = false
+            //};
 
-            ContentView.Add(_container);
-            _container.StretchWidthAndHeight(ContentView);
+            //ContentView.Add(_container);
+            //_container.StretchWidthAndHeight(ContentView);
 
             base.OnViewModelLoadedOverride();
         }

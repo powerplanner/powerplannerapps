@@ -137,6 +137,11 @@ namespace Vx.iOS
                     return new iOSColorPicker();
                 }
 
+                if (view is Vx.Views.SlideView)
+                {
+                    return new iOSSlideView();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

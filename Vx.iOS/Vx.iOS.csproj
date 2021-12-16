@@ -132,6 +132,7 @@
     <Compile Include="Controllers\ImprovedModalEditViewController.cs" />
     <Compile Include="BareUIViews\BareUICenteredView.cs" />
     <Compile Include="Views\iOSColorPicker.cs" />
+    <Compile Include="Views\iOSSlideView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
