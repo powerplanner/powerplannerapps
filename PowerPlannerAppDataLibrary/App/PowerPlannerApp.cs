@@ -290,6 +290,8 @@ namespace PowerPlannerAppDataLibrary.App
                 throw new NullReferenceException("account was null. Windows: " + Windows.Count);
             }
 
+            ValidateChanges(changes);
+
             var dataStore = await AccountDataStore.Get(account.LocalAccountId);
             var saveChangeTasks = await dataStore.ProcessLocalChanges(changes);
             System.Threading.Tasks.Task<SyncResult> syncTask = null;
@@ -317,6 +319,28 @@ namespace PowerPlannerAppDataLibrary.App
                     if (syncResult != null && syncResult.SaveChangesTask != null)
                     {
                         await syncResult.SaveChangesTask.WaitForAllTasksAsync();
+                    }
+                }
+            }
+        }
+
+        private static void ValidateChanges(DataChanges changes)
+        {
+            foreach (var c in changes.EditedItems)
+            {
+                foreach (var p in c.GetSetProperties())
+                {
+                    var val = c.GetValue(p);
+                    if (val is DateTime dateVal)
+                    {
+                        if (dateVal < SqlDate.MinValue)
+                        {
+                            throw new InvalidOperationException($"Date value {dateVal} was below SQL min value");
+                        }
+                        else if (dateVal > SqlDate.MaxValue)
+                        {
+                            throw new InvalidOperationException($"Date value {dateVal} was above SQL max value");
+                        }
                     }
                 }
             }
