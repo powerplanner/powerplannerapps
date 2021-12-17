@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Vx.Views;
 
 namespace Vx.Droid.Views
 {
@@ -19,7 +18,7 @@ namespace Vx.Droid.Views
         {
         }
 
-        protected override void ApplyProperties(Border oldView, Border newView)
+        protected override void ApplyProperties(Vx.Views.Border oldView, Vx.Views.Border newView)
         {
             base.ApplyProperties(oldView, newView);
 

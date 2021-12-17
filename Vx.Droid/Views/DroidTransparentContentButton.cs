@@ -12,9 +12,9 @@ using Vx.Views;
 
 namespace Vx.Droid.Views
 {
-    public class DroidTransparentContentButton : DroidView<Vx.Views.TransparentContentButton, FrameLayout>
+    public class DroidTransparentContentButton : DroidView<Vx.Views.TransparentContentButton, Android.Widget.FrameLayout>
     {
-        public DroidTransparentContentButton() : base(new FrameLayout(VxDroidExtensions.ApplicationContext))
+        public DroidTransparentContentButton() : base(new Android.Widget.FrameLayout(VxDroidExtensions.ApplicationContext))
         {
             View.Click += View_Click;
         }

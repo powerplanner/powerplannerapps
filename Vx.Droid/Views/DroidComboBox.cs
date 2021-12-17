@@ -14,7 +14,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using ToolsPortable;
-using Vx.Views;
 
 namespace Vx.Droid.Views
 {
@@ -47,7 +46,7 @@ namespace Vx.Droid.Views
         }
 
         private IEnumerable _currentItems;
-        protected override void ApplyProperties(ComboBox oldView, ComboBox newView)
+        protected override void ApplyProperties(Vx.Views.ComboBox oldView, Vx.Views.ComboBox newView)
         {
             base.ApplyProperties(oldView, newView);
 
@@ -243,7 +242,7 @@ namespace Vx.Droid.Views
 
             public override Android.Views.View GetView(int position, Android.Views.View convertView, ViewGroup parent)
             {
-                if (DataTemplateHelper.ProcessAndIsNewComponent(this[position], ItemTemplate, convertView as INativeComponent, out VxComponent newComponent))
+                if (Vx.Views.DataTemplateHelper.ProcessAndIsNewComponent(this[position], ItemTemplate, convertView as INativeComponent, out Vx.Views.VxComponent newComponent))
                 {
                     var newView = newComponent.Render();
                     var padding = ThemeHelper.AsPx(parent.Context, 12);

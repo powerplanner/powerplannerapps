@@ -14,7 +14,7 @@ using Vx.Views;
 
 namespace Vx.Droid
 {
-    public class DroidNativeComponent : FrameLayout, INativeComponent
+    public class DroidNativeComponent : Android.Widget.FrameLayout, INativeComponent
     {
         public DroidNativeComponent(Context context, VxComponent component) : base(context)
         {
