@@ -133,6 +133,7 @@
     <Compile Include="BareUIViews\BareUICenteredView.cs" />
     <Compile Include="Views\iOSColorPicker.cs" />
     <Compile Include="Views\iOSSlideView.cs" />
+    <Compile Include="Views\iOSFrameLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

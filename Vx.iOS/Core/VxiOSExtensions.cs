@@ -142,6 +142,11 @@ namespace Vx.iOS
                     return new iOSSlideView();
                 }
 
+                if (view is Vx.Views.FrameLayout)
+                {
+                    return new iOSFrameLayout();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

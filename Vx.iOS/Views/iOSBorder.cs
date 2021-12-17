@@ -21,9 +21,9 @@ namespace Vx.iOS.Views
 
             // Incorporate padding with child's margin
             var paddingPlusMargin = newView.Padding;
-            if (newView != null)
+            if (newView.Content != null)
             {
-                paddingPlusMargin = paddingPlusMargin.Combine(newView.Padding);
+                paddingPlusMargin = paddingPlusMargin.Combine(newView.Content.Margin);
             }
 
             ReconcileContent(oldView?.Content, newView.Content, overriddenChildMargin: paddingPlusMargin);

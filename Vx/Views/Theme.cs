@@ -68,6 +68,8 @@ namespace Vx.Views
 
         public virtual float BodyFontSize => 14;
 
+        public virtual float SubtitleFontSize => 20;
+
         public virtual float TitleFontSize => 24;
 
         private static Lazy<float> _marginModifier = new Lazy<float>(() =>
