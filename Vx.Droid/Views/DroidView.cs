@@ -29,10 +29,12 @@ namespace Vx.Droid.Views
             if (newView.Tapped != null && !_hasRegisteredTappedEvent)
             {
                 View.Click += View_Click;
+                _hasRegisteredTappedEvent = true;
             }
             else if (newView.Tapped == null && _hasRegisteredTappedEvent)
             {
                 View.Click -= View_Click;
+                _hasRegisteredTappedEvent = false;
             }
 
             if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
