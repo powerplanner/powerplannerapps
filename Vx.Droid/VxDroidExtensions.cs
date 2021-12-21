@@ -148,6 +148,11 @@ namespace Vx.Droid
                     return new DroidSlideView();
                 }
 
+                if (view is Vx.Views.FrameLayout)
+                {
+                    return new DroidFrameLayout();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

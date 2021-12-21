@@ -31,6 +31,7 @@ using AndroidX.Core.View;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar.CalendarViewModel;
 using PowerPlannerAndroid.ViewHosts;
 using Android.Views.InputMethods;
+using Vx.Droid;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -38,52 +39,72 @@ namespace PowerPlannerAndroid.Views
     {
         private MyCalendarView _calendarView;
         private DayPagerControl _dayPagerControl;
+        private View _fullCalendarView;
 
         public CalendarMainView(ViewGroup root) : base(Resource.Layout.CalendarMain, root)
         {
             _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
             _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
+        }
 
-            SetBinding<DisplayStates>(nameof(ViewModel.DisplayState), displayState =>
+        private void UpdateDisplayState(DisplayStates displayState)
+        {
+            if (displayState != DisplayStates.FullCalendar)
             {
-                switch (displayState)
+                if (_fullCalendarView != null)
                 {
-                    // Full calendar
-                    case DisplayStates.CompactCalendar:
-                        _dayPagerControl.Visibility = ViewStates.Gone;
-                        _calendarView.Visibility = ViewStates.Visible;
-                        _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MatchParent,
-                            0,
-                            1);
-                        break;
-
-                    // Both
-                    case DisplayStates.Split:
-                        _dayPagerControl.Visibility = ViewStates.Visible;
-                        _calendarView.Visibility = ViewStates.Visible;
-                        _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MatchParent,
-                            ThemeHelper.AsPx(Context, 280));
-                        _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MatchParent,
-                            0,
-                            1);
-                        _dayPagerControl.ShowHeader = true;
-                        break;
-
-                    // Full day
-                    case DisplayStates.Day:
-                        _dayPagerControl.Visibility = ViewStates.Visible;
-                        _calendarView.Visibility = ViewStates.Gone;
-                        _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MatchParent,
-                            0,
-                            1);
-                        _dayPagerControl.ShowHeader = false;
-                        break;
+                    _fullCalendarView.Visibility = ViewStates.Gone;
                 }
-            });
+            }
+
+            switch (displayState)
+            {
+                // Full compact calendar
+                case DisplayStates.CompactCalendar:
+                    _dayPagerControl.Visibility = ViewStates.Gone;
+                    _calendarView.Visibility = ViewStates.Visible;
+                    _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MatchParent,
+                        0,
+                        1);
+                    break;
+
+                // Both
+                case DisplayStates.Split:
+                    _dayPagerControl.Visibility = ViewStates.Visible;
+                    _calendarView.Visibility = ViewStates.Visible;
+                    _calendarView.LayoutParameters = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MatchParent,
+                        ThemeHelper.AsPx(Context, 280));
+                    _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MatchParent,
+                        0,
+                        1);
+                    _dayPagerControl.ShowHeader = true;
+                    break;
+
+                // Full day
+                case DisplayStates.Day:
+                    _dayPagerControl.Visibility = ViewStates.Visible;
+                    _calendarView.Visibility = ViewStates.Gone;
+                    _dayPagerControl.LayoutParameters = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MatchParent,
+                        0,
+                        1);
+                    _dayPagerControl.ShowHeader = false;
+                    break;
+
+                // Full (desktop) calendar
+                case DisplayStates.FullCalendar:
+                    _dayPagerControl.Visibility = ViewStates.Gone;
+                    _calendarView.Visibility = ViewStates.Gone;
+                    if (_fullCalendarView == null)
+                    {
+                        _fullCalendarView = new FullSizeCalendarComponent(ViewModel).Render();
+                        FindViewById<LinearLayout>(Resource.Id.CalendarViewRootLayout).AddView(_fullCalendarView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
+                    }
+                    break;
+            }
         }
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
@@ -99,15 +120,24 @@ namespace PowerPlannerAndroid.Views
             Handler handler = new Handler();
             handler.Post(delegate
             {
-                UpdateViewSizeState(base.Height);
+                UpdateViewSizeState(base.Height, base.Width);
             });
         }
 
-        private void UpdateViewSizeState(int h)
+        private void UpdateViewSizeState(int h, int w)
         {
             // Ignore while keyboard visible
             if ((Context.GetSystemService(Context.InputMethodService) as InputMethodManager).IsAcceptingText)
             {
+                return;
+            }
+
+            int fullHeightBreakpoint = ThemeHelper.AsPx(Context, 600);
+            int fullWidthBreakpoint = ThemeHelper.AsPx(Context, 600);
+
+            if (h >= fullHeightBreakpoint && w >= fullWidthBreakpoint)
+            {
+                ViewModel.ViewSizeState = ViewSizeStates.FullSize;
                 return;
             }
 
@@ -134,7 +164,7 @@ namespace PowerPlannerAndroid.Views
         {
             if (base.Height != 0)
             {
-                UpdateViewSizeState(base.Height);
+                UpdateViewSizeState(base.Height, base.Width);
             }
         }
 
@@ -161,6 +191,11 @@ namespace PowerPlannerAndroid.Views
             _dayPagerControl.ScheduleClick += _dayPagerControl_ScheduleClick;
             _dayPagerControl.CurrentDateChanged += _dayPagerControl_CurrentDateChanged;
             _dayPagerControl.ExpandClick += _dayPagerControl_ExpandClick;
+
+            SetBinding<DisplayStates>(nameof(ViewModel.DisplayState), displayState =>
+            {
+                UpdateDisplayState(displayState);
+            });
         }
 
         private void _dayPagerControl_ExpandClick(object sender, EventArgs e)

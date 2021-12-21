@@ -23,6 +23,7 @@ namespace Vx.Droid.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.SetBackgroundColor(newView.BackgroundColor.ToDroid());
             View.Orientation = newView.Orientation == Vx.Views.Orientation.Vertical ? Android.Widget.Orientation.Vertical : Android.Widget.Orientation.Horizontal;
 
             ReconcileChildren(oldView?.Children, newView.Children, View);

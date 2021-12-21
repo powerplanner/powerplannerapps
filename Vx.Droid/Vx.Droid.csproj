@@ -130,6 +130,7 @@
     <Compile Include="Views\DroidComboBox.cs" />
     <Compile Include="Views\DroidDatePicker.cs" />
     <Compile Include="Views\DroidFontIcon.cs" />
+    <Compile Include="Views\DroidFrameLayout.cs" />
     <Compile Include="Views\DroidLinearLayout.cs" />
     <Compile Include="Views\DroidListItemButton.cs" />
     <Compile Include="Views\DroidNumberTextBox.cs" />

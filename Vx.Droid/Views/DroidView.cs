@@ -15,6 +15,8 @@ namespace Vx.Droid.Views
 {
     public abstract class DroidView<V, N> : NativeView<V, N> where V : Vx.Views.View where N : View
     {
+        private bool _hasRegisteredTappedEvent;
+
         public DroidView(N view)
         {
             // Note that we can't use reflection to create views, since in Release mode the constructors
@@ -24,6 +26,15 @@ namespace Vx.Droid.Views
 
         protected override void ApplyProperties(V oldView, V newView)
         {
+            if (newView.Tapped != null && !_hasRegisteredTappedEvent)
+            {
+                View.Click += View_Click;
+            }
+            else if (newView.Tapped == null && _hasRegisteredTappedEvent)
+            {
+                View.Click -= View_Click;
+            }
+
             if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
             {
                 var weight = Vx.Views.LinearLayout.GetWeight(newView);
@@ -77,6 +88,11 @@ namespace Vx.Droid.Views
             }
 
             View.Alpha = newView.Opacity;
+        }
+
+        private void View_Click(object sender, EventArgs e)
+        {
+            VxView.Tapped?.Invoke();
         }
 
         /// <summary>
