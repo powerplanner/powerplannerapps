@@ -60,11 +60,42 @@ namespace Vx.Droid.Views
                 }
                 else
                 {
-                    height = isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) && !(View is LinearLayout) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent);
+                    if (newView is Vx.Views.LinearLayout childLinearLayout)
+                    {
+                        if (isVertical)
+                        {
+                            height = weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0;
+                        }
+                        else
+                        {
+                            if (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
+                            {
+                                // Temporary workaround to solve nested vertical layout within horizontal layout...
+                                // Key scenarios to test are...
+                                // - Full size calendar day square background colors
+                                // - Class grade summary component
+                                if (Vx.Views.LinearLayout.GetWeight(parentLinearLayout) > 0)
+                                {
+                                    height = LinearLayout.LayoutParams.MatchParent;
+                                }
+                                else
+                                {
+                                    height = LinearLayout.LayoutParams.WrapContent;
+                                }
+                            }
+                            else
+                            {
+                                height = LinearLayout.LayoutParams.WrapContent;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        height = isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent);
+                    }
                 }
 
                 // For height on buttons, we need to NOT use MatchParent for height since otherwise they'll drop their padding/etc and go down to like 12px tall
-                // Same as height on LinearLayouts. Note that someday we might need to improve the height for child linear layouts someday if we want to support a linear layout with vertical weights that's inside a horizontal linear layout.
                 View.LayoutParameters = new LinearLayout.LayoutParams(width, height)
                 {
                     Gravity = isVertical ? newView.HorizontalAlignment.ToDroid() : newView.VerticalAlignment.ToDroid(),
