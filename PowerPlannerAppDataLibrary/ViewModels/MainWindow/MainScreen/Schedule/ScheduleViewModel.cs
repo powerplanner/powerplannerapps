@@ -310,7 +310,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         {
             TimeSpan min = TimeSpan.MaxValue;
             TimeSpan max = TimeSpan.MinValue;
-            foreach (var arranger in Items.Values.Where(i => i.IsValid()))
+            foreach (var arranger in Items.Values.Where(i => i.IsValid() && i.HasSpecificTimeItems()))
             {
                 if (min == TimeSpan.MaxValue || arranger.StartTime < min)
                 {

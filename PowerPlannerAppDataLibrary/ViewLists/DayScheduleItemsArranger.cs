@@ -621,6 +621,11 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             return ScheduleItems.Length > 0 || EventItems.Length > 0 || HasHolidays || AllDayItems.Count > 0;
         }
 
+        public bool HasSpecificTimeItems()
+        {
+            return ScheduleItems.Length > 0 || EventItems.Length > 0;
+        }
+
         /// <summary>
         /// Assumes this is being called from UI thread
         /// </summary>
