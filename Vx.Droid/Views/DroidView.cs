@@ -107,6 +107,39 @@ namespace Vx.Droid.Views
                 };
             }
 
+            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout)
+            {
+                int width;
+                int height;
+
+                if (!float.IsNaN(newView.Width))
+                {
+                    width = ThemeHelper.AsPx(View.Context, newView.Width);
+                }
+                else
+                {
+                    width = newView.HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch ? FrameLayout.LayoutParams.MatchParent : FrameLayout.LayoutParams.WrapContent;
+                }
+
+                if (!float.IsNaN(newView.Height))
+                {
+                    height = ThemeHelper.AsPx(View.Context, newView.Height);
+                }
+                else
+                {
+                    height = newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch ? FrameLayout.LayoutParams.MatchParent : FrameLayout.LayoutParams.WrapContent;
+                }
+
+                View.LayoutParameters = new FrameLayout.LayoutParams(width, height)
+                {
+                    Gravity = newView.HorizontalAlignment.ToDroid() | newView.VerticalAlignment.ToDroid(),
+                    MarginStart = AsPx(newView.Margin.Left),
+                    TopMargin = AsPx(newView.Margin.Top),
+                    MarginEnd = AsPx(newView.Margin.Right),
+                    BottomMargin = AsPx(newView.Margin.Bottom)
+                };
+            }
+
             else
             {
                 // For transparent content buttons, we center-align

@@ -121,7 +121,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     grid.Children.Add(row.LinearLayoutWeight(1));
                 }
 
-                return new LinearLayout
+                var finalLayout = new LinearLayout
                 {
                     BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
@@ -131,6 +131,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         grid.LinearLayoutWeight(1)
                     }
                 };
+
+                // If different semester
+                if (ViewModel.SemesterItemsViewGroup.Semester != null && !ViewModel.SemesterItemsViewGroup.Semester.IsMonthDuringThisSemester(Month))
+                {
+                    return new FrameLayout
+                    {
+                        Children =
+                        {
+                            finalLayout,
+
+                            new LinearLayout
+                            {
+                                HorizontalAlignment = HorizontalAlignment.Center,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                BackgroundColor = Theme.Current.BackgroundAlt1Color.Opacity(0.3),
+                                Children =
+                                {
+                                    new Border
+                                    {
+                                        Content = new TextBlock
+                                        {
+                                            Text = "Different semester",
+                                            TextColor = Theme.Current.ForegroundColor.Opacity(0.7)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    };
+                }
+                else
+                {
+                    return finalLayout;
+                }
             }
 
             private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

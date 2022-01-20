@@ -40,5 +40,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
             (int)(color.G * amountFrom + overlayColor.G * overlayOpacity),
             (int)(color.B * amountFrom + overlayColor.B * overlayOpacity));
         }
+
+        public static Color Opacity(this Color color, double opacity)
+        {
+            return Color.FromArgb((int)(opacity * 255), color.R, color.G, color.B);
+        }
     }
 }
