@@ -84,7 +84,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         WrapText = false,
                         TextColor = Theme.Current.SubtleForegroundColor,
                         FontSize = 13,
-                        Margin = new Thickness(12, 6, 12, 6)
+                        Margin = new Thickness(12, 6, 12, 6),
+                        VerticalAlignment = VerticalAlignment.Center
                     }.LinearLayoutWeight(1));
                 }
 
@@ -196,7 +197,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Margin = new Thickness(12),
                     FontSize = Theme.Current.SubtitleFontSize,
                     FontWeight = FontWeights.SemiLight,
-                    TextColor = isToday ? Theme.Current.ForegroundColor.Invert() : Theme.Current.SubtleForegroundColor
+                    TextColor = isToday ? Theme.Current.ForegroundColor.Invert() : Theme.Current.SubtleForegroundColor,
+                    VerticalAlignment = VerticalAlignment.Center
                 };
 
                 var dayBackgroundColor = isToday ? Theme.Current.SubtleForegroundColor : dayType == DayType.ThisMonth ? Color.Transparent : Theme.Current.BackgroundAlt1Color;
@@ -224,7 +226,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                     Text = holidays.First().Name,
                                     WrapText = false,
                                     FontSize = 10,
-                                    TextColor = tbDay.TextColor
+                                    TextColor = tbDay.TextColor,
+                                    VerticalAlignment = VerticalAlignment.Center
                                 }.LinearLayoutWeight(1)
                             }
                         } : (View)tbDay
