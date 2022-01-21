@@ -43,6 +43,8 @@ namespace PowerPlannerAndroid.Views
 
         public CalendarMainView(ViewGroup root) : base(Resource.Layout.CalendarMain, root)
         {
+            Visibility = ViewStates.Invisible;
+
             _calendarView = FindViewById<MyCalendarView>(Resource.Id.CalendarView);
             _dayPagerControl = FindViewById<DayPagerControl>(Resource.Id.DayPagerControl);
         }
@@ -125,6 +127,11 @@ namespace PowerPlannerAndroid.Views
             handler.Post(delegate
             {
                 UpdateViewSizeState(base.Height, base.Width);
+
+                if (Visibility == ViewStates.Invisible)
+                {
+                    Visibility = ViewStates.Visible;
+                }
             });
         }
 
