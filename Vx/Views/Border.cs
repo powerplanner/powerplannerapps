@@ -16,5 +16,7 @@ namespace Vx.Views
         public Thickness Padding { get; set; }
 
         public View Content { get; set; }
+
+        public float CornerRadius { get; set; }
     }
 }

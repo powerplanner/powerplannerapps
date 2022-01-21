@@ -35,6 +35,8 @@ namespace Vx.Views
 
         public abstract Color SubtleForegroundColor { get; }
 
+        public Color BackgroundColor => IsDarkTheme ? Color.Black : Color.White;
+
         public abstract Color PopupPageBackgroundColor { get; }
 
         public abstract Color PopupPageBackgroundAltColor { get; }

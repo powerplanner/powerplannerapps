@@ -18,6 +18,7 @@ namespace Vx.iOS.Views
             View.BackgroundColor = newView.BackgroundColor.ToUI();
             View.Layer.BorderWidth = newView.BorderThickness.Top;
             View.Layer.BorderColor = newView.BorderColor.ToUI().CGColor;
+            View.Layer.CornerRadius = newView.CornerRadius;
 
             // Incorporate padding with child's margin
             var paddingPlusMargin = newView.Padding;

@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.Helpers;
+﻿using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
@@ -61,6 +62,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             }
+
+            private VxState<DateTime?> DismissedDifferentSemesterMonth = new VxState<DateTime?>();
 
             protected override View Render()
             {
@@ -133,7 +136,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 };
 
                 // If different semester
-                if (ViewModel.SemesterItemsViewGroup.Semester != null && !ViewModel.SemesterItemsViewGroup.Semester.IsMonthDuringThisSemester(Month))
+                if (ViewModel.SemesterItemsViewGroup.Semester != null && !ViewModel.SemesterItemsViewGroup.Semester.IsMonthDuringThisSemester(Month) && DismissedDifferentSemesterMonth.Value != Month)
                 {
                     return new FrameLayout
                     {
@@ -141,22 +144,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         {
                             finalLayout,
 
-                            new LinearLayout
+                            new DifferentSemesterComponent()
                             {
-                                HorizontalAlignment = HorizontalAlignment.Center,
-                                VerticalAlignment = VerticalAlignment.Center,
-                                BackgroundColor = Theme.Current.BackgroundAlt1Color.Opacity(0.3),
-                                Children =
-                                {
-                                    new Border
-                                    {
-                                        Content = new TextBlock
-                                        {
-                                            Text = "Different semester",
-                                            TextColor = Theme.Current.ForegroundColor.Opacity(0.7)
-                                        }
-                                    }
-                                }
+                                OnDismiss = () => DismissedDifferentSemesterMonth.Value = Month,
+                                OnOpenSemester = () => ViewModel.MainScreenViewModel.OpenYears()
                             }
                         }
                     };

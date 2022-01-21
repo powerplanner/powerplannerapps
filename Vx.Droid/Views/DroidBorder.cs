@@ -28,6 +28,7 @@ namespace Vx.Droid.Views
             {
                 border.SetStroke(AsPx(newView.BorderThickness.Top), newView.BorderColor.ToDroid());
             }
+            border.SetCornerRadius(AsPx(newView.CornerRadius));
             View.Background = border;
 
             View.SetPadding(AsPx(newView.Padding.Left), AsPx(newView.Padding.Top), AsPx(newView.Padding.Right), AsPx(newView.Padding.Bottom));
