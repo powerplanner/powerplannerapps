@@ -142,6 +142,11 @@ namespace Vx.Uwp
                     return new UwpColorPicker();
                 }
 
+                if (view is Vx.Views.AdaptiveGridPanel)
+                {
+                    return new UwpAdaptiveGridPanel();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {

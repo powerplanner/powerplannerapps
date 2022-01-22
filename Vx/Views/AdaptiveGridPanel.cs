@@ -5,11 +5,23 @@ using System.Text;
 
 namespace Vx.Views
 {
-    public class AdaptiveGridPanel : VxComponent
+    /// <summary>
+    /// Currently only UWP, but can use <see cref="AdaptiveGridPanelComponent"/> on Android/iOS
+    /// </summary>
+    public class AdaptiveGridPanel : View
+    {
+        public List<View> Children { get; } = new List<View>();
+
+        public float MinColumnWidth { get; set; } = 250;
+
+        public float ColumnSpacing { get; set; } = 24;
+    }
+
+    public class AdaptiveGridPanelComponent : VxComponent
     {
         public List<View> Children { get; private set; } = new List<View>();
 
-        public float MinColumnWidth { get; set; } = 200;
+        public float MinColumnWidth { get; set; } = 250;
 
         private int _renderedCols;
 
