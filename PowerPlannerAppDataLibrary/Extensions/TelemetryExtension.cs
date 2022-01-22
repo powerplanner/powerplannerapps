@@ -30,6 +30,37 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public abstract void TrackEvent(string eventName, IDictionary<string, string> properties = null);
 
+        protected static string EventToString(string eventName, IDictionary<string, string> properties = null)
+        {
+            string s = $"Event: {eventName}";
+
+            if (properties != null && properties.Count > 0)
+            {
+                s += ", " + string.Join(", ", properties.Select(i => i.Key + ": " + i.Value));
+            }
+
+            return s;
+        }
+
+        protected static string ExceptionToString(Exception ex, [CallerMemberName] string exceptionName = null, IDictionary<string, string> properties = null)
+        {
+            string s = $"Exception: {ex.ToString()}";
+
+            if (exceptionName != null)
+            {
+                s += ", " + exceptionName;
+            }
+
+            if (properties != null && properties.Count > 0)
+            {
+                s += ", " + string.Join(", ", properties.Select(i => i.Key + ": " + i.Value));
+            }
+
+            return s;
+        }
+
+        public abstract string GetDeveloperLogs();
+
         private string _lastPageName;
         private object _pageViewLock = new object();
         private TelemetryPageViewBundler _pageViewBundler;
@@ -137,12 +168,18 @@ namespace PowerPlannerAppDataLibrary.Extensions
     {
         public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)
         {
-            System.Diagnostics.Debug.WriteLine($"Event: {eventName}");
+            string e = EventToString(eventName, properties);
+
+            System.Diagnostics.Debug.WriteLine(e);
+            _developerLogs.Add(e);
         }
 
         public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null, IDictionary<string, string> properties = null)
         {
+            string e = ExceptionToString(ex, exceptionName, properties);
+
             System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+            _developerLogs.Add(e);
         }
 
         public override void TrackPageVisited(string pageName)
@@ -155,6 +192,12 @@ namespace PowerPlannerAppDataLibrary.Extensions
             base.UpdateCurrentUser(account);
 
             System.Diagnostics.Debug.WriteLine($"CurrentUser: {UserId}");
+        }
+
+        private List<string> _developerLogs = new List<string>();
+        public override string GetDeveloperLogs()
+        {
+            return string.Join("\n", _developerLogs);
         }
     }
 #endif
