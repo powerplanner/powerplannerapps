@@ -15,7 +15,7 @@ namespace InterfacesUWP
     /// </summary>
     public class MyAdaptiveGridPanel : Panel
     {
-        public static readonly DependencyProperty MinColumnWidthProperty = DependencyProperty.Register("MinColumnWidth", typeof(double), typeof(MyAdaptiveGridPanel), new PropertyMetadata(100.0));
+        public static readonly DependencyProperty MinColumnWidthProperty = DependencyProperty.Register("MinColumnWidth", typeof(double), typeof(MyAdaptiveGridPanel), new PropertyMetadata(100.0, OnMeasureAffectingPropertyChanged));
 
         /// <summary>
         /// Must be positive number.
@@ -25,6 +25,20 @@ namespace InterfacesUWP
             get { return (double)GetValue(MinColumnWidthProperty); }
             set { SetValue(MinColumnWidthProperty, value); }
         }
+
+
+
+        public double ColumnSpacing
+        {
+            get { return (double)GetValue(ColumnSpacingProperty); }
+            set { SetValue(ColumnSpacingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ColumnSpacing.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ColumnSpacingProperty =
+            DependencyProperty.Register("ColumnSpacing", typeof(double), typeof(MyAdaptiveGridPanel), new PropertyMetadata(24.0, OnMeasureAffectingPropertyChanged));
+
+
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -36,7 +50,9 @@ namespace InterfacesUWP
             if (availableSize.Width == 0)
                 return new Size(0, 0);
 
-            var colInfo = GetColumnInfo(availableSize);
+            var childrenThatCount = Children.Where(c => c.Visibility == Visibility.Visible).ToList();
+
+            var colInfo = GetColumnInfo(availableSize, childrenThatCount.Count);
 
             Size availableSizeForElements = new Size(colInfo.ColumnWidth, double.PositiveInfinity);
 
@@ -47,8 +63,6 @@ namespace InterfacesUWP
             {
                 invisibleChildren.Measure(availableSize);
             }
-
-            var childrenThatCount = Children.Where(c => c.Visibility == Visibility.Visible).ToList();
 
             if (childrenThatCount.Count == 1 && StretchIfOnlyOneChild)
             {
@@ -90,12 +104,12 @@ namespace InterfacesUWP
             if (finalSize.Width == 0)
                 return new Size(0, 0);
 
-            var colInfo = GetColumnInfo(finalSize);
+            var childrenThatCount = Children.Where(c => c.Visibility == Visibility.Visible).ToList();
+
+            var colInfo = GetColumnInfo(finalSize, childrenThatCount.Count);
 
             double totalHeight = 0;
             int i = 0;
-
-            var childrenThatCount = Children.Where(c => c.Visibility == Visibility.Visible).ToList();
 
             if (childrenThatCount.Count == 1 && StretchIfOnlyOneChild)
             {
@@ -125,7 +139,7 @@ namespace InterfacesUWP
                 {
                     var el = childrenThatCount[i];
 
-                    double x = colIndex * colInfo.ColumnWidth;
+                    double x = colIndex * colInfo.ColumnWidth + ColumnSpacing * colIndex;
 
                     // y is just totalHeight
                     // width is just colInfo.ColumnWidth
@@ -154,18 +168,32 @@ namespace InterfacesUWP
             public int NumberOfColumns { get; set; }
         }
 
-        private ColumnInfo GetColumnInfo(Size availableSize)
+        private ColumnInfo GetColumnInfo(Size availableSize, int children)
         {
+            if (children <= 1)
+            {
+                return new ColumnInfo
+                {
+                    NumberOfColumns = 1,
+                    ColumnWidth = StretchIfOnlyOneChild ? availableSize.Width : Math.Min(MinColumnWidth, availableSize.Width)
+                };
+            }
+
             // Say available size is 1,000 and min column width is 200, then this would be 5 columns
             // Say available size is 1,100 and min column width is 200, then this would be 5.5 truncated to 5 columns
-            int numberOfColumns = (int)(availableSize.Width / MinColumnWidth);
+            int numberOfColumns = (int)((availableSize.Width - ColumnSpacing) / (MinColumnWidth - ColumnSpacing));
 
             // If there's not enough space for one column, we'll still have one column
             if (numberOfColumns <= 0)
                 numberOfColumns = 1;
 
+            if (numberOfColumns > children)
+            {
+                numberOfColumns = children;
+            }
+
             // And then figure out desired column width given how many columns we have
-            double columnWidth = availableSize.Width / numberOfColumns;
+            double columnWidth = (availableSize.Width - ColumnSpacing * (numberOfColumns - 1)) / numberOfColumns;
 
             return new ColumnInfo()
             {
