@@ -89,8 +89,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public bool CanGoBack => CachedComputation<bool>(delegate
         {
-            return DisplayState == DisplayStates.Day;
-        }, new string[] { nameof(DisplayState) });
+            return DisplayState == DisplayStates.Day || (ViewSizeState == ViewSizeStates.FullSize && DisplayState == DisplayStates.Split);
+        }, new string[] { nameof(DisplayState), nameof(ViewSizeState) });
 
         public override bool GoBack()
         {
@@ -108,8 +108,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 return true;
             }
 
+            if (DisplayState == DisplayStates.Split && ViewSizeState == ViewSizeStates.FullSize)
+            {
+                DisplayState = DisplayStates.FullCalendar;
+                return true;
+            }
+
             return base.GoBack();
         }
+
+        public bool IncludeToolbarPrevNextButtons => CachedComputation<bool>(delegate
+        {
+            return ViewSizeState == ViewSizeStates.FullSize;
+        }, new string[] { nameof(ViewSizeState) });
+
+        public bool IncludeToolbarFilterButton => CachedComputation<bool>(delegate
+        {
+            return DisplayState == DisplayStates.FullCalendar;
+        }, new string[] { nameof(DisplayState) });
 
         private string GetDateHeaderText(DateTime date)
         {
@@ -188,6 +204,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }
 
+        public void Next()
+        {
+            if (DisplayState == DisplayStates.Day)
+            {
+                SelectedDate = SelectedDate.AddDays(1);
+            }
+            else
+            {
+                DisplayMonth = DisplayMonth.AddMonths(1);
+            }
+        }
+
+        public void Previous()
+        {
+            if (DisplayState == DisplayStates.Day)
+            {
+                SelectedDate = SelectedDate.AddDays(-1);
+            }
+            else
+            {
+                DisplayMonth = DisplayMonth.AddMonths(-1);
+            }
+        }
+
         public enum ViewSizeStates
         {
             /// <summary>
@@ -198,7 +238,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             /// <summary>
             /// Only calendar (or day) can be displayed
             /// </summary>
-            FullyCompact
+            FullyCompact,
+
+            /// <summary>
+            /// Big screen (like iPad/desktop), full size calendar can be displayed
+            /// </summary>
+            FullSize
         }
 
         private ViewSizeStates _viewSizeState;
@@ -212,7 +257,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 if (_viewSizeState != value)
                 {
-                    _viewSizeState = value;
+                    SetProperty(ref _viewSizeState, value, nameof(ViewSizeState));
 
                     switch (value)
                     {
@@ -225,6 +270,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             {
                                 DisplayState = DisplayStates.CompactCalendar;
                             }
+                            break;
+
+                        case ViewSizeStates.FullSize:
+                            DisplayState = DisplayStates.FullCalendar;
                             break;
                     }
                 }
@@ -246,7 +295,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             /// <summary>
             /// Only display the compact calendar.
             /// </summary>
-            CompactCalendar
+            CompactCalendar,
+
+            /// <summary>
+            /// Full size calendar
+            /// </summary>
+            FullCalendar
         }
 
         // Use previous selected display state from before
@@ -269,7 +323,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public void ExpandDay()
         {
-            if (ViewSizeState == ViewSizeStates.Compact)
+            if (ViewSizeState == ViewSizeStates.Compact || ViewSizeState == ViewSizeStates.FullSize)
             {
                 DisplayState = DisplayStates.Day;
             }
@@ -289,6 +343,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 case ViewSizeStates.FullyCompact:
                     DisplayState = DisplayStates.CompactCalendar;
+                    break;
+
+                case ViewSizeStates.FullSize:
+                    if (DisplayState == DisplayStates.Split)
+                    {
+                        DisplayState = DisplayStates.FullCalendar;
+                    }
+                    else
+                    {
+                        DisplayState = DisplayStates.Split;
+                    }
                     break;
 
                 default:
@@ -405,11 +470,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
             {
-                throw new InvalidOperationException("If using unified calendar/day tab, you should set SelectedDate on the CalendarViewModel instead.");
+                if (DisplayState == DisplayStates.FullCalendar)
+                {
+                    SelectedDate = date.Date;
+                    DisplayState = DisplayStates.Split;
+                }
+                else
+                {
+                    throw new InvalidOperationException("If using unified calendar/day tab and not in the FullCalendar state, you should set SelectedDate on the CalendarViewModel instead.");
+                }
             }
-
-            NavigationManager.SetSelectedDate(date.Date);
-            MainScreenViewModel.SetContent(new DayViewModel(MainScreenViewModel, MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester), preserveBack: true);
+            else
+            {
+                NavigationManager.SetSelectedDate(date.Date);
+                MainScreenViewModel.SetContent(new DayViewModel(MainScreenViewModel, MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester), preserveBack: true);
+            }
         }
 
         public void ViewClass(ViewItemClass c)

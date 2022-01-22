@@ -15,6 +15,8 @@ namespace Vx.Droid.Views
 {
     public abstract class DroidView<V, N> : NativeView<V, N> where V : Vx.Views.View where N : View
     {
+        private bool _hasRegisteredTappedEvent;
+
         public DroidView(N view)
         {
             // Note that we can't use reflection to create views, since in Release mode the constructors
@@ -24,6 +26,17 @@ namespace Vx.Droid.Views
 
         protected override void ApplyProperties(V oldView, V newView)
         {
+            if (newView.Tapped != null && !_hasRegisteredTappedEvent)
+            {
+                View.Click += View_Click;
+                _hasRegisteredTappedEvent = true;
+            }
+            else if (newView.Tapped == null && _hasRegisteredTappedEvent)
+            {
+                View.Click -= View_Click;
+                _hasRegisteredTappedEvent = false;
+            }
+
             if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
             {
                 var weight = Vx.Views.LinearLayout.GetWeight(newView);
@@ -47,11 +60,42 @@ namespace Vx.Droid.Views
                 }
                 else
                 {
-                    height = isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) && !(View is LinearLayout) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent);
+                    if (newView is Vx.Views.LinearLayout childLinearLayout)
+                    {
+                        if (isVertical)
+                        {
+                            height = weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0;
+                        }
+                        else
+                        {
+                            if (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
+                            {
+                                // Temporary workaround to solve nested vertical layout within horizontal layout...
+                                // Key scenarios to test are...
+                                // - Full size calendar day square background colors
+                                // - Class grade summary component
+                                if (Vx.Views.LinearLayout.GetWeight(parentLinearLayout) > 0)
+                                {
+                                    height = LinearLayout.LayoutParams.MatchParent;
+                                }
+                                else
+                                {
+                                    height = LinearLayout.LayoutParams.WrapContent;
+                                }
+                            }
+                            else
+                            {
+                                height = LinearLayout.LayoutParams.WrapContent;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        height = isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent);
+                    }
                 }
 
                 // For height on buttons, we need to NOT use MatchParent for height since otherwise they'll drop their padding/etc and go down to like 12px tall
-                // Same as height on LinearLayouts. Note that someday we might need to improve the height for child linear layouts someday if we want to support a linear layout with vertical weights that's inside a horizontal linear layout.
                 View.LayoutParameters = new LinearLayout.LayoutParams(width, height)
                 {
                     Gravity = isVertical ? newView.HorizontalAlignment.ToDroid() : newView.VerticalAlignment.ToDroid(),
@@ -60,6 +104,39 @@ namespace Vx.Droid.Views
                     MarginEnd = AsPx(newView.Margin.Right),
                     BottomMargin = AsPx(newView.Margin.Bottom),
                     Weight = weight
+                };
+            }
+
+            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout)
+            {
+                int width;
+                int height;
+
+                if (!float.IsNaN(newView.Width))
+                {
+                    width = ThemeHelper.AsPx(View.Context, newView.Width);
+                }
+                else
+                {
+                    width = newView.HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch ? FrameLayout.LayoutParams.MatchParent : FrameLayout.LayoutParams.WrapContent;
+                }
+
+                if (!float.IsNaN(newView.Height))
+                {
+                    height = ThemeHelper.AsPx(View.Context, newView.Height);
+                }
+                else
+                {
+                    height = newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch ? FrameLayout.LayoutParams.MatchParent : FrameLayout.LayoutParams.WrapContent;
+                }
+
+                View.LayoutParameters = new FrameLayout.LayoutParams(width, height)
+                {
+                    Gravity = newView.HorizontalAlignment.ToDroid() | newView.VerticalAlignment.ToDroid(),
+                    MarginStart = AsPx(newView.Margin.Left),
+                    TopMargin = AsPx(newView.Margin.Top),
+                    MarginEnd = AsPx(newView.Margin.Right),
+                    BottomMargin = AsPx(newView.Margin.Bottom)
                 };
             }
 
@@ -77,6 +154,11 @@ namespace Vx.Droid.Views
             }
 
             View.Alpha = newView.Opacity;
+        }
+
+        private void View_Click(object sender, EventArgs e)
+        {
+            VxView.Tapped?.Invoke();
         }
 
         /// <summary>

@@ -191,7 +191,20 @@ namespace Vx.Views
         {
             var seenProps = new HashSet<string>();
 
-            foreach (var prop in this.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && _iNotifyPropertyChangedType.IsAssignableFrom(i.PropertyType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
+            foreach (var prop in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(i => i.CanRead && _iNotifyPropertyChangedType.IsAssignableFrom(i.PropertyType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
+            {
+                // Avoid subscribing to properties overridden by "new" keyword
+                if (seenProps.Add(prop.Name))
+                {
+                    var propVal = prop.GetValue(this) as INotifyPropertyChanged;
+                    if (propVal != null)
+                    {
+                        yield return propVal;
+                    }
+                }
+            }
+
+            foreach (var prop in this.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(i => _iNotifyPropertyChangedType.IsAssignableFrom(i.FieldType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
             {
                 // Avoid subscribing to properties overridden by "new" keyword
                 if (seenProps.Add(prop.Name))

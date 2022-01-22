@@ -10,6 +10,8 @@ namespace Vx.iOS.Views
 {
     public abstract class iOSView<V, N> : NativeView<V, N> where V : View where N : UIView
     {
+        private UITapGestureRecognizer _tapGestureRecognizer;
+
         public iOSView()
         {
             View = Activator.CreateInstance<N>();
@@ -48,6 +50,15 @@ namespace Vx.iOS.Views
                         View.SetHeight(newView.Height);
                     }
                 }
+            }
+
+            if (newView.Tapped != null && _tapGestureRecognizer == null)
+            {
+                _tapGestureRecognizer = new UITapGestureRecognizer();
+
+                _tapGestureRecognizer.AddTarget(() => VxView.Tapped?.Invoke());
+
+                View.AddGestureRecognizer(_tapGestureRecognizer);
             }
         }
 

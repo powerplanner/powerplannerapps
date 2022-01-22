@@ -2620,6 +2620,10 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>This week</source>
           <target state="final">In dieser Woche</target>
         </trans-unit>
+        <trans-unit id="HidePastCompleteItems" translate="yes" xml:space="preserve">
+          <source>Hide past complete items</source>
+          <target state="final">Vergangene abgeschlossene Elemente ausblenden</target>
+        </trans-unit>
       </group>
     </body>
   </file>

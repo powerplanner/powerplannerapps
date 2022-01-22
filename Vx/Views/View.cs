@@ -45,6 +45,8 @@ namespace Vx.Views
 
         public Action<View> ViewRef { get; set; }
 
+        public Action Tapped { get; set; }
+
         /// <summary>
         /// Note that HorizontalAlignment will be ignored and be Stretch when parent is a *horizontal* LinearLayout
         /// </summary>
