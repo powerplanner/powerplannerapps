@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Vx.Views;
 
 namespace Vx.Droid.Views
 {
@@ -19,7 +18,7 @@ namespace Vx.Droid.Views
         {
         }
 
-        protected override void ApplyProperties(Border oldView, Border newView)
+        protected override void ApplyProperties(Vx.Views.Border oldView, Vx.Views.Border newView)
         {
             base.ApplyProperties(oldView, newView);
 
@@ -29,6 +28,7 @@ namespace Vx.Droid.Views
             {
                 border.SetStroke(AsPx(newView.BorderThickness.Top), newView.BorderColor.ToDroid());
             }
+            border.SetCornerRadius(AsPx(newView.CornerRadius));
             View.Background = border;
 
             View.SetPadding(AsPx(newView.Padding.Left), AsPx(newView.Padding.Top), AsPx(newView.Padding.Right), AsPx(newView.Padding.Bottom));

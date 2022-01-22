@@ -2618,6 +2618,10 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>This week</source>
           <target state="final">Cette semaine</target>
         </trans-unit>
+        <trans-unit id="HidePastCompleteItems" translate="yes" xml:space="preserve">
+          <source>Hide past complete items</source>
+          <target state="final">Masquer les éléments terminés passés</target>
+        </trans-unit>
       </group>
     </body>
   </file>

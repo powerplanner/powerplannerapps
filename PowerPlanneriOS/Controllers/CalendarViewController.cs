@@ -21,6 +21,8 @@ using System.Collections.Specialized;
 using PowerPlanneriOS.Views;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary.DataLayer;
+using Vx.iOS;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -29,16 +31,17 @@ namespace PowerPlanneriOS.Controllers
         private MyCalendarView _cal;
         private UIPagedDayView _pagedDayView;
         private AdaptiveView _container;
+        private UIBarButtonItem _toolbarAddItemButton;
 
         public CalendarViewController()
         {
             HideBackButton();
 
-            NavItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Add)
+            _toolbarAddItemButton = new UIBarButtonItem(UIBarButtonSystemItem.Add)
             {
                 Title = "Add item"
             };
-            NavItem.RightBarButtonItem.Clicked += new WeakEventHandler<EventArgs>(ButtonAddItem_Clicked).Handler;
+            _toolbarAddItemButton.Clicked += new WeakEventHandler<EventArgs>(ButtonAddItem_Clicked).Handler;
         }
 
         private void ButtonAddItem_Clicked(object sender, EventArgs e)
@@ -57,7 +60,7 @@ namespace PowerPlanneriOS.Controllers
             UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
             if (presentationPopover != null)
             {
-                presentationPopover.BarButtonItem = NavItem.RightBarButtonItem;
+                presentationPopover.BarButtonItem = _toolbarAddItemButton;
                 presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
             }
 
@@ -65,9 +68,11 @@ namespace PowerPlanneriOS.Controllers
             this.PresentViewController(actionSheetAlert, true, null);
         }
 
+        private object _tabBarHeightListener;
         public override void OnViewModelLoadedOverride()
         {
             UpdateTitle();
+            UpdateToolbarButtons();
 
             // Calendar
             _cal = new MyCalendarView(ViewModel.FirstDayOfWeek)
@@ -97,7 +102,11 @@ namespace PowerPlanneriOS.Controllers
             };
 
             ContentView.Add(_container);
-            _container.StretchWidthAndHeight(ContentView);
+
+            MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
+            {
+                _container.StretchWidthAndHeight(ContentView, 0, 0, 0, (float)MainScreenViewController.TAB_BAR_HEIGHT);
+            });
 
             base.OnViewModelLoadedOverride();
         }
@@ -132,12 +141,88 @@ namespace PowerPlanneriOS.Controllers
 
                 NavItem.LeftBarButtonItem = _backButton;
             }
+            else if (ViewModel.DisplayState == CalendarViewModel.DisplayStates.Split && ViewModel.ViewSizeState == CalendarViewModel.ViewSizeStates.FullSize)
+            {
+                Title = "";
 
+                if (_backButtonContents == null)
+                {
+                    _backButtonContents = new UIButton(UIButtonType.Custom);
+                    _backButtonContents.SetImage(UIImage.FromBundle("ToolbarBack").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
+                    _backButtonContents.TouchUpInside += _backButton_Clicked;
+                }
+
+                _backButtonContents.SetTitle(ViewModel.DisplayMonth.ToString("MMMM yyyy"), UIControlState.Normal);
+                _backButtonContents.SizeToFit();
+
+                if (_backButton == null)
+                {
+                    _backButton = new UIBarButtonItem(_backButtonContents);
+                }
+
+                NavItem.LeftBarButtonItem = _backButton;
+            }
             else
             {
                 Title = ViewModel.DisplayMonth.ToString("MMMM yyyy");
                 NavItem.LeftBarButtonItem = null;
             }
+        }
+
+        private UIBarButtonItem _toolbarPrevMonthButton, _toolbarNextMonthButton, _toolbarMoreButton;
+        private void UpdateToolbarButtons()
+        {
+            List<UIBarButtonItem> buttons = new List<UIBarButtonItem>()
+            {
+                _toolbarAddItemButton
+            };
+
+            if (ViewModel.IncludeToolbarPrevNextButtons)
+            {
+                if (_toolbarPrevMonthButton == null)
+                {
+                    _toolbarPrevMonthButton = new UIBarButtonItem(UIImage.FromBundle("ToolbarBack").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIBarButtonItemStyle.Plain, (s, e) => ViewModel.Previous());
+                    _toolbarNextMonthButton = new UIBarButtonItem(UIImage.FromBundle("ToolbarForward").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIBarButtonItemStyle.Plain, (s, e) => ViewModel.Next());
+                }
+
+                buttons.Add(_toolbarPrevMonthButton);
+                buttons.Add(_toolbarNextMonthButton);
+            }
+
+            if (_toolbarMoreButton == null)
+            {
+                _toolbarMoreButton = new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIBarButtonItemStyle.Plain, (s, e) => ShowMoreOptions());
+            }
+            buttons.Add(_toolbarMoreButton);
+
+            buttons.Reverse(); // This causes our items to go in order of left-to-right, so index 0 in original list is "first" (left-most) item.
+            NavItem.RightBarButtonItems = buttons.ToArray();
+        }
+
+        private void ShowMoreOptions()
+        {
+            UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+
+            actionSheetAlert.AddAction(UIAlertAction.Create("Go to today", UIAlertActionStyle.Default, delegate { ViewModel.GoToToday(); }));
+
+            if (ViewModel.IncludeToolbarFilterButton)
+            {
+                actionSheetAlert.AddAction(UIAlertAction.Create(PowerPlannerResources.GetString(ViewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"), UIAlertActionStyle.Default, delegate { ViewModel.ShowPastCompleteItemsOnFullCalendar = !ViewModel.ShowPastCompleteItemsOnFullCalendar; }));
+            }
+
+            actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            // Required for iPad - You must specify a source for the Action Sheet since it is
+            // displayed as a popover
+            UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
+            if (presentationPopover != null)
+            {
+                presentationPopover.BarButtonItem = _toolbarMoreButton;
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+            }
+
+            // Display the alert
+            this.PresentViewController(actionSheetAlert, true, null);
         }
 
         private void _backButton_Clicked(object sender, EventArgs e)
@@ -166,10 +251,15 @@ namespace PowerPlanneriOS.Controllers
 
                 case nameof(ViewModel.DisplayMonth):
                     UpdateTitle();
+                    _cal.DisplayMonth = ViewModel.DisplayMonth;
                     break;
 
                 case nameof(ViewModel.DisplayState):
                     UpdateTitle();
+                    break;
+
+                case nameof(ViewModel.IncludeToolbarPrevNextButtons):
+                    UpdateToolbarButtons();
                     break;
             }
         }
@@ -183,6 +273,7 @@ namespace PowerPlanneriOS.Controllers
 
         private class AdaptiveView : UIView
         {
+            private UIView _fullSizeCalendarView;
             private MyCalendarView _calendarView;
             private UIPagedDayView _dayView;
             private CalendarViewModel _viewModel;
@@ -224,7 +315,11 @@ namespace PowerPlanneriOS.Controllers
                 {
                     base.Bounds = value;
 
-                    if (value.Height > 500)
+                    if (value.Height > 800 && value.Width > 675)
+                    {
+                        _viewModel.ViewSizeState = CalendarViewModel.ViewSizeStates.FullSize;
+                    }
+                    else if (value.Height > 500)
                     {
                         _viewModel.ViewSizeState = CalendarViewModel.ViewSizeStates.Compact;
                     }
@@ -252,6 +347,10 @@ namespace PowerPlanneriOS.Controllers
                             _calendarView.Hidden = false;
                             _calendarView.Frame = new CGRect(0, 0, width, height);
                             _dayView.Hidden = true;
+                            if (_fullSizeCalendarView != null)
+                            {
+                                _fullSizeCalendarView.Hidden = true;
+                            }
                         }
                         break;
 
@@ -260,6 +359,10 @@ namespace PowerPlanneriOS.Controllers
                             _calendarView.Hidden = true;
                             _dayView.Frame = new CGRect(0, 0, width, height);
                             _dayView.Hidden = false;
+                            if (_fullSizeCalendarView != null)
+                            {
+                                _fullSizeCalendarView.Hidden = true;
+                            }
                         }
                         break;
 
@@ -267,6 +370,10 @@ namespace PowerPlanneriOS.Controllers
                         {
                             _calendarView.Hidden = false;
                             _dayView.Hidden = false;
+                            if (_fullSizeCalendarView != null)
+                            {
+                                _fullSizeCalendarView.Hidden = true;
+                            }
 
                             nfloat splitCalendarHeight = 300;
 
@@ -278,6 +385,20 @@ namespace PowerPlanneriOS.Controllers
                             _calendarView.Frame = new CGRect(0, 0, width, splitCalendarHeight);
 
                             _dayView.Frame = new CGRect(0, splitCalendarHeight, width, height - splitCalendarHeight);
+                        }
+                        break;
+
+                    case CalendarViewModel.DisplayStates.FullCalendar:
+                        {
+                            _calendarView.Hidden = true;
+                            _dayView.Hidden = true;
+                            if (_fullSizeCalendarView == null)
+                            {
+                                _fullSizeCalendarView = new FullSizeCalendarComponent(_viewModel).Render();
+                                Add(_fullSizeCalendarView);
+                            }
+                            _fullSizeCalendarView.Hidden = false;
+                            _fullSizeCalendarView.Frame = new CGRect(0, 0, width, height);
                         }
                         break;
                 }

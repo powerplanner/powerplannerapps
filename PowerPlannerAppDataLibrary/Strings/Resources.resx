@@ -2071,4 +2071,7 @@ Please think about using an online account instead!</value>
   <data name="RelativeDate_ThisWeek" xml:space="preserve">
     <value>This week</value>
   </data>
+  <data name="HidePastCompleteItems" xml:space="preserve">
+    <value>Hide past complete items</value>
+  </data>
 </root>

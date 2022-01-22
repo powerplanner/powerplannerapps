@@ -237,6 +237,11 @@ namespace Vx.iOS.Views
             get => _text;
             set
             {
+                if (_text == value)
+                {
+                    return;
+                }
+
                 _text = value;
                 _textField.Text = value;
             }
@@ -272,6 +277,11 @@ namespace Vx.iOS.Views
             get => _validationState;
             set
             {
+                if (_validationState == value)
+                {
+                    return;
+                }
+
                 _validationState = value;
 
                 if (value != null && value.ErrorMessage != null)
@@ -302,6 +312,11 @@ namespace Vx.iOS.Views
             get => _textField.Enabled;
             set
             {
+                if (Enabled == value)
+                {
+                    return;
+                }
+
                 _textField.Enabled = value;
                 Alpha = value ? 1.0f : 0.5f;
             }

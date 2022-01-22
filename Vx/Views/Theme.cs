@@ -35,6 +35,8 @@ namespace Vx.Views
 
         public abstract Color SubtleForegroundColor { get; }
 
+        public Color BackgroundColor => IsDarkTheme ? Color.Black : Color.White;
+
         public abstract Color PopupPageBackgroundColor { get; }
 
         public abstract Color PopupPageBackgroundAltColor { get; }
@@ -67,6 +69,8 @@ namespace Vx.Views
         public virtual float CaptionFontSize => 12;
 
         public virtual float BodyFontSize => 14;
+
+        public virtual float SubtitleFontSize => 20;
 
         public virtual float TitleFontSize => 24;
 

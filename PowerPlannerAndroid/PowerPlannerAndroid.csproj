@@ -462,9 +462,6 @@
     <AndroidResource Include="Resources\menu\class_times_menu.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\menu\calendar_menu.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\menu\classes_menu.xml" />
   </ItemGroup>
   <ItemGroup>

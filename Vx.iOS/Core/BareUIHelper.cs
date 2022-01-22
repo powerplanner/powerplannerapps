@@ -145,6 +145,13 @@ namespace Vx.iOS
             return view;
         }
 
+        public static UIView PinToLeft(this UIView view, UIView parentView, float left, float right)
+        {
+            parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-({left.ToString(CultureInfo.InvariantCulture)})-[view]->=({right})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
+
+            return view;
+        }
+
         /// <summary>
         /// Sets the left edge of the view to the right edge of the provided view. Must also provide the parent view which hosts the constraint.
         /// </summary>
@@ -191,6 +198,13 @@ namespace Vx.iOS
         public static UIView PinToRight(this UIView view, UIView parentView, float right = 0)
         {
             parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:[view]-({right.ToString(CultureInfo.InvariantCulture)})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
+
+            return view;
+        }
+
+        public static UIView PinToRight(this UIView view, UIView parentView, float left, float right)
+        {
+            parentView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|->=({left})-[view]-({right.ToString(CultureInfo.InvariantCulture)})-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null, new NSDictionary("view", view)));
 
             return view;
         }
