@@ -207,6 +207,8 @@ namespace PowerPlannerAndroid.Views
             {
                 UpdateDisplayState(displayState);
             });
+
+            RequestUpdateMenu();
         }
 
         private void _dayPagerControl_ExpandClick(object sender, EventArgs e)
@@ -593,6 +595,12 @@ namespace PowerPlannerAndroid.Views
                         _calendarView.Adapter = new MyCalendarAdapter(ViewModel, ViewModel.DisplayMonth, ViewModel.FirstDayOfWeek);
                     }
                     break;
+
+                case nameof(ViewModel.IncludeToolbarPrevNextButtons):
+                case nameof(ViewModel.IncludeToolbarFilterButton):
+                case nameof(ViewModel.ShowPastCompleteItemsOnFullCalendar):
+                    RequestUpdateMenu();
+                    break;
             }
         }
 
@@ -606,17 +614,68 @@ namespace PowerPlannerAndroid.Views
             ViewModel.ShowItem(e);
         }
 
+        private enum MenuItems
+        {
+            GoToToday,
+            Previous,
+            Next,
+            TogglePastComplete
+        }
+
         protected override int GetMenuResource()
         {
-            return Resource.Menu.calendar_menu;
+            var menu = MainScreenView.Toolbar.Menu;
+            menu.Clear();
+
+            menu.Add(0, (int)MenuItems.GoToToday, 0, PowerPlannerResources.GetString("String_GoToToday"));
+            var item = menu.GetItem(0);
+            item.SetIcon(Resource.Drawable.baseline_today_white_24);
+            item.SetShowAsAction(ShowAsAction.IfRoom);
+
+            var white = new ColorStateList(new int[][] { new int[0] }, new int[] { Color.White });
+
+            if (ViewModel.IncludeToolbarPrevNextButtons)
+            {
+                menu.Add(0, (int)MenuItems.Previous, 1, "Previous");
+                var prev = menu.GetItem(1);
+                prev.SetIcon(Resource.Drawable.material_ic_keyboard_arrow_previous_black_24dp);
+                prev.SetIconTintList(white);
+                prev.SetShowAsAction(ShowAsAction.Always);
+
+                menu.Add(0, (int)MenuItems.Next, 2, "Next");
+                var next = menu.GetItem(2);
+                next.SetIcon(Resource.Drawable.material_ic_keyboard_arrow_next_black_24dp);
+                next.SetIconTintList(white);
+                next.SetShowAsAction(ShowAsAction.Always);
+            }
+
+            if (ViewModel.IncludeToolbarFilterButton)
+            {
+                int index = ViewModel.IncludeToolbarPrevNextButtons ? 3 : 1;
+                menu.Add(0, (int)MenuItems.TogglePastComplete, index, PowerPlannerResources.GetString(ViewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"));
+            }
+
+            return -1; // Indicates I've updated menu myself programmatically
         }
 
         public override void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
         {
-            switch (e.Item.ItemId)
+            switch ((MenuItems)e.Item.ItemId)
             {
-                case Resource.Id.MenuItemGoToToday:
+                case MenuItems.GoToToday:
                     ViewModel.GoToToday();
+                    break;
+
+                case MenuItems.Previous:
+                    ViewModel.Previous();
+                    break;
+
+                case MenuItems.Next:
+                    ViewModel.Next();
+                    break;
+
+                case MenuItems.TogglePastComplete:
+                    ViewModel.ShowPastCompleteItemsOnFullCalendar = !ViewModel.ShowPastCompleteItemsOnFullCalendar;
                     break;
             }
         }

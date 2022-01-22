@@ -22,6 +22,7 @@ using PowerPlanneriOS.Views;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary.DataLayer;
 using Vx.iOS;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -206,7 +207,7 @@ namespace PowerPlanneriOS.Controllers
 
             if (ViewModel.IncludeToolbarFilterButton)
             {
-                actionSheetAlert.AddAction(UIAlertAction.Create(ViewModel.ShowPastCompleteItemsOnFullCalendar ? "Hide past complete items" : "Show past complete items", UIAlertActionStyle.Default, delegate { ViewModel.ShowPastCompleteItemsOnFullCalendar = !ViewModel.ShowPastCompleteItemsOnFullCalendar; }));
+                actionSheetAlert.AddAction(UIAlertAction.Create(PowerPlannerResources.GetString(ViewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"), UIAlertActionStyle.Default, delegate { ViewModel.ShowPastCompleteItemsOnFullCalendar = !ViewModel.ShowPastCompleteItemsOnFullCalendar; }));
             }
 
             actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));

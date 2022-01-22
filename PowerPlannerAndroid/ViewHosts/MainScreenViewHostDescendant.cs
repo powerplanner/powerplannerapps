@@ -47,9 +47,15 @@ namespace PowerPlannerAndroid.ViewHosts
 
         public void RequestUpdateMenu()
         {
-            MainScreenView.Toolbar.Menu.Clear();
-
             int menuResource = GetMenuResource();
+
+            if (menuResource == -1)
+            {
+                // -1 means view will handle menu on its own
+                return;
+            }
+
+            MainScreenView.Toolbar.Menu.Clear();
 
             if (menuResource == 0)
             {

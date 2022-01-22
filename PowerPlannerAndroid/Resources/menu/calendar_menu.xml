@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/MenuItemGoToToday"
-          android:title="{Calendar_FullCalendarGoToTodayButton.ToolTipService.ToolTip}"
-          android:icon="@drawable/baseline_today_white_24"
-          app:iconTint="#ffffff"
-          android:showAsAction="ifRoom"/>
-</menu>

@@ -2622,6 +2622,10 @@ Please think about using an online account instead!</source>
           <source>This week</source>
           <target state="final">هذا الاسبوع</target>
         </trans-unit>
+        <trans-unit id="HidePastCompleteItems" translate="yes" xml:space="preserve">
+          <source>Hide past complete items</source>
+          <target state="final">إخفاء العناصر السابقة الكاملة</target>
+        </trans-unit>
       </group>
     </body>
   </file>
