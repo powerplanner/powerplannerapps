@@ -241,6 +241,7 @@
       <DependentUpon>PopupsPresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModelPresenters\ViewModelToViewConverter.cs" />
+    <Compile Include="Views\UwpAdaptiveGridPanel.cs" />
     <Compile Include="Views\UwpBorder.cs" />
     <Compile Include="Views\UwpButton.cs" />
     <Compile Include="Views\UwpCheckBox.cs" />
