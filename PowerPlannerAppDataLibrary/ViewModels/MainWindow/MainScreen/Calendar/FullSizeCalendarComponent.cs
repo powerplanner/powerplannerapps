@@ -136,8 +136,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     }
                 };
 
-                // If different semester
-                if (ViewModel.SemesterItemsViewGroup.Semester != null && !ViewModel.SemesterItemsViewGroup.Semester.IsMonthDuringThisSemester(Month) && DismissedDifferentSemesterMonth.Value != Month)
+                // If different semester (exclude iOS for now since haven't tested/finished this for iOS)
+                if (Vx.VxPlatform.Current != Platform.iOS && ViewModel.SemesterItemsViewGroup.Semester != null && !ViewModel.SemesterItemsViewGroup.Semester.IsMonthDuringThisSemester(Month) && DismissedDifferentSemesterMonth.Value != Month)
                 {
                     return new FrameLayout
                     {
