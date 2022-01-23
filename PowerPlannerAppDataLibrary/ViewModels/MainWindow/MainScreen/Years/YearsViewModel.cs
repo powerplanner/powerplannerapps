@@ -275,7 +275,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             foreach (var c in semester.Classes)
             {
                 Subscribe(c);
-                linearLayout.Children.Add(RenderClassRow(c.Name, c.CreditsStringForYearsPage, c.GpaStringForTableDisplay));
+                linearLayout.Children.Add(RenderClassRow(c.Name, c.CreditsStringForYearsPage, c.GpaStringForTableDisplay, strikethroughStr3: semester.CalculatedCreditsAffectingGpa != PowerPlannerSending.Grade.NO_CREDITS && c.Credits == PowerPlannerSending.Grade.NO_CREDITS));
             }
 
             bool displayCrossedOutCredits = semester.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED;
@@ -308,7 +308,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             };
         }
 
-        private View RenderClassRow(string str1, string str2, string str3, bool isSubtle = false, bool isBig = false, bool strikethrough = false)
+        private View RenderClassRow(string str1, string str2, string str3, bool isSubtle = false, bool isBig = false, bool strikethrough = false, bool strikethroughStr3 = false)
         {
             var textColor = isSubtle ? Theme.Current.SubtleForegroundColor : Theme.Current.ForegroundColor;
             var fontSize = isBig ? 16 : Theme.Current.CaptionFontSize;
@@ -348,7 +348,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         WrapText = false,
                         TextAlignment = HorizontalAlignment.Right,
                         FontWeight = FontWeights.SemiBold,
-                        Strikethrough = strikethrough
+                        Strikethrough = strikethrough || strikethroughStr3
                     }.LinearLayoutWeight(1)
                 }
             };
