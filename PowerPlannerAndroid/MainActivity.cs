@@ -49,7 +49,7 @@ namespace PowerPlannerAndroid
         LaunchMode = LaunchMode.SingleInstance,
         WindowSoftInputMode = SoftInput.AdjustResize,
         // ConfigurationChanges enables my app to handle orientation changes without re-rendering the views
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout | ConfigChanges.KeyboardHidden)]
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout | ConfigChanges.KeyboardHidden | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : BareActivity
     {
         public static MainActivity GetCurrent()
