@@ -27,6 +27,28 @@ namespace Vx.Uwp
 
             SizeChanged += UwpNativeComponent_SizeChanged;
             ActualThemeChanged += UwpNativeComponent_ActualThemeChanged;
+
+            if (component.SubscribeToIsMouseOver)
+            {
+                PointerEntered += UwpNativeComponent_PointerEntered;
+                PointerExited += UwpNativeComponent_PointerExited;
+                PointerCaptureLost += UwpNativeComponent_PointerCaptureLost;
+            }
+        }
+
+        private void UwpNativeComponent_PointerCaptureLost(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            Component.IsMouseOver.Value = false;
+        }
+
+        private void UwpNativeComponent_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            Component.IsMouseOver.Value = false;
+        }
+
+        private void UwpNativeComponent_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            Component.IsMouseOver.Value = true;
         }
 
         private void UwpNativeComponent_ActualThemeChanged(Windows.UI.Xaml.FrameworkElement sender, object args)

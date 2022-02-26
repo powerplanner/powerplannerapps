@@ -389,7 +389,17 @@ namespace Vx.Views
             }
         }
 
+        /// <summary>
+        /// To observe size, override <see cref="OnSizeChanged(SizeF)"/>.
+        /// </summary>
         public SizeF Size => NativeComponent.ComponentSize;
+
+        public VxState<bool> IsMouseOver = new VxState<bool>(false);
+
+        /// <summary>
+        /// Components can override this to react to mouse over changes
+        /// </summary>
+        public virtual bool SubscribeToIsMouseOver => false;
 
         /// <summary>
         /// Components can override this to create adaptive UI, choosing to mark dirty at different sizes

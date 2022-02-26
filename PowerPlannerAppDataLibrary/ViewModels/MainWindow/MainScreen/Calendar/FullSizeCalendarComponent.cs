@@ -170,6 +170,34 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
             }
 
+            private VxComponent RenderDay(DateTime date)
+            {
+                return new FullSizeCalendarDayComponent
+                {
+                    Month = Month,
+                    Items = Items,
+                    ViewModel = ViewModel,
+                    Date = date
+                };
+            }
+        }
+
+        private class FullSizeCalendarDayComponent : VxComponent
+        {
+            public DateTime Month { get; set; }
+            public MyObservableList<BaseViewItemMegaItem> Items { get; set; }
+
+            // Note that subsequent properties on the ViewModel are NOT observed
+            public CalendarViewModel ViewModel { get; set; }
+            public DateTime Date { get; set; }
+
+            public override bool SubscribeToIsMouseOver => true;
+
+            protected override View Render()
+            {
+                return RenderDay(Date);
+            }
+
             private View RenderDay(DateTime date)
             {
                 bool isToday = date == ViewModel.Today;
@@ -214,21 +242,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Tapped = () => ViewModel.OpenDay(date),
                     Children =
                     {
-                        holidays.Any() ? (View)new LinearLayout
+                        holidays.Any() || IsMouseOver ? (View)new LinearLayout
                         {
                             Orientation = Orientation.Horizontal,
                             Children =
                             {
-                                tbDay,
+                                tbDay.LinearLayoutWeight(holidays.Any() ? 0 : 1),
 
-                                new TextBlock
+                                holidays.Any() ? new TextBlock
                                 {
                                     Text = holidays.First().Name,
                                     WrapText = false,
                                     FontSize = 10,
                                     TextColor = tbDay.TextColor,
                                     VerticalAlignment = VerticalAlignment.Center
-                                }.LinearLayoutWeight(1)
+                                }.LinearLayoutWeight(1) : null,
+
+                                IsMouseOver ? new FontIcon
+                                {
+                                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                    FontSize = 12
+                                } : null
                             }
                         } : (View)tbDay
                     }
