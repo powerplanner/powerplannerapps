@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
+using Vx.Uwp;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Popups;
@@ -121,6 +122,8 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelLoadedOverride();
 
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+
             try
             {
                 if (base.ActualWidth > 0)
@@ -137,6 +140,27 @@ namespace PowerPlannerUWP.Views
             {
                 base.IsEnabled = false;
                 TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ViewModel.DisplayMonth):
+                    UpdateDisplayMonth();
+                    break;
+            }
+        }
+
+        private void UpdateDisplayMonth()
+        {
+            if (_visualState == VisualState.Full)
+            {
+                SetCommandBarContent(new TextBlock()
+                {
+                    Text = ViewModel.DisplayMonth.ToString("MMMM")
+                });
             }
         }
 
@@ -180,6 +204,8 @@ namespace PowerPlannerUWP.Views
                 SetVisualState(VisualState.Full);
         }
 
+        private FullSizeCalendarComponent _fullSizeCalendarComponent;
+        private FrameworkElement _fullSizeCalendarComponentElement;
         private VisualState _visualState;
         private void SetVisualState(VisualState state)
         {
@@ -188,14 +214,21 @@ namespace PowerPlannerUWP.Views
             {
                 case VisualState.Full:
 
-                    if (Root.Child is FullCalendarPageView)
+                    if (_fullSizeCalendarComponentElement != null && Root.Child == _fullSizeCalendarComponentElement)
                         return;
 
-                    base.HideCommandBar();
+                    SetCommandBarPrimaryCommands(AppBarAdd, AppBarGoToToday);
+                    UpdateDisplayMonth();
 
-                    var fullView = new FullCalendarPageView();
-                    fullView.Initialize(ViewModel);
-                    Root.Child = fullView;
+                    if (_fullSizeCalendarComponent == null)
+                    {
+                        _fullSizeCalendarComponent = new FullSizeCalendarComponent(ViewModel);
+                        _fullSizeCalendarComponentElement = _fullSizeCalendarComponent.Render();
+                        _fullSizeCalendarComponentElement.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        _fullSizeCalendarComponentElement.VerticalAlignment = VerticalAlignment.Stretch;
+                    }
+
+                    Root.Child = _fullSizeCalendarComponentElement;
 
                     break;
 

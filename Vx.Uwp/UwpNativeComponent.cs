@@ -23,6 +23,7 @@ namespace Vx.Uwp
         {
             Component = component;
             HorizontalContentAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
+            VerticalContentAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch;
 
             SizeChanged += UwpNativeComponent_SizeChanged;
             ActualThemeChanged += UwpNativeComponent_ActualThemeChanged;

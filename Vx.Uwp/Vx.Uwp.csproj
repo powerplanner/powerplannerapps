@@ -250,11 +250,13 @@
     <Compile Include="Views\UwpDataTemplateView.cs" />
     <Compile Include="Views\UwpDatePicker.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
+    <Compile Include="Views\UwpFrameLayout.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
     <Compile Include="Views\UwpNumberTextBox.cs" />
     <Compile Include="Views\UwpPasswordBox.cs" />
     <Compile Include="Views\UwpScrollView.cs" />
+    <Compile Include="Views\UwpSlideView.cs" />
     <Compile Include="Views\UwpSwitch.cs" />
     <Compile Include="Views\UwpTextBlock.cs" />
     <Compile Include="Views\UwpTextBox.cs" />

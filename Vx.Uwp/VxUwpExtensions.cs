@@ -50,6 +50,11 @@ namespace Vx.Uwp
                     return new UwpLinearLayout();
                 }
 
+                if (view is Vx.Views.FrameLayout)
+                {
+                    return new UwpFrameLayout();
+                }
+
                 if (view is Vx.Views.ListItemButton)
                 {
                     return new UwpListItemButton();
@@ -145,6 +150,11 @@ namespace Vx.Uwp
                 if (view is Vx.Views.AdaptiveGridPanel)
                 {
                     return new UwpAdaptiveGridPanel();
+                }
+
+                if (view is Vx.Views.SlideView)
+                {
+                    return new UwpSlideView();
                 }
 
 #if DEBUG

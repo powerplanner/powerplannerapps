@@ -10,14 +10,22 @@ namespace Vx.Uwp.Views
 {
     public abstract class UwpView<V, N> : NativeView<V, N> where V : View where N : FrameworkElement
     {
-        public UwpView()
-        {
-            View = Activator.CreateInstance<N>();
-        }
+        public UwpView() : this(Activator.CreateInstance<N>()) { }
 
         public UwpView(N view)
         {
             View = view;
+
+            view.Tapped += View_Tapped;
+        }
+
+        private void View_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            if (VxView?.Tapped != null)
+            {
+                VxView.Tapped();
+                e.Handled = true;
+            }
         }
 
         internal static void ReconcileList(IList<View> oldList, IList<View> newList, IList<UIElement> nativeList)
