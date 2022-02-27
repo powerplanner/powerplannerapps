@@ -26,6 +26,10 @@ namespace Vx.Uwp.Views
                 VxView.Tapped();
                 e.Handled = true;
             }
+            else if (View.GetType().GetEvent("Click") != null)
+            {
+                e.Handled = true;
+            }
         }
 
         internal static void ReconcileList(IList<View> oldList, IList<View> newList, IList<UIElement> nativeList)

@@ -198,6 +198,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 return RenderDay(Date);
             }
 
+            private View _addButtonRef;
+
             private View RenderDay(DateTime date)
             {
                 bool isToday = date == ViewModel.Today;
@@ -242,7 +244,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Tapped = () => ViewModel.OpenDay(date),
                     Children =
                     {
-                        holidays.Any() || IsMouseOver ? (View)new LinearLayout
+                        new LinearLayout
                         {
                             Orientation = Orientation.Horizontal,
                             Children =
@@ -258,13 +260,41 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                     VerticalAlignment = VerticalAlignment.Center
                                 }.LinearLayoutWeight(1) : null,
 
-                                IsMouseOver ? new FontIcon
+                                new TransparentContentButton
                                 {
-                                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                                    FontSize = 12
-                                } : null
+                                    Content = new FontIcon
+                                    {
+                                        Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                        Color = tbDay.TextColor,
+                                        FontSize = tbDay.FontSize,
+                                        Margin = new Thickness(6),
+                                        Opacity = IsMouseOver ? 1 : 0
+                                    },
+                                    ViewRef = v => _addButtonRef = v,
+                                    Click = () => new ContextMenu
+                                    {
+                                        Items =
+                                        {
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("String_Task"),
+                                                Click = () => ViewModel.AddTask(date)
+                                            },
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("String_Event"),
+                                                Click = () => ViewModel.AddEvent(date)
+                                            },
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("String_Holiday"),
+                                                Click = () => ViewModel.AddHoliday(date)
+                                            }
+                                        }
+                                    }.Show(_addButtonRef)
+                                }
                             }
-                        } : (View)tbDay
+                        }
                     }
                 };
 
