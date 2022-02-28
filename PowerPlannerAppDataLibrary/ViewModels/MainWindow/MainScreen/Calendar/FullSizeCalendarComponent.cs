@@ -224,7 +224,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 var tbDay = new TextBlock
                 {
                     Text = date.Day.ToString(),
-                    Margin = new Thickness(12),
+                    Margin = new Thickness(10,6,10,6),
                     FontSize = Theme.Current.SubtitleFontSize,
                     FontWeight = FontWeights.SemiLight,
                     TextColor = isToday ? Theme.Current.ForegroundColor.Invert() : Theme.Current.SubtleForegroundColor,
@@ -345,7 +345,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
 
                 content.Tapped = () => ViewModel.ShowItem(item);
-                content.Margin = new Thickness(0, 0, 0, 3);
+                content.Margin = new Thickness(0, 0, 0, 2);
 
                 return content;
             }
