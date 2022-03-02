@@ -12,6 +12,7 @@ namespace Vx.Uwp.Views
 {
     public class UwpLinearLayout : UwpView<Vx.Views.LinearLayout, LinearLayout>
     {
+        private static int count = 0;
         protected override void ApplyProperties(Vx.Views.LinearLayout oldView, Vx.Views.LinearLayout newView)
         {
             base.ApplyProperties(oldView, newView);
@@ -47,17 +48,37 @@ namespace Vx.Uwp.Views
             // window will stay smaller. And I've matched this to the behavior of UWP grids, where when there's less content, the Star row
             // definitions behave as Auto. If the area can't fit all of the content, the Auto columns get first priority.
 
+            // However this does NOT work for calendar grid when each square has an excess amount of items, since the earlier rows will
+            // report they need more space and the later rows will not get enough space...
+            // We could measure all weighted with infinite height, to see how little they need?
+            // Think I solved it below...
+
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
 
             double consumed = 0;
             double maxOtherDimension = 0;
 
-            // We also have to measure autos FIRST, since those get priority
-            foreach (var child in Children.Where(i => GetWeight(i) == 0).Concat(Children.Where(i => GetWeight(i) != 0)))
+            // We measure autos FIRST, since those get priority
+            foreach (var child in Children.Where(i => i.Visibility == Visibility.Visible && GetWeight(i) == 0))
             {
-                if (child.Visibility == Windows.UI.Xaml.Visibility.Visible)
+                child.Measure(isVert ? new Size(availableSize.Width, Math.Max(0, availableSize.Height - consumed)) : new Size(Math.Max(0, availableSize.Width - consumed), availableSize.Height));
+
+                consumed += isVert ? child.DesiredSize.Height : child.DesiredSize.Width;
+                maxOtherDimension = Math.Max(maxOtherDimension, isVert ? child.DesiredSize.Width : child.DesiredSize.Height);
+            }
+
+            double weightedAvailable = Math.Max((isVert ? availableSize.Height : availableSize.Width) - consumed, 0);
+            float totalWeight = GetTotalWeight();
+
+            if (totalWeight > 0)
+            {
+                foreach (var child in Children.Where(i => i.Visibility == Visibility.Visible && GetWeight(i) != 0))
                 {
-                    child.Measure(isVert ? new Size(availableSize.Width, Math.Max(0, availableSize.Height - consumed)) : new Size(Math.Max(0, availableSize.Width - consumed), availableSize.Height));
+                    var weight = GetWeight(child);
+                    var childConsumed = (weight / totalWeight) * weightedAvailable;
+
+                    child.Measure(isVert ? new Size(availableSize.Width, childConsumed) : new Size(childConsumed, availableSize.Height));
+
                     consumed += isVert ? child.DesiredSize.Height : child.DesiredSize.Width;
                     maxOtherDimension = Math.Max(maxOtherDimension, isVert ? child.DesiredSize.Width : child.DesiredSize.Height);
                 }
@@ -70,6 +91,11 @@ namespace Vx.Uwp.Views
         {
             float totalWeight = GetTotalWeight();
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
+
+            if (isVert && Children.Count == 12)
+            {
+
+            }
 
             bool autoHeightsForAll = double.IsPositiveInfinity(isVert ? finalSize.Height : finalSize.Width) || totalWeight == 0;
 
