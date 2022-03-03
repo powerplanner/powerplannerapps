@@ -57,6 +57,23 @@ namespace Vx.Uwp.Views
 
             double consumed = 0;
             double maxOtherDimension = 0;
+            float totalWeight = GetTotalWeight();
+
+            bool autoHeightsForAll = double.IsPositiveInfinity(isVert ? availableSize.Height : availableSize.Width) || totalWeight == 0;
+
+            // StackPanel essentially
+            if (autoHeightsForAll)
+            {
+                foreach (var child in Children.Where(i => i.Visibility == Visibility.Visible))
+                {
+                    child.Measure(isVert ? new Size(availableSize.Width, double.PositiveInfinity) : new Size(double.PositiveInfinity, availableSize.Height));
+
+                    consumed += isVert ? child.DesiredSize.Height : child.DesiredSize.Width;
+                    maxOtherDimension = Math.Max(maxOtherDimension, isVert ? child.DesiredSize.Width : child.DesiredSize.Height);
+                }
+
+                return isVert ? new Size(maxOtherDimension, consumed) : new Size(consumed, maxOtherDimension);
+            }
 
             // We measure autos FIRST, since those get priority
             foreach (var child in Children.Where(i => i.Visibility == Visibility.Visible && GetWeight(i) == 0))
@@ -68,7 +85,6 @@ namespace Vx.Uwp.Views
             }
 
             double weightedAvailable = Math.Max((isVert ? availableSize.Height : availableSize.Width) - consumed, 0);
-            float totalWeight = GetTotalWeight();
 
             if (totalWeight > 0)
             {
@@ -91,11 +107,6 @@ namespace Vx.Uwp.Views
         {
             float totalWeight = GetTotalWeight();
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
-
-            if (isVert && Children.Count == 12)
-            {
-
-            }
 
             bool autoHeightsForAll = double.IsPositiveInfinity(isVert ? finalSize.Height : finalSize.Width) || totalWeight == 0;
 
