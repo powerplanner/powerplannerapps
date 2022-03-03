@@ -10,12 +10,6 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <Grid.Transitions>
-            <TransitionCollection>
-                <EntranceThemeTransition />
-            </TransitionCollection>
-        </Grid.Transitions>
-
         <calendarViews:SmallCalendarView
             x:Name="smallCalendar"/>
         
