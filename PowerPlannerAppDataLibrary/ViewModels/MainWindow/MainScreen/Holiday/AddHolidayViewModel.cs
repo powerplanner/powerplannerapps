@@ -115,14 +115,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
                         new DatePicker
                         {
                             Header = PowerPlannerResources.GetString("AddHolidayView_DatePickerStart.Header"),
-                            Value = VxValue.Create<DateTime?>(StartDate, v => StartDate = v.GetValueOrDefault(DateTime.Today)),
+                            Value = VxValue.Create<DateTime?>(StartDate, v => StartDate = v.GetValueOrDefault(StartDate)),
                             Margin = new Thickness(0, 0, 9, 0)
                         }.LinearLayoutWeight(1),
 
                         new DatePicker
                         {
                             Header = PowerPlannerResources.GetString("AddHolidayView_DatePickerEnd.Header"),
-                            Value = VxValue.Create<DateTime?>(EndDate, v => EndDate = v.GetValueOrDefault(DateTime.Today)),
+                            Value = VxValue.Create<DateTime?>(EndDate, v => EndDate = v.GetValueOrDefault(EndDate)),
                             Margin = new Thickness(9, 0, 0, 0)
                         }.LinearLayoutWeight(1)
                     }
