@@ -128,7 +128,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                         new DatePicker
                         {
                             Header = PowerPlannerResources.GetString("EditGradePage_DatePickerDate.Header"),
-                            Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault(DateTime.Today)),
+                            Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault(Date)),
                             Margin = new Thickness(0, 0, 9, 0)
                         }.LinearLayoutWeight(1),
 

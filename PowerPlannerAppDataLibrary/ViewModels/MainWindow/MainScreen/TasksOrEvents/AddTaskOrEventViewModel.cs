@@ -53,7 +53,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     IsDatePickerVisible ? new DatePicker
                     {
                         Header = PowerPlannerResources.GetString("EditTaskOrEventPage_DatePickerDate.Header"),
-                        Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault())
+                        Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault(Date))
                     } : null,
 
                     IsClassPickerVisible ? new ComboBox
@@ -342,7 +342,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new DatePicker
                                 {
                                     IsEnabled = ViewModel.IsEndDateChecked,
-                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault()),
+                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault(ViewModel.EndDate)),
                                     Margin = new Thickness(12, 0, 0, 0)
                                 }
                             }
