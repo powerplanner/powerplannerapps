@@ -74,10 +74,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             public string FriendlyName { get; private set; }
 
-            public FriendlyTimeZone(TimeZoneInfo tz)
+            public FriendlyTimeZone(TimeZoneInfo tz, string friendlyName)
             {
                 TimeZone = tz;
-                FriendlyName = TZNames.GetDisplayNameForTimeZone(tz.Id, CultureInfo.CurrentUICulture.Name);
+                FriendlyName = friendlyName;
             }
 
             public override string ToString()
@@ -119,37 +119,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             List<FriendlyTimeZone> answer = new List<FriendlyTimeZone>();
 
-            if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
+            foreach (var tz in TZNames.GetDisplayNames(CultureInfo.CurrentUICulture.Name, useIanaZoneIds: true))
             {
-                HashSet<string> visitedWindowsIds = new HashSet<string>();
                 // In Android, the system time zones are already in IANA format
-                foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+                if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
                 {
-                    if (TZConvert.TryIanaToWindows(tz.Id, out string windows))
-                    {
-                        if (visitedWindowsIds.Add(windows))
-                        {
-                            if (TZConvert.TryWindowsToIana(windows, out string iana))
-                            {
-                                try
-                                {
-                                    answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(iana)));
-                                }
-                                catch { }
-                            }
-                        }
-                    }
+                    answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(tz.Key), tz.Value));
                 }
-                answer = answer.OrderBy(i => i.TimeZone.BaseUtcOffset).ToList();
-            }
-            else
-            {
-                foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+                else if (TZConvert.TryIanaToWindows(tz.Key, out string windowsId))
                 {
-                    if (TZConvert.TryWindowsToIana(tz.Id, out string iana))
-                    {
-                        answer.Add(new FriendlyTimeZone(tz));
-                    }
+                    answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(windowsId), tz.Value));
                 }
             }
 
