@@ -384,6 +384,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2203, 18, 4, 0))
+                    {
+                        changedText += "\n - Improved the school time zone picker";
+                    }
+
                     if (v <= new Version(2111, 29, 1, 99))
                     {
                         changedText += "\n - Added back the \"drop grade\" option!";

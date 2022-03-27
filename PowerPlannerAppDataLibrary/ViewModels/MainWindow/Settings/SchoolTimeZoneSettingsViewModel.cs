@@ -2,10 +2,12 @@
 using PowerPlannerAppDataLibrary.DataLayer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeZoneConverter;
+using TimeZoneNames;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
@@ -23,7 +25,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             if (Account.SchoolTimeZone != null)
             {
-                var matching = AvailableTimeZones.FirstOrDefault(i => i.Equals(Account.SchoolTimeZone));
+                var matching = AvailableTimeZones.FirstOrDefault(i => i.TimeZone.Equals(Account.SchoolTimeZone));
                 if (matching != null)
                 {
                     _selectedSchoolTimeZone = matching;
@@ -43,7 +45,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     Header = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ComboBoxTimeZone.Header"),
                     Items = AvailableTimeZones,
-                    SelectedItem = VxValue.Create<object>(SelectedSchoolTimeZone, v => SelectedSchoolTimeZone = v as TimeZoneInfo),
+                    SelectedItem = VxValue.Create<object>(SelectedSchoolTimeZone, v => SelectedSchoolTimeZone = v as FriendlyTimeZone),
                     IsEnabled = IsEnabled,
                     Margin = new Thickness(0, 18, 0, 0)
                 },
@@ -65,6 +67,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 }
             );
         }
+        
+        public class FriendlyTimeZone
+        {
+            public TimeZoneInfo TimeZone { get; private set; }
+
+            public string FriendlyName { get; private set; }
+
+            public FriendlyTimeZone(TimeZoneInfo tz, string friendlyName)
+            {
+                TimeZone = tz;
+                FriendlyName = friendlyName;
+            }
+
+            public override string ToString()
+            {
+                return FriendlyName;
+            }
+        }
 
         private bool _isEnabled;
         public bool IsEnabled
@@ -73,8 +93,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             set => SetProperty(ref _isEnabled, value, nameof(IsEnabled));
         }
 
-        private TimeZoneInfo _selectedSchoolTimeZone;
-        public TimeZoneInfo SelectedSchoolTimeZone
+        private FriendlyTimeZone _selectedSchoolTimeZone;
+        public FriendlyTimeZone SelectedSchoolTimeZone
         {
             get => _selectedSchoolTimeZone;
             set => SetProperty(ref _selectedSchoolTimeZone, value, nameof(SelectedSchoolTimeZone));
@@ -85,7 +105,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             try
             {
                 IsEnabled = false;
-                await Account.SetSchoolTimeZone(SelectedSchoolTimeZone);
+                await Account.SetSchoolTimeZone(SelectedSchoolTimeZone.TimeZone);
 
                 // Reset the app so that changes are applied to all the views
                 await base.FindAncestor<MainWindowViewModel>().HandleNormalLaunchActivation();
@@ -93,72 +113,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             catch { IsEnabled = true; }
         }
 
-        public List<TimeZoneInfo> AvailableTimeZones { get; private set; } = GetAvailableTimeZones();
+        public List<FriendlyTimeZone> AvailableTimeZones { get; private set; } = GetAvailableTimeZones();
 
-        private static List<TimeZoneInfo> GetAvailableTimeZones()
+        private static List<FriendlyTimeZone> GetAvailableTimeZones()
         {
-            List<TimeZoneInfo> answer = new List<TimeZoneInfo>();
+            List<FriendlyTimeZone> answer = new List<FriendlyTimeZone>();
 
-            if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
+            foreach (var tz in TZNames.GetDisplayNames(CultureInfo.CurrentUICulture.Name, useIanaZoneIds: true))
             {
-                HashSet<string> visitedWindowsIds = new HashSet<string>();
                 // In Android, the system time zones are already in IANA format
-                foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+                if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
                 {
-                    if (TZConvert.TryIanaToWindows(tz.Id, out string windows))
-                    {
-                        if (visitedWindowsIds.Add(windows))
-                        {
-                            if (TZConvert.TryWindowsToIana(windows, out string iana))
-                            {
-                                try
-                                {
-                                    answer.Add(TimeZoneInfo.FindSystemTimeZoneById(iana));
-                                }
-                                catch { }
-                            }
-                        }
-                    }
+                    answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(tz.Key), tz.Value));
                 }
-                answer = answer.OrderBy(i => i.BaseUtcOffset).ToList();
-            }
-            else
-            {
-                foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+                else if (TZConvert.TryIanaToWindows(tz.Key, out string windowsId))
                 {
-                    if (TZConvert.TryWindowsToIana(tz.Id, out string iana))
-                    {
-                        answer.Add(tz);
-                    }
+                    answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(windowsId), tz.Value));
                 }
             }
 
             return answer;
-        }
-
-        /// <summary>
-        /// Some platforms like Android don't format time zones by default very well.
-        /// </summary>
-        /// <param name="timeZone"></param>
-        /// <returns></returns>
-        public static string Format(TimeZoneInfo timeZone)
-        {
-            if (!App.PowerPlannerApp.UsesIanaTimeZoneIds)
-            {
-                throw new InvalidOperationException("This should only be called if UsesIanaTimeZoneIds is set to true");
-            }
-
-            return Format(timeZone.BaseUtcOffset, TZConvert.IanaToWindows(timeZone.Id));
-        }
-
-        public static string FormatWindows(TimeZoneInfo timeZone)
-        {
-            return Format(timeZone.BaseUtcOffset, timeZone.DisplayName);
-        }
-
-        private static string Format(TimeSpan offset, string displayName)
-        {
-            return $"(UTC{(offset.TotalMinutes < 0 ? "-" : "+")}{offset.ToString("hh\\:mm")}) {displayName}";
         }
     }
 }
