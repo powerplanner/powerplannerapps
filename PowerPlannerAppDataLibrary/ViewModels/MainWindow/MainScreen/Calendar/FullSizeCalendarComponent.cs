@@ -1,4 +1,6 @@
-﻿using PowerPlannerAppDataLibrary.Components;
+﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
@@ -11,6 +13,7 @@ using System.Linq;
 using System.Text;
 using ToolsPortable;
 using Vx.Views;
+using Vx.Views.DragDrop;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
@@ -303,6 +306,51 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     linearLayout.Children.Add(RenderDayItem(item));
                 }
 
+                linearLayout.AllowDrop = true;
+                linearLayout.DragOver = e =>
+                {
+                    if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
+                    {
+                        bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+
+                        if (duplicate)
+                        {
+                            e.AcceptedOperation = DataPackageOperation.Copy;
+                        }
+                        else if (draggedTaskOrEvent.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
+                        {
+                            e.AcceptedOperation = DataPackageOperation.Move;
+                        }
+                        else
+                        {
+                            e.AcceptedOperation = DataPackageOperation.None;
+                        }
+                    }
+                };
+                linearLayout.Drop = e =>
+                {
+                    try
+                    {
+                        if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
+                        {
+                            bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+
+                            if (duplicate)
+                            {
+                                PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(draggedTaskOrEvent, this.Date.Date);
+                            }
+                            else
+                            {
+                                _ = ViewModel.MoveItem(draggedTaskOrEvent, this.Date.Date);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+                };
+
                 return linearLayout;
             }
 
@@ -346,6 +394,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 content.Tapped = () => ViewModel.ShowItem(item);
                 content.Margin = new Thickness(0, 0, 0, 2);
+
+                content.CanDrag = true;
+                content.DragStarting = e =>
+                {
+                    e.Data.Properties.Add("ViewItem", item);
+                };
 
                 return content;
             }

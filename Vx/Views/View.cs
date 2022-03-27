@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Vx.Views.DragDrop;
 
 namespace Vx.Views
 {
@@ -33,6 +34,30 @@ namespace Vx.Views
 
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
 
+#region DragDrop
+        /// <summary>
+        /// Gets or sets a value that indicates whether the element can be dragged as data in a drag-and-drop operation.
+        /// </summary>
+        public bool CanDrag { get; set; }
+
+        public Action<DragStartingEventArgs> DragStarting { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value that determines whether this UIElement can be a drop target for purposes of drag-and-drop operations.
+        /// </summary>
+        public bool AllowDrop { get; set; }
+
+        /// <summary>
+        /// Occurs when the input system reports an underlying drag event with this element as the potential drop target.
+        /// </summary>
+        public Action<DragEventArgs> DragOver { get; set; }
+
+        /// <summary>
+        /// Occurs when an item is dropped.
+        /// </summary>
+        public Action<DragEventArgs> Drop { get; set; }
+        #endregion DragDrop
+
         public Thickness Margin { get; set; }
 
         /// <summary>
@@ -54,7 +79,7 @@ namespace Vx.Views
 
         public VerticalAlignment VerticalAlignment { get; set; }
 
-        protected T GetProperty<T>([CallerMemberName]string propertyName = null)
+        protected T GetProperty<T>([CallerMemberName] string propertyName = null)
         {
             if (_properties.TryGetValue(propertyName, out object val) && val is T)
             {
@@ -64,7 +89,7 @@ namespace Vx.Views
             return default(T);
         }
 
-        protected void SetProperty(object value, [CallerMemberName]string propertyName = null)
+        protected void SetProperty(object value, [CallerMemberName] string propertyName = null)
         {
             _properties[propertyName] = value;
         }
