@@ -282,9 +282,6 @@
     <Compile Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml.cs">
       <DependentUpon>CalendarIntegrationTasksView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml.cs">
-      <DependentUpon>SchoolTimeZoneSettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\WebContentView.xaml.cs">
       <DependentUpon>WebContentView.xaml</DependentUpon>
     </Compile>
@@ -613,10 +610,6 @@
     <Page Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\SchoolTimeZoneSettingsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsViews\WebContentView.xaml">
       <SubType>Designer</SubType>
