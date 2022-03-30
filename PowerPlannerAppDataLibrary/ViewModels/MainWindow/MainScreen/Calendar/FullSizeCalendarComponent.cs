@@ -192,7 +192,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         Text = DateTools.ToLocalizedString(ViewModel.FirstDayOfWeek + i),
                         WrapText = false,
                         TextColor = Theme.Current.SubtleForegroundColor,
-                        FontSize = 13,
+                        FontSize = 16,
                         Margin = new Thickness(12, 6, 12, 6),
                         VerticalAlignment = VerticalAlignment.Center
                     }.LinearLayoutWeight(1));
