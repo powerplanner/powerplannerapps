@@ -394,6 +394,9 @@ namespace Vx.Views
         /// </summary>
         public SizeF Size => NativeComponent.ComponentSize;
 
+        /// <summary>
+        /// To use this, override <see cref="SubscribeToIsMouseOver"/>.
+        /// </summary>
         public VxState<bool> IsMouseOver = new VxState<bool>(false);
 
         /// <summary>

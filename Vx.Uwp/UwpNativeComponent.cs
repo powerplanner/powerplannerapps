@@ -32,14 +32,14 @@ namespace Vx.Uwp
             {
                 PointerEntered += UwpNativeComponent_PointerEntered;
                 PointerExited += UwpNativeComponent_PointerExited;
-                PointerCaptureLost += UwpNativeComponent_PointerCaptureLost;
+                //PointerCaptureLost += UwpNativeComponent_PointerCaptureLost;
             }
         }
 
-        private void UwpNativeComponent_PointerCaptureLost(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            Component.IsMouseOver.Value = false;
-        }
+        //private void UwpNativeComponent_PointerCaptureLost(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        //{
+        //    Component.IsMouseOver.Value = false;
+        //}
 
         private void UwpNativeComponent_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {

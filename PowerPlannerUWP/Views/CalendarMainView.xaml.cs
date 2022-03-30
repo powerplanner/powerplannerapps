@@ -122,8 +122,6 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelLoadedOverride();
 
-            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-
             try
             {
                 if (base.ActualWidth > 0)
@@ -140,27 +138,6 @@ namespace PowerPlannerUWP.Views
             {
                 base.IsEnabled = false;
                 TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(ViewModel.DisplayMonth):
-                    UpdateDisplayMonth();
-                    break;
-            }
-        }
-
-        private void UpdateDisplayMonth()
-        {
-            if (_visualState == VisualState.Full)
-            {
-                SetCommandBarContent(new TextBlock()
-                {
-                    Text = ViewModel.DisplayMonth.ToString("MMMM")
-                });
             }
         }
 
@@ -217,8 +194,7 @@ namespace PowerPlannerUWP.Views
                     if (_fullSizeCalendarComponentElement != null && Root.Child == _fullSizeCalendarComponentElement)
                         return;
 
-                    SetCommandBarPrimaryCommands(AppBarAdd, AppBarGoToToday);
-                    UpdateDisplayMonth();
+                    base.HideCommandBar();
 
                     if (_fullSizeCalendarComponent == null)
                     {

@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using ToolsPortable;
+using Vx;
 using Vx.Views;
 using Vx.Views.DragDrop;
 
@@ -24,6 +25,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         private DateTime _thisMonth;
         private Func<int, View> _itemTemplate;
+        private View _addButtonRef, _filterButtonRef;
+
+        private static bool IntegratedTopControls = VxPlatform.Current == Platform.Uwp;
+
+        public override bool SubscribeToIsMouseOver => IntegratedTopControls;
 
         public FullSizeCalendarComponent(CalendarViewModel viewModel)
         {
@@ -34,11 +40,77 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         protected override View Render()
         {
-            return new SlideView
+            var slideView = new SlideView
             {
                 Position = VxValue.Create(DateTools.DifferenceInMonths(_viewModel.DisplayMonth, _thisMonth), i => _viewModel.DisplayMonth = _thisMonth.AddMonths(i)),
                 ItemTemplate = _itemTemplate
             };
+
+            if (IntegratedTopControls)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        slideView,
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            Margin = new Thickness(0, 20, 0, 0),
+                            Children =
+                            {
+                                CreateArrowButton(MaterialDesign.MaterialDesignIcons.ArrowLeft, () => _viewModel.Previous(), new Thickness(0)),
+
+                                new Border().LinearLayoutWeight(1),
+
+                                CreateIconButton(MaterialDesign.MaterialDesignIcons.Add, () => new ContextMenu
+                                {
+                                    Items =
+                                    {
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString("String_Task"),
+                                            Click = () => _viewModel.AddTask(_viewModel.SelectedDate)
+                                        },
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString("String_Event"),
+                                            Click = () => _viewModel.AddEvent(_viewModel.SelectedDate)
+                                        },
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString("String_Holiday"),
+                                            Click = () => _viewModel.AddHoliday(_viewModel.SelectedDate)
+                                        }
+                                    }
+                                }.Show(_addButtonRef), v => _addButtonRef = v),
+
+                                CreateIconButton(MaterialDesign.MaterialDesignIcons.FilterAlt, () => new ContextMenu
+                                {
+                                    Items =
+                                    {
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString(_viewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
+                                            Click = () => _viewModel.ShowPastCompleteItemsOnFullCalendar = !_viewModel.ShowPastCompleteItemsOnFullCalendar
+                                        }
+                                    }
+                                }.Show(_filterButtonRef), v => _filterButtonRef = v),
+
+                                CreateIconButton(MaterialDesign.MaterialDesignIcons.Today, () => _viewModel.GoToToday()),
+
+                                CreateArrowButton(MaterialDesign.MaterialDesignIcons.ArrowRight, () => _viewModel.Next(), new Thickness(24, 0, 0, 0))
+                            }
+                        }
+                    }
+                };
+            }
+            else
+            {
+                return slideView;
+            }
         }
 
         private View RenderContent(int position)
@@ -50,6 +122,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 Month = month,
                 Items = _viewModel.SemesterItemsViewGroup.Items,
                 ViewModel = _viewModel
+            };
+        }
+
+        private TransparentContentButton CreateIconButton(string glyph, Action click, Action<View> viewRef = null)
+        {
+            return new TransparentContentButton
+            {
+                Content = new FontIcon
+                {
+                    Glyph = glyph,
+                    Color = Theme.Current.SubtleForegroundColor,
+                    FontSize = Theme.Current.TitleFontSize,
+                    Margin = new Thickness(6)
+                },
+                ViewRef = viewRef,
+                Click = click,
+                Margin = new Thickness(9, 0, 0, 0)
+            };
+        }
+
+        private TransparentContentButton CreateArrowButton(string glyph, Action click, Thickness margin)
+        {
+            return new TransparentContentButton
+            {
+                Content = new FontIcon
+                {
+                    Glyph = glyph,
+                    Color = Theme.Current.SubtleForegroundColor,
+                    FontSize = Theme.Current.TitleFontSize,
+                    Margin = new Thickness(6)
+                },
+                Click = click,
+                Margin = margin,
+                Opacity = IsMouseOver ? 1 : 0
             };
         }
 
@@ -128,11 +234,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     grid.Children.Add(row.LinearLayoutWeight(1));
                 }
 
+                View monthHeader = null;
+
+                if (IntegratedTopControls)
+                {
+                    monthHeader = new TextBlock
+                    {
+                        Text = Month.ToString("MMMM yyyy"),
+                        FontSize = Theme.Current.HeaderFontSize,
+                        FontWeight = FontWeights.SemiLight,
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        Margin = new Thickness(60, 10, 12, 6),
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+                }
+
                 var finalLayout = new LinearLayout
                 {
                     BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
                     {
+                        monthHeader,
+
                         dayHeaders,
 
                         grid.LinearLayoutWeight(1)
