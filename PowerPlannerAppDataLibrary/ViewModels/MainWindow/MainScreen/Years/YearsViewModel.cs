@@ -126,6 +126,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 {
                     new TransparentContentButton
                     {
+                        AltText = year.Name,
                         Click = () => EditYear(year),
                         Content = new LinearLayout
                         {
@@ -238,6 +239,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 {
                     new TransparentContentButton
                     {
+                        AltText = semester.Name,
                         Click = () => EditSemester(semester),
                         Content = new LinearLayout
                         {

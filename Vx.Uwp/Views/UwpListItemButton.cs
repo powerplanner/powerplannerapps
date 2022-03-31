@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.Views
@@ -26,6 +27,8 @@ namespace Vx.Uwp.Views
             base.ApplyProperties(oldView, newView);
 
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view => View.Content = view?.CreateFrameworkElement());
+
+            AutomationProperties.SetName(View, newView.AltText ?? "");
         }
     }
 

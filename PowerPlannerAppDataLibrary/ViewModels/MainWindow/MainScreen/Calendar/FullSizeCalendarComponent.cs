@@ -61,47 +61,67 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             Margin = new Thickness(0, 20, 0, 0),
                             Children =
                             {
-                                CreateArrowButton(MaterialDesign.MaterialDesignIcons.ArrowLeft, () => _viewModel.Previous(), new Thickness(0)),
+                                CreateArrowButton(
+                                    glyph: MaterialDesign.MaterialDesignIcons.ArrowLeft,
+                                    altText: "Previous month",
+                                    click: () => _viewModel.Previous(),
+                                    margin: new Thickness(0)),
 
                                 new Border().LinearLayoutWeight(1),
 
-                                CreateIconButton(MaterialDesign.MaterialDesignIcons.Add, () => new ContextMenu
-                                {
-                                    Items =
+                                CreateIconButton(
+                                    glyph: MaterialDesign.MaterialDesignIcons.Add,
+                                    tooltipText: PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
+                                    altText: null,
+                                    click: () => new ContextMenu
                                     {
-                                        new ContextMenuItem
+                                        Items =
                                         {
-                                            Text = PowerPlannerResources.GetString("String_Task"),
-                                            Click = () => _viewModel.AddTask(_viewModel.SelectedDate)
-                                        },
-                                        new ContextMenuItem
-                                        {
-                                            Text = PowerPlannerResources.GetString("String_Event"),
-                                            Click = () => _viewModel.AddEvent(_viewModel.SelectedDate)
-                                        },
-                                        new ContextMenuItem
-                                        {
-                                            Text = PowerPlannerResources.GetString("String_Holiday"),
-                                            Click = () => _viewModel.AddHoliday(_viewModel.SelectedDate)
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("String_Task"),
+                                                Click = () => _viewModel.AddTask(_viewModel.SelectedDate)
+                                            },
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("String_Event"),
+                                                Click = () => _viewModel.AddEvent(_viewModel.SelectedDate)
+                                            },
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("String_Holiday"),
+                                                Click = () => _viewModel.AddHoliday(_viewModel.SelectedDate)
+                                            }
                                         }
-                                    }
-                                }.Show(_addButtonRef), v => _addButtonRef = v),
+                                    }.Show(_addButtonRef), v => _addButtonRef = v),
 
-                                CreateIconButton(MaterialDesign.MaterialDesignIcons.FilterAlt, () => new ContextMenu
-                                {
-                                    Items =
+                                CreateIconButton(
+                                    glyph: MaterialDesign.MaterialDesignIcons.FilterAlt,
+                                    tooltipText: PowerPlannerResources.GetString("Calendar_FullCalendarFilterButton.ToolTipService.ToolTip"),
+                                    altText: null,
+                                    click: () => new ContextMenu
                                     {
-                                        new ContextMenuItem
+                                        Items =
                                         {
-                                            Text = PowerPlannerResources.GetString(_viewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
-                                            Click = () => _viewModel.ShowPastCompleteItemsOnFullCalendar = !_viewModel.ShowPastCompleteItemsOnFullCalendar
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString(_viewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
+                                                Click = () => _viewModel.ShowPastCompleteItemsOnFullCalendar = !_viewModel.ShowPastCompleteItemsOnFullCalendar
+                                            }
                                         }
-                                    }
-                                }.Show(_filterButtonRef), v => _filterButtonRef = v),
+                                    }.Show(_filterButtonRef), v => _filterButtonRef = v),
 
-                                CreateIconButton(MaterialDesign.MaterialDesignIcons.Today, () => _viewModel.GoToToday()),
+                                CreateIconButton(
+                                    glyph: MaterialDesign.MaterialDesignIcons.Today,
+                                    tooltipText: PowerPlannerResources.GetString("String_GoToToday"),
+                                    altText: null,
+                                    click: () => _viewModel.GoToToday()),
 
-                                CreateArrowButton(MaterialDesign.MaterialDesignIcons.ArrowRight, () => _viewModel.Next(), new Thickness(24, 0, 0, 0))
+                                CreateArrowButton(
+                                    glyph: MaterialDesign.MaterialDesignIcons.ArrowRight,
+                                    altText: "Next month",
+                                    click: () => _viewModel.Next(),
+                                    margin: new Thickness(24, 0, 0, 0))
                             }
                         }
                     }
@@ -125,7 +145,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             };
         }
 
-        private TransparentContentButton CreateIconButton(string glyph, Action click, Action<View> viewRef = null)
+        private TransparentContentButton CreateIconButton(string glyph, string tooltipText, string altText, Action click, Action<View> viewRef = null)
         {
             return new TransparentContentButton
             {
@@ -138,11 +158,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 },
                 ViewRef = viewRef,
                 Click = click,
-                Margin = new Thickness(9, 0, 0, 0)
+                Margin = new Thickness(9, 0, 0, 0),
+                TooltipText = tooltipText,
+                AltText = altText
             };
         }
 
-        private TransparentContentButton CreateArrowButton(string glyph, Action click, Thickness margin)
+        private TransparentContentButton CreateArrowButton(string glyph, string altText, Action click, Thickness margin)
         {
             return new TransparentContentButton
             {
@@ -155,7 +177,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 },
                 Click = click,
                 Margin = margin,
-                Opacity = IsMouseOver ? 1 : 0
+                Opacity = IsMouseOver ? 1 : 0,
+                AltText = altText
             };
         }
 
@@ -388,6 +411,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                                 new TransparentContentButton
                                 {
+                                    AltText = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
                                     Content = new FontIcon
                                     {
                                         Glyph = MaterialDesign.MaterialDesignIcons.Add,

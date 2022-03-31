@@ -341,6 +341,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             return new ListItemButton
             {
+                AltText = title,
                 Content = new LinearLayout
                 {
                     Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12),
