@@ -32,14 +32,18 @@ namespace Vx.Uwp
             {
                 PointerEntered += UwpNativeComponent_PointerEntered;
                 PointerExited += UwpNativeComponent_PointerExited;
-                //PointerCaptureLost += UwpNativeComponent_PointerCaptureLost;
+                PointerCaptureLost += UwpNativeComponent_PointerCaptureLost;
             }
         }
 
-        //private void UwpNativeComponent_PointerCaptureLost(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        //{
-        //    Component.IsMouseOver.Value = false;
-        //}
+        private void UwpNativeComponent_PointerCaptureLost(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            // PointerCaptureLost needed for when using touch, so that when swiping left on calendar, mouse overs don't stay on
+            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            {
+                Component.IsMouseOver.Value = false;
+            }
+        }
 
         private void UwpNativeComponent_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
@@ -48,7 +52,10 @@ namespace Vx.Uwp
 
         private void UwpNativeComponent_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            Component.IsMouseOver.Value = true;
+            if (e.Pointer.PointerDeviceType != Windows.Devices.Input.PointerDeviceType.Touch)
+            {
+                Component.IsMouseOver.Value = true;
+            }
         }
 
         private void UwpNativeComponent_ActualThemeChanged(Windows.UI.Xaml.FrameworkElement sender, object args)
