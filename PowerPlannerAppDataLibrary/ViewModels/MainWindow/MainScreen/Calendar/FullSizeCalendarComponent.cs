@@ -80,17 +80,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                             new ContextMenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("String_Task"),
-                                                Click = () => _viewModel.AddTask(_viewModel.SelectedDate)
+                                                Click = () => _viewModel.AddTask(false)
                                             },
                                             new ContextMenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("String_Event"),
-                                                Click = () => _viewModel.AddEvent(_viewModel.SelectedDate)
+                                                Click = () => _viewModel.AddEvent(false)
                                             },
                                             new ContextMenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("String_Holiday"),
-                                                Click = () => _viewModel.AddHoliday(_viewModel.SelectedDate)
+                                                Click = () => _viewModel.AddHoliday(false)
                                             }
                                         }
                                     }.Show(_addButtonRef), v => _addButtonRef = v),
