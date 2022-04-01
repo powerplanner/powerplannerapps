@@ -319,15 +319,9 @@
     <Compile Include="Views\CalendarViews\CompletelyCompactCalendarPageView.xaml.cs">
       <DependentUpon>CompletelyCompactCalendarPageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CalendarViews\FullCalendarPageView.xaml.cs">
-      <DependentUpon>FullCalendarPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CalendarViews\MainCalendarView.cs" />
-    <Compile Include="Views\CalendarViews\MainCalendarGrid.cs" />
     <Compile Include="Views\CalendarViews\MainCalendarItemView.xaml.cs">
       <DependentUpon>MainCalendarItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CalendarViews\MainCalendarSquare.cs" />
     <Compile Include="Views\CalendarViews\SmallCalendarGrid.cs" />
     <Compile Include="Views\CalendarViews\SmallCalendarView.cs" />
     <Compile Include="Views\ClassViews\ClassGradesHeaderView.xaml.cs">
@@ -655,14 +649,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CalendarViews\FullCalendarPageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\CalendarViews\MainCalendarItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+	</Page>
     <Page Include="Views\ClassViews\ClassGradesHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
