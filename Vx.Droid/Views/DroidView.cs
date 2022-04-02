@@ -15,7 +15,7 @@ namespace Vx.Droid.Views
 {
     public abstract class DroidView<V, N> : NativeView<V, N> where V : Vx.Views.View where N : View
     {
-        private bool _hasRegisteredTappedEvent;
+        private bool _hasRegisteredTappedEvent, _hasRegisteredContextClick;
 
         public DroidView(N view)
         {
@@ -35,6 +35,17 @@ namespace Vx.Droid.Views
             {
                 View.Click -= View_Click;
                 _hasRegisteredTappedEvent = false;
+            }
+
+            if (newView.ContextMenu != null && !_hasRegisteredContextClick)
+            {
+                View.ContextClick += View_ContextClick;
+                _hasRegisteredContextClick = true;
+            }
+            else if (newView.ContextMenu == null && _hasRegisteredContextClick)
+            {
+                View.ContextClick -= View_ContextClick;
+                _hasRegisteredContextClick = false;
             }
 
             if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
@@ -154,6 +165,19 @@ namespace Vx.Droid.Views
             }
 
             View.Alpha = newView.Opacity;
+        }
+
+        private void View_ContextClick(object sender, View.ContextClickEventArgs e)
+        {
+            var cmFunc = VxView?.ContextMenu;
+            if (cmFunc != null)
+            {
+                var cm = cmFunc();
+                if (cm != null)
+                {
+                    cm.Show(VxViewRef);
+                }
+            }
         }
 
         private void View_Click(object sender, EventArgs e)
