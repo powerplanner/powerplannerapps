@@ -31,7 +31,7 @@ namespace PowerPlannerAppDataLibrary.Components
                     Text = Item.Name,
                     Margin = new Thickness(6),
                     WrapText = false,
-                    TextColor = Item.IsComplete ? Color.LightGray : Color.White,
+                    TextColor = Color.White,
                     Strikethrough = Item.IsComplete,
                     FontSize = Theme.Current.CaptionFontSize,
                     FontWeight = FontWeights.SemiBold
