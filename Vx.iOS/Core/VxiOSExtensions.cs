@@ -159,10 +159,12 @@ namespace Vx.iOS
 
         private static void ShowContextMenu(ContextMenu contextMenu, View view)
         {
+            var contextMenuItems = contextMenu.Items.OfType<ContextMenuItem>().ToArray();
+
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-            foreach (var item in contextMenu.Items)
+            foreach (var item in contextMenuItems)
             {
                 actionSheetAlert.AddAction(UIAlertAction.Create(item.Text, UIAlertActionStyle.Default, delegate { item.Click(); }));
             }

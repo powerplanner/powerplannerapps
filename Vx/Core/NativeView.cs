@@ -21,6 +21,8 @@ namespace Vx
 
         public View VxParentView { get; set; }
 
+        public View VxViewRef => _originalComponent ?? VxView;
+
         private VxComponent _originalComponent;
         public void Apply(View newView)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -172,23 +173,80 @@ namespace Vx.Uwp
         private static void ShowContextMenu(ContextMenu contextMenu, View view)
         {
             var menuFlyout = new MenuFlyout();
+            var contextMenuItems = contextMenu.Items.Where(i => i != null).ToArray();
 
-            foreach (var item in contextMenu.Items)
+            foreach (var item in contextMenuItems)
+            {
+                menuFlyout.Items.Add(item.ToUwp());
+            }
+
+            menuFlyout.ShowAt(view.NativeView.View as FrameworkElement);
+        }
+
+        private static MenuFlyoutItemBase ToUwp(this IContextMenuItem item)
+        {
+            if (item is ContextMenuItem cmItem)
             {
                 var flyoutItem = new MenuFlyoutItem()
                 {
-                    Text = item.Text
+                    Text = cmItem.Text
+                };
+
+                if (cmItem.Glyph != null)
+                {
+                    flyoutItem.Icon = new SymbolIcon(ToUwpSymbol(cmItem.Glyph));
+                }
+
+                flyoutItem.Click += delegate
+                {
+                    cmItem.Click?.Invoke();
+                };
+
+                return flyoutItem;
+            }
+            else if (item is ContextMenuSeparator)
+            {
+                return new MenuFlyoutSeparator();
+            }
+            else if (item is ContextMenuSubItem cmSubItem)
+            {
+                var flyoutItem = new MenuFlyoutSubItem
+                {
+                    Text = cmSubItem.Text
+                };
+
+                if (cmSubItem.Glyph != null)
+                {
+                    flyoutItem.Icon = new SymbolIcon(ToUwpSymbol(cmSubItem.Glyph));
+                }
+
+                foreach (var subItem in cmSubItem.Items)
+                {
+                    flyoutItem.Items.Add(subItem.ToUwp());
+                }
+
+                return flyoutItem;
+            }
+            else if (item is ContextMenuRadioItem cmRadioItem)
+            {
+                var flyoutItem = new RadioMenuFlyoutItem
+                {
+                    Text = cmRadioItem.Text,
+                    GroupName = cmRadioItem.GroupName,
+                    IsChecked = cmRadioItem.IsChecked
                 };
 
                 flyoutItem.Click += delegate
                 {
-                    item.Click?.Invoke();
+                    cmRadioItem.Click?.Invoke();
                 };
 
-                menuFlyout.Items.Add(flyoutItem);
+                return flyoutItem;
             }
-
-            menuFlyout.ShowAt(view.NativeView.View as FrameworkElement);
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public static FrameworkElement Render(this VxComponent component)
@@ -315,6 +373,18 @@ namespace Vx.Uwp
 
                 case MaterialDesign.MaterialDesignIcons.Edit:
                     return Symbol.Edit;
+
+                case MaterialDesign.MaterialDesignIcons.Copy:
+                    return Symbol.Copy;
+
+                case MaterialDesign.MaterialDesignIcons.SwapHoriz:
+                    return Symbol.Switch;
+
+                case MaterialDesign.MaterialDesignIcons.Launch:
+                    return Symbol.Go;
+
+                case MaterialDesign.MaterialDesignIcons.Calculate:
+                    return Symbol.Calculator;
 
                 default:
                     return Symbol.Refresh;

@@ -58,6 +58,11 @@ namespace Vx.Views
         public Action<DragEventArgs> Drop { get; set; }
         #endregion DragDrop
 
+        /// <summary>
+        /// Context menu to display when right clicked.
+        /// </summary>
+        public Func<ContextMenu> ContextMenu { get; set; }
+
         public Thickness Margin { get; set; }
 
         /// <summary>

@@ -503,52 +503,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             private View RenderDayItem(ViewItemTaskOrEvent item)
             {
-                View content = new Border
+                return new MainCalendarItemComponent
                 {
-                    BackgroundColor = item.Class.Color.ToColor(),
-                    Content = new TextBlock
-                    {
-                        Text = item.Name,
-                        Margin = new Thickness(6),
-                        WrapText = false,
-                        TextColor = item.IsComplete ? Color.LightGray : Color.White,
-                        Strikethrough = item.IsComplete,
-                        FontSize = Theme.Current.CaptionFontSize,
-                        FontWeight = FontWeights.SemiBold
-                    }
+                    Item = item,
+                    ViewModel = ViewModel,
+                    ShowItem = ShowItem,
+                    Margin = new Thickness(0, 0, 0, 1)
                 };
+            }
 
-                if (item.IsComplete)
-                {
-                    content = new LinearLayout
-                    {
-                        Orientation = Orientation.Horizontal,
-                        BackgroundColor = item.Class.Color.ToColor(),
-                        Opacity = 0.7f,
-                        Children =
-                        {
-                            new Border
-                            {
-                                BackgroundColor = Color.Black,
-                                Opacity = 0.3f,
-                                Width = 12
-                            },
-
-                            content.LinearLayoutWeight(1)
-                        }
-                    };
-                }
-
-                content.Tapped = () => ViewModel.ShowItem(item);
-                content.Margin = new Thickness(0, 0, 0, 2);
-
-                content.CanDrag = true;
-                content.DragStarting = e =>
-                {
-                    e.Data.Properties.Add("ViewItem", item);
-                };
-
-                return content;
+            private void ShowItem(ViewItemTaskOrEvent item)
+            {
+                ViewModel.ShowItem(item);
             }
 
             public enum DayType

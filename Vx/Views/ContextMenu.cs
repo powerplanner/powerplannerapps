@@ -6,7 +6,7 @@ namespace Vx.Views
 {
     public class ContextMenu
     {
-        public List<ContextMenuItem> Items { get; } = new List<ContextMenuItem>();
+        public List<IContextMenuItem> Items { get; } = new List<IContextMenuItem>();
 
         public void Show(View view)
         {
@@ -20,9 +20,35 @@ namespace Vx.Views
         }
     }
 
-    public class ContextMenuItem
+    public class ContextMenuItem : IContextMenuItem
     {
         public string Text { get; set; }
         public Action Click { get; set; }
+        public string Glyph { get; set; }
+    }
+
+    public class ContextMenuSeparator : IContextMenuItem
+    {
+
+    }
+
+    public class ContextMenuSubItem : IContextMenuItem
+    {
+        public string Text { get; set; }
+        public string Glyph { get; set; }
+        public List<IContextMenuItem> Items { get; } = new List<IContextMenuItem>();
+    }
+
+    public class ContextMenuRadioItem : IContextMenuItem
+    {
+        public string Text { get; set; }
+        public string GroupName { get; set; }
+        public bool IsChecked { get; set; }
+        public Action Click { get; set; }
+    }
+
+    public interface IContextMenuItem
+    {
+
     }
 }

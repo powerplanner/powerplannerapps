@@ -166,8 +166,10 @@ namespace Vx.Droid
         {
             var menu = new PopupMenu(ApplicationContext, view.NativeView.View as Android.Views.View);
 
+            var contextMenuItems = contextMenu.Items.OfType<ContextMenuItem>().ToArray();
+
             var menuItems = new List<IMenuItem>();
-            foreach (var item in contextMenu.Items)
+            foreach (var item in contextMenuItems)
             {
                 menuItems.Add(menu.Menu.Add(item.Text));
             }
@@ -175,7 +177,7 @@ namespace Vx.Droid
             menu.MenuItemClick += (e, args) =>
             {
                 int index = menuItems.IndexOf(args.Item);
-                contextMenu.Items[index].Click?.Invoke();
+                contextMenuItems[index].Click?.Invoke();
             };
 
             menu.Show();

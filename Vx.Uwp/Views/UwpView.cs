@@ -20,6 +20,20 @@ namespace Vx.Uwp.Views
             view.DragStarting += View_DragStarting;
             view.DragOver += View_DragOver;
             view.Drop += View_Drop;
+            view.ContextRequested += View_ContextRequested;
+        }
+
+        private void View_ContextRequested(UIElement sender, Windows.UI.Xaml.Input.ContextRequestedEventArgs args)
+        {
+            var cmFunc = VxView?.ContextMenu;
+            if (cmFunc != null)
+            {
+                var cm = cmFunc();
+                if (cm != null)
+                {
+                    cm.Show(VxViewRef);
+                }
+            }
         }
 
         private void View_Drop(object sender, DragEventArgs e)

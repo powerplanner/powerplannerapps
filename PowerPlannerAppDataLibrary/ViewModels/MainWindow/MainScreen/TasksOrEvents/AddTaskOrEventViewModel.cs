@@ -830,12 +830,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         private ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c)
         {
+            return GetWeightCategories(c, this);
+        }
+
+        public static ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c, BaseViewModel viewModel)
+        {
             if (c.WeightCategories == null)
             {
                 string pageCrumbsInfo = "";
                 try
                 {
-                    var topParent = this.GetRootParent();
+                    var topParent = viewModel.GetRootParent();
                     pageCrumbsInfo = string.Join(",", topParent.GetDescendants());
                 }
                 catch { }
