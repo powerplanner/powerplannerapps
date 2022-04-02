@@ -22,6 +22,20 @@ namespace Vx.Droid.Views
             // Note that we can't use reflection to create views, since in Release mode the constructors
             // get linked away and creating the views will fail at runtime.
             View = view;
+            View.LongClick += View_LongClick;
+        }
+
+        private void View_LongClick(object sender, View.LongClickEventArgs e)
+        {
+            var item = new ClipData.Item("txt");
+
+            var clipData = new ClipData(
+                "label", 
+                new string[] { ClipDescription.MimetypeTextPlain },
+                item);
+
+            View.StartDragAndDrop(clipData, new Android.Views.View.DragShadowBuilder(sender as View), null, 0);
+            e.Handled = true;
         }
 
         protected override void ApplyProperties(V oldView, V newView)
