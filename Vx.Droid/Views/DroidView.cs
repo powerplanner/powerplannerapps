@@ -16,24 +16,74 @@ namespace Vx.Droid.Views
     public abstract class DroidView<V, N> : NativeView<V, N> where V : Vx.Views.View where N : View
     {
         private bool _hasRegisteredTappedEvent, _hasRegisteredContextClick;
+        private MyGestureListener _myGestureListener;
+
+        private class MyGestureListener : GestureDetector.SimpleOnGestureListener
+        {
+            private DroidView<V, N> _droidView;
+
+            public MyGestureListener(DroidView<V, N> droidView)
+            {
+                _droidView = droidView;
+            }
+
+            public override bool OnSingleTapUp(MotionEvent e)
+            {
+                if (_droidView.VxView?.Tapped != null)
+                {
+                    _droidView.VxView.Tapped();
+                    return true;
+                }
+
+                return false;
+            }
+
+            //public override bool OnSingleTapConfirmed(MotionEvent e)
+            //{
+            //    if (_droidView.VxView?.Tapped != null)
+            //    {
+            //        _droidView.VxView.Tapped();
+            //        return true;
+            //    }
+
+            //    return false;
+            //}
+        }
+
+        private class MyTouchListener : Java.Lang.Object, View.IOnTouchListener
+        {
+            private GestureDetector _gestureDetector;
+            public MyTouchListener(GestureDetector gestureDetector)
+            {
+                _gestureDetector = gestureDetector;
+            }
+            public bool OnTouch(View v, MotionEvent e)
+            {
+                return _gestureDetector.OnTouchEvent(e);
+            }
+        }
 
         public DroidView(N view)
         {
             // Note that we can't use reflection to create views, since in Release mode the constructors
             // get linked away and creating the views will fail at runtime.
             View = view;
+
+            _myGestureListener = new MyGestureListener(this);
+            var detector = new GestureDetector(view.Context, _myGestureListener);
+            View.SetOnTouchListener(new MyTouchListener(detector));
         }
 
         protected override void ApplyProperties(V oldView, V newView)
         {
             if (newView.Tapped != null && !_hasRegisteredTappedEvent)
             {
-                View.Click += View_Click;
+                //View.Click += View_Click; // Click event is overriding the mouse hover events, OnClickListener does that too...
                 _hasRegisteredTappedEvent = true;
             }
             else if (newView.Tapped == null && _hasRegisteredTappedEvent)
             {
-                View.Click -= View_Click;
+                //View.Click -= View_Click;
                 _hasRegisteredTappedEvent = false;
             }
 
