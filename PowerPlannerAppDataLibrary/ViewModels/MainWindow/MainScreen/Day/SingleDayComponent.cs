@@ -6,6 +6,7 @@ using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using ToolsPortable;
@@ -82,6 +83,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                             {
                                 ViewModel.MainScreenViewModel.ShowItem(taskOrEvent);
                             }
+                            else if (item is ViewItemHoliday holiday)
+                            {
+                                ViewModel.MainScreenViewModel.ViewHoliday(holiday);
+                            }
                         }
                     }.LinearLayoutWeight(1)
                 }
@@ -108,10 +113,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             }
             else if (objItem is ViewItemHoliday holiday)
             {
-                return new TextBlock
+                return new LinearLayout
                 {
-                    Text = holiday.Name,
-                    Margin = new Thickness(6)
+                    Children =
+                    {
+                        new Border
+                        {
+                            BackgroundColor = Color.FromArgb(255, 228, 0, 137),
+                            Content = new TextBlock
+                            {
+                                Text = holiday.Name,
+                                Margin = new Thickness(12),
+                                WrapText = false,
+                                TextColor = Color.White
+                            }
+                        },
+
+                        TaskOrEventListItemComponent.Divider()
+                    }
                 };
             }
             else
