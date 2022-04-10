@@ -111,6 +111,27 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return account;
         }
 
+        public static AccountDataItem GetCached(Guid localAccountId)
+        {
+            CachedAccountEntry entry;
+
+            lock (_cachedAccounts)
+            {
+                if (_cachedAccounts.TryGetValue(localAccountId, out entry))
+                {
+                    // But account still might have been disposed
+                    var account = entry.Account;
+                    if (account != null)
+                    {
+                        Debug.WriteLine("Returning cached account: " + localAccountId);
+                        return account;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public static async Task<AccountDataItem> GetOrLoadOnlineAccount(long onlineAccountId)
         {
             lock (_cachedAccounts)

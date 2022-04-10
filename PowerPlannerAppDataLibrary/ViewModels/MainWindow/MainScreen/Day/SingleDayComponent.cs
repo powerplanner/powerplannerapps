@@ -6,6 +6,7 @@ using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ToolsPortable;
 using Vx.Views;
@@ -19,9 +20,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; set; }
         public BaseMainScreenViewModelDescendant ViewModel { get; set; }
 
+        private static object SCHEDULE_SNAPSHOT = new object();
+
+        private SemesterItemsViewGroup.DayWithScheduleSnapshot _dayWithScheduleSnapshot;
+
         protected override View Render()
         {
-            var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, SemesterItemsViewGroup.Items, Date, Today);
+            _dayWithScheduleSnapshot = SemesterItemsViewGroup.GetDayWithScheduleSnapshot(Date);
 
             return new LinearLayout
             {
@@ -69,11 +74,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
                     new ListView
                     {
-                        Items = itemsOnDay,
+                        Items = _dayWithScheduleSnapshot.Items,
                         ItemTemplate = RenderItem,
                         ItemClicked = item =>
                         {
-                            ViewModel.MainScreenViewModel.ShowItem(item as ViewItemTaskOrEvent);
+                            if (item is ViewItemTaskOrEvent taskOrEvent)
+                            {
+                                ViewModel.MainScreenViewModel.ShowItem(taskOrEvent);
+                            }
                         }
                     }.LinearLayoutWeight(1)
                 }
@@ -82,12 +90,34 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         private View RenderItem(object objItem)
         {
-            return new TaskOrEventListItemComponent
+            if (objItem is ViewItemTaskOrEvent taskOrEvent)
             {
-                Item = objItem as ViewItemTaskOrEvent,
-                ViewModel = ViewModel,
-                IncludeDate = false
-            };
+                return new TaskOrEventListItemComponent
+                {
+                    Item = taskOrEvent,
+                    ViewModel = ViewModel,
+                    IncludeDate = false
+                };
+            }
+            else if (objItem is DayScheduleItemsArranger arranger)
+            {
+                return new DayScheduleSnapshotComponent
+                {
+                    ArrangedItems = arranger
+                };
+            }
+            else if (objItem is ViewItemHoliday holiday)
+            {
+                return new TextBlock
+                {
+                    Text = holiday.Name,
+                    Margin = new Thickness(6)
+                };
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private View Divider()

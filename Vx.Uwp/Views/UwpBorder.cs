@@ -17,6 +17,7 @@ namespace Vx.Uwp.Views
             View.Padding = newView.Padding.ToUwp();
             View.BorderThickness = newView.BorderThickness.ToUwp();
             View.BorderBrush = newView.BorderColor.ToUwpBrush();
+            View.CornerRadius = new Windows.UI.Xaml.CornerRadius(newView.CornerRadius);
 
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view =>
             {

@@ -438,6 +438,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         {
                             Width = 4,
                             Height = 4,
+                            CornerRadius = 4,
                             BackgroundColor = item.Class.Color.ToColor(),
                             Margin = new Thickness(0, 0, 4, 0)
                         });

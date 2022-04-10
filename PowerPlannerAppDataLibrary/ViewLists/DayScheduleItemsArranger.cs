@@ -640,6 +640,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                     Initialize(_schedules, _events, _holidays);
                     _hadChanges = false;
                     OnItemsChanged?.Invoke(this, new EventArgs());
+                    OnPropertyChanged(nameof(StartTime)); // Trigger this so Vx updates
                 }
             }
             catch (Exception ex)
