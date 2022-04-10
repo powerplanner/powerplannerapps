@@ -328,6 +328,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     case nameof(ViewModel.ShowPastCompleteItemsOnFullCalendar):
                     case nameof(ViewModel.FirstDayOfWeek):
                     case nameof(ViewModel.DisplayState):
+                    case nameof(ViewModel.SelectedDate):
                         MarkDirty();
                         break;
                 }
