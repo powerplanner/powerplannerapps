@@ -18,7 +18,7 @@ using Vx.Views.DragDrop;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
-    public class FullSizeCalendarComponent : VxComponent
+    public class CalendarComponent : VxComponent
     {
         [VxSubscribe]
         private CalendarViewModel _viewModel;
@@ -31,7 +31,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public override bool SubscribeToIsMouseOver => IntegratedTopControls;
 
-        public FullSizeCalendarComponent(CalendarViewModel viewModel)
+        public bool IsFullSize => _viewModel.DisplayState == CalendarViewModel.DisplayStates.FullCalendar;
+
+        public CalendarComponent(CalendarViewModel viewModel)
         {
             _viewModel = viewModel;
             _thisMonth = DateTools.GetMonth(DateTime.Today);
@@ -58,7 +60,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         {
                             Orientation = Orientation.Horizontal,
                             VerticalAlignment = VerticalAlignment.Top,
-                            Margin = new Thickness(0, 20, 0, 0),
+                            Margin = new Thickness(0, IsFullSize ? 20 : 10, 0, 0),
                             Children =
                             {
                                 CreateArrowButton(
@@ -95,7 +97,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                         }
                                     }.Show(_addButtonRef), v => _addButtonRef = v),
 
-                                CreateIconButton(
+                                // Filter button (only on full size calendar)
+                                IsFullSize ? CreateIconButton(
                                     glyph: MaterialDesign.MaterialDesignIcons.FilterAlt,
                                     tooltipText: PowerPlannerResources.GetString("Calendar_FullCalendarFilterButton.ToolTipService.ToolTip"),
                                     altText: null,
@@ -109,7 +112,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                                 Click = () => _viewModel.ShowPastCompleteItemsOnFullCalendar = !_viewModel.ShowPastCompleteItemsOnFullCalendar
                                             }
                                         }
-                                    }.Show(_filterButtonRef), v => _filterButtonRef = v),
+                                    }.Show(_filterButtonRef), v => _filterButtonRef = v) : null,
 
                                 CreateIconButton(
                                     glyph: MaterialDesign.MaterialDesignIcons.Today,
@@ -137,7 +140,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             var month = _thisMonth.AddMonths(position);
 
-            return new FullSizeCalendarMonthComponent
+            return new CalendarMonthComponent
             {
                 Month = month,
                 Items = _viewModel.SemesterItemsViewGroup.Items,
@@ -182,13 +185,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             };
         }
 
-        private class FullSizeCalendarMonthComponent : VxComponent
+        private class CalendarMonthComponent : VxComponent
         {
             public DateTime Month { get; set; }
             public MyObservableList<BaseViewItemMegaItem> Items { get; set; }
 
-            // Note that subsequent properties on the ViewModel are NOT observed
+            // Note that subsequent properties on the ViewModel are NOT observed except for anything defined in ViewModel_PropertyChanged
             public CalendarViewModel ViewModel { get; set; }
+
+            public bool IsFullSize => ViewModel.DisplayState == CalendarViewModel.DisplayStates.FullCalendar;
 
             protected override void Initialize()
             {
@@ -210,14 +215,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 for (int i = 0; i < 7; i++)
                 {
+                    var day = DateTools.ToLocalizedString(ViewModel.FirstDayOfWeek + i);
+                    if (!IsFullSize && day.Length > 3)
+                    {
+                        day = day.Substring(0, 3);
+                    }
+
                     dayHeaders.Children.Add(new TextBlock
                     {
-                        Text = DateTools.ToLocalizedString(ViewModel.FirstDayOfWeek + i),
+                        Text = day,
                         WrapText = false,
                         TextColor = Theme.Current.SubtleForegroundColor,
                         FontSize = 16,
                         Margin = new Thickness(12, 6, 12, 6),
-                        VerticalAlignment = VerticalAlignment.Center
+                        VerticalAlignment = VerticalAlignment.Center,
+                        TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
                     }.LinearLayoutWeight(1));
                 }
 
@@ -264,10 +276,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     monthHeader = new TextBlock
                     {
                         Text = Month.ToString("MMMM yyyy"),
-                        FontSize = Theme.Current.HeaderFontSize,
+                        FontSize = IsFullSize ? Theme.Current.HeaderFontSize : Theme.Current.TitleFontSize,
                         FontWeight = FontWeights.SemiLight,
                         TextColor = Theme.Current.SubtleForegroundColor,
-                        Margin = new Thickness(60, 10, 12, 6),
+                        Margin = new Thickness(IsFullSize ? 60 : 48, 10, 12, 6),
                         VerticalAlignment = VerticalAlignment.Center
                     };
                 }
@@ -314,6 +326,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 {
                     case nameof(ViewModel.ShowPastCompleteItemsOnFullCalendar):
                     case nameof(ViewModel.FirstDayOfWeek):
+                    case nameof(ViewModel.DisplayState):
                         MarkDirty();
                         break;
                 }
@@ -321,17 +334,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             private VxComponent RenderDay(DateTime date)
             {
-                return new FullSizeCalendarDayComponent
+                return new CalendarDayComponent
                 {
                     Month = Month,
                     Items = Items,
                     ViewModel = ViewModel,
-                    Date = date
+                    Date = date,
+                    IsFullSize = IsFullSize
                 };
             }
         }
 
-        private class FullSizeCalendarDayComponent : VxComponent
+        private class CalendarDayComponent : VxComponent
         {
             public DateTime Month { get; set; }
             public MyObservableList<BaseViewItemMegaItem> Items { get; set; }
@@ -339,6 +353,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             // Note that subsequent properties on the ViewModel are NOT observed
             public CalendarViewModel ViewModel { get; set; }
             public DateTime Date { get; set; }
+            public bool IsFullSize { get; set; }
 
             public override bool SubscribeToIsMouseOver => true;
 
@@ -373,11 +388,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 var tbDay = new TextBlock
                 {
                     Text = date.Day.ToString(),
-                    Margin = new Thickness(10,6,10,6),
-                    FontSize = Theme.Current.SubtitleFontSize,
+                    Margin = new Thickness(10,6,10, IsFullSize ? 6 : 0),
+                    FontSize = IsFullSize ? Theme.Current.SubtitleFontSize : Theme.Current.BodyFontSize,
                     FontWeight = FontWeights.SemiLight,
                     TextColor = isToday ? Theme.Current.ForegroundColor.Invert() : Theme.Current.SubtleForegroundColor,
-                    VerticalAlignment = VerticalAlignment.Center
+                    VerticalAlignment = IsFullSize ? VerticalAlignment.Center : VerticalAlignment.Top,
+                    TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
                 };
 
                 var dayBackgroundColor = isToday ? Theme.Current.SubtleForegroundColor : dayType == DayType.ThisMonth ? Color.Transparent : Theme.Current.BackgroundAlt1Color;
@@ -391,112 +407,137 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 {
                     BackgroundColor = dayBackgroundColor,
                     Tapped = () => ViewModel.OpenDay(date),
-                    Children =
+                    Orientation = Orientation.Vertical
+                };
+
+                if (!IsFullSize)
+                {
+                    var itemCircles = new LinearLayout
                     {
-                        new LinearLayout
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        Margin = new Thickness(6,0,6,6)
+                    };
+
+                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
+                    {
+                        itemCircles.Children.Add(new Border
                         {
-                            Orientation = Orientation.Horizontal,
-                            Children =
+                            Width = 4,
+                            Height = 4,
+                            BackgroundColor = item.Class.Color.ToColor(),
+                            Margin = new Thickness(0, 0, 4, 0)
+                        });
+                    }
+
+                    linearLayout.Children.Add(tbDay);
+                    linearLayout.Children.Add(itemCircles.LinearLayoutWeight(1));
+                }
+                else
+                {
+                    linearLayout.Children.Add(new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Children =
+                        {
+                            tbDay.LinearLayoutWeight(holidays.Any() ? 0 : 1),
+
+                            holidays.Any() ? new TextBlock
                             {
-                                tbDay.LinearLayoutWeight(holidays.Any() ? 0 : 1),
+                                Text = holidays.First().Name,
+                                WrapText = false,
+                                FontSize = 10,
+                                TextColor = tbDay.TextColor,
+                                VerticalAlignment = VerticalAlignment.Center
+                            }.LinearLayoutWeight(1) : null,
 
-                                holidays.Any() ? new TextBlock
+                            new TransparentContentButton
+                            {
+                                AltText = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
+                                Content = new FontIcon
                                 {
-                                    Text = holidays.First().Name,
-                                    WrapText = false,
-                                    FontSize = 10,
-                                    TextColor = tbDay.TextColor,
-                                    VerticalAlignment = VerticalAlignment.Center
-                                }.LinearLayoutWeight(1) : null,
-
-                                new TransparentContentButton
+                                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                    Color = tbDay.TextColor,
+                                    FontSize = tbDay.FontSize,
+                                    Margin = new Thickness(6),
+                                    Opacity = IsMouseOver ? 1 : 0
+                                },
+                                ViewRef = v => _addButtonRef = v,
+                                Click = () => new ContextMenu
                                 {
-                                    AltText = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
-                                    Content = new FontIcon
+                                    Items =
                                     {
-                                        Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                                        Color = tbDay.TextColor,
-                                        FontSize = tbDay.FontSize,
-                                        Margin = new Thickness(6),
-                                        Opacity = IsMouseOver ? 1 : 0
-                                    },
-                                    ViewRef = v => _addButtonRef = v,
-                                    Click = () => new ContextMenu
-                                    {
-                                        Items =
+                                        new ContextMenuItem
                                         {
-                                            new ContextMenuItem
-                                            {
-                                                Text = PowerPlannerResources.GetString("String_Task"),
-                                                Click = () => ViewModel.AddTask(date)
-                                            },
-                                            new ContextMenuItem
-                                            {
-                                                Text = PowerPlannerResources.GetString("String_Event"),
-                                                Click = () => ViewModel.AddEvent(date)
-                                            },
-                                            new ContextMenuItem
-                                            {
-                                                Text = PowerPlannerResources.GetString("String_Holiday"),
-                                                Click = () => ViewModel.AddHoliday(date)
-                                            }
+                                            Text = PowerPlannerResources.GetString("String_Task"),
+                                            Click = () => ViewModel.AddTask(date)
+                                        },
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString("String_Event"),
+                                            Click = () => ViewModel.AddEvent(date)
+                                        },
+                                        new ContextMenuItem
+                                        {
+                                            Text = PowerPlannerResources.GetString("String_Holiday"),
+                                            Click = () => ViewModel.AddHoliday(date)
                                         }
-                                    }.Show(_addButtonRef)
-                                }
+                                    }
+                                }.Show(_addButtonRef)
                             }
                         }
-                    }
-                };
+                    });
 
-                foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
-                {
-                    linearLayout.Children.Add(RenderDayItem(item));
-                }
-
-                linearLayout.AllowDrop = true;
-                linearLayout.DragOver = e =>
-                {
-                    if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
+                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
                     {
-                        bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
-
-                        if (duplicate)
-                        {
-                            e.AcceptedOperation = DataPackageOperation.Copy;
-                        }
-                        else if (draggedTaskOrEvent.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
-                        {
-                            e.AcceptedOperation = DataPackageOperation.Move;
-                        }
-                        else
-                        {
-                            e.AcceptedOperation = DataPackageOperation.None;
-                        }
+                        linearLayout.Children.Add(RenderDayItem(item));
                     }
-                };
-                linearLayout.Drop = e =>
-                {
-                    try
+
+                    linearLayout.AllowDrop = true;
+                    linearLayout.DragOver = e =>
                     {
                         if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
                         {
                             bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
 
-                            if (duplicate)
+                        if (duplicate)
                             {
-                                PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(draggedTaskOrEvent, this.Date.Date);
+                                e.AcceptedOperation = DataPackageOperation.Copy;
+                            }
+                            else if (draggedTaskOrEvent.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
+                            {
+                                e.AcceptedOperation = DataPackageOperation.Move;
                             }
                             else
                             {
-                                _ = ViewModel.MoveItem(draggedTaskOrEvent, this.Date.Date);
+                                e.AcceptedOperation = DataPackageOperation.None;
                             }
                         }
-                    }
-                    catch (Exception ex)
+                    };
+                    linearLayout.Drop = e =>
                     {
-                        TelemetryExtension.Current?.TrackException(ex);
-                    }
-                };
+                        try
+                        {
+                            if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
+                            {
+                                bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+
+                            if (duplicate)
+                                {
+                                    PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(draggedTaskOrEvent, this.Date.Date);
+                                }
+                                else
+                                {
+                                    _ = ViewModel.MoveItem(draggedTaskOrEvent, this.Date.Date);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            TelemetryExtension.Current?.TrackException(ex);
+                        }
+                    };
+                }
 
                 return linearLayout;
             }

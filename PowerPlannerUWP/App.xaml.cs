@@ -103,7 +103,7 @@ namespace PowerPlannerUWP
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
-                { typeof(CalendarViewModel), typeof(CalendarMainView) },
+                { typeof(CalendarViewModel), typeof(ComponentView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },

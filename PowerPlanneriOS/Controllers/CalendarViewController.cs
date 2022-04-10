@@ -394,7 +394,7 @@ namespace PowerPlanneriOS.Controllers
                             _dayView.Hidden = true;
                             if (_fullSizeCalendarView == null)
                             {
-                                _fullSizeCalendarView = new FullSizeCalendarComponent(_viewModel).Render();
+                                _fullSizeCalendarView = new CalendarComponent(_viewModel).Render();
                                 Add(_fullSizeCalendarView);
                             }
                             _fullSizeCalendarView.Hidden = false;

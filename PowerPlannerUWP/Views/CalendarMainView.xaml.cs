@@ -181,7 +181,7 @@ namespace PowerPlannerUWP.Views
                 SetVisualState(VisualState.Full);
         }
 
-        private FullSizeCalendarComponent _fullSizeCalendarComponent;
+        private CalendarComponent _fullSizeCalendarComponent;
         private FrameworkElement _fullSizeCalendarComponentElement;
         private VisualState _visualState;
         private void SetVisualState(VisualState state)
@@ -198,7 +198,7 @@ namespace PowerPlannerUWP.Views
 
                     if (_fullSizeCalendarComponent == null)
                     {
-                        _fullSizeCalendarComponent = new FullSizeCalendarComponent(ViewModel);
+                        _fullSizeCalendarComponent = new CalendarComponent(ViewModel);
                         _fullSizeCalendarComponentElement = _fullSizeCalendarComponent.Render();
                         _fullSizeCalendarComponentElement.HorizontalAlignment = HorizontalAlignment.Stretch;
                         _fullSizeCalendarComponentElement.VerticalAlignment = VerticalAlignment.Stretch;

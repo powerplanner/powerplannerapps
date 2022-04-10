@@ -102,7 +102,7 @@ namespace PowerPlannerAndroid.Views
                     _calendarView.Visibility = ViewStates.Gone;
                     if (_fullCalendarView == null)
                     {
-                        _fullCalendarView = new FullSizeCalendarComponent(ViewModel).Render();
+                        _fullCalendarView = new CalendarComponent(ViewModel).Render();
                         FindViewById<LinearLayout>(Resource.Id.CalendarViewRootLayout).AddView(_fullCalendarView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
                     }
                     else

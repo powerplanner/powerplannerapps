@@ -16,10 +16,12 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
+using Vx.Views;
+using System.Drawing;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
-    public class CalendarViewModel : BaseMainScreenViewModelChild
+    public class CalendarViewModel : ComponentViewModel
     {
         private static DisplayStates _lastDisplayState;
         private static DateTime _initialSelectedDate;
@@ -266,7 +268,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             break;
 
                         case ViewSizeStates.FullyCompact:
-                            if (DisplayState == DisplayStates.Split)
+                            if (DisplayState != DisplayStates.Day)
                             {
                                 DisplayState = DisplayStates.CompactCalendar;
                             }
@@ -529,6 +531,59 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             DisplayMonth = Today;
             SelectedDate = Today;
+        }
+
+        protected override void OnSizeChanged(SizeF size)
+        {
+            if (size.Height < 550)
+                ViewSizeState = ViewSizeStates.FullyCompact;
+
+            else if (size.Width < 676)
+            {
+                if (size.Height < 700)
+                    ViewSizeState = ViewSizeStates.FullyCompact;
+
+                else
+                    ViewSizeState = ViewSizeStates.Compact;
+            }
+
+            else
+                ViewSizeState = ViewSizeStates.FullSize;
+        }
+
+        protected override View Render()
+        {
+            CalendarComponent calendar = null;
+            if (DisplayState != DisplayStates.Day)
+            {
+                calendar = new CalendarComponent(this);
+
+                if (DisplayState == DisplayStates.Split)
+                {
+                    calendar.Height = 350;
+                }
+                else
+                {
+                    calendar.LinearLayoutWeight(1);
+                }
+            }
+
+            View day = null;
+            if (DisplayState == DisplayStates.Day || DisplayState == DisplayStates.Split)
+            {
+                day = new TextBlock { Text = "TODO" };
+                day.LinearLayoutWeight(1);
+            }
+
+            return new LinearLayout
+            {
+                Orientation = Orientation.Vertical,
+                Children =
+                {
+                    calendar,
+                    day
+                }
+            };
         }
     }
 }
