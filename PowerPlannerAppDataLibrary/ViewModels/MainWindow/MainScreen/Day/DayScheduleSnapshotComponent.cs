@@ -1,9 +1,13 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 using Vx.Extensions;
 using Vx.Views;
@@ -68,7 +72,104 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 });
             }
 
+            // Reverse the order so that when items expand, they appear on top of the items beneath them.
+            // Otherwise I would have to do some crazy Z-order logic.
+            foreach (var e in ArrangedItems.EventItems.Reverse())
+            {
+                if (e.IsCollapsedMode)
+                {
+                    AddVisualItem(root, e, new CollapsedTaskOrEventComponent
+                    {
+                        EventItem = e
+                    });
+                }
+                else
+                {
+                    AddVisualItem(root, e, RenderFullEventItem(e));
+                }
+            }
+
             return root;
+        }
+
+        private View RenderFullEventItem(DayScheduleItemsArranger.EventItem e)
+        {
+            return new Border
+            {
+                BackgroundColor = e.Item.Class.Color.ToColor(),
+                Content = new TextBlock
+                {
+                    Text = e.Item.Name,
+                    WrapText = false,
+                    TextColor = Color.White,
+                    Margin = new Thickness(6),
+                    VerticalAlignment = VerticalAlignment.Top
+                },
+                CornerRadius = 8,
+                Tapped = () => PowerPlannerApp.Current.GetMainScreenViewModel().ShowItem(e.Item),
+                Height = (float)e.Height
+            };
+        }
+
+        private class CollapsedTaskOrEventComponent : VxComponent
+        {
+            public override bool SubscribeToIsMouseOver => true;
+            public DayScheduleItemsArranger.EventItem EventItem { get; set; }
+
+            protected override View Render()
+            {
+                if (IsMouseOver)
+                {
+                    var allItems = new List<ViewItemTaskOrEvent>() { EventItem.Item };
+                    if (EventItem.AdditionalItems != null)
+                    {
+                        allItems.AddRange(EventItem.AdditionalItems);
+                    }
+
+                    var expandedItems = new LinearLayout
+                    {
+                        Margin = new Thickness(0, 4, 0, 4)
+                    };
+
+                    foreach (var i in allItems)
+                    {
+                        expandedItems.Children.Add(new MainCalendarItemComponent
+                        {
+                            Item = i,
+                            ShowItem = item => PowerPlannerApp.Current.GetMainScreenViewModel().ShowItem(item),
+                            Margin = new Thickness(0, expandedItems.Children.Count == 0 ? 0 : 1, 0, 0)
+                        });
+                    }
+
+                    return new Border
+                    {
+                        BackgroundColor = Theme.Current.BackgroundColor,
+                        CornerRadius = 8,
+                        BorderColor = Theme.Current.SubtleForegroundColor.Opacity(0.3),
+                        BorderThickness = new Thickness(3),
+                        Content = expandedItems
+                    };
+                }
+                else
+                {
+                    return new Border
+                    {
+                        BackgroundColor = EventItem.Item.Class.Color.ToColor(),
+                        Content = new TextBlock
+                        {
+                            Text = EventItem.Item.Name.Length > 0 ? EventItem.Item.Name.Substring(0, 1) : "",
+                            WrapText = false,
+                            TextColor = Color.White,
+                            Margin = new Thickness(6),
+                            VerticalAlignment = VerticalAlignment.Top
+                        },
+                        CornerRadius = 8,
+                        Width = 40,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Height = (float)EventItem.Height
+                    };
+                }
+            }
         }
 
         private void AddVisualItem(FrameLayout root, DayScheduleItemsArranger.BaseScheduleItem item, View view)
