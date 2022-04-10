@@ -113,12 +113,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         private class CollapsedTaskOrEventComponent : VxComponent
         {
-            public override bool SubscribeToIsMouseOver => true;
             public DayScheduleItemsArranger.EventItem EventItem { get; set; }
+            private VxState<bool> IsExpanded = new VxState<bool>(false);
+            public override bool SubscribeToIsMouseOver => true;
+            private DateTime _ignoreMouseTill;
+
+            protected override void OnMouseOverChanged(bool isMouseOver)
+            {
+                if (!isMouseOver && DateTime.Now < _ignoreMouseTill)
+                {
+                    return;
+                }
+
+                IsExpanded.Value = isMouseOver;
+            }
 
             protected override View Render()
             {
-                if (IsMouseOver)
+                if (IsExpanded.Value)
                 {
                     var allItems = new List<ViewItemTaskOrEvent>() { EventItem.Item };
                     if (EventItem.AdditionalItems != null)
@@ -200,14 +212,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                             {
                                 collapsed,
                                 additionalCircles
-                            }
+                            },
+                            Tapped = OnCollapsedTapped
                         };
                     }
 
                     collapsed.HorizontalAlignment = HorizontalAlignment.Left;
+                    collapsed.Tapped = OnCollapsedTapped;
 
                     return collapsed;
                 }
+            }
+
+            private void OnCollapsedTapped()
+            {
+                _ignoreMouseTill = DateTime.Now.AddSeconds(0.5);
+                IsExpanded.Value = true;
             }
         }
 

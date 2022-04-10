@@ -46,6 +46,7 @@ namespace Vx.Views
 
             NativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
             NativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
+            NativeComponent.MouseOverChanged += new WeakEventHandler<bool>(NativeComponent_MouseOverChanged).Handler;
 
             Initialize();
 
@@ -71,6 +72,11 @@ namespace Vx.Views
             RenderActual();
 
             EnableHotReload();
+        }
+
+        private void NativeComponent_MouseOverChanged(object sender, bool e)
+        {
+            OnMouseOverChanged(e);
         }
 
         private void NativeComponent_ThemeChanged(object sender, EventArgs e)
@@ -409,6 +415,15 @@ namespace Vx.Views
         /// </summary>
         /// <param name="size"></param>
         protected virtual void OnSizeChanged(SizeF size)
+        {
+            // Nothing here
+        }
+
+        /// <summary>
+        /// Must override <see cref="SubscribeToIsMouseOver"/> to true to use this. Components can override this to react to mouse over, but must mark dirty if a render change is desired.
+        /// </summary>
+        /// <param name="isMouseOver"></param>
+        protected virtual void OnMouseOverChanged(bool isMouseOver)
         {
             // Nothing here
         }

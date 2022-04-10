@@ -18,6 +18,7 @@ namespace Vx.Uwp
 
         public event EventHandler<SizeF> ComponentSizeChanged;
         public event EventHandler ThemeChanged;
+        public event EventHandler<bool> MouseOverChanged;
 
         public UwpNativeComponent(VxComponent component)
         {
@@ -42,12 +43,14 @@ namespace Vx.Uwp
             if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
             {
                 Component.IsMouseOver.Value = false;
+                MouseOverChanged?.Invoke(this, false);
             }
         }
 
         private void UwpNativeComponent_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             Component.IsMouseOver.Value = false;
+            MouseOverChanged?.Invoke(this, false);
         }
 
         private void UwpNativeComponent_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
@@ -55,6 +58,7 @@ namespace Vx.Uwp
             if (e.Pointer.PointerDeviceType != Windows.Devices.Input.PointerDeviceType.Touch)
             {
                 Component.IsMouseOver.Value = true;
+                MouseOverChanged?.Invoke(this, true);
             }
         }
 

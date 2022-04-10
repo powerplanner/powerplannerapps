@@ -26,6 +26,7 @@ namespace Vx.iOS
 
         public event EventHandler<SizeF> ComponentSizeChanged;
         public event EventHandler ThemeChanged;
+        public event EventHandler<bool> MouseOverChanged;
 
         private SizeF _currSize;
 

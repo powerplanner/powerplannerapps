@@ -27,6 +27,7 @@ namespace Vx.Droid
 
         public event EventHandler<SizeF> ComponentSizeChanged;
         public event EventHandler ThemeChanged;
+        public event EventHandler<bool> MouseOverChanged;
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
         {
