@@ -406,7 +406,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 var linearLayout = new LinearLayout
                 {
                     BackgroundColor = dayBackgroundColor,
-                    Tapped = () => ViewModel.OpenDay(date),
+                    Tapped = () =>
+                    {
+                        if (ViewModel.DisplayState == CalendarViewModel.DisplayStates.Split)
+                        {
+                            ViewModel.SelectedDate = date;
+                        }
+                        else
+                        {
+                            ViewModel.OpenDay(date);
+                        }
+                    },
                     Orientation = Orientation.Vertical
                 };
 

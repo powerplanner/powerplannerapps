@@ -158,6 +158,11 @@ namespace Vx.Uwp
                     return new UwpSlideView();
                 }
 
+                if (view is Vx.Views.ListView)
+                {
+                    return new UwpListView();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {

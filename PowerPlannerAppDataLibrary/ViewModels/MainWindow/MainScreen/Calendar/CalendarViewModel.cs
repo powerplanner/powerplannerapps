@@ -571,7 +571,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             View day = null;
             if (DisplayState == DisplayStates.Day || DisplayState == DisplayStates.Split)
             {
-                day = new TextBlock { Text = "TODO" };
+                day = new DayComponent
+                {
+                    Today = Today,
+                    SemesterItemsViewGroup = SemesterItemsViewGroup,
+                    ViewModel = this,
+                    DisplayDate = SelectedDate,
+                    OnDisplayDateChanged = value => SelectedDate = value
+                };
                 day.LinearLayoutWeight(1);
             }
 

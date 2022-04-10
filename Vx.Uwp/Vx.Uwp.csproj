@@ -253,6 +253,7 @@
     <Compile Include="Views\UwpFrameLayout.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
+    <Compile Include="Views\UwpListView.cs" />
     <Compile Include="Views\UwpNumberTextBox.cs" />
     <Compile Include="Views\UwpPasswordBox.cs" />
     <Compile Include="Views\UwpScrollView.cs" />
