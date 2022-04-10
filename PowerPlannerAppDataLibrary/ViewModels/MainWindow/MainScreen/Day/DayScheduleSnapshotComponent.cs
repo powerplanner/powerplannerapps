@@ -224,14 +224,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
                 for (int i = 0; i < item.NumOfColumns; i++)
                 {
-                    if (i == item.Column)
-                    {
-                        linLayout.Children.Add(view.LinearLayoutWeight(1));
-                    }
-                    else
-                    {
-                        linLayout.Children.Add(new Border().LinearLayoutWeight(1));
-                    }
+                    var viewItem = i == item.Column ? view : new Border();
+                    viewItem.LinearLayoutWeight(1);
+                    viewItem.Margin = new Thickness(i == 0 ? 0 : 3, 0, i == item.NumOfColumns - 1 ? 0 : 3, 0);
+                    linLayout.Children.Add(viewItem);
                 }
 
                 viewToAdd = linLayout;
