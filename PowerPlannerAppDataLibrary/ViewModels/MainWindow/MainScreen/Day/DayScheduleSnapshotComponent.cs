@@ -152,7 +152,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 }
                 else
                 {
-                    return new Border
+                    var collapsed = new Border
                     {
                         BackgroundColor = EventItem.Item.Class.Color.ToColor(),
                         Content = new TextBlock
@@ -161,13 +161,52 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                             WrapText = false,
                             TextColor = Color.White,
                             Margin = new Thickness(6),
-                            VerticalAlignment = VerticalAlignment.Top
+                            VerticalAlignment = VerticalAlignment.Top,
+                            TextAlignment = HorizontalAlignment.Center,
+                            FontSize = 16
                         },
                         CornerRadius = 8,
-                        Width = 40,
-                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Width = ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM,
                         Height = (float)EventItem.Height
                     };
+
+                    if (EventItem.AdditionalItems != null)
+                    {
+                        var additionalCircles = new LinearLayout
+                        {
+                            Margin = new Thickness(2, 0, 0, 0)
+                        };
+
+                        foreach (var a in EventItem.AdditionalItems)
+                        {
+                            const int circleSize = 8;
+
+                            additionalCircles.Children.Add(new Border
+                            {
+                                BackgroundColor = a.IsComplete ? Theme.Current.SubtleForegroundColor.Opacity(0.3) : a.Class.Color.ToColor(),
+                                Width = circleSize,
+                                Height = circleSize,
+                                CornerRadius = circleSize,
+                                Margin = new Thickness(0, 0, 0, 2)
+                            });
+                        }
+
+                        return new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Height = (float)EventItem.Height,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            Children =
+                            {
+                                collapsed,
+                                additionalCircles
+                            }
+                        };
+                    }
+
+                    collapsed.HorizontalAlignment = HorizontalAlignment.Left;
+
+                    return collapsed;
                 }
             }
         }
