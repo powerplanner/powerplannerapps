@@ -391,6 +391,9 @@ namespace Vx.Uwp
                 case MaterialDesign.MaterialDesignIcons.Calculate:
                     return Symbol.Calculator;
 
+                case MaterialDesign.MaterialDesignIcons.Close:
+                    return Symbol.Cancel;
+
                 default:
                     return Symbol.Refresh;
             }

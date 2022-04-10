@@ -194,6 +194,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public CalendarViewModel ViewModel { get; set; }
 
             public bool IsFullSize => ViewModel.DisplayState == CalendarViewModel.DisplayStates.FullCalendar;
+            public bool IsSplit => ViewModel.DisplayState == CalendarViewModel.DisplayStates.Split;
 
             protected override void Initialize()
             {
@@ -340,7 +341,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Items = Items,
                     ViewModel = ViewModel,
                     Date = date,
-                    IsFullSize = IsFullSize
+                    IsFullSize = IsFullSize,
+                    IsSelected = IsSplit && ViewModel.SelectedDate == date
                 };
             }
         }
@@ -354,6 +356,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public CalendarViewModel ViewModel { get; set; }
             public DateTime Date { get; set; }
             public bool IsFullSize { get; set; }
+            public bool IsSelected { get; set; }
 
             public override bool SubscribeToIsMouseOver => true;
 
@@ -382,7 +385,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     dayType = DayType.NextMonth;
                 }
 
-                var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !ViewModel.ShowPastCompleteItemsOnFullCalendar);
+                var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !IsFullSize || !ViewModel.ShowPastCompleteItemsOnFullCalendar);
                 var holidays = HolidaysOnDay.Create(Items, date);
 
                 var tbDay = new TextBlock
@@ -429,7 +432,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         Margin = new Thickness(6,0,6,6)
                     };
 
-                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
+                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>().Where(i => !i.IsComplete))
                     {
                         itemCircles.Children.Add(new Border
                         {
@@ -546,6 +549,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         {
                             TelemetryExtension.Current?.TrackException(ex);
                         }
+                    };
+                }
+
+                if (IsSelected)
+                {
+                    return new Border
+                    {
+                        Margin = new Thickness(-2),
+                        BorderThickness = new Thickness(2),
+                        BorderColor = Theme.Current.AccentColor,
+                        Content = linearLayout
                     };
                 }
 

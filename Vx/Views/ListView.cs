@@ -14,6 +14,6 @@ namespace Vx.Views
 
         public Func<object, View> ItemTemplate { get; set; }
 
-        public Action<object> OnItemClicked { get; set; }
+        public Action<object> ItemClicked { get; set; }
     }
 }

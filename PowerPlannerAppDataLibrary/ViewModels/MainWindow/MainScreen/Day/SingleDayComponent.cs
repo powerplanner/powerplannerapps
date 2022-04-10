@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.Helpers;
+﻿using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
@@ -27,6 +28,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 Orientation = Orientation.Vertical,
                 Children =
                 {
+                    Divider(),
+
                     new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
@@ -38,32 +41,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                                 Content = new TextBlock
                                 {
                                     Text = GetHeaderText(Date),
-                                    FontSize = Theme.Current.TitleFontSize,
-                                    Margin = new Thickness(6)
+                                    FontSize = Theme.Current.SubtitleFontSize,
+                                    Margin = new Thickness(12,6,6,6),
+                                    TextColor = Theme.Current.SubtleForegroundColor
                                 }
                             }.LinearLayoutWeight(1),
 
-                            new Border
-                            {
-                                BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                                Content = new FontIcon
-                                {
-                                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                                    FontSize = Theme.Current.TitleFontSize,
-                                    Margin = new Thickness(6)
-                                },
-                                Tapped = () =>
-                                {
-                                    // TODO
-                                }
-                            }
+                            //new Border
+                            //{
+                            //    BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                            //    Content = new FontIcon
+                            //    {
+                            //        Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                            //        FontSize = Theme.Current.TitleFontSize,
+                            //        Margin = new Thickness(6),
+                            //        Color = Theme.Current.SubtleForegroundColor
+                            //    },
+                            //    Tapped = () =>
+                            //    {
+                            //        // TODO
+                            //    }
+                            //}
                         }
                     },
+
+                    Divider(),
 
                     new ListView
                     {
                         Items = itemsOnDay,
-                        ItemTemplate = RenderItem
+                        ItemTemplate = RenderItem,
+                        ItemClicked = item =>
+                        {
+                            ViewModel.MainScreenViewModel.ShowItem(item as ViewItemTaskOrEvent);
+                        }
                     }.LinearLayoutWeight(1)
                 }
             };
@@ -71,57 +82,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         private View RenderItem(object objItem)
         {
-            var item = objItem as ViewItemTaskOrEvent;
-            if (item == null)
+            return new TaskOrEventListItemComponent
             {
-                return new TextBlock
-                {
-                    Text = "Not a task or event",
-                    Margin = new Thickness(12)
-                };
-            }
-
-            return new LinearLayout
-            {
-                Orientation = Orientation.Horizontal,
-                Children =
-                {
-                    new Border
-                    {
-                        Width = 6,
-                        BackgroundColor = item.Class.Color.ToColor()
-                    },
-
-                    new LinearLayout
-                    {
-                        Margin = new Thickness(6,0,0,0),
-                        Children =
-                        {
-                            new TextBlock
-                            {
-                                Text = item.Name,
-                                FontWeight = FontWeights.SemiBold,
-                                WrapText = false
-                            },
-
-                            new TextBlock
-                            {
-                                Text = item.Subtitle,
-                                FontWeight = FontWeights.SemiBold,
-                                TextColor = item.Class.Color.ToColor(),
-                                WrapText = false
-                            },
-
-                            !string.IsNullOrWhiteSpace(item.Details) ? new TextBlock
-                            {
-                                Text = item.Details.Replace("\n", "  "),
-                                WrapText = false,
-                                TextColor = Theme.Current.SubtleForegroundColor
-                            } : null
-                        }
-                    }.LinearLayoutWeight(1)
-                }
+                Item = objItem as ViewItemTaskOrEvent,
+                ViewModel = ViewModel,
+                IncludeDate = false
             };
+        }
+
+        private View Divider()
+        {
+            return TaskOrEventListItemComponent.Divider();
         }
 
         private string GetHeaderText(DateTime date)
