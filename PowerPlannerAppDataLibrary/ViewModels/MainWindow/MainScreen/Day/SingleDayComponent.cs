@@ -77,17 +77,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                     {
                         Items = _dayWithScheduleSnapshot.Items,
                         ItemTemplate = RenderItem,
-                        ItemClicked = item =>
-                        {
-                            if (item is ViewItemTaskOrEvent taskOrEvent)
-                            {
-                                ViewModel.MainScreenViewModel.ShowItem(taskOrEvent);
-                            }
-                            else if (item is ViewItemHoliday holiday)
-                            {
-                                ViewModel.MainScreenViewModel.ViewHoliday(holiday);
-                            }
-                        }
+                        Padding = new Thickness(0, 0, 0, 12)
                     }.LinearLayoutWeight(1)
                 }
             };
@@ -95,6 +85,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         private View RenderItem(object objItem)
         {
+            if (objItem is SemesterItemsViewGroup.DayWithScheduleSnapshot.Spacing)
+            {
+                return new Border
+                {
+                    Height = 9
+                };
+            }
             if (objItem is ViewItemTaskOrEvent taskOrEvent)
             {
                 return new TaskOrEventListItemComponent
@@ -108,13 +105,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             {
                 return new DayScheduleSnapshotComponent
                 {
-                    ArrangedItems = arranger
+                    ArrangedItems = arranger,
+                    Margin = new Thickness(0, 6, 0, 0)
                 };
             }
             else if (objItem is ViewItemHoliday holiday)
             {
                 return new LinearLayout
                 {
+                    Tapped = () => ViewModel.MainScreenViewModel.ViewHoliday(holiday),
                     Children =
                     {
                         new Border

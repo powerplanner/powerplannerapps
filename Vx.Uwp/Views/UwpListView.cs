@@ -14,24 +14,20 @@ namespace Vx.Uwp.Views
         {
             View.Name = "ListView" + GetHashCode();
             View.SelectionMode = ListViewSelectionMode.None;
-            View.IsItemClickEnabled = true;
-            View.ItemClick += View_ItemClick;
 
             var style = new Style();
             style.TargetType = typeof(ListViewItem);
             style.Setters.Add(new Setter(ListViewItem.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
             style.Setters.Add(new Setter(ListViewItem.PaddingProperty, new Thickness(0)));
+            style.Setters.Add(new Setter(ListViewItem.MinHeightProperty, 0));
             View.ItemContainerStyle = style;
-        }
-
-        private void View_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            VxView?.ItemClicked?.Invoke(e.ClickedItem);
         }
 
         protected override void ApplyProperties(Vx.Views.ListView oldView, Vx.Views.ListView newView)
         {
             base.ApplyProperties(oldView, newView);
+
+            View.Padding = newView.Padding.ToUwp();
 
             View.DataContext = newView.ItemTemplate;
 

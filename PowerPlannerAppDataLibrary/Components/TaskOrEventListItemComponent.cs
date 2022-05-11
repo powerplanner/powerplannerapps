@@ -22,54 +22,53 @@ namespace PowerPlannerAppDataLibrary.Components
             string details = GetDetails();
             var subtitleColor = Item.Class.Color.ToColor().Opacity(Item.IsComplete ? 0.7 : 1);
 
-            return new LinearLayout
+            return new Border
             {
-                Children =
+                Margin = new Thickness(12,3,12,3),
+                BackgroundColor = Theme.Current.BackgroundAlt1Color,
+                CornerRadius = 4,
+                Tapped = () => ViewModel.MainScreenViewModel.ShowItem(Item),
+                Content = new LinearLayout
                 {
-                    new LinearLayout
+                    Orientation = Orientation.Horizontal,
+                    Children =
                     {
-                        Orientation = Orientation.Horizontal,
-                        Children =
+                        CompletionBar(Item),
+
+                        new LinearLayout
                         {
-                            CompletionBar(Item),
-
-                            new LinearLayout
+                            Margin = new Thickness(6, 3, 0, 5),
+                            Children =
                             {
-                                Margin = new Thickness(6,3,0,5),
-                                Children =
+                                new TextBlock
                                 {
-                                    new TextBlock
-                                    {
-                                        Text = Item.Name,
-                                        FontWeight = FontWeights.SemiBold,
-                                        WrapText = false,
-                                        Strikethrough = Item.IsComplete,
-                                        TextColor = !Item.IsComplete ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor
-                                    },
+                                    Text = Item.Name,
+                                    FontWeight = FontWeights.SemiBold,
+                                    WrapText = false,
+                                    Strikethrough = Item.IsComplete,
+                                    TextColor = !Item.IsComplete ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor
+                                },
 
-                                    new TextBlock
-                                    {
-                                        Text = GetSubtitle(),
-                                        FontWeight = FontWeights.SemiBold,
-                                        TextColor = subtitleColor,
-                                        WrapText = false
-                                    },
+                                new TextBlock
+                                {
+                                    Text = GetSubtitle(),
+                                    FontWeight = FontWeights.SemiBold,
+                                    TextColor = subtitleColor,
+                                    WrapText = false
+                                },
 
-                                    !string.IsNullOrWhiteSpace(details) ? new TextBlock
-                                    {
-                                        Text = details,
-                                        WrapText = false,
-                                        TextColor = Theme.Current.SubtleForegroundColor
-                                    } : null
-                                }
-                            }.LinearLayoutWeight(1)
-                        }
+                                !string.IsNullOrWhiteSpace(details) ? new TextBlock
+                                {
+                                    Text = details,
+                                    WrapText = false,
+                                    TextColor = Theme.Current.SubtleForegroundColor
+                                } : null
+                            }
+                        }.LinearLayoutWeight(1)
                     },
 
-                    Divider()
-                },
-
-                ContextMenu = () => TaskOrEventContextMenu.Generate(Item, ViewModel)
+                    ContextMenu = () => TaskOrEventContextMenu.Generate(Item, ViewModel)
+                }
             };
         }
 

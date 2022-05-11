@@ -153,6 +153,11 @@ namespace Vx.Droid
                     return new DroidFrameLayout();
                 }
 
+                if (view is Vx.Views.ListView)
+                {
+                    return new DroidListView();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

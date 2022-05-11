@@ -15,5 +15,7 @@ namespace Vx.Views
         public Func<object, View> ItemTemplate { get; set; }
 
         public Action<object> ItemClicked { get; set; }
+
+        public Thickness Padding { get; set; }
     }
 }

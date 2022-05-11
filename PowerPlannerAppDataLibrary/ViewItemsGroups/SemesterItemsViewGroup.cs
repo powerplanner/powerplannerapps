@@ -267,6 +267,11 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             /// </summary>
             public IList<object> Items { get; set; }
 
+            public class Spacing
+            {
+
+            }
+
             public DayWithScheduleSnapshot(SemesterItemsViewGroup semesterItems, DateTime date)
             {
                 _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), semesterItems, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, date, DayScheduleSnapshotComponent.HEIGHT_OF_HOUR, ScheduleItemComponent.SPACING_WITH_NO_ADDITIONAL, ScheduleItemComponent.SPACING_WITH_ADDITIONAL, ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
@@ -277,6 +282,8 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 Items = new MyAppendedObservableLists<object>(
 
                     HolidaysOnDay.Create(semesterItems.Items, date),
+
+                    new Spacing[] { new Spacing() },
 
                     TasksOrEventsOnDay.Get(AccountsManager.GetCached(semesterItems.LocalAccountId), semesterItems.Items, date),
 
