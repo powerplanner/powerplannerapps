@@ -18,6 +18,7 @@ using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using Vx.Views;
 using System.Drawing;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
@@ -540,7 +541,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             else if (size.Width < 676)
             {
-                if (size.Height < 700)
+                if (size.Height < (CalendarComponent.IntegratedTopControls ? 700 : 600))
                     ViewSizeState = ViewSizeStates.FullyCompact;
 
                 else
