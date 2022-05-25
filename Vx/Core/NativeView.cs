@@ -62,7 +62,7 @@ namespace Vx
                 var oldVal = p.GetValue(_originalComponent);
                 var newVal = p.GetValue(newView);
 
-                if (object.ReferenceEquals(_originalComponent, newVal) || object.Equals(_originalComponent, newVal))
+                if (object.ReferenceEquals(oldVal, newVal) || object.Equals(oldVal, newVal))
                 {
                     continue;
                 }
