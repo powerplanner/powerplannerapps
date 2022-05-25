@@ -51,7 +51,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         FontSize = Theme.Current.TitleFontSize,
                         FontWeight = FontWeights.SemiLight,
                         VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center
+                        TextAlignment = HorizontalAlignment.Center
                     }
                 });
 

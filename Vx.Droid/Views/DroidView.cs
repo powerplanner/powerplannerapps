@@ -118,7 +118,7 @@ namespace Vx.Droid.Views
                 };
             }
 
-            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout)
+            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout || VxParentView is Vx.Views.Border)
             {
                 int width;
                 int height;
