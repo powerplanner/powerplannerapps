@@ -392,7 +392,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 var tbDay = new TextBlock
                 {
                     Text = date.Day.ToString(),
-                    Margin = new Thickness(10,6,10, IsFullSize ? 6 : 0),
+                    Margin = IsFullSize ? new Thickness(10, 6, 10, 6) : new Thickness(10, 4, 8, 0),
                     FontSize = IsFullSize ? Theme.Current.SubtitleFontSize : Theme.Current.BodyFontSize,
                     FontWeight = FontWeights.SemiLight,
                     TextColor = isToday ? Theme.Current.ForegroundColor.Invert() : Theme.Current.SubtleForegroundColor,
@@ -429,8 +429,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     var itemCircles = new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
-                        VerticalAlignment = VerticalAlignment.Bottom,
-                        Margin = new Thickness(6,0,6,6)
+                        Margin = new Thickness(4,0,4,4)
                     };
 
                     foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>().Where(i => !i.IsComplete))
@@ -441,6 +440,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             Height = 4,
                             CornerRadius = 4,
                             BackgroundColor = item.Class.Color.ToColor(),
+                            VerticalAlignment = VerticalAlignment.Bottom,
                             Margin = new Thickness(0, 0, 4, 0)
                         });
                     }
@@ -554,18 +554,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     };
                 }
 
-                if (IsSelected)
+                return new Border
                 {
-                    return new Border
-                    {
-                        Margin = new Thickness(-2),
-                        BorderThickness = new Thickness(2),
-                        BorderColor = Theme.Current.AccentColor,
-                        Content = linearLayout
-                    };
-                }
-
-                return linearLayout;
+                    BorderThickness = new Thickness(2),
+                    BorderColor = IsSelected ? Theme.Current.AccentColor : Color.Transparent,
+                    Content = linearLayout
+                };
             }
 
             private View RenderDayItem(ViewItemTaskOrEvent item)
