@@ -83,7 +83,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Image
-                    Source="/Assets/Logo.png"
+                    Source="ms-appx:///Images/Logo.png"
                     Stretch="Uniform"
                     x:Name="logo"
                     Tapped="logo_Tapped"
