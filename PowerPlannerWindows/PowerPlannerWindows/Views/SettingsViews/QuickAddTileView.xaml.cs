@@ -1,5 +1,4 @@
-﻿using NotificationsVisualizerLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -31,46 +30,46 @@ namespace PowerPlannerUWP.Views.SettingsViews
 
         private void InitializeTiles()
         {
-            try
-            {
-                foreach (var tile in AllTiles())
-                    InitializeTile(tile);
-            }
+            //try
+            //{
+            //    foreach (var tile in AllTiles())
+            //        InitializeTile(tile);
+            //}
 
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
+            //catch (Exception ex)
+            //{
+            //    TelemetryExtension.Current?.TrackException(ex);
+            //}
         }
 
-        private IEnumerable<PreviewTile> AllTiles()
-        {
-            return new PreviewTile[]
-            {
-                SmallPreviewTile,
-                MediumPreviewTile
-            };
-        }
+        //private IEnumerable<PreviewTile> AllTiles()
+        //{
+        //    return new PreviewTile[]
+        //    {
+        //        SmallPreviewTile,
+        //        MediumPreviewTile
+        //    };
+        //}
 
-        private async void InitializeTile(PreviewTile tile)
-        {
-            try
-            {
-                tile.DisplayName = "Quick Add";
+        //private async void InitializeTile(PreviewTile tile)
+        //{
+        //    try
+        //    {
+        //        tile.DisplayName = "Quick Add";
 
-                tile.VisualElements.ShowNameOnSquare150x150Logo = true;
-                tile.VisualElements.Square44x44Logo = new Uri("ms-appx:///Assets/Square44x44Logo.png");
-                tile.VisualElements.Square71x71Logo = new Uri("ms-appx:///Assets/QuickAddTile/Square71x71Logo.png");
-                tile.VisualElements.Square150x150Logo = new Uri("ms-appx:///Assets/QuickAddTile/Square150x150Logo.png");
+        //        tile.VisualElements.ShowNameOnSquare150x150Logo = true;
+        //        tile.VisualElements.Square44x44Logo = new Uri("ms-appx:///Assets/Square44x44Logo.png");
+        //        tile.VisualElements.Square71x71Logo = new Uri("ms-appx:///Assets/QuickAddTile/Square71x71Logo.png");
+        //        tile.VisualElements.Square150x150Logo = new Uri("ms-appx:///Assets/QuickAddTile/Square150x150Logo.png");
 
-                await tile.UpdateAsync();
-            }
+        //        await tile.UpdateAsync();
+        //    }
 
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
+        //    catch (Exception ex)
+        //    {
+        //        TelemetryExtension.Current?.TrackException(ex);
+        //    }
+        //}
 
         public override void OnViewModelLoadedOverride()
         {

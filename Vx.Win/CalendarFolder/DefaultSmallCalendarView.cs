@@ -16,7 +16,7 @@ namespace InterfacesUWP
 
         protected override void OnMouseOverChanged(Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            if (IsMouseOver && e.Pointer.PointerDeviceType != Windows.Devices.Input.PointerDeviceType.Touch)
+            if (IsMouseOver && e.Pointer.PointerDeviceType != Microsoft.UI.Input.PointerDeviceType.Touch)
             {
                 for (int i = 0; i < _calendars.Count; i++)
                     (_calendars[i] as DefaultSmallCalendarGrid).ShowArrows();

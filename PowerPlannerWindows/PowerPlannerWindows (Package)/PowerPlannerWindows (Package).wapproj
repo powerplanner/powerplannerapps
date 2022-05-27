@@ -80,14 +80,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.3">
-      <IncludeAssets>build</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.3">
-      <IncludeAssets>build</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Images\ImageLoading.jpg" />
     <Content Include="Images\ImageNotFound.jpg" />
     <Content Include="Images\ImageOffline.jpg" />
@@ -166,6 +158,9 @@
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
     <Content Include="Images\Wide310x150Logo.scale-400.png" />
     <None Include="PowerPlannerWindows %28Package%29_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.3" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
 </Project>

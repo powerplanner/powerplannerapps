@@ -1,122 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>Vx.Win</RootNamespace>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Controls\BarePasswordBox.xaml" />
-    <None Remove="Controls\BareTextBox.xaml" />
-    <None Remove="Controls\ComboBoxWithActions.xaml" />
-    <None Remove="Controls\TimePickers\TextBasedTimePicker.xaml" />
-    <None Remove="Legacy\ColorPicker.xaml" />
     <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
     <None Remove="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
-    <None Remove="Snackbar\BareSnackbarPresenter.xaml" />
-    <None Remove="Themes\Generic.xaml" />
-    <None Remove="VerticalProgressBarFolder\VerticalProgressBar.xaml" />
-    <None Remove="ViewModelPresenters\GenericViewModelPresenter.xaml" />
-    <None Remove="ViewModelPresenters\PagedViewModelPresenter.xaml" />
-    <None Remove="ViewModelPresenters\PagedViewModelWithPopupsPresenter.xaml" />
-    <None Remove="ViewModelPresenters\PopupsPresenter.xaml" />
-    <None Remove="ZoomableImageFolder\ZoomableImage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Fonts\MaterialIcons-Regular.ttf" />
     <Content Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
   </ItemGroup>
-
   <ItemGroup>
-      <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.3" />
-      <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.3" />
-      <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.3" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
     <ProjectReference Include="..\Vx\Vx.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\BarePasswordBox.xaml.cs">
-      <DependentUpon>BarePasswordBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\BareTextBox.xaml.cs">
-      <DependentUpon>BareTextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\ComboBoxWithActions.xaml.cs">
-      <DependentUpon>ComboBoxWithActions.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\TimePickers\TextBasedTimePicker.xaml.cs">
-      <DependentUpon>TextBasedTimePicker.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Legacy\ColorPicker.xaml.cs">
-      <DependentUpon>ColorPicker.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Snackbar\BareSnackbarPresenter.xaml.cs">
-      <DependentUpon>BareSnackbarPresenter.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="VerticalProgressBarFolder\VerticalProgressBar.xaml.cs">
-      <DependentUpon>VerticalProgressBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ViewModelPresenters\GenericViewModelPresenter.xaml.cs">
-      <DependentUpon>GenericViewModelPresenter.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ViewModelPresenters\PagedViewModelPresenter.xaml.cs">
-      <DependentUpon>PagedViewModelPresenter.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ViewModelPresenters\PagedViewModelWithPopupsPresenter.xaml.cs">
-      <DependentUpon>PagedViewModelWithPopupsPresenter.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ViewModelPresenters\PopupsPresenter.xaml.cs">
-      <DependentUpon>PopupsPresenter.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ZoomableImageFolder\ZoomableImage.xaml.cs">
-      <DependentUpon>ZoomableImage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Controls\BarePasswordBox.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controls\BareTextBox.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controls\ComboBoxWithActions.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Controls\TimePickers\TextBasedTimePicker.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Legacy\ColorPicker.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Snackbar\BareSnackbarPresenter.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="VerticalProgressBarFolder\VerticalProgressBar.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="ViewModelPresenters\GenericViewModelPresenter.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="ViewModelPresenters\PagedViewModelPresenter.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="ViewModelPresenters\PagedViewModelWithPopupsPresenter.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="ViewModelPresenters\PopupsPresenter.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="ZoomableImageFolder\ZoomableImage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 </Project>
