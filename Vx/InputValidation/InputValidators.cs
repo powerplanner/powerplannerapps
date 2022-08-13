@@ -11,17 +11,19 @@ namespace BareMvvm.Core
     {
         public static readonly EmailInputValidator Instance = new EmailInputValidator();
 
-        private EmailInputValidator() : base(StringTools.EmailRegex, Resources.InvalidInput_InvalidEmail) { }
+        private EmailInputValidator() : base(StringTools.EmailRegex, Resources.InvalidInput_InvalidEmail, caseSensitive: false) { }
     }
 
     public class RegexInputValidator : IInputValidator
     {
         public Regex Regex { get; private set; }
         public string ErrorText { get; private set; }
+        public bool CaseSensitive { get; private set; }
 
-        public RegexInputValidator(string regex, string errorText)
+        public RegexInputValidator(string regex, string errorText, bool caseSensitive = true)
         {
             ErrorText = errorText;
+            CaseSensitive = caseSensitive;
 
             if (!regex.StartsWith("^"))
             {
@@ -32,7 +34,7 @@ namespace BareMvvm.Core
                 regex += "$";
             }
 
-            Regex = new Regex(regex);
+            Regex = CaseSensitive ? new Regex(regex) : new Regex(regex, RegexOptions.IgnoreCase);
         }
 
         public InputValidationState Validate(string text)
