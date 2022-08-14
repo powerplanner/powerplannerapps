@@ -84,9 +84,27 @@ namespace Vx.Views
             MarkDirty();
         }
 
+        private SizeF _prevSize;
         private void NativeComponent_ComponentSizeChanged(object sender, SizeF e)
         {
-            OnSizeChanged(e);
+            if (SubscribeToWidthBreakpoints != null)
+            {
+                foreach (var b in SubscribeToWidthBreakpoints)
+                {
+                    if (e.Width >= b && _prevSize.Width < b)
+                    {
+                        MarkDirty();
+                    }
+
+                    else if (e.Width < b && _prevSize.Width >= b)
+                    {
+                        MarkDirty();
+                    }
+                }
+            }
+
+            OnSizeChanged(e, _prevSize);
+            _prevSize = e;
         }
 
         private async void EnableHotReload()
@@ -411,10 +429,15 @@ namespace Vx.Views
         public virtual bool SubscribeToIsMouseOver => false;
 
         /// <summary>
+        /// Components can override this to react to when a breakpoint is hit. Note that a breakpoint of 600 will trigger when going from 599 to 600, or when going from 600 to 599. Your rendering logic should use if >= 600.
+        /// </summary>
+        public virtual IEnumerable<float> SubscribeToWidthBreakpoints => null;
+
+        /// <summary>
         /// Components can override this to create adaptive UI, choosing to mark dirty at different sizes
         /// </summary>
         /// <param name="size"></param>
-        protected virtual void OnSizeChanged(SizeF size)
+        protected virtual void OnSizeChanged(SizeF size, SizeF previousSize)
         {
             // Nothing here
         }

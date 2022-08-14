@@ -492,77 +492,8 @@
             </PivotItem>
             
             <!--Grades-->
-            <PivotItem x:Uid="ClassPage_PivotItemGrades" Header="Grades">
+            <PivotItem x:Name="PivotItemGrades" x:Uid="ClassPage_PivotItemGrades" Header="Grades" Margin="0">
 
-                <ScrollViewer Style="{StaticResource PageScrollViewerStyle}" Visibility="{Binding ViewItemsGroupClass.IsGradesLoaded, Converter={StaticResource BoolToVisibilityConverter}}">
-
-                    <Grid Margin="8,0,8,20">
-
-                        <StackPanel x:Name="StackPanelGradesNormal">
-
-                            <!--Grades info section-->
-                            <ContentControl x:Name="GradeSummaryContainer" Margin="0, 0, 0, 12" HorizontalContentAlignment="Stretch"/>
-
-                            <ItemsControl
-                                ItemsSource="{Binding ViewItemsGroupClass.Class.WeightCategories}" Margin="0,0,-12,0">
-
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <interfaces:MyAdaptiveGridPanel MinColumnWidth="300">
-                                            <interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                                <TransitionCollection>
-                                                    <AddDeleteThemeTransition />
-                                                </TransitionCollection>
-                                            </interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                        </interfaces:MyAdaptiveGridPanel>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <gradeViews:WeightCategoryListViewItem
-                                            Margin="0,12,12,0"
-                                            OnRequestViewGrade="WeightCategoryListViewItem_OnRequestViewGrade"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-
-                            </ItemsControl>
-
-                            <Button
-                                x:Name="HeaderUnassignedItems"
-                                Style="{StaticResource HeaderStyle}"
-                                Content="Unassigned items"
-                                HorizontalAlignment="Stretch"
-                                Padding="8,0"
-                                Height="36"
-                                Margin="0,40,0,0"
-                                Visibility="{Binding ViewItemsGroupClass.HasUnassignedItems, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                            <ItemsControl
-                                ItemsSource="{Binding ViewItemsGroupClass.UnassignedItems}" Margin="0,0,-12,0">
-
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <interfaces:MyAdaptiveGridPanel MinColumnWidth="300"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <taskOrEventViews:TaskOrEventListViewItem
-                                            Margin="0,6,6,0"
-                                            OnClickItem="TaskOrEventListViewItem_OnClickItem"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                                
-                            </ItemsControl>
-
-                        </StackPanel>
-
-                    </Grid>
-
-                </ScrollViewer>
-                
             </PivotItem>
 
         </Pivot>

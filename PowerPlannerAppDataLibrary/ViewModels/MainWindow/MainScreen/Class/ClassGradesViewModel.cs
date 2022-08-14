@@ -1,5 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Components;
 using PowerPlannerAppDataLibrary.Converters;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
@@ -9,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -201,6 +204,117 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         public void OpenWhatIf()
         {
             MainScreenViewModel.Navigate(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+        }
+
+        private const float WidthBreakpoint = 640;
+
+        public override IEnumerable<float> SubscribeToWidthBreakpoints => new float[] { WidthBreakpoint };
+
+        protected override View Render()
+        {
+            if (Size.Width < WidthBreakpoint)
+            {
+                return new ListView
+                {
+                    Items = ItemsWithHeaders,
+                    ItemTemplate = item =>
+                    {
+                        if (item is ViewItemGrade g)
+                        {
+                            return new GradeListViewItemComponent
+                            {
+                                Item = g,
+                                OnRequestViewGrade = () => ShowItem(g),
+                                Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
+                            };
+                        }
+
+                        if (item is ViewItemWeightCategory w)
+                        {
+                            return new Border
+                            {
+                                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                                Content = new LinearLayout
+                                {
+                                    Orientation = Orientation.Horizontal,
+                                    Children =
+                                    {
+                                        new TextBlock
+                                        {
+                                            Text = w.Name,
+                                            FontSize = Theme.Current.SubtitleFontSize,
+                                            Margin = new Thickness(12, 6, 6, 6),
+                                            WrapText = false
+                                        }.LinearLayoutWeight(1),
+
+                                        new TextBlock
+                                        {
+                                            Text = w.WeightAchievedAndTotalString,
+                                            FontSize = Theme.Current.SubtitleFontSize,
+                                            Margin = new Thickness(0, 6, 6, 6),
+                                            TextColor = Theme.Current.SubtleForegroundColor,
+                                            WrapText = false
+                                        }
+                                    }
+                                },
+                                Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0),
+                                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
+                                BorderThickness = new Thickness(1)
+                            };
+                        }
+
+                        if (item is string str && str == UNASSIGNED_ITEMS_HEADER)
+                        {
+                            return new Border
+                            {
+                                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                                Content = new TextBlock
+                                {
+                                    Text = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader"),
+                                    FontSize = Theme.Current.SubtitleFontSize,
+                                    Margin = new Thickness(12, 6, 6, 6),
+                                    WrapText = false
+                                },
+                                Margin = new Thickness(Theme.Current.PageMargin, 18, Theme.Current.PageMargin, 3),
+                                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
+                                BorderThickness = new Thickness(1)
+                            };
+                        }
+
+                        if (item is ViewItemTaskOrEvent t)
+                        {
+                            if (t.IsUnassignedItem)
+                            {
+                                return new Components.TaskOrEventListItemComponent
+                                {
+                                    Item = t,
+                                    ViewModel = this
+                                };
+                            }
+                            else
+                            {
+                                return new GradeListViewItemComponent
+                                {
+                                    Item = t,
+                                    OnRequestViewGrade = () => ShowItem(t),
+                                    Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0),
+                                };
+                            }
+                        }
+
+                        return new GradesSummaryComponent(this)
+                        {
+                            Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
+                        };
+                    }
+                };
+            }
+
+            // Otherwise full-size
+            return new TextBlock
+            {
+                Text = "Full size!"
+            };
         }
 
         public GradesSummaryComponent SummaryComponent { get; private set; }

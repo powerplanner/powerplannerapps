@@ -140,8 +140,6 @@ namespace PowerPlannerUWP.Views
         public ClassView()
         {
             this.InitializeComponent();
-
-            HeaderUnassignedItems.Content = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader");
         }
 
         public override async void OnViewModelLoadedOverride()
@@ -152,7 +150,6 @@ namespace PowerPlannerUWP.Views
 
             try
             {
-                GradeSummaryContainer.Content = ViewModel.GradesViewModel.SummaryComponent.Render();
                 ViewModel.ViewItemsGroupClass.Class.Schedules.CollectionChanged += Schedules_CollectionChanged;
                 UpdateNoSchedulesText();
 
@@ -330,6 +327,11 @@ namespace PowerPlannerUWP.Views
             GoToCollapsedHeaderVisualState();
 
             UpdateAppBarButtons();
+
+            if (PivotItemGrades.Content == null)
+            {
+                PivotItemGrades.Content = ViewModel.GradesViewModel.Render();
+            }
         }
 
         private void GoToCollapsedHeaderVisualState()

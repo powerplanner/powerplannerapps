@@ -16,15 +16,28 @@ namespace PowerPlannerAppDataLibrary.Components
         public BaseMainScreenViewModelDescendant ViewModel { get; set; }
         public bool IncludeDate { get; set; } = true;
         public bool IncludeClass { get; set; } = true;
+        public bool IncludeMargin { get; set; } = true;
+
+        public void MarkDirtyPublic()
+        {
+            MarkDirty();
+        }
 
         protected override View Render()
         {
+            if (Item == null || ViewModel == null)
+            {
+                return null;
+            }
+
+            Console.WriteLine("Rendering " + Item.Name);
+
             string details = GetDetails();
             var subtitleColor = Item.Class.Color.ToColor().Opacity(Item.IsComplete ? 0.7 : 1);
 
             return new Border
             {
-                Margin = new Thickness(12,3,12,3),
+                Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 3, Theme.Current.PageMargin, 3) : new Thickness(),
                 BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 CornerRadius = 4,
                 Tapped = () => ViewModel.MainScreenViewModel.ShowItem(Item),

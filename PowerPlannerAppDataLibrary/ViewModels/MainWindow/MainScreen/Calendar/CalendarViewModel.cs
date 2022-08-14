@@ -534,7 +534,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             SelectedDate = Today;
         }
 
-        protected override void OnSizeChanged(SizeF size)
+        protected override void OnSizeChanged(SizeF size, SizeF previousSize)
         {
             if (size.Height < 550)
                 ViewSizeState = ViewSizeStates.FullyCompact;
