@@ -82,18 +82,11 @@ namespace Vx.Droid.Views
                         {
                             if (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
                             {
-                                // Temporary workaround to solve nested vertical layout within horizontal layout...
-                                // Key scenarios to test are...
+                                // Key scenarios of nested LinearLayouts to test are...
                                 // - Full size calendar day square background colors
                                 // - Class grade summary component
-                                if (Vx.Views.LinearLayout.GetWeight(parentLinearLayout) > 0)
-                                {
-                                    height = LinearLayout.LayoutParams.MatchParent;
-                                }
-                                else
-                                {
-                                    height = LinearLayout.LayoutParams.WrapContent;
-                                }
+                                // - Class grade items
+                                height = LinearLayout.LayoutParams.MatchParent;
                             }
                             else
                             {
