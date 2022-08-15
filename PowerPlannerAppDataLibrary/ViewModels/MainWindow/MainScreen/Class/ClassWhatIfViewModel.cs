@@ -252,6 +252,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 return null;
             }
 
+            var leftMargin = Theme.Current.PageMargin + NookInsets.Left;
+            var rightMargin = Theme.Current.PageMargin + NookInsets.Right;
+
             return new ScrollView
             {
                 Content = new LinearLayout
@@ -263,7 +266,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                             BackgroundColor = Class.Color.ToColor(),
                             Content = new LinearLayout
                             {
-                                Margin = new Thickness(Theme.Current.PageMargin),
+                                Margin = new Thickness(leftMargin, Theme.Current.PageMargin + NookInsets.Top, rightMargin, Theme.Current.PageMargin),
                                 Children =
                                 {
                                     // ========= WHAT IF? ===========
@@ -362,14 +365,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         new GradesSummaryComponent
                         {
                             Class = Class,
-                            Margin = new Thickness(Theme.Current.PageMargin)
+                            Margin = new Thickness(leftMargin, Theme.Current.PageMargin, rightMargin, 12)
                         },
 
                         new AdaptiveGradesListComponent
                         {
                             Class = Class,
                             OnRequestViewGrade = g => ShowItem(g),
-                            Margin = new Thickness(Theme.Current.PageMargin),
+                            Margin = new Thickness(leftMargin, 12, rightMargin, Theme.Current.PageMargin + NookInsets.Bottom),
                             IsInWhatIfMode = true
                         }
                     }
