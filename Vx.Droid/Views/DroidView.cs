@@ -107,10 +107,21 @@ namespace Vx.Droid.Views
                     }
                 }
 
+                // If width (or height) is match_parent, we will NOT use gravity, it doesn't intermix well
+                GravityFlags gravity;
+                if (isVertical)
+                {
+                    gravity = width == LinearLayout.LayoutParams.MatchParent ? (GravityFlags)(-1) : newView.HorizontalAlignment.ToDroid();
+                }
+                else
+                {
+                    gravity = height == LinearLayout.LayoutParams.MatchParent ? (GravityFlags)(-1) : newView.VerticalAlignment.ToDroid();
+                }
+
                 // For height on buttons, we need to NOT use MatchParent for height since otherwise they'll drop their padding/etc and go down to like 12px tall
                 View.LayoutParameters = new LinearLayout.LayoutParams(width, height)
                 {
-                    Gravity = isVertical ? newView.HorizontalAlignment.ToDroid() : newView.VerticalAlignment.ToDroid(),
+                    Gravity = gravity,
                     MarginStart = AsPx(newView.Margin.Left),
                     TopMargin = AsPx(newView.Margin.Top),
                     MarginEnd = AsPx(newView.Margin.Right),
