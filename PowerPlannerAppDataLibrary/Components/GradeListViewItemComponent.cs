@@ -11,6 +11,7 @@ namespace PowerPlannerAppDataLibrary.Components
 {
     public class GradeListViewItemComponent : VxComponent
     {
+        [VxSubscribe] // Subscribe is needed for What If? mode
         public BaseViewItemMegaItem Item { get; set; }
         public Action OnRequestViewGrade { get; set; }
         public bool IsInWhatIfMode { get; set; }

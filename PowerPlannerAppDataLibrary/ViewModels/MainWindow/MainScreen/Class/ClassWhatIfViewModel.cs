@@ -19,7 +19,7 @@ using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class.C
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class ClassWhatIfViewModel : ComponentViewModel
+    public class ClassWhatIfViewModel : PopupComponentViewModel
     {
         private ViewItemClass _originalClass;
 
@@ -31,6 +31,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         public ClassWhatIfViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             _originalClass = c;
+            Title = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockHeader.Text");
         }
 
         private ViewItemClass _class;

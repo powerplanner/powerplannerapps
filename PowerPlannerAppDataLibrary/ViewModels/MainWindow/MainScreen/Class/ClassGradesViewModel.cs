@@ -206,15 +206,34 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void OpenWhatIf()
         {
-            MainScreenViewModel.Navigate(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+            if (PowerPlannerApp.ShowClassesAsPopups)
+            {
+                MainScreenViewModel.ShowPopup(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+            }
+            else
+            {
+                MainScreenViewModel.Navigate(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+            }
         }
 
         private const float WidthBreakpoint = 640;
 
         public override IEnumerable<float> SubscribeToWidthBreakpoints => new float[] { WidthBreakpoint };
 
+        protected override void Initialize()
+        {
+            _ = LoadAsync();
+
+            base.Initialize();
+        }
+
         protected override View Render()
         {
+            if (!IsLoaded)
+            {
+                return null;
+            }
+
             if (Size.Width < WidthBreakpoint)
             {
                 return new ListView
@@ -340,19 +359,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             };
         }
 
-        internal static View RenderHeader(ViewItemWeightCategory w, bool includeMargin = true)
+        private class WeightHeaderComponent : VxComponent
         {
-            return new Border
+            [VxSubscribe] // Subscribing is needed for What If? mode
+            public ViewItemWeightCategory Weight { get; set; }
+
+            public bool IncludeMargin { get; set; }
+
+            protected override View Render()
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                Content = new LinearLayout
+                return new Border
                 {
-                    Orientation = Orientation.Horizontal,
-                    Children =
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                    Content = new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Children =
                     {
                         new TextBlock
                         {
-                            Text = w.Name,
+                            Text = Weight.Name,
                             FontSize = Theme.Current.SubtitleFontSize,
                             Margin = new Thickness(12, 6, 6, 6),
                             WrapText = false
@@ -360,17 +386,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                         new TextBlock
                         {
-                            Text = w.WeightAchievedAndTotalString,
+                            Text = Weight.WeightAchievedAndTotalString,
                             FontSize = Theme.Current.SubtitleFontSize,
                             Margin = new Thickness(0, 6, 6, 6),
                             TextColor = Theme.Current.SubtleForegroundColor,
                             WrapText = false
                         }
                     }
-                },
-                Margin = includeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0),
-                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
-                BorderThickness = new Thickness(1)
+                    },
+                    Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0),
+                    BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
+                    BorderThickness = new Thickness(1)
+                };
+            }
+        }
+
+        internal static View RenderHeader(ViewItemWeightCategory w, bool includeMargin = true)
+        {
+            return new WeightHeaderComponent
+            {
+                Weight = w,
+                IncludeMargin = includeMargin
             };
         }
 
@@ -453,7 +489,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                 return new LinearLayout
                 {
-                    Margin = VxPlatform.Current == Platform.iOS ? new Thickness(18) : VxPlatform.Current == Platform.Uwp ? new Thickness(0) : new Thickness(16, 16, 16, 0),
                     Children =
                     {
                         new LinearLayout
@@ -520,23 +555,42 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                             HorizontalAlignment = HorizontalAlignment.Right
                                         },
 
-                                        OnRequestConfigureGrades != null ? new TextButton
-                                        {
-                                            Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
-                                            HorizontalAlignment = HorizontalAlignment.Right,
-                                            Margin = new Thickness(0, 6, 0, 0),
-                                            Click = () => OnRequestConfigureGrades()
-                                        } : null
+                                        //OnRequestConfigureGrades != null ? new TextButton
+                                        //{
+                                        //    Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
+                                        //    HorizontalAlignment = HorizontalAlignment.Right,
+                                        //    Margin = new Thickness(0, 6, 0, 0),
+                                        //    Click = () => OnRequestConfigureGrades()
+                                        //} : null
                                     }
                                 }
                             }
                         },
 
-                        OnRequestOpenWhatIf != null ? new AccentButton
+                        OnRequestOpenWhatIf != null && OnRequestConfigureGrades != null ? new LinearLayout
                         {
-                            Text = PowerPlannerResources.GetString("ClassPage_ButtonWhatIfMode.Content"),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            Click = () => OnRequestOpenWhatIf()
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                // On Droid AccentButton needs to be in a container to respect the left alignment
+                                new Border
+                                {
+                                    Content = new AccentButton
+                                    {
+                                        Text = PowerPlannerResources.GetString("ClassPage_ButtonWhatIfMode.Content"),
+                                        HorizontalAlignment = HorizontalAlignment.Left,
+                                        Click = () => OnRequestOpenWhatIf()
+                                    }
+                                }.LinearLayoutWeight(1),
+
+                                new TextButton
+                                {
+                                    Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
+                                    HorizontalAlignment = HorizontalAlignment.Right,
+                                    Margin = new Thickness(0, 6, 0, 0),
+                                    Click = () => OnRequestConfigureGrades()
+                                }
+                            }
                         } : null,
 
                         RenderWeightCategories()
