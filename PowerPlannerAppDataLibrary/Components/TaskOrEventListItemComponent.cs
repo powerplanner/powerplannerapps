@@ -17,6 +17,7 @@ namespace PowerPlannerAppDataLibrary.Components
         public bool IncludeDate { get; set; } = true;
         public bool IncludeClass { get; set; } = true;
         public bool IncludeMargin { get; set; } = true;
+        public Action InterceptOnTapped { get; set; }
 
         public void MarkDirtyPublic()
         {
@@ -37,10 +38,20 @@ namespace PowerPlannerAppDataLibrary.Components
 
             return new Border
             {
-                Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 3, Theme.Current.PageMargin, 3) : new Thickness(),
+                Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 3, Theme.Current.PageMargin, 3) : new Thickness(0, 3, 0, 3),
                 BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 CornerRadius = 4,
-                Tapped = () => ViewModel.MainScreenViewModel.ShowItem(Item),
+                Tapped = () =>
+                {
+                    if (InterceptOnTapped != null)
+                    {
+                        InterceptOnTapped();
+                    }
+                    else
+                    {
+                        ViewModel.MainScreenViewModel.ShowItem(Item);
+                    }
+                },
                 Content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,

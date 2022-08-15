@@ -53,7 +53,11 @@ namespace PowerPlannerAndroid.Adapters
                     return new GenericRecyclerViewHolder(gradeView);
 
                 case TOP_HEADER_ITEM_TYPE:
-                    var topHeaderView = new ClassGradesViewModel.GradesSummaryComponent(_viewModel).Render();
+                    var topHeaderView = new ClassGradesViewModel.GradesSummaryComponent
+                    {
+                        Class = _viewModel.Class,
+                        OnRequestConfigureGrades = _viewModel.ConfigureGrades
+                    }.Render();
                     topHeaderView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
                     return new GenericRecyclerViewHolder(topHeaderView);
 

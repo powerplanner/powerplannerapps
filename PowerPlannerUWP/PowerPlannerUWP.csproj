@@ -208,9 +208,6 @@
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassWhatIfView.xaml.cs">
-      <DependentUpon>ClassWhatIfView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\EditClassDetailsView.xaml.cs">
       <DependentUpon>EditClassDetailsView.xaml</DependentUpon>
@@ -509,10 +506,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ClassWhatIfView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\EditClassDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -652,7 +645,7 @@
     <Page Include="Views\CalendarViews\MainCalendarItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-	</Page>
+    </Page>
     <Page Include="Views\ClassViews\ClassGradesHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

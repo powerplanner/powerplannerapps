@@ -25,9 +25,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
     {
         public static readonly string UNASSIGNED_ITEMS_HEADER = "Unassigned items";
 
+        [VxSubscribe]
+        public ViewItemsGroups.ClassViewItemsGroup ViewItemsGroup { get; private set; }
+
         public ClassGradesViewModel(ClassViewModel parent) : base(parent)
         {
-            SummaryComponent = new GradesSummaryComponent(this);
+            ViewItemsGroup = ClassViewModel.ViewItemsGroupClass;
         }
 
         protected override async Task LoadAsyncOverride()
@@ -221,89 +224,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     {
                         if (item is ViewItemGrade g)
                         {
-                            return new GradeListViewItemComponent
-                            {
-                                Item = g,
-                                OnRequestViewGrade = () => ShowItem(g),
-                                Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
-                            };
+                            return RenderGrade(g, i => ShowItem(i), isInWhatIfMode: false);
                         }
 
                         if (item is ViewItemWeightCategory w)
                         {
-                            return new Border
-                            {
-                                BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                                Content = new LinearLayout
-                                {
-                                    Orientation = Orientation.Horizontal,
-                                    Children =
-                                    {
-                                        new TextBlock
-                                        {
-                                            Text = w.Name,
-                                            FontSize = Theme.Current.SubtitleFontSize,
-                                            Margin = new Thickness(12, 6, 6, 6),
-                                            WrapText = false
-                                        }.LinearLayoutWeight(1),
-
-                                        new TextBlock
-                                        {
-                                            Text = w.WeightAchievedAndTotalString,
-                                            FontSize = Theme.Current.SubtitleFontSize,
-                                            Margin = new Thickness(0, 6, 6, 6),
-                                            TextColor = Theme.Current.SubtleForegroundColor,
-                                            WrapText = false
-                                        }
-                                    }
-                                },
-                                Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0),
-                                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
-                                BorderThickness = new Thickness(1)
-                            };
+                            return RenderHeader(w);
                         }
 
                         if (item is string str && str == UNASSIGNED_ITEMS_HEADER)
                         {
-                            return new Border
-                            {
-                                BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                                Content = new TextBlock
-                                {
-                                    Text = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader"),
-                                    FontSize = Theme.Current.SubtitleFontSize,
-                                    Margin = new Thickness(12, 6, 6, 6),
-                                    WrapText = false
-                                },
-                                Margin = new Thickness(Theme.Current.PageMargin, 18, Theme.Current.PageMargin, 3),
-                                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
-                                BorderThickness = new Thickness(1)
-                            };
+                            return RenderUnassignedHeader();
                         }
 
                         if (item is ViewItemTaskOrEvent t)
                         {
                             if (t.IsUnassignedItem)
                             {
-                                return new Components.TaskOrEventListItemComponent
-                                {
-                                    Item = t,
-                                    ViewModel = this
-                                };
+                                return RenderUnassignedItem(t);
                             }
                             else
                             {
-                                return new GradeListViewItemComponent
-                                {
-                                    Item = t,
-                                    OnRequestViewGrade = () => ShowItem(t),
-                                    Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0),
-                                };
+                                return RenderGrade(t, i => ShowItem(i), isInWhatIfMode: false);
                             }
                         }
 
-                        return new GradesSummaryComponent(this)
+                        return new GradesSummaryComponent
                         {
+                            Class = Class,
+                            OnRequestConfigureGrades = ConfigureGrades,
+                            OnRequestOpenWhatIf = OpenWhatIf,
                             Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
                         };
                     }
@@ -311,36 +261,196 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
 
             // Otherwise full-size
-            return new TextBlock
+            const float minColumnWidth = 280;
+            const float columnSpacing = 24;
+
+            var gridPanel = new AdaptiveGradesListComponent
             {
-                Text = "Full size!"
+                Class = Class,
+                OnRequestViewGrade = g => ShowItem(g)
+            };
+
+            var unassignedPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
+            {
+                MinColumnWidth = minColumnWidth,
+                ColumnSpacing = columnSpacing
+            } : (View)new AdaptiveGridPanelComponent
+            {
+                MinColumnWidth = minColumnWidth,
+                ColumnSpacing = columnSpacing
+            };
+
+            List<View> unassignedPanelChildren = VxPlatform.Current == Platform.Uwp ? (unassignedPanel as AdaptiveGridPanel).Children : (unassignedPanel as AdaptiveGridPanelComponent).Children;
+
+            foreach (var t in ViewItemsGroup.UnassignedItems)
+            {
+                unassignedPanelChildren.Add(RenderUnassignedItem(t, includeMargin: false));
+            }
+
+            return new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    Children =
+                    {
+                        new GradesSummaryComponent
+                        {
+                            Class = Class,
+                            OnRequestOpenWhatIf = OpenWhatIf,
+                            OnRequestConfigureGrades = ConfigureGrades
+                        },
+
+                        gridPanel,
+
+                        ViewItemsGroup.HasUnassignedItems ? RenderUnassignedHeader(includeMargin: false) : null,
+
+                        ViewItemsGroup.HasUnassignedItems ? unassignedPanel : null
+                    }
+                }
+            };
+        }
+
+        private View RenderUnassignedItem(ViewItemTaskOrEvent t, bool includeMargin = true)
+        {
+            return new Components.TaskOrEventListItemComponent
+            {
+                Item = t,
+                ViewModel = this,
+                IncludeMargin = includeMargin,
+                InterceptOnTapped = () => ShowUnassignedItem(t)
+            };
+        }
+
+        private View RenderUnassignedHeader(bool includeMargin = true)
+        {
+            return new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                Content = new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader"),
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    Margin = new Thickness(12, 6, 6, 6),
+                    WrapText = false
+                },
+                Margin = new Thickness(includeMargin ? Theme.Current.PageMargin : 0, 18, includeMargin ? Theme.Current.PageMargin : 0, 3),
+                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
+                BorderThickness = new Thickness(1)
+            };
+        }
+
+        internal static View RenderHeader(ViewItemWeightCategory w, bool includeMargin = true)
+        {
+            return new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                Content = new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = w.Name,
+                            FontSize = Theme.Current.SubtitleFontSize,
+                            Margin = new Thickness(12, 6, 6, 6),
+                            WrapText = false
+                        }.LinearLayoutWeight(1),
+
+                        new TextBlock
+                        {
+                            Text = w.WeightAchievedAndTotalString,
+                            FontSize = Theme.Current.SubtitleFontSize,
+                            Margin = new Thickness(0, 6, 6, 6),
+                            TextColor = Theme.Current.SubtleForegroundColor,
+                            WrapText = false
+                        }
+                    }
+                },
+                Margin = includeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0),
+                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
+                BorderThickness = new Thickness(1)
+            };
+        }
+
+        private static View RenderGrade(BaseViewItemMegaItem i, Action<BaseViewItemMegaItem> onRequestViewGrade, bool isInWhatIfMode, bool includeMargin = true)
+        {
+            return new GradeListViewItemComponent
+            {
+                Item = i,
+                OnRequestViewGrade = () => onRequestViewGrade(i),
+                Margin = includeMargin ? new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0) : new Thickness(),
+                IsInWhatIfMode = isInWhatIfMode
             };
         }
 
         public GradesSummaryComponent SummaryComponent { get; private set; }
 
-        public class GradesSummaryComponent : VxComponent
+        internal class AdaptiveGradesListComponent : VxComponent
         {
-            [VxSubscribe]
-            public ViewItemClass Class { get; private set; }
+            public const float MinColumnWidth = 280;
+            public const float ColumnSpacing = 24;
 
-            private ClassGradesViewModel _viewModel;
+            public ViewItemClass Class { get; set; }
 
-            public GradesSummaryComponent(ClassGradesViewModel viewModel)
-            {
-                Class = viewModel.Class;
-                _viewModel = viewModel;
+            public Action<BaseViewItemMegaItem> OnRequestViewGrade { get; set; }
 
-                Class.WeightCategories.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(WeightCategories_CollectionChanged).Handler;
-            }
-
-            private void WeightCategories_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-            {
-                MarkDirty();
-            }
+            public bool IsInWhatIfMode { get; set; }
 
             protected override View Render()
             {
+                SubscribeToCollection(Class.WeightCategories);
+
+                var gridPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
+                {
+                    MinColumnWidth = MinColumnWidth,
+                    ColumnSpacing = ColumnSpacing
+                } : (View)new AdaptiveGridPanelComponent
+                {
+                    MinColumnWidth = MinColumnWidth,
+                    ColumnSpacing = ColumnSpacing
+                };
+
+                List<View> gridPanelChildren = VxPlatform.Current == Platform.Uwp ? (gridPanel as AdaptiveGridPanel).Children : (gridPanel as AdaptiveGridPanelComponent).Children;
+
+                foreach (var weight in Class.WeightCategories)
+                {
+                    SubscribeToCollection(weight.Grades);
+
+                    var linLayout = new LinearLayout
+                    {
+                        Children =
+                    {
+                        RenderHeader(weight, includeMargin: false)
+                    }
+                    };
+
+                    foreach (var g in weight.Grades)
+                    {
+                        linLayout.Children.Add(RenderGrade(g, OnRequestViewGrade, IsInWhatIfMode, includeMargin: false));
+                    }
+
+                    gridPanelChildren.Add(linLayout);
+                }
+
+                return gridPanel;
+            }
+        }
+
+        public class GradesSummaryComponent : VxComponent
+        {
+            [VxSubscribe]
+            public ViewItemClass Class { get; set; }
+
+            public Action OnRequestConfigureGrades { get; set; }
+
+            public Action OnRequestOpenWhatIf { get; set; }
+
+            protected override View Render()
+            {
+                SubscribeToCollection(Class.WeightCategories);
+
                 return new LinearLayout
                 {
                     Margin = VxPlatform.Current == Platform.iOS ? new Thickness(18) : VxPlatform.Current == Platform.Uwp ? new Thickness(0) : new Thickness(16, 16, 16, 0),
@@ -410,23 +520,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                             HorizontalAlignment = HorizontalAlignment.Right
                                         },
 
-                                        new TextButton
+                                        OnRequestConfigureGrades != null ? new TextButton
                                         {
                                             Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
                                             HorizontalAlignment = HorizontalAlignment.Right,
                                             Margin = new Thickness(0, 6, 0, 0),
-                                            Click = _viewModel.ConfigureGrades
-                                        }
+                                            Click = () => OnRequestConfigureGrades()
+                                        } : null
                                     }
                                 }
                             }
                         },
 
-                        VxPlatform.Current == Platform.Uwp ? new AccentButton
+                        OnRequestOpenWhatIf != null ? new AccentButton
                         {
                             Text = PowerPlannerResources.GetString("ClassPage_ButtonWhatIfMode.Content"),
                             HorizontalAlignment = HorizontalAlignment.Left,
-                            Click = _viewModel.OpenWhatIf
+                            Click = () => OnRequestOpenWhatIf()
                         } : null,
 
                         RenderWeightCategories()

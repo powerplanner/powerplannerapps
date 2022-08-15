@@ -106,7 +106,6 @@ namespace PowerPlannerUWP
                 { typeof(CalendarViewModel), typeof(ComponentView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
-                { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(LoginViewModel), typeof(LoginView) },
                 { typeof(DayViewModel), typeof(MainContentDayView) },
