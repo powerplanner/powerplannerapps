@@ -16,6 +16,7 @@ namespace Vx.Droid.Views
     {
         public DroidLinearLayout() : base(new Android.Widget.LinearLayout(VxDroidExtensions.ApplicationContext))
         {
+            // This ensures that text will be aligned at bottom or top as specified, rather than aligned to the text baseline
             View.BaselineAligned = false;
         }
 
