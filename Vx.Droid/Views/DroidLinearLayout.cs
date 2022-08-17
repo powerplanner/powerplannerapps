@@ -16,7 +16,7 @@ namespace Vx.Droid.Views
     {
         public DroidLinearLayout() : base(new Android.Widget.LinearLayout(VxDroidExtensions.ApplicationContext))
         {
-
+            View.BaselineAligned = false;
         }
 
         protected override void ApplyProperties(Vx.Views.LinearLayout oldView, Vx.Views.LinearLayout newView)
