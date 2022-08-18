@@ -93,6 +93,7 @@
     <Compile Include="DroidViews\BareEditDecimalNumber.cs" />
     <Compile Include="DroidViews\BareMaterialEditDecimalNumber.cs" />
     <Compile Include="DroidViews\CustomColorPickerView.cs" />
+    <Compile Include="DroidViews\DroidVxLinearLayout.cs" />
     <Compile Include="DroidViews\GenericRecyclerViewHolder.cs" />
     <Compile Include="DroidViews\GridViewLayout.cs" />
     <Compile Include="DroidViews\IGetSnackbarAnchorView.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="DroidViews\MyColorPicker.cs" />
     <Compile Include="DroidViews\MyTextView.cs" />
     <Compile Include="DroidViews\MyZoomAndPanView.cs" />
+    <Compile Include="DroidViews\ThicknessInt.cs" />
     <Compile Include="DroidViews\ViewGroupExtensionMethods.cs" />
     <Compile Include="DroidViews\ViewHost.cs" />
     <Compile Include="DroidViews\ViewHostGeneric.cs" />

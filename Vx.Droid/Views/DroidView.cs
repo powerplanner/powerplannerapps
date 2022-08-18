@@ -72,53 +72,38 @@ namespace Vx.Droid.Views
                 }
                 else
                 {
-                    if (newView is Vx.Views.LinearLayout childLinearLayout)
+                    if (isVertical)
                     {
-                        if (isVertical)
-                        {
-                            height = weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0;
-                        }
-                        else
-                        {
-                            if (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
-                            {
-                                // Key scenarios of nested LinearLayouts to test are...
-                                // - Full size calendar day square background colors
-                                // - Class grade summary component
-                                // - Class grade items
-                                height = LinearLayout.LayoutParams.MatchParent;
-                            }
-                            else
-                            {
-                                height = LinearLayout.LayoutParams.WrapContent;
-                            }
-                        }
+                        height = weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0;
                     }
                     else
                     {
-                        height = isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent);
+                        // Scenarios to test
+                        // - What If header UI
+                        if (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
+                        {
+                            if (float.IsNaN(parentLinearLayout.Height))
+                            {
+                                // This enables What If header UI
+                                height = LinearLayout.LayoutParams.WrapContent;
+                            }
+                            else
+                            {
+                                height = LinearLayout.LayoutParams.MatchParent;
+                            }
+                        }
+                        else
+                        {
+                            height = LinearLayout.LayoutParams.WrapContent;
+                        }
                     }
                 }
 
-                // If width (or height) is match_parent, we will NOT use gravity, it doesn't intermix well
-                GravityFlags gravity;
-                if (isVertical)
+                View.LayoutParameters = new DroidViews.DroidVxLinearLayout.LayoutParams(width, height)
                 {
-                    gravity = width == LinearLayout.LayoutParams.MatchParent ? (GravityFlags)(-1) : newView.HorizontalAlignment.ToDroid();
-                }
-                else
-                {
-                    gravity = height == LinearLayout.LayoutParams.MatchParent ? (GravityFlags)(-1) : newView.VerticalAlignment.ToDroid();
-                }
-
-                // For height on buttons, we need to NOT use MatchParent for height since otherwise they'll drop their padding/etc and go down to like 12px tall
-                View.LayoutParameters = new LinearLayout.LayoutParams(width, height)
-                {
-                    Gravity = gravity,
-                    MarginStart = AsPx(newView.Margin.Left),
-                    TopMargin = AsPx(newView.Margin.Top),
-                    MarginEnd = AsPx(newView.Margin.Right),
-                    BottomMargin = AsPx(newView.Margin.Bottom),
+                    HorizontalAlignment = newView.HorizontalAlignment,
+                    VerticalAlignment = newView.VerticalAlignment,
+                    Margin = new DroidViews.ThicknessInt(AsPx(newView.Margin.Left), AsPx(newView.Margin.Top), AsPx(newView.Margin.Right), AsPx(newView.Margin.Bottom)),
                     Weight = weight
                 };
             }
@@ -148,7 +133,7 @@ namespace Vx.Droid.Views
 
                 View.LayoutParameters = new FrameLayout.LayoutParams(width, height)
                 {
-                    Gravity = newView.HorizontalAlignment.ToDroid() | newView.VerticalAlignment.ToDroid(),
+                    Gravity = newView.HorizontalAlignment.ToDroid(width) | newView.VerticalAlignment.ToDroid(height),
                     MarginStart = AsPx(newView.Margin.Left),
                     TopMargin = AsPx(newView.Margin.Top),
                     MarginEnd = AsPx(newView.Margin.Right),

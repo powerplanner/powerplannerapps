@@ -210,8 +210,14 @@ namespace Vx.Droid
             return new Android.Graphics.Color(color.ToArgb());
         }
 
-        internal static GravityFlags ToDroid(this HorizontalAlignment horizontalAlignment)
+        internal static GravityFlags ToDroid(this HorizontalAlignment horizontalAlignment, int width)
         {
+            // If MatchParent, using gravity flags just messes things up
+            if (width == ViewGroup.LayoutParams.MatchParent)
+            {
+                return (GravityFlags)(-1);
+            }
+
             switch (horizontalAlignment)
             {
                 case HorizontalAlignment.Left:
@@ -228,8 +234,14 @@ namespace Vx.Droid
             }
         }
 
-        internal static GravityFlags ToDroid(this VerticalAlignment verticalAlignment)
+        internal static GravityFlags ToDroid(this VerticalAlignment verticalAlignment, int height)
         {
+            // If MatchParent, using gravity flags just messes things up
+            if (height == ViewGroup.LayoutParams.MatchParent)
+            {
+                return (GravityFlags)(-1);
+            }
+
             switch (verticalAlignment)
             {
                 case VerticalAlignment.Center:

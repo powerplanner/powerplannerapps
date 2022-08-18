@@ -329,6 +329,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 "BareBones Dev",
                 OpenAbout);
 
+#if DEBUG
+            RenderOption(
+                layout,
+                MaterialDesign.MaterialDesignIcons.Code,
+                "Vx Tests",
+                "View Vx UI tests",
+                () => ShowPopup(new VxTests.VxTestsViewModel(this)));
+#endif
+
             return new ScrollView(layout);
         }
 
