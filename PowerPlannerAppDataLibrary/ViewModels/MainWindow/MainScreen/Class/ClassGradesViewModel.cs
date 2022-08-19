@@ -234,11 +234,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 return null;
             }
 
+            View finalView;
+            float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
+
             if (Size.Width < WidthBreakpoint)
             {
-                return new ListView
+                finalView = new ListView
                 {
                     Items = ItemsWithHeaders,
+                    Padding = new Thickness(0, 0, 0, floatingActionButtonOffset),
                     ItemTemplate = item =>
                     {
                         if (item is ViewItemGrade g)
@@ -280,54 +284,84 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
 
             // Otherwise full-size
-            const float minColumnWidth = 280;
-            const float columnSpacing = 24;
-
-            var gridPanel = new AdaptiveGradesListComponent
+            else
             {
-                Class = Class,
-                OnRequestViewGrade = g => ShowItem(g)
-            };
+                const float minColumnWidth = 280;
+                const float columnSpacing = 24;
 
-            var unassignedPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
-            {
-                MinColumnWidth = minColumnWidth,
-                ColumnSpacing = columnSpacing
-            } : (View)new AdaptiveGridPanelComponent
-            {
-                MinColumnWidth = minColumnWidth,
-                ColumnSpacing = columnSpacing
-            };
+                var gridPanel = new AdaptiveGradesListComponent
+                {
+                    Class = Class,
+                    OnRequestViewGrade = g => ShowItem(g)
+                };
 
-            List<View> unassignedPanelChildren = VxPlatform.Current == Platform.Uwp ? (unassignedPanel as AdaptiveGridPanel).Children : (unassignedPanel as AdaptiveGridPanelComponent).Children;
+                var unassignedPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
+                {
+                    MinColumnWidth = minColumnWidth,
+                    ColumnSpacing = columnSpacing
+                } : (View)new AdaptiveGridPanelComponent
+                {
+                    MinColumnWidth = minColumnWidth,
+                    ColumnSpacing = columnSpacing
+                };
 
-            foreach (var t in ViewItemsGroup.UnassignedItems)
-            {
-                unassignedPanelChildren.Add(RenderUnassignedItem(t, includeMargin: false));
+                List<View> unassignedPanelChildren = VxPlatform.Current == Platform.Uwp ? (unassignedPanel as AdaptiveGridPanel).Children : (unassignedPanel as AdaptiveGridPanelComponent).Children;
+
+                foreach (var t in ViewItemsGroup.UnassignedItems)
+                {
+                    unassignedPanelChildren.Add(RenderUnassignedItem(t, includeMargin: false));
+                }
+
+                finalView = new ScrollView
+                {
+                    Content = new LinearLayout
+                    {
+                        Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin + floatingActionButtonOffset),
+                        Children =
+                        {
+                            new GradesSummaryComponent
+                            {
+                                Class = Class,
+                                OnRequestOpenWhatIf = OpenWhatIf,
+                                OnRequestConfigureGrades = ConfigureGrades
+                            },
+
+                            gridPanel,
+
+                            ViewItemsGroup.HasUnassignedItems ? RenderUnassignedHeader(includeMargin: false) : null,
+
+                            ViewItemsGroup.HasUnassignedItems ? unassignedPanel : null
+                        }
+                    }
+                };
             }
 
-            return new ScrollView
+            // Add floating action button for Android
+            return WrapInFloatingActionButtonIfNeeded(finalView, Add, new Thickness());
+        }
+
+        internal static View WrapInFloatingActionButtonIfNeeded(View view, Action addAction, Thickness nookInsets)
+        {
+            if (VxPlatform.Current == Platform.Android)
             {
-                Content = new LinearLayout
+                return new FrameLayout
                 {
-                    Margin = new Thickness(Theme.Current.PageMargin),
                     Children =
                     {
-                        new GradesSummaryComponent
+                        view,
+
+                        new FloatingActionButton
                         {
-                            Class = Class,
-                            OnRequestOpenWhatIf = OpenWhatIf,
-                            OnRequestConfigureGrades = ConfigureGrades
-                        },
-
-                        gridPanel,
-
-                        ViewItemsGroup.HasUnassignedItems ? RenderUnassignedHeader(includeMargin: false) : null,
-
-                        ViewItemsGroup.HasUnassignedItems ? unassignedPanel : null
+                            Click = addAction,
+                            Margin = new Thickness(Theme.Current.PageMargin).Combine(nookInsets),
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Bottom
+                        }
                     }
-                }
-            };
+                };
+            }
+
+            return view;
         }
 
         private View RenderUnassignedItem(ViewItemTaskOrEvent t, bool includeMargin = true)

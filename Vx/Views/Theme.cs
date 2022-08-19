@@ -29,7 +29,15 @@ namespace Vx.Views
 
         public static Color DefaultAccentColor { get; set; } = Color.Blue;
 
+        /// <summary>
+        /// Accent color for light theme so shows up on dark themes
+        /// </summary>
         public static Color DefaultDarkAccentColor { get; set; } = Color.Blue;
+
+        /// <summary>
+        /// Background color of buttons, titlebars, etc
+        /// </summary>
+        public static Color ChromeColor { get; set; } = Color.Blue;
 
         public abstract Color ForegroundColor { get; }
 

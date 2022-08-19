@@ -16,6 +16,7 @@ using Vx.Views;
 using PowerPlannerAppDataLibrary.Helpers;
 using System.Drawing;
 using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class.ClassGradesViewModel;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
@@ -254,8 +255,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             var leftMargin = Theme.Current.PageMargin + NookInsets.Left;
             var rightMargin = Theme.Current.PageMargin + NookInsets.Right;
+            float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
 
-            return new ScrollView
+            return ClassGradesViewModel.WrapInFloatingActionButtonIfNeeded(new ScrollView
             {
                 Content = new LinearLayout
                 {
@@ -372,12 +374,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             Class = Class,
                             OnRequestViewGrade = g => ShowItem(g),
-                            Margin = new Thickness(leftMargin, 12, rightMargin, Theme.Current.PageMargin + NookInsets.Bottom),
+                            Margin = new Thickness(leftMargin, 12, rightMargin, Theme.Current.PageMargin + NookInsets.Bottom + floatingActionButtonOffset),
                             IsInWhatIfMode = true
                         }
                     }
                 }
-            };
+            }, AddGrade, NookInsets);
         }
     }
 }

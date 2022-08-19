@@ -28,6 +28,9 @@ namespace Vx.Droid.Views
 
             _adapter = new VxDroidRecyclerAdapter();
             View.SetAdapter(_adapter);
+
+            // Ensures padding will be added within the scrolling portion
+            View.SetClipToPadding(false);
         }
 
         private IEnumerable _currentItems;
@@ -41,6 +44,8 @@ namespace Vx.Droid.Views
                 _adapter.ItemTemplate = newView.ItemTemplate;
                 _currentItems = newView.Items;
             }
+
+            View.SetPadding(AsPx(newView.Padding.Left), AsPx(newView.Padding.Top), AsPx(newView.Padding.Right), AsPx(newView.Padding.Bottom));
         }
 
         private class VxDroidRecyclerAdapter : ObservableRecyclerViewAdapter

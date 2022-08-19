@@ -131,6 +131,7 @@
     <Compile Include="Views\DroidColorPicker.cs" />
     <Compile Include="Views\DroidComboBox.cs" />
     <Compile Include="Views\DroidDatePicker.cs" />
+    <Compile Include="Views\DroidFloatingActionButton.cs" />
     <Compile Include="Views\DroidFontIcon.cs" />
     <Compile Include="Views\DroidFrameLayout.cs" />
     <Compile Include="Views\DroidLinearLayout.cs" />
@@ -194,6 +195,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values-night\colors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add_48px.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

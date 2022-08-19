@@ -158,6 +158,11 @@ namespace Vx.Droid
                     return new DroidListView();
                 }
 
+                if (view is Vx.Views.FloatingActionButton)
+                {
+                    return new DroidFloatingActionButton();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
