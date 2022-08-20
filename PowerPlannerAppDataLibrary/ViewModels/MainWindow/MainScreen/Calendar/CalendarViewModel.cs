@@ -104,6 +104,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 {
                     DisplayState = DisplayStates.Split;
                 }
+                else if (ViewSizeState == ViewSizeStates.FullSize)
+                {
+                    DisplayState = DisplayStates.FullCalendar;
+                }
                 else
                 {
                     DisplayState = DisplayStates.CompactCalendar;
@@ -474,10 +478,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
             {
-                if (DisplayState == DisplayStates.FullCalendar)
+                if (DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     SelectedDate = date.Date;
-                    DisplayState = DisplayStates.Split;
+                    DisplayState = DisplayStates.Day;
                 }
                 else
                 {
@@ -579,9 +583,48 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     SemesterItemsViewGroup = SemesterItemsViewGroup,
                     ViewModel = this,
                     DisplayDate = SelectedDate,
-                    OnDisplayDateChanged = value => SelectedDate = value
+                    OnDisplayDateChanged = value => SelectedDate = value,
+                    IncludeHeader = DisplayState == DisplayStates.Split
                 };
                 day.LinearLayoutWeight(1);
+            }
+
+            View toolbar = null;
+            if (DisplayState == DisplayStates.Day)
+            {
+                toolbar = new Toolbar
+                {
+                    Title = Title,
+                    OnBack = () => GoBack(),
+                    PrimaryCommands =
+                    {
+                        new ToolbarCommand
+                        {
+                            Text = "Add",
+                            Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                            SubCommands = new ToolbarCommand[]
+                            {
+                                new ToolbarCommand
+                                {
+                                    Text = "Add task",
+                                    Action = () => AddTask()
+                                },
+
+                                new ToolbarCommand
+                                {
+                                    Text = "Add event",
+                                    Action = () => AddEvent()
+                                },
+
+                                new ToolbarCommand
+                                {
+                                    Text = "Add holiday",
+                                    Action = () => AddHoliday()
+                                }
+                            }
+                        }
+                    }
+                };
             }
 
             var root = new LinearLayout
@@ -589,6 +632,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 Orientation = Orientation.Vertical,
                 Children =
                 {
+                    toolbar,
                     calendar,
                     day
                 }

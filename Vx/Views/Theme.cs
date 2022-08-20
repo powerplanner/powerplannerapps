@@ -37,7 +37,7 @@ namespace Vx.Views
         /// <summary>
         /// Background color of buttons, titlebars, etc
         /// </summary>
-        public static Color ChromeColor { get; set; } = Color.Blue;
+        public Color ChromeColor { get; set; } = Color.Blue;
 
         public abstract Color ForegroundColor { get; }
 

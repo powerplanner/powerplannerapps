@@ -144,6 +144,7 @@
     <Compile Include="Views\DroidTextBlock.cs" />
     <Compile Include="Views\DroidTextBox.cs" />
     <Compile Include="Views\DroidTimePicker.cs" />
+    <Compile Include="Views\DroidToolbar.cs" />
     <Compile Include="Views\DroidTransparentContentButton.cs" />
     <Compile Include="Views\DroidView.cs" />
     <Compile Include="Views\DroidVxComponent.cs" />
@@ -198,6 +199,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\add_48px.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\arrow_back_24px.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add_24px.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

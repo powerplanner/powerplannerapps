@@ -21,7 +21,7 @@ namespace Vx.Droid.Views
             // Always add icon for now
             View.SetImageResource(Resource.Drawable.add_48px);
 
-            ViewCompat.SetBackgroundTintList(View, ColorTools.GetColorStateList(Vx.Views.Theme.ChromeColor.ToDroid()));
+            ViewCompat.SetBackgroundTintList(View, ColorTools.GetColorStateList(Vx.Views.Theme.Current.ChromeColor.ToDroid()));
             View.ImageTintList = ColorTools.GetColorStateList(Android.Graphics.Color.White);
 
             View.Click += View_Click;

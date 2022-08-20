@@ -163,10 +163,15 @@ namespace Vx.Droid
                     return new DroidFloatingActionButton();
                 }
 
+                if (view is Vx.Views.Toolbar)
+                {
+                    return new DroidToolbar();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
-                throw new NotImplementedException("Unknown view. Droid hasn't implemented this.");
+                throw new NotImplementedException("Unknown view. Droid hasn't implemented " + view.GetType());
             };
 
             NativeView.ShowContextMenu = ShowContextMenu;

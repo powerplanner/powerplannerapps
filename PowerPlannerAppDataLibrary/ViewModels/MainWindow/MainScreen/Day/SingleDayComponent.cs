@@ -20,6 +20,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         public DateTime Today { get; set; } = DateTime.Today;
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; set; }
         public BaseMainScreenViewModelDescendant ViewModel { get; set; }
+        public bool IncludeHeader { get; set; } = true;
 
         private static object SCHEDULE_SNAPSHOT = new object();
 
@@ -34,9 +35,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 Orientation = Orientation.Vertical,
                 Children =
                 {
-                    Divider(),
+                    IncludeHeader ? Divider() : null,
 
-                    new LinearLayout
+                    IncludeHeader ? new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
                         Children =
@@ -51,27 +52,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                                     Margin = new Thickness(12,6,6,6),
                                     TextColor = Theme.Current.SubtleForegroundColor
                                 }
-                            }.LinearLayoutWeight(1),
-
-                            //new Border
-                            //{
-                            //    BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                            //    Content = new FontIcon
-                            //    {
-                            //        Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                            //        FontSize = Theme.Current.TitleFontSize,
-                            //        Margin = new Thickness(6),
-                            //        Color = Theme.Current.SubtleForegroundColor
-                            //    },
-                            //    Tapped = () =>
-                            //    {
-                            //        // TODO
-                            //    }
-                            //}
+                            }.LinearLayoutWeight(1)
                         }
-                    },
+                    } : null,
 
-                    Divider(),
+                    IncludeHeader ? Divider() : null,
 
                     new ListView
                     {

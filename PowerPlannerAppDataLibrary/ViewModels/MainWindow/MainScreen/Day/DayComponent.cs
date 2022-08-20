@@ -16,6 +16,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         public DateTime Today { get; set; } = DateTime.Today;
         public DateTime DisplayDate { get; set; }
         public Action<DateTime> OnDisplayDateChanged { get; set; }
+        public bool IncludeHeader { get; set; } = true;
 
         public DayComponent()
         {
@@ -41,7 +42,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 Today = Today,
                 SemesterItemsViewGroup = SemesterItemsViewGroup,
                 ViewModel = ViewModel,
-                Date = day
+                Date = day,
+                IncludeHeader = IncludeHeader
             };
         }
     }
