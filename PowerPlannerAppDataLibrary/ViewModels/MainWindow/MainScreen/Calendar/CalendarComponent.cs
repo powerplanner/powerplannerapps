@@ -400,7 +400,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
                 };
 
-                var dayBackgroundColor = isToday ? Theme.Current.SubtleForegroundColor : dayType == DayType.ThisMonth ? Color.Transparent : Theme.Current.BackgroundAlt1Color;
+                var dayBackgroundColor = isToday ? Theme.Current.SubtleForegroundColor : dayType == DayType.ThisMonth ? Theme.Current.BackgroundAlt2Color : Theme.Current.BackgroundAlt1Color;
 
                 if (holidays.Any())
                 {
@@ -409,7 +409,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 var linearLayout = new LinearLayout
                 {
-                    BackgroundColor = dayBackgroundColor,
                     Tapped = () =>
                     {
                         if (ViewModel.DisplayState == CalendarViewModel.DisplayStates.Split)
@@ -557,7 +556,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 return new Border
                 {
                     BorderThickness = new Thickness(2),
-                    BorderColor = IsSelected ? Theme.Current.AccentColor : Color.Transparent,
+                    BackgroundColor = dayBackgroundColor,
+                    BorderColor = IsSelected ? Theme.Current.AccentColor : dayBackgroundColor,
                     Content = linearLayout
                 };
             }
