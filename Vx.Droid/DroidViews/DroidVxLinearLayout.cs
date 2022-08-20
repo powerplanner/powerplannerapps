@@ -190,10 +190,14 @@ namespace Vx.Droid.DroidViews
                     Weight = lp.Weight;
                 }
 
-                PrimaryAxis = Orientation == Vx.Views.Orientation.Vertical ? GetHeight(View) : GetWidth(View);
-                SecondaryAxis = Orientation == Vx.Views.Orientation.Vertical ? GetWidth(View) : GetHeight(View);
+                RawPrimaryAxis = Orientation == Vx.Views.Orientation.Vertical ? GetHeight(View) : GetWidth(View);
+                RawSecondaryAxis = Orientation == Vx.Views.Orientation.Vertical ? GetWidth(View) : GetHeight(View);
+                PrimaryAxis = RawPrimaryAxis;
+                SecondaryAxis = RawSecondaryAxis;
+                PrimaryMargin = Orientation == Vx.Views.Orientation.Vertical ? Margin.Height : Margin.Width;
+                SecondaryMargin = Orientation == Vx.Views.Orientation.Vertical ? Margin.Width : Margin.Height;
 
-                if (IsSpecific(PrimaryAxis) && !(Weight != 0 && PrimaryAxis == 0)) // When weighted, size = 0, so ignore that
+                if (IsSpecific(PrimaryAxis) && !(IsWeighted && PrimaryAxis == 0)) // When weighted, size = 0, so ignore that
                 {
                     PrimaryAxis += Orientation == Vx.Views.Orientation.Vertical ? Margin.Height : Margin.Width;
                 }
@@ -210,6 +214,14 @@ namespace Vx.Droid.DroidViews
             public int PrimaryAxis { get; private set; }
 
             public int SecondaryAxis { get; private set; }
+
+            public int RawPrimaryAxis { get; private set; }
+
+            public int RawSecondaryAxis { get; private set; }
+
+            public int PrimaryMargin { get; private set; }
+
+            public int SecondaryMargin { get; private set; }
 
             public float Weight { get; private set; }
 
@@ -265,14 +277,14 @@ namespace Vx.Droid.DroidViews
             public void Measure(int primaryAxis, int secondaryAxis, MeasureSpecMode secondaryMode)
             {
                 // If child has a specific size, use that size (when weighted, size = 0, so ignore that)
-                if (IsSpecific(PrimaryAxis) && !(IsWeighted && PrimaryAxis == 0))
+                if (IsSpecific(RawPrimaryAxis) && !(IsWeighted && PrimaryAxis == 0))
                 {
-                    primaryAxis = MeasureSpec.MakeMeasureSpec(PrimaryAxis, MeasureSpecMode.Exactly);
+                    primaryAxis = MeasureSpec.MakeMeasureSpec(RawPrimaryAxis, MeasureSpecMode.Exactly);
                 }
                 else if (IsSpecific(primaryAxis))
                 {
                     // Accomodate for margin
-                    primaryAxis = MeasureSpec.MakeMeasureSpec(primaryAxis - (Orientation == Vx.Views.Orientation.Vertical ? Margin.Height : Margin.Width), PrimaryAlignment == Align.Stretch && IsWeighted ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
+                    primaryAxis = MeasureSpec.MakeMeasureSpec(primaryAxis - PrimaryMargin, PrimaryAlignment == Align.Stretch && IsWeighted ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
                 }
                 else
                 {
@@ -280,13 +292,13 @@ namespace Vx.Droid.DroidViews
                 }
 
 
-                if (IsSpecific(SecondaryAxis))
+                if (IsSpecific(RawSecondaryAxis))
                 {
-                    secondaryAxis = MeasureSpec.MakeMeasureSpec(SecondaryAxis, MeasureSpecMode.Exactly);
+                    secondaryAxis = MeasureSpec.MakeMeasureSpec(RawSecondaryAxis, MeasureSpecMode.Exactly);
                 }
                 else if (IsSpecific(secondaryAxis))
                 {
-                    secondaryAxis = MeasureSpec.MakeMeasureSpec(secondaryAxis - (Orientation == Vx.Views.Orientation.Vertical ? Margin.Width : Margin.Height), SecondaryAlignment == Align.Stretch && secondaryMode == MeasureSpecMode.Exactly ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
+                    secondaryAxis = MeasureSpec.MakeMeasureSpec(secondaryAxis - SecondaryMargin, SecondaryAlignment == Align.Stretch && secondaryMode == MeasureSpecMode.Exactly ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
                 }
                 else
                 {

@@ -19,6 +19,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
             {
                 Content = new LinearLayout
                 {
+                    Margin = new Thickness(NookInsets.Left, 0, NookInsets.Right, NookInsets.Bottom),
                     Children =
                     {
                         new LinearLayout
@@ -410,8 +411,41 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                 }.LinearLayoutWeight(1),
                             }
                         },
+
+                        new TextBlock
+                        {
+                            Text = "Fixed size items (small calendar circles, should be on bottom)",
+                            Margin = new Thickness(Theme.Current.PageMargin)
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            BackgroundColor = Color.BurlyWood,
+                            Height = 20,
+                            Children =
+                            {
+                                CalendarCircle(Color.Red),
+                                CalendarCircle(Color.Blue),
+                                CalendarCircle(Color.Green)
+                            }
+                        }
                     }
                 }
+            };
+        }
+
+        private View CalendarCircle(Color color)
+        {
+            const float size = 4;
+            return new Border
+            {
+                Width = size,
+                Height = size,
+                CornerRadius = size,
+                BackgroundColor = color,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Margin = new Thickness(0, 0, size, 0)
             };
         }
     }
