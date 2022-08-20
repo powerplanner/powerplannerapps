@@ -80,18 +80,23 @@ namespace Vx.Droid.DroidViews
             var heightMode = MeasureSpec.GetMode(heightMeasureSpec);
 
             SizeInt availableSize;
+            MeasureSpecMode secondaryMode;
 
             if (Orientation == Vx.Views.Orientation.Vertical)
             {
                 availableSize = new SizeInt(
                     heightMode == MeasureSpecMode.Unspecified ? int.MaxValue : MeasureSpec.GetSize(heightMeasureSpec),
                     widthMode == MeasureSpecMode.Unspecified ? int.MaxValue : MeasureSpec.GetSize(widthMeasureSpec));
+
+                secondaryMode = widthMode;
             }
             else
             {
                 availableSize = new SizeInt(
                     widthMode == MeasureSpecMode.Unspecified ? int.MaxValue : MeasureSpec.GetSize(widthMeasureSpec),
                     heightMode == MeasureSpecMode.Unspecified ? int.MaxValue : MeasureSpec.GetSize(heightMeasureSpec));
+
+                secondaryMode = heightMode;
             }
 
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
@@ -119,7 +124,7 @@ namespace Vx.Droid.DroidViews
             {
                 foreach (var child in WrappedVisibleChildren)
                 {
-                    child.Measure(int.MaxValue, availableSize.Secondary, isWeighted: false);
+                    child.Measure(int.MaxValue, availableSize.Secondary, secondaryMode);
 
                     consumed += child.MeasuredPrimaryAxis;
                     maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
@@ -132,7 +137,7 @@ namespace Vx.Droid.DroidViews
             // We measure autos FIRST, since those get priority
             foreach (var child in WrappedVisibleChildren.Where(i => i.Weight == 0))
             {
-                child.Measure(Math.Max(0, availableSize.Primary - consumed), availableSize.Secondary, isWeighted: false);
+                child.Measure(Math.Max(0, availableSize.Primary - consumed), availableSize.Secondary, secondaryMode);
 
                 consumed += child.MeasuredPrimaryAxis;
                 maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
@@ -147,7 +152,7 @@ namespace Vx.Droid.DroidViews
                     var weight = child.Weight;
                     var childConsumed = (int)((weight / totalWeight) * weightedAvailable);
 
-                    child.Measure(childConsumed, availableSize.Secondary, isWeighted: true);
+                    child.Measure(childConsumed, availableSize.Secondary, secondaryMode);
 
                     consumed += child.MeasuredPrimaryAxis;
                     maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
@@ -208,6 +213,8 @@ namespace Vx.Droid.DroidViews
 
             public float Weight { get; private set; }
 
+            public bool IsWeighted => Weight > 0;
+
             public ThicknessInt Margin { get; private set; }
 
             /// <summary>
@@ -255,17 +262,17 @@ namespace Vx.Droid.DroidViews
             /// </summary>
             /// <param name="primaryAxis"></param>
             /// <param name="secondaryAxis"></param>
-            public void Measure(int primaryAxis, int secondaryAxis, bool isWeighted)
+            public void Measure(int primaryAxis, int secondaryAxis, MeasureSpecMode secondaryMode)
             {
                 // If child has a specific size, use that size (when weighted, size = 0, so ignore that)
-                if (IsSpecific(PrimaryAxis) && !(isWeighted && PrimaryAxis == 0))
+                if (IsSpecific(PrimaryAxis) && !(IsWeighted && PrimaryAxis == 0))
                 {
                     primaryAxis = MeasureSpec.MakeMeasureSpec(PrimaryAxis, MeasureSpecMode.Exactly);
                 }
                 else if (IsSpecific(primaryAxis))
                 {
                     // Accomodate for margin
-                    primaryAxis = MeasureSpec.MakeMeasureSpec(primaryAxis - (Orientation == Vx.Views.Orientation.Vertical ? Margin.Height : Margin.Width), PrimaryAlignment == Align.Stretch && isWeighted ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
+                    primaryAxis = MeasureSpec.MakeMeasureSpec(primaryAxis - (Orientation == Vx.Views.Orientation.Vertical ? Margin.Height : Margin.Width), PrimaryAlignment == Align.Stretch && IsWeighted ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
                 }
                 else
                 {
@@ -279,7 +286,7 @@ namespace Vx.Droid.DroidViews
                 }
                 else if (IsSpecific(secondaryAxis))
                 {
-                    secondaryAxis = MeasureSpec.MakeMeasureSpec(secondaryAxis - (Orientation == Vx.Views.Orientation.Vertical ? Margin.Width : Margin.Height), SecondaryAlignment == Align.Stretch ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
+                    secondaryAxis = MeasureSpec.MakeMeasureSpec(secondaryAxis - (Orientation == Vx.Views.Orientation.Vertical ? Margin.Width : Margin.Height), SecondaryAlignment == Align.Stretch && secondaryMode == MeasureSpecMode.Exactly ? MeasureSpecMode.Exactly : MeasureSpecMode.AtMost);
                 }
                 else
                 {
