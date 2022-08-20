@@ -76,7 +76,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             {
                 AddVisualItem(root, s, new ScheduleItemComponent
                 {
-                    ScheduleItem = s
+                    ScheduleItem = s,
+                    Tapped = () => PowerPlannerApp.Current.GetMainScreenViewModel().ViewClass(s.Item.Class)
                 });
             }
 
