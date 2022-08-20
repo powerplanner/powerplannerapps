@@ -23,13 +23,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         [VxSubscribe]
         public DayScheduleItemsArranger ArrangedItems { get; set; }
 
+        private VxState<DayScheduleItemsArranger.EventItem> ExpandedTaskOrEvent = new VxState<DayScheduleItemsArranger.EventItem>(null);
+
+        private void CollapseExpanded()
+        {
+            ExpandedTaskOrEvent.Value = null;
+        }
+
         protected override View Render()
         {
             float totalHeight = ((int)(ArrangedItems.EndTime - ArrangedItems.StartTime).TotalHours + 1) * HEIGHT_OF_HOUR;
 
             var root = new FrameLayout
             {
-                Height = totalHeight
+                Height = totalHeight,
+                Tapped = CollapseExpanded
             };
 
             for (TimeSpan time = ArrangedItems.StartTime; time <= ArrangedItems.EndTime; time = time.Add(TimeSpan.FromHours(1)))
@@ -80,7 +88,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 {
                     AddVisualItem(root, e, new CollapsedTaskOrEventComponent
                     {
-                        EventItem = e
+                        EventItem = e,
+                        IsExpanded = ExpandedTaskOrEvent.Value == e,
+                        SetExpanded = exp => ExpandedTaskOrEvent.Value = exp
                     });
                 }
                 else
@@ -114,7 +124,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         private class CollapsedTaskOrEventComponent : VxComponent
         {
             public DayScheduleItemsArranger.EventItem EventItem { get; set; }
-            private VxState<bool> IsExpanded = new VxState<bool>(false);
+            public bool IsExpanded { get; set; }
+            public Action<DayScheduleItemsArranger.EventItem> SetExpanded { get; set; }
             public override bool SubscribeToIsMouseOver => true;
             private DateTime _ignoreMouseTill;
 
@@ -125,12 +136,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                     return;
                 }
 
-                IsExpanded.Value = isMouseOver;
+                SetExpanded(isMouseOver ? EventItem : null);
             }
 
             protected override View Render()
             {
-                if (IsExpanded.Value)
+                if (IsExpanded)
                 {
                     var allItems = new List<ViewItemTaskOrEvent>() { EventItem.Item };
                     if (EventItem.AdditionalItems != null)
@@ -227,7 +238,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             private void OnCollapsedTapped()
             {
                 _ignoreMouseTill = DateTime.Now.AddSeconds(0.5);
-                IsExpanded.Value = true;
+                SetExpanded(EventItem);
             }
         }
 
