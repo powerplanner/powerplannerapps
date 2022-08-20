@@ -108,7 +108,7 @@ namespace Vx.Droid.Views
                 };
             }
 
-            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout || VxParentView is Vx.Views.Border)
+            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout || VxParentView is Vx.Views.Border || VxParentView == null) // Null when it's top-level view
             {
                 int width;
                 int height;
