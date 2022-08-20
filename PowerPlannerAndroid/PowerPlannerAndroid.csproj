@@ -161,6 +161,7 @@
     <Compile Include="Views\DayView.cs" />
     <Compile Include="Views\DroidCompletionSlider.cs" />
     <Compile Include="Views\DroidEditImagesView.cs" />
+    <Compile Include="Views\DroidFloatingAddItemButton.cs" />
     <Compile Include="Views\DroidImagesView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
     <Compile Include="Views\ListItemHeaders\ListItemHeaderAgendaView.cs" />
@@ -1268,6 +1269,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values-v30\colors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add_48px.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

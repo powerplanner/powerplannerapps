@@ -19,6 +19,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using Vx.Views;
 using System.Drawing;
 using Vx;
+using PowerPlannerAppDataLibrary.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
@@ -583,7 +584,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 day.LinearLayoutWeight(1);
             }
 
-            return new LinearLayout
+            var root = new LinearLayout
             {
                 Orientation = Orientation.Vertical,
                 Children =
@@ -592,6 +593,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     day
                 }
             };
+
+            // Add floating action button for Android
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        root,
+
+                        day != null ? new FloatingAddItemButton
+                        {
+                            AddTask = () => AddTask(),
+                            AddEvent = () => AddEvent(),
+                            AddHoliday = () => AddHoliday()
+                        } : null
+                    }
+                };
+            }
+
+            return root;
         }
     }
 }
