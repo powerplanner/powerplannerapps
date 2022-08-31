@@ -130,6 +130,15 @@ namespace Vx.Droid.DroidViews
                     maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
                 }
 
+                // Re-measure children that need to expand their secondary dimension to the max dimension
+                foreach (var child in WrappedVisibleChildren)
+                {
+                    if (child.MeasuredSecondaryAxis != maxOtherDimension)
+                    {
+                        child.Measure(child.MeasuredPrimaryAxis, maxOtherDimension, MeasureSpecMode.Exactly);
+                    }
+                }
+
                 setMeasuredDimension();
                 return;
             }
@@ -156,6 +165,15 @@ namespace Vx.Droid.DroidViews
 
                     consumed += child.MeasuredPrimaryAxis;
                     maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
+                }
+            }
+
+            // Re-measure children that need to expand their secondary dimension to the max dimension
+            foreach (var child in WrappedVisibleChildren)
+            {
+                if (child.MeasuredSecondaryAxis != maxOtherDimension)
+                {
+                    child.Measure(child.MeasuredPrimaryAxis, maxOtherDimension, MeasureSpecMode.Exactly);
                 }
             }
 
