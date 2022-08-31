@@ -117,9 +117,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private static List<FriendlyTimeZone> GetAvailableTimeZones()
         {
+            try
+            {
+                return GetAvailableTimeZones(CultureInfo.CurrentUICulture.Name);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    return GetAvailableTimeZones(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+                }
+                catch
+                {
+                    return GetAvailableTimeZones("en-US");
+                }
+            }
+        }
+
+        private static List<FriendlyTimeZone> GetAvailableTimeZones(string languageCode)
+        {
             List<FriendlyTimeZone> answer = new List<FriendlyTimeZone>();
 
-            foreach (var tz in TZNames.GetDisplayNames(CultureInfo.CurrentUICulture.Name, useIanaZoneIds: true))
+            foreach (var tz in TZNames.GetDisplayNames(languageCode, useIanaZoneIds: true))
             {
                 // In Android, the system time zones are already in IANA format
                 if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
