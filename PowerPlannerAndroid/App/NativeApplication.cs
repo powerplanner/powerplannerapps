@@ -82,7 +82,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(CalendarViewModel), typeof(ComponentView) },
                 { typeof(AgendaViewModel), typeof(ComponentView) },
-                { typeof(DayViewModel), typeof(DayView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },

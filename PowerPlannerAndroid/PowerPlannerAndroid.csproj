@@ -140,15 +140,12 @@
     <Compile Include="ViewModel\Settings\WidgetScheduleViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetAgendaViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
-    <Compile Include="Views\AgendaView.cs" />
-    <Compile Include="Views\CalendarMainView.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
     <Compile Include="Views\ClassTasksOrEventsView.cs" />
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\Controls\DayPagerControl.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
     <Compile Include="Views\Controls\FloatingAddItemControl.cs" />
     <Compile Include="Views\Controls\TaskProgressBarControl.cs" />
@@ -156,9 +153,7 @@
     <Compile Include="Views\Controls\ImagesPagerControl.cs" />
     <Compile Include="Views\Controls\ImageAttachmentView.cs" />
     <Compile Include="Views\Controls\SettingsListItem.cs" />
-    <Compile Include="Views\Controls\SingleDayControl.cs" />
     <Compile Include="Views\DayScheduleSnapshotView.cs" />
-    <Compile Include="Views\DayView.cs" />
     <Compile Include="Views\DroidCompletionSlider.cs" />
     <Compile Include="Views\DroidEditImagesView.cs" />
     <Compile Include="Views\DroidFloatingAddItemButton.cs" />
@@ -216,13 +211,7 @@
     <AndroidResource Include="Resources\layout\PopupView.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\CalendarMain.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemEditingScheduleClassTime.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\Agenda.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemHeaderAgenda.xml">
@@ -232,12 +221,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SpinnerItemClass.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SingleDay.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\Day.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SingleClass.xml">
@@ -337,9 +320,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\DayPager.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
