@@ -130,7 +130,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 Items = ItemsWithHeaders,
                 ItemTemplate = RenderItem,
-                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin * 2 + FloatingActionButton.DefaultSize)
+                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))
             };
         }
 

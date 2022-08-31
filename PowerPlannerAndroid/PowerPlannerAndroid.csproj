@@ -142,7 +142,6 @@
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
-    <Compile Include="Views\ClassTasksOrEventsView.cs" />
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
@@ -227,9 +226,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ClassDetails.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassTasksOrEvents.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemHeaderDateGroup.xml">

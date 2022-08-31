@@ -104,6 +104,8 @@ namespace PowerPlannerAndroid.Views
             public ClassView ClassView { get; private set; }
 
             private View _renderedGrades;
+            private View _renderedTasks;
+            private View _renderedEvents;
 
             public ClassPagerAdapter(ClassView classView)
             {
@@ -138,11 +140,19 @@ namespace PowerPlannerAndroid.Views
                         break;
 
                     case TASKS:
-                        view = new ClassTasksOrEventsView(container, ClassView.ViewModel.TasksViewModel);
+                        if (_renderedTasks == null)
+                        {
+                            _renderedTasks = ClassView.ViewModel.TasksViewModel.Render();
+                        }
+                        view = _renderedTasks;
                         break;
 
                     case EVENTS:
-                        view = new ClassTasksOrEventsView(container, ClassView.ViewModel.EventsViewModel);
+                        if (_renderedEvents == null)
+                        {
+                            _renderedEvents = ClassView.ViewModel.EventsViewModel.Render();
+                        }
+                        view = _renderedEvents;
                         break;
 
                     case GRADES:
