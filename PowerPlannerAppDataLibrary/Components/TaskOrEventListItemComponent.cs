@@ -176,8 +176,7 @@ namespace PowerPlannerAppDataLibrary.Components
 
                         new Border
                         {
-                            BackgroundColor = item.Class.Color.ToColor(),
-                            Width = width
+                            BackgroundColor = item.Class.Color.ToColor()
                         }.LinearLayoutWeight((float)item.PercentComplete),
 
                         new Border().LinearLayoutWeight(incomplete / 2)

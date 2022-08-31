@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -428,6 +429,55 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                 CalendarCircle(Color.Red),
                                 CalendarCircle(Color.Blue),
                                 CalendarCircle(Color.Green)
+                            }
+                        },
+
+                        new TextBlock
+                        {
+                            Text = "Vertical completion bar (65%)",
+                            Margin = new Thickness(Theme.Current.PageMargin)
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            BackgroundColor = Color.BurlyWood,
+                            Children =
+                            {
+                                new LinearLayout
+                                {
+                                    BackgroundColor = Theme.Current.SubtleForegroundColor.Opacity(0.3),
+                                    Width = 8,
+                                    Children =
+                                    {
+                                        new Border().LinearLayoutWeight(0.175f),
+
+                                        new Border
+                                        {
+                                            BackgroundColor = Color.Red
+                                        }.LinearLayoutWeight(0.65f),
+
+                                        new Border().LinearLayoutWeight(0.175f)
+                                    }
+                                },
+
+                                new LinearLayout
+                                {
+                                    Margin = new Thickness(6, 3, 0, 3),
+                                    Children =
+                                    {
+                                        new TextBlock
+                                        {
+                                            Text = "Item 1"
+                                        },
+
+                                        new TextBlock
+                                        {
+                                            Text = "Caption",
+                                            TextColor = Theme.Current.SubtleForegroundColor
+                                        }
+                                    }
+                                }.LinearLayoutWeight(1)
                             }
                         }
                     }
