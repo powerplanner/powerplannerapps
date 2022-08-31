@@ -67,11 +67,6 @@ namespace BareMvvm.Core.ViewModels
         /// </summary>
         public virtual bool ImportantForAutofill => false;
 
-        private void BindableBase_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Multicast event for property change notifications.
         /// </summary>
@@ -127,6 +122,8 @@ namespace BareMvvm.Core.ViewModels
                 for (int i = 0; i < propertyNames.Length; i++)
                     eventHandler(this, new PropertyChangedEventArgs(propertyNames[i]));
             }
+
+            MarkDirty();
         }
 
         private Dictionary<string, object> _values;

@@ -12,6 +12,10 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System.Collections;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.DataLayer;
+using Vx.Views;
+using Vx;
+using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Components;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 {
@@ -56,6 +60,107 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             UpdateHasNoItems();
 
             ListenToLocalEditsFor<DataLayer.DataItems.DataItemMegaItem>().ChangedItems += ItemsLocallyEditedListener_ChangedItems;
+        }
+
+        protected override void Initialize()
+        {
+            _ = LoadAsync();
+
+            base.Initialize();
+        }
+
+        protected override View Render()
+        {
+            if (!IsLoaded)
+            {
+                return null;
+            }
+
+            var baseView = RenderBase();
+
+            // Wrap in floating action button
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        baseView,
+
+                        new FloatingAddItemButton
+                        {
+                            AddTask = AddTask,
+                            AddEvent = AddEvent
+                        }
+                    }
+                };
+            }
+
+            return baseView;
+        }
+
+        private View RenderBase()
+        {
+            if (HasNoItems)
+            {
+                return new LinearLayout
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Agenda_NoItemsHeader.Text"),
+                            TextAlignment = HorizontalAlignment.Center,
+                            WrapText = true
+                        }.TitleStyle(),
+
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Agenda_NoItemsDescription.Text"),
+                            TextAlignment = HorizontalAlignment.Center,
+                            WrapText = true,
+                            TextColor = Theme.Current.SubtleForegroundColor
+                        }
+                    }
+                };
+            }
+
+            return new ListView
+            {
+                Items = ItemsWithHeaders,
+                ItemTemplate = RenderItem,
+                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin * 2 + FloatingActionButton.DefaultSize)
+            };
+        }
+
+        private View RenderItem(object item)
+        {
+            if (item is ViewItemTaskOrEvent taskOrEvent)
+            {
+                return new TaskOrEventListItemComponent
+                {
+                    Item = taskOrEvent,
+                    ViewModel = this,
+                    IncludeDate = true
+                };
+            }
+
+            else if (item is ItemsGroupHeader header)
+            {
+                return new TextBlock
+                {
+                    Text = header.Header,
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    WrapText = false,
+                    Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 3)
+                };
+            }
+
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

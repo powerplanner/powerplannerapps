@@ -37,23 +37,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 {
                     IncludeHeader ? Divider() : null,
 
-                    IncludeHeader ? new LinearLayout
+                    IncludeHeader ? new ListHeaderComponent
                     {
-                        Orientation = Orientation.Horizontal,
-                        Children =
-                        {
-                            new Border
-                            {
-                                BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                                Content = new TextBlock
-                                {
-                                    Text = GetHeaderText(Date),
-                                    FontSize = Theme.Current.SubtitleFontSize,
-                                    Margin = new Thickness(12,6,6,6),
-                                    TextColor = Theme.Current.SubtleForegroundColor
-                                }
-                            }.LinearLayoutWeight(1)
-                        }
+                        Text = GetHeaderText(Date)
                     } : null,
 
                     IncludeHeader ? Divider() : null,
