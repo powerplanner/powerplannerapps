@@ -33,6 +33,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public bool IsFullSize => _viewModel.DisplayState == CalendarViewModel.DisplayStates.FullCalendar;
 
+        public static Color CalendarColor => Theme.Current.IsDarkTheme ? Color.FromArgb(18, 18, 18) : Color.FromArgb(240, 240, 240);
+
         public CalendarComponent(CalendarViewModel viewModel)
         {
             _viewModel = viewModel;
@@ -287,7 +289,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 var finalLayout = new LinearLayout
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                    BackgroundColor = CalendarColor,
                     Children =
                     {
                         monthHeader,
@@ -368,6 +370,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             private View _addButtonRef;
 
+            private static Color TodayColor => Theme.Current.IsDarkTheme ? Color.FromArgb(56, 56, 56) : Color.FromArgb(117, 117, 117);
+            private static Color OtherMonthColor => Theme.Current.IsDarkTheme ? Color.FromArgb(30, 30, 30) : Color.FromArgb(228, 228, 228);
+
             private View RenderDay(DateTime date)
             {
                 bool isToday = date == ViewModel.Today;
@@ -386,6 +391,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     dayType = DayType.NextMonth;
                 }
 
+                Color foregroundColor = isToday ? Color.White : Theme.Current.SubtleForegroundColor;
+
                 var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !IsFullSize || !ViewModel.ShowPastCompleteItemsOnFullCalendar);
                 var holidays = HolidaysOnDay.Create(Items, date);
 
@@ -395,12 +402,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Margin = IsFullSize ? new Thickness(10, 6, 10, 6) : new Thickness(10, 4, 8, 0),
                     FontSize = IsFullSize ? Theme.Current.SubtitleFontSize : Theme.Current.BodyFontSize,
                     FontWeight = FontWeights.SemiLight,
-                    TextColor = isToday ? Theme.Current.ForegroundColor.Invert() : Theme.Current.SubtleForegroundColor,
+                    TextColor = foregroundColor,
                     VerticalAlignment = IsFullSize ? VerticalAlignment.Center : VerticalAlignment.Top,
                     TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
                 };
 
-                var dayBackgroundColor = isToday ? Theme.Current.SubtleForegroundColor : dayType == DayType.ThisMonth ? Theme.Current.BackgroundAlt2Color : Theme.Current.BackgroundAlt1Color;
+                var dayBackgroundColor = isToday ? TodayColor : dayType == DayType.ThisMonth ? CalendarColor : OtherMonthColor;
 
                 if (holidays.Any())
                 {
@@ -471,7 +478,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                 Content = new FontIcon
                                 {
                                     Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                                    Color = tbDay.TextColor,
+                                    Color = foregroundColor,
                                     FontSize = tbDay.FontSize,
                                     Margin = new Thickness(6),
                                     Opacity = IsMouseOver ? 1 : 0
