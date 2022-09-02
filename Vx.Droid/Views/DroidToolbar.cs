@@ -154,6 +154,19 @@ namespace Vx.Droid.Views
             {
                 case MaterialDesign.MaterialDesignIcons.Add:
                     return Resource.Drawable.add_24px;
+
+                case MaterialDesign.MaterialDesignIcons.ChevronLeft:
+                case MaterialDesign.MaterialDesignIcons.NavigateBefore:
+                case MaterialDesign.MaterialDesignIcons.KeyboardArrowLeft:
+                    return Resource.Drawable.chevron_left_24px;
+
+                case MaterialDesign.MaterialDesignIcons.ChevronRight:
+                case MaterialDesign.MaterialDesignIcons.NavigateNext:
+                case MaterialDesign.MaterialDesignIcons.KeyboardArrowRight:
+                    return Resource.Drawable.chevron_right_24px;
+
+                case MaterialDesign.MaterialDesignIcons.Today:
+                    return Resource.Drawable.today_24px;
                 //case MaterialDesign.MaterialDesignIcons.Check:
                 //case MaterialDesign.MaterialDesignIcons.Save:
                 //    return Resource.Drawable.ic_check_white_36dp;

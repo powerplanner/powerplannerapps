@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         private Func<int, View> _itemTemplate;
         private View _addButtonRef, _filterButtonRef;
 
-        public static bool IntegratedTopControls = VxPlatform.Current != Platform.iOS;
+        public static bool IntegratedTopControls = VxPlatform.Current == Platform.Uwp;
 
         public override bool SubscribeToIsMouseOver => IntegratedTopControls;
 
@@ -345,7 +345,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     ViewModel = ViewModel,
                     Date = date,
                     IsFullSize = IsFullSize,
-                    IsSelected = IsSplit && ViewModel.SelectedDate == date
+                    IsSelected = IsSplit && ViewModel.SelectedDate == date,
+                    ShowPastCompleteItemsOnFullCalendar = ViewModel.ShowPastCompleteItemsOnFullCalendar
                 };
             }
         }
@@ -360,6 +361,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public DateTime Date { get; set; }
             public bool IsFullSize { get; set; }
             public bool IsSelected { get; set; }
+            public bool ShowPastCompleteItemsOnFullCalendar { get; set; }
 
             public override bool SubscribeToIsMouseOver => true;
 
@@ -393,8 +395,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 Color foregroundColor = isToday ? Color.White : Theme.Current.SubtleForegroundColor;
 
-                var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !IsFullSize || !ViewModel.ShowPastCompleteItemsOnFullCalendar);
+                var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !IsFullSize || !ShowPastCompleteItemsOnFullCalendar);
+                SubscribeToCollectionStrong(itemsOnDay, nameof(itemsOnDay));
                 var holidays = HolidaysOnDay.Create(Items, date);
+                SubscribeToCollectionStrong(holidays, nameof(holidays));
 
                 var tbDay = new TextBlock
                 {

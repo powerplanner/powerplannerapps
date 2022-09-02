@@ -559,6 +559,75 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         protected override View Render()
         {
+            var toolbar = new Toolbar
+            {
+                Title = Title,
+                OnBack = CanGoBack ? () => GoBack() : (Action)null,
+                PrimaryCommands =
+                {
+                    new ToolbarCommand
+                    {
+                        Text = PowerPlannerResources.GetString("String_Previous"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
+                        Action = Previous
+                    },
+
+                    new ToolbarCommand
+                    {
+                        Text = PowerPlannerResources.GetString("String_Next"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.ChevronRight,
+                        Action = Next
+                    },
+
+                    new ToolbarCommand
+                    {
+                        Text = PowerPlannerResources.GetString("String_GoToToday"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                        Action = GoToToday
+                    }
+                }
+            };
+
+            // Only on full calendar, show the option for past complete
+            if (DisplayState == DisplayStates.FullCalendar)
+            {
+                toolbar.SecondaryCommands.Add(new ToolbarCommand
+                {
+                    Text = PowerPlannerResources.GetString(ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
+                    Action = () => ShowPastCompleteItemsOnFullCalendar = !ShowPastCompleteItemsOnFullCalendar
+                });
+            }
+
+            // Add button is displayed as floating action button sometimes on Android
+            if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
+            {
+                toolbar.PrimaryCommands.Insert(0, new ToolbarCommand
+                {
+                    Text = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
+                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                    SubCommands = new ToolbarCommand[]
+                    {
+                        new ToolbarCommand
+                        {
+                            Text = PowerPlannerResources.GetString("String_AddTask"),
+                            Action = () => AddTask()
+                        },
+
+                        new ToolbarCommand
+                        {
+                            Text = PowerPlannerResources.GetString("String_AddEvent"),
+                            Action = () => AddEvent()
+                        },
+
+                        new ToolbarCommand
+                        {
+                            Text = PowerPlannerResources.GetString("String_AddHoliday"),
+                            Action = () => AddHoliday()
+                        }
+                    }
+                });
+            }
+
             CalendarComponent calendar = null;
             if (DisplayState != DisplayStates.Day)
             {
@@ -587,44 +656,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     IncludeHeader = DisplayState == DisplayStates.Split
                 };
                 day.LinearLayoutWeight(1);
-            }
-
-            View toolbar = null;
-            if (DisplayState == DisplayStates.Day)
-            {
-                toolbar = new Toolbar
-                {
-                    Title = Title,
-                    OnBack = () => GoBack(),
-                    PrimaryCommands =
-                    {
-                        new ToolbarCommand
-                        {
-                            Text = "Add",
-                            Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                            SubCommands = new ToolbarCommand[]
-                            {
-                                new ToolbarCommand
-                                {
-                                    Text = "Add task",
-                                    Action = () => AddTask()
-                                },
-
-                                new ToolbarCommand
-                                {
-                                    Text = "Add event",
-                                    Action = () => AddEvent()
-                                },
-
-                                new ToolbarCommand
-                                {
-                                    Text = "Add holiday",
-                                    Action = () => AddHoliday()
-                                }
-                            }
-                        }
-                    }
-                };
             }
 
             var root = new LinearLayout

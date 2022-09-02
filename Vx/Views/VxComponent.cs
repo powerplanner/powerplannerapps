@@ -211,6 +211,29 @@ namespace Vx.Views
             }
         }
 
+        private void UnsubscribeFromCollections()
+        {
+            if (_subscribedCollections != null)
+            {
+                foreach (var col in _subscribedCollections)
+                {
+                    col.CollectionChanged -= _collectionChangedHandler;
+                }
+
+                _subscribedCollections = null;
+            }
+
+            if (_subscribedCollectionsStrong != null)
+            {
+                foreach (var col in _subscribedCollectionsStrong.Values)
+                {
+                    col.CollectionChanged -= _collectionChangedHandler;
+                }
+
+                _subscribedCollectionsStrong = null;
+            }
+        }
+
         private IEnumerable<INotifyPropertyChanged> AllSubscribeablePropertyValues()
         {
             var seenProps = new HashSet<string>();
@@ -279,6 +302,10 @@ namespace Vx.Views
             if (_subscribedCollections == null)
             {
                 _subscribedCollections = new WeakReferenceList<INotifyCollectionChanged>();
+            }
+
+            if (_collectionChangedHandler == null)
+            {
                 _collectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(Collection_CollectionChanged).Handler;
             }
 
@@ -287,6 +314,39 @@ namespace Vx.Views
                 col.CollectionChanged += _collectionChangedHandler;
                 _subscribedCollections.Add(col);
             }
+        }
+
+        private Dictionary<string, INotifyCollectionChanged> _subscribedCollectionsStrong;
+
+        /// <summary>
+        /// Holds a strong reference and will also clear listening to the previous collection
+        /// </summary>
+        /// <param name="col"></param>
+        /// <param name="prev"></param>
+        protected void SubscribeToCollectionStrong(INotifyCollectionChanged col, string key)
+        {
+            if (_subscribedCollectionsStrong == null)
+            {
+                _subscribedCollectionsStrong = new Dictionary<string, INotifyCollectionChanged>();
+            }
+
+            if (_collectionChangedHandler == null)
+            {
+                _collectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(Collection_CollectionChanged).Handler;
+            }
+
+            if (_subscribedCollectionsStrong.TryGetValue(key, out INotifyCollectionChanged existing))
+            {
+                if (existing == col)
+                {
+                    return;
+                }
+
+                existing.CollectionChanged -= _collectionChangedHandler;
+            }
+
+            _subscribedCollectionsStrong[key] = col;
+            col.CollectionChanged += _collectionChangedHandler;
         }
 
         private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -374,6 +434,7 @@ namespace Vx.Views
         {
             UnsubscribeFromStates();
             UnsubscribeFromProperties();
+            UnsubscribeFromCollections();
         }
 
         private View RenderedContent { get; set; }
