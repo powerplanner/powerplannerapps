@@ -37,6 +37,31 @@ namespace Vx.Droid
             ComponentSizeChanged?.Invoke(this, ComponentSize);
         }
 
+        private bool _rendered = false;
+
+        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+            if (!_rendered)
+            {
+                _rendered = true;
+
+                var widthMode = MeasureSpec.GetMode(widthMeasureSpec);
+                var heightMode = MeasureSpec.GetMode(heightMeasureSpec);
+                var width = MeasureSpec.GetSize(widthMeasureSpec);
+                var height = MeasureSpec.GetSize(heightMeasureSpec);
+                float widthF;
+                float heightF;
+
+                widthF = widthMode == MeasureSpecMode.Unspecified ? float.MaxValue : ThemeHelper.FromPxPrecise(Context, width);
+                heightF = heightMode == MeasureSpecMode.Unspecified ? float.MaxValue : ThemeHelper.FromPxPrecise(Context, height);
+
+                ComponentSize = new SizeF(width, height);
+                Component.InitializeForDisplay(this);
+            }
+
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+
         public void ChangeView(Vx.Views.View view)
         {
             base.RemoveAllViews();

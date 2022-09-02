@@ -539,6 +539,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             SelectedDate = Today;
         }
 
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            OnSizeChanged(Size, new SizeF());
+        }
+
         protected override void OnSizeChanged(SizeF size, SizeF previousSize)
         {
             if (size.Height < 550)
