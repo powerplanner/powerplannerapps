@@ -55,7 +55,7 @@ namespace Vx.Droid
                 widthF = widthMode == MeasureSpecMode.Unspecified ? float.MaxValue : ThemeHelper.FromPxPrecise(Context, width);
                 heightF = heightMode == MeasureSpecMode.Unspecified ? float.MaxValue : ThemeHelper.FromPxPrecise(Context, height);
 
-                ComponentSize = new SizeF(width, height);
+                ComponentSize = new SizeF(widthF, heightF);
                 Component.InitializeForDisplay(this);
             }
 
