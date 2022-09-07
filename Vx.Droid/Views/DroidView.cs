@@ -132,7 +132,7 @@ namespace Vx.Droid.Views
 
                 View.LayoutParameters = new FrameLayout.LayoutParams(width, height)
                 {
-                    Gravity = newView.HorizontalAlignment.ToDroid(width) | newView.VerticalAlignment.ToDroid(height),
+                    Gravity = CombineGravity(newView.HorizontalAlignment.ToDroid(width), newView.VerticalAlignment.ToDroid(height)),
                     MarginStart = AsPx(newView.Margin.Left),
                     TopMargin = AsPx(newView.Margin.Top),
                     MarginEnd = AsPx(newView.Margin.Right),
@@ -154,6 +154,26 @@ namespace Vx.Droid.Views
             }
 
             View.Alpha = newView.Opacity;
+        }
+
+        private GravityFlags CombineGravity(GravityFlags horizontal, GravityFlags vertical)
+        {
+            if (horizontal == (GravityFlags)(-1) && vertical == (GravityFlags)(-1))
+            {
+                return (GravityFlags)(-1);
+            }
+
+            if (horizontal == (GravityFlags)(-1))
+            {
+                return vertical;
+            }
+
+            if (vertical == (GravityFlags)(-1))
+            {
+                return horizontal;
+            }
+
+            return horizontal | vertical;
         }
 
         private void View_LongClick(object sender, View.LongClickEventArgs e)
