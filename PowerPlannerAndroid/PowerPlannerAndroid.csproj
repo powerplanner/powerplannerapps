@@ -73,12 +73,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\AgendaTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\DateGroupedTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\FlatTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\GroupedTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\SpinnerClassesAdapter.cs" />
-    <Compile Include="Adapters\SpinnerWeightCategoriesAdapter.cs" />
     <Compile Include="App\Secrets.cs" />
     <None Include="App\Secrets.template.cs" />
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
@@ -158,14 +152,11 @@
     <Compile Include="Views\DroidFloatingAddItemButton.cs" />
     <Compile Include="Views\DroidImagesView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
-    <Compile Include="Views\ListItemHeaders\ListItemHeaderAgendaView.cs" />
-    <Compile Include="Views\ListItemHeaders\ListItemHeaderDateGroup.cs" />
     <Compile Include="Views\ListItems\ListItemClassGroupedTimesView.cs" />
     <Compile Include="Views\ListItems\ListItemClassMenuItemView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassTimeView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassView.cs" />
     <Compile Include="Views\ListItems\ListItemHolidayScheduleView.cs" />
-    <Compile Include="Views\ListItems\ListItemTaskOrEventView.cs" />
     <Compile Include="Views\ListItems\MyScheduleItemView.cs" />
     <Compile Include="Views\MainCalendarItemView.cs" />
     <Compile Include="Views\MainScreenView.cs" />
@@ -213,22 +204,10 @@
     <AndroidResource Include="Resources\layout\ListItemEditingScheduleClassTime.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderAgenda.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemTaskOrEvent.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemClass.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\SingleClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ClassDetails.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderDateGroup.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\EditClassDetails.xml">
@@ -261,13 +240,7 @@
     <AndroidResource Include="Resources\layout\SyncErrors.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemWeightCategory.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemClassMenuItem.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTaskOrEventWeightCategoryPreview.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\WidgetAgenda.xml">
@@ -1236,12 +1209,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_notifications_black_48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOption.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOptionPreview.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values-v30\colors.xml" />
