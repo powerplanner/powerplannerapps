@@ -37,17 +37,16 @@ namespace Vx.Droid.Views
                 _hasRegisteredTappedEvent = false;
             }
 
-            // Removing long click for now, it doesn't work in conjunction with normal click and couldn't figure that out after 1 hr
-            //if (newView.ContextMenu != null && !_hasRegisteredContextClick)
-            //{
-            //    View.LongClick += View_LongClick;
-            //    _hasRegisteredContextClick = true;
-            //}
-            //else if (newView.ContextMenu == null && _hasRegisteredContextClick)
-            //{
-            //    View.LongClick -= View_LongClick;
-            //    _hasRegisteredContextClick = false;
-            //}
+            if (newView.ContextMenu != null && !_hasRegisteredContextClick)
+            {
+                View.LongClick += View_LongClick;
+                _hasRegisteredContextClick = true;
+            }
+            else if (newView.ContextMenu == null && _hasRegisteredContextClick)
+            {
+                View.LongClick -= View_LongClick;
+                _hasRegisteredContextClick = false;
+            }
 
             if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
             {

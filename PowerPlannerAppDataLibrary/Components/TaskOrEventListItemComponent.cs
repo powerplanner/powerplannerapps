@@ -31,8 +31,6 @@ namespace PowerPlannerAppDataLibrary.Components
                 return null;
             }
 
-            Console.WriteLine("Rendering " + Item.Name);
-
             string details = GetDetails();
             var subtitleColor = Item.Class.Color.ToColor().Opacity(Item.IsComplete ? 0.7 : 1);
 
@@ -89,10 +87,10 @@ namespace PowerPlannerAppDataLibrary.Components
                                 } : null
                             }
                         }.LinearLayoutWeight(1)
-                    },
+                    }
+                },
 
-                    ContextMenu = () => TaskOrEventContextMenu.Generate(Item, ViewModel)
-                }
+                ContextMenu = () => TaskOrEventContextMenu.Generate(Item, ViewModel)
             };
         }
 
