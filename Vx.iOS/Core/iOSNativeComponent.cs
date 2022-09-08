@@ -66,7 +66,7 @@ namespace Vx.iOS
                 return;
             }
 
-            var uiView = view.CreateUIView(null);
+            var uiView = view.CreateUIView(null).View;
             uiView.TranslatesAutoresizingMaskIntoConstraints = false;
 
             base.Add(uiView);

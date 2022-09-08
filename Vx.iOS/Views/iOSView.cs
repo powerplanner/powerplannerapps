@@ -8,19 +8,22 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public abstract class iOSView<V, N> : NativeView<V, N> where V : View where N : UIView
+    public abstract class iOSView<V, N> : NativeView<V, UIViewWrapper> where V : View where N : UIView
     {
         private UITapGestureRecognizer _tapGestureRecognizer;
 
         public iOSView()
         {
-            View = Activator.CreateInstance<N>();
+            base.View = new UIViewWrapper(Activator.CreateInstance<N>());
             //View.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
+        public UIViewWrapper ViewWrapper => base.View;
+        public new N View => ViewWrapper.View as N;
+
         public iOSView(N view)
         {
-            View = view;
+            base.View = new UIViewWrapper(view);
             //view.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
@@ -28,31 +31,35 @@ namespace Vx.iOS.Views
         {
             View.Alpha = newView.Opacity;
 
-            View.LayoutMargins = newView.Margin.ToUI();
+            ViewWrapper.Margin = newView.Margin;
+            ViewWrapper.Height = newView.Height;
+            ViewWrapper.Width = newView.Width;
+            ViewWrapper.HorizontalAlignment = newView.HorizontalAlignment;
+            ViewWrapper.VerticalAlignment = newView.VerticalAlignment;
 
             // Clearing heights on buttons does some funky things, so keeping this scoped to border for now
-            if (newView is Border)
-            {
-                if (oldView == null || newView.Width != oldView.Width)
-                {
-                    View.ClearWidth();
+            //if (newView is Border)
+            //{
+            //    if (oldView == null || newView.Width != oldView.Width)
+            //    {
+            //        View.ClearWidth();
 
-                    if (!float.IsNaN(newView.Width))
-                    {
-                        View.SetWidth(newView.Width);
-                    }
-                }
+            //        if (!float.IsNaN(newView.Width))
+            //        {
+            //            View.SetWidth(newView.Width);
+            //        }
+            //    }
 
-                if (oldView == null || newView.Height != oldView.Height)
-                {
-                    View.ClearHeight();
+            //    if (oldView == null || newView.Height != oldView.Height)
+            //    {
+            //        View.ClearHeight();
 
-                    if (!float.IsNaN(newView.Height))
-                    {
-                        View.SetHeight(newView.Height);
-                    }
-                }
-            }
+            //        if (!float.IsNaN(newView.Height))
+            //        {
+            //            View.SetHeight(newView.Height);
+            //        }
+            //    }
+            //}
 
             if (newView.Tapped != null && _tapGestureRecognizer == null)
             {
@@ -73,7 +80,7 @@ namespace Vx.iOS.Views
 
                 if (view != null)
                 {
-                    var child = view.CreateUIView(VxView);
+                    var child = view.CreateUIView(VxView).View;
                     child.TranslatesAutoresizingMaskIntoConstraints = false;
                     View.AddSubview(child);
                     afterSubviewAddedAction(child);
@@ -117,7 +124,7 @@ namespace Vx.iOS.Views
                 if (view != null)
                 {
                     var child = view.CreateUIView(VxView);
-                    contentView.Content = new UIViewWrapper(child, view);
+                    contentView.Content = child;
                 }
                 else
                 {

@@ -7,12 +7,60 @@ namespace Vx.iOS.Views
     public class UIViewWrapper
     {
         public UIView View { get; private set; }
-        public Vx.Views.View VxView { get; private set; }
 
-        public UIViewWrapper(UIView view, Vx.Views.View vxView)
+        private float _width = float.NaN;
+        public float Width
         {
+            get => _width;
+            set => SetValue(ref _width, value);
+        }
+
+        private float _height = float.NaN;
+        public float Height
+        {
+            get => _height;
+            set => SetValue(ref _height, value);
+        }
+
+        private Vx.Views.HorizontalAlignment _horizontalAlignment;
+        public Vx.Views.HorizontalAlignment HorizontalAlignment
+        {
+            get => _horizontalAlignment;
+            set => SetValue(ref _horizontalAlignment, value);
+        }
+
+        private Vx.Views.VerticalAlignment _verticalAlignment;
+        public Vx.Views.VerticalAlignment VerticalAlignment
+        {
+            get => _verticalAlignment;
+            set => SetValue(ref _verticalAlignment, value);
+        }
+
+        private Vx.Views.Thickness _margin;
+        public Vx.Views.Thickness Margin
+        {
+            get => _margin;
+            set => SetValue(ref _margin, value.AsModified());
+        }
+
+        private void SetValue<T>(ref T storage, T value)
+        {
+            if (!object.Equals(storage, value))
+            {
+                storage = value;
+                View.Superview?.InvalidateIntrinsicContentSize();
+                View.Superview?.SetNeedsLayout();
+            }
+        }
+
+        public UIViewWrapper(UIView view)
+        {
+            if (view == null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+
             View = view;
-            VxView = vxView;
         }
 
         public CGSize IntrinsicContentSize
@@ -20,7 +68,7 @@ namespace Vx.iOS.Views
             get
             {
                 var size = View.IntrinsicContentSize;
-                var margin = VxView.Margin.AsModified();
+                var margin = Margin;
                 if (size.Width != UIView.NoIntrinsicMetric)
                 {
                     size.Width += margin.Width;
@@ -37,15 +85,15 @@ namespace Vx.iOS.Views
         public void Arrange(CGRect pos, CGSize finalSize)
         {
             nfloat width, height;
-            var margin = VxView.Margin.AsModified();
+            var margin = Margin;
 
-            if (!float.IsNaN(VxView.Width))
+            if (!float.IsNaN(Width))
             {
-                width = VxView.Width;
+                width = Width;
             }
             else
             {
-                switch (VxView.HorizontalAlignment)
+                switch (HorizontalAlignment)
                 {
                     case Vx.Views.HorizontalAlignment.Stretch:
                         width = finalSize.Width - margin.Width;
@@ -68,13 +116,13 @@ namespace Vx.iOS.Views
                 }
             }
 
-            if (!float.IsNaN(VxView.Height))
+            if (!float.IsNaN(Height))
             {
-                height = VxView.Height;
+                height = Height;
             }
             else
             {
-                switch (VxView.VerticalAlignment)
+                switch (VerticalAlignment)
                 {
                     case Vx.Views.VerticalAlignment.Stretch:
                         height = finalSize.Height - margin.Height;
@@ -99,7 +147,7 @@ namespace Vx.iOS.Views
 
             nfloat childX, childY;
 
-            switch (VxView.HorizontalAlignment)
+            switch (HorizontalAlignment)
             {
                 case Vx.Views.HorizontalAlignment.Stretch:
                 case Vx.Views.HorizontalAlignment.Left:
@@ -120,7 +168,7 @@ namespace Vx.iOS.Views
                     throw new NotImplementedException();
             }
 
-            switch (VxView.VerticalAlignment)
+            switch (VerticalAlignment)
             {
                 case Vx.Views.VerticalAlignment.Stretch:
                 case Vx.Views.VerticalAlignment.Top:

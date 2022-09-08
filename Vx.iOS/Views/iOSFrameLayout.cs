@@ -36,7 +36,7 @@ namespace Vx.iOS.Views
 
         private void Insert(int i, View v)
         {
-            var childView = v.CreateUIView(VxParentView);
+            var childView = v.CreateUIView(VxParentView).View;
             childView.TranslatesAutoresizingMaskIntoConstraints = false;
             View.InsertSubview(childView, i);
             var modifiedMargin = v.Margin.AsModified();

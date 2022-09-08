@@ -210,9 +210,9 @@ namespace Vx.iOS
             return nativeComponent;
         }
 
-        internal static UIView CreateUIView(this Vx.Views.View view, Vx.Views.View parentView)
+        internal static UIViewWrapper CreateUIView(this Vx.Views.View view, Vx.Views.View parentView)
         {
-            return view.CreateNativeView(parentView).View as UIView;
+            return view.CreateNativeView(parentView).View as UIViewWrapper;
         }
 
         internal static UIColor ToUI(this Color color)
