@@ -134,6 +134,9 @@
     <Compile Include="Views\iOSColorPicker.cs" />
     <Compile Include="Views\iOSSlideView.cs" />
     <Compile Include="Views\iOSFrameLayout.cs" />
+    <Compile Include="Views\iOSListView.cs" />
+    <Compile Include="Views\iOSToolbar.cs" />
+    <Compile Include="Views\UIStatusBarView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -199,6 +202,9 @@
       <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
       <Name>Vx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

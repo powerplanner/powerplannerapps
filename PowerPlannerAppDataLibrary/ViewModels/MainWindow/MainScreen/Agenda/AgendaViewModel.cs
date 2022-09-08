@@ -96,6 +96,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                 };
             }
 
+            else if (VxPlatform.Current == Platform.iOS)
+            {
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        new Toolbar
+                        {
+                            Title = "Agenda"
+                        },
+
+                        baseView.LinearLayoutWeight(1)
+                    }
+                };
+            }
+
             return baseView;
         }
 

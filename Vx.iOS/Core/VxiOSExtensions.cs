@@ -147,6 +147,16 @@ namespace Vx.iOS
                     return new iOSFrameLayout();
                 }
 
+                if (view is Vx.Views.ListView)
+                {
+                    return new iOSListView();
+                }
+
+                if (view is Vx.Views.Toolbar)
+                {
+                    return new iOSToolbar();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
