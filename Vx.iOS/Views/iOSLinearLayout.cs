@@ -163,7 +163,6 @@ namespace Vx.iOS.Views
         }
     }
 
-
     public class UILinearLayout : UIView
     {
         private Orientation _orientation;
@@ -421,6 +420,20 @@ namespace Vx.iOS.Views
 
             private bool IsVertical => Parent.Orientation == Orientation.Vertical;
 
+            public nfloat MeasuredPrimaryAxis => IsVertical ? GetSize(Subview.IntrinsicContentSize.Height) : GetSize(Subview.IntrinsicContentSize.Width);
+
+            public void Layout(nfloat pos, SizeF size)
+            {
+                if (IsVertical)
+                {
+                    Subview.Frame = new CGRect(0, pos, size.Secondary, size.Primary);
+                }
+                else
+                {
+                    Subview.Frame = new CGRect(pos, 0, size.Primary, size.Secondary);
+                }
+            }
+
             public void UpdateConstraints(ArrangedSubview prev, ArrangedSubview next, bool usingWeights, ArrangedSubview firstWeighted)
             {
                 Subview.SetContentHuggingPriority(Weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
@@ -676,7 +689,6 @@ namespace Vx.iOS.Views
 
         public void InsertArrangedSubview(UIView subview, int index, float weight)
         {
-            subview.TranslatesAutoresizingMaskIntoConstraints = false;
             InsertSubview(subview, index);
 
             ArrangedSubview curr = new ArrangedSubview(this, subview, new Thickness(), weight);
@@ -684,11 +696,134 @@ namespace Vx.iOS.Views
             _arrangedSubviews.Insert(index, curr);
         }
 
+        private struct SizeF
+        {
+            public SizeF(nfloat primary, nfloat secondary)
+            {
+                Primary = primary;
+                Secondary = secondary;
+            }
+
+            public nfloat Primary { get; set; }
+            public nfloat Secondary { get; set; }
+
+            public override string ToString()
+            {
+                return $"{Primary}, {Secondary}";
+            }
+        }
+
+        /// <summary>
+        /// Returns the appropriate size for the content. Returns UIViewNoIntrinsicMetric for a dimension if doesn't have a preferred size.
+        /// </summary>
+        public override CGSize IntrinsicContentSize => CalculateMinSize();
+
+        private float GetTotalWeight()
+        {
+            return _arrangedSubviews.Sum(i => i.Weight);
+        }
+
+        private CGSize CalculateMinSize()
+        {
+            var availableSize = new SizeF(float.MaxValue, float.MaxValue);
+
+            bool isVert = Orientation == Vx.Views.Orientation.Vertical;
+
+            nfloat consumed = 0;
+            nfloat maxOtherDimension = 0;
+            bool consumedHasIntrinsic = false;
+            bool otherDimensionHasIntrinsic = false;
+            float totalWeight = GetTotalWeight();
+
+            // StackPanel essentially
+            {
+                int children = _arrangedSubviews.Count;
+                foreach (var child in _arrangedSubviews)
+                {
+                    var childSize = GetSize(child.Subview.IntrinsicContentSize);
+
+                    if (childSize.Primary != UIView.NoIntrinsicMetric)
+                    {
+                        consumed += childSize.Primary;
+                        consumedHasIntrinsic = true;
+                    }
+
+                    if (childSize.Secondary != UIView.NoIntrinsicMetric && childSize.Secondary >= maxOtherDimension)
+                    {
+                        maxOtherDimension = childSize.Secondary;
+                        otherDimensionHasIntrinsic = true;
+                    }
+                }
+
+                if (!consumedHasIntrinsic && _arrangedSubviews.Count > 0)
+                {
+                    consumed = UIView.NoIntrinsicMetric;
+                }
+                if (!otherDimensionHasIntrinsic && _arrangedSubviews.Count > 0)
+                {
+                    maxOtherDimension = UIView.NoIntrinsicMetric;
+                }
+
+                return isVert ? new CGSize(maxOtherDimension, consumed) : new CGSize(consumed, maxOtherDimension);
+            }
+        }
+
+        public override void LayoutSubviews()
+        {
+            var totalWeight = GetTotalWeight();
+            bool isVert = Orientation == Vx.Views.Orientation.Vertical;
+            var finalSize = isVert ? new SizeF(Frame.Height, Frame.Width) : new SizeF(Frame.Width, Frame.Height);
+
+            nfloat pos = 0;
+
+            double consumedByAuto = _arrangedSubviews.Where(i => i.Weight == 0).Sum(i => isVert ? i.Subview.IntrinsicContentSize.Height : i.Subview.IntrinsicContentSize.Width);
+            double weightedAvailable = Math.Max(0, finalSize.Primary - consumedByAuto);
+
+            foreach (var child in _arrangedSubviews)
+            {
+                var weight = child.Weight;
+
+                nfloat consumed;
+                if (weight == 0)
+                {
+                    consumed = child.MeasuredPrimaryAxis;
+                }
+                else
+                {
+                    consumed = (int)((weight / totalWeight) * weightedAvailable);
+                }
+
+                child.Layout(pos, new SizeF(consumed, finalSize.Secondary));
+
+                pos += consumed;
+            }
+        }
+
+        private SizeF GetSize(CGSize size)
+        {
+            if (Orientation == Orientation.Vertical)
+            {
+                return new SizeF(size.Height, size.Width);
+            }
+            else
+            {
+                return new SizeF(size.Width, size.Height);
+            }
+        }
+
+        private static nfloat GetSize(nfloat size)
+        {
+            return size == UIView.NoIntrinsicMetric ? 0 : size;
+        }
+
         /// <summary>
         /// You must call this after modifying anything
         /// </summary>
         public void UpdateAllConstraints()
         {
+            InvalidateIntrinsicContentSize();
+            SetNeedsLayout();
+            return;
             ArrangedSubview prev = null;
             ArrangedSubview curr = null;
             ArrangedSubview firstWeighted = null;

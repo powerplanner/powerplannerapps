@@ -220,6 +220,16 @@ namespace Vx.iOS
             return UIColor.FromRGBA(color.R, color.G, color.B, color.A);
         }
 
+        internal static UIEdgeInsets ToUI(this Thickness thickness, bool autoModify = true)
+        {
+            if (autoModify)
+            {
+                thickness = thickness.AsModified();
+            }
+
+            return new UIEdgeInsets(thickness.Top, thickness.Left, thickness.Bottom, thickness.Right);
+        }
+
         internal static UITextAlignment ToUITextAlignment(this HorizontalAlignment horizontalAlignment)
         {
             switch (horizontalAlignment)

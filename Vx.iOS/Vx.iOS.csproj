@@ -137,6 +137,8 @@
     <Compile Include="Views\iOSListView.cs" />
     <Compile Include="Views\iOSToolbar.cs" />
     <Compile Include="Views\UIStatusBarView.cs" />
+    <Compile Include="Views\UIContentView.cs" />
+    <Compile Include="Views\UIViewWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

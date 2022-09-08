@@ -4,7 +4,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSListItemButton : iOSView<ListItemButton, UIView>
+    public class iOSListItemButton : iOSView<ListItemButton, UIContentView>
     {
         public iOSListItemButton()
         {
@@ -19,7 +19,7 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            ReconcileContent(oldView?.Content, newView.Content);
+            ReconcileContentNew(oldView?.Content, newView.Content);
         }
     }
 }

@@ -28,6 +28,8 @@ namespace Vx.iOS.Views
         {
             View.Alpha = newView.Opacity;
 
+            View.LayoutMargins = newView.Margin.ToUI();
+
             // Clearing heights on buttons does some funky things, so keeping this scoped to border for now
             if (newView is Border)
             {
@@ -103,6 +105,30 @@ namespace Vx.iOS.Views
                     var modifiedMargin = (overriddenChildMargin ?? newContent.Margin).AsModified();
                     subview.StretchWidthAndHeight(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
                 }
+            });
+        }
+
+        protected void ReconcileContentNew(View oldContent, View newContent)
+        {
+            VxReconciler.Reconcile(oldContent, newContent, view =>
+            {
+                var contentView = View as UIContentView;
+
+                if (view != null)
+                {
+                    var child = view.CreateUIView(VxView);
+                    contentView.Content = new UIViewWrapper(child, view);
+                }
+                else
+                {
+                    contentView.Content = null;
+                }
+            }, transferView: view =>
+            {
+                //if (afterTransfer != null)
+                //{
+                //    afterTransfer(view.NativeView.View as UIView);
+                //}
             });
         }
     }
