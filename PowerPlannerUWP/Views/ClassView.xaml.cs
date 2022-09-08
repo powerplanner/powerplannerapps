@@ -396,7 +396,14 @@ namespace PowerPlannerUWP.Views
 
         private void appBarAddGrade_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.GradesViewModel.Add();
+            if (ViewModel.MainScreenViewModel.Content is ClassWhatIfViewModel whatIf)
+            {
+                whatIf.AddGrade();
+            }
+            else
+            {
+                ViewModel.GradesViewModel.Add();
+            }
         }
 
         private void appBarEditClass_Click(object sender, RoutedEventArgs e)

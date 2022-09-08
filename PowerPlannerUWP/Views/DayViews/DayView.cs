@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Uwp;
 
 namespace PowerPlannerUWP.Views.DayViews
 {
@@ -24,7 +25,12 @@ namespace PowerPlannerUWP.Views.DayViews
 
             public Windows.UI.Xaml.FrameworkElement GetCurrent()
             {
-                return new SingleDayView(_viewModel, _date);
+                return new SingleDayComponent
+                {
+                    ViewModel = _viewModel,
+                    Date = _date,
+                    SemesterItemsViewGroup = _viewModel.SemesterItemsViewGroup
+                }.Render();
             }
 
             public void MoveNext()
@@ -50,7 +56,7 @@ namespace PowerPlannerUWP.Views.DayViews
             base.MinimumColumnWidth = 390;
 
             // The items have 10px margins so that they'll have 20px gaps between adjacent, and so we need additional 20px on the right side for the outside of the window
-            base.ColumnSpacing = 20;
+            base.ColumnSpacing = 0;
 
             ViewModel = viewModel;
             SelectedDate = viewModel.CurrentDate;
@@ -59,10 +65,10 @@ namespace PowerPlannerUWP.Views.DayViews
         public bool CloseExpandedEvents()
         {
             bool closed = false;
-            foreach (var singleDayView in base.Children.OfType<SingleDayView>())
-            {
-                closed = singleDayView.CloseExpandedEvents() || closed;
-            }
+            //foreach (var singleDayView in base.Children.OfType<SingleDayView>())
+            //{
+            //    closed = singleDayView.CloseExpandedEvents() || closed;
+            //}
             return closed;
         }
 

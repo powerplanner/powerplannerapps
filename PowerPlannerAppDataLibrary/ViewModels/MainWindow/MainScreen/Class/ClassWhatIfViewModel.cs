@@ -20,7 +20,7 @@ using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class ClassWhatIfViewModel : PopupComponentViewModel
+    public class ClassWhatIfViewModel : ComponentViewModel
     {
         private ViewItemClass _originalClass;
 
