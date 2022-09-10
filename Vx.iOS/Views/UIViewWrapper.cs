@@ -82,15 +82,21 @@ namespace Vx.iOS.Views
             }
         }
 
+        /// <summary>
+        /// Includes margins
+        /// </summary>
+        public CGSize MeasuredSize { get; private set; }
+
         public CGSize Measure(CGSize availableSize)
         {
             var contentSize = View.SizeThatFits(new CGSize(availableSize.Width - Margin.Width, availableSize.Height - Margin.Height));
-            return new CGSize(contentSize.Width + Margin.Width, contentSize.Height + Margin.Height);
+            MeasuredSize = new CGSize(contentSize.Width + Margin.Width, contentSize.Height + Margin.Height);
+            return MeasuredSize;
         }
 
         public void Arrange(CGPoint pos, CGSize finalSize)
         {
-            nfloat width, height;
+            nfloat width, height; // Width/height without margins
             var margin = Margin;
 
             if (!float.IsNaN(Width))
@@ -106,17 +112,13 @@ namespace Vx.iOS.Views
                         break;
 
                     default:
-                        if (View.IntrinsicContentSize.Width == UIView.NoIntrinsicMetric)
+                        if (MeasuredSize.Width > finalSize.Width)
                         {
                             width = finalSize.Width - margin.Width;
                         }
                         else
                         {
-                            width = View.IntrinsicContentSize.Width;
-                            if (width > finalSize.Width - margin.Width)
-                            {
-                                width = finalSize.Width - margin.Width;
-                            }
+                            width = MeasuredSize.Width - margin.Width;
                         }
                         break;
                 }
@@ -135,17 +137,13 @@ namespace Vx.iOS.Views
                         break;
 
                     default:
-                        if (View.IntrinsicContentSize.Height == UIView.NoIntrinsicMetric)
+                        if (MeasuredSize.Height > finalSize.Height)
                         {
                             height = finalSize.Height - margin.Height;
                         }
                         else
                         {
-                            height = View.IntrinsicContentSize.Height;
-                            if (height > finalSize.Height - margin.Height)
-                            {
-                                height = finalSize.Height - margin.Height;
-                            }
+                            height = MeasuredSize.Height - Margin.Height;
                         }
                         break;
                 }
@@ -161,7 +159,7 @@ namespace Vx.iOS.Views
                     break;
 
                 case Vx.Views.HorizontalAlignment.Center:
-                    nfloat center = (width + margin.Width) / 2.0f;
+                    nfloat center = (finalSize.Width + margin.Left - margin.Right) / 2.0f;
                     nfloat offset = width / 2.0f;
                     childX = pos.X + center - offset;
                     break;
@@ -182,7 +180,7 @@ namespace Vx.iOS.Views
                     break;
 
                 case Vx.Views.VerticalAlignment.Center:
-                    nfloat center = (height + margin.Height) / 2.0f;
+                    nfloat center = (finalSize.Height + margin.Top - margin.Bottom) / 2.0f;
                     nfloat offset = height / 2.0f;
                     childY = pos.Y + center - offset;
                     break;
