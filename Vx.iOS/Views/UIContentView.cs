@@ -45,11 +45,21 @@ namespace Vx.iOS.Views
             }
         }
 
+        public override CGSize SizeThatFits(CGSize size)
+        {
+            if (Content == null)
+            {
+                return new CGSize(0, 0);
+            }
+
+            return Content.Measure(size);
+        }
+
         public override void LayoutSubviews()
         {
             if (Content != null)
             {
-                Content.Arrange(new CGRect(), Frame.Size);
+                Content.Arrange(new CGPoint(), Frame.Size);
             }
         }
     }

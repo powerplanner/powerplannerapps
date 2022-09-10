@@ -82,7 +82,13 @@ namespace Vx.iOS.Views
             }
         }
 
-        public void Arrange(CGRect pos, CGSize finalSize)
+        public CGSize Measure(CGSize availableSize)
+        {
+            var contentSize = View.SizeThatFits(new CGSize(availableSize.Width - Margin.Width, availableSize.Height - Margin.Height));
+            return new CGSize(contentSize.Width + Margin.Width, contentSize.Height + Margin.Height);
+        }
+
+        public void Arrange(CGPoint pos, CGSize finalSize)
         {
             nfloat width, height;
             var margin = Margin;
