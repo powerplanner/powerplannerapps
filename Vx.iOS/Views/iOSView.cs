@@ -115,9 +115,14 @@ namespace Vx.iOS.Views
             });
         }
 
+        protected void ReconcileContentNew(View oldContent, View newContent, Action<View> changeView)
+        {
+            VxReconciler.Reconcile(oldContent, newContent, changeView);
+        }
+
         protected void ReconcileContentNew(View oldContent, View newContent)
         {
-            VxReconciler.Reconcile(oldContent, newContent, view =>
+            ReconcileContentNew(oldContent, newContent, view =>
             {
                 var contentView = View as UIContentView;
 
@@ -130,12 +135,6 @@ namespace Vx.iOS.Views
                 {
                     contentView.Content = null;
                 }
-            }, transferView: view =>
-            {
-                //if (afterTransfer != null)
-                //{
-                //    afterTransfer(view.NativeView.View as UIView);
-                //}
             });
         }
     }
