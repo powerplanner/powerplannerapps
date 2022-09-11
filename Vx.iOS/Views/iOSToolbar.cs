@@ -4,7 +4,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSToolbar : iOSView<Vx.Views.Toolbar, UILabel>
+    public class iOSToolbar : iOSView<Vx.Views.Toolbar, UIView>
     {
         private UINavigationBar NavBar;
 
