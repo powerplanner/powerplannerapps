@@ -2,6 +2,7 @@
 using System.Linq;
 using CoreGraphics;
 using UIKit;
+using Vx.Views;
 
 namespace Vx.iOS.Views
 {
@@ -28,6 +29,23 @@ namespace Vx.iOS.Views
                     }
 
                     InvalidateIntrinsicContentSize();
+                    SetNeedsLayout();
+                }
+            }
+        }
+
+        private Thickness _padding = new Thickness();
+        public Thickness Padding
+        {
+            get => _padding;
+            set
+            {
+                if (value != _padding)
+                {
+                    _padding = value;
+
+                    InvalidateIntrinsicContentSize();
+                    SetNeedsLayout();
                 }
             }
         }
@@ -38,10 +56,11 @@ namespace Vx.iOS.Views
             {
                 if (Content != null)
                 {
-                    return Content.IntrinsicContentSize;
+                    var contentSize = Content.IntrinsicContentSize;
+                    return new CGSize(contentSize.Width + Padding.Width, contentSize.Height + Padding.Height);
                 }
 
-                return new CGSize(0, 0);
+                return new CGSize(Padding.Width, Padding.Height);
             }
         }
 
@@ -49,17 +68,19 @@ namespace Vx.iOS.Views
         {
             if (Content == null)
             {
-                return new CGSize(0, 0);
+                return new CGSize(Padding.Width, Padding.Height);
             }
 
-            return Content.Measure(size);
+            size = new CGSize(size.Width - Padding.Width, size.Height - Padding.Height);
+            var measured = Content.Measure(size);
+            return new CGSize(measured.Width + Padding.Width, measured.Height + Padding.Height);
         }
 
         public override void LayoutSubviews()
         {
             if (Content != null)
             {
-                Content.Arrange(new CGPoint(), Frame.Size);
+                Content.Arrange(new CGPoint(Padding.Left, Padding.Top), new CGSize(Frame.Width - Padding.Width, Frame.Height - Padding.Height));
             }
         }
     }
