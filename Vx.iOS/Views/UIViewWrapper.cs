@@ -89,8 +89,33 @@ namespace Vx.iOS.Views
 
         public CGSize Measure(CGSize availableSize)
         {
+            if (!float.IsNaN(Width) && !float.IsNaN(Height))
+            {
+                MeasuredSize = new CGSize(Width + Margin.Width, Height + Margin.Height);
+                return MeasuredSize;
+            }
+
+            if (!float.IsNaN(Width))
+            {
+                availableSize = new CGSize(Width + Margin.Width, availableSize.Height);
+            }
+            else if (!float.IsNaN(Height))
+            {
+                availableSize = new CGSize(availableSize.Width, Height + Margin.Height);
+            }
+
             var contentSize = View.SizeThatFits(new CGSize(availableSize.Width - Margin.Width, availableSize.Height - Margin.Height));
             MeasuredSize = new CGSize(contentSize.Width + Margin.Width, contentSize.Height + Margin.Height);
+
+            if (!float.IsNaN(Width))
+            {
+                MeasuredSize = new CGSize(Width + Margin.Width, MeasuredSize.Height);
+            }
+            else if (!float.IsNaN(Height))
+            {
+                MeasuredSize = new CGSize(MeasuredSize.Width, Height + Margin.Height);
+            }
+
             return MeasuredSize;
         }
 
