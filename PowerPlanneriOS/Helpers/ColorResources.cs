@@ -32,6 +32,20 @@ namespace PowerPlanneriOS.Helpers
                     ForegroundColor = UIColor.White
                 };
             }
+
+            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            {
+                var appearance = new UINavigationBarAppearance();
+                appearance.ConfigureWithOpaqueBackground();
+                appearance.BackgroundColor = PowerPlannerBlueChromeColor;
+                appearance.TitleTextAttributes = new UIStringAttributes()
+                {
+                    ForegroundColor = navBar.TintColor
+                };
+
+                navBar.StandardAppearance = appearance;
+                navBar.ScrollEdgeAppearance = appearance;
+            }
         }
     }
 }

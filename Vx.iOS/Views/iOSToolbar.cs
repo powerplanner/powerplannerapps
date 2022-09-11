@@ -50,6 +50,23 @@ namespace Vx.iOS.Views
                 }
             }
 
+            if (oldView?.BackgroundColor != newView.BackgroundColor || oldView?.ForegroundColor != newView.ForegroundColor)
+            {
+                if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+                {
+                    var appearance = new UINavigationBarAppearance();
+                    appearance.ConfigureWithOpaqueBackground();
+                    appearance.BackgroundColor = View.BackgroundColor;
+                    appearance.TitleTextAttributes = new UIStringAttributes()
+                    {
+                        ForegroundColor = NavBar.TintColor
+                    };
+
+                    NavBar.StandardAppearance = appearance;
+                    NavBar.ScrollEdgeAppearance = appearance;
+                }
+            }
+
             NavBar.TopItem.Title = newView.Title;
         }
     }
