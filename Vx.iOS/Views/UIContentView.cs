@@ -80,6 +80,7 @@ namespace Vx.iOS.Views
         {
             if (Content != null)
             {
+                Content.Measure(new CGSize(Frame.Width - Padding.Width, Frame.Height - Padding.Height));
                 Content.Arrange(new CGPoint(Padding.Left, Padding.Top), new CGSize(Frame.Width - Padding.Width, Frame.Height - Padding.Height));
             }
         }
