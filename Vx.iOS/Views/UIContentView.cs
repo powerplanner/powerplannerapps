@@ -72,8 +72,8 @@ namespace Vx.iOS.Views
             }
 
             size = new CGSize(size.Width - Padding.Width, size.Height - Padding.Height);
-            var measured = Content.Measure(size);
-            return new CGSize(measured.Width + Padding.Width, measured.Height + Padding.Height);
+            Content.Measure(size);
+            return new CGSize(Content.DesiredSize.Width + Padding.Width, Content.DesiredSize.Height + Padding.Height);
         }
 
         public override void LayoutSubviews()

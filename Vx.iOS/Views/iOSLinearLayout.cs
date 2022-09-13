@@ -259,25 +259,21 @@ namespace Vx.iOS.Views
 
             public nfloat MeasuredPrimaryAxis => IsVertical ? GetSize(Subview.IntrinsicContentSize.Height) : GetSize(Subview.IntrinsicContentSize.Width);
 
-            public SizeF DesiredSize { get; private set; }
+            public SizeF DesiredSize => IsVertical ? new SizeF(Subview.DesiredSize.Height, Subview.DesiredSize.Width) : new SizeF(Subview.DesiredSize.Width, Subview.DesiredSize.Height);
 
-            public SizeF Measure(SizeF availableSize)
+            public void Measure(SizeF availableSize)
             {
                 if (IsVertical)
                 {
-                    var measured = Subview.Measure(new CGSize(availableSize.Secondary, availableSize.Primary));
-                    DesiredSize = new SizeF(measured.Height, measured.Width);
-                    return DesiredSize;
+                    Subview.Measure(new CGSize(availableSize.Secondary, availableSize.Primary));
                 }
                 else
                 {
-                    var measured = Subview.Measure(new CGSize(availableSize.Primary, availableSize.Secondary));
-                    DesiredSize = new SizeF(measured.Width, measured.Height);
-                    return DesiredSize;
+                    Subview.Measure(new CGSize(availableSize.Primary, availableSize.Secondary));
                 }
             }
 
-            public void Layout(nfloat pos, SizeF size)
+            public void Arrange(nfloat pos, SizeF size)
             {
                 if (IsVertical)
                 {
@@ -318,58 +314,16 @@ namespace Vx.iOS.Views
             }
         }
 
-        /// <summary>
-        /// Returns the appropriate size for the content. Returns UIViewNoIntrinsicMetric for a dimension if doesn't have a preferred size.
-        /// </summary>
-        public override CGSize IntrinsicContentSize => CalculateMinSize();
-
         private float GetTotalWeight()
         {
             return _arrangedSubviews.Sum(i => i.Weight);
         }
 
-        private CGSize CalculateMinSize()
+        public override CGSize IntrinsicContentSize
         {
-            var availableSize = new SizeF(float.MaxValue, float.MaxValue);
-
-            bool isVert = Orientation == Vx.Views.Orientation.Vertical;
-
-            nfloat consumed = 0;
-            nfloat maxOtherDimension = 0;
-            bool consumedHasIntrinsic = false;
-            bool otherDimensionHasIntrinsic = false;
-            float totalWeight = GetTotalWeight();
-
-            // StackPanel essentially
+            get
             {
-                int children = _arrangedSubviews.Count;
-                foreach (var child in _arrangedSubviews)
-                {
-                    var childSize = GetSize(child.Subview.IntrinsicContentSize);
-
-                    if (childSize.Primary != UIView.NoIntrinsicMetric)
-                    {
-                        consumed += childSize.Primary;
-                        consumedHasIntrinsic = true;
-                    }
-
-                    if (childSize.Secondary != UIView.NoIntrinsicMetric && childSize.Secondary >= maxOtherDimension)
-                    {
-                        maxOtherDimension = childSize.Secondary;
-                        otherDimensionHasIntrinsic = true;
-                    }
-                }
-
-                if (!consumedHasIntrinsic && _arrangedSubviews.Count > 0)
-                {
-                    consumed = UIView.NoIntrinsicMetric;
-                }
-                if (!otherDimensionHasIntrinsic && _arrangedSubviews.Count > 0)
-                {
-                    maxOtherDimension = UIView.NoIntrinsicMetric;
-                }
-
-                return isVert ? new CGSize(maxOtherDimension, consumed) : new CGSize(consumed, maxOtherDimension);
+                return SizeThatFits(new CGSize(nfloat.MaxValue, nfloat.MaxValue));
             }
         }
 
@@ -382,7 +336,7 @@ namespace Vx.iOS.Views
             nfloat maxOtherDimension = 0;
             float totalWeight = GetTotalWeight();
 
-            bool autoHeightsForAll = totalWeight == 0;
+            bool autoHeightsForAll = totalWeight == 0 || availableSize.Primary == nfloat.MaxValue;
 
             // StackPanel essentially
             if (autoHeightsForAll)
@@ -390,18 +344,13 @@ namespace Vx.iOS.Views
                 availableSize = new SizeF(nfloat.MaxValue, availableSize.Secondary);
                 foreach (var child in _arrangedSubviews)
                 {
-                    var childSize = child.Measure(availableSize);
+                    child.Measure(availableSize);
 
-                    if (childSize.Primary == 0)
+                    consumed += child.DesiredSize.Primary;
+
+                    if (child.DesiredSize.Secondary >= maxOtherDimension)
                     {
-
-                    }
-
-                    consumed += childSize.Primary;
-
-                    if (childSize.Secondary >= maxOtherDimension)
-                    {
-                        maxOtherDimension = childSize.Secondary;
+                        maxOtherDimension = child.DesiredSize.Secondary;
                     }
                 }
 
@@ -411,10 +360,10 @@ namespace Vx.iOS.Views
             // We measure autos FIRST, since those get priority
             foreach (var child in _arrangedSubviews.Where(i => i.Weight == 0))
             {
-                var measured = child.Measure(new SizeF(MaxF(0f, availableSize.Primary - consumed), availableSize.Secondary));
+                child.Measure(new SizeF(MaxF(0f, availableSize.Primary - consumed), availableSize.Secondary));
 
-                consumed += measured.Primary;
-                maxOtherDimension = MaxF(maxOtherDimension, measured.Secondary);
+                consumed += child.DesiredSize.Primary;
+                maxOtherDimension = MaxF(maxOtherDimension, child.DesiredSize.Secondary);
             }
 
             double weightedAvailable = Math.Max(availableSize.Primary - consumed, 0);
@@ -426,10 +375,10 @@ namespace Vx.iOS.Views
                     var weight = child.Weight;
                     var childConsumed = (int)((weight / totalWeight) * weightedAvailable);
 
-                    var measured = child.Measure(new SizeF(childConsumed, availableSize.Secondary));
+                    child.Measure(new SizeF(childConsumed, availableSize.Secondary));
 
-                    consumed += measured.Primary;
-                    maxOtherDimension = MaxF(maxOtherDimension, measured.Secondary);
+                    consumed += child.DesiredSize.Primary;
+                    maxOtherDimension = MaxF(maxOtherDimension, child.DesiredSize.Secondary);
                 }
             }
 
@@ -456,7 +405,9 @@ namespace Vx.iOS.Views
             nfloat consumedByAuto = 0;
             foreach (var child in _arrangedSubviews.Where(i => i.Weight == 0))
             {
-                consumedByAuto += child.Measure(new SizeF(nfloat.MaxValue, finalSize.Secondary)).Primary;
+                child.Measure(new SizeF(nfloat.MaxValue, finalSize.Secondary));
+
+                consumedByAuto += child.DesiredSize.Primary;
             }
 
             double weightedAvailable = Math.Max(0, finalSize.Primary - consumedByAuto);
@@ -475,7 +426,7 @@ namespace Vx.iOS.Views
                     consumed = (int)((weight / totalWeight) * weightedAvailable);
                 }
 
-                child.Layout(pos, new SizeF(consumed, finalSize.Secondary));
+                child.Arrange(pos, new SizeF(consumed, finalSize.Secondary));
 
                 pos += consumed;
             }

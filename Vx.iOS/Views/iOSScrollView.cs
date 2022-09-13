@@ -84,8 +84,8 @@ namespace Vx.iOS.Views
             }
 
             size = new CGSize(size.Width - Padding.Width, nfloat.MaxValue);
-            var measured = Content.Measure(size);
-            return new CGSize(measured.Width + Padding.Width, measured.Height + Padding.Height);
+            Content.Measure(size);
+            return new CGSize(Content.DesiredSize.Width + Padding.Width, Content.DesiredSize.Height + Padding.Height);
         }
 
         private UIViewWrapper _prevContent;
@@ -107,9 +107,9 @@ namespace Vx.iOS.Views
                 nfloat width = Frame.Width - Padding.Width;
                 nfloat height = nfloat.MaxValue;
 
-                var measured = Content.Measure(new CGSize(width, height));
-                Content.Arrange(new CGPoint(Padding.Left, Padding.Top), new CGSize(width, measured.Height));
-                ContentSize = new CGSize(width + Padding.Width, measured.Height + Padding.Height);
+                Content.Measure(new CGSize(width, height));
+                Content.Arrange(new CGPoint(Padding.Left, Padding.Top), new CGSize(width, Content.DesiredSize.Height));
+                ContentSize = new CGSize(width + Padding.Width, Content.DesiredSize.Height + Padding.Height);
             }
             else
             {

@@ -85,38 +85,80 @@ namespace Vx.iOS.Views
         /// <summary>
         /// Includes margins
         /// </summary>
-        public CGSize MeasuredSize { get; private set; }
+        public CGSize DesiredSize { get; private set; }
 
-        public CGSize Measure(CGSize availableSize)
+        public void Measure(CGSize availableSize)
         {
-            if (!float.IsNaN(Width) && !float.IsNaN(Height))
+            var width = availableSize.Width;
+            var height = availableSize.Height;
+
+            // If width/height are explicitly set, use those (even if bigger)
+            if (!float.IsNaN(Width))
             {
-                MeasuredSize = new CGSize(Width + Margin.Width, Height + Margin.Height);
-                return MeasuredSize;
+                width = Width;
             }
+            else
+            {
+                // Otherwise, accomodate for margins
+                width = MaxF(availableSize.Width - Margin.Width, 0);
+            }
+
+            if (!float.IsNaN(Height))
+            {
+                height = Height;
+            }
+            else
+            {
+                height = MaxF(availableSize.Height - Margin.Height, 0);
+            }
+
+            // Returns a size without any margins
+            var size = MeasureOverride(new CGSize(width, height));
+
+            width = size.Width;
+            height = size.Height;
 
             if (!float.IsNaN(Width))
             {
-                availableSize = new CGSize(Width + Margin.Width, availableSize.Height);
+                width = Width;
             }
-            else if (!float.IsNaN(Height))
+            if (!float.IsNaN(Height))
             {
-                availableSize = new CGSize(availableSize.Width, Height + Margin.Height);
+                height = Height;
             }
 
-            var contentSize = View.SystemLayoutSizeFittingSize(new CGSize(availableSize.Width - Margin.Width, availableSize.Height - Margin.Height));
-            MeasuredSize = new CGSize(contentSize.Width + Margin.Width, contentSize.Height + Margin.Height);
+            width += Margin.Width;
+            height += Margin.Height;
 
-            if (!float.IsNaN(Width))
-            {
-                MeasuredSize = new CGSize(Width + Margin.Width, MeasuredSize.Height);
-            }
-            else if (!float.IsNaN(Height))
-            {
-                MeasuredSize = new CGSize(MeasuredSize.Width, Height + Margin.Height);
-            }
+            DesiredSize = new CGSize(MinF(width, availableSize.Width), MinF(height, availableSize.Height));
+        }
 
-            return MeasuredSize;
+        protected static nfloat MaxF(nfloat f1, nfloat f2)
+        {
+            if (f1 > f2)
+            {
+                return f1;
+            }
+            return f2;
+        }
+
+        protected static nfloat MinF(nfloat f1, nfloat f2)
+        {
+            if (f1 < f2)
+            {
+                return f1;
+            }
+            return f2;
+        }
+
+        /// <summary>
+        /// Extending classes can implement this to custom measure. Margins have already been accomodated for (ignore margins when calculating). Ignore the Width/Height values too.
+        /// </summary>
+        /// <param name="availableSize"></param>
+        /// <returns></returns>
+        protected virtual CGSize MeasureOverride(CGSize availableSize)
+        {
+            return View.SystemLayoutSizeFittingSize(availableSize);
         }
 
         public void Arrange(CGPoint pos, CGSize finalSize)
@@ -137,13 +179,13 @@ namespace Vx.iOS.Views
                         break;
 
                     default:
-                        if (MeasuredSize.Width > finalSize.Width)
+                        if (DesiredSize.Width > finalSize.Width)
                         {
                             width = finalSize.Width - margin.Width;
                         }
                         else
                         {
-                            width = MeasuredSize.Width - margin.Width;
+                            width = DesiredSize.Width - margin.Width;
                         }
                         break;
                 }
@@ -162,17 +204,22 @@ namespace Vx.iOS.Views
                         break;
 
                     default:
-                        if (MeasuredSize.Height > finalSize.Height)
+                        if (DesiredSize.Height > finalSize.Height)
                         {
                             height = finalSize.Height - margin.Height;
                         }
                         else
                         {
-                            height = MeasuredSize.Height - Margin.Height;
+                            height = DesiredSize.Height - Margin.Height;
                         }
                         break;
                 }
             }
+
+            // Use final size
+            var arrangedSize = ArrangeOverride(new CGSize(width, height));
+            width = arrangedSize.Width;
+            height = arrangedSize.Height;
 
             nfloat childX, childY;
 
@@ -219,6 +266,11 @@ namespace Vx.iOS.Views
             }
 
             View.Frame = new CGRect(childX, childY, width, height);
+        }
+
+        protected virtual CGSize ArrangeOverride(CGSize finalSize)
+        {
+            return finalSize;
         }
     }
 }
