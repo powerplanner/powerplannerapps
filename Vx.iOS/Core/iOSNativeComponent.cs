@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using CoreGraphics;
+using Foundation;
 using InterfacesiOS.Helpers;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,15 @@ namespace Vx.iOS
 
         private SizeF _currSize;
 
+        private UIViewWrapper _viewWrapper;
+
         public override void LayoutSubviews()
         {
-            base.LayoutSubviews();
+            if (_viewWrapper != null)
+            {
+                _viewWrapper.Measure(Frame.Size);
+                _viewWrapper.Arrange(new CoreGraphics.CGPoint(0, 0), Frame.Size);
+            }
 
             var newSize = ComponentSize;
             if (_currSize != newSize)
@@ -61,20 +68,35 @@ namespace Vx.iOS
 
             base.RemoveConstraints(base.Constraints);
 
+            _viewWrapper = null;
+
             if (view == null)
             {
                 return;
             }
 
-            var uiView = view.CreateUIView(null).View;
-            uiView.TranslatesAutoresizingMaskIntoConstraints = false;
+            _viewWrapper = view.CreateUIView(null);
+            var uiView = _viewWrapper.View;
 
             base.Add(uiView);
 
-            var modifiedMargin = view.Margin.AsModified();
-            uiView.StretchWidthAndHeight(this, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
+            InvalidateIntrinsicContentSize();
+            SetNeedsLayout();
 
             AfterViewChanged?.Invoke(uiView);
         }
+
+        public override CGSize SizeThatFits(CGSize size)
+        {
+            if (_viewWrapper != null)
+            {
+                _viewWrapper.Measure(size);
+                return _viewWrapper.DesiredSize;
+            }
+
+            return new CGSize(0, 0);
+        }
+
+        public override CGSize IntrinsicContentSize => SizeThatFits(new CGSize(nfloat.MaxValue, nfloat.MaxValue));
     }
 }

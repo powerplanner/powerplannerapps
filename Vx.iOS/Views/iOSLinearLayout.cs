@@ -323,6 +323,7 @@ namespace Vx.iOS.Views
         {
             get
             {
+                // Used by list view
                 return SizeThatFits(new CGSize(nfloat.MaxValue, nfloat.MaxValue));
             }
         }

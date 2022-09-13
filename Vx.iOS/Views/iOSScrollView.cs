@@ -62,32 +62,6 @@ namespace Vx.iOS.Views
             }
         }
 
-        public override CGSize IntrinsicContentSize
-        {
-            get
-            {
-                if (Content != null)
-                {
-                    var contentSize = Content.IntrinsicContentSize;
-                    return new CGSize(contentSize.Width + Padding.Width, contentSize.Height + Padding.Height);
-                }
-
-                return new CGSize(Padding.Width, Padding.Height);
-            }
-        }
-
-        public override CGSize SizeThatFits(CGSize size)
-        {
-            if (Content == null)
-            {
-                return new CGSize(Padding.Width, Padding.Height);
-            }
-
-            size = new CGSize(size.Width - Padding.Width, nfloat.MaxValue);
-            Content.Measure(size);
-            return new CGSize(Content.DesiredSize.Width + Padding.Width, Content.DesiredSize.Height + Padding.Height);
-        }
-
         private UIViewWrapper _prevContent;
         private CGSize _prevSize;
         private Thickness _prevPadding;
