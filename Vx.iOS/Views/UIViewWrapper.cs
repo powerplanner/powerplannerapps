@@ -104,7 +104,7 @@ namespace Vx.iOS.Views
                 availableSize = new CGSize(availableSize.Width, Height + Margin.Height);
             }
 
-            var contentSize = View.SizeThatFits(new CGSize(availableSize.Width - Margin.Width, availableSize.Height - Margin.Height));
+            var contentSize = View.SystemLayoutSizeFittingSize(new CGSize(availableSize.Width - Margin.Width, availableSize.Height - Margin.Height));
             MeasuredSize = new CGSize(contentSize.Width + Margin.Width, contentSize.Height + Margin.Height);
 
             if (!float.IsNaN(Width))
