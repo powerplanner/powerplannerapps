@@ -139,6 +139,7 @@
     <Compile Include="Views\UIStatusBarView.cs" />
     <Compile Include="Views\UIContentView.cs" />
     <Compile Include="Views\UIViewWrapper.cs" />
+    <Compile Include="Views\UIPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

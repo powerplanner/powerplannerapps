@@ -9,16 +9,29 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSScrollView : iOSView<Vx.Views.ScrollView, UIVxScrollView>
+    public class iOSScrollView : iOSView<Vx.Views.ScrollView, UIScrollView>
     {
         protected override void ApplyProperties(ScrollView oldView, ScrollView newView)
         {
             base.ApplyProperties(oldView, newView);
 
-            ReconcileContentNew(oldView?.Content, newView.Content, contentView =>
+            ReconcileContent(oldView?.Content, newView.Content, subview =>
             {
-                View.Content = contentView.CreateUIView(VxView);
+                ApplyMargins(subview, newView.Content);
+            }, afterTransfer: subview =>
+            {
+                if (oldView.Content.Margin != newView.Content.Margin)
+                {
+                    ApplyMargins(subview, newView.Content, removeExisting: true);
+                }
             });
+        }
+
+        private void ApplyMargins(UIView subview, View subVxView, bool removeExisting = false)
+        {
+            var modifiedMargin = subVxView.Margin.AsModified();
+            subview.TranslatesAutoresizingMaskIntoConstraints = false;
+            subview.ConfigureForVerticalScrolling(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom, removeExisting: removeExisting);
         }
     }
 
@@ -59,35 +72,6 @@ namespace Vx.iOS.Views
                     InvalidateIntrinsicContentSize();
                     SetNeedsLayout();
                 }
-            }
-        }
-
-        private UIViewWrapper _prevContent;
-        private CGSize _prevSize;
-        private Thickness _prevPadding;
-        public override void LayoutSubviews()
-        {
-            if (Content == _prevContent && Frame.Size == _prevSize && Padding == _prevPadding)
-            {
-                return;
-            }
-
-            _prevContent = Content;
-            _prevPadding = Padding;
-            _prevSize = Frame.Size;
-
-            if (Content != null)
-            {
-                nfloat width = Frame.Width - Padding.Width;
-                nfloat height = nfloat.MaxValue;
-
-                Content.Measure(new CGSize(width, height));
-                Content.Arrange(new CGPoint(Padding.Left, Padding.Top), new CGSize(width, Content.DesiredSize.Height));
-                ContentSize = new CGSize(width + Padding.Width, Content.DesiredSize.Height + Padding.Height);
-            }
-            else
-            {
-                ContentSize = new CGSize(Padding.Width, Padding.Height);
             }
         }
     }

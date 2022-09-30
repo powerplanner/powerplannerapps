@@ -10,6 +10,25 @@ using Vx.Views;
 namespace Vx.iOS.Views
 {
     /*
+     * DEFINITIVE OVERRIDING LAYOUTSUBVIEWS GUIDE...
+     * 
+     * 1. How does SystemLayoutSizeFittingSize / SizeThatFits work?
+     *      
+     *      - It returns the BEST SIZE for a given size (does not return min size).
+     *      - If you pass in a width or height of 0, that's equivalent to "Auto height" or "Auto width" (and 0,0 is "Min size in general")
+     *      
+     * 2. What does a custom control need to implement?
+     * 
+     *      - Override IntrinsicContentSize
+     *      - Override SizeThatFits
+     *      - Override LayoutSubviews
+     *      
+     * 3. What should a custom panel call when measuring size of children?
+     * 
+     *      - Call SystemLayoutSizeFittingSize(), if you want smallest size, pass in 0 for width and/or heights
+     * */
+
+    /*
      * iOS views have a few key concepts...
      * 
      * IntrinsicContentSize - The minimum size a view intrinsicly needs. Some views, like UIView, don't have an intrinsic size of their own. But views like a Button or Label do (however much space they need to render their content).
@@ -65,16 +84,7 @@ namespace Vx.iOS.Views
             //View.BackgroundColor = UIColor.FromRGBA(0, 0, 255, 15);
             View.BackgroundColor = newView.BackgroundColor.ToUI();
 
-            bool changed = false;
-
-            if (View.Orientation != newView.Orientation)
-            {
-                View.Orientation = newView.Orientation;
-                changed = true;
-            }
-
-            changed = View.SetHorizontalAlignment(newView.HorizontalAlignment) || changed;
-            changed = View.SetVerticalAlignment(newView.VerticalAlignment) || changed;
+            View.Orientation = newView.Orientation;
 
             ReconcileList(
                 oldView?.Children,
@@ -83,83 +93,27 @@ namespace Vx.iOS.Views
                 {
                     var childView = v.CreateUIView(VxParentView);
                     View.InsertArrangedSubview(childView, i);
-                    changed = true;
                 },
                 remove: (i) =>
                 {
-                    View.RemoveArrangedSubview(i);
-                    changed = true;
+                    View.RemoveArrangedSubviewAt(i);
                 },
                 replace: (i, v) =>
                 {
-                    View.RemoveArrangedSubview(i);
+                    View.RemoveArrangedSubviewAt(i);
 
                     var childView = v.CreateUIView(VxParentView);
                     View.InsertArrangedSubview(childView, i);
-
-                    changed = true;
                 },
                 clear: () =>
                 {
                     View.ClearArrangedSubviews();
-
-                    changed = true;
                 }
                 );
-
-            var children = newView.Children.Where(i => i != null).ToList();
-            for (int i = 0; i < children.Count; i++)
-            {
-                var child = children[i];
-
-                changed = View.SetWeight(i, LinearLayout.GetWeight(child)) || changed;
-            }
-
-            if (changed)
-            {
-                View.UpdateAllConstraints();
-            }
         }
     }
 
-    public class StretchingUIView : UIView
-    {
-        private Orientation? _stretchingOrientation;
-        public Orientation? StretchingOrientation
-        {
-            get => _stretchingOrientation;
-            set
-            {
-                if (!object.Equals(_stretchingOrientation, value))
-                {
-                    _stretchingOrientation = value;
-                    InvalidateIntrinsicContentSize();
-                }
-            }
-        }
-
-        public override CoreGraphics.CGSize IntrinsicContentSize
-        {
-            get
-            {
-                if (StretchingOrientation == null)
-                {
-                    return new CoreGraphics.CGSize(-1, -1);
-                }
-
-                if (StretchingOrientation == Orientation.Vertical)
-                {
-                    return new CoreGraphics.CGSize(0, 50000);
-                }
-                else
-                {
-                    return new CoreGraphics.CGSize(50000, 0);
-                }
-            }
-        }
-    }
-
-    public class UILinearLayout : UIView
+    public class UILinearLayout : UIPanel
     {
         private Orientation _orientation;
         public Orientation Orientation
@@ -170,131 +124,49 @@ namespace Vx.iOS.Views
                 if (value != _orientation)
                 {
                     _orientation = value;
+                    InvalidateIntrinsicContentSize();
+                    SetNeedsLayout();
                 }
             }
         }
 
-        public HorizontalAlignment HorizontalAlignment { get; private set; }
+        private const string WEIGHT = "Weight";
 
-        /// <summary>
-        /// Sets the horizontal alignment of the linearlayout itself
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool SetHorizontalAlignment(HorizontalAlignment value)
+        public static void SetWeight(UIViewWrapper view, float weight)
         {
-            if (HorizontalAlignment != value)
-            {
-                HorizontalAlignment = value;
-                return true;
-            }
-
-            return false;
+            view.SetValue(WEIGHT, weight);
         }
 
-        public VerticalAlignment VerticalAlignment { get; private set; }
-
-        /// <summary>
-        /// Sets the vertical alignment of the linearlayout itself
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool SetVerticalAlignment(VerticalAlignment value)
+        public static float GetWeight(UIViewWrapper view)
         {
-            if (VerticalAlignment != value)
-            {
-                VerticalAlignment = value;
-                return true;
-            }
-
-            return false;
+            return view.GetValueOrDefault<float>(WEIGHT, 0);
         }
 
-        public bool SetWeight(int index, float weight)
+        private SizeF ChildSizeThatFits(UIViewWrapper view, SizeF size)
         {
-            if (_arrangedSubviews[index].Weight != weight)
-            {
-                _arrangedSubviews[index].Weight = weight;
-                return true;
-            }
-
-            return false;
+            return ToRelativeSize(view.SizeThatFits(ToAbsoluteSize(size)));
         }
 
-        public void ClearArrangedSubviews()
+        private CGSize ToAbsoluteSize(SizeF size)
         {
-            _arrangedSubviews.Clear();
-            foreach (var subview in Subviews)
-            {
-                subview.RemoveFromSuperview();
-            }
-            RemoveConstraints(Constraints);
+            return Orientation == Orientation.Horizontal ? new CGSize(size.Primary, size.Secondary) : new CGSize(size.Secondary, size.Primary);
         }
 
-        public void RemoveArrangedSubview(int index)
+        private SizeF ToRelativeSize(CGSize size)
         {
-            _arrangedSubviews.RemoveAt(index);
-            Subviews[index].RemoveFromSuperview();
+            return Orientation == Orientation.Horizontal ? new SizeF(size.Width, size.Height) : new SizeF(size.Height, size.Width);
         }
 
-        public void InsertArrangedSubview(UIViewWrapper subview, int index)
+        private void SetChildFrame(UIViewWrapper view, nfloat pos, SizeF size)
         {
-            InsertArrangedSubview(subview, index, 0);
-        }
-
-        private class ArrangedSubview
-        {
-            public UILinearLayout Parent { get; set; }
-            public UIViewWrapper Subview { get; set; }
-            public float Weight { get; set; }   
-
-            public ArrangedSubview(UILinearLayout parent, UIViewWrapper subview, float weight)
+            if (Orientation == Orientation.Horizontal)
             {
-                Parent = parent;
-                Subview = subview;
-                Weight = weight;
+                view.Frame = new CGRect(new CGPoint(pos, 0), ToAbsoluteSize(size));
             }
-
-            private bool IsVertical => Parent.Orientation == Orientation.Vertical;
-
-            public nfloat MeasuredPrimaryAxis => IsVertical ? GetSize(Subview.IntrinsicContentSize.Height) : GetSize(Subview.IntrinsicContentSize.Width);
-
-            public SizeF DesiredSize => IsVertical ? new SizeF(Subview.DesiredSize.Height, Subview.DesiredSize.Width) : new SizeF(Subview.DesiredSize.Width, Subview.DesiredSize.Height);
-
-            public void Measure(SizeF availableSize)
+            else
             {
-                if (IsVertical)
-                {
-                    Subview.Measure(new CGSize(availableSize.Secondary, availableSize.Primary));
-                }
-                else
-                {
-                    Subview.Measure(new CGSize(availableSize.Primary, availableSize.Secondary));
-                }
+                view.Frame = new CGRect(new CGPoint(0, pos), ToAbsoluteSize(size));
             }
-
-            public void Arrange(nfloat pos, SizeF size)
-            {
-                if (IsVertical)
-                {
-                    Subview.Arrange(new CGPoint(0, pos), new CGSize(size.Secondary, size.Primary));
-                }
-                else
-                {
-                    Subview.Arrange(new CGPoint(pos, 0), new CGSize(size.Primary, size.Secondary));
-                }
-            }
-        }
-
-        private List<ArrangedSubview> _arrangedSubviews = new List<ArrangedSubview>();
-
-        public void InsertArrangedSubview(UIViewWrapper subview, int index, float weight)
-        {
-            InsertSubview(subview.View, index);
-
-            ArrangedSubview curr = new ArrangedSubview(this, subview, weight);
-
-            _arrangedSubviews.Insert(index, curr);
         }
 
         private struct SizeF
@@ -316,175 +188,104 @@ namespace Vx.iOS.Views
 
         private float GetTotalWeight()
         {
-            return _arrangedSubviews.Sum(i => i.Weight);
+            return ArrangedSubviews.Sum(i => GetWeight(i));
         }
 
-        public override CGSize IntrinsicContentSize
-        {
-            get
-            {
-                // Used by list view
-                return SizeThatFits(new CGSize(nfloat.MaxValue, nfloat.MaxValue));
-            }
-        }
+        // TODO: Almost fully working except the Scroll Viewer test page, height of LinearLayout isn't being calculated correctly, maybe it's issue with IntrinsicContentSize?
+        // I wonder what Apple's arranged views do for IntrinsicContentSize
 
         public override CGSize SizeThatFits(CGSize size)
         {
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
-            var availableSize = isVert ? new SizeF(size.Height, size.Width) : new SizeF(size.Width, size.Height);
+            var availableSize = ToRelativeSize(size);
 
             nfloat consumed = 0;
             nfloat maxOtherDimension = 0;
             float totalWeight = GetTotalWeight();
 
-            bool autoHeightsForAll = totalWeight == 0 || availableSize.Primary == nfloat.MaxValue;
+            bool autoHeightsForAll = totalWeight == 0 || availableSize.Primary == 0;
 
             // StackPanel essentially
             if (autoHeightsForAll)
             {
-                availableSize = new SizeF(nfloat.MaxValue, availableSize.Secondary);
-                foreach (var child in _arrangedSubviews)
+                availableSize = new SizeF(0, availableSize.Secondary);
+                foreach (var child in ArrangedSubviews)
                 {
-                    child.Measure(availableSize);
+                    var childSize = ChildSizeThatFits(child, availableSize);
 
-                    consumed += child.DesiredSize.Primary;
-
-                    if (child.DesiredSize.Secondary >= maxOtherDimension)
-                    {
-                        maxOtherDimension = child.DesiredSize.Secondary;
-                    }
+                    consumed += childSize.Primary;
+                    maxOtherDimension = MaxF(maxOtherDimension, childSize.Secondary);
                 }
 
-                return isVert ? new CGSize(maxOtherDimension, consumed) : new CGSize(consumed, maxOtherDimension);
+                return ToAbsoluteSize(new SizeF(consumed, maxOtherDimension));
             }
 
             // We measure autos FIRST, since those get priority
-            foreach (var child in _arrangedSubviews.Where(i => i.Weight == 0))
+            foreach (var child in ArrangedSubviews.Where(i => GetWeight(i) == 0))
             {
-                child.Measure(new SizeF(MaxF(0f, availableSize.Primary - consumed), availableSize.Secondary));
+                var childSize = ChildSizeThatFits(child, new SizeF(0, availableSize.Secondary));
 
-                consumed += child.DesiredSize.Primary;
-                maxOtherDimension = MaxF(maxOtherDimension, child.DesiredSize.Secondary);
+                consumed += childSize.Primary;
+                maxOtherDimension = MaxF(maxOtherDimension, childSize.Secondary);
             }
 
             double weightedAvailable = Math.Max(availableSize.Primary - consumed, 0);
 
             if (totalWeight > 0)
             {
-                foreach (var child in _arrangedSubviews.Where(i => i.Weight != 0))
+                foreach (var child in ArrangedSubviews.Where(i => GetWeight(i) != 0))
                 {
-                    var weight = child.Weight;
+                    var weight = GetWeight(child);
                     var childConsumed = (int)((weight / totalWeight) * weightedAvailable);
 
-                    child.Measure(new SizeF(childConsumed, availableSize.Secondary));
+                    var childSize = ChildSizeThatFits(child, new SizeF(childConsumed, availableSize.Secondary));
 
-                    consumed += child.DesiredSize.Primary;
-                    maxOtherDimension = MaxF(maxOtherDimension, child.DesiredSize.Secondary);
+                    consumed += childConsumed;
+                    maxOtherDimension = MaxF(maxOtherDimension, childSize.Secondary);
                 }
             }
 
-            return isVert ? new CGSize(maxOtherDimension, consumed) : new CGSize(consumed, maxOtherDimension);
-        }
-
-        private static nfloat MaxF(nfloat f1, nfloat f2)
-        {
-            if (f1 > f2)
-            {
-                return f1;
-            }
-            return f2;
+            return ToAbsoluteSize(new SizeF(consumed, maxOtherDimension));
         }
 
         public override void LayoutSubviews()
         {
             var totalWeight = GetTotalWeight();
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
-            var finalSize = isVert ? new SizeF(Frame.Height, Frame.Width) : new SizeF(Frame.Width, Frame.Height);
+            var finalSize = ToRelativeSize(Frame.Size);
 
             nfloat pos = 0;
 
+            Dictionary<UIViewWrapper, nfloat> autoChildPrimaries = new Dictionary<UIViewWrapper, nfloat>();
             nfloat consumedByAuto = 0;
-            foreach (var child in _arrangedSubviews.Where(i => i.Weight == 0))
+            foreach (var child in ArrangedSubviews.Where(i => GetWeight(i) == 0))
             {
-                child.Measure(new SizeF(nfloat.MaxValue, finalSize.Secondary));
+                var childSize = ChildSizeThatFits(child, new SizeF(0, finalSize.Secondary));
 
-                consumedByAuto += child.DesiredSize.Primary;
+                consumedByAuto += childSize.Primary;
+                autoChildPrimaries[child] = childSize.Primary;
             }
 
             double weightedAvailable = Math.Max(0, finalSize.Primary - consumedByAuto);
 
-            foreach (var child in _arrangedSubviews)
+            foreach (var child in ArrangedSubviews)
             {
-                var weight = child.Weight;
+                var weight = GetWeight(child);
 
                 nfloat consumed;
                 if (weight == 0)
                 {
-                    consumed = child.DesiredSize.Primary;
+                    consumed = autoChildPrimaries[child];
                 }
                 else
                 {
                     consumed = (int)((weight / totalWeight) * weightedAvailable);
                 }
 
-                child.Arrange(pos, new SizeF(consumed, finalSize.Secondary));
+                SetChildFrame(child, pos, new SizeF(consumed, finalSize.Secondary));
 
                 pos += consumed;
             }
         }
-
-        private SizeF GetSize(CGSize size)
-        {
-            if (Orientation == Orientation.Vertical)
-            {
-                return new SizeF(size.Height, size.Width);
-            }
-            else
-            {
-                return new SizeF(size.Width, size.Height);
-            }
-        }
-
-        private static nfloat GetSize(nfloat size)
-        {
-            return size == UIView.NoIntrinsicMetric ? 0 : size;
-        }
-
-        /// <summary>
-        /// You must call this after modifying anything
-        /// </summary>
-        public void UpdateAllConstraints()
-        {
-            InvalidateIntrinsicContentSize();
-            SetNeedsLayout();
-            return;
-        }
-
-        //public override void UpdateConstraints()
-        //{
-        //    ArrangedSubview prev = null;
-        //    ArrangedSubview curr = null;
-        //    ArrangedSubview firstWeighted = null;
-
-        //    bool usingWeights = _arrangedSubviews.Any(i => i.Weight > 0);
-
-        //    for (int i = 0; i < _arrangedSubviews.Count; i++)
-        //    {
-        //        curr = _arrangedSubviews[i];
-        //        ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(i + 1);
-
-        //        curr.UpdateConstraints(prev, next, usingWeights, firstWeighted);
-
-        //        if (firstWeighted == null && curr.Weight > 0)
-        //        {
-        //            firstWeighted = curr;
-        //        }
-
-        //        prev = curr;
-        //    }
-
-        //    // Need to call base when done
-        //    base.UpdateConstraints();
-        //}
     }
 }

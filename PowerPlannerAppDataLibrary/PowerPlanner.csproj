@@ -24,7 +24,7 @@
     <Compile Remove="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release' Or '$(Configuration)'=='Release (Android)'">
-	<Compile Remove="ViewModels\MainWindow\Settings\VxTests\*"/>
+	<Compile Remove="ViewModels\MainWindow\Settings\VxTests\*" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\Secrets.template.cs" />

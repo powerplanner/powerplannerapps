@@ -22,7 +22,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                     {
                         RenderOption<VxLinearLayoutTestsViewModel>("LinearLayout tests"),
                         RenderOption<VxTopLevelLinearLayoutTestViewModel>("Top level LinearLayout"),
-                        RenderOption<VxBorderChildAlignmentTestViewModel>("Border child alignment")
+                        RenderOption<VxBorderChildAlignmentTestViewModel>("Border child alignment"),
+                        RenderOption<VxScrollViewerTestViewModel>("Scroll view test")
                     }
                 }
             };

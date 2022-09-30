@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
 using UIKit;
 
@@ -48,9 +49,37 @@ namespace Vx.iOS.Views
             if (!object.Equals(storage, value))
             {
                 storage = value;
-                View.Superview?.InvalidateIntrinsicContentSize();
-                View.Superview?.SetNeedsLayout();
+                Invalidate();
             }
+        }
+
+        private void Invalidate()
+        {
+            View.InvalidateIntrinsicContentSize();
+            View.Superview?.SetNeedsLayout();
+        }
+
+        private Dictionary<string, object> _attachedValues;
+
+        public T GetValueOrDefault<T>(string key, T defaultValue = default(T))
+        {
+            if (_attachedValues == null)
+            {
+                return defaultValue;
+            }
+
+            return (T)_attachedValues.GetValueOrDefault(key, defaultValue);
+        }
+
+        public void SetValue(string key, object val)
+        {
+            if (_attachedValues == null)
+            {
+                _attachedValues = new Dictionary<string, object>();
+            }
+
+            _attachedValues[key] = val;
+            Invalidate();
         }
 
         public UIViewWrapper(UIView view)
@@ -61,76 +90,6 @@ namespace Vx.iOS.Views
             }
 
             View = view;
-        }
-
-        public CGSize IntrinsicContentSize
-        {
-            get
-            {
-                var size = View.IntrinsicContentSize;
-                var margin = Margin;
-                if (size.Width != UIView.NoIntrinsicMetric)
-                {
-                    size.Width += margin.Width;
-                }
-                if (size.Height != UIView.NoIntrinsicMetric)
-                {
-                    size.Height += margin.Height;
-                }
-
-                return size;
-            }
-        }
-
-        /// <summary>
-        /// Includes margins
-        /// </summary>
-        public CGSize DesiredSize { get; private set; }
-
-        public void Measure(CGSize availableSize)
-        {
-            var width = availableSize.Width;
-            var height = availableSize.Height;
-
-            // If width/height are explicitly set, use those (even if bigger)
-            if (!float.IsNaN(Width))
-            {
-                width = Width;
-            }
-            else
-            {
-                // Otherwise, accomodate for margins
-                width = MaxF(availableSize.Width - Margin.Width, 0);
-            }
-
-            if (!float.IsNaN(Height))
-            {
-                height = Height;
-            }
-            else
-            {
-                height = MaxF(availableSize.Height - Margin.Height, 0);
-            }
-
-            // Returns a size without any margins
-            var size = MeasureOverride(new CGSize(width, height));
-
-            width = size.Width;
-            height = size.Height;
-
-            if (!float.IsNaN(Width))
-            {
-                width = Width;
-            }
-            if (!float.IsNaN(Height))
-            {
-                height = Height;
-            }
-
-            width += Margin.Width;
-            height += Margin.Height;
-
-            DesiredSize = new CGSize(MinF(width, availableSize.Width), MinF(height, availableSize.Height));
         }
 
         protected static nfloat MaxF(nfloat f1, nfloat f2)
@@ -152,125 +111,181 @@ namespace Vx.iOS.Views
         }
 
         /// <summary>
-        /// Extending classes can implement this to custom measure. Margins have already been accomodated for (ignore margins when calculating). Ignore the Width/Height values too.
+        /// Automatically includes Margins and Height/Width values
         /// </summary>
-        /// <param name="availableSize"></param>
-        /// <returns></returns>
-        protected virtual CGSize MeasureOverride(CGSize availableSize)
-        {
-            return View.SystemLayoutSizeFittingSize(availableSize);
-        }
+        public CGSize IntrinsicContentSize => SizeThatFits(new CGSize(0, 0));
 
-        public void Arrange(CGPoint pos, CGSize finalSize)
+        /// <summary>
+        /// Automatically includes Margins and Height/Width values
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public CGSize SizeThatFits(CGSize size)
         {
-            nfloat width, height; // Width/height without margins
-            var margin = Margin;
+            // If absolute size
+            if (!float.IsNaN(Width) && !float.IsNaN(Height))
+            {
+                // We're done
+                return new CGSize(Width + Margin.Width, Height + Margin.Height);
+            }
+
+            // If we're fitting to parent size and parent size isn't auto, just return that, nothing to measure
+            if (HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch && VerticalAlignment == Vx.Views.VerticalAlignment.Stretch
+                && size.Width != 0 && size.Height != 0)
+            {
+                return size;
+            }
+
+            size = new CGSize(size.Width, size.Height);
+
+            if (HorizontalAlignment != Vx.Views.HorizontalAlignment.Stretch)
+            {
+                // Auto width
+                size.Width = 0;
+            }
+
+            if (VerticalAlignment != Vx.Views.VerticalAlignment.Stretch)
+            {
+                // Auto height
+                size.Height = 0;
+            }
+
+            // This will include margins
+            var innerSize = new CGSize(size.Width, size.Height);
 
             if (!float.IsNaN(Width))
             {
-                width = Width;
+                innerSize.Width = Width;
             }
-            else
+            else if (innerSize.Width != 0)
             {
-                switch (HorizontalAlignment)
-                {
-                    case Vx.Views.HorizontalAlignment.Stretch:
-                        width = finalSize.Width - margin.Width;
-                        break;
-
-                    default:
-                        if (DesiredSize.Width > finalSize.Width)
-                        {
-                            width = finalSize.Width - margin.Width;
-                        }
-                        else
-                        {
-                            width = DesiredSize.Width - margin.Width;
-                        }
-                        break;
-                }
+                innerSize.Width = MaxF(0, size.Width - Margin.Width);
             }
 
             if (!float.IsNaN(Height))
             {
-                height = Height;
+                innerSize.Height = Height;
             }
-            else
+            else if (innerSize.Height != 0)
             {
-                switch (VerticalAlignment)
+                innerSize.Height = MaxF(0, size.Height - Margin.Height);
+            }
+
+            innerSize = View.SystemLayoutSizeFittingSize(innerSize);
+
+            // Reset any fixed width/height values
+            if (!float.IsNaN(Width))
+            {
+                innerSize.Width = Width;
+            }
+            if (!float.IsNaN(Height))
+            {
+                innerSize.Height = Height;
+            }
+
+            return new CGSize(innerSize.Width + Margin.Width, innerSize.Height + Margin.Height);
+        }
+
+        private CGRect _frame;
+        public CGRect Frame
+        {
+            get => _frame;
+            set
+            {
+                var contentSize = new CGSize(value.Size.Width, value.Size.Height);
+
+                CGSize innerSize = new CGSize(contentSize);
+
+                if (!float.IsNaN(Width))
                 {
-                    case Vx.Views.VerticalAlignment.Stretch:
-                        height = finalSize.Height - margin.Height;
+                    innerSize.Width = Width;
+                }
+                else
+                {
+                    innerSize.Width = MaxF(0, contentSize.Width - Margin.Width);
+                }
+                if (!float.IsNaN(Height))
+                {
+                    innerSize.Height = Height;
+                }
+                else
+                {
+                    innerSize.Height = MaxF(0, contentSize.Height - Margin.Height);
+                }
+
+                bool isWidthKnown = !float.IsNaN(Width) || HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch;
+                bool isHeightKnown = !float.IsNaN(Height) || VerticalAlignment == Vx.Views.VerticalAlignment.Stretch;
+
+                if (!isWidthKnown || !isHeightKnown)
+                {
+                    innerSize = View.SystemLayoutSizeFittingSize(new CGSize(
+                        isWidthKnown ? innerSize.Width : 0,
+                        isHeightKnown ? innerSize.Height : 0));
+
+                    if (!float.IsNaN(Width))
+                    {
+                        innerSize.Width = Width;
+                    }
+                    else if (HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch)
+                    {
+                        innerSize.Width = MaxF(0, contentSize.Width - Margin.Width);
+                    }
+                    if (!float.IsNaN(Height))
+                    {
+                        innerSize.Height = Height;
+                    }
+                    else if (VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
+                    {
+                        innerSize.Height = MaxF(0, contentSize.Height - Margin.Height);
+                    }
+                }
+
+                nfloat childX, childY;
+
+                switch (HorizontalAlignment)
+                {
+                    case Vx.Views.HorizontalAlignment.Stretch:
+                    case Vx.Views.HorizontalAlignment.Left:
+                        childX = value.X + Margin.Left;
+                        break;
+
+                    case Vx.Views.HorizontalAlignment.Center:
+                        nfloat center = contentSize.Width / 2.0f;
+                        nfloat offset = (innerSize.Width + Margin.Left - Margin.Right) / 2.0f;
+                        childX = value.X + center - offset;
+                        break;
+
+                    case Vx.Views.HorizontalAlignment.Right:
+                        childX = value.X + (contentSize.Width - innerSize.Width - Margin.Right);
                         break;
 
                     default:
-                        if (DesiredSize.Height > finalSize.Height)
-                        {
-                            height = finalSize.Height - margin.Height;
-                        }
-                        else
-                        {
-                            height = DesiredSize.Height - Margin.Height;
-                        }
-                        break;
+                        throw new NotImplementedException();
                 }
+
+                switch (VerticalAlignment)
+                {
+                    case Vx.Views.VerticalAlignment.Stretch:
+                    case Vx.Views.VerticalAlignment.Top:
+                        childY = value.Y + Margin.Top;
+                        break;
+
+                    case Vx.Views.VerticalAlignment.Center:
+                        nfloat center = contentSize.Height / 2.0f;
+                        nfloat offset = (innerSize.Height + Margin.Top - Margin.Bottom) / 2.0f;
+                        childY = value.Y + center - offset;
+                        break;
+
+                    case Vx.Views.VerticalAlignment.Bottom:
+                        childY = value.Y + (contentSize.Height - innerSize.Height - Margin.Bottom);
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+
+                View.Frame = new CGRect(childX, childY, innerSize.Width, innerSize.Height);
             }
-
-            // Use final size
-            var arrangedSize = ArrangeOverride(new CGSize(width, height));
-            width = arrangedSize.Width;
-            height = arrangedSize.Height;
-
-            nfloat childX, childY;
-
-            switch (HorizontalAlignment)
-            {
-                case Vx.Views.HorizontalAlignment.Stretch:
-                case Vx.Views.HorizontalAlignment.Left:
-                    childX = pos.X + margin.Left;
-                    break;
-
-                case Vx.Views.HorizontalAlignment.Center:
-                    nfloat center = (finalSize.Width + margin.Left - margin.Right) / 2.0f;
-                    nfloat offset = width / 2.0f;
-                    childX = pos.X + center - offset;
-                    break;
-
-                case Vx.Views.HorizontalAlignment.Right:
-                    childX = pos.X + (finalSize.Width - width - margin.Right);
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-            }
-
-            switch (VerticalAlignment)
-            {
-                case Vx.Views.VerticalAlignment.Stretch:
-                case Vx.Views.VerticalAlignment.Top:
-                    childY = pos.Y + margin.Top;
-                    break;
-
-                case Vx.Views.VerticalAlignment.Center:
-                    nfloat center = (finalSize.Height + margin.Top - margin.Bottom) / 2.0f;
-                    nfloat offset = height / 2.0f;
-                    childY = pos.Y + center - offset;
-                    break;
-
-                case Vx.Views.VerticalAlignment.Bottom:
-                    childY = pos.Y + (finalSize.Height - height - margin.Bottom);
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-            }
-
-            View.Frame = new CGRect(childX, childY, width, height);
-        }
-
-        protected virtual CGSize ArrangeOverride(CGSize finalSize)
-        {
-            return finalSize;
         }
     }
 }

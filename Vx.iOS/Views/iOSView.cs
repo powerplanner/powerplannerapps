@@ -37,6 +37,8 @@ namespace Vx.iOS.Views
             ViewWrapper.HorizontalAlignment = newView.HorizontalAlignment;
             ViewWrapper.VerticalAlignment = newView.VerticalAlignment;
 
+            UILinearLayout.SetWeight(ViewWrapper, LinearLayout.GetWeight(newView));
+
             // Clearing heights on buttons does some funky things, so keeping this scoped to border for now
             //if (newView is Border)
             //{

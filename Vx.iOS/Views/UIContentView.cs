@@ -6,7 +6,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class UIContentView : UIView
+    public class UIContentView : UIPanel
     {
         public UIContentView()
         {
@@ -21,15 +21,12 @@ namespace Vx.iOS.Views
                 if (value != Content)
                 {
                     _content = value;
-                    Subviews.FirstOrDefault()?.RemoveFromSuperview();
+                    base.ClearArrangedSubviews();
 
                     if (value != null)
                     {
-                        base.AddSubview(value.View);
+                        base.AddArrangedSubview(value);
                     }
-
-                    InvalidateIntrinsicContentSize();
-                    SetNeedsLayout();
                 }
             }
         }
@@ -54,34 +51,34 @@ namespace Vx.iOS.Views
         {
             get
             {
-                if (Content != null)
-                {
-                    var contentSize = Content.IntrinsicContentSize;
-                    return new CGSize(contentSize.Width + Padding.Width, contentSize.Height + Padding.Height);
-                }
-
-                return new CGSize(Padding.Width, Padding.Height);
+                var answer = base.IntrinsicContentSize;
+                return new CGSize(answer.Width + Padding.Width, answer.Height + Padding.Height);
             }
         }
 
         public override CGSize SizeThatFits(CGSize size)
         {
-            if (Content == null)
+            var baseWidth = size.Width;
+            if (baseWidth != 0)
             {
-                return new CGSize(Padding.Width, Padding.Height);
+                baseWidth = MaxF(0, baseWidth - Padding.Width);
+            }
+            var baseHeight = size.Height;
+            if (baseHeight != 0)
+            {
+                baseHeight = MaxF(0, baseHeight - Padding.Height);
             }
 
-            size = new CGSize(size.Width - Padding.Width, size.Height - Padding.Height);
-            Content.Measure(size);
-            return new CGSize(Content.DesiredSize.Width + Padding.Width, Content.DesiredSize.Height + Padding.Height);
+            var answer = base.SizeThatFits(new CGSize(baseWidth, baseHeight));
+
+            return new CGSize(answer.Width + Padding.Width, answer.Height + Padding.Height);
         }
 
         public override void LayoutSubviews()
         {
             if (Content != null)
             {
-                Content.Measure(new CGSize(Frame.Width - Padding.Width, Frame.Height - Padding.Height));
-                Content.Arrange(new CGPoint(Padding.Left, Padding.Top), new CGSize(Frame.Width - Padding.Width, Frame.Height - Padding.Height));
+                Content.Frame = new CGRect(new CGPoint(Padding.Left, Padding.Top), new CGSize(Frame.Width - Padding.Width, Frame.Height - Padding.Height));
             }
         }
     }
