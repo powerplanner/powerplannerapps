@@ -231,7 +231,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         TextColor = Theme.Current.SubtleForegroundColor,
                         FontSize = 16,
                         Margin = new Thickness(12, 6, 12, 6),
-                        VerticalAlignment = VerticalAlignment.Center,
                         TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
                     }.LinearLayoutWeight(1));
                 }
