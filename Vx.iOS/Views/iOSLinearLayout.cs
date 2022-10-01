@@ -113,6 +113,8 @@ namespace Vx.iOS.Views
         }
     }
 
+    
+
     public class UILinearLayout : UIPanel
     {
         private Orientation _orientation;
@@ -124,11 +126,12 @@ namespace Vx.iOS.Views
                 if (value != _orientation)
                 {
                     _orientation = value;
-                    InvalidateIntrinsicContentSize();
-                    SetNeedsLayout();
+                    SetNeedsUpdateConstraints();
                 }
             }
         }
+
+
 
         private const string WEIGHT = "Weight";
 
@@ -142,147 +145,173 @@ namespace Vx.iOS.Views
             return view.GetValueOrDefault<float>(WEIGHT, 0);
         }
 
-        private SizeF ChildSizeThatFits(UIViewWrapper view, SizeF size)
+        protected override void CustomUpdateConstraints()
         {
-            return ToRelativeSize(view.SizeThatFits(ToAbsoluteSize(size)));
-        }
+            bool usingWeights = ArrangedSubviews.Any(i => GetWeight(i) > 0);
 
-        private CGSize ToAbsoluteSize(SizeF size)
-        {
-            return Orientation == Orientation.Horizontal ? new CGSize(size.Primary, size.Secondary) : new CGSize(size.Secondary, size.Primary);
-        }
+            UIViewWrapper prev = null;
+            UIViewWrapper curr = null;
+            UIViewWrapper firstWeighted = null;
 
-        private SizeF ToRelativeSize(CGSize size)
-        {
-            return Orientation == Orientation.Horizontal ? new SizeF(size.Width, size.Height) : new SizeF(size.Height, size.Width);
-        }
-
-        private void SetChildFrame(UIViewWrapper view, nfloat pos, SizeF size)
-        {
-            if (Orientation == Orientation.Horizontal)
+            for (int i = 0; i < ArrangedSubviews.Count; i++)
             {
-                view.Frame = new CGRect(new CGPoint(pos, 0), ToAbsoluteSize(size));
-            }
-            else
-            {
-                view.Frame = new CGRect(new CGPoint(0, pos), ToAbsoluteSize(size));
-            }
-        }
+                curr = ArrangedSubviews[i];
+                UIViewWrapper next = ArrangedSubviews.ElementAtOrDefault(i + 1);
 
-        private struct SizeF
-        {
-            public SizeF(nfloat primary, nfloat secondary)
-            {
-                Primary = primary;
-                Secondary = secondary;
-            }
+                UpdateConstraints(curr, prev, next, usingWeights, firstWeighted);
 
-            public nfloat Primary { get; set; }
-            public nfloat Secondary { get; set; }
-
-            public override string ToString()
-            {
-                return $"{Primary}, {Secondary}";
-            }
-        }
-
-        private float GetTotalWeight()
-        {
-            return ArrangedSubviews.Sum(i => GetWeight(i));
-        }
-
-        public override CGSize SizeThatFits(CGSize size)
-        {
-            bool isVert = Orientation == Vx.Views.Orientation.Vertical;
-            var availableSize = ToRelativeSize(size);
-
-            nfloat consumed = 0;
-            nfloat maxOtherDimension = 0;
-            float totalWeight = GetTotalWeight();
-
-            bool autoHeightsForAll = totalWeight == 0 || availableSize.Primary == 0;
-
-            // StackPanel essentially
-            if (autoHeightsForAll)
-            {
-                availableSize = new SizeF(0, availableSize.Secondary);
-                foreach (var child in ArrangedSubviews)
+                if (firstWeighted == null && GetWeight(curr) > 0)
                 {
-                    var childSize = ChildSizeThatFits(child, availableSize);
-
-                    consumed += childSize.Primary;
-                    maxOtherDimension = MaxF(maxOtherDimension, childSize.Secondary);
+                    firstWeighted = curr;
                 }
 
-                return ToAbsoluteSize(new SizeF(consumed, maxOtherDimension));
+                prev = curr;
             }
-
-            // We measure autos FIRST, since those get priority
-            foreach (var child in ArrangedSubviews.Where(i => GetWeight(i) == 0))
-            {
-                var childSize = ChildSizeThatFits(child, new SizeF(0, availableSize.Secondary));
-
-                consumed += childSize.Primary;
-                maxOtherDimension = MaxF(maxOtherDimension, childSize.Secondary);
-            }
-
-            double weightedAvailable = Math.Max(availableSize.Primary - consumed, 0);
-
-            if (totalWeight > 0)
-            {
-                foreach (var child in ArrangedSubviews.Where(i => GetWeight(i) != 0))
-                {
-                    var weight = GetWeight(child);
-                    var childConsumed = (int)((weight / totalWeight) * weightedAvailable);
-
-                    var childSize = ChildSizeThatFits(child, new SizeF(childConsumed, availableSize.Secondary));
-
-                    consumed += childConsumed;
-                    maxOtherDimension = MaxF(maxOtherDimension, childSize.Secondary);
-                }
-            }
-
-            return ToAbsoluteSize(new SizeF(consumed, maxOtherDimension));
         }
 
-        public override void LayoutSubviews()
+        private bool IsVertical => Orientation == Orientation.Vertical;
+
+        private void UpdateConstraints(UIViewWrapper curr, UIViewWrapper prev, UIViewWrapper next, bool usingWeights, UIViewWrapper firstWeighted)
         {
-            var totalWeight = GetTotalWeight();
-            bool isVert = Orientation == Vx.Views.Orientation.Vertical;
-            var finalSize = ToRelativeSize(Bounds.Size);
+            var weight = GetWeight(curr);
 
-            nfloat pos = 0;
+            curr.View.SetContentHuggingPriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
 
-            Dictionary<UIViewWrapper, nfloat> autoChildPrimaries = new Dictionary<UIViewWrapper, nfloat>();
-            nfloat consumedByAuto = 0;
-            foreach (var child in ArrangedSubviews.Where(i => GetWeight(i) == 0))
+            WrapperConstraint? leftConstraint, topConstraint, rightConstraint, bottomConstraint, widthConstraint = null, heightConstraint = null;
+
+            if (IsVertical)
             {
-                var childSize = ChildSizeThatFits(child, new SizeF(0, finalSize.Secondary));
-
-                consumedByAuto += childSize.Primary;
-                autoChildPrimaries[child] = childSize.Primary;
-            }
-
-            double weightedAvailable = Math.Max(0, finalSize.Primary - consumedByAuto);
-
-            foreach (var child in ArrangedSubviews)
-            {
-                var weight = GetWeight(child);
-
-                nfloat consumed;
-                if (weight == 0)
+                if (prev == null)
                 {
-                    consumed = autoChildPrimaries[child];
+                    topConstraint = new WrapperConstraint(
+                        this,
+                        NSLayoutAttribute.Top);
                 }
                 else
                 {
-                    consumed = (int)((weight / totalWeight) * weightedAvailable);
+                    topConstraint = new WrapperConstraint(
+                        prev.View,
+                        NSLayoutAttribute.Bottom,
+                        1,
+                        prev.Margin.Bottom);
                 }
 
-                SetChildFrame(child, pos, new SizeF(consumed, finalSize.Secondary));
+                if (next == null)
+                {
+                    bottomConstraint = new WrapperConstraint(
+                        this,
+                        NSLayoutAttribute.Bottom)
+                    {
+                        GreaterThanOrEqual = !usingWeights
+                    };
+                }
+                else
+                {
+                    bottomConstraint = null;
+                }
 
-                pos += consumed;
+                leftConstraint = new WrapperConstraint(
+                    this,
+                    NSLayoutAttribute.Left);
+
+                rightConstraint = new WrapperConstraint(
+                    this,
+                    NSLayoutAttribute.Right);
             }
+            else // Horizontal
+            {
+                if (prev == null)
+                {
+                    leftConstraint = new WrapperConstraint(
+                        this,
+                        NSLayoutAttribute.Left);
+                }
+                else
+                {
+                    leftConstraint = new WrapperConstraint(
+                        prev.View,
+                        NSLayoutAttribute.Right,
+                        1,
+                        prev.Margin.Right);
+                }
+
+                if (next == null)
+                {
+                    rightConstraint = new WrapperConstraint(
+                        this,
+                        NSLayoutAttribute.Right)
+                    {
+                        GreaterThanOrEqual = !usingWeights
+                    };
+                }
+                else
+                {
+                    rightConstraint = null;
+                }
+
+                topConstraint = new WrapperConstraint(
+                    this,
+                    NSLayoutAttribute.Top);
+
+                bottomConstraint = new WrapperConstraint(
+                    this,
+                    NSLayoutAttribute.Bottom);
+            }
+
+            if (usingWeights && firstWeighted != null && weight > 0)
+            {
+                if (IsVertical)
+                {
+                    widthConstraint = null;
+                    heightConstraint = new WrapperConstraint(
+                        firstWeighted.View,
+                        NSLayoutAttribute.Height,
+                        weight / GetWeight(firstWeighted),
+                        0);
+                }
+                else
+                {
+                    heightConstraint = null;
+                    widthConstraint = new WrapperConstraint(
+                        firstWeighted.View,
+                        NSLayoutAttribute.Width,
+                        weight / GetWeight(firstWeighted),
+                        0);
+                }
+            }
+
+            UIView centeringHorizontalView = IsVertical ? this : null;
+            UIView centeringVerticalView = IsVertical ? null : this;
+
+            curr.SetConstraints(leftConstraint, topConstraint, rightConstraint, bottomConstraint, centeringHorizontalView, centeringVerticalView, widthConstraint, heightConstraint);
         }
+
+
+        //public override void UpdateConstraints()
+        //{
+        //    ArrangedSubview prev = null;
+        //    ArrangedSubview curr = null;
+        //    ArrangedSubview firstWeighted = null;
+
+        //    bool usingWeights = _arrangedSubviews.Any(i => i.Weight > 0);
+
+        //    for (int i = 0; i < _arrangedSubviews.Count; i++)
+        //    {
+        //        curr = _arrangedSubviews[i];
+        //        ArrangedSubview next = _arrangedSubviews.ElementAtOrDefault(i + 1);
+
+        //        curr.UpdateConstraints(prev, next, usingWeights, firstWeighted);
+
+        //        if (firstWeighted == null && curr.Weight > 0)
+        //        {
+        //            firstWeighted = curr;
+        //        }
+
+        //        prev = curr;
+        //    }
+
+        //    // Need to call base when done
+        //    base.UpdateConstraints();
+        //}
     }
 }

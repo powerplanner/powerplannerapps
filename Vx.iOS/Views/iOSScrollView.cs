@@ -36,16 +36,6 @@ namespace Vx.iOS.Views
             AddSubview(_contentView);
             _contentView.ConfigureForVerticalScrolling(this);
         }
-        public override CGRect Bounds
-        {
-            get => base.Bounds;
-            set
-            {
-                base.Bounds = value;
-
-                _contentView.PreferredMaxLayoutWidth = value.Width;
-            }
-        }
 
         public UIViewWrapper Content
         {

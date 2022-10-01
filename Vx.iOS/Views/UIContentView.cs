@@ -41,45 +41,20 @@ namespace Vx.iOS.Views
                 {
                     _padding = value;
 
-                    InvalidateIntrinsicContentSize();
-                    SetNeedsLayout();
+                    SetNeedsUpdateConstraints();
                 }
             }
         }
 
-        public override CGSize IntrinsicContentSize
+        protected override void CustomUpdateConstraints()
         {
-            get
-            {
-                var answer = base.IntrinsicContentSize;
-                return new CGSize(answer.Width + Padding.Width, answer.Height + Padding.Height);
-            }
-        }
-
-        public override CGSize SizeThatFits(CGSize size)
-        {
-            var baseWidth = size.Width;
-            if (baseWidth != 0)
-            {
-                baseWidth = MaxF(0, baseWidth - Padding.Width);
-            }
-            var baseHeight = size.Height;
-            if (baseHeight != 0)
-            {
-                baseHeight = MaxF(0, baseHeight - Padding.Height);
-            }
-
-            var answer = base.SizeThatFits(new CGSize(baseWidth, baseHeight));
-
-            return new CGSize(answer.Width + Padding.Width, answer.Height + Padding.Height);
-        }
-
-        public override void LayoutSubviews()
-        {
-            if (Content != null)
-            {
-                Content.Frame = new CGRect(new CGPoint(Padding.Left, Padding.Top), new CGSize(Frame.Width - Padding.Width, Frame.Height - Padding.Height));
-            }
+            Content?.SetConstraints(
+                new WrapperConstraint(this, NSLayoutAttribute.Left, 1, Padding.Left),
+                new WrapperConstraint(this, NSLayoutAttribute.Top, 1, Padding.Top),
+                new WrapperConstraint(this, NSLayoutAttribute.Right, 1, -1 * Padding.Right),
+                new WrapperConstraint(this, NSLayoutAttribute.Bottom, 1, -1 * Padding.Bottom),
+                this,
+                this);
         }
     }
 }

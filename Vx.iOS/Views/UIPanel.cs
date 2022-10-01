@@ -9,10 +9,22 @@ namespace Vx.iOS.Views
     public class UIPanel : UIView
     {
         private List<UIViewWrapper> _arrangedSubviews = new List<UIViewWrapper>();
-        public IReadOnlyList<UIViewWrapper> ArrangedSubviews => _arrangedSubviews as IReadOnlyList<UIViewWrapper>;
+        private IReadOnlyList<UIViewWrapper> _readOnlyArrangedSubviews;
+        public IReadOnlyList<UIViewWrapper> ArrangedSubviews
+        {
+            get
+            {
+                if (_readOnlyArrangedSubviews == null)
+                {
+                    _readOnlyArrangedSubviews = _arrangedSubviews as IReadOnlyList<UIViewWrapper>;
+                }
+                return _readOnlyArrangedSubviews;
+            }
+        }
 
         public void AddArrangedSubview(UIViewWrapper subview)
         {
+            subview.View.TranslatesAutoresizingMaskIntoConstraints = false;
             _arrangedSubviews.Add(subview);
             base.AddSubview(subview.View);
             Invalidate();
@@ -35,6 +47,7 @@ namespace Vx.iOS.Views
 
         public void InsertArrangedSubview(UIViewWrapper subview, int index)
         {
+            subview.View.TranslatesAutoresizingMaskIntoConstraints = false;
             _arrangedSubviews.Insert(index, subview);
             base.InsertSubview(subview.View, index);
             Invalidate();
@@ -62,42 +75,28 @@ namespace Vx.iOS.Views
 
         public UIView View => this;
 
-        private nfloat _preferredMaxLayoutWidth = -1;
-        public nfloat PreferredMaxLayoutWidth
-        {
-            get => _preferredMaxLayoutWidth;
-            set
-            {
-                if (_preferredMaxLayoutWidth != value)
-                {
-                    _preferredMaxLayoutWidth = value;
-                    InvalidateIntrinsicContentSize();
-                }
-            }
-        }
-
-        public override CGSize IntrinsicContentSize => SizeThatFits(new CGSize(PreferredMaxLayoutWidth == -1 ? 0 : PreferredMaxLayoutWidth, 0));
-
-        public override CGSize SizeThatFits(CGSize size)
-        {
-            nfloat measuredWidth = 0, measuredHeight = 0;
-            foreach (var child in ArrangedSubviews)
-            {
-                var childSize = child.SizeThatFits(size);
-
-                measuredWidth = MaxF(measuredWidth, childSize.Width);
-                measuredHeight = MaxF(measuredHeight, childSize.Height);
-            }
-
-            return new CGSize(measuredWidth, measuredHeight);
-        }
-
-        public override void LayoutSubviews()
+        protected virtual void CustomUpdateConstraints()
         {
             foreach (var subview in ArrangedSubviews)
             {
-                subview.Frame = new CGRect(0, 0, Frame.Width, Frame.Height);
+                subview.SetConstraints(
+                    new WrapperConstraint(this, NSLayoutAttribute.Left),
+                    new WrapperConstraint(this, NSLayoutAttribute.Top),
+                    new WrapperConstraint(this, NSLayoutAttribute.Right),
+                    new WrapperConstraint(this, NSLayoutAttribute.Bottom),
+                    this,
+                    this);
             }
+        }
+
+        /// <summary>
+        /// Do NOT override this, override the CustomUpdateConstraints instead.
+        /// </summary>
+        public override void UpdateConstraints()
+        {
+            CustomUpdateConstraints();
+
+            base.UpdateConstraints();
         }
 
         protected static nfloat MaxF(nfloat f1, nfloat f2)
@@ -111,8 +110,7 @@ namespace Vx.iOS.Views
 
         private void Invalidate()
         {
-            InvalidateIntrinsicContentSize();
-            SetNeedsLayout();
+            SetNeedsUpdateConstraints();
         }
     }
 }

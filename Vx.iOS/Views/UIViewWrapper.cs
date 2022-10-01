@@ -5,6 +5,33 @@ using UIKit;
 
 namespace Vx.iOS.Views
 {
+    public struct WrapperConstraint
+    {
+        public WrapperConstraint(UIView otherView, NSLayoutAttribute otherViewAttribute, nfloat multiplier, nfloat constant)
+        {
+            OtherView = otherView;
+            OtherViewAttribute = otherViewAttribute;
+            Multiplier = multiplier;
+            Constant = constant;
+            GreaterThanOrEqual = false;
+        }
+
+        public WrapperConstraint(UIView otherView, NSLayoutAttribute otherViewAttribute)
+        {
+            OtherView = otherView;
+            OtherViewAttribute = otherViewAttribute;
+            Multiplier = 1;
+            Constant = 0;
+            GreaterThanOrEqual = false;
+        }
+
+        public UIView OtherView;
+        public NSLayoutAttribute OtherViewAttribute;
+        public nfloat Multiplier;
+        public nfloat Constant;
+        public bool GreaterThanOrEqual;
+    }
+
     public class UIViewWrapper
     {
         public UIView View { get; private set; }
@@ -14,6 +41,263 @@ namespace Vx.iOS.Views
         {
             get => _width;
             set => SetValue(ref _width, value);
+        }
+
+        public void SetConstraints(
+            WrapperConstraint? leftConstraint,
+            WrapperConstraint? topConstraint,
+            WrapperConstraint? rightConstraint,
+            WrapperConstraint? bottomConstraint,
+            UIView centeringHorizontalView,
+            UIView centeringVerticalView,
+            WrapperConstraint? widthConstraint = null,
+            WrapperConstraint? heightConstraint = null)
+        {
+            if (widthConstraint != null)
+            {
+                WidthConstraint = NSLayoutConstraint.Create(
+                    View,
+                    NSLayoutAttribute.Width,
+                    NSLayoutRelation.Equal,
+                    widthConstraint.Value.OtherView,
+                    widthConstraint.Value.OtherViewAttribute,
+                    widthConstraint.Value.Multiplier,
+                    widthConstraint.Value.Constant);
+            }
+            else if (!float.IsNaN(Width))
+            {
+                WidthConstraint = NSLayoutConstraint.Create(
+                    View,
+                    NSLayoutAttribute.Width,
+                    NSLayoutRelation.Equal,
+                    1,
+                    Width);
+            }
+            else
+            {
+                WidthConstraint = null;
+            }
+
+            if (heightConstraint != null)
+            {
+                HeightConstraint = NSLayoutConstraint.Create(
+                    View,
+                    NSLayoutAttribute.Height,
+                    NSLayoutRelation.Equal,
+                    heightConstraint.Value.OtherView,
+                    heightConstraint.Value.OtherViewAttribute,
+                    heightConstraint.Value.Multiplier,
+                    heightConstraint.Value.Constant);
+            }
+            else if (!float.IsNaN(Height))
+            {
+                HeightConstraint = NSLayoutConstraint.Create(
+                    View,
+                    NSLayoutAttribute.Height,
+                    NSLayoutRelation.Equal,
+                    1,
+                    Height);
+            }
+            else
+            {
+                HeightConstraint = null;
+            }
+
+            LeftConstraint = leftConstraint.HasValue ? TransformLeftConstraint(leftConstraint.Value) : null;
+            TopConstraint = topConstraint.HasValue ? TransformTopConstraint(topConstraint.Value) : null;
+            RightConstraint = rightConstraint.HasValue ? TransformRightConstraint(rightConstraint.Value) : null;
+            BottomConstraint = bottomConstraint.HasValue ? TransformBottomConstraint(bottomConstraint.Value) : null;
+
+            ApplyHorizontalCenteringConstraintIfNeeded(centeringHorizontalView);
+            ApplyVerticalCenteringConstraintIfNeeded(centeringVerticalView);
+        }
+
+        private NSLayoutConstraint TransformLeftConstraint(WrapperConstraint constraint)
+        {
+            bool pinLeft = HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch || HorizontalAlignment == Vx.Views.HorizontalAlignment.Left;
+
+            return NSLayoutConstraint.Create(
+                View,
+                NSLayoutAttribute.Left,
+                pinLeft ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                constraint.OtherView,
+                constraint.OtherViewAttribute,
+                constraint.Multiplier,
+                constraint.Constant + Margin.Left);
+        }
+
+        private NSLayoutConstraint TransformRightConstraint(WrapperConstraint constraint)
+        {
+            bool pinRight = !constraint.GreaterThanOrEqual && (HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch || HorizontalAlignment == Vx.Views.HorizontalAlignment.Right);
+
+            return NSLayoutConstraint.Create(
+                constraint.OtherView,
+                constraint.OtherViewAttribute,
+                pinRight ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                View,
+                NSLayoutAttribute.Right,
+                constraint.Multiplier,
+                Margin.Right + constraint.Constant);
+        }
+
+        private NSLayoutConstraint TransformTopConstraint(WrapperConstraint constraint)
+        {
+            bool pinTop = VerticalAlignment == Vx.Views.VerticalAlignment.Stretch || VerticalAlignment == Vx.Views.VerticalAlignment.Top;
+
+            return NSLayoutConstraint.Create(
+                View,
+                NSLayoutAttribute.Top,
+                pinTop ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                constraint.OtherView,
+                constraint.OtherViewAttribute,
+                constraint.Multiplier,
+                Margin.Top + constraint.Constant);
+        }
+
+        private NSLayoutConstraint TransformBottomConstraint(WrapperConstraint constraint)
+        {
+            bool pinBottom = !constraint.GreaterThanOrEqual && (VerticalAlignment == Vx.Views.VerticalAlignment.Stretch || VerticalAlignment == Vx.Views.VerticalAlignment.Bottom);
+
+            return NSLayoutConstraint.Create(
+                constraint.OtherView,
+                constraint.OtherViewAttribute,
+                pinBottom ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                View,
+                NSLayoutAttribute.Bottom,
+                constraint.Multiplier,
+                Margin.Bottom + constraint.Constant);
+        }
+
+        private void ApplyHorizontalCenteringConstraintIfNeeded(UIView viewForCenter)
+        {
+            if (viewForCenter != null && HorizontalAlignment == Vx.Views.HorizontalAlignment.Center)
+            {
+                CenterXConstraint = NSLayoutConstraint.Create(
+                    View,
+                    NSLayoutAttribute.CenterX,
+                    NSLayoutRelation.Equal,
+                    viewForCenter,
+                    NSLayoutAttribute.CenterX,
+                    1,
+                    (Margin.Left - Margin.Right) / 2f);
+            }
+            else
+            {
+                CenterXConstraint = null;
+            }
+        }
+
+        private void ApplyVerticalCenteringConstraintIfNeeded(UIView viewForCenter)
+        {
+            if (viewForCenter != null && VerticalAlignment == Vx.Views.VerticalAlignment.Center)
+            {
+                CenterYConstraint = NSLayoutConstraint.Create(
+                    View,
+                    NSLayoutAttribute.CenterY,
+                    NSLayoutRelation.Equal,
+                    viewForCenter,
+                    NSLayoutAttribute.CenterY,
+                    1,
+                    (Margin.Top - Margin.Bottom) / 2f);
+            }
+            else
+            {
+                CenterYConstraint = null;
+            }
+        }
+
+        private NSLayoutConstraint _topConstraint;
+        private NSLayoutConstraint TopConstraint
+        {
+            get => _topConstraint;
+            set => SetConstraint(ref _topConstraint, value);
+        }
+
+        private NSLayoutConstraint _rightConstraint;
+        private NSLayoutConstraint RightConstraint
+        {
+            get => _rightConstraint;
+            set => SetConstraint(ref _rightConstraint, value);
+        }
+
+        private NSLayoutConstraint _leftConstraint;
+        private NSLayoutConstraint LeftConstraint
+        {
+            get => _leftConstraint;
+            set => SetConstraint(ref _leftConstraint, value);
+        }
+
+        private NSLayoutConstraint _bottomConstraint;
+        private NSLayoutConstraint BottomConstraint
+        {
+            get => _bottomConstraint;
+            set => SetConstraint(ref _bottomConstraint, value);
+        }
+
+        private NSLayoutConstraint _widthConstraint;
+        private NSLayoutConstraint WidthConstraint
+        {
+            get => _widthConstraint;
+            set => SetConstraint(ref _widthConstraint, value);
+        }
+
+        private NSLayoutConstraint _heightConstraint;
+        private NSLayoutConstraint HeightConstraint
+        {
+            get => _heightConstraint;
+            set => SetConstraint(ref _heightConstraint, value);
+        }
+
+        private NSLayoutConstraint _centerXConstraint;
+        private NSLayoutConstraint CenterXConstraint
+        {
+            get => _centerXConstraint;
+            set => SetConstraint(ref _centerXConstraint, value);
+        }
+
+        private NSLayoutConstraint _centerYConstraint;
+        private NSLayoutConstraint CenterYConstraint
+        {
+            get => _centerYConstraint;
+            set => SetConstraint(ref _centerYConstraint, value);
+        }
+
+        private void SetConstraint(ref NSLayoutConstraint storage, NSLayoutConstraint value)
+        {
+            // If removing
+            if (storage != null && value == null)
+            {
+                // Simply remove
+                View.Superview.RemoveConstraint(storage);
+                storage = null;
+                return;
+            }
+
+            if (storage != null)
+            {
+                // If identical
+                if (object.ReferenceEquals(storage.FirstItem, value.FirstItem)
+                    && storage.FirstAttribute == value.FirstAttribute
+                    && storage.Relation == value.Relation
+                    && object.ReferenceEquals(storage.SecondItem, value.SecondItem)
+                    && storage.SecondAttribute == value.SecondAttribute
+                    && storage.Multiplier == value.Multiplier
+                    && storage.Constant == value.Constant)
+                {
+                    // No need to update
+                    return;
+                }
+
+                // Otherwise we need to remove existing constraint to update it
+                View.Superview.RemoveConstraint(storage);
+                storage = null;
+            }
+
+            if (value != null)
+            {
+                View.Superview.AddConstraint(value);
+                storage = value;
+            }
         }
 
         private float _height = float.NaN;
@@ -55,8 +339,7 @@ namespace Vx.iOS.Views
 
         private void Invalidate()
         {
-            View.InvalidateIntrinsicContentSize();
-            View.Superview?.SetNeedsLayout();
+            View.Superview?.SetNeedsUpdateConstraints();
         }
 
         private Dictionary<string, object> _attachedValues;
@@ -108,206 +391,6 @@ namespace Vx.iOS.Views
                 return f1;
             }
             return f2;
-        }
-
-        private nfloat _preferredMaxLayoutWidth = -1;
-        public nfloat PreferredMaxLayoutWidth
-        {
-            get => _preferredMaxLayoutWidth;
-            set
-            {
-                if (_preferredMaxLayoutWidth != value)
-                {
-                    if (View is UIPanel panel)
-                    {
-                        panel.PreferredMaxLayoutWidth = value;
-                    }
-                    else if (View is UILabel label)
-                    {
-                        label.PreferredMaxLayoutWidth = value;
-                    }
-
-                    _preferredMaxLayoutWidth = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Automatically includes Margins and Height/Width values
-        /// </summary>
-        public CGSize IntrinsicContentSize => SizeThatFits(new CGSize(0, 0));
-
-        /// <summary>
-        /// Automatically includes Margins and Height/Width values
-        /// </summary>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        public CGSize SizeThatFits(CGSize size)
-        {
-            // If absolute size
-            if (!float.IsNaN(Width) && !float.IsNaN(Height))
-            {
-                // We're done
-                return new CGSize(Width + Margin.Width, Height + Margin.Height);
-            }
-
-            // If we're fitting to parent size and parent size isn't auto, just return that, nothing to measure
-            if (HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch && VerticalAlignment == Vx.Views.VerticalAlignment.Stretch
-                && size.Width != 0 && size.Height != 0)
-            {
-                return size;
-            }
-
-            size = new CGSize(size.Width, size.Height);
-
-            if (HorizontalAlignment != Vx.Views.HorizontalAlignment.Stretch)
-            {
-                // Auto width
-                size.Width = 0;
-            }
-
-            if (VerticalAlignment != Vx.Views.VerticalAlignment.Stretch)
-            {
-                // Auto height
-                size.Height = 0;
-            }
-
-            // This will include margins
-            var innerSize = new CGSize(size.Width, size.Height);
-
-            if (!float.IsNaN(Width))
-            {
-                innerSize.Width = Width;
-            }
-            else if (innerSize.Width != 0)
-            {
-                innerSize.Width = MaxF(0, size.Width - Margin.Width);
-            }
-
-            if (!float.IsNaN(Height))
-            {
-                innerSize.Height = Height;
-            }
-            else if (innerSize.Height != 0)
-            {
-                innerSize.Height = MaxF(0, size.Height - Margin.Height);
-            }
-
-            innerSize = View.SystemLayoutSizeFittingSize(innerSize);
-
-            // Reset any fixed width/height values
-            if (!float.IsNaN(Width))
-            {
-                innerSize.Width = Width;
-            }
-            if (!float.IsNaN(Height))
-            {
-                innerSize.Height = Height;
-            }
-
-            return new CGSize(innerSize.Width + Margin.Width, innerSize.Height + Margin.Height);
-        }
-
-        private CGRect _frame;
-        public CGRect Frame
-        {
-            get => _frame;
-            set
-            {
-                var contentSize = new CGSize(value.Size.Width, value.Size.Height);
-
-                CGSize innerSize = new CGSize(contentSize);
-
-                if (!float.IsNaN(Width))
-                {
-                    innerSize.Width = Width;
-                }
-                else
-                {
-                    innerSize.Width = MaxF(0, contentSize.Width - Margin.Width);
-                }
-                if (!float.IsNaN(Height))
-                {
-                    innerSize.Height = Height;
-                }
-                else
-                {
-                    innerSize.Height = MaxF(0, contentSize.Height - Margin.Height);
-                }
-
-                bool isWidthKnown = !float.IsNaN(Width) || HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch;
-                bool isHeightKnown = !float.IsNaN(Height) || VerticalAlignment == Vx.Views.VerticalAlignment.Stretch;
-
-                if (!isWidthKnown || !isHeightKnown)
-                {
-                    innerSize = View.SystemLayoutSizeFittingSize(new CGSize(
-                        isWidthKnown ? innerSize.Width : 0,
-                        isHeightKnown ? innerSize.Height : 0));
-
-                    if (!float.IsNaN(Width))
-                    {
-                        innerSize.Width = Width;
-                    }
-                    else if (HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch)
-                    {
-                        innerSize.Width = MaxF(0, contentSize.Width - Margin.Width);
-                    }
-                    if (!float.IsNaN(Height))
-                    {
-                        innerSize.Height = Height;
-                    }
-                    else if (VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
-                    {
-                        innerSize.Height = MaxF(0, contentSize.Height - Margin.Height);
-                    }
-                }
-
-                nfloat childX, childY;
-
-                switch (HorizontalAlignment)
-                {
-                    case Vx.Views.HorizontalAlignment.Stretch:
-                    case Vx.Views.HorizontalAlignment.Left:
-                        childX = value.X + Margin.Left;
-                        break;
-
-                    case Vx.Views.HorizontalAlignment.Center:
-                        nfloat center = contentSize.Width / 2.0f;
-                        nfloat offset = (innerSize.Width + Margin.Left - Margin.Right) / 2.0f;
-                        childX = value.X + center - offset;
-                        break;
-
-                    case Vx.Views.HorizontalAlignment.Right:
-                        childX = value.X + (contentSize.Width - innerSize.Width - Margin.Right);
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                switch (VerticalAlignment)
-                {
-                    case Vx.Views.VerticalAlignment.Stretch:
-                    case Vx.Views.VerticalAlignment.Top:
-                        childY = value.Y + Margin.Top;
-                        break;
-
-                    case Vx.Views.VerticalAlignment.Center:
-                        nfloat center = contentSize.Height / 2.0f;
-                        nfloat offset = (innerSize.Height + Margin.Top - Margin.Bottom) / 2.0f;
-                        childY = value.Y + center - offset;
-                        break;
-
-                    case Vx.Views.VerticalAlignment.Bottom:
-                        childY = value.Y + (contentSize.Height - innerSize.Height - Margin.Bottom);
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                View.Frame = new CGRect(childX, childY, innerSize.Width, innerSize.Height);
-            }
         }
     }
 }
