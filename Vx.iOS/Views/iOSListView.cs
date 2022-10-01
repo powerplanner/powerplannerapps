@@ -43,6 +43,7 @@ namespace Vx.iOS.Views
                 if (newView.Items == null || newView.ItemTemplate == null)
                 {
                     View.Source = null;
+                    View.ReloadData();
                 }
                 else
                 {
@@ -61,6 +62,8 @@ namespace Vx.iOS.Views
                             _prevList.CollectionChanged += Items_CollectionChanged;
                         }
                     }
+
+                    View.ReloadData();
                 }
             }
         }
