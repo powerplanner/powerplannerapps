@@ -61,9 +61,13 @@ namespace Vx.Views
             {
                 return 16;
             }
+            else if (VxPlatform.Current == Platform.iOS)
+            {
+                return 20;
+            }
             else
             {
-                return 24; // iOS will get down-converted to 20 automatically
+                return 24;
             }
         });
 
@@ -83,24 +87,5 @@ namespace Vx.Views
         public virtual float TitleFontSize => 24;
 
         public virtual float HeaderFontSize => 38;
-
-        private static Lazy<float> _marginModifier = new Lazy<float>(() =>
-        {
-            switch (VxPlatform.Current)
-            {
-                case Platform.Uwp:
-                    return 1;
-
-                case Platform.iOS:
-                    return 20f / 24f; // iOS margins should be 20px, everything gets downgraded. Realistically even sizes like buttons should be downgraded (Android usually recommends 48dp, iOS recommends 44, so similar downsize factor. If I only do it for margins, other UI would be inconsistent.
-
-                case Platform.Android:
-                    return 1;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        });
-        public float MarginModifier => _marginModifier.Value;
     }
 }
