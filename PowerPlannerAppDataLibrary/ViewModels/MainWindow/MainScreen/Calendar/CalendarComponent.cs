@@ -229,8 +229,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         Text = day,
                         WrapText = false,
                         TextColor = Theme.Current.SubtleForegroundColor,
-                        FontSize = 16,
-                        Margin = new Thickness(12, 6, 12, 6),
+                        FontSize = IsFullSize ? 16 : Theme.Current.CaptionFontSize,
+                        Margin = new Thickness(
+                            left: IsFullSize ? CalendarDayComponent.FullSizeLeftRightMargin : CalendarDayComponent.CompactLeftMargin,
+                            top: 6,
+                            right: IsFullSize ? CalendarDayComponent.FullSizeLeftRightMargin : CalendarDayComponent.CompactRightMargin,
+                            bottom: 6),
                         TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
                     }.LinearLayoutWeight(1));
                 }
@@ -375,6 +379,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             private static Color TodayColor => Theme.Current.IsDarkTheme ? Color.FromArgb(56, 56, 56) : Color.FromArgb(117, 117, 117);
             private static Color OtherMonthColor => Theme.Current.IsDarkTheme ? Color.FromArgb(30, 30, 30) : Color.FromArgb(228, 228, 228);
 
+            public const int CompactRightMargin = 8;
+            public const int CompactLeftMargin = 10;
+            public const int FullSizeLeftRightMargin = 10;
+
             private View RenderDay(DateTime date)
             {
                 bool isToday = date == ViewModel.Today;
@@ -403,7 +411,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 var tbDay = new TextBlock
                 {
                     Text = date.Day.ToString(),
-                    Margin = IsFullSize ? new Thickness(10, 6, 10, 6) : new Thickness(10, 4, 8, 0),
+                    Margin = IsFullSize ? new Thickness(FullSizeLeftRightMargin, 6, FullSizeLeftRightMargin, 6) : new Thickness(CompactLeftMargin, 4, CompactRightMargin, 0),
                     FontSize = IsFullSize ? Theme.Current.SubtitleFontSize : Theme.Current.BodyFontSize,
                     FontWeight = FontWeights.SemiLight,
                     TextColor = foregroundColor,
