@@ -26,6 +26,8 @@ namespace Vx.iOS.Views
             View.EstimatedRowHeight = 44;
 
             View.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
+
+            View.AllowsSelection = false;
         }
 
         private INotifyCollectionChanged _prevList;
