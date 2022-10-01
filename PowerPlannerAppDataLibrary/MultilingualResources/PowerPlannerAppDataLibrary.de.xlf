@@ -112,7 +112,7 @@
         </trans-unit>
         <trans-unit id="Settings_ChangePasswordPage_Errors_FailedUpdateOnline" translate="yes" xml:space="preserve">
           <source>Failed to change your online password. Maybe you're not connected to the internet?</source>
-          <target state="final">Fehler beim ändern ihres Online-Kennwortes. Vielleicht sind Sie nicht mit dem Internet verbunden?</target>
+          <target state="final">Fehler beim Ändern ihres Online-Kennwortes. Vielleicht sind Sie nicht mit dem Internet verbunden?</target>
         </trans-unit>
         <trans-unit id="Settings_ChangePasswordPage_Errors_MustEnterPassword" translate="yes" xml:space="preserve">
           <source>You must enter a password!</source>
@@ -120,7 +120,7 @@
         </trans-unit>
         <trans-unit id="Settings_ChangePasswordPage_Errors_PasswordsDidNotMatch" translate="yes" xml:space="preserve">
           <source>Your passwords did not match. Try again.</source>
-          <target state="final">Ihre Kennwörter stimmen nicht überein. Versuchebn Sie es bitte erneut.</target>
+          <target state="final">Ihre Kennwörter stimmen nicht überein. Versuchen Sie es bitte erneut.</target>
         </trans-unit>
         <trans-unit id="Settings_ChangePasswordPage_TextBoxConfirmPassword.Header" translate="yes" xml:space="preserve">
           <source>Confirm new password</source>
@@ -220,7 +220,7 @@
 It is recommended that you delete your current account and then convert this device's account to an online account. Nevertheless, would you like to continue logging into the online account?
 
 Click Continue to login (which might cause duplicates).</source>
-          <target state="final">Sie melden sich gerade in einem bestehenden Konto. an Wahrscheinlich werden dadurch doppelte Elemente hochgeladen, da alles was aktuell auf diesem Gerät gespeichert ist, als neue Elemente hochgeladen wird. 
+          <target state="final">Sie melden sich gerade in einem bestehenden Konto an. Wahrscheinlich werden dadurch doppelte Elemente hochgeladen, da alles was aktuell auf diesem Gerät gespeichert ist, als neue Elemente hochgeladen wird. 
  
 Es wird empfohlen, dass Sie Ihr aktuelles Konto löschen und dann das Konto auf diesem Gerät in ein Online-Konto umwandeln. Möchte Sie sich dennoch weiterhin in einem Online-Konto anmelden? 
  
@@ -245,7 +245,7 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
         </trans-unit>
         <trans-unit id="Settings_DeleteAccountPage_Errors_ErrorDeletingHeader" translate="yes" xml:space="preserve">
           <source>Error deleting account</source>
-          <target state="final">Fehler beim löschen des Kontos</target>
+          <target state="final">Fehler beim Löschen des Kontos</target>
         </trans-unit>
         <trans-unit id="Settings_DeleteAccountPage_Errors_UnknownErrorDeletingOnline" translate="yes" xml:space="preserve">
           <source>Failed to delete your online account. Maybe you're offline?</source>
@@ -309,7 +309,7 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Set current week and day week changes</source>
-          <target state="final">Stellen sie die aktuelle Woche und Wochentge Änderungen ein</target>
+          <target state="final">Stellen sie die aktuelle Woche und Wochentage Änderungen ein</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Title" translate="yes" xml:space="preserve">
           <source>Two week schedule</source>
@@ -373,7 +373,7 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
         </trans-unit>
         <trans-unit id="Settings_Reminders_DayBeforeDescription.Text" translate="yes" xml:space="preserve">
           <source>This feature reminds you the day before your incomplete tasks or events are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
-          <target state="final">Diese Funktion erinnert Sie an dem Tag bevor Ihre unerledigten Aufgaben oder Veranstaltungen anstehen an diese. Sie erinnert Sie 10 Minuten nach dem letzten Kurs, oder um 15:00, wenn an diesem Tag keine Kurse stattfindet.</target>
+          <target state="final">Diese Funktion erinnert Sie am Tag vor der Fälligkeit an Ihre unvollständigen Aufgaben oder Ereignisse. Sie erinnert Sie 10 Minuten nach dem letzten Kurs, oder um 15:00, wenn an diesem Tag keine Kurse stattfindet.</target>
         </trans-unit>
         <trans-unit id="Settings_Reminders_DayOfDescription.Text" translate="yes" xml:space="preserve">
           <source>This feature reminds you on the same day that your incomplete tasks or events are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
@@ -413,7 +413,7 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_TextBlockNoClasses.Text" translate="yes" xml:space="preserve">
           <source>Looks like you don't have any classes. Add some classes first and then check this page.</source>
-          <target state="final">Sieht aus, als hätten Sie keine Unterrichte. Fügen Sie zuerset welche hinzu und kehren dann zu dieser Seite zurück.</target>
+          <target state="final">Sieht aus, als hätten Sie keinen Unterricht. Fügen Sie zuerst eine Klasse hinzu und kehren Sie dann zu dieser Seite zurück.</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_TextBlockNoSemester.Text" translate="yes" xml:space="preserve">
           <source>You must select a semester first. Please open the menu, click Years, and open a semester.</source>
@@ -449,7 +449,7 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_MainTile_Description.Text" translate="yes" xml:space="preserve">
           <source>These settings affect the main tile, which can be pinned by right clicking Power Planner in your app list, and clicking 'Pin to Start'. The Skip items setting will be inherited by your class tiles, unless you've specifically changed your class tile settings.</source>
-          <target state="final">Diese Einstellungen betreffen die Haupt Kachel, welche durch einen Rechtsklick und die Auswahl "An Start Anheften" auf der Startseite angepinnt wird. Die Elemente-Überspringen Einstellung wird durch Ihre Kurs Kacheln beeinflusst, es sei denn Sie haben Ihre Kurs-Kachel Einstellungen geändert.</target>
+          <target state="final">Diese Einstellungen betreffen die Hauptkachel, welche durch einen Rechtsklick und die Auswahl "An Start Anheften" auf der Startseite angepinnt wird. Die Elemente-Überspringen Einstellung wird durch Ihre Kurs-Kacheln beeinflusst, es sei denn Sie haben Ihre Kurs-Kachel Einstellungen geändert.</target>
         </trans-unit>
         <trans-unit id="Settings_Tiles_MainTile_Header.Text" translate="yes" xml:space="preserve">
           <source>MAIN TILE</source>
@@ -498,15 +498,15 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
         </trans-unit>
         <trans-unit id="Tile_SkipExplanation1.Text" translate="yes" xml:space="preserve">
           <source>Entering 1 will ignore items due yesterday or earlier</source>
-          <target state="final">Wenn Sie 1 eingeben, werden alle Elemente bis Gestern und davor ignoriert</target>
+          <target state="final">Wenn Sie 1 eingeben, werden alle Elemente bis gestern und davor ignoriert</target>
         </trans-unit>
         <trans-unit id="Tile_SkipExplanation2.Text" translate="yes" xml:space="preserve">
           <source>Entering 2 will ignore items due 2 days ago or earlier</source>
-          <target state="final">Wenn Sie 2 eingeben, werden alle Elemente bis Vorgestern und davor ignoriert</target>
+          <target state="final">Wenn Sie 2 eingeben, werden alle Elemente bis vorgestern und davor ignoriert</target>
         </trans-unit>
         <trans-unit id="Tile_SkipExplanationBlank.Text" translate="yes" xml:space="preserve">
           <source>Leaving this blank means the earliest assignment will be displayed (default behavior)</source>
-          <target state="final">Wenn Sie dies leer lassen, bedeutet das, dass die früheste Zuordnung angezeigt  wird (Standardverhalten)</target>
+          <target state="final">Wenn Sie dies leer lassen, bedeutet das, dass die früheste Zuordnung angezeigt wird (Standardverhalten)</target>
         </trans-unit>
         <trans-unit id="Tile_SkipItems.Text" translate="yes" xml:space="preserve">
           <source>Skip items</source>
@@ -682,7 +682,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
         </trans-unit>
         <trans-unit id="MessageFreeSemesterLimitReached" translate="yes" xml:space="preserve">
           <source>To add more than one semester, you must upgrade to the premium version of Power Planner. Alternatively, you could always delete your current semester.</source>
-          <target state="final">Um mehr als ein Semester hinzuzufügen, müssen Sie auf die Premium-Version von Power-Planer updgraden. Alternativ könnten Sie immer Ihr aktuelles Semester löschen.</target>
+          <target state="final">Um mehr als ein Semester hinzuzufügen, müssen Sie auf die Premium-Version von Power-Planner updgraden. Alternativ könnten Sie immer Ihr aktuelles Semester löschen.</target>
         </trans-unit>
         <trans-unit id="SemesterViewEditing_TextBoxName.PlaceholderText" translate="yes" xml:space="preserve">
           <source>Name</source>
@@ -729,7 +729,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
         </trans-unit>
         <trans-unit id="AddYearPage_MessageNoName_Body" translate="yes" xml:space="preserve">
           <source>You must enter a name for this year!</source>
-          <target state="final">Geben sie einen Namen für dieses Jahr ein!</target>
+          <target state="final">Geben Sie einen Namen für dieses Jahr ein!</target>
         </trans-unit>
         <trans-unit id="AddYearPage_MessageNoName_Title" translate="yes" xml:space="preserve">
           <source>No name</source>
@@ -1128,7 +1128,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_TextBlockWeekDescription.Text" translate="yes" xml:space="preserve">
           <source>Leave this on 'Every week' unless you have a two-week schedule.</source>
-          <target state="final">Lassen Sie dieses auf "Jede woche" stehen, es sei denn, Sie haben einen Zwei Wochen Stundenplan.</target>
+          <target state="final">Lassen Sie dieses auf "Jede Woche" stehen, es sei denn, Sie haben einen Zwei Wochen Stundenplan.</target>
         </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_TextBoxRoom.Header" translate="yes" xml:space="preserve">
           <source>Room</source>
@@ -1184,7 +1184,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
         </trans-unit>
         <trans-unit id="ForgotUsername_String_ErrorFindingUsername" translate="yes" xml:space="preserve">
           <source>Error finding username</source>
-          <target state="final">Fehler bei Suche nach Benutzernamen</target>
+          <target state="final">Fehler beim Suchen nach dem Benutzernamen</target>
         </trans-unit>
         <trans-unit id="ForgotUsername_String_FindingUsernameStatusText" translate="yes" xml:space="preserve">
           <source>Finding username</source>
@@ -1204,7 +1204,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
         </trans-unit>
         <trans-unit id="ForgotUsername_String_YourUsernames" translate="yes" xml:space="preserve">
           <source>Your usernames are...</source>
-          <target state="final" state-qualifier="mt-suggestion">Ihren Benutzernamen sind...</target>
+          <target state="final" state-qualifier="mt-suggestion">Ihre Benutzernamen sind...</target>
         </trans-unit>
         <trans-unit id="LoginPage_String_CheckingOnlinePassword" translate="yes" xml:space="preserve">
           <source>Checking online password</source>
@@ -1284,7 +1284,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
         </trans-unit>
         <trans-unit id="ResetPassword_String_ErrorResettingPassword" translate="yes" xml:space="preserve">
           <source>Error resetting password</source>
-          <target state="final">Fehler beim zurücksetzen des Passwortes</target>
+          <target state="final">Fehler beim Zurücksetzen des Passworts</target>
         </trans-unit>
         <trans-unit id="ResetPassword_String_ResetSuccessHeader" translate="yes" xml:space="preserve">
           <source>Password reset!</source>
@@ -1332,7 +1332,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
         </trans-unit>
         <trans-unit id="String_OfflineExplanation" translate="yes" xml:space="preserve">
           <source>Maybe you're offline? Couldn't connect to the server.</source>
-          <target state="final">Vielleicht sind Sie offline? Konnte nicht mit Server verbinden.</target>
+          <target state="final">Vielleicht sind Sie offline? Konnte nicht mit dem Server verbinden.</target>
         </trans-unit>
         <trans-unit id="String_Recover" translate="yes" xml:space="preserve">
           <source>Recover</source>
@@ -1367,7 +1367,7 @@ nach dem Kauf der Premium-Version, besitzen Sie die Premium-Version auf all Ihre
           <source>What If? mode allows you to expirement with your grades without saving any changes. You can delete grades, add new grades, edit existing grades, and more, all without the fear of changing your actual grades. When you're done, just press the back button to return to your actual grades.
 
 If you have ungraded items, you can also find out exactly what grade you need to keep your desired grade in the class. After entering your desired grade, Power Planner will calculate what you need on ungraded items to achieve your desired grade.</source>
-          <target state="final">Was wenn? Modus elaubt es Ihnen mit Ihren Noten zu experimentieren, ohne Änderungen zu speichern. Sie können Noten löschen, neue Kurse hinzufügen, existierende Noten bearbeiten, und vieles mehr, alles ohne Angst zhaben zu müssen, dass ihre tatsächlichen Noten geändert werden. Wenn Sie fertig sind, drücken Sie einfach auf die Schaltfläche "zurück", um zu Ihren tatsächliche Noten zurückzukehren. 
+          <target state="final">Was wenn? Modus erlaubt es Ihnen mit Ihren Noten zu experimentieren, ohne Änderungen zu speichern. Sie können Noten löschen, neue Kurse hinzufügen, existierende Noten bearbeiten, und vieles mehr, alles ohne Angst zhaben zu müssen, dass ihre tatsächlichen Noten geändert werden. Wenn Sie fertig sind, drücken Sie einfach auf die Schaltfläche "zurück", um zu Ihren tatsächliche Noten zurückzukehren. 
  
 Wenn sie unbenotete Elemente haben, können Sie herausfinden, welche Note Sie brauchen, um ihre bevorzugte Note in diesem Kurs zu bekommen. Nach der Eingabe Ihrer gewünschten Note, wird Power Planner berechnen, welche Noten Sie bei ihren unbenoteten Elementen brauchen, um Ihre gewünschte Note zu erreichen.</target>
         </trans-unit>
@@ -1430,16 +1430,16 @@ With an offline account, you won't be able to...
 Please think about using an online account instead!</source>
           <target state="final">Ich empfehle Ihnen sehr, dass Sie ein Online-Konto verwenden. 
  
-Mit einem offline-Konto ist folgendes nicht möglich...
+Mit einem Offline-Konto ist folgendes nicht möglich...
  - Daten synchronisieren mit anderen Geräten (Android/iOS/Windows)
- - Daten auf ein neues Gerät
+ - Daten auf ein neues Gerät übertragen
  - Nutzung der Website (powerplanner.net)
 
 Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="CreateAccountPage_TextBlockCreateOfflineAccount.Text" translate="yes" xml:space="preserve">
           <source>No internet? Click here to make an offline account</source>
-          <target state="final">Kein Internet? Klicken Sie hier um ein offline-Konto zu machen</target>
+          <target state="final">Kein Internet? Klicken Sie hier um ein Offline-Konto zu machen</target>
         </trans-unit>
         <trans-unit id="CreateAccountPage_TextBoxEmail.Header" translate="yes" xml:space="preserve">
           <source>Email address</source>
@@ -1527,7 +1527,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_BothWeeks" translate="yes" xml:space="preserve">
           <source>Every week</source>
-          <target state="final" state-qualifier="mt-suggestion">Jede woche</target>
+          <target state="final" state-qualifier="mt-suggestion">Jede Woche</target>
         </trans-unit>
         <trans-unit id="EditGradePage_ComboBoxWeightCategories.Header" translate="yes" xml:space="preserve">
           <source>Weight Category</source>
@@ -1588,7 +1588,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="EditSemesterPage_DatePickerEnd.Header" translate="yes" xml:space="preserve">
           <source>End date</source>
-          <target state="final" state-qualifier="tm-suggestion">Endtermin</target>
+          <target state="final" state-qualifier="tm-suggestion">Enddatum</target>
         </trans-unit>
         <trans-unit id="EditSemesterPage_DatePickerStart.Header" translate="yes" xml:space="preserve">
           <source>Start date</source>
@@ -1596,7 +1596,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="EditSemesterPage_String_InvalidStartDate" translate="yes" xml:space="preserve">
           <source>Invalid start date</source>
-          <target state="final" state-qualifier="tm-suggestion">Ungültiger Anfangstermin</target>
+          <target state="final" state-qualifier="tm-suggestion">Ungültiger Anfangsdatum</target>
         </trans-unit>
         <trans-unit id="EditSemesterPage_String_StartDateGreaterThanEndExplanation" translate="yes" xml:space="preserve">
           <source>Your start date must be earlier than your end date.</source>
@@ -1691,7 +1691,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockWelcomeSubtitle.Text" translate="yes" xml:space="preserve">
           <source>To get started, add your classes and schedule!</source>
-          <target state="final" state-qualifier="mt-suggestion">Um zu beginnen, fügen Sie Ihre Klassen und Stundenplan!</target>
+          <target state="final" state-qualifier="mt-suggestion">Um zu beginnen, fügen Sie Ihre Klassen und Stundenplan hinzu!</target>
         </trans-unit>
         <trans-unit id="ClassGrades_UnassignedItemsHeader" translate="yes" xml:space="preserve">
           <source>Unassigned items</source>
@@ -1779,7 +1779,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_DueTime" translate="yes" xml:space="preserve">
           <source>Due time</source>
-          <target state="final" state-qualifier="mt-suggestion">Zu gegebener Zeit</target>
+          <target state="final" state-qualifier="mt-suggestion">Fälligkeitsdatum</target>
         </trans-unit>
         <trans-unit id="String_DueX" translate="yes" xml:space="preserve">
           <source>Due {0}</source>
@@ -1859,7 +1859,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_ScheduleExportToImage_Clipboard_Subtitle" translate="yes" xml:space="preserve">
           <source>Copy image of schedule to paste into other apps</source>
-          <target state="final">Kopieren Sie Bild des Zeitplans in andere Anwendungen einfügen</target>
+          <target state="final">Kopieren Sie ein Bild des Stundenplan um ihn in andere App einfügen zu können</target>
         </trans-unit>
         <trans-unit id="String_ScheduleExportToImage_Clipboard_Title" translate="yes" xml:space="preserve">
           <source>Copy to clipboard</source>
@@ -1871,7 +1871,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_ScheduleExportToImage_Save_Subtitle" translate="yes" xml:space="preserve">
           <source>Save an image of your schedule</source>
-          <target state="final">Speichern Sie ein Bild des Terminplans</target>
+          <target state="final">Speichern Sie ein Bild des Stundenplan</target>
         </trans-unit>
         <trans-unit id="String_ScheduleExportToImage_Save_Title" translate="yes" xml:space="preserve">
           <source>Save to image</source>
@@ -1879,11 +1879,11 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_ScheduleExportToImage_Share_Subtitle" translate="yes" xml:space="preserve">
           <source>Open Share dialog, showing apps that support images</source>
-          <target state="final">Öffnen Sie-Dialogfeld "freigeben", zeigt apps, Bilder zu unterstützen</target>
+          <target state="final">Öffne Teilen-Dialogfeld, mit Apps die Bilder unterstützen</target>
         </trans-unit>
         <trans-unit id="String_ScheduleExportToImage_Share_Title" translate="yes" xml:space="preserve">
           <source>Share with apps</source>
-          <target state="final">Teilen Sie mit apps</target>
+          <target state="final">Teilen Sie mit Apps</target>
         </trans-unit>
         <trans-unit id="DummyFirstYear" translate="yes" xml:space="preserve">
           <source>Freshman</source>
@@ -1897,35 +1897,35 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="ResetPassword_Description" translate="yes" xml:space="preserve">
           <source>Enter your username and email address to reset your password. You will then receive an email that contains a link allowing you to reset your password.</source>
-          <target state="final" state-qualifier="mt-suggestion">Voer uw gebruikersnaam en e-mailadres in om uw wachtwoord opnieuw in te stellen. U ontvangt dan een e-mail met een link waarmee u uw wachtwoord opnieuw kunt instellen.</target>
+          <target state="final" state-qualifier="mt-suggestion">Geben Sie Ihren Benutzernamen und Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen. Sie erhalten dann eine E-Mail mit einem Link, über den Sie Ihr Passwort zurücksetzen können.</target>
         </trans-unit>
         <trans-unit id="SemesterView_NoClasses" translate="yes" xml:space="preserve">
           <source>No classes. Click "open semester" to add some classes!</source>
-          <target state="final" state-qualifier="mt-suggestion">Geen lessen. Klik op "semester öffnen" om enkele klassen toe te voegen!</target>
+          <target state="final" state-qualifier="mt-suggestion">Keine Klassen. Klicken Sie "Semester öffnen" um Klassen hinzuzufügen!</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_Widgets_Subtitle" translate="yes" xml:space="preserve">
           <source>Customize Android home screen widgets</source>
-          <target state="final" state-qualifier="mt-suggestion">Pas Android-widgets op het startscherm aan</target>
+          <target state="final" state-qualifier="mt-suggestion">Widgets für den Android-Startbildschirm anpassen</target>
         </trans-unit>
         <trans-unit id="Settings_MyAccount_DeleteAccountConfirmation_Title" translate="yes" xml:space="preserve">
           <source>Delete account?</source>
-          <target state="final" state-qualifier="mt-suggestion">Account verwijderen?</target>
+          <target state="final" state-qualifier="mt-suggestion">Account löschen?</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetAgenda_Description" translate="yes" xml:space="preserve">
           <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
-          <target state="final" state-qualifier="mt-suggestion">Deze instellingen zijn van invloed op de agendawidget, die op je startscherm kan worden vastgezet door je widget voor Android-widgets te openen en de Power Planner-agenda-widget op je startscherm te plaatsen.</target>
+          <target state="final" state-qualifier="mt-suggestion">Diese Einstellungen wirken sich auf das Agenda-Widget aus, das Sie an Ihren Homescreen anheften können, indem Sie den Android Widgets Drawer öffnen und das Power Planner Agenda-Widget auf Ihrem Homescreen platzieren.</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetSchedule_Description" translate="yes" xml:space="preserve">
           <source>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
-          <target state="final" state-qualifier="mt-suggestion">De planningswidget kan aan het startscherm worden vastgemaakt door uw lade voor Android-widgets te openen en de Powerplanner-planningswidget op uw startscherm te plaatsen. De planningswidget geeft uw aankomende lessen en vakanties weer.</target>
+          <target state="final" state-qualifier="mt-suggestion">Das Zeitplan-Widget kann an Ihren Homescreen gepinnt werden, indem Sie den Android-Widgets-Drawer öffnen und das Power Planner-Zeitplan-Widget auf Ihrem Homescreen platzieren. Das Zeitplan-Widget zeigt Ihre bevorstehenden Kurse und Feiertage an.</target>
         </trans-unit>
         <trans-unit id="Settings_Widgets_Agenda_Subtitle" translate="yes" xml:space="preserve">
           <source>Displays upcoming tasks and events</source>
-          <target state="final" state-qualifier="mt-suggestion">Geeft geplande taken en gebeurtenissen weer</target>
+          <target state="final" state-qualifier="mt-suggestion">Zeigt anstehende Aufgaben und Ereignisse an</target>
         </trans-unit>
         <trans-unit id="Settings_Widgets_Schedule_Subtitle" translate="yes" xml:space="preserve">
           <source>Displays upcoming classes</source>
-          <target state="final" state-qualifier="mt-suggestion">Geeft komende klassen weer</target>
+          <target state="final" state-qualifier="mt-suggestion">Zeigt anstehende Kurse an</target>
         </trans-unit>
         <trans-unit id="String_AgendaWidget" translate="yes" xml:space="preserve">
           <source>Agenda widget</source>
@@ -1933,7 +1933,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_EndOfSemester" translate="yes" xml:space="preserve">
           <source>End of semester</source>
-          <target state="final" state-qualifier="mt-suggestion">einde semester</target>
+          <target state="final" state-qualifier="mt-suggestion">Semesterende</target>
         </trans-unit>
         <trans-unit id="String_GradeOptions" translate="yes" xml:space="preserve">
           <source>Grade options</source>
@@ -1941,59 +1941,59 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_Loading" translate="yes" xml:space="preserve">
           <source>Loading...</source>
-          <target state="final" state-qualifier="tm-suggestion">Bezig met laden...</target>
+          <target state="final" state-qualifier="tm-suggestion">Laden...</target>
         </trans-unit>
         <trans-unit id="String_NoAccount" translate="yes" xml:space="preserve">
           <source>No account</source>
-          <target state="final" state-qualifier="mt-suggestion">Geen account</target>
+          <target state="final" state-qualifier="mt-suggestion">Kein Benutzerkonto</target>
         </trans-unit>
         <trans-unit id="String_NoClassesThisWeek" translate="yes" xml:space="preserve">
           <source>No classes this week!</source>
-          <target state="final" state-qualifier="mt-suggestion">Geen lessen deze week!</target>
+          <target state="final" state-qualifier="mt-suggestion">Keine Kurse diese Woche!</target>
         </trans-unit>
         <trans-unit id="String_NoClassToday" translate="yes" xml:space="preserve">
           <source>No class today!</source>
-          <target state="final" state-qualifier="mt-suggestion">Keine Klasse heute!</target>
+          <target state="final" state-qualifier="mt-suggestion">Keine Kurse heute!</target>
         </trans-unit>
         <trans-unit id="String_NoMoreClasses" translate="yes" xml:space="preserve">
           <source>No more classes!</source>
-          <target state="final" state-qualifier="mt-suggestion">Geen lessen meer!</target>
+          <target state="final" state-qualifier="mt-suggestion">Keine weiteren Kurse!</target>
         </trans-unit>
         <trans-unit id="String_NoSemester" translate="yes" xml:space="preserve">
           <source>No semester</source>
-          <target state="final" state-qualifier="mt-suggestion">Geen semester</target>
+          <target state="final" state-qualifier="mt-suggestion">Kein Semester</target>
         </trans-unit>
         <trans-unit id="String_NothingDue" translate="yes" xml:space="preserve">
           <source>Nothing due!</source>
-          <target state="final" state-qualifier="mt-suggestion">Niets verschuldigd!</target>
+          <target state="final" state-qualifier="mt-suggestion">Nichts fällig!</target>
         </trans-unit>
         <trans-unit id="String_PartialSemesterClass" translate="yes" xml:space="preserve">
           <source>Partial semester class?</source>
-          <target state="final" state-qualifier="mt-suggestion">Partielle semester klasse?</target>
+          <target state="final" state-qualifier="mt-suggestion">Teilsemester Kurs?</target>
         </trans-unit>
         <trans-unit id="String_PreviousWeek" translate="yes" xml:space="preserve">
           <source>Previous week</source>
-          <target state="final" state-qualifier="tm-suggestion">Vorige week</target>
+          <target state="final" state-qualifier="tm-suggestion">Vorherige week</target>
         </trans-unit>
         <trans-unit id="String_ScheduleWidget" translate="yes" xml:space="preserve">
           <source>Schedule widget</source>
-          <target state="final" state-qualifier="mt-suggestion">Widget plannen</target>
+          <target state="final" state-qualifier="mt-suggestion">Stundenplan Widget</target>
         </trans-unit>
         <trans-unit id="String_StartGrade" translate="yes" xml:space="preserve">
           <source>Start grade</source>
-          <target state="final" state-qualifier="mt-suggestion">Begin cijfer</target>
+          <target state="final" state-qualifier="mt-suggestion">Startnote</target>
         </trans-unit>
         <trans-unit id="String_StartOfSemester" translate="yes" xml:space="preserve">
           <source>Start of semester</source>
-          <target state="final" state-qualifier="mt-suggestion">Begin semester</target>
+          <target state="final" state-qualifier="mt-suggestion">Semesterbegin</target>
         </trans-unit>
         <trans-unit id="String_SyncError" translate="yes" xml:space="preserve">
           <source>Sync error</source>
-          <target state="final" state-qualifier="mt-suggestion">Synchronisatiefout</target>
+          <target state="final" state-qualifier="mt-suggestion">Synchronisationsfehler</target>
         </trans-unit>
         <trans-unit id="String_WidgetDisabled" translate="yes" xml:space="preserve">
           <source>Widget disabled from app settings</source>
-          <target state="final" state-qualifier="mt-suggestion">Widget uitgeschakeld vanuit app-instellingen</target>
+          <target state="final" state-qualifier="mt-suggestion">Widget aus App-Einstellung deaktiviert</target>
         </trans-unit>
         <trans-unit id="String_Widgets" translate="yes" xml:space="preserve">
           <source>Widgets</source>
@@ -2001,7 +2001,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="SyncErrors_Description" translate="yes" xml:space="preserve">
           <source>These are the sync errors since your last sync. You can tap the Power Planner icon in the main menu to trigger a new sync.</source>
-          <target state="final" state-qualifier="mt-suggestion">Dit zijn de synchronisatiefouten sinds je laatste synchronisatie. U kunt op het pictogram Power Planner in het hoofdmenu tikken om een nieuwe synchronisatie te activeren.</target>
+          <target state="final" state-qualifier="mt-suggestion">Dies sind die Synchronisierungsfehler seit Ihrer letzten Synchronisierung. Sie können auf das Power Planner-Symbol im Hauptmenü tippen, um eine neue Synchronisierung auszulösen.</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Tasks and classes in Google Calendar</source>
@@ -2009,7 +2009,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
           <source>Google Calendar integration</source>
-          <target state="final" state-qualifier="mt-suggestion">Google Kalender-integration</target>
+          <target state="final" state-qualifier="mt-suggestion">Google Kalender-Integration</target>
         </trans-unit>
         <trans-unit id="RepeatingEntry_CheckBoxRepeats.Content" translate="yes" xml:space="preserve">
           <source>Repeats?</source>
@@ -2041,11 +2041,11 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="RepeatingEntry_TextBlockMustUpgrade.Text" translate="yes" xml:space="preserve">
           <source>You must upgrade to premium to use repeating bulk entry.</source>
-          <target state="final" state-qualifier="mt-suggestion">Sie müssen aktualisieren auf Premium zu wiederholenden Bulk-Eintrag verwenden.</target>
+          <target state="final" state-qualifier="mt-suggestion">Sie müssen auf Premium upgraden um den wiederholenden Bulk-Eintrag zu verwenden können.</target>
         </trans-unit>
         <trans-unit id="RepeatingEntry_TextBlockNoteCannotBulkEdit.Text" translate="yes" xml:space="preserve">
           <source>Note: You won't be able to bulk edit this series once you save it, so check for typos now!</source>
-          <target state="final" state-qualifier="mt-suggestion">Hinweis: Sie werden zu bulk-Edit dieser Serie nach dem speichern, also check für Tippfehler now!</target>
+          <target state="final" state-qualifier="mt-suggestion">Hinweis: Sie können diese Serie nicht mehr bearbeiten, sobald Sie sie gespeichert haben, also überprüfen Sie sie jetzt auf Tippfehler!</target>
         </trans-unit>
         <trans-unit id="RepeatingEntry_TextBlockOccurrences.Text" translate="yes" xml:space="preserve">
           <source>occurrences</source>
@@ -2061,7 +2061,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="RepeatingEntry_TextBlockTryForFree.Text" translate="yes" xml:space="preserve">
           <source>Premium feature. You can try this once for free.</source>
-          <target state="final" state-qualifier="mt-suggestion">Premium-Feature. Sie können einmal lang kostenlos ausprobieren.</target>
+          <target state="final" state-qualifier="mt-suggestion">Premium-Feature. Sie können dies einmal kostenlos ausprobieren.</target>
         </trans-unit>
         <trans-unit id="ConfigureClassGrades_Items_WeightCategories.Title" translate="yes" xml:space="preserve">
           <source>Weight categories</source>
@@ -2093,7 +2093,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_Fail" translate="yes" xml:space="preserve">
           <source>Fail</source>
-          <target state="final" state-qualifier="tm-suggestion">Fehler</target>
+          <target state="final" state-qualifier="tm-suggestion">durchgefallen</target>
         </trans-unit>
         <trans-unit id="String_Pass" translate="yes" xml:space="preserve">
           <source>Pass</source>
@@ -2105,7 +2105,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_ListItemGpaType.Title" translate="yes" xml:space="preserve">
           <source>GPA type (standard or pass/fail)</source>
-          <target state="final" state-qualifier="mt-suggestion">GPA-Typ (standard oder bestanden/fehler)</target>
+          <target state="final" state-qualifier="mt-suggestion">GPA-Typ (standard oder bestanden/durchgefallen)</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_GpaType" translate="yes" xml:space="preserve">
           <source>GPA type</source>
@@ -2113,7 +2113,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_ListItemPassingGrade.Title" translate="yes" xml:space="preserve">
           <source>Passing grade</source>
-          <target state="final" state-qualifier="mt-suggestion">Bestehen der Note</target>
+          <target state="final" state-qualifier="mt-suggestion">Bestandene Noten</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_GpaType_Standard.Text" translate="yes" xml:space="preserve">
           <source>Standard</source>
@@ -2121,7 +2121,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_GpaType_PassFail.Text" translate="yes" xml:space="preserve">
           <source>Pass/fail</source>
-          <target state="final" state-qualifier="tm-suggestion">Bestanden/fehler</target>
+          <target state="final" state-qualifier="tm-suggestion">Bestanden/durchgefallen</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_GpaType_StandardExplanation.Text" translate="yes" xml:space="preserve">
           <source>Both your GPA and credits are counted. Most classes are like this.</source>
@@ -2129,7 +2129,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_GpaType_PassFailExplanation.Text" translate="yes" xml:space="preserve">
           <source>The class never impacts your GPA. If you receive a passing grade, the credits of this class will count towards your overall credits. Otherwise, the credits won't be counted.</source>
-          <target state="final" state-qualifier="mt-suggestion">Die Klasse wirkt nie Ihre GPA. Wenn Sie eine Note erhalten, zählen die Credits dieser Klasse für Ihre gesamte Credits. Andernfalls wird nicht die Credits angerechnet.</target>
+          <target state="final" state-qualifier="mt-suggestion">Die Klasse wirkt nie auf Ihre GPA ein. Wenn Sie eine Note erhalten, zählen die Credits dieser Klasse für Ihre gesamte Credits. Andernfalls wird nicht die Credits angerechnet.</target>
         </trans-unit>
         <trans-unit id="String_ExamplePlaceholderText" translate="yes" xml:space="preserve">
           <source>ex: {0}</source>
@@ -2138,7 +2138,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_GradeOptions_PassingGrade_Explanation.Text" translate="yes" xml:space="preserve">
           <source>Specify what grade (percentage) counts as a passing grade for this class. Typically, 60% is a passing grade, so you would enter "60". Click save when you're done!</source>
-          <target state="final" state-qualifier="mt-suggestion">Geben Sie an, welche Note (in Prozent) als Note für diese Klasse gilt. In der Regel beträgt 60 % Note, so dass Sie "60" eingeben würden. Klicken Sie auf speichern, wenn du fertig bist!</target>
+          <target state="final" state-qualifier="mt-suggestion">Geben Sie an, welche Note (in Prozent) als bestanden für diese Klasse gilt. In der Regel ist 60% bestanden, so dass Sie "60" eingeben würden. Klicken Sie auf speichern, wenn du fertig bist!</target>
         </trans-unit>
         <trans-unit id="String_ImageAttachments" translate="yes" xml:space="preserve">
           <source>Image attachments</source>
@@ -2154,11 +2154,11 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
           <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
-          <target state="final">Um die Integration von Google Kalender verwenden, müssen Sie zunächst ein Power Planner konto erstellen!</target>
+          <target state="final">Um die Integration von Google Kalender verwenden, müssen Sie zunächst ein Power Planner Konto erstellen!</target>
         </trans-unit>
         <trans-unit id="Settings_LogInFromDefaultAccountMessage" translate="yes" xml:space="preserve">
           <source>By logging in to an account, all information you've currently entered will be DELETED. If you want to keep your information, create an account instead.</source>
-          <target state="final" state-qualifier="mt-suggestion">Von einem Konto anmelden, werden alle Informationen, die Sie gerade eingegeben haben gelöscht. Wenn Sie Ihre Daten behalten möchten, erstellen Sie stattdessen ein Konto.</target>
+          <target state="final" state-qualifier="mt-suggestion">Wenn sie sich bei einem Konto anmelden, werden alle Informationen, die Sie zurzeit eingegeben haben, gelöscht. Wenn Sie Ihre Daten behalten möchten, erstellen Sie stattdessen ein Konto.</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockReturningUser.Text" translate="yes" xml:space="preserve">
           <source>Returning user?</source>
@@ -2186,7 +2186,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Settings_SuccessfullyCreatedAccountPage_Message.Text" translate="yes" xml:space="preserve">
           <source>Your account has been created! You can now use Power Planner on Android, iOS, Windows, and the web at https://powerplanner.net!</source>
-          <target state="final">Ihr Konto wurde erstellt! Power Planner können Sie nun auf Android, iOS, Windows und im Internet unter https://powerplanner.net!</target>
+          <target state="final">Ihr Konto wurde erstellt! Power Planner können Sie nun auf Android, iOS, Windows und im Internet unter https://powerplanner.net verwenden!</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage.Title" translate="yes" xml:space="preserve">
           <source>CONNECT ACCOUNT</source>
@@ -2194,7 +2194,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage_Message.Text" translate="yes" xml:space="preserve">
           <source>Are you using Power Planner on another device, but haven't set up an account? If so, open Power Planner from that device, go to Settings -&gt; Create account, and create an account. After that, log in below!</source>
-          <target state="final">Verwenden Sie Power Planner auf einem anderen Gerät, aber noch kein Konto einrichten? Wenn ja, öffnen Sie macht Power Planner von diesem Gerät zu, gehen Sie zu Einstellungen -&gt; Erstellen Konto und erstellen Sie ein Konto. Dann logge dich unten!</target>
+          <target state="final">Verwenden Sie Power Planner auf einem anderen Gerät, aber noch kein Konto einrichten? Wenn ja, öffnen Sie macht Power Planner von diesem Gerät zu, gehen Sie zu Einstellungen -&gt; Konto erstellen und erstellen Sie ein Konto. Dann logge dich unten ein!</target>
         </trans-unit>
         <trans-unit id="Welcome_ConnectAccountPage_NeedHelp.Text" translate="yes" xml:space="preserve">
           <source>If you need help, contact support@powerplanner.net</source>
@@ -2210,11 +2210,11 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="Welcome_ExistingUserPage_ButtonNoAccount.Content" translate="yes" xml:space="preserve">
           <source>No, I don't have an account</source>
-          <target state="final" state-qualifier="mt-suggestion">Nein, ich habe ein Konto</target>
+          <target state="final" state-qualifier="mt-suggestion">Nein, ich habe kein Konto</target>
         </trans-unit>
         <trans-unit id="Welcome_ExistingUserPage_Message.Text" translate="yes" xml:space="preserve">
           <source>Do you have a Power Planner account?</source>
-          <target state="final">Haben Sie ein Power Planner konto?</target>
+          <target state="final">Haben Sie ein Power Planner Konto?</target>
         </trans-unit>
         <trans-unit id="ClassesPage_TextBlockNoClassesHeader.Text" translate="yes" xml:space="preserve">
           <source>No classes</source>
@@ -2310,7 +2310,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="ShowPastCompleteItems.Text" translate="yes" xml:space="preserve">
           <source>Show past complete items</source>
-          <target state="final" state-qualifier="mt-suggestion">Vergangene vollständige Elemente anzeigen</target>
+          <target state="final" state-qualifier="mt-suggestion">Vergangene erledigte Elemente anzeigen</target>
         </trans-unit>
         <trans-unit id="Settings_LanguageSettings_ComboBoxLanguageOption.Header" translate="yes" xml:space="preserve">
           <source>Language</source>
@@ -2338,11 +2338,11 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="String_ConvertToEvent" translate="yes" xml:space="preserve">
           <source>Convert to event</source>
-          <target state="final" state-qualifier="mt-suggestion">Konvertieren in Ereignis</target>
+          <target state="final" state-qualifier="mt-suggestion">Konvertieren zu einem Ereignis</target>
         </trans-unit>
         <trans-unit id="String_ConvertToTask" translate="yes" xml:space="preserve">
           <source>Convert to task</source>
-          <target state="final" state-qualifier="mt-suggestion">Konvertieren in Aufgabe</target>
+          <target state="final" state-qualifier="mt-suggestion">Konvertieren zu einer Aufgabe</target>
         </trans-unit>
         <trans-unit id="String_AddGrade" translate="yes" xml:space="preserve">
           <source>Add grade</source>
@@ -2494,7 +2494,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="ContextFlyout_MarkIncomplete" translate="yes" xml:space="preserve">
           <source>Mark incomplete</source>
-          <target state="final" state-qualifier="mt-suggestion">Markieren unvollständig</target>
+          <target state="final" state-qualifier="mt-suggestion">Als unvollständig markieren</target>
         </trans-unit>
         <trans-unit id="Settings_DefaultGradeOptions_AverageGrades" translate="yes" xml:space="preserve">
           <source>Default average grades</source>
@@ -2542,11 +2542,11 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="ClassPage_EditAverageGradesForThisClass" translate="yes" xml:space="preserve">
           <source>Edit average grade options for this class.</source>
-          <target state="final" state-qualifier="mt-suggestion">Bearbeiten Sie die Optionen für durchschnittsnoten für diese Klasse.</target>
+          <target state="final" state-qualifier="mt-suggestion">Bearbeiten Sie die Optionen für Durchschnittsnoten für diese Klasse.</target>
         </trans-unit>
         <trans-unit id="ClassPage_EditGrades_EditForAll" translate="yes" xml:space="preserve">
           <source>Edit for all classes instead</source>
-          <target state="final" state-qualifier="mt-suggestion">Bearbeiten für alle Klassen statt</target>
+          <target state="final" state-qualifier="mt-suggestion">Bearbeiten für alle Klassen</target>
         </trans-unit>
         <trans-unit id="ClassPage_EditGrades_EditGradeScaleForThisClass" translate="yes" xml:space="preserve">
           <source>Edit the grade scale for this class.</source>
