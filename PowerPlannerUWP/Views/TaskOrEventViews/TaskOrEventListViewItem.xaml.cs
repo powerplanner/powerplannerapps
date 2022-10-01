@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Vx.Uwp;
+using Vx.Views;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -27,7 +28,20 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
     public sealed partial class TaskOrEventListViewItem : UserControl
     {
         public event EventHandler<ViewItemTaskOrEvent> OnClickItem;
-        private TaskOrEventListItemComponent _component;
+        private ComponentWrapper _component;
+
+        private class ComponentWrapper : VxComponent
+        {
+            public ViewItemTaskOrEvent Item { get; set; }
+            public BaseMainScreenViewModelDescendant ViewModel { get; set; }
+            public bool IncludeDate { get; set; } = true;
+            public bool IncludeClass { get; set; } = true;
+
+            protected override View Render()
+            {
+                return TaskOrEventListItemComponent.Render(Item, ViewModel, IncludeDate, IncludeClass, false);
+            }
+        }
 
         public TaskOrEventListViewItem()
         {
@@ -35,10 +49,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
             this.DataContextChanged += TaskOrEventListViewItem_DataContextChanged;
 
-            _component = new TaskOrEventListItemComponent()
-            {
-                IncludeMargin = false
-            };
+            _component = new ComponentWrapper();
         }
 
         private ViewItemTaskOrEvent _currItem;
@@ -49,11 +60,14 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
             _component.ViewModel = PowerPlannerApp.Current.GetMainScreenViewModel().Content as BaseMainScreenViewModelDescendant;
             _component.Item = _currItem;
-            _component.MarkDirtyPublic();
 
             if (this.Content == null)
             {
                 this.Content = _component.Render();
+            }
+            else
+            {
+                _component.RenderOnDemand();
             }
         }
 
