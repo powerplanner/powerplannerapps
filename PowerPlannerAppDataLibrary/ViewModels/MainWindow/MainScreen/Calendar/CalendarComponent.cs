@@ -282,7 +282,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         FontWeight = FontWeights.SemiLight,
                         TextColor = Theme.Current.SubtleForegroundColor,
                         Margin = new Thickness(IsFullSize ? 60 : 48, 10, 12, 6),
-                        VerticalAlignment = VerticalAlignment.Center
+                        VerticalAlignment = VerticalAlignment.Center,
+                        WrapText = false
                     };
                 }
 
@@ -407,7 +408,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     FontWeight = FontWeights.SemiLight,
                     TextColor = foregroundColor,
                     VerticalAlignment = IsFullSize ? VerticalAlignment.Center : VerticalAlignment.Top,
-                    TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
+                    TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right,
+                    WrapText = false
                 };
 
                 var dayBackgroundColor = isToday ? TodayColor : dayType == DayType.ThisMonth ? CalendarColor : OtherMonthColor;
