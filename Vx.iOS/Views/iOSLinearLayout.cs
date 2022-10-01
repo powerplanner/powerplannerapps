@@ -189,8 +189,13 @@ namespace Vx.iOS.Views
         {
             var weight = GetWeight(curr);
 
+            // https://betterprogramming.pub/what-are-content-hugging-and-compression-resistance-in-swift-60275f6dc69e
+            // ContentHugging: Defaults to 250. Higher value means hug the view (don't expand unnecessarily beyond intrinsic size).
+            // CompressionResistance: Defaults to 750. Higher value means resist shrinking beyond the view's intrinsic size.
             curr.View.SetContentHuggingPriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
-            curr.View.SetContentHuggingPriority(251, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical);
+            curr.View.SetContentHuggingPriority(250, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical); // Reset other direction to default
+            //curr.View.SetContentCompressionResistancePriority(weight == 0 ? 0 : 1000, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+            //curr.View.SetContentCompressionResistancePriority(750, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical); // Reset other direction to default
 
             WrapperConstraint? leftConstraint, topConstraint, rightConstraint, bottomConstraint, widthConstraint = null, heightConstraint = null;
 
