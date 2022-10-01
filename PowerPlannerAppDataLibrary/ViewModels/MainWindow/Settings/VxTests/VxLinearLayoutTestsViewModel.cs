@@ -42,6 +42,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                     TextColor = Color.White,
                                     FontSize = Theme.Current.TitleFontSize,
                                     Margin = new Thickness(6),
+                                    WrapText = false
                                 },
 
                                 new Border
@@ -69,25 +70,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                 new TextBlock
                                 {
                                     Text = "Stretch",
-                                    VerticalAlignment = VerticalAlignment.Stretch
+                                    VerticalAlignment = VerticalAlignment.Stretch,
+                                    WrapText = false // iOS needs non-wrapping when in horizontal auto-width layout
                                 },
 
                                 new TextBlock
                                 {
                                     Text = "Top",
-                                    VerticalAlignment = VerticalAlignment.Top
+                                    VerticalAlignment = VerticalAlignment.Top,
+                                    WrapText = false
                                 },
 
                                 new TextBlock
                                 {
                                     Text = "Center",
-                                    VerticalAlignment = VerticalAlignment.Center
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    WrapText = false
                                 },
 
                                 new TextBlock
                                 {
                                     Text = "Bottom",
-                                    VerticalAlignment = VerticalAlignment.Bottom
+                                    VerticalAlignment = VerticalAlignment.Bottom,
+                                    WrapText = false
                                 }
                             }
                         },
@@ -148,28 +153,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                 {
                                     Text = "Stretch",
                                     VerticalAlignment = VerticalAlignment.Stretch,
-                                    Margin = new Thickness(6)
+                                    Margin = new Thickness(6),
+                                    WrapText = false // iOS needs non-wrapping when in horizontal auto-width layout
                                 },
 
                                 new TextBlock
                                 {
                                     Text = "Top",
                                     VerticalAlignment = VerticalAlignment.Top,
-                                    Margin = new Thickness(6)
+                                    Margin = new Thickness(6),
+                                    WrapText = false
                                 },
 
                                 new TextBlock
                                 {
                                     Text = "Center",
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Margin = new Thickness(6)
+                                    Margin = new Thickness(6),
+                                    WrapText = false
                                 },
 
                                 new TextBlock
                                 {
                                     Text = "Bottom",
                                     VerticalAlignment = VerticalAlignment.Bottom,
-                                    Margin = new Thickness(6)
+                                    Margin = new Thickness(6),
+                                    WrapText = false
                                 }
                             }
                         },
@@ -352,7 +361,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
 
                                                     new TextBlock
                                                     {
-                                                        Text = "+"
+                                                        Text = "+",
+                                                        WrapText = false
                                                     }
                                                 }
                                             },
@@ -360,6 +370,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                             new LinearLayout
                                             {
                                                 BackgroundColor = Color.Blue,
+                                                Orientation = Orientation.Horizontal,
                                                 Children =
                                                 {
                                                     new Border
@@ -372,7 +383,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                                     {
                                                         Text = "One item",
                                                         TextColor = Color.White
-                                                    }
+                                                    }.LinearLayoutWeight(1)
                                                 }
                                             }
                                         }
@@ -403,7 +414,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
 
                                                     new TextBlock
                                                     {
-                                                        Text = "+"
+                                                        Text = "+",
+                                                        WrapText = false
                                                     }
                                                 }
                                             }

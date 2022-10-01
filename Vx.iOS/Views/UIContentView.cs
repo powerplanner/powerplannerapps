@@ -46,13 +46,13 @@ namespace Vx.iOS.Views
             }
         }
 
-        protected override void CustomUpdateConstraints()
+        public override void ArrangeSubviews()
         {
             Content?.SetConstraints(
                 new WrapperConstraint(this, NSLayoutAttribute.Left, 1, Padding.Left),
                 new WrapperConstraint(this, NSLayoutAttribute.Top, 1, Padding.Top),
-                new WrapperConstraint(this, NSLayoutAttribute.Right, 1, -1 * Padding.Right),
-                new WrapperConstraint(this, NSLayoutAttribute.Bottom, 1, -1 * Padding.Bottom),
+                new WrapperConstraint(this, NSLayoutAttribute.Right, 1, Padding.Right),
+                new WrapperConstraint(this, NSLayoutAttribute.Bottom, 1, Padding.Bottom),
                 this,
                 this);
         }

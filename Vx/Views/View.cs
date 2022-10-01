@@ -112,5 +112,13 @@ namespace Vx.Views
             this.SetNativeView(nativeView);
             return nativeView;
         }
+
+        /// <summary>
+        /// Debugging focused method to perform any validation of the view. Only called when in a debug compiled build.
+        /// </summary>
+        public virtual void Validate()
+        {
+            // Extending classes can implement
+        }
     }
 }

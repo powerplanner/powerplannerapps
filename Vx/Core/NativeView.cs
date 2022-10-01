@@ -26,6 +26,10 @@ namespace Vx
         private VxComponent _originalComponent;
         public void Apply(View newView)
         {
+#if DEBUG
+            newView.Validate();
+#endif
+
             var oldView = VxView;
             VxView = newView;
 

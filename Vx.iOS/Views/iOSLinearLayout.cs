@@ -145,7 +145,7 @@ namespace Vx.iOS.Views
             return view.GetValueOrDefault<float>(WEIGHT, 0);
         }
 
-        protected override void CustomUpdateConstraints()
+        public override void ArrangeSubviews()
         {
             bool usingWeights = ArrangedSubviews.Any(i => GetWeight(i) > 0);
 
@@ -169,6 +169,20 @@ namespace Vx.iOS.Views
             }
         }
 
+#if DEBUG
+        private string DebugDumpConstraints()
+        {
+            string str = "";
+            for (int i = 0; i < ArrangedSubviews.Count; i++)
+            {
+                var curr = ArrangedSubviews[i];
+
+                str += "ITEM " + i + ": " + curr.DebugConstraintsString + "\n\n";
+            }
+            return str;
+        }
+#endif
+
         private bool IsVertical => Orientation == Orientation.Vertical;
 
         private void UpdateConstraints(UIViewWrapper curr, UIViewWrapper prev, UIViewWrapper next, bool usingWeights, UIViewWrapper firstWeighted)
@@ -176,6 +190,7 @@ namespace Vx.iOS.Views
             var weight = GetWeight(curr);
 
             curr.View.SetContentHuggingPriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+            curr.View.SetContentHuggingPriority(251, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical);
 
             WrapperConstraint? leftConstraint, topConstraint, rightConstraint, bottomConstraint, widthConstraint = null, heightConstraint = null;
 
@@ -220,6 +235,10 @@ namespace Vx.iOS.Views
             }
             else // Horizontal
             {
+                if (curr.View is UILabel label && label.Lines == 0 && weight == 0 && float.IsNaN(curr.Width))
+                {
+                    throw new NotImplementedException("Cannot have multiline text blocks within a horizontal linear layout unless it has a fixed width or weight. Disable text wrapping on your TextBlock.");
+                }
                 if (prev == null)
                 {
                     leftConstraint = new WrapperConstraint(

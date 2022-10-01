@@ -75,7 +75,10 @@ namespace Vx.iOS.Views
 
         public UIView View => this;
 
-        protected virtual void CustomUpdateConstraints()
+        /// <summary>
+        /// Automatically called
+        /// </summary>
+        public virtual void ArrangeSubviews()
         {
             foreach (var subview in ArrangedSubviews)
             {
@@ -90,11 +93,11 @@ namespace Vx.iOS.Views
         }
 
         /// <summary>
-        /// Do NOT override this, override the CustomUpdateConstraints instead.
+        /// Do NOT override this, override ArrangeSubviews
         /// </summary>
         public override void UpdateConstraints()
         {
-            CustomUpdateConstraints();
+            ArrangeSubviews();
 
             base.UpdateConstraints();
         }

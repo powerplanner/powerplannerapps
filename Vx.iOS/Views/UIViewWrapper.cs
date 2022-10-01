@@ -43,6 +43,26 @@ namespace Vx.iOS.Views
             set => SetValue(ref _width, value);
         }
 
+#if DEBUG
+        public string DebugConstraintsString
+        {
+            get
+            {
+                return string.Join("\n", DebugDumpConstraints("Left", LeftConstraint), DebugDumpConstraints("Top", TopConstraint), DebugDumpConstraints("Right", RightConstraint), DebugDumpConstraints("Bottom", BottomConstraint), DebugDumpConstraints("Width", WidthConstraint), DebugDumpConstraints("Height", HeightConstraint), DebugDumpConstraints("CenterX", CenterXConstraint), DebugDumpConstraints("CenterY", CenterYConstraint));
+            }
+        }
+
+        public static string DebugDumpConstraints(string name, NSLayoutConstraint constraint)
+        {
+            if (constraint == null)
+            {
+                return $"{name}: null";
+            }
+
+            return $"{name}: {constraint.FirstAttribute} {constraint.FirstItem} {constraint.Relation} {constraint.Multiplier}x {constraint.SecondAttribute} {constraint.SecondItem} + {constraint.Constant}";
+        }
+#endif
+
         public void SetConstraints(
             WrapperConstraint? leftConstraint,
             WrapperConstraint? topConstraint,
