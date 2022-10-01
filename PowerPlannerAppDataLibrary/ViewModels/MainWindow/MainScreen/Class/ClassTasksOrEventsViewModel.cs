@@ -154,13 +154,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             if (item is ViewItemTaskOrEvent taskOrEvent)
             {
-                return new TaskOrEventListItemComponent
-                {
-                    Item = taskOrEvent,
-                    ViewModel = this,
-                    IncludeDate = true,
-                    IncludeClass = false
-                };
+                return TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false);
             }
 
             else if (item is DateTime header)

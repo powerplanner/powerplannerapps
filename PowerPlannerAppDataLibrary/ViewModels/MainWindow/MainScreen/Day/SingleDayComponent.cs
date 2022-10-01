@@ -65,12 +65,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             }
             if (objItem is ViewItemTaskOrEvent taskOrEvent)
             {
-                return new TaskOrEventListItemComponent
-                {
-                    Item = taskOrEvent,
-                    ViewModel = ViewModel,
-                    IncludeDate = false
-                };
+                return TaskOrEventListItemComponent.Render(taskOrEvent, ViewModel, IncludeDate: false);
             }
             else if (objItem is DayScheduleItemsArranger arranger)
             {

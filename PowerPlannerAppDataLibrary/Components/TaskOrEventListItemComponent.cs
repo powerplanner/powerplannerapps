@@ -8,30 +8,18 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class TaskOrEventListItemComponent : VxComponent
+    public static class TaskOrEventListItemComponent
     {
         private const string IMAGE_ATTACHMENT_SYMBOL = "\uD83D\uDCF7";
 
-        public ViewItemTaskOrEvent Item { get; set; }
-        public BaseMainScreenViewModelDescendant ViewModel { get; set; }
-        public bool IncludeDate { get; set; } = true;
-        public bool IncludeClass { get; set; } = true;
-        public bool IncludeMargin { get; set; } = true;
-        public Action InterceptOnTapped { get; set; }
-
-        public void MarkDirtyPublic()
-        {
-            MarkDirty();
-        }
-
-        protected override View Render()
+        public static View Render(ViewItemTaskOrEvent Item, BaseMainScreenViewModelDescendant ViewModel, bool IncludeDate = true, bool IncludeClass = true, bool IncludeMargin = true, Action InterceptOnTapped = null)
         {
             if (Item == null || ViewModel == null)
             {
                 return null;
             }
 
-            string details = GetDetails();
+            string details = GetDetails(Item);
             var subtitleColor = Item.Class.Color.ToColor().Opacity(Item.IsComplete ? 0.7 : 1);
 
             return new Border
@@ -73,7 +61,7 @@ namespace PowerPlannerAppDataLibrary.Components
 
                                 new TextBlock
                                 {
-                                    Text = GetSubtitle(),
+                                    Text = GetSubtitle(Item, IncludeDate, IncludeClass),
                                     FontWeight = FontWeights.SemiBold,
                                     TextColor = subtitleColor,
                                     WrapText = false
@@ -94,7 +82,7 @@ namespace PowerPlannerAppDataLibrary.Components
             };
         }
 
-        private string GetSubtitle()
+        private static string GetSubtitle(ViewItemTaskOrEvent Item, bool IncludeDate, bool IncludeClass)
         {
             string txt;
 
@@ -119,16 +107,16 @@ namespace PowerPlannerAppDataLibrary.Components
             return txt;
         }
 
-        private string GetDetails()
+        private static string GetDetails(ViewItemTaskOrEvent Item)
         {
-            if (string.IsNullOrWhiteSpace(Item.Details) && !HasImageAttachments())
+            if (string.IsNullOrWhiteSpace(Item.Details) && !HasImageAttachments(Item))
             {
                 return null;
             }
 
             string details = Item.Details.Replace("\n", "  ").Trim();
 
-            if (HasImageAttachments())
+            if (HasImageAttachments(Item))
             {
                 if (string.IsNullOrWhiteSpace(details))
                     return IMAGE_ATTACHMENT_SYMBOL + " Image Attachment";
@@ -141,12 +129,12 @@ namespace PowerPlannerAppDataLibrary.Components
             }
         }
 
-        private bool HasImageAttachments()
+        private static bool HasImageAttachments(ViewItemTaskOrEvent Item)
         {
             return Item.ImageNames != null && Item.ImageNames.Length > 0;
         }
 
-        private View CompletionBar(ViewItemTaskOrEvent item)
+        private static View CompletionBar(ViewItemTaskOrEvent item)
         {
             bool isAbsolute = item.IsComplete || item.IsEvent || item.PercentComplete == 0;
             const int width = 8;

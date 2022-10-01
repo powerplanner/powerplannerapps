@@ -154,12 +154,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         {
             if (item is ViewItemTaskOrEvent taskOrEvent)
             {
-                return new TaskOrEventListItemComponent
-                {
-                    Item = taskOrEvent,
-                    ViewModel = this,
-                    IncludeDate = true
-                };
+                return TaskOrEventListItemComponent.Render(taskOrEvent, this);
             }
 
             else if (item is ItemsGroupHeader header)
