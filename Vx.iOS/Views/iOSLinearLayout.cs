@@ -191,9 +191,6 @@ namespace Vx.iOS.Views
             return ArrangedSubviews.Sum(i => GetWeight(i));
         }
 
-        // TODO: Almost fully working except the Scroll Viewer test page, height of LinearLayout isn't being calculated correctly, maybe it's issue with IntrinsicContentSize?
-        // I wonder what Apple's arranged views do for IntrinsicContentSize
-
         public override CGSize SizeThatFits(CGSize size)
         {
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
@@ -252,7 +249,7 @@ namespace Vx.iOS.Views
         {
             var totalWeight = GetTotalWeight();
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
-            var finalSize = ToRelativeSize(Frame.Size);
+            var finalSize = ToRelativeSize(Bounds.Size);
 
             nfloat pos = 0;
 

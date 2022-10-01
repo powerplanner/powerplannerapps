@@ -9,29 +9,48 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSScrollView : iOSView<Vx.Views.ScrollView, UIScrollView>
+    public class iOSScrollView : iOSView<Vx.Views.ScrollView, UIScrollViewWithPreferredMax>
     {
+        // TODO: Maybe I just need to implement my own scroll view? Can't figure out how to get the width passed to the child with auto layout...
         protected override void ApplyProperties(ScrollView oldView, ScrollView newView)
         {
             base.ApplyProperties(oldView, newView);
 
-            ReconcileContent(oldView?.Content, newView.Content, subview =>
+            ReconcileContentNew(oldView?.Content, newView.Content, changedView =>
             {
-                ApplyMargins(subview, newView.Content);
-            }, afterTransfer: subview =>
-            {
-                if (oldView.Content.Margin != newView.Content.Margin)
-                {
-                    ApplyMargins(subview, newView.Content, removeExisting: true);
-                }
+                View.Content = changedView.CreateUIView(VxView);
             });
         }
+    }
 
-        private void ApplyMargins(UIView subview, View subVxView, bool removeExisting = false)
+    public class UIScrollViewWithPreferredMax : UIScrollView
+    {
+        private UIContentView _contentView;
+
+        public UIScrollViewWithPreferredMax()
         {
-            var modifiedMargin = subVxView.Margin.AsModified();
-            subview.TranslatesAutoresizingMaskIntoConstraints = false;
-            subview.ConfigureForVerticalScrolling(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom, removeExisting: removeExisting);
+            _contentView = new UIContentView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+            AddSubview(_contentView);
+            _contentView.ConfigureForVerticalScrolling(this);
+        }
+        public override CGRect Bounds
+        {
+            get => base.Bounds;
+            set
+            {
+                base.Bounds = value;
+
+                _contentView.PreferredMaxLayoutWidth = value.Width;
+            }
+        }
+
+        public UIViewWrapper Content
+        {
+            get => _contentView.Content;
+            set => _contentView.Content = value;
         }
     }
 

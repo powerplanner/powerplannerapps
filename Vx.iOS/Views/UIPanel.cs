@@ -62,7 +62,21 @@ namespace Vx.iOS.Views
 
         public UIView View => this;
 
-        public override CGSize IntrinsicContentSize => SizeThatFits(new CGSize(0, 0));
+        private nfloat _preferredMaxLayoutWidth = -1;
+        public nfloat PreferredMaxLayoutWidth
+        {
+            get => _preferredMaxLayoutWidth;
+            set
+            {
+                if (_preferredMaxLayoutWidth != value)
+                {
+                    _preferredMaxLayoutWidth = value;
+                    InvalidateIntrinsicContentSize();
+                }
+            }
+        }
+
+        public override CGSize IntrinsicContentSize => SizeThatFits(new CGSize(PreferredMaxLayoutWidth == -1 ? 0 : PreferredMaxLayoutWidth, 0));
 
         public override CGSize SizeThatFits(CGSize size)
         {

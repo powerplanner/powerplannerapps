@@ -110,6 +110,28 @@ namespace Vx.iOS.Views
             return f2;
         }
 
+        private nfloat _preferredMaxLayoutWidth = -1;
+        public nfloat PreferredMaxLayoutWidth
+        {
+            get => _preferredMaxLayoutWidth;
+            set
+            {
+                if (_preferredMaxLayoutWidth != value)
+                {
+                    if (View is UIPanel panel)
+                    {
+                        panel.PreferredMaxLayoutWidth = value;
+                    }
+                    else if (View is UILabel label)
+                    {
+                        label.PreferredMaxLayoutWidth = value;
+                    }
+
+                    _preferredMaxLayoutWidth = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Automatically includes Margins and Height/Width values
         /// </summary>
