@@ -60,6 +60,8 @@ namespace Vx
                 return;
             }
 
+            bool changed = false;
+
             // Only want properties above the base VxComponent
             foreach (var p in newView.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && typeof(VxComponent).IsAssignableFrom(i.DeclaringType) && i.Name != nameof(VxComponent.NativeComponent)))
             {
@@ -72,7 +74,14 @@ namespace Vx
                 }
 
                 p.SetValue(_originalComponent, newVal);
-                _originalComponent.MarkInternalComponentDirty();
+                changed = true;
+            }
+
+            if (changed)
+            {
+                // We render on demand here to stay in sync with the parent view changes.
+                // This is critical for iOS ListView to work correctly with changing views
+                _originalComponent.RenderOnDemand();
             }
         }
 

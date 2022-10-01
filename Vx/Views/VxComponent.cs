@@ -379,6 +379,14 @@ namespace Vx.Views
             MarkDirty();
         }
 
+        /// <summary>
+        /// Should only be called in rare cases where you need the update to happen immediately
+        /// </summary>
+        public void RenderOnDemand()
+        {
+            RenderActual();
+        }
+
         private void RenderActual()
         {
             var now = DateTime.Now;

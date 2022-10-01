@@ -22,6 +22,9 @@ namespace Vx.iOS.Views
                 View.CellLayoutMarginsFollowReadableWidth = false;
             }
 
+            View.RowHeight = UITableView.AutomaticDimension;
+            View.EstimatedRowHeight = 44;
+
             View.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
         }
 
@@ -120,8 +123,10 @@ namespace Vx.iOS.Views
                     return cell;
                 }
 
-                var component = (cell.ContentView.Subviews[0] as INativeComponent).Component as VxDataTemplateComponent;
+                var nativeComponent = (cell.ContentView.Subviews[0] as iOSNativeComponent);
+                var component = nativeComponent.Component as VxDataTemplateComponent;
                 component.Data = item;
+                component.RenderOnDemand(); // Need it to update the views immediately before returning
                 return cell;
             }
 
