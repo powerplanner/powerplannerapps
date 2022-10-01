@@ -12,7 +12,7 @@ using Vx.Views;
 
 namespace Vx.iOS
 {
-    public class iOSNativeComponent : UIView, INativeComponent
+    public class iOSNativeComponent : UIContentView, INativeComponent
     {
         public Action<UIView> AfterViewChanged { get; set; }
 
@@ -55,27 +55,12 @@ namespace Vx.iOS
 
         public void ChangeView(View view)
         {
-            foreach (var subview in base.Subviews)
+            Content = view?.CreateUIView(null);
+
+            if (Content?.View != null)
             {
-                subview.RemoveFromSuperview();
+                AfterViewChanged?.Invoke(Content.View);
             }
-
-            base.RemoveConstraints(base.Constraints);
-
-            if (view == null)
-            {
-                return;
-            }
-
-            var uiView = view.CreateUIView(null).View;
-            uiView.TranslatesAutoresizingMaskIntoConstraints = false;
-
-            base.Add(uiView);
-
-            var modifiedMargin = view.Margin.AsModified();
-            uiView.StretchWidthAndHeight(this, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
-
-            AfterViewChanged?.Invoke(uiView);
         }
     }
 }
