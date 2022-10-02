@@ -19,6 +19,7 @@ namespace Vx.iOS.Views
             View.Layer.BorderWidth = newView.BorderThickness.Top;
             View.Layer.BorderColor = newView.BorderColor.ToUI().CGColor;
             View.Layer.CornerRadius = newView.CornerRadius;
+            View.Layer.MasksToBounds = newView.CornerRadius > 0; // Clip the corners of subviews
             View.Padding = newView.Padding;
 
             ReconcileContentNew(oldView?.Content, newView.Content);
