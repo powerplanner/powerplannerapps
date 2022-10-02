@@ -27,6 +27,11 @@ namespace Vx.iOS.Views
 
             View.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
 
+            if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
+            {
+                View.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
+            }
+
             View.AllowsSelection = false;
         }
 
@@ -36,7 +41,8 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
 
             var padding = newView.Padding.AsModified();
-            View.ContentInset = new UIEdgeInsets(padding.Top, padding.Left, padding.Bottom, padding.Right);
+            View.ContentInset = new UIEdgeInsets(0, padding.Left, padding.Bottom, padding.Right);
+            View.TableHeaderView = new UIView(new CoreGraphics.CGRect(0, 0, 0, padding.Top)); // Have to use HeaderView for top padding since the ContentInset won't start scrolled (Insets are meant for a transparent header where the content scrolls underneath).
 
             if (oldView?.Items != newView.Items || oldView?.ItemTemplate != newView.ItemTemplate)
             {
