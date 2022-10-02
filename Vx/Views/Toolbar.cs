@@ -10,6 +10,7 @@ namespace Vx.Views
     {
         public string Title { get; set; }
         public Action OnBack { get; set; }
+        public string BackText { get; set; }
         public Color BackgroundColor { get; set; } = Theme.Current.ChromeColor;
         public Color ForegroundColor { get; set; } = Color.White;
         public List<ToolbarCommand> PrimaryCommands { get; } = new List<ToolbarCommand>();

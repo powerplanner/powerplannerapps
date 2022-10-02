@@ -11,6 +11,7 @@ namespace Vx.iOS.Views
     {
         private UINavigationBar NavBar;
 
+
         public iOSToolbar()
         {
             var statusBarView = UIStatusBarView.CreateAndAddTo(View);
@@ -32,6 +33,8 @@ namespace Vx.iOS.Views
                 "statusBar", statusBarView,
                 "navBar", NavBar));
         }
+
+        private UIBackBarButtonItem _backButton;
 
         protected override void ApplyProperties(Toolbar oldView, Toolbar newView)
         {
@@ -77,6 +80,31 @@ namespace Vx.iOS.Views
             {
                 NavBar.TopItem.RightBarButtonItems = GetRightBarButtonItems(newView).ToArray();
             }
+
+            if (newView.OnBack != null)
+            {
+                if (_backButton == null)
+                {
+                    _backButton = new UIBackBarButtonItem();
+                    _backButton.Clicked += _backButton_Clicked;
+                }
+
+                _backButton.Title = newView.BackText ?? "Back";
+
+                if (NavBar.TopItem.LeftBarButtonItem == null)
+                {
+                    NavBar.TopItem.LeftBarButtonItem = _backButton;
+                }
+            }
+            else
+            {
+                NavBar.TopItem.LeftBarButtonItem = null;
+            }
+        }
+
+        private void _backButton_Clicked(object sender, EventArgs e)
+        {
+            VxView.OnBack?.Invoke();
         }
 
         private IEnumerable<UIBarButtonItem> GetRightBarButtonItems(Toolbar toolbar)
@@ -107,37 +135,43 @@ namespace Vx.iOS.Views
             }
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private class UIBackBarButtonItem : UIBarButtonItem
         {
-            throw new NotImplementedException();
-        }
+            private UIButton _button => base.CustomView as UIButton;
 
-        private class VxUIBarButtonItem : UIBarButtonItem
-        {
-            private ToolbarCommand _command;
-            private iOSToolbar _toolbar;
-            public VxUIBarButtonItem(iOSToolbar toolbar, ToolbarCommand command) : base(command.Glyph.ToUIBarButtonSystemItem())
+            public new event EventHandler Clicked;
+
+            public new string Title
             {
-                _command = command;
-                _toolbar = toolbar;
-                base.Clicked += VxUIBarButtonItem_Clicked;
+                get => _button.Title(UIControlState.Normal);
+                set
+                {
+                    if (value != Title)
+                    {
+                        _button.SetTitle(value, UIControlState.Normal);
+                        _button.SizeToFit();
+                    }
+                }
             }
 
-            private void VxUIBarButtonItem_Clicked(object sender, EventArgs e)
+            public UIBackBarButtonItem() : base(CreateContent())
             {
-                InvokeCommand();
+                _button.TouchUpInside += _button_TouchUpInside;
             }
 
-            private void InvokeCommand()
+            private void _button_TouchUpInside(object sender, EventArgs e)
             {
-                if (_command.Action != null)
-                {
-                    _command.Action();
-                }
-                else if (_command.SubCommands != null && _command.SubCommands.Any())
-                {
-                    _toolbar.ShowSubCommands(_command.SubCommands, this);
-                }
+                Clicked?.Invoke(this, e);
+            }
+
+            private static UIButton CreateContent()
+            {
+                var _backButtonContents = new UIButton(UIButtonType.Custom);
+                _backButtonContents.SetImage(UIImage.FromBundle("ToolbarBack").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIControlState.Normal);
+
+                _backButtonContents.SetTitle("Back", UIControlState.Normal);
+                _backButtonContents.SizeToFit();
+                return _backButtonContents;
             }
         }
 

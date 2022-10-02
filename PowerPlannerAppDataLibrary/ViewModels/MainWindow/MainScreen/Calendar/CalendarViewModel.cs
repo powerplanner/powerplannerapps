@@ -574,8 +574,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 toolbar = new Toolbar
                 {
-                    Title = Title,
+                    Title = CanGoBack ? "" : Title,
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
+                    BackText = CanGoBack ? Title : null,
                     PrimaryCommands =
                     {
                         // Add will get inserted here unless it's used as floating action
