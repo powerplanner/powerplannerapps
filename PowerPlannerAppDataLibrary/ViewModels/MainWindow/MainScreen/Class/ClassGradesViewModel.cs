@@ -239,7 +239,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             var topMargin = VxPlatform.Current == Platform.iOS ? Theme.Current.PageMargin : 0;
 
-            if (Size.Width < WidthBreakpoint)
+            // Android/iOS don't support the multi-column views
+            if (Size.Width < WidthBreakpoint || VxPlatform.Current == Platform.Android || VxPlatform.Current == Platform.iOS)
             {
                 finalView = new ListView
                 {
@@ -474,7 +475,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     ColumnSpacing = ColumnSpacing
                 } : (View)new AdaptiveGridPanelComponent
                 {
-                    MinColumnWidth = MinColumnWidth,
+                    MinColumnWidth = VxPlatform.Current == Platform.iOS ? 50000 : MinColumnWidth, // iOS doesn't work with this component at this time
                     ColumnSpacing = ColumnSpacing
                 };
 
