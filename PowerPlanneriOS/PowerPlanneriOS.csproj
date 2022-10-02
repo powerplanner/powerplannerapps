@@ -122,8 +122,6 @@
     <None Include="App\Secrets.template.cs" />
     <Compile Include="App\Secrets.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />
-    <Compile Include="Controllers\AgendaViewController.cs" />
-    <Compile Include="Controllers\CalendarViewController.cs" />
     <Compile Include="Controllers\ClassesViewController.cs" />
     <Compile Include="Controllers\ClassViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\ClassDetailsViewController.cs" />

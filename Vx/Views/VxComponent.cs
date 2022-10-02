@@ -29,6 +29,11 @@ namespace Vx.Views
             InitializeForDisplay();
         }
 
+        /// <summary>
+        /// Extending components can override this to true if they'd like to lazy postpone rendering till the Size is present.
+        /// </summary>
+        public virtual bool DelayFirstRenderTillSizePresent => false;
+
         private bool _hasInitializedForDisplay;
         private void InitializeForDisplay()
         {

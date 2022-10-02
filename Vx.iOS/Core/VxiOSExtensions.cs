@@ -206,7 +206,10 @@ namespace Vx.iOS
             {
                 AfterViewChanged = afterViewChanged
             };
-            component.InitializeForDisplay(nativeComponent);
+            if (!component.DelayFirstRenderTillSizePresent)
+            {
+                component.InitializeForDisplay(nativeComponent);
+            }
             return nativeComponent;
         }
 

@@ -29,6 +29,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         private static DisplayStates _lastDisplayState;
         private static DateTime _initialSelectedDate;
 
+        public override bool DelayFirstRenderTillSizePresent => false;
+
         public static void SetInitialDisplayState(DisplayStates displayState, DateTime selectedDate)
         {
             _lastDisplayState = displayState;
@@ -544,7 +546,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             base.Initialize();
 
-            OnSizeChanged(Size, new SizeF());
+            if (Size.Height > 0)
+            {
+                OnSizeChanged(Size, new SizeF());
+            }
         }
 
         protected override void OnSizeChanged(SizeF size, SizeF previousSize)

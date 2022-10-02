@@ -21,25 +21,40 @@ namespace Vx.iOS
         public iOSNativeComponent(VxComponent component)
         {
             Component = component;
+            _rendered = !component.DelayFirstRenderTillSizePresent;
         }
 
-        public SizeF ComponentSize => new SizeF((float)this.Frame.Width, (float)this.Frame.Height);
+        public SizeF ComponentSize => new SizeF((float)this.Bounds.Width, (float)this.Bounds.Height);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
         public event EventHandler ThemeChanged;
         public event EventHandler<bool> MouseOverChanged;
 
+        private bool _rendered;
+
         private SizeF _currSize;
 
-        public override void LayoutSubviews()
+        public override CGRect Bounds
         {
-            base.LayoutSubviews();
-
-            var newSize = ComponentSize;
-            if (_currSize != newSize)
+            get => base.Bounds;
+            set
             {
-                _currSize = newSize;
-                ComponentSizeChanged?.Invoke(this, newSize);
+                base.Bounds = value;
+
+                if (!_rendered)
+                {
+                    _rendered = true;
+                    Component.InitializeForDisplay(this);
+                }
+                else
+                {
+                    var newSize = ComponentSize;
+                    if (_currSize != newSize)
+                    {
+                        _currSize = newSize;
+                        ComponentSizeChanged?.Invoke(this, newSize);
+                    }
+                }
             }
         }
 
