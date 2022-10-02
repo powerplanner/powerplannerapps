@@ -138,8 +138,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                 {
                                     Text = year.Name,
                                     FontSize = Theme.Current.TitleFontSize,
-                                    WrapText = false,
                                     Margin = new Thickness(0, 0, 6, 0)
+                                    // iOS needs this view TO wrap so that it fills the width correctly
                                 }.LinearLayoutWeight(1),
 
                                 new LinearLayout
