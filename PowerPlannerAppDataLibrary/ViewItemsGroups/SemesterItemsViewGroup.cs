@@ -9,6 +9,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -261,6 +262,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             private ObservableCollection<DayScheduleItemsArranger> _scheduleSnapshot = new ObservableCollection<DayScheduleItemsArranger>();
 
             private DayScheduleItemsArranger _arrangedItems;
+            private TasksOrEventsOnDay _tasks;
+
+            private ObservableCollection<string> _noTasks = new ObservableCollection<string>();
 
             /// <summary>
             /// Holidays will be first, then tasks/events (including completed), then a DayScheduleItemsArranger if has scheduled items
@@ -277,7 +281,11 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), semesterItems, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, date, DayScheduleSnapshotComponent.HEIGHT_OF_HOUR, ScheduleItemComponent.SPACING_WITH_NO_ADDITIONAL, ScheduleItemComponent.SPACING_WITH_ADDITIONAL, ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
                 _arrangedItems.OnItemsChanged += new WeakEventHandler(_arrangedItems_OnItemsChanged).Handler;
 
+                _tasks = TasksOrEventsOnDay.Get(AccountsManager.GetCached(semesterItems.LocalAccountId), semesterItems.Items, date);
+                _tasks.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Tasks_CollectionChanged).Handler;
+
                 UpdateScheduleSnapshot();
+                UpdateNoTasks();
 
                 Items = new MyAppendedObservableLists<object>(
 
@@ -285,11 +293,36 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                     new Spacing[] { new Spacing() },
 
-                    TasksOrEventsOnDay.Get(AccountsManager.GetCached(semesterItems.LocalAccountId), semesterItems.Items, date),
+                    _noTasks,
+
+                    _tasks,
 
                     _scheduleSnapshot
 
                 );
+            }
+
+            private void Tasks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            {
+                UpdateNoTasks();
+            }
+
+            private void UpdateNoTasks()
+            {
+                if (_tasks.Count == 0)
+                {
+                    if (_noTasks.Count == 0)
+                    {
+                        _noTasks.Add(PowerPlannerResources.GetString("String_NothingDue"));
+                    }
+                }
+                else
+                {
+                    if (_noTasks.Count > 0)
+                    {
+                        _noTasks.RemoveAt(0);
+                    }
+                }
             }
 
             private void _arrangedItems_OnItemsChanged(object sender, EventArgs e)

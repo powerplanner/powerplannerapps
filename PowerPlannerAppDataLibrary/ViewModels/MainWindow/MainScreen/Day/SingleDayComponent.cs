@@ -113,6 +113,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                     Height = 9
                 };
             }
+            if (objItem is string nothingDueStr)
+            {
+                return new TextBlock
+                {
+                    Text = nothingDueStr,
+                    TextColor = Theme.Current.SubtleForegroundColor,
+                    Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 6)
+                };
+            }
             if (objItem is ViewItemTaskOrEvent taskOrEvent)
             {
                 return TaskOrEventListItemComponent.Render(taskOrEvent, ViewModel, IncludeDate: false);
@@ -138,7 +147,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                             Content = new TextBlock
                             {
                                 Text = holiday.Name,
-                                Margin = new Thickness(12),
+                                Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12),
                                 WrapText = false,
                                 TextColor = Color.White
                             }
