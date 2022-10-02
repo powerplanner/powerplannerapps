@@ -260,7 +260,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     Text = SemesterToSemesterViewStartEndStringConverter.Convert(semester),
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
-                                    TextAlignment = HorizontalAlignment.Right
+                                    TextAlignment = HorizontalAlignment.Right,
+                                    WrapText = false
                                 }
                             }
                         }

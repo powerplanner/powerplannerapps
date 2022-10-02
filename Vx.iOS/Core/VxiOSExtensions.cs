@@ -248,6 +248,46 @@ namespace Vx.iOS
             }
         }
 
+        public static UIBarButtonItem ToUIBarButtonItem(this string glyph)
+        {
+            UIBarButtonItem uiBarButton;
+
+            var val = glyph.ToUIBarButtonSystemItem();
+            if (val != UIBarButtonSystemItem.Action)
+            {
+                uiBarButton = new UIBarButtonItem(val);
+            }
+            else
+            {
+                var img = glyph.ToUIBarButtonImage();
+                if (img != null)
+                {
+                    uiBarButton = new UIBarButtonItem(UIImage.FromBundle(img), UIBarButtonItemStyle.Plain, null);
+                }
+                else
+                {
+                    uiBarButton = new UIBarButtonItem(UIBarButtonSystemItem.Action);
+                }
+            }
+
+            return uiBarButton;
+        }
+
+        private static string ToUIBarButtonImage(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.ChevronLeft:
+                    return "ToolbarBack";
+
+                case MaterialDesign.MaterialDesignIcons.ChevronRight:
+                    return "ToolbarForward";
+
+                default:
+                    return null;
+            }
+        }
+
         public static UIBarButtonSystemItem ToUIBarButtonSystemItem(this string glyph)
         {
             switch (glyph)
@@ -263,6 +303,9 @@ namespace Vx.iOS
 
                 case MaterialDesign.MaterialDesignIcons.Edit:
                     return UIBarButtonSystemItem.Edit;
+
+                case MaterialDesign.MaterialDesignIcons.Add:
+                    return UIBarButtonSystemItem.Add;
 
                 default:
                     return UIBarButtonSystemItem.Action;

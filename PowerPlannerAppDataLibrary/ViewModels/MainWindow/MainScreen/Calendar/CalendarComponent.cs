@@ -382,6 +382,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public const int CompactRightMargin = 8;
             public const int CompactLeftMargin = 10;
             public const int FullSizeLeftRightMargin = 10;
+            private const int CircleSize = 5;
 
             private View RenderDay(DateTime date)
             {
@@ -448,16 +449,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     var itemCircles = new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
-                        Margin = new Thickness(4,0,4,4)
+                        Margin = new Thickness(5,0,5,5)
                     };
 
                     foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>().Where(i => !i.IsComplete))
                     {
                         itemCircles.Children.Add(new Border
                         {
-                            Width = 4,
-                            Height = 4,
-                            CornerRadius = 4,
+                            Width = CircleSize,
+                            Height = CircleSize,
+                            CornerRadius = CircleSize,
                             BackgroundColor = item.Class.Color.ToColor(),
                             VerticalAlignment = VerticalAlignment.Bottom,
                             Margin = new Thickness(0, 0, 4, 0)

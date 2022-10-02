@@ -16,6 +16,7 @@ using Vx.Views;
 using Vx;
 using PowerPlannerAppDataLibrary.Views;
 using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 {
@@ -104,8 +105,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     {
                         new Toolbar
                         {
-                            Title = "Agenda"
-                        },
+                            Title = "Agenda",
+                            PrimaryCommands =
+                            {
+                                ToolbarHelper.AddCommand(AddTask, AddEvent)
+                            }
+                        }.PowerPlannerThemed(),
 
                         baseView.LinearLayoutWeight(1)
                     }

@@ -20,6 +20,7 @@ using Vx.Views;
 using System.Drawing;
 using Vx;
 using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
@@ -577,12 +578,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
                     PrimaryCommands =
                     {
-                        new ToolbarCommand
-                        {
-                            Text = PowerPlannerResources.GetString("String_Previous"),
-                            Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
-                            Action = Previous
-                        },
+                        // Add will get inserted here unless it's used as floating action
 
                         new ToolbarCommand
                         {
@@ -593,12 +589,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                         new ToolbarCommand
                         {
-                            Text = PowerPlannerResources.GetString("String_GoToToday"),
-                            Glyph = MaterialDesign.MaterialDesignIcons.Today,
-                            Action = GoToToday
-                        }
+                            Text = PowerPlannerResources.GetString("String_Previous"),
+                            Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
+                            Action = Previous
+                        },
+
+                        // Go to today would be shown for Android (but not iOS since we don't have an icon for it yet)
                     }
-                };
+                }.PowerPlannerThemed();
+
+                if (VxPlatform.Current != Platform.iOS)
+                {
+                    toolbar.PrimaryCommands.Add(new ToolbarCommand
+                    {
+                        Text = PowerPlannerResources.GetString("String_GoToToday"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                        Action = GoToToday
+                    });
+                }
 
                 // Only on full calendar, show the option for past complete
                 if (DisplayState == DisplayStates.FullCalendar)
@@ -613,31 +621,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 // Add button is displayed as floating action button sometimes on Android
                 if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
-                    toolbar.PrimaryCommands.Insert(0, new ToolbarCommand
-                    {
-                        Text = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
-                        Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                        SubCommands = new ToolbarCommand[]
-                        {
-                            new ToolbarCommand
-                            {
-                                Text = PowerPlannerResources.GetString("String_AddTask"),
-                                Action = () => AddTask()
-                            },
-
-                            new ToolbarCommand
-                            {
-                                Text = PowerPlannerResources.GetString("String_AddEvent"),
-                                Action = () => AddEvent()
-                            },
-
-                            new ToolbarCommand
-                            {
-                                Text = PowerPlannerResources.GetString("String_AddHoliday"),
-                                Action = () => AddHoliday()
-                            }
-                        }
-                    });
+                    toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
                 }
             }
 
@@ -648,7 +632,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 if (DisplayState == DisplayStates.Split)
                 {
-                    calendar.Height = 350;
+                    calendar.Height = 320;
                 }
                 else
                 {
