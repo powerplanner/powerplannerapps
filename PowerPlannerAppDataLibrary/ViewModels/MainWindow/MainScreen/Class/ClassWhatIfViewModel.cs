@@ -20,7 +20,7 @@ using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class ClassWhatIfViewModel : ComponentViewModel
+    public class ClassWhatIfViewModel : PopupComponentViewModel
     {
         private ViewItemClass _originalClass;
 
@@ -272,7 +272,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                 Children =
                                 {
                                     // ========= WHAT IF? ===========
-                                    new LinearLayout
+                                    VxPlatform.Current == Platform.Uwp ? new LinearLayout
                                     {
                                         Orientation = Orientation.Horizontal,
                                         Children =
@@ -289,7 +289,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                                 Text = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockHeader.Text"),
                                                 FontSize = Theme.Current.TitleFontSize,
                                                 TextColor = Color.White,
-                                                Margin = new Thickness(6, 0, 6, 0)
+                                                Margin = new Thickness(6, 0, 6, 0),
+                                                WrapText = false
                                             },
 
                                             new Border
@@ -299,7 +300,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                                 VerticalAlignment = VerticalAlignment.Center
                                             }.LinearLayoutWeight(1)
                                         }
-                                    },
+                                    } : null,
 
                                     new TransparentContentButton
                                     {

@@ -160,13 +160,13 @@ namespace PowerPlanneriOS.Controllers
                         // Task
                         if (_pageMenuController.CurrentPageIndex == 2)
                         {
-                            _tasksViewController.ScrollToItem(changedItem);
+                            //_tasksViewController.ScrollToItem(changedItem);
                         }
 
                         // Event
                         else if (_pageMenuController.CurrentPageIndex == 3)
                         {
-                            _eventsViewController.ScrollToItem(changedItem);
+                            //_eventsViewController.ScrollToItem(changedItem);
                         }
                     }
                 }

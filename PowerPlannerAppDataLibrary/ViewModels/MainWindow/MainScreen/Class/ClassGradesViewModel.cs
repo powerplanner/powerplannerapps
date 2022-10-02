@@ -206,7 +206,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void OpenWhatIf()
         {
-            if (PowerPlannerApp.ShowClassesAsPopups)
+            if (PowerPlannerApp.ShowClassesAsPopups || VxPlatform.Current == Platform.iOS)
             {
                 MainScreenViewModel.ShowPopup(new ClassWhatIfViewModel(MainScreenViewModel, Class));
             }
@@ -237,12 +237,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             View finalView;
             float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
 
+            var topMargin = VxPlatform.Current == Platform.iOS ? Theme.Current.PageMargin : 0;
+
             if (Size.Width < WidthBreakpoint)
             {
                 finalView = new ListView
                 {
                     Items = ItemsWithHeaders,
-                    Padding = new Thickness(0, 0, 0, floatingActionButtonOffset),
+                    Padding = new Thickness(0, topMargin, 0, Theme.Current.PageMargin + floatingActionButtonOffset),
                     ItemTemplate = item =>
                     {
                         if (item is ViewItemGrade g)
