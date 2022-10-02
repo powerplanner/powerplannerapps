@@ -16,7 +16,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         public DateTime Today { get; set; } = DateTime.Today;
         public DateTime DisplayDate { get; set; }
         public Action<DateTime> OnDisplayDateChanged { get; set; }
-        public bool IncludeHeader { get; set; } = true;
+        public bool IncludeHeader
+        {
+            get => _singleDayComponentLiveProps.IncludeHeader;
+            set => _singleDayComponentLiveProps.IncludeHeader = value;
+        }
+        public Action OnExpand
+        {
+            get => _singleDayComponentLiveProps.OnExpand;
+            set => _singleDayComponentLiveProps.OnExpand = value;
+        }
+
+        private SingleDayComponentLiveProps _singleDayComponentLiveProps = new SingleDayComponentLiveProps();
 
         public DayComponent()
         {
@@ -43,7 +54,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 SemesterItemsViewGroup = SemesterItemsViewGroup,
                 ViewModel = ViewModel,
                 Date = day,
-                IncludeHeader = IncludeHeader
+                LiveProps = _singleDayComponentLiveProps
             };
         }
     }

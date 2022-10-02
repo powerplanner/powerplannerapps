@@ -14,13 +14,32 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 {
+    public class SingleDayComponentLiveProps : BindableBase
+    {
+        private Action _onExpand;
+        public Action OnExpand
+        {
+            get => _onExpand;
+            set => SetProperty(ref _onExpand, value, nameof(OnExpand));
+        }
+
+        private bool _includeHeader = true;
+        public bool IncludeHeader
+        {
+            get => _includeHeader;
+            set => SetProperty(ref _includeHeader, value, nameof(IncludeHeader));
+        }
+    }
+
     public class SingleDayComponent : VxComponent
     {
         public DateTime Date { get; set; }
         public DateTime Today { get; set; } = DateTime.Today;
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; set; }
         public BaseMainScreenViewModelDescendant ViewModel { get; set; }
-        public bool IncludeHeader { get; set; } = true;
+
+        [VxSubscribe]
+        public SingleDayComponentLiveProps LiveProps { get; set; }
 
         private static object SCHEDULE_SNAPSHOT = new object();
 
@@ -29,6 +48,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         protected override View Render()
         {
             _dayWithScheduleSnapshot = SemesterItemsViewGroup.GetDayWithScheduleSnapshot(Date);
+            var IncludeHeader = LiveProps.IncludeHeader;
 
             return new LinearLayout
             {
@@ -37,10 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 {
                     IncludeHeader ? Divider() : null,
 
-                    IncludeHeader ? new ListHeaderComponent
-                    {
-                        Text = GetHeaderText(Date)
-                    } : null,
+                    IncludeHeader ? RenderHeader() : null,
 
                     IncludeHeader ? Divider() : null,
 
@@ -50,6 +67,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         ItemTemplate = RenderItem,
                         Padding = new Thickness(0, 0, 0, 12)
                     }.LinearLayoutWeight(1)
+                }
+            };
+        }
+
+        private View RenderHeader()
+        {
+            return new LinearLayout
+            {
+                Orientation = Orientation.Horizontal,
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = GetHeaderText(Date),
+                        FontSize = Theme.Current.SubtitleFontSize,
+                        Margin = new Thickness(Theme.Current.PageMargin, 6, 6, 6),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        WrapText = false
+                    }.LinearLayoutWeight(1),
+
+                    LiveProps.OnExpand != null ? new TransparentContentButton
+                    {
+                        Content = new FontIcon
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.ExpandLess,
+                            FontSize = Theme.Current.TitleFontSize,
+                            Margin = new Thickness(6, 6, Theme.Current.PageMargin, 6),
+                            Color = Theme.Current.SubtleForegroundColor
+                        },
+                        AltText = "Show full day",
+                        Click = LiveProps.OnExpand
+                    } : null
                 }
             };
         }

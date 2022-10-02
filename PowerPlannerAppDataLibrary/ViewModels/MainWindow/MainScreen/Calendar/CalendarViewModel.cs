@@ -651,7 +651,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     ViewModel = this,
                     DisplayDate = SelectedDate,
                     OnDisplayDateChanged = value => SelectedDate = value,
-                    IncludeHeader = DisplayState == DisplayStates.Split
+                    IncludeHeader = DisplayState == DisplayStates.Split,
+                    OnExpand = DisplayState == DisplayStates.Split ? ExpandDay : (Action)null
                 };
                 day.LinearLayoutWeight(1);
             }
