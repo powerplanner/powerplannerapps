@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CoreGraphics;
 using UIKit;
 using Vx.Views;
-
+    
 namespace Vx.iOS.Views
 {
     public class UIPanel : UIView
@@ -68,10 +68,12 @@ namespace Vx.iOS.Views
         /// </summary>
         /// <param name="view"></param>
         [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void AddSubview(UIView view)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             // Note that cannot throw here since context menus add to the view
-            //throw new InvalidOperationException("Use AddArrangedSubview instead");
+            base.AddSubview(view);
         }
 
         /// <summary>
@@ -80,10 +82,12 @@ namespace Vx.iOS.Views
         /// <param name="view"></param>
         /// <param name="atIndex"></param>
         [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void InsertSubview(UIView view, nint atIndex)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             // Note that cannot throw here since context menus add to the view
-            //throw new InvalidOperationException("Use InsertArrangedSubview instead");
+            base.InsertSubview(view, atIndex);
         }
 
         public UIView View => this;
