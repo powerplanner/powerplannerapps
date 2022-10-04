@@ -251,6 +251,61 @@ namespace Vx.iOS
             }
         }
 
+        /// <summary>
+        /// Before iOS 13, this returns null.
+        /// </summary>
+        /// <param name="glyph"></param>
+        /// <returns></returns>
+        public static UIImage GlyphToUIImage(this string glyph)
+        {
+            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            {
+                var systemImageName = glyph.GlyphToSystemImageName();
+                if (systemImageName != null)
+                {
+                    return UIImage.GetSystemImage(systemImageName);
+                }
+            }
+
+            return null;
+        }
+
+        public static string GlyphToSystemImageName(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.Check:
+                    return "checkmark";
+
+                case MaterialDesign.MaterialDesignIcons.Save:
+                    return "square.and.arrow.down";
+
+                case MaterialDesign.MaterialDesignIcons.Delete:
+                    return "trash";
+
+                case MaterialDesign.MaterialDesignIcons.Edit:
+                    return "pencil";
+
+                case MaterialDesign.MaterialDesignIcons.Copy:
+                    return "doc.on.doc";
+
+                case MaterialDesign.MaterialDesignIcons.SwapHoriz:
+                    return "arrow.left.arrow.right";
+
+                case MaterialDesign.MaterialDesignIcons.Launch:
+                    return "arrow.up.right.square";
+
+                case MaterialDesign.MaterialDesignIcons.Calculate:
+                    return "number";
+
+                case MaterialDesign.MaterialDesignIcons.Close:
+                    return "xmark";
+
+                default:
+                    return null;
+            }
+        }
+
         public static UIBarButtonItem ToUIBarButtonItem(this string glyph)
         {
             UIBarButtonItem uiBarButton;

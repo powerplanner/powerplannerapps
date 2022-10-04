@@ -25,6 +25,7 @@ namespace Vx.Views
         public string Text { get; set; }
         public Action Click { get; set; }
         public string Glyph { get; set; }
+        public ContextMenuItemStyle Style { get; set; }
     }
 
     public class ContextMenuSeparator : IContextMenuItem
@@ -50,5 +51,11 @@ namespace Vx.Views
     public interface IContextMenuItem
     {
 
+    }
+
+    public enum ContextMenuItemStyle
+    {
+        Default,
+        Destructive
     }
 }

@@ -115,7 +115,8 @@ namespace PowerPlannerAppDataLibrary.Components
                                     await viewModel.MainScreenViewModel.DeleteItem(item);
                                 }
                                 Telemetry_TrackContextEvent("Delete");
-                            }
+                            },
+                            Style = ContextMenuItemStyle.Destructive
                         },
 
                         new ContextMenuSeparator(),

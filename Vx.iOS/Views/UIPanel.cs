@@ -63,14 +63,27 @@ namespace Vx.iOS.Views
             Invalidate();
         }
 
+        /// <summary>
+        /// Do not call this. Call AddArrangedSubview instead.
+        /// </summary>
+        /// <param name="view"></param>
+        [Obsolete]
         public override void AddSubview(UIView view)
         {
-            throw new InvalidOperationException("Use AddArrangedSubview instead");
+            // Note that cannot throw here since context menus add to the view
+            //throw new InvalidOperationException("Use AddArrangedSubview instead");
         }
 
+        /// <summary>
+        /// Do not call this. Call InsertArrangedSubview instead.
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="atIndex"></param>
+        [Obsolete]
         public override void InsertSubview(UIView view, nint atIndex)
         {
-            throw new InvalidOperationException("Use InsertArrangedSubview instead");
+            // Note that cannot throw here since context menus add to the view
+            //throw new InvalidOperationException("Use InsertArrangedSubview instead");
         }
 
         public UIView View => this;
