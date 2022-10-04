@@ -314,6 +314,12 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             List<ViewItemTaskOrEvent> allDayEvents = new List<ViewItemTaskOrEvent>();
             foreach (var e in events.OfType<ViewItemTaskOrEvent>())
             {
+                // Don't include complete tasks
+                if (e.Type == TaskOrEventType.Task && e.IsComplete)
+                {
+                    continue;
+                }
+
                 if (e.IsDuringDay())
                 {
                     eventsCopied.Add(new EventItem(this, e));
