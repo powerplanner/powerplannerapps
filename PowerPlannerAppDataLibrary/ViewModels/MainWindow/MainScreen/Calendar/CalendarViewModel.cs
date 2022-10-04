@@ -29,7 +29,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         private static DisplayStates _lastDisplayState;
         private static DateTime _initialSelectedDate;
 
-        public override bool DelayFirstRenderTillSizePresent => false;
+        public override bool DelayFirstRenderTillSizePresent => true;
 
         public static void SetInitialDisplayState(DisplayStates displayState, DateTime selectedDate)
         {
