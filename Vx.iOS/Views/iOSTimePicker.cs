@@ -1,5 +1,7 @@
 ﻿using System;
+using InterfacesiOS.Helpers;
 using UIKit;
+using Vx.Extensions;
 using Vx.Views;
 
 namespace Vx.iOS.Views
@@ -7,7 +9,8 @@ namespace Vx.iOS.Views
     public class iOSTimePicker : iOSView<Vx.Views.TimePicker, UIView>
     {
         private UILabel _header;
-        private UIDatePicker _datePicker;
+        private UIControl _valueContainer;
+        private UILabel _value;
 
         public iOSTimePicker()
         {
@@ -16,54 +19,59 @@ namespace Vx.iOS.Views
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
 
-            _datePicker = new UIDatePicker
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                Mode = UIDatePickerMode.Time
-            };
-            if (InterfacesiOS.Helpers.SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
-            {
-                _datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
-            }
-            _datePicker.ValueChanged += View_ValueChanged;
-
             View.AddSubview(_header);
-            View.AddSubview(_datePicker);
 
             _header.StretchWidth(View);
 
-            // Date picker has weird built in padding for some reason, move it over and to left
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-(-8)-[datePicker]->=0-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                "datePicker", _datePicker));
+            _valueContainer = new UIControl
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                ClipsToBounds = true,
+                BackgroundColor = UIColorCompat.TertiarySystemFillColor
+            };
+            _valueContainer.Layer.CornerRadius = 10;
+            _valueContainer.TouchUpInside += _valueContainer_TouchUpInside;
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header][datePicker]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
+            _value = new UILabel
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Lines = 1
+            };
+            _valueContainer.Add(_value);
+            _value.StretchWidthAndHeight(_valueContainer, 10, 0, 10, 0);
+
+            View.AddSubview(_valueContainer);
+
+            _valueContainer.StretchWidth(View);
+
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[valueContainer(36)]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "header", _header,
-                "datePicker", _datePicker));
+                "valueContainer", _valueContainer));
         }
 
-        private void View_ValueChanged(object sender, EventArgs e)
+        private async void _valueContainer_TouchUpInside(object sender, EventArgs e)
         {
-            var newTime = BareUIHelper.NSDateToDateTime(_datePicker.Date).TimeOfDay;
-
-            if (VxView is EndTimePicker endTimePicker)
+            if (!VxView.IsEnabled)
             {
-                if (newTime <= endTimePicker.StartTime)
-                {
-                    View.BackgroundColor = UIColor.FromRGBA(255, 0, 0, 20);
-                    View.Layer.BorderColor = UIColor.Red.CGColor;
-                    View.Layer.BorderWidth = 2;
-                }
-                else
-                {
-                    View.BackgroundColor = null;
-                    // Can't set BorderColor to null (crashes on actual devices), no need to change it anyways though
-                    View.Layer.BorderWidth = 0;
-                }
+                return;
             }
 
-            if (VxView.Value != null && newTime != VxView.Value.Value)
+            var minTime = VxView is EndTimePicker endTimePicker ? endTimePicker.StartTime : new TimeSpan();
+            var resp = await new Controllers.ImprovedModalTimePickerViewController(_valueContainer, VxView.Value?.Value ?? new TimeSpan(DateTime.Today.Hour, 0, 0), minTime).ShowAsync();
+
+            if (resp != null)
             {
-                VxView.Value.ValueChanged?.Invoke(newTime);
+                var newTime = resp.Value;
+
+                if (_value != null)
+                {
+                    UpdateText(newTime);
+                }
+
+                if (VxView.Value != null && newTime != VxView.Value.Value)
+                {
+                    VxView.Value.ValueChanged?.Invoke(newTime);
+                }
             }
         }
 
@@ -72,16 +80,17 @@ namespace Vx.iOS.Views
             base.ApplyProperties(oldView, newView);
 
             _header.Text = newView.Header;
+            _valueContainer.Alpha = newView.IsEnabled ? 1f : 0.5f;
 
-            if (newView.Value != null)
+            if (newView.Value?.Value != null)
             {
-                _datePicker.Date = BareUIHelper.DateTimeToNSDate(DateTime.Today.Add(newView.Value.Value));
+                UpdateText(newView.Value.Value);
             }
+        }
 
-            if (VxView is Vx.Views.EndTimePicker endTimePicker)
-            {
-                _datePicker.MinimumDate = BareUIHelper.DateTimeToNSDate(DateTime.Today.Add(endTimePicker.StartTime));
-            }
+        private void UpdateText(TimeSpan timeSpan)
+        {
+            _value.Text = DateTimeFormatterExtension.Current.FormatAsShortTime(DateTime.Today.Add(timeSpan));
         }
     }
 }
