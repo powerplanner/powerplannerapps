@@ -106,6 +106,10 @@ namespace Vx.iOS.Views
                     new WrapperConstraint(this, NSLayoutAttribute.Bottom),
                     this,
                     this);
+
+                // Ensures auto widths/heights within linear layouts don't end up consuming full space
+                subview.View.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
+                subview.View.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Vertical);
             }
         }
 

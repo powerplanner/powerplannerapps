@@ -491,6 +491,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                                     }
                                 }.LinearLayoutWeight(1)
                             }
+                        },
+
+                        new TextBlock
+                        {
+                            Text = "Default grade scales (text boxes should stretch width)",
+                            Margin = new Thickness(Theme.Current.PageMargin)
+                        },
+
+                        new LinearLayout
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(Theme.Current.PageMargin),
+                            Children =
+                            {
+                                new NumberTextBox
+                                {
+                                    Margin = new Thickness(0, 0, 6, 0),
+                                }.LinearLayoutWeight(1),
+
+                                new NumberTextBox
+                                {
+                                    Margin = new Thickness(6, 0, 0, 0)
+                                }.LinearLayoutWeight(1),
+
+                                new TransparentContentButton
+                                {
+                                    Content = new FontIcon
+                                    {
+                                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                                        FontSize = 20,
+                                        Color = System.Drawing.Color.Red
+                                    }
+                                }
+                            }
                         }
                     }
                 }

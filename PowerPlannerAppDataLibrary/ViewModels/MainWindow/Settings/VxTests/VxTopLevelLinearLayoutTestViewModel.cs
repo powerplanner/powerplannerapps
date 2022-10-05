@@ -43,7 +43,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
 
                                     new TextBlock
                                     {
-                                        Text = "Add"
+                                        Text = "Add",
+                                        WrapText = false
                                     }
                                 }
                             },
