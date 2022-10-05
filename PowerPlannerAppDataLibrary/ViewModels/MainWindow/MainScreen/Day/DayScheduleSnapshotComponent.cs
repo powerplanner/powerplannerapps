@@ -25,6 +25,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         private VxState<DayScheduleItemsArranger.EventItem> ExpandedTaskOrEvent = new VxState<DayScheduleItemsArranger.EventItem>(null);
 
+        protected override void OnSizeChanged(SizeF size, SizeF previousSize)
+        {
+            // We render columns manually so we depend on the width
+            // This is to ensure each column item is clickable
+            if (size.Width != previousSize.Width)
+            {
+                MarkDirty();
+            }
+        }
+
         private void CollapseExpanded()
         {
             ExpandedTaskOrEvent.Value = null;
@@ -284,26 +294,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         {
             View viewToAdd = view;
 
-            if (item.NumOfColumns > 1)
+            float leftOffset = TIME_INDICATOR_SIZE + GAP_SIZE + (float)item.LeftOffset;
+            float rightOffset = 0;
+
+            if (item.NumOfColumns > 1 && Size.Width > leftOffset)
             {
-                var linLayout = new LinearLayout
-                {
-                    Orientation = Orientation.Horizontal
-                };
+                // Instead of using columns (linearlayouts) to achieve this, we use the raw width offset to ensure that items remain clickable.
+                // Otherwise the overlapping transparent linearlayouts block click events from getting through.
+                float colWidth = (Size.Width - leftOffset) / item.NumOfColumns;
 
-                for (int i = 0; i < item.NumOfColumns; i++)
-                {
-                    var viewItem = i == item.Column ? view : new Border();
-                    viewItem.LinearLayoutWeight(1);
-                    viewItem.Margin = new Thickness(i == 0 ? 0 : 3, 0, i == item.NumOfColumns - 1 ? 0 : 3, 0);
-                    linLayout.Children.Add(viewItem);
-                }
-
-                viewToAdd = linLayout;
+                // Note that the margins will only work for up to 2 columns, but that's all we support today anyways
+                leftOffset += colWidth * item.Column + 3 * item.Column;
+                rightOffset += colWidth * (item.NumOfColumns - item.Column - 1) + (item.Column != item.NumOfColumns - 1 ? 3 : 0);
             }
 
             viewToAdd.VerticalAlignment = VerticalAlignment.Top;
-            viewToAdd.Margin = new Thickness(TIME_INDICATOR_SIZE + GAP_SIZE + (float)item.LeftOffset, (float)item.TopOffset, 0, 0);
+            viewToAdd.Margin = new Thickness(leftOffset, (float)item.TopOffset, rightOffset, 0);
             root.Children.Add(viewToAdd);
         }
 
