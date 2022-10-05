@@ -32,6 +32,8 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         public TimeSpan MinDuration { get; private set; }
 
+        public double TotalHeight { get; private set; }
+
         public List<ViewItemTaskOrEvent> AllDayItems { get; private set; }
 
         public List<ViewItemHoliday> Holidays { get; private set; }
@@ -498,6 +500,18 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             foreach (var e in EventItems)
             {
                 e.CalculateOffsets();
+            }
+
+            TotalHeight = ((EndTime - StartTime).TotalHours + 1) * HeightOfHour;
+
+            foreach (var e in EventItems)
+            {
+                if (e.AdditionalItems != null && e.AdditionalItems.Count > 0)
+                {
+                    var estExpandedHeight = (e.AdditionalItems.Count + 1) * 30;
+
+                    TotalHeight = Math.Max(TotalHeight, e.TopOffset + estExpandedHeight);
+                }
             }
         }
 

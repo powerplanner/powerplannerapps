@@ -42,11 +42,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         protected override View Render()
         {
-            float totalHeight = ((int)(ArrangedItems.EndTime - ArrangedItems.StartTime).TotalHours + 1) * HEIGHT_OF_HOUR;
-
             var root = new FrameLayout
             {
-                Height = totalHeight,
+                Height = (float)ArrangedItems.TotalHeight,
                 Tapped = CollapseExpanded
             };
 
