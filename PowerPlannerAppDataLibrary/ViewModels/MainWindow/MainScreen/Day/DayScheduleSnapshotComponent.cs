@@ -102,7 +102,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         EventItem = e,
                         IsExpanded = ExpandedTaskOrEvent.Value == e,
                         SetExpanded = exp => ExpandedTaskOrEvent.Value = exp
-                    });
+                    }, isCollapsed: ExpandedTaskOrEvent.Value != e);
                 }
                 else
                 {
@@ -169,6 +169,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             public Action<DayScheduleItemsArranger.EventItem> SetExpanded { get; set; }
             public override bool SubscribeToIsMouseOver => true;
             private DateTime _ignoreMouseTill;
+            public const float ADDITIONAL_CIRCLES_MARGIN = 2;
+            public const float ADDITIONAL_CIRCLES_WIDTH = 8;
 
             protected override void OnMouseOverChanged(bool isMouseOver)
             {
@@ -247,7 +249,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                     {
                         var additionalCircles = new LinearLayout
                         {
-                            Margin = new Thickness(2, 0, 0, 0)
+                            Margin = new Thickness(ADDITIONAL_CIRCLES_MARGIN, 0, 0, 0)
                         };
 
                         foreach (var a in EventItem.AdditionalItems)
@@ -257,8 +259,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                             additionalCircles.Children.Add(new Border
                             {
                                 BackgroundColor = a.IsComplete ? Theme.Current.SubtleForegroundColor.Opacity(0.3) : a.Class.Color.ToColor(),
-                                Width = circleSize,
-                                Height = circleSize,
+                                Width = ADDITIONAL_CIRCLES_WIDTH,
+                                Height = ADDITIONAL_CIRCLES_WIDTH,
                                 CornerRadius = circleSize,
                                 Margin = new Thickness(0, 0, 0, 2)
                             });
@@ -290,7 +292,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             }
         }
 
-        private void AddVisualItem(FrameLayout root, DayScheduleItemsArranger.BaseScheduleItem item, View view)
+        private void AddVisualItem(FrameLayout root, DayScheduleItemsArranger.BaseScheduleItem item, View view, bool isCollapsed = false)
         {
             View viewToAdd = view;
 
@@ -308,8 +310,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 rightOffset += colWidth * (item.NumOfColumns - item.Column - 1) + (item.Column != item.NumOfColumns - 1 ? 3 : 0);
             }
 
+            else if (isCollapsed)
+            {
+                // We add right margin when item is collapsed so it doesn't steal the clicks of the class to the right
+                rightOffset = Math.Max(0, Size.Width - leftOffset - ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM - ExpandableTaskOrEventComponent.ADDITIONAL_CIRCLES_WIDTH - ExpandableTaskOrEventComponent.ADDITIONAL_CIRCLES_MARGIN);
+            }
+
             viewToAdd.VerticalAlignment = VerticalAlignment.Top;
             viewToAdd.Margin = new Thickness(leftOffset, (float)item.TopOffset, rightOffset, 0);
+
             root.Children.Add(viewToAdd);
         }
 
