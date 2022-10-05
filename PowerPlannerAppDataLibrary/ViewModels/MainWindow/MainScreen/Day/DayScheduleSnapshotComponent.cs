@@ -87,7 +87,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             {
                 if (e.IsCollapsedMode)
                 {
-                    AddVisualItem(root, e, new CollapsedTaskOrEventComponent
+                    AddVisualItem(root, e, new ExpandableTaskOrEventComponent
                     {
                         EventItem = e,
                         IsExpanded = ExpandedTaskOrEvent.Value == e,
@@ -105,7 +105,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         private View RenderFullEventItem(DayScheduleItemsArranger.EventItem e)
         {
-            return new Border
+            bool hasAdditionalItems = e.AdditionalItems != null && e.AdditionalItems.Count > 0;
+
+            if (!hasAdditionalItems)
+            {
+                return RenderFullEventItemStandard(e, true);
+            }
+            else
+            {
+                return new ExpandableTaskOrEventComponent
+                {
+                    EventItem = e,
+                    IsExpanded = ExpandedTaskOrEvent.Value == e,
+                    SetExpanded = exp => ExpandedTaskOrEvent.Value = exp
+                };
+            }
+        }
+
+        /// <summary>
+        /// Renders without any additional items, just the full width event item
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private static View RenderFullEventItemStandard(DayScheduleItemsArranger.EventItem e, bool isStandaloneView)
+        {
+            var b = new Border
             {
                 BackgroundColor = e.Item.Class.Color.ToColor(),
                 Content = new TextBlock
@@ -116,13 +140,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                     Margin = new Thickness(6),
                     VerticalAlignment = VerticalAlignment.Top
                 },
-                CornerRadius = 8,
-                Tapped = () => PowerPlannerApp.Current.GetMainScreenViewModel().ShowItem(e.Item),
-                Height = (float)e.Height
+                CornerRadius = 8
             };
+
+            if (isStandaloneView)
+            {
+                b.Tapped = () => PowerPlannerApp.Current.GetMainScreenViewModel().ShowItem(e.Item);
+                b.Height = (float)e.Height;
+            }
+
+            return b;
         }
 
-        private class CollapsedTaskOrEventComponent : VxComponent
+        private class ExpandableTaskOrEventComponent : VxComponent
         {
             public DayScheduleItemsArranger.EventItem EventItem { get; set; }
             public bool IsExpanded { get; set; }
@@ -176,23 +206,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 }
                 else
                 {
-                    var collapsed = new Border
+                    View collapsed;
+
+                    if (EventItem.IsCollapsedMode)
                     {
-                        BackgroundColor = EventItem.Item.Class.Color.ToColor(),
-                        Content = new TextBlock
+                        collapsed = new Border
                         {
-                            Text = EventItem.Item.Name.Length > 0 ? EventItem.Item.Name.Substring(0, 1) : "",
-                            WrapText = false,
-                            TextColor = Color.White,
-                            Margin = new Thickness(6),
-                            VerticalAlignment = VerticalAlignment.Top,
-                            TextAlignment = HorizontalAlignment.Center,
-                            FontSize = 16
-                        },
-                        CornerRadius = 8,
-                        Width = ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM,
-                        Height = (float)EventItem.Height
-                    };
+                            BackgroundColor = EventItem.Item.Class.Color.ToColor(),
+                            Content = new TextBlock
+                            {
+                                Text = EventItem.Item.Name.Length > 0 ? EventItem.Item.Name.Substring(0, 1) : "",
+                                WrapText = false,
+                                TextColor = Color.White,
+                                Margin = new Thickness(6),
+                                VerticalAlignment = VerticalAlignment.Top,
+                                TextAlignment = HorizontalAlignment.Center,
+                                FontSize = 16
+                            },
+                            CornerRadius = 8,
+                            Width = ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM,
+                            Height = (float)EventItem.Height
+                        };
+                    }
+                    else
+                    {
+                        collapsed = RenderFullEventItemStandard(EventItem, false);
+                    }
 
                     if (EventItem.AdditionalItems != null)
                     {
@@ -219,17 +258,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         {
                             Orientation = Orientation.Horizontal,
                             Height = (float)EventItem.Height,
-                            HorizontalAlignment = HorizontalAlignment.Left,
                             Children =
                             {
-                                collapsed,
+                                collapsed.LinearLayoutWeight(1),
                                 additionalCircles
                             },
                             Tapped = OnCollapsedTapped
                         };
                     }
 
-                    collapsed.HorizontalAlignment = HorizontalAlignment.Left;
                     collapsed.Tapped = OnCollapsedTapped;
 
                     return collapsed;
