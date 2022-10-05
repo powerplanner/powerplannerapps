@@ -140,6 +140,7 @@
     <Compile Include="Views\UIContentView.cs" />
     <Compile Include="Views\UIViewWrapper.cs" />
     <Compile Include="Views\UIPanel.cs" />
+    <Compile Include="Core\VxiOSContextMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

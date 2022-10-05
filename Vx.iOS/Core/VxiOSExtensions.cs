@@ -181,18 +181,25 @@ namespace Vx.iOS
 
             actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
 
+            var uiView = view.NativeUIView();
+
             // Required for iPad - You must specify a source for the Action Sheet since it is
             // displayed as a popover
             UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
             if (presentationPopover != null)
             {
-                presentationPopover.SourceView = view.NativeView.View as UIView;
-                presentationPopover.SourceRect = (view.NativeView.View as UIView).Frame;
-                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+                presentationPopover.SourceView = uiView;
+                presentationPopover.SourceRect = uiView.Frame;
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Any;
             }
 
             // Display the alert
-            (view.NativeView.View as UIView).GetViewController().PresentViewController(actionSheetAlert, true, null);
+            uiView.GetViewController().PresentViewController(actionSheetAlert, true, null);
+        }
+
+        public static UIView NativeUIView(this View view)
+        {
+            return (UIView)((UIViewWrapper)view.NativeView.View).View;
         }
 
         public static iOSNativeComponent Render(this VxComponent component, Action<UIView> afterViewChanged = null)
