@@ -158,14 +158,14 @@ namespace PowerPlannerAppDataLibrary.Components
                     Width = width,
                     Children =
                     {
-                        new Border().LinearLayoutWeight(incomplete / 2),
+                        new Border().LinearLayoutWeight((float)item.PercentComplete / 2),
 
                         new Border
                         {
                             BackgroundColor = item.Class.Color.ToColor()
-                        }.LinearLayoutWeight((float)item.PercentComplete),
+                        }.LinearLayoutWeight(incomplete),
 
-                        new Border().LinearLayoutWeight(incomplete / 2)
+                        new Border().LinearLayoutWeight((float)item.PercentComplete/ 2)
                     }
                 };
             }
