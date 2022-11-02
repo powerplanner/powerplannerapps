@@ -30,7 +30,10 @@ namespace Vx.Uwp.Views
 
             for (int i = 0; i < 3; i++)
             {
-                _stackpanel.Children.Add(new Border());
+                _stackpanel.Children.Add(new Border()
+                {
+                    Width = 0
+                });
             }
 
             _scrollViewer = new ScrollViewer()

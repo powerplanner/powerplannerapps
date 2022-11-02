@@ -29,6 +29,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             get => _includeHeader;
             set => SetProperty(ref _includeHeader, value, nameof(IncludeHeader));
         }
+
+        private bool _includeAdd = false;
+        public bool IncludeAdd
+        {
+            get => _includeAdd;
+            set => SetProperty(ref _includeAdd, value, nameof(IncludeAdd));
+        }
     }
 
     public class SingleDayComponent : VxComponent
@@ -71,6 +78,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             };
         }
 
+        private View _addRef;
+
         private View RenderHeader()
         {
             return new LinearLayout
@@ -87,6 +96,41 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         TextColor = Theme.Current.SubtleForegroundColor,
                         WrapText = false
                     }.LinearLayoutWeight(1),
+
+                    LiveProps.IncludeAdd ? new TransparentContentButton
+                    {
+                        Content = new FontIcon
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                            FontSize = Theme.Current.TitleFontSize,
+                            Margin = new Thickness(6),
+                            Color = Theme.Current.SubtleForegroundColor
+                        },
+                        AltText = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
+                        ViewRef = v => _addRef = v,
+                        Click = () => new ContextMenu
+                        {
+                            Items =
+                            {
+                                new ContextMenuItem
+                                {
+                                    Text = PowerPlannerResources.GetString("String_Task"),
+                                    Click = () => (ViewModel as Calendar.CalendarViewModel).AddTask(Date)
+                                },
+                                new ContextMenuItem
+                                {
+                                    Text = PowerPlannerResources.GetString("String_Event"),
+                                    Click = () => (ViewModel as Calendar.CalendarViewModel).AddEvent(Date)
+                                },
+                                new ContextMenuItem
+                                {
+                                    Text = PowerPlannerResources.GetString("String_Holiday"),
+                                    Click = () => (ViewModel as Calendar.CalendarViewModel).AddHoliday(Date)
+                                }
+                            }
+                        }.Show(_addRef),
+                        Margin = new Thickness(0, 0, Theme.Current.PageMargin, 0)
+                    } : null,
 
                     LiveProps.OnExpand != null ? new TransparentContentButton
                     {

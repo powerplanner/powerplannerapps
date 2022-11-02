@@ -43,6 +43,7 @@ namespace PowerPlannerUWP.Views
 
             UpdateSelectedItemDisplay();
             UpdateSyncStates();
+            OnContentChanged();
         }
 
         public override void OnViewModelLoadedOverride()
@@ -95,7 +96,7 @@ namespace PowerPlannerUWP.Views
 
         private void OnContentChanged()
         {
-            if (ViewModel.Content is SettingsViewModel)
+            if (ViewModel.Content is SettingsViewModel || ViewModel.Content is PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar.CalendarViewModel)
             {
                 HideCommandBar();
                 SetCommandBarCommands(null, null);

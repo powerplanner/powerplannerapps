@@ -27,6 +27,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             set => _singleDayComponentLiveProps.OnExpand = value;
         }
 
+        public bool IncludeAdd
+        {
+            get => _singleDayComponentLiveProps.IncludeAdd;
+            set => _singleDayComponentLiveProps.IncludeAdd = value;
+        }
+
         private SingleDayComponentLiveProps _singleDayComponentLiveProps = new SingleDayComponentLiveProps();
 
         public DayComponent()

@@ -73,7 +73,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                                 new Border().LinearLayoutWeight(1),
 
-                                CreateIconButton(
+                                _viewModel.DisplayState != CalendarViewModel.DisplayStates.Split ? CreateIconButton(
                                     glyph: MaterialDesign.MaterialDesignIcons.Add,
                                     tooltipText: PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
                                     altText: null,
@@ -97,7 +97,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                                 Click = () => _viewModel.AddHoliday(false)
                                             }
                                         }
-                                    }.Show(_addButtonRef), v => _addButtonRef = v),
+                                    }.Show(_addButtonRef), v => _addButtonRef = v) : null,
 
                                 // Filter button (only on full size calendar)
                                 IsFullSize ? CreateIconButton(
