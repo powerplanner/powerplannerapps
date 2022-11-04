@@ -307,7 +307,7 @@ namespace Vx.iOS.Views
             UIView centeringHorizontalView = IsVertical ? this : null;
             UIView centeringVerticalView = IsVertical ? null : this;
 
-            curr.SetConstraints(leftConstraint, topConstraint, rightConstraint, bottomConstraint, centeringHorizontalView, centeringVerticalView, widthConstraint, heightConstraint);
+            curr.SetConstraints(leftConstraint, topConstraint, rightConstraint, bottomConstraint, centeringHorizontalView, centeringVerticalView, widthConstraint, heightConstraint, centerViaLayoutGuideIfNeeded: weight > 0 && IsVertical);
         }
 
 
