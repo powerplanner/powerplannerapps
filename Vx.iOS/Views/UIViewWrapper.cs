@@ -74,7 +74,7 @@ namespace Vx.iOS.Views
             return NSLayoutConstraint.Create(
                 ViewOrGuide,
                 NSLayoutAttribute.Left,
-                PinLeft ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                PinLeft && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
                 constraint.OtherView,
                 constraint.OtherViewAttribute,
                 constraint.Multiplier,
@@ -86,7 +86,7 @@ namespace Vx.iOS.Views
             return NSLayoutConstraint.Create(
                 constraint.OtherView,
                 constraint.OtherViewAttribute,
-                PinRight ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                PinRight && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
                 ViewOrGuide,
                 NSLayoutAttribute.Right,
                 constraint.Multiplier,
@@ -98,7 +98,7 @@ namespace Vx.iOS.Views
             return NSLayoutConstraint.Create(
                 ViewOrGuide,
                 NSLayoutAttribute.Top,
-                PinTop ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                PinTop && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
                 constraint.OtherView,
                 constraint.OtherViewAttribute,
                 constraint.Multiplier,
@@ -110,7 +110,7 @@ namespace Vx.iOS.Views
             return NSLayoutConstraint.Create(
                 constraint.OtherView,
                 constraint.OtherViewAttribute,
-                PinBottom ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
+                PinBottom && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
                 ViewOrGuide,
                 NSLayoutAttribute.Bottom,
                 constraint.Multiplier,
