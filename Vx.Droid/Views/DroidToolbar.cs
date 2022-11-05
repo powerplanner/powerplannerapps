@@ -91,7 +91,7 @@ namespace Vx.Droid.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            View.Title = newView.Title;
+            View.Title = newView.BackText ?? newView.Title;
             View.SetBackgroundColor(newView.BackgroundColor.ToDroid());
 
             if (newView.OnBack != null && View.NavigationIcon == null)
