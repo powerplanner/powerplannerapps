@@ -234,9 +234,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             public DateTime Today { get; private set; }
             public IEnumerable<ViewItemClass> Classes { get; private set; }
             public DateTime NextWeekStartDate { get; private set; }
+            private bool _useThisWeekForNextWeek = false;
+            
             public GroupHeaderProvider(DateTime today, IEnumerable<ViewItemClass> classes, AccountDataItem account)
             {
-                Today = today;
+                Today = today.Date;
                 Classes = classes;
                 var weekChangesOn = account.WeekChangesOn;
                 if (weekChangesOn == DayOfWeek.Sunday)
@@ -245,6 +247,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     weekChangesOn = DayOfWeek.Monday;
                 }
                 NextWeekStartDate = DateTools.Next(weekChangesOn, today.AddDays(1));
+
+                // If today is Saturday and week changes on Monday, since "In two days" would be Monday, everything else on that week should also be "This week" to avoid confusion
+                if ((NextWeekStartDate - Today).Days <= 2)
+                {
+                    _useThisWeekForNextWeek = true;
+                }
 
                 _overdue = new ItemsGroupHeader()
                 {
@@ -350,7 +358,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     return _thisWeek;
 
                 if (itemDate < NextWeekStartDate.AddDays(7))
+                {
+                    if (_useThisWeekForNextWeek)
+                    {
+                        return _thisWeek;
+                    }
+
                     return _nextWeek;
+                }
 
                 if (itemDate <= todayAsUtc.AddDays(30))
                     return _withinThirtyDays;
