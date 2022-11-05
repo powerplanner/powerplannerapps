@@ -42,6 +42,11 @@ namespace Vx.Uwp.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            if (availableSize.Width == 0 || availableSize.Height == 0)
+            {
+                return new Size(0, 0);
+            }
+
             // MeasureOverride is supposed to report the SMALLEST possible size that will fit the content. If availableSize.Height is 700
             // but content could fit in 200, then should return 200. This effectively means that the weighted heights are treated as
             // auto. This ensures that for the ViewTask dialog, even though it uses a weighted height, if the content is smaller, the
