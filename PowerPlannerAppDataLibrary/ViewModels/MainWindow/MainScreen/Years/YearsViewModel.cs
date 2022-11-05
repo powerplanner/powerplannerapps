@@ -261,7 +261,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
                                     TextAlignment = HorizontalAlignment.Right,
-                                    WrapText = false
+                                    WrapText = false,
+                                    MaxLines = 2 // iOS needs MaxLines since otherwise it'll trim at one line and cut off the end date on the second line
                                 }
                             }
                         }
