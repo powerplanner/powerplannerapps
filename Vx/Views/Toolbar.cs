@@ -15,6 +15,12 @@ namespace Vx.Views
         public Color ForegroundColor { get; set; } = Color.White;
         public List<ToolbarCommand> PrimaryCommands { get; } = new List<ToolbarCommand>();
         public List<ToolbarCommand> SecondaryCommands { get; } = new List<ToolbarCommand>();
+
+        /// <summary>
+        /// iOS reverses the primary commands, so the first one is displayed on the right. If you have relational-specific commands,
+        /// like Previous and Next, use this to determine if you should reveres those command orders.
+        /// </summary>
+        public static readonly bool DisplaysPrimaryCommandsRightToLeft = VxPlatform.Current == Platform.iOS;
     }
 
     public enum ToolbarCommandStyle

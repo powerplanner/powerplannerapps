@@ -588,21 +588,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                         new ToolbarCommand
                         {
-                            Text = PowerPlannerResources.GetString("String_Next"),
-                            Glyph = MaterialDesign.MaterialDesignIcons.ChevronRight,
-                            Action = Next
-                        },
-
-                        new ToolbarCommand
-                        {
                             Text = PowerPlannerResources.GetString("String_Previous"),
                             Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
                             Action = Previous
                         },
 
+                        new ToolbarCommand
+                        {
+                            Text = PowerPlannerResources.GetString("String_Next"),
+                            Glyph = MaterialDesign.MaterialDesignIcons.ChevronRight,
+                            Action = Next
+                        },
+
                         // Go to today would be shown for Android (but not iOS since we don't have an icon for it yet)
                     }
                 }.PowerPlannerThemed();
+
+                // iOS reverses the order of toolbar items, so to ensure prev and next are int he right order, we reverse
+                if (Toolbar.DisplaysPrimaryCommandsRightToLeft)
+                {
+                    toolbar.PrimaryCommands.Reverse();
+                }
 
                 if (VxPlatform.Current != Platform.iOS)
                 {
