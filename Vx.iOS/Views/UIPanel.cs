@@ -33,7 +33,7 @@ namespace Vx.iOS.Views
         public void RemoveArrangedSubview(UIViewWrapper subview)
         {
             _arrangedSubviews.Remove(subview);
-            subview.View.RemoveFromSuperview();
+            subview.RemoveFromSuperview();
             Invalidate();
         }
 
@@ -41,7 +41,7 @@ namespace Vx.iOS.Views
         {
             var subview = _arrangedSubviews[index];
             _arrangedSubviews.RemoveAt(index);
-            subview.View.RemoveFromSuperview();
+            subview.RemoveFromSuperview();
             Invalidate();
         }
 
@@ -57,7 +57,7 @@ namespace Vx.iOS.Views
         {
             foreach (var subview in _arrangedSubviews)
             {
-                subview.View.RemoveFromSuperview();
+                subview.RemoveFromSuperview();
             }
             _arrangedSubviews.Clear();
             Invalidate();

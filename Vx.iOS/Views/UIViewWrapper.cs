@@ -256,6 +256,16 @@ namespace Vx.iOS.Views
         public UIView View => ViewOrGuide as UIView;
         public override UIView Superview => View.Superview;
 
+        public void RemoveFromSuperview()
+        {
+            View.RemoveFromSuperview();
+
+            if (_centerYGuide != null)
+            {
+                DisposeCenterYGuide();
+            }
+        }
+
 #if DEBUG
         public string DebugConstraintsString
         {
