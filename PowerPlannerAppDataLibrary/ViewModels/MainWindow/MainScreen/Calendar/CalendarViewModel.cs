@@ -554,17 +554,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         protected override void OnSizeChanged(SizeF size, SizeF previousSize)
         {
-            if (size.Height < 550)
+            if (size.Height < 500)
                 ViewSizeState = ViewSizeStates.FullyCompact;
 
             else if (size.Width < 676)
-            {
-                if (size.Height < (CalendarComponent.IntegratedTopControls ? 700 : 600))
-                    ViewSizeState = ViewSizeStates.FullyCompact;
-
-                else
-                    ViewSizeState = ViewSizeStates.Compact;
-            }
+                ViewSizeState = ViewSizeStates.Compact;
 
             else
                 ViewSizeState = ViewSizeStates.FullSize;
@@ -644,7 +638,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 if (DisplayState == DisplayStates.Split)
                 {
-                    calendar.Height = 320;
+                    calendar.Height = 300;
                 }
                 else
                 {
