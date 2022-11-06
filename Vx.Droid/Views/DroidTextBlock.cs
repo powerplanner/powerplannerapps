@@ -45,8 +45,15 @@ namespace Vx.Droid.Views
                     break;
             }
 
-            View.SetSingleLine(!newView.WrapText);
-            View.SetMaxLines(newView.MaxLines == 0 ? int.MaxValue : newView.MaxLines);
+            if (newView.MaxLines != 0)
+            {
+                View.SetSingleLine(false);
+                View.SetMaxLines(newView.MaxLines);
+            }
+            else
+            {
+                View.SetSingleLine(!newView.WrapText);
+            }
 
             // Strikethrough: https://stackoverflow.com/a/52344500
             View.PaintFlags = newView.Strikethrough ? View.PaintFlags | Android.Graphics.PaintFlags.StrikeThruText : View.PaintFlags & ~Android.Graphics.PaintFlags.StrikeThruText;
