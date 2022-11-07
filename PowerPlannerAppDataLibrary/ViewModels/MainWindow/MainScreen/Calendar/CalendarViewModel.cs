@@ -638,7 +638,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 if (DisplayState == DisplayStates.Split)
                 {
-                    calendar.Height = 300;
+                    calendar.Height = 300 + (CalendarComponent.IntegratedTopControls ? 50 : 0);
                 }
                 else
                 {
