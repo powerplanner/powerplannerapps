@@ -389,7 +389,10 @@ namespace Vx.Views
         /// </summary>
         public void RenderOnDemand()
         {
-            RenderActual();
+            if (_hasInitializedForDisplay)
+            {
+                RenderActual();
+            }
         }
 
         private void RenderActual()
