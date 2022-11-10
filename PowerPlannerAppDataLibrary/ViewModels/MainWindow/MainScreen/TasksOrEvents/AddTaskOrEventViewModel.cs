@@ -292,7 +292,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new TextBlock
                                 {
                                     Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatEvery.Text"),
-                                    VerticalAlignment = VerticalAlignment.Center
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    WrapText = false
                                 },
 
                                 new NumberTextBox
@@ -375,7 +376,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 {
                                     Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockOccurrences.Text"),
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Margin = new Thickness(6, 0, 0, 0)
+                                    Margin = new Thickness(6, 0, 0, 0),
+                                    WrapText = false
                                 }
                             }
                         }
