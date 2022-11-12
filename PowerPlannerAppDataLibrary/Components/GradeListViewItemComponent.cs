@@ -79,7 +79,7 @@ namespace PowerPlannerAppDataLibrary.Components
 
                                 !string.IsNullOrWhiteSpace(Item.Details) ?  new TextBlock
                                 {
-                                    Text = Item.Details,
+                                    Text = Item.Details.Replace("\n", "  ").Trim(),
                                     WrapText = false,
                                     TextColor = Theme.Current.SubtleForegroundColor
                                 } : null
