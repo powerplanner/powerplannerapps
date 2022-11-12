@@ -51,6 +51,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     Text = VxValue.Create(Username, v => Username = v),
                     Margin = new Thickness(0, 24, 0, 0),
                     InputScope = InputScope.Username,
+                    AutoMoveToNextTextBox = true,
                     OnSubmit = LogIn,
                     IsEnabled = isEnabled
                 },

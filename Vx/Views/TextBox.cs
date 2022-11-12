@@ -38,6 +38,15 @@ namespace Vx.Views
 
         public InputScope InputScope { get; set; } = InputScope.Normal;
 
+        /// <summary>
+        /// On touch-based devices, this will cause the "return" key to search for the next text box
+        /// </summary>
+        public bool AutoMoveToNextTextBox { get; set; }
+
+        /// <summary>
+        /// Used to "submit" the form. On keyboard-based devices, pressing enter on the 1st of 2 text boxes should submit the form (keyboard users use tab to go to the next field).
+        /// On touch-based devices, pressing the virtual "return" key on the 1st of 2 text boxes should continue to the next text box, unless it's the last text box, which it should then execute submit.
+        /// </summary>
         public Action OnSubmit { get; set; }
 
         public bool IsEnabled { get; set; } = true;

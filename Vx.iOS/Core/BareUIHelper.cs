@@ -414,6 +414,48 @@ namespace Vx.iOS
             }
         }
 
+        /// <summary>
+        /// Iteratively returns all next views (including recursively up and back down the tree) from the current view
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        public static IEnumerable<UIView> NextViews(this UIView view)
+        {
+            if (view.Superview == null)
+            {
+                yield break;
+            }
+
+            bool started = false;
+            foreach (var subview in view.Superview.Subviews)
+            {
+                if (started)
+                {
+                    yield return subview;
+
+                    foreach (var descendant in subview.Descendants())
+                    {
+                        yield return descendant;
+                    }
+                }
+                else if (object.ReferenceEquals(subview, view))
+                {
+                    started = true;
+                }
+            }
+
+            // Now look at parent of the parent
+            foreach (var nextView in view.Superview.NextViews())
+            {
+                yield return nextView;
+            }
+        }
+
+        public static UIView FindNextView(this UIView view, Func<UIView, bool> predicate)
+        {
+            return view.NextViews().FirstOrDefault(predicate);
+        }
+
         public static void ClearAllSubviews(this UIView view)
         {
             foreach (var subview in view.Subviews.ToArray())
