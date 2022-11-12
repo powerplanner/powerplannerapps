@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Text.Method;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Webkit;
 using Android.Widget;
 using Google.Android.Material.TextField;
@@ -17,11 +18,46 @@ namespace Vx.Droid.Views
 {
     public class DroidTextBox : DroidView<Vx.Views.TextBox, TextInputLayout>
     {
-        private TextInputEditText _editText;
+        private MyTextInputEditText _editText;
+
+        private class MyTextInputEditText : TextInputEditText
+        {
+            public Action OnSubmit { get; set; }
+            public bool AutoMoveToNextTextBox { get; set; }
+
+            public MyTextInputEditText(Context context) : base(context)
+            {
+
+            }
+
+            public override void OnEditorAction([GeneratedEnum] ImeAction actionCode)
+            {
+                if (!AutoMoveToNextTextBox && OnSubmit != null)
+                {
+                    OnSubmit();
+                }
+                else
+                {
+                    base.OnEditorAction(actionCode);
+                }
+            }
+
+            public override bool OnKeyUp([GeneratedEnum] Keycode keyCode, KeyEvent e)
+            {
+                // We only respect Enter as OnSubmit if coming from a physical keyboard (not the virtual IME)
+                if (keyCode == Keycode.Enter && !e.Flags.HasFlag(KeyEventFlags.EditorAction))
+                {
+                    OnSubmit?.Invoke();
+                    return true;
+                }
+
+                return base.OnKeyUp(keyCode, e);
+            }
+        }
 
         public DroidTextBox() : base(new TextInputLayout(VxDroidExtensions.ApplicationContext, null, Resource.Attribute.materialOutlinedTextBoxStyle))
         {
-            _editText = new TextInputEditText(View.Context)
+            _editText = new MyTextInputEditText(View.Context)
             {
                 LayoutParameters = new TextInputLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent),
                 InputType = Android.Text.InputTypes.TextFlagCapSentences | Android.Text.InputTypes.TextFlagAutoCorrect,
@@ -41,6 +77,17 @@ namespace Vx.Droid.Views
 
             _editText.TextChanged += _editText_TextChanged;
             _editText.FocusChange += _editText_FocusChange;
+        }
+
+        private void _editText_EditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            if (e.ActionId == Android.Views.InputMethods.ImeAction.ImeNull
+                && e.Event != null && e.Event.Action == KeyEventActions.Up
+                && VxView.OnSubmit != null)
+            {
+                VxView.OnSubmit();
+                e.Handled = true;
+            }
         }
 
         private void _editText_Touch(object sender, View.TouchEventArgs e)
@@ -88,6 +135,9 @@ namespace Vx.Droid.Views
             }
 
             _editText.Error = newView.ValidationState?.ErrorMessage;
+            _editText.OnSubmit = newView.OnSubmit;
+            _editText.AutoMoveToNextTextBox = newView.AutoMoveToNextTextBox;
+            _editText.ImeOptions = newView.AutoMoveToNextTextBox ? ImeAction.Next : (newView.OnSubmit != null ? ImeAction.Done : ImeAction.Unspecified);
 
             View.Hint = newView.Header;
             View.Enabled = newView.IsEnabled;
