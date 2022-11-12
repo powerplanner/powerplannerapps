@@ -607,14 +607,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenYears()
         {
-            if (VxPlatform.Current == Platform.Uwp)
-            {
-                MainScreenViewModel.SelectedItem = NavigationManager.MainMenuSelections.Years;
-            }
-            else
-            {
-                MainScreenViewModel?.OpenYears();
-            }
+            MainScreenViewModel?.OpenOrShowYears();
         }
 
         public void StartSync()

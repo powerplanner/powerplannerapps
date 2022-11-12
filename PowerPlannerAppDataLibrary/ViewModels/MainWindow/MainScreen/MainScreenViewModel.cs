@@ -1307,6 +1307,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             this.ShowPopup(AddHolidayViewModel.CreateForEdit(this, holiday));
         }
 
+        /// <summary>
+        /// Only should be called from devices that don't show Years in the tab items (Android/iOS)
+        /// </summary>
         public void OpenYears()
         {
             try
@@ -1321,6 +1324,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Works from all devices
+        /// </summary>
+        public void OpenOrShowYears()
+        {
+            if (PowerPlannerApp.DoNotShowYearsInTabItems)
+            {
+                OpenYears();
+            }
+            else
+            {
+                SelectedItem = MainMenuSelections.Years;
             }
         }
 

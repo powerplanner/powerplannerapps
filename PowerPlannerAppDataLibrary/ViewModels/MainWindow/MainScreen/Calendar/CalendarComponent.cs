@@ -316,7 +316,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             new DifferentSemesterComponent()
                             {
                                 OnDismiss = () => DismissedDifferentSemesterMonth.Value = Month,
-                                OnOpenSemester = () => ViewModel.MainScreenViewModel.OpenYears()
+                                OnOpenSemester = () => ViewModel.MainScreenViewModel.OpenOrShowYears()
                             }
                         }
                     };
