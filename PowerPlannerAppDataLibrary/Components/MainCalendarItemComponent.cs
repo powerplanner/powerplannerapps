@@ -17,6 +17,7 @@ namespace PowerPlannerAppDataLibrary.Components
 {
     public class MainCalendarItemComponent : VxComponent
     {
+        [VxSubscribe]
         public ViewItemTaskOrEvent Item { get; set; }
         public BaseMainScreenViewModelDescendant ViewModel { get; set; }
         public Action<ViewItemTaskOrEvent> ShowItem { get; set; }
