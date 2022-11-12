@@ -46,6 +46,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     PlaceholderText = PowerPlannerResources.GetString("Settings_ChangePasswordPage_TextBoxNewPassword.PlaceholderText"),
                     AutoFocus = true,
                     IsEnabled = isEnabled,
+                    AutoMoveToNextTextBox = true,
                     OnSubmit = Update
                 },
 

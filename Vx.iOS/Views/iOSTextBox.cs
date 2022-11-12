@@ -18,6 +18,26 @@ namespace Vx.iOS.Views
         {
             View.TextChanged += View_TextChanged;
             View.FocusChanged += View_FocusChanged;
+            View.TextField.ShouldReturn = TextFieldShouldReturn;
+        }
+
+        private bool TextFieldShouldReturn(UITextField textField)
+        {
+            if (VxView.AutoMoveToNextTextBox)
+            {
+                var next = textField.FindNextView(i => i is UITextField);
+                if (next != null)
+                {
+                    next.BecomeFirstResponder();
+                }
+                return false;
+            }
+            if (VxView.OnSubmit != null)
+            {
+                VxView.OnSubmit();
+                return false;
+            }
+            return true;
         }
 
         private void View_FocusChanged(object sender, bool e)
@@ -76,6 +96,15 @@ namespace Vx.iOS.Views
             if (oldView == null && newView.AutoFocus)
             {
                 View.BecomeFirstResponder();
+            }
+
+            if (newView.OnSubmit != null && !newView.AutoMoveToNextTextBox)
+            {
+                View.TextField.ReturnKeyType = UIReturnKeyType.Done;
+            }
+            else
+            {
+                View.TextField.ReturnKeyType = UIReturnKeyType.Default;
             }
         }
     }
@@ -146,6 +175,8 @@ namespace Vx.iOS.Views
         private UILabel _errorSymbol;
         private UILabel _errorMessage;
         private InterfacesiOS.Views.BareUIVisibilityContainer _errorMessageContainer;
+
+        public UIRoundedTextField TextField => _textField;
 
         public UIRoundedTextFieldWithHeader()
         {
