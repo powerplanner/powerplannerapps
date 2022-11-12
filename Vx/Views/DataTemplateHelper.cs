@@ -36,7 +36,7 @@ namespace Vx.Views
 
             protected override View Render()
             {
-                if (Template == null)
+                if (Template == null || Data == null)
                 {
                     return null;
                 }

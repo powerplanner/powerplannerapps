@@ -147,6 +147,16 @@ namespace Vx.iOS
                     return new iOSFrameLayout();
                 }
 
+                if (view is Vx.Views.ListView)
+                {
+                    return new iOSListView();
+                }
+
+                if (view is Vx.Views.Toolbar)
+                {
+                    return new iOSToolbar();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
@@ -159,28 +169,37 @@ namespace Vx.iOS
 
         private static void ShowContextMenu(ContextMenu contextMenu, View view)
         {
+            var contextMenuItems = contextMenu.Items.OfType<ContextMenuItem>().ToArray();
+
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-            foreach (var item in contextMenu.Items)
+            foreach (var item in contextMenuItems)
             {
                 actionSheetAlert.AddAction(UIAlertAction.Create(item.Text, UIAlertActionStyle.Default, delegate { item.Click(); }));
             }
 
             actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
 
+            var uiView = view.NativeUIView();
+
             // Required for iPad - You must specify a source for the Action Sheet since it is
             // displayed as a popover
             UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
             if (presentationPopover != null)
             {
-                presentationPopover.SourceView = view.NativeView.View as UIView;
-                presentationPopover.SourceRect = (view.NativeView.View as UIView).Frame;
-                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+                presentationPopover.SourceView = uiView;
+                presentationPopover.SourceRect = uiView.Frame;
+                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Any;
             }
 
             // Display the alert
-            (view.NativeView.View as UIView).GetViewController().PresentViewController(actionSheetAlert, true, null);
+            uiView.GetViewController().PresentViewController(actionSheetAlert, true, null);
+        }
+
+        public static UIView NativeUIView(this View view)
+        {
+            return (UIView)((UIViewWrapper)view.NativeView.View).View;
         }
 
         public static iOSNativeComponent Render(this VxComponent component, Action<UIView> afterViewChanged = null)
@@ -194,18 +213,31 @@ namespace Vx.iOS
             {
                 AfterViewChanged = afterViewChanged
             };
-            component.InitializeForDisplay(nativeComponent);
+            if (!component.DelayFirstRenderTillSizePresent)
+            {
+                component.InitializeForDisplay(nativeComponent);
+            }
             return nativeComponent;
         }
 
-        internal static UIView CreateUIView(this Vx.Views.View view, Vx.Views.View parentView)
+        internal static UIViewWrapper CreateUIView(this Vx.Views.View view, Vx.Views.View parentView)
         {
-            return view.CreateNativeView(parentView).View as UIView;
+            return view.CreateNativeView(parentView).View as UIViewWrapper;
         }
 
         internal static UIColor ToUI(this Color color)
         {
             return UIColor.FromRGBA(color.R, color.G, color.B, color.A);
+        }
+
+        internal static UIEdgeInsets ToUI(this Thickness thickness, bool autoModify = true)
+        {
+            if (autoModify)
+            {
+                thickness = thickness.AsModified();
+            }
+
+            return new UIEdgeInsets(thickness.Top, thickness.Left, thickness.Bottom, thickness.Right);
         }
 
         internal static UITextAlignment ToUITextAlignment(this HorizontalAlignment horizontalAlignment)
@@ -226,6 +258,101 @@ namespace Vx.iOS
             }
         }
 
+        /// <summary>
+        /// Before iOS 13, this returns null.
+        /// </summary>
+        /// <param name="glyph"></param>
+        /// <returns></returns>
+        public static UIImage GlyphToUIImage(this string glyph)
+        {
+            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            {
+                var systemImageName = glyph.GlyphToSystemImageName();
+                if (systemImageName != null)
+                {
+                    return UIImage.GetSystemImage(systemImageName);
+                }
+            }
+
+            return null;
+        }
+
+        public static string GlyphToSystemImageName(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.Check:
+                    return "checkmark";
+
+                case MaterialDesign.MaterialDesignIcons.Save:
+                    return "square.and.arrow.down";
+
+                case MaterialDesign.MaterialDesignIcons.Delete:
+                    return "trash";
+
+                case MaterialDesign.MaterialDesignIcons.Edit:
+                    return "pencil";
+
+                case MaterialDesign.MaterialDesignIcons.Copy:
+                    return "doc.on.doc";
+
+                case MaterialDesign.MaterialDesignIcons.SwapHoriz:
+                    return "arrow.left.arrow.right";
+
+                case MaterialDesign.MaterialDesignIcons.Launch:
+                    return "arrow.up.right.square";
+
+                case MaterialDesign.MaterialDesignIcons.Calculate:
+                    return "number";
+
+                case MaterialDesign.MaterialDesignIcons.Close:
+                    return "xmark";
+
+                default:
+                    return null;
+            }
+        }
+
+        public static UIBarButtonItem ToUIBarButtonItem(this string glyph)
+        {
+            UIBarButtonItem uiBarButton;
+
+            var val = glyph.ToUIBarButtonSystemItem();
+            if (val != UIBarButtonSystemItem.Action)
+            {
+                uiBarButton = new UIBarButtonItem(val);
+            }
+            else
+            {
+                var img = glyph.ToUIBarButtonImage();
+                if (img != null)
+                {
+                    uiBarButton = new UIBarButtonItem(UIImage.FromBundle(img), UIBarButtonItemStyle.Plain, null);
+                }
+                else
+                {
+                    uiBarButton = new UIBarButtonItem(UIBarButtonSystemItem.Action);
+                }
+            }
+
+            return uiBarButton;
+        }
+
+        private static string ToUIBarButtonImage(this string glyph)
+        {
+            switch (glyph)
+            {
+                case MaterialDesign.MaterialDesignIcons.ChevronLeft:
+                    return "ToolbarBack";
+
+                case MaterialDesign.MaterialDesignIcons.ChevronRight:
+                    return "ToolbarForward";
+
+                default:
+                    return null;
+            }
+        }
+
         public static UIBarButtonSystemItem ToUIBarButtonSystemItem(this string glyph)
         {
             switch (glyph)
@@ -241,6 +368,9 @@ namespace Vx.iOS
 
                 case MaterialDesign.MaterialDesignIcons.Edit:
                     return UIBarButtonSystemItem.Edit;
+
+                case MaterialDesign.MaterialDesignIcons.Add:
+                    return UIBarButtonSystemItem.Add;
 
                 default:
                     return UIBarButtonSystemItem.Action;

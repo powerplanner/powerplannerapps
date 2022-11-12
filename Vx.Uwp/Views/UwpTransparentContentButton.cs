@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp.Views
 {
     public class UwpTransparentContentButton : UwpView<Vx.Views.TransparentContentButton, TransparentButton>
     {
+        private ToolTip _toolTip;
+
         public UwpTransparentContentButton()
         {
             View.Click += View_Click;
@@ -26,6 +29,33 @@ namespace Vx.Uwp.Views
             base.ApplyProperties(oldView, newView);
 
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view => View.Content = view?.CreateFrameworkElement());
+
+            AutomationProperties.SetName(View, newView.AltText ?? newView.TooltipText ?? "");
+
+            if (newView.TooltipText != null)
+            {
+                if (_toolTip == null)
+                {
+                    _toolTip = new ToolTip()
+                    {
+                        Content = newView.TooltipText
+                    };
+
+                    ToolTipService.SetToolTip(View, _toolTip);
+                }
+                else
+                {
+                    _toolTip.Content = newView.TooltipText;
+                }
+            }
+            else
+            {
+                if (_toolTip != null)
+                {
+                    ToolTipService.SetToolTip(View, null);
+                    _toolTip = null;
+                }
+            }
         }
     }
 

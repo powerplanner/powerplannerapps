@@ -103,6 +103,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                         WrapText = false
                     }, new TransparentContentButton
                     {
+                        AltText = PowerPlannerResources.GetMenuItemDelete(),
                         Opacity = 0,
                         Content = new FontIcon
                         {
@@ -131,6 +132,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     })
                 }, new TransparentContentButton
                 {
+                    AltText = PowerPlannerResources.GetMenuItemDelete(),
                     Content = new FontIcon
                     {
                         Glyph = MaterialDesign.MaterialDesignIcons.Close,

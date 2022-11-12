@@ -2,7 +2,7 @@
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
-    public abstract class BaseMainScreenViewModelChild : BaseMainScreenViewModelDescendant
+    public abstract class BaseMainScreenViewModelChild : ComponentViewModel
     {
         public BaseMainScreenViewModelChild(BaseViewModel parent) : base(parent) { }
 

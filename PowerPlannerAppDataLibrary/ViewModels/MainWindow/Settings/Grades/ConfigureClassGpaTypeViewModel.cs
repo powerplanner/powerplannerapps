@@ -51,6 +51,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             return new TransparentContentButton
             {
+                AltText = title + "\n" + subtitle + "\n" + (isChecked ? "Selected" : "Unselected"),
                 Opacity = _isEnabled.Value ? 1 : 0.7f,
                 Content = new LinearLayout
                 {

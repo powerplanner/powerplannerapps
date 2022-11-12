@@ -202,14 +202,11 @@
     <Compile Include="Views\AgendaView.xaml.cs">
       <DependentUpon>AgendaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CalendarMainView.xaml.cs">
-      <DependentUpon>CalendarMainView.xaml</DependentUpon>
+    <Compile Include="Views\CalendarViews\MainCalendarItemView.xaml.cs">
+      <DependentUpon>MainCalendarItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ClassWhatIfView.xaml.cs">
-      <DependentUpon>ClassWhatIfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\EditClassDetailsView.xaml.cs">
@@ -234,6 +231,7 @@
     <Compile Include="Views\ScheduleViews\HolidayScheduleItemView.xaml.cs">
       <DependentUpon>HolidayScheduleItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScheduleViews\MyBaseEventVisual.cs" />
     <Compile Include="Views\SettingsViews\CalendarIntegrationClassesView.xaml.cs">
       <DependentUpon>CalendarIntegrationClassesView.xaml</DependentUpon>
     </Compile>
@@ -313,23 +311,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectors\SideBarTemplateSelector.cs" />
     <Compile Include="Views\BasicPopupView.cs" />
-    <Compile Include="Views\CalendarViews\CompactCalendarPageView.xaml.cs">
-      <DependentUpon>CompactCalendarPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CalendarViews\CompletelyCompactCalendarPageView.xaml.cs">
-      <DependentUpon>CompletelyCompactCalendarPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CalendarViews\FullCalendarPageView.xaml.cs">
-      <DependentUpon>FullCalendarPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CalendarViews\MainCalendarView.cs" />
-    <Compile Include="Views\CalendarViews\MainCalendarGrid.cs" />
-    <Compile Include="Views\CalendarViews\MainCalendarItemView.xaml.cs">
-      <DependentUpon>MainCalendarItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CalendarViews\MainCalendarSquare.cs" />
-    <Compile Include="Views\CalendarViews\SmallCalendarGrid.cs" />
-    <Compile Include="Views\CalendarViews\SmallCalendarView.cs" />
     <Compile Include="Views\ClassViews\ClassGradesHeaderView.xaml.cs">
       <DependentUpon>ClassGradesHeaderView.xaml</DependentUpon>
     </Compile>
@@ -343,9 +324,6 @@
       <DependentUpon>CompletionSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DayViews\DayView.cs" />
-    <Compile Include="Views\DayViews\SingleDayView.xaml.cs">
-      <DependentUpon>SingleDayView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DifferentSemesterOverlayControl.xaml.cs">
       <DependentUpon>DifferentSemesterOverlayControl.xaml</DependentUpon>
     </Compile>
@@ -390,7 +368,6 @@
       <DependentUpon>MainSettingsItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopupMenuConfirmDelete.cs" />
-    <Compile Include="Views\ScheduleViews\DayScheduleSnapshot.cs" />
     <Compile Include="Views\SettingsViews\SettingItem.xaml.cs">
       <DependentUpon>SettingItem.xaml</DependentUpon>
     </Compile>
@@ -507,15 +484,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CalendarMainView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\CalendarViews\MainCalendarItemView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ClassView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassWhatIfView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -647,22 +620,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\CalendarViews\CompactCalendarPageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CalendarViews\CompletelyCompactCalendarPageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CalendarViews\FullCalendarPageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CalendarViews\MainCalendarItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ClassViews\ClassGradesHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -676,10 +633,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CompletionSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DayViews\SingleDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

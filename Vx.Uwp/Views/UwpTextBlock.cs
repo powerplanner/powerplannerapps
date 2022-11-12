@@ -34,6 +34,7 @@ namespace Vx.Uwp.Views
             View.TextDecorations = newView.Strikethrough ? Windows.UI.Text.TextDecorations.Strikethrough : Windows.UI.Text.TextDecorations.None;
             View.TextAlignment = newView.TextAlignment.ToUwpTextAlignment();
             View.IsTextSelectionEnabled = newView.IsTextSelectionEnabled;
+            View.MaxLines = newView.MaxLines;
         }
     }
 }

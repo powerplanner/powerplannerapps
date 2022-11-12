@@ -1,5 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Components;
 using PowerPlannerAppDataLibrary.Converters;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
@@ -9,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +25,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
     {
         public static readonly string UNASSIGNED_ITEMS_HEADER = "Unassigned items";
 
+        [VxSubscribe]
+        public ViewItemsGroups.ClassViewItemsGroup ViewItemsGroup { get; private set; }
+
         public ClassGradesViewModel(ClassViewModel parent) : base(parent)
         {
-            SummaryComponent = new GradesSummaryComponent(this);
+            ViewItemsGroup = ClassViewModel.ViewItemsGroupClass;
         }
 
         protected override async Task LoadAsyncOverride()
@@ -200,36 +206,320 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void OpenWhatIf()
         {
-            MainScreenViewModel.Navigate(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+            if (PowerPlannerApp.ShowClassesAsPopups || VxPlatform.Current == Platform.iOS)
+            {
+                MainScreenViewModel.ShowPopup(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+            }
+            else
+            {
+                MainScreenViewModel.Navigate(new ClassWhatIfViewModel(MainScreenViewModel, Class));
+            }
+        }
+
+        private const float WidthBreakpoint = 640;
+
+        public override IEnumerable<float> SubscribeToWidthBreakpoints => new float[] { WidthBreakpoint };
+
+        protected override void Initialize()
+        {
+            _ = LoadAsync();
+
+            base.Initialize();
+        }
+
+        protected override View Render()
+        {
+            if (!IsLoaded)
+            {
+                return null;
+            }
+
+            View finalView;
+            float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
+
+            var topMargin = VxPlatform.Current == Platform.iOS ? Theme.Current.PageMargin : 0;
+
+            // Android/iOS don't support the multi-column views
+            if (Size.Width < WidthBreakpoint || VxPlatform.Current == Platform.Android || VxPlatform.Current == Platform.iOS)
+            {
+                finalView = new ListView
+                {
+                    Items = ItemsWithHeaders,
+                    Padding = new Thickness(0, topMargin, 0, Theme.Current.PageMargin + floatingActionButtonOffset),
+                    ItemTemplate = item =>
+                    {
+                        if (item is ViewItemGrade g)
+                        {
+                            return RenderGrade(g, i => ShowItem(i), isInWhatIfMode: false);
+                        }
+
+                        if (item is ViewItemWeightCategory w)
+                        {
+                            return RenderHeader(w);
+                        }
+
+                        if (item is string str && str == UNASSIGNED_ITEMS_HEADER)
+                        {
+                            return RenderUnassignedHeader();
+                        }
+
+                        if (item is ViewItemTaskOrEvent t)
+                        {
+                            if (t.IsUnassignedItem)
+                            {
+                                return RenderUnassignedItem(t);
+                            }
+                            else
+                            {
+                                return RenderGrade(t, i => ShowItem(i), isInWhatIfMode: false);
+                            }
+                        }
+
+                        return new GradesSummaryComponent
+                        {
+                            Class = Class,
+                            OnRequestConfigureGrades = ConfigureGrades,
+                            OnRequestOpenWhatIf = OpenWhatIf,
+                            Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
+                        };
+                    }
+                };
+            }
+
+            // Otherwise full-size
+            else
+            {
+                const float minColumnWidth = 280;
+                const float columnSpacing = 24;
+
+                var gridPanel = new AdaptiveGradesListComponent
+                {
+                    Class = Class,
+                    OnRequestViewGrade = g => ShowItem(g)
+                };
+
+                var unassignedPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
+                {
+                    MinColumnWidth = minColumnWidth,
+                    ColumnSpacing = columnSpacing
+                } : (View)new AdaptiveGridPanelComponent
+                {
+                    MinColumnWidth = minColumnWidth,
+                    ColumnSpacing = columnSpacing
+                };
+
+                List<View> unassignedPanelChildren = VxPlatform.Current == Platform.Uwp ? (unassignedPanel as AdaptiveGridPanel).Children : (unassignedPanel as AdaptiveGridPanelComponent).Children;
+
+                foreach (var t in ViewItemsGroup.UnassignedItems)
+                {
+                    unassignedPanelChildren.Add(RenderUnassignedItem(t, includeMargin: false));
+                }
+
+                finalView = new ScrollView
+                {
+                    Content = new LinearLayout
+                    {
+                        Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin + floatingActionButtonOffset),
+                        Children =
+                        {
+                            new GradesSummaryComponent
+                            {
+                                Class = Class,
+                                OnRequestOpenWhatIf = OpenWhatIf,
+                                OnRequestConfigureGrades = ConfigureGrades
+                            },
+
+                            gridPanel,
+
+                            ViewItemsGroup.HasUnassignedItems ? RenderUnassignedHeader(includeMargin: false) : null,
+
+                            ViewItemsGroup.HasUnassignedItems ? unassignedPanel : null
+                        }
+                    }
+                };
+            }
+
+            // Add floating action button for Android
+            return WrapInFloatingActionButtonIfNeeded(finalView, Add, new Thickness());
+        }
+
+        internal static View WrapInFloatingActionButtonIfNeeded(View view, Action addAction, Thickness nookInsets)
+        {
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        view,
+
+                        new FloatingActionButton
+                        {
+                            Click = addAction,
+                            Margin = new Thickness(Theme.Current.PageMargin).Combine(nookInsets),
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Bottom
+                        }
+                    }
+                };
+            }
+
+            return view;
+        }
+
+        private View RenderUnassignedItem(ViewItemTaskOrEvent t, bool includeMargin = true)
+        {
+            return Components.TaskOrEventListItemComponent.Render(t, this, IncludeMargin: includeMargin, InterceptOnTapped: () => ShowUnassignedItem(t));
+        }
+
+        private View RenderUnassignedHeader(bool includeMargin = true)
+        {
+            return new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                Content = new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader"),
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    Margin = new Thickness(12, 6, 6, 6),
+                    WrapText = false
+                },
+                Margin = new Thickness(includeMargin ? Theme.Current.PageMargin : 0, 18, includeMargin ? Theme.Current.PageMargin : 0, 3),
+                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
+                BorderThickness = new Thickness(1)
+            };
+        }
+
+        private class WeightHeaderComponent : VxComponent
+        {
+            [VxSubscribe] // Subscribing is needed for What If? mode
+            public ViewItemWeightCategory Weight { get; set; }
+
+            public bool IncludeMargin { get; set; }
+
+            protected override View Render()
+            {
+                return new Border
+                {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                    Content = new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = Weight.Name,
+                            FontSize = Theme.Current.SubtitleFontSize,
+                            Margin = new Thickness(12, 6, 6, 6),
+                            WrapText = false
+                        }.LinearLayoutWeight(1),
+
+                        new TextBlock
+                        {
+                            Text = Weight.WeightAchievedAndTotalString,
+                            FontSize = Theme.Current.SubtitleFontSize,
+                            Margin = new Thickness(0, 6, 6, 6),
+                            TextColor = Theme.Current.SubtleForegroundColor,
+                            WrapText = false
+                        }
+                    }
+                    },
+                    Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0),
+                    BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
+                    BorderThickness = new Thickness(1)
+                };
+            }
+        }
+
+        internal static View RenderHeader(ViewItemWeightCategory w, bool includeMargin = true)
+        {
+            return new WeightHeaderComponent
+            {
+                Weight = w,
+                IncludeMargin = includeMargin
+            };
+        }
+
+        private static View RenderGrade(BaseViewItemMegaItem i, Action<BaseViewItemMegaItem> onRequestViewGrade, bool isInWhatIfMode, bool includeMargin = true)
+        {
+            return new GradeListViewItemComponent
+            {
+                Item = i,
+                OnRequestViewGrade = () => onRequestViewGrade(i),
+                Margin = includeMargin ? new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0) : new Thickness(),
+                IsInWhatIfMode = isInWhatIfMode
+            };
         }
 
         public GradesSummaryComponent SummaryComponent { get; private set; }
 
-        public class GradesSummaryComponent : VxComponent
+        internal class AdaptiveGradesListComponent : VxComponent
         {
-            [VxSubscribe]
-            public ViewItemClass Class { get; private set; }
+            public const float MinColumnWidth = 280;
+            public const float ColumnSpacing = 24;
 
-            private ClassGradesViewModel _viewModel;
+            public ViewItemClass Class { get; set; }
 
-            public GradesSummaryComponent(ClassGradesViewModel viewModel)
-            {
-                Class = viewModel.Class;
-                _viewModel = viewModel;
+            public Action<BaseViewItemMegaItem> OnRequestViewGrade { get; set; }
 
-                Class.WeightCategories.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(WeightCategories_CollectionChanged).Handler;
-            }
-
-            private void WeightCategories_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-            {
-                MarkDirty();
-            }
+            public bool IsInWhatIfMode { get; set; }
 
             protected override View Render()
             {
+                SubscribeToCollection(Class.WeightCategories);
+
+                var gridPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
+                {
+                    MinColumnWidth = MinColumnWidth,
+                    ColumnSpacing = ColumnSpacing
+                } : (View)new AdaptiveGridPanelComponent
+                {
+                    MinColumnWidth = VxPlatform.Current == Platform.iOS ? 50000 : MinColumnWidth, // iOS doesn't work with this component at this time
+                    ColumnSpacing = ColumnSpacing
+                };
+
+                List<View> gridPanelChildren = VxPlatform.Current == Platform.Uwp ? (gridPanel as AdaptiveGridPanel).Children : (gridPanel as AdaptiveGridPanelComponent).Children;
+
+                foreach (var weight in Class.WeightCategories)
+                {
+                    SubscribeToCollection(weight.Grades);
+
+                    var linLayout = new LinearLayout
+                    {
+                        Children =
+                    {
+                        RenderHeader(weight, includeMargin: false)
+                    }
+                    };
+
+                    foreach (var g in weight.Grades)
+                    {
+                        linLayout.Children.Add(RenderGrade(g, OnRequestViewGrade, IsInWhatIfMode, includeMargin: false));
+                    }
+
+                    gridPanelChildren.Add(linLayout);
+                }
+
+                return gridPanel;
+            }
+        }
+
+        public class GradesSummaryComponent : VxComponent
+        {
+            [VxSubscribe]
+            public ViewItemClass Class { get; set; }
+
+            public Action OnRequestConfigureGrades { get; set; }
+
+            public Action OnRequestOpenWhatIf { get; set; }
+
+            protected override View Render()
+            {
+                SubscribeToCollection(Class.WeightCategories);
+
                 return new LinearLayout
                 {
-                    Margin = VxPlatform.Current == Platform.iOS ? new Thickness(18) : VxPlatform.Current == Platform.Uwp ? new Thickness(0) : new Thickness(16, 16, 16, 0),
                     Children =
                     {
                         new LinearLayout
@@ -296,23 +586,42 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                             HorizontalAlignment = HorizontalAlignment.Right
                                         },
 
-                                        new TextButton
-                                        {
-                                            Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
-                                            HorizontalAlignment = HorizontalAlignment.Right,
-                                            Margin = new Thickness(0, 6, 0, 0),
-                                            Click = _viewModel.ConfigureGrades
-                                        }
+                                        //OnRequestConfigureGrades != null ? new TextButton
+                                        //{
+                                        //    Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
+                                        //    HorizontalAlignment = HorizontalAlignment.Right,
+                                        //    Margin = new Thickness(0, 6, 0, 0),
+                                        //    Click = () => OnRequestConfigureGrades()
+                                        //} : null
                                     }
                                 }
                             }
                         },
 
-                        VxPlatform.Current == Platform.Uwp ? new AccentButton
+                        OnRequestOpenWhatIf != null && OnRequestConfigureGrades != null ? new LinearLayout
                         {
-                            Text = PowerPlannerResources.GetString("ClassPage_ButtonWhatIfMode.Content"),
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            Click = _viewModel.OpenWhatIf
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                // On Droid AccentButton needs to be in a container to respect the left alignment
+                                new Border
+                                {
+                                    Content = new AccentButton
+                                    {
+                                        Text = PowerPlannerResources.GetString("ClassPage_ButtonWhatIfMode.Content"),
+                                        HorizontalAlignment = HorizontalAlignment.Left,
+                                        Click = () => OnRequestOpenWhatIf()
+                                    }
+                                }.LinearLayoutWeight(1),
+
+                                new TextButton
+                                {
+                                    Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
+                                    HorizontalAlignment = HorizontalAlignment.Right,
+                                    Margin = new Thickness(0, 6, 0, 0),
+                                    Click = () => OnRequestConfigureGrades()
+                                }
+                            }
                         } : null,
 
                         RenderWeightCategories()

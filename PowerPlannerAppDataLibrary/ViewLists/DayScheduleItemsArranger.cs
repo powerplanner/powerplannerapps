@@ -32,6 +32,8 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
         public TimeSpan MinDuration { get; private set; }
 
+        public double TotalHeight { get; private set; }
+
         public List<ViewItemTaskOrEvent> AllDayItems { get; private set; }
 
         public List<ViewItemHoliday> Holidays { get; private set; }
@@ -314,6 +316,12 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             List<ViewItemTaskOrEvent> allDayEvents = new List<ViewItemTaskOrEvent>();
             foreach (var e in events.OfType<ViewItemTaskOrEvent>())
             {
+                // Don't include complete tasks
+                if (e.Type == TaskOrEventType.Task && e.IsComplete)
+                {
+                    continue;
+                }
+
                 if (e.IsDuringDay())
                 {
                     eventsCopied.Add(new EventItem(this, e));
@@ -493,6 +501,18 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             {
                 e.CalculateOffsets();
             }
+
+            TotalHeight = ((EndTime - StartTime).TotalHours + 1) * HeightOfHour;
+
+            foreach (var e in EventItems)
+            {
+                if (e.AdditionalItems != null && e.AdditionalItems.Count > 0)
+                {
+                    var estExpandedHeight = (e.AdditionalItems.Count + 1) * 30;
+
+                    TotalHeight = Math.Max(TotalHeight, e.TopOffset + estExpandedHeight);
+                }
+            }
         }
 
         private bool _hadChanges;
@@ -640,6 +660,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                     Initialize(_schedules, _events, _holidays);
                     _hadChanges = false;
                     OnItemsChanged?.Invoke(this, new EventArgs());
+                    OnPropertyChanged(nameof(StartTime)); // Trigger this so Vx updates
                 }
             }
             catch (Exception ex)

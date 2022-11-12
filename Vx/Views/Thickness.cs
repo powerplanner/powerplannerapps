@@ -69,7 +69,7 @@ namespace Vx.Views
 
         public Thickness AsModified()
         {
-            return new Thickness(Theme.Current.MarginModifier * Left, Theme.Current.MarginModifier * Top, Theme.Current.MarginModifier * Right, Theme.Current.MarginModifier * Bottom);
+            return this;
         }
 
         public Thickness Combine(Thickness other)

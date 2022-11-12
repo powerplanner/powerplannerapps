@@ -16,6 +16,8 @@ namespace Vx.Droid.Views
     {
         public DroidBorder() : base(new FrameLayout(VxDroidExtensions.ApplicationContext))
         {
+            // Ensure content is clipped within any corner radius
+            View.ClipToOutline = true;
         }
 
         protected override void ApplyProperties(Vx.Views.Border oldView, Vx.Views.Border newView)

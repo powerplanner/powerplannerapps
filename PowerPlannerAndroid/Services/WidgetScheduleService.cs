@@ -118,7 +118,7 @@ namespace PowerPlannerAndroid.Services
 
                         RemoteViews holidayView = new RemoteViews(_context.PackageName, Resource.Layout.WidgetScheduleHolidayListItem);
                         holidayView.SetTextViewText(Resource.Id.WidgetScheduleHolidayNameTextView, holiday.Name.Trim());
-                        holidayView.SetInt(Resource.Id.WidgetScheduleHolidayListItem, "setBackgroundColor", Views.DayScheduleSnapshotView.HolidayColor);
+                        holidayView.SetInt(Resource.Id.WidgetScheduleHolidayListItem, "setBackgroundColor", new Android.Graphics.Color(228, 0, 137));
 
                         Intent holidayIntent = new Intent()
                             .SetAction(Intent.ActionView)

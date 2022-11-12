@@ -15,7 +15,7 @@ namespace Vx.Droid.Views
 {
     public abstract class DroidView<V, N> : NativeView<V, N> where V : Vx.Views.View where N : View
     {
-        private bool _hasRegisteredTappedEvent;
+        private bool _hasRegisteredTappedEvent, _hasRegisteredContextClick;
 
         public DroidView(N view)
         {
@@ -35,6 +35,17 @@ namespace Vx.Droid.Views
             {
                 View.Click -= View_Click;
                 _hasRegisteredTappedEvent = false;
+            }
+
+            if (newView.ContextMenu != null && !_hasRegisteredContextClick)
+            {
+                View.LongClick += View_LongClick;
+                _hasRegisteredContextClick = true;
+            }
+            else if (newView.ContextMenu == null && _hasRegisteredContextClick)
+            {
+                View.LongClick -= View_LongClick;
+                _hasRegisteredContextClick = false;
             }
 
             if (VxParentView is Vx.Views.LinearLayout parentLinearLayout)
@@ -60,54 +71,43 @@ namespace Vx.Droid.Views
                 }
                 else
                 {
-                    if (newView is Vx.Views.LinearLayout childLinearLayout)
+                    if (isVertical)
                     {
-                        if (isVertical)
-                        {
-                            height = weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0;
-                        }
-                        else
-                        {
-                            if (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
-                            {
-                                // Temporary workaround to solve nested vertical layout within horizontal layout...
-                                // Key scenarios to test are...
-                                // - Full size calendar day square background colors
-                                // - Class grade summary component
-                                if (Vx.Views.LinearLayout.GetWeight(parentLinearLayout) > 0)
-                                {
-                                    height = LinearLayout.LayoutParams.MatchParent;
-                                }
-                                else
-                                {
-                                    height = LinearLayout.LayoutParams.WrapContent;
-                                }
-                            }
-                            else
-                            {
-                                height = LinearLayout.LayoutParams.WrapContent;
-                            }
-                        }
+                        height = weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0;
                     }
                     else
                     {
-                        height = isVertical ? (weight == 0 ? LinearLayout.LayoutParams.WrapContent : 0) : (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && !(View is Button) ? LinearLayout.LayoutParams.MatchParent : LinearLayout.LayoutParams.WrapContent);
+                        // Scenarios to test
+                        // - What If header UI
+                        if (newView.VerticalAlignment == Vx.Views.VerticalAlignment.Stretch)
+                        {
+                            if (float.IsNaN(parentLinearLayout.Height))
+                            {
+                                // This enables What If header UI
+                                height = LinearLayout.LayoutParams.WrapContent;
+                            }
+                            else
+                            {
+                                height = LinearLayout.LayoutParams.MatchParent;
+                            }
+                        }
+                        else
+                        {
+                            height = LinearLayout.LayoutParams.WrapContent;
+                        }
                     }
                 }
 
-                // For height on buttons, we need to NOT use MatchParent for height since otherwise they'll drop their padding/etc and go down to like 12px tall
-                View.LayoutParameters = new LinearLayout.LayoutParams(width, height)
+                View.LayoutParameters = new DroidViews.DroidVxLinearLayout.LayoutParams(width, height)
                 {
-                    Gravity = isVertical ? newView.HorizontalAlignment.ToDroid() : newView.VerticalAlignment.ToDroid(),
-                    MarginStart = AsPx(newView.Margin.Left),
-                    TopMargin = AsPx(newView.Margin.Top),
-                    MarginEnd = AsPx(newView.Margin.Right),
-                    BottomMargin = AsPx(newView.Margin.Bottom),
+                    HorizontalAlignment = newView.HorizontalAlignment,
+                    VerticalAlignment = newView.VerticalAlignment,
+                    Margin = new DroidViews.ThicknessInt(AsPx(newView.Margin.Left), AsPx(newView.Margin.Top), AsPx(newView.Margin.Right), AsPx(newView.Margin.Bottom)),
                     Weight = weight
                 };
             }
 
-            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout)
+            else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout || VxParentView is Vx.Views.Border || VxParentView == null) // Null when it's top-level view
             {
                 int width;
                 int height;
@@ -132,7 +132,7 @@ namespace Vx.Droid.Views
 
                 View.LayoutParameters = new FrameLayout.LayoutParams(width, height)
                 {
-                    Gravity = newView.HorizontalAlignment.ToDroid() | newView.VerticalAlignment.ToDroid(),
+                    Gravity = CombineGravity(newView.HorizontalAlignment.ToDroid(width), newView.VerticalAlignment.ToDroid(height)),
                     MarginStart = AsPx(newView.Margin.Left),
                     TopMargin = AsPx(newView.Margin.Top),
                     MarginEnd = AsPx(newView.Margin.Right),
@@ -154,6 +154,39 @@ namespace Vx.Droid.Views
             }
 
             View.Alpha = newView.Opacity;
+        }
+
+        private GravityFlags CombineGravity(GravityFlags horizontal, GravityFlags vertical)
+        {
+            if (horizontal == (GravityFlags)(-1) && vertical == (GravityFlags)(-1))
+            {
+                return (GravityFlags)(-1);
+            }
+
+            if (horizontal == (GravityFlags)(-1))
+            {
+                return vertical;
+            }
+
+            if (vertical == (GravityFlags)(-1))
+            {
+                return horizontal;
+            }
+
+            return horizontal | vertical;
+        }
+
+        private void View_LongClick(object sender, View.LongClickEventArgs e)
+        {
+            var cmFunc = VxView?.ContextMenu;
+            if (cmFunc != null)
+            {
+                var cm = cmFunc();
+                if (cm != null)
+                {
+                    cm.Show(VxViewRef);
+                }
+            }
         }
 
         private void View_Click(object sender, EventArgs e)

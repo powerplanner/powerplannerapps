@@ -72,7 +72,11 @@ namespace PowerPlanneriOS.Controllers
 
         public override void ViewDidLayoutSubviews()
         {
-            var newHeight = _tabBar.Bounds.Size.Height + (_bottomGlass != null ? _bottomGlass.Bounds.Size.Height : 0);
+            base.ViewDidLayoutSubviews();
+            _tabBar.InvalidateIntrinsicContentSize();
+            _tabBar.Superview.UpdateConstraintsIfNeeded();
+
+            var newHeight = _tabBar.IntrinsicContentSize.Height;
 
             if (TAB_BAR_HEIGHT != newHeight)
             {
@@ -102,8 +106,6 @@ namespace PowerPlanneriOS.Controllers
                     action(viewModel);
                 }
             }
-
-            base.ViewDidLayoutSubviews();
         }
 
         private void AvailableItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -202,7 +204,6 @@ namespace PowerPlanneriOS.Controllers
         private UITabBarItem _tabBarItemSchedule;
         private UITabBarItem _tabBarItemClasses;
         private UITabBarItem _tabBarItemMore;
-        private UIView _bottomGlass;
 
         public MainScreenViewController()
         {
@@ -245,47 +246,16 @@ namespace PowerPlanneriOS.Controllers
             };
             _tabBar.ItemSelected += new WeakEventHandler<UITabBarItemEventArgs>(_tabBar_ItemSelected).Handler;
 
-            // Have to wrap tab bar in a view as per this: https://novemberfive.co/blog/apple-september-event-iphonex-apps/
-            // Then that fixes the items getting squished on iPhone X
-            var tabBarContainer = new UIView()
+            var tabBarContainer = _tabBar;
+
+            base.Add(_tabBar);
+            _tabBar.StretchWidth(base.View);
+
+            NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-
-            tabBarContainer.Add(_tabBar);
-
-            _tabBar.StretchWidth(tabBarContainer);
-            _tabBar.StretchHeight(tabBarContainer);
-
-            base.Add(tabBarContainer);
-            tabBarContainer.StretchWidth(base.View);
-            if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
-            {
-                NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
-                {
-                    tabBarContainer.BottomAnchor.ConstraintEqualTo(this.View.SafeAreaLayoutGuide.BottomAnchor)
-                });
-
-                // We also add a bottom blur in the safe area, otherwise there's a blank white gap on iPhone X
-                _bottomGlass = new BareUIBlurView()
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false
-                };
-                base.Add(_bottomGlass);
-                _bottomGlass.StretchWidth(this.View);
-                _bottomGlass.PinToBottom(this.View);
-                NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
-                {
-                    _bottomGlass.TopAnchor.ConstraintEqualTo(this.View.SafeAreaLayoutGuide.BottomAnchor)
-                });
-            }
-            else
-            {
-                NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
-                {
-                    tabBarContainer.BottomAnchor.ConstraintEqualTo(this.BottomLayoutGuide.GetBottomAnchor())
-                });
-            }
+                _tabBar.BottomAnchor.ConstraintEqualTo(this.BottomLayoutGuide.GetBottomAnchor()),
+                _tabBar.TopAnchor.ConstraintGreaterThanOrEqualTo(this.TopLayoutGuide.GetTopAnchor())
+            });
         }
 
         private void _tabBar_ItemSelected(object sender, UITabBarItemEventArgs e)

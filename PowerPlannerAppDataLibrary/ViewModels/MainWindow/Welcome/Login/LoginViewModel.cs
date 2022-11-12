@@ -73,23 +73,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         {
                             Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotUsername.Text"),
                             Click = ForgotUsername,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            Margin = new Thickness(0, 0, 12, 0),
                             IsEnabled = !IsLoggingInOnline
                         }.LinearLayoutWeight(1),
 
                         new Border
                         {
                             BackgroundColor = Theme.Current.SubtleForegroundColor,
-                            Width = 1
+                            Width = 1,
+                            Margin = new Thickness(6, 0, 6, 0)
                         },
 
                         new TextButton
                         {
                             Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
                             Click = ForgotPassword,
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            Margin = new Thickness(12, 0, 0, 0),
                             IsEnabled = !IsLoggingInOnline
                         }.LinearLayoutWeight(1)
                     }

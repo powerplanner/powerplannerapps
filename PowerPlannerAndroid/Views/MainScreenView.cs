@@ -311,8 +311,11 @@ namespace PowerPlannerAndroid.Views
         private BindingInstance _selectedClassNameBinding;
         private BindingInstance _calendarTitleBinding;
         private BindingInstance _calendarBackBinding;
+        private BindingInstance _calendarStateBinding;
         private void UpdateActionBarTitle()
         {
+            Toolbar.Visibility = ViewStates.Visible;
+            
             if (_selectedClassNameBinding != null)
             {
                 _selectedClassNameBinding.Dispose();
@@ -348,14 +351,7 @@ namespace PowerPlannerAndroid.Views
 
             else if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Calendar)
             {
-                _calendarTitleBinding = (ViewModel.Content as CalendarViewModel).SetBinding(nameof(CalendarViewModel.Title), viewModel =>
-                {
-                    Toolbar.Title = viewModel.Title;
-                });
-                _calendarBackBinding = (ViewModel.Content as CalendarViewModel).SetBinding(nameof(CalendarViewModel.CanGoBack), viewModel =>
-                {
-                    ShowBackButton = viewModel.CanGoBack;
-                });
+                Toolbar.Visibility = ViewStates.Gone;
             }
 
             else

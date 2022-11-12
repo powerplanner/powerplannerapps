@@ -329,6 +329,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 "BareBones Dev",
                 OpenAbout);
 
+#if DEBUG
+            RenderOption(
+                layout,
+                MaterialDesign.MaterialDesignIcons.Code,
+                "Vx Tests",
+                "View Vx UI tests",
+                () => ShowPopup(new VxTests.VxTestsViewModel(this)));
+#endif
+
             return new ScrollView(layout);
         }
 
@@ -341,6 +350,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             return new ListItemButton
             {
+                AltText = title,
                 Content = new LinearLayout
                 {
                     Margin = new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 12),

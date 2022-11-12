@@ -292,7 +292,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new TextBlock
                                 {
                                     Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatEvery.Text"),
-                                    VerticalAlignment = VerticalAlignment.Center
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    WrapText = false
                                 },
 
                                 new NumberTextBox
@@ -375,7 +376,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 {
                                     Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockOccurrences.Text"),
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Margin = new Thickness(6, 0, 0, 0)
+                                    Margin = new Thickness(6, 0, 0, 0),
+                                    WrapText = false
                                 }
                             }
                         }
@@ -830,12 +832,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         private ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c)
         {
+            return GetWeightCategories(c, this);
+        }
+
+        public static ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c, BaseViewModel viewModel)
+        {
             if (c.WeightCategories == null)
             {
                 string pageCrumbsInfo = "";
                 try
                 {
-                    var topParent = this.GetRootParent();
+                    var topParent = viewModel.GetRootParent();
                     pageCrumbsInfo = string.Join(",", topParent.GetDescendants());
                 }
                 catch { }

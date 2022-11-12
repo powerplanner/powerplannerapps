@@ -69,7 +69,7 @@ namespace PowerPlannerUWP.Flyouts
             // Get initial page (if it's a task/event, go to that page)
             ClassViewModel.ClassPages? initialPage = null;
             if (_item.IsTask) initialPage = ClassViewModel.ClassPages.Tasks;
-            else if (_item.IsTask) initialPage = ClassViewModel.ClassPages.Events;
+            else if (!_item.IsTask) initialPage = ClassViewModel.ClassPages.Events;
 
             // Navigate to class
             PowerPlannerApp.Current.GetMainScreenViewModel()?.ViewClass(_item.Class, initialPage);
@@ -220,20 +220,7 @@ namespace PowerPlannerUWP.Flyouts
         // From AddTaskOrEventViewModel. May be able to clean up with a reference
         private static ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c)
         {
-            if (c.WeightCategories == null)
-            {
-                throw new NullReferenceException("ViewItemClass.WeightCategories was null. ClassId: " + c.Identifier + ".");
-            }
-
-            List<ViewItemWeightCategory> answer = new List<ViewItemWeightCategory>(c.WeightCategories.Count + 2);
-
-            answer.Add(ViewItemWeightCategory.UNASSIGNED);
-
-            answer.AddRange(c.WeightCategories);
-
-            answer.Add(ViewItemWeightCategory.EXCLUDED);
-
-            return answer.ToArray();
+            return PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents.AddTaskOrEventViewModel.GetWeightCategories(c, null);
         }
 
         private static void Telemetry_TrackContextEvent(string action)

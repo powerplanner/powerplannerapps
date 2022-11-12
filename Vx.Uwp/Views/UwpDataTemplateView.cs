@@ -12,6 +12,11 @@ namespace Vx.Uwp.Views
 {
     public class UwpDataTemplateView : ContentControl
     {
+        public UwpDataTemplateView()
+        {
+            HorizontalContentAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
+        }
+
         public static DataTemplate GetDataTemplate(string elementWithTemplateName)
         {
             var dataTemplateString =

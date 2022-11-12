@@ -91,6 +91,7 @@ namespace PowerPlannerUWP
             return new Dictionary<Type, Type>
             {
                 { typeof(YearsViewModel), typeof(ComponentView) }, // Don't show Years as a popup on Windows
+                { typeof(ClassWhatIfViewModel), typeof(ComponentView) }, // Don't show What If as a popup on Windows
                 { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
                 { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
             };
@@ -103,10 +104,9 @@ namespace PowerPlannerUWP
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
-                { typeof(CalendarViewModel), typeof(CalendarMainView) },
+                { typeof(CalendarViewModel), typeof(ComponentView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
-                { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(LoginViewModel), typeof(LoginView) },
                 { typeof(DayViewModel), typeof(MainContentDayView) },

@@ -83,6 +83,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                     })
                 }, new TransparentContentButton
                 {
+                    AltText = PowerPlannerResources.GetMenuItemDelete(),
                     Content = new FontIcon
                     {
                         Glyph = MaterialDesign.MaterialDesignIcons.Close,

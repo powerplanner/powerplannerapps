@@ -31,7 +31,7 @@ namespace Vx.Droid.Views
             View.Text = newView.Text;
             View.SetTextColor(newView.TextColor.ToDroid());
             View.SetTextSize(Android.Util.ComplexUnitType.Dip, newView.FontSize);
-            View.Gravity = newView.TextAlignment.ToDroid();
+            View.Gravity = newView.TextAlignment.ToDroid(ViewGroup.LayoutParams.WrapContent);
 
             switch (newView.FontWeight)
             {
@@ -45,7 +45,15 @@ namespace Vx.Droid.Views
                     break;
             }
 
-            View.SetSingleLine(!newView.WrapText);
+            if (newView.MaxLines != 0)
+            {
+                View.SetSingleLine(false);
+                View.SetMaxLines(newView.MaxLines);
+            }
+            else
+            {
+                View.SetSingleLine(!newView.WrapText);
+            }
 
             // Strikethrough: https://stackoverflow.com/a/52344500
             View.PaintFlags = newView.Strikethrough ? View.PaintFlags | Android.Graphics.PaintFlags.StrikeThruText : View.PaintFlags & ~Android.Graphics.PaintFlags.StrikeThruText;

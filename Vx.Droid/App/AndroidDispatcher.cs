@@ -31,7 +31,8 @@ namespace InterfacesDroid.App
             }
             else
             {
-                window.Activity.RunOnUiThread(codeToExecute);
+                // Post method will queue up events if on the current UI thread, whereas the runOnUiThread would run immediately.
+                window.Activity.FindViewById(Android.Resource.Id.Content).Post(codeToExecute);
             }
             
             return Task.FromResult(true);

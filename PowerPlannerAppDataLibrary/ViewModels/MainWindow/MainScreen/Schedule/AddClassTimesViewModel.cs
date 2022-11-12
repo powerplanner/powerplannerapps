@@ -801,6 +801,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         new TransparentContentButton
                         {
+                            AltText = group.TimeString,
                             Click = () =>
                             {
                                 group.Expanded = true;
@@ -840,6 +841,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
                         new TransparentContentButton
                         {
+                            AltText = PowerPlannerResources.GetMenuItemDelete(),
                             Content = new FontIcon
                             {
                                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,

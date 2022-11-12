@@ -9,6 +9,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
+		<item name="colorOnPrimary">@android:color/white</item>
         <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
         <item name="materialButtonStyle">@style/ButtonDefault</item>
 

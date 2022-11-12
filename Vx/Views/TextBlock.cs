@@ -28,6 +28,8 @@ namespace Vx.Views
         /// Gets or sets a value that indicates whether text selection is enabled. False by default. Note that iOS essentially ignores this (on iOS, only HyperlinkTextBlock supports text selection).
         /// </summary>
         public bool IsTextSelectionEnabled { get; set; } = false;
+
+        public int MaxLines { get; set; }
     }
 
     /// <summary>

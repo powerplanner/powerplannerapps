@@ -23,11 +23,11 @@ namespace Vx.iOS
 
         public override bool IsDarkTheme => SdkSupportHelper.IsUserInterfaceStyleSupported ? NativeiOSApplication.Current.Window.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark : false;
 
-        public override float BodyFontSize => (float)UIFont.PreferredBody.PointSize;
+        public override float BodyFontSize => 15;
 
-        public override float CaptionFontSize => (float)UIFont.PreferredCaption1.PointSize;
+        public override float CaptionFontSize => 12;
 
-        public override float TitleFontSize => (float)UIFont.PreferredTitle1.PointSize;
+        public override float TitleFontSize => 24;
     }
 
     internal static class iOSThemeExtensions

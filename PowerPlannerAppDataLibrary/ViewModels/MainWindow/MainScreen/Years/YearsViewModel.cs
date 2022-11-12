@@ -126,6 +126,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 {
                     new TransparentContentButton
                     {
+                        AltText = year.Name,
                         Click = () => EditYear(year),
                         Content = new LinearLayout
                         {
@@ -137,8 +138,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                 {
                                     Text = year.Name,
                                     FontSize = Theme.Current.TitleFontSize,
-                                    WrapText = false,
                                     Margin = new Thickness(0, 0, 6, 0)
+                                    // iOS needs this view TO wrap so that it fills the width correctly
                                 }.LinearLayoutWeight(1),
 
                                 new LinearLayout
@@ -238,6 +239,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 {
                     new TransparentContentButton
                     {
+                        AltText = semester.Name,
                         Click = () => EditSemester(semester),
                         Content = new LinearLayout
                         {
@@ -258,7 +260,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     Text = SemesterToSemesterViewStartEndStringConverter.Convert(semester),
                                     FontSize = Theme.Current.CaptionFontSize,
                                     TextColor = Theme.Current.SubtleForegroundColor,
-                                    TextAlignment = HorizontalAlignment.Right
+                                    TextAlignment = HorizontalAlignment.Right,
+                                    WrapText = false,
+                                    MaxLines = 2 // iOS needs MaxLines since otherwise it'll trim at one line and cut off the end date on the second line
                                 }
                             }
                         }

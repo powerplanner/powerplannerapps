@@ -90,7 +90,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
         private const double ColumnSpacing = 20;
         private const double AfterHeaderSpacing = 8;
-        private const double ItemSpacing = 6;
+        private const double ItemSpacing = 3;
         private const double AfterGroupSpacing = 37;
 
         private Size _currMeasuredSize;

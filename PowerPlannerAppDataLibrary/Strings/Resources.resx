@@ -1515,6 +1515,9 @@ Please think about using an online account instead!</value>
   <data name="String_NextWeek" xml:space="preserve">
     <value>Next week</value>
   </data>
+	<data name="String_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="String_NoClass" xml:space="preserve">
     <value>No class</value>
   </data>
@@ -1663,6 +1666,9 @@ Please think about using an online account instead!</value>
   </data>
   <data name="String_PartialSemesterClass" xml:space="preserve">
     <value>Partial semester class?</value>
+  </data>
+	<data name="String_Previous" xml:space="preserve">
+    <value>Previous</value>
   </data>
   <data name="String_PreviousWeek" xml:space="preserve">
     <value>Previous week</value>

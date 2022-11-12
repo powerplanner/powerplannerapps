@@ -28,6 +28,26 @@ namespace Vx.Views
         {
             return view.GetAttachedProperty("LinearLayout.Weight", 0f);
         }
+
+#if DEBUG
+        public override void Validate()
+        {
+            if (Orientation == Orientation.Horizontal)
+            {
+                foreach (var child in Children)
+                {
+                    if (child is TextBlock tb && tb.WrapText && float.IsNaN(tb.Width) && GetWeight(tb) == 0)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                        throw new NotSupportedException("Wrapping TextBlocks within horizontal linear layouts must have a fixed width or weight. Either disable text wrapping or add a width/weight. Text: " + tb.Text);
+                    }
+
+                }
+            }
+
+            base.Validate();
+        }
+#endif
     }
 
     public static class LinearLayoutExtensions
