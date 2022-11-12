@@ -125,7 +125,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                             {
                                 Text = "-",
                                 VerticalAlignment = VerticalAlignment.Center,
-                                Margin = new Thickness(6, 0, 6, 0)
+                                Margin = new Thickness(6, 0, 6, 0),
+                                WrapText = false
                             }.CaptionStyle(),
 
                             new TextButton
