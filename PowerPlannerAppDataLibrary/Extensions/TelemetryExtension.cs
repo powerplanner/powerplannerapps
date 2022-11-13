@@ -33,6 +33,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
         private string _lastPageName;
         private object _pageViewLock = new object();
         private TelemetryPageViewBundler _pageViewBundler;
+        public string LastPageName => _lastPageName;
         public virtual void TrackPageVisited(string pageName)
         {
             try

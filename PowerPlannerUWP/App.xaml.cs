@@ -145,7 +145,17 @@ namespace PowerPlannerUWP
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            TelemetryExtension.Current?.TrackException(e.Exception);
+            string currPage = TelemetryExtension.Current?.LastPageName;
+            try
+            {
+                TelemetryExtension.Current?.LeavingApp();
+            }
+            catch { }
+
+            TelemetryExtension.Current?.TrackException(e.Exception, properties: currPage != null ? new Dictionary<string, string>
+            {
+                { "CurrPage", currPage }
+            } : (Dictionary<string, string>)null);
         }
 
         private bool _registeredBackgroundTasks = false;
