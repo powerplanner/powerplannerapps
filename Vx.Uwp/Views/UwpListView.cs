@@ -10,9 +10,11 @@ namespace Vx.Uwp.Views
 {
     public class UwpListView : UwpView<Vx.Views.ListView, ListView>
     {
+        private static long _listViewNum;
         public UwpListView()
         {
-            View.Name = "ListView" + GetHashCode();
+            View.Name = "ListView" + _listViewNum;
+            _listViewNum++;
             View.SelectionMode = ListViewSelectionMode.None;
 
             var style = new Style();

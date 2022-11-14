@@ -10,10 +10,12 @@ namespace Vx.Uwp.Views
 {
     public class UwpComboBox : UwpView<Vx.Views.ComboBox, ComboBox>
     {
+        private static long _comboBoxNum;
         public UwpComboBox()
         {
             View.SelectionChanged += View_SelectionChanged;
-            View.Name = "ComboBox" + GetHashCode();
+            View.Name = "ComboBox" + _comboBoxNum;
+            _comboBoxNum++;
         }
 
         private bool _ignoreSelectionChanged;
