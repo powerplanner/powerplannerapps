@@ -42,21 +42,29 @@ namespace Vx.Uwp.Views
                 VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
                 VerticalScrollMode = ScrollMode.Disabled,
                 HorizontalSnapPointsType = SnapPointsType.MandatorySingle,
-                ZoomMode = ZoomMode.Disabled,
-                Opacity = 0
+                ZoomMode = ZoomMode.Disabled
             };
             _scrollViewer.Content = _stackpanel;
-            _scrollViewer.ViewChanged += _scrollViewer_ViewChanged;
-            _scrollViewer.Loaded += _scrollViewer_Loaded;
             base.View.Child = _scrollViewer;
 
             base.View.SizeChanged += View_SizeChanged;
         }
 
+        private Tuple<Vx.Views.SlideView, Vx.Views.SlideView> _deferredApplyProperties;
         private Func<object, Vx.Views.View> _itemTemplate;
         protected override void ApplyProperties(Vx.Views.SlideView oldView, Vx.Views.SlideView newView)
         {
             base.ApplyProperties(oldView, newView);
+
+            if (!_hasSizeChanged)
+            {
+                _deferredApplyProperties = new Tuple<Vx.Views.SlideView, Vx.Views.SlideView>(null, newView);
+                return;
+            }
+            else
+            {
+                _deferredApplyProperties = null;
+            }
 
             if (!object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
             {
@@ -104,6 +112,7 @@ namespace Vx.Uwp.Views
             _rightComponent.Data = _position + 1;
         }
 
+        private bool _hasSizeChanged;
         private void View_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
             _left.Width = e.NewSize.Width;
@@ -116,6 +125,18 @@ namespace Vx.Uwp.Views
             _right.Height = e.NewSize.Height;
 
             CenterWithoutSnap();
+
+            if (!_hasSizeChanged)
+            {
+                _hasSizeChanged = true;
+
+                if (_deferredApplyProperties != null)
+                {
+                    ApplyProperties(_deferredApplyProperties.Item1, _deferredApplyProperties.Item2);
+                }
+
+                _scrollViewer.ViewChanged += _scrollViewer_ViewChanged;
+            }
         }
 
         void _scrollViewer_Loaded(object sender, RoutedEventArgs e)
