@@ -80,7 +80,6 @@ namespace Vx.Uwp.Views
                     {
                         _viewportWidth = value;
                         InvalidateMeasure();
-                        HorizontalSnapPointsChanged?.Invoke(this, (float)ViewportWidth);
                     }
                 }
             }
