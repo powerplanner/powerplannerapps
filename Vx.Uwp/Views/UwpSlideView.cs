@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace Vx.Uwp.Views
 {
-    public class UwpSlideView : UwpView<Vx.Views.SlideView, Border>
+    public class UwpSlideView : UwpView<Vx.Views.SlideView, UwpSlideView.MySlideView>
     {
-        private StackPanel _stackpanel;
-        private ScrollViewer _scrollViewer;
         private int _position;
-        private Border _left => _stackpanel.Children[0] as Border;
-        private Border _center => _stackpanel.Children[1] as Border;
-        private Border _right => _stackpanel.Children[2] as Border;
+        private Border _left => View.ThreeViews.Children[0] as Border;
+        private Border _center => View.ThreeViews.Children[1] as Border;
+        private Border _right => View.ThreeViews.Children[2] as Border;
 
         private Vx.Views.DataTemplateHelper.VxDataTemplateComponent _leftComponent => (_left.Child as INativeComponent).Component as Vx.Views.DataTemplateHelper.VxDataTemplateComponent;
         private Vx.Views.DataTemplateHelper.VxDataTemplateComponent _centerComponent => (_center.Child as INativeComponent).Component as Vx.Views.DataTemplateHelper.VxDataTemplateComponent;
@@ -23,20 +23,13 @@ namespace Vx.Uwp.Views
 
         public UwpSlideView()
         {
-            _stackpanel = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
+            base.View.SizeChanged += View_SizeChanged;
+            View.ScrollViewer.ViewChanged += _scrollViewer_ViewChanged;
+        }
 
-            for (int i = 0; i < 3; i++)
-            {
-                _stackpanel.Children.Add(new Border()
-                {
-                    Width = 0
-                });
-            }
-
-            _scrollViewer = new ScrollViewer()
+        public class MySlideView : Panel
+        {
+            public ScrollViewer ScrollViewer { get; } = new ScrollViewer
             {
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
@@ -44,27 +37,112 @@ namespace Vx.Uwp.Views
                 HorizontalSnapPointsType = SnapPointsType.MandatorySingle,
                 ZoomMode = ZoomMode.Disabled
             };
-            _scrollViewer.Content = _stackpanel;
-            base.View.Child = _scrollViewer;
 
-            base.View.SizeChanged += View_SizeChanged;
+            public MyThreeViews ThreeViews { get; } = new MyThreeViews();
+
+            public MySlideView()
+            {
+                ScrollViewer.Content = ThreeViews;
+                Children.Add(ScrollViewer);
+            }
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                // Only initialize width on the first load
+                if (ThreeViews.ViewportWidth == 0)
+                {
+                    // Set silently... measure will be called later anyways
+                    ThreeViews._viewportWidth = availableSize.Width;
+                }
+
+                ScrollViewer.Measure(availableSize);
+                return availableSize;
+            }
+
+            protected override Size ArrangeOverride(Size finalSize)
+            {
+                ThreeViews.ViewportWidth = finalSize.Width;
+
+                ScrollViewer.Arrange(new Rect(new Point(), finalSize));
+                return finalSize;
+            }
         }
 
-        private Tuple<Vx.Views.SlideView, Vx.Views.SlideView> _deferredApplyProperties;
+        public class MyThreeViews : Panel, IScrollSnapPointsInfo
+        {
+            public double _viewportWidth;
+            public double ViewportWidth
+            {
+                get => _viewportWidth;
+                set
+                {
+                    if (value != _viewportWidth)
+                    {
+                        _viewportWidth = value;
+                        InvalidateMeasure();
+                        HorizontalSnapPointsChanged?.Invoke(this, (float)ViewportWidth);
+                    }
+                }
+            }
+
+            public MyThreeViews()
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Children.Add(new Border());
+                }
+            }
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                var childSize = new Size(ViewportWidth, availableSize.Height);
+                foreach (var child in Children)
+                {
+                    child.Measure(childSize);
+                }
+
+                return new Size(ViewportWidth * 3, availableSize.Height);
+            }
+
+            protected override Size ArrangeOverride(Size finalSize)
+            {
+                var childSize = new Size(ViewportWidth, finalSize.Height);
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    double x = ViewportWidth * i;
+                    Children[i].Arrange(new Rect(new Point(x, 0), childSize));
+                }
+
+                return new Size(ViewportWidth * 3, finalSize.Height);
+            }
+
+            public IReadOnlyList<float> GetIrregularSnapPoints(Orientation orientation, SnapPointsAlignment alignment)
+            {
+                return new List<float>();
+            }
+
+            public float GetRegularSnapPoints(Orientation orientation, SnapPointsAlignment alignment, out float offset)
+            {
+                offset = 0;
+                if (orientation == Orientation.Horizontal)
+                {
+                    return (float)ViewportWidth;
+                }
+                return 0;
+            }
+
+            public bool AreHorizontalSnapPointsRegular => true;
+
+            public bool AreVerticalSnapPointsRegular => true;
+
+            public event EventHandler<object> HorizontalSnapPointsChanged;
+            public event EventHandler<object> VerticalSnapPointsChanged;
+        }
+
         private Func<object, Vx.Views.View> _itemTemplate;
         protected override void ApplyProperties(Vx.Views.SlideView oldView, Vx.Views.SlideView newView)
         {
             base.ApplyProperties(oldView, newView);
-
-            if (!_hasSizeChanged)
-            {
-                _deferredApplyProperties = new Tuple<Vx.Views.SlideView, Vx.Views.SlideView>(null, newView);
-                return;
-            }
-            else
-            {
-                _deferredApplyProperties = null;
-            }
 
             if (!object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
             {
@@ -112,45 +190,9 @@ namespace Vx.Uwp.Views
             _rightComponent.Data = _position + 1;
         }
 
-        private bool _hasSizeChanged;
         private void View_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
-            _left.Width = e.NewSize.Width;
-            _left.Height = e.NewSize.Height;
-
-            _center.Width = e.NewSize.Width;
-            _center.Height = e.NewSize.Height;
-
-            _right.Width = e.NewSize.Width;
-            _right.Height = e.NewSize.Height;
-
             CenterWithoutSnap();
-
-            if (!_hasSizeChanged)
-            {
-                _hasSizeChanged = true;
-
-                if (_deferredApplyProperties != null)
-                {
-                    ApplyProperties(_deferredApplyProperties.Item1, _deferredApplyProperties.Item2);
-                }
-
-                _scrollViewer.ViewChanged += _scrollViewer_ViewChanged;
-            }
-        }
-
-        void _scrollViewer_Loaded(object sender, RoutedEventArgs e)
-        {
-            CenterWithoutSnap();
-
-            var dontWait = View.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, delegate
-            {
-                try
-                {
-                    _scrollViewer.Opacity = 1;
-                }
-                catch { }
-            });
         }
 
         /// <summary>
@@ -162,21 +204,19 @@ namespace Vx.Uwp.Views
             return View.ActualWidth;
         }
 
-        private int _scrollingPosition;
-
         void _scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             //as we scroll, we'll dynamically add upcoming/previous items
 
             //moving next
             // Scrollable - Offset = 0 when scrolled all the way to the right
-            if ((_scrollViewer.ScrollableWidth - _scrollViewer.HorizontalOffset) < TotalColumnWidth() * 0.5)
+            if ((View.ScrollViewer.ScrollableWidth - View.ScrollViewer.HorizontalOffset) < TotalColumnWidth() * 0.5)
             {
                 ShowNextVisual();
             }
 
             //moving previous
-            else if (_scrollViewer.HorizontalOffset < TotalColumnWidth() * 0.5)
+            else if (View.ScrollViewer.HorizontalOffset < TotalColumnWidth() * 0.5)
             {
                 ShowPreviousVisual();
             }
@@ -189,32 +229,6 @@ namespace Vx.Uwp.Views
                 {
                     VxView.Position.ValueChanged?.Invoke(_position);
                 }
-
-                //if (actualCurrentIndex != CurrentItemIndex)
-                //    UpdateCurrentItemIndex(actualCurrentIndex);
-
-                //int countRemovedFromLeft = 0;
-
-                //// Remove on the left
-                //while (CurrentItemIndex > 1)
-                //{
-                //    if (!removePrevVisual())
-                //        break;
-
-                //    countRemovedFromLeft++;
-                //}
-
-                //// If we removed from the left, we need to adjust scroll offset
-                //if (countRemovedFromLeft > 0)
-                //    setWithoutSnap(_scrollViewer.HorizontalOffset - TotalColumnWidth() * countRemovedFromLeft);
-
-                //// Remove on the right
-                //int desiredCountOfVisuals = countOfVisuals();
-                //while (_stackpanel.Children.Count > desiredCountOfVisuals)
-                //{
-                //    if (!removeNextVisual())
-                //        break;
-                //}
             }
         }
 
@@ -222,28 +236,22 @@ namespace Vx.Uwp.Views
         {
             _position++;
 
-            var oldLeft = _left;
-
-            _stackpanel.Children.Remove(_left);
-            _stackpanel.Children.Add(oldLeft);
+            View.ThreeViews.Children.Move(0, 2);
 
             _rightComponent.Data = _position + 1;
 
-            SetWithoutSnap(_scrollViewer.HorizontalOffset - TotalColumnWidth());
+            SetWithoutSnap(View.ScrollViewer.HorizontalOffset - TotalColumnWidth());
         }
 
         private void ShowPreviousVisual()
         {
             _position--;
 
-            var oldRight = _right;
-
-            _stackpanel.Children.Remove(_right);
-            _stackpanel.Children.Insert(0, oldRight);
+            View.ThreeViews.Children.Move(2, 0);
 
             _leftComponent.Data = _position - 1;
 
-            SetWithoutSnap(_scrollViewer.HorizontalOffset + TotalColumnWidth());
+            SetWithoutSnap(View.ScrollViewer.HorizontalOffset + TotalColumnWidth());
         }
 
         private void CenterWithoutSnap()
@@ -253,16 +261,16 @@ namespace Vx.Uwp.Views
 
         private void SetWithoutSnap(double x)
         {
-            if (_scrollViewer.HorizontalOffset == x)
+            if (View.ScrollViewer.HorizontalOffset == x)
                 return;
 
-            _scrollViewer.HorizontalSnapPointsType = SnapPointsType.None;
+            View.ScrollViewer.HorizontalSnapPointsType = SnapPointsType.None;
             SetX(x);
-            _scrollViewer.HorizontalSnapPointsType = SnapPointsType.MandatorySingle;
+            View.ScrollViewer.HorizontalSnapPointsType = SnapPointsType.MandatorySingle;
         }
         private void SetX(double x)
         {
-            _scrollViewer.ChangeView(x, null, null, true);
+            View.ScrollViewer.ChangeView(x, null, null, true);
         }
     }
 }
