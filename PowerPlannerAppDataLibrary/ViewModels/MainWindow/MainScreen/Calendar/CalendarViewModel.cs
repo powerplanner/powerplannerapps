@@ -554,6 +554,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         protected override void OnSizeChanged(SizeF size, SizeF previousSize)
         {
+            if (previousSize.Height == 0 && size.Height != 0)
+            {
+                // Make sure it renders after getting size
+                MarkDirty();
+            }
+
             if (size.Height < 500)
                 ViewSizeState = ViewSizeStates.FullyCompact;
 
@@ -566,6 +572,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         protected override View Render()
         {
+            if (Size.Height == 0)
+            {
+                return null;
+            }
+
             Toolbar toolbar = null;
 
             // Add toolbar to all but UWP
