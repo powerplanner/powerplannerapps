@@ -23,12 +23,15 @@ namespace Vx.Uwp.Views
 
         public UwpSlideView()
         {
-            base.View.SizeChanged += View_SizeChanged;
             View.ScrollViewer.ViewChanged += _scrollViewer_ViewChanged;
         }
 
         public class MySlideView : Panel
         {
+            public bool IgnoreChangeView { get; set; }
+
+            public double? DesiredHorizontalOffset { get; set; }
+
             public ScrollViewer ScrollViewer { get; } = new ScrollViewer
             {
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden,
@@ -63,8 +66,27 @@ namespace Vx.Uwp.Views
             {
                 ThreeViews.ViewportWidth = finalSize.Width;
 
+                IgnoreChangeView = true;
                 ScrollViewer.Arrange(new Rect(new Point(), finalSize));
+                SetWithoutSnap(finalSize.Width);
+                IgnoreChangeView = false;
+
                 return finalSize;
+            }
+
+            public void SetWithoutSnap(double x)
+            {
+                if (ScrollViewer.HorizontalOffset == x)
+                    return;
+
+                ScrollViewer.HorizontalSnapPointsType = SnapPointsType.None;
+                SetX(x);
+                ScrollViewer.HorizontalSnapPointsType = SnapPointsType.MandatorySingle;
+            }
+            public void SetX(double x)
+            {
+                DesiredHorizontalOffset = x;
+                ScrollViewer.ChangeView(x, null, null, true);
             }
         }
 
@@ -189,23 +211,37 @@ namespace Vx.Uwp.Views
             _rightComponent.Data = _position + 1;
         }
 
-        private void View_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
-        {
-            CenterWithoutSnap();
-        }
-
         /// <summary>
         /// Returns column width combined with half of each side's spacing (thus the effective column width including padding)
         /// </summary>
         /// <returns></returns>
         private double TotalColumnWidth()
         {
-            return View.ActualWidth;
+            return View.ThreeViews.ViewportWidth;
         }
+
 
         void _scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             //as we scroll, we'll dynamically add upcoming/previous items
+            if (View.DesiredHorizontalOffset != null)
+            {
+
+                // If horizontal offset was 350, and then I resize it down to 200, would it adjust automatically? I suppose depends on the view content width...
+                // So say horizontal offset was 500 (so total scrollable is 1500) and I resize window down to 100 (so total scrollable becomes 300), horizontal offset would then change as a result
+                // Hence I have this following logic...
+                if (View.DesiredHorizontalOffset.Value == View.ScrollViewer.HorizontalOffset)
+                {
+                    View.DesiredHorizontalOffset = null;
+                }
+
+                return;
+            }
+
+            if (View.IgnoreChangeView)
+            {
+                return;
+            }
 
             //moving next
             // Scrollable - Offset = 0 when scrolled all the way to the right
@@ -239,7 +275,7 @@ namespace Vx.Uwp.Views
 
             _rightComponent.Data = _position + 1;
 
-            SetWithoutSnap(View.ScrollViewer.HorizontalOffset - TotalColumnWidth());
+            View.SetWithoutSnap(View.ScrollViewer.HorizontalOffset - TotalColumnWidth());
         }
 
         private void ShowPreviousVisual()
@@ -250,26 +286,7 @@ namespace Vx.Uwp.Views
 
             _leftComponent.Data = _position - 1;
 
-            SetWithoutSnap(View.ScrollViewer.HorizontalOffset + TotalColumnWidth());
-        }
-
-        private void CenterWithoutSnap()
-        {
-            SetWithoutSnap(base.View.ActualWidth);
-        }
-
-        private void SetWithoutSnap(double x)
-        {
-            if (View.ScrollViewer.HorizontalOffset == x)
-                return;
-
-            View.ScrollViewer.HorizontalSnapPointsType = SnapPointsType.None;
-            SetX(x);
-            View.ScrollViewer.HorizontalSnapPointsType = SnapPointsType.MandatorySingle;
-        }
-        private void SetX(double x)
-        {
-            View.ScrollViewer.ChangeView(x, null, null, true);
+            View.SetWithoutSnap(View.ScrollViewer.HorizontalOffset + TotalColumnWidth());
         }
     }
 }
