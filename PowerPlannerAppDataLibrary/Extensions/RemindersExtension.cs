@@ -42,7 +42,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
         }
 
         /// <summary>
-        /// Platforms that need notification permission (iOS) can use this to prompt the user at the right time, instead of at app launch
+        /// Platforms that need notification permission (iOS/Android) can use this to prompt the user at the right time, instead of at app launch
         /// </summary>
         public virtual void RequestReminderPermission()
         {

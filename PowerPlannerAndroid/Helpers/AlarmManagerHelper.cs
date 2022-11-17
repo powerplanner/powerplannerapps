@@ -23,7 +23,7 @@ namespace PowerPlannerAndroid.Helpers
                 alarmIntent.SetData(Android.Net.Uri.Parse(uriData));
             }
 
-            PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(context, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+            PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(context, 0, alarmIntent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
 
             AlarmManager alarmManager = (AlarmManager)context.GetSystemService(Context.AlarmService);
 

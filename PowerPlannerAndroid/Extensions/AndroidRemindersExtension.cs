@@ -31,6 +31,11 @@ namespace PowerPlannerAndroid.Extensions
 {
     public class AndroidRemindersExtension : RemindersExtension
     {
+        public override void RequestReminderPermission()
+        {
+            MainActivity.GetCurrent().RequestPermissions(new string[] { Android.Manifest.Permission.PostNotifications }, 0);
+        }
+
         protected override async Task ActuallyClearReminders(Guid localAccountId)
         {
             // This occurs when an account is deleted
@@ -724,7 +729,7 @@ namespace PowerPlannerAndroid.Extensions
                 .SetAction(Intent.ActionView)
                 .SetData(Android.Net.Uri.Parse("powerplanner:?" + launchArgs.SerializeToString()));
 
-            var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
 
             // By setting SDK target to 21 or higher, the logo will automatically become white on the system tray,
             // and will use the color specified when displayed in the notification itself

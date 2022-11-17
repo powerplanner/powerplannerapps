@@ -53,7 +53,7 @@ namespace PowerPlannerAndroid.Widgets
                         {
                             LaunchSurface = LaunchSurface.SecondaryTile
                         }.SerializeToString()));
-                    PendingIntent pendingOpenIntent = PendingIntent.GetActivity(context, 0, openIntent, 0);
+                    PendingIntent pendingOpenIntent = PendingIntent.GetActivity(context, 0, openIntent, PendingIntentFlags.Immutable);
                     views.SetOnClickPendingIntent(Resource.Id.WidgetScheduleHeader, pendingOpenIntent);
 
                     // Set up the list adapter to use our service that generates the items
@@ -63,7 +63,7 @@ namespace PowerPlannerAndroid.Widgets
                     Intent itemClickIntent = new Intent(context, typeof(MainActivity));
                     itemClickIntent.SetAction(Intent.ActionView);
                     itemClickIntent.PutExtra(AppWidgetManager.ExtraAppwidgetId, appWidgetId);
-                    PendingIntent pendingItemClickIntent = PendingIntent.GetActivity(context, 0, itemClickIntent, 0);
+                    PendingIntent pendingItemClickIntent = PendingIntent.GetActivity(context, 0, itemClickIntent, PendingIntentFlags.Immutable);
                     views.SetPendingIntentTemplate(Resource.Id.WidgetScheduleListView, pendingItemClickIntent);
 
                     // Update the widget
