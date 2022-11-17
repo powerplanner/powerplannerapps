@@ -311,7 +311,6 @@ namespace PowerPlannerAndroid.Views
         private BindingInstance _selectedClassNameBinding;
         private BindingInstance _calendarTitleBinding;
         private BindingInstance _calendarBackBinding;
-        private BindingInstance _calendarStateBinding;
         private void UpdateActionBarTitle()
         {
             Toolbar.Visibility = ViewStates.Visible;

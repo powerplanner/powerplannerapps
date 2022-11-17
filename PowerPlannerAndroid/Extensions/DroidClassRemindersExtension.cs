@@ -168,9 +168,7 @@ namespace PowerPlannerAndroid.Extensions
                 LocalAccountId = localAccountId,
                 ItemId = currSchedule.Class.Identifier,
                 LaunchSurface = LaunchSurface.Toast
-            });
-
-            builder.SetChannelId(AndroidRemindersExtension.GetChannelIdForClassReminders(localAccountId));
+            }, AndroidRemindersExtension.GetChannelIdForClassReminders(localAccountId));
 
             builder.SetShowWhen(false);
             builder.SetContentTitle(currSchedule.Class.Name);
@@ -189,7 +187,7 @@ namespace PowerPlannerAndroid.Extensions
 
             if (silentUpdate)
             {
-                builder.SetNotificationSilent();
+                builder.SetSilent(true);
             }
 
             notifManager.Notify(NotificationIds.CLASS_REMINDER_NOTIFICATION, builder.Build());
