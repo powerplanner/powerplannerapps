@@ -16,7 +16,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 
 namespace PowerPlannerAndroid.Widgets
 {
-    [BroadcastReceiver(Label = "Agenda")]
+    [BroadcastReceiver(Label = "Agenda", Exported = true)]
     [IntentFilter(new string[] { "android.appwidget.action.APPWIDGET_UPDATE" })]
     [MetaData("android.appwidget.provider", Resource = "@xml/widgetagendainfo")]
     public class WidgetAgendaProvider : AppWidgetProvider

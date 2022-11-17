@@ -1418,7 +1418,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
 
                 DataItemMegaItem dataItem;
-                bool repeating = false;
                 if (bulkEntry != null && bulkEntry.Count > 0)
                 {
                     dataItem = bulkEntry[0];
@@ -1427,8 +1426,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     {
                         changes.Add(item);
                     }
-
-                    repeating = true;
                 }
 
                 // Otherwise not repeating, create item as normal

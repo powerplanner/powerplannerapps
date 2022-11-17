@@ -92,6 +92,19 @@ namespace BareMvvm.Core.ViewModels
             }
         }
 
+        public override bool CanGoBack
+        {
+            get
+            {
+                if (BackStack.Count > 0)
+                {
+                    return true;
+                }
+
+                return base.CanGoBack;
+            }
+        }
+
         public void ClearContentAndBackStack()
         {
             if (BackStack.Count > 0)
@@ -226,9 +239,13 @@ namespace BareMvvm.Core.ViewModels
         private void UpdateRequestedBackButtonVisibility()
         {
             if (BackStack.Count > 0)
+            {
                 ThisBackButtonVisibility = RequestedBackButtonVisibility.Visible;
+            }
             else
+            {
                 ThisBackButtonVisibility = RequestedBackButtonVisibility.Inherit;
+            }
         }
     }
 }

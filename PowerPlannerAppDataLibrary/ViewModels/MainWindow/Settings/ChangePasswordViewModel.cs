@@ -20,9 +20,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
 
-        public event EventHandler<string> ActionError;
-        public event EventHandler<string> ActionPasswordsDidNotMatch;
-
         public AccountDataItem Account { get; private set; }
 
         public ChangePasswordViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)

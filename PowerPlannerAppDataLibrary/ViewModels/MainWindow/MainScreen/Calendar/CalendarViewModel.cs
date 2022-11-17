@@ -81,7 +81,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         /// <summary>
         /// Used by Android to display the correct title
         /// </summary>
-        public string Title => CachedComputation<string>(delegate
+        public new string Title => CachedComputation<string>(delegate
         {
             if (DisplayState == DisplayStates.Day)
             {
@@ -94,7 +94,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }, new string[] { nameof(DisplayState), nameof(SelectedDate), nameof(DisplayMonth) });
 
-        public bool CanGoBack => CachedComputation<bool>(delegate
+        public override bool CanGoBack => CachedComputation<bool>(delegate
         {
             return DisplayState == DisplayStates.Day || (ViewSizeState == ViewSizeStates.FullSize && DisplayState == DisplayStates.Split);
         }, new string[] { nameof(DisplayState), nameof(ViewSizeState) });

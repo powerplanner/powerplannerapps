@@ -129,7 +129,7 @@ namespace PowerPlannerAndroid.Views
         public override void OnViewModelLoadedOverride()
         {
             _bottomNav = FindViewById<BottomNavigationView>(Resource.Id.BottomNav);
-            _bottomNav.NavigationItemSelected += BottomNav_NavigationItemSelected;
+            _bottomNav.ItemSelected += BottomNav_NavigationItemSelected;
 
             // Place the content presenter
             _contentPresenter = new PagedViewModelPresenter(Context);
@@ -189,7 +189,7 @@ namespace PowerPlannerAndroid.Views
 
         private void AddMenuItem(NavigationManager.MainMenuSelections selection, string localizedId, int icon)
         {
-            _bottomNav.Menu.Add(Menu.None, (int)selection, Menu.None, PowerPlannerResources.GetString(localizedId)).SetIcon(icon);
+            _bottomNav.Menu.Add(IMenu.None, (int)selection, IMenu.None, PowerPlannerResources.GetString(localizedId)).SetIcon(icon);
         }
 
         private void UpdateSelectedMenuItem()
@@ -200,7 +200,7 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private void BottomNav_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
+        private void BottomNav_NavigationItemSelected(object sender, BottomNavigationView.ItemSelectedEventArgs e)
         {
             ViewModel.SelectedItem = (NavigationManager.MainMenuSelections)e.Item.ItemId;
         }

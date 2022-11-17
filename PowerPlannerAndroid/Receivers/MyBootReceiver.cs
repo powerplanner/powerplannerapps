@@ -15,7 +15,7 @@ using PowerPlannerAppDataLibrary.DataLayer;
 
 namespace PowerPlannerAndroid.Receivers
 {
-    [BroadcastReceiver(Enabled = true)]
+    [BroadcastReceiver(Enabled = true, Exported = true)]
     [IntentFilter(new[] { Intent.ActionBootCompleted })]
     public class MyBootReceiver : BroadcastReceiver
     {

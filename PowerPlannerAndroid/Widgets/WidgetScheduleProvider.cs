@@ -17,7 +17,7 @@ using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Widgets
 {
-    [BroadcastReceiver(Label = "Schedule")]
+    [BroadcastReceiver(Label = "Schedule", Exported = true)]
     [IntentFilter(new string[] { "android.appwidget.action.APPWIDGET_UPDATE" })]
     [MetaData("android.appwidget.provider", Resource = "@xml/widgetscheduleinfo")]
     public class WidgetScheduleProvider : AppWidgetProvider
