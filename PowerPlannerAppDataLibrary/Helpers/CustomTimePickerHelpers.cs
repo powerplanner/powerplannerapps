@@ -51,10 +51,10 @@ namespace PowerPlannerAppDataLibrary.Helpers
         /// </summary>
         public static bool ParseComboBoxItem(DateTime startTime, string itemText, out TimeSpan timeSpan)
         {
+            timeSpan = new TimeSpan();
+
             if (itemText == null || itemText.Length == 0)
                 return false; // Fail
-
-            timeSpan = new TimeSpan();
 
             // NOTE: We're manually parsing it since not only did "TimeSpan.TryParse" not work with AM/PM, but the text may contain things such as brackets at the end, and we want the option to use relative times (if someone wanted to).
             // Check to see if this begins with a "+", making it a relative time, if it does begin with a plus, we'll remember that and remove it to stop it from causing problems later.

@@ -30,6 +30,11 @@ namespace PowerPlannerAppDataLibrary.Components
                 {
                     accentColor = g.ColorWhenInWhatIfMode.ToColor();
                 }
+                else
+                {
+                    // I don't think this ever should get hit
+                    accentColor = Theme.Current.AccentColor;
+                }
             }
             else
             {

@@ -73,11 +73,11 @@ namespace PowerPlannerAndroid
             Vx.Droid.VxDroidExtensions.ApplicationContext = this;
 
 #if DEBUG
-            int disposedCount = 0;
-            WeakEventHandler.ObjectDisposedAction = delegate
-            {
-                Toast.MakeText(Application.Context, disposedCount++ + " ObjectDisposed", ToastLength.Short).Show();
-            };
+            //int disposedCount = 0;
+            //WeakEventHandler.ObjectDisposedAction = delegate
+            //{
+            //    Toast.MakeText(Application.Context, disposedCount++ + " ObjectDisposed", ToastLength.Short).Show();
+            //};
 #endif
 
             AppCenter.Start(Secrets.AppCenterAppSecret, typeof(Analytics), typeof(Crashes));
