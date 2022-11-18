@@ -31,7 +31,6 @@ using PowerPlannerAndroid.ViewModel.Settings;
 using PowerPlannerAppDataLibrary.ViewModels;
 using AndroidX.Core.Content.PM;
 using Android.Content.PM;
-using System.Runtime.Remoting.Contexts;
 
 namespace PowerPlannerAndroid.App
 {
