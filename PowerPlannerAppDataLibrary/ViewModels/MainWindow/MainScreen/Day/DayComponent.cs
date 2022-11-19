@@ -1,4 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         private Func<int, View> _itemTemplate;
 
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; set; }
-        public BaseMainScreenViewModelDescendant ViewModel { get; set; }
+        public ICalendarOrDayViewModel ViewModel { get; set; }
         public DateTime Today { get; set; } = DateTime.Today;
         public DateTime DisplayDate { get; set; }
         public Action<DateTime> OnDisplayDateChanged { get; set; }

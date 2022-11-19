@@ -32,7 +32,8 @@ namespace PowerPlannerUWP.Views.DayViews
                     SemesterItemsViewGroup = _viewModel.SemesterItemsViewGroup,
                     LiveProps = new SingleDayComponentLiveProps
                     {
-                        IncludeHeader = true
+                        IncludeHeader = true,
+                        IncludeAdd = true
                     }
                 }.Render();
             }
