@@ -27,7 +27,6 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 {
     public sealed partial class TaskOrEventListViewItem : UserControl
     {
-        public event EventHandler<ViewItemTaskOrEvent> OnClickItem;
         private ComponentWrapper _component;
 
         private class ComponentWrapper : VxComponent
