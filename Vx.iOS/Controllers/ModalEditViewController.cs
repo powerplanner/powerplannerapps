@@ -135,7 +135,7 @@ namespace InterfacesiOS.Controllers
             }
             _doneButton.BackgroundColor = UIColor.Clear;
             _doneButton.SetTitle(DoneButtonText, UIControlState.Normal);
-            _doneButton.Font = _doneButton.Font.Bold();
+            _doneButton.TitleLabel.Font = _doneButton.TitleLabel.Font.Bold();
             _doneButton.TouchUpInside += new WeakEventHandler(DoneButtonTapped).Handler;
 
             ContentView.BackgroundColor = UIColorCompat.SystemBackgroundColor;

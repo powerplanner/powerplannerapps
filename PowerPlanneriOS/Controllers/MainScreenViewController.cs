@@ -253,8 +253,8 @@ namespace PowerPlanneriOS.Controllers
 
             NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
             {
-                _tabBar.BottomAnchor.ConstraintEqualTo(this.BottomLayoutGuide.GetBottomAnchor()),
-                _tabBar.TopAnchor.ConstraintGreaterThanOrEqualTo(this.TopLayoutGuide.GetTopAnchor())
+                _tabBar.BottomAnchor.ConstraintEqualTo(this.BottomLayoutGuide.BottomAnchor),
+                _tabBar.TopAnchor.ConstraintGreaterThanOrEqualTo(this.TopLayoutGuide.TopAnchor)
             });
         }
 
