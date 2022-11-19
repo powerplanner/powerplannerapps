@@ -15,10 +15,11 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using Vx.Views;
 using Vx;
 using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 {
-    public class DayViewModel : BaseMainScreenViewModelChild
+    public class DayViewModel : BaseMainScreenViewModelChild, ICalendarOrDayViewModel
     {
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; private set; }
 
@@ -67,7 +68,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 SemesterItemsViewGroup = SemesterItemsViewGroup,
                 Today = Today,
                 DisplayDate = CurrentDate,
-                OnDisplayDateChanged = d => CurrentDate = d
+                OnDisplayDateChanged = d => CurrentDate = d,
+                IncludeAdd = VxPlatform.Current == Platform.Uwp
             };
         }
 
@@ -95,23 +97,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
         public void AddHoliday()
         {
+            AddHoliday(CurrentDate);
+        }
+
+        public void AddHoliday(DateTime date)
+        {
             MainScreenViewModel.ShowPopup(AddHolidayViewModel.CreateForAdd(MainScreenViewModel, new AddHolidayViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
-                StartDate = CurrentDate,
-                EndDate = CurrentDate
+                StartDate = date,
+                EndDate = date
             }));
         }
 
-        private void AddItem(TaskOrEventType type)
+        private void AddItem(TaskOrEventType type, DateTime? date = null)
         {
+            if (date == null)
+            {
+                date = CurrentDate;
+            }
+
             MainScreenViewModel.ShowPopup(AddTaskOrEventViewModel.CreateForAdd(MainScreenViewModel, new AddTaskOrEventViewModel.AddParameter()
             {
                 SemesterIdentifier = MainScreenViewModel.CurrentSemesterId,
                 Classes = MainScreenViewModel.Classes,
                 SelectedClass = null,
                 Type = type,
-                DueDate = CurrentDate
+                DueDate = date
             }));
         }
 
@@ -128,6 +140,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         public void ViewHoliday(ViewItemHoliday h)
         {
             MainScreenViewModel.ViewHoliday(h);
+        }
+
+        public void AddTask(DateTime date)
+        {
+            AddItem(TaskOrEventType.Task, date);
+        }
+
+        public void AddEvent(DateTime date)
+        {
+            AddItem(TaskOrEventType.Event, date);
         }
     }
 }
