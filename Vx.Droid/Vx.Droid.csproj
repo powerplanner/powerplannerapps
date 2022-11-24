@@ -93,6 +93,7 @@
     <Compile Include="DroidViews\BareEditDecimalNumber.cs" />
     <Compile Include="DroidViews\BareMaterialEditDecimalNumber.cs" />
     <Compile Include="DroidViews\CustomColorPickerView.cs" />
+    <Compile Include="DroidViews\DroidVxLinearLayout.cs" />
     <Compile Include="DroidViews\GenericRecyclerViewHolder.cs" />
     <Compile Include="DroidViews\GridViewLayout.cs" />
     <Compile Include="DroidViews\IGetSnackbarAnchorView.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="DroidViews\MyColorPicker.cs" />
     <Compile Include="DroidViews\MyTextView.cs" />
     <Compile Include="DroidViews\MyZoomAndPanView.cs" />
+    <Compile Include="DroidViews\ThicknessInt.cs" />
     <Compile Include="DroidViews\ViewGroupExtensionMethods.cs" />
     <Compile Include="DroidViews\ViewHost.cs" />
     <Compile Include="DroidViews\ViewHostGeneric.cs" />
@@ -129,10 +131,12 @@
     <Compile Include="Views\DroidColorPicker.cs" />
     <Compile Include="Views\DroidComboBox.cs" />
     <Compile Include="Views\DroidDatePicker.cs" />
+    <Compile Include="Views\DroidFloatingActionButton.cs" />
     <Compile Include="Views\DroidFontIcon.cs" />
     <Compile Include="Views\DroidFrameLayout.cs" />
     <Compile Include="Views\DroidLinearLayout.cs" />
     <Compile Include="Views\DroidListItemButton.cs" />
+    <Compile Include="Views\DroidListView.cs" />
     <Compile Include="Views\DroidNumberTextBox.cs" />
     <Compile Include="Views\DroidScrollView.cs" />
     <Compile Include="Views\DroidSlideView.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="Views\DroidTextBlock.cs" />
     <Compile Include="Views\DroidTextBox.cs" />
     <Compile Include="Views\DroidTimePicker.cs" />
+    <Compile Include="Views\DroidToolbar.cs" />
     <Compile Include="Views\DroidTransparentContentButton.cs" />
     <Compile Include="Views\DroidView.cs" />
     <Compile Include="Views\DroidVxComponent.cs" />
@@ -191,6 +196,27 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values-night\colors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add_48px.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\arrow_back_24px.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add_24px.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\chevron_left_24px.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\chevron_right_24px.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\today_24px.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

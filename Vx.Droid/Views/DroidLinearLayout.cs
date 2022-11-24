@@ -1,22 +1,11 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Vx.Views;
+﻿using Vx.Droid.DroidViews;
 
 namespace Vx.Droid.Views
 {
-    public class DroidLinearLayout : DroidView<Vx.Views.LinearLayout, Android.Widget.LinearLayout>
+    public class DroidLinearLayout : DroidView<Vx.Views.LinearLayout, DroidVxLinearLayout>
     {
-        public DroidLinearLayout() : base(new Android.Widget.LinearLayout(VxDroidExtensions.ApplicationContext))
+        public DroidLinearLayout() : base(new DroidVxLinearLayout(VxDroidExtensions.ApplicationContext))
         {
-
         }
 
         protected override void ApplyProperties(Vx.Views.LinearLayout oldView, Vx.Views.LinearLayout newView)
@@ -24,7 +13,7 @@ namespace Vx.Droid.Views
             base.ApplyProperties(oldView, newView);
 
             View.SetBackgroundColor(newView.BackgroundColor.ToDroid());
-            View.Orientation = newView.Orientation == Vx.Views.Orientation.Vertical ? Android.Widget.Orientation.Vertical : Android.Widget.Orientation.Horizontal;
+            View.Orientation = newView.Orientation;
 
             ReconcileChildren(oldView?.Children, newView.Children, View);
         }

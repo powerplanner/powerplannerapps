@@ -93,7 +93,7 @@ namespace Vx.Views
             return parentLayout;
         }
 
-        protected override void OnSizeChanged(SizeF size)
+        protected override void OnSizeChanged(SizeF size, SizeF previousSize)
         {
             var calc = CalcNumberOfColumns();
             if (_renderedCols != calc)

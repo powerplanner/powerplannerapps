@@ -91,6 +91,7 @@ namespace PowerPlannerUWP
             return new Dictionary<Type, Type>
             {
                 { typeof(YearsViewModel), typeof(ComponentView) }, // Don't show Years as a popup on Windows
+                { typeof(ClassWhatIfViewModel), typeof(ComponentView) }, // Don't show What If as a popup on Windows
                 { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
                 { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
             };
@@ -103,10 +104,9 @@ namespace PowerPlannerUWP
                 // Main views
                 { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
                 { typeof(AgendaViewModel), typeof(AgendaView) },
-                { typeof(CalendarViewModel), typeof(CalendarMainView) },
+                { typeof(CalendarViewModel), typeof(ComponentView) },
                 { typeof(ClassesViewModel), typeof(ClassesView) },
                 { typeof(ClassViewModel), typeof(ClassView) },
-                { typeof(ClassWhatIfViewModel), typeof(ClassWhatIfView) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(LoginViewModel), typeof(LoginView) },
                 { typeof(DayViewModel), typeof(MainContentDayView) },
@@ -664,6 +664,11 @@ namespace PowerPlannerUWP
 
 
                     string changedText = "";
+
+                    if (v <= new Version(2203, 18, 4, 0))
+                    {
+                        changedText += "\n - Improved the school time zone picker";
+                    }
 
                     if (v <= new Version(2111, 29, 1, 99))
                     {

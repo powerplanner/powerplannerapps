@@ -73,14 +73,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\AgendaTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\DateGroupedTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\FlatTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\ClassWhatIfGradesAdapter.cs" />
-    <Compile Include="Adapters\GradesAdapter.cs" />
-    <Compile Include="Adapters\GroupedTasksOrEventsAdapter.cs" />
-    <Compile Include="Adapters\SpinnerClassesAdapter.cs" />
-    <Compile Include="Adapters\SpinnerWeightCategoriesAdapter.cs" />
     <Compile Include="App\Secrets.cs" />
     <None Include="App\Secrets.template.cs" />
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
@@ -142,18 +134,11 @@
     <Compile Include="ViewModel\Settings\WidgetScheduleViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetAgendaViewModel.cs" />
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
-    <Compile Include="Views\AgendaView.cs" />
-    <Compile Include="Views\CalendarMainView.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
-    <Compile Include="Views\ClassWhatIfTopHeaderView.cs" />
-    <Compile Include="Views\ClassWhatIfView.cs" />
-    <Compile Include="Views\ClassGradesView.cs" />
-    <Compile Include="Views\ClassTasksOrEventsView.cs" />
     <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\Controls\DayPagerControl.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
     <Compile Include="Views\Controls\FloatingAddItemControl.cs" />
     <Compile Include="Views\Controls\TaskProgressBarControl.cs" />
@@ -161,24 +146,17 @@
     <Compile Include="Views\Controls\ImagesPagerControl.cs" />
     <Compile Include="Views\Controls\ImageAttachmentView.cs" />
     <Compile Include="Views\Controls\SettingsListItem.cs" />
-    <Compile Include="Views\Controls\SingleDayControl.cs" />
     <Compile Include="Views\DayScheduleSnapshotView.cs" />
-    <Compile Include="Views\DayView.cs" />
     <Compile Include="Views\DroidCompletionSlider.cs" />
     <Compile Include="Views\DroidEditImagesView.cs" />
+    <Compile Include="Views\DroidFloatingAddItemButton.cs" />
     <Compile Include="Views\DroidImagesView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
-    <Compile Include="Views\ListItemHeaders\ListItemHeaderAgendaView.cs" />
-    <Compile Include="Views\ListItemHeaders\ListItemHeaderDateGroup.cs" />
-    <Compile Include="Views\ListItemHeaders\ListItemHeaderWeightCategoryView.cs" />
     <Compile Include="Views\ListItems\ListItemClassGroupedTimesView.cs" />
     <Compile Include="Views\ListItems\ListItemClassMenuItemView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassTimeView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassView.cs" />
-    <Compile Include="Views\ListItems\ListItemGradeView.cs" />
     <Compile Include="Views\ListItems\ListItemHolidayScheduleView.cs" />
-    <Compile Include="Views\ListItems\ListItemTaskOrEventView.cs" />
-    <Compile Include="Views\ListItems\ListItemWeightCategorySummaryView.cs" />
     <Compile Include="Views\ListItems\MyScheduleItemView.cs" />
     <Compile Include="Views\MainCalendarItemView.cs" />
     <Compile Include="Views\MainScreenView.cs" />
@@ -223,40 +201,13 @@
     <AndroidResource Include="Resources\layout\PopupView.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\CalendarMain.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemEditingScheduleClassTime.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\Agenda.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderAgenda.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemTaskOrEvent.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemClass.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SingleDay.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\Day.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SingleClass.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ClassDetails.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassTasksOrEvents.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderDateGroup.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\EditClassDetails.xml">
@@ -289,34 +240,7 @@
     <AndroidResource Include="Resources\layout\SyncErrors.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassGrades.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemGrade.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemHeaderWeightCategory.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemWeightCategorySummary.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemWeightCategory.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemClassMenuItem.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemUnassignedItemsHeader.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SpinnerItemTaskOrEventWeightCategoryPreview.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassWhatIf.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassWhatIfTopHeader.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\WidgetAgenda.xml">
@@ -365,9 +289,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\DifferentSemesterOverlay.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\DayPager.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -1290,13 +1211,13 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_notifications_black_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOption.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\SpinnerItemTimeOptionPreview.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\values-v30\colors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add_48px.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

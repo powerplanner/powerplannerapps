@@ -250,11 +250,14 @@
     <Compile Include="Views\UwpDataTemplateView.cs" />
     <Compile Include="Views\UwpDatePicker.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
+    <Compile Include="Views\UwpFrameLayout.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
+    <Compile Include="Views\UwpListView.cs" />
     <Compile Include="Views\UwpNumberTextBox.cs" />
     <Compile Include="Views\UwpPasswordBox.cs" />
     <Compile Include="Views\UwpScrollView.cs" />
+    <Compile Include="Views\UwpSlideView.cs" />
     <Compile Include="Views\UwpSwitch.cs" />
     <Compile Include="Views\UwpTextBlock.cs" />
     <Compile Include="Views\UwpTextBox.cs" />
@@ -273,6 +276,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.11</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.5.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -41,6 +41,7 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchExtraArgs>
     </MtouchExtraArgs>
+<MtouchSdkVersion>15.5</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -69,6 +70,7 @@
     <MtouchFastDev>true</MtouchFastDev>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -81,6 +83,7 @@
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Distribution: Andrew Bares (A9B367L69G)</CodesignKey>
     <CodesignProvision>f8b30adf-bced-4181-87e1-cd3f9c22d962</CodesignProvision>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -119,8 +122,6 @@
     <None Include="App\Secrets.template.cs" />
     <Compile Include="App\Secrets.cs" />
     <Compile Include="App\PowerPlanneriOSApp.cs" />
-    <Compile Include="Controllers\AgendaViewController.cs" />
-    <Compile Include="Controllers\CalendarViewController.cs" />
     <Compile Include="Controllers\ClassesViewController.cs" />
     <Compile Include="Controllers\ClassViewController.cs" />
     <Compile Include="Controllers\ClassViewControllers\ClassDetailsViewController.cs" />

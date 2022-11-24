@@ -12,6 +12,9 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
+using Vx.Views;
+using Vx;
+using PowerPlannerAppDataLibrary.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 {
@@ -29,6 +32,43 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         private void Initialize(Guid localAccountId, ViewItemSemester semester)
         {
             SemesterItemsViewGroup = SemesterItemsViewGroup.Load(localAccountId, semester);
+        }
+
+        protected override View Render()
+        {
+            var baseView = RenderBase();
+
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        baseView,
+
+                        new FloatingAddItemButton
+                        {
+                            AddTask = AddTask,
+                            AddEvent = AddEvent,
+                            AddHoliday = AddHoliday
+                        }
+                    }
+                };
+            }
+
+            return baseView;
+        }
+
+        private View RenderBase()
+        {
+            return new DayComponent
+            {
+                ViewModel = this,
+                SemesterItemsViewGroup = SemesterItemsViewGroup,
+                Today = Today,
+                DisplayDate = CurrentDate,
+                OnDisplayDateChanged = d => CurrentDate = d
+            };
         }
 
         public void ShowItem(ViewItemTaskOrEvent item)

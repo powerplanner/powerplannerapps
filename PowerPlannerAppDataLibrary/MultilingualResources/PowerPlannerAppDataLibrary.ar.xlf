@@ -2626,6 +2626,14 @@ Please think about using an online account instead!</source>
           <source>Hide past complete items</source>
           <target state="final">إخفاء العناصر السابقة الكاملة</target>
         </trans-unit>
+        <trans-unit id="String_Next" translate="yes" xml:space="preserve">
+          <source>Next</source>
+          <target state="final">التالي</target>
+        </trans-unit>
+        <trans-unit id="String_Previous" translate="yes" xml:space="preserve">
+          <source>Previous</source>
+          <target state="final">سابق</target>
+        </trans-unit>
       </group>
     </body>
   </file>

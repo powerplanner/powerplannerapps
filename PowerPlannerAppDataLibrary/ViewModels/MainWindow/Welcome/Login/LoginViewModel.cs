@@ -44,7 +44,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                     Text = VxValue.Create(Username, t => Username = t),
                     InputScope = InputScope.Username,
                     AutoFocus = true,
-                    IsEnabled = !IsLoggingInOnline
+                    IsEnabled = !IsLoggingInOnline,
+                    OnSubmit = () => _ = LoginAsync(),
+                    AutoMoveToNextTextBox = true
                 },
 
                 new PasswordBox
@@ -52,7 +54,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                     Header = PowerPlannerResources.GetString("LoginPage_TextBoxPassword.Header"),
                     Text = VxValue.Create(Password, t => Password = t),
                     Margin = new Thickness(0, 16, 0, 0),
-                    IsEnabled = !IsLoggingInOnline
+                    IsEnabled = !IsLoggingInOnline,
+                    OnSubmit = () => _ = LoginAsync()
                 },
 
                 new AccentButton
@@ -73,23 +76,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                         {
                             Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotUsername.Text"),
                             Click = ForgotUsername,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            Margin = new Thickness(0, 0, 12, 0),
                             IsEnabled = !IsLoggingInOnline
                         }.LinearLayoutWeight(1),
 
                         new Border
                         {
                             BackgroundColor = Theme.Current.SubtleForegroundColor,
-                            Width = 1
+                            Width = 1,
+                            Margin = new Thickness(6, 0, 6, 0)
                         },
 
                         new TextButton
                         {
                             Text = PowerPlannerResources.GetString("LoginPage_TextBlockForgotPassword.Text"),
                             Click = ForgotPassword,
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            Margin = new Thickness(12, 0, 0, 0),
                             IsEnabled = !IsLoggingInOnline
                         }.LinearLayoutWeight(1)
                     }

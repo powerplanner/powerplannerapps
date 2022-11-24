@@ -2622,6 +2622,14 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Hide past complete items</source>
           <target state="final">Masquer les éléments terminés passés</target>
         </trans-unit>
+        <trans-unit id="String_Next" translate="yes" xml:space="preserve">
+          <source>Next</source>
+          <target state="final">Prochaine</target>
+        </trans-unit>
+        <trans-unit id="String_Previous" translate="yes" xml:space="preserve">
+          <source>Previous</source>
+          <target state="Final">Précédente</target>
+        </trans-unit>
       </group>
     </body>
   </file>

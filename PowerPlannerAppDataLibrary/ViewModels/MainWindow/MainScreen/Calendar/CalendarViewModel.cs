@@ -16,13 +16,20 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
+using Vx.Views;
+using System.Drawing;
+using Vx;
+using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
-    public class CalendarViewModel : BaseMainScreenViewModelChild
+    public class CalendarViewModel : ComponentViewModel
     {
         private static DisplayStates _lastDisplayState;
         private static DateTime _initialSelectedDate;
+
+        public override bool DelayFirstRenderTillSizePresent => true;
 
         public static void SetInitialDisplayState(DisplayStates displayState, DateTime selectedDate)
         {
@@ -99,6 +106,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 if (ViewSizeState == ViewSizeStates.Compact)
                 {
                     DisplayState = DisplayStates.Split;
+                }
+                else if (ViewSizeState == ViewSizeStates.FullSize)
+                {
+                    DisplayState = DisplayStates.FullCalendar;
                 }
                 else
                 {
@@ -266,7 +277,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             break;
 
                         case ViewSizeStates.FullyCompact:
-                            if (DisplayState == DisplayStates.Split)
+                            if (DisplayState != DisplayStates.Day)
                             {
                                 DisplayState = DisplayStates.CompactCalendar;
                             }
@@ -470,10 +481,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             if (PowerPlannerApp.UseUnifiedCalendarDayTabItem)
             {
-                if (DisplayState == DisplayStates.FullCalendar)
+                if (DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     SelectedDate = date.Date;
-                    DisplayState = DisplayStates.Split;
+                    DisplayState = DisplayStates.Day;
                 }
                 else
                 {
@@ -529,6 +540,161 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         {
             DisplayMonth = Today;
             SelectedDate = Today;
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            if (Size.Height > 0)
+            {
+                OnSizeChanged(Size, new SizeF());
+            }
+        }
+
+        protected override void OnSizeChanged(SizeF size, SizeF previousSize)
+        {
+            if (size.Height < 500)
+                ViewSizeState = ViewSizeStates.FullyCompact;
+
+            else if (size.Width < 676)
+                ViewSizeState = ViewSizeStates.Compact;
+
+            else
+                ViewSizeState = ViewSizeStates.FullSize;
+        }
+
+        protected override View Render()
+        {
+            Toolbar toolbar = null;
+
+            // Add toolbar to all but UWP
+            if (VxPlatform.Current != Platform.Uwp)
+            {
+                toolbar = new Toolbar
+                {
+                    Title = CanGoBack ? "" : Title,
+                    OnBack = CanGoBack ? () => GoBack() : (Action)null,
+                    BackText = CanGoBack ? Title : null,
+                    PrimaryCommands =
+                    {
+                        // Add will get inserted here unless it's used as floating action
+
+                        new ToolbarCommand
+                        {
+                            Text = PowerPlannerResources.GetString("String_Previous"),
+                            Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
+                            Action = Previous
+                        },
+
+                        new ToolbarCommand
+                        {
+                            Text = PowerPlannerResources.GetString("String_Next"),
+                            Glyph = MaterialDesign.MaterialDesignIcons.ChevronRight,
+                            Action = Next
+                        },
+
+                        // Go to today would be shown for Android (but not iOS since we don't have an icon for it yet)
+                    }
+                }.PowerPlannerThemed();
+
+                // iOS reverses the order of toolbar items, so to ensure prev and next are int he right order, we reverse
+                if (Toolbar.DisplaysPrimaryCommandsRightToLeft)
+                {
+                    toolbar.PrimaryCommands.Reverse();
+                }
+
+                if (VxPlatform.Current != Platform.iOS)
+                {
+                    toolbar.PrimaryCommands.Add(new ToolbarCommand
+                    {
+                        Text = PowerPlannerResources.GetString("String_GoToToday"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                        Action = GoToToday
+                    });
+                }
+
+                // Only on full calendar, show the option for past complete
+                if (DisplayState == DisplayStates.FullCalendar)
+                {
+                    toolbar.SecondaryCommands.Add(new ToolbarCommand
+                    {
+                        Text = PowerPlannerResources.GetString(ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
+                        Action = () => ShowPastCompleteItemsOnFullCalendar = !ShowPastCompleteItemsOnFullCalendar
+                    });
+                }
+
+                // Add button is displayed as floating action button sometimes on Android
+                if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
+                {
+                    toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
+                }
+            }
+
+            CalendarComponent calendar = null;
+            if (DisplayState != DisplayStates.Day)
+            {
+                calendar = new CalendarComponent(this);
+
+                if (DisplayState == DisplayStates.Split)
+                {
+                    calendar.Height = 300 + (CalendarComponent.IntegratedTopControls ? 50 : 0);
+                }
+                else
+                {
+                    calendar.LinearLayoutWeight(1);
+                }
+            }
+
+            View day = null;
+            if (DisplayState == DisplayStates.Day || DisplayState == DisplayStates.Split)
+            {
+                day = new DayComponent
+                {
+                    Today = Today,
+                    SemesterItemsViewGroup = SemesterItemsViewGroup,
+                    ViewModel = this,
+                    DisplayDate = SelectedDate,
+                    OnDisplayDateChanged = value => SelectedDate = value,
+                    IncludeHeader = DisplayState == DisplayStates.Split,
+                    OnExpand = DisplayState == DisplayStates.Split && VxPlatform.Current != Platform.Uwp ? ExpandDay : (Action)null,
+                    IncludeAdd = VxPlatform.Current == Platform.Uwp
+                    
+                };
+                day.LinearLayoutWeight(1);
+            }
+
+            var root = new LinearLayout
+            {
+                Orientation = Orientation.Vertical,
+                Children =
+                {
+                    toolbar,
+                    calendar,
+                    day
+                }
+            };
+
+            // Add floating action button for Android
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        root,
+
+                        day != null ? new FloatingAddItemButton
+                        {
+                            AddTask = () => AddTask(),
+                            AddEvent = () => AddEvent(),
+                            AddHoliday = () => AddHoliday()
+                        } : null
+                    }
+                };
+            }
+
+            return root;
         }
     }
 }

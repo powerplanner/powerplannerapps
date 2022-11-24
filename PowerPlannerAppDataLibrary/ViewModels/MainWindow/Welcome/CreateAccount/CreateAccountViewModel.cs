@@ -61,6 +61,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxUsername.PlaceholderText"),
                             InputScope = InputScope.Username,
                             AutoFocus = true,
+                            AutoMoveToNextTextBox = true,
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },
@@ -71,6 +72,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                             PlaceholderText = PowerPlannerResources.GetString("CreateAccountPage_TextBoxEmail.PlaceholderText"),
                             InputScope = InputScope.Email,
                             Margin = new Thickness(0, 18, 0, 0),
+                            AutoMoveToNextTextBox = true,
                             OnSubmit = CreateAccount,
                             IsEnabled = !IsCreatingOnlineAccount
                         },

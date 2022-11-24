@@ -14,19 +14,19 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            if (newView.Strikethrough)
+            // Note that to ensure clearing strikethrough works, we always use/set AttributedText rather than standard text
+            View.AttributedText = new NSAttributedString(newView.Text, strikethroughStyle: newView.Strikethrough ? NSUnderlineStyle.Single : NSUnderlineStyle.None);
+            View.TextColor = newView.TextColor.ToUI();
+
+            if (newView.MaxLines != 0)
             {
-                View.Text = null;
-                View.AttributedText = new NSAttributedString(newView.Text, strikethroughStyle: NSUnderlineStyle.Single);
+                View.Lines = newView.MaxLines;
             }
             else
             {
-                View.AttributedText = null;
-                View.Text = newView.Text;
+                View.Lines = newView.WrapText ? 0 : 1;
             }
 
-            View.TextColor = newView.TextColor.ToUI();
-            View.Lines = newView.WrapText ? 0 : 1;
             View.Font = View.Font.WithSize(newView.FontSize);
             View.TextAlignment = newView.TextAlignment.ToUITextAlignment();
 

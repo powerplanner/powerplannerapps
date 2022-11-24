@@ -1,9 +1,15 @@
-﻿using PowerPlannerAppDataLibrary.DataLayer;
+﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewLists;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -227,6 +233,119 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             else
             {
                 view.Class = Semester.Classes.First(i => i.Identifier == data.UpperIdentifier);
+            }
+        }
+
+        private DateTime _todayForScheduleSnapshotCache = DateTime.Today;
+        private WeakReferenceCache<DateTime, DayWithScheduleSnapshot> _withScheduleSnapshotCache = new WeakReferenceCache<DateTime, DayWithScheduleSnapshot>();
+
+        public DayWithScheduleSnapshot GetDayWithScheduleSnapshot(DateTime date)
+        {
+            if (_todayForScheduleSnapshotCache != DateTime.Today)
+            {
+                _withScheduleSnapshotCache = new WeakReferenceCache<DateTime, DayWithScheduleSnapshot>();
+                _todayForScheduleSnapshotCache = DateTime.Today;
+            }
+
+            if (_withScheduleSnapshotCache.TryGetValue(date, out DayWithScheduleSnapshot answer))
+            {
+                return answer;
+            }
+
+            var value = new DayWithScheduleSnapshot(this, date);
+            _withScheduleSnapshotCache[date] = value;
+            return value;
+        }
+
+        public class DayWithScheduleSnapshot
+        {
+            private ObservableCollection<DayScheduleItemsArranger> _scheduleSnapshot = new ObservableCollection<DayScheduleItemsArranger>();
+
+            private DayScheduleItemsArranger _arrangedItems;
+            private TasksOrEventsOnDay _tasks;
+
+            private ObservableCollection<string> _noTasks = new ObservableCollection<string>();
+
+            /// <summary>
+            /// Holidays will be first, then tasks/events (including completed), then a DayScheduleItemsArranger if has scheduled items
+            /// </summary>
+            public IList<object> Items { get; set; }
+
+            public class Spacing
+            {
+
+            }
+
+            public DayWithScheduleSnapshot(SemesterItemsViewGroup semesterItems, DateTime date)
+            {
+                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), semesterItems, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, date, DayScheduleSnapshotComponent.HEIGHT_OF_HOUR, ScheduleItemComponent.SPACING_WITH_NO_ADDITIONAL, ScheduleItemComponent.SPACING_WITH_ADDITIONAL, ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
+                _arrangedItems.OnItemsChanged += new WeakEventHandler(_arrangedItems_OnItemsChanged).Handler;
+
+                _tasks = TasksOrEventsOnDay.Get(AccountsManager.GetCached(semesterItems.LocalAccountId), semesterItems.Items, date);
+                _tasks.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Tasks_CollectionChanged).Handler;
+
+                UpdateScheduleSnapshot();
+                UpdateNoTasks();
+
+                Items = new MyAppendedObservableLists<object>(
+
+                    HolidaysOnDay.Create(semesterItems.Items, date),
+
+                    new Spacing[] { new Spacing() },
+
+                    _noTasks,
+
+                    _tasks,
+
+                    _scheduleSnapshot
+
+                );
+            }
+
+            private void Tasks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            {
+                UpdateNoTasks();
+            }
+
+            private void UpdateNoTasks()
+            {
+                if (_tasks.Count == 0)
+                {
+                    if (_noTasks.Count == 0)
+                    {
+                        _noTasks.Add(PowerPlannerResources.GetString("String_NothingDue"));
+                    }
+                }
+                else
+                {
+                    if (_noTasks.Count > 0)
+                    {
+                        _noTasks.RemoveAt(0);
+                    }
+                }
+            }
+
+            private void _arrangedItems_OnItemsChanged(object sender, EventArgs e)
+            {
+                UpdateScheduleSnapshot();
+            }
+
+            private void UpdateScheduleSnapshot()
+            {
+                if (_arrangedItems.HasSpecificTimeItems())
+                {
+                    if (_scheduleSnapshot.Count == 0)
+                    {
+                        _scheduleSnapshot.Add(_arrangedItems);
+                    }
+                }
+                else
+                {
+                    while (_scheduleSnapshot.Count > 0)
+                    {
+                        _scheduleSnapshot.RemoveAt(0);
+                    }
+                }
             }
         }
     }

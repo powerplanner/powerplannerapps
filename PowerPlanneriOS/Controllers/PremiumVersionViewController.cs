@@ -61,14 +61,14 @@ namespace PowerPlanneriOS.Controllers
             var labelDescription = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Text = @"The premium version of Power Planner unlocks a number of useful features.
+                Text = @"The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
 
 The free version is limited to...
  - 1 semester
  - 5 grades per class
  - 1 repeating bulk entry of a task/event
 
-Once you purchase the premium version, you own the premium version on all your devices.",
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).",
                 Lines = 0
             };
             StackView.AddArrangedSubview(labelDescription);

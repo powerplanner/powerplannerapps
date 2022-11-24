@@ -32,6 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                     Text = VxValue.Create(Username, t => Username = t),
                     InputScope = InputScope.Username,
                     AutoFocus = true,
+                    AutoMoveToNextTextBox = true,
                     OnSubmit = ResetPassword,
                     IsEnabled = !IsResettingPassword
                 },

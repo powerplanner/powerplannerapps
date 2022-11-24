@@ -12,6 +12,11 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System.Collections;
 using System.Collections.Specialized;
 using PowerPlannerAppDataLibrary.DataLayer;
+using Vx.Views;
+using Vx;
+using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 {
@@ -56,6 +61,122 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             UpdateHasNoItems();
 
             ListenToLocalEditsFor<DataLayer.DataItems.DataItemMegaItem>().ChangedItems += ItemsLocallyEditedListener_ChangedItems;
+        }
+
+        protected override void Initialize()
+        {
+            _ = LoadAsync();
+
+            base.Initialize();
+        }
+
+        protected override View Render()
+        {
+            if (!IsLoaded)
+            {
+                return null;
+            }
+
+            var baseView = RenderBase();
+
+            // Wrap in floating action button
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        baseView,
+
+                        new FloatingAddItemButton
+                        {
+                            AddTask = AddTask,
+                            AddEvent = AddEvent
+                        }
+                    }
+                };
+            }
+
+            else if (VxPlatform.Current == Platform.iOS)
+            {
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        new Toolbar
+                        {
+                            Title = "Agenda",
+                            PrimaryCommands =
+                            {
+                                ToolbarHelper.AddCommand(AddTask, AddEvent)
+                            }
+                        }.PowerPlannerThemed(),
+
+                        baseView.LinearLayoutWeight(1)
+                    }
+                };
+            }
+
+            return baseView;
+        }
+
+        private View RenderBase()
+        {
+            if (HasNoItems)
+            {
+                return new LinearLayout
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Agenda_NoItemsHeader.Text"),
+                            TextAlignment = HorizontalAlignment.Center,
+                            WrapText = true
+                        }.TitleStyle(),
+
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("Agenda_NoItemsDescription.Text"),
+                            TextAlignment = HorizontalAlignment.Center,
+                            WrapText = true,
+                            TextColor = Theme.Current.SubtleForegroundColor
+                        }
+                    }
+                };
+            }
+
+            return new ListView
+            {
+                Items = ItemsWithHeaders,
+                ItemTemplate = RenderItem,
+                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))
+            };
+        }
+
+        private View RenderItem(object item)
+        {
+            if (item is ViewItemTaskOrEvent taskOrEvent)
+            {
+                return TaskOrEventListItemComponent.Render(taskOrEvent, this);
+            }
+
+            else if (item is ItemsGroupHeader header)
+            {
+                return new TextBlock
+                {
+                    Text = header.Header,
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    WrapText = false,
+                    Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 3)
+                };
+            }
+
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -113,9 +234,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             public DateTime Today { get; private set; }
             public IEnumerable<ViewItemClass> Classes { get; private set; }
             public DateTime NextWeekStartDate { get; private set; }
+            private bool _useThisWeekForNextWeek = false;
+            
             public GroupHeaderProvider(DateTime today, IEnumerable<ViewItemClass> classes, AccountDataItem account)
             {
-                Today = today;
+                Today = today.Date;
                 Classes = classes;
                 var weekChangesOn = account.WeekChangesOn;
                 if (weekChangesOn == DayOfWeek.Sunday)
@@ -124,6 +247,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     weekChangesOn = DayOfWeek.Monday;
                 }
                 NextWeekStartDate = DateTools.Next(weekChangesOn, today.AddDays(1));
+
+                // If today is Saturday and week changes on Monday, since "In two days" would be Monday, everything else on that week should also be "This week" to avoid confusion
+                if ((NextWeekStartDate - Today).Days <= 2)
+                {
+                    _useThisWeekForNextWeek = true;
+                }
 
                 _overdue = new ItemsGroupHeader()
                 {
@@ -229,7 +358,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     return _thisWeek;
 
                 if (itemDate < NextWeekStartDate.AddDays(7))
+                {
+                    if (_useThisWeekForNextWeek)
+                    {
+                        return _thisWeek;
+                    }
+
                     return _nextWeek;
+                }
 
                 if (itemDate <= todayAsUtc.AddDays(30))
                     return _withinThirtyDays;

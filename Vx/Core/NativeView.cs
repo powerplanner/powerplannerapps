@@ -21,9 +21,15 @@ namespace Vx
 
         public View VxParentView { get; set; }
 
+        public View VxViewRef => _originalComponent ?? VxView;
+
         private VxComponent _originalComponent;
         public void Apply(View newView)
         {
+#if DEBUG
+            newView.Validate();
+#endif
+
             var oldView = VxView;
             VxView = newView;
 
@@ -54,19 +60,28 @@ namespace Vx
                 return;
             }
 
+            bool changed = false;
+
             // Only want properties above the base VxComponent
             foreach (var p in newView.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && typeof(VxComponent).IsAssignableFrom(i.DeclaringType) && i.Name != nameof(VxComponent.NativeComponent)))
             {
                 var oldVal = p.GetValue(_originalComponent);
                 var newVal = p.GetValue(newView);
 
-                if (object.ReferenceEquals(_originalComponent, newVal) || object.Equals(_originalComponent, newVal))
+                if (object.ReferenceEquals(oldVal, newVal) || object.Equals(oldVal, newVal))
                 {
                     continue;
                 }
 
                 p.SetValue(_originalComponent, newVal);
-                _originalComponent.MarkInternalComponentDirty();
+                changed = true;
+            }
+
+            if (changed)
+            {
+                // We render on demand here to stay in sync with the parent view changes.
+                // This is critical for iOS ListView to work correctly with changing views
+                _originalComponent.RenderOnDemand();
             }
         }
 

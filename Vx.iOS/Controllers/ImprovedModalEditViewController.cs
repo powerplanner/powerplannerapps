@@ -170,6 +170,41 @@ namespace Vx.iOS.Controllers
         }
     }
 
+    public class ImprovedModalTimePickerViewController : ImprovedModalEditViewController<UIDatePicker, TimeSpan>
+    {
+        private TimeSpan _minTime;
+        public ImprovedModalTimePickerViewController(UIView parentView, TimeSpan currentTime, TimeSpan minTime) : base(parentView, currentTime)
+        {
+            _minTime = minTime;
+        }
+
+        protected override UIDatePicker GenerateControl()
+        {
+            var today = DateTime.Today;
+
+            var datePicker = new UIDatePicker
+            {
+                Mode = UIDatePickerMode.Time,
+                Date = BareUIHelper.DateTimeToNSDate(today.Add(InitialValue)),
+                MinimumDate = BareUIHelper.DateTimeToNSDate(today.Add(_minTime))
+            };
+
+            datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Wheels;
+
+            return datePicker;
+        }
+
+        protected override void Dismiss()
+        {
+            Finish(BareUIHelper.NSDateToDateTime(Control.Date).TimeOfDay);
+        }
+
+        public static Task<ImprovedModalResponse<DateTime>> ShowAsync(UIView parentView, DateTime currentDate)
+        {
+            return new ImprovedModalDatePickerViewController(parentView, currentDate).ShowAsync();
+        }
+    }
+
     public class ImprovedModalPickerViewController : ImprovedModalEditViewController<UIPickerView, object>
     {
         private IEnumerable _items;

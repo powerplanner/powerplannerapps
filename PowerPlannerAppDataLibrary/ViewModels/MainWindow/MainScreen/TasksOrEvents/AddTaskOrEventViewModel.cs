@@ -53,7 +53,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     IsDatePickerVisible ? new DatePicker
                     {
                         Header = PowerPlannerResources.GetString("EditTaskOrEventPage_DatePickerDate.Header"),
-                        Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault())
+                        Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault(Date))
                     } : null,
 
                     IsClassPickerVisible ? new ComboBox
@@ -292,7 +292,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new TextBlock
                                 {
                                     Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatEvery.Text"),
-                                    VerticalAlignment = VerticalAlignment.Center
+                                    VerticalAlignment = VerticalAlignment.Center,
+                                    WrapText = false
                                 },
 
                                 new NumberTextBox
@@ -342,7 +343,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 new DatePicker
                                 {
                                     IsEnabled = ViewModel.IsEndDateChecked,
-                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault()),
+                                    Value = VxValue.Create<DateTime?>(ViewModel.EndDate, v => ViewModel.EndDate = v.GetValueOrDefault(ViewModel.EndDate)),
                                     Margin = new Thickness(12, 0, 0, 0)
                                 }
                             }
@@ -375,7 +376,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 {
                                     Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockOccurrences.Text"),
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Margin = new Thickness(6, 0, 0, 0)
+                                    Margin = new Thickness(6, 0, 0, 0),
+                                    WrapText = false
                                 }
                             }
                         }
@@ -830,12 +832,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         private ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c)
         {
+            return GetWeightCategories(c, this);
+        }
+
+        public static ViewItemWeightCategory[] GetWeightCategories(ViewItemClass c, BaseViewModel viewModel)
+        {
             if (c.WeightCategories == null)
             {
                 string pageCrumbsInfo = "";
                 try
                 {
-                    var topParent = this.GetRootParent();
+                    var topParent = viewModel.GetRootParent();
                     pageCrumbsInfo = string.Join(",", topParent.GetDescendants());
                 }
                 catch { }

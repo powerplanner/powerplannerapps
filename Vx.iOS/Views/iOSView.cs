@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using CoreGraphics;
+using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +9,23 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public abstract class iOSView<V, N> : NativeView<V, N> where V : View where N : UIView
+    public abstract class iOSView<V, N> : NativeView<V, UIViewWrapper> where V : View where N : UIView
     {
         private UITapGestureRecognizer _tapGestureRecognizer;
+        private ContextMenuInteractionHandler _cmInteractionHandler;
 
         public iOSView()
         {
-            View = Activator.CreateInstance<N>();
+            base.View = new UIViewWrapper(Activator.CreateInstance<N>());
             //View.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
+        public UIViewWrapper ViewWrapper => base.View;
+        public new N View => ViewWrapper.View as N;
+
         public iOSView(N view)
         {
-            View = view;
+            base.View = new UIViewWrapper(view);
             //view.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
@@ -28,29 +33,13 @@ namespace Vx.iOS.Views
         {
             View.Alpha = newView.Opacity;
 
-            // Clearing heights on buttons does some funky things, so keeping this scoped to border for now
-            if (newView is Border)
-            {
-                if (oldView == null || newView.Width != oldView.Width)
-                {
-                    View.ClearWidth();
+            ViewWrapper.Margin = newView.Margin;
+            ViewWrapper.Height = newView.Height;
+            ViewWrapper.Width = newView.Width;
+            ViewWrapper.HorizontalAlignment = newView.HorizontalAlignment;
+            ViewWrapper.VerticalAlignment = newView.VerticalAlignment;
 
-                    if (!float.IsNaN(newView.Width))
-                    {
-                        View.SetWidth(newView.Width);
-                    }
-                }
-
-                if (oldView == null || newView.Height != oldView.Height)
-                {
-                    View.ClearHeight();
-
-                    if (!float.IsNaN(newView.Height))
-                    {
-                        View.SetHeight(newView.Height);
-                    }
-                }
-            }
+            UILinearLayout.SetWeight(ViewWrapper, LinearLayout.GetWeight(newView));
 
             if (newView.Tapped != null && _tapGestureRecognizer == null)
             {
@@ -59,6 +48,25 @@ namespace Vx.iOS.Views
                 _tapGestureRecognizer.AddTarget(() => VxView.Tapped?.Invoke());
 
                 View.AddGestureRecognizer(_tapGestureRecognizer);
+            }
+
+            if (newView.ContextMenu != null && UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            {
+                if (_cmInteractionHandler == null)
+                {
+                    _cmInteractionHandler = new ContextMenuInteractionHandler(this);
+                }
+                if (!View.Interactions.Contains(_cmInteractionHandler.Interaction))
+                {
+                    View.AddInteraction(_cmInteractionHandler.Interaction);
+                }
+            }
+            else
+            {
+                if (_cmInteractionHandler != null && View.Interactions.Length > 0)
+                {
+                    View.RemoveInteraction(View.Interactions[0]);
+                }
             }
         }
 
@@ -71,7 +79,7 @@ namespace Vx.iOS.Views
 
                 if (view != null)
                 {
-                    var child = view.CreateUIView(VxView);
+                    var child = view.CreateUIView(VxView).View;
                     child.TranslatesAutoresizingMaskIntoConstraints = false;
                     View.AddSubview(child);
                     afterSubviewAddedAction(child);
@@ -80,7 +88,7 @@ namespace Vx.iOS.Views
             {
                 if (afterTransfer != null)
                 {
-                    afterTransfer(view.NativeView.View as UIView);
+                    afterTransfer(view.NativeUIView());
                 }
             });
         }
@@ -104,6 +112,55 @@ namespace Vx.iOS.Views
                     subview.StretchWidthAndHeight(View, modifiedMargin.Left, modifiedMargin.Top, modifiedMargin.Right, modifiedMargin.Bottom);
                 }
             });
+        }
+
+        protected void ReconcileContentNew(View oldContent, View newContent, Action<View> changeView)
+        {
+            VxReconciler.Reconcile(oldContent, newContent, changeView);
+        }
+
+        protected void ReconcileContentNew(View oldContent, View newContent)
+        {
+            ReconcileContentNew(oldContent, newContent, view =>
+            {
+                var contentView = View as UIContentView;
+
+                if (view != null)
+                {
+                    var child = view.CreateUIView(VxView);
+                    contentView.Content = child;
+                }
+                else
+                {
+                    contentView.Content = null;
+                }
+            });
+        }
+
+
+        private class ContextMenuInteractionHandler : NSObject, IUIContextMenuInteractionDelegate
+        {
+            private iOSView<V, N> _iosView;
+            public UIContextMenuInteraction Interaction { get; private set; }
+
+            public ContextMenuInteractionHandler(iOSView<V, N> iosView)
+            {
+                _iosView = iosView;
+                Interaction = new UIContextMenuInteraction(this);
+            }
+
+            public UIContextMenuConfiguration GetConfigurationForMenu(UIContextMenuInteraction interaction, CGPoint location)
+            {
+                List<UIMenuElement> elementList = new List<UIMenuElement>();
+
+                var cm = _iosView.VxView.ContextMenu?.Invoke();
+                if (cm == null)
+                {
+                    return null;
+                }
+
+                return UIContextMenuConfiguration.Create(null, null, a => VxiOSContextMenu.CreateMenu(cm));
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ using PowerPlannerAndroid.ViewHosts;
 using PowerPlannerAppDataLibrary;
 using Google.Android.Material.Tabs;
 using AndroidX.ViewPager.Widget;
+using Vx.Droid;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -102,6 +103,10 @@ namespace PowerPlannerAndroid.Views
 
             public ClassView ClassView { get; private set; }
 
+            private View _renderedGrades;
+            private View _renderedTasks;
+            private View _renderedEvents;
+
             public ClassPagerAdapter(ClassView classView)
             {
                 ClassView = classView;
@@ -135,15 +140,27 @@ namespace PowerPlannerAndroid.Views
                         break;
 
                     case TASKS:
-                        view = new ClassTasksOrEventsView(container, ClassView.ViewModel.TasksViewModel);
+                        if (_renderedTasks == null)
+                        {
+                            _renderedTasks = ClassView.ViewModel.TasksViewModel.Render();
+                        }
+                        view = _renderedTasks;
                         break;
 
                     case EVENTS:
-                        view = new ClassTasksOrEventsView(container, ClassView.ViewModel.EventsViewModel);
+                        if (_renderedEvents == null)
+                        {
+                            _renderedEvents = ClassView.ViewModel.EventsViewModel.Render();
+                        }
+                        view = _renderedEvents;
                         break;
 
                     case GRADES:
-                        view = new ClassGradesView(container, ClassView.ViewModel.GradesViewModel);
+                        if (_renderedGrades == null)
+                        {
+                            _renderedGrades = ClassView.ViewModel.GradesViewModel.Render();
+                        }
+                        view = _renderedGrades;
                         break;
 
                     default:

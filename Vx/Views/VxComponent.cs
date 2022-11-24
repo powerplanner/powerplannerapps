@@ -29,6 +29,11 @@ namespace Vx.Views
             InitializeForDisplay();
         }
 
+        /// <summary>
+        /// Extending components can override this to true if they'd like to lazy postpone rendering till the Size is present.
+        /// </summary>
+        public virtual bool DelayFirstRenderTillSizePresent => false;
+
         private bool _hasInitializedForDisplay;
         private void InitializeForDisplay()
         {
@@ -46,6 +51,7 @@ namespace Vx.Views
 
             NativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
             NativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
+            NativeComponent.MouseOverChanged += new WeakEventHandler<bool>(NativeComponent_MouseOverChanged).Handler;
 
             Initialize();
 
@@ -73,14 +79,37 @@ namespace Vx.Views
             EnableHotReload();
         }
 
+        private void NativeComponent_MouseOverChanged(object sender, bool e)
+        {
+            OnMouseOverChanged(e);
+        }
+
         private void NativeComponent_ThemeChanged(object sender, EventArgs e)
         {
             MarkDirty();
         }
 
+        private SizeF _prevSize;
         private void NativeComponent_ComponentSizeChanged(object sender, SizeF e)
         {
-            OnSizeChanged(e);
+            if (SubscribeToWidthBreakpoints != null)
+            {
+                foreach (var b in SubscribeToWidthBreakpoints)
+                {
+                    if (e.Width >= b && _prevSize.Width < b)
+                    {
+                        MarkDirty();
+                    }
+
+                    else if (e.Width < b && _prevSize.Width >= b)
+                    {
+                        MarkDirty();
+                    }
+                }
+            }
+
+            OnSizeChanged(e, _prevSize);
+            _prevSize = e;
         }
 
         private async void EnableHotReload()
@@ -187,6 +216,29 @@ namespace Vx.Views
             }
         }
 
+        private void UnsubscribeFromCollections()
+        {
+            if (_subscribedCollections != null)
+            {
+                foreach (var col in _subscribedCollections)
+                {
+                    col.CollectionChanged -= _collectionChangedHandler;
+                }
+
+                _subscribedCollections = null;
+            }
+
+            if (_subscribedCollectionsStrong != null)
+            {
+                foreach (var col in _subscribedCollectionsStrong.Values)
+                {
+                    col.CollectionChanged -= _collectionChangedHandler;
+                }
+
+                _subscribedCollectionsStrong = null;
+            }
+        }
+
         private IEnumerable<INotifyPropertyChanged> AllSubscribeablePropertyValues()
         {
             var seenProps = new HashSet<string>();
@@ -255,6 +307,10 @@ namespace Vx.Views
             if (_subscribedCollections == null)
             {
                 _subscribedCollections = new WeakReferenceList<INotifyCollectionChanged>();
+            }
+
+            if (_collectionChangedHandler == null)
+            {
                 _collectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(Collection_CollectionChanged).Handler;
             }
 
@@ -263,6 +319,39 @@ namespace Vx.Views
                 col.CollectionChanged += _collectionChangedHandler;
                 _subscribedCollections.Add(col);
             }
+        }
+
+        private Dictionary<string, INotifyCollectionChanged> _subscribedCollectionsStrong;
+
+        /// <summary>
+        /// Holds a strong reference and will also clear listening to the previous collection
+        /// </summary>
+        /// <param name="col"></param>
+        /// <param name="prev"></param>
+        protected void SubscribeToCollectionStrong(INotifyCollectionChanged col, string key)
+        {
+            if (_subscribedCollectionsStrong == null)
+            {
+                _subscribedCollectionsStrong = new Dictionary<string, INotifyCollectionChanged>();
+            }
+
+            if (_collectionChangedHandler == null)
+            {
+                _collectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(Collection_CollectionChanged).Handler;
+            }
+
+            if (_subscribedCollectionsStrong.TryGetValue(key, out INotifyCollectionChanged existing))
+            {
+                if (existing == col)
+                {
+                    return;
+                }
+
+                existing.CollectionChanged -= _collectionChangedHandler;
+            }
+
+            _subscribedCollectionsStrong[key] = col;
+            col.CollectionChanged += _collectionChangedHandler;
         }
 
         private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -293,6 +382,17 @@ namespace Vx.Views
         internal void MarkInternalComponentDirty()
         {
             MarkDirty();
+        }
+
+        /// <summary>
+        /// Should only be called in rare cases where you need the update to happen immediately
+        /// </summary>
+        public void RenderOnDemand()
+        {
+            if (_hasInitializedForDisplay)
+            {
+                RenderActual();
+            }
         }
 
         private void RenderActual()
@@ -350,6 +450,7 @@ namespace Vx.Views
         {
             UnsubscribeFromStates();
             UnsubscribeFromProperties();
+            UnsubscribeFromCollections();
         }
 
         private View RenderedContent { get; set; }
@@ -389,13 +490,40 @@ namespace Vx.Views
             }
         }
 
+        /// <summary>
+        /// To observe size, override <see cref="OnSizeChanged(SizeF)"/>.
+        /// </summary>
         public SizeF Size => NativeComponent.ComponentSize;
+
+        /// <summary>
+        /// To use this, override <see cref="SubscribeToIsMouseOver"/>.
+        /// </summary>
+        public VxState<bool> IsMouseOver = new VxState<bool>(false);
+
+        /// <summary>
+        /// Components can override this to react to mouse over changes
+        /// </summary>
+        public virtual bool SubscribeToIsMouseOver => false;
+
+        /// <summary>
+        /// Components can override this to react to when a breakpoint is hit. Note that a breakpoint of 600 will trigger when going from 599 to 600, or when going from 600 to 599. Your rendering logic should use if >= 600.
+        /// </summary>
+        public virtual IEnumerable<float> SubscribeToWidthBreakpoints => null;
 
         /// <summary>
         /// Components can override this to create adaptive UI, choosing to mark dirty at different sizes
         /// </summary>
         /// <param name="size"></param>
-        protected virtual void OnSizeChanged(SizeF size)
+        protected virtual void OnSizeChanged(SizeF size, SizeF previousSize)
+        {
+            // Nothing here
+        }
+
+        /// <summary>
+        /// Must override <see cref="SubscribeToIsMouseOver"/> to true to use this. Components can override this to react to mouse over, but must mark dirty if a render change is desired.
+        /// </summary>
+        /// <param name="isMouseOver"></param>
+        protected virtual void OnMouseOverChanged(bool isMouseOver)
         {
             // Nothing here
         }

@@ -10,6 +10,9 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using ToolsPortable;
 using System.Collections;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using Vx.Views;
+using Vx;
+using PowerPlannerAppDataLibrary.Components;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
@@ -58,6 +61,131 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             ClassViewModel.ViewItemsGroupClass.PropertyChanged += ViewItemsGroupClass_PropertyChanged;
 
             await ClassViewModel.ViewItemsGroupClass.LoadTasksAndEventsTask;
+        }
+
+        protected override void Initialize()
+        {
+            _ = LoadAsync();
+
+            base.Initialize();
+        }
+
+        protected override View Render()
+        {
+            if (!IsLoaded)
+            {
+                return null;
+            }
+
+            var baseView = RenderBase();
+
+            // Wrap in floating action button
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        baseView,
+
+                        new FloatingActionButton
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                            Click = Add,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Bottom,
+                            Margin = new Thickness(Theme.Current.PageMargin)
+                        }
+                    }
+                };
+            }
+
+            return baseView;
+        }
+
+        private View RenderBase()
+        {
+            if (IsPastCompletedItemsDisplayed)
+            {
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        new AccentButton
+                        {
+                            Text = PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "ClassPage_ButtonHideOldTasksString" : "ClassPage_ButtonHideOldEventsString"),
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            Margin = new Thickness(Theme.Current.PageMargin),
+                            Click = HidePastCompletedItems
+                        },
+
+                        new ListView
+                        {
+                            Items = PastCompletedItemsWithHeaders,
+                            ItemTemplate = RenderItem,
+                            Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))
+                        }.LinearLayoutWeight(1)
+                    }
+                };
+            }
+
+            return new LinearLayout
+            {
+                Children =
+                {
+                    new ListView
+                    {
+                        Items = ItemsWithHeaders,
+                        ItemTemplate = RenderItem
+                    }.LinearLayoutWeight(1),
+
+                    new Button
+                    {
+                        Text = PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "ClassPage_ButtonShowOldTasksString" : "ClassPage_ButtonShowOldEventsString"),
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0), Theme.Current.PageMargin),
+                        Click = ShowPastCompletedItems
+                    }
+                }
+            };
+        }
+
+        private View RenderItem(object item)
+        {
+            if (item is ViewItemTaskOrEvent taskOrEvent)
+            {
+                return TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false);
+            }
+
+            else if (item is DateTime header)
+            {
+                return new TextBlock
+                {
+                    Text = GetHeaderText(header),
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    WrapText = false,
+                    Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 3)
+                };
+            }
+
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private string GetHeaderText(DateTime date)
+        {
+            if (date.Date == DateTime.Today)
+                return PowerPlannerResources.GetRelativeDateToday().ToUpper();
+
+            else if (date.Date == DateTime.Today.AddDays(1))
+                return PowerPlannerResources.GetRelativeDateTomorrow().ToUpper();
+
+            else if (date.Date == DateTime.Today.AddDays(-1))
+                return PowerPlannerResources.GetRelativeDateYesterday().ToUpper();
+
+            return date.ToString("dddd, MMM d").ToUpper();
         }
 
         private void ViewItemsGroupClass_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

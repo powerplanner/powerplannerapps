@@ -49,7 +49,7 @@ namespace PowerPlannerAndroid
         LaunchMode = LaunchMode.SingleInstance,
         WindowSoftInputMode = SoftInput.AdjustResize,
         // ConfigurationChanges enables my app to handle orientation changes without re-rendering the views
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout | ConfigChanges.KeyboardHidden)]
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout | ConfigChanges.KeyboardHidden | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : BareActivity
     {
         public static MainActivity GetCurrent()
@@ -383,6 +383,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+
+                    if (v <= new Version(2203, 18, 4, 0))
+                    {
+                        changedText += "\n - Improved the school time zone picker";
+                    }
 
                     if (v <= new Version(2111, 29, 1, 99))
                     {

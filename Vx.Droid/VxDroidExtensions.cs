@@ -153,10 +153,25 @@ namespace Vx.Droid
                     return new DroidFrameLayout();
                 }
 
+                if (view is Vx.Views.ListView)
+                {
+                    return new DroidListView();
+                }
+
+                if (view is Vx.Views.FloatingActionButton)
+                {
+                    return new DroidFloatingActionButton();
+                }
+
+                if (view is Vx.Views.Toolbar)
+                {
+                    return new DroidToolbar();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
-                throw new NotImplementedException("Unknown view. Droid hasn't implemented this.");
+                throw new NotImplementedException("Unknown view. Droid hasn't implemented " + view.GetType());
             };
 
             NativeView.ShowContextMenu = ShowContextMenu;
@@ -166,8 +181,10 @@ namespace Vx.Droid
         {
             var menu = new PopupMenu(ApplicationContext, view.NativeView.View as Android.Views.View);
 
+            var contextMenuItems = contextMenu.Items.OfType<ContextMenuItem>().ToArray();
+
             var menuItems = new List<IMenuItem>();
-            foreach (var item in contextMenu.Items)
+            foreach (var item in contextMenuItems)
             {
                 menuItems.Add(menu.Menu.Add(item.Text));
             }
@@ -175,7 +192,7 @@ namespace Vx.Droid
             menu.MenuItemClick += (e, args) =>
             {
                 int index = menuItems.IndexOf(args.Item);
-                contextMenu.Items[index].Click?.Invoke();
+                contextMenuItems[index].Click?.Invoke();
             };
 
             menu.Show();
@@ -189,7 +206,6 @@ namespace Vx.Droid
             }
 
             var nativeComponent = new DroidNativeComponent(ApplicationContext, component);
-            component.InitializeForDisplay(nativeComponent);
             return nativeComponent;
         }
 
@@ -203,8 +219,14 @@ namespace Vx.Droid
             return new Android.Graphics.Color(color.ToArgb());
         }
 
-        internal static GravityFlags ToDroid(this HorizontalAlignment horizontalAlignment)
+        internal static GravityFlags ToDroid(this HorizontalAlignment horizontalAlignment, int width)
         {
+            // If MatchParent, using gravity flags just messes things up
+            if (width == ViewGroup.LayoutParams.MatchParent)
+            {
+                return (GravityFlags)(-1);
+            }
+
             switch (horizontalAlignment)
             {
                 case HorizontalAlignment.Left:
@@ -221,8 +243,14 @@ namespace Vx.Droid
             }
         }
 
-        internal static GravityFlags ToDroid(this VerticalAlignment verticalAlignment)
+        internal static GravityFlags ToDroid(this VerticalAlignment verticalAlignment, int height)
         {
+            // If MatchParent, using gravity flags just messes things up
+            if (height == ViewGroup.LayoutParams.MatchParent)
+            {
+                return (GravityFlags)(-1);
+            }
+
             switch (verticalAlignment)
             {
                 case VerticalAlignment.Center:

@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:max="100"
+        android:progressBackgroundTint="#6e6e6e"
         android:thumbTint="#90EE90"
         android:progressTint="#90EE90"/>
     

@@ -12,10 +12,15 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
+using Vx.Views;
+using PowerPlannerAppDataLibrary.Helpers;
+using System.Drawing;
+using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class.ClassGradesViewModel;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class ClassWhatIfViewModel : BaseMainScreenViewModelChild
+    public class ClassWhatIfViewModel : PopupComponentViewModel
     {
         private ViewItemClass _originalClass;
 
@@ -27,6 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         public ClassWhatIfViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
         {
             _originalClass = c;
+            Title = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockHeader.Text");
         }
 
         private ViewItemClass _class;
@@ -236,6 +242,145 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         private MyObservableList<BaseViewItemMegaItem> SelectGrades(ViewItemWeightCategory weightCategory)
         {
             return weightCategory.Grades;
+        }
+
+        private VxState<bool> _isDescriptionExpanded = new VxState<bool>(false);
+
+        protected override View Render()
+        {
+            if (!IsLoaded)
+            {
+                return null;
+            }
+
+            var leftMargin = Theme.Current.PageMargin + NookInsets.Left;
+            var rightMargin = Theme.Current.PageMargin + NookInsets.Right;
+            float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
+
+            return ClassGradesViewModel.WrapInFloatingActionButtonIfNeeded(new ScrollView
+            {
+                Content = new LinearLayout
+                {
+                    Children =
+                    {
+                        new Border
+                        {
+                            BackgroundColor = Class.Color.ToColor(),
+                            Content = new LinearLayout
+                            {
+                                Margin = new Thickness(leftMargin, Theme.Current.PageMargin + NookInsets.Top, rightMargin, Theme.Current.PageMargin),
+                                Children =
+                                {
+                                    // ========= WHAT IF? ===========
+                                    VxPlatform.Current == Platform.Uwp ? new LinearLayout
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        Children =
+                                        {
+                                            new Border
+                                            {
+                                                BackgroundColor = Color.White,
+                                                Height = 4,
+                                                VerticalAlignment = VerticalAlignment.Center
+                                            }.LinearLayoutWeight(1),
+
+                                            new TextBlock
+                                            {
+                                                Text = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockHeader.Text"),
+                                                FontSize = Theme.Current.TitleFontSize,
+                                                TextColor = Color.White,
+                                                Margin = new Thickness(6, 0, 6, 0),
+                                                WrapText = false
+                                            },
+
+                                            new Border
+                                            {
+                                                BackgroundColor = Color.White,
+                                                Height = 4,
+                                                VerticalAlignment = VerticalAlignment.Center
+                                            }.LinearLayoutWeight(1)
+                                        }
+                                    } : null,
+
+                                    new TransparentContentButton
+                                    {
+                                        Content = new TextBlock
+                                        {
+                                            Text = PowerPlannerResources.GetString("ClassWhatIfPage_RunExplanation.Text"),
+                                            TextColor = Color.White,
+                                            FontSize = Theme.Current.CaptionFontSize,
+                                            Height = _isDescriptionExpanded.Value ? float.NaN : 40
+                                        },
+                                        Click = () => _isDescriptionExpanded.Value = !_isDescriptionExpanded.Value
+                                    },
+
+                                    new TextBlock
+                                    {
+                                        Text = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockEnterDesired.Text"),
+                                        TextColor = Color.White,
+                                        Margin = new Thickness(0, 6, 0, 0)
+                                    },
+
+                                    new LinearLayout
+                                    {
+                                        Margin = new Thickness(0, 6, 0, 0),
+                                        Orientation = Orientation.Horizontal,
+                                        Children =
+                                        {
+                                            new NumberTextBox
+                                            {
+                                                Number = VxValue.Create<double?>(DesiredGrade * 100, v =>
+                                                {
+                                                    if (v != null)
+                                                    {
+                                                        DesiredGrade = v.Value / 100;
+                                                    }
+                                                }),
+                                                Margin = new Thickness(0, 0, 6, 0)
+                                            }.LinearLayoutWeight(1),
+
+                                            new NumberTextBox
+                                            {
+                                                Number = VxValue.Create<double?>(DesiredGPA, v =>
+                                                {
+                                                    if (v != null)
+                                                    {
+                                                        DesiredGPA = v.Value;
+                                                    }
+                                                }),
+                                                Margin = new Thickness(6, 0, 0, 0)
+                                            }.LinearLayoutWeight(1)
+                                        }
+                                    },
+
+                                    DesiredErrorMessage != null ? new TextBlock
+                                    {
+                                        Text = DesiredErrorMessage,
+                                        TextColor = Color.White,
+                                        FontWeight = FontWeights.SemiBold,
+                                        FontSize = Theme.Current.CaptionFontSize,
+                                        Margin = new Thickness(0, 6, 0, 0)
+                                    } : null
+                                }
+                            }
+                        },
+
+                        new GradesSummaryComponent
+                        {
+                            Class = Class,
+                            Margin = new Thickness(leftMargin, Theme.Current.PageMargin, rightMargin, 12)
+                        },
+
+                        new AdaptiveGradesListComponent
+                        {
+                            Class = Class,
+                            OnRequestViewGrade = g => ShowItem(g),
+                            Margin = new Thickness(leftMargin, 12, rightMargin, Theme.Current.PageMargin + NookInsets.Bottom + floatingActionButtonOffset),
+                            IsInWhatIfMode = true
+                        }
+                    }
+                }
+            }, AddGrade, NookInsets);
         }
     }
 }

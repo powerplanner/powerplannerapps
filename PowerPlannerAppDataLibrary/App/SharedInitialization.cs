@@ -32,6 +32,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             Theme.DefaultAccentColor = System.Drawing.Color.FromArgb(84, 107, 199);
             Theme.DefaultDarkAccentColor = System.Drawing.Color.FromArgb(100, 127, 234); // Lighter than normal so shows up on black backgrounds
+            Theme.Current.ChromeColor = System.Drawing.Color.FromArgb(46, 54, 109);
         }
 
         private static void SetUpApiKey()

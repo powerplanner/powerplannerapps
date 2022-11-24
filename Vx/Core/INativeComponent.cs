@@ -10,6 +10,7 @@ namespace Vx
     {
         event EventHandler<SizeF> ComponentSizeChanged;
         event EventHandler ThemeChanged;
+        event EventHandler<bool> MouseOverChanged;
         SizeF ComponentSize { get; }
         VxComponent Component { get; }
 

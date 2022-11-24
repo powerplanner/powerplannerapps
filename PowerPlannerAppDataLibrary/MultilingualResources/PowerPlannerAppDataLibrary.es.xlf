@@ -2623,6 +2623,14 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Hide past complete items</source>
           <target state="final">Ocultar elementos completos anteriores</target>
         </trans-unit>
+        <trans-unit id="String_Next" translate="yes" xml:space="preserve">
+          <source>Next</source>
+          <target state="final">Próxima</target>
+        </trans-unit>
+        <trans-unit id="String_Previous" translate="yes" xml:space="preserve">
+          <source>Previous</source>
+          <target state="final">Anterior</target>
+        </trans-unit>
       </group>
     </body>
   </file>

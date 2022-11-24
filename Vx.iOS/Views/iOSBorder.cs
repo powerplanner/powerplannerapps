@@ -5,7 +5,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSBorder : iOSView<Vx.Views.Border, UIView>
+    public class iOSBorder : iOSView<Vx.Views.Border, UIContentView>
     {
         public iOSBorder()
         {
@@ -19,15 +19,10 @@ namespace Vx.iOS.Views
             View.Layer.BorderWidth = newView.BorderThickness.Top;
             View.Layer.BorderColor = newView.BorderColor.ToUI().CGColor;
             View.Layer.CornerRadius = newView.CornerRadius;
+            View.Layer.MasksToBounds = newView.CornerRadius > 0; // Clip the corners of subviews
+            View.Padding = newView.Padding;
 
-            // Incorporate padding with child's margin
-            var paddingPlusMargin = newView.Padding;
-            if (newView.Content != null)
-            {
-                paddingPlusMargin = paddingPlusMargin.Combine(newView.Content.Margin);
-            }
-
-            ReconcileContent(oldView?.Content, newView.Content, overriddenChildMargin: paddingPlusMargin);
+            ReconcileContentNew(oldView?.Content, newView.Content);
         }
     }
 }
