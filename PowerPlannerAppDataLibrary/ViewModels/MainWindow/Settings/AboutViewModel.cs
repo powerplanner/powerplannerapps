@@ -20,6 +20,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Title = PowerPlannerResources.GetString("Settings_AboutPage_Header.Text");
         }
 
+        private VxState<string> _developerLogs = new VxState<string>();
+
         protected override View Render()
         {
             return RenderGenericPopupContent(
@@ -46,8 +48,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Text = "support@powerplanner.net",
                     Click = EmailDeveloper,
                     Margin = new Thickness(0, 6, 0, 0)
-                }
+                },
+
+                RenderHeader("developer logs"),
+                new Button
+                {
+                    Text = "Show logs",
+                    Click = ShowLogs,
+                    Margin = new Thickness(0, 6, 0, 0)
+                },
+
+                _developerLogs.Value != null ? new MultilineTextBox
+                {
+                    Text = new VxValue<string>(_developerLogs.Value, e => { }),
+                    Height = 150,
+                    Margin = new Thickness(0, 12, 0, 0)
+                } : null
             );
+        }
+
+        private void ShowLogs()
+        {
+            _developerLogs.Value = TelemetryExtension.Current?.GetDeveloperLogs();
         }
 
         private void OpenPrivacy()

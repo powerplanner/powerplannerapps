@@ -24,7 +24,15 @@ using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
-    public class CalendarViewModel : ComponentViewModel
+    public interface ICalendarOrDayViewModel
+    {
+        void AddTask(DateTime date);
+        void AddEvent(DateTime date);
+        void AddHoliday(DateTime date);
+        MainScreenViewModel MainScreenViewModel { get; }
+    }
+
+    public class CalendarViewModel : ComponentViewModel, ICalendarOrDayViewModel
     {
         private static DisplayStates _lastDisplayState;
         private static DateTime _initialSelectedDate;
@@ -554,6 +562,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         protected override void OnSizeChanged(SizeF size, SizeF previousSize)
         {
+            if (previousSize.Height == 0 && size.Height != 0)
+            {
+                // Make sure it renders after getting size
+                MarkDirty();
+            }
+
             if (size.Height < 500)
                 ViewSizeState = ViewSizeStates.FullyCompact;
 
@@ -566,6 +580,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         protected override View Render()
         {
+            if (Size.Height == 0)
+            {
+                return null;
+            }
+
             Toolbar toolbar = null;
 
             // Add toolbar to all but UWP

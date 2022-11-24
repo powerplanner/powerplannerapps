@@ -4,12 +4,14 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using ToolsPortable;
+using Vx;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
@@ -43,7 +45,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         public DateTime Date { get; set; }
         public DateTime Today { get; set; } = DateTime.Today;
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; set; }
-        public BaseMainScreenViewModelDescendant ViewModel { get; set; }
+        public ICalendarOrDayViewModel ViewModel { get; set; }
 
         [VxSubscribe]
         public SingleDayComponentLiveProps LiveProps { get; set; }
@@ -115,17 +117,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                                 new ContextMenuItem
                                 {
                                     Text = PowerPlannerResources.GetString("String_Task"),
-                                    Click = () => (ViewModel as Calendar.CalendarViewModel).AddTask(Date)
+                                    Click = () => ViewModel.AddTask(Date)
                                 },
                                 new ContextMenuItem
                                 {
                                     Text = PowerPlannerResources.GetString("String_Event"),
-                                    Click = () => (ViewModel as Calendar.CalendarViewModel).AddEvent(Date)
+                                    Click = () => ViewModel.AddEvent(Date)
                                 },
                                 new ContextMenuItem
                                 {
                                     Text = PowerPlannerResources.GetString("String_Holiday"),
-                                    Click = () => (ViewModel as Calendar.CalendarViewModel).AddHoliday(Date)
+                                    Click = () => ViewModel.AddHoliday(Date)
                                 }
                             }
                         }.Show(_addRef),
@@ -168,7 +170,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             }
             if (objItem is ViewItemTaskOrEvent taskOrEvent)
             {
-                return TaskOrEventListItemComponent.Render(taskOrEvent, ViewModel, IncludeDate: false);
+                return TaskOrEventListItemComponent.Render(taskOrEvent, ViewModel as BaseMainScreenViewModelDescendant, IncludeDate: false);
             }
             else if (objItem is DayScheduleItemsArranger arranger)
             {
