@@ -45,9 +45,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
-  </ItemGroup>
-  <ItemGroup>
     <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%402x.png">
       <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%402x.png</Link>
     </ImageAsset>
