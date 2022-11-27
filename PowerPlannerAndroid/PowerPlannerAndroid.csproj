@@ -47,7 +47,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
-      <Version>3.1.1</Version>
+      <Version>5.0.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Glide">
       <Version>4.13.2.2</Version>

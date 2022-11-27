@@ -41,7 +41,7 @@
     </PackageReference>
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1">
     </PackageReference>
-    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1">
+    <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
