@@ -39,7 +39,7 @@
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.2">
     </PackageReference>
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1">
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="2.0.0">
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
     </PackageReference>
@@ -63,12 +63,6 @@
     <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5%402x.png">
       <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5%402x.png</Link>
     </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\App Store Icon.png">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\App Store Icon.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
-      <Link>Resources\Images.xcassets\AppIcons.appiconset\Contents.json</Link>
-    </ImageAsset>
     <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%403x.png">
       <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%403x.png</Link>
     </ImageAsset>
@@ -90,90 +84,6 @@
     <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%402x.png">
       <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%402x.png</Link>
     </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_3x.png">
-      <Link>Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_3x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_2x.png">
-      <Link>Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_2x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_1x.png">
-      <Link>Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_1x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\baseline_error_black_18pt.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\baseline_error_black_18pt.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-60.png">
-      <Link>Resources\Images.xcassets\TabCalendar.imageset\icons8-today-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-90.png">
-      <Link>Resources\Images.xcassets\TabCalendar.imageset\icons8-today-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendar.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabCalendar.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-30.png">
-      <Link>Resources\Images.xcassets\TabCalendar.imageset\icons8-today-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-100.png">
-      <Link>Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-100.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-50.png">
-      <Link>Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-50.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-150.png">
-      <Link>Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-150.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderCompleteFilled.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\SliderCompleteFilled.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-60.png">
-      <Link>Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabScheduleSelected.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabScheduleSelected.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-90.png">
-      <Link>Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-30.png">
-      <Link>Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-90.png">
-      <Link>Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-30.png">
-      <Link>Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabSchedule.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabSchedule.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-60.png">
-      <Link>Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-60.png">
-      <Link>Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-30.png">
-      <Link>Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClassesSelected.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabClassesSelected.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-90.png">
-      <Link>Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-60.png">
-      <Link>Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-20.png">
-      <Link>Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-20.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarBack.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\ToolbarBack.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-40.png">
-      <Link>Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-40.png</Link>
-    </ImageAsset>
     <ImageAsset Update="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%403x.png">
       <Link>Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%403x.png</Link>
     </ImageAsset>
@@ -182,33 +92,6 @@
     </ImageAsset>
     <ImageAsset Update="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%401x.png">
       <Link>Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%401x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\PowerPlannerIcon.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\PowerPlannerIcon.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMore.imageset\icons8-student-male-60.png">
-      <Link>Resources\Images.xcassets\TabMore.imageset\icons8-student-male-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMore.imageset\icons8-student-male-90.png">
-      <Link>Resources\Images.xcassets\TabMore.imageset\icons8-student-male-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMore.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabMore.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMore.imageset\icons8-student-male-30.png">
-      <Link>Resources\Images.xcassets\TabMore.imageset\icons8-student-male-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-40.png">
-      <Link>Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-40.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-20.png">
-      <Link>Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-20.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarDown.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\ToolbarDown.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-60.png">
-      <Link>Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-60.png</Link>
     </ImageAsset>
     <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%401x.png">
       <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%401x.png</Link>
@@ -219,178 +102,11 @@
     <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait%402x.png">
       <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait%402x.png</Link>
     </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json">
-      <Link>Resources\Images.xcassets\LaunchImages.launchimage\Contents.json</Link>
-    </ImageAsset>
     <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%402x.png">
       <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%402x.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortraitRetina.png">
-      <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortraitRetina.png</Link>
     </ImageAsset>
     <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortrait%402x.png">
       <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortrait%402x.png</Link>
     </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-30.png">
-      <Link>Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-90.png">
-      <Link>Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-60.png">
-      <Link>Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabMoreSelected.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabMoreSelected.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-150.png">
-      <Link>Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-150.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderComplete.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\SliderComplete.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-100.png">
-      <Link>Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-100.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-50.png">
-      <Link>Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-50.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-60.png">
-      <Link>Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgendaSelected.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabAgendaSelected.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-30.png">
-      <Link>Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-90.png">
-      <Link>Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-60.png">
-      <Link>Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-20.png">
-      <Link>Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-20.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\DeleteIcon.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\DeleteIcon.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-40.png">
-      <Link>Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-40.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-40.png">
-      <Link>Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-40.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-20.png">
-      <Link>Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-20.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\MenuVerticalIcon.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\MenuVerticalIcon.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-60.png">
-      <Link>Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-60.png">
-      <Link>Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-30.png">
-      <Link>Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendarSelected.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabCalendarSelected.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-90.png">
-      <Link>Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-150.png">
-      <Link>Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-150.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncompleteFilled.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\SliderIncompleteFilled.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-50.png">
-      <Link>Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-50.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-100.png">
-      <Link>Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-100.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-90.png">
-      <Link>Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-30.png">
-      <Link>Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SettingsIcon.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\SettingsIcon.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-60.png">
-      <Link>Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-100.png">
-      <Link>Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-100.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-50.png">
-      <Link>Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-50.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-150.png">
-      <Link>Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-150.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SliderIncomplete.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\SliderIncomplete.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-60.png">
-      <Link>Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-30.png">
-      <Link>Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgenda.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabAgenda.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-90.png">
-      <Link>Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClasses.imageset\icons8-Books-60.png">
-      <Link>Resources\Images.xcassets\TabClasses.imageset\icons8-Books-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClasses.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\TabClasses.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClasses.imageset\icons8-Books-90.png">
-      <Link>Resources\Images.xcassets\TabClasses.imageset\icons8-Books-90.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\TabClasses.imageset\icons8-Books-30.png">
-      <Link>Resources\Images.xcassets\TabClasses.imageset\icons8-Books-30.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-60.png">
-      <Link>Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-20.png">
-      <Link>Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-20.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SaveAsIcon.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\SaveAsIcon.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-40.png">
-      <Link>Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-40.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-60.png">
-      <Link>Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-60.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-40.png">
-      <Link>Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-40.png</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarForward.imageset\Contents.json">
-      <Link>Resources\Images.xcassets\ToolbarForward.imageset\Contents.json</Link>
-    </ImageAsset>
-    <ImageAsset Update="Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-20.png">
-      <Link>Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-20.png</Link>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Condition="'$(_ResourcePrefix)' != ''" Update="Resources\Fonts\MaterialIconsOutlined-Regular.otf">
-      <Link>Resources\Fonts\MaterialIconsOutlined-Regular.otf</Link>
-    </BundleResource>
   </ItemGroup>
 </Project>
