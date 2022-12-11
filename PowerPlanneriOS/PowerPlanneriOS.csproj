@@ -566,10 +566,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>4.5.3</Version>
+      <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>4.5.3</Version>
+      <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="PCLCrypto">
       <Version>2.1.32-alpha</Version>
