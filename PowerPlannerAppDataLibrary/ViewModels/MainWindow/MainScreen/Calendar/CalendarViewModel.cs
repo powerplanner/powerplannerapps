@@ -24,7 +24,15 @@ using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
-    public class CalendarViewModel : ComponentViewModel
+    public interface ICalendarOrDayViewModel
+    {
+        void AddTask(DateTime date);
+        void AddEvent(DateTime date);
+        void AddHoliday(DateTime date);
+        MainScreenViewModel MainScreenViewModel { get; }
+    }
+
+    public class CalendarViewModel : ComponentViewModel, ICalendarOrDayViewModel
     {
         private static DisplayStates _lastDisplayState;
         private static DateTime _initialSelectedDate;

@@ -25,6 +25,8 @@ namespace PowerPlannerAndroid.Extensions
         {
             try
             {
+                _developerLogs.Add(EventToString(eventName, properties));
+
                 if (properties == null)
                 {
                     properties = new Dictionary<string, string>();
@@ -55,6 +57,8 @@ namespace PowerPlannerAndroid.Extensions
         {
             try
             {
+                _developerLogs.Add(ExceptionToString(ex, exceptionName, properties));
+
                 Dictionary<string, string> finalProps = new Dictionary<string, string>();
 
                 if (exceptionName != null)
@@ -83,6 +87,12 @@ namespace PowerPlannerAndroid.Extensions
             {
                 AppCenter.SetUserId(UserId);
             }
+        }
+
+        private List<string> _developerLogs = new List<string>();
+        public override string GetDeveloperLogs()
+        {
+            return string.Join("\n", _developerLogs);
         }
     }
 }
