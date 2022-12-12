@@ -110,7 +110,10 @@ namespace InterfacesDroid.Windows
         {
             portableWindow.PropertyChanged += PortableWindow_PropertyChanged;
             if (portableWindow.ViewModel != null)
+            {
                 _presenter.ViewModel = portableWindow.ViewModel;
+            }
+            Activity.IsBackEnabled = portableWindow.CanGoBack;
         }
 
         private void PortableWindow_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -119,6 +122,10 @@ namespace InterfacesDroid.Windows
             {
                 case "ViewModel":
                     _presenter.ViewModel = (sender as PortableAppWindow).ViewModel;
+                    break;
+
+                case nameof(PortableAppWindow.CanGoBack):
+                    Activity.IsBackEnabled = (sender as PortableAppWindow).CanGoBack;
                     break;
             }
         }

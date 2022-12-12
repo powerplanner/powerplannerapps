@@ -16,7 +16,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 
 namespace PowerPlannerAndroid.Widgets
 {
-    [BroadcastReceiver(Label = "Agenda")]
+    [BroadcastReceiver(Label = "Agenda", Exported = true)]
     [IntentFilter(new string[] { "android.appwidget.action.APPWIDGET_UPDATE" })]
     [MetaData("android.appwidget.provider", Resource = "@xml/widgetagendainfo")]
     public class WidgetAgendaProvider : AppWidgetProvider
@@ -45,14 +45,14 @@ namespace PowerPlannerAndroid.Widgets
                     // Wire the header click
                     Intent openIntent = new Intent(context, typeof(MainActivity))
                         .SetAction(Intent.ActionView);
-                    PendingIntent pendingOpenIntent = PendingIntent.GetActivity(context, 0, openIntent, 0);
+                    PendingIntent pendingOpenIntent = PendingIntent.GetActivity(context, 0, openIntent, PendingIntentFlags.Immutable);
                     views.SetOnClickPendingIntent(Resource.Id.WidgetAgendaHeaderBranding, pendingOpenIntent);
 
                     // Wire the "+" click
                     Intent addIntent = new Intent(context, typeof(MainActivity))
                         .SetAction(Intent.ActionView)
                         .SetData(Android.Net.Uri.Parse("powerplanner:?" + new QuickAddToCurrentAccountArguments().SerializeToString()));
-                    PendingIntent pendingAddIntent = PendingIntent.GetActivity(context, 0, addIntent, 0);
+                    PendingIntent pendingAddIntent = PendingIntent.GetActivity(context, 0, addIntent, PendingIntentFlags.Immutable);
                     views.SetOnClickPendingIntent(Resource.Id.WidgetAgendaHeaderAddButton, pendingAddIntent);
 
                     // Set up the list adapter to use our service that generates the items
@@ -62,7 +62,7 @@ namespace PowerPlannerAndroid.Widgets
                     Intent itemClickIntent = new Intent(context, typeof(MainActivity));
                     itemClickIntent.SetAction(Intent.ActionView);
                     itemClickIntent.PutExtra(AppWidgetManager.ExtraAppwidgetId, appWidgetId);
-                    PendingIntent pendingItemClickIntent = PendingIntent.GetActivity(context, 0, itemClickIntent, 0);
+                    PendingIntent pendingItemClickIntent = PendingIntent.GetActivity(context, 0, itemClickIntent, PendingIntentFlags.Immutable);
                     views.SetPendingIntentTemplate(Resource.Id.WidgetAgendaListView, pendingItemClickIntent);
 
                     // Update the widget

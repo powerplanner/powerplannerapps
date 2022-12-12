@@ -21,7 +21,7 @@ using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Services
 {
-    [Service(Permission = Android.Manifest.Permission.BindRemoteviews, Exported = false)]
+    [Service(Permission = Android.Manifest.Permission.BindRemoteviews)]
     public class WidgetScheduleService : RemoteViewsService
     {
         public override IRemoteViewsFactory OnGetViewFactory(Intent intent)

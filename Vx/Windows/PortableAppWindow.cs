@@ -100,6 +100,13 @@ namespace BareMvvm.Core.Windows
             }
         }
 
+        private bool _canGoBack;
+        public bool CanGoBack
+        {
+            get => _canGoBack;
+            set => SetProperty(ref _canGoBack, value, nameof(CanGoBack));
+        }
+
         private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (ViewModel == null)
@@ -111,6 +118,11 @@ namespace BareMvvm.Core.Windows
             {
                 case nameof(ViewModel.FinalBackButtonVisibility):
                     BackButtonVisibility = ViewModel.FinalBackButtonVisibility;
+                    break;
+
+                case nameof(ViewModel.FinalContent):
+                    var final = ViewModel?.FinalContent;
+                    CanGoBack = final != null ? final.CanGoBack : false;
                     break;
             }
         }

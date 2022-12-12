@@ -173,5 +173,18 @@ namespace BareMvvm.Core.ViewModels
                 ExceptionHelper.ReportHandledException(ex);
             }
         }
+
+        public override bool CanGoBack
+        {
+            get
+            {
+                if (Popups.Count > 0)
+                {
+                    return true;
+                }
+
+                return base.CanGoBack;
+            }
+        }
     }
 }

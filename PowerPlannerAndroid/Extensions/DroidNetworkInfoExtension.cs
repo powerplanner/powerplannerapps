@@ -46,6 +46,7 @@ namespace PowerPlannerAndroid.Extensions
 
                     else
                     {
+#pragma warning disable CS0618 // Type or member is obsolete
                         NetworkInfo activeInfo = connMgr.ActiveNetworkInfo;
                         if (activeInfo != null && activeInfo.IsConnected)
                         {
@@ -58,6 +59,7 @@ namespace PowerPlannerAndroid.Extensions
                                 return NetworkCostType.Limited;
                             }
                         }
+#pragma warning restore CS0618 // Type or member is obsolete
                     }
                 }
             }

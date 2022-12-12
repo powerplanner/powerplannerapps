@@ -19,7 +19,6 @@ namespace InterfacesDroid.ViewModelPresenters
     {
         public GenericViewModelPresenter(Context context) : base(context)
         {
-            Clickable = true;
         }
 
         private BaseViewModel _viewModel;

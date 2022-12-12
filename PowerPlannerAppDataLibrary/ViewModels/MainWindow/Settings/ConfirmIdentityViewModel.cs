@@ -20,7 +20,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private AccountDataItem _currAccount;
         public event EventHandler OnIdentityConfirmed;
-        public event EventHandler ActionIncorrectPassword;
 
         public bool ShowForgotPassword { get; private set; }
 

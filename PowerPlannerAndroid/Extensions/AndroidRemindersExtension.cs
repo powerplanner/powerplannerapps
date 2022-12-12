@@ -31,6 +31,11 @@ namespace PowerPlannerAndroid.Extensions
 {
     public class AndroidRemindersExtension : RemindersExtension
     {
+        public override void RequestReminderPermission()
+        {
+            MainActivity.GetCurrent().RequestPermissions(new string[] { Android.Manifest.Permission.PostNotifications }, 0);
+        }
+
         protected override async Task ActuallyClearReminders(Guid localAccountId)
         {
             // This occurs when an account is deleted
@@ -399,12 +404,11 @@ namespace PowerPlannerAndroid.Extensions
                 };
             }
             
-            var builder = CreateReminderBuilder(context, localAccountId, launchArgs);
+            var builder = CreateReminderBuilder(context, localAccountId, launchArgs, GetChannelIdForDayOf(localAccountId));
             Bundle b = new Bundle();
             b.PutString(EXTRA_UNIQUE_ID, extraUniqueId);
             builder.SetExtras(b);
             builder.SetContentTitle(item.Name);
-            builder.SetChannelId(GetChannelIdForDayOf(localAccountId));
             string subtitle = item.Subtitle;
             if (subtitle != null)
             {
@@ -716,21 +720,20 @@ namespace PowerPlannerAndroid.Extensions
                 LocalAccountId = localAccountId,
                 Page = ViewPageArguments.Pages.Agenda,
                 LaunchSurface = LaunchSurface.Toast
-            })
-            .SetChannelId(GetChannelIdForDayBefore(localAccountId));
+            }, GetChannelIdForDayBefore(localAccountId));
         }
 
-        public static NotificationCompat.Builder CreateReminderBuilder(Context context, Guid localAccountId, BaseArguments launchArgs)
+        public static NotificationCompat.Builder CreateReminderBuilder(Context context, Guid localAccountId, BaseArguments launchArgs, string channelId)
         {
             Intent intent = new Intent(context, typeof(MainActivity))
                 .SetAction(Intent.ActionView)
                 .SetData(Android.Net.Uri.Parse("powerplanner:?" + launchArgs.SerializeToString()));
 
-            var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
 
             // By setting SDK target to 21 or higher, the logo will automatically become white on the system tray,
             // and will use the color specified when displayed in the notification itself
-            var builder = new NotificationCompat.Builder(context)
+            var builder = new NotificationCompat.Builder(context, channelId)
                 .SetSmallIcon(Resource.Drawable.ic_powerplanner_notification)
                 .SetColor(new Color(55, 84, 198).ToArgb()) // #3754C6 (a bit more vibrant than my other theme colors)
                 .SetCategory(Notification.CategoryReminder)

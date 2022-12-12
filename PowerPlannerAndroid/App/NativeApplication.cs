@@ -29,6 +29,9 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAndroid.ViewModel.Settings;
 using PowerPlannerAppDataLibrary.ViewModels;
+using AndroidX.Core.Content.PM;
+using Android.Content.PM;
+using System.Runtime.Remoting.Contexts;
 
 namespace PowerPlannerAndroid.App
 {
@@ -43,7 +46,18 @@ namespace PowerPlannerAndroid.App
     {
         protected NativeApplication(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
-            var versionName = Context.PackageManager.GetPackageInfo(Context.PackageName, 0).VersionName;
+            PackageInfo packageInfo;
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
+            {
+                packageInfo = Context.PackageManager.GetPackageInfo(Context.PackageName, PackageManager.PackageInfoFlags.Of(0));
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                packageInfo = Context.PackageManager.GetPackageInfo(Context.PackageName, 0);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+            var versionName = packageInfo.VersionName;
             Variables.VERSION = Version.Parse(versionName);
 
 #if DEBUG

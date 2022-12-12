@@ -25,7 +25,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
         {
             Title = PowerPlannerResources.GetString("LoginPage.Title");
 
-            Initialize();
+            InitializeContent();
         }
 
         protected override View Render()
@@ -167,7 +167,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             set { _alertUserUpgradeAccountNeeded = new WeakReference<Action<string>>(value); }
         }
 
-        private async void Initialize()
+        private async void InitializeContent()
         {
             Accounts = new MyObservableList<AccountDataItem>(await AccountsManager.GetAllAccounts());
 

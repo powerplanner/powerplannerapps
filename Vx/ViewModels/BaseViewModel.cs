@@ -383,6 +383,19 @@ namespace BareMvvm.Core.ViewModels
             set { SetProperty(ref _finalBackButtonVisibility, value, "FinalBackButtonVisibility"); }
         }
 
+        public virtual bool CanGoBack
+        {
+            get
+            {
+                if (Parent != null)
+                {
+                    return Parent.CanGoBack;
+                }
+
+                return false;
+            }
+        }
+
         private bool _isLoaded;
         public bool IsLoaded
         {

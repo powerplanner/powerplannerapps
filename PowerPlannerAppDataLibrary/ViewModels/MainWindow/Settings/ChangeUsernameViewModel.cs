@@ -16,8 +16,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
 
-        public event EventHandler<string> ActionError;
-
         public AccountDataItem Account { get; private set; }
 
         public ChangeUsernameViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)

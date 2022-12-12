@@ -15,7 +15,7 @@ using Android.App.Job;
 
 namespace PowerPlannerAndroid.Services
 {
-    [Service]
+    [Service(Exported = true)]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     public class MyFirebaseMessagingService : FirebaseMessagingService
     {
@@ -64,6 +64,11 @@ namespace PowerPlannerAndroid.Services
 
             var jobScheduler = (JobScheduler)this.GetSystemService(Context.JobSchedulerService);
             jobScheduler.Schedule(builder.Build());
+        }
+
+        public override void OnNewToken(string token)
+        {
+            // TODO: In future should have this kick off a job service that syncs all accounts
         }
     }
 }

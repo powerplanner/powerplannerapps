@@ -25,7 +25,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 
 namespace PowerPlannerAndroid.Services
 {
-    [Service(Permission = Android.Manifest.Permission.BindRemoteviews, Exported = false)]
+    [Service(Permission = Android.Manifest.Permission.BindRemoteviews)]
     public class WidgetAgendaService : RemoteViewsService
     {
         public override IRemoteViewsFactory OnGetViewFactory(Intent intent)

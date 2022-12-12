@@ -861,6 +861,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     var semesters = TableSemesters.ToArray();
                     var classes = TableClasses.ToArray();
 
+#pragma warning disable CS0618 // Type or member is obsolete
                     var handleV2update = new Action<BaseDataItemHomeworkExam>((dataItem) =>
                     {
                         if (version < 2)
@@ -872,6 +873,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                             dataItem.WeightCategoryIdentifier = Guid.Empty;
                         }
                     });
+#pragma warning restore CS0618 // Type or member is obsolete
 
                     using (var batchInserter = new BatchDbInserter(_db, 30))
                     {
