@@ -29,6 +29,7 @@ namespace PowerPlannerUWP.TileHelpers
     public static class TileHelper
     {
         internal const string KEY_ACCOUNT = "account";
+        internal const int MAX_WIDE_TILE_TEXT_LENGTH = 66;
 
         private static MultipleChannelsWorkQueue _updateTileNotificationsForAccountWorkQueue = new MultipleChannelsWorkQueue();
         /// <summary>
@@ -571,7 +572,7 @@ namespace PowerPlannerUWP.TileHelpers
         {
             return new AdaptiveText()
             {
-                Text = TrimString(UWPNotificationsHelper.StripInvalidCharacters(item.Name), 200),
+                Text = TrimString(UWPNotificationsHelper.StripInvalidCharacters(item.Name), MAX_WIDE_TILE_TEXT_LENGTH),
                 HintStyle = AdaptiveTextStyle.CaptionSubtle
             };
         }
