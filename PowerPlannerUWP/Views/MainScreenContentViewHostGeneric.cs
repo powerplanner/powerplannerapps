@@ -30,18 +30,18 @@ namespace PowerPlannerUWP.Views
 
         private void UpdateCommandBar()
         {
-            _mainScreenView = (ViewModel.FindAncestor<MainScreenViewModel>().GetNativeView() as MainScreenView);
+            //_mainScreenView = (ViewModel.FindAncestor<MainScreenViewModel>().GetNativeView() as MainScreenView);
             
-            if (_isCommandBarHidden)
-            {
-                _mainScreenView.HideCommandBar();
-            }
-            else
-            {
-                _mainScreenView.ShowCommandBar();
-            }
-            _mainScreenView.SetCommandBarContent(_commandBarContent);
-            _mainScreenView.SetCommandBarCommands(_primaryCommands, _secondaryCommands);
+            //if (_isCommandBarHidden)
+            //{
+            //    _mainScreenView.HideCommandBar();
+            //}
+            //else
+            //{
+            //    _mainScreenView.ShowCommandBar();
+            //}
+            //_mainScreenView.SetCommandBarContent(_commandBarContent);
+            //_mainScreenView.SetCommandBarCommands(_primaryCommands, _secondaryCommands);
         }
 
         protected static AppBarButton CreateAppBarButton(Symbol symbol, string label, RoutedEventHandler onClick)
@@ -65,15 +65,15 @@ namespace PowerPlannerUWP.Views
 
         protected void SetCommandBarCommands(ICommandBarElement[] commands, ICommandBarElement[] secondaryCommands)
         {
-            _primaryCommands = commands;
-            _secondaryCommands = secondaryCommands;
+            //_primaryCommands = commands;
+            //_secondaryCommands = secondaryCommands;
 
-            if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
-            {
-                _mainScreenView.SetCommandBarCommands(commands, secondaryCommands);
-            }
+            //if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
+            //{
+            //    _mainScreenView.SetCommandBarCommands(commands, secondaryCommands);
+            //}
 
-            ShowCommandBar();
+            //ShowCommandBar();
         }
         
         protected void SetCommandBarPrimaryCommands(params ICommandBarElement[] commands)
@@ -95,22 +95,22 @@ namespace PowerPlannerUWP.Views
 
         private void ShowCommandBar()
         {
-            _isCommandBarHidden = false;
+            //_isCommandBarHidden = false;
 
-            if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
-            {
-                _mainScreenView.ShowCommandBar();
-            }
+            //if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
+            //{
+            //    _mainScreenView.ShowCommandBar();
+            //}
         }
 
         protected void HideCommandBar()
         {
-            _isCommandBarHidden = true;
+            //_isCommandBarHidden = true;
 
-            if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
-            {
-                _mainScreenView.HideCommandBar();
-            }
+            //if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
+            //{
+            //    _mainScreenView.HideCommandBar();
+            //}
         }
     }
 }

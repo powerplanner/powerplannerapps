@@ -17,12 +17,6 @@ namespace PowerPlannerUWP.Views
             Transitions.Add(new EntranceThemeTransition());
         }
 
-        public new ComponentViewModel ViewModel
-        {
-            get => base.ViewModel as ComponentViewModel;
-            set => base.ViewModel = value;
-        }
-
         public override void OnViewModelSetOverride()
         {
             base.OnViewModelSetOverride();

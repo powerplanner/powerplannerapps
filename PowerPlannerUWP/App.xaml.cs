@@ -110,7 +110,7 @@ namespace PowerPlannerUWP
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
                 { typeof(LoginViewModel), typeof(LoginView) },
                 { typeof(DayViewModel), typeof(MainContentDayView) },
-                { typeof(MainScreenViewModel), typeof(MainScreenView) },
+                { typeof(MainScreenViewModel), typeof(ComponentView) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
                 { typeof(PromoOtherPlatformsViewModel), typeof(PromoOtherPlatformsView) },
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },

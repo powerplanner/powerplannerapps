@@ -29,11 +29,70 @@ using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using BareMvvm.Core.Snackbar;
+using Vx.Views;
+using System.Drawing;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
     public class MainScreenViewModel : PagedViewModelWithPopups
     {
+        protected override View Render()
+        {
+            return new LinearLayout
+            {
+                Orientation = Orientation.Horizontal,
+                Children =
+                {
+                    new LinearLayout
+                    {
+                        Width = 220,
+                        BackgroundColor = PowerPlannerColors.PowerPlannerBlue,
+                        Children =
+                        {
+                            new TextBlock
+                            {
+                                Text = "PowerPlannerIcon"
+                            },
+
+                            new ScrollView
+                            {
+                                Content = RenderMenuItems()
+                            }.LinearLayoutWeight(1)
+                        }
+                    }
+                }
+            };
+        }
+
+        private View RenderMenuItems()
+        {
+            var layout = new LinearLayout();
+
+            foreach (var item in AvailableItems)
+            {
+                var menuItem = new TransparentContentButton
+                {
+                    Content = new Border
+                    {
+                        BackgroundColor = item == SelectedItem ? Color.FromArgb(255, 84, 107, 199) : Color.Transparent,
+                        Content = new TextBlock
+                        {
+                            Text = item.ToString(),
+                            FontSize = 20,
+                            TextColor = Color.White,
+                            Margin = new Thickness(24, 12, 0, 12),
+                            FontWeight = FontWeights.SemiLight
+                        }
+                    },
+                    Click = () => SelectedItem = item
+                };
+
+                layout.Children.Add(menuItem);
+            }
+
+            return layout;
+        }
+
         public enum SyncStates
         {
             Syncing,

@@ -254,6 +254,8 @@ namespace PowerPlannerUWP.Views
                 }
             }
 
+            button.VerticalAlignment = VerticalAlignment.Stretch;
+
             return new Border()
             {
                 Child = button,
