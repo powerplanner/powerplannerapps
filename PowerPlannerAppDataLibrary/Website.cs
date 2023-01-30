@@ -19,6 +19,7 @@ namespace PowerPlannerAppDataLibrary
 #endif
 
         public const string DataApiUrl = "https://data.powerplanner.net/api/";
+        public const string UploadApiUrl = "https://upload.powerplanner.net/api/";
 
         /// <summary>
         /// The root url, like "https://powerplanner.net/"

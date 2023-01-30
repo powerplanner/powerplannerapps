@@ -1159,7 +1159,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                             content.Add(streamContent, "image", imageName);
 
-                            using (var message = await client.PostAsync(Website.URL + "uploadimagemultipart", content))
+                            using (var message = await client.PostAsync(Website.UploadApiUrl + "UploadImageMultiPart", content))
                             {
                                 message.EnsureSuccessStatusCode();
 
