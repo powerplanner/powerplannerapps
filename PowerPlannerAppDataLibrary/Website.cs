@@ -18,6 +18,8 @@ namespace PowerPlannerAppDataLibrary
         public static readonly string URL = "https://powerplanner.net/api/";
 #endif
 
+        public const string DataApiUrl = "https://data.powerplanner.net/api/";
+
         /// <summary>
         /// The root url, like "https://powerplanner.net/"
         /// </summary>

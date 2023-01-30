@@ -482,7 +482,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 {
                     try
                     {
-                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, request.CancellationToken);
+                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.DataApiUrl + "Sync", req, request.CancellationToken);
                     }
 
                     catch (OperationCanceledException)
