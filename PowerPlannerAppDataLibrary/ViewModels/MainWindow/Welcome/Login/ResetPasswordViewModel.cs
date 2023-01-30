@@ -89,7 +89,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 var username = Username.Trim();
 
                 ResetPasswordResponse resp = await WebHelper.Download<ResetPasswordRequest, ResetPasswordResponse>(
-                    Website.URL + "resetpasswordmodern",
+                    Website.ClientApiUrl + "resetpasswordmodern",
                     new ResetPasswordRequest() { Username = username, Email = email },
                     Website.ApiKey);
 

@@ -1448,7 +1448,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                             Settings = settings
                         };
 
-                        SyncSettingsResponse response = await account.PostAuthenticatedAsync<SyncSettingsRequest, SyncSettingsResponse>(Website.URL + "syncsettingsmodern", request);
+                        SyncSettingsResponse response = await account.PostAuthenticatedAsync<SyncSettingsRequest, SyncSettingsResponse>(Website.ClientApiUrl + "syncsettingsmodern", request);
 
                         if (response == null)
                             return;
@@ -1508,7 +1508,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 }
 
                 AddPremiumAccountDurationResponse resp = await account.PostAuthenticatedAsync<AddPremiumAccountDurationRequest, AddPremiumAccountDurationResponse>(
-                    Website.URL + "addpremiumaccountduration",
+                    Website.ClientApiUrl + "addpremiumaccountduration",
                     new AddPremiumAccountDurationRequest()
                     {
                         DaysToAdd = int.MaxValue

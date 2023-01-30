@@ -57,7 +57,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             try
             {
                 GetEmailResponse response = await Account.PostAuthenticatedAsync<GetEmailRequest, GetEmailResponse>(
-                    Website.URL + "getemailmodern",
+                    Website.ClientApiUrl + "getemailmodern",
                     new GetEmailRequest());
 
                 if (response != null)
@@ -119,7 +119,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             try
             {
                 ChangeEmailResponse response = await Account.PostAuthenticatedAsync<ChangeEmailRequest, ChangeEmailResponse>(
-                    Website.URL + "changeemailmodern",
+                    Website.ClientApiUrl + "changeemailmodern",
                     new ChangeEmailRequest()
                     {
                         NewEmail = Email.Text.Trim()

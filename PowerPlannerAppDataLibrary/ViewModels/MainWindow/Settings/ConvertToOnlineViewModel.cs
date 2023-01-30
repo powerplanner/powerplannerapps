@@ -85,7 +85,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 IsConverting = true;
 
                 _response = await WebHelper.Download<CreateAccountRequest, CreateAccountResponse>(
-                    Website.URL + "createaccountmodern",
+                    Website.ClientApiUrl + "createaccountmodern",
                     new CreateAccountRequest()
                     {
                         Username = currAccount.Username,
