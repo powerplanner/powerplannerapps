@@ -50,7 +50,7 @@ namespace Vx.iOS.Views
                 View.AddGestureRecognizer(_tapGestureRecognizer);
             }
 
-            if (newView.ContextMenu != null && UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            if (newView.ContextMenu != null && UIDevice.CurrentDevice.CheckSystemVersion(14, 0))
             {
                 if (_cmInteractionHandler == null)
                 {
