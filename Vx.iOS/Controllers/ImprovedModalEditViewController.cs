@@ -189,7 +189,10 @@ namespace Vx.iOS.Controllers
                 MinimumDate = BareUIHelper.DateTimeToNSDate(today.Add(_minTime))
             };
 
-            datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Wheels;
+            if (SdkSupportHelper.IsUIDatePickerWheelsStyleSupported)
+            {
+                datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Wheels;
+            }
 
             return datePicker;
         }
