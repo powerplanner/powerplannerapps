@@ -117,7 +117,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private async System.Threading.Tasks.Task deleteAndFinish()
         {
             await AccountsManager.Delete(Account.LocalAccountId);
-            RemoveViewModel();
         }
     }
 }
