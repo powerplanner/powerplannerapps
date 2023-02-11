@@ -78,6 +78,8 @@ namespace Vx.iOS.Views
     {
         protected override void ApplyProperties(LinearLayout oldView, LinearLayout newView)
         {
+            View.HoldOffApplyingChanges();
+
             base.ApplyProperties(oldView, newView);
 
             // Temp background color for debugging purposes
@@ -110,6 +112,8 @@ namespace Vx.iOS.Views
                     View.ClearArrangedSubviews();
                 }
                 );
+
+            View.ApplyAnyHeldChanges();
         }
     }
 
