@@ -25,10 +25,18 @@ namespace Vx.iOS.Views
 
                     if (value != null)
                     {
+                        value.View?.SetContentHuggingPriority(this.ContentHuggingPriority(UILayoutConstraintAxis.Horizontal), UILayoutConstraintAxis.Horizontal);
+                        value.View?.SetContentHuggingPriority(this.ContentHuggingPriority(UILayoutConstraintAxis.Vertical), UILayoutConstraintAxis.Vertical);
                         base.AddArrangedSubview(value);
                     }
                 }
             }
+        }
+
+        public override void SetContentHuggingPriority(float priority, UILayoutConstraintAxis axis)
+        {
+            Content?.View?.SetContentHuggingPriority(priority, axis);
+            base.SetContentHuggingPriority(priority, axis);
         }
 
         private Thickness _padding = new Thickness();
@@ -55,10 +63,6 @@ namespace Vx.iOS.Views
                 new WrapperConstraint(this, NSLayoutAttribute.Bottom, 1, Padding.Bottom),
                 this,
                 this);
-
-            // Ensures auto widths/heights within linear layouts don't end up consuming full space
-            Content?.View.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
-            Content?.View.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Vertical);
         }
     }
 }
