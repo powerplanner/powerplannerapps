@@ -2631,6 +2631,18 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>Previous</source>
           <target state="final">Anterior</target>
         </trans-unit>
+        <trans-unit id="EditSemesterPage_Title_Copying" translate="yes" xml:space="preserve">
+          <source>COPY SEMESTER</source>
+          <target state="final">COPIAR SEMESTRE</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_Year.Header" translate="yes" xml:space="preserve">
+          <source>Year</source>
+          <target state="final">Año</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_String_CopiedItemsExplanation" translate="yes" xml:space="preserve">
+          <source>Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.</source>
+          <target state="final">Se copiarán los horarios y la configuración de calificaciones de las clases seleccionadas. Las tareas, los eventos y las calificaciones de las clases no se copiarán.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

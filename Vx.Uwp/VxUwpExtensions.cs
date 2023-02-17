@@ -394,6 +394,10 @@ namespace Vx.Uwp
                 case MaterialDesign.MaterialDesignIcons.Close:
                     return Symbol.Cancel;
 
+                case MaterialDesign.MaterialDesignIcons.More:
+                case MaterialDesign.MaterialDesignIcons.MoreHoriz:
+                    return Symbol.More;
+
                 default:
                     return Symbol.Refresh;
             }

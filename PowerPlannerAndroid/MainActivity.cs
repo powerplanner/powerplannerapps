@@ -384,6 +384,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2302, 11, 2, 99))
+                    {
+                        changedText += "\n - Ability to copy semesters with their classes and schedules!";
+                    }
+
                     if (v <= new Version(2203, 18, 4, 0))
                     {
                         changedText += "\n - Improved the school time zone picker";

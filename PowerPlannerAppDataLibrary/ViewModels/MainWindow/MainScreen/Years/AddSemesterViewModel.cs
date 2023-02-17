@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
 using Vx.Views;
+using static PowerPlannerSending.Schedule;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
@@ -18,7 +19,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
     {
         protected override bool InitialAllowLightDismissValue => false;
 
-        public enum OperationState { Adding, Editing }
+        public enum OperationState { Adding, Editing, Copying }
 
         public OperationState State { get; private set; }
 
@@ -31,6 +32,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             if (State == OperationState.Adding)
             {
                 return "AddSemesterView";
+            }
+            else if (State == OperationState.Copying)
+            {
+                return "CopySemesterView";
             }
             else
             {
@@ -50,6 +55,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     AutoFocus = true,
                     OnSubmit = Save
                 },
+
+                // Year picker (for when copying semester)
+                State == OperationState.Copying ? new ComboBox
+                {
+                    Margin = new Thickness(0, 18, 0, 0),
+                    Header = PowerPlannerResources.GetString("EditSemesterPage_Year.Header"),
+                    Items = _copyAvailableYears,
+                    SelectedItem = VxValue.Create<object>(_copySelectedYear.Value, v => _copySelectedYear.Value = v as ViewItemYear),
+                    ItemTemplate = y => new TextBlock
+                    {
+                        Text = (y as ViewItemYear).Name
+                    }
+                } : null,
 
                 new LinearLayout
                 {
@@ -73,12 +91,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     }
                 },
 
-                new CheckBox
+                State != OperationState.Copying ? new CheckBox
                 {
                     Text = PowerPlannerResources.GetString("AddYearPage_OverrideGpaCredits.Header"),
                     IsChecked = VxValue.Create(IsCustomizeCreditsGpaChecked, v => IsCustomizeCreditsGpaChecked = v),
                     Margin = new Thickness(0, 18, 0, 0)
-                },
+                } : null,
 
                 IsCustomizeCreditsGpaChecked ? new LinearLayout
                 {
@@ -100,8 +118,60 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                             Header = PowerPlannerResources.GetString("AddYearPage_OverrideCredits.Header")
                         }.LinearLayoutWeight(1)
                     }
-                } : null
+                } : null,
+
+                // Classes section (for copying semester)
+                State == OperationState.Copying ? new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("MainMenuItem_Classes"),
+                    Margin = new Thickness(0, 18, 0, 4)
+                } : null,
+
+                State == OperationState.Copying ? RenderClassesForCopy() : null
             );
+        }
+
+        private View RenderClassesForCopy()
+        {
+            var layout = new LinearLayout
+            {
+                Margin = new Thickness(12,6,12,6)
+            };
+
+            foreach (var c in _copyAvailableClasses)
+            {
+                layout.Children.Add(new CheckBox
+                {
+                    Text = c.Name,
+                    IsChecked = VxValue.Create(_copySelectedClasses.Contains(c), isChecked =>
+                    {
+                        if (isChecked)
+                        {
+                            _copySelectedClasses.Add(c);
+                        }
+                        else
+                        {
+                            _copySelectedClasses.Remove(c);
+                        }
+
+                        MarkDirty();
+                    })
+                });
+            }
+
+            layout.Children.Add(new TextBlock
+            {
+                // Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.
+                Text = PowerPlannerResources.GetString("EditSemesterPage_String_CopiedItemsExplanation"),
+                FontSize = Theme.Current.CaptionFontSize,
+                Margin = new Thickness(0, 6, 0, 0)
+            });
+
+            return new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundAlt1Color,
+                Content = layout
+            };
         }
 
         public ViewItemSemester SemesterToEdit { get; private set; }
@@ -113,20 +183,34 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public AddParameter AddParams { get; private set; }
 
+        private ViewItemYear[] _copyAvailableYears;
+        private VxState<ViewItemYear> _copySelectedYear = new VxState<ViewItemYear>();
+        private ViewItemClass[] _copyAvailableClasses;
+        private HashSet<ViewItemClass> _copySelectedClasses;
+
         private AddSemesterViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
             State = state;
 
-            Title = State == OperationState.Adding ? PowerPlannerResources.GetString("EditSemesterPage_Title_Adding") : PowerPlannerResources.GetString("EditSemesterPage_Title_Editing");
-
             PrimaryCommand = PopupCommand.Save(Save);
 
-            if (state == OperationState.Editing)
+            switch (state)
             {
-                SecondaryCommands = new PopupCommand[]
-                {
+                case OperationState.Adding:
+                    Title = PowerPlannerResources.GetString("EditSemesterPage_Title_Adding");
+                    break;
+
+                case OperationState.Copying:
+                    Title = PowerPlannerResources.GetString("EditSemesterPage_Title_Copying");
+                    break;
+
+                default:
+                    Title = PowerPlannerResources.GetString("EditSemesterPage_Title_Editing");
+                    SecondaryCommands = new PopupCommand[]
+                    {
                     PopupCommand.Delete(ConfirmDelete)
-                };
+                    };
+                    break;
             }
         }
 
@@ -136,6 +220,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 AddParams = addParams
             };
+        }
+
+        public static AddSemesterViewModel CreateForCopy(BaseViewModel parent, ViewItemSemester semesterToCopy, ViewItemYear[] years)
+        {
+            var answer = new AddSemesterViewModel(parent, OperationState.Copying)
+            {
+                _copyAvailableYears = years,
+                _copyAvailableClasses = semesterToCopy.Classes.ToArray()
+            };
+            answer._copySelectedClasses = new HashSet<ViewItemClass>(answer._copyAvailableClasses);
+            answer._copySelectedYear.Value = semesterToCopy.Year;
+            return answer;
         }
 
         public static AddSemesterViewModel CreateForEdit(BaseViewModel parent, ViewItemSemester semesterToEdit)
@@ -190,75 +286,138 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public void Save()
         {
+            string name = Name;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                new PortableMessageDialog(PowerPlannerResources.GetStringNoNameMessageBody(), PowerPlannerResources.GetStringNoNameMessageHeader()).Show();
+                return;
+            }
+
+            if (State == OperationState.Copying && _copySelectedYear.Value == null)
+            {
+                // Not localizing this since it should theoretically never get hit
+                new PortableMessageDialog("You must select a year to copy the semester into.", "No year").Show();
+                return;
+            }
+
+            DataItemSemester semester;
+
+            if (SemesterToEdit != null)
+                semester = new DataItemSemester()
+                {
+                    Identifier = SemesterToEdit.Identifier
+                };
+
+            else if (AddParams != null)
+                semester = new DataItemSemester()
+                {
+                    Identifier = Guid.NewGuid(),
+                    UpperIdentifier = AddParams.YearIdentifier
+                };
+
+            else if (State == OperationState.Copying)
+            {
+                semester = new DataItemSemester
+                {
+                    Identifier = Guid.NewGuid(),
+                    UpperIdentifier = _copySelectedYear.Value.Identifier
+                };
+            }
+
+            else
+                throw new NullReferenceException("Either editing semester or add semester param must be initialized.");
+
+            semester.Name = name;
+            semester.OverriddenGPA = IsCustomizeCreditsGpaChecked && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
+            semester.OverriddenCredits = IsCustomizeCreditsGpaChecked && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
+
+            if (StartDate != null)
+            {
+                semester.Start = DateTime.SpecifyKind(StartDate.Value.Date, DateTimeKind.Utc);
+
+                if (!SqlDate.IsValid(semester.Start))
+                    semester.Start = DateTime.Today;
+            }
+
+            else
+            {
+                semester.Start = PowerPlannerSending.DateValues.UNASSIGNED;
+            }
+
+            if (EndDate != null)
+            {
+                semester.End = DateTime.SpecifyKind(EndDate.Value.Date, DateTimeKind.Utc);
+
+                if (!SqlDate.IsValid(semester.End))
+                    semester.End = DateTime.Today;
+            }
+
+            else
+            {
+                semester.End = PowerPlannerSending.DateValues.UNASSIGNED;
+            }
+
+
+            if (!PowerPlannerSending.DateValues.IsUnassigned(semester.Start)
+                && !PowerPlannerSending.DateValues.IsUnassigned(semester.End)
+                && semester.Start > semester.End)
+            {
+                new PortableMessageDialog(PowerPlannerResources.GetString("EditSemesterPage_String_StartDateGreaterThanEndExplanation"), PowerPlannerResources.GetString("EditSemesterPage_String_InvalidStartDate")).Show();
+                return;
+            }
+
             TryStartDataOperationAndThenNavigate(async delegate
             {
-                string name = Name;
-
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    new PortableMessageDialog(PowerPlannerResources.GetStringNoNameMessageBody(), PowerPlannerResources.GetStringNoNameMessageHeader()).Show();
-                    return;
-                }
-
-                DataItemSemester semester;
-
-                if (SemesterToEdit != null)
-                    semester = new DataItemSemester()
-                    {
-                        Identifier = SemesterToEdit.Identifier
-                    };
-
-                else if (AddParams != null)
-                    semester = new DataItemSemester()
-                    {
-                        Identifier = Guid.NewGuid(),
-                        UpperIdentifier = AddParams.YearIdentifier
-                    };
-
-                else
-                    throw new NullReferenceException("Either editing semester or add semester param must be initialized.");
-
-                semester.Name = name;
-                semester.OverriddenGPA = IsCustomizeCreditsGpaChecked && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
-                semester.OverriddenCredits = IsCustomizeCreditsGpaChecked && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
-
-                if (StartDate != null)
-                {
-                    semester.Start = DateTime.SpecifyKind(StartDate.Value.Date, DateTimeKind.Utc);
-
-                    if (!SqlDate.IsValid(semester.Start))
-                        semester.Start = DateTime.Today;
-                }
-
-                else
-                {
-                    semester.Start = PowerPlannerSending.DateValues.UNASSIGNED;
-                }
-
-                if (EndDate != null)
-                {
-                    semester.End = DateTime.SpecifyKind(EndDate.Value.Date, DateTimeKind.Utc);
-
-                    if (!SqlDate.IsValid(semester.End))
-                        semester.End = DateTime.Today;
-                }
-
-                else
-                {
-                    semester.End = PowerPlannerSending.DateValues.UNASSIGNED;
-                }
-
-
-                if (!PowerPlannerSending.DateValues.IsUnassigned(semester.Start)
-                    && !PowerPlannerSending.DateValues.IsUnassigned(semester.End)
-                    && semester.Start > semester.End)
-                {
-                    new PortableMessageDialog(PowerPlannerResources.GetString("EditSemesterPage_String_StartDateGreaterThanEndExplanation"), PowerPlannerResources.GetString("EditSemesterPage_String_InvalidStartDate")).Show();
-                    return;
-                }
-
                 DataChanges changes = new DataChanges();
                 changes.Add(semester);
+
+                if (State == OperationState.Copying)
+                {
+                    foreach (var c in _copySelectedClasses)
+                    {
+                        var dataC = new DataItemClass
+                        {
+                            Identifier = Guid.NewGuid(),
+                            UpperIdentifier = semester.Identifier,
+                            Name = c.Name,
+                            Credits = c.Credits,
+                            DoesRoundGradesUp = c.DoesRoundGradesUp,
+                            ShouldAverageGradeTotals = c.ShouldAverageGradeTotals,
+                            PassingGrade = c.PassingGrade,
+                            GpaType = c.GpaType,
+                            RawColor = c.Color,
+                            Details = c.Details
+                        };
+                        dataC.SetGradeScales(c.GradeScales);
+                        changes.Add(dataC);
+
+                        foreach (var w in c.WeightCategories)
+                        {
+                            changes.Add(new DataItemWeightCategory
+                            {
+                                Identifier = Guid.NewGuid(),
+                                UpperIdentifier = dataC.Identifier,
+                                Name = w.Name,
+                                WeightValue = w.WeightValue
+                            });
+                        }
+
+                        foreach (var s in c.Schedules)
+                        {
+                            changes.Add(new DataItemSchedule
+                            {
+                                Identifier = Guid.NewGuid(),
+                                UpperIdentifier = dataC.Identifier,
+                                DayOfWeek = s.DayOfWeek,
+                                StartTime = s.DataItem.StartTime,
+                                EndTime = s.DataItem.EndTime,
+                                Room = s.Room,
+                                ScheduleWeek = s.ScheduleWeek
+                            });
+                        }
+                    }
+                }
 
                 await PowerPlannerApp.Current.SaveChanges(changes);
             }, delegate

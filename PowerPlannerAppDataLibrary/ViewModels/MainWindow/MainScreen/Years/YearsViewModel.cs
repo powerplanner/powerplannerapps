@@ -10,6 +10,7 @@ using PowerPlannerAppDataLibrary.App;
 using ToolsPortable;
 using Vx.Views;
 using PowerPlannerAppDataLibrary.Converters;
+using PowerPlannerAppDataLibrary.Components;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
@@ -263,6 +264,37 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     TextAlignment = HorizontalAlignment.Right,
                                     WrapText = false,
                                     MaxLines = 2 // iOS needs MaxLines since otherwise it'll trim at one line and cut off the end date on the second line
+                                },
+
+                                new MoreButton
+                                {
+                                    Margin = new Thickness(0,-12,-12,-12),
+                                    ContextMenu = () => new ContextMenu
+                                    {
+                                        Items =
+                                        {
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Editing"),
+                                                Glyph = MaterialDesign.MaterialDesignIcons.Edit,
+                                                Click = () => EditSemester(semester)
+                                            },
+
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Copying"),
+                                                Glyph = MaterialDesign.MaterialDesignIcons.Copy,
+                                                Click = () => CopySemester(semester)
+                                            },
+
+                                            new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("MessageDeleteSemester_Title"),
+                                                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                                                Click = () => DeleteSemester(semester)
+                                            },
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -396,6 +428,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         public void EditSemester(ViewItemSemester semester)
         {
             ShowPopup(AddSemesterViewModel.CreateForEdit(MainScreenViewModel, semester));
+        }
+
+        public void CopySemester(ViewItemSemester semester)
+        {
+            ShowPopup(AddSemesterViewModel.CreateForCopy(MainScreenViewModel, semester, YearsViewItemsGroup.School.Years.ToArray()));
+        }
+
+        public async void DeleteSemester(ViewItemSemester semester)
+        {
+            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("MessageDeleteSemester_Body"), PowerPlannerResources.GetString("MessageDeleteSemester_Title")))
+            {
+                await MainScreenViewModel.DeleteItem(semester.Identifier);
+            }
         }
 
         public async void OpenSemester(Guid semesterId)

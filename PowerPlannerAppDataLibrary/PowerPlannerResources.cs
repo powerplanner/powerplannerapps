@@ -55,6 +55,11 @@ namespace PowerPlannerAppDataLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the string with the first character capitalized and the rest lowercase.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static string GetCapitalizedString(string id)
         {
             string str = GetString(id);
@@ -68,10 +73,10 @@ namespace PowerPlannerAppDataLibrary
 
                 if (_cultureInfo.TwoLetterISOLanguageName == "ar")
                 {
-                    return str.Substring(0, str.Length - 1) + char.ToUpper(str[str.Length - 1]);
+                    return str.Substring(0, str.Length - 1).ToLower() + char.ToUpper(str[str.Length - 1]);
                 }
 
-                return char.ToUpper(str[0]) + str.Substring(1);
+                return char.ToUpper(str[0]) + str.Substring(1).ToLower();
             }
 
             return str;
