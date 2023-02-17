@@ -1,6 +1,7 @@
 // Helpers/Settings.cs
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
+using PowerPlannerAppDataLibrary.Extensions;
 using System;
 using ToolsPortable;
 using static PowerPlannerAppDataLibrary.NavigationManager;
@@ -85,6 +86,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string HAS_SHOWN_PROMO_CONTRIBUTE = "HasShownPromoContribute";
         private const string OWNS_IN_APP_PURCHASE = "OwnsInAppPurchase";
         private const string LANGUAGE_OVERRIDE = "LanguageOverride";
+        private const string THEME_OVERRIDE = "ThemeOverride";
 
         #endregion
 
@@ -251,6 +253,12 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             get => AppSettings.GetValueOrDefault(LANGUAGE_OVERRIDE, null);
             set => AppSettings.AddOrUpdateValue(LANGUAGE_OVERRIDE, value);
+        }
+
+        public static Themes ThemeOverride
+        {
+            get => AppSettings.GetEnumOrDefault(THEME_OVERRIDE, Themes.Automatic);
+            set => AppSettings.AddOrUpdateEnum(THEME_OVERRIDE, value);
         }
 
         public static class NavigationManagerSettings

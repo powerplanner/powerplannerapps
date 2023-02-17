@@ -72,6 +72,7 @@ namespace PowerPlannerUWP
             SoundsExtension.Current = new UWPSoundsExtension();
             BrowserExtension.Current = new UWPBrowserExtension();
             EmailExtension.Current = new UWPEmailExtension();
+            ThemeExtension.Current = new UWPThemeExtension();
 
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is EditImagesView, v => new UwpEditImagesView());

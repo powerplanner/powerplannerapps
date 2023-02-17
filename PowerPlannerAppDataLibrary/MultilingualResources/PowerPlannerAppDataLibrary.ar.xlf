@@ -2646,6 +2646,22 @@ Please think about using an online account instead!</source>
           <source>Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.</source>
           <target state="final">سيتم نسخ إعدادات الجداول والجداول من الفصول الدراسية المحددة. لن يتم نسخ المهام والأحداث والدرجات من داخل الفصول الدراسية.</target>
         </trans-unit>
+        <trans-unit id="String_Theme" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="final">سمة</target>
+        </trans-unit>
+        <trans-unit id="String_Automatic" translate="yes" xml:space="preserve">
+          <source>Automatic</source>
+          <target state="final">تلقائي</target>
+        </trans-unit>
+        <trans-unit id="String_Dark" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="final">مظلم</target>
+        </trans-unit>
+        <trans-unit id="String_Light" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="final">ضوء</target>
+        </trans-unit>
       </group>
     </body>
   </file>
