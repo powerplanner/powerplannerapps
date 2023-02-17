@@ -40,7 +40,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ButtonSave.Content"),
                     Click = SaveChanges,
-                    Margin = new Thickness(0, 18, 0, 0)
+                    Margin = new Thickness(0, 18, 0, 0),
+                    IsEnabled = _theme.Value != Helpers.Settings.ThemeOverride
                 },
 
                 new TextBlock

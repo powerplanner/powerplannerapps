@@ -88,6 +88,7 @@ namespace PowerPlannerAndroid.App
             AppShortcutsExtension.Current = new DroidAppShortcutsExtension();
             BrowserExtension.Current = new DroidBrowserExtension();
             EmailExtension.Current = new DroidEmailExtension();
+            ThemeExtension.Current = new DroidThemeExtension();
 
             // Initialize custom views
             VxDroidExtensions.RegisterCustomView(v => v is EditImagesView, v => new DroidEditImagesView());

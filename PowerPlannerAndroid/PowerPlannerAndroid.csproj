@@ -103,6 +103,7 @@
     <Compile Include="Extensions\DroidPushExtension.cs" />
     <Compile Include="Extensions\DroidScheduleTileExtension.cs" />
     <Compile Include="Extensions\DroidTelemetryExtension.cs" />
+    <Compile Include="Extensions\DroidThemeExtension.cs" />
     <Compile Include="Extensions\DroidTilesExtension.cs" />
     <Compile Include="Helpers\AlarmManagerHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
