@@ -155,6 +155,7 @@
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
     <Compile Include="Extensions\UWPBrowserExtension.cs" />
     <Compile Include="Extensions\UWPEmailExtension.cs" />
+    <Compile Include="Extensions\UWPThemeExtension.cs" />
     <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />

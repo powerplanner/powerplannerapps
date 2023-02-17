@@ -2631,6 +2631,34 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Previous</source>
           <target state="final">Anterior</target>
         </trans-unit>
+        <trans-unit id="EditSemesterPage_Title_Copying" translate="yes" xml:space="preserve">
+          <source>COPY SEMESTER</source>
+          <target state="final">COPIAR SEMESTRE</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_Year.Header" translate="yes" xml:space="preserve">
+          <source>Year</source>
+          <target state="final">Ano</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_String_CopiedItemsExplanation" translate="yes" xml:space="preserve">
+          <source>Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.</source>
+          <target state="final">Os horários e configurações de notas das turmas selecionadas serão copiados. Tarefas, eventos e notas das turmas não serão copiados.</target>
+        </trans-unit>
+        <trans-unit id="String_Theme" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="final">Tema</target>
+        </trans-unit>
+        <trans-unit id="String_Automatic" translate="yes" xml:space="preserve">
+          <source>Automatic</source>
+          <target state="final">Automático</target>
+        </trans-unit>
+        <trans-unit id="String_Dark" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="final">Escuro</target>
+        </trans-unit>
+        <trans-unit id="String_Light" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="final">Luz</target>
+        </trans-unit>
       </group>
     </body>
   </file>

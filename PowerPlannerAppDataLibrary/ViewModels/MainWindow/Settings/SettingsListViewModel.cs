@@ -296,6 +296,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSoundSettings);
             }
 
+            if (IsThemeVisible)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.DesignServices,
+                    PowerPlannerResources.GetString("String_Theme"),
+                    Helpers.Settings.ThemeOverride.ToLocalizedString(),
+                    OpenThemeSettings);
+            }
+
             if (VxPlatform.Current != Platform.iOS)
             {
                 RenderOption(
@@ -425,6 +435,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public bool IsSchoolTimeZoneVisible => HasAccount;
 
         public bool IsSoundEffectsVisible => HasAccount && VxPlatform.Current == Platform.Uwp;
+
+        public bool IsThemeVisible => ThemeExtension.Current != null;
 
         public bool IsViewYearsAndSemestersVisible => HasAccount && MainScreenViewModel != null;
 
@@ -765,6 +777,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public void OpenSoundSettings()
         {
             ShowPopup(new SoundEffectsViewModel(ParentForSubviews));
+        }
+
+        public void OpenThemeSettings()
+        {
+            ShowPopup(new ThemeSettingsViewModel(ParentForSubviews));
         }
 
         public void OpenLanguageSettings()

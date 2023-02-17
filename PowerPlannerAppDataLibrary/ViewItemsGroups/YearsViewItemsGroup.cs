@@ -46,7 +46,13 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
         {
             return new ViewItemClass(
                 dataClass,
+                createScheduleMethod: CreateSchedule,
                 createWeightMethod: CreateWeight);
+        }
+
+        private static ViewItemSchedule CreateSchedule(DataItemSchedule dataSchedule)
+        {
+            return new ViewItemSchedule(dataSchedule);
         }
 
         private static ViewItemWeightCategory CreateWeight(DataItemWeightCategory dataWeight)
@@ -63,6 +69,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             DataItemYear[] dataYears;
             DataItemSemester[] dataSemesters;
             DataItemClass[] dataClasses;
+            DataItemSchedule[] dataSchedules; // Schedules needed to support Copy Semester
             DataItemWeightCategory[] dataWeightCategories;
             DataItemMegaItem[] dataMegaItems;
             DataItemGrade[] dataGrades;
@@ -73,6 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 dataYears = dataStore.TableYears.ToArray();
                 dataSemesters = dataStore.TableSemesters.ToArray();
                 dataClasses = dataStore.TableClasses.ToArray();
+                dataSchedules = dataStore.TableSchedules.ToArray();
                 dataWeightCategories = dataStore.TableWeightCategories.ToArray();
                 dataGrades = dataStore.TableGrades.ToArray();
                 dataMegaItems = dataStore.TableMegaItems.Where(i =>
@@ -93,6 +101,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                         foreach (var classItem in semester.Classes)
                         {
+                            classItem.FilterAndAddChildren(dataSchedules);
                             classItem.FilterAndAddChildren(dataWeightCategories);
 
                             foreach (var weight in classItem.WeightCategories)

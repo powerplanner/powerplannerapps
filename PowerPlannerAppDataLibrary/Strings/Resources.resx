@@ -1350,6 +1350,9 @@ Please think about using an online account instead!</value>
   <data name="EditSemesterPage_Title_Editing" xml:space="preserve">
     <value>EDIT SEMESTER</value>
   </data>
+	<data name="EditSemesterPage_Title_Copying" xml:space="preserve">
+    <value>COPY SEMESTER</value>
+  </data>
   <data name="MessageDeleteSemester_Body" xml:space="preserve">
     <value>Are you sure you want to delete this semester and all of its contents?</value>
   </data>
@@ -1362,11 +1365,17 @@ Please think about using an online account instead!</value>
   <data name="EditSemesterPage_DatePickerStart.Header" xml:space="preserve">
     <value>Start date</value>
   </data>
+	<data name="EditSemesterPage_Year.Header" xml:space="preserve">
+    <value>Year</value>
+  </data>
   <data name="EditSemesterPage_String_InvalidStartDate" xml:space="preserve">
     <value>Invalid start date</value>
   </data>
   <data name="EditSemesterPage_String_StartDateGreaterThanEndExplanation" xml:space="preserve">
     <value>Your start date must be earlier than your end date.</value>
+  </data>
+	<data name="EditSemesterPage_String_CopiedItemsExplanation" xml:space="preserve">
+    <value>Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.</value>
   </data>
   <data name="DifferentSemesterOverlayControl_TextBlockDescription.Text" xml:space="preserve">
     <value>This is a different semester. Tap this to view all of your semesters.</value>
@@ -2079,5 +2088,17 @@ Please think about using an online account instead!</value>
   </data>
   <data name="HidePastCompleteItems" xml:space="preserve">
     <value>Hide past complete items</value>
+  </data>
+  <data name="String_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="String_Automatic" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="String_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="String_Light" xml:space="preserve">
+    <value>Light</value>
   </data>
 </root>
