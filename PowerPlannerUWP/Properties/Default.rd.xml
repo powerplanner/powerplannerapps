@@ -25,6 +25,9 @@
     
     
     <!-- Add your application specific runtime directives here. -->
+	  
+	<!--Needed for TimeZoneNames because it uses System.Text.Json 4.7.0 and on UWP .NET Native that gets compiled out: https://github.com/dotnet/runtime/issues/978-->
+	<Namespace Name="System.Text.Json.Serialization.Converters" Dynamic="Required All"/>
 
 
   </Application>
