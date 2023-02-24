@@ -420,6 +420,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 }
 
                 await PowerPlannerApp.Current.SaveChanges(changes);
+
+                if (State == OperationState.Copying)
+                {
+                    TelemetryExtension.Current?.TrackEvent("CopiedSemester", new Dictionary<string, string>()
+                    {
+                        { "AvailableClasses", _copyAvailableClasses.Length.ToString() },
+                        { "SelectedClasses", _copySelectedClasses.Count.ToString() }
+                    });
+                }
             }, delegate
             {
                 this.RemoveViewModel();
