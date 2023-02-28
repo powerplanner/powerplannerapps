@@ -24,7 +24,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <MtouchSdkVersion>13.1</MtouchSdkVersion>
+    <MtouchSdkVersion>16.2</MtouchSdkVersion>
     <ProvisioningType>manual</ProvisioningType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -41,7 +41,6 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchExtraArgs>
     </MtouchExtraArgs>
-    <MtouchSdkVersion>15.5</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
