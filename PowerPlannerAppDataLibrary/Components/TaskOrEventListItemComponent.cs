@@ -95,9 +95,12 @@ namespace PowerPlannerAppDataLibrary.Components
                 txt = Item.GetType().GetProperty("SubtitleDueTime").GetValue(Item) as string;
             }
 
-            if (!IncludeClass)
+            if (!IncludeClass || Item.Class == null || Item.Class.IsNoClassClass)
             {
-                txt = txt.Substring(" - ".Length);
+                if (txt.StartsWith(" - "))
+                {
+                    txt = txt.Substring(" - ".Length);
+                }
             }
             else
             {
