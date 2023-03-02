@@ -151,7 +151,6 @@
     <Compile Include="Views\DroidFloatingAddItemButton.cs" />
     <Compile Include="Views\DroidImagesView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
-    <Compile Include="Views\ListItems\ListItemClassGroupedTimesView.cs" />
     <Compile Include="Views\ListItems\ListItemClassMenuItemView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassTimeView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassView.cs" />
@@ -210,9 +209,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\EditClassDetails.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemClassGroupedTimes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\TaskProgressBarControl.xml">
