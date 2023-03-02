@@ -151,12 +151,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         }
 
         private static SimpleAsyncWorkerQueue _normalLaunchActivationWorkerQueue = new SimpleAsyncWorkerQueue();
-        public async Task HandleNormalLaunchActivation()
+        public async Task HandleNormalLaunchActivation(bool sync = true)
         {
+            _normalLaunchSync = sync;
             // Use a queue to handle niche concurrency case where new app launched twice in a row and tries to create two default accounts.
             await _normalLaunchActivationWorkerQueue.QueueAsync(HandleNormalLaunchActivationHelper);
         }
 
+        private bool _normalLaunchSync = true;
         private async Task HandleNormalLaunchActivationHelper()
         {
             // Restore previous login
@@ -187,7 +189,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
             if (lastAccount != null && lastAccount.IsAutoLoginPossible && lastAccount.AutoLogin)
             {
-                await this.SetCurrentAccount(lastAccount);
+                await this.SetCurrentAccount(lastAccount, syncAccount: _normalLaunchSync);
                 PromoRegistrations.StartPromoLogic(lastAccount);
                 LoggedInFromNormalActivation?.Invoke(this, lastAccount);
             }
