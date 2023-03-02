@@ -158,18 +158,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private static List<FriendlyTimeZone> GetAvailableTimeZones(string languageCode)
         {
             List<FriendlyTimeZone> answer = new List<FriendlyTimeZone>();
+            Exception latestEx = null;
 
             foreach (var tz in TZNames.GetDisplayNames(languageCode, useIanaZoneIds: true))
             {
                 // In Android, the system time zones are already in IANA format
                 if (App.PowerPlannerApp.UsesIanaTimeZoneIds)
                 {
-                    answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(tz.Key), tz.Value));
+                    try
+                    {
+                        answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(tz.Key), tz.Value));
+                    }
+                    catch (Exception ex)
+                    {
+                        latestEx = ex;
+                    }
                 }
                 else if (TZConvert.TryIanaToWindows(tz.Key, out string windowsId))
                 {
                     answer.Add(new FriendlyTimeZone(TimeZoneInfo.FindSystemTimeZoneById(windowsId), tz.Value));
                 }
+            }
+
+            if (answer.Count <= 5 && latestEx != null)
+            {
+                throw latestEx;
             }
 
             return answer;
