@@ -413,7 +413,7 @@ namespace PowerPlannerAndroid.Views
 
             foreach (var s in arranger.ScheduleItems)
             {
-                var scheduleItem = new MyScheduleItemView(Context, s.Item);
+                var scheduleItem = new MyScheduleItemView(Context, s.Item, date);
                 scheduleItem.Clickable = true;
                 scheduleItem.Click += ScheduleItem_Click;
 

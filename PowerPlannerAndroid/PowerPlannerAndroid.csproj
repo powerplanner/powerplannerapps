@@ -108,6 +108,7 @@
     <Compile Include="Helpers\AlarmManagerHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="Helpers\PicturePickerHelper.cs" />
+    <Compile Include="Helpers\ScheduleGroup.cs" />
     <Compile Include="Helpers\WidgetsHelper.cs" />
     <Compile Include="Receivers\MyBootReceiver.cs" />
     <Compile Include="App\NativeApplication.cs" />
