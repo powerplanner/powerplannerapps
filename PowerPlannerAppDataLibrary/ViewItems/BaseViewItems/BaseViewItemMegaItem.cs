@@ -210,7 +210,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
                 return 1;
 
             //get the comparison of their start times
-            int comp = schedule1.StartTime.TimeOfDay.CompareTo(schedule2.StartTime.TimeOfDay);
+            int comp = schedule1.CompareTo(schedule2);
 
             //if they started at the same time, use the updated time
             if (comp == 0)

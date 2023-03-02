@@ -64,18 +64,23 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
-        private DateTime _startTime;
-        public DateTime StartTime
+        private TimeSpan _startTime;
+        private TimeSpan StartTime
         {
-            get { return _startTime; }
-            set { SetProperty(ref _startTime, value, "StartTime"); }
+            get => _startTime;
+            set => SetProperty(ref _startTime, value, "StartTime");
+        }
+
+        public DateTime StartTimeInLocalTime(DateTime date)
+        {
+            return ToViewItemTime(StartTime, date);
         }
 
         private DateTime _startTimeInSchoolTime;
         public DateTime StartTimeInSchoolTime
         {
             get => _startTimeInSchoolTime;
-            set => SetProperty(ref _startTimeInSchoolTime, value, nameof(StartTimeInSchoolTime));
+            private set => SetProperty(ref _startTimeInSchoolTime, value, nameof(StartTimeInSchoolTime));
         }
 
         /// <summary>
@@ -97,11 +102,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             return false;
         }
 
-        private DateTime _endTime;
-        public DateTime EndTime
+        private TimeSpan _endTime;
+        private TimeSpan EndTime
         {
             get { return _endTime; }
             set { SetProperty(ref _endTime, value, "EndTime"); }
+        }
+
+        public DateTime EndTimeInLocalTime(DateTime date)
+        {
+            return ToViewItemTime(EndTime, date);
         }
 
         private DateTime _endTimeInSchoolTime;
@@ -125,6 +135,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             set { SetProperty(ref _scheduleWeek, value, "ScheduleWeek"); }
         }
 
+        /// <summary>
+        /// Does not have property change notifications
+        /// </summary>
+        public TimeSpan Duration => EndTime - StartTime;
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);
@@ -133,10 +148,10 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
             DayOfWeek = schedule.DayOfWeek;
 
-            StartTime = ToViewItemTime(schedule.StartTime);
+            StartTime = schedule.StartTime.TimeOfDay;
             StartTimeInSchoolTime = ToViewItemSchoolTime(schedule.StartTime);
 
-            EndTime = ToViewItemTime(schedule.EndTime);
+            EndTime = schedule.EndTime.TimeOfDay;
             EndTimeInSchoolTime = ToViewItemSchoolTime(schedule.EndTime);
 
             Room = schedule.Room;
@@ -158,12 +173,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
             if (DayOfWeek == other.DayOfWeek)
             {
-                if (StartTime.TimeOfDay < other.StartTime.TimeOfDay)
+                if (StartTime < other.StartTime)
                     return -1;
-                if (StartTime.TimeOfDay == other.StartTime.TimeOfDay)
+                if (StartTime == other.StartTime)
                 {
-                    if (EndTime.TimeOfDay <= other.EndTime.TimeOfDay)
+                    if (EndTime < other.EndTime)
                         return -1;
+                    else if (EndTime == other.EndTime)
+                        return 0;
                     return 1;
                 }
                 return 1;

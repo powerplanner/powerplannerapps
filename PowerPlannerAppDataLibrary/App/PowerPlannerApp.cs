@@ -411,7 +411,7 @@ namespace PowerPlannerAppDataLibrary.App
                 if (c.Schedules.Any(s =>
                     s.DayOfWeek == date.DayOfWeek
                     && (s.ScheduleWeek == Schedule.Week.BothWeeks || s.ScheduleWeek == currWeek)
-                    && (date.Date != now.Date || s.StartTime.TimeOfDay > now.TimeOfDay)))
+                    && (date.Date != now.Date || s.StartTimeInLocalTime(now) > now)))
                 {
                     return date;
                 }
@@ -447,17 +447,20 @@ namespace PowerPlannerAppDataLibrary.App
             //look through all schedules
             foreach (var s in schedules)
             {
+                var startTime = s.StartTimeInLocalTime(now);
+                var endTime = s.EndTimeInLocalTime(now);
+
                 //if the class is currently going on
-                if (now.TimeOfDay >= s.StartTime.TimeOfDay && now.TimeOfDay <= s.EndTime.TimeOfDay)
+                if (now >= startTime && now <= endTime)
                 {
                     return s.Class;
                 }
 
                 //else if the class is in the future, we instantly select it for the after class since it's sorted from earliest to latest
-                else if (s.StartTime.TimeOfDay >= now.TimeOfDay)
+                else if (startTime >= now)
                 {
                     // Make sure it's only 10 mins after
-                    if ((s.StartTime.TimeOfDay - now.TimeOfDay) < TimeSpan.FromMinutes(10))
+                    if ((startTime - now) < TimeSpan.FromMinutes(10))
                     {
                         closestAfter = s;
                     }
@@ -469,7 +472,7 @@ namespace PowerPlannerAppDataLibrary.App
                 else
                 {
                     // Make sure it's only 10 mins before
-                    if ((now.TimeOfDay - s.EndTime.TimeOfDay) < TimeSpan.FromMinutes(10))
+                    if ((now - endTime) < TimeSpan.FromMinutes(10))
                     {
                         closestBefore = s;
                     }
@@ -487,7 +490,7 @@ namespace PowerPlannerAppDataLibrary.App
             else if (closestBefore == null)
                 return closestAfter.Class;
 
-            else if ((now.TimeOfDay - closestBefore.EndTime.TimeOfDay) < (closestAfter.StartTime.TimeOfDay - now.TimeOfDay))
+            else if ((now - closestBefore.EndTimeInLocalTime(now)) < (closestAfter.StartTimeInLocalTime(now) - now))
                 return closestBefore.Class;
 
             else

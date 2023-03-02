@@ -54,21 +54,6 @@ namespace PowerPlannerUWP.Views.ClassViews
                 OnDelete(this, null);
         }
 
-        public ScheduleCreator ScheduleCreator
-        {
-            set
-            {
-                timePickerStart.Time = value.StartTime;
-                timePickerEnd.Time = value.EndTime;
-
-                tbRoom.Text = value.Room;
-
-                selectedDays = value.DayOfWeeks;
-
-                weekComboBox.SelectedWeek = value.Week;
-            }
-        }
-
         private IEnumerable<DayOfWeek> selectedDays
         {
             get
