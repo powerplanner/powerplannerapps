@@ -6,6 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx;
+using Vx.Extensions;
+using Vx.Views;
+using static PowerPlannerAppDataLibrary.ViewLists.DayScheduleItemsArranger;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
@@ -44,6 +48,72 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
+        protected override View Render()
+        {
+            var linLayout = new LinearLayout
+            {
+                Margin = new Thickness(VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin)
+            };
+
+            foreach (var group in TimesGroupedByDay)
+            {
+                SubscribeToCollection(group.Times);
+
+                if (group.IsVisible)
+                {
+                    linLayout.Children.Add(new TextBlock
+                    {
+                        Text = DateTools.ToLocalizedString(group.DayOfWeek)
+                    }.TitleStyle());
+
+                    foreach (var time in group.Times)
+                    {
+                        bool hasRoom = !string.IsNullOrWhiteSpace(time.Room);
+
+                        linLayout.Children.Add(new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetStringTimeToTime(DateTimeFormatterExtension.Current.FormatAsShortTime(time.StartTimeInSchoolTime), DateTimeFormatterExtension.Current.FormatAsShortTime(time.EndTimeInSchoolTime)),
+                            Margin = new Thickness(0, 0, 0, hasRoom ? 0 : 12)
+                        });
+
+                        if (hasRoom)
+                        {
+                            linLayout.Children.Add(new HyperlinkTextBlock
+                            {
+                                Text = time.Room,
+                                Margin = new Thickness(0, 0, 0, 12)
+                            });
+                        }
+                    }
+                }
+            }
+
+            if (linLayout.Children.Count == 0)
+            {
+                return new LinearLayout
+                {
+                    Margin = new Thickness(Theme.Current.PageMargin),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("ClassPage_SchedulesNoTimesHeader.Text"),
+                            TextAlignment = HorizontalAlignment.Center
+                        }.TitleStyle(),
+
+                        new TextBlock
+                        {
+                            Text = PowerPlannerResources.GetString("ClassPage_SchedulesNoTimesDetails.Text"),
+                            TextAlignment = HorizontalAlignment.Center
+                        }
+                    }
+                };
+            }
+
+            return new ScrollView(linLayout);
+        }
+
         public class GroupedDay : BindableBase
         {
             public GroupedDay(MyObservableList<ViewItemSchedule> allSchedules, DayOfWeek dayOfWeek)
@@ -53,39 +123,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 var date = DateTools.Next(dayOfWeek, DateTime.Today);
 
                 Times = allSchedules.Sublist(i => i.OccursOnDate(date));
-                Times.CollectionChanged += Schedules_CollectionChanged;
-
-                ResetVisibility();
-            }
-
-            private void Schedules_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-            {
-                try
-                {
-                    ResetVisibility();
-                }
-
-                catch (Exception ex)
-                {
-                    TelemetryExtension.Current?.TrackException(ex);
-                }
             }
 
             public MyObservableList<ViewItemSchedule> Times { get; private set; }
 
-            private bool _isVisible;
-            public bool IsVisible
-            {
-                get { return _isVisible; }
-                private set { SetProperty(ref _isVisible, value, "Visibility"); }
-            }
+            public bool IsVisible => Times.Count > 0 ? true : false;
 
             public DayOfWeek DayOfWeek { get; private set; }
-
-            private void ResetVisibility()
-            {
-                IsVisible = Times.Count > 0 ? true : false;
-            }
         }
     }
 }
