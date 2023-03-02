@@ -136,7 +136,6 @@
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
-    <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
@@ -211,9 +210,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\EditClassDetails.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassTimes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ListItemClassGroupedTimes.xml">
