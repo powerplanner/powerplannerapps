@@ -660,6 +660,22 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
+        public override bool DateTimeIsDependentOnSchedule
+        {
+            get
+            {
+                switch (TimeOption)
+                {
+                    case DataItemMegaItem.TimeOptions.AllDay:
+                    case DataItemMegaItem.TimeOptions.Custom:
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        }
+
         /// <summary>
         /// Returns false if it's an all-day item
         /// </summary>

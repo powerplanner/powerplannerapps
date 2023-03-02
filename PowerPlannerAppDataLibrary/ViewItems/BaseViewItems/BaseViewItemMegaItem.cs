@@ -151,6 +151,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             get { return GradeTotal == 0; }
         }
 
+        public virtual bool DateTimeIsDependentOnSchedule => false;
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);
@@ -164,7 +166,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             }
             else
             {
-                Date = ToViewItemTime(i.Date);
+                if (this.DateTimeIsDependentOnSchedule)
+                {
+                    Date = ToViewItemSchoolTime(i.Date);
+                }
+                else
+                {
+                    Date = ToViewItemTime(i.Date);
+                }
             }
 
             DateInSchoolTime = ToViewItemSchoolTime(i.Date);
