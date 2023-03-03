@@ -240,7 +240,7 @@ namespace PowerPlanneriOS.Views
 
             foreach (var s in _arrangedItems.ScheduleItems)
             {
-                UIScheduleItemView visual = new UIScheduleItemView(s.Item);
+                UIScheduleItemView visual = new UIScheduleItemView(s.Item, _arrangedItems.Date);
                 visual.TouchUpInside += new WeakEventHandler(ScheduleItem_TouchUpInside).Handler;
 
                 AddVisualItem(visual, s);

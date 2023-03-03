@@ -108,6 +108,7 @@
     <Compile Include="Helpers\AlarmManagerHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="Helpers\PicturePickerHelper.cs" />
+    <Compile Include="Helpers\ScheduleGroup.cs" />
     <Compile Include="Helpers\WidgetsHelper.cs" />
     <Compile Include="Receivers\MyBootReceiver.cs" />
     <Compile Include="App\NativeApplication.cs" />
@@ -136,7 +137,6 @@
     <Compile Include="ViewModel\Settings\WidgetsViewModel.cs" />
     <Compile Include="Views\ClassDetailsView.cs" />
     <Compile Include="Views\ClassesView.cs" />
-    <Compile Include="Views\ClassTimesView.cs" />
     <Compile Include="Views\ClassView.cs" />
     <Compile Include="Views\ComponentView.cs" />
     <Compile Include="Views\Controls\DifferentSemesterOverlayControl.cs" />
@@ -152,7 +152,6 @@
     <Compile Include="Views\DroidFloatingAddItemButton.cs" />
     <Compile Include="Views\DroidImagesView.cs" />
     <Compile Include="Views\EditClassDetailsView.cs" />
-    <Compile Include="Views\ListItems\ListItemClassGroupedTimesView.cs" />
     <Compile Include="Views\ListItems\ListItemClassMenuItemView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassTimeView.cs" />
     <Compile Include="Views\ListItems\ListItemEditingScheduleClassView.cs" />
@@ -211,12 +210,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\EditClassDetails.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ClassTimes.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ListItemClassGroupedTimes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\TaskProgressBarControl.xml">

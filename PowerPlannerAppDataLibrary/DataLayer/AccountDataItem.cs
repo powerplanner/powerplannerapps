@@ -1052,7 +1052,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (!schedules.Any())
                 return null;
 
-            return date.Add(schedules.Max(i => i.EndTime.TimeOfDay));
+            return date.Add(schedules.Max(i => i.EndTimeInLocalTime(date).TimeOfDay));
         }
     }
 }

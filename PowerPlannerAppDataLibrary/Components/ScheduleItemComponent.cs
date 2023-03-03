@@ -51,7 +51,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 return multiColumn ? DateTimeFormatterExtension.Current.FormatAsShortTimeWithoutAmPm(date) : DateTimeFormatterExtension.Current.FormatAsShortTime(date);
             };
 
-            var tbTime = Text(PowerPlannerResources.GetStringTimeToTime(formatter(s.StartTime), formatter(s.EndTime)));
+            var tbTime = Text(PowerPlannerResources.GetStringTimeToTime(formatter(s.StartTimeInLocalTime(ScheduleItem.Date)), formatter(s.EndTimeInLocalTime(ScheduleItem.Date))));
 
             
 

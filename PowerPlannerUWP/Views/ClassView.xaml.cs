@@ -150,9 +150,6 @@ namespace PowerPlannerUWP.Views
 
             try
             {
-                ViewModel.ViewItemsGroupClass.Class.Schedules.CollectionChanged += Schedules_CollectionChanged;
-                UpdateNoSchedulesText();
-
                 UpdateAppBarButtons();
                 UpdatePinButton();
 
@@ -164,27 +161,6 @@ namespace PowerPlannerUWP.Views
             catch (Exception ex)
             {
                 base.IsEnabled = false;
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private void UpdateNoSchedulesText()
-        {
-            if (ViewModel.ViewItemsGroupClass.Class.Schedules.Count > 0)
-                StackPanelNoSchedules.Visibility = Visibility.Collapsed;
-            else
-                StackPanelNoSchedules.Visibility = Visibility.Visible;
-        }
-
-        private void Schedules_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            try
-            {
-                UpdateNoSchedulesText();
-            }
-
-            catch (Exception ex)
-            {
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
@@ -303,6 +279,11 @@ namespace PowerPlannerUWP.Views
             GoToCollapsedHeaderVisualState();
 
             UpdateAppBarButtons();
+
+            if (PivotItemTimes.Content == null)
+            {
+                PivotItemTimes.Content = ViewModel.TimesViewModel.Render();
+            }
         }
 
         private void GoToTasksVisualState()
@@ -311,6 +292,11 @@ namespace PowerPlannerUWP.Views
             GoToCollapsedHeaderVisualState();
 
             UpdateAppBarButtons();
+
+            if (PivotItemTasks.Content == null)
+            {
+                PivotItemTasks.Content = ViewModel.TasksViewModel.Render();
+            }
         }
 
         private void GoToEventsVisualState()
@@ -319,6 +305,11 @@ namespace PowerPlannerUWP.Views
             GoToCollapsedHeaderVisualState();
 
             UpdateAppBarButtons();
+
+            if (PivotItemEvents.Content == null)
+            {
+                PivotItemEvents.Content = ViewModel.EventsViewModel.Render();
+            }
         }
 
         private void GoToGradesVisualState()

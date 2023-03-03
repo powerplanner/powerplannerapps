@@ -73,14 +73,14 @@ namespace PowerPlannerUWP.Extensions
 
                     foreach (var s in schedulesOnDay)
                     {
-                        var reminderTime = today.Add(s.StartTime.TimeOfDay).Subtract(beforeTime);
+                        var reminderTime = s.StartTimeInLocalTime(today).Subtract(beforeTime);
                         if (reminderTime >= DateTime.Now.AddSeconds(5))
                         {
                             XmlDocument payload;
 
                             if (!generatedPayloads.TryGetValue(s, out payload))
                             {
-                                payload = GeneratePayload(account, s);
+                                payload = GeneratePayload(account, s, today);
                                 generatedPayloads[s] = payload;
                             }
 
@@ -92,7 +92,7 @@ namespace PowerPlannerUWP.Extensions
 
                             if (isExpirationTimeSupported)
                             {
-                                notif.ExpirationTime = today.Add(s.EndTime.TimeOfDay);
+                                notif.ExpirationTime = s.EndTimeInLocalTime(today);
                             }
 
                             try
@@ -125,7 +125,7 @@ namespace PowerPlannerUWP.Extensions
             }
         }
 
-        private static XmlDocument GeneratePayload(AccountDataItem account, ViewItemSchedule s)
+        private static XmlDocument GeneratePayload(AccountDataItem account, ViewItemSchedule s, DateTime date)
         {
             var c = s.Class;
 
@@ -138,7 +138,7 @@ namespace PowerPlannerUWP.Extensions
                 }.SerializeToString(), ToastActivationType.Foreground)
                 .SetToastScenario(ToastScenario.Reminder)
                 .AddText(c.Name)
-                .AddText(string.Format(_timeToTime, _timeFormatter.Format(s.StartTime), _timeFormatter.Format(s.EndTime)));
+                .AddText(string.Format(_timeToTime, _timeFormatter.Format(s.StartTimeInLocalTime(date)), _timeFormatter.Format(s.EndTimeInLocalTime(date))));
 
             if (!string.IsNullOrWhiteSpace(s.Room))
             {

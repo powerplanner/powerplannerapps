@@ -403,6 +403,7 @@ namespace PowerPlannerUWP.Views
             {
                 MyScheduleItem visual = new MyScheduleItem()
                 {
+                    Date = date,
                     Schedule = s.Item,
                     Height = s.Height
                 };

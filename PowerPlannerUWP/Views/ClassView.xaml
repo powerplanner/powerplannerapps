@@ -38,56 +38,10 @@
             <Setter Property="Padding" Value="12"/>
         </Style>
 
-        <DataTemplate x:Key="DataTemplateTaskOrEventForGrid">
-            <ContentPresenter ContentTemplate="{StaticResource DataTemplateTaskOrEventWithoutClass}" Margin="0,0,6,0"/>
-        </DataTemplate>
-
         <Style x:Key="HeaderStyle" TargetType="Button" BasedOn="{StaticResource SubitemContainerStyle}">
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="SemiLight"/>
         </Style>
-
-        <DataTemplate x:Key="DataTemplateDay">
-            <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock
-                    Text="{Binding DayOfWeek, Mode=OneTime, Converter={StaticResource DayOfWeekToStringConverter}}"
-                    IsTextSelectionEnabled="True"
-                    Style="{ThemeResource SubtitleTextBlockStyle}"/>
-
-                <ItemsControl
-                    ItemsSource="{Binding Times, Mode=OneTime}"
-                    Grid.Row="1">
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <RichTextBlock
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True">
-                                    <Paragraph>
-                                        <Run Text="{Binding StartTime, Converter={StaticResource DateToTimeConverter}, Mode=OneTime}"/>
-                                        <Run x:Uid="TextBlock_To" Text="to"/>
-                                        <Run Text="{Binding EndTime, Converter={StaticResource DateToTimeConverter}, Mode=OneTime}"/>
-                                    </Paragraph>
-                                </RichTextBlock>
-                                <TextBlock
-                                    interfaces:TextBlockExtensions.RawText="{Binding Room, Mode=OneTime}"
-                                    FontSize="14"
-                                    Margin="0,0,0,15"
-                                    IsTextSelectionEnabled="True"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-
-                </ItemsControl>
-
-            </Grid>
-        </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateDayPreview">
             <TextBlock
@@ -112,9 +66,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <localConverters:IsPastCompletedTasksDisplayedToButtonContentConverter x:Key="IsPastCompletedTasksDisplayedToButtonContentConverter"/>
-        <localConverters:IsPastCompletedEventsDisplayedToButtonContentConverter x:Key="IsPastCompletedEventsDisplayedToButtonContentConverter"/>
 
     </local:MainScreenContentViewHostGeneric.Resources>
     
@@ -342,152 +293,17 @@
             </PivotItem>
 
             <!--Class times-->
-            <PivotItem x:Uid="ClassPage_PivotItemTimes" Header="Times">
+            <PivotItem x:Name="PivotItemTimes" x:Uid="ClassPage_PivotItemTimes" Header="Times">
 
-                <ScrollViewer x:Name="ScrollViewerSchedules" Style="{StaticResource PageScrollViewerStyle}">
-
-                    <Grid>
-
-                        <Grid x:Name="SchedulesNormal">
-
-                            <StackPanel x:Name="StackPanelNoSchedules" Visibility="Collapsed">
-
-                                <TextBlock
-                                    x:Uid="ClassPage_SchedulesNoTimesHeader"
-                                    Text="No Times"
-                                    Style="{ThemeResource SubtitleTextBlockStyle}"
-                                    TextAlignment="Center"/>
-
-                                <TextBlock
-                                    x:Uid="ClassPage_SchedulesNoTimesDetails"
-                                    Text="Click the edit button in the app bar to add class times"
-                                    Style="{ThemeResource BodyTextBlockStyle}"
-                                    TextAlignment="Center"/>
-
-                            </StackPanel>
-
-                            <ItemsControl
-                                ItemsSource="{Binding TimesViewModel.TimesGroupedByDay}"
-                                ItemTemplate="{StaticResource DataTemplateDay}"
-                                Margin="8, 0, 8, 20"/>
-
-                        </Grid>
-                        
-                    </Grid>
-
-                </ScrollViewer>
-                
             </PivotItem>
 
             <!--Tasks-->
-            <PivotItem x:Uid="ClassPage_PivotItemTasks" Header="Tasks">
-
-                <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
-                    <StackPanel Style="{StaticResource PageStackPanelStyle}">
-
-                        <ItemsControl ItemsSource="{Binding ViewItemsGroupClass.Tasks}" ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}" Margin="0,0,-6,0">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <interfaces:MyAdaptiveGridPanel MinColumnWidth="300" VerticalAlignment="Top">
-                                        <interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                            <TransitionCollection>
-                                                <AddDeleteThemeTransition />
-                                            </TransitionCollection>
-                                        </interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                    </interfaces:MyAdaptiveGridPanel>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-
-                        <StackPanel
-                            Visibility="{Binding ViewItemsGroupClass.HasPastCompletedTasks, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Margin="0,12,0,0">
-
-                            <Button
-                                x:Name="ButtonToggleShowPastCompletedTasks"
-                                Style="{StaticResource SubitemButtonStyle}"
-                                Content="{Binding ViewItemsGroupClass.IsPastCompletedTasksDisplayed, Converter={StaticResource IsPastCompletedTasksDisplayedToButtonContentConverter}}"
-                                HorizontalAlignment="Stretch"
-                                Click="ButtonToggleShowPastCompletedTasks_Click"/>
-
-                            <ItemsControl
-                                ItemsSource="{Binding ViewItemsGroupClass.PastCompletedTasks}"
-                                ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}"
-                                Visibility="{Binding ViewItemsGroupClass.IsPastCompletedTasksDisplayed, Converter={StaticResource BoolToVisibilityConverter}}"
-                                Margin="0,3,-6,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <interfaces:MyAdaptiveGridPanel MinColumnWidth="300" VerticalAlignment="Top">
-                                            <interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                                <TransitionCollection>
-                                                    <AddDeleteThemeTransition />
-                                                </TransitionCollection>
-                                            </interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                        </interfaces:MyAdaptiveGridPanel>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-
-                        </StackPanel>
-
-                    </StackPanel>
-                </ScrollViewer>
+            <PivotItem x:Name="PivotItemTasks" x:Uid="ClassPage_PivotItemTasks" Header="Tasks">
 
             </PivotItem>
 
             <!--Events-->
-            <PivotItem x:Uid="ClassPage_PivotItemEvents" Header="Events">
-
-                <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
-                    <StackPanel Style="{StaticResource PageStackPanelStyle}">
-
-                        <ItemsControl ItemsSource="{Binding ViewItemsGroupClass.Events}" ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}" Margin="0,0,-6,0">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <interfaces:MyAdaptiveGridPanel MinColumnWidth="300" VerticalAlignment="Top">
-                                        <interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                            <TransitionCollection>
-                                                <AddDeleteThemeTransition />
-                                            </TransitionCollection>
-                                        </interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                    </interfaces:MyAdaptiveGridPanel>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-
-                        <StackPanel
-                            Visibility="{Binding ViewItemsGroupClass.HasPastCompletedEvents, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Margin="0,12,0,0">
-
-                            <Button
-                                x:Name="ButtonToggleShowPastCompletedEvents"
-                                Style="{StaticResource SubitemButtonStyle}"
-                                Content="{Binding ViewItemsGroupClass.IsPastCompletedEventsDisplayed, Converter={StaticResource IsPastCompletedEventsDisplayedToButtonContentConverter}}"
-                                HorizontalAlignment="Stretch"
-                                Click="ButtonToggleShowPastCompletedEvents_Click"/>
-
-                            <ItemsControl
-                                ItemsSource="{Binding ViewItemsGroupClass.PastCompletedEvents}"
-                                ItemTemplate="{StaticResource DataTemplateTaskOrEventForGrid}"
-                                Visibility="{Binding ViewItemsGroupClass.IsPastCompletedEventsDisplayed, Converter={StaticResource BoolToVisibilityConverter}}"
-                                Margin="0,3,-6,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <interfaces:MyAdaptiveGridPanel MinColumnWidth="300" VerticalAlignment="Top">
-                                            <interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                                <TransitionCollection>
-                                                    <AddDeleteThemeTransition />
-                                                </TransitionCollection>
-                                            </interfaces:MyAdaptiveGridPanel.ChildrenTransitions>
-                                        </interfaces:MyAdaptiveGridPanel>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-
-                        </StackPanel>
-
-                    </StackPanel>
-                </ScrollViewer>
+            <PivotItem x:Name="PivotItemEvents" x:Uid="ClassPage_PivotItemEvents" Header="Events">
 
             </PivotItem>
             

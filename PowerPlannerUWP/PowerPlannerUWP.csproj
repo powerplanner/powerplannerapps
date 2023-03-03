@@ -315,9 +315,6 @@
     <Compile Include="Views\ClassViews\ClassGradesHeaderView.xaml.cs">
       <DependentUpon>ClassGradesHeaderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassViews\ClassSchedulesEditing.xaml.cs">
-      <DependentUpon>ClassSchedulesEditing.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ClassViews\EditingClassScheduleItemView.xaml.cs">
       <DependentUpon>EditingClassScheduleItemView.xaml</DependentUpon>
     </Compile>
@@ -622,10 +619,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ClassViews\ClassGradesHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassViews\ClassSchedulesEditing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

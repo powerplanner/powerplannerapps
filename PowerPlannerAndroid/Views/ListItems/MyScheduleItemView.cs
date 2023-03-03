@@ -27,7 +27,7 @@ namespace PowerPlannerAndroid.Views.ListItems
         private BindingInstance m_classColorBindingInstance;
         private BindingInstance m_classNameBindingInstance;
 
-        public MyScheduleItemView(Context context, ViewItemSchedule s) : base(context)
+        public MyScheduleItemView(Context context, ViewItemSchedule s, DateTime date) : base(context)
         {
             Schedule = s;
 
@@ -51,7 +51,7 @@ namespace PowerPlannerAndroid.Views.ListItems
             textViewName.SetMaxLines(2);
             base.AddView(textViewName);
 
-            base.AddView(CreateTextView(GetStringTimeToTime(s)));
+            base.AddView(CreateTextView(GetStringTimeToTime(s, date)));
 
             if (!string.IsNullOrWhiteSpace(s.Room))
             {
@@ -59,9 +59,9 @@ namespace PowerPlannerAndroid.Views.ListItems
             }
         }
 
-        public static string GetStringTimeToTime(ViewItemSchedule s)
+        public static string GetStringTimeToTime(ViewItemSchedule s, DateTime date)
         {
-            return PowerPlannerResources.GetStringTimeToTime(DateHelper.ToShortTimeString(s.StartTime), DateHelper.ToShortTimeString(s.EndTime));
+            return PowerPlannerResources.GetStringTimeToTime(DateHelper.ToShortTimeString(s.StartTimeInLocalTime(date)), DateHelper.ToShortTimeString(s.EndTimeInLocalTime(date)));
         }
 
         private TextView CreateTextView(string text, bool autoLink = false)
