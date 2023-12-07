@@ -53,10 +53,11 @@ namespace PowerPlannerAndroid.Extensions
 
             _ownsInAppPurchaseTaskCompletionSource = new TaskCompletionSource<bool>();
             var result = await client.QueryPurchasesAsync(QueryPurchasesParams.NewBuilder().SetProductType(BillingClient.ProductType.Inapp).Build());
+            var finalResult = _ownsInAppPurchaseTaskCompletionSource.Task;
             PurchasesUpdatedListener(result.Result, result.Purchases);
-            if (_ownsInAppPurchaseTaskCompletionSource.Task.IsCompletedSuccessfully)
+            if (finalResult.IsCompletedSuccessfully)
             {
-                return _ownsInAppPurchaseTaskCompletionSource.Task.Result;
+                return finalResult.Result;
             }
             return false;
         }
