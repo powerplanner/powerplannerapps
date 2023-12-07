@@ -27,7 +27,7 @@ namespace PowerPlannerAndroid.Extensions
         }
     }
 
-    public class AndroidBillingAssistant : Java.Lang.Object, IPurchasesResponseListener
+    public class AndroidBillingAssistant
     {
         public static AndroidBillingAssistant Current = new AndroidBillingAssistant();
 
@@ -52,13 +52,13 @@ namespace PowerPlannerAndroid.Extensions
             var client = await GetClientAsync(MainActivity.GetCurrent());
 
             _ownsInAppPurchaseTaskCompletionSource = new TaskCompletionSource<bool>();
-            client.QueryPurchasesAsync(BillingClient.SkuType.Inapp, this);
-            return await _ownsInAppPurchaseTaskCompletionSource.Task;
-        }
-
-        public void OnQueryPurchasesResponse(BillingResult result, IList<Purchase> purchases)
-        {
-            PurchasesUpdatedListener(result, purchases);
+            var result = await client.QueryPurchasesAsync(QueryPurchasesParams.NewBuilder().SetProductType(BillingClient.ProductType.Inapp).Build());
+            PurchasesUpdatedListener(result.Result, result.Purchases);
+            if (_ownsInAppPurchaseTaskCompletionSource.Task.IsCompletedSuccessfully)
+            {
+                return _ownsInAppPurchaseTaskCompletionSource.Task.Result;
+            }
+            return false;
         }
 
         /// <summary>
@@ -73,20 +73,25 @@ namespace PowerPlannerAndroid.Extensions
             var client = await GetClientAsync(mainActivity);
 
             // First we have to query to get the product details https://developer.android.com/google/play/billing/integrate#show-products
-            var skuDetailsParams = SkuDetailsParams.NewBuilder()
-                .SetSkusList(new List<string>() { ProductId })
-                .SetType(BillingClient.SkuType.Inapp)
+            var queryProductDetailsParams = QueryProductDetailsParams.NewBuilder()
+                .SetProductList(new List<QueryProductDetailsParams.Product>()
+                {
+                    QueryProductDetailsParams.Product.NewBuilder()
+                    .SetProductId(ProductId)
+                    .SetProductType(BillingClient.ProductType.Inapp)
+                    .Build()
+                })
                 .Build();
 
-            var skuDetails = await _billingClient.QuerySkuDetailsAsync(skuDetailsParams);
+            var productDetailsResult = await _billingClient.QueryProductDetailsAsync(queryProductDetailsParams);
 
-            if (skuDetails.Result.ResponseCode != BillingResponseCode.Ok)
+            if (productDetailsResult.Result.ResponseCode != BillingResponseCode.Ok)
             {
-                TrackBillingError(skuDetails.Result);
+                TrackBillingError(productDetailsResult.Result);
                 throw new InAppPurchaseHandledException();
             }
 
-            var product = skuDetails.SkuDetails.FirstOrDefault();
+            var product = productDetailsResult.ProductDetails.FirstOrDefault();
             if (product == null)
             {
                 throw new Exception("Failed to find the product.");
@@ -94,7 +99,12 @@ namespace PowerPlannerAndroid.Extensions
 
             // Then we can prompt purchase flow https://developer.android.com/google/play/billing/integrate#launch
             var billingFlowParams = BillingFlowParams.NewBuilder()
-                .SetSkuDetails(product)
+                .SetProductDetailsParamsList(new List<BillingFlowParams.ProductDetailsParams>()
+                {
+                    BillingFlowParams.ProductDetailsParams.NewBuilder()
+                        .SetProductDetails(productDetailsResult.ProductDetails.FirstOrDefault())
+                        .Build()
+                })
                 .Build();
 
             _purchaseTaskCompletionSource = new TaskCompletionSource<bool>();
@@ -196,7 +206,7 @@ namespace PowerPlannerAndroid.Extensions
             {
                 if (result.ResponseCode == BillingResponseCode.Ok || result.ResponseCode == BillingResponseCode.ItemAlreadyOwned)
                 {
-                    var premium = purchases.FirstOrDefault(i => i.Skus.Contains(ProductId));
+                    var premium = purchases.FirstOrDefault(i => i.Products.Contains(ProductId));
 
                     if (premium != null && premium.PurchaseState == PurchaseState.Purchased)
                     {
