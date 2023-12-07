@@ -383,6 +383,10 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2303, 2, 2, 99))
+                    {
+                        changedText += "\n - Fixed issue with times appearing incorrectly on Android 14 devices";
+                    }
 
                     if (v <= new Version(2302, 11, 2, 99))
                     {
