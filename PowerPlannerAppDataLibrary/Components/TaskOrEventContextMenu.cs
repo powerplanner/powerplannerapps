@@ -95,7 +95,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         new ContextMenuItem
                         {
                             Text = PowerPlannerResources.GetString("ContextFlyout_Duplicate"),
-                            Glyph = MaterialDesign.MaterialDesignIcons.Copy,
+                            Glyph = MaterialDesign.MaterialDesignIcons.ContentCopy,
                             Click = () =>
                             {
                                 viewModel.MainScreenViewModel.DuplicateAndEditTaskOrEvent(item);

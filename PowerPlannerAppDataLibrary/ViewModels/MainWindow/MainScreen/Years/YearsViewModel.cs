@@ -283,14 +283,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                             YearsViewItemsGroup.School.Years.Count > 1 ? new ContextMenuItem
                                             {
                                                 Text = "Move semester",
-                                                Glyph = MaterialDesign.MaterialDesignIcons.Cut, // TODO BETTER ICON
+                                                Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove, // TODO BETTER ICON
                                                 Click = () => MoveSemester(semester)
                                             } : null,
 
                                             new ContextMenuItem
                                             {
                                                 Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Copying"),
-                                                Glyph = MaterialDesign.MaterialDesignIcons.Copy,
+                                                Glyph = MaterialDesign.MaterialDesignIcons.ContentCopy,
                                                 Click = () => CopySemester(semester)
                                             },
 

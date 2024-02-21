@@ -279,6 +279,8 @@ namespace Vx.iOS
 
         public static string GlyphToSystemImageName(this string glyph)
         {
+            // See all iOS SF Symbols online: https://github.com/andrewtavis/sf-symbols-online/blob/master/README.md
+
             switch (glyph)
             {
                 case MaterialDesign.MaterialDesignIcons.Check:
@@ -293,8 +295,11 @@ namespace Vx.iOS
                 case MaterialDesign.MaterialDesignIcons.Edit:
                     return "pencil";
 
-                case MaterialDesign.MaterialDesignIcons.Copy:
+                case MaterialDesign.MaterialDesignIcons.ContentCopy:
                     return "doc.on.doc";
+
+                case MaterialDesign.MaterialDesignIcons.DriveFileMove:
+                    return "arrow.down.doc";
 
                 case MaterialDesign.MaterialDesignIcons.SwapHoriz:
                     return "arrow.left.arrow.right";
