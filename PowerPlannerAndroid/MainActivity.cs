@@ -383,6 +383,12 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+
+                    if (v <= new Version(2402, 19, 0, 0))
+                    {
+                        changedText += "\n - Ability to move semesters and classes to different semesters and years!";
+                    }
+
                     if (v <= new Version(2303, 2, 2, 99))
                     {
                         changedText += "\n - Fixed issue with times appearing incorrectly on Android 14 devices";
