@@ -2104,4 +2104,11 @@ Please think about using an online account instead!</value>
   <data name="SemesterActions_MoveSemester" xml:space="preserve">
     <value>Move semester</value>
   </data>
+  <data name="SemesterActions_MoveClass" xml:space="preserve">
+    <value>Move {0} to different semester</value>
+	<comment>{0} is the class name</comment>
+  </data>
+  <data name="Header_Semester" xml:space="preserve">
+	<value>Semester</value>
+  </data>
 </root>

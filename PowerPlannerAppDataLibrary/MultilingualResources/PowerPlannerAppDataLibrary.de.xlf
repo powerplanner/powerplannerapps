@@ -2664,6 +2664,14 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Move semester</source>
           <target state="final">Semester verschieben</target>
         </trans-unit>
+        <trans-unit id="SemesterActions_MoveClass" translate="yes" xml:space="preserve">
+          <source>Move {0} to different semester</source>
+          <target state="final">Verschiebe {0} in ein anderes Semester</target>
+        </trans-unit>
+        <trans-unit id="Header_Semester" translate="yes" xml:space="preserve">
+          <source>Semester</source>
+          <target state="final">Semester</target>
+        </trans-unit>
       </group>
     </body>
   </file>

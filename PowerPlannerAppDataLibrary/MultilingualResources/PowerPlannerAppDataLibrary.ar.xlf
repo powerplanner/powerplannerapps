@@ -2666,6 +2666,14 @@ Please think about using an online account instead!</source>
           <source>Move semester</source>
           <target state="final">نقل الفصل الدراسي</target>
         </trans-unit>
+        <trans-unit id="SemesterActions_MoveClass" translate="yes" xml:space="preserve">
+          <source>Move {0} to different semester</source>
+          <target state="final">نقل {0} إلى فصل دراسي مختلف</target>
+        </trans-unit>
+        <trans-unit id="Header_Semester" translate="yes" xml:space="preserve">
+          <source>Semester</source>
+          <target state="final">فصل دراسي</target>
+        </trans-unit>
       </group>
     </body>
   </file>
