@@ -110,7 +110,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     AgendaViewItemsGroup.ClearCache();
                     ViewLists.SchedulesOnDay.ClearCached();
                     ViewLists.DayScheduleItemsArranger.ClearCached();
-                    await MainScreenViewModel.SetCurrentSemester(Guid.Empty);
+                    await MainScreenViewModel.SetCurrentSemester(Guid.Empty, closeYearsPopup: false);
                 }
             }, RemoveViewModel);
         }
