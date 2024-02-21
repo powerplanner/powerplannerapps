@@ -25,7 +25,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             _otherYears = years.Where(i => i.Identifier != semesterToMove.Year.Identifier).ToArray();
             _copySelectedYear = new VxState<ViewItemYear>(_otherYears.FirstOrDefault());
 
-            Title = "Move Semester";
+            Title = PowerPlannerResources.GetString("SemesterActions_MoveSemester").ToUpper();
 
             PrimaryCommand = PopupCommand.Save(Save);
         }

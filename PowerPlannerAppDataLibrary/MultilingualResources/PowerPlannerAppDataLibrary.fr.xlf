@@ -2658,6 +2658,10 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Light</source>
           <target state="final">Lumière</target>
         </trans-unit>
+        <trans-unit id="SemesterActions_MoveSemester" translate="yes" xml:space="preserve">
+          <source>Move semester</source>
+          <target state="final">Déplacer semestre</target>
+        </trans-unit>
       </group>
     </body>
   </file>

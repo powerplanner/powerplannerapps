@@ -2101,4 +2101,7 @@ Please think about using an online account instead!</value>
   <data name="String_Light" xml:space="preserve">
     <value>Light</value>
   </data>
+  <data name="SemesterActions_MoveSemester" xml:space="preserve">
+    <value>Move semester</value>
+  </data>
 </root>

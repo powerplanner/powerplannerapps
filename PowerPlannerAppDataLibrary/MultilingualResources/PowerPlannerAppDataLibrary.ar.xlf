@@ -2662,6 +2662,10 @@ Please think about using an online account instead!</source>
           <source>Light</source>
           <target state="final">ضوء</target>
         </trans-unit>
+        <trans-unit id="SemesterActions_MoveSemester" translate="yes" xml:space="preserve">
+          <source>Move semester</source>
+          <target state="final">نقل الفصل الدراسي</target>
+        </trans-unit>
       </group>
     </body>
   </file>

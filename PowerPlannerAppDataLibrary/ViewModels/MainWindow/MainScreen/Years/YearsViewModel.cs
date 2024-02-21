@@ -282,8 +282,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
                                             YearsViewItemsGroup.School.Years.Count > 1 ? new ContextMenuItem
                                             {
-                                                Text = "Move semester",
-                                                Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove, // TODO BETTER ICON
+                                                Text = PowerPlannerResources.GetString("SemesterActions_MoveSemester"),
+                                                Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove,
                                                 Click = () => MoveSemester(semester)
                                             } : null,
 

@@ -2660,6 +2660,10 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Light</source>
           <target state="final">Licht</target>
         </trans-unit>
+        <trans-unit id="SemesterActions_MoveSemester" translate="yes" xml:space="preserve">
+          <source>Move semester</source>
+          <target state="final">Semester verschieben</target>
+        </trans-unit>
       </group>
     </body>
   </file>
