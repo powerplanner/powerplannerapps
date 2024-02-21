@@ -280,6 +280,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                                 Click = () => EditSemester(semester)
                                             },
 
+                                            YearsViewItemsGroup.School.Years.Count > 1 ? new ContextMenuItem
+                                            {
+                                                Text = "Move semester",
+                                                Glyph = MaterialDesign.MaterialDesignIcons.Cut, // TODO BETTER ICON
+                                                Click = () => MoveSemester(semester)
+                                            } : null,
+
                                             new ContextMenuItem
                                             {
                                                 Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Copying"),
@@ -433,6 +440,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         public void CopySemester(ViewItemSemester semester)
         {
             ShowPopup(AddSemesterViewModel.CreateForCopy(MainScreenViewModel, semester, YearsViewItemsGroup.School.Years.ToArray()));
+        }
+
+        public void MoveSemester(ViewItemSemester semester)
+        {
+            ShowPopup(new MoveSemesterViewModel(MainScreenViewModel, semester, YearsViewItemsGroup.School.Years.ToArray()));
         }
 
         public async void DeleteSemester(ViewItemSemester semester)
