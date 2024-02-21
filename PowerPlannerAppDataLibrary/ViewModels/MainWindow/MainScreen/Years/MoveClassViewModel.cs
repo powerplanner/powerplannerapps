@@ -55,7 +55,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 {
                     Header = PowerPlannerResources.GetString("EditSemesterPage_Year.Header"),
                     Items = _years,
-                    SelectedItem = VxValue.Create<object>(_selectedYear.Value, v => _selectedYear.Value = v as ViewItemYear),
+                    SelectedItem = VxValue.Create<object>(_selectedYear.Value, v =>
+                    {
+                        _selectedYear.Value = v as ViewItemYear;
+                        _selectedSemester.Value = GetAvailableSemesters(_selectedYear.Value).FirstOrDefault();
+                    }),
                     ItemTemplate = y => new TextBlock
                     {
                         Text = (y as ViewItemYear).Name
