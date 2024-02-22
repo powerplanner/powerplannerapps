@@ -68,6 +68,11 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         private static WeakReferenceList<CacheItem> _cache = new WeakReferenceList<CacheItem>();
 
+        public static void ClearCache()
+        {
+            _cache.Clear();
+        }
+
         public static Task<AgendaViewItemsGroup> LoadAsync(Guid localAccountId, ViewItemSemester semester, DateTime today, bool trackChanges = true)
         {
             if (semester == null)

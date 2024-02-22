@@ -34,6 +34,11 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         private static WeakReferenceCache<Guid, SemesterItemsViewGroup> _cachedSemesterItems = new WeakReferenceCache<Guid, SemesterItemsViewGroup>();
 
+        public static void ClearCache()
+        {
+            _cachedSemesterItems.Clear();
+        }
+
         public static SemesterItemsViewGroup Load(Guid localAccountId, ViewItemSemester semester, bool trackChanges = true)
         {
             if (trackChanges)

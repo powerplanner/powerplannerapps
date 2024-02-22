@@ -87,7 +87,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                     (i.MegaItemType == PowerPlannerSending.MegaItemType.Homework || i.MegaItemType == PowerPlannerSending.MegaItemType.Exam)
                     && i.WeightCategoryIdentifier != PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED).ToArray();
 
-                var school = new ViewItemSchool(CreateYear);
+                var school = School ?? new ViewItemSchool(CreateYear);
 
                 school.FilterAndAddChildren(dataYears);
 
@@ -124,10 +124,18 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             School.CalculateEverything();
         }
 
-        protected override void OnDataChangedEvent(DataChangedEvent e)
+        protected override async void OnDataChangedEvent(DataChangedEvent e)
         {
             if (School != null)
             {
+                // A semester or class moving is rare. The previous code wasn't written with support for this scenario, but since it's so rare, I'll just re-load everything.
+                if (ContainsSemesterThatMovedYears(e) || ContainsClassThatMovedSemesters(e))
+                {
+                    School.Years.Clear();
+                    await LoadBlocking();
+                    return;
+                }
+
                 bool changed = School.HandleDataChangedEvent(e);
 
                 if (changed)
@@ -137,6 +145,40 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                     School.CalculateEverything();
                 }
             }
+        }
+
+        private bool ContainsSemesterThatMovedYears(DataChangedEvent e)
+        {
+            foreach (var editedSemester in e.EditedItems.OfType<DataItemSemester>())
+            {
+                foreach (var existingYears in School.Years)
+                {
+                    if (existingYears.Identifier == editedSemester.UpperIdentifier
+                        && !existingYears.Semesters.Any(existingSemester => existingSemester.Identifier == editedSemester.Identifier))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool ContainsClassThatMovedSemesters(DataChangedEvent e)
+        {
+            foreach (var editedClass in e.EditedItems.OfType<DataItemClass>())
+            {
+                foreach (var existingSemester in School.Years.SelectMany(i => i.Semesters))
+                {
+                    if (existingSemester.Identifier == editedClass.UpperIdentifier
+                        && !existingSemester.Classes.Any(existingClass => existingClass.Identifier == editedClass.Identifier))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

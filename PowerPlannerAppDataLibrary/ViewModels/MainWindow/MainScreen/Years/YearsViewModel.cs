@@ -280,10 +280,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                                 Click = () => EditSemester(semester)
                                             },
 
+                                            YearsViewItemsGroup.School.Years.Count > 1 ? new ContextMenuItem
+                                            {
+                                                Text = PowerPlannerResources.GetString("SemesterActions_MoveSemester"),
+                                                Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove,
+                                                Click = () => MoveSemester(semester)
+                                            } : null,
+
                                             new ContextMenuItem
                                             {
                                                 Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Copying"),
-                                                Glyph = MaterialDesign.MaterialDesignIcons.Copy,
+                                                Glyph = MaterialDesign.MaterialDesignIcons.ContentCopy,
                                                 Click = () => CopySemester(semester)
                                             },
 
@@ -302,7 +309,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 }
             };
 
-            linearLayout.Children.Add(RenderClassRow(
+            linearLayout.Children.Add(RenderClassRow(null, 
                 PowerPlannerResources.GetString("SemesterView_HeaderClass.Text"),
                 PowerPlannerResources.GetString("SemesterView_HeaderCredits.Text"),
                 PowerPlannerResources.GetString("SemesterView_HeaderGPA.Text"), isSubtle: true));
@@ -311,7 +318,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             foreach (var c in semester.Classes)
             {
                 Subscribe(c);
-                linearLayout.Children.Add(RenderClassRow(c.Name, c.CreditsStringForYearsPage, c.GpaStringForTableDisplay, strikethroughStr3: semester.CalculatedCreditsAffectingGpa != PowerPlannerSending.Grade.NO_CREDITS && c.Credits == PowerPlannerSending.Grade.NO_CREDITS));
+                linearLayout.Children.Add(RenderClassRow(c, c.Name, c.CreditsStringForYearsPage, c.GpaStringForTableDisplay, strikethroughStr3: semester.CalculatedCreditsAffectingGpa != PowerPlannerSending.Grade.NO_CREDITS && c.Credits == PowerPlannerSending.Grade.NO_CREDITS));
             }
 
             bool displayCrossedOutCredits = semester.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED;
@@ -319,6 +326,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             if (displayCrossedOutCredits || displayCrossedOutGpa)
             {
                 linearLayout.Children.Add(RenderClassRow(
+                    null,
                     PowerPlannerResources.GetString("SemesterView_Total.Text"),
                     displayCrossedOutCredits ? CreditsToStringConverter.Convert(semester.CalculatedCreditsEarned) : "",
                     displayCrossedOutGpa ? GpaToStringConverter.Convert(semester.CalculatedGPA) : "",
@@ -327,7 +335,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     strikethrough: true));
             }
 
-            linearLayout.Children.Add(RenderClassRow(PowerPlannerResources.GetString("SemesterView_Total.Text"), CreditsToStringConverter.Convert(semester.CreditsEarned), GpaToStringConverter.Convert(semester.GPA), isBig: true));
+            linearLayout.Children.Add(RenderClassRow(null, PowerPlannerResources.GetString("SemesterView_Total.Text"), CreditsToStringConverter.Convert(semester.CreditsEarned), GpaToStringConverter.Convert(semester.GPA), isBig: true));
 
             linearLayout.Children.Add(new AccentButton
             {
@@ -344,7 +352,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             };
         }
 
-        private View RenderClassRow(string str1, string str2, string str3, bool isSubtle = false, bool isBig = false, bool strikethrough = false, bool strikethroughStr3 = false)
+        private View RenderClassRow(ViewItemClass c, string str1, string str2, string str3, bool isSubtle = false, bool isBig = false, bool strikethrough = false, bool strikethroughStr3 = false)
         {
             var textColor = isSubtle ? Theme.Current.SubtleForegroundColor : Theme.Current.ForegroundColor;
             var fontSize = isBig ? 16 : Theme.Current.CaptionFontSize;
@@ -362,7 +370,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         TextColor = textColor,
                         WrapText = false,
                         FontWeight = FontWeights.SemiBold,
-                        Strikethrough = strikethrough
+                        Strikethrough = strikethrough,
+                        ContextMenu = () => (c != null && YearsViewItemsGroup.School.Years.SelectMany(i => i.Semesters).Count() > 1) ? new ContextMenu()
+                        {
+                            Items =
+                            {
+                                new ContextMenuItem
+                                {
+                                    Text = PowerPlannerResources.GetStringWithParameters("SemesterActions_MoveClass", c.Name),
+                                    Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove,
+                                    Click = () => MoveClass(c)
+                                }
+                            }
+                        } : null
                     }.LinearLayoutWeight(2),
 
                     new TextBlock
@@ -433,6 +453,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         public void CopySemester(ViewItemSemester semester)
         {
             ShowPopup(AddSemesterViewModel.CreateForCopy(MainScreenViewModel, semester, YearsViewItemsGroup.School.Years.ToArray()));
+        }
+
+        public void MoveSemester(ViewItemSemester semester)
+        {
+            ShowPopup(new MoveSemesterViewModel(MainScreenViewModel, semester, YearsViewItemsGroup.School.Years.ToArray()));
+        }
+
+        public void MoveClass(ViewItemClass c)
+        {
+            ShowPopup(new MoveClassViewModel(MainScreenViewModel, c, YearsViewItemsGroup.School.Years.ToArray()));
         }
 
         public async void DeleteSemester(ViewItemSemester semester)

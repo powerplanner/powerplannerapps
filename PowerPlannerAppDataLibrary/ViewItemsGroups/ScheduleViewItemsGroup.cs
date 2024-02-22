@@ -36,6 +36,11 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         private static WeakReferenceList<ScheduleViewItemsGroup> _cachedItems = new WeakReferenceList<ScheduleViewItemsGroup>();
 
+        public static void ClearCache()
+        {
+            _cachedItems.Clear();
+        }
+
         public static async Task<ScheduleViewItemsGroup> LoadAsync(Guid localAccountId, Guid semesterId, bool trackChanges = true, bool includeWeightCategories = true)
         {
             ScheduleViewItemsGroup answer;

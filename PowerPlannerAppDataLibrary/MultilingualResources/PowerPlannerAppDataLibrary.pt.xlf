@@ -2659,6 +2659,18 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Light</source>
           <target state="final">Luz</target>
         </trans-unit>
+        <trans-unit id="SemesterActions_MoveSemester" translate="yes" xml:space="preserve">
+          <source>Move semester</source>
+          <target state="final">Mover semestre</target>
+        </trans-unit>
+        <trans-unit id="SemesterActions_MoveClass" translate="yes" xml:space="preserve">
+          <source>Move {0} to different semester</source>
+          <target state="final">Mover {0} para outro semestre</target>
+        </trans-unit>
+        <trans-unit id="Header_Semester" translate="yes" xml:space="preserve">
+          <source>Semester</source>
+          <target state="final">Semestre</target>
+        </trans-unit>
       </group>
     </body>
   </file>

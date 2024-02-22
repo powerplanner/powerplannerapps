@@ -88,7 +88,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// </summary>
         /// <param name="semesterId"></param>
         /// <returns></returns>
-        public async Task SetCurrentSemester(Guid semesterId, bool alwaysNavigate = false)
+        public async Task SetCurrentSemester(Guid semesterId, bool alwaysNavigate = false, bool closeYearsPopup = true)
         {
             if (CurrentSemesterId == semesterId)
             {
@@ -100,7 +100,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         SelectedItem = AvailableItems.First();
                     }
 
-                    if (PowerPlannerApp.DoNotShowYearsInTabItems)
+                    if (PowerPlannerApp.DoNotShowYearsInTabItems && closeYearsPopup)
                     {
                         // We need to clear the Years page
                         Popups.Clear();
@@ -124,7 +124,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 SelectedItem = null;
             }
 
-            if (PowerPlannerApp.DoNotShowYearsInTabItems && AvailableItems.Any())
+            if (PowerPlannerApp.DoNotShowYearsInTabItems && AvailableItems.Any() && closeYearsPopup)
             {
                 // We need to clear the Years page
                 Popups.Clear();
