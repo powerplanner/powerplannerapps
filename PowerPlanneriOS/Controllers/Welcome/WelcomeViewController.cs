@@ -8,6 +8,7 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Welcome
 {
@@ -52,7 +53,7 @@ namespace PowerPlanneriOS.Welcome
                     var labelSubtitle = new UILabel()
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
-                        Text = "The ultimate homework planner",
+                        Text = PowerPlannerResources.GetString("WelcomePage_TextBlockSubtitle.Text"),
                         TextColor = new UIColor(0.9f, 1),
                         Font = UIFont.PreferredCaption1,
                         TextAlignment = UITextAlignment.Center
@@ -75,13 +76,13 @@ namespace PowerPlanneriOS.Welcome
                     TranslatesAutoresizingMaskIntoConstraints = false
                 };
                 {
-                    var buttonLogin = PowerPlannerUIHelper.CreatePowerPlannerBlueButton("Log In");
+                    var buttonLogin = PowerPlannerUIHelper.CreatePowerPlannerBlueButton(PowerPlannerResources.GetString("Button_LogIn.Content"));
                     buttonLogin.TranslatesAutoresizingMaskIntoConstraints = false;
                     buttonLogin.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.Login(); }).Handler;
                     viewButtons.Add(buttonLogin);
                     buttonLogin.StretchHeight(viewButtons);
 
-                    var buttonCreateAccount = PowerPlannerUIHelper.CreatePowerPlannerBlueButton("Create Account");
+                    var buttonCreateAccount = PowerPlannerUIHelper.CreatePowerPlannerBlueButton(PowerPlannerResources.GetString("CreateAccountPage_ButtonCreateOnlineAccount.Content"));
                     buttonCreateAccount.TranslatesAutoresizingMaskIntoConstraints = false;
                     buttonCreateAccount.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.CreateAccount(); }).Handler;
                     viewButtons.Add(buttonCreateAccount);
@@ -119,7 +120,7 @@ namespace PowerPlanneriOS.Welcome
                         TranslatesAutoresizingMaskIntoConstraints = false,
                         Font = UIFont.PreferredCaption1,
                         TextColor = UIColor.White,
-                        Text = "About"
+                        Text = PowerPlannerResources.GetString("Settings_MainPage_AboutItem.Title")
                     };
                     buttonSettings.Add(label);
                     label.StretchHeight(buttonSettings);

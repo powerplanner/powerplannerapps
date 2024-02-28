@@ -14,6 +14,7 @@ using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes;
 using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -38,31 +39,31 @@ namespace PowerPlanneriOS.Controllers
         {
             _navButtonEditDetails = new UIBarButtonItem(UIBarButtonSystemItem.Edit)
             {
-                Title = "Edit details"
+                Title = PowerPlannerResources.GetString("String_EditDetails")
             };
             _navButtonEditDetails.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditClassWithDetails(); }).Handler;
 
             _navButtonEditTimes = new UIBarButtonItem(UIBarButtonSystemItem.Edit)
             {
-                Title = "Edit times"
+                Title = PowerPlannerResources.GetString("String_EditTimes")
             };
             _navButtonEditTimes.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditTimes(); }).Handler;
 
             _navButtonAddTask = new UIBarButtonItem(UIBarButtonSystemItem.Add)
             {
-                Title = "Add task"
+                Title = PowerPlannerResources.GetString("String_AddTask")
             };
             _navButtonAddTask.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.TasksViewModel.Add(); }).Handler;
 
             _navButtonAddEvent = new UIBarButtonItem(UIBarButtonSystemItem.Add)
             {
-                Title = "Add event"
+                Title = PowerPlannerResources.GetString("String_AddEvent")
             };
             _navButtonAddEvent.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EventsViewModel.Add(); }).Handler;
 
             _navButtonAddGrade = new UIBarButtonItem(UIBarButtonSystemItem.Add)
             {
-                Title = "Add grade"
+                Title = PowerPlannerResources.GetString("String_AddGrade")
             };
             _navButtonAddGrade.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.GradesViewModel.Add(); }).Handler;
 
@@ -76,12 +77,12 @@ namespace PowerPlanneriOS.Controllers
             };
             _tasksViewController = new ClassTasksOrEventsViewController()
             {
-                Title = "Tasks",
+                Title = PowerPlannerResources.GetString("ClassPage_PivotItemTasks.Header"),
                 ViewModel = ViewModel.TasksViewModel
             };
             _eventsViewController = new ClassTasksOrEventsViewController()
             {
-                Title = "Events",
+                Title = PowerPlannerResources.GetString("ClassPage_PivotItemEvents.Header"),
                 ViewModel = ViewModel.EventsViewModel
             };
             _gradesViewController = new ClassGradesViewController()
@@ -141,7 +142,7 @@ namespace PowerPlanneriOS.Controllers
                 Title = name;
             });
 
-            BackButtonText = "Back";
+            BackButtonText = PowerPlannerResources.GetString("String_Back");
 
             base.OnViewModelLoadedOverride();
         }

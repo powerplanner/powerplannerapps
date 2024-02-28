@@ -564,6 +564,19 @@ The free version is limited to...
 
 Once you purchase the premium version, you own the premium version on all your devices.</value>
   </data>
+  <data name="Settings_UpgradeToPremiumIOS_Description.Text" xml:space="preserve">
+    <value>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</value>
+  </data>
+  <data name="Settings_UpgradeToPremium_ButtonRestore.Content" xml:space="preserve">
+    <value>Restore Previous Purchase</value>
+  </data>
   <data name="TextBox_Password.Header" xml:space="preserve">
     <value>Password</value>
   </data>
@@ -861,6 +874,9 @@ Once you purchase the premium version, you own the premium version on all your d
   </data>
   <data name="ClassPage_ToggleRoundGradesUp.Header" xml:space="preserve">
     <value>Round grades up</value>
+  </data>
+  <data name="ClassPage_Details_NothingHereString" xml:space="preserve">
+    <value>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</value>
   </data>
   <data name="ConfigureClassGrades_Items_WeightCategories.Title" xml:space="preserve">
     <value>Weight categories</value>
@@ -1265,6 +1281,9 @@ Please think about using an online account instead!</value>
   <data name="String_GoBack" xml:space="preserve">
     <value>Go back</value>
   </data>
+  <data name="String_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="String_InvalidConfirmationPassword" xml:space="preserve">
     <value>Invalid confirmation password</value>
   </data>
@@ -1438,7 +1457,7 @@ Please think about using an online account instead!</value>
     <comment>Like "5 days ago"</comment>
   </data>
   <data name="SchedulePage_ButtonAddClass.Content" xml:space="preserve">
-    <value>add class</value>
+    <value>Add class</value>
   </data>
   <data name="SchedulePage_TextBlockWelcomeTitle.Text" xml:space="preserve">
     <value>Welcome to Power Planner!</value>
@@ -2110,5 +2129,8 @@ Please think about using an online account instead!</value>
   </data>
   <data name="Header_Semester" xml:space="preserve">
 	<value>Semester</value>
+  </data>
+  <data name="String_Done" xml:space="preserve">
+	<value>Done</value>
   </data>
 </root>

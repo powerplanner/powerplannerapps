@@ -135,7 +135,6 @@
     <Compile Include="Controllers\PremiumVersionViewController.cs" />
     <Compile Include="Controllers\ScheduleViewController.cs" />
     <Compile Include="Controllers\Settings\Grades\ConfigureClassGradesViewController.cs" />
-    <Compile Include="Controllers\Settings\SettingsListViewController.cs" />
     <Compile Include="Controllers\Settings\SettingsViewController.cs" />
     <Compile Include="Extensions\iOSEmailExtension.cs" />
     <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />
@@ -153,10 +152,8 @@
     <Compile Include="Views\UIFriendlyDateHeaderCell.cs" />
     <Compile Include="Views\UIGradeCell.cs" />
     <Compile Include="Views\UIHeaderCell.cs" />
-    <Compile Include="Views\UIInlineMultiDayPickerView.cs" />
     <Compile Include="Views\UIMainCalendarItemView.cs" />
     <Compile Include="Views\UIPagedDayView.cs" />
-    <Compile Include="Views\UIRecurrenceView.cs" />
     <Compile Include="Views\UIScheduleEditingView.cs" />
     <Compile Include="Views\UIScheduleItemView.cs" />
     <Compile Include="Views\UIScheduleView.cs" />

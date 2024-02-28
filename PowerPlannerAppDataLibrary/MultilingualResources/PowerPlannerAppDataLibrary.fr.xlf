@@ -1764,8 +1764,8 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Like "5 days ago"</note>
         </trans-unit>
         <trans-unit id="SchedulePage_ButtonAddClass.Content" translate="yes" xml:space="preserve">
-          <source>add class</source>
-          <target state="final" state-qualifier="mt-suggestion">ajouter la classe</target>
+          <source>Add class</source>
+          <target state="new" state-qualifier="mt-suggestion">Ajouter la classe</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockWelcomeTitle.Text" translate="yes" xml:space="preserve">
           <source>Welcome to Power Planner!</source>
@@ -2669,6 +2669,40 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
         <trans-unit id="Header_Semester" translate="yes" xml:space="preserve">
           <source>Semester</source>
           <target state="final">Semestre</target>
+        </trans-unit>
+        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
+          <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
+          <target state="new">The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</target>
+        </trans-unit>
+        <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
+          <source>Restore Previous Purchase</source>
+          <target state="new">Restore Previous Purchase</target>
+        </trans-unit>
+        <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
+          <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
+          <target state="new">Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</target>
+        </trans-unit>
+        <trans-unit id="String_Back" translate="yes" xml:space="preserve">
+          <source>Back</source>
+          <target state="new">Back</target>
+        </trans-unit>
+        <trans-unit id="String_Done" translate="yes" xml:space="preserve">
+          <source>Done</source>
+          <target state="new">Done</target>
         </trans-unit>
       </group>
     </body>

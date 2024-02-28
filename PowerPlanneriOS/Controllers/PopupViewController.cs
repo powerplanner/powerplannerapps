@@ -11,6 +11,7 @@ using InterfacesiOS.Views;
 using PowerPlanneriOS.Helpers;
 using ToolsPortable;
 using PowerPlanneriOS.Views;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -49,7 +50,7 @@ namespace PowerPlanneriOS.Controllers
 
             _backButton = new UIBarButtonItem()
             {
-                Title = "Back"
+                Title = PowerPlannerResources.GetString("String_Back")
             };
             _backButton.Clicked += new WeakEventHandler<EventArgs>(_backButton_Clicked).Handler;
 
