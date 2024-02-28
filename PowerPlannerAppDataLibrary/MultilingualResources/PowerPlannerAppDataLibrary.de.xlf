@@ -1683,7 +1683,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
         </trans-unit>
         <trans-unit id="SchedulePage_ButtonAddClass.Content" translate="yes" xml:space="preserve">
           <source>Add class</source>
-          <target state="new">Kurs hinzufügen</target>
+          <target state="final">Kurs hinzufügen</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockWelcomeTitle.Text" translate="yes" xml:space="preserve">
           <source>Welcome to Power Planner!</source>
@@ -2672,8 +2672,8 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Semester</source>
           <target state="final">Semester</target>
         </trans-unit>
-        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
-          <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+		  <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
+  <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
 
 The free version is limited to...
  - 1 semester
@@ -2681,32 +2681,32 @@ The free version is limited to...
  - 1 repeating bulk entry of a task/event
 
 Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
-          <target state="new">The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+  <target state="final">Die Premium-Version von Power Planner schaltet eine Reihe nützlicher Funktionen frei und ist ein einmaliger LEBENSLANGER Kauf (keine monatlichen/jährlichen Abonnements)!
 
-The free version is limited to...
- - 1 semester
- - 5 grades per class
- - 1 repeating bulk entry of a task/event
+Die kostenlose Version ist beschränkt auf...
+ - 1 Semester
+ - 5 Noten pro Klasse
+ - 1 wiederholende Masseneingabe einer Aufgabe/Veranstaltung
 
-Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</target>
-        </trans-unit>
-        <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
-          <source>Restore Previous Purchase</source>
-          <target state="new">Restore Previous Purchase</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
-          <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
-          <target state="new">Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</target>
-        </trans-unit>
-        <trans-unit id="String_Back" translate="yes" xml:space="preserve">
-          <source>Back</source>
-          <target state="new">Back</target>
-        </trans-unit>
-        <trans-unit id="String_Done" translate="yes" xml:space="preserve">
-          <source>Done</source>
-          <target state="new">Done</target>
-        </trans-unit>
-      </group>
+Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version auf all Ihren Geräten (sie ist mit Ihrem Online-Konto verknüpft).</target>
+</trans-unit>
+		  <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
+  <source>Restore Previous Purchase</source>
+  <target state="final">Vorherigen Kauf wiederherstellen</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
+  <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
+  <target state="final">Tippen Sie auf den Bearbeitungsknopf oben rechts, um Details wie die Kontaktinformationen des Lehrers, Sprechzeiten und alles Weitere hinzuzufügen!</target>
+</trans-unit>
+		  <trans-unit id="String_Back" translate="yes" xml:space="preserve">
+  <source>Back</source>
+  <target state="final">Zurück</target>
+</trans-unit>
+		  <trans-unit id="String_Done" translate="yes" xml:space="preserve">
+  <source>Done</source>
+  <target state="final">Fertig</target>
+</trans-unit>
+	  </group>
     </body>
   </file>
 </xliff>
