@@ -306,15 +306,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenThemeSettings);
             }
 
-            if (VxPlatform.Current != Platform.iOS)
-            {
-                RenderOption(
-                    layout,
-                    MaterialDesign.MaterialDesignIcons.Translate,
-                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
-                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
-                    OpenLanguageSettings);
-            }
+            RenderOption(
+                layout,
+                MaterialDesign.MaterialDesignIcons.Translate,
+                PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
+                PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
+                OpenLanguageSettings);
 
             if (VxPlatform.Current == Platform.Uwp)
             {

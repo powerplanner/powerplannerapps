@@ -10,6 +10,7 @@ using BareMvvm.Core.App;
 using ToolsPortable;
 using InterfacesiOS.Extensions;
 using CoreGraphics;
+using System.Globalization;
 
 namespace InterfacesiOS.App
 {
@@ -89,7 +90,7 @@ namespace InterfacesiOS.App
             // Register message dialog
             PortableMessageDialog.Extension = IOSMessageDialog.Show;
 
-            //PortableLocalizedResources.CultureExtension = GetCultureInfo;
+            PortableLocalizedResources.CultureExtension = GetCultureInfo;
 
             // Initialize the app
             PortableApp.InitializeAsync((PortableApp)Activator.CreateInstance(GetPortableAppType()));
@@ -134,5 +135,10 @@ namespace InterfacesiOS.App
         public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
 
         public abstract Type GetPortableAppType();
+
+        private CultureInfo GetCultureInfo()
+        {
+            return CultureInfo.CurrentUICulture;
+        }
     }
 }
