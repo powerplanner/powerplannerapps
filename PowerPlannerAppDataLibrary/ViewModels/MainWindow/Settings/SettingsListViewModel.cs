@@ -783,7 +783,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenLanguageSettings()
         {
-            Show(new LanguageSettingsViewModel(ParentForSubviews));
+            ShowPopup(new LanguageSettingsViewModel(ParentForSubviews));
         }
 
         public void ViewSyncErrors()
