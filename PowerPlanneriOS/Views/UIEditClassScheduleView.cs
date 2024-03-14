@@ -78,7 +78,7 @@ namespace PowerPlanneriOS.Views
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            buttonAdd.SetTitle("Add Time", UIControlState.Normal);
+            buttonAdd.SetTitle(PowerPlannerResources.GetString("String_AddTime"), UIControlState.Normal);
             buttonAdd.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { OnRequestAddTime?.Invoke(this, DataContext as ViewItemClass); }).Handler;
             this.Add(buttonAdd);
             buttonAdd.StretchWidth(this, left: 8, right: 8);

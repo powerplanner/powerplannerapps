@@ -105,7 +105,7 @@ namespace PowerPlanneriOS.Controllers
 
                 if (value != null)
                 {
-                    var uiButton = new UIBarButtonItem(UIBarButtonSystemItem.Save)
+                    var uiButton = new UIBarButtonItem
                     {
                         Title = value.Title
                     };

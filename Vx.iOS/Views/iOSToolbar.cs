@@ -118,7 +118,7 @@ namespace Vx.iOS.Views
             {
                 foreach (var command in toolbar.PrimaryCommands)
                 {
-                    var button = command.Glyph.ToUIBarButtonItem();
+                    var button = command.ToUIBarButtonItem(skipClickHandler: true);
                     button.Clicked += delegate
                     {
                         if (command.Action != null)

@@ -1351,6 +1351,9 @@ Please think about using an online account instead!</value>
   <data name="EditGradePage_TextBoxName.Header" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="EditGradePage_IsDropped" xml:space="preserve">
+    <value>Is dropped?</value>
+  </data>
   <data name="String_Close" xml:space="preserve">
     <value>Close</value>
   </data>

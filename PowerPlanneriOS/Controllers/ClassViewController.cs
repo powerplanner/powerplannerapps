@@ -37,15 +37,15 @@ namespace PowerPlanneriOS.Controllers
 
         public override void OnViewModelLoadedOverride()
         {
-            _navButtonEditDetails = new UIBarButtonItem(UIBarButtonSystemItem.Edit)
+            _navButtonEditDetails = new UIBarButtonItem
             {
-                Title = PowerPlannerResources.GetString("String_EditDetails")
+                Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
             };
             _navButtonEditDetails.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditClassWithDetails(); }).Handler;
 
-            _navButtonEditTimes = new UIBarButtonItem(UIBarButtonSystemItem.Edit)
+            _navButtonEditTimes = new UIBarButtonItem
             {
-                Title = PowerPlannerResources.GetString("String_EditTimes")
+                Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
             };
             _navButtonEditTimes.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EditTimes(); }).Handler;
 

@@ -2672,7 +2672,7 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>Semester</source>
           <target state="final">Semester</target>
         </trans-unit>
-		  <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
   <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
 
 The free version is limited to...
@@ -2690,23 +2690,27 @@ Die kostenlose Version ist beschränkt auf...
 
 Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version auf all Ihren Geräten (sie ist mit Ihrem Online-Konto verknüpft).</target>
 </trans-unit>
-		  <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
   <source>Restore Previous Purchase</source>
   <target state="final">Vorherigen Kauf wiederherstellen</target>
 </trans-unit>
-		  <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
   <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
   <target state="final">Tippen Sie auf den Bearbeitungsknopf oben rechts, um Details wie die Kontaktinformationen des Lehrers, Sprechzeiten und alles Weitere hinzuzufügen!</target>
 </trans-unit>
-		  <trans-unit id="String_Back" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Back" translate="yes" xml:space="preserve">
   <source>Back</source>
   <target state="final">Zurück</target>
 </trans-unit>
-		  <trans-unit id="String_Done" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Done" translate="yes" xml:space="preserve">
   <source>Done</source>
   <target state="final">Fertig</target>
 </trans-unit>
-	  </group>
+<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+  <source>Is dropped?</source>
+  <target state="final">Wurde es fallengelassen?</target>
+</trans-unit>
+      </group>
     </body>
   </file>
 </xliff>

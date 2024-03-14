@@ -28,14 +28,14 @@ namespace PowerPlanneriOS.Controllers
             Title = PowerPlannerResources.GetString("MainMenuItem_Schedule");
             HideBackButton();
 
-            _editButton = new UIBarButtonItem(UIBarButtonSystemItem.Edit)
+            _editButton = new UIBarButtonItem
             {
-                Title = PowerPlannerResources.GetString("String_EditSchedule")
+                Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
             };
             _editButton.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EnterEditMode(); }).Handler;
             NavItem.RightBarButtonItem = _editButton;
 
-            _doneButton = new UIBarButtonItem(UIBarButtonSystemItem.Done)
+            _doneButton = new UIBarButtonItem
             {
                 Title = PowerPlannerResources.GetString("String_Done")
             };

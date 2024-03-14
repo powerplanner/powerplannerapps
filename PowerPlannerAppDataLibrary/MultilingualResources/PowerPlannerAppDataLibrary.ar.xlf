@@ -2692,21 +2692,25 @@ Once you purchase the premium version, you own the premium version on all your d
 
 بمجرد شرائك للنسخة المميزة، تمتلك النسخة المميزة على جميع أجهزتك (يتم ربطها بحسابك على الإنترنت).</target>
 </trans-unit>
-<trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
   <source>Restore Previous Purchase</source>
   <target state="final">استعادة الشراء السابق</target>
 </trans-unit>
-<trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
+        <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
   <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
   <target state="final">اضغط على زر التعديل في الزاوية العلوية اليمنى لإضافة تفاصيل مثل معلومات الاتصال بالمعلم، وساعات العمل، وأي شيء آخر!</target>
 </trans-unit>
-<trans-unit id="String_Back" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Back" translate="yes" xml:space="preserve">
   <source>Back</source>
   <target state="final">رجوع</target>
 </trans-unit>
-<trans-unit id="String_Done" translate="yes" xml:space="preserve">
+        <trans-unit id="String_Done" translate="yes" xml:space="preserve">
   <source>Done</source>
   <target state="final">تم</target>
+</trans-unit>
+<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+  <source>Is dropped?</source>
+  <target state="final">هل تم إسقاطه؟</target>
 </trans-unit>
       </group>
     </body>
