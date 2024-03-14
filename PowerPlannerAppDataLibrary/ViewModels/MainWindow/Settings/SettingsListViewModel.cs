@@ -783,7 +783,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenLanguageSettings()
         {
-            ShowPopup(new LanguageSettingsViewModel(ParentForSubviews));
+            if (LanguageExtension.OpenSystemAppLanguageSelector != null)
+            {
+                LanguageExtension.OpenSystemAppLanguageSelector();
+            }
+            else
+            {
+                ShowPopup(new LanguageSettingsViewModel(ParentForSubviews));
+            }
         }
 
         public void ViewSyncErrors()
