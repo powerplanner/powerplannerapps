@@ -25,19 +25,19 @@ namespace PowerPlanneriOS.Controllers
 
         public ScheduleViewController()
         {
-            Title = "Schedule";
+            Title = PowerPlannerResources.GetString("MainMenuItem_Schedule");
             HideBackButton();
 
-            _editButton = new UIBarButtonItem(UIBarButtonSystemItem.Edit)
+            _editButton = new UIBarButtonItem
             {
-                Title = "Edit schedule"
+                Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
             };
             _editButton.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EnterEditMode(); }).Handler;
             NavItem.RightBarButtonItem = _editButton;
 
-            _doneButton = new UIBarButtonItem(UIBarButtonSystemItem.Done)
+            _doneButton = new UIBarButtonItem
             {
-                Title = "Done"
+                Title = PowerPlannerResources.GetString("String_Done")
             };
             _doneButton.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.ExitEditMode(); }).Handler;
 
@@ -227,7 +227,7 @@ namespace PowerPlanneriOS.Controllers
             if (ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.Normal)
             {
                 NavItem.RightBarButtonItem = _editButton;
-                Title = "Schedule";
+                Title = PowerPlannerResources.GetString("MainMenuItem_Schedule");
             }
             else if (ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.SplitEditing
                 || ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.FullEditing)
@@ -254,7 +254,7 @@ namespace PowerPlanneriOS.Controllers
                 _editingView.StretchWidthAndHeight(ContentView);
 
                 NavItem.RightBarButtonItem = _doneButton;
-                Title = "Edit Schedule";
+                Title = PowerPlannerResources.GetString("String_EditSchedule");
             }
             else
             {
@@ -278,7 +278,7 @@ namespace PowerPlanneriOS.Controllers
                         var title = new UILabel()
                         {
                             TranslatesAutoresizingMaskIntoConstraints = false,
-                            Text = "Welcome to Power Planner!",
+                            Text = PowerPlannerResources.GetString("SchedulePage_TextBlockWelcomeTitle.Text"),
                             AdjustsFontSizeToFitWidth = true,
                             Font = UIFont.PreferredTitle3,
                             TextAlignment = UITextAlignment.Center
@@ -289,7 +289,7 @@ namespace PowerPlanneriOS.Controllers
                         var subtitle = new UILabel()
                         {
                             TranslatesAutoresizingMaskIntoConstraints = false,
-                            Text = "To get started, add your classes and schedule!",
+                            Text = PowerPlannerResources.GetString("SchedulePage_TextBlockWelcomeSubtitle.Text"),
                             Lines = 0,
                             Font = UIFont.PreferredCaption1,
                             TextAlignment = UITextAlignment.Center
@@ -301,7 +301,7 @@ namespace PowerPlanneriOS.Controllers
                         {
                             TranslatesAutoresizingMaskIntoConstraints = false
                         };
-                        buttonAddClass.SetTitle("Add Class", UIControlState.Normal);
+                        buttonAddClass.SetTitle(PowerPlannerResources.GetString("SchedulePage_ButtonAddClass.Content"), UIControlState.Normal);
                         buttonAddClass.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
                         buttonAddClass.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
                         buttonAddClass.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.AddClass(); }).Handler;
@@ -328,7 +328,7 @@ namespace PowerPlanneriOS.Controllers
                             _welcomeView.Add(returningUser);
                             returningUser.StretchWidth(_welcomeView, left: 16, right: 16);
 
-                            var buttonLogIn = PowerPlannerUIHelper.CreatePowerPlannerBlueButton("Log In");
+                            var buttonLogIn = PowerPlannerUIHelper.CreatePowerPlannerBlueButton(PowerPlannerResources.GetString("Button_LogIn.Content"));
                             buttonLogIn.TranslatesAutoresizingMaskIntoConstraints = false;
                             buttonLogIn.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.LogIn(); }).Handler;
                             _welcomeView.Add(buttonLogIn);
@@ -346,7 +346,7 @@ namespace PowerPlanneriOS.Controllers
                 _welcomeView.StretchWidth(ContentView);
 
                 NavItem.RightBarButtonItem = null;
-                Title = "Edit Schedule";
+                Title = PowerPlannerResources.GetString("String_EditSchedule");
 
                 MainScreenViewController.ListenToTabBarHeightChanged(ref _welcomeViewTabBarHeightListener, delegate
                 {

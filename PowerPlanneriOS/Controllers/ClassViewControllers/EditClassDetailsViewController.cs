@@ -7,6 +7,7 @@ using Foundation;
 using UIKit;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using InterfacesiOS.Views;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -16,10 +17,10 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
         {
             // NOTE: This view isn't used anymore, I simply use AddClass with details enabled instead
 
-            Title = "Edit Details";
+            Title = PowerPlannerResources.GetString("String_EditDetails");
 
-            BackButtonText = "Cancel";
-            PositiveNavBarButton = new PopupRightNavBarButtonItem("Save", delegate { ViewModel.Save(); });
+            BackButtonText = PowerPlannerResources.GetStringCancel();
+            PositiveNavBarButton = new PopupRightNavBarButtonItem(PowerPlannerResources.GetStringSave(), delegate { ViewModel.Save(); });
 
             AddSectionDivider();
 

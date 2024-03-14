@@ -306,15 +306,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenThemeSettings);
             }
 
-            if (VxPlatform.Current != Platform.iOS)
-            {
-                RenderOption(
-                    layout,
-                    MaterialDesign.MaterialDesignIcons.Translate,
-                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
-                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
-                    OpenLanguageSettings);
-            }
+            RenderOption(
+                layout,
+                MaterialDesign.MaterialDesignIcons.Translate,
+                PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
+                PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
+                OpenLanguageSettings);
 
             if (VxPlatform.Current == Platform.Uwp)
             {
@@ -786,7 +783,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenLanguageSettings()
         {
-            Show(new LanguageSettingsViewModel(ParentForSubviews));
+            if (LanguageExtension.OpenSystemAppLanguageSelector != null)
+            {
+                LanguageExtension.OpenSystemAppLanguageSelector();
+            }
+            else
+            {
+                ShowPopup(new LanguageSettingsViewModel(ParentForSubviews));
+            }
         }
 
         public void ViewSyncErrors()

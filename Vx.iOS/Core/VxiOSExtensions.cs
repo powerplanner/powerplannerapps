@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using CarPlay;
+using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -318,31 +319,6 @@ namespace Vx.iOS
             }
         }
 
-        public static UIBarButtonItem ToUIBarButtonItem(this string glyph)
-        {
-            UIBarButtonItem uiBarButton;
-
-            var val = glyph.ToUIBarButtonSystemItem();
-            if (val != UIBarButtonSystemItem.Action)
-            {
-                uiBarButton = new UIBarButtonItem(val);
-            }
-            else
-            {
-                var img = glyph.ToUIBarButtonImage();
-                if (img != null)
-                {
-                    uiBarButton = new UIBarButtonItem(UIImage.FromBundle(img), UIBarButtonItemStyle.Plain, null);
-                }
-                else
-                {
-                    uiBarButton = new UIBarButtonItem(UIBarButtonSystemItem.Action);
-                }
-            }
-
-            return uiBarButton;
-        }
-
         private static string ToUIBarButtonImage(this string glyph)
         {
             switch (glyph)
@@ -356,6 +332,63 @@ namespace Vx.iOS
                 default:
                     return null;
             }
+        }
+
+        public static UIBarButtonItem ToUIBarButtonItem(this ToolbarCommand command, bool skipClickHandler = false)
+        {
+            UIBarButtonItem btn;
+            var systemItem = command.Glyph.ToUIBarButtonSystemItem();
+            switch (systemItem)
+            {
+                case UIBarButtonSystemItem.Action:
+                    {
+                        var img = command.Glyph.ToUIBarButtonImage();
+                        if (img != null)
+                        {
+                            btn = new UIBarButtonItem(UIImage.FromBundle(img), UIBarButtonItemStyle.Plain, null);
+                        }
+                        else
+                        {
+                            btn = new UIBarButtonItem { Title = command.Text };
+                        }
+                    }
+                    break;
+
+                // Icons (non-localized)
+                case UIBarButtonSystemItem.Add:
+                case UIBarButtonSystemItem.FlexibleSpace:
+                case UIBarButtonSystemItem.FixedSpace:
+                case UIBarButtonSystemItem.Compose:
+                case UIBarButtonSystemItem.Reply:
+                case UIBarButtonSystemItem.Organize:
+                case UIBarButtonSystemItem.Bookmarks:
+                case UIBarButtonSystemItem.Refresh:
+                case UIBarButtonSystemItem.Stop:
+                case UIBarButtonSystemItem.Camera:
+                case UIBarButtonSystemItem.Trash:
+                case UIBarButtonSystemItem.Play:
+                case UIBarButtonSystemItem.Pause:
+                case UIBarButtonSystemItem.Rewind:
+                case UIBarButtonSystemItem.FastForward:
+                case UIBarButtonSystemItem.Undo:
+                case UIBarButtonSystemItem.Redo:
+                case UIBarButtonSystemItem.Close:
+                    btn = new UIBarButtonItem(systemItem);
+                    break;
+
+                // Others are text that's localized (and we want to use our text instead)
+                default:
+                    btn = new UIBarButtonItem
+                    {
+                        Title = command.Text
+                    };
+                    break;
+            }
+            if (!skipClickHandler)
+            {
+                btn.Clicked += delegate { command.Action(); };
+            }
+            return btn;
         }
 
         public static UIBarButtonSystemItem ToUIBarButtonSystemItem(this string glyph)

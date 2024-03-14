@@ -22,7 +22,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
         public ClassTimesViewController()
         {
-            Title = "Times";
+            Title = PowerPlannerResources.GetString("ClassPage_PivotItemTimes.Header");
         }
 
         public override void OnViewModelSetOverride()

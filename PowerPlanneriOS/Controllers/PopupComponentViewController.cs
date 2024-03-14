@@ -13,6 +13,7 @@ using PowerPlanneriOS.Helpers;
 using ToolsPortable;
 using UIKit;
 using Vx.iOS;
+using Vx.Views;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -73,7 +74,7 @@ namespace PowerPlanneriOS.Controllers
             {
                 foreach (var command in ViewModel.Commands)
                 {
-                    yield return new UIBarButtonItem(command.Glyph.ToUIBarButtonSystemItem(), (obj, args) => command.Action());
+                    yield return command.ToUIBarButtonItem();
                 }
             }
         }
@@ -85,7 +86,7 @@ namespace PowerPlanneriOS.Controllers
 
             foreach (var option in ViewModel.SecondaryCommands)
             {
-                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == PopupCommandStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
+                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == ToolbarCommandStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
                 {
                     if (option.UseQuickConfirmDelete)
                     {

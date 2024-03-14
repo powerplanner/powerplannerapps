@@ -1683,7 +1683,7 @@ Please think about using an online account instead!</source>
           <note from="MultilingualBuild" annotates="source" priority="2">Like "5 days ago"</note>
         </trans-unit>
         <trans-unit id="SchedulePage_ButtonAddClass.Content" translate="yes" xml:space="preserve">
-          <source>add class</source>
+          <source>Add class</source>
           <target state="final">إضافة فئة</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockWelcomeTitle.Text" translate="yes" xml:space="preserve">
@@ -2674,6 +2674,44 @@ Please think about using an online account instead!</source>
           <source>Semester</source>
           <target state="final">فصل دراسي</target>
         </trans-unit>
+        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
+  <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
+  <target state="final">النسخة المميزة من Power Planner تفتح عددًا من الميزات المفيدة، وهي عملية شراء مدى الحياة لمرة واحدة (بدون اشتراكات شهرية/سنوية)!
+
+النسخة المجانية محدودة ب...
+ - فصل دراسي واحد
+ - 5 درجات لكل صف
+ - إدخال مكرر بالجملة لمهمة/حدث واحد
+
+بمجرد شرائك للنسخة المميزة، تمتلك النسخة المميزة على جميع أجهزتك (يتم ربطها بحسابك على الإنترنت).</target>
+</trans-unit>
+        <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
+  <source>Restore Previous Purchase</source>
+  <target state="final">استعادة الشراء السابق</target>
+</trans-unit>
+        <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
+  <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
+  <target state="final">اضغط على زر التعديل في الزاوية العلوية اليمنى لإضافة تفاصيل مثل معلومات الاتصال بالمعلم، وساعات العمل، وأي شيء آخر!</target>
+</trans-unit>
+        <trans-unit id="String_Back" translate="yes" xml:space="preserve">
+  <source>Back</source>
+  <target state="final">رجوع</target>
+</trans-unit>
+        <trans-unit id="String_Done" translate="yes" xml:space="preserve">
+  <source>Done</source>
+  <target state="final">تم</target>
+</trans-unit>
+<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+  <source>Is dropped?</source>
+  <target state="final">هل تم إسقاطه؟</target>
+</trans-unit>
       </group>
     </body>
   </file>

@@ -19,6 +19,7 @@ using CoreGraphics;
 using PowerPlannerAppDataLibrary.Extensions;
 using InterfacesiOS.Helpers;
 using Vx.iOS;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -28,7 +29,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
 
         public ClassGradesViewController()
         {
-            Title = "Grades";
+            Title = PowerPlannerResources.GetString("ClassPage_PivotItemGrades.Header");
         }
 
         public override void OnViewModelSetOverride()

@@ -15,6 +15,7 @@ using PowerPlanneriOS.Helpers;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -218,15 +219,15 @@ namespace PowerPlanneriOS.Controllers
 
             // https://developer.xamarin.com/Recipes/ios/Content_Controls/Tab_Bar/Create_a_Tab_Bar/
 
-            _tabBarItemCalendar = new UITabBarItem("Calendar", UIImage.FromBundle("TabCalendar"), UIImage.FromBundle("TabCalendarSelected"));
+            _tabBarItemCalendar = new UITabBarItem(PowerPlannerResources.GetString("MainMenuItem_Calendar"), UIImage.FromBundle("TabCalendar"), UIImage.FromBundle("TabCalendarSelected"));
 
-            _tabBarItemAgenda = new UITabBarItem("Agenda", UIImage.FromBundle("TabAgenda"), UIImage.FromBundle("TabAgendaSelected"));
+            _tabBarItemAgenda = new UITabBarItem(PowerPlannerResources.GetString("MainMenuItem_Agenda"), UIImage.FromBundle("TabAgenda"), UIImage.FromBundle("TabAgendaSelected"));
 
-            _tabBarItemSchedule = new UITabBarItem("Schedule", UIImage.FromBundle("TabSchedule"), UIImage.FromBundle("TabScheduleSelected"));
+            _tabBarItemSchedule = new UITabBarItem(PowerPlannerResources.GetString("MainMenuItem_Schedule"), UIImage.FromBundle("TabSchedule"), UIImage.FromBundle("TabScheduleSelected"));
 
-            _tabBarItemClasses = new UITabBarItem("Classes", UIImage.FromBundle("TabClasses"), UIImage.FromBundle("TabClassesSelected"));
+            _tabBarItemClasses = new UITabBarItem(PowerPlannerResources.GetString("MainMenuItem_Classes"), UIImage.FromBundle("TabClasses"), UIImage.FromBundle("TabClassesSelected"));
 
-            _tabBarItemMore = new UITabBarItem("More", UIImage.FromBundle("TabMore"), UIImage.FromBundle("TabMoreSelected"));
+            _tabBarItemMore = new UITabBarItem(PowerPlannerResources.GetString("String_More"), UIImage.FromBundle("TabMore"), UIImage.FromBundle("TabMoreSelected"));
 
             _tabBar = new UITabBar()
             {

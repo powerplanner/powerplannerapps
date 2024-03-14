@@ -8,6 +8,7 @@ using UIKit;
 using InterfacesiOS.Views;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Views
 {
@@ -32,7 +33,7 @@ namespace PowerPlanneriOS.Views
                 var labelHeader = new UILabel()
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
-                    Text = "Different semester",
+                    Text = PowerPlannerResources.GetString("DifferentSemesterOverlayControl_TextBlockHeader.Text"),
                     Font = UIFont.PreferredSubheadline,
                     TextAlignment = UITextAlignment.Center,
                     TextColor = UIColor.White
@@ -43,7 +44,7 @@ namespace PowerPlanneriOS.Views
                 var labelBody = new UILabel()
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
-                    Text = "This is a different semester. Tap this to view all of your semesters",
+                    Text = PowerPlannerResources.GetString("DifferentSemesterOverlayControl_TextBlockDescription.Text"),
                     Font = UIFont.PreferredCaption1,
                     TextAlignment = UITextAlignment.Center,
                     TextColor = UIColor.White,

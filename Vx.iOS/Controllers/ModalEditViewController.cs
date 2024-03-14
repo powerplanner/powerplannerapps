@@ -62,8 +62,8 @@ namespace InterfacesiOS.Controllers
             _parent = parent;
             ContentView = contentView;
             contentView.TranslatesAutoresizingMaskIntoConstraints = false;
-            DoneButtonText = "Done";
-            CancelButtonText = "Cancel";
+            DoneButtonText = PortableLocalizedResources.GetString("String_Done");
+            CancelButtonText = PortableLocalizedResources.GetString("String_Cancel");
         }
 
         private bool m_preparedForModal;

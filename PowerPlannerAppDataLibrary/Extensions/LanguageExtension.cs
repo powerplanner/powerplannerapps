@@ -11,5 +11,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
         public abstract string GetLanguageOverrideCode();
 
         public abstract void SetLanguageOverrideCode(string code);
+
+        public static Action OpenSystemAppLanguageSelector { get; set; }
     }
 }

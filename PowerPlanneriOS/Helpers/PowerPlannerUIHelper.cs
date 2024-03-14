@@ -9,18 +9,24 @@ using ToolsPortable;
 using InterfacesiOS.Controllers;
 using BareMvvm.Core.ViewModels;
 using InterfacesiOS.Helpers;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Helpers
 {
     public static class PowerPlannerUIHelper
     {
-        public static void ConfirmDeleteQuick(UIViewController viewController, UIBarButtonItem barButton, Action deleteAction, string deleteText = "Delete")
+        public static void ConfirmDeleteQuick(UIViewController viewController, UIBarButtonItem barButton, Action deleteAction, string deleteText = null)
         {
+            if (deleteText == null)
+            {
+                deleteText = PowerPlannerResources.GetString("MenuItemDelete");
+            }
+
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
             actionSheetAlert.AddAction(UIAlertAction.Create(deleteText, UIAlertActionStyle.Destructive, delegate { deleteAction(); }));
-            actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+            actionSheetAlert.AddAction(UIAlertAction.Create(PowerPlannerResources.GetStringCancel(), UIAlertActionStyle.Cancel, null));
 
             // Required for iPad - You must specify a source for the Action Sheet since it is
             // displayed as a popover
@@ -33,26 +39,6 @@ namespace PowerPlanneriOS.Helpers
 
             // Display the alert
             viewController.PresentViewController(actionSheetAlert, true, null);
-        }
-
-        public static void ConfirmDelete(string message, string title, Action deleteAction)
-        {
-            WeakReference<Action> weakAction = new WeakReference<Action>(deleteAction);
-            IUIAlertViewDelegate del = null;
-            var alertView = new UIAlertView(title, message, del, "Cancel", "Delete");
-            alertView.Clicked += (s, e) =>
-            {
-                if (e.ButtonIndex == 1)
-                {
-                    // Use a weak reference otherwise the reference to the view model's delete action
-                    // gets persisted and the view model doesn't dispose
-                    if (weakAction.TryGetTarget(out Action delAction))
-                    {
-                        delAction();
-                    }
-                }
-            };
-            alertView.Show();
         }
 
         public static UIButton CreatePowerPlannerBlueButton(string title)

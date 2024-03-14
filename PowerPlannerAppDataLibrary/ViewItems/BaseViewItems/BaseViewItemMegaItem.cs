@@ -126,13 +126,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
                 string answer = "";
 
                 if (this.IsDropped)
-                    answer = "DROPPED - ";
+                    answer = PowerPlannerResources.GetString("ViewGradePage_TextBlockDropped.Text").ToUpper() + " - ";
 
                 if (this.GradeReceived == PowerPlannerSending.Grade.UNGRADED)
                     return answer + "----  -  --/" + this.GradeTotal;
 
                 if (this.GradeTotal == 0)
-                    return answer + "Extra Credit - " + this.GradeReceived;
+                    return answer + PowerPlannerResources.GetString("String_ExtraCreditAbbreviation") + " - " + this.GradeReceived;
 
                 return answer + this.GradePercent.ToString("0.##%") + "  -  " + this.GradeReceived + "/" + this.GradeTotal;
             }

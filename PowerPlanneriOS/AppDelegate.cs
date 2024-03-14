@@ -188,6 +188,21 @@ namespace PowerPlanneriOS
             EmailExtension.Current = new iOSEmailExtension();
             DateTimeFormatterExtension.Current = new iOSDateTimeFormatterExtension();
 
+#if !DEBUG
+            // On release, use the system language selector (in simulator the system settings doesn't support this).
+            LanguageExtension.OpenSystemAppLanguageSelector = delegate
+            {
+                try
+                {
+                    UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+            };
+#endif
+
             // Register custom views
             Vx.iOS.VxiOSExtensions.RegisterCustomView(v => v is CompletionSlider, v => new iOSCompletionSlider());
 
