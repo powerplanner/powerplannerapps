@@ -145,7 +145,6 @@ namespace PowerPlannerUWP
                 { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) },
-                { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }

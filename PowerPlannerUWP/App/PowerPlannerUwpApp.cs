@@ -31,7 +31,6 @@ namespace PowerPlannerUWP
 
             // We register promoting other accounts as one of the first promotions
             PromoRegistrations.Registrations.Insert(0, typeof(PromoOtherPlatformsViewModel.Registration));
-            PromoRegistrations.Registrations.Add(typeof(PromoContributeViewModel.Registration));
 
             // Register settings extensions
             SettingsListViewModel.OpenLiveTiles = settingsListViewModel =>

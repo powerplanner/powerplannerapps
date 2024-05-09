@@ -2143,14 +2143,6 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">Anexos de imagem</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Are you a developer? Help add some features!</source>
-          <target state="final" state-qualifier="mt-suggestion">Você é um desenvolvedor? Ajude a adicionar alguns recursos!</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
-          <source>Contribute to Power Planner</source>
-          <target state="final" state-qualifier="mt-suggestion">Contribua para Power Planner</target>
-        </trans-unit>
         <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
           <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
           <target state="final" state-qualifier="mt-suggestion">Para utilizar a integração do Google Calendar, você deve primeiro criar uma conta de Power Planner!</target>
@@ -2705,7 +2697,7 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
   <source>Done</source>
   <target state="final">Concluído</target>
 </trans-unit>
-<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+        <trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
   <source>Is dropped?</source>
   <target state="final">Foi excluído?</target>
 </trans-unit>

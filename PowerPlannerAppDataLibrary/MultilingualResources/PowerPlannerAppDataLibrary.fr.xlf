@@ -2202,14 +2202,6 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Image attachments</source>
           <target state="final">Images en pièces jointes</target>
         </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Are you a developer? Help add some features!</source>
-          <target state="final" state-qualifier="mt-suggestion">Êtes-vous un développeur? Aidez à ajouter quelques fonctionnalités!</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
-          <source>Contribute to Power Planner</source>
-          <target state="final" state-qualifier="mt-suggestion">Contribuer à Power Planner</target>
-        </trans-unit>
         <trans-unit id="SchedulePage_TextBlockReturningUser.Text" translate="yes" xml:space="preserve">
           <source>Returning user?</source>
           <target state="final" state-qualifier="mt-suggestion">Utilisateur de retour?</target>
@@ -2704,7 +2696,7 @@ Une fois que vous avez acheté la version premium, vous possédez la version pre
   <source>Done</source>
   <target state="final">Terminé</target>
 </trans-unit>
-<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+        <trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
   <source>Is dropped?</source>
   <target state="final">Est-il supprimé ?</target>
 </trans-unit>

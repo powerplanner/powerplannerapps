@@ -1795,12 +1795,6 @@ Please think about using an online account instead!</value>
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>Image attachments</value>
   </data>
-  <data name="Settings_MainPage_ContributeItem.Subtitle" xml:space="preserve">
-    <value>Are you a developer? Help add some features!</value>
-  </data>
-  <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
-    <value>Contribute to Power Planner</value>
-  </data>
   <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
     <value>Returning user?</value>
   </data>
