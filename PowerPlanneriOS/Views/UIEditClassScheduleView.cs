@@ -78,7 +78,7 @@ namespace PowerPlanneriOS.Views
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            buttonAdd.SetTitle("Add Time", UIControlState.Normal);
+            buttonAdd.SetTitle(PowerPlannerResources.GetString("String_AddTime"), UIControlState.Normal);
             buttonAdd.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { OnRequestAddTime?.Invoke(this, DataContext as ViewItemClass); }).Handler;
             this.Add(buttonAdd);
             buttonAdd.StretchWidth(this, left: 8, right: 8);
@@ -240,7 +240,8 @@ namespace PowerPlanneriOS.Views
             ViewItemSchedule first = schedules.First();
 
             _labelDayOfWeeks.Text = string.Join(", ", schedules.Select(i => i.DayOfWeek).Distinct().OrderBy(i => i).Select(i => DateTools.ToLocalizedString(i)));
-            _labelTime.Text = PowerPlannerResources.GetStringTimeToTime(DateTimeFormatterExtension.Current.FormatAsShortTime(first.StartTime), DateTimeFormatterExtension.Current.FormatAsShortTime(first.EndTime));
+            // Editing view, so we use School Time
+            _labelTime.Text = PowerPlannerResources.GetStringTimeToTime(DateTimeFormatterExtension.Current.FormatAsShortTime(first.StartTimeInSchoolTime), DateTimeFormatterExtension.Current.FormatAsShortTime(first.EndTimeInSchoolTime));
             if (string.IsNullOrWhiteSpace(first.Room))
             {
                 _visibilityRoom.IsVisible = false;

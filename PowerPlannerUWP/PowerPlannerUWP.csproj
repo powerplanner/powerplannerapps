@@ -155,6 +155,7 @@
     <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
     <Compile Include="Extensions\UWPBrowserExtension.cs" />
     <Compile Include="Extensions\UWPEmailExtension.cs" />
+    <Compile Include="Extensions\UWPThemeExtension.cs" />
     <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
     <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
     <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
@@ -219,9 +220,6 @@
       <DependentUpon>InitialSyncView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopupComponentView.cs" />
-    <Compile Include="Views\Promos\PromoContributeView.xaml.cs">
-      <DependentUpon>PromoContributeView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Promos\PromoOtherPlatformsView.xaml.cs">
       <DependentUpon>PromoOtherPlatformsView.xaml</DependentUpon>
     </Compile>
@@ -313,9 +311,6 @@
     <Compile Include="Views\BasicPopupView.cs" />
     <Compile Include="Views\ClassViews\ClassGradesHeaderView.xaml.cs">
       <DependentUpon>ClassGradesHeaderView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ClassViews\ClassSchedulesEditing.xaml.cs">
-      <DependentUpon>ClassSchedulesEditing.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassViews\EditingClassScheduleItemView.xaml.cs">
       <DependentUpon>EditingClassScheduleItemView.xaml</DependentUpon>
@@ -504,10 +499,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Promos\PromoContributeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Promos\PromoOtherPlatformsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -621,10 +612,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ClassViews\ClassGradesHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassViews\ClassSchedulesEditing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

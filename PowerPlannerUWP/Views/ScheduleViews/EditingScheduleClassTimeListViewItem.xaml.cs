@@ -38,7 +38,8 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             var timeFormatter = new DateTimeFormatter("shorttime");
 
             TextBlockDayOfWeeks.Text = string.Join(", ", schedules.Select(i => i.DayOfWeek).Distinct().OrderBy(i => i).Select(i => DateTools.ToLocalizedString(i)));
-            TextBlockName.Text = LocalizedResources.Common.GetStringTimeToTime(timeFormatter.Format(first.StartTime), timeFormatter.Format(first.EndTime));
+            // Editing view, so we use School Time
+            TextBlockName.Text = LocalizedResources.Common.GetStringTimeToTime(timeFormatter.Format(first.StartTimeInSchoolTime), timeFormatter.Format(first.EndTimeInSchoolTime));
             if (string.IsNullOrWhiteSpace(first.Room))
             {
                 TextBlockRoom.Visibility = Visibility.Collapsed;

@@ -488,7 +488,7 @@ namespace PowerPlannerUWP.Extensions
                 return date.AddHours(15); // 3:00 PM is default time for day before reminders
             }
 
-            return date.Add(schedules.Max(i => i.EndTime.TimeOfDay)).AddMinutes(10); //day before reminders show up 10 mins after last class
+            return date.Add(schedules.Max(i => i.EndTimeInLocalTime(date).TimeOfDay)).AddMinutes(10); //day before reminders show up 10 mins after last class
         }
 
         internal static string TrimString(string str, int maxLength)

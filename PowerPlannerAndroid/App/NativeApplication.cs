@@ -31,6 +31,8 @@ using PowerPlannerAndroid.ViewModel.Settings;
 using PowerPlannerAppDataLibrary.ViewModels;
 using AndroidX.Core.Content.PM;
 using Android.Content.PM;
+using System.Runtime.Remoting.Contexts;
+using AndroidX.AppCompat.App;
 
 namespace PowerPlannerAndroid.App
 {
@@ -58,6 +60,8 @@ namespace PowerPlannerAndroid.App
             }
             var versionName = packageInfo.VersionName;
             Variables.VERSION = Version.Parse(versionName);
+
+            Extensions.DroidThemeExtension.ApplyTheme(ignoreAutomatic: true);
 
 #if DEBUG
             //var culture = new System.Globalization.CultureInfo("es-MX");

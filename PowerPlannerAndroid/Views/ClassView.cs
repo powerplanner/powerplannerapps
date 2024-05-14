@@ -103,6 +103,7 @@ namespace PowerPlannerAndroid.Views
 
             public ClassView ClassView { get; private set; }
 
+            private View _renderedTimes;
             private View _renderedGrades;
             private View _renderedTasks;
             private View _renderedEvents;
@@ -136,7 +137,11 @@ namespace PowerPlannerAndroid.Views
                         break;
 
                     case TIMES:
-                        view = new ClassTimesView(container, ClassView.ViewModel.TimesViewModel);
+                        if (_renderedTimes == null)
+                        {
+                            _renderedTimes = ClassView.ViewModel.TimesViewModel.Render();
+                        }
+                        view = _renderedTimes;
                         break;
 
                     case TASKS:

@@ -233,6 +233,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             return DateHelpers.ToViewItemTime(Account, rawDateTime);
         }
 
+        protected DateTime ToViewItemTime(TimeSpan time, DateTime date)
+        {
+            return ToViewItemTime(date.Date.Add(time));
+        }
+
         /// <summary>
         /// Keeps the time in the school's time (so if it was due 9pm, it's still due 9pm regardless of where they currently are)
         /// </summary>

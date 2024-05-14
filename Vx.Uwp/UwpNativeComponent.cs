@@ -14,7 +14,7 @@ namespace Vx.Uwp
 {
     public class UwpNativeComponent : ContentControl, INativeComponent
     {
-        public SizeF ComponentSize => new SizeF(this.ActualSize.X, this.ActualSize.Y);
+        public SizeF ComponentSize => new SizeF((float)this.ActualWidth, (float)this.ActualHeight);
 
         public event EventHandler<SizeF> ComponentSizeChanged;
         public event EventHandler ThemeChanged;

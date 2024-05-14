@@ -35,27 +35,24 @@
             Margin="-6"
             Opacity="0"/>
 
-        <interfacesControls:StackPanelWithImportances Background="{Binding ElementName=ThisControl, Path=Schedule.Class.Color, Converter={StaticResource ColorToBrushConverter}}">
+        <StackPanel Background="{Binding ElementName=ThisControl, Path=Schedule.Class.Color, Converter={StaticResource ColorToBrushConverter}}">
 
             <TextBlock
                 Text="{Binding ElementName=ThisControl, Path=Schedule.Class.Name}"
                 Style="{StaticResource ScheduleTextBlockStyle}"
-                interfacesControls:StackPanelWithImportances.Importance="1"
                 TextWrapping="WrapWholeWords"/>
 
             <TextBlock
                 x:Name="TextBlockTime"
-                Style="{StaticResource ScheduleTextBlockStyle}"
-                interfacesControls:StackPanelWithImportances.Importance="0"/>
+                Style="{StaticResource ScheduleTextBlockStyle}"/>
 
             <TextBlock
                 interfaces:TextBlockExtensions.HyperlinkColor="White"
                 interfaces:TextBlockExtensions.RawText="{Binding ElementName=ThisControl, Path=Schedule.Room}"
                 Style="{StaticResource ScheduleTextBlockStyle}"
-                TextWrapping="WrapWholeWords"
-                interfacesControls:StackPanelWithImportances.Importance="0"/>
+                TextWrapping="WrapWholeWords"/>
 
-        </interfacesControls:StackPanelWithImportances>
+        </StackPanel>
 
 
         <VisualStateManager.VisualStateGroups>

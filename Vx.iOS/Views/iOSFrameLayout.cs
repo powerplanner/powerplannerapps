@@ -8,6 +8,8 @@ namespace Vx.iOS.Views
     {
         protected override void ApplyProperties(FrameLayout oldView, FrameLayout newView)
         {
+            View.HoldOffApplyingChanges();
+
             base.ApplyProperties(oldView, newView);
 
             View.BackgroundColor = newView.BackgroundColor.ToUI();
@@ -36,6 +38,8 @@ namespace Vx.iOS.Views
                     View.ClearArrangedSubviews();
                 }
                 );
+
+            View.ApplyAnyHeldChanges();
         }
     }
 }

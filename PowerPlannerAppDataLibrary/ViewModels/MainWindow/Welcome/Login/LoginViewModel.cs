@@ -437,6 +437,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
             catch (Exception ex)
             {
                 Debug.WriteLine("Failed logging into online account: " + ex.ToString());
+                TelemetryExtension.Current?.TrackException(ex);
 
                 ShowMessage(PowerPlannerResources.GetString("LoginPage_String_ExplanationOfflineAndNoLocalAccountFound"), PowerPlannerResources.GetString("LoginPage_String_NoAccountFoundHeader"));
             }

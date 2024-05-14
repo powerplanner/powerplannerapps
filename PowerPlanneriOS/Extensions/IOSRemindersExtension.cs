@@ -15,6 +15,7 @@ using ToolsPortable;
 using System.Globalization;
 using PowerPlannerAppDataLibrary.ViewItems;
 using InterfacesiOS.Helpers;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Extensions
 {
@@ -161,7 +162,8 @@ namespace PowerPlanneriOS.Extensions
                     {
                         DateTime reminderTime = RemindersExtension.GetDayBeforeReminderTime(artificialToday, account, agendaItems);
 
-                        string title = "Due tomorrow";
+                        // "Due tomorrow"
+                        string title = PowerPlannerResources.GetDueX(PowerPlannerResources.GetRelativeDateTomorrow().ToLower());
                         string body = "";
                         if (itemsOnDay.Length == 1)
                         {

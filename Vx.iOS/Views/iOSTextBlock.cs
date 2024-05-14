@@ -78,7 +78,7 @@ namespace Vx.iOS.Views
 
             View.TextColor = newView.TextColor.ToUI();
             //View.Lines = newView.WrapText ? 0 : 1;
-            View.Font = View.Font.WithSize(newView.FontSize);
+            View.Font = (View.Font ?? UIFont.PreferredBody).WithSize(newView.FontSize);
             View.TextAlignment = newView.TextAlignment.ToUITextAlignment();
 
             switch (newView.FontWeight)

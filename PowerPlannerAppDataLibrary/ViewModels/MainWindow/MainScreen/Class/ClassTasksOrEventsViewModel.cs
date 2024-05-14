@@ -70,6 +70,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             base.Initialize();
         }
 
+        private static readonly float PageMargin = VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin;
+
         protected override View Render()
         {
             if (!IsLoaded)
@@ -94,7 +96,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                             Click = Add,
                             HorizontalAlignment = HorizontalAlignment.Right,
                             VerticalAlignment = VerticalAlignment.Bottom,
-                            Margin = new Thickness(Theme.Current.PageMargin)
+                            Margin = new Thickness(PageMargin)
                         }
                     }
                 };
@@ -115,7 +117,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             Text = PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "ClassPage_ButtonHideOldTasksString" : "ClassPage_ButtonHideOldEventsString"),
                             HorizontalAlignment = HorizontalAlignment.Stretch,
-                            Margin = new Thickness(Theme.Current.PageMargin),
+                            Margin = new Thickness(PageMargin),
                             Click = HidePastCompletedItems
                         },
 
@@ -123,7 +125,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             Items = PastCompletedItemsWithHeaders,
                             ItemTemplate = RenderItem,
-                            Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))
+                            Padding = new Thickness(0, 0, 0, PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + PageMargin) : 0))
                         }.LinearLayoutWeight(1)
                     }
                 };
@@ -143,7 +145,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     {
                         Text = PowerPlannerResources.GetString(Type == TaskOrEventType.Task ? "ClassPage_ButtonShowOldTasksString" : "ClassPage_ButtonShowOldEventsString"),
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0), Theme.Current.PageMargin),
+                        Margin = new Thickness(PageMargin, PageMargin, PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + PageMargin) : 0), PageMargin),
                         Click = ShowPastCompletedItems
                     }
                 }
@@ -154,7 +156,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             if (item is ViewItemTaskOrEvent taskOrEvent)
             {
-                return TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false);
+                var listItem = TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false, IncludeMargin: false);
+                listItem.Margin = new Thickness(PageMargin, listItem.Margin.Top, PageMargin, listItem.Margin.Bottom);
+                return listItem;
             }
 
             else if (item is DateTime header)
@@ -164,7 +168,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     Text = GetHeaderText(header),
                     FontSize = Theme.Current.SubtitleFontSize,
                     WrapText = false,
-                    Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 3)
+                    Margin = new Thickness(PageMargin, 12, 0, 3)
                 };
             }
 

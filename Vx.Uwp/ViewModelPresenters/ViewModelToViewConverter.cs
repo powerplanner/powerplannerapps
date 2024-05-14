@@ -98,7 +98,20 @@ namespace InterfacesUWP.ViewModelPresenters
             }
 
             // And set the property
-            viewModelProperty.SetValue(view, value);
+            try
+            {
+                viewModelProperty.SetValue(view, value);
+            }
+            catch (Exception ex)
+            {
+                ToolsPortable.ExceptionHelper.OnHandledExceptionOccurred?.Invoke(ex);
+#if DEBUG
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
+#endif
+            }
 
             // And return the view
             return view;

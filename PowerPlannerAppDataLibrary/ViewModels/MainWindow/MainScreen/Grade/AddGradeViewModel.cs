@@ -144,7 +144,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 
                 UsesIsDropped ? new CheckBox
                 {
-                    Text = "Is dropped?",
+                    Text = PowerPlannerResources.GetString("EditGradePage_IsDropped"),
                     Margin = new Thickness(0, 18, 0, 0),
                     IsChecked = VxValue.Create(IsDropped, v => IsDropped = v)
                 } : null,

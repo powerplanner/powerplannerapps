@@ -118,7 +118,14 @@ namespace Vx.iOS.Views
         /// </summary>
         public override void UpdateConstraints()
         {
-            ArrangeSubviews();
+            if (_holdingOffApplyingChanges)
+            {
+                _hasHeldOffChanges = true;
+            }
+            else
+            {
+                ArrangeSubviews();
+            }
 
             base.UpdateConstraints();
         }
@@ -134,7 +141,34 @@ namespace Vx.iOS.Views
 
         private void Invalidate()
         {
+            if (_holdingOffApplyingChanges)
+            {
+                _hasHeldOffChanges = true;
+                return;
+            }
+
             SetNeedsUpdateConstraints();
+        }
+
+        private bool _holdingOffApplyingChanges;
+        private bool _hasHeldOffChanges;
+        public void HoldOffApplyingChanges()
+        {
+            _holdingOffApplyingChanges = true;
+            _hasHeldOffChanges = false;
+        }
+
+        public void ApplyAnyHeldChanges()
+        {
+            var shouldUpdate = _hasHeldOffChanges;
+
+            _holdingOffApplyingChanges = false;
+            _hasHeldOffChanges = false;
+
+            if (shouldUpdate)
+            {
+                SetNeedsUpdateConstraints();
+            }
         }
     }
 }

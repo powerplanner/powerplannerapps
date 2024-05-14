@@ -296,15 +296,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSoundSettings);
             }
 
-            if (VxPlatform.Current != Platform.iOS)
+            if (IsThemeVisible)
             {
                 RenderOption(
                     layout,
-                    MaterialDesign.MaterialDesignIcons.Translate,
-                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
-                    PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
-                    OpenLanguageSettings);
+                    MaterialDesign.MaterialDesignIcons.DesignServices,
+                    PowerPlannerResources.GetString("String_Theme"),
+                    Helpers.Settings.ThemeOverride.ToLocalizedString(),
+                    OpenThemeSettings);
             }
+
+            RenderOption(
+                layout,
+                MaterialDesign.MaterialDesignIcons.Translate,
+                PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Title"),
+                PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
+                OpenLanguageSettings);
 
             if (VxPlatform.Current == Platform.Uwp)
             {
@@ -425,6 +432,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public bool IsSchoolTimeZoneVisible => HasAccount;
 
         public bool IsSoundEffectsVisible => HasAccount && VxPlatform.Current == Platform.Uwp;
+
+        public bool IsThemeVisible => ThemeExtension.Current != null;
 
         public bool IsViewYearsAndSemestersVisible => HasAccount && MainScreenViewModel != null;
 
@@ -767,9 +776,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             ShowPopup(new SoundEffectsViewModel(ParentForSubviews));
         }
 
+        public void OpenThemeSettings()
+        {
+            ShowPopup(new ThemeSettingsViewModel(ParentForSubviews));
+        }
+
         public void OpenLanguageSettings()
         {
-            Show(new LanguageSettingsViewModel(ParentForSubviews));
+            if (LanguageExtension.OpenSystemAppLanguageSelector != null)
+            {
+                LanguageExtension.OpenSystemAppLanguageSelector();
+            }
+            else
+            {
+                ShowPopup(new LanguageSettingsViewModel(ParentForSubviews));
+            }
         }
 
         public void ViewSyncErrors()

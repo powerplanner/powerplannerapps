@@ -1683,7 +1683,7 @@ Please think about using an online account instead!</source>
           <note from="MultilingualBuild" annotates="source" priority="2">Like "5 days ago"</note>
         </trans-unit>
         <trans-unit id="SchedulePage_ButtonAddClass.Content" translate="yes" xml:space="preserve">
-          <source>add class</source>
+          <source>Add class</source>
           <target state="final">إضافة فئة</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockWelcomeTitle.Text" translate="yes" xml:space="preserve">
@@ -2145,14 +2145,6 @@ Please think about using an online account instead!</source>
         <trans-unit id="String_ImageAttachments" translate="yes" xml:space="preserve">
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">مرفقات الصور</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Are you a developer? Help add some features!</source>
-          <target state="final" state-qualifier="mt-suggestion">هل أنت مطور؟ مساعدة إضافة بعض الميزات!</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
-          <source>Contribute to Power Planner</source>
-          <target state="final" state-qualifier="mt-suggestion">المساهمة في تخطيط الطاقة</target>
         </trans-unit>
         <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
           <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
@@ -2634,6 +2626,84 @@ Please think about using an online account instead!</source>
           <source>Previous</source>
           <target state="final">سابق</target>
         </trans-unit>
+        <trans-unit id="EditSemesterPage_Title_Copying" translate="yes" xml:space="preserve">
+          <source>COPY SEMESTER</source>
+          <target state="final">نسخ الفصل</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_Year.Header" translate="yes" xml:space="preserve">
+          <source>Year</source>
+          <target state="final">سنة</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_String_CopiedItemsExplanation" translate="yes" xml:space="preserve">
+          <source>Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.</source>
+          <target state="final">سيتم نسخ إعدادات الجداول والجداول من الفصول الدراسية المحددة. لن يتم نسخ المهام والأحداث والدرجات من داخل الفصول الدراسية.</target>
+        </trans-unit>
+        <trans-unit id="String_Theme" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="final">سمة</target>
+        </trans-unit>
+        <trans-unit id="String_Automatic" translate="yes" xml:space="preserve">
+          <source>Automatic</source>
+          <target state="final">تلقائي</target>
+        </trans-unit>
+        <trans-unit id="String_Dark" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="final">مظلم</target>
+        </trans-unit>
+        <trans-unit id="String_Light" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="final">ضوء</target>
+        </trans-unit>
+        <trans-unit id="SemesterActions_MoveSemester" translate="yes" xml:space="preserve">
+          <source>Move semester</source>
+          <target state="final">نقل الفصل الدراسي</target>
+        </trans-unit>
+        <trans-unit id="SemesterActions_MoveClass" translate="yes" xml:space="preserve">
+          <source>Move {0} to different semester</source>
+          <target state="final">نقل {0} إلى فصل دراسي مختلف</target>
+        </trans-unit>
+        <trans-unit id="Header_Semester" translate="yes" xml:space="preserve">
+          <source>Semester</source>
+          <target state="final">فصل دراسي</target>
+        </trans-unit>
+        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
+  <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
+  <target state="final">النسخة المميزة من Power Planner تفتح عددًا من الميزات المفيدة، وهي عملية شراء مدى الحياة لمرة واحدة (بدون اشتراكات شهرية/سنوية)!
+
+النسخة المجانية محدودة ب...
+ - فصل دراسي واحد
+ - 5 درجات لكل صف
+ - إدخال مكرر بالجملة لمهمة/حدث واحد
+
+بمجرد شرائك للنسخة المميزة، تمتلك النسخة المميزة على جميع أجهزتك (يتم ربطها بحسابك على الإنترنت).</target>
+</trans-unit>
+        <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
+  <source>Restore Previous Purchase</source>
+  <target state="final">استعادة الشراء السابق</target>
+</trans-unit>
+        <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
+  <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
+  <target state="final">اضغط على زر التعديل في الزاوية العلوية اليمنى لإضافة تفاصيل مثل معلومات الاتصال بالمعلم، وساعات العمل، وأي شيء آخر!</target>
+</trans-unit>
+        <trans-unit id="String_Back" translate="yes" xml:space="preserve">
+  <source>Back</source>
+  <target state="final">رجوع</target>
+</trans-unit>
+        <trans-unit id="String_Done" translate="yes" xml:space="preserve">
+  <source>Done</source>
+  <target state="final">تم</target>
+</trans-unit>
+<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+  <source>Is dropped?</source>
+  <target state="final">هل تم إسقاطه؟</target>
+</trans-unit>
       </group>
     </body>
   </file>

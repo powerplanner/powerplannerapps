@@ -72,6 +72,17 @@ namespace PowerPlannerUWP
             //ApplicationLanguages.PrimaryLanguageOverride = "es";
 #endif
 
+            switch (Settings.ThemeOverride)
+            {
+                case Themes.Light:
+                    RequestedTheme = ApplicationTheme.Light;
+                    break;
+
+                case Themes.Dark:
+                    RequestedTheme = ApplicationTheme.Dark;
+                    break;
+            }
+
             this.UnhandledException += App_UnhandledException;
 
             this.InitializeComponent();
@@ -134,7 +145,6 @@ namespace PowerPlannerUWP
                 { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) },
-                { typeof(PromoContributeViewModel), typeof(PromoContributeView) },
                 { typeof(LanguageSettingsViewModel), typeof(LanguageSettingsView) }
             };
         }
@@ -674,6 +684,16 @@ namespace PowerPlannerUWP
 
 
                     string changedText = "";
+
+                    if (v <= new Version(2402, 19, 0, 0))
+                    {
+                        changedText += "\n - Ability to move semesters and classes to different semesters and years!";
+                    }
+
+                    if (v <= new Version(2302, 11, 2, 99))
+                    {
+                        changedText += "\n - Ability to copy semesters with their classes and schedules!\n - Ability to pick light vs dark theme!";
+                    }
 
                     if (v <= new Version(2203, 18, 4, 0))
                     {

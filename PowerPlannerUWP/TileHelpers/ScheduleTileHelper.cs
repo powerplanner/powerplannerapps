@@ -249,7 +249,7 @@ namespace PowerPlannerUWP.TileHelpers
                     var schedulesOnDate = dayData.Schedules.ToList();
                     while (schedulesOnDate.Count > 0)
                     {
-                        DateTime expirationTime = dayData.Date.Add(schedulesOnDate.First().EndTime.TimeOfDay);
+                        DateTime expirationTime = schedulesOnDate.First().EndTimeInLocalTime(dayData.Date);
 
                         // If it hasn't expired yet
                         if (expirationTime > now)
@@ -257,7 +257,7 @@ namespace PowerPlannerUWP.TileHelpers
                             XmlDocument xml = GenerateTileNotification(schedulesOnDate, "Today", dayData.Date, dayData.Date);
 
                             // If the class is 10 mins or longer, we'll switch it 5 mins before the class ends, so that user can see their next class
-                            if ((schedulesOnDate.First().EndTime.TimeOfDay - schedulesOnDate.First().StartTime.TimeOfDay).TotalMinutes >= 10)
+                            if (schedulesOnDate.First().Duration.TotalMinutes >= 10)
                                 expirationTime = expirationTime.AddMinutes(-5);
 
                             yield return new TileNotificationContentAndData()
@@ -453,17 +453,17 @@ namespace PowerPlannerUWP.TileHelpers
 
                     TileMedium = new TileBinding()
                     {
-                        Content = GenerateTileNotificationMediumContent(schedules)
+                        Content = GenerateTileNotificationMediumContent(schedules, dateOfClass)
                     },
 
                     TileWide = new TileBinding()
                     {
-                        Content = GenerateTileNotificationWideContent(schedules)
+                        Content = GenerateTileNotificationWideContent(schedules, dateOfClass)
                     },
 
                     TileLarge = new TileBinding()
                     {
-                        Content = GenerateTileNotificationLargeContent(schedules)
+                        Content = GenerateTileNotificationLargeContent(schedules, dateOfClass)
                     }
                 }
             };
@@ -473,9 +473,9 @@ namespace PowerPlannerUWP.TileHelpers
             string dateAndTimeString;
 
             if (currentDate == dateOfClass)
-                dateAndTimeString = GetTimeStringWithAmPm(firstItem.StartTime) + " - " + GetTimeStringWithAmPm(firstItem.EndTime);
+                dateAndTimeString = GetTimeStringWithAmPm(firstItem.StartTimeInLocalTime(currentDate)) + " - " + GetTimeStringWithAmPm(firstItem.EndTimeInLocalTime(currentDate));
             else
-                dateAndTimeString = displayName + ": " + GetTimeStringWithAmPm(firstItem.StartTime) + " - " + GetTimeStringWithAmPm(firstItem.EndTime);
+                dateAndTimeString = displayName + ": " + GetTimeStringWithAmPm(firstItem.StartTimeInLocalTime(currentDate)) + " - " + GetTimeStringWithAmPm(firstItem.EndTimeInLocalTime(currentDate));
 
             // Name
             content.Visual.LockDetailedStatus1 = trim(firstItem.Class.Name, 255);
@@ -505,7 +505,7 @@ namespace PowerPlannerUWP.TileHelpers
             string timeString;
 
             if (date.Date == relativeTo.Date)
-                timeString = GetTimeString(first.StartTime);
+                timeString = GetTimeString(first.StartTimeInLocalTime(date));
             else
                 timeString = date.ToString("M/d");
 
@@ -531,14 +531,14 @@ namespace PowerPlannerUWP.TileHelpers
             };
         }
 
-        private static TileBindingContentAdaptive GenerateTileNotificationWideContent(IEnumerable<ViewItemSchedule> schedules)
+        private static TileBindingContentAdaptive GenerateTileNotificationWideContent(IEnumerable<ViewItemSchedule> schedules, DateTime date)
         {
             TileBindingContentAdaptive content = new TileBindingContentAdaptive();
 
             if (schedules.Any())
             {
                 // Create and add the first large content
-                content.Children.Add(GenerateTileNotificationWideAndLargeGroupContent(schedules.ElementAt(0)));
+                content.Children.Add(GenerateTileNotificationWideAndLargeGroupContent(schedules.ElementAt(0), date));
 
                 if (schedules.Count() > 1)
                 {
@@ -567,7 +567,7 @@ namespace PowerPlannerUWP.TileHelpers
                                     {
                                         new AdaptiveText()
                                         {
-                                            Text = GetTimeString(schedule.StartTime),
+                                            Text = GetTimeString(schedule.StartTimeInLocalTime(date)),
                                             HintStyle = AdaptiveTextStyle.CaptionSubtle
                                         }
                                     }
@@ -613,7 +613,7 @@ namespace PowerPlannerUWP.TileHelpers
             return content;
         }
 
-        private static TileBindingContentAdaptive GenerateTileNotificationLargeContent(IEnumerable<ViewItemSchedule> schedules)
+        private static TileBindingContentAdaptive GenerateTileNotificationLargeContent(IEnumerable<ViewItemSchedule> schedules, DateTime date)
         {
             const int max = 4;
 
@@ -625,13 +625,13 @@ namespace PowerPlannerUWP.TileHelpers
                 if (content.Children.Count > 0)
                     content.Children.Add(new AdaptiveText());
 
-                content.Children.Add(GenerateTileNotificationWideAndLargeGroupContent(schedules.ElementAt(i)));
+                content.Children.Add(GenerateTileNotificationWideAndLargeGroupContent(schedules.ElementAt(i), date));
             }
 
             return content;
         }
 
-        private static AdaptiveGroup GenerateTileNotificationWideAndLargeGroupContent(ViewItemSchedule schedule)
+        private static AdaptiveGroup GenerateTileNotificationWideAndLargeGroupContent(ViewItemSchedule schedule, DateTime date)
         {
             return new AdaptiveGroup()
             {
@@ -645,7 +645,7 @@ namespace PowerPlannerUWP.TileHelpers
                         {
                             new AdaptiveText()
                             {
-                                Text = GetTimeString(schedule.StartTime),
+                                Text = GetTimeString(schedule.StartTimeInLocalTime(date)),
                                 HintStyle = AdaptiveTextStyle.SubheaderNumeral
                             }
                         }
@@ -685,7 +685,7 @@ namespace PowerPlannerUWP.TileHelpers
             return new DateTimeFormatter("shorttime").Format(DateTime.SpecifyKind(time, DateTimeKind.Local));
         }
 
-        private static TileBindingContentAdaptive GenerateTileNotificationMediumContent(IEnumerable<ViewItemSchedule> schedules)
+        private static TileBindingContentAdaptive GenerateTileNotificationMediumContent(IEnumerable<ViewItemSchedule> schedules, DateTime date)
         {
             TileBindingContentAdaptive content = new TileBindingContentAdaptive();
 
@@ -697,13 +697,13 @@ namespace PowerPlannerUWP.TileHelpers
                     content.Children.Add(new AdaptiveText());
                 }
 
-                content.Children.Add(GenerateTileNotificationMediumGroupContent(schedules.ElementAt(i)));
+                content.Children.Add(GenerateTileNotificationMediumGroupContent(schedules.ElementAt(i), date));
             }
 
             return content;
         }
 
-        private static AdaptiveGroup GenerateTileNotificationMediumGroupContent(ViewItemSchedule schedule)
+        private static AdaptiveGroup GenerateTileNotificationMediumGroupContent(ViewItemSchedule schedule, DateTime date)
         {
             AdaptiveSubgroup subgroup = new AdaptiveSubgroup()
             {
@@ -716,7 +716,7 @@ namespace PowerPlannerUWP.TileHelpers
 
                     new AdaptiveText()
                     {
-                        Text = GetTimeString(schedule.StartTime),
+                        Text = GetTimeString(schedule.StartTimeInLocalTime(date)),
                         HintStyle = AdaptiveTextStyle.TitleNumeral
                     }
                 }

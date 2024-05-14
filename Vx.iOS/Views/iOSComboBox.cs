@@ -100,7 +100,7 @@ namespace Vx.iOS.Views
 
         private async void ShowOptions()
         {
-            if (!VxView.IsEnabled)
+            if (!VxView.IsEnabled || !VxView.Items.GetEnumerator().MoveNext())
             {
                 return;
             }

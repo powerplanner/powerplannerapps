@@ -75,7 +75,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     {
                         try
                         {
-                            DeleteAccountResponse resp = await Account.PostAuthenticatedAsync<DeleteAccountRequest, DeleteAccountResponse>(Website.URL + "deleteaccountmodern", new DeleteAccountRequest());
+                            DeleteAccountResponse resp = await Account.PostAuthenticatedAsync<DeleteAccountRequest, DeleteAccountResponse>(Website.ClientApiUrl + "deleteaccountmodern", new DeleteAccountRequest());
 
                             if (resp.Error != null)
                             {
@@ -95,7 +95,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     else
                     {
                         //no need to check whether delete device succeeded
-                        try { var dontWait = Account.PostAuthenticatedAsync<DeleteDevicesRequest, DeleteDevicesResponse>(Website.URL + "deletedevicesmodern", new DeleteDevicesRequest() { DeviceIdsToDelete = new List<int>() { Account.DeviceId } }); }
+                        try { var dontWait = Account.PostAuthenticatedAsync<DeleteDevicesRequest, DeleteDevicesResponse>(Website.ClientApiUrl + "deletedevicesmodern", new DeleteDevicesRequest() { DeviceIdsToDelete = new List<int>() { Account.DeviceId } }); }
 
                         catch { }
 
@@ -117,7 +117,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private async System.Threading.Tasks.Task deleteAndFinish()
         {
             await AccountsManager.Delete(Account.LocalAccountId);
-            RemoveViewModel();
         }
     }
 }

@@ -384,6 +384,21 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2402, 19, 0, 0))
+                    {
+                        changedText += "\n - Ability to move semesters and classes to different semesters and years!";
+                    }
+
+                    if (v <= new Version(2303, 2, 2, 99))
+                    {
+                        changedText += "\n - Fixed issue with times appearing incorrectly on Android 14 devices";
+                    }
+
+                    if (v <= new Version(2302, 11, 2, 99))
+                    {
+                        changedText += "\n - Ability to copy semesters with their classes and schedules!\n - Ability to pick light vs dark theme!";
+                    }
+
                     if (v <= new Version(2203, 18, 4, 0))
                     {
                         changedText += "\n - Improved the school time zone picker";

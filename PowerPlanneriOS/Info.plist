@@ -68,5 +68,16 @@
 	<array>
 		<string>Fonts/MaterialIconsOutlined-Regular.otf</string>
 	</array>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>es</string>
+		<string>fr</string>
+		<string>pt</string>
+		<string>de</string>
+		<string>ar</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
 </dict>
 </plist>

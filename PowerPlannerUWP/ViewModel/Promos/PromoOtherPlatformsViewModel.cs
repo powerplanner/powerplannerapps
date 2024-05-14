@@ -54,7 +54,7 @@ namespace PowerPlannerUWP.ViewModel.Promos
                 {
                     // Try downloading and then show
                     ShouldSuggestOtherPlatformsResponse response = await account.PostAuthenticatedAsync<ShouldSuggestOtherPlatformsRequest, ShouldSuggestOtherPlatformsResponse>(
-                    Website.URL + "shouldsuggestotherplatforms",
+                    Website.ClientApiUrl + "shouldsuggestotherplatforms",
                     new ShouldSuggestOtherPlatformsRequest()
                     {
                         CurrentPlatform = "Windows 10"

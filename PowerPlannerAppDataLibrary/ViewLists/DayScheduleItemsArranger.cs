@@ -130,13 +130,15 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         public class ScheduleItem : BaseScheduleItem
         {
             public ViewItemSchedule Item { get; private set; }
+            public DateTime Date { get; private set; }
 
             public ScheduleItem(DayScheduleItemsArranger arranger, ViewItemSchedule viewItem, TimeSpan? overriddenStartTime = null, TimeSpan? overriddenEndTime = null) : base(arranger)
             {
                 Item = viewItem;
+                Date = arranger.Date;
 
-                StartTime = overriddenStartTime ?? viewItem.StartTime.TimeOfDay;
-                EndTime = overriddenEndTime ?? viewItem.EndTime.TimeOfDay;
+                StartTime = overriddenStartTime ?? viewItem.StartTimeInLocalTime(Date).TimeOfDay;
+                EndTime = overriddenEndTime ?? viewItem.EndTimeInLocalTime(Date).TimeOfDay;
             }
         }
 
@@ -300,7 +302,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             {
                 foreach (var item in schedules)
                 {
-                    if (item.EndTime.TimeOfDay > item.StartTime.TimeOfDay)
+                    if (item.EndTimeInLocalTime(Date).TimeOfDay > item.StartTimeInLocalTime(Date).TimeOfDay)
                     {
                         schedulesCopied.Add(new ScheduleItem(this, item));
                     }

@@ -25,7 +25,7 @@ namespace PowerPlanneriOS.Controllers
 
         public PremiumVersionViewController()
         {
-            Title = "Premium Version";
+            Title = PowerPlannerResources.GetString("Settings_UpdateToPremium.Title");
         }
 
         private void IOSInAppPurchaseExtension_ResponseReceived(object sender, InAppPurchaseHelper.PurchaseResponse e)
@@ -61,14 +61,7 @@ namespace PowerPlanneriOS.Controllers
             var labelDescription = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Text = @"The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
-
-The free version is limited to...
- - 1 semester
- - 5 grades per class
- - 1 repeating bulk entry of a task/event
-
-Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).",
+                Text = PowerPlannerResources.GetString("Settings_UpgradeToPremiumIOS_Description.Text"),
                 Lines = 0
             };
             StackView.AddArrangedSubview(labelDescription);
@@ -97,7 +90,7 @@ Once you purchase the premium version, you own the premium version on all your d
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            _buttonUpgrade.SetTitle("UPGRADE TO PREMIUM", UIControlState.Normal);
+            _buttonUpgrade.SetTitle(PowerPlannerResources.GetString("Settings_UpgradeToPremium_ButtonUpgrade.Content"), UIControlState.Normal);
             _buttonUpgrade.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
             _buttonUpgrade.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
             _buttonUpgrade.TouchUpInside += new WeakEventHandler(ButtonUpgrade_TouchUpInside).Handler;
@@ -110,7 +103,7 @@ Once you purchase the premium version, you own the premium version on all your d
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            buttonRestore.SetTitle("Restore Previous Purchase", UIControlState.Normal);
+            buttonRestore.SetTitle(PowerPlannerResources.GetString("Settings_UpgradeToPremium_ButtonRestore.Content"), UIControlState.Normal);
             buttonRestore.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
             buttonRestore.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
             buttonRestore.TouchUpInside += new WeakEventHandler(ButtonRestore_TouchUpInside).Handler;
@@ -132,7 +125,7 @@ Once you purchase the premium version, you own the premium version on all your d
                 string price = await InAppPurchaseHelper.GetPriceAsync();
                 if (price != null)
                 {
-                    _buttonUpgrade.SetTitle("UPGRADE TO PREMIUM - " + price, UIControlState.Normal);
+                    _buttonUpgrade.SetTitle(PowerPlannerResources.GetString("Settings_UpgradeToPremium_ButtonUpgrade.Content") + " - " + price, UIControlState.Normal);
                 }
             }
 

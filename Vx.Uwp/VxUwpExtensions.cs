@@ -379,8 +379,11 @@ namespace Vx.Uwp
                 case MaterialDesign.MaterialDesignIcons.Edit:
                     return Symbol.Edit;
 
-                case MaterialDesign.MaterialDesignIcons.Copy:
+                case MaterialDesign.MaterialDesignIcons.ContentCopy:
                     return Symbol.Copy;
+
+                case MaterialDesign.MaterialDesignIcons.DriveFileMove:
+                    return Symbol.MoveToFolder;
 
                 case MaterialDesign.MaterialDesignIcons.SwapHoriz:
                     return Symbol.Switch;
@@ -393,6 +396,10 @@ namespace Vx.Uwp
 
                 case MaterialDesign.MaterialDesignIcons.Close:
                     return Symbol.Cancel;
+
+                case MaterialDesign.MaterialDesignIcons.More:
+                case MaterialDesign.MaterialDesignIcons.MoreHoriz:
+                    return Symbol.More;
 
                 default:
                     return Symbol.Refresh;

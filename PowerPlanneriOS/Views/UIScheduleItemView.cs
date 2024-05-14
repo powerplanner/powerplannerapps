@@ -20,7 +20,7 @@ namespace PowerPlanneriOS.Views
         public ViewItemSchedule Item { get; private set; }
         private BindingHost m_classBindingHost = new BindingHost();
 
-        public UIScheduleItemView(ViewItemSchedule item)
+        public UIScheduleItemView(ViewItemSchedule item, DateTime date)
         {
             Item = item;
             m_classBindingHost.DataContext = item.Class;
@@ -44,7 +44,7 @@ namespace PowerPlanneriOS.Views
             var labelTime = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Text = PowerPlannerResources.GetStringTimeToTime(DateTimeFormatterExtension.Current.FormatAsShortTime(item.StartTime), DateTimeFormatterExtension.Current.FormatAsShortTime(item.EndTime)),
+                Text = PowerPlannerResources.GetStringTimeToTime(DateTimeFormatterExtension.Current.FormatAsShortTime(item.StartTimeInLocalTime(date)), DateTimeFormatterExtension.Current.FormatAsShortTime(item.EndTimeInLocalTime(date))),
                 TextColor = UIColor.White,
                 Lines = 1,
                 Font = UIFont.PreferredCaption1

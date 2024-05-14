@@ -482,7 +482,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 {
                     try
                     {
-                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.URL + "syncmodern", req, request.CancellationToken);
+                        response = await account.PostAuthenticatedAsync<SyncRequest, SyncResponse>(Website.DataApiUrl + "Sync", req, request.CancellationToken);
                     }
 
                     catch (OperationCanceledException)
@@ -1159,7 +1159,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
                             content.Add(streamContent, "image", imageName);
 
-                            using (var message = await client.PostAsync(Website.URL + "uploadimagemultipart", content))
+                            using (var message = await client.PostAsync(Website.UploadApiUrl + "UploadImageMultiPart", content))
                             {
                                 message.EnsureSuccessStatusCode();
 
@@ -1448,7 +1448,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                             Settings = settings
                         };
 
-                        SyncSettingsResponse response = await account.PostAuthenticatedAsync<SyncSettingsRequest, SyncSettingsResponse>(Website.URL + "syncsettingsmodern", request);
+                        SyncSettingsResponse response = await account.PostAuthenticatedAsync<SyncSettingsRequest, SyncSettingsResponse>(Website.ClientApiUrl + "syncsettingsmodern", request);
 
                         if (response == null)
                             return;
@@ -1508,7 +1508,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 }
 
                 AddPremiumAccountDurationResponse resp = await account.PostAuthenticatedAsync<AddPremiumAccountDurationRequest, AddPremiumAccountDurationResponse>(
-                    Website.URL + "addpremiumaccountduration",
+                    Website.ClientApiUrl + "addpremiumaccountduration",
                     new AddPremiumAccountDurationRequest()
                     {
                         DaysToAdd = int.MaxValue

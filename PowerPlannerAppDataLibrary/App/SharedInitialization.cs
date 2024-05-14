@@ -25,7 +25,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             // Set up API key
             SetUpApiKey();
-            PowerPlannerAuth.WebsiteApiUrl = new Uri(Website.URL);
+            PowerPlannerAuth.WebsiteApiUrl = new Uri(Website.ClientApiUrl);
 
             // Pipe localizer so it works on Android from portable binding library
             PortableLocalizedResources.LocalizerExtension = PowerPlannerResources.GetString;

@@ -41,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels
 
         protected void UseCancelForBack()
         {
-            BackOverride = new Tuple<string, Action>("Cancel", null);
+            BackOverride = new Tuple<string, Action>(PowerPlannerResources.GetStringCancel(), null);
         }
 
         /// <summary>
@@ -94,23 +94,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         }
     }
 
-    public enum PopupCommandStyle
+    public class PopupCommand : ToolbarCommand
     {
-        Default,
-        Destructive
-    }
-
-    public class PopupCommand
-    {
-        public string Text { get; set; }
-        public Action Action { get; set; }
-        public string Glyph { get; set; }
-        public PopupCommandStyle Style { get; set; }
         public bool UseQuickConfirmDelete { get; set; }
 
         public PopupCommand() { }
 
-        public PopupCommand(string text, Action action, PopupCommandStyle style = PopupCommandStyle.Default)
+        public PopupCommand(string text, Action action, ToolbarCommandStyle style = ToolbarCommandStyle.Default)
         {
             Text = text;
             Action = action;
@@ -134,7 +124,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels
                 Text = PowerPlannerResources.GetString("MenuItemDelete"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
                 Action = action,
-                Style = PopupCommandStyle.Destructive
+                Style = ToolbarCommandStyle.Destructive
             };
         }
 
@@ -146,7 +136,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels
                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
                 UseQuickConfirmDelete = true,
                 Action = actualDeleteAction,
-                Style = PopupCommandStyle.Destructive
+                Style = ToolbarCommandStyle.Destructive
             };
         }
 

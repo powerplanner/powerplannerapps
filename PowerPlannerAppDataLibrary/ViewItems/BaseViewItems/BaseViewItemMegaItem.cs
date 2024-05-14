@@ -126,13 +126,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
                 string answer = "";
 
                 if (this.IsDropped)
-                    answer = "DROPPED - ";
+                    answer = PowerPlannerResources.GetString("ViewGradePage_TextBlockDropped.Text").ToUpper() + " - ";
 
                 if (this.GradeReceived == PowerPlannerSending.Grade.UNGRADED)
                     return answer + "----  -  --/" + this.GradeTotal;
 
                 if (this.GradeTotal == 0)
-                    return answer + "Extra Credit - " + this.GradeReceived;
+                    return answer + PowerPlannerResources.GetString("String_ExtraCreditAbbreviation") + " - " + this.GradeReceived;
 
                 return answer + this.GradePercent.ToString("0.##%") + "  -  " + this.GradeReceived + "/" + this.GradeTotal;
             }
@@ -151,6 +151,8 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             get { return GradeTotal == 0; }
         }
 
+        public virtual bool DateTimeIsDependentOnSchedule => false;
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);
@@ -164,7 +166,14 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             }
             else
             {
-                Date = ToViewItemTime(i.Date);
+                if (this.DateTimeIsDependentOnSchedule)
+                {
+                    Date = ToViewItemSchoolTime(i.Date);
+                }
+                else
+                {
+                    Date = ToViewItemTime(i.Date);
+                }
             }
 
             DateInSchoolTime = ToViewItemSchoolTime(i.Date);
@@ -210,7 +219,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
                 return 1;
 
             //get the comparison of their start times
-            int comp = schedule1.StartTime.TimeOfDay.CompareTo(schedule2.StartTime.TimeOfDay);
+            int comp = schedule1.CompareTo(schedule2);
 
             //if they started at the same time, use the updated time
             if (comp == 0)

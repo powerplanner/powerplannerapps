@@ -14,6 +14,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using CoreAnimation;
 using CoreGraphics;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -25,7 +26,7 @@ namespace PowerPlanneriOS.Controllers
 
         public ClassesViewController()
         {
-            Title = "Classes";
+            Title = PowerPlannerResources.GetString("MainMenuItem_Classes");
             HideBackButton();
         }
 
@@ -38,7 +39,7 @@ namespace PowerPlanneriOS.Controllers
             _labelNoClasses = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Text = "Tap \"+\" to add your first class!",
+                Text = PowerPlannerResources.GetString("ClassesPage_TextBlockNoClassesDescription.Text"),
                 Font = UIFont.PreferredCallout,
                 TextAlignment = UITextAlignment.Center
             };

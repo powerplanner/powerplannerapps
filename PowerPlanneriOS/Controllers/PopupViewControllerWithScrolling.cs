@@ -107,33 +107,6 @@ namespace PowerPlanneriOS.Controllers
             stackView.AddDivider(fullWidth);
         }
 
-        protected void AddDeleteButton(string text, EventHandler<EventArgs> onClickAction)
-        {
-            var buttonDelete = new UIButton(UIButtonType.System)
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                TintColor = UIColor.Red
-            };
-            buttonDelete.SetTitle(text, UIControlState.Normal);
-            buttonDelete.TouchUpInside += new WeakEventHandler(onClickAction).Handler;
-            StackView.AddArrangedSubview(buttonDelete);
-            buttonDelete.StretchWidth(StackView);
-            buttonDelete.SetHeight(44);
-        }
-
-        private List<EventHandler<EventArgs>> _buttonDeleteEventHandlers = new List<EventHandler<EventArgs>>();
-
-        protected void AddDeleteButtonWithConfirmation(string text, Action deleteAction, string confirmTitle, string confirmMessage)
-        {
-            var handler = new EventHandler<EventArgs>(delegate
-            {
-                PowerPlannerUIHelper.ConfirmDelete(confirmMessage, confirmTitle, deleteAction);
-            });
-            _buttonDeleteEventHandlers.Add(handler);
-
-            AddDeleteButton(text, handler);
-        }
-
         /// <summary>
         /// Adds a text field
         /// </summary>

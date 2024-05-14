@@ -47,6 +47,17 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
+        /// <summary>
+        /// Something like "15/20" but ignores the weight value. This should only be used when there's only one weight, the default "All Grades" weight.
+        /// </summary>
+        public string WeightAchievedAndTotalStringAsSum
+        {
+            get
+            {
+                return (WeightAchieved == Grade.UNGRADED ? "--" : WeightPointsAchieved.ToString("0.##")) + "/" + WeightPointsTotal.ToString("0.##");
+            }
+        }
+
         private bool _hasWiredClassEvent;
         public double WeightAchieved
         {
@@ -80,6 +91,26 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                     OnPropertyChanged(nameof(WeightAchieved), nameof(WeightAchievedAndTotalString));
                     break;
             }
+        }
+
+        private double _weightPointsAchieved = Grade.UNGRADED;
+        /// <summary>
+        /// The raw sum of the points achieved, ex 270
+        /// </summary>
+        public double WeightPointsAchieved
+        {
+            get => _weightPointsAchieved;
+            set => SetProperty(ref _weightPointsAchieved, value, nameof(WeightPointsAchieved));
+        }
+
+        private double _weightPointsTotal = Grade.UNGRADED;
+        /// <summary>
+        /// The raw sum of weight points, ex 300
+        /// </summary>
+        public double WeightPointsTotal
+        {
+            get => _weightPointsTotal;
+            set => SetProperty(ref _weightPointsTotal, value, nameof(WeightPointsTotal));
         }
 
         private double _weightAchievedSummed = Grade.UNGRADED;
@@ -290,12 +321,19 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             //sum of GradeReceived
             double points = gradesThatCount.Sum(i => i.GradeReceived);
 
+            WeightPointsAchieved = points;
+
             //if WeightValue is 0, then we just use the total of the points
             if (WeightValue == 0)
+            {
+                WeightPointsTotal = 0;
                 return points;
+            }
 
             //sum of GradeTotal
             double total = gradesThatCount.Sum(i => i.GradeTotal);
+
+            WeightPointsTotal = total;
 
             //if there wasn't a non-EC item, then it's ungraded
             if (total == 0)

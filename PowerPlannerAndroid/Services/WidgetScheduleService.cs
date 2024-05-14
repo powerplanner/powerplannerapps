@@ -133,6 +133,16 @@ namespace PowerPlannerAndroid.Services
                         return holidayView;
                     }
 
+                    var date = DateTime.Today;
+                    for (int i = position - 1; i >= 0; i--)
+                    {
+                        if (_items[i] is DateTime dateItem)
+                        {
+                            date = dateItem;
+                            break;
+                        }
+                    }
+
                     var schedule = item as ViewItemSchedule;
                     var c = schedule.Class;
                     if (c == null)
@@ -145,7 +155,7 @@ namespace PowerPlannerAndroid.Services
 
                     RemoteViews classView = new RemoteViews(_context.PackageName, hasRoom ? Resource.Layout.WidgetScheduleClassWithRoomListItem : Resource.Layout.WidgetScheduleClassListItem);
                     classView.SetTextViewText(Resource.Id.WidgetScheduleClassNameTextView, c.Name.Trim());
-                    classView.SetTextViewText(Resource.Id.WidgetScheduleClassTimeTextView, Views.ListItems.MyScheduleItemView.GetStringTimeToTime(schedule));
+                    classView.SetTextViewText(Resource.Id.WidgetScheduleClassTimeTextView, Views.ListItems.MyScheduleItemView.GetStringTimeToTime(schedule, date));
                     if (hasRoom)
                     {
                         classView.SetTextViewText(Resource.Id.WidgetScheduleClassRoomTextView, schedule.Room.Trim());
@@ -253,7 +263,7 @@ namespace PowerPlannerAndroid.Services
                                         {
                                             foreach (var s in dayData.Schedules)
                                             {
-                                                if (s.EndTime.TimeOfDay > _now.TimeOfDay)
+                                                if (s.EndTimeInLocalTime(dayData.Date) > _now)
                                                 {
                                                     items.Add(s);
                                                     schedulesToday.Add(s);
@@ -313,7 +323,7 @@ namespace PowerPlannerAndroid.Services
                     DateTime nextChangeTime = _now.Date.AddDays(1);
                     if (schedulesToday.Count > 0)
                     {
-                        nextChangeTime = _now.Date.Add(schedulesToday.First().EndTime.TimeOfDay);
+                        nextChangeTime = schedulesToday.First().EndTimeInLocalTime(_now);
                     }
 
                     AlarmManagerHelper.Schedule(

@@ -10,6 +10,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlanneriOS.Helpers;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Views
 {
@@ -54,7 +55,7 @@ namespace PowerPlanneriOS.Views
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false
                 };
-                buttonAdd.SetTitle("Add Class", UIControlState.Normal);
+                buttonAdd.SetTitle(PowerPlannerResources.GetString("SchedulePage_ButtonAddClass.Content"), UIControlState.Normal);
                 buttonAdd.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
                 buttonAdd.BackgroundColor = ColorResources.PowerPlannerBlueChromeColor;
                 buttonAdd.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.AddClass(); }).Handler;

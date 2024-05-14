@@ -27,6 +27,8 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             this.InitializeComponent();
         }
 
+        public DateTime Date { get; set; }
+
         public ViewItemSchedule Schedule
         {
             get { return (ViewItemSchedule)GetValue(ScheduleProperty); }
@@ -48,7 +50,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
                 return;
 
             var timeFormatter = new DateTimeFormatter("shorttime");
-            TextBlockTime.Text = string.Format(LocalizedResources.GetString("String_TimeToTime"), timeFormatter.Format(Schedule.StartTime), timeFormatter.Format(Schedule.EndTime));
+            TextBlockTime.Text = string.Format(LocalizedResources.GetString("String_TimeToTime"), timeFormatter.Format(Schedule.StartTimeInLocalTime(Date)), timeFormatter.Format(Schedule.EndTimeInLocalTime(Date)));
         }
 
         public bool IsHighlighted

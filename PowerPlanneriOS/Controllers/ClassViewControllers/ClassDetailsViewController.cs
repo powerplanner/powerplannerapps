@@ -8,6 +8,7 @@ using UIKit;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using InterfacesiOS.Controllers;
 using InterfacesiOS.Views;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers.ClassViewControllers
 {
@@ -15,7 +16,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
     {
         public ClassDetailsViewController()
         {
-            Title = "Details";
+            Title = PowerPlannerResources.GetString("ClassPage_PivotItemDetails.Header");
 
             var textViewDetails = new UITextView()
             {
@@ -41,7 +42,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Lines = 0,
                 Font = UIFont.PreferredCallout,
-                Text = "Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!",
+                Text = PowerPlannerResources.GetString("ClassPage_Details_NothingHereString"),
                 TextColor = UIColor.LightGray,
                 TextAlignment = UITextAlignment.Center
             };

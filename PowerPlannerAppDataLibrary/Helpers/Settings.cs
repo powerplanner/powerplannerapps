@@ -1,6 +1,7 @@
 // Helpers/Settings.cs
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
+using PowerPlannerAppDataLibrary.Extensions;
 using System;
 using ToolsPortable;
 using static PowerPlannerAppDataLibrary.NavigationManager;
@@ -82,9 +83,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string LAST_SELECTED_DURATION_FOR_EVENT_WITHOUT_CLASS = "LastDurationEventNoClass";
         private const string AVERAGE_IMAGE_BLOB_SAVE_SPEED_IN_BYTES_PER_SECOND = "AverageImageBlobSaveSpeedInBytesPerSecond";
         private const string AVERAGE_IMAGE_UPLOAD_SPEED_IN_BYTES_PER_SECOND = "AverageImageUploadSpeedInBytesPerSecond";
-        private const string HAS_SHOWN_PROMO_CONTRIBUTE = "HasShownPromoContribute";
         private const string OWNS_IN_APP_PURCHASE = "OwnsInAppPurchase";
         private const string LANGUAGE_OVERRIDE = "LanguageOverride";
+        private const string THEME_OVERRIDE = "ThemeOverride";
 
         #endregion
 
@@ -165,22 +166,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
             }
         }
 
-        public static bool HasShownPromoContribute
-        {
-            get => AppSettings.GetValueOrDefault(HAS_SHOWN_PROMO_CONTRIBUTE, false);
-            set
-            {
-                if (value)
-                {
-                    AppSettings.AddOrUpdateValue(HAS_SHOWN_PROMO_CONTRIBUTE, true);
-                }
-                else
-                {
-                    AppSettings.Remove(HAS_SHOWN_PROMO_CONTRIBUTE);
-                }
-            }
-        }
-
         public static Guid LastLoginLocalId
         {
             get
@@ -251,6 +236,12 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             get => AppSettings.GetValueOrDefault(LANGUAGE_OVERRIDE, null);
             set => AppSettings.AddOrUpdateValue(LANGUAGE_OVERRIDE, value);
+        }
+
+        public static Themes ThemeOverride
+        {
+            get => AppSettings.GetEnumOrDefault(THEME_OVERRIDE, Themes.Automatic);
+            set => AppSettings.AddOrUpdateEnum(THEME_OVERRIDE, value);
         }
 
         public static class NavigationManagerSettings

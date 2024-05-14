@@ -96,7 +96,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     try
                     {
-                        ChangeUsernameResponse resp = await Account.PostAuthenticatedAsync<ChangeUsernameRequest, ChangeUsernameResponse>(Website.URL + "changeusernamemodern", new ChangeUsernameRequest()
+                        ChangeUsernameResponse resp = await Account.PostAuthenticatedAsync<ChangeUsernameRequest, ChangeUsernameResponse>(Website.ClientApiUrl + "changeusernamemodern", new ChangeUsernameRequest()
                         {
                             NewUsername = Username
                         });

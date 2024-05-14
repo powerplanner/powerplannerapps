@@ -660,6 +660,22 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             }
         }
 
+        public override bool DateTimeIsDependentOnSchedule
+        {
+            get
+            {
+                switch (TimeOption)
+                {
+                    case DataItemMegaItem.TimeOptions.AllDay:
+                    case DataItemMegaItem.TimeOptions.Custom:
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        }
+
         /// <summary>
         /// Returns false if it's an all-day item
         /// </summary>
@@ -686,27 +702,27 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 switch (TimeOption)
                 {
                     case DataItemMegaItem.TimeOptions.BeforeClass:
-                        answer = Date.Date.Add(schedule.StartTime.TimeOfDay).AddMinutes(-1);
+                        answer = schedule.StartTimeInLocalTime(Date).AddMinutes(-1);
                         return true;
 
                     case DataItemMegaItem.TimeOptions.StartOfClass:
-                        answer = Date.Date.Add(schedule.StartTime.TimeOfDay);
+                        answer = schedule.StartTimeInLocalTime(Date);
                         return true;
 
                     case DataItemMegaItem.TimeOptions.DuringClass:
                         if (this.Type == TaskOrEventType.Task)
                         {
-                            answer = Date.Date.Add(schedule.StartTime.TimeOfDay).AddTicks((schedule.EndTime.TimeOfDay.Ticks - schedule.StartTime.TimeOfDay.Ticks) / 2);
+                            answer = schedule.StartTimeInLocalTime(Date).AddTicks(schedule.Duration.Ticks / 2);
                             return true;
                         }
                         else
                         {
-                            answer = Date.Date.Add(schedule.StartTime.TimeOfDay);
+                            answer = schedule.StartTimeInLocalTime(Date);
                             return true;
                         }
 
                     case DataItemMegaItem.TimeOptions.EndOfClass:
-                        answer = Date.Date.Add(schedule.EndTime.TimeOfDay);
+                        answer = schedule.EndTimeInLocalTime(Date);
                         return true;
                 }
             }
@@ -751,7 +767,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 switch (TimeOption)
                 {
                     case DataItemMegaItem.TimeOptions.DuringClass:
-                        dateTime = Date.Date.Add(schedule.EndTime.TimeOfDay);
+                        dateTime = schedule.EndTimeInLocalTime(Date);
                         return true;
                 }
             }

@@ -1681,8 +1681,8 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Like "5 days ago"</note>
         </trans-unit>
         <trans-unit id="SchedulePage_ButtonAddClass.Content" translate="yes" xml:space="preserve">
-          <source>add class</source>
-          <target state="final">adicionar aula</target>
+          <source>Add class</source>
+          <target state="final">Adicionar aula</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockWelcomeTitle.Text" translate="yes" xml:space="preserve">
           <source>Welcome to Power Planner!</source>
@@ -2142,14 +2142,6 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
         <trans-unit id="String_ImageAttachments" translate="yes" xml:space="preserve">
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">Anexos de imagem</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Are you a developer? Help add some features!</source>
-          <target state="final" state-qualifier="mt-suggestion">Você é um desenvolvedor? Ajude a adicionar alguns recursos!</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_ContributeItem.Title" translate="yes" xml:space="preserve">
-          <source>Contribute to Power Planner</source>
-          <target state="final" state-qualifier="mt-suggestion">Contribua para Power Planner</target>
         </trans-unit>
         <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
           <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
@@ -2631,6 +2623,84 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Previous</source>
           <target state="final">Anterior</target>
         </trans-unit>
+        <trans-unit id="EditSemesterPage_Title_Copying" translate="yes" xml:space="preserve">
+          <source>COPY SEMESTER</source>
+          <target state="final">COPIAR SEMESTRE</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_Year.Header" translate="yes" xml:space="preserve">
+          <source>Year</source>
+          <target state="final">Ano</target>
+        </trans-unit>
+        <trans-unit id="EditSemesterPage_String_CopiedItemsExplanation" translate="yes" xml:space="preserve">
+          <source>Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.</source>
+          <target state="final">Os horários e configurações de notas das turmas selecionadas serão copiados. Tarefas, eventos e notas das turmas não serão copiados.</target>
+        </trans-unit>
+        <trans-unit id="String_Theme" translate="yes" xml:space="preserve">
+          <source>Theme</source>
+          <target state="final">Tema</target>
+        </trans-unit>
+        <trans-unit id="String_Automatic" translate="yes" xml:space="preserve">
+          <source>Automatic</source>
+          <target state="final">Automático</target>
+        </trans-unit>
+        <trans-unit id="String_Dark" translate="yes" xml:space="preserve">
+          <source>Dark</source>
+          <target state="final">Escuro</target>
+        </trans-unit>
+        <trans-unit id="String_Light" translate="yes" xml:space="preserve">
+          <source>Light</source>
+          <target state="final">Luz</target>
+        </trans-unit>
+        <trans-unit id="SemesterActions_MoveSemester" translate="yes" xml:space="preserve">
+          <source>Move semester</source>
+          <target state="final">Mover semestre</target>
+        </trans-unit>
+        <trans-unit id="SemesterActions_MoveClass" translate="yes" xml:space="preserve">
+          <source>Move {0} to different semester</source>
+          <target state="final">Mover {0} para outro semestre</target>
+        </trans-unit>
+        <trans-unit id="Header_Semester" translate="yes" xml:space="preserve">
+          <source>Semester</source>
+          <target state="final">Semestre</target>
+        </trans-unit>
+        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
+  <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
+  <target state="final">A versão premium do Power Planner desbloqueia várias funcionalidades úteis, e é uma compra única VITALÍCIA (sem assinaturas mensais/anuais)!
+
+A versão gratuita é limitada a...
+ - 1 semestre
+ - 5 notas por turma
+ - 1 inserção em massa repetitiva de uma tarefa/evento
+
+Uma vez que você compra a versão premium, você possui a versão premium em todos os seus dispositivos (está vinculada com sua conta online).</target>
+</trans-unit>
+        <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
+  <source>Restore Previous Purchase</source>
+  <target state="final">Restaurar Compra Anterior</target>
+</trans-unit>
+        <trans-unit id="ClassPage_Details_NothingHereString" translate="yes" xml:space="preserve">
+  <source>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</source>
+  <target state="final">Toque no botão de editar no canto superior direito para adicionar detalhes como as informações de contato do professor, horário de atendimento, e qualquer outra coisa!</target>
+</trans-unit>
+        <trans-unit id="String_Back" translate="yes" xml:space="preserve">
+  <source>Back</source>
+  <target state="final">Voltar</target>
+</trans-unit>
+        <trans-unit id="String_Done" translate="yes" xml:space="preserve">
+  <source>Done</source>
+  <target state="final">Concluído</target>
+</trans-unit>
+        <trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+  <source>Is dropped?</source>
+  <target state="final">Foi excluído?</target>
+</trans-unit>
       </group>
     </body>
   </file>

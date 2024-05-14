@@ -83,7 +83,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 }
 
                 ForgotUsernameResponse response = await WebHelper.Download<ForgotUsernameRequest, ForgotUsernameResponse>(
-                        Website.URL + "forgotusernamemodern",
+                        Website.ClientApiUrl + "forgotusernamemodern",
                         new ForgotUsernameRequest() { Email = email },
                         Website.ApiKey);
 

@@ -496,7 +496,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
                 else
                 {
-                    throw new InvalidOperationException("If using unified calendar/day tab and not in the FullCalendar state, you should set SelectedDate on the CalendarViewModel instead.");
+                    throw new InvalidOperationException("If using unified calendar/day tab and not in the FullCalendar state, you should set SelectedDate on the CalendarViewModel instead. Current DisplayState is " + DisplayState);
                 }
             }
             else

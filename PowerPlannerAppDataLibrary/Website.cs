@@ -10,13 +10,9 @@ namespace PowerPlannerAppDataLibrary
 {
     public static class Website
     {
-#if DEBUG
-        public static readonly string URL = "https://powerplanner.net/api/";
-        //public static readonly string URL = "https://powerplannerwebsite-staging.azurewebsites.net/api/";
-        //public static readonly string URL = "http://localhost:51266/api/";
-#else
-        public static readonly string URL = "https://powerplanner.net/api/";
-#endif
+        public const string ClientApiUrl = "https://client.api.powerplanner.net/api/";
+        public const string DataApiUrl = "https://data.powerplanner.net/api/";
+        public const string UploadApiUrl = "https://upload.powerplanner.net/api/";
 
         /// <summary>
         /// The root url, like "https://powerplanner.net/"
@@ -30,7 +26,7 @@ namespace PowerPlannerAppDataLibrary
 
         public static async Task<ForgotUsernameResponse> ForgotUsername(string email)
         {
-            return await WebHelper.Download<ForgotUsernameRequest, ForgotUsernameResponse>(URL + "forgotusernamemodern", new ForgotUsernameRequest()
+            return await WebHelper.Download<ForgotUsernameRequest, ForgotUsernameResponse>(ClientApiUrl + "forgotusernamemodern", new ForgotUsernameRequest()
             {
                 Email = email
             }, ApiKey);

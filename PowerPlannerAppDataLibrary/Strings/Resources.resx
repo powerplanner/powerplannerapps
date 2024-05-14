@@ -564,6 +564,19 @@ The free version is limited to...
 
 Once you purchase the premium version, you own the premium version on all your devices.</value>
   </data>
+  <data name="Settings_UpgradeToPremiumIOS_Description.Text" xml:space="preserve">
+    <value>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
+
+The free version is limited to...
+ - 1 semester
+ - 5 grades per class
+ - 1 repeating bulk entry of a task/event
+
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</value>
+  </data>
+  <data name="Settings_UpgradeToPremium_ButtonRestore.Content" xml:space="preserve">
+    <value>Restore Previous Purchase</value>
+  </data>
   <data name="TextBox_Password.Header" xml:space="preserve">
     <value>Password</value>
   </data>
@@ -861,6 +874,9 @@ Once you purchase the premium version, you own the premium version on all your d
   </data>
   <data name="ClassPage_ToggleRoundGradesUp.Header" xml:space="preserve">
     <value>Round grades up</value>
+  </data>
+  <data name="ClassPage_Details_NothingHereString" xml:space="preserve">
+    <value>Tap the edit button in the top right to add details like the teacher's contact info, office hours, and anything else!</value>
   </data>
   <data name="ConfigureClassGrades_Items_WeightCategories.Title" xml:space="preserve">
     <value>Weight categories</value>
@@ -1265,6 +1281,9 @@ Please think about using an online account instead!</value>
   <data name="String_GoBack" xml:space="preserve">
     <value>Go back</value>
   </data>
+  <data name="String_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="String_InvalidConfirmationPassword" xml:space="preserve">
     <value>Invalid confirmation password</value>
   </data>
@@ -1332,6 +1351,9 @@ Please think about using an online account instead!</value>
   <data name="EditGradePage_TextBoxName.Header" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="EditGradePage_IsDropped" xml:space="preserve">
+    <value>Is dropped?</value>
+  </data>
   <data name="String_Close" xml:space="preserve">
     <value>Close</value>
   </data>
@@ -1350,6 +1372,9 @@ Please think about using an online account instead!</value>
   <data name="EditSemesterPage_Title_Editing" xml:space="preserve">
     <value>EDIT SEMESTER</value>
   </data>
+	<data name="EditSemesterPage_Title_Copying" xml:space="preserve">
+    <value>COPY SEMESTER</value>
+  </data>
   <data name="MessageDeleteSemester_Body" xml:space="preserve">
     <value>Are you sure you want to delete this semester and all of its contents?</value>
   </data>
@@ -1362,11 +1387,17 @@ Please think about using an online account instead!</value>
   <data name="EditSemesterPage_DatePickerStart.Header" xml:space="preserve">
     <value>Start date</value>
   </data>
+	<data name="EditSemesterPage_Year.Header" xml:space="preserve">
+    <value>Year</value>
+  </data>
   <data name="EditSemesterPage_String_InvalidStartDate" xml:space="preserve">
     <value>Invalid start date</value>
   </data>
   <data name="EditSemesterPage_String_StartDateGreaterThanEndExplanation" xml:space="preserve">
     <value>Your start date must be earlier than your end date.</value>
+  </data>
+	<data name="EditSemesterPage_String_CopiedItemsExplanation" xml:space="preserve">
+    <value>Schedules and grade settings from the selected classes will be copied. Tasks, events, and grades from within the classes will not be copied.</value>
   </data>
   <data name="DifferentSemesterOverlayControl_TextBlockDescription.Text" xml:space="preserve">
     <value>This is a different semester. Tap this to view all of your semesters.</value>
@@ -1429,7 +1460,7 @@ Please think about using an online account instead!</value>
     <comment>Like "5 days ago"</comment>
   </data>
   <data name="SchedulePage_ButtonAddClass.Content" xml:space="preserve">
-    <value>add class</value>
+    <value>Add class</value>
   </data>
   <data name="SchedulePage_TextBlockWelcomeTitle.Text" xml:space="preserve">
     <value>Welcome to Power Planner!</value>
@@ -1764,12 +1795,6 @@ Please think about using an online account instead!</value>
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>Image attachments</value>
   </data>
-  <data name="Settings_MainPage_ContributeItem.Subtitle" xml:space="preserve">
-    <value>Are you a developer? Help add some features!</value>
-  </data>
-  <data name="Settings_MainPage_ContributeItem.Title" xml:space="preserve">
-    <value>Contribute to Power Planner</value>
-  </data>
   <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
     <value>Returning user?</value>
   </data>
@@ -2079,5 +2104,30 @@ Please think about using an online account instead!</value>
   </data>
   <data name="HidePastCompleteItems" xml:space="preserve">
     <value>Hide past complete items</value>
+  </data>
+  <data name="String_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="String_Automatic" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="String_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="String_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="SemesterActions_MoveSemester" xml:space="preserve">
+    <value>Move semester</value>
+  </data>
+  <data name="SemesterActions_MoveClass" xml:space="preserve">
+    <value>Move {0} to different semester</value>
+	<comment>{0} is the class name</comment>
+  </data>
+  <data name="Header_Semester" xml:space="preserve">
+	<value>Semester</value>
+  </data>
+  <data name="String_Done" xml:space="preserve">
+	<value>Done</value>
   </data>
 </root>

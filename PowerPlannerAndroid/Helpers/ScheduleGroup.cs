@@ -27,13 +27,14 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             var s = schedules[0];
 
-            StartTime = s.StartTime.TimeOfDay;
-            EndTime = s.EndTime.TimeOfDay;
+            // Used for editing, so using school time
+            StartTime = s.StartTimeInSchoolTime.TimeOfDay;
+            EndTime = s.EndTimeInSchoolTime.TimeOfDay;
             Room = s.Room;
             DayOfWeeks = schedules.Select(i => i.DayOfWeek).Distinct().OrderBy(i => i).ToArray();
 
             DaysText = string.Join(", ", DayOfWeeks.Select(i => DateTools.ToLocalizedString(i)));
-            TimeText = PowerPlannerResources.GetStringTimeToTime(DateTimeFormatterExtension.Current.FormatAsShortTime(s.StartTime), DateTimeFormatterExtension.Current.FormatAsShortTime(s.EndTime));
+            TimeText = PowerPlannerResources.GetStringTimeToTime(DateTimeFormatterExtension.Current.FormatAsShortTime(s.StartTimeInSchoolTime), DateTimeFormatterExtension.Current.FormatAsShortTime(s.EndTimeInSchoolTime));
         }
     }
 }
