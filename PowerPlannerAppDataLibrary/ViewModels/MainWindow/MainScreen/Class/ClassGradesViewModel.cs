@@ -239,6 +239,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             var topMargin = VxPlatform.Current == Platform.iOS ? Theme.Current.PageMargin : 0;
 
+            // If there's only one default weight category, we show the weight header as a sum rather than /100, since the /100 value is dupe of the percent value.
+            bool showWeightHeaderAsSum = !ShowWeightCategoriesSummary && !Class.ShouldAverageGradeTotals;
+
             // Android/iOS don't support the multi-column views
             if (Size.Width < WidthBreakpoint || VxPlatform.Current == Platform.Android || VxPlatform.Current == Platform.iOS)
             {
@@ -255,7 +258,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                         if (item is ViewItemWeightCategory w)
                         {
-                            return RenderHeader(w);
+                            return RenderHeader(w, showWeightHeaderAsSum);
                         }
 
                         if (item is string str && str == UNASSIGNED_ITEMS_HEADER)
@@ -295,7 +298,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 var gridPanel = new AdaptiveGradesListComponent
                 {
                     Class = Class,
-                    OnRequestViewGrade = g => ShowItem(g)
+                    OnRequestViewGrade = g => ShowItem(g),
+                    ShowWeightHeaderAsSum = showWeightHeaderAsSum
                 };
 
                 var unassignedPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
@@ -397,6 +401,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             public bool IncludeMargin { get; set; }
 
+            public bool ShowWeightHeaderAsSum { get; set; }
+
             protected override View Render()
             {
                 return new Border
@@ -417,7 +423,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                         new TextBlock
                         {
-                            Text = Weight.WeightAchievedAndTotalString,
+                            Text = ShowWeightHeaderAsSum ? Weight.WeightAchievedAndTotalStringAsSum : Weight.WeightAchievedAndTotalString,
                             FontSize = Theme.Current.SubtitleFontSize,
                             Margin = new Thickness(0, 6, 6, 6),
                             TextColor = Theme.Current.SubtleForegroundColor,
@@ -432,12 +438,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        internal static View RenderHeader(ViewItemWeightCategory w, bool includeMargin = true)
+        internal static View RenderHeader(ViewItemWeightCategory w, bool showWeightHeaderAsSum, bool includeMargin = true)
         {
             return new WeightHeaderComponent
             {
                 Weight = w,
-                IncludeMargin = includeMargin
+                IncludeMargin = includeMargin,
+                ShowWeightHeaderAsSum = showWeightHeaderAsSum
             };
         }
 
@@ -465,6 +472,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             public bool IsInWhatIfMode { get; set; }
 
+            public bool ShowWeightHeaderAsSum { get; set; }
+
             protected override View Render()
             {
                 SubscribeToCollection(Class.WeightCategories);
@@ -489,7 +498,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     {
                         Children =
                     {
-                        RenderHeader(weight, includeMargin: false)
+                        RenderHeader(weight, ShowWeightHeaderAsSum, includeMargin: false)
                     }
                     };
 
