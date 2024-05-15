@@ -313,16 +313,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
                 OpenLanguageSettings);
 
-            if (VxPlatform.Current == Platform.Uwp)
-            {
-                RenderOption(
-                    layout,
-                    MaterialDesign.MaterialDesignIcons.Code,
-                    PowerPlannerResources.GetString("Settings_MainPage_ContributeItem.Title"),
-                    PowerPlannerResources.GetString("Settings_MainPage_ContributeItem.Subtitle"),
-                    () => OpenContribute());
-            }
-
             RenderOption(
                 layout,
                 MaterialDesign.MaterialDesignIcons.Help,
