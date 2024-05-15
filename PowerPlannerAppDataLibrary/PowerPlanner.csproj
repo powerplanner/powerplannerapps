@@ -8,7 +8,7 @@
     <Configurations>Release (Android);Debug (Android);Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net7.0-android</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net8.0-android</TargetFrameworks>
     <Configurations>Debug;Release;Debug (Android);Release (Android)</Configurations>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>PowerPlannerAppDataLibrary</RootNamespace>
@@ -34,7 +34,7 @@
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.210505.2" />
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="2.0.0" />
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.3" />
     <PackageReference Include="TimeZoneConverter" Version="6.0.1" />
     <PackageReference Include="TimeZoneNames" Version="6.0.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta" />
