@@ -715,10 +715,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>5.0.0</Version>
+      <Version>5.0.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>5.0.0</Version>
+      <Version>5.0.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -727,7 +727,7 @@
       <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.1</Version>
+      <Version>2.8.6</Version>
     </PackageReference>
     <PackageReference Include="NotificationsVisualizerLibrary">
       <Version>1.0.5</Version>
@@ -736,10 +736,10 @@
       <Version>2.1.32-alpha</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.8.116</Version>
+      <Version>1.9.172</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green">
-      <Version>2.1.2</Version>
+      <Version>2.1.8</Version>
     </PackageReference>
     <PackageReference Include="StorageEverywhereIncludingiOS">
       <Version>3.0.3</Version>
