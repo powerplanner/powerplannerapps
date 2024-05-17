@@ -4,6 +4,7 @@
 	<TargetFramework>net8.0-ios</TargetFramework>
 	<OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
+    <MtouchSdkVersion>17.5</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <ForceSimulatorX64ArchitectureInIDE>true</ForceSimulatorX64ArchitectureInIDE>
