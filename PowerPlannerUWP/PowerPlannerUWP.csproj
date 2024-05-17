@@ -742,7 +742,7 @@
       <Version>2.1.8</Version>
     </PackageReference>
     <PackageReference Include="StorageEverywhereIncludingiOS">
-      <Version>3.0.3</Version>
+      <Version>3.0.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

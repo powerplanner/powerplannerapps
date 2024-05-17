@@ -3,10 +3,12 @@
   <PropertyGroup>
 	<TargetFramework>net8.0-ios</TargetFramework>
 	<OutputType>Exe</OutputType>
-    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <ForceSimulatorX64ArchitectureInIDE>true</ForceSimulatorX64ArchitectureInIDE>
     <CreatePackage>false</CreatePackage>
+    <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <CreatePackage>false</CreatePackage>
@@ -39,7 +41,7 @@
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8">
     </PackageReference>
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.3" />
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.4" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
     </PackageReference>
   </ItemGroup>

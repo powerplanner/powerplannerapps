@@ -43,7 +43,7 @@
       <Version>1.9.172</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.3" />
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.4" />
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>5.0.0-beta</Version>
     </PackageReference>
