@@ -1,0 +1,15 @@
+using System;
+using Foundation;
+using UIKit;
+using Vx.Views;
+
+namespace Vx.iOS.Views
+{
+    public class iOSPagedViewModelPresenterView : iOSView<Vx.Views.PagedViewModelPresenterView, InterfacesiOS.ViewModelPresenters.PagedViewModelPresenter>
+    {
+        protected override void ApplyProperties(PagedViewModelPresenterView oldView, PagedViewModelPresenterView newView)
+        {
+            View.ViewModel = newView.ViewModel;
+        }
+    }
+}

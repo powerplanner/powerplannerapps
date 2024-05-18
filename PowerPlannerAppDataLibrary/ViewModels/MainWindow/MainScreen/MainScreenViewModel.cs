@@ -172,7 +172,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             {
                                 Source = new UriImageSource
                                 {
-                                    UwpUri = "ms-appx:///Assets/Logo.png"
+                                    UwpUri = "ms-appx:///Assets/Logo.png",
+                                    IosBundleName = "PowerPlannerIcon"
                                 },
                                 Width = 58,
                                 Margin = new Thickness(0, 24, 0, 24),
