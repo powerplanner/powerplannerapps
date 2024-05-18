@@ -17,7 +17,7 @@ namespace Vx.Views
     {
         public string UwpUri { get; set; }
         public string AndroidUri { get; set; }
-        public string IosUri { get; set; }
+        public string IosBundleName { get; set; }
         public string Uri
         {
             get
@@ -26,7 +26,7 @@ namespace Vx.Views
                 {
                     case Platform.Uwp: return UwpUri;
                     case Platform.Android: return AndroidUri;
-                    case Platform.iOS: return IosUri;
+                    case Platform.iOS: return IosBundleName;
                     default: throw new NotImplementedException();
                 }
             }
