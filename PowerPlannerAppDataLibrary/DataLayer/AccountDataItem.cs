@@ -805,10 +805,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, cancellationToken ?? System.Threading.CancellationToken.None);
         }
 
-#if ANDROID
+        // This is only needed on Android, but I accidentally was compiling it into the iOS app too, and now the iOS DataContractSerializer won't deserialize
+        // legacy accounts that have this property in its saved XML unless this property is present (it's bizzare). So I'm making it show up for all platforms, but
+        // marking it obselete on those other platforms. I could have an #if IOS, but that would require adding another target framework and it'd just be for this, not worth it.
         [DataMember]
-        public DateTime DateLastDayBeforeReminderWasSent { get; set; }
+#if !ANDROID
+        [Obsolete("Non-Android platforms should NOT use this property")]
 #endif
+        public DateTime DateLastDayBeforeReminderWasSent { get; set; }
 
 
 
