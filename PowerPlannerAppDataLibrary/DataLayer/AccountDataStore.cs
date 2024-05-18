@@ -19,8 +19,7 @@ using Newtonsoft.Json;
 using System.Linq.Expressions;
 using System.Reflection;
 
-/// <summary>
-/// ClassAttribute
+/*  ClassAttribute
 /// ClassAttributeUnderClass
 /// ClassSubject
 /// ClassSubjectUnderClass
@@ -35,8 +34,7 @@ using System.Reflection;
 /// Teacher
 /// WeightCategory
 /// Year
-/// </summary>
-/// 
+*/
 
 namespace PowerPlannerAppDataLibrary.DataLayer
 {
@@ -513,7 +511,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             /// <summary>
             /// Caller should establish data lock
             /// </summary>
-            /// <param name="localAccountId"></param>
             /// <returns></returns>
             public static async Task<ChangedItems> Load(AccountDataStore dataStore)
             {
@@ -762,7 +759,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <summary>
         /// Caller must establish data lock. Caller must call InitializeDatabaseAsync().
         /// </summary>
-        /// <param name="localAccountId"></param>
         private AccountDataStore(AccountDataItem account)
         {
             Account = account;

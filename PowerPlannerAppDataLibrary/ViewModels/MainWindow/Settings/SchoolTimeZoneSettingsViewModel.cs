@@ -133,7 +133,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 return GetAvailableTimeZones(CultureInfo.CurrentUICulture.Name);
             }
-            catch (Exception ex)
+            catch
             {
                 try
                 {

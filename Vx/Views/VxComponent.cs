@@ -112,22 +112,26 @@ namespace Vx.Views
             _prevSize = e;
         }
 
-        private async void EnableHotReload()
+        private void EnableHotReload()
         {
 #if DEBUG
             // Enable hot reload by refreshing every second since we can't subscribe to MetadataUpdateHandler yet
             if (System.Diagnostics.Debugger.IsAttached && VxPlatform.Current == Platform.Uwp)
             {
-                try
+                Func<Task> loop = async () =>
                 {
-                    while (true)
+                    try
                     {
-                        await Task.Delay(1000);
+                        while (true)
+                        {
+                            await Task.Delay(1000);
 
-                        MarkDirty();
+                            MarkDirty();
+                        }
                     }
-                }
-                catch { }
+                    catch { }
+                };
+                loop();
             }
 #endif
         }

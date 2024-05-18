@@ -120,7 +120,6 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
         /// <summary>
         /// Assumes item has already been filtered
         /// </summary>
-        /// <param name="h"></param>
         private void Add(DataItemMegaItem i)
         {
             ViewItemTaskOrEvent taskOrExam = i.CreateViewItemTaskOrEvent(Semester);

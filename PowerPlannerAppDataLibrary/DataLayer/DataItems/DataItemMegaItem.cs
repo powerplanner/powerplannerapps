@@ -183,7 +183,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
         /// <summary>
         /// Returns null if none of the expected types
         /// </summary>
-        /// <param name="semester"></param>
         /// <returns></returns>
         public ViewItemTaskOrEvent CreateViewItemTaskOrEvent(IEnumerable<ViewItemClass> classes, ViewItemClass noClassClass)
         {
