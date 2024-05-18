@@ -251,11 +251,14 @@
     <Compile Include="Views\UwpDatePicker.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
     <Compile Include="Views\UwpFrameLayout.cs" />
+    <Compile Include="Views\UwpImageView.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
     <Compile Include="Views\UwpListView.cs" />
     <Compile Include="Views\UwpNumberTextBox.cs" />
+    <Compile Include="Views\UwpPagedViewModelPresenterView.cs" />
     <Compile Include="Views\UwpPasswordBox.cs" />
+    <Compile Include="Views\UwpProgressBar.cs" />
     <Compile Include="Views\UwpScrollView.cs" />
     <Compile Include="Views\UwpSlideView.cs" />
     <Compile Include="Views\UwpSwitch.cs" />

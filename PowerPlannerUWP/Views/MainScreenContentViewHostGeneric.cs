@@ -32,16 +32,16 @@ namespace PowerPlannerUWP.Views
         {
             _mainScreenView = (ViewModel.FindAncestor<MainScreenViewModel>().GetNativeView() as MainScreenView);
             
-            if (_isCommandBarHidden)
-            {
-                _mainScreenView.HideCommandBar();
-            }
-            else
-            {
-                _mainScreenView.ShowCommandBar();
-            }
-            _mainScreenView.SetCommandBarContent(_commandBarContent);
-            _mainScreenView.SetCommandBarCommands(_primaryCommands, _secondaryCommands);
+            //if (_isCommandBarHidden)
+            //{
+            //    _mainScreenView.HideCommandBar();
+            //}
+            //else
+            //{
+            //    _mainScreenView.ShowCommandBar();
+            //}
+            //_mainScreenView.SetCommandBarContent(_commandBarContent);
+            //_mainScreenView.SetCommandBarCommands(_primaryCommands, _secondaryCommands);
         }
 
         protected static AppBarButton CreateAppBarButton(Symbol symbol, string label, RoutedEventHandler onClick)
@@ -70,7 +70,7 @@ namespace PowerPlannerUWP.Views
 
             if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
             {
-                _mainScreenView.SetCommandBarCommands(commands, secondaryCommands);
+                //_mainScreenView.SetCommandBarCommands(commands, secondaryCommands);
             }
 
             ShowCommandBar();
@@ -87,7 +87,7 @@ namespace PowerPlannerUWP.Views
 
             if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
             {
-                _mainScreenView.SetCommandBarContent(content);
+                //_mainScreenView.SetCommandBarContent(content);
             }
 
             ShowCommandBar();
@@ -99,7 +99,7 @@ namespace PowerPlannerUWP.Views
 
             if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
             {
-                _mainScreenView.ShowCommandBar();
+                //_mainScreenView.ShowCommandBar();
             }
         }
 
@@ -109,7 +109,7 @@ namespace PowerPlannerUWP.Views
 
             if (ViewModel != null && ViewModel.IsCurrentNavigatedPage)
             {
-                _mainScreenView.HideCommandBar();
+                //_mainScreenView.HideCommandBar();
             }
         }
     }

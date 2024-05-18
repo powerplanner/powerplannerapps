@@ -163,6 +163,21 @@ namespace Vx.Uwp
                     return new UwpListView();
                 }
 
+                if (view is Vx.Views.ImageView)
+                {
+                    return new UwpImageView();
+                }
+
+                if (view is Vx.Views.ProgressBar)
+                {
+                    return new UwpProgressBar();
+                }
+
+                if (view is Vx.Views.PagedViewModelPresenterView)
+                {
+                    return new UwpPagedViewModelPresenterView();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
