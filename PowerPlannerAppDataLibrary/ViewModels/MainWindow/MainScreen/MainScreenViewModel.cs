@@ -31,6 +31,8 @@ using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using BareMvvm.Core.Snackbar;
 using Vx.Views;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.Components;
+using System.Drawing;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -38,21 +40,277 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
     {
         protected override View Render()
         {
+            if (Size.Width == 0)
+            {
+                return null;
+            }
+
             return new LinearLayout
             {
-                Orientation = Orientation.Horizontal,
+                Orientation = IsCompactMode ? Orientation.Vertical : Orientation.Horizontal,
                 Children =
                 {
-                    RenderSidebar(),
-                    new PagedViewModelPresenterView
+                    IsCompactMode ? RenderCompactTopBar() : RenderSidebar(),
+
+                    new FrameLayout
                     {
-                        ViewModel = this
+                        Children =
+                        {
+                            new PagedViewModelPresenterView
+                            {
+                                ViewModel = this
+                            },
+
+                            IsCompactMenuOpen ? RenderCompactExpandedMenu() : null
+                        }
                     }.LinearLayoutWeight(1)
                 }
             };
         }
 
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            if (Size.Height > 0)
+            {
+                OnSizeChanged(Size, new SizeF());
+            }
+        }
+
+        protected override void OnSizeChanged(SizeF size, SizeF previousSize)
+        {
+            if (previousSize.Height == 0 && size.Height != 0)
+            {
+                // Make sure it renders after getting size
+                MarkDirty();
+            }
+
+            IsCompactMode = size.Width < 670;
+        }
+
+        private View RenderCompactTopBar()
+        {
+            return new FrameLayout
+            {
+                Height = 48,
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
+                {
+                    RenderSyncProgressBar(),
+
+                    new LinearLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        Children =
+                        {
+                            new TransparentContentButton
+                            {
+                                Content = new FontIcon
+                                {
+                                    Glyph = MaterialDesign.MaterialDesignIcons.Menu,
+                                    FontSize = 20,
+                                    Color = System.Drawing.Color.White,
+                                    Margin = new Thickness(20,0,12,0)
+                                },
+                                Click = () =>
+                                {
+                                    IsCompactMenuOpen = !IsCompactMenuOpen;
+                                }
+                            },
+
+                            new TextBlock
+                            {
+                                Text = SelectedItem == MainMenuSelections.Classes && SelectedClass != null ? SelectedClass.Name : (SelectedItem != null ? MainMenuItemToString(SelectedItem.Value) : ""),
+                                FontSize = 18,
+                                TextColor = System.Drawing.Color.White,
+                                WrapText = false,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                Margin = new Thickness(6,0,12,0)
+                            }.LinearLayoutWeight(1),
+
+                            RenderOfflineOrErrorsView(VerticalAlignment.Stretch)
+                        }
+                    }
+                }
+            };
+        }
+
+        private View RenderCompactExpandedMenu()
+        {
+            return new LinearLayout
+            {
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
+                {
+                    new ScrollView
+                    {
+                        Content = RenderMenuItems()
+                    }.LinearLayoutWeight(1),
+
+                    RenderSettingsButton()
+                }
+            };
+        }
+
+        private View RenderSyncProgressBar()
+        {
+            return new ProgressBar
+            {
+                Opacity = SyncState == SyncStates.Done ? 0 : 1,
+                Color = System.Drawing.Color.White,
+                IsIndeterminate = SyncState == SyncStates.Syncing ? true : false,
+                Value = SyncState == SyncStates.UploadingImages ? UploadImageProgress : 0,
+                MaxValue = 1,
+                VerticalAlignment = VerticalAlignment.Top
+            };
+        }
+
+        private View RenderOfflineOrErrorsView(VerticalAlignment verticalAlignment = VerticalAlignment.Top)
+        {
+            return IsOffline || HasSyncErrors ? new TransparentContentButton
+            {
+                VerticalAlignment = verticalAlignment,
+                Content = new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(6),
+                    Children =
+                    {
+                        new FontIcon
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.Error,
+                            FontSize = 16,
+                            Color = System.Drawing.Color.White,
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+                        new TextBlock
+                        {
+                            Text = HasSyncErrors ? PowerPlannerResources.GetString("String_SyncError") : IsOffline ? PowerPlannerResources.GetString("String_Offline") : "",
+                            WrapText = false,
+                            TextColor = System.Drawing.Color.White,
+                            FontSize = 12,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Margin = new Thickness(6,0,0,0)
+                        }.LinearLayoutWeight(1)
+                    }
+                },
+                Click = () =>
+                {
+                    if (HasSyncErrors)
+                    {
+                        ViewSyncErrors();
+                    }
+                    else
+                    {
+                        this.SyncCurrentAccount();
+                    }
+                }
+            } : null;
+        }
+
         private View RenderSidebar()
+        {
+            var menuItems = RenderMenuItems();
+
+            return new FrameLayout
+            {
+                BackgroundColor = Theme.Current.ChromeColor,
+                Width = 215,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Children =
+                {
+                    new LinearLayout
+                    {
+                        Orientation = Orientation.Vertical,
+                        VerticalAlignment = VerticalAlignment.Stretch,
+                        Children =
+                        {
+                            new ImageView
+                            {
+                                Source = new UriImageSource
+                                {
+                                    UwpUri = "ms-appx:///Assets/Logo.png"
+                                },
+                                Width = 58,
+                                Margin = new Thickness(0, 24, 0, 24),
+                                Tapped = SyncCurrentAccount
+                            },
+
+                            new ScrollView
+                            {
+                                Content = menuItems
+                            }.LinearLayoutWeight(1),
+
+                            RenderSettingsButton()
+                        }
+                    },
+
+                    RenderSyncProgressBar(),
+
+                    RenderOfflineOrErrorsView(),
+                }
+            };
+        }
+
+        private View RenderSettingsButton()
+        {
+            return new TransparentContentButton
+            {
+                Content = new Border
+                {
+                    BackgroundColor = SelectedItem == MainMenuSelections.Settings ? Theme.Current.AccentColor : System.Drawing.Color.Transparent,
+                    Content = new TextBlock
+                    {
+                        Text = PowerPlannerResources.GetString("MainMenuItem_Settings"),
+                        TextColor = System.Drawing.Color.White,
+                        FontSize = 16,
+                        Margin = new Thickness(20, 12, 0, 20),
+                        FontWeight = FontWeights.SemiLight,
+                        WrapText = false,
+                        VerticalAlignment = VerticalAlignment.Center
+                    }
+                },
+                Click = () =>
+                {
+                    IsCompactMenuOpen = false;
+                    SelectedItem = MainMenuSelections.Settings;
+                }
+            };
+        }
+
+        private static string MainMenuItemToString(MainMenuSelections value)
+        {
+            switch (value)
+            {
+                case MainMenuSelections.Agenda:
+                    return PowerPlannerResources.GetString("MainMenuItem_Agenda");
+
+                case MainMenuSelections.Calendar:
+                    return PowerPlannerResources.GetString("MainMenuItem_Calendar");
+
+                case MainMenuSelections.Classes:
+                    return PowerPlannerResources.GetString("MainMenuItem_Classes");
+
+                case MainMenuSelections.Day:
+                    return PowerPlannerResources.GetString("MainMenuItem_Day");
+
+                case MainMenuSelections.Schedule:
+                    return PowerPlannerResources.GetString("MainMenuItem_Schedule");
+
+                case MainMenuSelections.Settings:
+                    return PowerPlannerResources.GetString("MainMenuItem_Settings");
+
+                case MainMenuSelections.Years:
+                    return PowerPlannerResources.GetString("MainMenuItem_Years");
+
+                default:
+                    throw new NotImplementedException("Unknown MainMenuSelections enum value");
+            }
+        }
+
+        private View RenderMenuItems()
         {
             var menuItems = new LinearLayout
             {
@@ -67,7 +325,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                 var tb = new TextBlock
                 {
-                    Text = i.ToString(),
+                    Text = MainMenuItemToString(i),
                     TextColor = System.Drawing.Color.White,
                     Margin = new Thickness(20, 8, 0, 8),
                     FontSize = 20,
@@ -103,6 +361,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         } : (View)tb,
                         Click = () =>
                         {
+                            if (i != MainMenuSelections.Classes)
+                            {
+                                IsCompactMenuOpen = false;
+                            }
                             SelectedItem = i;
                         }
                     },
@@ -146,119 +408,38 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                 },
                                 Click = () =>
                                 {
+                                    IsCompactMenuOpen = false;
                                     SelectClassWithinSemester(c);
                                 }
                             },
-                            BackgroundColor = SelectedClass == c ? System.Drawing.Color.FromArgb(65,167,240) : Theme.Current.AccentColor
+                            BackgroundColor = SelectedClass == c ? System.Drawing.Color.FromArgb(65, 167, 240) : Theme.Current.AccentColor
                         });
                     }
                 }
             }
 
-            return new FrameLayout
+            return menuItems;
+        }
+
+        private bool _isCompactMode = false;
+        public bool IsCompactMode
+        {
+            get => _isCompactMode;
+            set
             {
-                BackgroundColor = Theme.Current.ChromeColor,
-                Width = 215,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                Children =
+                if (_isCompactMode != value)
                 {
-                    new LinearLayout
-                    {
-                        Orientation = Orientation.Vertical,
-                        VerticalAlignment = VerticalAlignment.Stretch,
-                        Children =
-                        {
-                            new ImageView
-                            {
-                                Source = new UriImageSource
-                                {
-                                    UwpUri = "ms-appx:///Assets/Logo.png"
-                                },
-                                Width = 58,
-                                Margin = new Thickness(0, 24, 0, 24),
-                                Tapped = SyncCurrentAccount
-                            },
-
-                            new ScrollView
-                            {
-                                Content = menuItems
-                            }.LinearLayoutWeight(1),
-
-                            new TransparentContentButton
-                            {
-                                Content = new Border
-                                {
-                                    BackgroundColor = SelectedItem == MainMenuSelections.Settings ? Theme.Current.AccentColor : System.Drawing.Color.Transparent,
-                                    Content = new TextBlock
-                                    {
-                                        Text = "Settings",
-                                        TextColor = System.Drawing.Color.White,
-                                        FontSize = 16,
-                                        Margin = new Thickness(20, 12, 0, 20),
-                                        FontWeight = FontWeights.SemiLight,
-                                        WrapText = false,
-                                        VerticalAlignment = VerticalAlignment.Center
-                                    }
-                                },
-                                Click = () =>
-                                {
-                                    SelectedItem = MainMenuSelections.Settings;
-                                }
-                            }
-                        }
-                    },
-
-                    new ProgressBar
-                    {
-                        Opacity = SyncState == SyncStates.Done ? 0 : 1,
-                        Color = System.Drawing.Color.White,
-                        IsIndeterminate = SyncState == SyncStates.Syncing ? true : false,
-                        Value = SyncState == SyncStates.UploadingImages ? UploadImageProgress : 0,
-                        MaxValue = 1,
-                        VerticalAlignment = VerticalAlignment.Top
-                    },
-
-                    IsOffline || HasSyncErrors ? new TransparentContentButton
-                    {
-                        VerticalAlignment = VerticalAlignment.Top,
-                        Content = new LinearLayout
-                        {
-                            Orientation = Orientation.Horizontal,
-                            Margin = new Thickness(6),
-                            Children =
-                            {
-                                new FontIcon
-                                {
-                                    Glyph = MaterialDesign.MaterialDesignIcons.Error,
-                                    FontSize = 16,
-                                    Color = System.Drawing.Color.White,
-                                    VerticalAlignment = VerticalAlignment.Center
-                                },
-                                new TextBlock
-                                {
-                                    Text = HasSyncErrors ? PowerPlannerResources.GetString("String_SyncError") : IsOffline ? PowerPlannerResources.GetString("String_Offline") : "",
-                                    WrapText = false,
-                                    TextColor = System.Drawing.Color.White,
-                                    FontSize = 12,
-                                    VerticalAlignment = VerticalAlignment.Center,
-                                    Margin = new Thickness(6,0,0,0)
-                                }.LinearLayoutWeight(1)
-                            }
-                        },
-                        Click = () =>
-                        {
-                            if (HasSyncErrors)
-                            {
-                                ViewSyncErrors();
-                            }
-                            else
-                            {
-                                this.SyncCurrentAccount();
-                            }
-                        }
-                    } : null,
+                    IsCompactMenuOpen = false;
+                    SetProperty(ref _isCompactMode, value, nameof(IsCompactMode));
                 }
-            };
+            }
+        }
+
+        private bool _isCompactMenuOpen = false;
+        public bool IsCompactMenuOpen
+        {
+            get => _isCompactMenuOpen;
+            set => SetProperty(ref _isCompactMenuOpen, value, nameof(IsCompactMenuOpen));
         }
 
         public enum SyncStates
