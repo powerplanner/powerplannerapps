@@ -50,20 +50,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 Orientation = IsCompactMode ? Orientation.Vertical : Orientation.Horizontal,
                 Children =
                 {
-                    IsCompactMode ? RenderCompactTopBar() : RenderSidebar(),
+                    IsCompactMode ? new FrameLayout() : RenderSidebar(),
 
-                    new FrameLayout
+                    new PagedViewModelPresenterView
                     {
-                        Children =
-                        {
-                            new PagedViewModelPresenterView
-                            {
-                                ViewModel = this
-                            },
+                        ViewModel = this
+                    }.LinearLayoutWeight(1),
 
-                            IsCompactMenuOpen ? RenderCompactExpandedMenu() : null
-                        }
-                    }.LinearLayoutWeight(1)
+                    IsCompactMode ? new BottomNavBar
+                    {
+                        SelectedItem = SelectedItem,
+                        SetSelectedItem = i => SelectedItem = i,
+                        IsOfflineOrHasSyncError = IsOffline || HasSyncErrors,
+                        SyncState = SyncState,
+                        UploadImageProgress = UploadImageProgress
+                    } : null
                 }
             };
         }
@@ -89,72 +90,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             IsCompactMode = size.Width < 670;
         }
 
-        private View RenderCompactTopBar()
-        {
-            return new FrameLayout
-            {
-                Height = 48,
-                BackgroundColor = Theme.Current.ChromeColor,
-                Children =
-                {
-                    RenderSyncProgressBar(),
-
-                    new LinearLayout
-                    {
-                        Orientation = Orientation.Horizontal,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Children =
-                        {
-                            new TransparentContentButton
-                            {
-                                Content = new FontIcon
-                                {
-                                    Glyph = MaterialDesign.MaterialDesignIcons.Menu,
-                                    FontSize = 20,
-                                    Color = System.Drawing.Color.White,
-                                    Margin = new Thickness(20,0,12,0)
-                                },
-                                Click = () =>
-                                {
-                                    IsCompactMenuOpen = !IsCompactMenuOpen;
-                                }
-                            },
-
-                            new TextBlock
-                            {
-                                Text = SelectedItem == MainMenuSelections.Classes && SelectedClass != null ? SelectedClass.Name : (SelectedItem != null ? MainMenuItemToString(SelectedItem.Value) : ""),
-                                FontSize = 18,
-                                TextColor = System.Drawing.Color.White,
-                                WrapText = false,
-                                VerticalAlignment = VerticalAlignment.Center,
-                                Margin = new Thickness(6,0,12,0)
-                            }.LinearLayoutWeight(1),
-
-                            RenderOfflineOrErrorsView(VerticalAlignment.Stretch)
-                        }
-                    }
-                }
-            };
-        }
-
-        private View RenderCompactExpandedMenu()
-        {
-            return new LinearLayout
-            {
-                BackgroundColor = Theme.Current.ChromeColor,
-                Children =
-                {
-                    new ScrollView
-                    {
-                        Content = RenderMenuItems()
-                    }.LinearLayoutWeight(1),
-
-                    RenderSettingsButton()
-                }
-            };
-        }
-
         private View RenderSyncProgressBar()
+        {
+            return RenderSyncProgressBar(SyncState, UploadImageProgress, VerticalAlignment.Top);
+        }
+
+        public static View RenderSyncProgressBar(SyncStates SyncState, double UploadImageProgress, VerticalAlignment verticalAlignment)
         {
             return new ProgressBar
             {
@@ -163,7 +104,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 IsIndeterminate = SyncState == SyncStates.Syncing ? true : false,
                 Value = SyncState == SyncStates.UploadingImages ? UploadImageProgress : 0,
                 MaxValue = 1,
-                VerticalAlignment = VerticalAlignment.Top
+                VerticalAlignment = verticalAlignment
             };
         }
 
@@ -274,13 +215,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 },
                 Click = () =>
                 {
-                    IsCompactMenuOpen = false;
                     SelectedItem = MainMenuSelections.Settings;
                 }
             };
         }
 
-        private static string MainMenuItemToString(MainMenuSelections value)
+        public static string MainMenuItemToString(MainMenuSelections value)
         {
             switch (value)
             {
@@ -361,10 +301,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         } : (View)tb,
                         Click = () =>
                         {
-                            if (i != MainMenuSelections.Classes)
-                            {
-                                IsCompactMenuOpen = false;
-                            }
                             SelectedItem = i;
                         }
                     },
@@ -408,7 +344,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                 },
                                 Click = () =>
                                 {
-                                    IsCompactMenuOpen = false;
                                     SelectClassWithinSemester(c);
                                 }
                             },
@@ -429,17 +364,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             {
                 if (_isCompactMode != value)
                 {
-                    IsCompactMenuOpen = false;
                     SetProperty(ref _isCompactMode, value, nameof(IsCompactMode));
                 }
             }
-        }
-
-        private bool _isCompactMenuOpen = false;
-        public bool IsCompactMenuOpen
-        {
-            get => _isCompactMenuOpen;
-            set => SetProperty(ref _isCompactMenuOpen, value, nameof(IsCompactMenuOpen));
         }
 
         public enum SyncStates
