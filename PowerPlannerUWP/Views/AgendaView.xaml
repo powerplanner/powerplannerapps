@@ -8,13 +8,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:tasksOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews">
+    xmlns:tasksOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews"
+    xmlns:controls="using:PowerPlannerUWP.Controls">
 
-    <Grid>
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <StackPanel
             Visibility="{Binding HasNoItems, Converter={StaticResource BoolToVisibilityConverter}}"
             VerticalAlignment="Center"
-            Margin="20">
+            Margin="20"
+            Grid.Row="1">
             <TextBlock
                 x:Uid="Agenda_NoItemsHeader"
                 TextAlignment="Center"
@@ -27,7 +33,8 @@
                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
         </StackPanel>
         <tasksOrEventViews:TasksOrEventsGroupedListView
-            x:Name="MainGridView"/>
+            x:Name="MainGridView"
+            Grid.Row="1"/>
     </Grid>
 
 </local:MainScreenContentViewHostGeneric>

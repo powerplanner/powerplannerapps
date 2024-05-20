@@ -588,7 +588,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             Toolbar toolbar = null;
 
             // Add toolbar to all but UWP
-            if (VxPlatform.Current != Platform.Uwp)
+            if (true)
             {
                 toolbar = new Toolbar
                 {

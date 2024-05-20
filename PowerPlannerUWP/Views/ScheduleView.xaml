@@ -70,14 +70,15 @@
 
 
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="Root" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.RowDefinitions>
+            <RowDefinition x:Name="RowToolbar" Height="Auto"/>
             <RowDefinition x:Name="RowNormal" Height="*"/>
             <RowDefinition x:Name="RowEditing" Height="0"/>
         </Grid.RowDefinitions>
 
-        <Grid>
+        <Grid Grid.Row="1">
 
             <Grid x:Name="GridSchedule">
 
@@ -349,7 +350,7 @@
             x:Name="EditingRoot"
             x:DeferLoadStrategy="Lazy"
             Visibility="Collapsed"
-            Grid.Row="1"
+            Grid.Row="2"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             
             <Grid.RowDefinitions>
@@ -434,6 +435,7 @@
             x:Name="WelcomeRoot"
             x:DeferLoadStrategy="Lazy"
             Visibility="Collapsed"
+            Grid.Row="1"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
             Padding="24">
 
@@ -488,7 +490,7 @@
         </Grid>
 
 
-        <Border x:Name="BorderRenderedImage" Opacity="0"/>
+        <Border x:Name="BorderRenderedImage" Opacity="0" Grid.Row="1"/>
 
 
 

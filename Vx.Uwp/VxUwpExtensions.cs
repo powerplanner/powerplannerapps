@@ -178,6 +178,11 @@ namespace Vx.Uwp
                     return new UwpPagedViewModelPresenterView();
                 }
 
+                if (view is Vx.Views.Toolbar)
+                {
+                    return new UwpToolbar();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {

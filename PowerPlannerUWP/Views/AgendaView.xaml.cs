@@ -1,5 +1,8 @@
-﻿using PowerPlannerAppDataLibrary.Extensions;
+﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerUWP.Views.TaskOrEventViews;
 using System;
@@ -9,6 +12,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
 using ToolsUniversal;
+using Vx.Components.OnlyForNativeLibraries;
+using Vx.Uwp;
+using Vx.Views;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -36,9 +42,20 @@ namespace PowerPlannerUWP.Views
             set { base.ViewModel = value; }
         }
 
+        private Toolbar _toolbar;
+
         public AgendaView()
         {
             this.InitializeComponent();
+
+            _toolbar = new Toolbar
+            {
+                Title = MainScreenViewModel.MainMenuItemToString(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda)
+            };
+            MainGrid.Children.Add(new ToolbarComponent
+            {
+                Toolbar = _toolbar
+            }.Render());
         }
 
 #if DEBUG
@@ -54,12 +71,11 @@ namespace PowerPlannerUWP.Views
 
             try
             {
-                SetCommandBarCommands(new ICommandBarElement[]
-                {
-                AppBarAdd
-                }, null);
-
                 MainGridView.ItemsSource = ViewModel.ItemsWithHeaders;
+
+                _toolbar.PrimaryCommands.Add(ToolbarHelper.AddCommand(
+                    ViewModel.AddTask,
+                    ViewModel.AddEvent));
             }
 
             catch (Exception ex)

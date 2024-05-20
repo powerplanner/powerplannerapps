@@ -133,6 +133,7 @@
     <Compile Include="Controls\RecurrenceControl.xaml.cs">
       <DependentUpon>RecurrenceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TopCommandBar.cs" />
     <Compile Include="Controls\VirtualizedItemsControl.cs" />
     <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
     <Compile Include="Converters\BoolToValidityBrushConverter.cs" />

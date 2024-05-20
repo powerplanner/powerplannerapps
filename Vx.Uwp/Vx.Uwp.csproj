@@ -265,6 +265,7 @@
     <Compile Include="Views\UwpTextBlock.cs" />
     <Compile Include="Views\UwpTextBox.cs" />
     <Compile Include="Views\UwpTimePicker.cs" />
+    <Compile Include="Views\UwpToolbar.cs" />
     <Compile Include="Views\UwpTransparentContentButton.cs" />
     <Compile Include="Views\UwpView.cs" />
     <Compile Include="Views\UwpVxComponent.cs" />

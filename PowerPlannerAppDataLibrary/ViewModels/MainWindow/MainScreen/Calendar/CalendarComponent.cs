@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         private Func<int, View> _itemTemplate;
         private View _addButtonRef, _filterButtonRef;
 
-        public static bool IntegratedTopControls = VxPlatform.Current == Platform.Uwp;
+        public static bool IntegratedTopControls = false;
 
         public override bool SubscribeToIsMouseOver => IntegratedTopControls;
 

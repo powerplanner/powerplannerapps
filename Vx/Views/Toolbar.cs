@@ -9,6 +9,10 @@ namespace Vx.Views
     public class Toolbar : View
     {
         public string Title { get; set; }
+        /// <summary>
+        /// CustomTitle is only supported on UWP right now
+        /// </summary>
+        public View CustomTitle { get; set; }
         public Action OnBack { get; set; }
         public string BackText { get; set; }
         public Color BackgroundColor { get; set; } = Theme.Current.ChromeColor;

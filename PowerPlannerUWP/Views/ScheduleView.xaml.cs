@@ -26,6 +26,8 @@ using System.Globalization;
 using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerUWP.TileHelpers;
+using PowerPlannerAppDataLibrary.Components;
+using Vx.Uwp;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -303,9 +305,14 @@ namespace PowerPlannerUWP.Views
             return INITIAL_MARGIN + Math.Max((itemTime - baseTime).TotalHours * HEIGHT_OF_HOUR, 0);
         }
 
+        private ScheduleToolbarComponent _toolbar;
+
         public ScheduleView()
         {
             this.InitializeComponent();
+
+            _toolbar = new ScheduleToolbarComponent();
+            Root.Children.Add(_toolbar.Render());
         }
         
         public new ScheduleViewModel ViewModel
@@ -314,9 +321,22 @@ namespace PowerPlannerUWP.Views
             set { base.ViewModel = value; }
         }
 
+        public override void OnViewModelSetOverride()
+        {
+            base.OnViewModelSetOverride();
+
+            ViewModel.RequestPinHandler = PinTile;
+            ViewModel.RequestUnpinHandler = UnpinTile;
+            ViewModel.RequestExportToImage = ExportToImage;
+            UpdatePinVisibility();
+        }
+
         public override void OnViewModelLoadedOverride()
         {
             base.OnViewModelLoadedOverride();
+
+            _toolbar.ViewModel = ViewModel;
+            _toolbar.RenderOnDemand();
             
             try
             {
@@ -332,8 +352,6 @@ namespace PowerPlannerUWP.Views
                 UpdateDayHeaders();
 
                 RenderAll();
-
-                UpdatePinVisibility();
 
                 ViewModel.BackRequested += new WeakEventHandler<CancelEventArgs>(ViewModel_BackRequested).Handler;
             }
@@ -822,16 +840,50 @@ namespace PowerPlannerUWP.Views
             }
         }
 
+        private async void PinTile()
+        {
+            try
+            {
+                var currAccount = ViewModel.MainScreenViewModel.CurrentAccount;
+                var currData = await AccountDataStore.Get(currAccount.LocalAccountId);
+                await ScheduleTileHelper.PinTile(currAccount, currData);
+
+                UpdatePinVisibility();
+            }
+
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        private async void UnpinTile()
+        {
+            try
+            {
+                await ScheduleTileHelper.UnpinTile(ViewModel.MainScreenViewModel.CurrentLocalAccountId);
+
+                UpdatePinVisibility();
+            }
+
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
         private void UpdatePinVisibility()
         {
             if (ScheduleTileHelper.IsPinned(ViewModel.MainScreenViewModel.CurrentLocalAccountId))
             {
+                ViewModel.IsPinned = true;
                 AppBarButtonPin.Icon = new SymbolIcon(Symbol.UnPin);
                 AppBarButtonPin.Label = LocalizedResources.Common.GetStringUnpinFromStart();
             }
 
             else
             {
+                ViewModel.IsPinned = false;
                 AppBarButtonPin.Icon = new SymbolIcon(Symbol.Pin);
                 AppBarButtonPin.Label = LocalizedResources.Common.GetStringPinToStart();
             }
@@ -1153,6 +1205,10 @@ namespace PowerPlannerUWP.Views
         }
 
         private void ButtonExportToImage_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void ExportToImage()
         {
             ViewModel.MainScreenViewModel.ShowPopup(new ExportSchedulePopupViewModel(ViewModel.MainScreenViewModel, ViewModel));
         }
