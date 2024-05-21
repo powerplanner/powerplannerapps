@@ -38,267 +38,8 @@ namespace PowerPlannerUWP.Views
     /// </summary>
     public sealed partial class ScheduleView : MainScreenContentViewHostGeneric
     {
-        private class CurrentWeekToStringConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, string language)
-            {
-                if (value is Schedule.Week)
-                {
-                    return $", {LocalizedResources.Common.GetLocalizedWeek((Schedule.Week)value)}";
-                }
-
-                return value;
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, string language)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         private static readonly int INITIAL_MARGIN = 55;
         public static readonly int HEIGHT_OF_HOUR = 120;
-
-        private FrameworkElement _appBarContent;
-        private FrameworkElement AppBarContent
-        {
-            get
-            {
-                if (_appBarContent == null)
-                {
-                    var sp = new StackPanel()
-                    {
-                        Orientation = Orientation.Horizontal
-                    };
-
-                    AppBarButton buttonPrev = CreateAppBarButton(Symbol.Back, LocalizedResources.GetString("String_LastWeek"), ButtonPrevious_Click);
-                    AppBarButton buttonNext = CreateAppBarButton(Symbol.Forward, LocalizedResources.GetString("String_NextWeek"), ButtonNext_Click);
-                    buttonPrev.IsCompact = true;
-                    buttonNext.IsCompact = true;
-
-                    sp.Children.Add(buttonPrev);
-                    sp.Children.Add(buttonNext);
-
-                    var tbStart = new TextBlock()
-                    {
-                        Margin = new Thickness(3, 9, 0, 0),
-                        Style = Resources["SubtitleTextBlockStyle"] as Style
-                    };
-                    tbStart.SetBinding(TextBlock.TextProperty, new Binding()
-                    {
-                        Source = ViewModel,
-                        Path = new PropertyPath(nameof(ViewModel.DisplayStartDate)),
-                        Converter = new DateToStringConverter(),
-                        ConverterParameter = GetWeekDateConverterParameter()
-                    });
-                    sp.Children.Add(tbStart);
-
-                    var tbMiddle = new TextBlock()
-                    {
-                        Margin = new Thickness(4, 9, 0, 0),
-                        Text = "-",
-                        Style = Resources["SubtitleTextBlockStyle"] as Style
-                    };
-                    sp.Children.Add(tbMiddle);
-
-                    var tbEnd = new TextBlock()
-                    {
-                        Margin = new Thickness(4, 9, 0, 0),
-                        Style = Resources["SubtitleTextBlockStyle"] as Style
-                    };
-                    tbEnd.SetBinding(TextBlock.TextProperty, new Binding()
-                    {
-                        Source = ViewModel,
-                        Converter = new DateToStringConverter(),
-                        Path = new PropertyPath(nameof(ViewModel.DisplayEndDate)),
-                        ConverterParameter = GetWeekDateConverterParameter()
-                    });
-                    sp.Children.Add(tbEnd);
-
-                    var tbYear = new TextBlock()
-                    {
-                        Margin = new Thickness(6, 15, 0, 0),
-                        Opacity = 0.6
-                    };
-                    tbYear.SetBinding(TextBlock.TextProperty, new Binding()
-                    {
-                        Source = ViewModel,
-                        Path = new PropertyPath(nameof(ViewModel.DisplayStartDate)),
-                        Converter = new DateToStringConverter(),
-                        ConverterParameter = "yyyy"
-                    });
-                    sp.Children.Add(tbYear);
-
-                    var tbWeek = new TextBlock()
-                    {
-                        Margin = new Thickness(0, 15, 0, 0),
-                        Opacity = 0.6
-                    };
-                    tbWeek.SetBinding(VisibilityProperty, new Binding()
-                    {
-                        Source = ViewModel,
-                        Path = new PropertyPath(nameof(ViewModel.HasTwoWeekSchedule)),
-                        Converter = new BoolToVisibilityConverter()
-                    });
-                    tbWeek.SetBinding(TextBlock.TextProperty, new Binding()
-                    {
-                        Source = ViewModel,
-                        Path = new PropertyPath(nameof(ViewModel.CurrentWeek)),
-                        Converter = new CurrentWeekToStringConverter()
-                    });
-                    sp.Children.Add(tbWeek);
-
-
-                    _appBarContent = sp;
-                }
-
-                return _appBarContent;
-            }
-        }
-
-        private static string GetWeekDateConverterParameter()
-        {
-            if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName.Equals("en"))
-            {
-                return "M/d";
-            }
-            else
-            {
-                return "d";
-            }
-        }
-
-        private AppBarButton _appBarButtonPin;
-        private AppBarButton AppBarButtonPin
-        {
-            get
-            {
-                if (_appBarButtonPin == null)
-                    _appBarButtonPin = CreateAppBarButton(Symbol.Pin, LocalizedResources.Common.GetStringPinToStart(), ButtonPinToStart_Click);
-                
-                return _appBarButtonPin;
-            }
-        }
-
-        private AppBarButton _appBarButtonEdit;
-        private AppBarButton AppBarButtonEdit
-        {
-            get
-            {
-                if (_appBarButtonEdit == null)
-                    _appBarButtonEdit = CreateAppBarButton(Symbol.Edit, LocalizedResources.GetString("String_EditSchedule"), ButtonEdit_Click);
-
-                return _appBarButtonEdit;
-            }
-        }
-
-        private AppBarButton _appBarButtonCloseEdit;
-        private AppBarButton AppBarButtonCloseEdit
-        {
-            get
-            {
-                if (_appBarButtonCloseEdit == null)
-                    _appBarButtonCloseEdit = CreateAppBarButton(Symbol.Cancel, LocalizedResources.Common.GetStringClose(), ButtonCloseEdit_Click);
-
-                return _appBarButtonCloseEdit;
-            }
-        }
-
-        private AppBarButton _appBarButtonExportToImage;
-        private AppBarButton AppBarButtonExportToImage
-        {
-            get
-            {
-                if (_appBarButtonExportToImage == null)
-                    _appBarButtonExportToImage = CreateAppBarButton(Symbol.Pictures, LocalizedResources.GetString("String_ExportToImage"), ButtonExportToImage_Click);
-
-                return _appBarButtonExportToImage;
-            }
-        }
-
-        private ICommandBarElement[] _secondaryMenuCommands;
-        private ICommandBarElement[] SecondaryMenuCommands
-        {
-            get
-            {
-                if (_secondaryMenuCommands == null)
-                    _secondaryMenuCommands = new ICommandBarElement[] { AppBarButtonExportToImage };
-
-                return _secondaryMenuCommands;
-            }
-        }
-
-        private TextBlock _tbWeekOne;
-        private TextBlock tbWeekOne
-        {
-            get
-            {
-                if (_tbWeekOne == null)
-                {
-                    _tbWeekOne = new TextBlock()
-                    {
-                        Text = LocalizedResources.Common.GetStringWeekA(),
-                        Style = Resources["SelectedWeekStyle"] as Style
-                    };
-
-                    _tbWeekOne.Tapped += tbWeekOne_Tapped;
-                }
-
-                return _tbWeekOne;
-            }
-        }
-
-        private TextBlock _tbWeekTwo;
-        private TextBlock tbWeekTwo
-        {
-            get
-            {
-                if (_tbWeekTwo == null)
-                {
-                    _tbWeekTwo = new TextBlock()
-                    {
-                        Text = LocalizedResources.Common.GetStringWeekB(),
-                        Style = Resources["WeekStyle"] as Style
-                    };
-
-                    _tbWeekTwo.Tapped += tbWeekTwo_Tapped;
-                }
-
-                return _tbWeekTwo;
-            }
-        }
-
-        private ScrollViewer _selectWeekUIElement;
-        private ScrollViewer SelectWeekUIElement
-        {
-            get
-            {
-                if (_selectWeekUIElement == null)
-                {
-                    _selectWeekUIElement = new ScrollViewer()
-                    {
-                        Visibility = Visibility.Collapsed,
-                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        VerticalScrollBarVisibility = ScrollBarVisibility.Disabled
-                    };
-
-                    StackPanel sp = new StackPanel()
-                    {
-                        Orientation = Orientation.Horizontal,
-
-                        Children =
-                        {
-                            tbWeekOne,
-                            tbWeekTwo
-                        }
-                    };
-
-                    _selectWeekUIElement.Content = sp;
-                }
-
-                return _selectWeekUIElement;
-            }
-        }
 
         private static double getTopMargin(TimeSpan itemTime, TimeSpan baseTime)
         {
@@ -341,8 +82,6 @@ namespace PowerPlannerUWP.Views
             try
             {
                 ViewModel.InitializeArrangers(HEIGHT_OF_HOUR, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM);
-
-                updateWeekDisplay(ViewModel.CurrentWeek);
 
                 ViewModel.OnItemsForDateChanged += new WeakEventHandler<DateTime>(ViewModel_OnItemsForDateChanged).Handler;
                 ViewModel.OnFullReset += new WeakEventHandler<EventArgs>(ViewModel_OnFullReset).Handler;
@@ -570,33 +309,6 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private void SetCommandBarContent()
-        {
-            SetCommandBarContent(AppBarContent);
-        }
-
-        private void SetNormalCommandBarButtons()
-        {
-            SetCommandBarCommands(new ICommandBarElement[]
-            {
-                AppBarButtonPin,
-                AppBarButtonEdit
-            }, SecondaryMenuCommands);
-        }
-
-        private void SetFullEditingCommandBarButtons()
-        {
-            SetCommandBarCommands(new ICommandBarElement[0], null);
-        }
-
-        private void SetEditingCommandBarButtons()
-        {
-            SetCommandBarCommands(new ICommandBarElement[]
-            {
-                AppBarButtonCloseEdit
-            }, null);
-        }
-
         private void RenderAll()
         {
             try
@@ -725,121 +437,6 @@ namespace PowerPlannerUWP.Views
             return ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.FullEditing || ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.SplitEditing;
         }
 
-        private void updateWeekDisplay(Schedule.Week week)
-        {
-            if (week == Schedule.Week.WeekOne)
-            {
-                tbWeekOne.Style = (Style)Resources["SelectedWeekStyle"];
-                tbWeekTwo.Style = (Style)Resources["WeekStyle"];
-            }
-
-            else
-            {
-                tbWeekOne.Style = (Style)Resources["WeekStyle"];
-                tbWeekTwo.Style = (Style)Resources["SelectedWeekStyle"];
-            }
-        }
-
-        private void tbWeekTwo_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            // TODO
-            //try
-            //{
-            //    if (tbWeekTwo.Style == Resources["SelectedWeekStyle"])
-            //        return;
-
-            //    ViewModel.CurrentWeek = Schedule.Week.WeekTwo;
-            //    updateWeekDisplay(Schedule.Week.WeekTwo);
-
-            //    GenerateSchedule();
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    TelemetryExtension.Current?.TrackException(ex);
-            //}
-        }
-
-        private void tbWeekOne_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            // TODO
-            //try
-            //{
-            //    if (tbWeekOne.Style == Resources["SelectedWeekStyle"])
-            //        return;
-
-            //    ViewModel.CurrentWeek = Schedule.Week.WeekOne;
-            //    updateWeekDisplay(Schedule.Week.WeekOne);
-
-            //    GenerateSchedule();
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    TelemetryExtension.Current?.TrackException(ex);
-            //}
-        }
-
-        private void ButtonPrevious_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.PreviousWeek();
-        }
-
-        private void ButtonNext_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.NextWeek();
-        }
-
-        private void ButtonEdit_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.EnterEditMode();
-        }
-
-        private void ButtonSaveChanges_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.ExitEditMode();
-        }
-
-        private void ButtonCloseEdit_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.ExitEditMode();
-        }
-
-        private async void ButtonPinToStart_Click(object sender, RoutedEventArgs e)
-        {
-            if ((AppBarButtonPin.Icon as SymbolIcon).Symbol == Symbol.Pin)
-            {
-                try
-                {
-                    var currAccount = ViewModel.MainScreenViewModel.CurrentAccount;
-                    var currData = await AccountDataStore.Get(currAccount.LocalAccountId);
-                    await ScheduleTileHelper.PinTile(currAccount, currData);
-
-                    UpdatePinVisibility();
-                }
-
-                catch (Exception ex)
-                {
-                    TelemetryExtension.Current?.TrackException(ex);
-                }
-            }
-
-            else
-            {
-                try
-                {
-                    await ScheduleTileHelper.UnpinTile(ViewModel.MainScreenViewModel.CurrentLocalAccountId);
-
-                    UpdatePinVisibility();
-                }
-
-                catch (Exception ex)
-                {
-                    TelemetryExtension.Current?.TrackException(ex);
-                }
-            }
-        }
-
         private async void PinTile()
         {
             try
@@ -877,46 +474,31 @@ namespace PowerPlannerUWP.Views
             if (ScheduleTileHelper.IsPinned(ViewModel.MainScreenViewModel.CurrentLocalAccountId))
             {
                 ViewModel.IsPinned = true;
-                AppBarButtonPin.Icon = new SymbolIcon(Symbol.UnPin);
-                AppBarButtonPin.Label = LocalizedResources.Common.GetStringUnpinFromStart();
             }
 
             else
             {
                 ViewModel.IsPinned = false;
-                AppBarButtonPin.Icon = new SymbolIcon(Symbol.Pin);
-                AppBarButtonPin.Label = LocalizedResources.Common.GetStringPinToStart();
             }
         }
 
         private void GoToEditingState()
         {
-            SetEditingCommandBarButtons();
-            SetCommandBarContent();
-
             VisualStateManager.GoToState(this, "EditingState", true);
         }
 
         private void GoToFullEditingState()
         {
-            SetFullEditingCommandBarButtons();
-            SetCommandBarContent(null);
-
             VisualStateManager.GoToState(this, "FullEditingState", true);
         }
 
         private void GoToNormalState()
         {
-            SetNormalCommandBarButtons();
-            SetCommandBarContent();
-
             VisualStateManager.GoToState(this, "DefaultState", true);
         }
 
         private void GoToWelcomeState()
         {
-            HideCommandBar();
-
             VisualStateManager.GoToState(this, "WelcomeState", true);
             ButtonWelcomeAddClass.Content = PowerPlannerResources.GetString("SchedulePage_ButtonAddClass/Content").ToUpper();
         }
@@ -1202,10 +784,6 @@ namespace PowerPlannerUWP.Views
         private void ScrollViewerSchedule_Tapped(object sender, TappedRoutedEventArgs e)
         {
             HideAllExpansions();
-        }
-
-        private void ButtonExportToImage_Click(object sender, RoutedEventArgs e)
-        {
         }
 
         private void ExportToImage()

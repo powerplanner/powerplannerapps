@@ -18,6 +18,12 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return toolbar;
         }
 
+        public static Toolbar InnerToolbarThemed(this Toolbar toolbar)
+        {
+            toolbar.BackgroundColor = Color.FromArgb(255, 31, 38, 86);
+            return toolbar;
+        }
+
         public static ToolbarCommand AddCommand(Action addTask, Action addEvent, Action addHoliday = null)
         {
             return new ToolbarCommand

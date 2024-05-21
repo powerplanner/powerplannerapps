@@ -31,6 +31,8 @@ namespace Vx.Components.OnlyForNativeLibraries
                 Height = ToolbarHeight,
                 Children =
                 {
+                    Toolbar.OnBack != null ? RenderButton(MaterialDesign.MaterialDesignIcons.ArrowBack, PortableLocalizedResources.GetString("String_Back"), () => Toolbar.OnBack()) : null,
+
                     Toolbar.CustomTitle != null ? Toolbar.CustomTitle.LinearLayoutWeight(1) : (View)new TextBlock
                     {
                         Text = Toolbar.Title ?? "",
@@ -39,7 +41,7 @@ namespace Vx.Components.OnlyForNativeLibraries
                         WrapText = false,
                         FontWeight = FontWeights.SemiLight,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(Theme.Current.PageMargin,0,Theme.Current.PageMargin,0)
+                        Margin = new Thickness(Toolbar.OnBack != null ? 6 : Theme.Current.PageMargin,0,Theme.Current.PageMargin,0)
                     }.LinearLayoutWeight(1)
                 }
             };

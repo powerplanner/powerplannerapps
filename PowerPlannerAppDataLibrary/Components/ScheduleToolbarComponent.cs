@@ -1,4 +1,5 @@
 ﻿using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using System;
 using System.Collections.Generic;
@@ -23,9 +24,12 @@ namespace PowerPlannerAppDataLibrary.Components
             // Note that VxSubscribe prop only works if prop is already pre-set, so using Subscribe here instead
             Subscribe(ViewModel);
 
+            bool hasScheduleContent = ViewModel.LayoutMode != ScheduleViewModel.LayoutModes.Welcome && ViewModel.LayoutMode != ScheduleViewModel.LayoutModes.FullEditing;
+
             return new Toolbar
             {
-                CustomTitle = new LinearLayout
+                Title = !hasScheduleContent ? MainScreenViewModel.MainMenuItemToString(NavigationManager.MainMenuSelections.Schedule) : null,
+                CustomTitle = hasScheduleContent ? new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
                     VerticalAlignment = VerticalAlignment.Center,
@@ -43,7 +47,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         },
                         new TextBlock
                         {
-                            Text = ViewModel.DisplayStartDate.ToString("yyyy"),
+                            Text = ViewModel.DisplayStartDate.ToString("yyyy") + (ViewModel.HasTwoWeekSchedule ? ", " + PowerPlannerResources.GetLocalizedWeek(ViewModel.CurrentWeek) : ""),
                             TextColor = Color.White,
                             Opacity = 0.7f,
                             FontSize = 16,
@@ -53,17 +57,17 @@ namespace PowerPlannerAppDataLibrary.Components
                             Margin = new Thickness(6, 0, 0, 1)
                         }
                     }
-                },
+                } : null,
                 PrimaryCommands =
                 {
-                    ViewModel.LayoutMode != ScheduleViewModel.LayoutModes.Welcome && ViewModel.LayoutMode != ScheduleViewModel.LayoutModes.FullEditing ? new ToolbarCommand
+                    hasScheduleContent ? new ToolbarCommand
                     {
                         Text = PowerPlannerResources.GetString("String_LastWeek"),
                         Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
                         Action = ViewModel.PreviousWeek
                     } : null,
 
-                    ViewModel.LayoutMode != ScheduleViewModel.LayoutModes.Welcome && ViewModel.LayoutMode != ScheduleViewModel.LayoutModes.FullEditing ? new ToolbarCommand
+                    hasScheduleContent ? new ToolbarCommand
                     {
                         Text = PowerPlannerResources.GetString("String_NextWeek"),
                         Glyph = MaterialDesign.MaterialDesignIcons.ChevronRight,
@@ -96,13 +100,13 @@ namespace PowerPlannerAppDataLibrary.Components
                         Action = ViewModel.RequestUnpinHandler
                     } : null,
 
-                    ViewModel.RequestExportToImage != null ? new ToolbarCommand
+                    hasScheduleContent && ViewModel.RequestExportToImage != null ? new ToolbarCommand
                     {
                         Text = PowerPlannerResources.GetString("String_ExportToImage"),
                         Action = ViewModel.RequestExportToImage
                     } : null
                 }
-            };
+            }.InnerToolbarThemed();
         }
 
 

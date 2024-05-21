@@ -517,6 +517,7 @@
 
                 <VisualState x:Name="WelcomeState">
                     <VisualState.Setters>
+                        <Setter Target="RowToolbar.Height" Value="0"/>
                         <Setter Target="WelcomeRoot.Visibility" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>

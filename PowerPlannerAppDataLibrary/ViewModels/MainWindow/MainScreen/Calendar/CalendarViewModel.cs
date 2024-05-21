@@ -615,7 +615,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                         // Go to today would be shown for Android (but not iOS since we don't have an icon for it yet)
                     }
-                }.PowerPlannerThemed();
+                };
+
+                toolbar = VxPlatform.Current == Platform.Uwp ? toolbar.InnerToolbarThemed() : toolbar.PowerPlannerThemed();
 
                 // iOS reverses the order of toolbar items, so to ensure prev and next are int he right order, we reverse
                 if (Toolbar.DisplaysPrimaryCommandsRightToLeft)

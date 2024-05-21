@@ -42,7 +42,11 @@ namespace PowerPlannerAppDataLibrary.Components
 
         private View RenderItem(NavigationManager.MainMenuSelections item, string glyph, bool error = false)
         {
-            var isThisItem = item == SelectedItem;
+            var isThisItem =
+                item == SelectedItem ||
+                (SelectedItem == NavigationManager.MainMenuSelections.Years && item == NavigationManager.MainMenuSelections.Settings) ||
+                (SelectedItem == NavigationManager.MainMenuSelections.Day && item == NavigationManager.MainMenuSelections.Calendar);
+
             var title = item == NavigationManager.MainMenuSelections.Settings ? PowerPlannerResources.GetString("String_More") : MainScreenViewModel.MainMenuItemToString(item);
             var color = isThisItem ? System.Drawing.Color.White : System.Drawing.Color.LightGray;
 

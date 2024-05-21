@@ -243,9 +243,6 @@
     <Compile Include="Views\NothingHerePage.xaml.cs">
       <DependentUpon>NothingHerePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassesView.xaml.cs">
-      <DependentUpon>ClassesView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\BaseSettingsSplitView.xaml.cs">
       <DependentUpon>BaseSettingsSplitView.xaml</DependentUpon>
     </Compile>
@@ -525,10 +522,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NothingHerePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

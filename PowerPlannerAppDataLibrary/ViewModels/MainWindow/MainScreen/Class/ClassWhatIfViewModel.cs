@@ -257,7 +257,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             var rightMargin = Theme.Current.PageMargin + NookInsets.Right;
             float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
 
-            return ClassGradesViewModel.WrapInFloatingActionButtonIfNeeded(new ScrollView
+            View content = new ScrollView
             {
                 Content = new LinearLayout
                 {
@@ -380,7 +380,35 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         }
                     }
                 }
-            }, AddGrade, NookInsets);
+            };
+
+            if (VxPlatform.Current != Platform.Android)
+            {
+                content = new LinearLayout
+                {
+                    Children =
+                    {
+                        new Toolbar
+                        {
+                            Title = Class.Name,
+                            PrimaryCommands =
+                            {
+                                new ToolbarCommand
+                                {
+                                    Text = PowerPlannerResources.GetString("String_NewGrade"),
+                                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                    Action = AddGrade
+                                }
+                            },
+                            OnBack = () => GoBack()
+                        }.InnerToolbarThemed(),
+
+                        content.LinearLayoutWeight(1)
+                    }
+                };
+            }
+
+            return ClassGradesViewModel.WrapInFloatingActionButtonIfNeeded(content, AddGrade, NookInsets);
         }
     }
 }

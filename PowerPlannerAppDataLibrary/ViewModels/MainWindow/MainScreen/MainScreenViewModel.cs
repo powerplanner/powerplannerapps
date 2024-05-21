@@ -60,7 +60,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     IsCompactMode ? new BottomNavBar
                     {
                         SelectedItem = SelectedItem,
-                        SetSelectedItem = i => SelectedItem = i,
+                        SetSelectedItem = i =>
+                        {
+                            if (i == MainMenuSelections.Classes && SelectedItem == MainMenuSelections.Classes && SelectedClass != null)
+                            {
+                                // Revert back to class picker
+                                SelectClassWithinSemester(null);
+                            }
+                            else
+                            {
+                                SelectedItem = i;
+                            }
+                        },
                         IsOfflineOrHasSyncError = IsOffline || HasSyncErrors,
                         SyncState = SyncState,
                         UploadImageProgress = UploadImageProgress
@@ -295,7 +306,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                     Click = () =>
                                     {
                                         AddClass(navigateToClassAfterAdd: true);
-                                    }
+                                    },
+                                    TooltipText = R.S("SchedulePage_ButtonAddClass.Content")
                                 } : null
                             }
                         } : (View)tb,

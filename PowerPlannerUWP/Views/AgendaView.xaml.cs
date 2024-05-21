@@ -51,7 +51,7 @@ namespace PowerPlannerUWP.Views
             _toolbar = new Toolbar
             {
                 Title = MainScreenViewModel.MainMenuItemToString(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda)
-            };
+            }.InnerToolbarThemed();
             MainGrid.Children.Add(new ToolbarComponent
             {
                 Toolbar = _toolbar
@@ -81,34 +81,6 @@ namespace PowerPlannerUWP.Views
             catch (Exception ex)
             {
                 base.IsEnabled = false;
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private AppBarButton _appBarAdd;
-        private AppBarButton AppBarAdd
-        {
-            get
-            {
-                if (_appBarAdd == null)
-                    _appBarAdd = CreateAppBarButton(Symbol.Add, LocalizedResources.Common.GetStringNewItem(), appBarAdd_Click);
-
-                return _appBarAdd;
-            }
-        }
-
-        private void appBarAdd_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                App.ShowFlyoutAddTaskOrEvent(
-                    elToCenterFrom: sender as FrameworkElement,
-                    addTaskAction: ViewModel.AddTask,
-                    addEventAction: ViewModel.AddEvent);
-            }
-
-            catch (Exception ex)
-            {
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
