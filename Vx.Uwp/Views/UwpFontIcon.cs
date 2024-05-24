@@ -11,7 +11,7 @@ namespace Vx.Uwp.Views
     public class UwpFontIcon : UwpView<Vx.Views.FontIcon, FontIcon>
     {
         //private static FontFamily MaterialIconFontFamily = new FontFamily("ms-appx:///Vx.Uwp/Resources/Fonts/MaterialIcons-Regular.ttf#Material Icons");
-        private static FontFamily MaterialIconFontFamily = new FontFamily("ms-appx:///Vx.Uwp/Resources/Fonts/MaterialIconsOutlined-Regular.otf#Material Icons Outlined");
+        public static FontFamily MaterialIconFontFamily = new FontFamily("ms-appx:///Vx.Uwp/Resources/Fonts/MaterialIconsOutlined-Regular.otf#Material Icons Outlined");
 
         public UwpFontIcon()
         {

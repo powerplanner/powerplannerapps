@@ -61,7 +61,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             SecondaryCommands = new PopupCommand[]
             {
-                new PopupCommand(ConvertTypeButtonText, ConvertType),
+                new PopupCommand(ConvertTypeButtonText, ConvertType)
+                {
+                    Glyph = MaterialDesign.MaterialDesignIcons.SwapHoriz
+                },
                 PopupCommand.DeleteWithQuickConfirm(Delete)
             };
         }

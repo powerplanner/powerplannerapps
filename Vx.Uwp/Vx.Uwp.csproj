@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProjectGuid>{81903242-5242-48DF-A80D-B1B52316283B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -255,6 +255,7 @@
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
     <Compile Include="Views\UwpListView.cs" />
+    <Compile Include="Views\UwpNativeContentContainer.cs" />
     <Compile Include="Views\UwpNumberTextBox.cs" />
     <Compile Include="Views\UwpPagedViewModelPresenterView.cs" />
     <Compile Include="Views\UwpPasswordBox.cs" />

@@ -38,32 +38,32 @@ namespace PowerPlannerAppDataLibrary.Components
                 Title = ViewModel.ClassName,
                 PrimaryCommands =
                 {
-                    SelectedIndex == 0 ? new ToolbarCommand
+                    SelectedIndex == 0 ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_EditClass"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Edit,
-                        Action = ViewModel.EditClassWithDetails
+                        Click = ViewModel.EditClassWithDetails
                     } : null,
 
-                    SelectedIndex == 1 ? new ToolbarCommand
+                    SelectedIndex == 1 ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_EditDetails"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Edit,
-                        Action = ViewModel.EditDetails
+                        Click = ViewModel.EditDetails
                     } : null,
 
-                    SelectedIndex == 2 ? new ToolbarCommand
+                    SelectedIndex == 2 ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_EditTimes"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Edit,
-                        Action = ViewModel.EditTimes
+                        Click = ViewModel.EditTimes
                     } : null,
 
-                    SelectedIndex >= 3 ? new ToolbarCommand
+                    SelectedIndex >= 3 ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString(SelectedIndex == 3 ? "String_NewTask" : SelectedIndex == 4 ? "String_NewEvent" : "String_NewGrade"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                        Action = () =>
+                        Click = () =>
                         {
                             if (SelectedIndex == 3)
                             {
@@ -83,16 +83,16 @@ namespace PowerPlannerAppDataLibrary.Components
 
                 SecondaryCommands =
                 {
-                    OnPinClass != null && OnUnpinClass != null ? new ToolbarCommand
+                    OnPinClass != null && OnUnpinClass != null ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString(IsPinned ? "String_UnpinClass" : "String_PinClass"),
-                        Action = IsPinned ? OnUnpinClass : OnPinClass
+                        Click = IsPinned ? OnUnpinClass : OnPinClass
                     } : null,
 
-                    new ToolbarCommand
+                    new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_DeleteClass"),
-                        Action = async () =>
+                        Click = async () =>
                         {
                             if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("String_ConfirmDeleteClassMessage"), PowerPlannerResources.GetString("String_ConfirmDeleteClassHeader")))
                             {

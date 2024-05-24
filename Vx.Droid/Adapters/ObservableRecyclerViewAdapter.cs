@@ -265,6 +265,7 @@ namespace InterfacesDroid.Adapters
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
+                    System.Diagnostics.Debug.WriteLine(ex);
                 }
             }
 #endif

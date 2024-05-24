@@ -49,7 +49,7 @@ namespace Vx.Components.OnlyForNativeLibraries
             foreach (var c in Toolbar.PrimaryCommands.Where(i => i != null))
             {
                 View buttonRef = null;
-                Action action = c.SubCommands != null && c.SubCommands.Any() ? () => ShowContextMenu(buttonRef, c.SubCommands) : c.Action;
+                Action action = c.SubItems != null && c.SubItems.Any() ? () => ShowContextMenu(buttonRef, c.SubItems) : c.Click;
                 layout.Children.Add(RenderButton(c.Glyph, c.Text, action, (view) => buttonRef = view));
             }
 
@@ -64,20 +64,24 @@ namespace Vx.Components.OnlyForNativeLibraries
                         (moreButton) => _moreButtonRef = moreButton));
             }
 
+            if (Toolbar.OnClose != null)
+            {
+                layout.Children.Add(
+                    RenderButton(
+                        MaterialDesign.MaterialDesignIcons.Close,
+                        PortableLocalizedResources.GetString("String_Close"),
+                        Toolbar.OnClose));
+            }
+
             return layout;
         }
 
-        private void ShowContextMenu(View viewRef, IEnumerable<ToolbarCommand> commands)
+        private void ShowContextMenu(View viewRef, IEnumerable<IMenuItem> commands)
         {
             var cm = new ContextMenu();
             foreach (var c in commands.Where(i => i != null))
             {
-                cm.Items.Add(new ContextMenuItem
-                {
-                    Text = c.Text,
-                    Glyph = c.Glyph,
-                    Click = c.Action
-                });
+                cm.Items.Add(c);
             }
 
             cm.Show(viewRef);

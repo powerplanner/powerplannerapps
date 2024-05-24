@@ -17,20 +17,20 @@ namespace PowerPlannerAppDataLibrary.Components
     {
         public static ContextMenu Generate(ViewItemTaskOrEvent item, BaseMainScreenViewModelDescendant viewModel)
         {
-            ContextMenuSubItem weightsMenu = null;
+            MenuItem weightsMenu = null;
             try
             {
                 if (IsClassValid(item))
                 {
                     var weights = ViewModels.MainWindow.MainScreen.TasksOrEvents.AddTaskOrEventViewModel.GetWeightCategories(item.Class, viewModel);
 
-                    weightsMenu = new ContextMenuSubItem
+                    weightsMenu = new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("ContextFlyout_GradeWeightCategories"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Calculate
                     };
 
-                    weightsMenu.Items.AddRange(weights.Select(weight => new ContextMenuRadioItem
+                    weightsMenu.SubItems.AddRange(weights.Select(weight => new MenuRadioItem
                     {
                         Text = weight.Name,
                         GroupName = "GradeWeightCategories",
@@ -64,7 +64,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 Items =
                     {
                         // Only show "Toggle Complete" item if it's a task
-                        item.IsTask ? new ContextMenuItem
+                        item.IsTask ? new MenuItem
                         {
                             Text = PowerPlannerResources.GetString(item.IsComplete ? "ContextFlyout_MarkIncomplete" : "ContextFlyout_MarkComplete"),
                             Glyph = item.IsComplete ? MaterialDesign.MaterialDesignIcons.Close : MaterialDesign.MaterialDesignIcons.Check,
@@ -77,10 +77,10 @@ namespace PowerPlannerAppDataLibrary.Components
                             }
                         } : null,
 
-                        item.IsTask ? new ContextMenuSeparator() : null,
+                        item.IsTask ? new MenuSeparator() : null,
                         
                         // Edit
-                        new ContextMenuItem
+                        new MenuItem
                         {
                             Text = PowerPlannerResources.GetString("ContextFlyout_Edit"),
                             Glyph = MaterialDesign.MaterialDesignIcons.Edit,
@@ -92,7 +92,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         },
 
                         // Duplicate
-                        new ContextMenuItem
+                        new MenuItem
                         {
                             Text = PowerPlannerResources.GetString("ContextFlyout_Duplicate"),
                             Glyph = MaterialDesign.MaterialDesignIcons.ContentCopy,
@@ -104,7 +104,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         },
 
                         // Delete
-                        new ContextMenuItem
+                        new MenuItem
                         {
                             Text = PowerPlannerResources.GetString("ContextFlyout_Delete"),
                             Glyph = MaterialDesign.MaterialDesignIcons.Delete,
@@ -116,16 +116,16 @@ namespace PowerPlannerAppDataLibrary.Components
                                 }
                                 Telemetry_TrackContextEvent("Delete");
                             },
-                            Style = ContextMenuItemStyle.Destructive
+                            Style = MenuItemStyle.Destructive
                         },
 
-                        new ContextMenuSeparator(),
+                        new MenuSeparator(),
 
                         // Class-specific weight categories sub-menu
                         weightsMenu,
 
                         // Convert task/event
-                        new ContextMenuItem
+                        new MenuItem
                         {
                             Text = !item.IsTask ? PowerPlannerResources.GetString("String_ConvertToTask") : PowerPlannerResources.GetString("String_ConvertToEvent"),
                             Glyph = MaterialDesign.MaterialDesignIcons.SwapHoriz,
@@ -137,8 +137,8 @@ namespace PowerPlannerAppDataLibrary.Components
                         },
 
                         // Go to class
-                        IsClassValid(item) ? new ContextMenuSeparator() : null,
-                        IsClassValid(item) ? new ContextMenuItem
+                        IsClassValid(item) ? new MenuSeparator() : null,
+                        IsClassValid(item) ? new MenuItem
                         {
                             Text = PowerPlannerResources.GetString("ContextFlyout_GoToClass"),
                             Glyph = MaterialDesign.MaterialDesignIcons.Launch,

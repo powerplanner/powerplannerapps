@@ -94,16 +94,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         }
     }
 
-    public class PopupCommand : ToolbarCommand
+    public class PopupCommand : MenuItem
     {
         public bool UseQuickConfirmDelete { get; set; }
 
         public PopupCommand() { }
 
-        public PopupCommand(string text, Action action, ToolbarCommandStyle style = ToolbarCommandStyle.Default)
+        public PopupCommand(string text, Action action, MenuItemStyle style = MenuItemStyle.Default)
         {
             Text = text;
-            Action = action;
+            Click = action;
             Style = style;
         }
 
@@ -113,7 +113,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             {
                 Text = PowerPlannerResources.GetStringSave(),
                 Glyph = MaterialDesign.MaterialDesignIcons.Check,
-                Action = action
+                Click = action
             };
         }
 
@@ -123,8 +123,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             {
                 Text = PowerPlannerResources.GetString("MenuItemDelete"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
-                Action = action,
-                Style = ToolbarCommandStyle.Destructive
+                Click = action,
+                Style = MenuItemStyle.Destructive
             };
         }
 
@@ -135,8 +135,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels
                 Text = PowerPlannerResources.GetString("MenuItemDelete"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
                 UseQuickConfirmDelete = true,
-                Action = actualDeleteAction,
-                Style = ToolbarCommandStyle.Destructive
+                Click = actualDeleteAction,
+                Style = MenuItemStyle.Destructive
             };
         }
 
@@ -146,7 +146,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels
             {
                 Text = PowerPlannerResources.GetString("AppBarButtonEdit.Label"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Edit,
-                Action = delegate { action?.Invoke(); }
+                Click = delegate { action?.Invoke(); }
             };
         }
     }

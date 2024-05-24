@@ -24,32 +24,32 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return toolbar;
         }
 
-        public static ToolbarCommand AddCommand(Action addTask, Action addEvent, Action addHoliday = null)
+        public static MenuItem AddCommand(Action addTask, Action addEvent, Action addHoliday = null)
         {
-            return new ToolbarCommand
+            return new MenuItem
             {
                 Text = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
                 Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                SubCommands = new ToolbarCommand[]
+                SubItems =
                 {
-                    new ToolbarCommand
+                    new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_AddTask"),
-                        Action = addTask
+                        Click = addTask
                     },
 
-                    new ToolbarCommand
+                    new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_AddEvent"),
-                        Action = addEvent
+                        Click = addEvent
                     },
 
-                    addHoliday != null ? new ToolbarCommand
+                    addHoliday != null ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_AddHoliday"),
-                        Action = addHoliday
+                        Click = addHoliday
                     } : null
-                }.Where(i => i != null).ToArray()
+                }
             };
         }
     }

@@ -36,9 +36,11 @@ namespace PowerPlannerUWP.Views
             this.InitializeComponent();
         }
 
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
+        public override void OnViewModelSetOverride()
         {
-            ViewModel.Save();
+            base.OnViewModelSetOverride();
+
+            PrimaryCommands.Add(PowerPlannerAppDataLibrary.ViewModels.PopupCommand.Save(ViewModel.Save));
         }
 
         private void Popup_KeyUp(object sender, KeyRoutedEventArgs e)

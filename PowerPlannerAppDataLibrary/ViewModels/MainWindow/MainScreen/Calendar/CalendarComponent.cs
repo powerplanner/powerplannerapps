@@ -81,17 +81,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                     {
                                         Items =
                                         {
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("String_Task"),
                                                 Click = () => _viewModel.AddTask(false)
                                             },
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("String_Event"),
                                                 Click = () => _viewModel.AddEvent(false)
                                             },
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("String_Holiday"),
                                                 Click = () => _viewModel.AddHoliday(false)
@@ -108,7 +108,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                     {
                                         Items =
                                         {
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString(_viewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
                                                 Click = () => _viewModel.ShowPastCompleteItemsOnFullCalendar = !_viewModel.ShowPastCompleteItemsOnFullCalendar
@@ -502,17 +502,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                 {
                                     Items =
                                     {
-                                        new ContextMenuItem
+                                        new MenuItem
                                         {
                                             Text = PowerPlannerResources.GetString("String_Task"),
                                             Click = () => ViewModel.AddTask(date)
                                         },
-                                        new ContextMenuItem
+                                        new MenuItem
                                         {
                                             Text = PowerPlannerResources.GetString("String_Event"),
                                             Click = () => ViewModel.AddEvent(date)
                                         },
-                                        new ContextMenuItem
+                                        new MenuItem
                                         {
                                             Text = PowerPlannerResources.GetString("String_Holiday"),
                                             Click = () => ViewModel.AddHoliday(date)

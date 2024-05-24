@@ -86,15 +86,15 @@ namespace PowerPlanneriOS.Controllers
 
             foreach (var option in ViewModel.SecondaryCommands)
             {
-                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == ToolbarCommandStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
+                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == MenuItemStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
                 {
                     if (option.UseQuickConfirmDelete)
                     {
-                        ConfirmDelete(option.Action);
+                        ConfirmDelete(option.Click);
                     }
                     else
                     {
-                        option.Action();
+                        option.Click();
                     }
                 }));
             }
@@ -148,7 +148,7 @@ namespace PowerPlanneriOS.Controllers
 
         private void PrimaryButton_Clicked(object sender, EventArgs e)
         {
-            ViewModel.PrimaryCommand.Action?.Invoke();
+            ViewModel.PrimaryCommand.Click?.Invoke();
         }
 
         protected override void BackButtonClicked()

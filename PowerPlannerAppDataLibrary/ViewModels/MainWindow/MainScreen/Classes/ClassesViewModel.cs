@@ -138,11 +138,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                         Title = MainScreenViewModel.MainMenuItemToString(NavigationManager.MainMenuSelections.Classes),
                         PrimaryCommands =
                         {
-                            new ToolbarCommand
+                            new MenuItem
                             {
                                 Text = R.S("SchedulePage_ButtonAddClass.Content"),
                                 Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                                Action = AddClass
+                                Click = AddClass
                             }
                         }
                     }.InnerToolbarThemed(),

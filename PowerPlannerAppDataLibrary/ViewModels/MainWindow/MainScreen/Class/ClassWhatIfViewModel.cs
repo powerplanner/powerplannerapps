@@ -393,11 +393,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                             Title = Class.Name,
                             PrimaryCommands =
                             {
-                                new ToolbarCommand
+                                new MenuItem
                                 {
                                     Text = PowerPlannerResources.GetString("String_NewGrade"),
                                     Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                                    Action = AddGrade
+                                    Click = AddGrade
                                 }
                             },
                             OnBack = () => GoBack()

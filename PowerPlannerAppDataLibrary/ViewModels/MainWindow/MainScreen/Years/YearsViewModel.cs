@@ -307,28 +307,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     {
                                         Items =
                                         {
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Editing"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.Edit,
                                                 Click = () => EditSemester(semester)
                                             },
 
-                                            YearsViewItemsGroup.School.Years.Count > 1 ? new ContextMenuItem
+                                            YearsViewItemsGroup.School.Years.Count > 1 ? new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("SemesterActions_MoveSemester"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove,
                                                 Click = () => MoveSemester(semester)
                                             } : null,
 
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Copying"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.ContentCopy,
                                                 Click = () => CopySemester(semester)
                                             },
 
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("MessageDeleteSemester_Title"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
@@ -409,7 +409,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         {
                             Items =
                             {
-                                new ContextMenuItem
+                                new MenuItem
                                 {
                                     Text = PowerPlannerResources.GetStringWithParameters("SemesterActions_MoveClass", c.Name),
                                     Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove,

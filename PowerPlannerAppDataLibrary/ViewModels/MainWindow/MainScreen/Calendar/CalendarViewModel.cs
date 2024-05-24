@@ -599,18 +599,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     {
                         // Add will get inserted here unless it's used as floating action
 
-                        new ToolbarCommand
+                        new MenuItem
                         {
                             Text = PowerPlannerResources.GetString("String_Previous"),
                             Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
-                            Action = Previous
+                            Click = Previous
                         },
 
-                        new ToolbarCommand
+                        new MenuItem
                         {
                             Text = PowerPlannerResources.GetString("String_Next"),
                             Glyph = MaterialDesign.MaterialDesignIcons.ChevronRight,
-                            Action = Next
+                            Click = Next
                         },
 
                         // Go to today would be shown for Android (but not iOS since we don't have an icon for it yet)
@@ -627,21 +627,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 if (VxPlatform.Current != Platform.iOS)
                 {
-                    toolbar.PrimaryCommands.Add(new ToolbarCommand
+                    toolbar.PrimaryCommands.Add(new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_GoToToday"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Today,
-                        Action = GoToToday
+                        Click = GoToToday
                     });
                 }
 
                 // Only on full calendar, show the option for past complete
                 if (DisplayState == DisplayStates.FullCalendar)
                 {
-                    toolbar.SecondaryCommands.Add(new ToolbarCommand
+                    toolbar.SecondaryCommands.Add(new MenuItem
                     {
                         Text = PowerPlannerResources.GetString(ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
-                        Action = () => ShowPastCompleteItemsOnFullCalendar = !ShowPastCompleteItemsOnFullCalendar
+                        Click = () => ShowPastCompleteItemsOnFullCalendar = !ShowPastCompleteItemsOnFullCalendar
                     });
                 }
 

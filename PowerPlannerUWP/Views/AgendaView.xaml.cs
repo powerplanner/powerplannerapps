@@ -43,6 +43,7 @@ namespace PowerPlannerUWP.Views
         }
 
         private Toolbar _toolbar;
+        private ToolbarComponent _toolbarComponent;
 
         public AgendaView()
         {
@@ -52,10 +53,11 @@ namespace PowerPlannerUWP.Views
             {
                 Title = MainScreenViewModel.MainMenuItemToString(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda)
             }.InnerToolbarThemed();
-            MainGrid.Children.Add(new ToolbarComponent
+            _toolbarComponent = new ToolbarComponent
             {
                 Toolbar = _toolbar
-            }.Render());
+            };
+            MainGrid.Children.Add(_toolbarComponent.Render());
         }
 
 #if DEBUG
@@ -76,6 +78,7 @@ namespace PowerPlannerUWP.Views
                 _toolbar.PrimaryCommands.Add(ToolbarHelper.AddCommand(
                     ViewModel.AddTask,
                     ViewModel.AddEvent));
+                _toolbarComponent.RenderOnDemand();
             }
 
             catch (Exception ex)

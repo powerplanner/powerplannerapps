@@ -60,50 +60,50 @@ namespace PowerPlannerAppDataLibrary.Components
                 } : null,
                 PrimaryCommands =
                 {
-                    hasScheduleContent ? new ToolbarCommand
+                    hasScheduleContent ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_LastWeek"),
                         Glyph = MaterialDesign.MaterialDesignIcons.ChevronLeft,
-                        Action = ViewModel.PreviousWeek
+                        Click = ViewModel.PreviousWeek
                     } : null,
 
-                    hasScheduleContent ? new ToolbarCommand
+                    hasScheduleContent ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_NextWeek"),
                         Glyph = MaterialDesign.MaterialDesignIcons.ChevronRight,
-                        Action = ViewModel.NextWeek
+                        Click = ViewModel.NextWeek
                     } : null,
 
-                    ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.SplitEditing || ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.FullEditing ? new ToolbarCommand
+                    ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.SplitEditing || ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.FullEditing ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetStringClose(),
                         Glyph = MaterialDesign.MaterialDesignIcons.Close,
-                        Action = ViewModel.ExitEditMode
-                    } : new ToolbarCommand
+                        Click = ViewModel.ExitEditMode
+                    } : new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_EditSchedule"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Edit,
-                        Action = ViewModel.EnterEditMode
+                        Click = ViewModel.EnterEditMode
                     }
                 },
                 SecondaryCommands =
                 {
-                    !ViewModel.IsPinned && ViewModel.RequestPinHandler != null && ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.Normal ? new ToolbarCommand
+                    !ViewModel.IsPinned && ViewModel.RequestPinHandler != null && ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.Normal ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_PinToStart"),
-                        Action = ViewModel.RequestPinHandler
+                        Click = ViewModel.RequestPinHandler
                     } : null,
 
-                    ViewModel.IsPinned && ViewModel.RequestUnpinHandler != null && ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.Normal ? new ToolbarCommand
+                    ViewModel.IsPinned && ViewModel.RequestUnpinHandler != null && ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.Normal ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_UnpinFromStart"),
-                        Action = ViewModel.RequestUnpinHandler
+                        Click = ViewModel.RequestUnpinHandler
                     } : null,
 
-                    hasScheduleContent && ViewModel.RequestExportToImage != null ? new ToolbarCommand
+                    hasScheduleContent && ViewModel.RequestExportToImage != null ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_ExportToImage"),
-                        Action = ViewModel.RequestExportToImage
+                        Click = ViewModel.RequestExportToImage
                     } : null
                 }
             }.InnerToolbarThemed();

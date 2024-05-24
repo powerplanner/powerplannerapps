@@ -94,6 +94,7 @@ namespace PowerPlannerAndroid.Views.Controls
             catch (Exception ex)
             {
                 System.Diagnostics.Debugger.Break();
+                System.Diagnostics.Debug.WriteLine(ex);
             }
 #endif
 

@@ -74,6 +74,7 @@ namespace BareMvvm.Core.Bindings
                 if (Debugger.IsAttached)
                 {
                     Debugger.Break();
+                    Debug.WriteLine(ex);
                 }
             }
         }
@@ -134,10 +135,11 @@ namespace BareMvvm.Core.Bindings
                 if (Debugger.IsAttached)
                 {
                     Debugger.Break();
+                    Debug.WriteLine(ex);
                 }
 #endif
 
-                throw ex;
+                throw;
             }
         }
     }
