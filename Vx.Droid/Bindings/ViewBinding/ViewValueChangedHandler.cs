@@ -68,7 +68,6 @@ namespace BareMvvm.Core.Bindings
             catch
 #if DEBUG
             (Exception ex)
-#endif
             {
                 /* TODO: log exception */
                 if (Debugger.IsAttached)
@@ -77,6 +76,10 @@ namespace BareMvvm.Core.Bindings
                     Debug.WriteLine(ex);
                 }
             }
+#else
+            {
+            }
+#endif
         }
 
         internal static void UpdateSourceProperty<T>(
@@ -129,18 +132,23 @@ namespace BareMvvm.Core.Bindings
                 // Must set through binding registration so that it'll correctly ignore property change events from just being set
                 bindingRegistration.SetSourceValue(newValue, preObtainedSourceProperty: sourceProperty);
             }
-            catch (Exception ex)
-            {
+            catch
 #if DEBUG
+            (Exception ex)
+            {
                 if (Debugger.IsAttached)
                 {
                     Debugger.Break();
                     Debug.WriteLine(ex);
                 }
-#endif
 
                 throw;
             }
+#else
+            {
+                throw;
+            }
+#endif
         }
     }
 }
