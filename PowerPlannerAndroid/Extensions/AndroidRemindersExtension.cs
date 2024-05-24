@@ -33,7 +33,10 @@ namespace PowerPlannerAndroid.Extensions
     {
         public override void RequestReminderPermission()
         {
-            MainActivity.GetCurrent().RequestPermissions(new string[] { Android.Manifest.Permission.PostNotifications }, 0);
+            if (OperatingSystem.IsAndroidVersionAtLeast(33))
+            {
+                MainActivity.GetCurrent().RequestPermissions(new string[] { Android.Manifest.Permission.PostNotifications }, 0);
+            }
         }
 
         protected override async Task ActuallyClearReminders(Guid localAccountId)
@@ -624,7 +627,7 @@ namespace PowerPlannerAndroid.Extensions
 
         private static async Task ActuallyInitializeChannelsAsync(NotificationManager notificationManager)
         {
-            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
+            if (!OperatingSystem.IsAndroidVersionAtLeast(26))
             {
                 return;
             }
@@ -635,16 +638,19 @@ namespace PowerPlannerAndroid.Extensions
             // Delete groups which the account was deleted
             foreach (var g in groups)
             {
-                if (!accounts.Any(a => a.LocalAccountId.ToString() == g.Id))
+                var gId = g.Id;
+                if (!accounts.Any(a => a.LocalAccountId.ToString() == gId))
                 {
-                    notificationManager.DeleteNotificationChannelGroup(g.Id);
+                    notificationManager.DeleteNotificationChannelGroup(gId);
                 }
             }
 
             // Add/update groups
             foreach (var a in accounts)
             {
+#pragma warning disable CA1416 // Version is checked above, but the warning code doesn't support predicates
                 var g = groups.FirstOrDefault(i => i.Id == a.LocalAccountId.ToString());
+#pragma warning restore CA1416 // Version is checked above, but the warning code doesn't support predicates
                 if (g != null)
                 {
                     // If details are already correct

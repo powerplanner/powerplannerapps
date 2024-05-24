@@ -195,7 +195,14 @@ namespace Vx.iOS.Views
             UIPopoverPresentationController presentationPopover = actionSheetMoreOptions.PopoverPresentationController;
             if (presentationPopover != null)
             {
-                presentationPopover.BarButtonItem = source;
+                if (OperatingSystem.IsIOSVersionAtLeast(16))
+                {
+                    presentationPopover.SourceItem = source;
+                }
+                else
+                {
+                    presentationPopover.BarButtonItem = source;
+                }
                 presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
             }
 

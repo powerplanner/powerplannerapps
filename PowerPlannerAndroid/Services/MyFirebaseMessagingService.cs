@@ -57,7 +57,7 @@ namespace PowerPlannerAndroid.Services
                 .SetRequiredNetworkType(NetworkType.Any)
                 .SetExtras(extras);
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            if (OperatingSystem.IsAndroidVersionAtLeast(26))
             {
                 builder.SetRequiresBatteryNotLow(true);
             }

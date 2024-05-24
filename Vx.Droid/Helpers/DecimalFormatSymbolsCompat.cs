@@ -18,7 +18,7 @@ namespace Vx.Droid.Helpers
         {
             get
             {
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                if (OperatingSystem.IsAndroidVersionAtLeast(24))
                 {
                     return DecimalFormatSymbols.Instance.DecimalSeparator;
                 }

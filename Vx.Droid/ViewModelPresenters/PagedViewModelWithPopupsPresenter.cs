@@ -144,7 +144,8 @@ namespace InterfacesDroid.ViewModelPresenters
             catch (Exception ex)
             {
                 System.Diagnostics.Debugger.Break();
-                throw ex;
+                System.Diagnostics.Debug.WriteLine(ex);
+                throw;
             }
 #endif
 
