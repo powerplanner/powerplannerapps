@@ -371,6 +371,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             linearLayout.Children.Add(RenderClassRow(null, PowerPlannerResources.GetString("SemesterView_Total.Text"), CreditsToStringConverter.Convert(semester.CreditsEarned), GpaToStringConverter.Convert(semester.GPA), isBig: true));
 
+            if (!string.IsNullOrWhiteSpace(semester.Details))
+            {
+                linearLayout.Children.Add(new TransparentContentButton
+                {
+                    AltText = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                    Click = () => ViewSemesterDetails(semester),
+                    Content = new TextBlock
+                    {
+                        Text = semester.Details,
+                        WrapText = true,
+                        FontSize = Theme.Current.CaptionFontSize,
+                        Margin = new Thickness(12, 6, 12, 6),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        MaxLines = 3
+                    }
+                });
+            }
+
             linearLayout.Children.Add(new AccentButton
             {
                 Text = PowerPlannerResources.GetString("SemesterView_ButtonOpenSemester.Content"),
@@ -482,6 +500,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         public void EditSemester(ViewItemSemester semester)
         {
             ShowPopup(AddSemesterViewModel.CreateForEdit(MainScreenViewModel, semester));
+        }
+
+        public void ViewSemesterDetails(ViewItemSemester semester)
+        {
+            ShowPopup(new ViewSemesterDetailsViewModel(this, semester));
         }
 
         public void CopySemester(ViewItemSemester semester)
