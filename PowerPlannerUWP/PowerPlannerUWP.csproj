@@ -10,6 +10,7 @@
     <RootNamespace>PowerPlannerUWP</RootNamespace>
     <AssemblyName>PowerPlannerUWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
+	<NeutralLanguage>en-US</NeutralLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
