@@ -38,7 +38,7 @@
     </PackageReference>
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha">
     </PackageReference>
-    <PackageReference Include="sqlite-net-pcl" Version="1.9.172">
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335">
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8">
     </PackageReference>

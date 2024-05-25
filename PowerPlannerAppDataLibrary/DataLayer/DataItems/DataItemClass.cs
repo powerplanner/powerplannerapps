@@ -153,65 +153,29 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             set { SetValue(LastEventTimeOptionProperty, value); }
         }
 
-        #region TimeSpans
-
-        // Note that for these timespans, I used to use TimeSpan? directly as the SQL storage type, but due to
-        // https://github.com/praeclarum/sqlite-net/issues/1067 the nullables don't seem to work on iOS when running
-        // as release on real devices with AOT. So I worked around with this.
-
-        private TimeSpan? GetAotTimeSpan(TimeSpan aotTimeSpan)
-        {
-            return aotTimeSpan == TimeSpan.MinValue ? (TimeSpan?)null : aotTimeSpan;
-        }
-
-        private TimeSpan AsAotTimeSpan(TimeSpan? value)
-        {
-            return value == null ? TimeSpan.MinValue : value.Value;
-        }
-
         public static readonly DataItemProperty LastTaskDueTimeProperty = DataItemProperty.Register();
         [Column("LastTaskDueTime")]
-        public TimeSpan AotLastTaskDueTime
-        {
-            get => GetValue<TimeSpan>(LastTaskDueTimeProperty, TimeSpan.MinValue);
-            set => SetValue(LastTaskDueTimeProperty, value);
-        }
-
         public virtual TimeSpan? LastTaskDueTime
         {
-            get => GetAotTimeSpan(AotLastTaskDueTime);
-            set => AotLastTaskDueTime = AsAotTimeSpan(value);
+            get { return GetValue<TimeSpan?>(LastTaskDueTimeProperty, null); }
+            set { SetValue(LastTaskDueTimeProperty, value); }
         }
 
         public static readonly DataItemProperty LastEventStartTimeProperty = DataItemProperty.Register();
         [Column("LastEventStartTime")]
-        public virtual TimeSpan AotLastEventStartTime
-        {
-            get { return GetValue<TimeSpan>(LastEventStartTimeProperty, TimeSpan.MinValue); }
-            set { SetValue(LastEventStartTimeProperty, value); }
-        }
-
         public virtual TimeSpan? LastEventStartTime
         {
-            get => GetAotTimeSpan(AotLastEventStartTime);
-            set => AotLastEventStartTime = AsAotTimeSpan(value);
+            get { return GetValue<TimeSpan?>(LastEventStartTimeProperty, null); }
+            set { SetValue(LastEventStartTimeProperty, value); }
         }
 
         public static readonly DataItemProperty LastEventDurationProperty = DataItemProperty.Register();
         [Column("LastEventDurationProperty")]
-        public virtual TimeSpan AotLastEventDuration
-        {
-            get { return GetValue<TimeSpan>(LastEventDurationProperty, TimeSpan.MinValue); }
-            set { SetValue(LastEventDurationProperty, value); }
-        }
-
         public virtual TimeSpan? LastEventDuration
         {
-            get => GetAotTimeSpan(AotLastEventDuration);
-            set => AotLastEventDuration = AsAotTimeSpan(value);
+            get { return GetValue<TimeSpan?>(LastEventDurationProperty, null); }
+            set { SetValue(LastEventDurationProperty, value); }
         }
-
-        #endregion
 
         public GradeScale[] GetGradeScales()
         {
