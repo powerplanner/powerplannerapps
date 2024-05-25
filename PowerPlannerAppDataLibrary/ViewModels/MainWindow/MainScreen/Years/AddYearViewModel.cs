@@ -97,8 +97,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                             Header = PowerPlannerResources.GetString("AddYearPage_OverrideCredits.Header")
                         }.LinearLayoutWeight(1)
                     }
-                } : null
+                } : null,
 
+                new MultilineTextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                    Height = 140, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
+                    Text = VxValue.Create(Details, v => Details = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                }
             );
         }
 
@@ -114,7 +121,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 YearToEdit = yearToEdit,
                 Name = yearToEdit.Name,
                 OverriddenGpa = yearToEdit.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenGPA : (double?)null,
-                OverriddenCredits = yearToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenCredits : (double?)null
+                OverriddenCredits = yearToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? yearToEdit.OverriddenCredits : (double?)null,
+                Details = yearToEdit.Details
             };
 
             viewModel.IsCustomizeCreditsGpaChecked = viewModel.OverriddenGpa != null || viewModel.OverriddenCredits != null;
@@ -135,6 +143,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         {
             get { return _name; }
             set { SetProperty(ref _name, value, nameof(Name)); }
+        }
+
+        private string _details = "";
+        public string Details
+        {
+            get => _details;
+            set => SetProperty(ref _details, value, nameof(Details));
         }
 
         public void Save()
@@ -161,6 +176,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     year = new DataItemYear() { Identifier = Guid.NewGuid() };
 
                 year.Name = name;
+                year.Details = Details.Trim();
                 year.OverriddenGPA = IsCustomizeCreditsGpaChecked && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
                 year.OverriddenCredits = IsCustomizeCreditsGpaChecked && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
 
