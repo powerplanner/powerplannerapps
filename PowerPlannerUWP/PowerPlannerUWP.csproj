@@ -258,9 +258,6 @@
     <Compile Include="Views\SettingsViews\ImageUploadOptionsView.xaml.cs">
       <DependentUpon>ImageUploadOptionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\LanguageSettingsView.xaml.cs">
-      <DependentUpon>LanguageSettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\MainTileView.xaml.cs">
       <DependentUpon>MainTileView.xaml</DependentUpon>
     </Compile>
@@ -542,10 +539,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\ImageUploadOptionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\LanguageSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
