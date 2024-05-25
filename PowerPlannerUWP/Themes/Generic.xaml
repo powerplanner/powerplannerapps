@@ -10,6 +10,10 @@
 
             <SolidColorBrush x:Key="PowerPlannerAccentBlue" Color="#546BC7"/>
 
+            <SolidColorBrush x:Key="CompletionSliderBackground">#CCCCCC</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundHover">#BBBBBB</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundPressed">#AAAAAA</SolidColorBrush>
+
             <SolidColorBrush x:Key="ItemBackground">#EFEFEF</SolidColorBrush>
             <SolidColorBrush x:Key="SubitemBackground">#F5F5F5</SolidColorBrush>
 
@@ -173,6 +177,10 @@
         <ResourceDictionary x:Key="Dark">
 
             <SolidColorBrush x:Key="PowerPlannerAccentBlue" Color="#546BC7"/>
+
+            <SolidColorBrush x:Key="CompletionSliderBackground">#333333</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundHover">#444444</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundPressed">#555555</SolidColorBrush>
             
             <SolidColorBrush x:Key="ItemBackground">#333333</SolidColorBrush>
             <SolidColorBrush x:Key="SubitemBackground">#222222</SolidColorBrush>
