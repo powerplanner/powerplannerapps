@@ -44,6 +44,13 @@ namespace Vx
                 newView.ViewRef(_originalComponent ?? VxView);
             }
 
+#if DEBUG
+            if (OnApplyPropertiesValidationHook != null)
+            {
+                OnApplyPropertiesValidationHook(oldView, newView);
+            }
+#endif
+
             ApplyProperties(oldView, newView);
 
             if (oldView != null)
@@ -51,6 +58,10 @@ namespace Vx
                 newView.NativeView = oldView.NativeView;
             }
         }
+
+#if DEBUG
+        internal Action<View, View> OnApplyPropertiesValidationHook { get; set; }
+#endif
 
         private void HandleInnerComponent(VxComponent oldView, VxComponent newView)
         {
@@ -87,7 +98,79 @@ namespace Vx
 
         protected abstract void ApplyProperties(View oldView, View newView);
 
-        public static void ReconcileList(IList<View> oldList, IList<View> newList, Action<int, View> insert, Action<int> remove, Action<int, View> replace, Action clear)
+        public static void ReconcileList(IList<View> oldList, IList<View> newList, Action<int, View> insert, Action<int> remove, Action<int, View> replace, Action clear, bool catchErrorsInDebug = true)
+        {
+#if DEBUG
+            var finalList = new List<View>(oldList != null ? oldList.Where(i => i != null) : new List<View>());
+
+            if (oldList != null)
+            {
+                foreach (var item in oldList.Where(i => i != null))
+                {
+                    item.NativeView.OnApplyPropertiesValidationHook = (oldView, newView) =>
+                    {
+                        var index = finalList.IndexOf(oldView);
+                        if (index == -1)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                            throw new InvalidOperationException("Couldn't find old view");
+                        }
+                        finalList[index] = newView;
+                    };
+                }
+            }
+
+            var insertOrig = insert;
+
+            insert = (i, v) =>
+            {
+                finalList.Insert(i, v);
+                insertOrig?.Invoke(i, v);
+            };
+
+            var removeOrig = remove;
+
+            remove = (i) =>
+            {
+                finalList.RemoveAt(i);
+                removeOrig?.Invoke(i);
+            };
+
+            var replaceOrig = replace;
+
+            replace = (i, v) =>
+            {
+                if (finalList[i].GetType() == v.GetType())
+                {
+                    System.Diagnostics.Debugger.Break();
+                    throw new InvalidOperationException("When replacing, item types should be different.");
+                }
+                finalList[i] = v;
+                replaceOrig?.Invoke(i, v);
+            };
+
+            var clearOrig = clear;
+
+            clear = () =>
+            {
+                finalList.Clear();
+                clearOrig?.Invoke();
+            };
+
+            catchErrorsInDebug = false;
+#endif
+
+            ReconcileListActual(oldList, newList, insert, remove, replace, clear, catchErrorsInDebug);
+
+#if DEBUG
+            if (!newList.Where(i => i != null).SequenceEqual(finalList))
+            {
+                System.Diagnostics.Debugger.Break();
+                throw new InvalidOperationException("Reconciling error");
+            }
+#endif
+        }
+        private static void ReconcileListActual(IList<View> oldList, IList<View> newList, Action<int, View> insert, Action<int> remove, Action<int, View> replace, Action clear, bool catchErrorsInDebug = true)
         {
 #if DEBUG
             try
@@ -204,6 +287,11 @@ namespace Vx
             }
             catch (Exception ex)
             {
+                if (!catchErrorsInDebug)
+                {
+                    throw;
+                }
+
                 System.Diagnostics.Debug.WriteLine(ex);
                 System.Diagnostics.Debugger.Break();
             }

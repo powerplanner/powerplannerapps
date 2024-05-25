@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFramework>net8.0-android</TargetFramework>
-	<SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
 	<OutputType>Exe</OutputType>
 	<ApplicationId>com.barebonesdev.powerplanner.dev</ApplicationId>
 	<ApplicationVersion>1</ApplicationVersion>
@@ -40,7 +40,7 @@
       <Version>2.1.32-alpha</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.9.172</Version>
+      <Version>1.7.335</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.4" />

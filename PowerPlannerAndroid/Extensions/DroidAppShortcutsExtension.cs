@@ -21,7 +21,7 @@ namespace PowerPlannerAndroid.Extensions
     {
         public override Task UpdateAsync(bool showAddItemShortcuts)
         {
-            if (Build.VERSION.SdkInt < BuildVersionCodes.NMr1)
+            if (!OperatingSystem.IsAndroidVersionAtLeast(25))
             {
                 return Task.CompletedTask;
             }

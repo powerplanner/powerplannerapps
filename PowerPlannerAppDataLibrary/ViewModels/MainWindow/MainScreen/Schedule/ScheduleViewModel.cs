@@ -54,6 +54,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public DateTime StartDate { get; private set; }
 
+        /// <summary>
+        /// UWP uses this to support pinning.
+        /// </summary>
+        public Action RequestPinHandler { get; set; }
+        public Action RequestUnpinHandler { get; set; }
+        public Action RequestExportToImage { get; set; }
+
+        private bool _isPinned;
+        public bool IsPinned
+        {
+            get => _isPinned;
+            set => SetProperty(ref _isPinned, value, nameof(IsPinned));
+        }
+
         private bool _hasAllDayItems;
         public bool HasAllDayItems
         {

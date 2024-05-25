@@ -11,17 +11,6 @@
     Title="CLASS DETAILS"
     KeyUp="Popup_KeyUp">
 
-    <views:PopupViewHostGeneric.PrimaryCommands>
-
-        <AppBarButton
-            x:Uid="AppBarButtonSave"
-            x:Name="ButtonSave"
-            Icon="Save"
-            Label="Save"
-            Click="ButtonSave_Click"/>
-
-    </views:PopupViewHostGeneric.PrimaryCommands>
-
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="10">

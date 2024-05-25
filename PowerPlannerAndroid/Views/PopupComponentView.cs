@@ -140,12 +140,12 @@ namespace PowerPlannerAndroid.Views
                     // In Android I didn't implement the quick confirm delete
                     if (await PowerPlannerAppDataLibrary.App.PowerPlannerApp.ConfirmDeleteAsync())
                     {
-                        matching.Action?.Invoke();
+                        matching.Click?.Invoke();
                     }
                 }
                 else
                 {
-                    matching.Action?.Invoke();
+                    matching.Click?.Invoke();
                 }
                 return;
             }

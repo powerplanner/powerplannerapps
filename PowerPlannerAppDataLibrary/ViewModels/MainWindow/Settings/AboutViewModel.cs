@@ -26,7 +26,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             return RenderGenericPopupContent(
                 RenderHeader(PowerPlannerResources.GetString("Settings_AboutPage_VersionHeader.Text"), false),
-                RenderDescription(Variables.VERSION.ToString()),
+                RenderDescription(Variables.VERSION.ToString(), isTextSelectionEnabled: true),
 
                 RenderHeader(PowerPlannerResources.GetString("Settings_AboutPage_DeveloperHeader.Text")),
                 RenderDescription(PowerPlannerResources.GetString("Settings_AboutPage_DeveloperValue.Text")),
@@ -109,11 +109,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             };
         }
 
-        private TextBlock RenderDescription(string text)
+        private TextBlock RenderDescription(string text, bool isTextSelectionEnabled = false)
         {
             return new TextBlock
             {
-                Text = text
+                Text = text,
+                IsTextSelectionEnabled = isTextSelectionEnabled,
             };
         }
     }

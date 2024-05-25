@@ -75,8 +75,8 @@ namespace Vx.iOS.Views
 
             NavBar.TopItem.Title = newView.Title;
 
-            if (!Vx.Views.ToolbarCommand.AreSame(oldView?.PrimaryCommands, newView.PrimaryCommands)
-                || !Vx.Views.ToolbarCommand.AreSame(oldView?.SecondaryCommands, newView.SecondaryCommands))
+            if (!Vx.Views.MenuItem.AreSame(oldView?.PrimaryCommands, newView.PrimaryCommands)
+                || !Vx.Views.MenuItem.AreSame(oldView?.SecondaryCommands, newView.SecondaryCommands))
             {
                 NavBar.TopItem.RightBarButtonItems = GetRightBarButtonItems(newView).ToArray();
             }
@@ -121,13 +121,13 @@ namespace Vx.iOS.Views
                     var button = command.ToUIBarButtonItem(skipClickHandler: true);
                     button.Clicked += delegate
                     {
-                        if (command.Action != null)
+                        if (command.Click != null)
                         {
-                            command.Action();
+                            command.Click();
                         }
-                        else if (command.SubCommands != null && command.SubCommands.Any())
+                        else if (command.SubItems != null && command.SubItems.Any(i => i != null))
                         {
-                            ShowSubCommands(command.SubCommands, button);
+                            ShowSubCommands(command.SubItems.OfType<MenuItem>().Where(i => i != null), button);
                         }
                     };
                     yield return button;
@@ -175,16 +175,16 @@ namespace Vx.iOS.Views
             }
         }
 
-        private void ShowSubCommands(IEnumerable<ToolbarCommand> commands, UIBarButtonItem source)
+        private void ShowSubCommands(IEnumerable<MenuItem> commands, UIBarButtonItem source)
         {
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetMoreOptions = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
             foreach (var option in commands)
             {
-                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == ToolbarCommandStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
+                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == MenuItemStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
                 {
-                    option.Action?.Invoke();
+                    option.Click?.Invoke();
                 }));
             }
 
@@ -195,7 +195,14 @@ namespace Vx.iOS.Views
             UIPopoverPresentationController presentationPopover = actionSheetMoreOptions.PopoverPresentationController;
             if (presentationPopover != null)
             {
-                presentationPopover.BarButtonItem = source;
+                if (OperatingSystem.IsIOSVersionAtLeast(16))
+                {
+                    presentationPopover.SourceItem = source;
+                }
+                else
+                {
+                    presentationPopover.BarButtonItem = source;
+                }
                 presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
             }
 

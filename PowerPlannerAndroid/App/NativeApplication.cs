@@ -47,7 +47,7 @@ namespace PowerPlannerAndroid.App
         protected NativeApplication(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
             PackageInfo packageInfo;
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
+            if (OperatingSystem.IsAndroidVersionAtLeast(33))
             {
                 packageInfo = Context.PackageManager.GetPackageInfo(Context.PackageName, PackageManager.PackageInfoFlags.Of(PackageInfoFlagsLong.None));
             }

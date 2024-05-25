@@ -563,7 +563,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                 {
                                     Items =
                                     {
-                                        new ContextMenuItem
+                                        new MenuItem
                                         {
                                             Text = PowerPlannerResources.GetString("String_YesDelete"),
                                             Click = Delete

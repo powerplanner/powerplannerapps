@@ -114,17 +114,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         {
                             Items =
                             {
-                                new ContextMenuItem
+                                new MenuItem
                                 {
                                     Text = PowerPlannerResources.GetString("String_Task"),
                                     Click = () => ViewModel.AddTask(Date)
                                 },
-                                new ContextMenuItem
+                                new MenuItem
                                 {
                                     Text = PowerPlannerResources.GetString("String_Event"),
                                     Click = () => ViewModel.AddEvent(Date)
                                 },
-                                new ContextMenuItem
+                                new MenuItem
                                 {
                                     Text = PowerPlannerResources.GetString("String_Holiday"),
                                     Click = () => ViewModel.AddHoliday(Date)

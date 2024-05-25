@@ -27,7 +27,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.210505.2" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.4" />
     <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
     <PackageReference Include="TimeZoneNames" Version="6.0.0" />

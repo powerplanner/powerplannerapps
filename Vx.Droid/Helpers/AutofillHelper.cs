@@ -16,7 +16,7 @@ namespace InterfacesDroid.Helpers
     {
         public static void DisableForAll(View view)
         {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            if (OperatingSystem.IsAndroidVersionAtLeast(26))
             {
                 view.ImportantForAutofill = ImportantForAutofill.NoExcludeDescendants;
             }
@@ -24,7 +24,7 @@ namespace InterfacesDroid.Helpers
 
         public static void EnableForAll(View view)
         {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            if (OperatingSystem.IsAndroidVersionAtLeast(26))
             {
                 view.ImportantForAutofill = ImportantForAutofill.Yes;
             }

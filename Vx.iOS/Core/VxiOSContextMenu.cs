@@ -14,15 +14,15 @@ namespace Vx.iOS
             return CreateMenu(menu.Items);
         }
 
-        private static UIMenu CreateMenu(IEnumerable<IContextMenuItem> contextMenuItems)
+        private static UIMenu CreateMenu(IEnumerable<IMenuItem> contextMenuItems)
         {
             UIMenuElement[] actions = CreateMenuElements(contextMenuItems);
             return UIMenu.Create(actions);
         }
 
-        private static UIMenuElement[] CreateMenuElements(IEnumerable<IContextMenuItem> contextMenuItems)
+        private static UIMenuElement[] CreateMenuElements(IEnumerable<IMenuItem> contextMenuItems)
         {
-            if (contextMenuItems.OfType<ContextMenuSeparator>().Any())
+            if (contextMenuItems.OfType<MenuSeparator>().Any())
             {
                 List<UIMenuElement> groupedActions = new List<UIMenuElement>();
                 foreach (var g in SeparatedIntoGroups(contextMenuItems))
@@ -37,18 +37,18 @@ namespace Vx.iOS
             }
         }
 
-        private static IEnumerable<IContextMenuItem[]> SeparatedIntoGroups(IEnumerable<IContextMenuItem> flatList)
+        private static IEnumerable<IMenuItem[]> SeparatedIntoGroups(IEnumerable<IMenuItem> flatList)
         {
-            List<IContextMenuItem> currGroup = new List<IContextMenuItem>();
+            List<IMenuItem> currGroup = new List<IMenuItem>();
             foreach (var item in flatList)
             {
-                if (item is ContextMenuSeparator)
+                if (item is MenuSeparator)
                 {
                     if (currGroup.Count > 0)
                     {
                         yield return currGroup.ToArray();
                     }
-                    currGroup = new List<IContextMenuItem>();
+                    currGroup = new List<IMenuItem>();
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace Vx.iOS
             }
         }
 
-        private static UIMenuElement[] CreateNonSeparatedMenuElements(IEnumerable<IContextMenuItem> contextMenuItems)
+        private static UIMenuElement[] CreateNonSeparatedMenuElements(IEnumerable<IMenuItem> contextMenuItems)
         {
             var actions = new List<UIMenuElement>();
 
@@ -77,24 +77,24 @@ namespace Vx.iOS
             return actions.ToArray();
         }
 
-        private static UIMenuElement CreateMenuElement(IContextMenuItem item)
+        private static UIMenuElement CreateMenuElement(IMenuItem item)
         {
-            if (item is ContextMenuItem cmItem)
+            if (item is MenuItem cmItem)
             {
+                if (cmItem.SubItems != null && cmItem.SubItems.Any(i => i != null))
+                {
+                    return UIMenu.Create(cmItem.Text, cmItem.Glyph.GlyphToUIImage(), UIMenuIdentifier.None, default(UIMenuOptions), CreateMenuElements(cmItem.SubItems.Where(i => i != null)));
+                }
                 var a = UIAction.Create(cmItem.Text, cmItem.Glyph.GlyphToUIImage(), null, _ => cmItem.Click?.Invoke());
-                if (cmItem.Style == ContextMenuItemStyle.Destructive)
+                if (cmItem.Style == MenuItemStyle.Destructive)
                 {
                     a.Attributes = UIMenuElementAttributes.Destructive;
                 }
                 return a;
             }
-            else if (item is ContextMenuRadioItem rItem)
+            else if (item is MenuRadioItem rItem)
             {
                 return UIAction.Create(rItem.Text, rItem.IsChecked ? UIImage.GetSystemImage("checkmark") : null, null, _ => rItem.Click?.Invoke());
-            }
-            else if (item is ContextMenuSubItem cmItemGroup)
-            {
-                return UIMenu.Create(cmItemGroup.Text, cmItemGroup.Glyph.GlyphToUIImage(), UIMenuIdentifier.None, default(UIMenuOptions), CreateMenuElements(cmItemGroup.Items));
             }
 
             return null;

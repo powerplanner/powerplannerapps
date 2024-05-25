@@ -10,8 +10,15 @@
 
             <SolidColorBrush x:Key="PowerPlannerAccentBlue" Color="#546BC7"/>
 
+            <SolidColorBrush x:Key="CompletionSliderBackground">#CCCCCC</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundHover">#BBBBBB</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundPressed">#AAAAAA</SolidColorBrush>
+
             <SolidColorBrush x:Key="ItemBackground">#EFEFEF</SolidColorBrush>
             <SolidColorBrush x:Key="SubitemBackground">#F5F5F5</SolidColorBrush>
+
+            <SolidColorBrush x:Key="ItemBackgroundHover">#EBEBEB</SolidColorBrush>
+            <SolidColorBrush x:Key="ItemBackgroundPressed">#E9E9E9</SolidColorBrush>
 
             <SolidColorBrush x:Key="ItemShadow" Color="Black" Opacity="0.2"/>
             <SolidColorBrush x:Key="SubitemShadow" Color="Black" Opacity="0.2"/>
@@ -170,9 +177,16 @@
         <ResourceDictionary x:Key="Dark">
 
             <SolidColorBrush x:Key="PowerPlannerAccentBlue" Color="#546BC7"/>
+
+            <SolidColorBrush x:Key="CompletionSliderBackground">#333333</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundHover">#444444</SolidColorBrush>
+            <SolidColorBrush x:Key="CompletionSliderBackgroundPressed">#555555</SolidColorBrush>
             
             <SolidColorBrush x:Key="ItemBackground">#333333</SolidColorBrush>
             <SolidColorBrush x:Key="SubitemBackground">#222222</SolidColorBrush>
+
+            <SolidColorBrush x:Key="ItemBackgroundHover">#444444</SolidColorBrush>
+            <SolidColorBrush x:Key="ItemBackgroundPressed">#555555</SolidColorBrush>
 
             <SolidColorBrush x:Key="ItemShadow" Color="White" Opacity="0.1"/>
             <SolidColorBrush x:Key="SubitemShadow" Color="White" Opacity="0.1"/>
@@ -333,56 +347,5 @@
     <SolidColorBrush x:Key="ItemBackgroundPressedDark">#555555</SolidColorBrush>
     <SolidColorBrush x:Key="SubitemBackgroundHoverDark">#333333</SolidColorBrush>
     <SolidColorBrush x:Key="SubitemBackgroundPressedDark">#444444</SolidColorBrush>
-
-    <Style TargetType="views:BasicPopupView">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="views:BasicPopupView">
-                    <Border
-        Style="{ThemeResource ItemContainer}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Button
-                    x:Name="header"
-                    Content="{TemplateBinding Title}"
-                    HorizontalContentAlignment="Left"
-                    Style="{StaticResource PowerPlannerBlueButtonStyle}"
-                    Foreground="White"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"/>
-
-                                <Button
-                    x:Name="buttonCancel"
-                                    Command="{TemplateBinding CloseCommand}"
-                    Style="{StaticResource PowerPlannerBlueButtonStyle}"
-                    Grid.Column="1"
-                    Margin="2,0,0,0">
-                                    <SymbolIcon Symbol="Cancel"/>
-                                </Button>
-
-                            </Grid>
-
-                            <ContentPresenter
-                                Grid.Row="1"
-                                Content="{TemplateBinding Content}"
-                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
-
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 
 </ResourceDictionary>

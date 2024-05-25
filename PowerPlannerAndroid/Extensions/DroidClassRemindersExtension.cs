@@ -66,14 +66,11 @@ namespace PowerPlannerAndroid.Extensions
             }
             else
             {
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+                var existing = notifManager.GetActiveNotifications().FirstOrDefault(i => i.Id == NotificationIds.CLASS_REMINDER_NOTIFICATION);
+                if (existing != null)
                 {
-                    var existing = notifManager.GetActiveNotifications().FirstOrDefault(i => i.Id == NotificationIds.CLASS_REMINDER_NOTIFICATION);
-                    if (existing != null)
-                    {
-                        // Update silently
-                        ShowNotification(notifManager, Application.Context, account.LocalAccountId, currSchedule, dateOfClass, silentUpdate: true);
-                    }
+                    // Update silently
+                    ShowNotification(notifManager, Application.Context, account.LocalAccountId, currSchedule, dateOfClass, silentUpdate: true);
                 }
             }
 

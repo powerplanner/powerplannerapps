@@ -12,6 +12,14 @@ using PowerPlannerAppDataLibrary.Extensions;
 
 namespace PowerPlannerAppDataLibrary
 {
+    public static class R
+    {
+        public static string S(string id)
+        {
+            return PowerPlannerResources.GetString(id);
+        }
+    }
+
     public static class PowerPlannerResources
     {
         private static ResourceManager _resourceManager;

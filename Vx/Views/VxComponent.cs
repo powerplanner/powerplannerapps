@@ -325,6 +325,22 @@ namespace Vx.Views
             }
         }
 
+        protected void UnsubscribeFromCollection(INotifyCollectionChanged col)
+        {
+            if (col == null)
+            {
+                return;
+            }
+
+            if (_subscribedCollections == null || _collectionChangedHandler == null || !_subscribedCollections.Contains(col))
+            {
+                return;
+            }
+
+            col.CollectionChanged -= _collectionChangedHandler;
+            _subscribedCollections.Remove(col);
+        }
+
         private Dictionary<string, INotifyCollectionChanged> _subscribedCollectionsStrong;
 
         /// <summary>

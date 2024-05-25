@@ -1,5 +1,8 @@
-﻿using PowerPlannerAppDataLibrary.Extensions;
+﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerUWP.Views.TaskOrEventViews;
 using System;
@@ -9,6 +12,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
 using ToolsUniversal;
+using Vx.Components.OnlyForNativeLibraries;
+using Vx.Uwp;
+using Vx.Views;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -36,9 +42,22 @@ namespace PowerPlannerUWP.Views
             set { base.ViewModel = value; }
         }
 
+        private Toolbar _toolbar;
+        private ToolbarComponent _toolbarComponent;
+
         public AgendaView()
         {
             this.InitializeComponent();
+
+            _toolbar = new Toolbar
+            {
+                Title = MainScreenViewModel.MainMenuItemToString(PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Agenda)
+            }.InnerToolbarThemed();
+            _toolbarComponent = new ToolbarComponent
+            {
+                Toolbar = _toolbar
+            };
+            MainGrid.Children.Add(_toolbarComponent.Render());
         }
 
 #if DEBUG
@@ -54,45 +73,17 @@ namespace PowerPlannerUWP.Views
 
             try
             {
-                SetCommandBarCommands(new ICommandBarElement[]
-                {
-                AppBarAdd
-                }, null);
-
                 MainGridView.ItemsSource = ViewModel.ItemsWithHeaders;
+
+                _toolbar.PrimaryCommands.Add(ToolbarHelper.AddCommand(
+                    ViewModel.AddTask,
+                    ViewModel.AddEvent));
+                _toolbarComponent.RenderOnDemand();
             }
 
             catch (Exception ex)
             {
                 base.IsEnabled = false;
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private AppBarButton _appBarAdd;
-        private AppBarButton AppBarAdd
-        {
-            get
-            {
-                if (_appBarAdd == null)
-                    _appBarAdd = CreateAppBarButton(Symbol.Add, LocalizedResources.Common.GetStringNewItem(), appBarAdd_Click);
-
-                return _appBarAdd;
-            }
-        }
-
-        private void appBarAdd_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                App.ShowFlyoutAddTaskOrEvent(
-                    elToCenterFrom: sender as FrameworkElement,
-                    addTaskAction: ViewModel.AddTask,
-                    addEventAction: ViewModel.AddEvent);
-            }
-
-            catch (Exception ex)
-            {
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
@@ -313,16 +314,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 PowerPlannerResources.GetString("Settings_MainPage_LanguageItem.Subtitle"),
                 OpenLanguageSettings);
 
-            if (VxPlatform.Current == Platform.Uwp)
-            {
-                RenderOption(
-                    layout,
-                    MaterialDesign.MaterialDesignIcons.Code,
-                    PowerPlannerResources.GetString("Settings_MainPage_ContributeItem.Title"),
-                    PowerPlannerResources.GetString("Settings_MainPage_ContributeItem.Subtitle"),
-                    () => OpenContribute());
-            }
-
             RenderOption(
                 layout,
                 MaterialDesign.MaterialDesignIcons.Help,
@@ -345,6 +336,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 "View Vx UI tests",
                 () => ShowPopup(new VxTests.VxTestsViewModel(this)));
 #endif
+
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        MainScreenViewModel.IsCompactMode ? new Toolbar
+                        {
+                            Title = Title
+                        }.InnerToolbarThemed() : null,
+
+                        new ScrollView(layout).LinearLayoutWeight(1)
+                    }
+                };
+            }
 
             return new ScrollView(layout);
         }
@@ -586,6 +593,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 case nameof(MainScreenViewModel.IsOffline):
                     UpdateSyncStatus();
                     MarkDirty();
+                    break;
+
+                case nameof(MainScreenViewModel.IsCompactMode):
+                    if (VxPlatform.Current == Platform.Uwp)
+                    {
+                        MarkDirty();
+                    }
                     break;
             }
         }

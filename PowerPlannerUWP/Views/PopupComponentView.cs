@@ -51,18 +51,11 @@ namespace PowerPlannerUWP.Views
         private void UpdateCommands()
         {
             PrimaryCommands.Clear();
-
             if (ViewModel.Commands != null)
             {
-                foreach (var c in ViewModel.Commands)
+                foreach (var c in ViewModel.Commands.Where(i => i != null))
                 {
-                    var nativeButton = new AppBarButton()
-                    {
-                        Label = c.Text,
-                        Icon = new SymbolIcon(c.Glyph.ToUwpSymbol())
-                    };
-                    nativeButton.Click += delegate { c.Action(); };
-                    PrimaryCommands.Add(nativeButton);
+                    PrimaryCommands.Add(c);
                 }
             }
         }
@@ -73,26 +66,9 @@ namespace PowerPlannerUWP.Views
 
             if (ViewModel.SecondaryCommands != null)
             {
-                foreach (var c in ViewModel.SecondaryCommands)
+                foreach (var c in ViewModel.SecondaryCommands.Where(i => i != null))
                 {
-                    var nativeButton = new AppBarButton()
-                    {
-                        Label = c.Text
-                    };
-
-                    if (c.UseQuickConfirmDelete)
-                    {
-                        nativeButton.Click += delegate
-                        {
-                            PopupMenuConfirmDelete.Show(SecondaryOptionsButtonContainer, c.Action);
-                        };
-                    }
-                    else
-                    {
-                        nativeButton.Click += delegate { c.Action(); };
-                    }
-
-                    SecondaryCommands.Add(nativeButton);
+                    SecondaryCommands.Add(c);
                 }
             }
         }

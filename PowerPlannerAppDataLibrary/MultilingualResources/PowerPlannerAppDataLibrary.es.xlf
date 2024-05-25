@@ -2697,10 +2697,14 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
   <source>Done</source>
   <target state="final">Hecho</target>
 </trans-unit>
-<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+        <trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
   <source>Is dropped?</source>
   <target state="final">¿Se ha eliminado?</target>
 </trans-unit>
+        <trans-unit id="String_Offline" translate="yes" xml:space="preserve">
+          <source>Offline</source>
+          <target state="final">Desconectado</target>
+        </trans-unit>
       </group>
     </body>
   </file>

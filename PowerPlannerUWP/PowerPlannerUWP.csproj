@@ -3,13 +3,14 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProjectGuid>{F0716946-AD99-4AF1-9E5F-87BB75AF0C0A}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PowerPlannerUWP</RootNamespace>
     <AssemblyName>PowerPlannerUWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
+	<NeutralLanguage>en-US</NeutralLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
@@ -130,42 +131,17 @@
     <Compile Include="BackgroundTasks\ToastBackgroundTask.cs" />
     <Compile Include="Controls\AbTestControl.cs" />
     <Compile Include="Controls\ImageAttachmentControl.cs" />
-    <Compile Include="Controls\RecurrenceControl.xaml.cs">
-      <DependentUpon>RecurrenceControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\VirtualizedItemsControl.cs" />
-    <Compile Include="Converters\BoolToEnabledStringConverter.cs" />
-    <Compile Include="Converters\BoolToValidityBrushConverter.cs" />
-    <Compile Include="Converters\CanBeUsedForWhatIfModeToFontWeightConverter.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
-    <Compile Include="Converters\DateToFriendlyShortDateConverter.cs" />
     <Compile Include="Converters\DayOfWeeksToStringConverter.cs" />
-    <Compile Include="Converters\GpaToStringConverter.cs" />
-    <Compile Include="Converters\GpaTypeToStringConverter.cs" />
-    <Compile Include="Converters\GradeToFormatConverter.cs" />
-    <Compile Include="Converters\GradeToTextBoxTextConverter.cs" />
     <Compile Include="Converters\ImageUploadOptionToStringConverter.cs" />
     <Compile Include="Converters\IsCompleteToOpacityConverter.cs" />
     <Compile Include="Converters\IsCompleteToVisibilityConverter.cs" />
-    <Compile Include="Converters\IsTaskToVisibilityConverter.cs" />
-    <Compile Include="Converters\IsNotCompleteToVisibilityConverter.cs" />
-    <Compile Include="Converters\IsPastCompletedEventsDisplayedToButtonContentConverter.cs" />
-    <Compile Include="Converters\IsPastCompletedTasksDisplayedToButtonContentConverter.cs" />
-    <Compile Include="Converters\ItemTypeToDatePrefixConverter.cs" />
-    <Compile Include="Converters\MainMenuItemToStringConverter.cs" />
     <Compile Include="Extensions\UWPBrowserExtension.cs" />
     <Compile Include="Extensions\UWPEmailExtension.cs" />
     <Compile Include="Extensions\UWPThemeExtension.cs" />
     <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
-    <Compile Include="Converters\PercentCompleteToGridLengthConverter.cs" />
-    <Compile Include="Converters\PercentCompleteToInvertedConverter.cs" />
     <Compile Include="Converters\PercentCompleteToToolTipValueConverter.cs" />
-    <Compile Include="Converters\ScheduleWeekToStringConverter.cs" />
-    <Compile Include="Converters\SemesterToSemesterViewStartEndStringConverter.cs" />
     <Compile Include="Converters\SkipItemsToStringConverter.cs" />
-    <Compile Include="Converters\StringToImageConverter.cs" />
-    <Compile Include="Converters\StringToImageThumbnailConverter.cs" />
-    <Compile Include="Converters\TimeToShortTimeConverter.cs" />
     <Compile Include="DataTemplateSelectors\ScheduleAllDayItemTemplateSelector.cs" />
     <Compile Include="Extensions\UWPAppointmentsExtension.cs" />
     <Compile Include="Extensions\UWPClassRemindersExtension.cs" />
@@ -185,8 +161,6 @@
     <Compile Include="Helpers\QueryStringHelper.cs" />
     <Compile Include="Helpers\UWPExceptionHelper.cs" />
     <Compile Include="Helpers\UWPNotificationsHelper.cs" />
-    <Compile Include="MenuButtons\CancelAndDelete.cs" />
-    <Compile Include="MenuButtons\CancelAndDeleteBlue.cs" />
     <Compile Include="TileHelpers\ClassTileHelper.cs" />
     <Compile Include="TileHelpers\QuickAddTileHelper.cs" />
     <Compile Include="TileHelpers\ScheduleTileHelper.cs" />
@@ -242,9 +216,6 @@
     <Compile Include="Views\NothingHerePage.xaml.cs">
       <DependentUpon>NothingHerePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassesView.xaml.cs">
-      <DependentUpon>ClassesView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\BaseSettingsSplitView.xaml.cs">
       <DependentUpon>BaseSettingsSplitView.xaml</DependentUpon>
     </Compile>
@@ -259,9 +230,6 @@
     </Compile>
     <Compile Include="Views\SettingsViews\ImageUploadOptionsView.xaml.cs">
       <DependentUpon>ImageUploadOptionsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\LanguageSettingsView.xaml.cs">
-      <DependentUpon>LanguageSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\MainTileView.xaml.cs">
       <DependentUpon>MainTileView.xaml</DependentUpon>
@@ -278,17 +246,11 @@
     <Compile Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml.cs">
       <DependentUpon>CalendarIntegrationTasksView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\WebContentView.xaml.cs">
-      <DependentUpon>WebContentView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SyncErrorsView.xaml.cs">
       <DependentUpon>SyncErrorsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TaskOrEventViews\TaskOrEventListViewItem.xaml.cs">
       <DependentUpon>TaskOrEventListViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TaskOrEventViews\TaskOrEventProgressSidebar.xaml.cs">
-      <DependentUpon>TaskOrEventProgressSidebar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml.cs">
       <DependentUpon>TasksOrEventsGroupedListView.xaml</DependentUpon>
@@ -307,14 +269,6 @@
       <DependentUpon>ScheduleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemplateSelectors\SideBarTemplateSelector.cs" />
-    <Compile Include="Views\BasicPopupView.cs" />
-    <Compile Include="Views\ClassViews\ClassGradesHeaderView.xaml.cs">
-      <DependentUpon>ClassGradesHeaderView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ClassViews\EditingClassScheduleItemView.xaml.cs">
-      <DependentUpon>EditingClassScheduleItemView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\CompletionSlider.xaml.cs">
       <DependentUpon>CompletionSlider.xaml</DependentUpon>
     </Compile>
@@ -325,23 +279,9 @@
     <Compile Include="Views\EditImagesWrapGrid.xaml.cs">
       <DependentUpon>EditImagesWrapGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GradeViews\GradeListViewItem.xaml.cs">
-      <DependentUpon>GradeListViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\GradeViews\GradeSideBar.xaml.cs">
-      <DependentUpon>GradeSideBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\GradeViews\GradeWhatIfProperties.cs" />
-    <Compile Include="Views\GradeViews\WeightCategoryListViewItem.xaml.cs">
-      <DependentUpon>WeightCategoryListViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TaskOrEventViews\TasksOrEventsItemsControl.xaml.cs">
-      <DependentUpon>TasksOrEventsItemsControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TaskOrEventViews\TasksOrEventsListHeader.xaml.cs">
       <DependentUpon>TasksOrEventsListHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TaskOrEventViews\TasksOrEventsListView.cs" />
     <Compile Include="Views\TaskOrEventViews\IsCompleteToTitleForegroundConverter.cs" />
     <Compile Include="Views\ImagesWrapGrid.xaml.cs">
       <DependentUpon>ImagesWrapGrid.xaml</DependentUpon>
@@ -359,24 +299,9 @@
     <Compile Include="Views\ScheduleViews\MyScheduleItem.xaml.cs">
       <DependentUpon>MyScheduleItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\MainSettingsItem.xaml.cs">
-      <DependentUpon>MainSettingsItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PopupMenuConfirmDelete.cs" />
-    <Compile Include="Views\SettingsViews\SettingItem.xaml.cs">
-      <DependentUpon>SettingItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SideBarViews\SideBarMenuItemsView.xaml.cs">
-      <DependentUpon>SideBarMenuItemsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SizeTrigger.cs" />
-    <Compile Include="Views\WeekComboBox.cs" />
     <Compile Include="Views\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowHosts\LoggedInWindowHost.cs" />
-    <Compile Include="WindowHosts\MainAppWindowHost.cs" />
-    <Compile Include="WindowHosts\WindowHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -471,10 +396,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\RecurrenceControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AgendaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -527,10 +448,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ClassesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\BaseSettingsSplitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -548,10 +465,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsViews\ImageUploadOptionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\LanguageSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -575,19 +488,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\WebContentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SyncErrorsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TaskOrEventViews\TaskOrEventListViewItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\TaskOrEventViews\TaskOrEventProgressSidebar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -611,14 +516,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ClassViews\ClassGradesHeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClassViews\EditingClassScheduleItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\CompletionSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -628,22 +525,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditImagesWrapGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\GradeViews\GradeListViewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\GradeViews\GradeSideBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\GradeViews\WeightCategoryListViewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TaskOrEventViews\TasksOrEventsItemsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -668,18 +549,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScheduleViews\MyScheduleItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\MainSettingsItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\SettingItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SideBarViews\SideBarMenuItemsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -736,7 +605,7 @@
       <Version>2.1.32-alpha</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.9.172</Version>
+      <Version>1.7.335</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green">
       <Version>2.1.8</Version>

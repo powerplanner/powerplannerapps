@@ -13,6 +13,8 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerUWP.TileHelpers;
 using Vx.Uwp;
+using Vx.Components.OnlyForNativeLibraries;
+using PowerPlannerAppDataLibrary.Components;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,114 +25,6 @@ namespace PowerPlannerUWP.Views
     /// </summary>
     public sealed partial class ClassView : MainScreenContentViewHostGeneric
     {
-        private AppBarButton _appBarEditClass;
-        private AppBarButton AppBarEditClass
-        {
-            get
-            {
-                if (_appBarEditClass == null)
-                    _appBarEditClass = CreateAppBarButton(Symbol.Edit, LocalizedResources.GetString("String_EditClass"), appBarEditClass_Click);
-
-                return _appBarEditClass;
-            }
-        }
-
-        private AppBarButton _appBarPinClass;
-        private AppBarButton AppBarPinClass
-        {
-            get
-            {
-                if (_appBarPinClass == null)
-                    _appBarPinClass = CreateAppBarButton(Symbol.Pin, LocalizedResources.GetString("String_PinClass"), appBarPinClass_Click);
-
-                return _appBarPinClass;
-            }
-        }
-
-        private AppBarButton _appBarCancelEditClass;
-        private AppBarButton AppBarCancelEditClass
-        {
-            get
-            {
-                if (_appBarCancelEditClass == null)
-                    _appBarCancelEditClass = CreateAppBarButton(Symbol.Cancel, LocalizedResources.Common.GetStringCancel(), appBarCancelEditClass_Click);
-
-                return _appBarCancelEditClass;
-            }
-        }
-
-        private AppBarButton _appBarEditDetails;
-        private AppBarButton AppBarEditDetails
-        {
-            get
-            {
-                if (_appBarEditDetails == null)
-                    _appBarEditDetails = CreateAppBarButton(Symbol.Edit, LocalizedResources.GetString("String_EditDetails"), appBarEditDetails_Click);
-
-                return _appBarEditDetails;
-            }
-        }
-
-        private AppBarButton _appBarEditClassTimes;
-        private AppBarButton AppBarEditClassTimes
-        {
-            get
-            {
-                if (_appBarEditClassTimes == null)
-                    _appBarEditClassTimes = CreateAppBarButton(Symbol.Edit, LocalizedResources.GetString("String_EditTimes"), appBarEditClassTimes_Click);
-
-                return _appBarEditClassTimes;
-            }
-        }
-
-        private AppBarButton _appBarAddTask;
-        private AppBarButton AppBarAddTask
-        {
-            get
-            {
-                if (_appBarAddTask == null)
-                    _appBarAddTask = CreateAppBarButton(Symbol.Add, LocalizedResources.GetString("String_NewTask"), appBarAddTask_Click);
-
-                return _appBarAddTask;
-            }
-        }
-
-        private AppBarButton _appBarAddEvent;
-        private AppBarButton AppBarAddEvent
-        {
-            get
-            {
-                if (_appBarAddEvent == null)
-                    _appBarAddEvent = CreateAppBarButton(Symbol.Add, LocalizedResources.GetString("String_NewEvent"), appBarAddEvent_Click);
-
-                return _appBarAddEvent;
-            }
-        }
-
-        private AppBarButton _appBarAddGrade;
-        private AppBarButton AppBarAddGrade
-        {
-            get
-            {
-                if (_appBarAddGrade == null)
-                    _appBarAddGrade = CreateAppBarButton(Symbol.Add, LocalizedResources.GetString("String_NewGrade"), appBarAddGrade_Click);
-
-                return _appBarAddGrade;
-            }
-        }
-
-        private AppBarButton _appBarDeleteClass;
-        private AppBarButton AppBarDeleteClass
-        {
-            get
-            {
-                if (_appBarDeleteClass == null)
-                    _appBarDeleteClass = CreateAppBarButton(Symbol.Delete, LocalizedResources.GetString("String_DeleteClass"), appBarDeleteClass_Click);
-
-                return _appBarDeleteClass;
-            }
-        }
-
         public new ClassViewModel ViewModel
         {
             get { return base.ViewModel as ClassViewModel; }
@@ -140,17 +34,32 @@ namespace PowerPlannerUWP.Views
         public ClassView()
         {
             this.InitializeComponent();
+
+            Root.RowDefinitions[0].Height = new GridLength(ToolbarComponent.ToolbarHeight);
+        }
+
+        private ClassToolbarComponent _toolbar = new ClassToolbarComponent();
+
+        public override void OnViewModelSetOverride()
+        {
+            base.OnViewModelSetOverride();
+
+            _toolbar.ViewModel = ViewModel;
+            _toolbar.OnPinClass = PinClass;
+            _toolbar.OnUnpinClass = UnpinClass;
+
+            Root.Children.Add(_toolbar.Render());
         }
 
         public override async void OnViewModelLoadedOverride()
         {
             PivotMain.SelectedIndex = ViewModel.InitialPage != null ? (int)ViewModel.InitialPage : _prevSelectedIndex;
+            _toolbar.SelectedIndex = PivotMain.SelectedIndex;
 
             base.OnViewModelLoadedOverride();
 
             try
             {
-                UpdateAppBarButtons();
                 UpdatePinButton();
 
                 ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
@@ -165,14 +74,6 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        public static Guid JustAddedClassId { get; internal set; }
-        
-
-        private void EditSchedules()
-        {
-            ViewModel.EditTimes();
-        }
-
         private void tileDetails_Click(object sender, RoutedEventArgs e)
         {
             PivotMain.SelectedIndex = 1;
@@ -181,6 +82,7 @@ namespace PowerPlannerUWP.Views
         private static int _prevSelectedIndex;
         private void PivotMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            _toolbar.SelectedIndex = PivotMain.SelectedIndex;
             _prevSelectedIndex = PivotMain.SelectedIndex;
             switch (PivotMain.SelectedIndex)
             {
@@ -210,75 +112,22 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        private AppBarButton[] _defaultSecondaryCommands;
-        private AppBarButton[] DefaultSecondaryCommands
-        {
-            get
-            {
-                if (_defaultSecondaryCommands == null)
-                    _defaultSecondaryCommands = new AppBarButton[] { AppBarDeleteClass };
-
-                return _defaultSecondaryCommands;
-            }
-        }
-
-        private void SetCommandBarCommands(params AppBarButton[] buttons)
-        {
-            SetCommandBarCommands(buttons, DefaultSecondaryCommands);
-        }
-
-        private void UpdateAppBarButtons()
-        {
-            var state = PivotGroup.CurrentState;
-
-            if (state == Home)
-                SetCommandBarCommands(
-                    AppBarEditClass,
-                    AppBarPinClass);
-
-            else if (state == Details)
-                SetCommandBarCommands(
-                    AppBarEditDetails);
-
-            else if (state == ClassTimes)
-                SetCommandBarCommands(
-                    AppBarEditClassTimes);
-
-            else if (state == Tasks)
-                SetCommandBarCommands(
-                    AppBarAddTask);
-
-            else if (state == Events)
-                SetCommandBarCommands(
-                    AppBarAddEvent);
-
-            else if (state == Grades)
-                SetCommandBarCommands(
-                    AppBarAddGrade);
-        }
-
         private void GoToHomeVisualState()
         {
             VisualStateManager.GoToState(this, "Home", true);
             GoToExpandedHeaderVisualState();
-
-            UpdateAppBarButtons();
         }
 
         private void GoToDetailsVisualState()
         {
             VisualStateManager.GoToState(this, "Details", true);
             GoToCollapsedHeaderVisualState();
-
-            UpdateAppBarButtons();
         }
 
         private void GoToClassTimesVisualState()
         {
             VisualStateManager.GoToState(this, "ClassTimes", true);
             GoToCollapsedHeaderVisualState();
-
-            UpdateAppBarButtons();
 
             if (PivotItemTimes.Content == null)
             {
@@ -291,8 +140,6 @@ namespace PowerPlannerUWP.Views
             VisualStateManager.GoToState(this, "Tasks", true);
             GoToCollapsedHeaderVisualState();
 
-            UpdateAppBarButtons();
-
             if (PivotItemTasks.Content == null)
             {
                 PivotItemTasks.Content = ViewModel.TasksViewModel.Render();
@@ -304,8 +151,6 @@ namespace PowerPlannerUWP.Views
             VisualStateManager.GoToState(this, "Events", true);
             GoToCollapsedHeaderVisualState();
 
-            UpdateAppBarButtons();
-
             if (PivotItemEvents.Content == null)
             {
                 PivotItemEvents.Content = ViewModel.EventsViewModel.Render();
@@ -316,8 +161,6 @@ namespace PowerPlannerUWP.Views
         {
             VisualStateManager.GoToState(this, "Grades", true);
             GoToCollapsedHeaderVisualState();
-
-            UpdateAppBarButtons();
 
             if (PivotItemGrades.Content == null)
             {
@@ -333,26 +176,6 @@ namespace PowerPlannerUWP.Views
         private void GoToExpandedHeaderVisualState()
         {
             VisualStateManager.GoToState(this, "ExpandedHeader", true);
-        }
-
-        private void appBarCancelEditClassTimes_Click(object sender, RoutedEventArgs e)
-        {
-            GoToClassTimesVisualState();
-        }
-
-        private void appBarAddTask_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.TasksViewModel.Add();
-        }
-
-        private void appBarAddEvent_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.EventsViewModel.Add();
-        }
-
-        private void BorderClassName_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            PivotMain.SelectedIndex = 0;
         }
 
         private void tileClassTimes_Click(object sender, RoutedEventArgs e)
@@ -375,38 +198,6 @@ namespace PowerPlannerUWP.Views
             PivotMain.SelectedIndex = 5;
         }
 
-        private void appBarEditClassTimes_Click(object sender, RoutedEventArgs e)
-        {
-            this.EditSchedules();
-        }
-
-        private void appBarEditDetails_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.EditDetails();
-        }
-
-        private void appBarAddGrade_Click(object sender, RoutedEventArgs e)
-        {
-            if (ViewModel.MainScreenViewModel.Content is ClassWhatIfViewModel whatIf)
-            {
-                whatIf.AddGrade();
-            }
-            else
-            {
-                ViewModel.GradesViewModel.Add();
-            }
-        }
-
-        private void appBarEditClass_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.EditClass();
-        }
-
-        private void appBarCancelEditClass_Click(object sender, RoutedEventArgs e)
-        {
-            this.GoToHomeVisualState();
-        }
-
         private void ScrollViewerHome_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             HomeSquaresGrid.DesiredFitToSize = new Size(
@@ -414,39 +205,29 @@ namespace PowerPlannerUWP.Views
                 e.NewSize.Height - HomeSquaresGrid.Margin.Top - HomeSquaresGrid.Margin.Bottom - ScrollViewerHome.Padding.Top - ScrollViewerHome.Padding.Bottom);
         }
 
-        private async void appBarPinClass_Click(object sender, RoutedEventArgs e)
+        private async void PinClass()
         {
-            try
+            if (!(await PowerPlannerApp.Current.IsFullVersionAsync()))
             {
-                if (!(await PowerPlannerApp.Current.IsFullVersionAsync()))
-                {
-                    PowerPlannerApp.Current.PromptPurchase(LocalizedResources.GetString("String_PinningClassPremiumFeatureMessage"));
-                    return;
-                }
-
-                if (ViewModel == null || ViewModel.ViewItemsGroupClass.Class == null)
-                    return;
-
-                if ((AppBarPinClass.Icon as SymbolIcon).Symbol == Symbol.Pin)
-                {
-                    var acct = await AccountsManager.GetOrLoad(ViewModel.MainScreenViewModel.CurrentLocalAccountId);
-                    var data = await AccountDataStore.Get(ViewModel.MainScreenViewModel.CurrentLocalAccountId);
-
-                    await ClassTileHelper.PinTileAsync(acct, data, ViewModel.ViewItemsGroupClass.Class.Identifier, ViewModel.ViewItemsGroupClass.Class.Name, ColorTools.GetColor(ViewModel.ViewItemsGroupClass.Class.Color));
-                }
-
-                else
-                {
-                    await ClassTileHelper.UnpinTile(ViewModel.MainScreenViewModel.CurrentLocalAccountId, ViewModel.ViewItemsGroupClass.Class.Identifier);
-                }
-
-                UpdatePinButton();
+                PowerPlannerApp.Current.PromptPurchase(LocalizedResources.GetString("String_PinningClassPremiumFeatureMessage"));
+                return;
             }
 
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
+            if (ViewModel == null || ViewModel.ViewItemsGroupClass.Class == null)
+                return;
+
+            var acct = await AccountsManager.GetOrLoad(ViewModel.MainScreenViewModel.CurrentLocalAccountId);
+            var data = await AccountDataStore.Get(ViewModel.MainScreenViewModel.CurrentLocalAccountId);
+
+            await ClassTileHelper.PinTileAsync(acct, data, ViewModel.ViewItemsGroupClass.Class.Identifier, ViewModel.ViewItemsGroupClass.Class.Name, ColorTools.GetColor(ViewModel.ViewItemsGroupClass.Class.Color));
+        }
+
+        private async void UnpinClass()
+        {
+            if (ViewModel == null || ViewModel.ViewItemsGroupClass.Class == null)
+                return;
+
+            await ClassTileHelper.UnpinTile(ViewModel.MainScreenViewModel.CurrentLocalAccountId, ViewModel.ViewItemsGroupClass.Class.Identifier);
         }
 
         private void UpdatePinButton()
@@ -458,14 +239,12 @@ namespace PowerPlannerUWP.Views
 
                 if (ClassTileHelper.IsPinned(ViewModel.MainScreenViewModel.CurrentLocalAccountId, ViewModel.ViewItemsGroupClass.Class.Identifier))
                 {
-                    AppBarPinClass.Icon = new SymbolIcon(Symbol.UnPin);
-                    AppBarPinClass.Label = LocalizedResources.GetString("String_UnpinClass");
+                    _toolbar.IsPinned = true;
                 }
 
                 else
                 {
-                    AppBarPinClass.Icon = new SymbolIcon(Symbol.Pin);
-                    AppBarPinClass.Label = LocalizedResources.GetString("String_PinClass");
+                    _toolbar.IsPinned = false;
                 }
             }
 
@@ -473,58 +252,6 @@ namespace PowerPlannerUWP.Views
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
-        }
-
-        private async void appBarDeleteClass_Click(object sender, RoutedEventArgs e)
-        {
-            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteClassMessage"), LocalizedResources.GetString("String_ConfirmDeleteClassHeader")))
-            {
-                ViewModel.DeleteClass();
-            }
-        }
-        
-        private void ButtonToggleShowPastCompletedTasks_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (ViewModel.ViewItemsGroupClass.IsPastCompletedTasksDisplayed)
-                    ViewModel.ViewItemsGroupClass.HidePastCompletedTasks();
-
-                else
-                    ViewModel.ViewItemsGroupClass.ShowPastCompletedTasks();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private void ButtonToggleShowPastCompletedEvents_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (ViewModel.ViewItemsGroupClass.IsPastCompletedEventsDisplayed)
-                    ViewModel.ViewItemsGroupClass.HidePastCompletedEvents();
-
-                else
-                    ViewModel.ViewItemsGroupClass.ShowPastCompletedEvents();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private void WeightCategoryListViewItem_OnRequestViewGrade(object sender, BaseViewItemMegaItem e)
-        {
-            ViewModel.GradesViewModel.ShowItem(e);
-        }
-
-        private void TaskOrEventListViewItem_OnClickItem(object sender, ViewItemTaskOrEvent e)
-        {
-            ViewModel.GradesViewModel.ShowUnassignedItem(e);
         }
     }
 }
