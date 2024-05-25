@@ -161,7 +161,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
 
         private TimeSpan? GetAotTimeSpan(TimeSpan aotTimeSpan)
         {
-            return aotTimeSpan == TimeSpan.MinValue ? null : aotTimeSpan;
+            return aotTimeSpan == TimeSpan.MinValue ? (TimeSpan?)null : aotTimeSpan;
         }
 
         private TimeSpan AsAotTimeSpan(TimeSpan? value)
