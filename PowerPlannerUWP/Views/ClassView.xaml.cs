@@ -74,14 +74,6 @@ namespace PowerPlannerUWP.Views
             }
         }
 
-        public static Guid JustAddedClassId { get; internal set; }
-        
-
-        private void EditSchedules()
-        {
-            ViewModel.EditTimes();
-        }
-
         private void tileDetails_Click(object sender, RoutedEventArgs e)
         {
             PivotMain.SelectedIndex = 1;
@@ -186,26 +178,6 @@ namespace PowerPlannerUWP.Views
             VisualStateManager.GoToState(this, "ExpandedHeader", true);
         }
 
-        private void appBarCancelEditClassTimes_Click(object sender, RoutedEventArgs e)
-        {
-            GoToClassTimesVisualState();
-        }
-
-        private void appBarAddTask_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.TasksViewModel.Add();
-        }
-
-        private void appBarAddEvent_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.EventsViewModel.Add();
-        }
-
-        private void BorderClassName_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            PivotMain.SelectedIndex = 0;
-        }
-
         private void tileClassTimes_Click(object sender, RoutedEventArgs e)
         {
             PivotMain.SelectedIndex = 2;
@@ -280,58 +252,6 @@ namespace PowerPlannerUWP.Views
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
-        }
-
-        private async void appBarDeleteClass_Click(object sender, RoutedEventArgs e)
-        {
-            if (await App.ConfirmDelete(LocalizedResources.GetString("String_ConfirmDeleteClassMessage"), LocalizedResources.GetString("String_ConfirmDeleteClassHeader")))
-            {
-                ViewModel.DeleteClass();
-            }
-        }
-        
-        private void ButtonToggleShowPastCompletedTasks_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (ViewModel.ViewItemsGroupClass.IsPastCompletedTasksDisplayed)
-                    ViewModel.ViewItemsGroupClass.HidePastCompletedTasks();
-
-                else
-                    ViewModel.ViewItemsGroupClass.ShowPastCompletedTasks();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private void ButtonToggleShowPastCompletedEvents_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (ViewModel.ViewItemsGroupClass.IsPastCompletedEventsDisplayed)
-                    ViewModel.ViewItemsGroupClass.HidePastCompletedEvents();
-
-                else
-                    ViewModel.ViewItemsGroupClass.ShowPastCompletedEvents();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private void WeightCategoryListViewItem_OnRequestViewGrade(object sender, BaseViewItemMegaItem e)
-        {
-            ViewModel.GradesViewModel.ShowItem(e);
-        }
-
-        private void TaskOrEventListViewItem_OnClickItem(object sender, ViewItemTaskOrEvent e)
-        {
-            ViewModel.GradesViewModel.ShowUnassignedItem(e);
         }
     }
 }

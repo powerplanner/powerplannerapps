@@ -23,7 +23,7 @@
         <x:Double x:Key="SliderThumbSize">16</x:Double>
 
         <Style x:Key="SliderStyle" TargetType="Slider">
-            <Setter Property="Background" Value="{StaticResource ButtonBackgroundThemeBrush}"/>
+            <Setter Property="Background" Value="{ThemeResource ItemBackground}"/>
             <Setter Property="BorderBrush" Value="{ThemeResource SliderBorderThemeBrush}"/>
             <Setter Property="BorderThickness" Value="{ThemeResource SliderBorderThemeThickness}"/>
             <Setter Property="Foreground" Value="LightGreen"/>
@@ -72,13 +72,13 @@
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="Green"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="HorizontalTrackRect">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPointerOverBackgroundThemeBrush}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ItemBackgroundPressed}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="VerticalDecreaseRect">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SliderTrackDecreasePressedBackgroundThemeBrush}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="VerticalTrackRect">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPointerOverBackgroundThemeBrush}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ItemBackgroundPressed}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="HorizontalThumb">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="Green"/>
@@ -152,13 +152,13 @@
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="Green"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="HorizontalTrackRect">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPointerOverBackgroundThemeBrush}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ItemBackgroundHover}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="VerticalDecreaseRect">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SliderTrackDecreasePointerOverBackgroundThemeBrush}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="VerticalTrackRect">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPointerOverBackgroundThemeBrush}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ItemBackgroundHover}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="HorizontalThumb">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="Green"/>
