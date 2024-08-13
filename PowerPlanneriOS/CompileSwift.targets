@@ -1,0 +1,41 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <CompileSwift Include="**\*.swift" />
+    </ItemGroup>
+    
+    <Target Name="PrepareCompileSwift" BeforeTargets="CompileSwift" DependsOnTargets="_ComputeTargetArchitectures">
+        <ItemGroup>
+            <SwiftObjectFiles Include="@(CompileSwift -> '$(IntermediateOutputPath)%(Filename).o')" />
+        </ItemGroup>
+        <PropertyGroup>
+            <SwiftSourceFileList>@(CompileSwift -> '&quot;%(FullPath)&quot;', ' ')</SwiftSourceFileList>
+            <SwiftArchName>$(TargetArchitectures.ToLowerInvariant())</SwiftArchName>
+        </PropertyGroup>
+        <PropertyGroup Condition="'$(SwiftToolchainName)' == ''">
+            <SwiftToolchainName Condition="'$(_PlatformName)' == 'iOS' And '$(_SdkIsSimulator)' == 'true'">iphonesimulator</SwiftToolchainName>
+            <SwiftToolchainName Condition="'$(_PlatformName)' == 'iOS' And '$(_SdkIsSimulator)' != 'true'">iphoneos</SwiftToolchainName>
+            <SwiftToolchainName Condition="'$(_PlatformName)' == 'tvOS' And '$(_SdkIsSimulator)' == 'true'">appletvossimulator</SwiftToolchainName>
+            <SwiftToolchainName Condition="'$(_PlatformName)' == 'tvOS' And '$(_SdkIsSimulator)' != 'true'">appletvos</SwiftToolchainName>
+            <SwiftToolchainName Condition="'$(_PlatformName)' == 'MacCatalyst'">maccatalyst</SwiftToolchainName>
+            <SwiftToolchainName Condition="'$(_PlatformName)' == 'macOS'">macosx</SwiftToolchainName>
+        </PropertyGroup>
+        <Message Text="$(_PlatformName)" />
+        <PropertyGroup Condition="'$(SwiftTargetTriple)' == ''">
+            <SwiftTargetTriple Condition="'$(_PlatformName)' == 'iOS' And '$(_SdkIsSimulator)' == 'true'">$(SwiftArchName)-apple-ios$(SupportedOSPlatformVersion)-simulator</SwiftTargetTriple>
+            <SwiftTargetTriple Condition="'$(_PlatformName)' == 'iOS' And '$(_SdkIsSimulator)' != 'true'">$(SwiftArchName)-apple-ios$(SupportedOSPlatformVersion)</SwiftTargetTriple>
+            <SwiftTargetTriple Condition="'$(_PlatformName)' == 'tvOS' And '$(_SdkIsSimulator)' == 'true'">$(SwiftArchName)-apple-tvos$(SupportedOSPlatformVersion)-simulator</SwiftTargetTriple>
+            <SwiftTargetTriple Condition="'$(_PlatformName)' == 'tvOS' And '$(_SdkIsSimulator)' != 'true'">$(SwiftArchName)-apple-tvos$(SupportedOSPlatformVersion)</SwiftTargetTriple>
+            <SwiftTargetTriple Condition="'$(_PlatformName)' == 'MacCatalyst'">$(SwiftArchName)-apple-ios$(SupportedOSPlatformVersion)-macabi</SwiftTargetTriple>
+            <SwiftTargetTriple Condition="'$(_PlatformName)' == 'macOS'">$(SwiftArchName)-apple-macosx$(SupportedOSPlatformVersion)</SwiftTargetTriple>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="CompileSwift" Inputs="@(CompileSwift)" Outputs="@(SwiftObjectFiles)" BeforeTargets="_ComputeLinkNativeExecutableInputs">
+        <Exec Command="xcrun swiftc -target $(SwiftTargetTriple) -sdk $(_SdkRoot) $(SwiftSourceFileList) -emit-object -parse-as-library -module-name '$(AssemblyName)' -swift-version 5" WorkingDirectory="$(IntermediateOutputPath)" />
+        <ItemGroup>
+            <_XamarinMainLibraries Include="@(SwiftObjectFiles)"/>
+            <_MainLinkerFlags Include="-L/usr/lib/swift" />
+            <_MainLinkerFlags Include="-L$(_SdkDevPath)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(SwiftToolchainName)" />
+        </ItemGroup>
+    </Target>
+</Project>

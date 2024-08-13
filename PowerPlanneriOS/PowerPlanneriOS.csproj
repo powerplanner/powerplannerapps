@@ -111,4 +111,16 @@
       <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortrait%402x.png</Link>
     </ImageAsset>
   </ItemGroup>
+  
+  <!--For widget-->
+  <ItemGroup>
+    <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
+      <Name>NativeWidgetExtension</Name>
+      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/NativeApp/Build/Products/Debug-iphoneos</BuildOutput>
+      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/NativeApp/Build/Products/Debug-iphonesimulator</BuildOutput>
+    </AdditionalAppExtensions>
+  </ItemGroup>
+
+  <!--For widget-->
+  <Import Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
 </Project>
