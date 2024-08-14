@@ -21,6 +21,7 @@
 		429AB1D224ABA40600D106F0 /* NativeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 429AB1C124ABA40600D106F0 /* NativeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		429AB22F24ABA5F400D106F0 /* NativeWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 429AB1CA24ABA40600D106F0 /* NativeWidget.intentdefinition */; };
 		429AB23224AD036100D106F0 /* TestDataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429AB23024AD035E00D106F0 /* TestDataReader.swift */; };
+		530139DA2C6BBA0000A77560 /* DataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530139D92C6BBA0000A77560 /* DataReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		429AB23024AD035E00D106F0 /* TestDataReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataReader.swift; sourceTree = "<group>"; };
 		429AB23324AD123100D106F0 /* NativeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NativeWidgetExtension.entitlements; sourceTree = "<group>"; };
 		429AB23424AD128800D106F0 /* NativeApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NativeApp.entitlements; sourceTree = "<group>"; };
+		530139D92C6BBA0000A77560 /* DataReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 		429AB1C724ABA40600D106F0 /* NativeWidget */ = {
 			isa = PBXGroup;
 			children = (
+				530139D92C6BBA0000A77560 /* DataReader.swift */,
 				429AB1C824ABA40600D106F0 /* NativeWidget.swift */,
 				429AB1CA24ABA40600D106F0 /* NativeWidget.intentdefinition */,
 				429AB1CB24ABA40600D106F0 /* Assets.xcassets */,
@@ -264,6 +267,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				530139DA2C6BBA0000A77560 /* DataReader.swift in Sources */,
 				429AB1C924ABA40600D106F0 /* NativeWidget.swift in Sources */,
 				429AB23224AD036100D106F0 /* TestDataReader.swift in Sources */,
 				429AB22F24ABA5F400D106F0 /* NativeWidget.intentdefinition in Sources */,
