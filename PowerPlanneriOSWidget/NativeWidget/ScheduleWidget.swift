@@ -11,20 +11,20 @@ import Intents
 
 struct ScheduleProvider: IntentTimelineProvider {
     public func placeholder(in context: Context) -> ScheduleDataEntry {
-        return getSampleEntry(in: Provider.Intent.init());
+        return getPlaceholderEntry(in: Provider.Intent.init());
     }
     
     public func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (ScheduleDataEntry) -> Void) {
-        let entry = getSampleEntry(in: configuration);
-        completion(entry)
+        let entries = getEntries(for: configuration)
+        completion(entries[0])
     }
     
-    private func getSampleEntry(in configuration: ConfigurationIntent) -> ScheduleDataEntry {
+    private func getPlaceholderEntry(in configuration: ConfigurationIntent) -> ScheduleDataEntry {
         let calendar = Calendar.current;
         return ScheduleDataEntry(holidays: nil, schedules: [
-            ScheduleWidgetScheduleItem(className: "ASTR 170B2", classColor: [230, 133, 184], startTime: 11 * 3600, endTime: (12 * 3600) + (15 * 60), room: "Chavez 103"),
-            ScheduleWidgetScheduleItem(className: "CSC 401A", classColor: [207, 13, 217], startTime: (12 * 3600) + (30 * 60), endTime: (13 * 3600) + (45 * 60), room: "Harvill 302")
-        ], errorMessage: nil, date: Date(), dateOfItems: calendar.date(byAdding: .day, value: 2, to: Date()), configuration: configuration);
+            ScheduleWidgetScheduleItem(className: "...", classColor: [230, 133, 184], startTime: 11 * 3600, endTime: (12 * 3600) + (15 * 60), room: "..."),
+            ScheduleWidgetScheduleItem(className: "...", classColor: [207, 13, 217], startTime: (12 * 3600) + (30 * 60), endTime: (13 * 3600) + (45 * 60), room: "...")
+        ], errorMessage: nil, date: Date(), dateOfItems: Date(), configuration: configuration);
     }
     
     private func getNextDayWithItems(days: [ScheduleWidgetDayItem], currentDay: ScheduleWidgetDayItem) -> ScheduleWidgetDayItem? {
@@ -49,7 +49,7 @@ struct ScheduleProvider: IntentTimelineProvider {
         return nil
     }
     
-    public func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<ScheduleDataEntry>) -> Void) {
+    private func getEntries(for configuration: ConfigurationIntent) -> [ScheduleDataEntry] {
         var entries: [ScheduleDataEntry] = []
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
@@ -65,8 +65,8 @@ struct ScheduleProvider: IntentTimelineProvider {
         
         if (errorMessage != nil) {
             let entry = ScheduleDataEntry(holidays:nil, schedules:nil, errorMessage: data.errorMessage, date: today, dateOfItems: nil, configuration: configuration);
-            completion(Timeline(entries: [entry], policy: .never))
-            return
+            entries.append(entry);
+            return entries;
         }
         
         for day in data.days! {
@@ -81,7 +81,7 @@ struct ScheduleProvider: IntentTimelineProvider {
                     entries.append(ScheduleDataEntry(holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, date: day.date, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "No more entries. Open the app to refresh.", date: day.date, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "Open the app to refresh.", date: day.date, dateOfItems: nil, configuration: configuration))
                 }
             } else {
                 // Otherwise, we know there's schedules, iterate over them to switch through the day
@@ -102,11 +102,16 @@ struct ScheduleProvider: IntentTimelineProvider {
                     entries.append(ScheduleDataEntry(holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, date: displayDate, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "No more entries. Open the app to refresh.", date: displayDate, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "Open the app to refresh.", date: displayDate, dateOfItems: nil, configuration: configuration))
                 }
             }
         }
         
+        return entries;
+    }
+    
+    public func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<ScheduleDataEntry>) -> Void) {
+        let entries = getEntries(for: configuration)
         completion(Timeline(entries: entries, policy: .never));
     }
     

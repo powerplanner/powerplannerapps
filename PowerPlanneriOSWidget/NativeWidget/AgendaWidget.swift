@@ -11,15 +11,16 @@ import Intents
 
 struct Provider: IntentTimelineProvider {
     public func placeholder(in context: Context) -> DataEntry {
-        return DataEntry(items: [PrimaryWidgetDataItem(name: "Bookwork", color: [155, 42, 155], date: Date())], date: Date(), configuration: Provider.Intent.init())
+        return DataEntry(items: [PrimaryWidgetDataItem(name: "...", color: [230, 133, 184], date: Date())], date: Date(), configuration: Provider.Intent.init())
     }
     
     public func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (DataEntry) -> Void) {
-        let entry = DataEntry(items: [PrimaryWidgetDataItem(name: "Bookwork", color: [155, 42, 155], date: Date())], date: Date(), configuration: configuration)
+        let entries = getEntries(for: configuration)
+        let entry = entries[0]
         completion(entry)
     }
     
-    public func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<DataEntry>) -> Void) {
+    private func getEntries(for configuration: ConfigurationIntent) -> [DataEntry] {
         var entries: [DataEntry] = []
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
@@ -42,11 +43,15 @@ struct Provider: IntentTimelineProvider {
             entries.append(entry);
         }
         
+        return entries;
+    }
+    
+    public func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<DataEntry>) -> Void) {
+        var entries = getEntries(for: configuration)
+        
         // Set the refresh policy.
         let timeline = Timeline(entries: entries, policy: .never)
         completion(timeline)
-        
-        
     }
     
     typealias Entry = DataEntry
