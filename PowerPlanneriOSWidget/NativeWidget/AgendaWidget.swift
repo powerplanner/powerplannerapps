@@ -25,7 +25,7 @@ struct Provider: IntentTimelineProvider {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
-        var items = readPrimaryData()
+        let items = readPrimaryData()
         if (items.isEmpty) {
             entries.append(DataEntry(items: [], date: today, configuration: configuration))
             return entries
@@ -43,7 +43,7 @@ struct Provider: IntentTimelineProvider {
     }
     
     public func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<DataEntry>) -> Void) {
-        var entries = getEntries(for: configuration)
+        let entries = getEntries(for: configuration)
         
         // Set the refresh policy.
         let timeline = Timeline(entries: entries, policy: .never)
