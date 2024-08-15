@@ -506,7 +506,7 @@
 				CODE_SIGN_ENTITLEMENTS = NativeWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VAA25J7DNH;
+				DEVELOPMENT_TEAM = A9B367L69G;
 				INFOPLIST_FILE = NativeWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
