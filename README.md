@@ -64,7 +64,6 @@ Prereqs...
 * Install .NET `maui` workload
 
 Instructions...
-1. (Shouldn't be needed anymore...) In XCode, open the `PowerPlanneriOSWidget/NativeApp.xcodeproj` project, go to File -> Project Settings, make sure Derived Data is set to `Project-relative Location`, click Done, then click Product -> Build and ensure the build succeeds. You only need to do this once (unless you're editing the widget). This is the native code that hosts the widget and will get compiled into the .NET app.
 1. In Terminal, `cd` to the `PowerPlanneriOS` directory.
 1. Run `dotnet run --project PowerPlanneriOS.csproj`
 1. The simulator should launch!
