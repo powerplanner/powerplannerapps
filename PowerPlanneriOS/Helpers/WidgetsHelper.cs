@@ -7,7 +7,6 @@ using Foundation;
 using Newtonsoft.Json;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using ToolsPortable;
 using UIKit;
 
@@ -45,12 +44,7 @@ Reload();
         {
             if (UIDevice.CurrentDevice.CheckSystemVersion(14,0))
             {
-                //new WidgetCenterProxy().ReloadAllTimeLines();
                 ReloadWidgets();
-                PortableDispatcher.GetCurrentDispatcher().Run(delegate
-                {
-                    new PortableMessageDialog("Reloaded").Show();
-                });
             }
         }
 
@@ -58,11 +52,9 @@ Reload();
         {
             var account = await AccountsManager.GetLastLogin();
 
-            AccountDataStore data = null;
-
             if (account != null)
             {
-                data = await AccountDataStore.Get(account.LocalAccountId);
+                AccountDataStore data = await AccountDataStore.Get(account.LocalAccountId);
                 var items = await data.GetAllUpcomingItemsForWidgetAsync(DateTime.UtcNow.Date);
                 SavePrimaryWidgetItems(items);
             }
