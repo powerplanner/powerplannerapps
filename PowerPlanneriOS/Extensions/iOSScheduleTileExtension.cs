@@ -26,10 +26,9 @@ namespace PowerPlanneriOS.Extensions
             return Task.FromResult(true);
         }
 
-        public override Task UpdateScheduleTile(AccountDataItem account, AccountDataStore data)
+        public override async Task UpdateScheduleTile(AccountDataItem account, AccountDataStore data)
         {
-            WidgetsHelper.UpdateScheduleWidget();
-            return Task.FromResult(true);
+            await WidgetsHelper.UpdateScheduleWidget();
         }
     }
 }

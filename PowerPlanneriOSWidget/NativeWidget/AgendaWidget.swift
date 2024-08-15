@@ -60,14 +60,6 @@ struct DataEntry: TimelineEntry {
     public let configuration: ConfigurationIntent
 }
 
-struct PlaceholderView : View {
-    var body: some View {
-        VStack {
-            Text("")
-        }
-    }
-}
-
 struct PPAgendaWidgetView: View {
     var entry: DataEntry
     var body: some View {
@@ -161,7 +153,7 @@ struct PPAgendaWidgetView: View {
                 .frame(width: 5)
                 .cornerRadius(2.0)
             Text(title)
-                .padding(.leading, 4)
+                .padding(.leading, 6)
                 .padding(.vertical, 1)
                 .lineLimit(1)
                 .font(.callout)
@@ -183,48 +175,20 @@ struct PPAgendaWidgetView: View {
 
     // Helper function to categorize the dates
     func getDateCategory(for date: Date, today: Date) -> String {
-        let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E, MMM d" // Format for future dates like "Fri, Aug 30"
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "EEEE"
-        
-        if (calendar.startOfDay(for: date) < today) {
-            return "In the past"
-        }
-        
-        let daysBetween = calendar.dateComponents([.day], from: today, to: date).day!
-        
-        if daysBetween == 0 {
-            return "Today"
-        } else if daysBetween == 1 {
-            return "Tomorrow"
-        } else {
-            switch daysBetween {
-            case 2:
-                return "In two days"
-            case 3...6:
-                return "This " + dayFormatter.string(from: date) // Return day of the week like "This Thursday"
-            case 7...13:
-                return "Next " + dayFormatter.string(from: date) // "Next Friday"
-            default:
-                return dateFormatter.string(from: date) // Short date name
-            }
-        }
+        return getRelativeDateString(for: date, today: today)
     }
 }
 
 @available(iOSApplicationExtension 15.0, *)
-@main
-struct NativeWidget: Widget {
-    private let kind: String = "NativeWidget"
+struct AgendaWidget: Widget {
+    private let kind: String = "AgendaWidget"
 
     public var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             PPAgendaWidgetView(entry: entry)
             }
             .contentMarginsDisabled()
-            .configurationDisplayName("Power Planner Agenda")
+            .configurationDisplayName("Agenda")
             .description("Displays your upcoming tasks and events.")
             .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
