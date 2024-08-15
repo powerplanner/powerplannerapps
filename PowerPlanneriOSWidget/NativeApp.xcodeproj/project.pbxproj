@@ -460,7 +460,7 @@
 				CODE_SIGN_ENTITLEMENTS = NativeApp/NativeApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"NativeApp/Preview Content\"";
-				DEVELOPMENT_TEAM = VAA25J7DNH;
+				DEVELOPMENT_TEAM = A9B367L69G;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NativeApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
