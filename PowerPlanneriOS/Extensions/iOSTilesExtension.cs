@@ -16,13 +16,14 @@ namespace PowerPlanneriOS.Extensions
 
         public override async Task UpdatePrimaryTileNotificationsAsync()
         {
-            // This gets called upon account log off
+            // This gets called upon account log off or account change, and should run on current thread.
             await WidgetsHelper.UpdateAllWidgetsAsync();
         }
 
         public override async Task UpdateTileNotificationsForAccountAsync(AccountDataItem account, AccountDataStore data)
         {
-            await WidgetsHelper.UpdateAllWidgetsAsync();
+            // This is called frequently (when any items are edited) and should run on a background thread.
+            await Task.Run(WidgetsHelper.UpdateAllWidgetsAsync);
         }
     }
 }

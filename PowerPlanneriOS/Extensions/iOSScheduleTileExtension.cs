@@ -28,6 +28,7 @@ namespace PowerPlanneriOS.Extensions
 
         public override async Task UpdateScheduleTile(AccountDataItem account, AccountDataStore data)
         {
+            // This isn't called frequently, it's fine to run it on the same thread as caller
             await WidgetsHelper.UpdateScheduleWidget();
         }
     }
