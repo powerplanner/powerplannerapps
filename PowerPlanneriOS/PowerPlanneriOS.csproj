@@ -116,8 +116,8 @@
   <ItemGroup>
     <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
       <Name>NativeWidgetExtension</Name>
-      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/NativeApp/Build/Products/Debug-iphoneos</BuildOutput>
-      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/NativeApp/Build/Products/Debug-iphonesimulator</BuildOutput>
+      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/NativeApp/Build/Products/$(Configuration)-iphoneos</BuildOutput>
+      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/NativeApp/Build/Products/$(Configuration)-iphonesimulator</BuildOutput>
     </AdditionalAppExtensions>
   </ItemGroup>
 
