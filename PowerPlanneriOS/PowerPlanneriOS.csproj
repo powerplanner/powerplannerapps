@@ -111,6 +111,13 @@
       <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortrait%402x.png</Link>
     </ImageAsset>
   </ItemGroup>
+
+  <!--For widget-->
+  <Target Name="BuildXcodeProject" BeforeTargets="BeforeBuild">
+    <!-- Command to build the Xcode project -->
+    <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphoneos -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
+    <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphonesimulator -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
+  </Target>
   
   <!--For widget-->
   <ItemGroup>
