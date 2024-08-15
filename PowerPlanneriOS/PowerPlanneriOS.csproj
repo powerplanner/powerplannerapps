@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFramework>net8.0-ios</TargetFramework>
-	<OutputType>Exe</OutputType>
+	  <TargetFramework>net8.0-ios</TargetFramework>
+	  <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
     <MtouchSdkVersion>17.5</MtouchSdkVersion>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <ForceSimulatorX64ArchitectureInIDE>true</ForceSimulatorX64ArchitectureInIDE>
