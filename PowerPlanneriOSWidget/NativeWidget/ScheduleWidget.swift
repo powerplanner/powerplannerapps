@@ -80,7 +80,7 @@ struct ScheduleProvider: IntentTimelineProvider {
                     entries.append(ScheduleDataEntry(holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, date: day.date, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "Open the app to refresh.", date: day.date, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", date: day.date, dateOfItems: nil, configuration: configuration))
                 }
             } else {
                 // Otherwise, we know there's schedules, iterate over them to switch through the day
@@ -101,7 +101,7 @@ struct ScheduleProvider: IntentTimelineProvider {
                     entries.append(ScheduleDataEntry(holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, date: displayDate, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "Open the app to refresh.", date: displayDate, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", date: displayDate, dateOfItems: nil, configuration: configuration))
                 }
             }
         }
