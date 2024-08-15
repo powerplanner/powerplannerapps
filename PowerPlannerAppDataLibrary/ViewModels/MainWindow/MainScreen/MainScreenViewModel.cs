@@ -33,6 +33,7 @@ using Vx.Views;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Components;
 using System.Drawing;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
@@ -487,6 +488,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             Sync.UploadImageProgress += new WeakEventHandler<UploadImageProgressEventArgs>(Sync_UploadImageProgress).Handler;
 
             base.PropertyChanged += MainScreenViewModel_PropertyChanged;
+
+            // On iOS we need to refresh the widgets on launch
+            if (VxPlatform.Current == Platform.iOS && account != null)
+            {
+                UpdateTileNotifications(account);
+            }
+        }
+
+        private async void UpdateTileNotifications(AccountDataItem account)
+        {
+            try {
+                var data = await AccountDataStore.Get(account.LocalAccountId);
+                TilesExtension.Current?.UpdateTileNotificationsForAccountAsync(account, data);
+            }
+            catch {}
         }
 
         private double _uploadImageProgress;
