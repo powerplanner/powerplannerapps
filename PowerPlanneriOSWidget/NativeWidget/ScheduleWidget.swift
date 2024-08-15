@@ -20,7 +20,6 @@ struct ScheduleProvider: IntentTimelineProvider {
     }
     
     private func getPlaceholderEntry(in configuration: ConfigurationIntent) -> ScheduleDataEntry {
-        let calendar = Calendar.current;
         return ScheduleDataEntry(holidays: nil, schedules: [
             ScheduleWidgetScheduleItem(className: "...", classColor: [230, 133, 184], startTime: 11 * 3600, endTime: (12 * 3600) + (15 * 60), room: "..."),
             ScheduleWidgetScheduleItem(className: "...", classColor: [207, 13, 217], startTime: (12 * 3600) + (30 * 60), endTime: (13 * 3600) + (45 * 60), room: "...")

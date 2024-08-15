@@ -27,23 +27,19 @@ struct Provider: IntentTimelineProvider {
 
         var items = readPrimaryData()
         if (items.isEmpty) {
-            items.append(PrimaryWidgetDataItem(
-                        name: "No items present",
-                        color: [0, 150, 250],  // Example RGB values normalized (0.0 to 1.0)
-                        date: Date()
-                    )
-                )
+            entries.append(DataEntry(items: [], date: today, configuration: configuration))
+            return entries
         }
         
         // Make 14 timeline entries, one for each day (starting with today and continuing into the future), where each entry contains the items grouped by their relative due date relative to the date for that entry. Any overdue items (items due the day before) should be grouped
         // Assuming you want one entry per item in jsonData
         for i in 0..<14 {
             let dateForEntry = calendar.date(byAdding: .day, value: i, to: today)!;
-            let entry = DataEntry(items: items, date: dateForEntry, configuration: configuration);
-            entries.append(entry);
+            let entry = DataEntry(items: items, date: dateForEntry, configuration: configuration)
+            entries.append(entry)
         }
         
-        return entries;
+        return entries
     }
     
     public func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<DataEntry>) -> Void) {
@@ -125,12 +121,17 @@ struct PPAgendaWidgetView: View {
                 // Items
                 VStack(alignment: .leading, spacing: 4) {
                     
-                    ForEach(groupedItems, id: \.0) { category, items in
-                        dateHeaderView(date: category)
-                        ForEach(items.indices, id: \.self) { index in
-                            itemView(title: items[index].name, color: items[index].color)
+                    if items.isEmpty {
+                        Text("All done!")
+                            .padding()
+                    } else {
+                        ForEach(groupedItems, id: \.0) { category, items in
+                            dateHeaderView(date: category)
+                            ForEach(items.indices, id: \.self) { index in
+                                itemView(title: items[index].name, color: items[index].color)
+                            }
+                            Rectangle().fill(Color.white.opacity(0)).frame(height: 4)
                         }
-                        Rectangle().fill(Color.white.opacity(0)).frame(height: 4)
                     }
                 }
                 .frame(minHeight: 0, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .top)
