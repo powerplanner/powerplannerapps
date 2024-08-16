@@ -23,6 +23,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerUWP.Helpers;
+using Windows.Foundation.Metadata;
 
 namespace PowerPlannerUWP.TileHelpers
 {
@@ -30,6 +31,8 @@ namespace PowerPlannerUWP.TileHelpers
     {
         internal const string KEY_ACCOUNT = "account";
         internal const int MAX_WIDE_TILE_TEXT_LENGTH = 66;
+
+        public static bool AreLiveTilesSupported => !InterfacesUWP.DeviceInfo.IsWindows11;
 
         private static MultipleChannelsWorkQueue _updateTileNotificationsForAccountWorkQueue = new MultipleChannelsWorkQueue();
         /// <summary>

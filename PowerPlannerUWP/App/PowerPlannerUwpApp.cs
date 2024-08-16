@@ -33,11 +33,14 @@ namespace PowerPlannerUWP
             PromoRegistrations.Registrations.Insert(0, typeof(PromoOtherPlatformsViewModel.Registration));
 
             // Register settings extensions
-            SettingsListViewModel.OpenLiveTiles = settingsListViewModel =>
+            if (TileHelpers.TileHelper.AreLiveTilesSupported)
             {
-                var pagedViewModel = settingsListViewModel.FindAncestor<PagedViewModel>();
-                pagedViewModel.Navigate(new TileSettingsViewModel(pagedViewModel));
-            };
+                SettingsListViewModel.OpenLiveTiles = settingsListViewModel =>
+                {
+                    var pagedViewModel = settingsListViewModel.FindAncestor<PagedViewModel>();
+                    pagedViewModel.Navigate(new TileSettingsViewModel(pagedViewModel));
+                };
+            }
 
             // Extensions are registered with InitializeUWP.Initialize, since they're also needed from the background task
 

@@ -18,12 +18,26 @@ namespace PowerPlannerUWP.Extensions
 
         public override Task UpdatePrimaryTileNotificationsAsync()
         {
-            return TileHelper.UpdatePrimaryTileNotificationsAsync();
+            if (TileHelper.AreLiveTilesSupported)
+            {
+                return TileHelper.UpdatePrimaryTileNotificationsAsync();
+            }
+            else
+            {
+                return Task.CompletedTask;
+            }
         }
 
         public override Task UpdateTileNotificationsForAccountAsync(AccountDataItem account, AccountDataStore data)
         {
-            return TileHelper.UpdateTileNotificationsForAccountAsync(account, data);
+            if (TileHelper.AreLiveTilesSupported)
+            {
+                return TileHelper.UpdateTileNotificationsForAccountAsync(account, data);
+            }
+            else
+            {
+                return Task.CompletedTask;
+            }
         }
     }
 }

@@ -40,7 +40,11 @@ namespace PowerPlannerUWP.BackgroundTasks
 
                         await ClassRemindersExtension.Current?.ResetAllRemindersAsync(a);
                         await RemindersExtension.Current?.ResetReminders(a, data);
-                        await TileHelper.UpdateTileNotificationsForAccountAsync(a, data);
+
+                        if (TileHelper.AreLiveTilesSupported)
+                        {
+                            await TileHelper.UpdateTileNotificationsForAccountAsync(a, data);
+                        }
 
                         cancellationToken.ThrowIfCancellationRequested();
                     }

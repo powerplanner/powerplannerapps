@@ -53,6 +53,23 @@ namespace InterfacesUWP
                 return DeviceFormFactor.Desktop;
             }
         }
+
+        private static ulong _buildNumber;
+        public static ulong BuildNumber
+        {
+            get
+            {
+                if (_buildNumber == 0)
+                {
+                    string deviceFamilyVersion = AnalyticsInfo.VersionInfo.DeviceFamilyVersion;
+                    ulong version = ulong.Parse(deviceFamilyVersion);
+                    _buildNumber = (version & 0x00000000FFFF0000L) >> 16;
+                }
+
+                return _buildNumber;
+            }
+        }
+        public static bool IsWindows11 => BuildNumber >= 22000;
     }
 
     public enum DeviceFamily
