@@ -528,6 +528,9 @@ Click Continue to login (which might cause duplicates).</value>
   <data name="Tile_SkipItemsExplanation.Text" xml:space="preserve">
     <value>You can also make your live tiles skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</value>
   </data>
+  <data name="Widget_SkipItemsExplanation.Text" xml:space="preserve">
+    <value>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</value>
+  </data>
   <data name="Button_LogIn.Content" xml:space="preserve">
     <value>Log in</value>
   </data>
@@ -1648,16 +1651,16 @@ Please think about using an online account instead!</value>
     <value>No classes. Click "open semester" to add some classes!</value>
   </data>
   <data name="Settings_MainPage_Widgets_Subtitle" xml:space="preserve">
-    <value>Customize Android home screen widgets</value>
+    <value>Customize home screen widgets</value>
   </data>
   <data name="Settings_MyAccount_DeleteAccountConfirmation_Title" xml:space="preserve">
     <value>Delete account?</value>
   </data>
   <data name="Settings_WidgetAgenda_Description" xml:space="preserve">
-    <value>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</value>
+    <value>These settings affect the agenda widget, which can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Agenda widget on your homescreen.</value>
   </data>
   <data name="Settings_WidgetSchedule_Description" xml:space="preserve">
-    <value>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</value>
+    <value>The schedule widget can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</value>
   </data>
   <data name="Settings_Widgets_Agenda_Subtitle" xml:space="preserve">
     <value>Displays upcoming tasks and events</value>

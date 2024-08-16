@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Foundation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
@@ -49,17 +50,35 @@ namespace PowerPlanneriOS.Helpers
 
         private static async Task UpdatePrimaryWidgetAsync()
         {
-            var account = await AccountsManager.GetLastLogin();
+            try
+            {
+                var account = await AccountsManager.GetLastLogin();
 
-            if (account != null)
-            {
-                AccountDataStore data = await AccountDataStore.Get(account.LocalAccountId);
-                var items = await data.GetAllUpcomingItemsForWidgetAsync(DateTime.UtcNow.Date);
-                SavePrimaryWidgetItems(items);
+                if (account != null)
+                {
+                    AccountDataStore data = await AccountDataStore.Get(account.LocalAccountId);
+                    var items = await data.GetAllUpcomingItemsForWidgetAsync(DateTime.UtcNow.Date);
+
+                    SavePrimaryWidgetData(new PrimaryWidgetData
+                    {
+                        Items = ConvertToPrimaryWidgetDataItems(items)
+                    });
+                }
+                else
+                {
+                    SavePrimaryWidgetData(new PrimaryWidgetData
+                    {
+                        ErrorMessage = R.S("String_NoAccount")
+                    });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                SavePrimaryWidgetItems(new List<ViewItemTaskOrEvent>());
+                TelemetryExtension.Current?.TrackException(ex);
+                SavePrimaryWidgetData(new PrimaryWidgetData
+                {
+                    ErrorMessage = "Error generating data"
+                });
             }
         }
 
@@ -82,7 +101,7 @@ namespace PowerPlanneriOS.Helpers
                 {
                     SaveScheduleWidgetData(new ScheduleWidgetData
                     {
-                        ErrorMessage = "No account"
+                        ErrorMessage = R.S("String_NoAccount")
                     });
                 }
 
@@ -94,10 +113,19 @@ namespace PowerPlanneriOS.Helpers
             catch (Exception ex)
             {
                 TelemetryExtension.Current?.TrackException(ex);
+                SaveScheduleWidgetData(new ScheduleWidgetData
+                {
+                    ErrorMessage = "Error generating data"
+                });
             }
         }
 
-        private static void SavePrimaryWidgetItems(List<ViewItemTaskOrEvent> items)
+        private static void SavePrimaryWidgetData(PrimaryWidgetData data)
+        {
+            SaveWidgetState("primaryWidget.json", data);
+        }
+
+        private static PrimaryWidgetDataItem[] ConvertToPrimaryWidgetDataItems(List<ViewItemTaskOrEvent> items)
         {
             PrimaryWidgetDataItem[] dataItems = items.Take(10).Select(i => new PrimaryWidgetDataItem
             {
@@ -106,7 +134,7 @@ namespace PowerPlanneriOS.Helpers
                 Date = i.Date
             }).ToArray();
 
-            SaveWidgetState("primaryWidget.json", dataItems);
+            return dataItems;
         }
 
         private static void SaveScheduleWidgetData(ScheduleTileDataHelper helper)
@@ -115,7 +143,7 @@ namespace PowerPlanneriOS.Helpers
             {
                 SaveScheduleWidgetData(new ScheduleWidgetData
                 {
-                    ErrorMessage = "No semester"
+                    ErrorMessage = R.S("String_NoSemester")
                 });
                 return;
             }
@@ -156,10 +184,45 @@ namespace PowerPlanneriOS.Helpers
 
         private static void SaveWidgetState(string fileName, object data)
         {
-            NSUrl url = NSFileManager.DefaultManager.GetContainerUrl("group.com.barebonesdev.powerplanner");
-            url = url.Append(fileName, false);
-            System.IO.File.WriteAllText(url.Path, JsonConvert.SerializeObject(data, _jsonSettings));
+            try
+            {
+                NSUrl url = NSFileManager.DefaultManager.GetContainerUrl("group.com.barebonesdev.powerplanner");
+                url = url.Append(fileName, false);
+                System.IO.File.WriteAllText(url.Path, JsonConvert.SerializeObject(data, _jsonSettings));
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
+    }
+
+    public class PrimaryWidgetData
+    {
+        public string Title => R.S("MainMenuItem_Agenda");
+
+        public PrimaryWidgetDataItem[] Items { get; set; }
+
+        public string ErrorMessage { get; set; }
+
+        public RelativeDateStrings DateStrings => new RelativeDateStrings();
+
+        public string AllDoneString => R.S("Agenda_NoItemsHeader.Text");
+    }
+
+    public class RelativeDateStrings
+    {
+        public string InThePast => R.S("RelativeDate_InThePast");
+
+        public string Today => R.S("RelativeDate_Today");
+
+        public string Tomorrow => R.S("RelativeDate_Tomorrow");
+
+        public string InTwoDays => PowerPlannerResources.GetRelativeDateInTwoDays();
+
+        public string ThisX => R.S("RelativeDate_ThisDayOfWeek");
+
+        public string NextX => R.S("RelativeDate_NextDayOfWeek");
     }
 
     public class PrimaryWidgetDataItem
@@ -173,8 +236,13 @@ namespace PowerPlanneriOS.Helpers
 
     public class ScheduleWidgetData
     {
+        public string Title => R.S("MainMenuItem_Schedule");
+
         public string ErrorMessage { get; set; }
+
         public ScheduleWidgetDayItem[] Days { get; set; }
+
+        public RelativeDateStrings DateStrings => new RelativeDateStrings();
     }
 
     public class ScheduleWidgetDayItem

@@ -2706,6 +2706,10 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
           <source>Offline</source>
           <target state="final">Offline</target>
         </trans-unit>
+        <trans-unit id="Widget_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
+          <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
+          <target state="new">You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -20,10 +20,10 @@ struct ScheduleProvider: IntentTimelineProvider {
     }
     
     private func getPlaceholderEntry(in configuration: ConfigurationIntent) -> ScheduleDataEntry {
-        return ScheduleDataEntry(holidays: nil, schedules: [
+        return ScheduleDataEntry(fallbackTitle: "...", holidays: nil, schedules: [
             ScheduleWidgetScheduleItem(className: "...", classColor: [230, 133, 184], startTime: 11 * 3600, endTime: (12 * 3600) + (15 * 60), room: "..."),
             ScheduleWidgetScheduleItem(className: "...", classColor: [207, 13, 217], startTime: (12 * 3600) + (30 * 60), endTime: (13 * 3600) + (45 * 60), room: "...")
-        ], errorMessage: nil, date: Date(), dateOfItems: Date(), configuration: configuration);
+        ], errorMessage: nil, dateStrings: DateStrings.defaultStrings, date: Date(), dateOfItems: Date(), configuration: configuration);
     }
     
     private func getNextDayWithItems(days: [ScheduleWidgetDayItem], currentDay: ScheduleWidgetDayItem) -> ScheduleWidgetDayItem? {
@@ -63,7 +63,7 @@ struct ScheduleProvider: IntentTimelineProvider {
         }
         
         if (errorMessage != nil) {
-            let entry = ScheduleDataEntry(holidays:nil, schedules:nil, errorMessage: data.errorMessage, date: today, dateOfItems: nil, configuration: configuration);
+            let entry = ScheduleDataEntry(fallbackTitle: data.title, holidays:nil, schedules:nil, errorMessage: data.errorMessage, dateStrings: data.dateStrings, date: today, dateOfItems: nil, configuration: configuration);
             entries.append(entry);
             return entries;
         }
@@ -71,23 +71,23 @@ struct ScheduleProvider: IntentTimelineProvider {
         for day in data.days! {
             if (day.holidays != nil && !day.holidays!.isEmpty) {
                 // If there's a holiday on this date, we just display the holiday all day
-                entries.append(ScheduleDataEntry(holidays: day.holidays, schedules: nil, errorMessage: nil, date: day.date, dateOfItems: nil, configuration: configuration))
+                entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: day.holidays, schedules: nil, errorMessage: nil, dateStrings: data.dateStrings, date: day.date, dateOfItems: nil, configuration: configuration))
             } else if (day.schedules == nil || day.schedules!.isEmpty) {
                 // If there aren't any schedules on this day...
                 // Get the next day that does have content
                 if let nextDayWithContent = getNextDayWithItems(days: data.days!, currentDay: day) {
                     // Show that content
-                    entries.append(ScheduleDataEntry(holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, date: day.date, dateOfItems: nextDayWithContent.date, configuration: configuration))
+                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, dateStrings: data.dateStrings, date: day.date, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", date: day.date, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", dateStrings: data.dateStrings, date: day.date, dateOfItems: nil, configuration: configuration))
                 }
             } else {
                 // Otherwise, we know there's schedules, iterate over them to switch through the day
                 var displayDate = day.date;
                 var remainingSchedules = Array(day.schedules!)
                 for schedule in day.schedules! {
-                    entries.append(ScheduleDataEntry(holidays:nil, schedules:remainingSchedules, errorMessage: nil, date: displayDate, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays:nil, schedules:remainingSchedules, errorMessage: nil, dateStrings: data.dateStrings, date: displayDate, dateOfItems: nil, configuration: configuration))
                     
                     // Remove the first item
                     remainingSchedules.removeFirst()
@@ -98,10 +98,10 @@ struct ScheduleProvider: IntentTimelineProvider {
                 
                 // And finally, we've exhausted all the schedules on the day, but we need to start displaying the schedule for tomorrow (or the next day)
                 if let nextDayWithContent = getNextDayWithItems(days: data.days!, currentDay: day) {
-                    entries.append(ScheduleDataEntry(holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, date: displayDate, dateOfItems: nextDayWithContent.date, configuration: configuration))
+                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, dateStrings: data.dateStrings, date: displayDate, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", date: displayDate, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", dateStrings: data.dateStrings, date: displayDate, dateOfItems: nil, configuration: configuration))
                 }
             }
         }
@@ -119,9 +119,11 @@ struct ScheduleProvider: IntentTimelineProvider {
 }
 
 struct ScheduleDataEntry: TimelineEntry {
+    public let fallbackTitle: String
     public let holidays: [String]?
     public let schedules: [ScheduleWidgetScheduleItem]?
     public let errorMessage: String?
+    public let dateStrings: DateStrings
     
     public let date: Date
     public let dateOfItems: Date? // Nil means the items are for the same date as the normal date specified.
@@ -133,7 +135,7 @@ struct PPScheduleWidgetView: View {
     var body: some View {
         let today = Calendar.current.startOfDay(for: entry.date)
         
-        let headerText = entry.errorMessage != nil ? "Schedule" : getRelativeDateString(for: entry.dateOfItems ?? today, today: today)
+        let headerText = entry.errorMessage != nil ? entry.fallbackTitle : getRelativeDateString(for: entry.dateOfItems ?? today, today: today, dateStrings: entry.dateStrings)
         
         GeometryReader { geometry in
             VStack(alignment: .leading, spacing: 0) {

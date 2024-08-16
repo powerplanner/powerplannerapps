@@ -7,10 +7,36 @@
 
 import Foundation
 
+struct PrimaryWidgetData: Codable {
+    let title: String
+    let items: [PrimaryWidgetDataItem]?
+    let errorMessage: String?
+    let dateStrings: DateStrings
+    let allDoneString: String
+}
+
 struct PrimaryWidgetDataItem: Codable {
     let name: String
     let color: [UInt8]
     let date: Date
+}
+
+struct DateStrings: Codable {
+    let inThePast: String
+    let today: String
+    let tomorrow: String
+    let inTwoDays: String
+    let thisX: String
+    let nextX: String
+
+    static let defaultStrings = DateStrings(
+        inThePast: "In the past",
+        today: "Today",
+        tomorrow: "Tomorrow",
+        inTwoDays: "In two days",
+        thisX: "This {0}",
+        nextX: "Next {0}"
+    )
 }
 
 func readPrimaryData() -> [PrimaryWidgetDataItem] {
@@ -24,14 +50,26 @@ func readPrimaryData() -> [PrimaryWidgetDataItem] {
             decoder.dateDecodingStrategy = .iso8601
             
             do {
-                let value = try decoder.decode([PrimaryWidgetDataItem].self, from: data)
+                let value = try decoder.decode(PrimaryWidgetData.self, from: data)
                 return value
             } catch {
-                return [PrimaryWidgetDataItem(name: error.localizedDescription, color: [155, 42, 155], date: Date())];
+                return PrimaryWidgetData(
+                    title: "Agenda",
+                    items: nil,
+                    errorMessage: "Error loading data",
+                    dateStrings: DateStrings.defaultStrings,
+                    allDoneString: "All done!"
+                )
             }
         }
     }
 
-    // Return blank list if none
-    return []
+    // Fallback
+    return PrimaryWidgetData(
+        title: "Agenda",
+        items: nil,
+        errorMessage: "Error loading data",
+        dateStrings: DateStrings.defaultStrings,
+        allDoneString: "All done!"
+    )
 }

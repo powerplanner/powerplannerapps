@@ -11,7 +11,7 @@ import Intents
 
 struct Provider: IntentTimelineProvider {
     public func placeholder(in context: Context) -> DataEntry {
-        return DataEntry(items: [PrimaryWidgetDataItem(name: "...", color: [230, 133, 184], date: Date())], date: Date(), configuration: Provider.Intent.init())
+        return DataEntry(title: "...", items: [PrimaryWidgetDataItem(name: "...", color: [230, 133, 184], date: Date())], errorMessage: nil, dateStrings: data.dateStrings, allDoneString: "All done!", date: Date(), configuration: Provider.Intent.init())
     }
     
     public func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (DataEntry) -> Void) {
@@ -25,9 +25,12 @@ struct Provider: IntentTimelineProvider {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
-        let items = readPrimaryData()
-        if (items.isEmpty) {
-            entries.append(DataEntry(items: [], date: today, configuration: configuration))
+        let data = readPrimaryData()
+        if (data.errorMessage != nil) {
+            entries.append(DataEntry(title: data.title, items: [], errorMessage: data.errorMessage, dateStrings: data.dateStrings, allDoneString: "All done!", date: today, configuration: configuration))
+            return entries
+        } else if (data.items == nil || data.items.isEmpty) {
+            entries.append(DataEntry(title: data.title, items: [], errorMessage: nil, dateStrings: data.dateStrings, allDoneString: "All done!", date: today, configuration: configuration))
             return entries
         }
         
@@ -35,7 +38,7 @@ struct Provider: IntentTimelineProvider {
         // Assuming you want one entry per item in jsonData
         for i in 0..<14 {
             let dateForEntry = calendar.date(byAdding: .day, value: i, to: today)!;
-            let entry = DataEntry(items: items, date: dateForEntry, configuration: configuration)
+            let entry = DataEntry(title: data.title, items: items, errorMessage: nil, dateStrings: data.dateStrings, allDoneString: "All done!", date: dateForEntry, configuration: configuration)
             entries.append(entry)
         }
         
@@ -55,7 +58,11 @@ struct Provider: IntentTimelineProvider {
 }
 
 struct DataEntry: TimelineEntry {
+    public let title: String
     public let items: [PrimaryWidgetDataItem]
+    public let errorMessage: String?
+    public let dateStrings: DateStrings
+    public let allDoneString: String
     
     public let date: Date
     public let configuration: ConfigurationIntent
@@ -97,12 +104,12 @@ struct PPAgendaWidgetView: View {
                 // Header bar
                 HStack {
                     if #available(iOSApplicationExtension 15.0, *) {
-                        Text("Agenda")
+                        Text(entry.title)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                             .foregroundStyle(.white)
                     } else {
-                        Text("Agenda")
+                        Text(entry.title)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                             .foregroundColor(.white)
@@ -122,7 +129,7 @@ struct PPAgendaWidgetView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     
                     if items.isEmpty {
-                        Text("All done!")
+                        Text(entry.allDoneString) // "All done!"
                             .padding()
                     } else {
                         ForEach(groupedItems, id: \.0) { category, items in

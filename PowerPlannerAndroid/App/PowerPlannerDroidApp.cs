@@ -55,13 +55,6 @@ namespace PowerPlannerAndroid.App
 
                 Vx.Droid.VxDroidExtensions.ApplicationContext.StartActivity(browserIntent);
             };
-
-            SettingsListViewModel.OpenWidgets = settingsListViewModel =>
-            {
-                var newViewModel = new WidgetsViewModel(SettingsListViewModel.GetParentForSubviews(settingsListViewModel) as PagedViewModel);
-
-                SettingsListViewModel.Show(newViewModel);
-            };
         }
 
         public static new PowerPlannerDroidApp Current
