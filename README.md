@@ -51,14 +51,22 @@ Each platform-specific app simply needs to build views on top of the shared view
 
 ### Building Android
 
-1. Set the start up project to `PowerPlannerDroid`, and ensure the build config is set to `Debug (Droid)` (important that it must be the `(Droid)` config) and architecture is `Any CPU`
-1. Click **Local Machine** to deploy!
+1. Set the start up project to `PowerPlannerDroid`, and ensure the build config is set to `Debug` and architecture is `Any CPU`
+1. Click the deploy button to deploy! It'll typically say the name of the simulator, like "Pixel 5", on the button.
 
 
 ### Building iOS
 
-1. Set the start up project to `PowerPlanneriOS`, and ensure the build config is set to `Debug` and architecture is `Any CPU`
-1. Click **Local Machine** to deploy!
+Prereqs...
+* Be on Mac
+* Have latest XCode installed, with simulators installed and iOS SDK installed
+* Install .NET 8 SDK
+* Install .NET `maui` workload
+
+Instructions...
+1. In Terminal, `cd` to the `PowerPlanneriOS` directory.
+1. Run `dotnet run --project PowerPlanneriOS.csproj`
+1. The simulator should launch!
 
 
 ## Architecture

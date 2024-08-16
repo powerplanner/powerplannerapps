@@ -1190,11 +1190,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             catch (Exception ex)
             {
                 if (ex is OperationCanceledException)
-                    throw ex;
+                    throw;
 
                 reporter.ReportFailed();
 
-                throw ex;
+                throw;
             }
         }
 

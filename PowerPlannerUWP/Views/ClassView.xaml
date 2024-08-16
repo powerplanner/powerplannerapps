@@ -70,7 +70,7 @@
     </local:MainScreenContentViewHostGeneric.Resources>
     
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="Root" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.Transitions>
             <TransitionCollection>
@@ -79,10 +79,11 @@
         </Grid.Transitions>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Pivot x:Name="PivotMain" SelectionChanged="PivotMain_SelectionChanged">
+        <Pivot x:Name="PivotMain" SelectionChanged="PivotMain_SelectionChanged" Grid.Row="1">
 
             <Pivot.HeaderTemplate>
                 <DataTemplate>
@@ -314,7 +315,7 @@
 
         </Pivot>
 
-        <Grid Height="48" Grid.Row="0" x:Name="GridTopBar" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Height="48" Grid.Row="1" x:Name="GridTopBar" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
             <Rectangle
                     Height="4"

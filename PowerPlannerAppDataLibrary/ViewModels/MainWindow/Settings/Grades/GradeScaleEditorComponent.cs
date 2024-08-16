@@ -73,7 +73,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
                             var menu = new ContextMenu();
                             foreach (var preset in GetPresetGradeScales())
                             {
-                                menu.Items.Add(new ContextMenuItem
+                                menu.Items.Add(new MenuItem
                                 {
                                     Text = preset.Name,
                                     Click = () =>

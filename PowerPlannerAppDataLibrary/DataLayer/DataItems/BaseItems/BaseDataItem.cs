@@ -91,9 +91,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
         
         internal DataItemProperty[] GetProperties()
         {
-            /// The properties are static readonly properties on the class. So if an instance of the class already exists, that means the properties 
-            /// have already been assigned and will never change. Thus, we can load them once for each type and then simply cache them for
-            /// future lookups.
+            // The properties are static readonly properties on the class. So if an instance of the class already exists, that means the properties 
+            // have already been assigned and will never change. Thus, we can load them once for each type and then simply cache them for
+            // future lookups.
 
             DataItemProperty[] properties;
 

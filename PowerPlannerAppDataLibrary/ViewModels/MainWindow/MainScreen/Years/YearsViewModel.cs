@@ -11,6 +11,9 @@ using ToolsPortable;
 using Vx.Views;
 using PowerPlannerAppDataLibrary.Converters;
 using PowerPlannerAppDataLibrary.Components;
+using Vx;
+using PowerPlannerAppDataLibrary.Helpers;
+using System.ComponentModel;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
@@ -26,6 +29,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         public YearsViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("MainMenuItem_Years");
+
+            MainScreenViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(MainScreenViewModel_PropertyChanged).Handler;
+        }
+
+        private void MainScreenViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(MainScreenViewModel.IsCompactMode):
+                    MarkDirty();
+                    break;
+            }
         }
 
         protected override View Render()
@@ -110,6 +125,25 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 Margin = new Thickness(0, 24, 0, 0),
                 Click = AddYear
             });
+
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        MainScreenViewModel.IsCompactMode ? new Toolbar
+                        {
+                            Title = Title
+                        }.InnerToolbarThemed() : null,
+
+                        new ScrollView
+                        {
+                            Content = linearLayout
+                        }.LinearLayoutWeight(1)
+                    }
+                };
+            }
 
             return new ScrollView
             {
@@ -208,6 +242,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 }
             };
 
+            if (!string.IsNullOrWhiteSpace(year.Details))
+            {
+                linearLayout.Children.Add(new TransparentContentButton
+                {
+                    AltText = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                    Click = () => ViewYearDetails(year),
+                    Content = new TextBlock
+                    {
+                        Text = year.Details,
+                        WrapText = true,
+                        FontSize = Theme.Current.CaptionFontSize,
+                        Margin = new Thickness(12, 6, 12, 6),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        MaxLines = 3
+                    }
+                });
+            }
+
             SubscribeToCollection(year.Semesters);
             foreach (var semester in year.Semesters)
             {
@@ -273,28 +325,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                                     {
                                         Items =
                                         {
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Editing"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.Edit,
                                                 Click = () => EditSemester(semester)
                                             },
 
-                                            YearsViewItemsGroup.School.Years.Count > 1 ? new ContextMenuItem
+                                            YearsViewItemsGroup.School.Years.Count > 1 ? new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("SemesterActions_MoveSemester"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove,
                                                 Click = () => MoveSemester(semester)
                                             } : null,
 
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetCapitalizedString("EditSemesterPage_Title_Copying"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.ContentCopy,
                                                 Click = () => CopySemester(semester)
                                             },
 
-                                            new ContextMenuItem
+                                            new MenuItem
                                             {
                                                 Text = PowerPlannerResources.GetString("MessageDeleteSemester_Title"),
                                                 Glyph = MaterialDesign.MaterialDesignIcons.Delete,
@@ -308,6 +360,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     }
                 }
             };
+
+            if (!string.IsNullOrWhiteSpace(semester.Details))
+            {
+                linearLayout.Children.Add(new TransparentContentButton
+                {
+                    AltText = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                    Click = () => ViewSemesterDetails(semester),
+                    Content = new TextBlock
+                    {
+                        Text = semester.Details,
+                        WrapText = true,
+                        FontSize = Theme.Current.CaptionFontSize,
+                        Margin = new Thickness(12, 6, 12, 6),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        MaxLines = 3
+                    }
+                });
+            }
 
             linearLayout.Children.Add(RenderClassRow(null, 
                 PowerPlannerResources.GetString("SemesterView_HeaderClass.Text"),
@@ -375,7 +445,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                         {
                             Items =
                             {
-                                new ContextMenuItem
+                                new MenuItem
                                 {
                                     Text = PowerPlannerResources.GetStringWithParameters("SemesterActions_MoveClass", c.Name),
                                     Glyph = MaterialDesign.MaterialDesignIcons.DriveFileMove,
@@ -448,6 +518,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         public void EditSemester(ViewItemSemester semester)
         {
             ShowPopup(AddSemesterViewModel.CreateForEdit(MainScreenViewModel, semester));
+        }
+
+        public void ViewSemesterDetails(ViewItemSemester semester)
+        {
+            ShowPopup(new ViewSemesterDetailsViewModel(this, semester));
+        }
+
+        public void ViewYearDetails(ViewItemYear year)
+        {
+            ShowPopup(new ViewYearDetailsViewModel(this, year));
         }
 
         public void CopySemester(ViewItemSemester semester)

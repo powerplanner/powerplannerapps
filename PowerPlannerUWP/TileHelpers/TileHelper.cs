@@ -582,35 +582,9 @@ namespace PowerPlannerUWP.TileHelpers
         /// </summary>
         /// <param name="data"></param>
         /// <returns>Should always return an initialized list.</returns>
-        private static async Task<List<ViewItemTaskOrEvent>> getAllUpcomingBlocking(AccountDataItem account, AccountDataStore data, DateTime todayAsUtc, BaseUpcomingTileSettings tileSettings)
+        private static Task<List<ViewItemTaskOrEvent>> getAllUpcomingBlocking(AccountDataItem account, AccountDataStore data, DateTime todayAsUtc, BaseUpcomingTileSettings tileSettings)
         {
-            var currSemesterId = account.CurrentSemesterId;
-            if (currSemesterId == Guid.Empty)
-                return new List<ViewItemTaskOrEvent>();
-
-            ScheduleViewItemsGroup scheduleViewGroup;
-            try
-            {
-                scheduleViewGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, account.CurrentSemesterId, trackChanges: true, includeWeightCategories: false);
-            }
-            catch
-            {
-                // If semester not found
-                return new List<ViewItemTaskOrEvent>();
-            }
-
-            DateTime dateToStartDisplayingFrom = DateTime.SpecifyKind(tileSettings.GetDateToStartDisplayingOn(todayAsUtc), DateTimeKind.Utc);
-
-            var agendaViewGroup = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewGroup.Semester, DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local), trackChanges: true);
-
-            // We're not going to worry about locking changes while we enumerate, since if collection changes while we're enumerating, there'll be a
-            // new incoming reset request anyways
-
-            // Agenda view group doesn't sort, so we have to sort it
-            return agendaViewGroup.Items.Where(
-                i => i.Date.Date >= dateToStartDisplayingFrom
-                && ((tileSettings.ShowTasks && i.Type == TaskOrEventType.Task) || (tileSettings.ShowEvents && i.Type == TaskOrEventType.Event))
-                ).OrderBy(i => i).ToList();
+            return data.GetAllUpcomingItemsForWidgetAsync(todayAsUtc);
         }
 
 

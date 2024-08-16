@@ -1,588 +1,141 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{7CFAFCB2-C6ED-4C4B-9CBE-745347986F20}</ProjectGuid>
-    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>PowerPlanneriOS</RootNamespace>
-    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>PowerPlanneriOS</AssemblyName>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <MtouchSdkVersion>16.2</MtouchSdkVersion>
-    <ProvisioningType>manual</ProvisioningType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <MtouchArch>x86_64</MtouchArch>
-    <MtouchLink>None</MtouchLink>
-    <MtouchDebug>true</MtouchDebug>
-    <MtouchExtraArgs>
-    </MtouchExtraArgs>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <MtouchLink>None</MtouchLink>
-    <MtouchArch>x86_64</MtouchArch>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <MtouchArch>ARMv7, ARM64</MtouchArch>
+	  <TargetFramework>net8.0-ios</TargetFramework>
+	  <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
+    <MtouchSdkVersion>17.5</MtouchSdkVersion>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignKey>iPhone Developer: Andrew Bares (A8B2P228SK)</CodesignKey>
-    <MtouchDebug>true</MtouchDebug>
-    <CodesignProvision>Power Planner Debug Deployment</CodesignProvision>
-    <MtouchFastDev>true</MtouchFastDev>
-    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
-    <DeviceSpecificBuild>true</DeviceSpecificBuild>
-    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\iPhone\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Distribution: Andrew Bares (A9B367L69G)</CodesignKey>
-    <CodesignProvision>f8b30adf-bced-4181-87e1-cd3f9c22d962</CodesignProvision>
-    <MtouchLink>SdkOnly</MtouchLink>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <ForceSimulatorX64ArchitectureInIDE>true</ForceSimulatorX64ArchitectureInIDE>
+    <CreatePackage>false</CreatePackage>
+    <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
-    <DebugType>none</DebugType>
-    <Optimize>True</Optimize>
-    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
-    <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <BuildIpa>True</BuildIpa>
-    <CodesignProvision>4736a4a2-6b23-4c65-a857-81ac3892ef15</CodesignProvision>
-    <CodesignKey>iPhone Distribution: Andrew Bares (A9B367L69G)</CodesignKey>
-    <OptimizePNGs>true</OptimizePNGs>
-    <MtouchLink>SdkOnly</MtouchLink>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
-    <DebugType>none</DebugType>
-    <Optimize>True</Optimize>
-    <OutputPath>bin\iPhone\AppStore</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
-    <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>Power Planner App Store Distribution</CodesignProvision>
-    <CodesignKey>iPhone Distribution: BareBones Dev, LLC (A9B367L69G)</CodesignKey>
-    <OptimizePNGs>true</OptimizePNGs>
-    <MtouchLink>SdkOnly</MtouchLink>
-    <BuildIpa>true</BuildIpa>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
-    <AppExtensionDebugBundleId />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <CreatePackage>false</CreatePackage>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="App\Secrets.template.cs" />
-    <Compile Include="App\Secrets.cs" />
-    <Compile Include="App\PowerPlanneriOSApp.cs" />
-    <Compile Include="Controllers\ClassesViewController.cs" />
-    <Compile Include="Controllers\ClassViewController.cs" />
-    <Compile Include="Controllers\ClassViewControllers\ClassDetailsViewController.cs" />
-    <Compile Include="Controllers\ClassViewControllers\ClassGradesViewController.cs" />
-    <Compile Include="Controllers\ClassViewControllers\ClassTasksOrEventsViewController.cs" />
-    <Compile Include="Controllers\ClassViewControllers\ClassTimesViewController.cs" />
-    <Compile Include="Controllers\ClassViewControllers\EditClassDetailsViewController.cs" />
-    <Compile Include="Controllers\InitialSyncViewController.cs" />
-    <Compile Include="Controllers\MainScreenViewController.cs" />
-    <Compile Include="Controllers\PopupViewController.cs" />
-    <Compile Include="Controllers\PopupViewControllerWithScrolling.cs" />
-    <Compile Include="Controllers\PremiumVersionViewController.cs" />
-    <Compile Include="Controllers\ScheduleViewController.cs" />
-    <Compile Include="Controllers\Settings\Grades\ConfigureClassGradesViewController.cs" />
-    <Compile Include="Controllers\Settings\SettingsViewController.cs" />
-    <Compile Include="Extensions\iOSEmailExtension.cs" />
-    <Compile Include="Extensions\iOSInAppPurchaseExtension.cs" />
-    <Compile Include="Extensions\iOSPushExtension.cs" />
-    <Compile Include="Extensions\iOSTelemetryExtension.cs" />
-    <Compile Include="Extensions\IOSRemindersExtension.cs" />
-    <Compile Include="Helpers\ColorResources.cs" />
-    <Compile Include="Helpers\InAppPurchaseHelper.cs" />
-    <Compile Include="Helpers\PowerPlannerUIHelper.cs" />
-    <Compile Include="Main.cs" />
-    <Compile Include="AppDelegate.cs" />
-    <Compile Include="Views\UIDayScheduleSnapshot.cs" />
-    <Compile Include="Views\UIDifferentSemesterOverlayControl.cs" />
-    <Compile Include="Views\UIEditClassScheduleView.cs" />
-    <Compile Include="Views\UIFriendlyDateHeaderCell.cs" />
-    <Compile Include="Views\UIGradeCell.cs" />
-    <Compile Include="Views\UIHeaderCell.cs" />
-    <Compile Include="Views\UIMainCalendarItemView.cs" />
-    <Compile Include="Views\UIPagedDayView.cs" />
-    <Compile Include="Views\UIScheduleEditingView.cs" />
-    <Compile Include="Views\UIScheduleItemView.cs" />
-    <Compile Include="Views\UIScheduleView.cs" />
-    <Compile Include="Views\UIScheduleViewEventItem.cs" />
-    <Compile Include="Views\UIWeightHeaderCell.cs" />
-    <Compile Include="Views\UISingleDayView.cs" />
-    <Compile Include="Views\UIStatusBarView.cs" />
-    <Compile Include="Views\UITaskCell.cs" />
-    <Compile Include="Controllers\Welcome\WelcomeViewController.cs" />
-    <None Include="app.config" />
-    <None Include="GettingStarted.Xamarin" />
-    <None Include="Info.plist">
-      <SubType>Designer</SubType>
-    </None>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <InterfaceDefinition Include="LaunchScreen.storyboard">
-      <SubType>Designer</SubType>
-    </InterfaceDefinition>
-    <Compile Include="Controllers\PopupComponentViewController.cs" />
-    <Compile Include="Controllers\ComponentViewController.cs" />
-    <Compile Include="Extensions\iOSBrowserExtension.cs" />
-    <Compile Include="Extensions\iOSDateTimeFormatterExtension.cs" />
-    <Compile Include="Views\iOSCompletionSlider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="Xamarin.iOS" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Entitlements.plist">
-      <SubType>Designer</SubType>
-    </Content>
+    <Compile Remove="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
-      <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
-      <Name>ToolsPortable</Name>
     </ProjectReference>
     <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
-      <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
-      <Name>PowerPlanner</Name>
     </ProjectReference>
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
-      <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
-      <Name>PowerPlannerSending</Name>
     </ProjectReference>
     <ProjectReference Include="..\Vx.iOS\Vx.iOS.csproj">
-      <Project>{A9593895-1AA2-451D-8865-28DE0E2DFFB1}</Project>
-      <Name>Vx.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\Vx\Vx.csproj">
-      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
-      <Name>Vx</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\App Store Icon.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29@1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29@3x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40@1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40@3x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60@3x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76@1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\DeleteIcon.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\DeleteIcon.imageset\icons8-trash-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\MenuVerticalIcon.imageset\icons8-menu-vertical-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape@1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait@1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortrait@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortraitRetina.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\baseline_error_black_18pt.imageset\baseline_error_black_18pt_3x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\PowerPlannerIcon.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon@1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon@2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon@3x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SaveAsIcon.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SaveAsIcon.imageset\icons8-save-as-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SettingsIcon.imageset\icons8-Settings-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderComplete.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-50.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-100.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderComplete.imageset\icons8-Ok-150.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderCompleteFilled.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-50.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-100.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderCompleteFilled.imageset\icons8-Ok Filled-150.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncomplete.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-50.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-100.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncomplete.imageset\icons8-Cancel-150.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncompleteFilled.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-50.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-100.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\SliderIncompleteFilled.imageset\icons8-Cancel Filled-150.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgenda.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgenda.imageset\icons8-Todo List-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgendaSelected.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabAgendaSelected.imageset\icons8-Todo List Filled-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendar.imageset\icons8-today-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabCalendarSelected.imageset\icons8-today-filled-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClasses.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClasses.imageset\icons8-Books-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClasses.imageset\icons8-Books-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClasses.imageset\icons8-Books-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClassesSelected.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabClassesSelected.imageset\icons8-Books Filled-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMore.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMore.imageset\icons8-student-male-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMore.imageset\icons8-student-male-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMore.imageset\icons8-student-male-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMoreSelected.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabMoreSelected.imageset\icons8-student-male-filled-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabSchedule.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabSchedule.imageset\icons8-Timetable-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabScheduleSelected.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-30.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\TabScheduleSelected.imageset\icons8-Timetable Filled-90.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarBack.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarBack.imageset\icons8-Back Filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarForward.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarForward.imageset\icons8-Forward Filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarDown.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Resources\Images.xcassets\ToolbarDown.imageset\icons8-Down Filled-60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.3">
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.3">
+    </PackageReference>
+    <PackageReference Include="PCLCrypto" Version="2.1.32-alpha">
+    </PackageReference>
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335">
+    </PackageReference>
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8">
+    </PackageReference>
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.4" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%402x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%401x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%401x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%401x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%401x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%401x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%401x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%403x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%403x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5%402x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%403x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%403x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%402x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%403x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%403x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%402x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-60x60%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%401x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-76x76%401x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%403x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-40x40%403x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%402x.png">
+      <Link>Resources\Images.xcassets\AppIcons.appiconset\Icon-App-29x29%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%403x.png">
+      <Link>Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%403x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%402x.png">
+      <Link>Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%401x.png">
+      <Link>Resources\Images.xcassets\PowerPlannerIcon.imageset\NewIcon%401x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%401x.png">
+      <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%401x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait%401x.png">
+      <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait%401x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait%402x.png">
+      <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadPortrait%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%402x.png">
+      <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPadLandscape%402x.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortrait%402x.png">
+      <Link>Resources\Images.xcassets\LaunchImages.launchimage\SplashScreeniPhonePortrait%402x.png</Link>
+    </ImageAsset>
   </ItemGroup>
+
+  <!--For widget, in debug mode don't sign-->
+  <Target Name="BuildDebugXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug'">
+    <!-- Command to build the Xcode project -->
+    <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphoneos -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
+    <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphonesimulator -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
+  </Target>
+
+  <!--For widget, in release mode it should sign-->
+  <Target Name="BuildReleaseXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
+    <!-- Command to build the Xcode project -->
+    <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphoneos -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp" />
+    <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphonesimulator -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp" />
+  </Target>
+  
+  <!--For widget-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>4.5.3</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>4.5.3</Version>
-    </PackageReference>
-    <PackageReference Include="PCLCrypto">
-      <Version>2.1.32-alpha</Version>
-    </PackageReference>
-    <PackageReference Include="sqlite-net-pcl">
-      <Version>1.7.335</Version>
-    </PackageReference>
-    <PackageReference Include="StorageEverywhereIncludingiOS">
-      <Version>1.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugins.Settings">
-      <Version>3.1.1</Version>
-    </PackageReference>
+    <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
+      <Name>NativeWidgetExtension</Name>
+      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/NativeApp/Build/Products/$(Configuration)-iphoneos</BuildOutput>
+      <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/NativeApp/Build/Products/$(Configuration)-iphonesimulator</BuildOutput>
+    </AdditionalAppExtensions>
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <BundleResource Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+
+  <!--For widget-->
+  <Import Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
 </Project>

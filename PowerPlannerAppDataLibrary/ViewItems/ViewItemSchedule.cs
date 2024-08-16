@@ -87,7 +87,6 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         /// If the schedule instance occurs on the given (local) day, returns true. Accomodates for time zones including when time zone causes schedule that occurs on Wednesdays to actually be on Tuesday. Does NOT take into consideration week settings.
         /// </summary>
         /// <param name="date">Date to check in local time</param>
-        /// <param name="startTime"></param>
         /// <returns></returns>
         public bool OccursOnDate(DateTime date)
         {

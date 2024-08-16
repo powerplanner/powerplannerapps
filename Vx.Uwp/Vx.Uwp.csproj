@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProjectGuid>{81903242-5242-48DF-A80D-B1B52316283B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -251,17 +251,22 @@
     <Compile Include="Views\UwpDatePicker.cs" />
     <Compile Include="Views\UwpFontIcon.cs" />
     <Compile Include="Views\UwpFrameLayout.cs" />
+    <Compile Include="Views\UwpImageView.cs" />
     <Compile Include="Views\UwpLinearLayout.cs" />
     <Compile Include="Views\UwpListItemButton.cs" />
     <Compile Include="Views\UwpListView.cs" />
+    <Compile Include="Views\UwpNativeContentContainer.cs" />
     <Compile Include="Views\UwpNumberTextBox.cs" />
+    <Compile Include="Views\UwpPagedViewModelPresenterView.cs" />
     <Compile Include="Views\UwpPasswordBox.cs" />
+    <Compile Include="Views\UwpProgressBar.cs" />
     <Compile Include="Views\UwpScrollView.cs" />
     <Compile Include="Views\UwpSlideView.cs" />
     <Compile Include="Views\UwpSwitch.cs" />
     <Compile Include="Views\UwpTextBlock.cs" />
     <Compile Include="Views\UwpTextBox.cs" />
     <Compile Include="Views\UwpTimePicker.cs" />
+    <Compile Include="Views\UwpToolbar.cs" />
     <Compile Include="Views\UwpTransparentContentButton.cs" />
     <Compile Include="Views\UwpView.cs" />
     <Compile Include="Views\UwpVxComponent.cs" />
@@ -278,7 +283,7 @@
       <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.5.0</Version>
+      <Version>2.8.6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

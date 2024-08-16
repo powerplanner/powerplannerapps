@@ -56,6 +56,7 @@ namespace Vx.Uwp.Views
             _tb = tb;
 
             View.Click += View_Click;
+            View.Padding = new Thickness();
         }
 
         private void View_Click(object sender, RoutedEventArgs e)

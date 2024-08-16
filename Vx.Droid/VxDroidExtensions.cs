@@ -181,9 +181,9 @@ namespace Vx.Droid
         {
             var menu = new PopupMenu(ApplicationContext, view.NativeView.View as Android.Views.View);
 
-            var contextMenuItems = contextMenu.Items.OfType<ContextMenuItem>().ToArray();
+            var contextMenuItems = contextMenu.Items.OfType<MenuItem>().ToArray();
 
-            var menuItems = new List<IMenuItem>();
+            var menuItems = new List<Android.Views.IMenuItem>();
             foreach (var item in contextMenuItems)
             {
                 menuItems.Add(menu.Menu.Add(item.Text));

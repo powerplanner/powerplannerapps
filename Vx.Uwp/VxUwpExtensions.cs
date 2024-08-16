@@ -163,6 +163,31 @@ namespace Vx.Uwp
                     return new UwpListView();
                 }
 
+                if (view is Vx.Views.ImageView)
+                {
+                    return new UwpImageView();
+                }
+
+                if (view is Vx.Views.ProgressBar)
+                {
+                    return new UwpProgressBar();
+                }
+
+                if (view is Vx.Views.PagedViewModelPresenterView)
+                {
+                    return new UwpPagedViewModelPresenterView();
+                }
+
+                if (view is Vx.Views.Toolbar)
+                {
+                    return new UwpToolbar();
+                }
+
+                if (view is Vx.Views.NativeContentContainer)
+                {
+                    return new UwpNativeContentContainer();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
@@ -177,6 +202,11 @@ namespace Vx.Uwp
 
         private static void ShowContextMenu(ContextMenu contextMenu, View view)
         {
+            ShowContextMenu(contextMenu, view.NativeView.View as FrameworkElement);
+        }
+
+        public static void ShowContextMenu(ContextMenu contextMenu, FrameworkElement frameworkElement)
+        {
             var menuFlyout = new MenuFlyout();
             var contextMenuItems = contextMenu.Items.Where(i => i != null).ToArray();
 
@@ -185,54 +215,57 @@ namespace Vx.Uwp
                 menuFlyout.Items.Add(item.ToUwp());
             }
 
-            menuFlyout.ShowAt(view.NativeView.View as FrameworkElement);
+            menuFlyout.ShowAt(frameworkElement);
         }
 
-        private static MenuFlyoutItemBase ToUwp(this IContextMenuItem item)
+        private static MenuFlyoutItemBase ToUwp(this IMenuItem item)
         {
-            if (item is ContextMenuItem cmItem)
+            if (item is MenuItem cmItem)
             {
-                var flyoutItem = new MenuFlyoutItem()
+                if (cmItem.SubItems != null && cmItem.SubItems.Any(i => i != null))
                 {
-                    Text = cmItem.Text
-                };
+                    var flyoutItem = new MenuFlyoutSubItem
+                    {
+                        Text = cmItem.Text
+                    };
 
-                if (cmItem.Glyph != null)
-                {
-                    flyoutItem.Icon = new SymbolIcon(ToUwpSymbol(cmItem.Glyph));
+                    if (cmItem.Glyph != null)
+                    {
+                        flyoutItem.Icon = new SymbolIcon(ToUwpSymbol(cmItem.Glyph));
+                    }
+
+                    foreach (var subItem in cmItem.SubItems.Where(i => i != null))
+                    {
+                        flyoutItem.Items.Add(subItem.ToUwp());
+                    }
+
+                    return flyoutItem;
                 }
-
-                flyoutItem.Click += delegate
+                else
                 {
-                    cmItem.Click?.Invoke();
-                };
+                    var flyoutItem = new MenuFlyoutItem()
+                    {
+                        Text = cmItem.Text
+                    };
 
-                return flyoutItem;
+                    if (cmItem.Glyph != null)
+                    {
+                        flyoutItem.Icon = new SymbolIcon(ToUwpSymbol(cmItem.Glyph));
+                    }
+
+                    flyoutItem.Click += delegate
+                    {
+                        cmItem.Click?.Invoke();
+                    };
+
+                    return flyoutItem;
+                }
             }
-            else if (item is ContextMenuSeparator)
+            else if (item is MenuSeparator)
             {
                 return new MenuFlyoutSeparator();
             }
-            else if (item is ContextMenuSubItem cmSubItem)
-            {
-                var flyoutItem = new MenuFlyoutSubItem
-                {
-                    Text = cmSubItem.Text
-                };
-
-                if (cmSubItem.Glyph != null)
-                {
-                    flyoutItem.Icon = new SymbolIcon(ToUwpSymbol(cmSubItem.Glyph));
-                }
-
-                foreach (var subItem in cmSubItem.Items)
-                {
-                    flyoutItem.Items.Add(subItem.ToUwp());
-                }
-
-                return flyoutItem;
-            }
-            else if (item is ContextMenuRadioItem cmRadioItem)
+            else if (item is MenuRadioItem cmRadioItem)
             {
                 var flyoutItem = new RadioMenuFlyoutItem
                 {

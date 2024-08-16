@@ -58,18 +58,18 @@ namespace Vx.Droid.Views
                 itemIndex++;
             }
 
-            VxCommands().ElementAt(itemIndex).Action?.Invoke();
+            VxCommands().ElementAt(itemIndex).Click?.Invoke();
         }
 
-        private IEnumerable<Vx.Views.ToolbarCommand> VxCommands()
+        private IEnumerable<Vx.Views.MenuItem> VxCommands()
         {
             foreach (var c in VxView.PrimaryCommands)
             {
                 yield return c;
 
-                if (c.SubCommands != null)
+                if (c.SubItems != null)
                 {
-                    foreach (var s in c.SubCommands)
+                    foreach (var s in c.SubItems.OfType<Vx.Views.MenuItem>())
                     {
                         yield return s;
                     }
@@ -103,8 +103,8 @@ namespace Vx.Droid.Views
                 View.NavigationIcon = null;
             }
 
-            if (!Vx.Views.ToolbarCommand.AreSame(oldView?.PrimaryCommands, newView.PrimaryCommands)
-                || !Vx.Views.ToolbarCommand.AreSame(oldView?.SecondaryCommands, newView.SecondaryCommands))
+            if (!Vx.Views.MenuItem.AreSame(oldView?.PrimaryCommands, newView.PrimaryCommands)
+                || !Vx.Views.MenuItem.AreSame(oldView?.SecondaryCommands, newView.SecondaryCommands))
             {
                 View.Menu.Clear();
 
@@ -114,7 +114,7 @@ namespace Vx.Droid.Views
                     foreach (var c in newView.PrimaryCommands)
                     {
                         ISubMenu subMenu = null;
-                        if (c.SubCommands != null && c.SubCommands.Any())
+                        if (c.SubItems != null && c.SubItems.Any(i => i != null))
                         {
                             subMenu = View.Menu.AddSubMenu(c.Text);
                         }
@@ -129,7 +129,7 @@ namespace Vx.Droid.Views
 
                         if (subMenu != null)
                         {
-                            AddTextCommands(subMenu, c.SubCommands);
+                            AddTextCommands(subMenu, c.SubItems.OfType<Vx.Views.MenuItem>().Where(i => i != null));
                         }
 
                         i++;
@@ -140,7 +140,7 @@ namespace Vx.Droid.Views
             }
         }
 
-        private static void AddTextCommands(IMenu menu, IEnumerable<Vx.Views.ToolbarCommand> commands)
+        private static void AddTextCommands(IMenu menu, IEnumerable<Vx.Views.MenuItem> commands)
         {
             foreach (var c in commands)
             {

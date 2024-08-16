@@ -187,6 +187,8 @@ namespace PowerPlanneriOS
             BrowserExtension.Current = new iOSBrowserExtension();
             EmailExtension.Current = new iOSEmailExtension();
             DateTimeFormatterExtension.Current = new iOSDateTimeFormatterExtension();
+            TilesExtension.Current = new iOSTilesExtension();
+            ScheduleTileExtension.Current = new iOSScheduleTileExtension();
 
 #if !DEBUG
             // On release, use the system language selector (in simulator the system settings doesn't support this).

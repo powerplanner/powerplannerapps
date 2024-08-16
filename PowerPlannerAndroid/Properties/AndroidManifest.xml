@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.barebonesdev.powerplanner.dev" android:versionCode="1" android:versionName="1.0.0" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 	<application android:name="powerplanner" android:label="PP-Dev" android:theme="@style/AppTheme" android:allowBackup="false">
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">

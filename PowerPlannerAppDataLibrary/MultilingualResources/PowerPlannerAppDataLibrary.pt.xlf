@@ -2701,6 +2701,10 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
   <source>Is dropped?</source>
   <target state="final">Foi excluído?</target>
 </trans-unit>
+        <trans-unit id="String_Offline" translate="yes" xml:space="preserve">
+          <source>Offline</source>
+          <target state="final">Desconectado</target>
+        </trans-unit>
       </group>
     </body>
   </file>

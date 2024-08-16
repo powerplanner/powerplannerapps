@@ -288,7 +288,7 @@ namespace Vx.iOS.Views
                 {
                     _errorSymbol.Alpha = 1;
                     _errorSymbol.Text = MaterialDesign.MaterialDesignIcons.ErrorOutline;
-                    _errorSymbol.TextColor = UIColor.SystemRedColor;
+                    _errorSymbol.TextColor = UIColor.SystemRed;
                     _errorMessage.Text = value.ErrorMessage;
                     _errorMessageContainer.IsVisible = true;
                 }
@@ -296,7 +296,7 @@ namespace Vx.iOS.Views
                 {
                     _errorSymbol.Alpha = 1;
                     _errorSymbol.Text = MaterialDesign.MaterialDesignIcons.CheckCircleOutline;
-                    _errorSymbol.TextColor = UIColor.SystemGreenColor;
+                    _errorSymbol.TextColor = UIColor.SystemGreen;
                     _errorMessageContainer.IsVisible = false;
                 }
                 else

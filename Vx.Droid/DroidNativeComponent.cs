@@ -26,8 +26,12 @@ namespace Vx.Droid
         public SizeF ComponentSize { get; private set; }
 
         public event EventHandler<SizeF> ComponentSizeChanged;
+        // Disable the CS0067 warning
+#pragma warning disable CS0067
         public event EventHandler ThemeChanged;
         public event EventHandler<bool> MouseOverChanged;
+        // Re-enable the CS0067 warning
+#pragma warning restore CS0067
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
         {

@@ -301,7 +301,7 @@ namespace PowerPlannerAndroid.Extensions
 
         private static void TrackBillingError(BillingResult result)
         {
-            /** There's a few classes of responses...
+            /* There's a few classes of responses...
                - Errors that are expected and I can't do anything about (they need to sign in to Play Store, etc... I should still track just in case they increase dramatically)
                  - (3) BILLING_UNAVAILABLE
                  - (-2) FEATURE_NOT_SUPPORTED
@@ -313,7 +313,7 @@ namespace PowerPlannerAndroid.Extensions
                  - (5) DEVELOPER_ERROR
                  - (6) ERROR
                  - (4) ITEM_UNAVAILABLE
-            **/
+            */
 
             Dictionary<string, string> telemParmas = new Dictionary<string, string>()
             {

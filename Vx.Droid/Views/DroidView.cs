@@ -197,9 +197,6 @@ namespace Vx.Droid.Views
         /// <summary>
         /// Returns the absolute pixels from a given dp value
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="dp"></param>
-        /// <returns></returns>
         public static int AsPx(double dp)
         {
             return (int)Math.Round(AsPxPrecise(dp));

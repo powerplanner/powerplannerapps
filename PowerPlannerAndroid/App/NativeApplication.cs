@@ -31,7 +31,6 @@ using PowerPlannerAndroid.ViewModel.Settings;
 using PowerPlannerAppDataLibrary.ViewModels;
 using AndroidX.Core.Content.PM;
 using Android.Content.PM;
-using System.Runtime.Remoting.Contexts;
 using AndroidX.AppCompat.App;
 
 namespace PowerPlannerAndroid.App
@@ -48,9 +47,9 @@ namespace PowerPlannerAndroid.App
         protected NativeApplication(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
             PackageInfo packageInfo;
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
+            if (OperatingSystem.IsAndroidVersionAtLeast(33))
             {
-                packageInfo = Context.PackageManager.GetPackageInfo(Context.PackageName, PackageManager.PackageInfoFlags.Of(0));
+                packageInfo = Context.PackageManager.GetPackageInfo(Context.PackageName, PackageManager.PackageInfoFlags.Of(PackageInfoFlagsLong.None));
             }
             else
             {

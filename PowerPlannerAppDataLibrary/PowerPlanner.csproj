@@ -5,39 +5,33 @@
     <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
     <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
     <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
-    <Configurations>Release (Android);Debug (Android);Debug;Release</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Debug;Release;Debug (Android);Release (Android)</Configurations>
+    <TargetFrameworks>netstandard2.0;net8.0-android</TargetFrameworks>
+    <Configurations>Debug;Release;</Configurations>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>PowerPlannerAppDataLibrary</RootNamespace>
     <AssemblyName>PowerPlannerAppDataLibrary</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Android)|AnyCPU'">
-    <DefineConstants>TRACE;ANDROID</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (Android)|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE;ANDROID</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Release' Or '$(Configuration)'=='Release (Android)'">
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
 	<Compile Remove="ViewModels\MainWindow\Settings\VxTests\*" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.210505.2" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="1.0.1" />
-    <PackageReference Include="TimeZoneConverter" Version="6.0.1" />
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.4" />
+    <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
     <PackageReference Include="TimeZoneNames" Version="6.0.0" />
-    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta" />
     <PackageReference Include="XliffCompiler" Version="1.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

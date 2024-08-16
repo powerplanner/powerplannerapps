@@ -170,7 +170,7 @@ namespace Vx.iOS
 
         private static void ShowContextMenu(ContextMenu contextMenu, View view)
         {
-            var contextMenuItems = contextMenu.Items.OfType<ContextMenuItem>().ToArray();
+            var contextMenuItems = contextMenu.Items.OfType<MenuItem>().ToArray();
 
             // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
             UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
@@ -334,7 +334,7 @@ namespace Vx.iOS
             }
         }
 
-        public static UIBarButtonItem ToUIBarButtonItem(this ToolbarCommand command, bool skipClickHandler = false)
+        public static UIBarButtonItem ToUIBarButtonItem(this MenuItem command, bool skipClickHandler = false)
         {
             UIBarButtonItem btn;
             var systemItem = command.Glyph.ToUIBarButtonSystemItem();
@@ -386,7 +386,7 @@ namespace Vx.iOS
             }
             if (!skipClickHandler)
             {
-                btn.Clicked += delegate { command.Action(); };
+                btn.Clicked += delegate { command.Click(); };
             }
             return btn;
         }

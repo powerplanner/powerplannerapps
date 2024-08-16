@@ -2002,6 +2002,9 @@ Please think about using an online account instead!</value>
   <data name="String_OfflineLastSync" xml:space="preserve">
     <value>Offline, last sync: {0}</value>
   </data>
+	<data name="String_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
   <data name="AddClassTime_RemoveThisSchedule.Content" xml:space="preserve">
     <value>Remove this schedule</value>
   </data>

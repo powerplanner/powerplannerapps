@@ -67,13 +67,12 @@ namespace InterfacesDroid.Views
                 _viewForBinding = inflater.Inflate(resourceId, root, false); // Setting this to false but including the root ensures that the resource's root layout properties will be respected
                 return _viewForBinding;
             }
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
             catch (Exception ex)
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
             {
                 if (Debugger.IsAttached)
                 {
                     Debugger.Break();
+                    System.Diagnostics.Debug.WriteLine(ex);
                 }
 
                 throw;
@@ -104,13 +103,12 @@ namespace InterfacesDroid.Views
 
                     OnDataContextChanged(oldValue, value);
                 }
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
                 catch (Exception ex)
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
                 {
                     if (Debugger.IsAttached)
                     {
                         Debugger.Break();
+                        System.Diagnostics.Debug.WriteLine(ex);
                     }
                 }
             }
@@ -142,6 +140,7 @@ namespace InterfacesDroid.Views
                 catch (Exception ex)
                 {
                     Debugger.Break();
+                    System.Diagnostics.Debug.WriteLine(ex);
                 }
 #else
                 catch { }

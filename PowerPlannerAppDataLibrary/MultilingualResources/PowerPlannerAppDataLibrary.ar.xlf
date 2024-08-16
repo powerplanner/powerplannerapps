@@ -2700,10 +2700,14 @@ Once you purchase the premium version, you own the premium version on all your d
   <source>Done</source>
   <target state="final">تم</target>
 </trans-unit>
-<trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
+        <trans-unit id="EditGradePage_IsDropped" translate="yes" xml:space="preserve">
   <source>Is dropped?</source>
   <target state="final">هل تم إسقاطه؟</target>
 </trans-unit>
+        <trans-unit id="String_Offline" translate="yes" xml:space="preserve">
+          <source>Offline</source>
+          <target state="final">غير متصل</target>
+        </trans-unit>
       </group>
     </body>
   </file>

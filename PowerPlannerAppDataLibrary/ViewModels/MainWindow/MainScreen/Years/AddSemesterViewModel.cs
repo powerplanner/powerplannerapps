@@ -127,7 +127,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     Margin = new Thickness(0, 18, 0, 4)
                 } : null,
 
-                State == OperationState.Copying ? RenderClassesForCopy() : null
+                State == OperationState.Copying ? RenderClassesForCopy() : null,
+
+                new MultilineTextBox
+                {
+                    Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                    Height = 140, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
+                    Text = VxValue.Create(Details, v => Details = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                }
             );
         }
 
@@ -227,7 +235,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             var answer = new AddSemesterViewModel(parent, OperationState.Copying)
             {
                 _copyAvailableYears = years,
-                _copyAvailableClasses = semesterToCopy.Classes.ToArray()
+                _copyAvailableClasses = semesterToCopy.Classes.ToArray(),
+                Details = semesterToCopy.Details
             };
             answer._copySelectedClasses = new HashSet<ViewItemClass>(answer._copyAvailableClasses);
             answer._copySelectedYear.Value = semesterToCopy.Year;
@@ -241,7 +250,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 SemesterToEdit = semesterToEdit,
                 Name = semesterToEdit.Name,
                 OverriddenGpa = semesterToEdit.OverriddenGPA != PowerPlannerSending.Grade.UNGRADED ? semesterToEdit.OverriddenGPA : (double?)null,
-                OverriddenCredits = semesterToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? semesterToEdit.OverriddenCredits : (double?)null
+                OverriddenCredits = semesterToEdit.OverriddenCredits != PowerPlannerSending.Grade.UNGRADED ? semesterToEdit.OverriddenCredits : (double?)null,
+                Details = semesterToEdit.Details
             };
 
             if (!PowerPlannerSending.DateValues.IsUnassigned(semesterToEdit.Start))
@@ -282,6 +292,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
         {
             get { return _endDate; }
             set { SetProperty(ref _endDate, value, nameof(EndDate)); }
+        }
+
+        private string _details = "";
+        public string Details
+        {
+            get => _details;
+            set => SetProperty(ref _details, value, nameof(Details));
         }
 
         public void Save()
@@ -331,6 +348,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             semester.Name = name;
             semester.OverriddenGPA = IsCustomizeCreditsGpaChecked && OverriddenGpa != null ? OverriddenGpa.Value : PowerPlannerSending.Grade.UNGRADED;
             semester.OverriddenCredits = IsCustomizeCreditsGpaChecked && OverriddenCredits != null ? OverriddenCredits.Value : PowerPlannerSending.Grade.UNGRADED;
+            semester.Details = Details.Trim();
 
             if (StartDate != null)
             {

@@ -156,8 +156,14 @@ namespace Vx.Uwp.Views
 
             public bool AreVerticalSnapPointsRegular => true;
 
+            // Disable the CS0067 warning
+            #pragma warning disable CS0067
+
             public event EventHandler<object> HorizontalSnapPointsChanged;
             public event EventHandler<object> VerticalSnapPointsChanged;
+
+            // Re-enable the CS0067 warning
+            #pragma warning restore CS0067
         }
 
         private Func<object, Vx.Views.View> _itemTemplate;

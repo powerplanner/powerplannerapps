@@ -12,7 +12,7 @@ namespace InterfacesiOS.Views
 {
     public class BareSnackbarPresenter : UIView
     {
-        public static UIColor ButtonTextColor { get; set; } = UIColor.SystemBlueColor;
+        public static UIColor ButtonTextColor { get; set; } = UIColor.SystemBlue;
         public static nfloat BottomOffset { get; set; } = 0;
 
         public BareSnackbarManager SnackbarManager { get; private set; }
@@ -94,9 +94,9 @@ namespace InterfacesiOS.Views
             {
                 UIButton button = new UIButton()
                 {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
-                    Font = UIFont.PreferredCaption1.Bold()
+                    TranslatesAutoresizingMaskIntoConstraints = false
                 };
+                button.TitleLabel.Font = UIFont.PreferredCaption1.Bold();
                 button.SetTitle(snackbar.ButtonText, UIControlState.Normal);
                 button.SetTitleColor(ButtonTextColor, UIControlState.Normal);
                 snackbarContainer.AddSubview(button);

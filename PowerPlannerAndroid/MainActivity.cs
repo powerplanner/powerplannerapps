@@ -73,11 +73,11 @@ namespace PowerPlannerAndroid
             Vx.Droid.VxDroidExtensions.ApplicationContext = this;
 
 #if DEBUG
-            int disposedCount = 0;
-            WeakEventHandler.ObjectDisposedAction = delegate
-            {
-                Toast.MakeText(Application.Context, disposedCount++ + " ObjectDisposed", ToastLength.Short).Show();
-            };
+            //int disposedCount = 0;
+            //WeakEventHandler.ObjectDisposedAction = delegate
+            //{
+            //    Toast.MakeText(Application.Context, disposedCount++ + " ObjectDisposed", ToastLength.Short).Show();
+            //};
 #endif
 
             AppCenter.Start(Secrets.AppCenterAppSecret, typeof(Analytics), typeof(Crashes));
@@ -432,11 +432,6 @@ namespace PowerPlannerAndroid
                     if (v <= new Version(2102, 20, 1, 99))
                     {
                         changedText += "\n - Reminders for class schedule! See the settings to configure how soon before classes to be reminded.";
-                    }
-
-                    if (v <= new Version(2009, 25, 1, 0) && Android.Icu.Text.DecimalFormatSymbols.Instance.DecimalSeparator == ',')
-                    {
-                        changedText += "\n - Fixed decimal entry support for , as decimal!";
                     }
 
                     if (v <= new Version(2009, 23, 1, 0))

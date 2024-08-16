@@ -39,9 +39,6 @@ namespace InterfacesDroid.Adapters
         /// <summary>
         /// Creates an adapter using the default spinners
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <returns></returns>
         public static BaseAdapter<string> CreateSimple(IEnumerable<string> strings)
         {
             return new SimpleStringAdapter(strings);

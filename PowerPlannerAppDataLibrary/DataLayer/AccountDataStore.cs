@@ -18,9 +18,10 @@ using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
 using System.Reflection;
+using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
 
-/// <summary>
-/// ClassAttribute
+/*  ClassAttribute
 /// ClassAttributeUnderClass
 /// ClassSubject
 /// ClassSubjectUnderClass
@@ -35,8 +36,7 @@ using System.Reflection;
 /// Teacher
 /// WeightCategory
 /// Year
-/// </summary>
-/// 
+*/
 
 namespace PowerPlannerAppDataLibrary.DataLayer
 {
@@ -513,7 +513,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             /// <summary>
             /// Caller should establish data lock
             /// </summary>
-            /// <param name="localAccountId"></param>
             /// <returns></returns>
             public static async Task<ChangedItems> Load(AccountDataStore dataStore)
             {
@@ -762,7 +761,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <summary>
         /// Caller must establish data lock. Caller must call InitializeDatabaseAsync().
         /// </summary>
-        /// <param name="localAccountId"></param>
         private AccountDataStore(AccountDataItem account)
         {
             Account = account;
@@ -2203,5 +2201,42 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 #endif
+
+        /// <summary>
+        /// Guaranteed that data won't be null
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns>Should always return an initialized list.</returns>
+        public async Task<List<ViewItemTaskOrEvent>> GetAllUpcomingItemsForWidgetAsync(DateTime todayAsUtc)
+        {
+            var account = Account;
+            var currSemesterId = account.CurrentSemesterId;
+            if (currSemesterId == Guid.Empty)
+                return new List<ViewItemTaskOrEvent>();
+
+            ScheduleViewItemsGroup scheduleViewGroup;
+            try
+            {
+                scheduleViewGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, account.CurrentSemesterId, trackChanges: true, includeWeightCategories: false);
+            }
+            catch
+            {
+                // If semester not found
+                return new List<ViewItemTaskOrEvent>();
+            }
+
+            DateTime dateToStartDisplayingFrom = DateTime.SpecifyKind(account.MainTileSettings.GetDateToStartDisplayingOn(todayAsUtc), DateTimeKind.Utc);
+
+            var agendaViewGroup = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewGroup.Semester, DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local), trackChanges: true);
+
+            // We're not going to worry about locking changes while we enumerate, since if collection changes while we're enumerating, there'll be a
+            // new incoming reset request anyways
+
+            // Agenda view group doesn't sort, so we have to sort it
+            return agendaViewGroup.Items.Where(
+                i => i.Date.Date >= dateToStartDisplayingFrom
+                && ((account.MainTileSettings.ShowTasks && i.Type == TaskOrEventType.Task) || (account.MainTileSettings.ShowEvents && i.Type == TaskOrEventType.Event))
+                ).OrderBy(i => i).ToList();
+        }
     }
 }

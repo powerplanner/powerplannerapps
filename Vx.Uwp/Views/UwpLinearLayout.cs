@@ -12,7 +12,6 @@ namespace Vx.Uwp.Views
 {
     public class UwpLinearLayout : UwpView<Vx.Views.LinearLayout, LinearLayout>
     {
-        private static int count = 0;
         protected override void ApplyProperties(Vx.Views.LinearLayout oldView, Vx.Views.LinearLayout newView)
         {
             base.ApplyProperties(oldView, newView);

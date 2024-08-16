@@ -351,9 +351,6 @@ namespace InterfacesDroid.Views
 
             public bool Equals(Color other)
             {
-                if (Color == null || other == null)
-                    return false;
-
                 return Color.ToArgb() == other.ToArgb();
             }
         }

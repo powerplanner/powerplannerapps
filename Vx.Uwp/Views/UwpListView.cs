@@ -16,6 +16,7 @@ namespace Vx.Uwp.Views
             View.Name = "ListView" + _listViewNum;
             _listViewNum++;
             View.SelectionMode = ListViewSelectionMode.None;
+            View.ItemClick += View_ItemClick;
 
             var style = new Style();
             style.TargetType = typeof(ListViewItem);
@@ -25,9 +26,16 @@ namespace Vx.Uwp.Views
             View.ItemContainerStyle = style;
         }
 
+        private void View_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            VxView.ItemClicked?.Invoke(e.ClickedItem);
+        }
+
         protected override void ApplyProperties(Vx.Views.ListView oldView, Vx.Views.ListView newView)
         {
             base.ApplyProperties(oldView, newView);
+
+            View.IsItemClickEnabled = newView.ItemClicked != null;
 
             View.Padding = newView.Padding.ToUwp();
 
