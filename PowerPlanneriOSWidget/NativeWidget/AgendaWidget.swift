@@ -11,7 +11,7 @@ import Intents
 
 struct Provider: IntentTimelineProvider {
     public func placeholder(in context: Context) -> DataEntry {
-        return DataEntry(title: "...", items: [PrimaryWidgetDataItem(name: "...", color: [230, 133, 184], date: Date())], errorMessage: nil, dateStrings: data.dateStrings, allDoneString: "All done!", date: Date(), configuration: Provider.Intent.init())
+        return DataEntry(title: "...", items: [PrimaryWidgetDataItem(name: "...", color: [230, 133, 184], date: Date())], errorMessage: nil, dateStrings: DateStrings.defaultStrings, allDoneString: "All done!", date: Date(), configuration: Provider.Intent.init())
     }
     
     public func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (DataEntry) -> Void) {
@@ -29,8 +29,8 @@ struct Provider: IntentTimelineProvider {
         if (data.errorMessage != nil) {
             entries.append(DataEntry(title: data.title, items: [], errorMessage: data.errorMessage, dateStrings: data.dateStrings, allDoneString: "All done!", date: today, configuration: configuration))
             return entries
-        } else if (data.items == nil || data.items.isEmpty) {
-            entries.append(DataEntry(title: data.title, items: [], errorMessage: nil, dateStrings: data.dateStrings, allDoneString: "All done!", date: today, configuration: configuration))
+        } else if (data.items == nil || data.items!.isEmpty) {
+            entries.append(DataEntry(title: data.title, items: [], errorMessage: nil, dateStrings: data.dateStrings, allDoneString: data.allDoneString, date: today, configuration: configuration))
             return entries
         }
         
@@ -38,7 +38,7 @@ struct Provider: IntentTimelineProvider {
         // Assuming you want one entry per item in jsonData
         for i in 0..<14 {
             let dateForEntry = calendar.date(byAdding: .day, value: i, to: today)!;
-            let entry = DataEntry(title: data.title, items: items, errorMessage: nil, dateStrings: data.dateStrings, allDoneString: "All done!", date: dateForEntry, configuration: configuration)
+            let entry = DataEntry(title: data.title, items: data.items!, errorMessage: nil, dateStrings: data.dateStrings, allDoneString: data.allDoneString, date: dateForEntry, configuration: configuration)
             entries.append(entry)
         }
         
@@ -90,7 +90,7 @@ struct PPAgendaWidgetView: View {
 
         // Group items by their date category while preserving order
         let groupedItems: [(String, [PrimaryWidgetDataItem])] = items.reduce(into: []) { result, item in
-            let category = getDateCategory(for: item.date, today: today)
+            let category = getDateCategory(for: item.date, today: today, dateStrings: entry.dateStrings)
 
             if let index = result.firstIndex(where: { $0.0 == category }) {
                 result[index].1.append(item)
@@ -187,8 +187,8 @@ struct PPAgendaWidgetView: View {
     }
 
     // Helper function to categorize the dates
-    func getDateCategory(for date: Date, today: Date) -> String {
-        return getRelativeDateString(for: date, today: today)
+    func getDateCategory(for date: Date, today: Date, dateStrings: DateStrings) -> String {
+        return getRelativeDateString(for: date, today: today, dateStrings: dateStrings)
     }
 }
 

@@ -80,7 +80,7 @@ struct ScheduleProvider: IntentTimelineProvider {
                     entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, dateStrings: data.dateStrings, date: day.date, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", dateStrings: data.dateStrings, date: day.date, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nil, schedules: nil, errorMessage: data.noClassesString, dateStrings: data.dateStrings, date: day.date, dateOfItems: nil, configuration: configuration))
                 }
             } else {
                 // Otherwise, we know there's schedules, iterate over them to switch through the day
@@ -101,7 +101,7 @@ struct ScheduleProvider: IntentTimelineProvider {
                     entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nextDayWithContent.holidays, schedules: nextDayWithContent.schedules, errorMessage: nil, dateStrings: data.dateStrings, date: displayDate, dateOfItems: nextDayWithContent.date, configuration: configuration))
                 } else {
                     // Show that we've reached the end
-                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nil, schedules: nil, errorMessage: "No upcoming classes.", dateStrings: data.dateStrings, date: displayDate, dateOfItems: nil, configuration: configuration))
+                    entries.append(ScheduleDataEntry(fallbackTitle: data.title, holidays: nil, schedules: nil, errorMessage: data.noClassesString, dateStrings: data.dateStrings, date: displayDate, dateOfItems: nil, configuration: configuration))
                 }
             }
         }

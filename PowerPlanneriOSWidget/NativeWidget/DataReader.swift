@@ -39,7 +39,7 @@ struct DateStrings: Codable {
     )
 }
 
-func readPrimaryData() -> [PrimaryWidgetDataItem] {
+func readPrimaryData() -> PrimaryWidgetData {
     if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.barebonesdev.powerplanner") {
         let path = url.appendingPathComponent("primaryWidget.json")
 
