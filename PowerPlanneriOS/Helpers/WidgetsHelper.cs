@@ -243,6 +243,8 @@ namespace PowerPlanneriOS.Helpers
         public ScheduleWidgetDayItem[] Days { get; set; }
 
         public RelativeDateStrings DateStrings => new RelativeDateStrings();
+
+        public string NoClassesString => R.S("String_NoUpcomingClasses");
     }
 
     public class ScheduleWidgetDayItem

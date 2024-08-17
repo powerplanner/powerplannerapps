@@ -2712,6 +2712,10 @@ Once you purchase the premium version, you own the premium version on all your d
           <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
           <target state="final">يمكنك أيضًا جعل أداة الويدجيت تتجاوز العناصر المتأخرة. إذا قمت بتعيين الخيار أدناه، فسيتم تجاهل أي عناصر أقدم من عدد الأيام المحدد.</target>
         </trans-unit>
+        <trans-unit id="String_NoUpcomingClasses" translate="yes" xml:space="preserve">
+          <source>No upcoming classes.</source>
+          <target state="final">لا توجد دروس قادمة.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

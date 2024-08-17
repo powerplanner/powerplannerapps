@@ -2710,6 +2710,10 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
           <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
           <target state="final">Sie können auch einstellen, dass Ihr Widget über fällige Aufgaben hinweggeht. Wenn Sie die folgende Option aktivieren, werden alle Aufgaben ignoriert, die älter sind als die angegebene Anzahl an Tagen.</target>
         </trans-unit>
+        <trans-unit id="String_NoUpcomingClasses" translate="yes" xml:space="preserve">
+          <source>No upcoming classes.</source>
+          <target state="final">Keine bevorstehenden Klassen.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

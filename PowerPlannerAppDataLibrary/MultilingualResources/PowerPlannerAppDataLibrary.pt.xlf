@@ -2709,6 +2709,10 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
           <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
           <target state="final">Você também pode fazer com que seu widget ignore itens vencidos. Se você ativar a opção abaixo, ele desconsiderará qualquer item mais antigo do que o número especificado de dias.</target>
         </trans-unit>
+        <trans-unit id="String_NoUpcomingClasses" translate="yes" xml:space="preserve">
+          <source>No upcoming classes.</source>
+          <target state="final">Sem aulas futuras.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -2136,4 +2136,7 @@ Please think about using an online account instead!</value>
   <data name="String_Done" xml:space="preserve">
 	<value>Done</value>
   </data>
+  <data name="String_NoUpcomingClasses" xml:space="preserve">
+	<value>No upcoming classes.</value>
+  </data>
 </root>
