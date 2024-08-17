@@ -36,12 +36,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer.TileSettings
             return !ShowTasks && !ShowEvents;
         }
 
-        public DateTime GetDateToStartDisplayingOn(DateTime todayAsUtc)
+        public DateTime GetDateToStartDisplayingOn(DateTime today)
         {
             if (SkipItemsOlderThan == int.MinValue)
-                return DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+                return DateTime.MinValue;
 
-            return todayAsUtc.AddDays((SkipItemsOlderThan * -1) + 1);
+            return today.Date.AddDays((SkipItemsOlderThan * -1) + 1);
         }
     }
 }

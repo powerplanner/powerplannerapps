@@ -48,76 +48,85 @@ namespace PowerPlanneriOS.Helpers
             }
         }
 
-        private static async Task UpdatePrimaryWidgetAsync()
+        private static SimpleAsyncWorkerQueue _primaryWidgetWorkQueue = new SimpleAsyncWorkerQueue();
+        private static Task UpdatePrimaryWidgetAsync()
         {
-            try
+            return _primaryWidgetWorkQueue.QueueOrMergeAsync("primary", async delegate
             {
-                var account = await AccountsManager.GetLastLogin();
-
-                if (account != null)
+                try
                 {
-                    AccountDataStore data = await AccountDataStore.Get(account.LocalAccountId);
-                    var items = await data.GetAllUpcomingItemsForWidgetAsync(DateTime.UtcNow.Date);
+                    var account = await AccountsManager.GetLastLogin();
 
+                    if (account != null)
+                    {
+                        AccountDataStore data = await AccountDataStore.Get(account.LocalAccountId);
+                        var items = (await data.GetAllUpcomingItemsForWidgetAsync(DateTime.Today.Date, 10)).Items ?? new List<ViewItemTaskOrEvent>();
+
+                        SavePrimaryWidgetData(new PrimaryWidgetData
+                        {
+                            Items = ConvertToPrimaryWidgetDataItems(items)
+                        });
+                    }
+                    else
+                    {
+                        SavePrimaryWidgetData(new PrimaryWidgetData
+                        {
+                            ErrorMessage = R.S("String_NoAccount")
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
                     SavePrimaryWidgetData(new PrimaryWidgetData
                     {
-                        Items = ConvertToPrimaryWidgetDataItems(items)
+                        ErrorMessage = "Error generating data"
                     });
                 }
-                else
-                {
-                    SavePrimaryWidgetData(new PrimaryWidgetData
-                    {
-                        ErrorMessage = R.S("String_NoAccount")
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-                SavePrimaryWidgetData(new PrimaryWidgetData
-                {
-                    ErrorMessage = "Error generating data"
-                });
-            }
+            });
         }
 
+        private static SimpleAsyncWorkerQueue _scheduleWidgetWorkQueue = new SimpleAsyncWorkerQueue();
         public static async Task UpdateScheduleWidget(bool reload = true)
         {
             if (!UIDevice.CurrentDevice.CheckSystemVersion(14,0))
             {
                 return;
             }
-            try
-            {
-                var account = await AccountsManager.GetLastLogin();
 
-                if (account != null)
+            await _scheduleWidgetWorkQueue.QueueOrMergeAsync("schedule", async delegate
+            {
+                try
                 {
-                    var helper = await ScheduleTileDataHelper.LoadAsync(account, DateTime.Today, 14);
-                    SaveScheduleWidgetData(helper);
+                    var account = await AccountsManager.GetLastLogin();
+
+                    if (account != null)
+                    {
+                        var helper = await ScheduleTileDataHelper.LoadAsync(account, DateTime.Today, 14);
+                        SaveScheduleWidgetData(helper);
+                    }
+                    else
+                    {
+                        SaveScheduleWidgetData(new ScheduleWidgetData
+                        {
+                            ErrorMessage = R.S("String_NoAccount")
+                        });
+                    }
+
+                    if (reload)
+                    {
+                        Reload();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
+                    TelemetryExtension.Current?.TrackException(ex);
                     SaveScheduleWidgetData(new ScheduleWidgetData
                     {
-                        ErrorMessage = R.S("String_NoAccount")
+                        ErrorMessage = "Error generating data"
                     });
                 }
-
-                if (reload)
-                {
-                    Reload();
-                }
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-                SaveScheduleWidgetData(new ScheduleWidgetData
-                {
-                    ErrorMessage = "Error generating data"
-                });
-            }
+            });
         }
 
         private static void SavePrimaryWidgetData(PrimaryWidgetData data)

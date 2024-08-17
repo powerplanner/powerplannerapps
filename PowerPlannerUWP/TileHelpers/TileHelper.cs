@@ -585,9 +585,10 @@ namespace PowerPlannerUWP.TileHelpers
         /// </summary>
         /// <param name="data"></param>
         /// <returns>Should always return an initialized list.</returns>
-        private static Task<List<ViewItemTaskOrEvent>> getAllUpcomingBlocking(AccountDataItem account, AccountDataStore data, DateTime todayAsUtc, BaseUpcomingTileSettings tileSettings)
+        private static async Task<List<ViewItemTaskOrEvent>> getAllUpcomingBlocking(AccountDataItem account, AccountDataStore data, DateTime todayAsUtc, BaseUpcomingTileSettings tileSettings)
         {
-            return data.GetAllUpcomingItemsForWidgetAsync(todayAsUtc);
+            var resp = await data.GetAllUpcomingItemsForWidgetAsync(todayAsUtc, 30);
+            return resp.Items ?? new List<ViewItemTaskOrEvent>();
         }
 
 
