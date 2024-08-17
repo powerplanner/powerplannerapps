@@ -234,7 +234,7 @@ struct PPScheduleWidgetView: View {
                 if hasRoom {
                     Text(schedule.room!)
                         .lineLimit(1)
-                        .font(.callout)
+                        .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 Text(timeString)
