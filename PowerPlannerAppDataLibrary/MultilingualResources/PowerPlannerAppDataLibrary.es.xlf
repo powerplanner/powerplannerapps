@@ -1903,20 +1903,20 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <target state="final" state-qualifier="mt-suggestion">No hay clases. Haga clic en "abrir semestre" para añadir algunas clases!</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_Widgets_Subtitle" translate="yes" xml:space="preserve">
-          <source>Customize Android home screen widgets</source>
-          <target state="final" state-qualifier="mt-suggestion">Personalizar widgets pantalla de inicio Android</target>
+          <source>Customize home screen widgets</source>
+          <target state="final">Personaliza los widgets de la pantalla de inicio</target>
         </trans-unit>
         <trans-unit id="Settings_MyAccount_DeleteAccountConfirmation_Title" translate="yes" xml:space="preserve">
           <source>Delete account?</source>
           <target state="final" state-qualifier="mt-suggestion">¿Eliminar cuenta?</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetAgenda_Description" translate="yes" xml:space="preserve">
-          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
-          <target state="final" state-qualifier="mt-suggestion">Estos ajustes afectan el widget de agenda, que puede ser prendido a tu pantalla de inicio al abrir su cajón de widgets Android y colocar el widget de Power Planner Agenda en tu pantalla de inicio.</target>
+          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
+          <target state="final">Estos ajustes afectan el widget de agenda, el cual puedes anclar a tu pantalla de inicio abriendo el cajón de widgets y colocando el widget de Power Planner Agenda en tu pantalla de inicio.</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetSchedule_Description" translate="yes" xml:space="preserve">
-          <source>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
-          <target state="final" state-qualifier="mt-suggestion">El widget de calendario puede cubrió a tu pantalla de inicio al abrir su cajón de widgets de Android y colocar el widget de Power Planner calendario en tu pantalla de inicio. El widget de calendario muestra sus próximas clases y días de fiesta.</target>
+          <source>The schedule widget can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
+          <target state="final">El widget de horario se puede fijar en tu pantalla de inicio abriendo el cajón de widgets y colocando el widget de Power Planner en tu pantalla de inicio. El widget de horario muestra tus próximas clases y días festivos.</target>
         </trans-unit>
         <trans-unit id="Settings_Widgets_Agenda_Subtitle" translate="yes" xml:space="preserve">
           <source>Displays upcoming tasks and events</source>
@@ -2707,7 +2707,7 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
         </trans-unit>
         <trans-unit id="Widget_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
           <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
-          <target state="new">You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</target>
+          <target state="final">También puedes hacer que tu widget omita los elementos vencidos. Si activas la opción a continuación, ignorará cualquier elemento que tenga más de los días especificados.</target>
         </trans-unit>
       </group>
     </body>

@@ -2010,20 +2010,20 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <target state="final" state-qualifier="mt-suggestion">Pas de cours. Cliquez sur « semestre ouvert » pour ajouter quelques cours!</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_Widgets_Subtitle" translate="yes" xml:space="preserve">
-          <source>Customize Android home screen widgets</source>
-          <target state="final" state-qualifier="mt-suggestion">Personnalisez les widgets d’écran d’accueil Android</target>
+          <source>Customize home screen widgets</source>
+          <target state="final">Personnalisez les widgets de l’écran d’accueil</target>
         </trans-unit>
         <trans-unit id="Settings_MyAccount_DeleteAccountConfirmation_Title" translate="yes" xml:space="preserve">
           <source>Delete account?</source>
           <target state="final">Supprimer le compte ?</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetAgenda_Description" translate="yes" xml:space="preserve">
-          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
-          <target state="final" state-qualifier="mt-suggestion">Ces paramètres affectent le widget agenda, qui peut être épinglé sur votre écran d’accueil en ouvrant votre tiroir widgets Android et en plaçant le widget Power Planner Agenda sur votre écran d’accueil.</target>
+          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
+          <target state="final">Ces paramètres affectent le widget de l’agenda, que vous pouvez épingler sur votre écran d’accueil en ouvrant votre tiroir de widgets et en plaçant le widget Power Planner Agenda sur votre écran d’accueil.</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetSchedule_Description" translate="yes" xml:space="preserve">
-          <source>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
-          <target state="final" state-qualifier="mt-suggestion">Le widget d’horaire peut être épinglé sur votre écran d’accueil en ouvrant votre tiroir widgets Android et en plaçant le widget Power Planner Schedule sur votre écran d’accueil. Le widget horaire affiche vos cours et jours fériés à venir.</target>
+          <source>The schedule widget can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
+          <target state="final">Le widget de planification peut être épinglé à votre écran d'accueil en ouvrant le tiroir de widgets et en plaçant le widget Planificateur de Tâches sur votre écran d'accueil. Le widget de planification affiche vos cours et jours fériés à venir.</target>
         </trans-unit>
         <trans-unit id="Settings_Widgets_Agenda_Subtitle" translate="yes" xml:space="preserve">
           <source>Displays upcoming tasks and events</source>
@@ -2706,7 +2706,7 @@ Une fois que vous avez acheté la version premium, vous possédez la version pre
         </trans-unit>
         <trans-unit id="Widget_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
           <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
-          <target state="new">You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</target>
+          <target state="final">Vous pouvez également configurer votre widget pour qu'il ignore les éléments échus. Si vous activez l'option ci-dessous, il ignorera tous les éléments plus anciens que le nombre de jours spécifié.</target>
         </trans-unit>
       </group>
     </body>
