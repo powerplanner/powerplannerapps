@@ -2270,5 +2270,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             public bool NoSemester { get; set; }
             public List<ViewItemTaskOrEvent> Items { get; set; }
             public bool IsDisabledInSettings { get; set; }
+        }
     }
 }
