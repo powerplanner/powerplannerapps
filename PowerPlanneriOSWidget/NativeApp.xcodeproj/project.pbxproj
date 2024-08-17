@@ -20,7 +20,6 @@
 		429AB1CF24ABA40600D106F0 /* NativeWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 429AB1CA24ABA40600D106F0 /* NativeWidget.intentdefinition */; };
 		429AB1D224ABA40600D106F0 /* NativeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 429AB1C124ABA40600D106F0 /* NativeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		429AB22F24ABA5F400D106F0 /* NativeWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 429AB1CA24ABA40600D106F0 /* NativeWidget.intentdefinition */; };
-		429AB23224AD036100D106F0 /* TestDataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429AB23024AD035E00D106F0 /* TestDataReader.swift */; };
 		530139DA2C6BBA0000A77560 /* DataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530139D92C6BBA0000A77560 /* DataReader.swift */; };
 		530139DC2C6DAD2900A77560 /* ScheduleWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530139DB2C6DAD2900A77560 /* ScheduleWidget.swift */; };
 		530139DE2C6DAEE100A77560 /* ScheduleDataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530139DD2C6DAEE100A77560 /* ScheduleDataReader.swift */; };
@@ -68,7 +67,6 @@
 		429AB1CA24ABA40600D106F0 /* NativeWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = NativeWidget.intentdefinition; sourceTree = "<group>"; };
 		429AB1CB24ABA40600D106F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		429AB1CD24ABA40600D106F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		429AB23024AD035E00D106F0 /* TestDataReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataReader.swift; sourceTree = "<group>"; };
 		429AB23324AD123100D106F0 /* NativeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NativeWidgetExtension.entitlements; sourceTree = "<group>"; };
 		429AB23424AD128800D106F0 /* NativeApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NativeApp.entitlements; sourceTree = "<group>"; };
 		530139D92C6BBA0000A77560 /* DataReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReader.swift; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 				429AB1CA24ABA40600D106F0 /* NativeWidget.intentdefinition */,
 				429AB1CB24ABA40600D106F0 /* Assets.xcassets */,
 				429AB1CD24ABA40600D106F0 /* Info.plist */,
-				429AB23024AD035E00D106F0 /* TestDataReader.swift */,
 				530139DB2C6DAD2900A77560 /* ScheduleWidget.swift */,
 				530139DD2C6DAEE100A77560 /* ScheduleDataReader.swift */,
 				530139DF2C6DBAE400A77560 /* RelativeDateFormatter.swift */,
@@ -284,7 +281,6 @@
 				530139DE2C6DAEE100A77560 /* ScheduleDataReader.swift in Sources */,
 				530139E22C6DC40800A77560 /* AllWidgets.swift in Sources */,
 				429AB1C924ABA40600D106F0 /* AgendaWidget.swift in Sources */,
-				429AB23224AD036100D106F0 /* TestDataReader.swift in Sources */,
 				530139DC2C6DAD2900A77560 /* ScheduleWidget.swift in Sources */,
 				429AB22F24ABA5F400D106F0 /* NativeWidget.intentdefinition in Sources */,
 			);
