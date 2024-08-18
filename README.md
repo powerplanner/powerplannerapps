@@ -65,8 +65,9 @@ Prereqs...
 
 Instructions...
 1. In Terminal, `cd` to the `PowerPlanneriOS` directory.
-1. Run `dotnet run --project PowerPlanneriOS.csproj`
+1. Run `dotnet run`
 1. The simulator should launch!
+1. To specify a specific simulator, in XCode go to Window -> Devices and Simulators, and in the Simulators list, right click one from the left and click Copy Identifier. Then, use the command `dotnet run /p:_DeviceName=:v2:udid=E71087E9-241E-4BC1-862E-D5AFDC65C21D` using the identifier you copied.
 
 
 ## Architecture
