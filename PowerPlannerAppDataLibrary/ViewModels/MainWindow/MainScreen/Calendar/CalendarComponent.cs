@@ -454,18 +454,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                     foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
                     {
-                        itemCircles.Children.Add(new Border
+                        if (item.IsComplete)
                         {
-                            Width = CircleSize,
-                            Height = CircleSize,
-                            CornerRadius = CircleSize,
-                            BackgroundColor = item.IsComplete ? Color.Transparent : item.Class.Color.ToColor(),
-                            BorderColor = item.IsComplete ? item.Class.Color.ToColor() : Color.Transparent,
-                            BorderThickness = item.IsComplete ? new Thickness(1) : new Thickness(0),
-                            Opacity = item.IsComplete ? 0.7f : 1f,
-                            VerticalAlignment = VerticalAlignment.Bottom,
-                            Margin = new Thickness(0, 0, 4, 0)
-                        });
+                            itemCircles.Children.Add(new FontIcon
+                            {
+                                Glyph = MaterialDesign.MaterialDesignIcons.Check,
+                                Color = item.Class.Color.ToColor(),
+                                Opacity = 0.7f,
+                                FontSize = 6,
+                                VerticalAlignment = VerticalAlignment.Bottom,
+                                Margin = new Thickness(0, 0, 4, 0)
+                            });
+                        }
+                        else
+                        {
+                            itemCircles.Children.Add(new Border
+                            {
+                                Width = CircleSize,
+                                Height = CircleSize,
+                                CornerRadius = CircleSize,
+                                BackgroundColor = item.Class.Color.ToColor(),
+                                VerticalAlignment = VerticalAlignment.Bottom,
+                                Margin = new Thickness(0, 0, 4, 0)
+                            });
+                        }
                     }
 
                     linearLayout.Children.Add(tbDay);
