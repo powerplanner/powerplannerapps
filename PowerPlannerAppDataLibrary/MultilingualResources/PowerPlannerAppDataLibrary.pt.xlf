@@ -1903,20 +1903,20 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <target state="final" state-qualifier="mt-suggestion">Não há aulas. Clique em "abrir semestre" para adicionar algumas aulas!</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_Widgets_Subtitle" translate="yes" xml:space="preserve">
-          <source>Customize Android home screen widgets</source>
-          <target state="final" state-qualifier="mt-suggestion">Personalizar widgets Android tela inicial</target>
+          <source>Customize home screen widgets</source>
+          <target state="final">Personalizar widgets da tela inicial</target>
         </trans-unit>
         <trans-unit id="Settings_MyAccount_DeleteAccountConfirmation_Title" translate="yes" xml:space="preserve">
           <source>Delete account?</source>
           <target state="final" state-qualifier="mt-suggestion">Excluir a conta?</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetAgenda_Description" translate="yes" xml:space="preserve">
-          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
-          <target state="final" state-qualifier="mt-suggestion">Essas configurações afetam o widget da agenda, que pode ser fixado ao seu homescreen, abrindo sua gaveta de widgets Android e colocando o widget Power Planner Agenda em seu homescreen.</target>
+          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
+          <target state="final">Essas configurações afetam o widget da agenda, que pode ser fixado na tela inicial abrindo a gaveta de widgets e colocando o widget Power Planner Agenda na tela inicial.</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetSchedule_Description" translate="yes" xml:space="preserve">
-          <source>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
-          <target state="final" state-qualifier="mt-suggestion">O widget de calendário pode ser fixado ao seu homescreen, abrindo sua gaveta de widgets Android e colocando o widget Power Planner horário em seu homescreen. O widget de horário exibe suas próximas classes e feriados.</target>
+          <source>The schedule widget can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
+         <target state="final">O widget de programação pode ser fixado na tela inicial ao abrir a gaveta de widgets e posicionar o widget Power Planner Agenda na tela inicial. O widget de agenda exibe suas próximas aulas e feriados.</target>
         </trans-unit>
         <trans-unit id="Settings_Widgets_Agenda_Subtitle" translate="yes" xml:space="preserve">
           <source>Displays upcoming tasks and events</source>
@@ -2704,6 +2704,14 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
         <trans-unit id="String_Offline" translate="yes" xml:space="preserve">
           <source>Offline</source>
           <target state="final">Desconectado</target>
+        </trans-unit>
+        <trans-unit id="Widget_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
+          <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
+          <target state="final">Você também pode fazer com que seu widget ignore itens vencidos. Se você ativar a opção abaixo, ele desconsiderará qualquer item mais antigo do que o número especificado de dias.</target>
+        </trans-unit>
+        <trans-unit id="String_NoUpcomingClasses" translate="yes" xml:space="preserve">
+          <source>No upcoming classes.</source>
+          <target state="final">Sem aulas futuras.</target>
         </trans-unit>
       </group>
     </body>

@@ -215,72 +215,25 @@ namespace PowerPlannerAndroid.Services
                         {
                             hasAccount = true;
 
-                            isDisabledInSettings = account.MainTileSettings.IsDisabled();
+                            var resp = await data.GetAllUpcomingItemsForWidgetAsync(_now.Date, 20);
+                            tasks = resp.Items;
+                            isDisabledInSettings = resp.IsDisabledInSettings;
+                            hasSemester = !resp.NoSemester;
 
-                            if (!isDisabledInSettings)
+                            if (tasks != null)
                             {
-                                _localAccountId = account.LocalAccountId;
-                                var currSemesterId = account.CurrentSemesterId;
-                                if (currSemesterId != Guid.Empty)
+                                // Add date headers
+                                items = new List<object>();
+                                DateTime lastHeader = DateTime.MinValue;
+                                foreach (var t in tasks)
                                 {
-                                    ScheduleViewItemsGroup scheduleViewGroup;
-                                    try
+                                    if (lastHeader != t.Date.Date)
                                     {
-                                        scheduleViewGroup = await ScheduleViewItemsGroup.LoadAsync(account.LocalAccountId, account.CurrentSemesterId, trackChanges: true, includeWeightCategories: false);
-                                    }
-                                    catch
-                                    {
-                                        // If semester not found
-                                        scheduleViewGroup = null;
+                                        items.Add(t.Date.Date);
+                                        lastHeader = t.Date.Date;
                                     }
 
-                                    if (scheduleViewGroup != null)
-                                    {
-                                        DateTime dateToStartDisplayingFrom = DateTime.SpecifyKind(account.MainTileSettings.GetDateToStartDisplayingOn(_now.Date), DateTimeKind.Utc);
-
-                                        // We don't track changes since we need a fresh version that has been filtered right now.
-                                        // Otherwise when we update for an event expiring, if we have a cached version, that event wouldn't have expired!
-                                        var agendaViewGroup = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewGroup.Semester, _now.Date, trackChanges: false);
-                                        hasSemester = true;
-
-                                        // We lock the outside, since we are allowing trackChanges on the view items groups (so we have a chance of loading a cached one)... and since we're on a background thread, the lists inside the
-                                        // view items groups could change while we're enumerating, hence throwing an exception. So we lock it to ensure this won't happen, and then we return a copy of the items that we need.
-                                        using (await agendaViewGroup.DataChangeLock.LockForReadAsync())
-                                        {
-                                            var filtered = agendaViewGroup.Items
-                                                .Where(i => i.Date.Date >= dateToStartDisplayingFrom);
-
-                                            if (!account.MainTileSettings.ShowTasks)
-                                            {
-                                                filtered = filtered.Where(i => i.Type != TaskOrEventType.Task);
-                                            }
-
-                                            if (!account.MainTileSettings.ShowEvents)
-                                            {
-                                                filtered = filtered.Where(i => i.Type != TaskOrEventType.Event);
-                                            }
-
-                                            // Agenda view group doesn't sort, so we have to sort it
-                                            tasks = filtered
-                                                .OrderBy(i => i)
-                                                .Take(20)
-                                                .ToList();
-
-                                            // Add date headers
-                                            items = new List<object>();
-                                            DateTime lastHeader = DateTime.MinValue;
-                                            foreach (var t in tasks)
-                                            {
-                                                if (lastHeader != t.Date.Date)
-                                                {
-                                                    items.Add(t.Date.Date);
-                                                    lastHeader = t.Date.Date;
-                                                }
-
-                                                items.Add(t);
-                                            }
-                                        }
-                                    }
+                                    items.Add(t);
                                 }
                             }
                         }

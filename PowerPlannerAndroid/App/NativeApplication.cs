@@ -104,9 +104,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },
-                { typeof(WidgetsViewModel), typeof(SettingsWidgetsView) },
-                { typeof(WidgetAgendaViewModel), typeof(SettingsWidgetAgendaView) },
-                { typeof(WidgetScheduleViewModel), typeof(SettingsWidgetScheduleView) },
                 { typeof(SyncOptionsSimpleViewModel), typeof(SettingsSyncOptionsView) },
                 { typeof(ImageUploadOptionsViewModel), typeof(SettingsImageUploadOptionsView) },
 

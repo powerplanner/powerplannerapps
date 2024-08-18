@@ -1904,20 +1904,20 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <target state="final" state-qualifier="mt-suggestion">Keine Klassen. Klicken Sie "Semester öffnen" um Klassen hinzuzufügen!</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_Widgets_Subtitle" translate="yes" xml:space="preserve">
-          <source>Customize Android home screen widgets</source>
-          <target state="final" state-qualifier="mt-suggestion">Widgets für den Android-Startbildschirm anpassen</target>
+          <source>Customize home screen widgets</source>
+          <target state="final">Startbildschirm-Widgets anpassen</target>
         </trans-unit>
         <trans-unit id="Settings_MyAccount_DeleteAccountConfirmation_Title" translate="yes" xml:space="preserve">
           <source>Delete account?</source>
           <target state="final" state-qualifier="mt-suggestion">Account löschen?</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetAgenda_Description" translate="yes" xml:space="preserve">
-          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
-          <target state="final" state-qualifier="mt-suggestion">Diese Einstellungen wirken sich auf das Agenda-Widget aus, das Sie an Ihren Homescreen anheften können, indem Sie den Android Widgets Drawer öffnen und das Power Planner Agenda-Widget auf Ihrem Homescreen platzieren.</target>
+          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
+          <target state="final">Diese Einstellungen betreffen das Agenda-Widget, das Sie an Ihrem Startbildschirm anheften können, indem Sie den Widget-Bereich öffnen und das Power Planner Agenda-Widget dort platzieren.</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetSchedule_Description" translate="yes" xml:space="preserve">
-          <source>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
-          <target state="final" state-qualifier="mt-suggestion">Das Zeitplan-Widget kann an Ihren Homescreen gepinnt werden, indem Sie den Android-Widgets-Drawer öffnen und das Power Planner-Zeitplan-Widget auf Ihrem Homescreen platzieren. Das Zeitplan-Widget zeigt Ihre bevorstehenden Kurse und Feiertage an.</target>
+          <source>The schedule widget can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
+          <target state="final">Das Zeitplan-Widget kann auf Ihrem Homescreen angeheftet werden, indem Sie den Widget-Bereich öffnen und das Power Planner-Zeitplan-Widget dort platzieren. Das Widget zeigt Ihre bevorstehenden Kurse und Feiertage an.</target>
         </trans-unit>
         <trans-unit id="Settings_Widgets_Agenda_Subtitle" translate="yes" xml:space="preserve">
           <source>Displays upcoming tasks and events</source>
@@ -2705,6 +2705,14 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
         <trans-unit id="String_Offline" translate="yes" xml:space="preserve">
           <source>Offline</source>
           <target state="final">Offline</target>
+        </trans-unit>
+        <trans-unit id="Widget_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
+          <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
+          <target state="final">Sie können auch einstellen, dass Ihr Widget über fällige Aufgaben hinweggeht. Wenn Sie die folgende Option aktivieren, werden alle Aufgaben ignoriert, die älter sind als die angegebene Anzahl an Tagen.</target>
+        </trans-unit>
+        <trans-unit id="String_NoUpcomingClasses" translate="yes" xml:space="preserve">
+          <source>No upcoming classes.</source>
+          <target state="final">Keine bevorstehenden Klassen.</target>
         </trans-unit>
       </group>
     </body>

@@ -1906,20 +1906,20 @@ Please think about using an online account instead!</source>
           <target state="final" state-qualifier="mt-suggestion">لا توجد فصول دراسية. انقر فوق "فتح فصل دراسي" لإضافة بعض الفئات!</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_Widgets_Subtitle" translate="yes" xml:space="preserve">
-          <source>Customize Android home screen widgets</source>
-          <target state="final" state-qualifier="mt-suggestion">تخصيص الحاجيات الروبوت الشاشة الرئيسية</target>
+          <source>Customize home screen widgets</source>
+          <target state="final">تخصيص عناصر واجهة الشاشة الرئيسية</target>
         </trans-unit>
         <trans-unit id="Settings_MyAccount_DeleteAccountConfirmation_Title" translate="yes" xml:space="preserve">
           <source>Delete account?</source>
           <target state="final" state-qualifier="mt-suggestion">حذف الحساب؟</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetAgenda_Description" translate="yes" xml:space="preserve">
-          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
-          <target state="final" state-qualifier="mt-suggestion">هذه الإعدادات تؤثر على القطعة جدول الأعمال، والتي يمكن أن تكون مثبتة إلى الشاشة الرئيسية الخاصة بك عن طريق فتح الحاجيات الروبوت درج ووضع القطعة جدول الأعمال على الشاشة الرئيسية الخاصة بك.</target>
+          <source>These settings affect the agenda widget, which can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Agenda widget on your homescreen.</source>
+          <target state="final">هذه الإعدادات تؤثر على أداة جدول الأعمال، والتي يمكن تثبيتها على شاشتك الرئيسية عن طريق فتح درج الأدوات ووضع أداة جدول الأعمال الخاصة بـ Power Planner على شاشتك الرئيسية.</target>
         </trans-unit>
         <trans-unit id="Settings_WidgetSchedule_Description" translate="yes" xml:space="preserve">
-          <source>The schedule widget can be pinned to your homescreen by opening your Android widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
-          <target state="final" state-qualifier="mt-suggestion">القطعة الجدول الزمني يمكن أن تكون مثبتة إلى الشاشة الرئيسية الخاصة بك عن طريق فتح الحاجيات الروبوت درج ووضع القطعة الجدول على الشاشة الرئيسية الخاصة بك. القطعة الجدول الزمني يعرض الطبقات القادمة والأعياد الخاصة بك.</target>
+          <source>The schedule widget can be pinned to your homescreen by opening your widgets drawer and placing the Power Planner Schedule widget on your homescreen. The schedule widget displays your upcoming classes and holidays.</source>
+          <target state="final">يمكن تثبيت أداة الجدول الزمني على شاشتك الرئيسية عن طريق فتح درج الأدوات ووضع أداة الجدول الزمني الخاصة بـ Power Planner على شاشتك الرئيسية. تعرض أداة الجدول الزمني فصولك الدراسية القادمة والعطلات.</target>
         </trans-unit>
         <trans-unit id="Settings_Widgets_Agenda_Subtitle" translate="yes" xml:space="preserve">
           <source>Displays upcoming tasks and events</source>
@@ -2707,6 +2707,14 @@ Once you purchase the premium version, you own the premium version on all your d
         <trans-unit id="String_Offline" translate="yes" xml:space="preserve">
           <source>Offline</source>
           <target state="final">غير متصل</target>
+        </trans-unit>
+        <trans-unit id="Widget_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
+          <source>You can also make your widget skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
+          <target state="final">يمكنك أيضًا جعل أداة الويدجيت تتجاوز العناصر المتأخرة. إذا قمت بتعيين الخيار أدناه، فسيتم تجاهل أي عناصر أقدم من عدد الأيام المحدد.</target>
+        </trans-unit>
+        <trans-unit id="String_NoUpcomingClasses" translate="yes" xml:space="preserve">
+          <source>No upcoming classes.</source>
+          <target state="final">لا توجد دروس قادمة.</target>
         </trans-unit>
       </group>
     </body>

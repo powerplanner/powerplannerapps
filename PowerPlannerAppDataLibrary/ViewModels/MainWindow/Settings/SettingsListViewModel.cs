@@ -186,14 +186,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenMyAccount);
             }
 
-            if (HasAccount && OpenWidgets != null)
+            if (HasAccount && (VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android))
             {
                 RenderOption(
                     layout,
                     MaterialDesign.MaterialDesignIcons.Dashboard,
                     PowerPlannerResources.GetString("String_Widgets"),
                     PowerPlannerResources.GetString("Settings_MainPage_Widgets_Subtitle"),
-                    () => OpenWidgets(this));
+                    OpenWidgets);
             }
 
             if (HasAccount && OpenLiveTiles != null)
@@ -604,10 +604,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
         }
 
-        /// <summary>
-        /// Android initializes this
-        /// </summary>
-        public static Action<SettingsListViewModel> OpenWidgets { get; set; }
+        private void OpenWidgets()
+        {
+            ShowPopup(new WidgetSettingsViewModel(ParentForSubviews));
+        }
 
         /// <summary>
         /// UWP initializes this

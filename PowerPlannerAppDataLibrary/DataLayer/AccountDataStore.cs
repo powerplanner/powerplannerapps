@@ -2207,12 +2207,26 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// </summary>
         /// <param name="data"></param>
         /// <returns>Should always return an initialized list.</returns>
-        public async Task<List<ViewItemTaskOrEvent>> GetAllUpcomingItemsForWidgetAsync(DateTime todayAsUtc)
+        public async Task<UpcomingItemsForWidgetResponse> GetAllUpcomingItemsForWidgetAsync(DateTime today, int maxItems, bool allowCachedAgenda = true)
         {
             var account = Account;
+
+            if (account.MainTileSettings.IsDisabled())
+            {
+                return new UpcomingItemsForWidgetResponse
+                {
+                    IsDisabledInSettings = true
+                };
+            }
+
             var currSemesterId = account.CurrentSemesterId;
             if (currSemesterId == Guid.Empty)
-                return new List<ViewItemTaskOrEvent>();
+            {
+                return new UpcomingItemsForWidgetResponse
+                {
+                    NoSemester = true
+                };
+            }
 
             ScheduleViewItemsGroup scheduleViewGroup;
             try
@@ -2222,21 +2236,40 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             catch
             {
                 // If semester not found
-                return new List<ViewItemTaskOrEvent>();
+                return new UpcomingItemsForWidgetResponse
+                {
+                    NoSemester = true
+                };
             }
 
-            DateTime dateToStartDisplayingFrom = DateTime.SpecifyKind(account.MainTileSettings.GetDateToStartDisplayingOn(todayAsUtc), DateTimeKind.Utc);
+            DateTime dateToStartDisplayingFrom = account.MainTileSettings.GetDateToStartDisplayingOn(today);
 
-            var agendaViewGroup = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewGroup.Semester, DateTime.SpecifyKind(todayAsUtc, DateTimeKind.Local), trackChanges: true);
+            // On Android we won't allow reusing a cached agenda, since this will run when updating for an expired event and we need it to re-load.
+            var agendaViewGroup = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewGroup.Semester, today, trackChanges: allowCachedAgenda);
 
             // We're not going to worry about locking changes while we enumerate, since if collection changes while we're enumerating, there'll be a
             // new incoming reset request anyways
 
             // Agenda view group doesn't sort, so we have to sort it
-            return agendaViewGroup.Items.Where(
+            var items = agendaViewGroup.Items.Where(
                 i => i.Date.Date >= dateToStartDisplayingFrom
                 && ((account.MainTileSettings.ShowTasks && i.Type == TaskOrEventType.Task) || (account.MainTileSettings.ShowEvents && i.Type == TaskOrEventType.Event))
-                ).OrderBy(i => i).ToList();
+                )
+                .OrderBy(i => i)
+                .Take(maxItems)
+                .ToList();
+
+            return new UpcomingItemsForWidgetResponse
+            {
+                Items = items
+            };
+        }
+
+        public class UpcomingItemsForWidgetResponse
+        {
+            public bool NoSemester { get; set; }
+            public List<ViewItemTaskOrEvent> Items { get; set; }
+            public bool IsDisabledInSettings { get; set; }
         }
     }
 }

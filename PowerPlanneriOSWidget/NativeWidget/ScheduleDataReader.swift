@@ -10,8 +10,11 @@ import Foundation
 
 // Represents the main data structure for the schedule widget.
 struct ScheduleWidgetData: Codable {
+    let title: String
     let errorMessage: String?
     let days: [ScheduleWidgetDayItem]?
+    let dateStrings: DateStrings
+    let noClassesString: String
 }
 
 // Represents a day with its holidays and schedules.
@@ -44,11 +47,11 @@ func readScheduleData() -> ScheduleWidgetData {
                 let value = try decoder.decode(ScheduleWidgetData.self, from: data)
                 return value
             } catch {
-                return ScheduleWidgetData(errorMessage: "Error loading data", days: nil)
+                return ScheduleWidgetData(title: "Schedule", errorMessage: "Error loading data", days: nil, dateStrings: DateStrings.defaultStrings, noClassesString: "No upcoming classes.")
             }
         }
     }
 
     // Return blank list if none
-    return ScheduleWidgetData(errorMessage: "Error loading data", days: nil)
+    return ScheduleWidgetData(title: "Schedule", errorMessage: "Error loading data", days: nil, dateStrings: DateStrings.defaultStrings, noClassesString: "No upcoming classes.")
 }
