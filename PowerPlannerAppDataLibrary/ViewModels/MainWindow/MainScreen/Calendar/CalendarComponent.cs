@@ -99,8 +99,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                         }
                                     }.Show(_addButtonRef), v => _addButtonRef = v) : null,
 
-                                // Filter button (only on full size calendar)
-                                IsFullSize ? CreateIconButton(
+                                // Filter button
+                                CreateIconButton(
                                     glyph: MaterialDesign.MaterialDesignIcons.FilterAlt,
                                     tooltipText: PowerPlannerResources.GetString("Calendar_FullCalendarFilterButton.ToolTipService.ToolTip"),
                                     altText: null,
@@ -110,11 +110,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                         {
                                             new MenuItem
                                             {
-                                                Text = PowerPlannerResources.GetString(_viewModel.ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
-                                                Click = () => _viewModel.ShowPastCompleteItemsOnFullCalendar = !_viewModel.ShowPastCompleteItemsOnFullCalendar
+                                                Text = PowerPlannerResources.GetString(_viewModel.ShowPastCompleteItemsOnCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
+                                                Click = () => _viewModel.ShowPastCompleteItemsOnCalendar = !_viewModel.ShowPastCompleteItemsOnCalendar
                                             }
                                         }
-                                    }.Show(_filterButtonRef), v => _filterButtonRef = v) : null,
+                                    }.Show(_filterButtonRef), v => _filterButtonRef = v),
 
                                 CreateIconButton(
                                     glyph: MaterialDesign.MaterialDesignIcons.Today,
@@ -331,7 +331,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 switch (e.PropertyName)
                 {
-                    case nameof(ViewModel.ShowPastCompleteItemsOnFullCalendar):
+                    case nameof(ViewModel.ShowPastCompleteItemsOnCalendar):
                     case nameof(ViewModel.FirstDayOfWeek):
                     case nameof(ViewModel.DisplayState):
                     case nameof(ViewModel.SelectedDate):
@@ -350,7 +350,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Date = date,
                     IsFullSize = IsFullSize,
                     IsSelected = IsSplit && ViewModel.SelectedDate == date,
-                    ShowPastCompleteItemsOnFullCalendar = ViewModel.ShowPastCompleteItemsOnFullCalendar
+                    ShowPastCompleteItems = ViewModel.ShowPastCompleteItemsOnCalendar
                 };
             }
         }
@@ -365,7 +365,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public DateTime Date { get; set; }
             public bool IsFullSize { get; set; }
             public bool IsSelected { get; set; }
-            public bool ShowPastCompleteItemsOnFullCalendar { get; set; }
+            public bool ShowPastCompleteItems { get; set; }
 
             public override bool SubscribeToIsMouseOver => true;
 
@@ -404,7 +404,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 Color foregroundColor = isToday ? Color.White : Theme.Current.SubtleForegroundColor;
 
-                var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !IsFullSize || !ShowPastCompleteItemsOnFullCalendar);
+                var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !ShowPastCompleteItems);
                 SubscribeToCollectionStrong(itemsOnDay, nameof(itemsOnDay));
                 var holidays = HolidaysOnDay.Create(Items, date);
                 SubscribeToCollectionStrong(holidays, nameof(holidays));
@@ -452,14 +452,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         Margin = new Thickness(5,0,5,5)
                     };
 
-                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>().Where(i => !i.IsComplete))
+                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
                     {
                         itemCircles.Children.Add(new Border
                         {
                             Width = CircleSize,
                             Height = CircleSize,
                             CornerRadius = CircleSize,
-                            BackgroundColor = item.Class.Color.ToColor(),
+                            BackgroundColor = item.IsComplete ? Color.Transparent : item.Class.Color.ToColor(),
+                            BorderColor = item.IsComplete ? item.Class.Color.ToColor() : Color.Transparent,
+                            BorderThickness = item.IsComplete ? new Thickness(1) : new Thickness(0),
+                            Opacity = item.IsComplete ? 0.7f : 1f,
                             VerticalAlignment = VerticalAlignment.Bottom,
                             Margin = new Thickness(0, 0, 4, 0)
                         });

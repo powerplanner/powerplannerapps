@@ -348,12 +348,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return PowerPlannerSending.Helpers.WeekHelper.GetWeekOnDifferentDate(WeekOneStartsOn, date);
         }
 
-        private bool _showPastCompleteItemsOnFullCalendar = false;
-        [DataMember]
-        public bool ShowPastCompleteItemsOnFullCalendar
+        private bool _showPastCompleteItemsOnCalendar = false;
+        [DataMember(Name = "ShowPastCompleteItemsOnFullCalendar")] // For legacy purposes, it used to be called this
+        public bool ShowPastCompleteItemsOnCalendar
         {
-            get => _showPastCompleteItemsOnFullCalendar;
-            set => SetProperty(ref _showPastCompleteItemsOnFullCalendar, value, nameof(ShowPastCompleteItemsOnFullCalendar));
+            get => _showPastCompleteItemsOnCalendar;
+            set => SetProperty(ref _showPastCompleteItemsOnCalendar, value, nameof(ShowPastCompleteItemsOnCalendar));
         }
 
         private bool showSchedule = true;

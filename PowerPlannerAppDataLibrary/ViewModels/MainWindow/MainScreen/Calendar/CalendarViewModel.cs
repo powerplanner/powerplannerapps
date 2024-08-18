@@ -76,7 +76,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 throw new NullReferenceException("MainScreenViewModel.CurrentAccount was null");
             }
-            _showPastCompleteItemsOnFullCalendar = acct.ShowPastCompleteItemsOnFullCalendar;
+            _showPastCompleteItemsOnCalendar = acct.ShowPastCompleteItemsOnCalendar;
             FirstDayOfWeek = acct.WeekChangesOn;
 
             SemesterItemsViewGroup = SemesterItemsViewGroup.Load(localAccountId, semester);
@@ -160,20 +160,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             return PowerPlannerAppDataLibrary.Helpers.DateHelpers.ToMediumDateString(date);
         }
 
-        private bool _showPastCompleteItemsOnFullCalendar = false;
-        public bool ShowPastCompleteItemsOnFullCalendar
+        private bool _showPastCompleteItemsOnCalendar = false;
+        public bool ShowPastCompleteItemsOnCalendar
         {
-            get => _showPastCompleteItemsOnFullCalendar;
+            get => _showPastCompleteItemsOnCalendar;
             set
             {
-                if (_showPastCompleteItemsOnFullCalendar == value)
+                if (_showPastCompleteItemsOnCalendar == value)
                 {
                     return;
                 }
 
-                _showPastCompleteItemsOnFullCalendar = value;
-                MainScreenViewModel.CurrentAccount.ShowPastCompleteItemsOnFullCalendar = value;
-                OnPropertyChanged(nameof(ShowPastCompleteItemsOnFullCalendar));
+                _showPastCompleteItemsOnCalendar = value;
+                MainScreenViewModel.CurrentAccount.ShowPastCompleteItemsOnCalendar = value;
+                OnPropertyChanged(nameof(ShowPastCompleteItemsOnCalendar));
                 TelemetryExtension.Current?.TrackEvent("ToggledShowPastCompleteItems", new Dictionary<string, string>()
                 {
                     { "Value", value.ToString() }
@@ -625,25 +625,31 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     toolbar.PrimaryCommands.Reverse();
                 }
 
-                if (VxPlatform.Current != Platform.iOS)
+                // Go to today button
+                var goToTodayMenuItem = new MenuItem
                 {
-                    toolbar.PrimaryCommands.Add(new MenuItem
-                    {
-                        Text = PowerPlannerResources.GetString("String_GoToToday"),
-                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
-                        Click = GoToToday
-                    });
+                    Text = PowerPlannerResources.GetString("String_GoToToday"),
+                    Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                    Click = GoToToday
+                };
+                if (DisplayState == DisplayStates.FullCalendar)
+                {
+                    // On Full calendar, show it in primary commands
+                    toolbar.PrimaryCommands.Add(goToTodayMenuItem);
+                }
+                else
+                {
+                    // On compact/split calendars, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
+                    goToTodayMenuItem.Glyph = null;
+                    toolbar.SecondaryCommands.Add(goToTodayMenuItem);
                 }
 
                 // Only on full calendar, show the option for past complete
-                if (DisplayState == DisplayStates.FullCalendar)
+                toolbar.SecondaryCommands.Add(new MenuItem
                 {
-                    toolbar.SecondaryCommands.Add(new MenuItem
-                    {
-                        Text = PowerPlannerResources.GetString(ShowPastCompleteItemsOnFullCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
-                        Click = () => ShowPastCompleteItemsOnFullCalendar = !ShowPastCompleteItemsOnFullCalendar
-                    });
-                }
+                    Text = PowerPlannerResources.GetString(ShowPastCompleteItemsOnCalendar ? "HidePastCompleteItems" : "ShowPastCompleteItems.Text"),
+                    Click = () => ShowPastCompleteItemsOnCalendar = !ShowPastCompleteItemsOnCalendar
+                });
 
                 // Add button is displayed as floating action button sometimes on Android
                 if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
