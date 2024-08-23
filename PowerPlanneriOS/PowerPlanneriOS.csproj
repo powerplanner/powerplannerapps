@@ -33,10 +33,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.3">
-    </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.3">
-    </PackageReference>
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.22.0" />
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha">
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335">

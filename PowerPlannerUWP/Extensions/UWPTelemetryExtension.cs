@@ -11,6 +11,7 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Windows.System.Profile;
 using Windows.Security.Cryptography;
 using Microsoft.ApplicationInsights.Channel;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerUWP.Extensions
 {
@@ -35,7 +36,7 @@ namespace PowerPlannerUWP.Extensions
                 }
                 else
                 {
-                    _systemId = "notAvailable";
+                    _systemId = Settings.DeviceId;
                 }
 
                 _client.Context.Component.Version = Variables.VERSION.ToString();
