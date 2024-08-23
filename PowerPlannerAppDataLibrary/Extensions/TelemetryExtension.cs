@@ -64,7 +64,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
         private string _lastPageName;
         private object _pageViewLock = new object();
         private TelemetryPageViewBundler _pageViewBundler;
-        public string LastPageName => _lastPageName;
+        public virtual string LastPageName => _lastPageName;
         public virtual void TrackPageVisited(string pageName)
         {
             try
@@ -101,7 +101,7 @@ namespace PowerPlannerAppDataLibrary.Extensions
             }
         }
 
-        public void LeavingApp()
+        public virtual void LeavingApp()
         {
             try
             {
@@ -116,9 +116,14 @@ namespace PowerPlannerAppDataLibrary.Extensions
             catch (Exception ex) { TrackException(ex); }
         }
 
-        public void ReturnedToApp()
+        public virtual void ReturnedToApp()
         {
             TrackPageVisited(_lastPageName);
+        }
+
+        public virtual void SuspendingApp()
+        {
+
         }
 
         private void FinishPageViewBundler()

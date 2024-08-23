@@ -164,6 +164,8 @@ namespace PowerPlannerUWP
             {
                 { "CurrPage", currPage }
             } : (Dictionary<string, string>)null);
+
+            TelemetryExtension.Current?.SuspendingApp();
         }
 
         private bool _registeredBackgroundTasks = false;
@@ -916,6 +918,11 @@ namespace PowerPlannerUWP
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            try
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
+            catch { }
         }
 
         private static void UnregisterAllBackgroundTasks()
