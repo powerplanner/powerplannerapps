@@ -10,7 +10,7 @@
     <RootNamespace>PowerPlannerUWP</RootNamespace>
     <AssemblyName>PowerPlannerUWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
-	<NeutralLanguage>en-US</NeutralLanguage>
+    <NeutralLanguage>en-US</NeutralLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
@@ -212,9 +212,6 @@
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NothingHerePage.xaml.cs">
-      <DependentUpon>NothingHerePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\BaseSettingsSplitView.xaml.cs">
       <DependentUpon>BaseSettingsSplitView.xaml</DependentUpon>
@@ -441,10 +438,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NothingHerePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

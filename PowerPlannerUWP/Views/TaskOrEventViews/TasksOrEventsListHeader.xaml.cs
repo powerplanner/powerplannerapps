@@ -2,7 +2,6 @@
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
-using PowerPlannerUWP.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
