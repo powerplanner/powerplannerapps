@@ -154,11 +154,6 @@ namespace PowerPlannerUWP
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             string currPage = TelemetryExtension.Current?.LastPageName;
-            try
-            {
-                TelemetryExtension.Current?.LeavingApp();
-            }
-            catch { }
 
             TelemetryExtension.Current?.TrackException(e.Exception, properties: currPage != null ? new Dictionary<string, string>
             {

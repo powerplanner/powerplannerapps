@@ -18,7 +18,6 @@ namespace PowerPlannerUWP.Extensions
     {
         private static TelemetryClient _client;
         private static string _systemId;
-        private static IOperationHolder<RequestTelemetry> _session;
 
         static UWPTelemetryExtension()
         {
@@ -114,11 +113,6 @@ namespace PowerPlannerUWP.Extensions
                 _client.Flush();
             }
             catch { }
-        }
-
-        public override void ReturnedToApp()
-        {
-            // Don't track another pageview
         }
 
         private List<string> _developerLogs = new List<string>();
