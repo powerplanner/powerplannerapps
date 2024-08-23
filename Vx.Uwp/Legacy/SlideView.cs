@@ -253,11 +253,11 @@ namespace InterfacesUWP
             }
 
             //moving previous
-            else if (_scrollViewer.HorizontalOffset < TotalColumnWidth() * 0.5)
+            else if (_scrollViewer.HorizontalOffset < 10 && _scrollViewer.ActualWidth > 30) // 30 just for safety to not get into infinite loop on small size
             {
                 if (showPreviousVisual())
                 {
-                    setWithoutSnap(_scrollViewer.HorizontalOffset + TotalColumnWidth());
+                    setX(_scrollViewer.HorizontalOffset + TotalColumnWidth());
                 }
             }
 
