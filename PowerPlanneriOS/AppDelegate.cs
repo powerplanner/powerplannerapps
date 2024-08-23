@@ -106,6 +106,23 @@ namespace PowerPlanneriOS
             }
 
             catch { }
+
+            try
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
+            catch { }
+        }
+
+        public override void WillTerminate(UIApplication application)
+        {
+            base.WillTerminate(application);
+            
+            try
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
+            catch { }
         }
 
         public override void PerformActionForShortcutItem(UIApplication application, UIApplicationShortcutItem shortcutItem, UIOperationHandler completionHandler)
