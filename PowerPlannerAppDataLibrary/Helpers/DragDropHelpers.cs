@@ -103,6 +103,63 @@ namespace PowerPlannerAppDataLibrary.Helpers
             }
         }
 
+        public static T AllowDropTaskOrEventOnClass<T>(this T view, ViewItemClass c) where T : View
+        {
+            view.AllowDrop = true;
+            view.DragOver = e => HandleDragOverClass(c, e);
+            view.Drop = e => HandleDropOnClass(c, e);
+
+            return view;
+        }
+
+        private static void HandleDragOverClass(ViewItemClass c, DragEventArgs e)
+        {
+            if (e.TryGetViewItemTaskOrEvent(out ViewItemTaskOrEvent draggedTaskOrEvent))
+            {
+                if (e.IsDuplicate())
+                {
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+                else if (draggedTaskOrEvent.Class.Identifier != c.Identifier)
+                {
+                    e.AcceptedOperation = DataPackageOperation.Move;
+                }
+                else
+                {
+                    e.AcceptedOperation = DataPackageOperation.None;
+                }
+            }
+        }
+
+        private static void HandleDropOnClass(ViewItemClass c, DragEventArgs e)
+        {
+            try
+            {
+                if (e.TryGetViewItemTaskOrEvent(out ViewItemTaskOrEvent draggedTaskOrEvent))
+                {
+                    if (e.IsDuplicate())
+                    {
+                        PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(draggedTaskOrEvent, classIdentifier: c.Identifier);
+                    }
+                    else
+                    {
+                        DataChanges changes = new DataChanges();
+
+                        var dataItem = (DataItemMegaItem)draggedTaskOrEvent.DataItem;
+                        dataItem.UpperIdentifier = c.Identifier;
+
+                        changes.Add(dataItem);
+
+                        _ = PowerPlannerApp.Current.SaveChanges(changes);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
         public static T AllowDropMegaItemOnWeight<T>(this T view, ViewItemWeightCategory weight) where T : View
         {
             view.AllowDrop = true;
@@ -120,7 +177,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 {
                     e.AcceptedOperation = DataPackageOperation.Copy;
                 }
-                else if (item.WeightCategory != weight)
+                else if (item.WeightCategory?.Identifier != weight.Identifier)
                 {
                     e.AcceptedOperation = DataPackageOperation.Move;
                 }

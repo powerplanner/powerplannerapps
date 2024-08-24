@@ -361,7 +361,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                 }
                             },
                             BackgroundColor = SelectedClass == c ? System.Drawing.Color.FromArgb(65, 167, 240) : Theme.Current.AccentColor
-                        });
+                        }.AllowDropTaskOrEventOnClass(c));
                     }
                 }
             }
@@ -1504,7 +1504,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// <param name="item">The task or event being duplicated</param>
         /// <param name="date">The date the task or event should be copied to. Defaults to same date as item</param>
         /// <param name="weightCategoryIdentifier">The weight the task or event should be copied to. Defaults to same weight as item</param>
-        public void DuplicateTaskOrEvent(ViewItemTaskOrEvent item, DateTime? date = null, Guid? weightCategoryIdentifier = null)
+        public void DuplicateTaskOrEvent(ViewItemTaskOrEvent item, DateTime? date = null, Guid? weightCategoryIdentifier = null, Guid? classIdentifier = null)
         {
             DataChanges changes = new DataChanges();
             DateTime now = DateTime.UtcNow;
@@ -1515,6 +1515,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             copiedDataItem.Updated = now;       // The copy was created now
             copiedDataItem.Date = date ?? copiedDataItem.Date;  // If date is defined, set it
             copiedDataItem.WeightCategoryIdentifier = weightCategoryIdentifier ?? copiedDataItem.WeightCategoryIdentifier; // If weight is defined, set it
+            copiedDataItem.UpperIdentifier = classIdentifier ?? copiedDataItem.UpperIdentifier; // If class is defined, set it
 
             changes.Add(copiedDataItem);
 
