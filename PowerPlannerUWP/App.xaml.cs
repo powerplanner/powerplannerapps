@@ -680,6 +680,11 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
+                    if (v <= new Version(2408, 23, 3, 99))
+                    {
+                        changedText += "\n - Drag and drop of tasks and events is supported on nearly all the views!";
+                    }
+
                     if (v <= new Version(2402, 19, 0, 0))
                     {
                         changedText += "\n - Ability to move semesters and classes to different semesters and years!";
