@@ -71,7 +71,7 @@ namespace Vx.Uwp.Views
             return new Vx.Views.DragDrop.DragEventArgs(vxDataPackage, vxModifiers);
         }
 
-        private static Vx.Views.DragDrop.DataPackage GetVxDataPackage(DragEventArgs e)
+        public static Vx.Views.DragDrop.DataPackage GetVxDataPackage(DragEventArgs e)
         {
             Vx.Views.DragDrop.DataPackage vxDataPackage = null;
             if (e.DataView.Properties.TryGetValue("VxDataPackage", out object o))

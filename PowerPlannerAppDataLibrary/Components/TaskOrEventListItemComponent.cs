@@ -12,7 +12,7 @@ namespace PowerPlannerAppDataLibrary.Components
     {
         private const string IMAGE_ATTACHMENT_SYMBOL = "\uD83D\uDCF7";
 
-        public static View Render(ViewItemTaskOrEvent Item, BaseMainScreenViewModelDescendant ViewModel, bool IncludeDate = true, bool IncludeClass = true, bool IncludeMargin = true, Action InterceptOnTapped = null)
+        public static View Render(ViewItemTaskOrEvent Item, BaseMainScreenViewModelDescendant ViewModel, bool IncludeDate = true, bool IncludeClass = true, bool IncludeMargin = true, Action InterceptOnTapped = null, bool AllowDrag = false)
         {
             if (Item == null || ViewModel == null)
             {
@@ -22,7 +22,7 @@ namespace PowerPlannerAppDataLibrary.Components
             string details = GetDetails(Item);
             var subtitleColor = Item.Class.Color.ToColor().Opacity(Item.IsComplete ? 0.7 : 1);
 
-            return new Border
+            var answer = new Border
             {
                 Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 3, Theme.Current.PageMargin, 3) : new Thickness(0, 3, 0, 3),
                 BackgroundColor = Theme.Current.BackgroundAlt1Color,
@@ -80,6 +80,13 @@ namespace PowerPlannerAppDataLibrary.Components
 
                 ContextMenu = () => TaskOrEventContextMenu.Generate(Item, ViewModel)
             };
+
+            if (AllowDrag)
+            {
+                answer.AllowDragViewItem(Item);
+            }
+
+            return answer;
         }
 
         private static string GetSubtitle(ViewItemTaskOrEvent Item, bool IncludeDate, bool IncludeClass)

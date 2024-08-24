@@ -159,7 +159,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         {
             if (item is ViewItemTaskOrEvent taskOrEvent)
             {
-                return TaskOrEventListItemComponent.Render(taskOrEvent, this);
+                return TaskOrEventListItemComponent.Render(taskOrEvent, this, AllowDrag: true);
             }
 
             else if (item is ItemsGroupHeader header)

@@ -542,51 +542,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     {
                         linearLayout.Children.Add(RenderDayItem(item));
                     }
-
-                    linearLayout.AllowDrop = true;
-                    linearLayout.DragOver = e =>
-                    {
-                        if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
-                        {
-                            bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
-
-                        if (duplicate)
-                            {
-                                e.AcceptedOperation = DataPackageOperation.Copy;
-                            }
-                            else if (draggedTaskOrEvent.EffectiveDateForDisplayInDateBasedGroups.Date != this.Date.Date)
-                            {
-                                e.AcceptedOperation = DataPackageOperation.Move;
-                            }
-                            else
-                            {
-                                e.AcceptedOperation = DataPackageOperation.None;
-                            }
-                        }
-                    };
-                    linearLayout.Drop = e =>
-                    {
-                        try
-                        {
-                            if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
-                            {
-                                bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
-
-                            if (duplicate)
-                                {
-                                    PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(draggedTaskOrEvent, this.Date.Date);
-                                }
-                                else
-                                {
-                                    _ = ViewModel.MoveItem(draggedTaskOrEvent, this.Date.Date);
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            TelemetryExtension.Current?.TrackException(ex);
-                        }
-                    };
                 }
 
                 return new Border
@@ -595,7 +550,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     BackgroundColor = dayBackgroundColor,
                     BorderColor = IsSelected ? Theme.Current.AccentColor : dayBackgroundColor,
                     Content = linearLayout
-                };
+                }.AllowDropTaskOrEvent(this.Date);
             }
 
             private View RenderDayItem(ViewItemTaskOrEvent item)

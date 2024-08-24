@@ -516,7 +516,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             MainScreenViewModel.Navigate(new ScheduleViewModel(MainScreenViewModel));
         }
 
-        public async Task MoveItem(ViewItemTaskOrEvent item, DateTime toDate)
+        public static async Task MoveItem(ViewItemTaskOrEvent item, DateTime toDate)
         {
             try
             {

@@ -62,11 +62,7 @@ namespace PowerPlannerAppDataLibrary.Components
 
             content.Tapped = () => ShowItem(Item);
 
-            content.CanDrag = true;
-            content.DragStarting = e =>
-            {
-                e.Data.Properties.Add("ViewItem", Item);
-            };
+            content.AllowDragViewItem(Item);
 
 
 

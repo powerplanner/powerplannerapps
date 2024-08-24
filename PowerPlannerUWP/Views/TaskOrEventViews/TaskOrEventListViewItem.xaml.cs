@@ -38,7 +38,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
             protected override View Render()
             {
-                return TaskOrEventListItemComponent.Render(Item, ViewModel, IncludeDate, IncludeClass, false);
+                return TaskOrEventListItemComponent.Render(Item, ViewModel, IncludeDate, IncludeClass, false, AllowDrag: true);
             }
         }
 

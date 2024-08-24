@@ -77,7 +77,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         Padding = new Thickness(0, 0, 0, 12)
                     }.LinearLayoutWeight(1)
                 }
-            };
+            }.AllowDropTaskOrEvent(Date);
         }
 
         private View _addRef;
@@ -170,7 +170,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             }
             if (objItem is ViewItemTaskOrEvent taskOrEvent)
             {
-                return TaskOrEventListItemComponent.Render(taskOrEvent, ViewModel as BaseMainScreenViewModelDescendant, IncludeDate: false);
+                return TaskOrEventListItemComponent.Render(taskOrEvent, ViewModel as BaseMainScreenViewModelDescendant, IncludeDate: false, AllowDrag: true);
             }
             else if (objItem is DayScheduleItemsArranger arranger)
             {

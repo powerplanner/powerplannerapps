@@ -1,5 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using System;
@@ -7,6 +9,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Vx.Uwp.Views;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.DataTransfer.DragDrop;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -153,5 +158,52 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         public bool IsClassPickerHidden { get; set; }
 
         public bool IsDatePickerHidden { get; set; }
+
+        private void Grid_DragOver(object sender, DragEventArgs e)
+        {
+            var data = UwpView<Vx.Views.TextBlock, TextBlock>.GetVxDataPackage(e);
+            if (data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
+            {
+                bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+
+                if (duplicate)
+                {
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+                else if (DateToUseForNewItems != null && draggedTaskOrEvent.EffectiveDateForDisplayInDateBasedGroups.Date != DateToUseForNewItems.Value.Date)
+                {
+                    e.AcceptedOperation = DataPackageOperation.Move;
+                }
+                else
+                {
+                    e.AcceptedOperation = DataPackageOperation.None;
+                }
+            }
+        }
+
+        private void Grid_Drop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                var data = UwpView<Vx.Views.TextBlock, TextBlock>.GetVxDataPackage(e);
+                if (data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
+                {
+                    bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+
+                    if (duplicate)
+                    {
+                        PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(draggedTaskOrEvent, DateToUseForNewItems.Value.Date);
+                    }
+                    else
+                    {
+                        _ = CalendarViewModel.MoveItem(draggedTaskOrEvent, DateToUseForNewItems.Value.Date);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
     }
 }
