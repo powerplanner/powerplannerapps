@@ -13,6 +13,7 @@ using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using Vx.Views;
 using Vx;
 using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
@@ -156,7 +157,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             if (item is ViewItemTaskOrEvent taskOrEvent)
             {
-                var listItem = TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false, IncludeMargin: false);
+                var listItem = TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false, IncludeMargin: false, AllowDrag: true);
                 listItem.Margin = new Thickness(PageMargin, listItem.Margin.Top, PageMargin, listItem.Margin.Bottom);
                 return listItem;
             }
@@ -169,7 +170,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     FontSize = Theme.Current.SubtitleFontSize,
                     WrapText = false,
                     Margin = new Thickness(PageMargin, 12, 0, 3)
-                };
+                }.AllowDropTaskOrEventOnDate(header);
             }
 
             else
