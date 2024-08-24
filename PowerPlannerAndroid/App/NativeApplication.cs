@@ -32,6 +32,8 @@ using PowerPlannerAppDataLibrary.ViewModels;
 using AndroidX.Core.Content.PM;
 using Android.Content.PM;
 using AndroidX.AppCompat.App;
+using Microsoft.ApplicationInsights.Channel;
+using PowerPlannerAppDataLibrary.Extensions;
 
 namespace PowerPlannerAndroid.App
 {
@@ -122,6 +124,27 @@ namespace PowerPlannerAndroid.App
         public override Type GetPortableAppType()
         {
             return typeof(PowerPlannerDroidApp);
+        }
+
+        /// <summary>
+        /// Only called in debugging instances when app is terminated with debugger attached
+        /// </summary>
+        public override void OnTerminate()
+        {
+            base.OnTerminate();
+
+            TelemetryExtension.Current?.SuspendingApp();
+        }
+
+        public override void OnTrimMemory([GeneratedEnum] TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            // Flush or send telemetry data
+            if (level == TrimMemory.UiHidden || level == TrimMemory.Complete)
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
         }
     }
 }

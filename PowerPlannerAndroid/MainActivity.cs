@@ -19,9 +19,6 @@ using PowerPlannerAppDataLibrary.Helpers;
 using Plugin.Settings;
 using PowerPlannerAppDataLibrary;
 using ToolsPortable;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using System.IO;
 using Android.Webkit;
 using AndroidX.Core.Content;
@@ -80,7 +77,6 @@ namespace PowerPlannerAndroid
             //};
 #endif
 
-            AppCenter.Start(Secrets.AppCenterAppSecret, typeof(Analytics), typeof(Crashes));
             TelemetryExtension.Current = new DroidTelemetryExtension();
 
 #if DEBUG

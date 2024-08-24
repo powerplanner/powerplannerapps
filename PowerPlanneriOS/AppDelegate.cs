@@ -9,7 +9,6 @@ using BareMvvm.Core.App;
 using InterfacesiOS.Windows;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
@@ -20,21 +19,15 @@ using PowerPlanneriOS.Controllers.Settings;
 using PowerPlanneriOS.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using PowerPlanneriOS.Controllers.ClassViewControllers;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
 using PowerPlannerAppDataLibrary;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlanneriOS.Extensions;
 using PowerPlannerAppDataLibrary.App;
 using System.Linq;
 using PowerPlanneriOS.Helpers;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using UserNotifications;
 using InterfacesiOS.Helpers;
 using System.Threading.Tasks;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade;
 using PowerPlannerAppDataLibrary.ViewModels;
 using Vx.Extensions;
 using PowerPlannerAppDataLibrary.Views;
@@ -113,6 +106,23 @@ namespace PowerPlanneriOS
             }
 
             catch { }
+
+            try
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
+            catch { }
+        }
+
+        public override void WillTerminate(UIApplication application)
+        {
+            base.WillTerminate(application);
+            
+            try
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
+            catch { }
         }
 
         public override void PerformActionForShortcutItem(UIApplication application, UIApplicationShortcutItem shortcutItem, UIOperationHandler completionHandler)
@@ -176,10 +186,6 @@ namespace PowerPlanneriOS
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
             _hasActivatedWindow = false;
-
-            // Start telemetry and crash handling
-            AppCenter.Start(Secrets.AppCenterAppSecret,
-                   typeof(Analytics), typeof(Crashes));
 
             TelemetryExtension.Current = new iOSTelemetryExtension();
             InAppPurchaseExtension.Current = new iOSInAppPurchaseExtension();

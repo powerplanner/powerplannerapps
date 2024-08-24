@@ -124,6 +124,27 @@ namespace PowerPlannerAppDataLibrary.Helpers
             set => AppSettings.AddOrUpdateDouble(AVERAGE_IMAGE_UPLOAD_SPEED_IN_BYTES_PER_SECOND, value);
         }
 
+        private static string _deviceId;
+        private const string DEVICE_ID = "DeviceId";
+        public static string DeviceId
+        {
+            get
+            {
+                if (_deviceId == null)
+                {
+                    _deviceId = AppSettings.GetValueOrDefault(DEVICE_ID, null);
+
+                    if (_deviceId == null)
+                    {
+                        _deviceId = Guid.NewGuid().ToString();
+                        AppSettings.AddOrUpdateValue(DEVICE_ID, _deviceId);
+                    }
+                }
+
+                return _deviceId;
+            }
+        }
+
         /// <summary>
         /// Android uses this (and in future iOS will too). Windows doesn't use this since we'll be 
         /// </summary>

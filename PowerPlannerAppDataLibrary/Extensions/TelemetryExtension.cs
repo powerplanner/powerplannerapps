@@ -62,75 +62,15 @@ namespace PowerPlannerAppDataLibrary.Extensions
         public abstract string GetDeveloperLogs();
 
         private string _lastPageName;
-        private object _pageViewLock = new object();
-        private TelemetryPageViewBundler _pageViewBundler;
         public virtual string LastPageName => _lastPageName;
         public virtual void TrackPageVisited(string pageName)
         {
-            try
-            {
-                _lastPageName = pageName;
-
-                DateTime utcTimeVisited = DateTime.UtcNow;
-                string userId = UserId;
-
-                lock (_pageViewLock)
-                {
-                    if (_pageViewBundler == null)
-                    {
-                        _pageViewBundler = new TelemetryPageViewBundler(userId);
-                    }
-
-                    // If able to add the page to the bundler
-                    if (_pageViewBundler.TryAddPage(userId, pageName, utcTimeVisited))
-                    {
-                        return;
-                    }
-
-                    // Otherwise, need to log bundler and create new
-                    FinishPageViewBundler();
-
-                    // And then add to new one
-                    _pageViewBundler = new TelemetryPageViewBundler(userId);
-                    _pageViewBundler.TryAddPage(userId, pageName, utcTimeVisited);
-                }
-            }
-            catch (Exception ex)
-            {
-                TrackException(ex);
-            }
-        }
-
-        public virtual void LeavingApp()
-        {
-            try
-            {
-                lock (_pageViewLock)
-                {
-                    if (_pageViewBundler != null)
-                    {
-                        FinishPageViewBundler();
-                    }
-                }
-            }
-            catch (Exception ex) { TrackException(ex); }
-        }
-
-        public virtual void ReturnedToApp()
-        {
-            TrackPageVisited(_lastPageName);
+            _lastPageName = pageName;
         }
 
         public virtual void SuspendingApp()
         {
 
-        }
-
-        private void FinishPageViewBundler()
-        {
-            TrackEvent("PageViews", _pageViewBundler.GenerateProperties());
-
-            _pageViewBundler = null;
         }
 
         public virtual void UpdateCurrentUser(AccountDataItem account)

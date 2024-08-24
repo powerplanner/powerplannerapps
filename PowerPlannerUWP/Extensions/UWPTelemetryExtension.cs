@@ -11,6 +11,7 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Windows.System.Profile;
 using Windows.Security.Cryptography;
 using Microsoft.ApplicationInsights.Channel;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerUWP.Extensions
 {
@@ -18,7 +19,6 @@ namespace PowerPlannerUWP.Extensions
     {
         private static TelemetryClient _client;
         private static string _systemId;
-        private static IOperationHolder<RequestTelemetry> _session;
 
         static UWPTelemetryExtension()
         {
@@ -36,7 +36,7 @@ namespace PowerPlannerUWP.Extensions
                 }
                 else
                 {
-                    _systemId = "notAvailable";
+                    _systemId = Settings.DeviceId;
                 }
 
                 _client.Context.Component.Version = Variables.VERSION.ToString();
@@ -114,11 +114,6 @@ namespace PowerPlannerUWP.Extensions
                 _client.Flush();
             }
             catch { }
-        }
-
-        public override void ReturnedToApp()
-        {
-            // Don't track another pageview
         }
 
         private List<string> _developerLogs = new List<string>();
