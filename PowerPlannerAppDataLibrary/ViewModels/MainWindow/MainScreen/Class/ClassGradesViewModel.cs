@@ -373,7 +373,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         private View RenderUnassignedItem(ViewItemTaskOrEvent t, bool includeMargin = true)
         {
-            return Components.TaskOrEventListItemComponent.Render(t, this, IncludeMargin: includeMargin, InterceptOnTapped: () => ShowUnassignedItem(t));
+            return Components.TaskOrEventListItemComponent.Render(t, this, IncludeMargin: includeMargin, InterceptOnTapped: () => ShowUnassignedItem(t), AllowDrag: true);
         }
 
         private View RenderUnassignedHeader(bool includeMargin = true)
@@ -445,7 +445,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 Weight = w,
                 IncludeMargin = includeMargin,
                 ShowWeightHeaderAsSum = showWeightHeaderAsSum
-            };
+            }.AllowDropMegaItemOnWeight(w);
         }
 
         private static View RenderGrade(BaseViewItemMegaItem i, Action<BaseViewItemMegaItem> onRequestViewGrade, bool isInWhatIfMode, bool includeMargin = true)
@@ -456,7 +456,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 OnRequestViewGrade = () => onRequestViewGrade(i),
                 Margin = includeMargin ? new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0) : new Thickness(),
                 IsInWhatIfMode = isInWhatIfMode
-            };
+            }.AllowDragViewItem(i);
         }
 
         public GradesSummaryComponent SummaryComponent { get; private set; }

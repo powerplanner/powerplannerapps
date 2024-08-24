@@ -1,4 +1,6 @@
 ﻿using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
@@ -11,11 +13,11 @@ namespace PowerPlannerAppDataLibrary.Helpers
 {
     public static class DragDropTaskOrEventHelper
     {
-        public static T AllowDropTaskOrEvent<T>(this T view, DateTime dateOfThisSurface) where T : View
+        public static T AllowDropTaskOrEventOnDate<T>(this T view, DateTime dateOfThisSurface) where T : View
         {
             view.AllowDrop = true;
-            view.DragOver = e => HandleDragOver(dateOfThisSurface, e);
-            view.Drop = e => HandleDrop(dateOfThisSurface, e);
+            view.DragOver = e => HandleDragOverDate(dateOfThisSurface, e);
+            view.Drop = e => HandleDropOnDate(dateOfThisSurface, e);
 
             return view;
         }
@@ -31,13 +33,40 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return view;
         }
 
-        private static void HandleDragOver(DateTime dateOfThisSurface, DragEventArgs e)
+        private static bool TryGetViewItemTaskOrEvent(this DragEventArgs e, out ViewItemTaskOrEvent item)
         {
             if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
             {
-                bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+                item = draggedTaskOrEvent;
+                return true;
+            }
 
-                if (duplicate)
+            item = null;
+            return false;
+        }
+
+        private static bool TryGetViewItemMegaItem(this DragEventArgs e, out BaseViewItemMegaItem item)
+        {
+            if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is BaseViewItemMegaItem megaItem)
+            {
+                item = megaItem;
+                return true;
+            }
+
+            item = null;
+            return false;
+        }
+
+        private static bool IsDuplicate(this DragEventArgs e)
+        {
+            return (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
+        }
+
+        private static void HandleDragOverDate(DateTime dateOfThisSurface, DragEventArgs e)
+        {
+            if (e.TryGetViewItemTaskOrEvent(out ViewItemTaskOrEvent draggedTaskOrEvent))
+            {
+                if (e.IsDuplicate())
                 {
                     e.AcceptedOperation = DataPackageOperation.Copy;
                 }
@@ -52,21 +81,97 @@ namespace PowerPlannerAppDataLibrary.Helpers
             }
         }
 
-        private static void HandleDrop(DateTime dateOfThisSurface, DragEventArgs e)
+        private static void HandleDropOnDate(DateTime dateOfThisSurface, DragEventArgs e)
         {
             try
             {
-                if (e.Data.Properties.TryGetValue("ViewItem", out object o) && o is ViewItemTaskOrEvent draggedTaskOrEvent)
+                if (e.TryGetViewItemTaskOrEvent(out ViewItemTaskOrEvent draggedTaskOrEvent))
                 {
-                    bool duplicate = (e.Modifiers & DragDropModifiers.Control) != 0;  // Duplicate if holding Ctrl key
-
-                    if (duplicate)
+                    if (e.IsDuplicate())
                     {
                         PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(draggedTaskOrEvent, dateOfThisSurface.Date);
                     }
                     else
                     {
                         _ = CalendarViewModel.MoveItem(draggedTaskOrEvent, dateOfThisSurface.Date);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public static T AllowDropMegaItemOnWeight<T>(this T view, ViewItemWeightCategory weight) where T : View
+        {
+            view.AllowDrop = true;
+            view.DragOver = e => HandleDragOverWeight(weight, e);
+            view.Drop = e => HandleDropOnWeight(weight, e);
+
+            return view;
+        }
+
+        private static void HandleDragOverWeight(ViewItemWeightCategory weight, DragEventArgs e)
+        {
+            if (e.TryGetViewItemMegaItem(out BaseViewItemMegaItem item) && (item is ViewItemGrade || item is ViewItemTaskOrEvent))
+            {
+                if (e.IsDuplicate())
+                {
+                    e.AcceptedOperation = DataPackageOperation.Copy;
+                }
+                else if (item.WeightCategory != weight)
+                {
+                    e.AcceptedOperation = DataPackageOperation.Move;
+                }
+                else
+                {
+                    e.AcceptedOperation = DataPackageOperation.None;
+                }
+            }
+        }
+
+        private static void HandleDropOnWeight(ViewItemWeightCategory weight, DragEventArgs e)
+        {
+            try
+            {
+                if (e.TryGetViewItemMegaItem(out BaseViewItemMegaItem item))
+                {
+                    if (item is ViewItemTaskOrEvent taskItem)
+                    {
+                        if (e.IsDuplicate())
+                        {
+                            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateTaskOrEvent(taskItem, weightCategoryIdentifier: weight.Identifier);
+                        }
+                        else if (item.WeightCategory?.Identifier != weight.Identifier)
+                        {
+                            DataChanges changes = new DataChanges();
+
+                            var dataItem = (DataItemMegaItem)item.DataItem;
+                            dataItem.WeightCategoryIdentifier = weight.Identifier;
+
+                            changes.Add(dataItem);
+
+                            _ = PowerPlannerApp.Current.SaveChanges(changes);
+                        }
+                    }
+                    else if (item is ViewItemGrade grade)
+                    {
+                        if (e.IsDuplicate())
+                        {
+                            PowerPlannerApp.Current.GetMainScreenViewModel()?.DuplicateGrade(grade, weightCategoryIdentifier: weight.Identifier);
+                        }
+                        else if (item.WeightCategory?.Identifier != weight.Identifier)
+                        {
+                            DataChanges changes = new DataChanges();
+
+                            var dataItem = (DataItemGrade)item.DataItem;
+                            dataItem.UpperIdentifier = weight.Identifier;
+
+                            changes.Add(dataItem);
+
+                            _ = PowerPlannerApp.Current.SaveChanges(changes);
+                        }
                     }
                 }
             }

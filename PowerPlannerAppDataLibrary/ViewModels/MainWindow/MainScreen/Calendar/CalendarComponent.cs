@@ -550,7 +550,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     BackgroundColor = dayBackgroundColor,
                     BorderColor = IsSelected ? Theme.Current.AccentColor : dayBackgroundColor,
                     Content = linearLayout
-                }.AllowDropTaskOrEvent(this.Date);
+                }.AllowDropTaskOrEventOnDate(this.Date);
             }
 
             private View RenderDayItem(ViewItemTaskOrEvent item)

@@ -77,7 +77,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                         Padding = new Thickness(0, 0, 0, 12)
                     }.LinearLayoutWeight(1)
                 }
-            }.AllowDropTaskOrEvent(Date);
+            }.AllowDropTaskOrEventOnDate(Date);
         }
 
         private View _addRef;
