@@ -101,7 +101,11 @@ namespace PowerPlannerAndroid.Views.Controls
         {
             try
             {
-                Glide.With(_imageView.Context).Load(file.Path).Into(_imageView);
+                // Need to resolve any relative ".."'s from the path, otherwise Glide won't display the image
+                var path = System.IO.Path.GetFullPath(file.Path);
+
+                // And then display the image
+                Glide.With(_imageView.Context).Load(path).Into(_imageView);
             }
             catch (Exception ex)
             {
