@@ -80,9 +80,21 @@ namespace Vx.iOS.Views
             }
         }
 
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            SetNeedsUpdateConstraints();
+        }
+
         public override void ArrangeSubviews()
         {
             var width = Frame.Size.Width;
+            if (width == 0)
+            {
+                return;
+            }
+
             var columns = (int)(width / ItemWidth);
             if (columns == 0)
             {
@@ -105,12 +117,12 @@ namespace Vx.iOS.Views
                     view.SetConstraints(
                         leftConstraint: new WrapperConstraint(this, NSLayoutAttribute.Left, 1, left),
                         topConstraint: new WrapperConstraint(this, NSLayoutAttribute.Top, 1, top),
-                        rightConstraint: new WrapperConstraint(this, NSLayoutAttribute.Right, 1, 0) { GreaterThanOrEqual = true },
-                        bottomConstraint: new WrapperConstraint(this, NSLayoutAttribute.Bottom, 1, 0) { GreaterThanOrEqual = true },
+                        rightConstraint: new WrapperConstraint(this, NSLayoutAttribute.Right) { GreaterThanOrEqual = true },
+                        bottomConstraint: new WrapperConstraint(this, NSLayoutAttribute.Bottom) { GreaterThanOrEqual = true },
                         centeringHorizontalView: null,
                         centeringVerticalView: null,
-                        widthConstraint: new WrapperConstraint(null, NSLayoutAttribute.Width, 1, ItemWidth),
-                        heightConstraint: new WrapperConstraint(null, NSLayoutAttribute.Height, 1, ItemHeight));
+                        widthConstraint: new WrapperConstraint(null, NSLayoutAttribute.Width, 1, ItemWidth - view.Margin.Width),
+                        heightConstraint: new WrapperConstraint(null, NSLayoutAttribute.Height, 1, ItemHeight - view.Margin.Height));
                 }
             }
         }
