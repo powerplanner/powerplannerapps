@@ -188,6 +188,11 @@ namespace Vx.Uwp
                     return new UwpNativeContentContainer();
                 }
 
+                if (view is Vx.Views.WrapGrid)
+                {
+                    return new UwpWrapGrid();
+                }
+
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {

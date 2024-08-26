@@ -257,7 +257,6 @@
     </Compile>
     <Compile Include="Views\UwpCompletionSlider.cs" />
     <Compile Include="Views\UwpEditImagesView.cs" />
-    <Compile Include="Views\UwpImagesView.cs" />
     <Compile Include="Views\ShowImagesView.xaml.cs">
       <DependentUpon>ShowImagesView.xaml</DependentUpon>
     </Compile>

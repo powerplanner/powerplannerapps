@@ -21,6 +21,7 @@ using Vx.Views;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
 using Vx;
+using PowerPlannerAppDataLibrary.Components.ImageAttachments;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -111,11 +112,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                     IsTextSelectionEnabled = true
                                 } : null,
 
-                                VxPlatform.Current != Platform.iOS ? new ImagesView
+                                new ImagesComponent
                                 {
                                     ImageAttachments = Item.ImageAttachments,
                                     Margin = new Thickness(0, 18, 0, 0)
-                                } : null
+                                }
                             }
                         }
                     }.LinearLayoutWeight(1),
