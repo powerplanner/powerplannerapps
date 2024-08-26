@@ -25,6 +25,28 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
 
             float ITEM_SIZE = 120 + ItemSpacing;
 
+            var frame = new WrapGrid
+            {
+                Margin = new Thickness(ItemSpacing / -2),
+                ItemHeight = ITEM_SIZE,
+                ItemWidth = ITEM_SIZE
+            };
+
+            for (int i = 0; i < ImageAttachments.Length; i++)
+            {
+                frame.Children.Add(new Border
+                {
+                    BackgroundColor = Color.Black,
+                    Margin = new Thickness(i * ITEM_SIZE + i * ItemSpacing, 0, 0, 0),
+                    Content = new TextBlock
+                    {
+                        Text = "hi",
+                        TextColor = Color.White
+                    }
+                });
+            }
+            return frame;
+
             var wrapGrid = new WrapGrid
             {
                 ItemWidth = ITEM_SIZE,
@@ -70,7 +92,7 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
 
                 var margin = new Thickness(ImagesComponent.ItemSpacing / 2);
 
-                if (ImageAttachment.Status == Helpers.ImageAttachmentStatus.Loaded)
+                if (ImageAttachment.Status == Helpers.ImageAttachmentStatus.Loaded && false)
                 {
                     return new Border
                     {

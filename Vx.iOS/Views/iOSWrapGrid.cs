@@ -14,6 +14,8 @@ namespace Vx.iOS.Views
     {
         protected override void ApplyProperties(WrapGrid oldView, WrapGrid newView)
         {
+            View.HoldOffApplyingChanges();
+
             base.ApplyProperties(oldView, newView);
 
             View.ItemWidth = newView.ItemWidth;
@@ -43,6 +45,8 @@ namespace Vx.iOS.Views
                     View.ClearArrangedSubviews();
                 }
                 );
+
+            View.ApplyAnyHeldChanges();
         }
     }
 
@@ -98,14 +102,15 @@ namespace Vx.iOS.Views
                     var left = cIndex * ItemWidth;
                     var top = rIndex * ItemHeight;
 
-                    view.Width = ItemWidth;
-                    view.Height = ItemHeight;
-
                     view.SetConstraints(
                         leftConstraint: new WrapperConstraint(this, NSLayoutAttribute.Left, 1, left),
                         topConstraint: new WrapperConstraint(this, NSLayoutAttribute.Top, 1, top),
-                        rightConstraint: null,
-                        bottomConstraint: null);
+                        rightConstraint: new WrapperConstraint(this, NSLayoutAttribute.Right, 1, 0) { GreaterThanOrEqual = true },
+                        bottomConstraint: new WrapperConstraint(this, NSLayoutAttribute.Bottom, 1, 0) { GreaterThanOrEqual = true },
+                        centeringHorizontalView: null,
+                        centeringVerticalView: null,
+                        widthConstraint: new WrapperConstraint(null, NSLayoutAttribute.Width, 1, ItemWidth),
+                        heightConstraint: new WrapperConstraint(null, NSLayoutAttribute.Height, 1, ItemHeight));
                 }
             }
         }
