@@ -18,9 +18,15 @@ namespace PowerPlanneriOS.Helpers
 {
     public static class WidgetsHelper
     {
-
+#if !BUILD_OS_WINDOWS
         [DllImport ("__Internal", EntryPoint = "ReloadWidgets")]
         public extern static int ReloadWidgets ();
+#else
+        public static int ReloadWidgets()
+        {
+            return 0;
+        }
+#endif
 
         public static async Task UpdateAllWidgetsAsync()
         {
