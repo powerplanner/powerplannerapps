@@ -74,60 +74,135 @@ namespace InterfacesiOS.Views
             // Moving to the left
             if (this.ContentOffset.X <= 0)
             {
-                // prev becomes curr
-                // curr becomes next
-                // next moves over to prev
+                if (HasPrevious())
+                {
+                    // prev becomes curr
+                    // curr becomes next
+                    // next moves over to prev
 
-                var newPrev = _nextView;
-                _nextView = _currView;
-                _currView = _prevView;
-                _prevView = newPrev;
+                    var newPrev = _nextView;
+                    _nextView = _currView;
+                    _currView = _prevView;
+                    _prevView = newPrev;
 
-                ConfigureViewFrames();
+                    EarlyOnMovedToPrevious();
 
-                // And then adjust the offset to move to the new one
-                CenterScrollView();
+                    ConfigureViewFrames();
 
-                OnMovedToPrevious();
-                UpdatePrevView(_prevView);
+                    // And then adjust the offset to move to the new one
+                    CenterScrollView();
+
+                    OnMovedToPrevious();
+                    UpdatePrevView(_prevView);
+                }
             }
 
             // Moving to the right
             else if (this.ContentOffset.X >= this.ContentSize.Width - this.Frame.Width)
             {
-                var newNext = _prevView;
-                _prevView = _currView;
-                _currView = _nextView;
-                _nextView = newNext;
+                if (HasNext())
+                {
+                    var newNext = _prevView;
+                    _prevView = _currView;
+                    _currView = _nextView;
+                    _nextView = newNext;
 
-                ConfigureViewFrames();
+                    EarlyOnMovedToNext();
 
-                // And then adjust the offset to move to the new one
-                CenterScrollView();
+                    ConfigureViewFrames();
 
-                OnMovedToNext();
-                UpdateNextView(_nextView);
+                    // And then adjust the offset to move to the new one
+                    CenterScrollView();
+
+                    OnMovedToNext();
+                    UpdateNextView(_nextView);
+                }
             }
         }
 
         protected abstract void OnMovedToPrevious();
         protected abstract void OnMovedToNext();
+        protected virtual void EarlyOnMovedToPrevious()
+        {
+
+        }
+
+        protected virtual void EarlyOnMovedToNext()
+        {
+
+        }
 
         protected abstract void UpdateCurrView(TUIView curr);
         protected abstract void UpdateNextView(TUIView next);
         protected abstract void UpdatePrevView(TUIView prev);
 
+        protected virtual bool HasPrevious()
+        {
+            return true;
+        }
+
+        protected virtual bool HasNext()
+        {
+            return true;
+        }
+
+        private bool _hasDelayedUpdateAllViews;
+        private bool _hasDelayedSetNeedsLayout;
+        public bool DelayUpdates { get; set; }
+
+        public void ApplyDelayedUpdates()
+        {
+            var orig = DelayUpdates;
+            DelayUpdates = false;
+
+            if (_hasDelayedUpdateAllViews)
+            {
+                UpdateAllViews();
+                _hasDelayedUpdateAllViews = false;
+            }
+            if (_hasDelayedSetNeedsLayout)
+            {
+                SetNeedsLayout();
+                _hasDelayedSetNeedsLayout = false;
+            }
+
+            DelayUpdates = orig;
+        }
+
+        public override void SetNeedsLayout()
+        {
+            if (DelayUpdates)
+            {
+                _hasDelayedSetNeedsLayout = true;
+                return;
+            }
+
+            base.SetNeedsLayout();
+        }
+
         protected void UpdateAllViews()
         {
-            UpdatePrevView(_prevView);
+            if (DelayUpdates)
+            {
+                _hasDelayedUpdateAllViews = true;
+                return;
+            }
+
+            if (HasPrevious())
+            {
+                UpdatePrevView(_prevView);
+            }
             UpdateCurrView(_currView);
-            UpdateNextView(_nextView);
+            if (HasNext())
+            {
+                UpdateNextView(_nextView);
+            }
         }
 
         private void CenterScrollView()
         {
             this.SetContentOffset(new CoreGraphics.CGPoint(
-                x: this.Frame.Width,
+                x: HasPrevious() ? this.Frame.Width : 0,
                 y: this.ContentOffset.Y), animated: false);
         }
 
@@ -141,7 +216,7 @@ namespace InterfacesiOS.Views
                 _currHeight = this.Frame.Height;
 
                 this.ContentSize = new CoreGraphics.CGSize(
-                    this.Frame.Width * 3,
+                    this.Frame.Width * (1 + (HasPrevious() ? 1 : 0) + (HasNext() ? 1 : 0)),
                     this.Frame.Height);
 
                 ConfigureViewFrames();
@@ -152,9 +227,23 @@ namespace InterfacesiOS.Views
 
         private void ConfigureViewFrames()
         {
-            ConfigureViewFrame(_prevView, 0);
-            ConfigureViewFrame(_currView, 1);
-            ConfigureViewFrame(_nextView, 2);
+            if (HasPrevious())
+            {
+                ConfigureViewFrame(_prevView, 0);
+            }
+            else
+            {
+                _prevView.Frame = new CoreGraphics.CGRect();
+            }
+            ConfigureViewFrame(_currView, HasPrevious() ? 1 : 0);
+            if (HasNext())
+            {
+                ConfigureViewFrame(_nextView, HasPrevious() ? 2 : 1);
+            }
+            else
+            {
+                _nextView.Frame = new CoreGraphics.CGRect();
+            }
         }
 
         private void ConfigureViewFrame(UIView view, int index)

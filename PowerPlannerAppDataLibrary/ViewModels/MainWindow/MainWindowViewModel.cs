@@ -18,6 +18,7 @@ using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerAppDataLibrary.ViewItems;
+using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
@@ -80,7 +81,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public void ShowImage(ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages)
         {
-            Navigate(new ShowImagesViewModel(this, image, allImages));
+            if (VxPlatform.Current == Platform.iOS)
+            {
+                ShowPopup(new ShowImagesPopupViewModel(this, image, allImages));
+            }
+            else
+            {
+                Navigate(new ShowImagesViewModel(this, image, allImages));
+            }
         }
 
         private void AccountsManager_OnAccountDeleted(object sender, Guid localAccountId)

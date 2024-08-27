@@ -163,6 +163,11 @@ namespace Vx.iOS
                     return new iOSWrapGrid();
                 }
 
+                if (view is Vx.Views.ZoomableImageView)
+                {
+                    return new iOSZoomableImageView();
+                }
+
                 if (view is Vx.Views.ImageView)
                 {
                     return new iOSImageView();

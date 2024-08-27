@@ -10,5 +10,8 @@ namespace Vx.Views
         public VxValue<int> Position { get; set; }
 
         public Func<int, View> ItemTemplate { get; set; }
+
+        public int? MinPosition { get; set; }
+        public int? MaxPosition { get; set; }
     }
 }
