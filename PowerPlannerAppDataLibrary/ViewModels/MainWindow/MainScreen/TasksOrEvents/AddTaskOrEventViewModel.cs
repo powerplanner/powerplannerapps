@@ -214,7 +214,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 ImageAttachments = ImageAttachments,
                 RequestAddImage = () => _ = AddNewImageAttachmentAsync(),
-                Margin = new Thickness(0, 6, 0, 0)
+                Margin = new Thickness(0, 6, 0, 0),
+                Opacity = IsAddingNewImages ? 0.5f : 1
             });
 
             return RenderGenericPopupContent(views.ToArray());
@@ -995,8 +996,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         private List<EditingExistingImageAttachmentViewModel> _removedImageAttachments = new List<EditingExistingImageAttachmentViewModel>();
         public ObservableCollection<BaseEditingImageAttachmentViewModel> ImageAttachments { get; private set; }
 
+        private bool _isAddingNewImages;
+        public bool IsAddingNewImages
+        {
+            get => _isAddingNewImages;
+            set => SetProperty(ref _isAddingNewImages, value, nameof(IsAddingNewImages));
+        }
+
         public async Task AddNewImageAttachmentAsync()
         {
+            if (IsAddingNewImages)
+            {
+                return;
+            }
+
             try
             {
                 if (!(await PowerPlannerApp.Current.IsFullVersionAsync()) && ImageAttachments.Count >= 1)
@@ -1010,14 +1023,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     throw new PlatformNotSupportedException("ImagePickerExtension wasn't implemented");
                 }
 
+                IsAddingNewImages = true;
+
                 IFile[] files = await ImagePickerExtension.Current.PickImagesAsync();
                 foreach (var file in files)
                 {
                     ImageAttachments.Add(new EditingNewImageAttachmentViewModel(this, file));
                 }
+
+                IsAddingNewImages = false;
             }
             catch (Exception ex)
             {
+                IsAddingNewImages = false;
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }

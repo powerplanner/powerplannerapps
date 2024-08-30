@@ -194,6 +194,7 @@ namespace PowerPlanneriOS
             DateTimeFormatterExtension.Current = new iOSDateTimeFormatterExtension();
             TilesExtension.Current = new iOSTilesExtension();
             ScheduleTileExtension.Current = new iOSScheduleTileExtension();
+            ImagePickerExtension.Current = new iOSImagePickerExtension();
 
 #if !DEBUG
             // On release, use the system language selector (in simulator the system settings doesn't support this).
