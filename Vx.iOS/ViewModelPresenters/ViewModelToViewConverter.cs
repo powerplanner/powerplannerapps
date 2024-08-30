@@ -122,5 +122,18 @@ namespace InterfacesiOS.ViewModelPresenters
             // And return the view
             return view;
         }
+
+        public static BaseViewModel GetViewModelFromView(UIViewController view)
+        {
+            // Get the ViewModel property
+            var viewModelProperty = view.GetType().GetRuntimeProperties().FirstOrDefault(i => i.Name.Equals("ViewModel"));
+            if (viewModelProperty != null)
+            {
+                // And get the property
+                return viewModelProperty.GetValue(view) as BaseViewModel;
+            }
+
+            return null;
+        }
     }
 }

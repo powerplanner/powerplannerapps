@@ -27,22 +27,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         }
     }
 
-    public class ShowImagesPopupViewModel : PopupComponentViewModel
+    public class ShowImagesVxViewModel : PopupComponentViewModel
     {
-        public ShowImagesPopupViewModel(BaseViewModel parent, ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages) : base(parent)
+        public ShowImagesVxViewModel(BaseViewModel parent, ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages) : base(parent)
         {
             AllImages = allImages;
-            CurrentImage = image;
+            _index = Array.IndexOf(allImages, image);
         }
 
         public ImageAttachmentViewModel[] AllImages { get; set; }
-
-        private ImageAttachmentViewModel _currentImage;
-        public ImageAttachmentViewModel CurrentImage
-        {
-            get { return _currentImage; }
-            set { SetProperty(ref _currentImage, value, nameof(CurrentImage)); }
-        }
 
         private int _index = 0;
 

@@ -83,7 +83,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         {
             if (VxPlatform.Current == Platform.iOS)
             {
-                ShowPopup(new ShowImagesPopupViewModel(this, image, allImages));
+                ShowFullScreenPopup(new ShowImagesVxViewModel(this, image, allImages));
             }
             else
             {

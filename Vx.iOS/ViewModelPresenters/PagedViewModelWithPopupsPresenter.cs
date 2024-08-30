@@ -8,6 +8,7 @@ using UIKit;
 using System.Collections.Specialized;
 using ToolsPortable;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
@@ -41,6 +42,7 @@ namespace InterfacesiOS.ViewModelPresenters
         }
 
         private NotifyCollectionChangedEventHandler _popupsCollectionChangedHandler;
+        private PropertyChangedEventHandler _propertyChangedEventHandler;
         protected override void OnViewModelChanged(PagedViewModel oldViewModel, PagedViewModel currentViewModel)
         {
             _listPresenter.ViewModels = ViewModel?.Popups;
@@ -52,17 +54,71 @@ namespace InterfacesiOS.ViewModelPresenters
                 _popupsCollectionChangedHandler = new WeakEventHandler<NotifyCollectionChangedEventArgs>(Popups_CollectionChanged).Handler;
             }
 
+            if (_propertyChangedEventHandler == null)
+            {
+                _propertyChangedEventHandler = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+            }
+
             PagedViewModelWithPopups newModel = currentViewModel as PagedViewModelWithPopups;
             if (newModel != null)
             {
+                newModel.PropertyChanged += _propertyChangedEventHandler;
                 newModel.Popups.CollectionChanged += _popupsCollectionChangedHandler;
                 newModel.CurrentPopupAllowsLightDismissChanged += CurrentPopupAllowsLightDismissChanged;
             }
 
             UpdateVisibility();
+            UpdateFullScreenPopup();
             UpdateLightDismiss();
 
             base.OnViewModelChanged(oldViewModel, currentViewModel);
+        }
+
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModel.FullScreenPopup))
+            {
+                UpdateFullScreenPopup();
+            }
+        }
+
+        private UIViewController _prevFullScreenController;
+        private BaseViewModel _prevFullScreenViewModel;
+        private void UpdateFullScreenPopup()
+        {
+            // If there shouldn't be any full screen content
+            if (ViewModel == null || ViewModel.FullScreenPopup == null)
+            {
+                // If there was full screen content
+                if (_prevFullScreenController != null)
+                {
+                    // Dismiss it and update current
+                    _prevFullScreenController.DismissViewController(true, null);
+                    _prevFullScreenController = null;
+                    _prevFullScreenViewModel = null;
+                }
+
+                return;
+            }
+
+            // Otherwise, if the full screen content is the same
+            if (ViewModel.FullScreenPopup == _prevFullScreenViewModel)
+            {
+                // Do nothing
+                return;
+            }
+
+            // Otherwise, the full screen content must be initialized and is different
+            if (_prevFullScreenController != null)
+            {
+                _prevFullScreenController.DismissViewController(false, null);
+            }
+
+            var newController = ViewModelToViewConverter.Convert(ViewModel.FullScreenPopup);
+            newController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            ShowDetailViewController(newController, null);
+            _prevFullScreenController = newController;
+            _prevFullScreenViewModel = ViewModel.FullScreenPopup;
         }
 
         private void CurrentPopupAllowsLightDismissChanged(object sender, bool newValue)
@@ -76,6 +132,7 @@ namespace InterfacesiOS.ViewModelPresenters
 
             if (old != null)
             {
+                old.PropertyChanged -= _propertyChangedEventHandler;
                 old.Popups.CollectionChanged -= _popupsCollectionChangedHandler;
                 old.CurrentPopupAllowsLightDismissChanged -= CurrentPopupAllowsLightDismissChanged;
             }
