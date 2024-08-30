@@ -181,7 +181,10 @@ namespace InterfacesiOS.ViewModelPresenters
             // Note that ViewWillDisappear fires even if the user hasn't actually dragged the popup view off screen, so
             // it's premature and can only trust DidDisappear.
             // Note that the animated boolean is true even if I programmatically close
-            OnRemoved?.Invoke(this, new EventArgs());
+            if (IsMovingFromParentViewController || IsBeingDismissed)
+            {
+                OnRemoved?.Invoke(this, new EventArgs());
+            }
         }
     }
 }
