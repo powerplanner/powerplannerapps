@@ -41,87 +41,86 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
 
             foreach (var a in ImageAttachments)
             {
-                wrapGrid.Children.Add(new ImagePreviewComponent
+                wrapGrid.Children.Add(new ImageComponent
                 {
                     ImageAttachment = a,
-                    AllImageAttachments = ImageAttachments
+                    IsThumbnail = true,
+                    Tapped = delegate
+                    {
+                        PowerPlannerApp.Current.ShowImage(a, ImageAttachments);
+                    }
                 });
             }
 
             return wrapGrid;
         }
+    }
 
-        private class ImagePreviewComponent : VxComponent
+    internal class ImageComponent : VxComponent
+    {
+        [VxSubscribe]
+        public ImageAttachmentViewModel ImageAttachment { get; set; }
+
+        public bool IsThumbnail { get; set; }
+
+        protected override void Initialize()
         {
-            [VxSubscribe]
-            public ImageAttachmentViewModel ImageAttachment { get; set; }
+            ImageAttachment.StartLoad();
+        }
 
-            public ImageAttachmentViewModel[] AllImageAttachments { get; set; }
+        protected override View Render()
+        {
+            // Ensure this is called for when ImageAttachment changes
+            ImageAttachment.StartLoad();
 
-            protected override void Initialize()
+            var margin = new Thickness(IsThumbnail ? (ImagesComponent.ItemSpacing / 2) : 0);
+
+            if (ImageAttachment.Status == Helpers.ImageAttachmentStatus.Loaded)
             {
-                ImageAttachment.StartLoad();
-            }
-
-            protected override View Render()
-            {
-                // Ensure this is called for when ImageAttachment changes
-                ImageAttachment.StartLoad();
-
-                var margin = new Thickness(ImagesComponent.ItemSpacing / 2);
-
-                if (ImageAttachment.Status == Helpers.ImageAttachmentStatus.Loaded)
-                {
-                    return new Border
-                    {
-                        BackgroundColor = Color.Black,
-                        Content = new ImageView
-                        {
-                            Source = UriImageSource.FromFilePath(ImageAttachment.File.Path),
-                            UseFilePictureViewThumbnail = true
-                        },
-                        Tapped = delegate
-                        {
-                            PowerPlannerApp.Current.ShowImage(ImageAttachment, AllImageAttachments);
-                        },
-                        Margin = margin
-                    };
-                }
+                ImageView imageView = IsThumbnail ? new ImageView() : new ZoomableImageView();
+                imageView.Source = UriImageSource.FromFilePath(ImageAttachment.File.Path);
+                imageView.UseFilePictureViewThumbnail = IsThumbnail;
 
                 return new Border
                 {
                     BackgroundColor = Color.Black,
-                    Content = new FontIcon
-                    {
-                        Glyph = GetGlyph(ImageAttachment.Status),
-                        Color = Color.White,
-                        FontSize = 18,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    },
+                    Content = imageView,
                     Margin = margin
                 };
             }
 
-            private string GetGlyph(Helpers.ImageAttachmentStatus status)
+            return new Border
             {
-                switch (status)
+                BackgroundColor = Color.Black,
+                Content = new FontIcon
                 {
-                    case Helpers.ImageAttachmentStatus.NotFound:
-                        return MaterialDesign.MaterialDesignIcons.Error;
+                    Glyph = GetGlyph(ImageAttachment.Status),
+                    Color = Color.White,
+                    FontSize = 18,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                },
+                Margin = margin
+            };
+        }
+        private static string GetGlyph(Helpers.ImageAttachmentStatus status)
+        {
+            switch (status)
+            {
+                case Helpers.ImageAttachmentStatus.NotFound:
+                    return MaterialDesign.MaterialDesignIcons.Error;
 
-                    case Helpers.ImageAttachmentStatus.Offline:
-                        return MaterialDesign.MaterialDesignIcons.WifiOff;
+                case Helpers.ImageAttachmentStatus.Offline:
+                    return MaterialDesign.MaterialDesignIcons.WifiOff;
 
-                    case Helpers.ImageAttachmentStatus.Downloading:
-                        return MaterialDesign.MaterialDesignIcons.Downloading;
+                case Helpers.ImageAttachmentStatus.Downloading:
+                    return MaterialDesign.MaterialDesignIcons.Downloading;
 
-                    case Helpers.ImageAttachmentStatus.NotStarted:
-                        return "";
+                case Helpers.ImageAttachmentStatus.NotStarted:
+                    return "";
 
-                    default:
-                        return MaterialDesign.MaterialDesignIcons.Error;
-                }
+                default:
+                    return MaterialDesign.MaterialDesignIcons.Error;
             }
         }
     }

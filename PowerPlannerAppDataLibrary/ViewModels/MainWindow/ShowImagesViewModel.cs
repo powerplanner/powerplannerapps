@@ -1,4 +1,5 @@
 ﻿using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.Components.ImageAttachments;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using System;
 using System.Collections.Generic;
@@ -53,19 +54,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         private View RenderImage(int index)
         {
             var image = AllImages[index];
-            return RenderImage(image);
-        }
-
-        private View RenderImage(ImageAttachmentViewModel img)
-        {
-            if (img.Status != Helpers.ImageAttachmentStatus.Loaded)
+            return new ImageComponent()
             {
-                return new Border();
-            }
-
-            return new ZoomableImageView
-            {
-                Source = UriImageSource.FromFilePath(img.File.Path)
+                ImageAttachment = image
             };
         }
     }

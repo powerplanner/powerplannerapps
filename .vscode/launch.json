@@ -13,7 +13,7 @@
                 "run",
                 "--configuration",
                 "Debug",
-                "/p:_DeviceName=:v2:udid=E71087E9-241E-4BC1-862E-D5AFDC65C21D"
+                "/p:_DeviceName=:v2:udid=78E660EB-A32F-4683-95CC-CA663D7D64D0"
             ],
             "cwd": "${workspaceFolder}/PowerPlanneriOS",
             "console": "internalConsole",
