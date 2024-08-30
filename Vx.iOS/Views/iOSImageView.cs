@@ -55,14 +55,7 @@ namespace Vx.iOS.Views
         {
             if (source is UriImageSource uriSource && uriSource.IosFileName != null)
             {
-                using (var url = new NSUrl(uriSource.IosFileName, false))
-                {
-                    using (var imageSource = CGImageSource.FromUrl(url))
-                    {
-                        var cgImage = imageSource.CreateThumbnail(0, null);
-                        return UIImage.FromImage(cgImage);
-                    }
-                }
+                return UIImage.FromFile(uriSource.IosFileName);
             }
 
             return null;
