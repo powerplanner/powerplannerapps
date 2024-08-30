@@ -23,21 +23,7 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
                 return null;
             }
 
-            float ITEM_SIZE = 120 + ItemSpacing;
-
-            var wrapGrid = new WrapGrid
-            {
-                ItemWidth = ITEM_SIZE,
-                ItemHeight = ITEM_SIZE,
-                Margin = new Thickness(ItemSpacing / -2)
-            };
-
-            if (VxPlatform.Current == Platform.Uwp)
-            {
-                // UWP displays thumbnails at 190x130, so maintain that aspect ratio (and accomodate for spacing)
-                wrapGrid.ItemWidth = 152 + ItemSpacing;
-                wrapGrid.ItemHeight = 104 + ItemSpacing;
-            }
+            var wrapGrid = GenerateWrapGrid();
 
             foreach (var a in ImageAttachments)
             {
@@ -54,6 +40,27 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
 
             return wrapGrid;
         }
+
+        internal static WrapGrid GenerateWrapGrid()
+        {
+            float ITEM_SIZE = 120 + ItemSpacing;
+
+            var wrapGrid = new WrapGrid
+            {
+                ItemWidth = ITEM_SIZE,
+                ItemHeight = ITEM_SIZE,
+                Margin = new Thickness(ItemSpacing / -2)
+            };
+
+            if (VxPlatform.Current == Platform.Uwp)
+            {
+                // UWP displays thumbnails at 190x130, so maintain that aspect ratio (and accomodate for spacing)
+                wrapGrid.ItemWidth = 152 + ItemSpacing;
+                wrapGrid.ItemHeight = 104 + ItemSpacing;
+            }
+
+            return wrapGrid;
+        }
     }
 
     internal class ImageComponent : VxComponent
@@ -62,6 +69,8 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
         public ImageAttachmentViewModel ImageAttachment { get; set; }
 
         public bool IsThumbnail { get; set; }
+
+        public bool DontIncludeMargin { get; set; }
 
         protected override void Initialize()
         {
@@ -73,7 +82,7 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
             // Ensure this is called for when ImageAttachment changes
             ImageAttachment.StartLoad();
 
-            var margin = new Thickness(IsThumbnail ? (ImagesComponent.ItemSpacing / 2) : 0);
+            var margin = new Thickness(!DontIncludeMargin && IsThumbnail ? (ImagesComponent.ItemSpacing / 2) : 0);
 
             if (ImageAttachment.Status == Helpers.ImageAttachmentStatus.Loaded)
             {

@@ -22,6 +22,7 @@ using System.Drawing;
 using Vx;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Components.ImageAttachments;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -202,22 +203,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             }
 
-            if (VxPlatform.Current == Platform.Uwp || VxPlatform.Current == Platform.Android)
+            views.Add(new TextBlock
             {
-                views.Add(new TextBlock
-                {
-                    Text = PowerPlannerResources.GetString("String_ImageAttachments"),
-                    WrapText = false,
-                    Margin = new Thickness(0, 18, 0, 0)
-                });
+                Text = PowerPlannerResources.GetString("String_ImageAttachments"),
+                WrapText = false,
+                Margin = new Thickness(0, 18, 0, 0)
+            });
 
-                views.Add(new EditImagesView
-                {
-                    Attachments = ImageAttachments,
-                    RequestAddImage = () => _ = AddNewImageAttachmentAsync(),
-                    Margin = new Thickness(0, 6, 0, 0)
-                });
-            }
+            views.Add(new EditImagesComponent
+            {
+                ImageAttachments = ImageAttachments,
+                RequestAddImage = () => _ = AddNewImageAttachmentAsync(),
+                Margin = new Thickness(0, 6, 0, 0)
+            });
 
             return RenderGenericPopupContent(views.ToArray());
         }
