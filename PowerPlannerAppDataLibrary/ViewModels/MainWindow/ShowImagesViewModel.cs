@@ -30,10 +30,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
     public class ShowImagesVxViewModel : PopupComponentViewModel
     {
+        private Func<int, View> _itemTemplate;
+
         public ShowImagesVxViewModel(BaseViewModel parent, ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages) : base(parent)
         {
             AllImages = allImages;
             _index = Array.IndexOf(allImages, image);
+            _itemTemplate = RenderImage;
         }
 
         public ImageAttachmentViewModel[] AllImages { get; set; }
@@ -45,7 +48,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             return new SlideView
             {
                 Position = VxValue.Create(_index, i => { _index = i; MarkDirty(); }),
-                ItemTemplate = RenderImage,
+                ItemTemplate = _itemTemplate,
                 MinPosition = 0,
                 MaxPosition = AllImages.Length - 1
             };
