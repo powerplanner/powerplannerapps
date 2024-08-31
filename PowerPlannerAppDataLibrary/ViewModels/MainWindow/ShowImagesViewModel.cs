@@ -52,7 +52,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 ItemTemplate = _itemTemplate,
                 MinPosition = 0,
                 MaxPosition = AllImages.Length - 1,
-                BackgroundColor = Color.Black
+                BackgroundColor = Color.Black,
+                ShowMouseArrowIndicatorsOnHover = true
             };
         }
 

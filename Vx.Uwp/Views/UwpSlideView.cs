@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
 
 namespace Vx.Uwp.Views
 {
@@ -22,6 +23,23 @@ namespace Vx.Uwp.Views
             View.SelectionChanged += View_SelectionChanged;
             View.VerticalContentAlignment = VerticalAlignment.Stretch;
             View.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            View.Loaded += View_Loaded;
+        }
+
+        private void View_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (VxView != null && !VxView.ShowMouseArrowIndicatorsOnHover)
+            {
+                var grid = (Grid)VisualTreeHelper.GetChild(View, 0);
+                for (int i = 0; i < grid.Children.Count; i++)
+                {
+                    if (grid.Children[i] is Button)
+                    {
+                        grid.Children.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
         }
 
         private bool _ignoreSelectionChanged;
@@ -177,6 +195,7 @@ namespace Vx.Uwp.Views
             View.MinPosition = newView.MinPosition;
             View.MaxPosition = newView.MaxPosition;
             View.Position = newView.Position.Value;
+            View.Background = newView.BackgroundColor.ToUwpBrush();
 
             _ignoreSelectionChanged = true;
             View.ApplyDeferredUpdates();

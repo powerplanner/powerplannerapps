@@ -16,5 +16,7 @@ namespace Vx.Views
         public int? MaxPosition { get; set; }
 
         public Color BackgroundColor { get; set; }
+
+        public bool ShowMouseArrowIndicatorsOnHover { get; set; }
     }
 }
