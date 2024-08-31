@@ -87,10 +87,7 @@ namespace InterfacesiOS.Views
 
                     EarlyOnMovedToPrevious();
 
-                    ConfigureViewFrames();
-
-                    // And then adjust the offset to move to the new one
-                    CenterScrollView();
+                    ConfigureFrames();
 
                     OnMovedToPrevious();
                     UpdatePrevView(_prevView);
@@ -109,15 +106,21 @@ namespace InterfacesiOS.Views
 
                     EarlyOnMovedToNext();
 
-                    ConfigureViewFrames();
-
-                    // And then adjust the offset to move to the new one
-                    CenterScrollView();
+                    ConfigureFrames();
 
                     OnMovedToNext();
                     UpdateNextView(_nextView);
                 }
             }
+        }
+
+        private void ConfigureFrames()
+        {
+            ConfigureContentSize();
+            ConfigureViewFrames();
+
+            // And then adjust the offset to move to the new one
+            CenterScrollView();
         }
 
         protected abstract void OnMovedToPrevious();
@@ -147,7 +150,6 @@ namespace InterfacesiOS.Views
         }
 
         private bool _hasDelayedUpdateAllViews;
-        private bool _hasDelayedSetNeedsLayout;
         public bool DelayUpdates { get; set; }
 
         public void ApplyDelayedUpdates()
@@ -160,24 +162,8 @@ namespace InterfacesiOS.Views
                 UpdateAllViews();
                 _hasDelayedUpdateAllViews = false;
             }
-            if (_hasDelayedSetNeedsLayout)
-            {
-                SetNeedsLayout();
-                _hasDelayedSetNeedsLayout = false;
-            }
 
             DelayUpdates = orig;
-        }
-
-        public override void SetNeedsLayout()
-        {
-            if (DelayUpdates)
-            {
-                _hasDelayedSetNeedsLayout = true;
-                return;
-            }
-
-            base.SetNeedsLayout();
         }
 
         protected void UpdateAllViews()
@@ -188,6 +174,7 @@ namespace InterfacesiOS.Views
                 return;
             }
 
+            ConfigureFrames();
             if (HasPrevious())
             {
                 UpdatePrevView(_prevView);
@@ -215,14 +202,15 @@ namespace InterfacesiOS.Views
                 _currWidth = this.Frame.Width;
                 _currHeight = this.Frame.Height;
 
-                this.ContentSize = new CoreGraphics.CGSize(
-                    this.Frame.Width * (1 + (HasPrevious() ? 1 : 0) + (HasNext() ? 1 : 0)),
-                    this.Frame.Height);
-
-                ConfigureViewFrames();
-
-                CenterScrollView();
+                ConfigureFrames();
             }
+        }
+
+        private void ConfigureContentSize()
+        {
+            this.ContentSize = new CoreGraphics.CGSize(
+                this.Frame.Width * (1 + (HasPrevious() ? 1 : 0) + (HasNext() ? 1 : 0)),
+                this.Frame.Height);
         }
 
         private void ConfigureViewFrames()

@@ -72,7 +72,6 @@ namespace Vx.iOS.Views
                 {
                     _minPosition = value;
                     UpdateAllViews();
-                    SetNeedsLayout();
                 }
             }
         }
@@ -87,7 +86,6 @@ namespace Vx.iOS.Views
                 {
                     _maxPosition = value;
                     UpdateAllViews();
-                    SetNeedsLayout();
                 }
             }
         }
