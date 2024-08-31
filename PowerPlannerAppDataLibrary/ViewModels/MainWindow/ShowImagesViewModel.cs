@@ -3,6 +3,7 @@ using PowerPlannerAppDataLibrary.Components.ImageAttachments;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,7 +51,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                 Position = VxValue.Create(_index, i => { _index = i; MarkDirty(); }),
                 ItemTemplate = _itemTemplate,
                 MinPosition = 0,
-                MaxPosition = AllImages.Length - 1
+                MaxPosition = AllImages.Length - 1,
+                BackgroundColor = Color.Black
             };
         }
 

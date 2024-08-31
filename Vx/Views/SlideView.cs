@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Vx.Views
@@ -13,5 +14,7 @@ namespace Vx.Views
 
         public int? MinPosition { get; set; }
         public int? MaxPosition { get; set; }
+
+        public Color BackgroundColor { get; set; }
     }
 }

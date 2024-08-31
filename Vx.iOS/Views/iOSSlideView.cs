@@ -32,6 +32,7 @@ namespace Vx.iOS.Views
             View.MinPosition = newView.MinPosition;
             View.MaxPosition = newView.MaxPosition;
             View.Position = newView.Position?.Value ?? 0;
+            View.BackgroundColor = newView.BackgroundColor.ToUI();
 
             if (!object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
             {
