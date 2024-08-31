@@ -69,7 +69,7 @@ namespace Vx.Uwp.Views
                 }
             }
 
-            private int ActualMinPosition => MinPosition ?? BUFFER * -1;
+            public int ActualMinPosition => MinPosition ?? BUFFER * -1;
             private int ActualMaxPosition => MaxPosition ?? BUFFER;
             private int IndexOfZeroOffset
             {
@@ -121,7 +121,7 @@ namespace Vx.Uwp.Views
                 SelectedIndex = _position + IndexOfZeroOffset;
                 if (!object.Equals(SelectedItem, _position))
                 {
-                    SelectedItem = _position;IsSynchronizedWithCurrentItem = true;
+                    SelectedItem = _position;
                 }
             }
 
@@ -178,6 +178,10 @@ namespace Vx.Uwp.Views
             View.MaxPosition = newView.MaxPosition;
             View.Position = newView.Position.Value;
 
+            _ignoreSelectionChanged = true;
+            View.ApplyDeferredUpdates();
+            _ignoreSelectionChanged = false;
+
             if (_itemTemplate != newView.ItemTemplate)
             {
                 // Our generic data template expects to take in an object, whereas the SlideView takes in an int (position),
@@ -186,7 +190,16 @@ namespace Vx.Uwp.Views
                 Func<object, Vx.Views.View> genericItemTemplate = null;
                 if (newView.ItemTemplate != null)
                 {
-                    genericItemTemplate = (obj) => newView.ItemTemplate((int)obj);
+                    genericItemTemplate = (obj) =>
+                    {
+                        int index = (int)obj;
+                        if (newView.MinPosition == null && index == View.ActualMinPosition)
+                        {
+                            return null;
+                        }
+
+                        return newView.ItemTemplate(index);
+                    };
                 }
                 View.DataContext = genericItemTemplate;
             }
@@ -205,10 +218,6 @@ namespace Vx.Uwp.Views
                     View.ItemTemplate = null;
                 }
             }
-
-            _ignoreSelectionChanged = true;
-            View.ApplyDeferredUpdates();
-            _ignoreSelectionChanged = false;
         }
     }
 }
