@@ -25,6 +25,7 @@ namespace BareMvvm.Core.ViewModels
                 if (_fullScreenPopup != value)
                 {
                     _fullScreenPopup = value;
+                    UpdateRequestedBackButtonVisibility();
                     OnPopupsOrFullScreenPopupChanged();
                     OnPropertyChanged(nameof(FullScreenPopup));
                 }
@@ -39,6 +40,16 @@ namespace BareMvvm.Core.ViewModels
         public void ShowFullScreenPopup(BaseViewModel viewModel)
         {
             FullScreenPopup = viewModel;
+        }
+
+        protected override RequestedBackButtonVisibility CalculateThisBackButtonVisibility()
+        {
+            if (FullScreenPopup != null)
+            {
+                return RequestedBackButtonVisibility.Visible;
+            }
+
+            return base.CalculateThisBackButtonVisibility();
         }
 
         protected override BaseViewModel GetChildContent()
