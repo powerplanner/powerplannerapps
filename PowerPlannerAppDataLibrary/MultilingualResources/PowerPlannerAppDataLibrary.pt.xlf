@@ -19,8 +19,8 @@
           <target state="final">Nunca</target>
         </trans-unit>
         <trans-unit id="ImageUploadOptions_WifiOnly" translate="yes" xml:space="preserve">
-          <source>Wi-Fi Only</source>
-          <target state="final">Somente Wi-Fi</target>
+          <source>Unmetered networks only</source>
+          <target state="final">Apenas redes não medidas</target>
         </trans-unit>
         <trans-unit id="Settings_AboutPage_AboutAppHeader.Text" translate="yes" xml:space="preserve">
           <source>about the app</source>
@@ -251,8 +251,8 @@ Clique em continuar para fazer o login (que pode causar duplicatas).</target>
           <target state="final">Falha ao excluir sua conta on-line. Talvez você esteja off-line?</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" translate="yes" xml:space="preserve">
-          <source>Upload via</source>
-          <target state="final">Fazer upload via</target>
+          <source>Upload images</source>
+          <target state="final">Carregar imagens</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_Description.Text" translate="yes" xml:space="preserve">
           <source>Control when images are uploaded, so that you don't incur charges on your data plan.</source>

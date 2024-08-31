@@ -132,15 +132,12 @@ namespace PowerPlannerUWP
 
                 // Settings views
                 { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },
-                { typeof(SyncOptionsViewModel), typeof(BaseSettingsSplitView) },
                 { typeof(CalendarIntegrationViewModel), typeof(BaseSettingsSplitView) },
                 { typeof(CalendarIntegrationClassesViewModel), typeof(CalendarIntegrationClassesView) },
                 { typeof(CalendarIntegrationTasksViewModel), typeof(CalendarIntegrationTasksView) },
                 { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
                 { typeof(ClassTileViewModel), typeof(ClassTileView) },
-                { typeof(ImageUploadOptionsViewModel), typeof(ImageUploadOptionsView) },
                 { typeof(MainTileViewModel), typeof(MainTileView) },
-                { typeof(PushSettingsViewModel), typeof(PushSettingsView) },
                 { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
                 { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
                 { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) }

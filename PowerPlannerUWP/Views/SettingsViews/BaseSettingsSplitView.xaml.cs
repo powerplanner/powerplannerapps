@@ -52,18 +52,7 @@ namespace PowerPlannerUWP.Views.SettingsViews
 
         public override void OnViewModelLoadedOverride()
         {
-            if (ViewModel is SyncOptionsViewModel)
-            {
-                var viewModel = ViewModel as SyncOptionsViewModel;
-                this.Title = LocalizedResources.GetString("Settings_SyncOptions_Title");
-                ListBoxItems.ItemsSource = new SettingsListItem[]
-                {
-                    new SettingsListItem(LocalizedResources.GetString("Settings_SyncOptions_ItemImageUploadOptions_DisplayName"), typeof(ImageUploadOptionsViewModel)),
-                    new SettingsListItem(LocalizedResources.GetString("Settings_SyncOptions_ItemPushNotifications_DisplayName"), typeof(PushSettingsViewModel))
-                };
-            }
-
-            else if (ViewModel is TileSettingsViewModel)
+            if (ViewModel is TileSettingsViewModel)
             {
                 this.Title = LocalizedResources.GetString("Settings_LiveTiles_Title");
                 ListBoxItems.ItemsSource = new SettingsListItem[]

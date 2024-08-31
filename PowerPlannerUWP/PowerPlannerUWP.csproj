@@ -132,7 +132,6 @@
     <Compile Include="Controls\AbTestControl.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
     <Compile Include="Converters\DayOfWeeksToStringConverter.cs" />
-    <Compile Include="Converters\ImageUploadOptionToStringConverter.cs" />
     <Compile Include="Converters\IsCompleteToOpacityConverter.cs" />
     <Compile Include="Converters\IsCompleteToVisibilityConverter.cs" />
     <Compile Include="Extensions\UWPBrowserExtension.cs" />
@@ -224,14 +223,8 @@
     <Compile Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml.cs">
       <DependentUpon>GoogleCalendarIntegrationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViews\ImageUploadOptionsView.xaml.cs">
-      <DependentUpon>ImageUploadOptionsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsViews\MainTileView.xaml.cs">
       <DependentUpon>MainTileView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\PushSettingsView.xaml.cs">
-      <DependentUpon>PushSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\QuickAddTileView.xaml.cs">
       <DependentUpon>QuickAddTileView.xaml</DependentUpon>
@@ -442,15 +435,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsViews\ImageUploadOptionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SettingsViews\MainTileView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\PushSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

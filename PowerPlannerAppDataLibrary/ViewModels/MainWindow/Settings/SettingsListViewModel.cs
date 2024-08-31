@@ -227,24 +227,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenGradeOptions);
             }
 
-            if (VxPlatform.Current != Platform.iOS && IsSyncOptionsVisible)
+            if (IsSyncOptionsVisible)
             {
                 RenderOption(
                     layout,
                     MaterialDesign.MaterialDesignIcons.Cached,
                     PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Title"),
                     PowerPlannerResources.GetString("Settings_MainPage_SyncOptionsItem.Subtitle"),
-                    () =>
-                    {
-                        if (VxPlatform.Current == Platform.Uwp)
-                        {
-                            OpenSyncOptions();
-                        }
-                        else
-                        {
-                            OpenSyncOptionsSimple();
-                        }
-                    });
+                    OpenSyncOptions);
             }
 
             if (IsGoogleCalendarIntegrationVisible)
@@ -666,15 +656,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void OpenSyncOptions()
         {
-            Show(new SyncOptionsViewModel(ParentForSubviews));
-        }
-
-        /// <summary>
-        /// If UI app doesn't want to use the split model view model, then use this approach
-        /// </summary>
-        public void OpenSyncOptionsSimple()
-        {
-            Show(new SyncOptionsSimpleViewModel(ParentForSubviews));
+            ShowPopup(new SyncOptionsViewModel(ParentForSubviews));
         }
 
         public void OpenCalendarIntegration()

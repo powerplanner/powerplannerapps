@@ -7,13 +7,19 @@ using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class PushSettingsViewModel : BaseSettingsViewModelWithAccount
+    public class PushSettingsViewModel : PopupComponentViewModel
     {
+        private AccountDataItem Account;
+
         public PushSettingsViewModel(BaseViewModel parent) : base(parent)
         {
+            Title = R.S("Settings_PushPage_Header.Text");
+            Account = MainScreenViewModel.CurrentAccount;
+
             if (!Account.IsOnlineAccount)
             {
                 IsEnabled = false;
@@ -23,6 +29,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 IsEnabled = true;
                 _isPushEnabled = !Account.IsPushDisabled;
             }
+        }
+
+        private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set { SetProperty(ref _isEnabled, value, nameof(IsEnabled)); }
         }
 
         private bool _isPushEnabled;
@@ -50,10 +63,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
-                base.IsEnabled = false;
+                IsEnabled = false;
 
                 await AccountsManager.Save(Account);
-                base.IsEnabled = true;
+                IsEnabled = true;
 
                 // Sync so that push channel gets uploaded/removed
                 await Sync.SyncAccountAsync(Account);
@@ -68,8 +81,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             finally
             {
-                base.IsEnabled = true;
+                IsEnabled = true;
             }
+        }
+
+        protected override View Render()
+        {
+            return RenderGenericPopupContent(
+
+                new Switch
+                {
+                    IsEnabled = IsEnabled,
+                    IsOn = VxValue.Create<bool>(IsPushEnabled, v => IsPushEnabled = v)
+                },
+
+                new TextBlock
+                {
+                    Text = R.S("Settings_PushPage_Description.Text"),
+                    Margin = new Thickness(0, 12, 0, 0)
+                }
+            );
         }
     }
 }

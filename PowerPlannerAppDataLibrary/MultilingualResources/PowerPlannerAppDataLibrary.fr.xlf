@@ -19,8 +19,8 @@
           <target state="final">Jamais</target>
         </trans-unit>
         <trans-unit id="ImageUploadOptions_WifiOnly" translate="yes" xml:space="preserve">
-          <source>Wi-Fi Only</source>
-          <target state="final">Wi-Fi uniquement</target>
+          <source>Unmetered networks only</source>
+          <target state="final">Réseaux non mesurés uniquement</target>
         </trans-unit>
         <trans-unit id="Settings_AboutPage_AboutAppHeader.Text" translate="yes" xml:space="preserve">
           <source>about the app</source>
@@ -251,8 +251,8 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
           <target state="final" state-qualifier="mt-suggestion">Vous n’avez pas supprimé votre compte en ligne. Peut-être que tu es hors ligne ?</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" translate="yes" xml:space="preserve">
-          <source>Upload via</source>
-          <target state="final" state-qualifier="mt-suggestion">Télécharger via</target>
+          <source>Upload images</source>
+          <target state="final">Télécharger des images</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_Description.Text" translate="yes" xml:space="preserve">
           <source>Control when images are uploaded, so that you don't incur charges on your data plan.</source>
