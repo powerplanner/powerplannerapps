@@ -13,6 +13,10 @@ namespace PowerPlanneriOS.Extensions
     {
         public override NetworkCostType GetNetworkCostType()
         {
+#if DEBUG
+            // The simulator doesn't seem to support NWPathMonitor so I'll just return unlimited
+            return NetworkCostType.Unlimited;
+#else
             try
             {
                 using (var monitor = new NWPathMonitor())
@@ -20,7 +24,7 @@ namespace PowerPlanneriOS.Extensions
                     var path = monitor.CurrentPath;
 
                     // Check if the network is reachable
-                    if (path.Status == NWPathStatus.Satisfied)
+                    if (path != null && path.Status == NWPathStatus.Satisfied)
                     {
                         // Check for Low Data Mode
                         if (path.IsConstrained)
@@ -39,6 +43,7 @@ namespace PowerPlanneriOS.Extensions
 
             // Return disconnected if no network is reachable
             return NetworkCostType.Disconnected;
+#endif
         }
     }
 }

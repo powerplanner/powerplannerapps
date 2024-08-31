@@ -92,7 +92,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 new Switch
                 {
                     IsEnabled = IsEnabled,
-                    IsOn = VxValue.Create<bool>(IsPushEnabled, v => IsPushEnabled = v)
+                    IsOn = VxValue.Create<bool>(IsPushEnabled, v => IsPushEnabled = v),
+                    Title = R.S("Settings_SyncOptions_ItemPushNotifications_DisplayName")
                 },
 
                 new TextBlock

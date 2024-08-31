@@ -29,11 +29,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 Margin = new Thickness(VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin),
                 Children =
                 {
-                    new HyperlinkTextBlock
+                    !string.IsNullOrWhiteSpace(Class.Details) ? new HyperlinkTextBlock
                     {
                         Text = Class.Details,
                         IsTextSelectionEnabled = true
-                    },
+                    } : null,
+
+                    string.IsNullOrWhiteSpace(Class.Details) ? new TextBlock
+                    {
+                        Text = R.S("ClassPage_Details_NothingHereString"),
+                        TextColor = Theme.Current.SubtleForegroundColor
+                    } : null,
 
                     new ImagesComponent
                     {
