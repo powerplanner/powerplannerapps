@@ -81,7 +81,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public void ShowImage(ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages)
         {
-            if (VxPlatform.Current == Platform.iOS)
+            if (VxPlatform.Current != Platform.Android)
             {
                 ShowFullScreenPopup(new ShowImagesVxViewModel(this, image, allImages));
             }

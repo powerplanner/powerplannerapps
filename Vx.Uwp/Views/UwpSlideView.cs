@@ -7,292 +7,208 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
 
 namespace Vx.Uwp.Views
 {
     public class UwpSlideView : UwpView<Vx.Views.SlideView, UwpSlideView.MySlideView>
     {
-        private int _position;
-        private Border _left => View.ThreeViews.Children[0] as Border;
-        private Border _center => View.ThreeViews.Children[1] as Border;
-        private Border _right => View.ThreeViews.Children[2] as Border;
-
-        private Vx.Views.DataTemplateHelper.VxDataTemplateComponent _leftComponent => (_left.Child as INativeComponent).Component as Vx.Views.DataTemplateHelper.VxDataTemplateComponent;
-        private Vx.Views.DataTemplateHelper.VxDataTemplateComponent _centerComponent => (_center.Child as INativeComponent).Component as Vx.Views.DataTemplateHelper.VxDataTemplateComponent;
-        private Vx.Views.DataTemplateHelper.VxDataTemplateComponent _rightComponent => (_right.Child as INativeComponent).Component as Vx.Views.DataTemplateHelper.VxDataTemplateComponent;
-
+        private static long _slideViewNum;
         public UwpSlideView()
         {
-            View.ScrollViewer.ViewChanged += _scrollViewer_ViewChanged;
+            View.Name = "SlideView" + _slideViewNum;
+            _slideViewNum++;
+            View.DeferUpdates = true;
+            View.SelectionChanged += View_SelectionChanged;
+            View.VerticalContentAlignment = VerticalAlignment.Stretch;
+            View.HorizontalContentAlignment = HorizontalAlignment.Stretch;
         }
 
-        public class MySlideView : Panel
+        private bool _ignoreSelectionChanged;
+        private void View_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            public bool IgnoreChangeView { get; set; }
-
-            public double? DesiredHorizontalOffset { get; set; }
-
-            public ScrollViewer ScrollViewer { get; } = new ScrollViewer
+            if (View.SelectedItem == null || _ignoreSelectionChanged)
             {
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden,
-                VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
-                VerticalScrollMode = ScrollMode.Disabled,
-                HorizontalSnapPointsType = SnapPointsType.MandatorySingle,
-                ZoomMode = ZoomMode.Disabled
-            };
-
-            public MyThreeViews ThreeViews { get; } = new MyThreeViews();
-
-            public MySlideView()
-            {
-                ScrollViewer.Content = ThreeViews;
-                Children.Add(ScrollViewer);
+                return;
             }
 
-            protected override Size MeasureOverride(Size availableSize)
+            int newPosition = (int)View.SelectedItem;
+            if (VxView.Position != null && VxView.Position.Value != newPosition)
             {
-                // Only initialize width on the first load
-                if (ThreeViews.ViewportWidth == 0)
-                {
-                    // Set silently... measure will be called later anyways
-                    ThreeViews._viewportWidth = availableSize.Width;
-                }
-
-                ScrollViewer.Measure(availableSize);
-                return availableSize;
-            }
-
-            protected override Size ArrangeOverride(Size finalSize)
-            {
-                ThreeViews.ViewportWidth = finalSize.Width;
-
-                IgnoreChangeView = true;
-                ScrollViewer.Arrange(new Rect(new Point(), finalSize));
-                SetWithoutSnap(finalSize.Width);
-                IgnoreChangeView = false;
-
-                return finalSize;
-            }
-
-            public void SetWithoutSnap(double x)
-            {
-                if (ScrollViewer.HorizontalOffset == x)
-                    return;
-
-                ScrollViewer.HorizontalSnapPointsType = SnapPointsType.None;
-                SetX(x);
-                ScrollViewer.HorizontalSnapPointsType = SnapPointsType.MandatorySingle;
-            }
-            public void SetX(double x)
-            {
-                DesiredHorizontalOffset = x;
-                ScrollViewer.ChangeView(x, null, null, true);
+                VxView.Position.ValueChanged?.Invoke(newPosition);
             }
         }
 
-        public class MyThreeViews : Panel, IScrollSnapPointsInfo
+        public class MySlideView : FlipView
         {
-            public double _viewportWidth;
-            public double ViewportWidth
+            private int? _minPosition;
+            public int? MinPosition
             {
-                get => _viewportWidth;
+                get => _minPosition;
                 set
                 {
-                    if (value != _viewportWidth)
+                    if (value != _minPosition)
                     {
-                        _viewportWidth = value;
-                        InvalidateMeasure();
+                        _minPosition = value;
+                        UpdateItemsSource();
                     }
                 }
             }
 
-            public MyThreeViews()
+            private int? _maxPosition;
+            public int? MaxPosition
             {
-                for (int i = 0; i < 3; i++)
+                get => _maxPosition;
+                set
                 {
-                    Children.Add(new Border());
+                    if (value != _maxPosition)
+                    {
+                        _maxPosition = value;
+                        UpdateItemsSource();
+                    }
                 }
             }
 
-            protected override Size MeasureOverride(Size availableSize)
+            private int ActualMinPosition => MinPosition ?? BUFFER * -1;
+            private int ActualMaxPosition => MaxPosition ?? BUFFER;
+            private int IndexOfZeroOffset
             {
-                var childSize = new Size(ViewportWidth, availableSize.Height);
-                foreach (var child in Children)
+                get
                 {
-                    child.Measure(childSize);
+                    // If min is 0, our array would start at zero with item 0, everything's 1-1 (so a 0 offset).
+                    // [0, 1, 2, 3...]
+
+                    // If min is 1, our array starts with 1, so its theoretical 0 value would be at index -1 (so a -1 offset).
+                    // [1, 2, 3, 4...]
+
+                    // If min is -1, our array starts with -1, so its 0 value would be at index 1 (a +1 offset)
+                    // [-1, 0, 1, 2...]
+
+                    return ActualMinPosition * -1;
+                }
+            }
+
+            private const int BUFFER = 365 * 30; // Allow going back or forward 30 years
+
+            private int _position;
+            public int Position
+            {
+                get => _position;
+                set
+                {
+                    if (value != _position)
+                    {
+                        _position = value;
+                        UpdateSelectedIndex();
+                    }
+                }
+            }
+
+            private bool _hasDeferredUpdateSelectedIndex;
+            private void UpdateSelectedIndex()
+            {
+                if (DeferUpdates)
+                {
+                    _hasDeferredUpdateSelectedIndex = true;
+                    return;
                 }
 
-                return new Size(ViewportWidth * 3, availableSize.Height);
-            }
-
-            protected override Size ArrangeOverride(Size finalSize)
-            {
-                var childSize = new Size(ViewportWidth, finalSize.Height);
-                for (int i = 0; i < Children.Count; i++)
+                if (ItemsSource == null)
                 {
-                    double x = ViewportWidth * i;
-                    Children[i].Arrange(new Rect(new Point(x, 0), childSize));
+                    UpdateItemsSource();
                 }
 
-                return new Size(ViewportWidth * 3, finalSize.Height);
-            }
-
-            public IReadOnlyList<float> GetIrregularSnapPoints(Orientation orientation, SnapPointsAlignment alignment)
-            {
-                return new List<float>();
-            }
-
-            public float GetRegularSnapPoints(Orientation orientation, SnapPointsAlignment alignment, out float offset)
-            {
-                offset = 0;
-                if (orientation == Orientation.Horizontal)
+                SelectedIndex = _position + IndexOfZeroOffset;
+                if (!object.Equals(SelectedItem, _position))
                 {
-                    return (float)ViewportWidth;
+                    SelectedItem = _position;IsSynchronizedWithCurrentItem = true;
                 }
-                return 0;
             }
 
-            public bool AreHorizontalSnapPointsRegular => true;
+            public bool DeferUpdates { get; set; }
 
-            public bool AreVerticalSnapPointsRegular => true;
+            public void ApplyDeferredUpdates()
+            {
+                var orig = DeferUpdates;
+                DeferUpdates = false;
 
-            // Disable the CS0067 warning
-            #pragma warning disable CS0067
+                if (_hasDeferredUpdateItemsSource)
+                {
+                    UpdateItemsSource();
+                    _hasDeferredUpdateItemsSource = false;
+                }
 
-            public event EventHandler<object> HorizontalSnapPointsChanged;
-            public event EventHandler<object> VerticalSnapPointsChanged;
+                if (_hasDeferredUpdateSelectedIndex)
+                {
+                    UpdateSelectedIndex();
+                    _hasDeferredUpdateSelectedIndex = false;
+                }
 
-            // Re-enable the CS0067 warning
-            #pragma warning restore CS0067
+                DeferUpdates = orig;
+            }
+
+            private bool _hasDeferredUpdateItemsSource;
+            private void UpdateItemsSource()
+            {
+                if (DeferUpdates)
+                {
+                    _hasDeferredUpdateItemsSource = true;
+                    return;
+                }
+
+                int min = ActualMinPosition;
+                int max = ActualMaxPosition;
+
+                List<int> items = new List<int>();
+                for (int i = min; i <= max; i++)
+                {
+                    items.Add(i);
+                }
+
+                ItemsSource = items;
+            }
         }
 
-        private Func<object, Vx.Views.View> _itemTemplate;
+        private Func<int, Vx.Views.View> _itemTemplate;
         protected override void ApplyProperties(Vx.Views.SlideView oldView, Vx.Views.SlideView newView)
         {
             base.ApplyProperties(oldView, newView);
 
-            if (!object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
+            View.MinPosition = newView.MinPosition;
+            View.MaxPosition = newView.MaxPosition;
+            View.Position = newView.Position.Value;
+
+            if (_itemTemplate != newView.ItemTemplate)
             {
-                _itemTemplate = i =>
+                // Our generic data template expects to take in an object, whereas the SlideView takes in an int (position),
+                // so we need to adapt the template for that different type
+                _itemTemplate = newView.ItemTemplate;
+                Func<object, Vx.Views.View> genericItemTemplate = null;
+                if (newView.ItemTemplate != null)
                 {
-                    if (i == null)
-                    {
-                        return null;
-                    }
-
-                    return newView.ItemTemplate((int)i);
-                };
-
-                _left.Child = RenderChildComponent();
-                _center.Child = RenderChildComponent();
-                _right.Child = RenderChildComponent();
-
-                _position = newView.Position.Value;
-                SetPositions();
-            }
-            else if (_position != newView.Position.Value)
-            {
-                _position = newView.Position.Value;
-                SetPositions();
-            }
-        }
-
-        private FrameworkElement RenderChildComponent()
-        {
-            var el = new Vx.Views.DataTemplateHelper.VxDataTemplateComponent
-            {
-                Template = _itemTemplate
-            }.Render();
-
-            el.HorizontalAlignment = HorizontalAlignment.Stretch;
-            el.VerticalAlignment = VerticalAlignment.Stretch;
-
-            return el;
-        }
-
-        private void SetPositions()
-        {
-            _leftComponent.Data = _position - 1;
-            _centerComponent.Data = _position;
-            _rightComponent.Data = _position + 1;
-        }
-
-        /// <summary>
-        /// Returns column width combined with half of each side's spacing (thus the effective column width including padding)
-        /// </summary>
-        /// <returns></returns>
-        private double TotalColumnWidth()
-        {
-            return View.ThreeViews.ViewportWidth;
-        }
-
-
-        void _scrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-            //as we scroll, we'll dynamically add upcoming/previous items
-            if (View.DesiredHorizontalOffset != null)
-            {
-
-                // If horizontal offset was 350, and then I resize it down to 200, would it adjust automatically? I suppose depends on the view content width...
-                // So say horizontal offset was 500 (so total scrollable is 1500) and I resize window down to 100 (so total scrollable becomes 300), horizontal offset would then change as a result
-                // Hence I have this following logic...
-                if (View.DesiredHorizontalOffset.Value == View.ScrollViewer.HorizontalOffset)
-                {
-                    View.DesiredHorizontalOffset = null;
+                    genericItemTemplate = (obj) => newView.ItemTemplate((int)obj);
                 }
-
-                return;
+                View.DataContext = genericItemTemplate;
             }
 
-            if (View.IgnoreChangeView)
+            if (newView.ItemTemplate != null)
             {
-                return;
-            }
-
-            //moving next
-            // Scrollable - Offset = 0 when scrolled all the way to the right
-            if ((View.ScrollViewer.ScrollableWidth - View.ScrollViewer.HorizontalOffset) < TotalColumnWidth() * 0.5)
-            {
-                ShowNextVisual();
-            }
-
-            //moving previous
-            else if (View.ScrollViewer.HorizontalOffset < TotalColumnWidth() * 0.5)
-            {
-                ShowPreviousVisual();
-            }
-
-            // If we've stopped moving
-            if (!e.IsIntermediate)
-            {
-                // Only update current item when we stopped moving
-                if (VxView.Position != null && VxView.Position.Value != _position)
+                if (View.ItemTemplate == null)
                 {
-                    VxView.Position.ValueChanged?.Invoke(_position);
+                    View.ItemTemplate = UwpDataTemplateView.GetDataTemplateWithVerticalContentStretch(View.Name);
                 }
             }
-        }
+            else
+            {
+                if (View.ItemTemplate != null)
+                {
+                    View.ItemTemplate = null;
+                }
+            }
 
-        private void ShowNextVisual()
-        {
-            _position++;
-
-            View.ThreeViews.Children.Move(0, 2);
-
-            _rightComponent.Data = _position + 1;
-
-            View.SetWithoutSnap(View.ScrollViewer.HorizontalOffset - TotalColumnWidth());
-        }
-
-        private void ShowPreviousVisual()
-        {
-            _position--;
-
-            View.ThreeViews.Children.Move(2, 0);
-
-            _leftComponent.Data = _position - 1;
-
-            View.SetWithoutSnap(View.ScrollViewer.HorizontalOffset + TotalColumnWidth());
+            _ignoreSelectionChanged = true;
+            View.ApplyDeferredUpdates();
+            _ignoreSelectionChanged = false;
         }
     }
 }
