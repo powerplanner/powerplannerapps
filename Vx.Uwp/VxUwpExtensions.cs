@@ -163,6 +163,12 @@ namespace Vx.Uwp
                     return new UwpListView();
                 }
 
+                if (view is Vx.Views.ZoomableImageView)
+                {
+                    // Needs to be before normal ImageView since it's a subclass
+                    return new UwpZoomableImageView();
+                }
+
                 if (view is Vx.Views.ImageView)
                 {
                     return new UwpImageView();

@@ -45,7 +45,7 @@ namespace Vx.Uwp.Views
             }
         }
 
-        private Windows.UI.Xaml.Media.ImageSource GetSource(ImageSource source)
+        internal static Windows.UI.Xaml.Media.ImageSource GetSource(ImageSource source)
         {
             if (source is UriImageSource uriSource)
             {
@@ -55,7 +55,7 @@ namespace Vx.Uwp.Views
             return null;
         }
 
-        private async Task<Windows.UI.Xaml.Media.ImageSource> GetThumbnailSource(ImageSource source, CancellationToken cancellationToken)
+        internal static async Task<Windows.UI.Xaml.Media.ImageSource> GetThumbnailSource(ImageSource source, CancellationToken cancellationToken)
         {
             if (source is UriImageSource uriSource)
             {

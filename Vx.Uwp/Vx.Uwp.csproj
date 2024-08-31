@@ -237,6 +237,7 @@
     <Compile Include="Views\UwpView.cs" />
     <Compile Include="Views\UwpVxComponent.cs" />
     <Compile Include="Views\UwpWrapGrid.cs" />
+    <Compile Include="Views\UwpZoomableImageView.cs" />
     <Compile Include="Views\ViewHostGeneric.cs" />
     <Compile Include="VxUwpExtensions.cs" />
     <Compile Include="VxUwpTheme.cs" />
