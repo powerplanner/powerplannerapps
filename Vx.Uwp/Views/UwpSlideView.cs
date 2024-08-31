@@ -103,7 +103,7 @@ namespace Vx.Uwp.Views
                 }
                 else
                 {
-                    SelectedIndex = _position + MyCollectionView.MIDDLE_POSITION;
+                    SelectedIndex = _position + ((MinPosition == null && MaxPosition == null) ? MyCollectionView.MIDDLE_POSITION : 0);
                 }
             }
 
@@ -133,13 +133,43 @@ namespace Vx.Uwp.Views
             {
                 private int _startingItem;
                 private FlipView _fv;
+                private bool _isInfinite;
                 public MyCollectionView(int startingItem, int? minItem, int? maxItem, FlipView fv)
                 {
                     // StartingItem is an int where 0 is the middle, and -1 is prev item, 1 is next item, etc
                     _startingItem = startingItem;
                     _currentPosition = 0;
-                    CorrectStartingSelectedIndex = startingItem + MIDDLE_POSITION;
                     _fv = fv;
+
+                    if (maxItem != null)
+                    {
+                        if (minItem != null)
+                        {
+                            // Ex: Min = 0 and Max = 4. Count would be 5. Starting item might be 1.
+                            Count = maxItem.Value - minItem.Value + 1;
+                            CorrectStartingSelectedIndex = startingItem;
+                            if (startingItem == 0)
+                            {
+                                _hasRequestedUsingCorrectIndex = true;
+                                _indexedWithCorrectIndexTimes = 4;
+                            }
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Either max and min must both be initialized or null.", nameof(minItem));
+                        }
+                    }
+                    else
+                    {
+                        if (minItem != null)
+                        {
+                            throw new ArgumentException("Either max and min must both be initialized or null.", nameof(minItem));
+                        }
+
+                        Count = MIDDLE_POSITION * 2;
+                        CorrectStartingSelectedIndex = startingItem + MIDDLE_POSITION;
+                        _isInfinite = true;
+                    }
                 }
 
                 public int CorrectStartingSelectedIndex { get; private set; }
@@ -212,8 +242,8 @@ namespace Vx.Uwp.Views
 
                 private int CurrentZeroRelativePosition
                 {
-                    get => CurrentPosition - MIDDLE_POSITION;
-                    set => CurrentPosition = value + MIDDLE_POSITION;
+                    get => CurrentPosition - (_isInfinite ? MIDDLE_POSITION : 0);
+                    set => CurrentPosition = value + (_isInfinite ? MIDDLE_POSITION : 0);
                 }
 
                 public bool HasMoreItems => false;
@@ -228,7 +258,7 @@ namespace Vx.Uwp.Views
 
                 public int IndexOf(object item)
                 {
-                    return (int)item + MIDDLE_POSITION;
+                    return (int)item + (_isInfinite ? MIDDLE_POSITION : 0);
                 }
 
                 public void Insert(int index, object item)
@@ -253,7 +283,7 @@ namespace Vx.Uwp.Views
                             {
                                 _hasRequestedUsingCorrectIndex = true;
                                 _currentPosition = CorrectStartingSelectedIndex;
-                                return index - MIDDLE_POSITION;
+                                return index - (_isInfinite ? MIDDLE_POSITION : 0);
                             }
                             else
                             {
@@ -268,7 +298,7 @@ namespace Vx.Uwp.Views
                             return _startingItem + index;
                         }
 
-                        return index - MIDDLE_POSITION;
+                        return index - (_isInfinite ? MIDDLE_POSITION : 0);
                     }
                     set => throw new NotImplementedException(); }
 
@@ -297,7 +327,7 @@ namespace Vx.Uwp.Views
                     throw new NotImplementedException();
                 }
 
-                public int Count => MIDDLE_POSITION * 2;
+                public int Count { get; private set; }
 
                 public bool IsReadOnly => true;
 
