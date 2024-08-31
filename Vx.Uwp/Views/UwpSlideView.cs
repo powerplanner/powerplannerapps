@@ -1,9 +1,14 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls.AnimatedVisuals;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.PointOfService;
 using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -69,27 +74,6 @@ namespace Vx.Uwp.Views
                 }
             }
 
-            private int ActualMinPosition => MinPosition ?? BUFFER * -1;
-            private int ActualMaxPosition => MaxPosition ?? BUFFER;
-            private int IndexOfZeroOffset
-            {
-                get
-                {
-                    // If min is 0, our array would start at zero with item 0, everything's 1-1 (so a 0 offset).
-                    // [0, 1, 2, 3...]
-
-                    // If min is 1, our array starts with 1, so its theoretical 0 value would be at index -1 (so a -1 offset).
-                    // [1, 2, 3, 4...]
-
-                    // If min is -1, our array starts with -1, so its 0 value would be at index 1 (a +1 offset)
-                    // [-1, 0, 1, 2...]
-
-                    return ActualMinPosition * -1;
-                }
-            }
-
-            private const int BUFFER = 365 * 30; // Allow going back or forward 30 years
-
             private int _position;
             public int Position
             {
@@ -117,11 +101,9 @@ namespace Vx.Uwp.Views
                 {
                     UpdateItemsSource();
                 }
-
-                SelectedIndex = _position + IndexOfZeroOffset;
-                if (!object.Equals(SelectedItem, _position))
+                else
                 {
-                    SelectedItem = _position;IsSynchronizedWithCurrentItem = true;
+                    SelectedIndex = _position + MyCollectionView.MIDDLE_POSITION;
                 }
             }
 
@@ -147,6 +129,179 @@ namespace Vx.Uwp.Views
                 DeferUpdates = orig;
             }
 
+            private class MyCollectionView : ICollectionView
+            {
+                private int _startingItem;
+                public MyCollectionView(int startingItem, int? minItem, int? maxItem)
+                {
+                    // StartingItem is an int where 0 is the middle, and -1 is prev item, 1 is next item, etc
+                    _startingItem = startingItem;
+                    _currentPosition = 0;
+                    CorrectStartingSelectedIndex = startingItem + MIDDLE_POSITION;
+                }
+
+                public int CorrectStartingSelectedIndex { get; private set; }
+
+                public bool MoveCurrentTo(object item)
+                {
+                    CurrentZeroRelativePosition = (int)item;
+                    return true;
+                }
+
+                public bool MoveCurrentToPosition(int index)
+                {
+                    CurrentPosition = index;
+                    return true;
+                }
+
+                public bool MoveCurrentToFirst()
+                {
+                    CurrentPosition = 0;
+                    return true;
+                }
+
+                public bool MoveCurrentToLast()
+                {
+                    CurrentPosition = int.MaxValue;
+                    return true;
+                }
+
+                public bool MoveCurrentToNext()
+                {
+                    CurrentPosition++;
+                    return true;
+                }
+
+                public bool MoveCurrentToPrevious()
+                {
+                    CurrentPosition--;
+                    return true;
+                }
+
+                public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public IObservableVector<object> CollectionGroups => throw new NotImplementedException();
+
+                public object CurrentItem => _hasRequestedUsingCorrectIndex ? CurrentZeroRelativePosition : _startingItem;
+
+                public const int MIDDLE_POSITION = 5000;
+                private int _currentPosition;
+                public int CurrentPosition
+                {
+                    get => _currentPosition;
+                    private set
+                    {
+                        if (_currentPosition != value)
+                        {
+                            var changing = new CurrentChangingEventArgs();
+                            CurrentChanging?.Invoke(this, changing);
+                            if (changing.Cancel)
+                            {
+                                return;
+                            }
+                            _currentPosition = value;
+                            CurrentChanged?.Invoke(this, CurrentItem);
+                        }
+                    }
+                }
+
+                private int CurrentZeroRelativePosition
+                {
+                    get => CurrentPosition - MIDDLE_POSITION;
+                    set => CurrentPosition = value + MIDDLE_POSITION;
+                }
+
+                public bool HasMoreItems => false;
+
+                public bool IsCurrentAfterLast => false;
+
+                public bool IsCurrentBeforeFirst => false;
+
+                public event EventHandler<object> CurrentChanged;
+                public event CurrentChangingEventHandler CurrentChanging;
+                public event VectorChangedEventHandler<object> VectorChanged;
+
+                public int IndexOf(object item)
+                {
+                    return (int)item + MIDDLE_POSITION;
+                }
+
+                public void Insert(int index, object item)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void RemoveAt(int index)
+                {
+                    throw new NotImplementedException();
+                }
+
+                private bool _hasRequestedUsingCorrectIndex;
+                public object this[int index]
+                {
+                    get
+                    {
+                        if (index <= 2)
+                        {
+                            return _startingItem + index;
+                        }
+                        if (!_hasRequestedUsingCorrectIndex)
+                        {
+                            if (index <= 2)
+                            {
+                                return _startingItem + index;
+                            }
+
+                            _hasRequestedUsingCorrectIndex = true;
+                        }
+
+                        return index - MIDDLE_POSITION;
+                    }
+                    set => throw new NotImplementedException(); }
+
+                public void Add(object item)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void Clear()
+                {
+                    throw new NotImplementedException();
+                }
+
+                public bool Contains(object item)
+                {
+                    return true;
+                }
+
+                public void CopyTo(object[] array, int arrayIndex)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public bool Remove(object item)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public int Count => MIDDLE_POSITION * 2;
+
+                public bool IsReadOnly => true;
+
+                public IEnumerator<object> GetEnumerator()
+                {
+                    throw new NotImplementedException();
+                }
+
+                IEnumerator IEnumerable.GetEnumerator()
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
             private bool _hasDeferredUpdateItemsSource;
             private void UpdateItemsSource()
             {
@@ -156,16 +311,9 @@ namespace Vx.Uwp.Views
                     return;
                 }
 
-                int min = ActualMinPosition;
-                int max = ActualMaxPosition;
-
-                List<int> items = new List<int>();
-                for (int i = min; i <= max; i++)
-                {
-                    items.Add(i);
-                }
-
-                ItemsSource = items;
+                var mcv = new MyCollectionView(Position, MinPosition, MaxPosition);
+                ItemsSource = mcv;
+                SelectedIndex = mcv.CorrectStartingSelectedIndex;
             }
         }
 
