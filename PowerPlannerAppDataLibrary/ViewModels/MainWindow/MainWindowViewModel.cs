@@ -81,14 +81,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public void ShowImage(ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages)
         {
-            if (VxPlatform.Current != Platform.Android)
-            {
-                ShowFullScreenPopup(new ShowImagesVxViewModel(this, image, allImages));
-            }
-            else
-            {
-                Navigate(new ShowImagesViewModel(this, image, allImages));
-            }
+            ShowFullScreenPopup(new ShowImagesVxViewModel(this, image, allImages));
         }
 
         private void AccountsManager_OnAccountDeleted(object sender, Guid localAccountId)

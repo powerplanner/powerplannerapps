@@ -170,6 +170,11 @@ namespace Vx.Droid
 
                 if (view is Vx.Views.ImageView)
                 {
+                    if (view is Vx.Views.ZoomableImageView)
+                    {
+                        return new DroidZoomableImageView();
+                    }
+
                     return new DroidImageView();
                 }
 
