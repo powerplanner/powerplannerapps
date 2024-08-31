@@ -19,6 +19,10 @@ namespace Vx.Views
     {
         public string UwpUri { get; set; }
         public string AndroidUri { get; set; }
+        /// <summary>
+        /// The same ID string you'd use when calling Resource.Drawable.XYZ (only specify the XYZ)
+        /// </summary>
+        public string AndroidResourceName { get; set; }
         public string IosBundleName { get; set; }
         public string IosFileName { get; set; }
         public string Uri
@@ -65,7 +69,8 @@ namespace Vx.Views
             return new UriImageSource
             {
                 UwpUri = filePath,
-                IosFileName = filePath
+                IosFileName = filePath,
+                AndroidUri = filePath
             };
         }
     }

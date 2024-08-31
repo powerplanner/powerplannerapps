@@ -9,6 +9,7 @@
     <ProjectReference Include="..\Vx\Vx.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Xamarin.Android.Glide" Version="4.16.0.6" />
     <PackageReference Include="Xamarin.Android.ViewPump">
       <Version>2.0.3.2</Version>
     </PackageReference>
