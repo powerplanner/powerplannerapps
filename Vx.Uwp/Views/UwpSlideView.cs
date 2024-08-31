@@ -132,12 +132,14 @@ namespace Vx.Uwp.Views
             private class MyCollectionView : ICollectionView
             {
                 private int _startingItem;
-                public MyCollectionView(int startingItem, int? minItem, int? maxItem)
+                private FlipView _fv;
+                public MyCollectionView(int startingItem, int? minItem, int? maxItem, FlipView fv)
                 {
                     // StartingItem is an int where 0 is the middle, and -1 is prev item, 1 is next item, etc
                     _startingItem = startingItem;
                     _currentPosition = 0;
                     CorrectStartingSelectedIndex = startingItem + MIDDLE_POSITION;
+                    _fv = fv;
                 }
 
                 public int CorrectStartingSelectedIndex { get; private set; }
@@ -240,22 +242,30 @@ namespace Vx.Uwp.Views
                 }
 
                 private bool _hasRequestedUsingCorrectIndex;
+                private int _indexedWithCorrectIndexTimes;
                 public object this[int index]
                 {
                     get
                     {
-                        if (index <= 2)
-                        {
-                            return _startingItem + index;
-                        }
                         if (!_hasRequestedUsingCorrectIndex)
                         {
-                            if (index <= 2)
+                            if (_fv.SelectedIndex == CorrectStartingSelectedIndex)
+                            {
+                                _hasRequestedUsingCorrectIndex = true;
+                                _currentPosition = CorrectStartingSelectedIndex;
+                                return index - MIDDLE_POSITION;
+                            }
+                            else
                             {
                                 return _startingItem + index;
                             }
+                        }
 
-                            _hasRequestedUsingCorrectIndex = true;
+                        // It calls this 4 times, calling [0], [1], [0], [1], then it starts using the correct index
+                        if (_indexedWithCorrectIndexTimes < 4)
+                        {
+                            _indexedWithCorrectIndexTimes++;
+                            return _startingItem + index;
                         }
 
                         return index - MIDDLE_POSITION;
@@ -311,7 +321,7 @@ namespace Vx.Uwp.Views
                     return;
                 }
 
-                var mcv = new MyCollectionView(Position, MinPosition, MaxPosition);
+                var mcv = new MyCollectionView(Position, MinPosition, MaxPosition, this);
                 ItemsSource = mcv;
                 SelectedIndex = mcv.CorrectStartingSelectedIndex;
             }
