@@ -178,7 +178,6 @@
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Legacy\DeviceInfo.cs" />
-    <Compile Include="Legacy\ImageDownloader.cs" />
     <Compile Include="Legacy\LoadingPopup.cs" />
     <Compile Include="Legacy\MyAdaptiveGridPanel.cs" />
     <Compile Include="Legacy\MyContentControl.cs" />

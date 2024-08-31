@@ -6,27 +6,42 @@ using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.ViewItems;
+using Vx.Views;
+using Vx;
+using PowerPlannerAppDataLibrary.Components.ImageAttachments;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
     public class ClassDetailsViewModel : BaseClassContentViewModel
     {
-        private BindablePropertyWatcher _detailsPropertyWatcher;
-        private string _details = "";
-        public string Details
-        {
-            get { return _details; }
-            set { SetProperty(ref _details, value, nameof(Details)); }
-        }
+        [VxSubscribe]
+        public ViewItemClass Class { get; private set; }
 
         public ClassDetailsViewModel(ClassViewModel parent) : base(parent)
         {
-            _detailsPropertyWatcher = new BindablePropertyWatcher(parent.ViewItemsGroupClass.Class, nameof(ViewItemClass.Details), delegate
-            {
-                Details = parent.ViewItemsGroupClass.Class.Details;
-            });
+            Class = parent.ViewItemsGroupClass.Class;
+        }
 
-            Details = parent.ViewItemsGroupClass.Class.Details;
+        protected override View Render()
+        {
+            return new ScrollView(new LinearLayout
+            {
+                Margin = new Thickness(VxPlatform.Current == Platform.Uwp ? 12 : Theme.Current.PageMargin),
+                Children =
+                {
+                    new HyperlinkTextBlock
+                    {
+                        Text = Class.Details,
+                        IsTextSelectionEnabled = true
+                    },
+
+                    new ImagesComponent
+                    {
+                        ImageAttachments = Class.ImageAttachments,
+                        Margin = new Thickness(0, 18, 0, 0)
+                    }
+                }
+            });
         }
     }
 }

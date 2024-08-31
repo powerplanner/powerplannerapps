@@ -84,7 +84,6 @@ namespace PowerPlannerAndroid.App
             ThemeExtension.Current = new DroidThemeExtension();
 
             // Initialize custom views
-            VxDroidExtensions.RegisterCustomView(v => v is EditImagesView, v => new DroidEditImagesView());
             VxDroidExtensions.RegisterCustomView(v => v is CompletionSlider, v => new DroidCompletionSlider());
             VxDroidExtensions.RegisterCustomView(v => v is FloatingAddItemButton, v => new DroidFloatingAddItemButton());
 

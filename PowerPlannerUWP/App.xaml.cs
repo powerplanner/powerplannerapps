@@ -103,7 +103,7 @@ namespace PowerPlannerUWP
             {
                 { typeof(YearsViewModel), typeof(ComponentView) }, // Don't show Years as a popup on Windows
                 { typeof(ClassWhatIfViewModel), typeof(ComponentView) }, // Don't show What If as a popup on Windows
-                { typeof(ShowImagesVxViewModel), typeof(ComponentView) }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
+                { typeof(ShowImagesViewModel), typeof(ComponentView) }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
                 { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
                 { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
             };
@@ -128,7 +128,6 @@ namespace PowerPlannerUWP
                 { typeof(ScheduleViewModel), typeof(ScheduleView) },
                 { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(ShowImagesViewModel), typeof(ShowImagesView) },
                 { typeof(WelcomeViewModel), typeof(WelcomeView) },
 
                 // Settings views

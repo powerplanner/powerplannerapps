@@ -81,7 +81,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 
         public void ShowImage(ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages)
         {
-            ShowFullScreenPopup(new ShowImagesVxViewModel(this, image, allImages));
+            ShowFullScreenPopup(new ShowImagesViewModel(this, image, allImages));
         }
 
         private void AccountsManager_OnAccountDeleted(object sender, Guid localAccountId)

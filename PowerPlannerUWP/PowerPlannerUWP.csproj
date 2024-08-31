@@ -130,7 +130,6 @@
     <Compile Include="BackgroundTasks\RawPushBackgroundTask.cs" />
     <Compile Include="BackgroundTasks\ToastBackgroundTask.cs" />
     <Compile Include="Controls\AbTestControl.cs" />
-    <Compile Include="Controls\ImageAttachmentControl.cs" />
     <Compile Include="Converters\CreditsToStringConverter.cs" />
     <Compile Include="Converters\DayOfWeeksToStringConverter.cs" />
     <Compile Include="Converters\ImageUploadOptionToStringConverter.cs" />
@@ -256,10 +255,6 @@
       <DependentUpon>PremiumVersionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UwpCompletionSlider.cs" />
-    <Compile Include="Views\UwpEditImagesView.cs" />
-    <Compile Include="Views\ShowImagesView.xaml.cs">
-      <DependentUpon>ShowImagesView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainScreenContentViewHostGeneric.cs" />
     <Compile Include="Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
@@ -272,16 +267,10 @@
     <Compile Include="Views\DifferentSemesterOverlayControl.xaml.cs">
       <DependentUpon>DifferentSemesterOverlayControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditImagesWrapGrid.xaml.cs">
-      <DependentUpon>EditImagesWrapGrid.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TaskOrEventViews\TasksOrEventsListHeader.xaml.cs">
       <DependentUpon>TasksOrEventsListHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TaskOrEventViews\IsCompleteToTitleForegroundConverter.cs" />
-    <Compile Include="Views\ImagesWrapGrid.xaml.cs">
-      <DependentUpon>ImagesWrapGrid.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainScreenView.xaml.cs">
       <DependentUpon>MainScreenView.xaml</DependentUpon>
     </Compile>
@@ -313,9 +302,6 @@
     <Content Include="Assets\LockScreenLogo.scale-150.png" />
     <Content Include="Assets\LockScreenLogo.scale-400.png" />
     <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\ImageLoading.jpg" />
-    <Content Include="Assets\ImageNotFound.jpg" />
-    <Content Include="Assets\ImageOffline.jpg" />
     <Content Include="Assets\PromoOtherPlatforms\Android.png" />
     <None Include="Assets\PromoOtherPlatforms\WindowsPhone.png" />
     <Content Include="Assets\PromoOtherPlatforms\iPhone.png" />
@@ -496,10 +482,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ShowImagesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ScheduleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -516,15 +498,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditImagesWrapGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\TaskOrEventViews\TasksOrEventsListHeader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ImagesWrapGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

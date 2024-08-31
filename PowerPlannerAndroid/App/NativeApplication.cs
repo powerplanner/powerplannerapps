@@ -107,9 +107,7 @@ namespace PowerPlannerAndroid.App
                 { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
                 { typeof(QuickAddViewModel), typeof(QuickAddView) },
                 { typeof(SyncOptionsSimpleViewModel), typeof(SettingsSyncOptionsView) },
-                { typeof(ImageUploadOptionsViewModel), typeof(SettingsImageUploadOptionsView) },
-
-                { typeof(ShowImagesViewModel), typeof(ShowImagesView) }
+                { typeof(ImageUploadOptionsViewModel), typeof(SettingsImageUploadOptionsView) }
             };
         }
 

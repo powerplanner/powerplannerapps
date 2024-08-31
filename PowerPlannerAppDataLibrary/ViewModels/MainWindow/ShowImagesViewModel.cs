@@ -11,29 +11,11 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
-    public class ShowImagesViewModel : BaseViewModel
-    {
-        public ShowImagesViewModel(BaseViewModel parent, ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages) : base(parent)
-        {
-            AllImages = allImages;
-            CurrentImage = image;
-        }
-
-        public ImageAttachmentViewModel[] AllImages { get; set; }
-
-        private ImageAttachmentViewModel _currentImage;
-        public ImageAttachmentViewModel CurrentImage
-        {
-            get { return _currentImage; }
-            set { SetProperty(ref _currentImage, value, nameof(CurrentImage)); }
-        }
-    }
-
-    public class ShowImagesVxViewModel : PopupComponentViewModel
+    public class ShowImagesViewModel : PopupComponentViewModel
     {
         private Func<int, View> _itemTemplate;
 
-        public ShowImagesVxViewModel(BaseViewModel parent, ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages) : base(parent)
+        public ShowImagesViewModel(BaseViewModel parent, ImageAttachmentViewModel image, ImageAttachmentViewModel[] allImages) : base(parent)
         {
             AllImages = allImages;
             _index = Array.IndexOf(allImages, image);
