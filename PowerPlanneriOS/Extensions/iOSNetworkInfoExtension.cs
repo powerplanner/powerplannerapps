@@ -18,7 +18,7 @@ namespace PowerPlanneriOS.Extensions
 
             _monitor.SnapshotHandler = (path) =>
             {
-                if (path.Status == NWPathStatus.Satisfiable)
+                if (path.Status == NWPathStatus.Satisfied)
                 {
                     if (path.IsConstrained)
                     {
