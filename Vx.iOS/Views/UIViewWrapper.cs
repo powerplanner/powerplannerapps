@@ -305,14 +305,26 @@ namespace Vx.iOS.Views
 
             if (widthConstraint != null)
             {
-                WidthConstraint = NSLayoutConstraint.Create(
-                    ViewOrGuide,
-                    NSLayoutAttribute.Width,
-                    NSLayoutRelation.Equal,
-                    widthConstraint.Value.OtherView,
-                    widthConstraint.Value.OtherViewAttribute,
-                    widthConstraint.Value.Multiplier,
-                    widthConstraint.Value.Constant);
+                if (widthConstraint.Value.OtherView != null)
+                {
+                    WidthConstraint = NSLayoutConstraint.Create(
+                        ViewOrGuide,
+                        NSLayoutAttribute.Width,
+                        NSLayoutRelation.Equal,
+                        widthConstraint.Value.OtherView,
+                        widthConstraint.Value.OtherViewAttribute,
+                        widthConstraint.Value.Multiplier,
+                        widthConstraint.Value.Constant);
+                }
+                else
+                {
+                    WidthConstraint = NSLayoutConstraint.Create(
+                        ViewOrGuide,
+                        NSLayoutAttribute.Width,
+                        NSLayoutRelation.Equal,
+                        widthConstraint.Value.Multiplier,
+                        widthConstraint.Value.Constant);
+                }
             }
             else if (!float.IsNaN(Width))
             {
@@ -330,14 +342,26 @@ namespace Vx.iOS.Views
 
             if (heightConstraint != null)
             {
-                HeightConstraint = NSLayoutConstraint.Create(
-                    ViewOrGuide,
-                    NSLayoutAttribute.Height,
-                    NSLayoutRelation.Equal,
-                    heightConstraint.Value.OtherView,
-                    heightConstraint.Value.OtherViewAttribute,
-                    heightConstraint.Value.Multiplier,
-                    heightConstraint.Value.Constant);
+                if (heightConstraint.Value.OtherView != null)
+                {
+                    HeightConstraint = NSLayoutConstraint.Create(
+                        ViewOrGuide,
+                        NSLayoutAttribute.Height,
+                        NSLayoutRelation.Equal,
+                        heightConstraint.Value.OtherView,
+                        heightConstraint.Value.OtherViewAttribute,
+                        heightConstraint.Value.Multiplier,
+                        heightConstraint.Value.Constant);
+                }
+                else
+                {
+                    HeightConstraint = NSLayoutConstraint.Create(
+                        ViewOrGuide,
+                        NSLayoutAttribute.Height,
+                        NSLayoutRelation.Equal,
+                        heightConstraint.Value.Multiplier,
+                        heightConstraint.Value.Constant);
+                }
             }
             else if (!float.IsNaN(Height))
             {

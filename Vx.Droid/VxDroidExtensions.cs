@@ -168,6 +168,21 @@ namespace Vx.Droid
                     return new DroidToolbar();
                 }
 
+                if (view is Vx.Views.ImageView)
+                {
+                    if (view is Vx.Views.ZoomableImageView)
+                    {
+                        return new DroidZoomableImageView();
+                    }
+
+                    return new DroidImageView();
+                }
+
+                if (view is Vx.Views.WrapGrid)
+                {
+                    return new DroidWrapGrid();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

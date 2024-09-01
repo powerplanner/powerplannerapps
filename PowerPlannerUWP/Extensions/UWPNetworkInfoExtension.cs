@@ -21,10 +21,12 @@ namespace PowerPlannerUWP.Extensions
             if (cost == null)
                 return PowerPlannerAppDataLibrary.Extensions.NetworkInfo.NetworkCostType.Limited;
 
-            if (cost.NetworkCostType == NetworkCostType.Fixed || cost.NetworkCostType == NetworkCostType.Variable || cost.Roaming || cost.OverDataLimit)
-                return PowerPlannerAppDataLibrary.Extensions.NetworkInfo.NetworkCostType.Limited;
+            if (cost.NetworkCostType == NetworkCostType.Unrestricted)
+            {
+                return PowerPlannerAppDataLibrary.Extensions.NetworkInfo.NetworkCostType.Unlimited;
+            }
 
-            return PowerPlannerAppDataLibrary.Extensions.NetworkInfo.NetworkCostType.Unlimited;
+            return PowerPlannerAppDataLibrary.Extensions.NetworkInfo.NetworkCostType.Limited;
         }
     }
 }

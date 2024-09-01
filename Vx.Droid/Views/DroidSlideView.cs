@@ -36,17 +36,27 @@ namespace Vx.Droid.Views
 
             public override void OnPageSelected(int position)
             {
-                _droidSlideView.VxView?.Position?.ValueChanged?.Invoke(GetVxPosition(position));
+                _droidSlideView.VxView?.Position?.ValueChanged?.Invoke(GetVxPosition(position, _droidSlideView.VxView?.MinPosition, _droidSlideView.VxView?.MaxPosition));
             }
         }
 
-        private static int GetVxPosition(int droidPosition)
+        private static int GetVxPosition(int droidPosition, int? minPosition, int? maxPosition)
         {
+            if (minPosition != null && maxPosition != null)
+            {
+                return droidPosition;
+            }
+
             return droidPosition - int.MaxValue / 2;
         }
 
-        private static int GetDroidPosition(int vxPosition)
+        private static int GetDroidPosition(int vxPosition, int? minPosition, int? maxPosition)
         {
+            if (minPosition != null && maxPosition != null)
+            {
+                return vxPosition;
+            }
+
             return vxPosition + int.MaxValue / 2;
         }
 
@@ -54,12 +64,14 @@ namespace Vx.Droid.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            if (!object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
+            if (!object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate)
+                || !object.Equals(oldView?.MinPosition, newView.MinPosition)
+                || !object.Equals(oldView?.MaxPosition, newView.MaxPosition))
             {
-                View.Adapter = new DroidSwipeViewAdapter(newView.ItemTemplate);
+                View.Adapter = new DroidSwipeViewAdapter(newView.ItemTemplate, newView.MinPosition, newView.MaxPosition);
             }
 
-            int droidPosition = GetDroidPosition(newView.Position.Value);
+            int droidPosition = GetDroidPosition(newView.Position.Value, newView.MinPosition, newView.MaxPosition);
             if (View.CurrentItem != droidPosition)
             {
                 View.SetCurrentItem(droidPosition, false);
@@ -68,11 +80,24 @@ namespace Vx.Droid.Views
 
         private class DroidSwipeViewAdapter : RecyclerView.Adapter
         {
-            public override int ItemCount => int.MaxValue;
+            private int? _minPosition;
+            private int? _maxPosition;
+            private bool _isUnlimited = true;
+            private int _itemCount = int.MaxValue;
+            public override int ItemCount => _itemCount;
             private Func<object, Vx.Views.View> _itemTemplate;
 
-            public DroidSwipeViewAdapter(Func<int, Vx.Views.View> itemTemplate)
+            public DroidSwipeViewAdapter(Func<int, Vx.Views.View> itemTemplate, int? minPosition, int? maxPosition)
             {
+                if (minPosition != null && maxPosition != null)
+                {
+                    _itemCount = maxPosition.Value - minPosition.Value + 1;
+                    _isUnlimited = false;
+                }
+
+                _minPosition = minPosition;
+                _maxPosition = maxPosition;
+
                 _itemTemplate = i =>
                 {
                     if (i == null)
@@ -86,7 +111,7 @@ namespace Vx.Droid.Views
 
             public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
             {
-                ((holder.ItemView as INativeComponent).Component as DataTemplateHelper.VxDataTemplateComponent).Data = GetVxPosition(position);
+                ((holder.ItemView as INativeComponent).Component as DataTemplateHelper.VxDataTemplateComponent).Data = GetVxPosition(position, _minPosition, _maxPosition);
             }
 
             public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

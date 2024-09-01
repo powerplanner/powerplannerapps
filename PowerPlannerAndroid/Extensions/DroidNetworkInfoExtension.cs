@@ -30,15 +30,13 @@ namespace PowerPlannerAndroid.Extensions
                     if (network != null)
                     {
                         NetworkCapabilities capabilities = connMgr.GetNetworkCapabilities(network);
-
-                        if (capabilities.HasTransport(TransportType.Wifi))
+                        if (capabilities.HasCapability(NetCapability.NotMetered) ||
+                            (OperatingSystem.IsAndroidVersionAtLeast(30) && capabilities.HasCapability(NetCapability.TemporarilyNotMetered)))
                         {
                             return NetworkCostType.Unlimited;
                         }
-                        else
-                        {
-                            return NetworkCostType.Limited;
-                        }
+
+                        return NetworkCostType.Limited;
                     }
                 }
             }

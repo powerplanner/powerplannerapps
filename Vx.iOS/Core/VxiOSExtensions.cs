@@ -158,6 +158,21 @@ namespace Vx.iOS
                     return new iOSToolbar();
                 }
 
+                if (view is Vx.Views.WrapGrid)
+                {
+                    return new iOSWrapGrid();
+                }
+
+                if (view is Vx.Views.ZoomableImageView)
+                {
+                    return new iOSZoomableImageView();
+                }
+
+                if (view is Vx.Views.ImageView)
+                {
+                    return new iOSImageView();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();

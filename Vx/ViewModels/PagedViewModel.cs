@@ -34,13 +34,18 @@ namespace BareMvvm.Core.ViewModels
 
         private void PagedViewModel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            UpdateRequestedBackButtonVisibility();
+        }
+
+        protected virtual RequestedBackButtonVisibility CalculateThisBackButtonVisibility()
+        {
             if (BackStack.Count > 0)
             {
-                ThisBackButtonVisibility = RequestedBackButtonVisibility.Visible;
+                return RequestedBackButtonVisibility.Visible;
             }
             else
             {
-                ThisBackButtonVisibility = RequestedBackButtonVisibility.Collapsed;
+                return RequestedBackButtonVisibility.Collapsed;
             }
         }
 
@@ -236,16 +241,9 @@ namespace BareMvvm.Core.ViewModels
             }
         }
 
-        private void UpdateRequestedBackButtonVisibility()
+        protected void UpdateRequestedBackButtonVisibility()
         {
-            if (BackStack.Count > 0)
-            {
-                ThisBackButtonVisibility = RequestedBackButtonVisibility.Visible;
-            }
-            else
-            {
-                ThisBackButtonVisibility = RequestedBackButtonVisibility.Inherit;
-            }
+            ThisBackButtonVisibility = CalculateThisBackButtonVisibility();
         }
     }
 }

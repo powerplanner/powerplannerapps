@@ -11,6 +11,8 @@ namespace Vx.iOS.Views
         {
             View.MovedToNext += View_MovedToNext;
             View.MovedToPrev += View_MovedToPrev;
+
+            View.DelayUpdates = true;
         }
 
         private void View_MovedToPrev(object sender, EventArgs e)
@@ -27,12 +29,17 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.MinPosition = newView.MinPosition;
+            View.MaxPosition = newView.MaxPosition;
             View.Position = newView.Position?.Value ?? 0;
+            View.BackgroundColor = newView.BackgroundColor.ToUI();
 
             if (!object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
             {
                 View.ItemTemplate = newView.ItemTemplate;
             }
+
+            View.ApplyDelayedUpdates();
         }
     }
 
@@ -40,6 +47,7 @@ namespace Vx.iOS.Views
     {
         public event EventHandler MovedToNext, MovedToPrev;
 
+        private int _livePosition;
         private int _position;
         public int Position
         {
@@ -49,6 +57,35 @@ namespace Vx.iOS.Views
                 if (_position != value)
                 {
                     _position = value;
+                    _livePosition = value;
+                    UpdateAllViews();
+                }
+            }
+        }
+
+        private int? _minPosition;
+        public int? MinPosition
+        {
+            get => _minPosition;
+            set
+            {
+                if (_minPosition != value)
+                {
+                    _minPosition = value;
+                    UpdateAllViews();
+                }
+            }
+        }
+
+        private int? _maxPosition;
+        public int? MaxPosition
+        {
+            get => _maxPosition;
+            set
+            {
+                if (_maxPosition != value)
+                {
+                    _maxPosition = value;
                     UpdateAllViews();
                 }
             }
@@ -93,6 +130,16 @@ namespace Vx.iOS.Views
             MovedToPrev?.Invoke(this, new EventArgs());
         }
 
+        protected override void EarlyOnMovedToNext()
+        {
+            _livePosition++;
+        }
+
+        protected override void EarlyOnMovedToPrevious()
+        {
+            _livePosition--;
+        }
+
         protected override void UpdateCurrView(UIView curr)
         {
             var comp = GetDataTemplateComponent(curr);
@@ -112,6 +159,26 @@ namespace Vx.iOS.Views
             var comp = GetDataTemplateComponent(prev);
             comp.Data = Position - 1;
             comp.Template = _objItemTemplate;
+        }
+
+        protected override bool HasPrevious()
+        {
+            if (MinPosition == null)
+            {
+                return true;
+            }
+
+            return _livePosition - 1 >= MinPosition.Value;
+        }
+
+        protected override bool HasNext()
+        {
+            if (MaxPosition == null)
+            {
+                return true;
+            }
+
+            return _livePosition + 1 <= MaxPosition.Value;
         }
 
         private DataTemplateHelper.VxDataTemplateComponent GetDataTemplateComponent(UIView view)

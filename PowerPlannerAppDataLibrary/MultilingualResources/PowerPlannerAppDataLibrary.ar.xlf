@@ -19,8 +19,8 @@
           <target state="final">أبداً</target>
         </trans-unit>
         <trans-unit id="ImageUploadOptions_WifiOnly" translate="yes" xml:space="preserve">
-          <source>Wi-Fi Only</source>
-          <target state="final">وايفاي فقط</target>
+          <source>Unmetered networks only</source>
+          <target state="final">شبكات غير مقاسة فقط</target>
         </trans-unit>
         <trans-unit id="Settings_AboutPage_AboutAppHeader.Text" translate="yes" xml:space="preserve">
           <source>about the app</source>
@@ -253,8 +253,8 @@ Click Continue to login (which might cause duplicates).</source>
           <target state="final">فشل في حذف الحساب الخاص بك المتصل بشبكة الإنترنت. ربما انت غير متصل؟</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" translate="yes" xml:space="preserve">
-          <source>Upload via</source>
-          <target state="final">تحميل عن طريق</target>
+          <source>Upload images</source>
+          <target state="final">تحميل الصور</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_Description.Text" translate="yes" xml:space="preserve">
           <source>Control when images are uploaded, so that you don't incur charges on your data plan.</source>

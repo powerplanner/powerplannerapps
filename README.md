@@ -67,8 +67,19 @@ Instructions...
 1. In Terminal, `cd` to the `PowerPlanneriOS` directory.
 1. Run `dotnet run`
 1. The simulator should launch!
-1. To specify a specific simulator, in XCode go to Window -> Devices and Simulators, and in the Simulators list, right click one from the left and click Copy Identifier. Then, use the command `dotnet run /p:_DeviceName=:v2:udid=E71087E9-241E-4BC1-862E-D5AFDC65C21D` using the identifier you copied.
+1. To specify a specific simulator, in XCode go to Window -> Devices and Simulators, and in the Simulators list, right click one from the left and click Copy Identifier. Then, use the command `dotnet run /p:_DeviceName=:v2:udid=78E660EB-A32F-4683-95CC-CA663D7D64D0` using the identifier you copied.
 
+#### Known iOS issues
+
+* Could not find any available provisioning profiles for PowerPlanneriOS on iOS
+  * FIX: Make sure you've signed into XCode (launch XCode, then in the menu click XCode -> Settings -> Account and sign in, and optionally download manual profiles)
+* "Microsoft.iOS: Socket error while connecting to IDE on 127.0.0.1:10000: Connection refused"
+  * I could never figure out how to fix this, I tried changing a bunch of permissions/etc. This simply means debugging (breakpoints) and hot reload doesn't work. Breakpoints work when running the project through Windows connected to a Mac though, so that's the recommended development path (hot reload doesn't work regardless though, I don't think that's supported yet).
+* (When using PC) "A fatal error occurred while trying to start the simulator."
+  * On the Mac, try starting or rebooting the desired simulator, then try re-deploying
+  * If that still didn't work, try rebooting both machines
+* (When using PC) My edits don't seem to be applied when I re-deploy.
+  * I've noticed this and not sure what causes it. Seems like you have to clean the project each time first before deploying. Hopefully VS fixes it soon.
 
 ## Architecture
 

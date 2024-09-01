@@ -163,6 +163,12 @@ namespace Vx.Uwp
                     return new UwpListView();
                 }
 
+                if (view is Vx.Views.ZoomableImageView)
+                {
+                    // Needs to be before normal ImageView since it's a subclass
+                    return new UwpZoomableImageView();
+                }
+
                 if (view is Vx.Views.ImageView)
                 {
                     return new UwpImageView();
@@ -186,6 +192,11 @@ namespace Vx.Uwp
                 if (view is Vx.Views.NativeContentContainer)
                 {
                     return new UwpNativeContentContainer();
+                }
+
+                if (view is Vx.Views.WrapGrid)
+                {
+                    return new UwpWrapGrid();
                 }
 
 #if DEBUG

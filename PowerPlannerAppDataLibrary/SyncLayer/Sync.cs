@@ -1132,6 +1132,62 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             return await imagesFolder.GetFileAsync(image);
         }
 
+        public delegate void ProgressDelegate(long sentBytes, long totalBytes);
+
+        private class ProgressStream : Stream
+        {
+            private Stream _stream;
+            private long _totalBytes;
+            private ProgressDelegate _progress;
+            public ProgressStream(Stream stream, ProgressDelegate progress)
+            {
+                _stream = stream;
+                _totalBytes = stream.Length;
+                _progress = progress;
+            }
+
+            public override bool CanRead => _stream.CanRead;
+
+            public override bool CanSeek => _stream.CanSeek;
+
+            public override bool CanWrite => _stream.CanWrite;
+
+            public override long Length => _stream.Length;
+
+            public override long Position { get => _stream.Position; set => _stream.Position = value; }
+
+            public override void Flush()
+            {
+                _stream.Flush();
+            }
+
+            public override int Read(byte[] buffer, int offset, int count)
+            {
+                var sentBytes = _stream.Position;
+                var readCount = _stream.Read(buffer, offset, count);
+                if (readCount > 0)
+                {
+                    _progress(sentBytes + readCount, _totalBytes);
+                }
+                return readCount;
+            }
+
+            public override long Seek(long offset, SeekOrigin origin)
+            {
+                return _stream.Seek(offset, origin);
+            }
+
+            public override void SetLength(long value)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         private static async System.Threading.Tasks.Task uploadBytes(AccountDataItem account, string imageName, IFile imageFile, CancellationToken cancellationToken)
         {
             UploadProgressReporter reporter = new UploadProgressReporter(account);
@@ -1147,19 +1203,18 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         {
                             HeadersHelper.SetLoginCredentials(content.Headers, account);
                             HeadersHelper.SetApiKey(content.Headers);
-
-                            var streamContent = new ToolsPortable.Web.ProgressStreamContent(stream, cancellationToken);
-                            streamContent.Progress = (sentBytes, totalBytes, totalBytesExpected) =>
+                            
+                            var streamContent = new StreamContent(new ProgressStream(stream, (sentBytes, totalBytes) =>
                             {
-                                reporter.ReportBytesSent(totalBytes, totalBytesExpected);
-                            };
+                                reporter.ReportBytesSent(sentBytes, totalBytes);
+                            }));
 
                             DateTime lastSent = DateTime.MinValue;
                             DateTime uploadStartTime = DateTime.Now;
 
                             content.Add(streamContent, "image", imageName);
 
-                            using (var message = await client.PostAsync(Website.UploadApiUrl + "UploadImageMultiPart", content))
+                            using (var message = await client.PostAsync(Website.UploadApiUrl + "UploadImageMultiPart", content, cancellationToken))
                             {
                                 message.EnsureSuccessStatusCode();
 

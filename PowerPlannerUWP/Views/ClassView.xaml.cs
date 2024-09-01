@@ -122,6 +122,11 @@ namespace PowerPlannerUWP.Views
         {
             VisualStateManager.GoToState(this, "Details", true);
             GoToCollapsedHeaderVisualState();
+
+            if (PivotItemDetails.Content == null)
+            {
+                PivotItemDetails.Content = ViewModel.DetailsViewModel.Render();
+            }
         }
 
         private void GoToClassTimesVisualState()

@@ -46,6 +46,14 @@ namespace PowerPlannerAndroid.Views
             
             switch (_viewPager.CurrentItem)
             {
+                case ClassPagerAdapter.DETAILS:
+                    ViewModel.CurrentViewModel = ViewModel.DetailsViewModel;
+                    break;
+
+                case ClassPagerAdapter.TIMES:
+                    ViewModel.CurrentViewModel = ViewModel.TimesViewModel;
+                    break;
+
                 case ClassPagerAdapter.TASKS:
                     ViewModel.CurrentViewModel = ViewModel.TasksViewModel;
                     ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
@@ -103,6 +111,7 @@ namespace PowerPlannerAndroid.Views
 
             public ClassView ClassView { get; private set; }
 
+            private View _renderedDetails;
             private View _renderedTimes;
             private View _renderedGrades;
             private View _renderedTasks;
@@ -133,7 +142,11 @@ namespace PowerPlannerAndroid.Views
                 switch (position)
                 {
                     case DETAILS:
-                        view = new ClassDetailsView(container, ClassView);
+                        if (_renderedDetails == null)
+                        {
+                            _renderedDetails = ClassView.ViewModel.DetailsViewModel.Render();
+                        }
+                        view = _renderedDetails;
                         break;
 
                     case TIMES:

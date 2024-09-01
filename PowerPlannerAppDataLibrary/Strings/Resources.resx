@@ -127,7 +127,7 @@
     <value>Never</value>
   </data>
   <data name="ImageUploadOptions_WifiOnly" xml:space="preserve">
-    <value>Wi-Fi Only</value>
+    <value>Unmetered networks only</value>
   </data>
   <data name="Settings_AboutPage_AboutAppHeader.Text" xml:space="preserve">
     <value>about the app</value>
@@ -299,7 +299,7 @@ Click Continue to login (which might cause duplicates).</value>
     <value>Failed to delete your online account. Maybe you're offline?</value>
   </data>
   <data name="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" xml:space="preserve">
-    <value>Upload via</value>
+    <value>Upload images</value>
   </data>
   <data name="Settings_ImageUploadOptionsPage_Description.Text" xml:space="preserve">
     <value>Control when images are uploaded, so that you don't incur charges on your data plan.</value>

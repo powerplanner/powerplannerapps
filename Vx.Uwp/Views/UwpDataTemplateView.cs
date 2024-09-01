@@ -29,6 +29,18 @@ namespace Vx.Uwp.Views
             return XamlReader.Load(dataTemplateString) as DataTemplate;
         }
 
+        public static DataTemplate GetDataTemplateWithVerticalContentStretch(string elementWithTemplateName)
+        {
+            var dataTemplateString =
+@"<DataTemplate
+    xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+    xmlns:local=""using:Vx.Uwp.Views"">
+    <local:UwpDataTemplateView Data=""{Binding}"" ItemTemplate=""{Binding DataContext, ElementName=" + elementWithTemplateName + @"}"" VerticalContentAlignment=""Stretch""/>
+</DataTemplate>";
+
+            return XamlReader.Load(dataTemplateString) as DataTemplate;
+        }
+
         private DataTemplateHelper.VxDataTemplateComponent _component = new DataTemplateHelper.VxDataTemplateComponent();
 
         public object Data

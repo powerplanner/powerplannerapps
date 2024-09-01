@@ -19,8 +19,8 @@
           <target state="final">Nunca</target>
         </trans-unit>
         <trans-unit id="ImageUploadOptions_WifiOnly" translate="yes" xml:space="preserve">
-          <source>Wi-Fi Only</source>
-          <target state="final">Sólo Wi-Fi</target>
+          <source>Unmetered networks only</source>
+          <target state="final">Sólo redes no medidas</target>
         </trans-unit>
         <trans-unit id="Settings_AboutPage_AboutAppHeader.Text" translate="yes" xml:space="preserve">
           <source>about the app</source>
@@ -251,8 +251,8 @@ Haga clic en Continuar para iniciar la sesión (lo que podría causar duplicados
           <target state="final">Error al eliminar su cuenta en línea. ¿No estás conectado?</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" translate="yes" xml:space="preserve">
-          <source>Upload via</source>
-          <target state="final">Subir a través de</target>
+          <source>Upload images</source>
+          <target state="final">Subir imágenes</target>
         </trans-unit>
         <trans-unit id="Settings_ImageUploadOptionsPage_Description.Text" translate="yes" xml:space="preserve">
           <source>Control when images are uploaded, so that you don't incur charges on your data plan.</source>

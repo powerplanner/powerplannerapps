@@ -14,6 +14,7 @@ using InterfacesDroid.Themes;
 using InterfacesDroid.Helpers;
 using ToolsPortable;
 using Android.Util;
+using InterfacesDroid.Bindings.Programmatic;
 
 namespace InterfacesDroid.ViewModelPresenters
 {
@@ -177,6 +178,7 @@ namespace InterfacesDroid.ViewModelPresenters
     {
         private PagedViewModelPresenter _pagedViewModelPresenter;
         private PopupsPresenter _popupsPresenter;
+        private GenericViewModelPresenter _fullScreenPresenter;
 
         public PagedViewModelWithPopupsPresenter(Context context) : base(context)
         {
@@ -196,8 +198,14 @@ namespace InterfacesDroid.ViewModelPresenters
             _popupsPresenter = new PopupsPresenter(Context);
 
             base.AddView(_popupsPresenter);
+
+            _fullScreenPresenter = new GenericViewModelPresenter(Context);
+            _fullScreenPresenter.Visibility = ViewStates.Gone;
+
+            base.AddView(_fullScreenPresenter);
         }
 
+        private BindingInstance _fullScreenBindingInstance;
         private PagedViewModelWithPopups _viewModel;
         public PagedViewModelWithPopups ViewModel
         {
@@ -216,6 +224,14 @@ namespace InterfacesDroid.ViewModelPresenters
 
                 // And popups presenter
                 _popupsPresenter.ViewModel = value;
+
+                // And full screen presenter
+                _fullScreenBindingInstance?.Dispose();
+                _fullScreenBindingInstance = Binding.SetBinding(value, nameof(value.FullScreenPopup), f =>
+                {
+                    _fullScreenPresenter.ViewModel = f.FullScreenPopup;
+                    _fullScreenPresenter.Visibility = f.FullScreenPopup != null ? ViewStates.Visible : ViewStates.Gone;
+                });
             }
         }
 

@@ -19,6 +19,10 @@
         <local:PopupsPresenter
             ViewModel="{Binding ViewModel, ElementName=ThisView}"/>
 
+        <local:GenericViewModelPresenter
+            ViewModel="{Binding ViewModel.FullScreenPopup, ElementName=ThisView}"
+            Visibility="{Binding ViewModel.FullScreenPopup, ElementName=ThisView, Converter={StaticResource NotNullToVisibilityConverter}}"/>
+
     </Grid>
     
 </UserControl>

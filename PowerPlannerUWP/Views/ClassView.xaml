@@ -264,30 +264,8 @@
             </PivotItem>
 
             <!--Details-->
-            <PivotItem x:Uid="ClassPage_PivotItemDetails" Header="Details">
-
-                <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
-                    <Grid Margin="8,0,8,20">
-
-                        <StackPanel
-                            x:Name="GroupDetails">
-
-                            <TextBlock
-                                x:Name="TextBlockDetails"
-                                interfaces:TextBlockExtensions.RawText="{Binding ViewItemsGroupClass.Class.Details, FallbackValue=[details]}"
-                                Style="{ThemeResource BodyTextBlockStyle}"
-                                IsTextSelectionEnabled="True"
-                                TextWrapping="Wrap"/>
-
-                            <views:ImagesWrapGrid
-                                DataContext="{Binding ViewItemsGroupClass.Class.ImageNames}"
-                                Visibility="{Binding ViewItemsGroupClass.Class.ImageNames, Converter={StaticResource ListToVisibilityConverter}}"
-                                Margin="0,12,0,0"/>
-
-                        </StackPanel>
-
-                    </Grid>
-                </ScrollViewer>
+            <PivotItem x:Name="PivotItemDetails" x:Uid="ClassPage_PivotItemDetails" Header="Details">
+                
             </PivotItem>
 
             <!--Class times-->

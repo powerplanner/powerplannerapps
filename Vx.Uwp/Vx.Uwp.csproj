@@ -178,7 +178,6 @@
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Legacy\DeviceInfo.cs" />
-    <Compile Include="Legacy\ImageDownloader.cs" />
     <Compile Include="Legacy\LoadingPopup.cs" />
     <Compile Include="Legacy\MyAdaptiveGridPanel.cs" />
     <Compile Include="Legacy\MyContentControl.cs" />
@@ -236,6 +235,8 @@
     <Compile Include="Views\UwpTransparentContentButton.cs" />
     <Compile Include="Views\UwpView.cs" />
     <Compile Include="Views\UwpVxComponent.cs" />
+    <Compile Include="Views\UwpWrapGrid.cs" />
+    <Compile Include="Views\UwpZoomableImageView.cs" />
     <Compile Include="Views\ViewHostGeneric.cs" />
     <Compile Include="VxUwpExtensions.cs" />
     <Compile Include="VxUwpTheme.cs" />

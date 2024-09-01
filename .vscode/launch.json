@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "coreclr",
+            "request": "launch",
+            "name": "PowerPlanneriOS",
+            "program": "dotnet",
+            "args": [
+                "run",
+                "--configuration",
+                "Debug",
+                "/p:_DeviceName=:v2:udid=78E660EB-A32F-4683-95CC-CA663D7D64D0"
+            ],
+            "cwd": "${workspaceFolder}/PowerPlanneriOS",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}

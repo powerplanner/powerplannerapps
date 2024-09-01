@@ -38,7 +38,6 @@ namespace PowerPlanneriOS
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
-    [Register("AppDelegate")]
     public class AppDelegate : NativeiOSApplication
     {
         private MainAppWindow _mainAppWindow;
@@ -195,6 +194,8 @@ namespace PowerPlanneriOS
             DateTimeFormatterExtension.Current = new iOSDateTimeFormatterExtension();
             TilesExtension.Current = new iOSTilesExtension();
             ScheduleTileExtension.Current = new iOSScheduleTileExtension();
+            ImagePickerExtension.Current = new iOSImagePickerExtension();
+            NetworkInfoExtension.Current = new iOSNetworkInfoExtension();
 
 #if !DEBUG
             // On release, use the system language selector (in simulator the system settings doesn't support this).

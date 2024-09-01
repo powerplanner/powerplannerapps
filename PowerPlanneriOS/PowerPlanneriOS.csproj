@@ -7,10 +7,11 @@
     <MtouchSdkVersion>17.5</MtouchSdkVersion>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <ForceSimulatorX64ArchitectureInIDE>true</ForceSimulatorX64ArchitectureInIDE>
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <DefineConstants>BUILD_OS_WINDOWS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <CreatePackage>false</CreatePackage>
-    <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <CreatePackage>false</CreatePackage>
@@ -111,7 +112,7 @@
   </ItemGroup>
 
   <!--For widget, in debug mode don't sign-->
-  <Target Name="BuildDebugXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug'">
+  <Target Name="BuildDebugXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug' And '$(OS)' != 'Windows_NT'">
     <!-- Command to build the Xcode project -->
     <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphoneos -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
     <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphonesimulator -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
@@ -125,7 +126,7 @@
   </Target>
   
   <!--For widget-->
-  <ItemGroup>
+  <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
     <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
       <Name>NativeWidgetExtension</Name>
       <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/NativeApp/Build/Products/$(Configuration)-iphoneos</BuildOutput>
@@ -134,5 +135,5 @@
   </ItemGroup>
 
   <!--For widget-->
-  <Import Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
+  <Import Condition="'$(OS)' != 'Windows_NT'" Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
 </Project>

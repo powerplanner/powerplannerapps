@@ -16,13 +16,49 @@ namespace BareMvvm.Core.ViewModels
 
         public MyObservableList<BaseViewModel> Popups { get; private set; } = new MyObservableList<BaseViewModel>();
 
+        private BaseViewModel _fullScreenPopup;
+        public BaseViewModel FullScreenPopup
+        {
+            get => _fullScreenPopup;
+            set
+            {
+                if (_fullScreenPopup != value)
+                {
+                    _fullScreenPopup = value;
+                    UpdateRequestedBackButtonVisibility();
+                    OnPopupsOrFullScreenPopupChanged();
+                    OnPropertyChanged(nameof(FullScreenPopup));
+                }
+            }
+        }
+
         public override void ShowPopup(BaseViewModel viewModel)
         {
             Popups.Add(viewModel);
         }
 
+        public void ShowFullScreenPopup(BaseViewModel viewModel)
+        {
+            FullScreenPopup = viewModel;
+        }
+
+        protected override RequestedBackButtonVisibility CalculateThisBackButtonVisibility()
+        {
+            if (FullScreenPopup != null)
+            {
+                return RequestedBackButtonVisibility.Visible;
+            }
+
+            return base.CalculateThisBackButtonVisibility();
+        }
+
         protected override BaseViewModel GetChildContent()
         {
+            if (FullScreenPopup != null)
+            {
+                return FullScreenPopup;
+            }
+
             if (Popups.Count > 0)
                 return Popups.Last();
 
@@ -33,6 +69,10 @@ namespace BareMvvm.Core.ViewModels
         {
             var list = new List<BaseViewModel>(base.GetChildren());
             list.AddRange(Popups);
+            if (FullScreenPopup != null)
+            {
+                list.Add(FullScreenPopup);
+            }
             return list;
         }
 
@@ -74,46 +114,92 @@ namespace BareMvvm.Core.ViewModels
             }
         }
 
-        private BaseViewModel _prevLastPopup;
         private void Popups_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (Popups.LastOrDefault() != _prevLastPopup)
+            OnPopupsOrFullScreenPopupChanged();
+        }
+
+        private BaseViewModel _prevLastPopup;
+        private void OnPopupsOrFullScreenPopupChanged()
+        {
+            if (FullScreenPopup != null)
             {
-                var prevLastPopup = _prevLastPopup;
-                _prevLastPopup = Popups.LastOrDefault();
+                if (_prevLastPopup == FullScreenPopup)
+                {
+                    // One of the popups must have changed under the scenes, nothing to do
+                    return;
+                }
+                else
+                {
+                    // We have a new fullscreen popup
+                    var prevLastPopup = _prevLastPopup;
+                    _prevLastPopup = FullScreenPopup;
+                    var currPopup = FullScreenPopup;
 
-                var currPopup = Popups.LastOrDefault();
-                
-                // If we had a popup previously
-                if (prevLastPopup != null)
-                {
-                    prevLastPopup.OnViewLostFocus();
-                }
-                // Or if we didn't have any other popups but just added a popup, the normal paged content was lost focus
-                else if (currPopup != null && this.Content != null)
-                {
-                    this.Content.OnViewLostFocus();
-                }
-
-                if (currPopup != null)
-                {
-                    currPopup.OnViewFocused();
-                }
-                else if (this.Content != null)
-                {
-                    this.Content.OnViewFocused();
-                }
-
-                if (_subscribedToCurrentPopupAllowsLightDismiss)
-                {
-                    HandlePopupAllowsLightDismissCurrentPopupChange(prevLastPopup, currPopup);
-                    if (currPopup != null)
+                    // If we had a popup or fullscreen popup previously
+                    if (prevLastPopup != null)
                     {
+                        prevLastPopup.OnViewLostFocus();
+                    }
+                    else if (Content != null)
+                    {
+                        Content.OnViewLostFocus();
+                    }
+
+                    currPopup.OnViewFocused();
+                    TriggerVisibleContentChanged();
+                }
+            }
+            else if (Popups.Any())
+            {
+                if (_prevLastPopup == Popups.LastOrDefault())
+                {
+                    // One of the popups must have changed under the scenes, nothing to do
+                    return;
+                }
+                else
+                {
+                    var prevLastPopup = _prevLastPopup;
+                    _prevLastPopup = Popups.LastOrDefault();
+                    var currPopup = _prevLastPopup;
+
+                    // If we had a popup or fullscreen popup previously
+                    if (prevLastPopup != null)
+                    {
+                        prevLastPopup.OnViewLostFocus();
+                    }
+                    else if (Content != null)
+                    {
+                        Content.OnViewLostFocus();
+                    }
+
+                    currPopup.OnViewFocused();
+
+                    if (_subscribedToCurrentPopupAllowsLightDismiss)
+                    {
+                        HandlePopupAllowsLightDismissCurrentPopupChange(prevLastPopup, currPopup);
                         CurrentPopupAllowsLightDismiss = currPopup.AllowLightDismiss;
                     }
-                }
 
-                TriggerVisibleContentChanged();
+                    TriggerVisibleContentChanged();
+
+                }
+            }
+            else
+            {
+                if (_prevLastPopup != null)
+                {
+                    var prevLastPopup = _prevLastPopup;
+                    _prevLastPopup = null;
+                    prevLastPopup.OnViewLostFocus();
+
+                    if (Content != null)
+                    {
+                        Content.OnViewFocused();
+                    }
+
+                    TriggerVisibleContentChanged();
+                }
             }
         }
 
@@ -137,6 +223,12 @@ namespace BareMvvm.Core.ViewModels
 
         public override bool GoBack()
         {
+            if (FullScreenPopup != null)
+            {
+                FullScreenPopup = null;
+                return true;
+            }
+
             if (Popups.Count > 0)
             {
                 Popups.RemoveAt(Popups.Count - 1);
@@ -148,6 +240,12 @@ namespace BareMvvm.Core.ViewModels
 
         public override bool RemoveViewModel(BaseViewModel model)
         {
+            if (FullScreenPopup == model)
+            {
+                FullScreenPopup = null;
+                return true;
+            }
+
             if (Popups.Remove(model))
             {
                 return true;
@@ -165,6 +263,7 @@ namespace BareMvvm.Core.ViewModels
             {
                 await HandleUserInteractionAsync("ClearPopups", delegate
                 {
+                    FullScreenPopup = null;
                     Popups.Clear();
                 });
             }
@@ -178,6 +277,11 @@ namespace BareMvvm.Core.ViewModels
         {
             get
             {
+                if (FullScreenPopup != null)
+                {
+                    return true;
+                }
+
                 if (Popups.Count > 0)
                 {
                     return true;

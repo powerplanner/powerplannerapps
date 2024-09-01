@@ -22,6 +22,7 @@ using System.Drawing;
 using Vx;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Components.ImageAttachments;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -202,22 +203,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             }
 
-            if (VxPlatform.Current == Platform.Uwp || VxPlatform.Current == Platform.Android)
+            views.Add(new TextBlock
             {
-                views.Add(new TextBlock
-                {
-                    Text = PowerPlannerResources.GetString("String_ImageAttachments"),
-                    WrapText = false,
-                    Margin = new Thickness(0, 18, 0, 0)
-                });
+                Text = PowerPlannerResources.GetString("String_ImageAttachments"),
+                WrapText = false,
+                Margin = new Thickness(0, 18, 0, 0)
+            });
 
-                views.Add(new EditImagesView
-                {
-                    Attachments = ImageAttachments,
-                    RequestAddImage = () => _ = AddNewImageAttachmentAsync(),
-                    Margin = new Thickness(0, 6, 0, 0)
-                });
-            }
+            views.Add(new EditImagesComponent
+            {
+                ImageAttachments = ImageAttachments,
+                RequestAddImage = () => _ = AddNewImageAttachmentAsync(),
+                Margin = new Thickness(0, 6, 0, 0),
+                Opacity = IsAddingNewImages ? 0.5f : 1
+            });
 
             return RenderGenericPopupContent(views.ToArray());
         }
@@ -997,8 +996,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         private List<EditingExistingImageAttachmentViewModel> _removedImageAttachments = new List<EditingExistingImageAttachmentViewModel>();
         public ObservableCollection<BaseEditingImageAttachmentViewModel> ImageAttachments { get; private set; }
 
+        private bool _isAddingNewImages;
+        public bool IsAddingNewImages
+        {
+            get => _isAddingNewImages;
+            set => SetProperty(ref _isAddingNewImages, value, nameof(IsAddingNewImages));
+        }
+
         public async Task AddNewImageAttachmentAsync()
         {
+            if (IsAddingNewImages)
+            {
+                return;
+            }
+
             try
             {
                 if (!(await PowerPlannerApp.Current.IsFullVersionAsync()) && ImageAttachments.Count >= 1)
@@ -1012,14 +1023,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     throw new PlatformNotSupportedException("ImagePickerExtension wasn't implemented");
                 }
 
+                IsAddingNewImages = true;
+
                 IFile[] files = await ImagePickerExtension.Current.PickImagesAsync();
                 foreach (var file in files)
                 {
                     ImageAttachments.Add(new EditingNewImageAttachmentViewModel(this, file));
                 }
+
+                IsAddingNewImages = false;
             }
             catch (Exception ex)
             {
+                IsAddingNewImages = false;
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
