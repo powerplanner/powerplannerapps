@@ -1,49 +1,46 @@
-﻿using Network;
+﻿using CoreFoundation;
+using Network;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.NetworkInfo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PowerPlanneriOS.Extensions
 {
     public class iOSNetworkInfoExtension : NetworkInfoExtension
     {
-        public override NetworkCostType GetNetworkCostType()
+        private NetworkCostType _costType = NetworkCostType.Disconnected;
+        private NWPathMonitor _monitor;
+        public iOSNetworkInfoExtension()
         {
-#if DEBUG
-            // The simulator doesn't seem to support NWPathMonitor so I'll just return unlimited
-            return NetworkCostType.Unlimited;
-#else
-            try
+            _monitor = new NWPathMonitor();
+
+            var queue = new DispatchQueue("NetworkMonitorQueue");
+            _monitor.SetQueue(queue);
+
+            _monitor.SnapshotHandler = (path) =>
             {
-                using (var monitor = new NWPathMonitor())
+                if (path.Status == NWPathStatus.Satisfiable)
                 {
-                    var path = monitor.CurrentPath;
-
-                    // Check if the network is reachable
-                    if (path != null && path.Status == NWPathStatus.Satisfied)
+                    if (path.IsConstrained)
                     {
-                        // Check for Low Data Mode
-                        if (path.IsConstrained)
-                        {
-                            return NetworkCostType.Limited;
-                        }
-
-                        return NetworkCostType.Unlimited;
+                        _costType = NetworkCostType.Limited;
+                    }
+                    else
+                    {
+                        _costType = NetworkCostType.Unlimited;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
+                else
+                {
+                    _costType = NetworkCostType.Disconnected;
+                }
+            };
 
-            // Return disconnected if no network is reachable
-            return NetworkCostType.Disconnected;
-#endif
+            _monitor.Start();
+        }
+
+        public override NetworkCostType GetNetworkCostType()
+        {
+            return _costType;
         }
     }
 }
