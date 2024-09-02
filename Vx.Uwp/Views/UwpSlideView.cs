@@ -122,7 +122,7 @@ namespace Vx.Uwp.Views
                 }
             }
 
-            private bool _hasDeferredUpdateSelectedIndex;
+            private bool _hasDeferredUpdateSelectedIndex = true; // Start true so that on first load even if position is 0 it'll render
             private void UpdateSelectedIndex()
             {
                 if (DeferUpdates)
