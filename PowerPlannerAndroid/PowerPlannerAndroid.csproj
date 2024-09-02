@@ -50,7 +50,7 @@
       <Version>2.1.4</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4">
-      <Version>1.0.0.27</Version>
+      <Version>1.0.0.28</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Build.Download">
       <Version>0.11.4</Version>
@@ -62,7 +62,7 @@
       <Version>124.0.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Android.Material">
-      <Version>1.11.0.1</Version>
+      <Version>1.11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Dagger">
       <Version>2.52.0</Version>
