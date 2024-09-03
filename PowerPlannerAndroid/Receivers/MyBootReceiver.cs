@@ -40,7 +40,16 @@ namespace PowerPlannerAndroid.Receivers
                 TelemetryExtension.Current?.TrackException(ex);
             }
 
-            pendingResult.Finish();
+            try
+            {
+                // Sometimes throws ObjectDisposedException
+                pendingResult.Finish();
+            }
+            catch (ObjectDisposedException) { }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
     }
 }
