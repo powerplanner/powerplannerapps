@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.Components;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
+using PowerPlannerAppDataLibrary.Exceptions;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
@@ -84,7 +85,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
         private SemesterItemsViewGroup(Guid localAccountId, ViewItemSemester semester, bool trackChanges = true) : base(localAccountId, trackChanges)
         {
             if (semester == null)
-                throw new ArgumentNullException("semester");
+                throw new SemesterNotFoundException("semester param was null");
 
             Semester = semester;
         }

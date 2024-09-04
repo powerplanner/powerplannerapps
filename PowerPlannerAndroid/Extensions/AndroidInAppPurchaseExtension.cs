@@ -47,19 +47,31 @@ namespace PowerPlannerAndroid.Extensions
                 return _cachedOwnsInAppPurchase.Value;
             }
 
+            Task<bool> taskToReturn = null;
+            lock (this)
+            {
+                var tcs = _ownsInAppPurchaseTaskCompletionSource;
+                if (tcs == null || tcs.Task.IsFaulted)
+                {
+                    _ownsInAppPurchaseTaskCompletionSource = new TaskCompletionSource<bool>();
+                }
+                else
+                {
+                    taskToReturn = tcs.Task;
+                }
+            }
+
+            if (taskToReturn != null)
+            {
+                return await taskToReturn;
+            }
+
             TelemetryExtension.Current?.TrackEvent("CheckingInAppPurchase");
 
             var client = await GetClientAsync(MainActivity.GetCurrent());
-
-            _ownsInAppPurchaseTaskCompletionSource = new TaskCompletionSource<bool>();
             var result = await client.QueryPurchasesAsync(QueryPurchasesParams.NewBuilder().SetProductType(BillingClient.ProductType.Inapp).Build());
-            var finalResult = _ownsInAppPurchaseTaskCompletionSource.Task;
             PurchasesUpdatedListener(result.Result, result.Purchases);
-            if (finalResult.IsCompletedSuccessfully)
-            {
-                return finalResult.Result;
-            }
-            return false;
+            return _cachedOwnsInAppPurchase.GetValueOrDefault(false);
         }
 
         /// <summary>
@@ -84,7 +96,7 @@ namespace PowerPlannerAndroid.Extensions
                 })
                 .Build();
 
-            var productDetailsResult = await _billingClient.QueryProductDetailsAsync(queryProductDetailsParams);
+            var productDetailsResult = await client.QueryProductDetailsAsync(queryProductDetailsParams);
 
             if (productDetailsResult.Result.ResponseCode != BillingResponseCode.Ok)
             {

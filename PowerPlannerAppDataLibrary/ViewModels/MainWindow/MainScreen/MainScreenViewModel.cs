@@ -1202,40 +1202,55 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             updateAvailableItems();
 
-            switch (value)
+            try
             {
-                case NavigationManager.MainMenuSelections.Calendar:
-                    SetContent(new CalendarViewModel(this, CurrentLocalAccountId, CurrentSemester));
-                    break;
+                switch (value)
+                {
+                    case NavigationManager.MainMenuSelections.Calendar:
+                        SetContent(new CalendarViewModel(this, CurrentLocalAccountId, CurrentSemester));
+                        break;
 
-                case NavigationManager.MainMenuSelections.Day:
-                    SetContent(new DayViewModel(this, CurrentLocalAccountId, CurrentSemester));
-                    break;
+                    case NavigationManager.MainMenuSelections.Day:
+                        SetContent(new DayViewModel(this, CurrentLocalAccountId, CurrentSemester));
+                        break;
 
-                case NavigationManager.MainMenuSelections.Agenda:
-                    SetContent(new AgendaViewModel(this, CurrentLocalAccountId, CurrentSemester, DateTime.Today));
-                    break;
+                    case NavigationManager.MainMenuSelections.Agenda:
+                        SetContent(new AgendaViewModel(this, CurrentLocalAccountId, CurrentSemester, DateTime.Today));
+                        break;
 
-                case MainMenuSelections.Schedule:
-                    SetContent(new ScheduleViewModel(this));
-                    break;
+                    case MainMenuSelections.Schedule:
+                        SetContent(new ScheduleViewModel(this));
+                        break;
 
-                case MainMenuSelections.Classes:
+                    case MainMenuSelections.Classes:
 
-                    if (this.SelectedClass != null)
-                        SetContent(new ClassViewModel(this, CurrentLocalAccountId, SelectedClass.Identifier, DateTime.Today, CurrentSemester));
-                    else
-                        SetContent(new ClassesViewModel(this));
+                        if (this.SelectedClass != null)
+                            SetContent(new ClassViewModel(this, CurrentLocalAccountId, SelectedClass.Identifier, DateTime.Today, CurrentSemester));
+                        else
+                            SetContent(new ClassesViewModel(this));
 
-                    break;
+                        break;
 
-                case MainMenuSelections.Years:
-                    SetContent(new YearsViewModel(this));
-                    break;
+                    case MainMenuSelections.Years:
+                        SetContent(new YearsViewModel(this));
+                        break;
 
-                case MainMenuSelections.Settings:
-                    SetContent(new SettingsViewModel(this));
-                    break;
+                    case MainMenuSelections.Settings:
+                        SetContent(new SettingsViewModel(this));
+                        break;
+                }
+            }
+            catch (SemesterNotFoundException ex)
+            {
+                // Should rarely happen
+                TelemetryExtension.Current?.TrackEvent("SemesterNotFound", new Dictionary<string, string>
+                {
+                    { "Method", "MainScreenViewModel.setSelectedItem" },
+                    { "Message", ex.Message },
+                    { "StackTrace", ex.StackTrace }
+                });
+
+                _ = SetCurrentSemester(Guid.Empty);
             }
         }
 

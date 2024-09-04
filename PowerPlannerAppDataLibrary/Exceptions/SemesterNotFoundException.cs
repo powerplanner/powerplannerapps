@@ -9,5 +9,7 @@ namespace PowerPlannerAppDataLibrary.Exceptions
     public class SemesterNotFoundException : Exception
     {
         public SemesterNotFoundException() : base("Semester couldn't be found") { }
+
+        public SemesterNotFoundException(string message) : base(message) { }
     }
 }
