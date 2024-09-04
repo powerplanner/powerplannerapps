@@ -14,6 +14,7 @@ using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
+using PowerPlannerAppDataLibrary.Exceptions;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
@@ -227,11 +228,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             SemesterItemsViewGroup semesterGroup = SemesterItemsViewGroup.Load(MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester, trackChanges: true);
             if (semesterGroup == null)
             {
-                throw new NullReferenceException("semesterGroup was null");
+                throw new SemesterNotFoundException("semesterGroup was null");
             }
             if (semesterGroup.Semester == null)
             {
-                throw new NullReferenceException("semesterGroup.Semester was null");
+                throw new SemesterNotFoundException("semesterGroup.Semester was null");
             }
 
             if (modelParams == null)
