@@ -1,5 +1,6 @@
 ﻿using InterfacesUWP;
 using InterfacesUWP.App;
+using Microsoft.BingAds.UETSdk;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Views;
@@ -16,6 +17,8 @@ namespace PowerPlannerUWP
     public static class InitializeUWP
     {
         private static bool _initialized;
+        private static UETSdk _uetSdk;
+
         public static void Initialize()
         {
             if (_initialized)
@@ -62,6 +65,13 @@ namespace PowerPlannerUWP
 
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is PowerPlannerAppDataLibrary.Views.CompletionSlider, v => new UwpCompletionSlider());
+
+            // Initialize Microsoft Ads SDK
+            try
+            {
+                _uetSdk = new UETSdk(97151577);
+            }
+            catch { }
         }
     }
 }
