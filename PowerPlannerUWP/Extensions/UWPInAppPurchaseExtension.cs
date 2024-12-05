@@ -64,6 +64,13 @@ namespace PowerPlannerUWP.Extensions
                     {
                         var dontBlock = Sync.SetAsPremiumAccount(currAccount);
                     }
+
+                    // Report purchase to UET Store telemetry
+                    try
+                    {
+                        InitializeUWP._uetSdk?.TrackGoal("inapp_purchase", "Premium", "Features", 1.99f, "USD");
+                    }
+                    catch { }
                 }
 
                 return purchaseResults.Status == ProductPurchaseStatus.AlreadyPurchased || purchaseResults.Status == ProductPurchaseStatus.Succeeded;

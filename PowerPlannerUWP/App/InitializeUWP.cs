@@ -17,7 +17,7 @@ namespace PowerPlannerUWP
     public static class InitializeUWP
     {
         private static bool _initialized;
-        private static UETSdk _uetSdk;
+        internal static UETSdk _uetSdk;
 
         public static void Initialize()
         {
