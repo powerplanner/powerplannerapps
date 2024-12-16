@@ -54,6 +54,7 @@ using Windows.System.Profile;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
+using Microsoft.BingAds.UETSdk;
 
 namespace PowerPlannerUWP
 {
@@ -62,6 +63,8 @@ namespace PowerPlannerUWP
     /// </summary>
     sealed partial class App : NativeUwpApplication
     {
+        internal static UETSdk _uetSdk;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -146,6 +149,18 @@ namespace PowerPlannerUWP
 
         private void OnResuming(object sender, object e)
         {
+        }
+
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        {
+            // Initialize Microsoft Ads SDK
+            try
+            {
+                _uetSdk = new UETSdk(97151577);
+            }
+            catch { }
+
+            base.OnLaunched(args);
         }
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)

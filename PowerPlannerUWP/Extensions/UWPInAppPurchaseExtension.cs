@@ -68,7 +68,7 @@ namespace PowerPlannerUWP.Extensions
                     // Report purchase to UET Store telemetry
                     try
                     {
-                        InitializeUWP._uetSdk?.TrackGoal("inapp_purchase", "Premium", "Features", 1.99f, "USD");
+                        App._uetSdk?.TrackGoal("inapp_purchase", "Premium", "Features", 1.99f, "USD");
                     }
                     catch { }
                 }
