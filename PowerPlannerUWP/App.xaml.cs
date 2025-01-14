@@ -63,8 +63,6 @@ namespace PowerPlannerUWP
     /// </summary>
     sealed partial class App : NativeUwpApplication
     {
-        internal static UETSdk _uetSdk;
-
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -153,13 +151,6 @@ namespace PowerPlannerUWP
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            // Initialize Microsoft Ads SDK
-            try
-            {
-                _uetSdk = new UETSdk(97151577);
-            }
-            catch { }
-
             base.OnLaunched(args);
         }
 
