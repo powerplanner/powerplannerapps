@@ -2139,4 +2139,25 @@ Please think about using an online account instead!</value>
   <data name="String_NoUpcomingClasses" xml:space="preserve">
 	<value>No upcoming classes.</value>
   </data>
+  <data name="PromoPriceIncrease_Title_FirstReminder" xml:space="preserve">
+	<value>Last chance to save</value>
+  </data>
+  <data name="PromoPriceIncrease_Title_FinalReminder" xml:space="preserve">
+	<value>Final reminder to save</value>
+  </data>
+  <data name="PromoPriceIncrease_Body_HeaderFirstReminder" xml:space="preserve">
+	<value>Buy Premium for only $2.99!</value>
+  </data>
+  <data name="PromoPriceIncrease_Body_HeaderFinalReminder" xml:space="preserve">
+	<value>Final reminder: Premium for only $2.99!</value>
+  </data>
+  <data name="PromoPriceIncrease_Body_Description" xml:space="preserve">
+	<value>The price of the premium version is increasing to $4.99 USD on January 25th. This is your last chance to buy the premium version of Power Planner for only $2.99 USD. The premium version is a LIFETIME purchase, and applies across all your devices (iOS, Windows, and Android).</value>
+  </data>
+  <data name="PromoPriceIncrease_ButtonLearnMore" xml:space="preserve">
+	<value>Learn more</value>
+  </data>
+  <data name="PromoPriceIncrease_ButtonNoThanks" xml:space="preserve">
+	<value>No thanks</value>
+  </data>
 </root>
