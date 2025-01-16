@@ -35,24 +35,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
                 }
             }
 
-            public override Task<bool> ShouldShowAsync(AccountDataItem account)
+            public override async Task<bool> ShouldShowAsync(AccountDataItem account)
             {
                 if (DateTime.Now > LastDate)
                 {
-                    return Task.FromResult(false);
+                    return false;
+                }
+
+                if (await App.PowerPlannerApp.Current.IsFullVersionAsync())
+                {
+                    return false;
                 }
 
                 if (PowerPlannerAppDataLibrary.Helpers.Settings.AppSettings.Contains(SETTING_HAS_PROMOTED_PRICE_INCREASE))
                 {
                     if (DateTime.Now > LastDate.AddDays(-3) && !PowerPlannerAppDataLibrary.Helpers.Settings.AppSettings.Contains(SETTING_FINAL_PRICE_INCREASE_PROMO))
                     {
-                        return Task.FromResult(true);
+                        return true;
                     }
 
-                    return Task.FromResult(false);
+                    return false;
                 }
 
-                return Task.FromResult(true);
+                return true;
             }
         }
 
