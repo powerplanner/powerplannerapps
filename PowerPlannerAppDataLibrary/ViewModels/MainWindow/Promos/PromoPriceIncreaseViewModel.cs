@@ -80,7 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
                     {
                         Content = new LinearLayout
                         {
-                            Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin, Theme.Current.PageMargin / 2),
+                            Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, Theme.Current.PageMargin + NookInsets.Top, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin / 2),
                             Children =
                             {
                                 new TextBlock
@@ -100,7 +100,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
                     {
                         Orientation = Orientation.Horizontal,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin / 2, Theme.Current.PageMargin, Theme.Current.PageMargin),
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, Theme.Current.PageMargin / 2, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
                         Children =
                         {
                             new AccentButton
