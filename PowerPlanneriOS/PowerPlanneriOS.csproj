@@ -4,7 +4,7 @@
 	  <TargetFramework>net8.0-ios</TargetFramework>
 	  <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
-    <MtouchSdkVersion>18.2</MtouchSdkVersion>
+    <MtouchSdkVersion>18.1</MtouchSdkVersion>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
