@@ -15,7 +15,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
         private static bool _hasBeenRequestedThisSession;
         public static readonly List<Type> Registrations = new List<Type>()
         {
-            // Right now only UWP adds any registrations, it does so in PowerPlannerUwpApp.cs
+            typeof(PromoPriceIncreaseViewModel.Registration)
         };
 
         /// <summary>

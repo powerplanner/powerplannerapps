@@ -25,10 +25,26 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return defaultValue;
         }
 
+        public static object GetValueOrDefault(this ISettings settings, string key, object defaultValue = default(object))
+        {
+            object val = settings.GetValueOrDefault(key, defaultValue);
+            return val;
+        }
+
         public static bool AddOrUpdateDouble(this ISettings settings, string key, double value)
         {
             string val = value.ToString();
             return settings.AddOrUpdateValue(key, val);
+        }
+
+        public static bool AddOrUpdateValue(this ISettings settings, string key, object value)
+        {
+            return settings.AddOrUpdateValue(key, value);
+        }
+
+        public static bool Contains(this ISettings settings, string key)
+        {
+            return settings.Contains(key);
         }
 
         public static TEnum GetEnumOrDefault<TEnum>(this ISettings settings, string key, TEnum defaultValue = default(TEnum)) where TEnum : struct
@@ -63,7 +79,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return settings.AddOrUpdateValue(key, val);
         }
 
-        private static ISettings AppSettings
+        public static ISettings AppSettings
         {
             get
             {

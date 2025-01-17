@@ -2713,6 +2713,34 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
           <source>No upcoming classes.</source>
           <target state="final">Sem aulas futuras.</target>
         </trans-unit>
+        <trans-unit id="PromoPriceIncrease_Title_FirstReminder" translate="yes" xml:space="preserve">
+            <source>Last chance to save</source>
+            <target state="final">Última chance de economizar</target>
+        </trans-unit>
+        <trans-unit id="PromoPriceIncrease_Title_FinalReminder" translate="yes" xml:space="preserve">
+            <source>Final reminder to save</source>
+            <target state="final">Último lembrete para economizar</target>
+        </trans-unit>
+        <trans-unit id="PromoPriceIncrease_Body_HeaderFirstReminder" translate="yes" xml:space="preserve">
+            <source>Buy Premium for only $2.99!</source>
+            <target state="final">Compre o Premium por apenas $2,99!</target>
+        </trans-unit>
+        <trans-unit id="PromoPriceIncrease_Body_HeaderFinalReminder" translate="yes" xml:space="preserve">
+            <source>Final reminder: Premium for only $2.99!</source>
+            <target state="final">Último lembrete: Premium por apenas $2,99!</target>
+        </trans-unit>
+        <trans-unit id="PromoPriceIncrease_Body_Description" translate="yes" xml:space="preserve">
+            <source>The price of the premium version is increasing to $4.99 USD on January 25th. This is your last chance to buy the premium version of Power Planner for only $2.99 USD. The premium version is a LIFETIME purchase, and applies across all your devices (iOS, Windows, and Android).</source>
+            <target state="final">O preço da versão Premium aumentará para $4,99 USD em 25 de janeiro. Esta é sua última chance de comprar a versão Premium do Power Planner por apenas $2,99 USD. A versão Premium é uma compra VITALÍCIA e se aplica a todos os seus dispositivos (iOS, Windows e Android).</target>
+        </trans-unit>
+        <trans-unit id="PromoPriceIncrease_ButtonLearnMore" translate="yes" xml:space="preserve">
+            <source>Learn more</source>
+            <target state="final">Saiba mais</target>
+        </trans-unit>
+        <trans-unit id="PromoPriceIncrease_ButtonNoThanks" translate="yes" xml:space="preserve">
+            <source>No thanks</source>
+            <target state="final">Não, obrigado</target>
+        </trans-unit>
       </group>
     </body>
   </file>
