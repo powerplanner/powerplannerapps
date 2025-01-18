@@ -56,22 +56,35 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
-                GetEmailResponse response = await Account.PostAuthenticatedAsync<GetEmailRequest, GetEmailResponse>(
+                Email.Text = await GetEmailAsync(Account);
+            }
+            catch (Exception ex)
+            {
+                SetError(ex.Message);
+            }
+
+            IsRetrievingEmail = false;
+        }
+
+        public static async Task<string> GetEmailAsync(AccountDataItem account)
+        {
+            try
+            {
+                GetEmailResponse response = await account.PostAuthenticatedAsync<GetEmailRequest, GetEmailResponse>(
                     Website.ClientApiUrl + "getemailmodern",
                     new GetEmailRequest());
 
                 if (response != null)
                 {
                     if (response.Error != null)
-                        SetError(response.Error);
+                    {
+                        throw new Exception(response.Error);
+                    }
 
                     else
                     {
-                        Email.Text = response.Email;
-                        IsRetrievingEmail = false;
+                        return response.Email;
                     }
-
-                    return;
                 }
             }
 
@@ -80,7 +93,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             }
 
-            SetError(PowerPlannerResources.GetString("Settings_ChangeEmailPage_Errors_FailedGrabEmail"));
+            throw new Exception(R.S("Settings_ChangeEmailPage_Errors_FailedGrabEmail"));
         }
 
         private bool _isRetrievingEmail = true;

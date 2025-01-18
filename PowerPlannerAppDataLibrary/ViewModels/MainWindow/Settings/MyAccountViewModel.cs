@@ -20,19 +20,73 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         [VxSubscribe]
         public AccountDataItem CurrentAccount { get; private set; }
 
+        private VxState<string> _email = new VxState<string>(R.S("String_Loading"));
+
         private MyAccountViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("Settings_MyAccount_Header.Text");
         }
 
+        protected override async void Initialize()
+        {
+            if (CurrentAccount.IsOnlineAccount)
+            {
+                try
+                {
+                    _email.Value = await ChangeEmailViewModel.GetEmailAsync(CurrentAccount);
+                }
+                catch (Exception ex)
+                {
+                    _email.Value = ex.Message;
+                }
+            }
+        }
+
         protected override View Render()
         {
             return RenderGenericPopupContent(
-                new TextBlock
+
+                new LinearLayout
                 {
-                    Text = CurrentAccount.Username,
-                    FontWeight = FontWeights.Bold
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = R.S("TextBox_Username.Header") + ":",
+                            FontWeight = FontWeights.Bold,
+                            WrapText = false
+                        },
+
+                        new TextBlock
+                        {
+                            Text = CurrentAccount.Username,
+                            Margin = new Thickness(4, 0, 0, 0)
+                        }.LinearLayoutWeight(1),
+
+                    }
                 },
+
+                CurrentAccount.IsOnlineAccount ? new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = R.S("Settings_ChangeEmailPage_TextBoxEmail.Header") + ":",
+                            FontWeight = FontWeights.Bold,
+                            WrapText = false
+                        },
+
+                        new TextBlock
+                        {
+                            Text = _email.Value,
+                            Margin = new Thickness(4, 0, 0, 0)
+                        }.LinearLayoutWeight(1),
+
+                    }
+                } : null,
 
                 new Button
                 {
