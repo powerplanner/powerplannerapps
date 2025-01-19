@@ -20,6 +20,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public AccountDataItem Account { get; private set; }
 
+        public static event EventHandler<string> EmailChanged;
+
         public ChangeEmailViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
             Title = PowerPlannerResources.GetString("Settings_ChangeEmailPage.Title");
@@ -56,7 +58,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
-                Email.Text = await GetEmailAsync(Account);
+                Email.Text = (await GetEmailAsync(Account)).Item1;
             }
             catch (Exception ex)
             {
@@ -66,7 +68,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             IsRetrievingEmail = false;
         }
 
-        public static async Task<string> GetEmailAsync(AccountDataItem account)
+        public static async Task<Tuple<string, bool>> GetEmailAsync(AccountDataItem account)
         {
             try
             {
@@ -83,7 +85,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                     else
                     {
-                        return response.Email;
+                        return new Tuple<string, bool>(response.Email, response.EmailVerified);
                     }
                 }
             }
@@ -144,7 +146,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 }
 
                 else
+                {
+                    try
+                    {
+                        EmailChanged?.Invoke(this, Email.Text.Trim());
+                    }
+                    catch { }
+
                     GoBack();
+                }
             }
 
             catch

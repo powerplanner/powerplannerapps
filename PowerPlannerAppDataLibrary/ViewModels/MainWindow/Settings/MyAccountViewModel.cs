@@ -4,6 +4,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public AccountDataItem CurrentAccount { get; private set; }
 
         private VxState<string> _email = new VxState<string>(R.S("String_Loading"));
+        private VxState<bool?> _emailVerified = new VxState<bool?>(null);
+
+        private VxState<bool?> _sendingVerification = new VxState<bool?>(null);
 
         private MyAccountViewModel(BaseViewModel parent) : base(parent)
         {
@@ -29,17 +33,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override async void Initialize()
         {
+            ChangeEmailViewModel.EmailChanged += new WeakEventHandler<string>(ChangeEmailViewModel_EmailChanged).Handler;
+
             if (CurrentAccount.IsOnlineAccount)
             {
                 try
                 {
-                    _email.Value = await ChangeEmailViewModel.GetEmailAsync(CurrentAccount);
+                    var resp = await ChangeEmailViewModel.GetEmailAsync(CurrentAccount);
+                    _email.Value = resp.Item1;
+                    _emailVerified.Value = resp.Item2;
                 }
                 catch (Exception ex)
                 {
                     _email.Value = ex.Message;
                 }
             }
+        }
+
+        private void ChangeEmailViewModel_EmailChanged(object sender, string e)
+        {
+            try
+            {
+                _email.Value = e;
+                _emailVerified.Value = false;
+                _sendingVerification.Value = false;
+            }
+            catch { }
         }
 
         protected override View Render()
@@ -61,6 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         new TextBlock
                         {
                             Text = CurrentAccount.Username,
+                            IsTextSelectionEnabled = true,
                             Margin = new Thickness(4, 0, 0, 0)
                         }.LinearLayoutWeight(1),
 
@@ -82,9 +102,38 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         new TextBlock
                         {
                             Text = _email.Value,
+                            IsTextSelectionEnabled = true,
                             Margin = new Thickness(4, 0, 0, 0)
                         }.LinearLayoutWeight(1),
 
+                    }
+                } : null,
+
+                (_emailVerified.Value != null && _emailVerified.Value.Value == false) ? new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = R.S("Settings_MyAccount_UnverifiedHeader"), // "Unverified:"
+                            FontWeight = FontWeights.Bold,
+                            TextColor = Color.Red,
+                            WrapText = false,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Margin = new Thickness(0,0,6,0)
+                        },
+
+                        _sendingVerification.Value != null ? (View)new TextBlock
+                        {
+                            Text = _sendingVerification.Value.Value ? R.S("Settings_MyAccount_SendingVerification") : R.S("Settings_MyAccount_SentVerification"),
+                            WrapText = false
+                        } : new TextButton
+                        {
+                            Text = R.S("Settings_MyAccount_ResendVerification"), // "Resend verification email."
+                            Click = ResendVerificationEmail,
+                            IsEnabled = _sendingVerification.Value == null
+                        }
                     }
                 } : null,
 
@@ -153,6 +202,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     Click = PromptConfirmDelete
                 }
             );
+        }
+
+        private async void ResendVerificationEmail()
+        {
+            _sendingVerification.Value = true;
+
+            try
+            {
+                var response = await CurrentAccount.PostAuthenticatedAsync<PartialLoginRequest, PlainResponse>(
+                    Website.ClientApiUrl + "resendverificationemail",
+                    new PartialLoginRequest());
+
+                if (response.Error != null)
+                {
+                    new PortableMessageDialog(response.Error, "Error").Show();
+                    _sendingVerification.Value = null;
+                }
+                else
+                {
+                    _sendingVerification.Value = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                new PortableMessageDialog(ex.Message, "Error").Show();
+                _sendingVerification.Value = null;
+            }
         }
 
         public static MyAccountViewModel Load(BaseViewModel parent)
@@ -298,7 +374,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public void ConfirmIdentityAndThen(Action action)
         {
-            if (_lastConfrimedAccountId == CurrentAccount.LocalAccountId && _timeLastConfirmed.AddMinutes(10) > DateTime.Now)
+            if (!NeedsConfirmIdentity())
             {
                 action.Invoke();
                 return;
@@ -307,6 +383,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             var confirmViewModel = new ConfirmIdentityViewModel(GetPopupViewModelHost(), CurrentAccount);
             confirmViewModel.OnIdentityConfirmed += delegate { _lastConfrimedAccountId = CurrentAccount.LocalAccountId; _timeLastConfirmed = DateTime.Now; action.Invoke(); };
             ShowPopup(confirmViewModel);
+        }
+
+        private bool NeedsConfirmIdentity()
+        {
+            // If we've loaded whether email is verified, and it is NOT verified, we can allow the user to change their details without first confirming
+            if (_emailVerified.Value != null && _emailVerified.Value == false)
+            {
+                return false;
+            }
+
+            if (_lastConfrimedAccountId == CurrentAccount.LocalAccountId && _timeLastConfirmed.AddMinutes(10) > DateTime.Now)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public async System.Threading.Tasks.Task DeleteAccount(bool deleteOnlineToo)

@@ -2742,6 +2742,22 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
             <source>No thanks</source>
             <target state="final">Nein danke</target>
         </trans-unit>
+        <trans-unit id="Settings_MyAccount_UnverifiedHeader" translate="yes" xml:space="preserve">
+          <source>Unverified:</source>
+          <target state="final">Nicht verifiziert:</target>
+        </trans-unit>
+        <trans-unit id="Settings_MyAccount_SendingVerification" translate="yes" xml:space="preserve">
+          <source>Sending verification email...</source>
+          <target state="final">Verifizierungs-E-Mail wird gesendet...</target>
+        </trans-unit>
+        <trans-unit id="Settings_MyAccount_SentVerification" translate="yes" xml:space="preserve">
+          <source>Check your inbox and junk!</source>
+          <target state="final">Überprüfen Sie Ihren Posteingang und Spam-Ordner!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MyAccount_ResendVerification" translate="yes" xml:space="preserve">
+          <source>Resend verification email.</source>
+          <target state="final">Verifizierungs-E-Mail erneut senden.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

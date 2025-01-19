@@ -2160,4 +2160,16 @@ Please think about using an online account instead!</value>
   <data name="PromoPriceIncrease_ButtonNoThanks" xml:space="preserve">
 	<value>No thanks</value>
   </data>
+  <data name="Settings_MyAccount_UnverifiedHeader" xml:space="preserve">
+	<value>Unverified:</value>
+  </data>
+  <data name="Settings_MyAccount_SendingVerification" xml:space="preserve">
+	<value>Sending verification email...</value>
+  </data>
+  <data name="Settings_MyAccount_SentVerification" xml:space="preserve">
+	<value>Check your inbox and junk!</value>
+  </data>
+  <data name="Settings_MyAccount_ResendVerification" xml:space="preserve">
+	<value>Resend verification email.</value>
+  </data>
 </root>
