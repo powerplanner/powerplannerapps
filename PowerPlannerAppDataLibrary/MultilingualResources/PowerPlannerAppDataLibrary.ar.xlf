@@ -2744,6 +2744,22 @@ Once you purchase the premium version, you own the premium version on all your d
             <source>No thanks</source>
             <target state="final">لا شكرًا</target>
         </trans-unit>
+        <trans-unit id="Settings_MyAccount_UnverifiedHeader" translate="yes" xml:space="preserve">
+          <source>Unverified:</source>
+          <target state="final">غير مُوثق:</target>
+        </trans-unit>
+        <trans-unit id="Settings_MyAccount_SendingVerification" translate="yes" xml:space="preserve">
+          <source>Sending verification email...</source>
+          <target state="final">جارٍ إرسال بريد التحقق...</target>
+        </trans-unit>
+        <trans-unit id="Settings_MyAccount_SentVerification" translate="yes" xml:space="preserve">
+          <source>Check your inbox and junk!</source>
+          <target state="final">تحقق من صندوق الوارد والبريد العشوائي!</target>
+        </trans-unit>
+        <trans-unit id="Settings_MyAccount_ResendVerification" translate="yes" xml:space="preserve">
+          <source>Resend verification email.</source>
+          <target state="final">أعد إرسال بريد التحقق.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
