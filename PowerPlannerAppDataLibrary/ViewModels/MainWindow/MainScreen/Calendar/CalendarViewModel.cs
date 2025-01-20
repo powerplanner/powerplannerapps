@@ -247,6 +247,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }
 
+        private bool _showGoToTodayInPrimaryCommands = true;
+        public bool ShowGoToTodayInPrimaryCommands
+        {
+            get => _showGoToTodayInPrimaryCommands;
+            set => SetProperty(ref _showGoToTodayInPrimaryCommands, value, nameof(ShowGoToTodayInPrimaryCommands));
+        }
+
         public enum ViewSizeStates
         {
             /// <summary>
@@ -576,6 +583,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             else
                 ViewSizeState = ViewSizeStates.FullSize;
+
+            ShowGoToTodayInPrimaryCommands = Size.Width >= 435;
         }
 
         protected override View Render()
@@ -632,14 +641,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Glyph = MaterialDesign.MaterialDesignIcons.Today,
                     Click = GoToToday
                 };
-                if (DisplayState == DisplayStates.FullCalendar)
+                if (ShowGoToTodayInPrimaryCommands)
                 {
-                    // On Full calendar, show it in primary commands
                     toolbar.PrimaryCommands.Add(goToTodayMenuItem);
                 }
                 else
                 {
-                    // On compact/split calendars, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
+                    // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
                     goToTodayMenuItem.Glyph = null;
                     toolbar.SecondaryCommands.Add(goToTodayMenuItem);
                 }
