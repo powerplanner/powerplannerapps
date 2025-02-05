@@ -20,6 +20,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public AccountDataItem Account { get; private set; }
 
+        public static event EventHandler<string> EmailChanged;
+
         public ChangeEmailViewModel(BaseViewModel parent, AccountDataItem account) : base(parent)
         {
             Title = PowerPlannerResources.GetString("Settings_ChangeEmailPage.Title");
@@ -56,22 +58,35 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
-                GetEmailResponse response = await Account.PostAuthenticatedAsync<GetEmailRequest, GetEmailResponse>(
+                Email.Text = (await GetEmailAsync(Account)).Item1;
+            }
+            catch (Exception ex)
+            {
+                SetError(ex.Message);
+            }
+
+            IsRetrievingEmail = false;
+        }
+
+        public static async Task<Tuple<string, bool>> GetEmailAsync(AccountDataItem account)
+        {
+            try
+            {
+                GetEmailResponse response = await account.PostAuthenticatedAsync<GetEmailRequest, GetEmailResponse>(
                     Website.ClientApiUrl + "getemailmodern",
                     new GetEmailRequest());
 
                 if (response != null)
                 {
                     if (response.Error != null)
-                        SetError(response.Error);
+                    {
+                        throw new Exception(response.Error);
+                    }
 
                     else
                     {
-                        Email.Text = response.Email;
-                        IsRetrievingEmail = false;
+                        return new Tuple<string, bool>(response.Email, response.EmailVerified);
                     }
-
-                    return;
                 }
             }
 
@@ -80,7 +95,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             }
 
-            SetError(PowerPlannerResources.GetString("Settings_ChangeEmailPage_Errors_FailedGrabEmail"));
+            throw new Exception(R.S("Settings_ChangeEmailPage_Errors_FailedGrabEmail"));
         }
 
         private bool _isRetrievingEmail = true;
@@ -131,7 +146,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 }
 
                 else
+                {
+                    try
+                    {
+                        EmailChanged?.Invoke(this, Email.Text.Trim());
+                    }
+                    catch { }
+
                     GoBack();
+                }
             }
 
             catch
