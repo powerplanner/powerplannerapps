@@ -94,7 +94,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         Text = PowerPlannerResources.GetString("String_DeleteClass"),
                         Click = async () =>
                         {
-                            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("String_ConfirmDeleteClassMessage"), PowerPlannerResources.GetString("String_ConfirmDeleteClassHeader")))
+                            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("String_ConfirmDeleteClassMessage"), PowerPlannerResources.GetString("String_ConfirmDeleteClassHeader"), useConfirmationCheckbox: true))
                             {
                                 ViewModel.DeleteClass();
                             }
