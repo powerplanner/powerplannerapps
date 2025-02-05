@@ -70,40 +70,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
                         }
                     }.LinearLayoutWeight(1),
 
+                    new CheckBox
+                    {
+                        IsChecked = VxValue.Create(_isChecked.Value, v => _isChecked.Value = v),
+                        Text = _confirmationCheckBox,
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 12, Theme.Current.PageMargin + NookInsets.Right, 6)
+                    },
+
                     new LinearLayout
                     {
-                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, Theme.Current.PageMargin, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
+                        Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
                         Children =
                         {
-                            new CheckBox
+                            new DestructiveButton
                             {
-                                IsChecked = VxValue.Create(_isChecked.Value, v => _isChecked.Value = v),
-                                Text = _confirmationCheckBox,
-                                Margin = new Thickness(0, 12, 0, 6)
-                            },
+                                IsEnabled = _isChecked.Value,
+                                Text = R.S("MenuItemDelete"),
+                                Click = OnDelete,
+                                Margin = new Thickness(0, 0, 6, 0)
+                            }.LinearLayoutWeight(1),
 
-                            new LinearLayout
+                            new Button
                             {
-                                Orientation = Orientation.Horizontal,
-                                Children =
-                                {
-                                    new DestructiveButton
-                                    {
-                                        IsEnabled = _isChecked.Value,
-                                        Text = R.S("MenuItemDelete"),
-                                        Click = OnDelete,
-                                        Margin = new Thickness(0, 0, 6, 0)
-                                    }.LinearLayoutWeight(1),
-
-                                    new Button
-                                    {
-                                        Text = R.S("MenuItemCancel"),
-                                        Click = OnCancel,
-                                        Margin = new Thickness(6, 0, 0, 0)
-                                    }.LinearLayoutWeight(1)
-                                }
-                            }
-
+                                Text = R.S("MenuItemCancel"),
+                                Click = OnCancel,
+                                Margin = new Thickness(6, 0, 0, 0)
+                            }.LinearLayoutWeight(1)
                         }
                     }
                 }
@@ -124,7 +117,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
 
         public static Task<bool> ShowForResultAsync(string message, string title)
         {
-            var parent = PowerPlannerApp.Current.GetMainWindowViewModel().FinalContent.GetPopupViewModelHost();
+            var parent = PowerPlannerApp.Current.GetMainWindowViewModel();
             var viewModel = new ConfirmDeleteViewModel(parent, message, title, R.S("Settings_DeleteAccountPage_Description.Text"));
             parent.ShowPopup(viewModel);
 
