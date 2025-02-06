@@ -183,6 +183,11 @@ namespace Vx.Droid
                     return new DroidWrapGrid();
                 }
 
+                if (view is Vx.Views.ProgressBar)
+                {
+                    return new DroidProgressBar();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
