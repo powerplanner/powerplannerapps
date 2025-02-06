@@ -5,6 +5,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
+using PowerPlannerAppDataLibrary.ViewModels.Controls;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
@@ -535,8 +536,13 @@ namespace PowerPlannerAppDataLibrary.App
             }
         }
 
-        public static async Task<bool> ConfirmDeleteAsync(string message = null, string title = null)
+        public static async Task<bool> ConfirmDeleteAsync(string message = null, string title = null, bool useConfirmationCheckbox = false)
         {
+            if (useConfirmationCheckbox)
+            {
+                return await ConfirmDeleteViewModel.ShowForResultAsync(message ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemMessage"), title ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemHeader"));
+            }
+
             return await new PortableMessageDialog(message ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemMessage"), title ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemHeader"), PowerPlannerResources.GetString("MenuItemDelete"), PowerPlannerResources.GetString("MenuItemCancel")).ShowForResultAsync();
         }
     }

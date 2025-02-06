@@ -192,7 +192,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public async void ConfirmDelete()
         {
-            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("MessageDeleteYear_Body"), PowerPlannerResources.GetString("MessageDeleteYear_Title")))
+            bool useConfirmationCheckbox = YearToEdit.Semesters.Count > 0;
+
+            if (await PowerPlannerApp.ConfirmDeleteAsync(PowerPlannerResources.GetString("MessageDeleteYear_Body"), PowerPlannerResources.GetString("MessageDeleteYear_Title"), useConfirmationCheckbox))
             {
                 Delete();
             }
