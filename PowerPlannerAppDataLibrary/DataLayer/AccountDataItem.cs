@@ -805,6 +805,45 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, cancellationToken ?? System.Threading.CancellationToken.None);
         }
 
+        public async Task<PlainResponse> RecoverDeletedItemAsync(PastDeletedItem item)
+        {
+            try
+            {
+                var resp = await PostAuthenticatedAsync<UndeleteItemRequest, PlainResponse>(
+                    Website.ClientApiUrl + "undeleteitemandchildren",
+                    new UndeleteItemRequest
+                    {
+                        Identifier = item.Identifier
+                    });
+
+                if (resp.Error == null)
+                {
+                    try
+                    {
+                        await Sync.SyncAccountAsync(this);
+                    }
+                    catch { }
+                }
+
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                if (ExceptionHelper.IsHttpWebIssue(ex))
+                {
+                    return new PlainResponse
+                    {
+                        Error = R.S("String_OfflineExplanation")
+                    };
+                }
+
+                return new PlainResponse
+                {
+                    Error = ex.Message
+                };
+            }
+        }
+
         // This is only needed on Android, but I accidentally was compiling it into the iOS app too, and now the iOS DataContractSerializer won't deserialize
         // legacy accounts that have this property in its saved XML unless this property is present (it's bizzare). So I'm making it show up for all platforms, but
         // marking it obselete on those other platforms. I could have an #if IOS, but that would require adding another target framework and it'd just be for this, not worth it.

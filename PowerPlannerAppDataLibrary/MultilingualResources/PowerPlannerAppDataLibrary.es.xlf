@@ -2757,6 +2757,18 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
           <source>Resend verification email.</source>
           <target state="final">Reenviar correo de verificación.</target>
         </trans-unit>
+        <trans-unit id="RecoverDeletedItems_NothingFound" translate="yes" xml:space="preserve">
+          <source>No past deleted items were found in your online account.</source>
+          <target state="final">No se encontraron elementos eliminados anteriormente en tu cuenta en línea.</target>
+        </trans-unit>
+        <trans-unit id="RecoverDeletedItems_Title" translate="yes" xml:space="preserve">
+          <source>Recover deleted items</source>
+          <target state="final">Recuperar elementos eliminados</target>
+        </trans-unit>
+        <trans-unit id="String_Recovering" translate="yes" xml:space="preserve">
+          <source>Recovering...</source>
+          <target state="final">Recuperando...</target>
+        </trans-unit>
       </group>
     </body>
   </file>

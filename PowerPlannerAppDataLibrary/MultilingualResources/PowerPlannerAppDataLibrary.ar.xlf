@@ -2760,6 +2760,18 @@ Once you purchase the premium version, you own the premium version on all your d
           <source>Resend verification email.</source>
           <target state="final">أعد إرسال بريد التحقق.</target>
         </trans-unit>
+        <trans-unit id="RecoverDeletedItems_NothingFound" translate="yes" xml:space="preserve">
+          <source>No past deleted items were found in your online account.</source>
+          <target state="final">لم يتم العثور على أي عناصر محذوفة سابقة في حسابك عبر الإنترنت.</target>
+        </trans-unit>
+        <trans-unit id="RecoverDeletedItems_Title" translate="yes" xml:space="preserve">
+          <source>Recover deleted items</source>
+          <target state="final">استعادة العناصر المحذوفة</target>
+        </trans-unit>
+        <trans-unit id="String_Recovering" translate="yes" xml:space="preserve">
+          <source>Recovering...</source>
+          <target state="final">جارٍ الاستعادة...</target>
+        </trans-unit>
       </group>
     </body>
   </file>

@@ -126,6 +126,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 Click = AddYear
             });
 
+            if (MainScreenViewModel.CurrentAccount.IsOnlineAccount)
+            {
+                linearLayout.Children.Add(new TextButton
+                {
+                    Text = R.S("RecoverDeletedItems_Title"),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Margin = new Thickness(0, 24, 0, 0),
+                    Click = () => ShowPopup(new RecoverDeletedYearsAndSemestersViewModel(Parent))
+                });
+            }
+
             if (VxPlatform.Current == Platform.Uwp)
             {
                 return new LinearLayout

@@ -92,6 +92,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         {
             return RenderGenericPopupContent(views, margin);
         }
+
+        protected View RenderGenericLoadingContent()
+        {
+            return new Border
+            {
+                Content = new LinearLayout
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(Theme.Current.PageMargin).Combine(NookInsets),
+                    Children =
+                    {
+                        new TextBlock
+                        {
+                            Text = R.S("String_Loading"),
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            WrapText = false
+                        },
+
+                        new ProgressBar
+                        {
+                            IsIndeterminate = true,
+                            Margin = new Thickness(0, 6, 0, 0)
+                        }
+                    }
+                }
+            };
+        }
     }
 
     public class PopupCommand : MenuItem
