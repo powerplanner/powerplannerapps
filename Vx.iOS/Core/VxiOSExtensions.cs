@@ -173,6 +173,11 @@ namespace Vx.iOS
                     return new iOSImageView();
                 }
 
+                if (view is Vx.Views.ProgressBar)
+                {
+                    return new iOSProgressBar();
+                }
+
 #if DEBUG
                 // Control not implemented
                 System.Diagnostics.Debugger.Break();
