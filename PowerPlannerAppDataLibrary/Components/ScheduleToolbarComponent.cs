@@ -100,7 +100,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         Click = ViewModel.RequestUnpinHandler
                     } : null,
 
-                    hasScheduleContent && ViewModel.RequestExportToImage != null ? new MenuItem
+                    hasScheduleContent && ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.Normal && ViewModel.RequestExportToImage != null ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_ExportToImage"),
                         Click = ViewModel.RequestExportToImage
