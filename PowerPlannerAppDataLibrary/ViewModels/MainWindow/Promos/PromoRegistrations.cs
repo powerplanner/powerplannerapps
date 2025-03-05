@@ -15,7 +15,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
         private static bool _hasBeenRequestedThisSession;
         public static readonly List<Type> Registrations = new List<Type>()
         {
-            typeof(PromoPriceIncreaseViewModel.Registration)
+            //typeof(PromoPriceIncreaseViewModel.Registration)
         };
 
         /// <summary>
