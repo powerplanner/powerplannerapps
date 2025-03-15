@@ -226,338 +226,338 @@ Se recomienda que elimine su cuenta acual y luego convierta la cuenta de este di
  
 Haga clic en Continuar para iniciar la sesión (lo que podría causar duplicados).</target>
         </trans-unit>
-		  
-		  
-		  
-		  <!--Stopped translation here-->
-        <trans-unit id="Settings_DeleteAccountPage.Title" translate="yes" xml:space="preserve">
-          <source>DELETE ACCOUNT</source>
-          <target state="final">ELIMINAR CUENTA</target>
-        </trans-unit>
-        <trans-unit id="Settings_DeleteAccountPage_ButtonConfirmDelete.Content" translate="yes" xml:space="preserve">
-          <source>yes, delete my account</source>
-          <target state="final">sí, borrar mi cuenta</target>
-        </trans-unit>
-        <trans-unit id="Settings_DeleteAccountPage_CheckBoxDeleteOnlineToo.Content" translate="yes" xml:space="preserve">
-          <source>Delete online account too?</source>
-          <target state="final">¿Eliminar cuenta en línea también?</target>
-        </trans-unit>
-        <trans-unit id="Settings_DeleteAccountPage_Description.Text" translate="yes" xml:space="preserve">
-          <source>Are you sure?</source>
-          <target state="final">¿Está seguro?</target>
-        </trans-unit>
-        <trans-unit id="Settings_DeleteAccountPage_Errors_ErrorDeletingHeader" translate="yes" xml:space="preserve">
-          <source>Error deleting account</source>
-          <target state="final">Error al eliminar cuenta</target>
-        </trans-unit>
-        <trans-unit id="Settings_DeleteAccountPage_Errors_UnknownErrorDeletingOnline" translate="yes" xml:space="preserve">
-          <source>Failed to delete your online account. Maybe you're offline?</source>
-          <target state="final">Error al eliminar su cuenta en línea. ¿No estás conectado?</target>
-        </trans-unit>
-        <trans-unit id="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" translate="yes" xml:space="preserve">
-          <source>Upload images</source>
-          <target state="final">Subir imágenes</target>
-        </trans-unit>
-        <trans-unit id="Settings_ImageUploadOptionsPage_Description.Text" translate="yes" xml:space="preserve">
-          <source>Control when images are uploaded, so that you don't incur charges on your data plan.</source>
-          <target state="final">Controlar la carga de imágenes, para que no incurra en su plan de datos.</target>
-        </trans-unit>
-        <trans-unit id="Settings_ImageUploadOptionsPage_Header.Text" translate="yes" xml:space="preserve">
-          <source>IMAGE UPLOAD OPTIONS</source>
-          <target state="final">OPCIONES DE CARGA DE IMÁGENES</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_AboutItem.Title" translate="yes" xml:space="preserve">
-          <source>About</source>
-          <target state="final">Acerca de</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Tasks and classes in native Calendar app</source>
-          <target state="final">Tareas y horarios en aplicación nativa de Calendario</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
-          <source>Calendar integration</source>
-          <target state="final">Integración del calendario</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_LiveTilesItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Edit Live Tile settings</source>
-          <target state="final">Ajustar iconos dinámicos</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_LiveTilesItem.Title" translate="yes" xml:space="preserve">
-          <source>Live Tiles</source>
-          <target state="final">Iconos Dinámicos</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_MyAccountItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Logout or manage account</source>
-          <target state="final">Cerrar sesión o administrar cuenta</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_MyAccountItem.Title" translate="yes" xml:space="preserve">
-          <source>My account</source>
-          <target state="final">Mi cuenta</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_RemindersItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Change reminder settings</source>
-          <target state="final">Cambiar configuración de recordatorio</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_RemindersItem.Title" translate="yes" xml:space="preserve">
-          <source>Reminders</source>
-          <target state="final">Recordatorios</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_SyncOptionsItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Upload options, push</source>
-          <target state="final">Ajustes de carga y Push</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_SyncOptionsItem.Title" translate="yes" xml:space="preserve">
-          <source>Sync options</source>
-          <target state="final">Ajustes de sincronización</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Set current week and day week changes</source>
-          <target state="final">Guardar cambios de la semana y el día actual</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Title" translate="yes" xml:space="preserve">
-          <source>Two week schedule</source>
-          <target state="final">Horario de dos semanas</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_UpgradeToPremiumItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Unlock all the features!</source>
-          <target state="final">¡Desbloquea todas las características!</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_UpgradeToPremiumItem.Title" translate="yes" xml:space="preserve">
-          <source>Upgrade to premium version!</source>
-          <target state="final">¡Hazte con la versión premium!</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_ButtonChangeEmail.Content" translate="yes" xml:space="preserve">
-          <source>Change Email</source>
-          <target state="final">Cambiar correo</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_ButtonChangePassword.Content" translate="yes" xml:space="preserve">
-          <source>Change Password</source>
-          <target state="final">Cambiar contraseña</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_ButtonChangeUsername.Content" translate="yes" xml:space="preserve">
-          <source>Change Username</source>
-          <target state="final">Cambiar Nombre de usuario</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_ButtonConvertToOnline.Content" translate="yes" xml:space="preserve">
-          <source>Convert to Online Account</source>
-          <target state="final">Convertir a cuenta en línea</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_ButtonDeleteAccount.Content" translate="yes" xml:space="preserve">
-          <source>Delete Account</source>
-          <target state="final">Eliminar cuenta</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_ButtonLogOut.Content" translate="yes" xml:space="preserve">
-          <source>Log Out</source>
-          <target state="final">Cerrar sesión</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_CheckBoxAutoLogin.Content" translate="yes" xml:space="preserve">
-          <source>Auto login</source>
-          <target state="final">Ingresar automáticamente</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_CheckBoxRememberPassword.Content" translate="yes" xml:space="preserve">
-          <source>Remember password</source>
-          <target state="final">Recordar contraseña</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_CheckBoxRememberUsername.Content" translate="yes" xml:space="preserve">
-          <source>Remember username</source>
-          <target state="final">Recordar nombre de usuario</target>
-        </trans-unit>
-        <trans-unit id="Settings_MyAccount_Header.Text" translate="yes" xml:space="preserve">
-          <source>MY ACCOUNT</source>
-          <target state="final">MI CUENTA</target>
-        </trans-unit>
-        <trans-unit id="Settings_PushPage_Description.Text" translate="yes" xml:space="preserve">
-          <source>If you have an online account, you can enable push notifications. With push enabled, changes from another device will instantly appear on this device, even while the app isn't running.</source>
-          <target state="final">Si tienes una cuenta en línea, puedes activar las notificaciones push. Con el push activado, al cambiar de dispositivo las notificaciones estarán ahí de inmediato, aunque la aplicación esté cerrada.</target>
-        </trans-unit>
-        <trans-unit id="Settings_PushPage_Header.Text" translate="yes" xml:space="preserve">
-          <source>PUSH NOTIFICATIONS</source>
-          <target state="final">NOTIFICACIONES PUSH</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_DayBeforeDescription.Text" translate="yes" xml:space="preserve">
-          <source>This feature reminds you the day before your incomplete tasks or events are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
-          <target state="final">Esta característica le recuerda el día antes de tu tarea incompleta o la realización de su evento. Le recordará 10 minutos después de su última clase, o a las 3:00PM si no tienes más clases ese día.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_DayOfDescription.Text" translate="yes" xml:space="preserve">
-          <source>This feature reminds you on the same day that your incomplete tasks or events are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
-          <target state="final">Esta característica le recuerda de su tarea incompleta o evento el mismo día en el que está planeado. Le recordará una hora antes de que comience la clase, o a las 6:00PM si su clase no es ese día</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_Description.Text" translate="yes" xml:space="preserve">
-          <source>This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option.</source>
-          <target state="final">Esta aplicación establece recordatorios automáticamente para cada tarea y evento. Los recordatorios son como recordatorios de eventos de calendario, con opciones de pausa u omisión.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_Header.Text" translate="yes" xml:space="preserve">
-          <source>REMINDERS</source>
-          <target state="final">RECORDATORIOS</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_ToggleDayBefore.Header" translate="yes" xml:space="preserve">
-          <source>day before</source>
-          <target state="final">el día anterior</target>
-        </trans-unit>
-        <trans-unit id="Settings_Reminders_ToggleDayOf.Header" translate="yes" xml:space="preserve">
-          <source>day of</source>
-          <target state="final">el día de</target>
-        </trans-unit>
-        <trans-unit id="Settings_ScheduleTilePage_Description.Text" translate="yes" xml:space="preserve">
-          <source>The schedule tile displays your upcoming classes, so that you know when and where your next class is! Perfect for when you're learning a new schedule at the start of the year.</source>
-          <target state="final">El icono de horario muestra sus próximas clases, para que sepas dónde y cuándo es tu próxima clase. Perfecto para cuando estás aprendiendo un nuevo horario al comienzo del año.</target>
-        </trans-unit>
-        <trans-unit id="Settings_ScheduleTilePage_Header.Text" translate="yes" xml:space="preserve">
-          <source>SCHEDULE TILE</source>
-          <target state="final">ICONO DEL HORARIO</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
-          <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
-          <target state="final">Puede anclar un icono para cada clase, esto mostrará su próxima tarea o evento para esa clase. Además, de mostrarla al hacer clic en ella.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTiles_Header.Text" translate="yes" xml:space="preserve">
-          <source>CLASS TILES</source>
-          <target state="final">ICONOS DE CLASE</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTiles_TextBlockNoClasses.Text" translate="yes" xml:space="preserve">
-          <source>Looks like you don't have any classes. Add some classes first and then check this page.</source>
-          <target state="final">Parece que no tienes clases. Añade clases, y revísalas aquí</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTiles_TextBlockNoSemester.Text" translate="yes" xml:space="preserve">
-          <source>You must select a semester first. Please open the menu, click Years, and open a semester.</source>
-          <target state="final">Debe seleccionar un semestre primero. Abra el menú, haga clic en años y abrir un semestre.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_ButtonPinLabel" translate="yes" xml:space="preserve">
-          <source>Pin class</source>
-          <target state="final">Anclar clase</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_ButtonUnpinLabel" translate="yes" xml:space="preserve">
-          <source>Unpin class</source>
-          <target state="final">Desanclar clase</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_Explanation.Text" translate="yes" xml:space="preserve">
-          <source>These settings affect your single class tile. If not already pinned, tap the pin icon!</source>
-          <target state="final">Estos valores afectan a tu icono de clase única. Si aún no se ha anclado, pulse el icono de anclar!</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_Header.Text" translate="yes" xml:space="preserve">
-          <source>CLASS TILE</source>
-          <target state="final">ICONO DE LA CLASE</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_PromptPremiumFeature" translate="yes" xml:space="preserve">
-          <source>Pinning classes is a premium feature. Please upgrade to premium to unlock all secondary tile capabilities!</source>
-          <target state="final">Anclar clases es una característica Premium. ¡Hazte Premium para desbloquear todas las opciones de anclado!</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_ToggleExams.Header" translate="yes" xml:space="preserve">
-          <source>Display upcoming events</source>
-          <target state="final">Ver próximos eventos</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
-          <source>Display incomplete tasks</source>
-          <target state="final">Ver tarea incompleta</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_MainTile_Description.Text" translate="yes" xml:space="preserve">
-          <source>These settings affect the main tile, which can be pinned by right clicking Power Planner in your app list, and clicking 'Pin to Start'. The Skip items setting will be inherited by your class tiles, unless you've specifically changed your class tile settings.</source>
-          <target state="final">Estos ajustes afectan el icono principal, que puede anclar lanzando las opciones de Power Planner en su Lista de Aplicaciones, y presionando en 'Anclar al Inicio'. Los ajustes de los elementos omitidos también afectarán a los iconos de sus clases, a menos que especifique lo contrario.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_MainTile_Header.Text" translate="yes" xml:space="preserve">
-          <source>MAIN TILE</source>
-          <target state="final">ICONO PRINCIPAL</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_MainTile_ToggleEvents.Header" translate="yes" xml:space="preserve">
-          <source>Display upcoming events</source>
-          <target state="final">Ver próximos eventos</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_MainTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
-          <source>Display incomplete tasks</source>
-          <target state="final">Ver tarea incompleta</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_QuickAdd_Description.Text" translate="yes" xml:space="preserve">
-          <source>The Quick Add Tile allows you to quickly add a new task or event, by instantly opening the options to add those items when tapped.</source>
-          <target state="final">El anclado rápido te permite añadir rápidamente una nueva tarea o evento, abriendo de inmediato las opciones para agregar los elementos seleccionados.</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_QuickAdd_Header.Text" translate="yes" xml:space="preserve">
-          <source>QUICK ADD TILE</source>
-          <target state="final">AGREGAR ICONO RÁPIDAMENTE</target>
-        </trans-unit>
-        <trans-unit id="Tiles_TextBlockNotPinned.Text" translate="yes" xml:space="preserve">
-          <source>Not pinned</source>
-          <target state="final">No anclado</target>
-        </trans-unit>
-        <trans-unit id="Tiles_TextBlockPinned.Text" translate="yes" xml:space="preserve">
-          <source>Pinned</source>
-          <target state="final">Anclado</target>
-        </trans-unit>
-        <trans-unit id="Tile_ButtonPinTile.Label" translate="yes" xml:space="preserve">
-          <source>Pin tile</source>
-          <target state="final">Anclar icono</target>
-        </trans-unit>
-        <trans-unit id="Tile_ButtonUnpinTile.Label" translate="yes" xml:space="preserve">
-          <source>Unpin tile</source>
-          <target state="final">Desanclar icono</target>
-        </trans-unit>
-        <trans-unit id="Tile_DaysPastToday.Text" translate="yes" xml:space="preserve">
-          <source>days past today</source>
-          <target state="final">días despues de hoy</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Skip items {0] days past today</note>
-        </trans-unit>
-        <trans-unit id="Tile_SkipExplanation0.Text" translate="yes" xml:space="preserve">
-          <source>Entering 0 will ignore items due today or earlier</source>
-          <target state="final">Entrando 0 se mostrará a partir de mañana</target>
-        </trans-unit>
-        <trans-unit id="Tile_SkipExplanation1.Text" translate="yes" xml:space="preserve">
-          <source>Entering 1 will ignore items due yesterday or earlier</source>
-          <target state="final">Entrando 1 se mostrará a partir de hoy</target>
-        </trans-unit>
-        <trans-unit id="Tile_SkipExplanation2.Text" translate="yes" xml:space="preserve">
-          <source>Entering 2 will ignore items due 2 days ago or earlier</source>
-          <target state="final">Entrando 2 se mostrará a partir de ayer</target>
-        </trans-unit>
-        <trans-unit id="Tile_SkipExplanationBlank.Text" translate="yes" xml:space="preserve">
-          <source>Leaving this blank means the earliest assignment will be displayed (default behavior)</source>
-          <target state="final">Dejar esto en blanco significa que será la primera asignatura en aparecer (Ajuste por defecto)</target>
-        </trans-unit>
-        <trans-unit id="Tile_SkipItems.Text" translate="yes" xml:space="preserve">
-          <source>Skip items</source>
-          <target state="final">Omitir items</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Skip items {0} days past today</note>
-        </trans-unit>
-        <trans-unit id="Tile_SkipItemsError.Text" translate="yes" xml:space="preserve">
-          <source>This must be an integer, or left blank.</source>
-          <target state="final">Esto debe ser un entero o estar vacío.</target>
-        </trans-unit>
-        <trans-unit id="Tile_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
-          <source>You can also make your live tiles skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
-          <target state="final">Puede hacer que sus iconos dinámicos omitan los elementos vencidos. Si establece la opción de abajo, podrá ignorar cualquier elemento que exceda el número de días especificado.</target>
-        </trans-unit>
-        <trans-unit id="Button_LogIn.Content" translate="yes" xml:space="preserve">
-          <source>Log in</source>
-          <target state="final">Iniciar sesión</target>
-        </trans-unit>
-        <trans-unit id="Settings_TwoWeekSchedule_ComboBoxCurrentWeek.Header" translate="yes" xml:space="preserve">
-          <source>Current week</source>
-          <target state="final">Semana actual</target>
-        </trans-unit>
-        <trans-unit id="Settings_TwoWeekSchedule_ComboBoxWeekChangesOn.Header" translate="yes" xml:space="preserve">
-          <source>Week changes on</source>
-          <target state="final">Cambios de la semana en</target>
-        </trans-unit>
-        <trans-unit id="Settings_TwoWeekSchedule_Description.Text" translate="yes" xml:space="preserve">
-          <source>If your school uses a schedule that rotates between two weeks (Week One and Week Two, or Week A and Week B), you can configure what the current week is, and which day the week changes on.</source>
-          <target state="final">Si su escuela usa un programa que gira entre dos semanas (semana A y B), puede configurar cual es la semana actual y el día de cambio de semana.</target>
-        </trans-unit>
-        <trans-unit id="Settings_TwoWeekSchedule_Header.Text" translate="yes" xml:space="preserve">
-          <source>TWO WEEK SCHEDULE</source>
-          <target state="final">HORARIO DE DOS SEMANAS</target>
-        </trans-unit>
-        <trans-unit id="Settings_UpdateCredentialsPage.Title" translate="yes" xml:space="preserve">
-          <source>UPDATE CREDENTIALS</source>
-          <target state="final">ACTUALIZAR CREDENCIALES</target>
-        </trans-unit>
-        <trans-unit id="Settings_UpdateCredentialsPage_Description.Text" translate="yes" xml:space="preserve">
-          <source>Your online account's username or password has changed. Please log back in to continue using your online account.</source>
-          <target state="final">Nombre de usuario o contraseña de su cuenta en línea fue modificada. Por favor, inicie sesión de nuevo utilizando su cuenta en línea.</target>
-        </trans-unit>
-        <trans-unit id="Settings_UpgradeToPremium_ButtonUpgrade.Content" translate="yes" xml:space="preserve">
-          <source>UPGRADE TO PREMIUM</source>
-          <target state="final">ACTUALIZAR A PREMIUM</target>
-        </trans-unit>
-        <trans-unit id="Settings_UpgradeToPremium_Description.Text" translate="yes" xml:space="preserve">
-          <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time lifetime purchase!
+		  <trans-unit id="Settings_DeleteAccountPage.Title" translate="yes" xml:space="preserve">
+  <source>DELETE ACCOUNT</source>
+  <target state="final">ELIMINA ACCOUNT</target>
+</trans-unit>
+		  <trans-unit id="Settings_DeleteAccountPage_ButtonConfirmDelete.Content" translate="yes" xml:space="preserve">
+  <source>yes, delete my account</source>
+  <target state="final">sì, elimina il mio account</target>
+</trans-unit>
+		  <trans-unit id="Settings_DeleteAccountPage_CheckBoxDeleteOnlineToo.Content" translate="yes" xml:space="preserve">
+  <source>Delete online account too?</source>
+  <target state="final">Eliminare anche l'account online?</target>
+</trans-unit>
+		  <trans-unit id="Settings_DeleteAccountPage_Description.Text" translate="yes" xml:space="preserve">
+  <source>Are you sure?</source>
+  <target state="final">Sei sicuro?</target>
+</trans-unit>
+		  <trans-unit id="Settings_DeleteAccountPage_Errors_ErrorDeletingHeader" translate="yes" xml:space="preserve">
+  <source>Error deleting account</source>
+  <target state="final">Errore nell'eliminazione dell'account</target>
+</trans-unit>
+		  <trans-unit id="Settings_DeleteAccountPage_Errors_UnknownErrorDeletingOnline" translate="yes" xml:space="preserve">
+  <source>Failed to delete your online account. Maybe you're offline?</source>
+  <target state="final">Impossibile eliminare il tuo account online. Forse sei offline?</target>
+</trans-unit>
+		  <trans-unit id="Settings_ImageUploadOptionsPage_ComboBoxUploadOptions.Header" translate="yes" xml:space="preserve">
+  <source>Upload images</source>
+  <target state="final">Carica immagini</target>
+</trans-unit>
+		  <trans-unit id="Settings_ImageUploadOptionsPage_Description.Text" translate="yes" xml:space="preserve">
+  <source>Control when images are uploaded, so that you don't incur charges on your data plan.</source>
+  <target state="final">Controlla quando caricare le immagini, così da non avere costi aggiuntivi sul tuo piano dati.</target>
+</trans-unit>
+		  <trans-unit id="Settings_ImageUploadOptionsPage_Header.Text" translate="yes" xml:space="preserve">
+  <source>IMAGE UPLOAD OPTIONS</source>
+  <target state="final">OPZIONI DI CARICAMENTO IMMAGINI</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_AboutItem.Title" translate="yes" xml:space="preserve">
+  <source>About</source>
+  <target state="final">Informazioni</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
+  <source>Tasks and classes in native Calendar app</source>
+  <target state="final">Compiti e lezioni nell'app Calendario nativa</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
+  <source>Calendar integration</source>
+  <target state="final">Integrazione con il calendario</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_LiveTilesItem.Subtitle" translate="yes" xml:space="preserve">
+  <source>Edit Live Tile settings</source>
+  <target state="final">Modifica impostazioni delle Live Tile</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_LiveTilesItem.Title" translate="yes" xml:space="preserve">
+  <source>Live Tiles</source>
+  <target state="final">Live Tile</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_MyAccountItem.Subtitle" translate="yes" xml:space="preserve">
+  <source>Logout or manage account</source>
+  <target state="final">Esci o gestisci account</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_MyAccountItem.Title" translate="yes" xml:space="preserve">
+  <source>My account</source>
+  <target state="final">Il mio account</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_RemindersItem.Subtitle" translate="yes" xml:space="preserve">
+  <source>Change reminder settings</source>
+  <target state="final">Modifica impostazioni promemoria</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_RemindersItem.Title" translate="yes" xml:space="preserve">
+  <source>Reminders</source>
+  <target state="final">Promemoria</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_SyncOptionsItem.Subtitle" translate="yes" xml:space="preserve">
+  <source>Upload options, push</source>
+  <target state="final">Opzioni di caricamento e push</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_SyncOptionsItem.Title" translate="yes" xml:space="preserve">
+  <source>Sync options</source>
+  <target state="final">Opzioni di sincronizzazione</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Subtitle" translate="yes" xml:space="preserve">
+  <source>Set current week and day week changes</source>
+  <target state="final">Imposta la settimana corrente e le modifiche giornaliere</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_TwoWeekScheduleItem.Title" translate="yes" xml:space="preserve">
+  <source>Two week schedule</source>
+  <target state="final">Pianificazione di due settimane</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_UpgradeToPremiumItem.Subtitle" translate="yes" xml:space="preserve">
+  <source>Unlock all the features!</source>
+  <target state="final">Sblocca tutte le funzionalità!</target>
+</trans-unit>
+		  <trans-unit id="Settings_MainPage_UpgradeToPremiumItem.Title" translate="yes" xml:space="preserve">
+  <source>Upgrade to premium version!</source>
+  <target state="final">Passa alla versione premium!</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_ButtonChangeEmail.Content" translate="yes" xml:space="preserve">
+  <source>Change Email</source>
+  <target state="final">Cambia email</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_ButtonChangePassword.Content" translate="yes" xml:space="preserve">
+  <source>Change Password</source>
+  <target state="final">Cambia password</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_ButtonChangeUsername.Content" translate="yes" xml:space="preserve">
+  <source>Change Username</source>
+  <target state="final">Cambia nome utente</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_ButtonConvertToOnline.Content" translate="yes" xml:space="preserve">
+  <source>Convert to Online Account</source>
+  <target state="final">Converti in account online</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_ButtonDeleteAccount.Content" translate="yes" xml:space="preserve">
+  <source>Delete Account</source>
+  <target state="final">Elimina account</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_ButtonLogOut.Content" translate="yes" xml:space="preserve">
+  <source>Log Out</source>
+  <target state="final">Esci</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_CheckBoxAutoLogin.Content" translate="yes" xml:space="preserve">
+  <source>Auto login</source>
+  <target state="final">Accesso automatico</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_CheckBoxRememberPassword.Content" translate="yes" xml:space="preserve">
+  <source>Remember password</source>
+  <target state="final">Ricorda password</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_CheckBoxRememberUsername.Content" translate="yes" xml:space="preserve">
+  <source>Remember username</source>
+  <target state="final">Ricorda nome utente</target>
+</trans-unit>
+		  <trans-unit id="Settings_MyAccount_Header.Text" translate="yes" xml:space="preserve">
+  <source>MY ACCOUNT</source>
+  <target state="final">IL MIO ACCOUNT</target>
+</trans-unit>
+
+		  <trans-unit id="Settings_PushPage_Description.Text" translate="yes" xml:space="preserve">
+  <source>If you have an online account, you can enable push notifications. With push enabled, changes from another device will instantly appear on this device, even while the app isn't running.</source>
+  <target state="final">Se hai un account online, puoi attivare le notifiche push. Con il push attivato, le modifiche da un altro dispositivo appariranno immediatamente su questo dispositivo, anche quando l'app non è in esecuzione.</target>
+</trans-unit>
+		  <trans-unit id="Settings_PushPage_Header.Text" translate="yes" xml:space="preserve">
+  <source>PUSH NOTIFICATIONS</source>
+  <target state="final">NOTIFICHE PUSH</target>
+</trans-unit>
+		  <trans-unit id="Settings_Reminders_DayBeforeDescription.Text" translate="yes" xml:space="preserve">
+  <source>This feature reminds you the day before your incomplete tasks or events are due. It will remind you 10 minutes after your last class, or at 3:00 PM if you don't have any classes that day.</source>
+  <target state="final">Questa funzione ti ricorda il giorno prima della scadenza dei tuoi compiti o eventi incompleti. Ti avviserà 10 minuti dopo la tua ultima lezione, o alle 15:00 se non hai lezioni quel giorno.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Reminders_DayOfDescription.Text" translate="yes" xml:space="preserve">
+  <source>This feature reminds you on the same day that your incomplete tasks or events are due. It will remind you 1 hour before your class starts, or at 6:00 PM if your class doesn't meet on that day.</source>
+  <target state="final">Questa funzione ti ricorda il giorno stesso della scadenza dei tuoi compiti o eventi incompleti. Ti avviserà un'ora prima dell'inizio della lezione, o alle 18:00 se non hai lezioni quel giorno.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Reminders_Description.Text" translate="yes" xml:space="preserve">
+  <source>This application automatically sets reminders for each task and event. The reminders are just like calendar event reminders, with a snooze and dismiss option.</source>
+  <target state="final">Questa applicazione imposta automaticamente promemoria per ogni compito ed evento. I promemoria funzionano come quelli del calendario, con opzioni di posticipo e chiusura.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Reminders_Header.Text" translate="yes" xml:space="preserve">
+  <source>REMINDERS</source>
+  <target state="final">PROMEMORIA</target>
+</trans-unit>
+		  <trans-unit id="Settings_Reminders_ToggleDayBefore.Header" translate="yes" xml:space="preserve">
+  <source>day before</source>
+  <target state="final">giorno prima</target>
+</trans-unit>
+		  <trans-unit id="Settings_Reminders_ToggleDayOf.Header" translate="yes" xml:space="preserve">
+  <source>day of</source>
+  <target state="final">giorno stesso</target>
+</trans-unit>
+		  <trans-unit id="Settings_ScheduleTilePage_Description.Text" translate="yes" xml:space="preserve">
+  <source>The schedule tile displays your upcoming classes, so that you know when and where your next class is! Perfect for when you're learning a new schedule at the start of the year.</source>
+  <target state="final">Il riquadro dell'orario mostra le tue prossime lezioni, così saprai quando e dove sarà la prossima! Perfetto per quando stai imparando un nuovo orario all'inizio dell'anno.</target>
+</trans-unit>
+		  <trans-unit id="Settings_ScheduleTilePage_Header.Text" translate="yes" xml:space="preserve">
+  <source>SCHEDULE TILE</source>
+  <target state="final">RIQUADRO ORARIO</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
+  <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
+  <target state="final">Puoi aggiungere un riquadro per ogni classe, e mostrerà i tuoi prossimi compiti ed eventi per quella classe. Inoltre, si aprirà direttamente quella classe quando lo tocchi.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTiles_Header.Text" translate="yes" xml:space="preserve">
+  <source>CLASS TILES</source>
+  <target state="final">RIQUADRI CLASSE</target>
+</trans-unit>
+
+
+		  <trans-unit id="Settings_Tiles_ClassTiles_TextBlockNoClasses.Text" translate="yes" xml:space="preserve">
+  <source>Looks like you don't have any classes. Add some classes first and then check this page.</source>
+  <target state="final">Sembra che tu non abbia classi. Aggiungine alcune prima e poi controlla questa pagina.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTiles_TextBlockNoSemester.Text" translate="yes" xml:space="preserve">
+  <source>You must select a semester first. Please open the menu, click Years, and open a semester.</source>
+  <target state="final">Devi prima selezionare un semestre. Apri il menu, clicca su Anni e apri un semestre.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_ButtonPinLabel" translate="yes" xml:space="preserve">
+  <source>Pin class</source>
+  <target state="final">Fissa classe</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_ButtonUnpinLabel" translate="yes" xml:space="preserve">
+  <source>Unpin class</source>
+  <target state="final">Rimuovi classe</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_Explanation.Text" translate="yes" xml:space="preserve">
+  <source>These settings affect your single class tile. If not already pinned, tap the pin icon!</source>
+  <target state="final">Queste impostazioni influenzano il riquadro della tua classe. Se non è già fissato, tocca l'icona della puntina!</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_Header.Text" translate="yes" xml:space="preserve">
+  <source>CLASS TILE</source>
+  <target state="final">RIQUADRO CLASSE</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_PromptPremiumFeature" translate="yes" xml:space="preserve">
+  <source>Pinning classes is a premium feature. Please upgrade to premium to unlock all secondary tile capabilities!</source>
+  <target state="final">Fissare le classi è una funzione premium. Passa alla versione premium per sbloccare tutte le funzionalità dei riquadri secondari!</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_ToggleExams.Header" translate="yes" xml:space="preserve">
+  <source>Display upcoming events</source>
+  <target state="final">Mostra eventi imminenti</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
+  <source>Display incomplete tasks</source>
+  <target state="final">Mostra compiti incompleti</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_MainTile_Description.Text" translate="yes" xml:space="preserve">
+  <source>These settings affect the main tile, which can be pinned by right clicking Power Planner in your app list, and clicking 'Pin to Start'. The Skip items setting will be inherited by your class tiles, unless you've specifically changed your class tile settings.</source>
+  <target state="final">Queste impostazioni influenzano il riquadro principale, che può essere fissato facendo clic con il tasto destro su Power Planner nell'elenco delle app e selezionando 'Fissa a Start'. L'impostazione degli elementi da ignorare verrà applicata anche ai riquadri delle classi, a meno che tu non abbia modificato specificamente le loro impostazioni.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_MainTile_Header.Text" translate="yes" xml:space="preserve">
+  <source>MAIN TILE</source>
+  <target state="final">RIQUADRO PRINCIPALE</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_MainTile_ToggleEvents.Header" translate="yes" xml:space="preserve">
+  <source>Display upcoming events</source>
+  <target state="final">Mostra eventi imminenti</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_MainTile_ToggleTasks.Header" translate="yes" xml:space="preserve">
+  <source>Display incomplete tasks</source>
+  <target state="final">Mostra compiti incompleti</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_QuickAdd_Description.Text" translate="yes" xml:space="preserve">
+  <source>The Quick Add Tile allows you to quickly add a new task or event, by instantly opening the options to add those items when tapped.</source>
+  <target state="final">Il riquadro Aggiunta Rapida ti consente di aggiungere rapidamente un nuovo compito o evento, aprendo immediatamente le opzioni per aggiungerlo quando viene toccato.</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_QuickAdd_Header.Text" translate="yes" xml:space="preserve">
+  <source>QUICK ADD TILE</source>
+  <target state="final">RIQUADRO AGGIUNTA RAPIDA</target>
+</trans-unit>
+		  <trans-unit id="Tiles_TextBlockNotPinned.Text" translate="yes" xml:space="preserve">
+  <source>Not pinned</source>
+  <target state="final">Non fissato</target>
+</trans-unit>
+		  <trans-unit id="Tiles_TextBlockPinned.Text" translate="yes" xml:space="preserve">
+  <source>Pinned</source>
+  <target state="final">Fissato</target>
+</trans-unit>
+		  <trans-unit id="Tile_ButtonPinTile.Label" translate="yes" xml:space="preserve">
+  <source>Pin tile</source>
+  <target state="final">Fissa riquadro</target>
+</trans-unit>
+		  <trans-unit id="Tile_ButtonUnpinTile.Label" translate="yes" xml:space="preserve">
+  <source>Unpin tile</source>
+  <target state="final">Rimuovi riquadro</target>
+</trans-unit>
+
+		  <trans-unit id="Tile_DaysPastToday.Text" translate="yes" xml:space="preserve">
+  <source>days past today</source>
+  <target state="final">giorni trascorsi da oggi</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Skip items {0] days past today</note>
+</trans-unit>
+		  <trans-unit id="Tile_SkipExplanation0.Text" translate="yes" xml:space="preserve">
+  <source>Entering 0 will ignore items due today or earlier</source>
+  <target state="final">Inserendo 0 si ignoreranno gli elementi in scadenza oggi o prima</target>
+</trans-unit>
+		  <trans-unit id="Tile_SkipExplanation1.Text" translate="yes" xml:space="preserve">
+  <source>Entering 1 will ignore items due yesterday or earlier</source>
+  <target state="final">Inserendo 1 si ignoreranno gli elementi in scadenza ieri o prima</target>
+</trans-unit>
+		  <trans-unit id="Tile_SkipExplanation2.Text" translate="yes" xml:space="preserve">
+  <source>Entering 2 will ignore items due 2 days ago or earlier</source>
+  <target state="final">Inserendo 2 si ignoreranno gli elementi in scadenza due giorni fa o prima</target>
+</trans-unit>
+		  <trans-unit id="Tile_SkipExplanationBlank.Text" translate="yes" xml:space="preserve">
+  <source>Leaving this blank means the earliest assignment will be displayed (default behavior)</source>
+  <target state="final">Lasciare questo campo vuoto significa che verrà visualizzato il compito con la data di scadenza più prossima (comportamento predefinito)</target>
+</trans-unit>
+		  <trans-unit id="Tile_SkipItems.Text" translate="yes" xml:space="preserve">
+  <source>Skip items</source>
+  <target state="final">Ignora elementi</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Skip items {0} days past today</note>
+</trans-unit>
+		  <trans-unit id="Tile_SkipItemsError.Text" translate="yes" xml:space="preserve">
+  <source>This must be an integer, or left blank.</source>
+  <target state="final">Deve essere un numero intero o lasciato vuoto.</target>
+</trans-unit>
+		  <trans-unit id="Tile_SkipItemsExplanation.Text" translate="yes" xml:space="preserve">
+  <source>You can also make your live tiles skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days.</source>
+  <target state="final">Puoi anche fare in modo che le tue tile dinamiche ignorino gli elementi scaduti. Se imposti l'opzione qui sotto, verranno ignorati tutti gli elementi più vecchi del numero di giorni specificato.</target>
+</trans-unit>
+		  <trans-unit id="Button_LogIn.Content" translate="yes" xml:space="preserve">
+  <source>Log in</source>
+  <target state="final">Accedi</target>
+</trans-unit>
+		  <trans-unit id="Settings_TwoWeekSchedule_ComboBoxCurrentWeek.Header" translate="yes" xml:space="preserve">
+  <source>Current week</source>
+  <target state="final">Settimana attuale</target>
+</trans-unit>
+		  <trans-unit id="Settings_TwoWeekSchedule_ComboBoxWeekChangesOn.Header" translate="yes" xml:space="preserve">
+  <source>Week changes on</source>
+  <target state="final">Cambio di settimana il</target>
+</trans-unit>
+		  <trans-unit id="Settings_TwoWeekSchedule_Description.Text" translate="yes" xml:space="preserve">
+  <source>If your school uses a schedule that rotates between two weeks (Week One and Week Two, or Week A and Week B), you can configure what the current week is, and which day the week changes on.</source>
+  <target state="final">Se la tua scuola utilizza un programma che ruota tra due settimane (Settimana 1 e Settimana 2, o Settimana A e Settimana B), puoi configurare quale sia la settimana attuale e in quale giorno avviene il cambio.</target>
+</trans-unit>
+		  <trans-unit id="Settings_TwoWeekSchedule_Header.Text" translate="yes" xml:space="preserve">
+  <source>TWO WEEK SCHEDULE</source>
+  <target state="final">PROGRAMMA DI DUE SETTIMANE</target>
+</trans-unit>
+		  <trans-unit id="Settings_UpdateCredentialsPage.Title" translate="yes" xml:space="preserve">
+  <source>UPDATE CREDENTIALS</source>
+  <target state="final">AGGIORNA CREDENZIALI</target>
+</trans-unit>
+		  <trans-unit id="Settings_UpdateCredentialsPage_Description.Text" translate="yes" xml:space="preserve">
+  <source>Your online account's username or password has changed. Please log back in to continue using your online account.</source>
+  <target state="final">Il nome utente o la password del tuo account online è stato modificato. Accedi nuovamente per continuare a utilizzare il tuo account online.</target>
+</trans-unit>
+		  <trans-unit id="Settings_UpgradeToPremium_ButtonUpgrade.Content" translate="yes" xml:space="preserve">
+  <source>UPGRADE TO PREMIUM</source>
+  <target state="final">PASSA A PREMIUM</target>
+</trans-unit>
+		  <trans-unit id="Settings_UpgradeToPremium_Description.Text" translate="yes" xml:space="preserve">
+  <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time lifetime purchase!
 
 The free version is limited to...
  - 1 semester
@@ -567,713 +567,713 @@ The free version is limited to...
  - 1 photo attachment per item
 
 Once you purchase the premium version, you own the premium version on all your devices.</source>
-          <target state="final">La versión Premium de Power Planner desbloquea muchas características útiles, ¡y es una compra única de por vida!
- 
-La versión gratuita está limitada a... 
- - 1 semestre
- - 5 notas por clase
- - 1 repetición de entrada masiva de una tarea / evento
- - No puede anclar iconos secundarios
- - Adjuntar una foto por item
+  <target state="final">La versione Premium di Power Planner sblocca molte funzionalità utili ed è un acquisto unico a vita!
 
-Una vez que compres la versión premium, tienes la versión premium en todos sus dispositivos.</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
-        </trans-unit>
-        <trans-unit id="TextBox_Password.Header" translate="yes" xml:space="preserve">
-          <source>Password</source>
-          <target state="final">Contraseña</target>
-        </trans-unit>
-        <trans-unit id="TextBox_Username.Header" translate="yes" xml:space="preserve">
-          <source>Username</source>
-          <target state="final">Nombre de usuario</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Title" translate="yes" xml:space="preserve">
-          <source>CALENDAR INTEGRATION</source>
-          <target state="final">INTEGRACIÓN DEL CALENDARIO</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_ItemClasses_DisplayName" translate="yes" xml:space="preserve">
-          <source>Classes integration</source>
-          <target state="final">Integración de las clases</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_ItemTasks_DisplayName" translate="yes" xml:space="preserve">
-          <source>Tasks integration</source>
-          <target state="final">Integración de tareas</target>
-        </trans-unit>
-        <trans-unit id="Settings_LiveTiles_Title" translate="yes" xml:space="preserve">
-          <source>LIVE TILES</source>
-          <target state="final">ICONOS DINÁMICOS</target>
-        </trans-unit>
-        <trans-unit id="Settings_LiveTiles_ItemClassTiles_DisplayName" translate="yes" xml:space="preserve">
-          <source>Class Tiles</source>
-          <target state="final">Iconos de Clase</target>
-        </trans-unit>
-        <trans-unit id="Settings_LiveTiles_ItemMainTile_DisplayName" translate="yes" xml:space="preserve">
-          <source>Main Tile</source>
-          <target state="final">Icono principal</target>
-        </trans-unit>
-        <trans-unit id="Settings_LiveTiles_ItemQuickAddTile_DisplayName" translate="yes" xml:space="preserve">
-          <source>Quick Add Tile</source>
-          <target state="final">Agregar icono rápidamente</target>
-        </trans-unit>
-        <trans-unit id="Settings_LiveTiles_ItemScheduleTile_DisplayName" translate="yes" xml:space="preserve">
-          <source>Schedule Tile</source>
-          <target state="final">Icono del Horario</target>
-        </trans-unit>
-        <trans-unit id="Settings_SyncOptions_Title" translate="yes" xml:space="preserve">
-          <source>SYNC OPTIONS</source>
-          <target state="final">AJUSTES DE SINCRONIZACIÓN</target>
-        </trans-unit>
-        <trans-unit id="Settings_SyncOptions_ItemImageUploadOptions_DisplayName" translate="yes" xml:space="preserve">
-          <source>Image upload options</source>
-          <target state="final">Ajustes de carga de imágenes</target>
-        </trans-unit>
-        <trans-unit id="Settings_SyncOptions_ItemPushNotifications_DisplayName" translate="yes" xml:space="preserve">
-          <source>Push notifications</source>
-          <target state="final">Notificaciones push</target>
-        </trans-unit>
-        <trans-unit id="Settings_ChangeEmailPage_ButtonUpdateEmail_Content" translate="yes" xml:space="preserve">
-          <source>Update email</source>
-          <target state="final">Actualizar correo</target>
-        </trans-unit>
-        <trans-unit id="Settings_Tiles_ClassTile_HeaderText" translate="yes" xml:space="preserve">
-          <source>CLASS TILE</source>
-          <target state="final">ICONO DE LA CLASE</target>
-        </trans-unit>
-        <trans-unit id="Tile_PinTile" translate="yes" xml:space="preserve">
-          <source>Pin tile</source>
-          <target state="final">Anclar icono</target>
-        </trans-unit>
-        <trans-unit id="Tile_UnpinTile" translate="yes" xml:space="preserve">
-          <source>Unpin tile</source>
-          <target state="final">Desanclar icono</target>
-        </trans-unit>
-        <trans-unit id="MainMenuItem_Agenda" translate="yes" xml:space="preserve">
-          <source>Agenda</source>
-          <target state="final">Agenda</target>
-        </trans-unit>
-        <trans-unit id="MainMenuItem_Calendar" translate="yes" xml:space="preserve">
-          <source>Calendar</source>
-          <target state="final">Calendario</target>
-        </trans-unit>
-        <trans-unit id="MainMenuItem_Classes" translate="yes" xml:space="preserve">
-          <source>Classes</source>
-          <target state="final">Clases</target>
-        </trans-unit>
-        <trans-unit id="MainMenuItem_Day" translate="yes" xml:space="preserve">
-          <source>Day</source>
-          <target state="final">Día</target>
-        </trans-unit>
-        <trans-unit id="MainMenuItem_Schedule" translate="yes" xml:space="preserve">
-          <source>Schedule</source>
-          <target state="final">Horario</target>
-        </trans-unit>
-        <trans-unit id="MainMenuItem_Settings" translate="yes" xml:space="preserve">
-          <source>Settings</source>
-          <target state="final">Ajustes</target>
-        </trans-unit>
-        <trans-unit id="MainMenuItem_Years" translate="yes" xml:space="preserve">
-          <source>Years</source>
-          <target state="final">Años</target>
-        </trans-unit>
-        <trans-unit id="MenuItemCancel" translate="yes" xml:space="preserve">
-          <source>Cancel</source>
-          <target state="final">Cancelar</target>
-        </trans-unit>
-        <trans-unit id="MenuItemDelete" translate="yes" xml:space="preserve">
-          <source>Delete</source>
-          <target state="final">Eliminar</target>
-        </trans-unit>
-        <trans-unit id="MessageFreeSemesterLimitReached" translate="yes" xml:space="preserve">
-          <source>To add more than one semester, you must upgrade to the premium version of Power Planner. Alternatively, you could always delete your current semester.</source>
-          <target state="final">Para agregar más de un semestre, debe actualizar a la versión Premium de Power Planner. Como alternativa, siempre podrá eliminar su semestre actual.</target>
-        </trans-unit>
-        <trans-unit id="SemesterViewEditing_TextBoxName.PlaceholderText" translate="yes" xml:space="preserve">
-          <source>Name</source>
-          <target state="final">Nombre</target>
-        </trans-unit>
-        <trans-unit id="SemesterView_ButtonOpenSemester.Content" translate="yes" xml:space="preserve">
-          <source>Open semester</source>
-          <target state="final">Abrir semestre</target>
-        </trans-unit>
-        <trans-unit id="SemesterView_HeaderClass.Text" translate="yes" xml:space="preserve">
-          <source>Class</source>
-          <target state="final">Clase</target>
-        </trans-unit>
-        <trans-unit id="SemesterView_HeaderCredits.Text" translate="yes" xml:space="preserve">
-          <source>Credits</source>
-          <target state="final">Créditos</target>
-        </trans-unit>
-        <trans-unit id="SemesterView_HeaderGPA.Text" translate="yes" xml:space="preserve">
-          <source>GPA</source>
-          <target state="final">GPA</target>
-        </trans-unit>
-        <trans-unit id="String_Credits" translate="yes" xml:space="preserve">
-          <source>{0} Credits</source>
-          <target state="final">{0} Créditos</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Include the {0}, the credits will be inserted there</note>
-        </trans-unit>
-        <trans-unit id="String_GPA" translate="yes" xml:space="preserve">
-          <source>{0} GPA</source>
-          <target state="final">{0} GPA</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Include the {0}, the GPA will be inserted there</note>
-        </trans-unit>
-        <trans-unit id="YearsPage_ButtonAddYear.Content" translate="yes" xml:space="preserve">
-          <source>add year</source>
-          <target state="final">agregar año</target>
-        </trans-unit>
-        <trans-unit id="YearsPage_TextBlockOverall.Text" translate="yes" xml:space="preserve">
-          <source>Overall:</source>
-          <target state="final">General:</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Include the colon - this is displayed like "Overall: [GPA] / [Credits]"</note>
-        </trans-unit>
-        <trans-unit id="YearView_ButtonAddSemester.Content" translate="yes" xml:space="preserve">
-          <source>add semester</source>
-          <target state="final">agregar semestre</target>
-        </trans-unit>
-        <trans-unit id="AddYearPage_MessageNoName_Body" translate="yes" xml:space="preserve">
-          <source>You must enter a name for this year!</source>
-          <target state="final">¡Debe ingresar un nombre para este año!</target>
-        </trans-unit>
-        <trans-unit id="AddYearPage_MessageNoName_Title" translate="yes" xml:space="preserve">
-          <source>No name</source>
-          <target state="final">Sin nombre</target>
-        </trans-unit>
-        <trans-unit id="AddYearPage_TextBoxName.Header" translate="yes" xml:space="preserve">
-          <source>Name</source>
-          <target state="final">Nombre</target>
-        </trans-unit>
-        <trans-unit id="AddYearPage_TextBoxName.PlaceholderText" translate="yes" xml:space="preserve">
-          <source>ex: Freshman</source>
-          <target state="final">ej: Freshman</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Provide an example of a name of a year, like Freshman, Sophomore, Junior, or Senior</note>
-        </trans-unit>
-        <trans-unit id="AddYearPage_Title_Adding" translate="yes" xml:space="preserve">
-          <source>ADD YEAR</source>
-          <target state="final">AGREGAR AÑO</target>
-        </trans-unit>
-        <trans-unit id="AddYearPage_Title_Editing" translate="yes" xml:space="preserve">
-          <source>EDIT YEAR</source>
-          <target state="final">EDITAR AÑO</target>
-        </trans-unit>
-        <trans-unit id="AppBarButtonDelete.Label" translate="yes" xml:space="preserve">
-          <source>Delete</source>
-          <target state="final">Eliminar</target>
-        </trans-unit>
-        <trans-unit id="AppBarButtonSave.Label" translate="yes" xml:space="preserve">
-          <source>Save</source>
-          <target state="final">Guardar</target>
-        </trans-unit>
-        <trans-unit id="MessageDeleteYear_Body" translate="yes" xml:space="preserve">
-          <source>Are you sure you want to delete this year and all of its semesters, classes, and grades?</source>
-          <target state="final">¿Está seguro que desea eliminar este año y todos los semestres, clases y notas?</target>
-        </trans-unit>
-        <trans-unit id="MessageDeleteYear_Title" translate="yes" xml:space="preserve">
-          <source>Delete year?</source>
-          <target state="final">¿Eliminar año?</target>
-        </trans-unit>
-        <trans-unit id="SemesterView_Total.Text" translate="yes" xml:space="preserve">
-          <source>Total</source>
-          <target state="final">Total</target>
-        </trans-unit>
-        <trans-unit id="Calendar_FullCalendarAddButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Add</source>
-          <target state="final">Agregar</target>
-        </trans-unit>
-        <trans-unit id="Calendar_FullCalendarGoToTodayButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Go To Today</source>
-          <target state="final">Ir a hoy</target>
-        </trans-unit>
-        <trans-unit id="RelativeDate_Today" translate="yes" xml:space="preserve">
-          <source>Today</source>
-          <target state="final">Hoy</target>
-        </trans-unit>
-        <trans-unit id="RelativeDate_Tomorrow" translate="yes" xml:space="preserve">
-          <source>Tomorrow</source>
-          <target state="final">Mañana</target>
-        </trans-unit>
-        <trans-unit id="RelativeDate_Yesterday" translate="yes" xml:space="preserve">
-          <source>Yesterday</source>
-          <target state="final">Ayer</target>
-        </trans-unit>
-        <trans-unit id="RelativeDate_Future" translate="yes" xml:space="preserve">
-          <source>Future</source>
-          <target state="final">Futuro</target>
-        </trans-unit>
-        <trans-unit id="RelativeDate_InThePast" translate="yes" xml:space="preserve">
-          <source>In the past</source>
-          <target state="final">En el pasado</target>
-        </trans-unit>
-        <trans-unit id="RelativeDate_InXDays" translate="yes" xml:space="preserve">
-          <source>In {0} days</source>
-          <target state="final">En {0} días</target>
-        </trans-unit>
-        <trans-unit id="RelativeDate_WithinXDays" translate="yes" xml:space="preserve">
-          <source>Within {0} days</source>
-          <target state="final">Dentro de {0} días</target>
-        </trans-unit>
-        <trans-unit id="String_GoToToday" translate="yes" xml:space="preserve">
-          <source>Go to today</source>
-          <target state="final">Ir a hoy</target>
-        </trans-unit>
-        <trans-unit id="String_NewItem" translate="yes" xml:space="preserve">
-          <source>New item</source>
-          <target state="final">Nuevo item</target>
-        </trans-unit>
-        <trans-unit id="String_PinToStart" translate="yes" xml:space="preserve">
-          <source>Pin to Start</source>
-          <target state="final">Anclar al Inicio</target>
-        </trans-unit>
-        <trans-unit id="String_UnpinFromStart" translate="yes" xml:space="preserve">
-          <source>Unpin from Start</source>
-          <target state="final">Desanclar de Inicio</target>
-        </trans-unit>
-        <trans-unit id="String_WeekA" translate="yes" xml:space="preserve">
-          <source>Week A</source>
-          <target state="final">Semana A</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">In the context of the schedule view, for toggling between week A and B</note>
-        </trans-unit>
-        <trans-unit id="String_WeekB" translate="yes" xml:space="preserve">
-          <source>Week B</source>
-          <target state="final">Semana B</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">In the context of the schedule view, for toggling between week A and B</note>
-        </trans-unit>
-        <trans-unit id="String_TimeToTime" translate="yes" xml:space="preserve">
-          <source>{0} to {1}</source>
-          <target state="final">{0} a {1}</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Ex: "8:00 AM to 8:50 AM"</note>
-        </trans-unit>
-        <trans-unit id="ClassPage_ButtonAddGradeScale.Content" translate="yes" xml:space="preserve">
-          <source>+ add grade scale</source>
-          <target state="final">+ agregar escala de notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_ButtonAddWeightCategory.Content" translate="yes" xml:space="preserve">
-          <source>+ add weight category</source>
-          <target state="final">+ agregar categoría de notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_ButtonWhatIfMode.Content" translate="yes" xml:space="preserve">
-          <source>What If? Mode</source>
-          <target state="final">Modo ¿Qué tal si?</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_ColorPickerEditClassColor.Header" translate="yes" xml:space="preserve">
-          <source>Color</source>
-          <target state="final">Color</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_EditGrades_TextBlockGPA.Text" translate="yes" xml:space="preserve">
-          <source>GPA</source>
-          <target state="final">GPA</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_EditGrades_TextBlockGradeScales.Text" translate="yes" xml:space="preserve">
-          <source>Grade Scales</source>
-          <target state="final">Escala de Notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_EditGrades_TextBlockName.Text" translate="yes" xml:space="preserve">
-          <source>Name</source>
-          <target state="final">Nombre</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_EditGrades_TextBlockStartingGrade.Text" translate="yes" xml:space="preserve">
-          <source>Starting Grade</source>
-          <target state="final">Nota Mínima</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_EditGrades_TextBlockWeight.Text" translate="yes" xml:space="preserve">
-          <source>Weight</source>
-          <target state="final">Peso</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_EditGrades_TextBlockWeightCategories.Text" translate="yes" xml:space="preserve">
-          <source>Weight Categories</source>
-          <target state="final">Categorías de Notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_PivotItemDetails.Header" translate="yes" xml:space="preserve">
-          <source>Details</source>
-          <target state="final">Detalles</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_PivotItemEvents.Header" translate="yes" xml:space="preserve">
-          <source>Events</source>
-          <target state="final">Eventos</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_PivotItemGrades.Header" translate="yes" xml:space="preserve">
-          <source>Grades</source>
-          <target state="final">Notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_PivotItemTasks.Header" translate="yes" xml:space="preserve">
-          <source>Tasks</source>
-          <target state="final">Tarea</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_PivotItemOverview.Header" translate="yes" xml:space="preserve">
-          <source>Overview</source>
-          <target state="final">General</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_PivotItemTimes.Header" translate="yes" xml:space="preserve">
-          <source>Times</source>
-          <target state="final">Horario</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_SchedulesNoTimesDetails.Text" translate="yes" xml:space="preserve">
-          <source>Click the edit button in the app bar to add class times</source>
-          <target state="final">Pulsa el botón editar para agregar los horarios</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_SchedulesNoTimesHeader.Text" translate="yes" xml:space="preserve">
-          <source>No Times</source>
-          <target state="final">Sin Horarios</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockAverageGradesHelpBody.Text" translate="yes" xml:space="preserve">
-          <source>Typically, you should leave this DISABLED. If you enable averaging grade totals, then your total class grade will be calculated by each grade's percent, not points. That means if you have a grade of 9/10 and another grade of 96/100, your average grade will be 93% even though the second one was worth more points. Most teachers grade by summing up the points, thus leaving this option disabled will have that effect. Your grade would then be 95.45% since the second grade was worth more points.</source>
-          <target state="final">Por lo general, esto debe estar DESHABILITADO. Si habilita el redondeo, el promedio de su clase será calculado por porcentaje y no por puntos. Significa que si su nota es de 9/10 y otra de 96/100, supromedio será de 93% a pesar de que el otro valía más puntos. Muchos profesores hacen suma de puntos, en ese caso debe deshabilitar esta opción. Su nota será 95.45% ya que el segundo tiene más puntos.</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockAverageGradesHelpHeader.Text" translate="yes" xml:space="preserve">
-          <source>Average grades</source>
-          <target state="final">Promediar notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockClassTimes.Text" translate="yes" xml:space="preserve">
-          <source>CLASS TIMES</source>
-          <target state="final">HORARIOS</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockDetails.Text" translate="yes" xml:space="preserve">
-          <source>DETAILS</source>
-          <target state="final">DETALLES</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockEvents.Text" translate="yes" xml:space="preserve">
-          <source>EVENTS</source>
-          <target state="final">EVENTOS</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockGrades.Text" translate="yes" xml:space="preserve">
-          <source>GRADES</source>
-          <target state="final">NOTAS</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockTasks.Text" translate="yes" xml:space="preserve">
-          <source>TASKS</source>
-          <target state="final">TAREA</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockRoundGradesUpHelpBody.Text" translate="yes" xml:space="preserve">
-          <source>Typically, you should leave this ENABLED. Rounding grades up means that if your total grade is 89.6%, you will still get a 4.0. Most teachers round grades up like this. Disabling this option will mean that even if you got a 89.9%, you're still going home with a 3.0. If your teacher is evil and doesn't round grades, disable this option.</source>
-          <target state="final">Por lo general, debe dejar esto HABILITADO. Redondear notas significa que si su calificación de total es 89.6%, aún obtendrá un 4.0. La mayoría de los profesores redondean sus notas. Deshabilitando esta opción significa que incluso si obtienes un 89,9%, todavía obtendrás un 3.0. Si tu profesor no redondea las notas, puedes deshabilitar esta opción.</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBlockRoundGradesUpHelpHeader.Text" translate="yes" xml:space="preserve">
-          <source>Round grades up</source>
-          <target state="final">Redondear notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBoxEditClassName.Header" translate="yes" xml:space="preserve">
-          <source>Name</source>
-          <target state="final">Nombre</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBoxEditCredits.Header" translate="yes" xml:space="preserve">
-          <source>Credits</source>
-          <target state="final">Créditos</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBoxEditCredits.PlaceholderText" translate="yes" xml:space="preserve">
-          <source>ex: 4</source>
-          <target state="final">ej: 4</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_TextBoxEditWeightCategoryName.PlaceholderText" translate="yes" xml:space="preserve">
-          <source>ex: Exams</source>
-          <target state="final">ej: Exámenes</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_ToggleAverageGrades.Header" translate="yes" xml:space="preserve">
-          <source>Average grades</source>
-          <target state="final">Promediar notas</target>
-        </trans-unit>
-        <trans-unit id="ClassPage_ToggleRoundGradesUp.Header" translate="yes" xml:space="preserve">
-          <source>Round grades up</source>
-          <target state="final">Redondear notas</target>
-        </trans-unit>
-        <trans-unit id="String_AddTime" translate="yes" xml:space="preserve">
-          <source>Add time</source>
-          <target state="final">Agregar hora</target>
-        </trans-unit>
-        <trans-unit id="String_Cancel" translate="yes" xml:space="preserve">
-          <source>Cancel</source>
-          <target state="final">Cancelar</target>
-        </trans-unit>
-        <trans-unit id="String_ConfirmDeleteClassHeader" translate="yes" xml:space="preserve">
-          <source>Delete class?</source>
-          <target state="final">¿Eliminar clase?</target>
-        </trans-unit>
-        <trans-unit id="String_ConfirmDeleteClassMessage" translate="yes" xml:space="preserve">
-          <source>Are you sure you want to delete this class and all its contents?</source>
-          <target state="final">¿Está seguro que desea eliminar esta clase y todo su contenido?</target>
-        </trans-unit>
-        <trans-unit id="String_DeleteClass" translate="yes" xml:space="preserve">
-          <source>Delete class</source>
-          <target state="final">Eliminar clase</target>
-        </trans-unit>
-        <trans-unit id="String_EditClass" translate="yes" xml:space="preserve">
-          <source>Edit class</source>
-          <target state="final">Editar clase</target>
-        </trans-unit>
-        <trans-unit id="String_EditDetails" translate="yes" xml:space="preserve">
-          <source>Edit details</source>
-          <target state="final">Editar detalles</target>
-        </trans-unit>
-        <trans-unit id="String_EditGrades" translate="yes" xml:space="preserve">
-          <source>Edit grades</source>
-          <target state="final">Editar notas</target>
-        </trans-unit>
-        <trans-unit id="String_EditTimes" translate="yes" xml:space="preserve">
-          <source>Edit times</source>
-          <target state="final">Editar fechas</target>
-        </trans-unit>
-        <trans-unit id="String_EventDatePrefix" translate="yes" xml:space="preserve">
-          <source>on</source>
-          <target state="final">el</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Something like "on 3/25/2016"</note>
-        </trans-unit>
-        <trans-unit id="String_GradeScaleCustom" translate="yes" xml:space="preserve">
-          <source>Custom (not saved)</source>
-          <target state="final">Personalizado (no guardado)</target>
-        </trans-unit>
-        <trans-unit id="String_TaskDatePrefix" translate="yes" xml:space="preserve">
-          <source>due</source>
-          <target state="final">plazo hasta el</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Something like "due 3/25/2016"</note>
-        </trans-unit>
-        <trans-unit id="String_InvalidGradeScalesMessageBody" translate="yes" xml:space="preserve">
-          <source>Your grade scales are invalid. Please ensure that each scale's Start Grade is less than the previous one's Start Grade.</source>
-          <target state="final">Sus escalas de notas son invalidas. Asegúrese que las notas iniciales de cada escala es menor que la anterior de la calificaciones inicial.</target>
-        </trans-unit>
-        <trans-unit id="String_InvalidGradeScalesMessageHeader" translate="yes" xml:space="preserve">
-          <source>Invalid Grade Scales</source>
-          <target state="final">Escalas de notas invalida</target>
-        </trans-unit>
-        <trans-unit id="String_InvalidWeightCategoriesMessageBody" translate="yes" xml:space="preserve">
-          <source>Your weight categories are invalid. Please ensure that each weight category has a name and a non-positive value.</source>
-          <target state="final">Sus categorías de notas son invalidas. Asegúrese de que cada categoría de calificaciones tiene un nombre y un valor positivo.</target>
-        </trans-unit>
-        <trans-unit id="String_InvalidWeightCategoriesMessageHeader" translate="yes" xml:space="preserve">
-          <source>Invalid Weight Categories</source>
-          <target state="final">Categorías de notas invalida</target>
-        </trans-unit>
-        <trans-unit id="String_NewEvent" translate="yes" xml:space="preserve">
-          <source>New event</source>
-          <target state="final">Nuevo evento</target>
-        </trans-unit>
-        <trans-unit id="String_NewGrade" translate="yes" xml:space="preserve">
-          <source>New grade</source>
-          <target state="final">Nueva nota</target>
-        </trans-unit>
-        <trans-unit id="String_NewTask" translate="yes" xml:space="preserve">
-          <source>New task</source>
-          <target state="final">Nueva tarea</target>
-        </trans-unit>
-        <trans-unit id="String_NoClassNameMessageBody" translate="yes" xml:space="preserve">
-          <source>You must enter a name for this class!</source>
-          <target state="final">¡Debe ingresar un nombre para la clase!</target>
-        </trans-unit>
-        <trans-unit id="String_NoNameMessageHeader" translate="yes" xml:space="preserve">
-          <source>No name</source>
-          <target state="final">Sin nombre</target>
-        </trans-unit>
-        <trans-unit id="String_PinClass" translate="yes" xml:space="preserve">
-          <source>Pin class</source>
-          <target state="final">Anclar clase</target>
-        </trans-unit>
-        <trans-unit id="String_PinningClassPremiumFeatureMessage" translate="yes" xml:space="preserve">
-          <source>Pinning classes is a premium feature. Please upgrade to premium to unlock all secondary tile capabilities!</source>
-          <target state="final">Anclar clases es una característica Premium. ¡Hazte Premium para desbloquear todas las opciones de anclado!</target>
-        </trans-unit>
-        <trans-unit id="String_Save" translate="yes" xml:space="preserve">
-          <source>Save</source>
-          <target state="final">Guardar</target>
-        </trans-unit>
-        <trans-unit id="String_SaveTimes" translate="yes" xml:space="preserve">
-          <source>Save times</source>
-          <target state="final">Guardar horario</target>
-        </trans-unit>
-        <trans-unit id="String_UnpinClass" translate="yes" xml:space="preserve">
-          <source>Unpin class</source>
-          <target state="final">Desanclar clase</target>
-        </trans-unit>
-        <trans-unit id="TextBlock_To.Text" translate="yes" xml:space="preserve">
-          <source>to</source>
-          <target state="final">a</target>
-          <note from="MultilingualBuild" annotates="source" priority="2">Something like "10:00 to 10:50"</note>
-        </trans-unit>
-        <trans-unit id="AddClassPage_AddTitle" translate="yes" xml:space="preserve">
-          <source>ADD CLASS</source>
-          <target state="final">AGREGAR CLASE</target>
-        </trans-unit>
-        <trans-unit id="AddClassPage_ColorPickerEditClassColor.Header" translate="yes" xml:space="preserve">
-          <source>Color</source>
-          <target state="final">Color</target>
-        </trans-unit>
-        <trans-unit id="AddClassPage_TextBoxName.Header" translate="yes" xml:space="preserve">
-          <source>Name</source>
-          <target state="final">Nombre</target>
-        </trans-unit>
-        <trans-unit id="ClassSchedulesEditing_TextBlockNoTimes.Text" translate="yes" xml:space="preserve">
-          <source>Click the "+" button in the app bar to add a time</source>
-          <target state="final">Pulsa el botón "+" para agregar una hora</target>
-        </trans-unit>
-        <trans-unit id="EditGradePage_HeaderAddString" translate="yes" xml:space="preserve">
-          <source>ADD GRADE</source>
-          <target state="final">AGREGAR NOTA</target>
-        </trans-unit>
-        <trans-unit id="EditGradePage_HeaderAddWhatIfString" translate="yes" xml:space="preserve">
-          <source>ADD GRADE (WHAT IF)</source>
-          <target state="final">AGREGAR NOTA (QUÉ TAL SI)</target>
-        </trans-unit>
-        <trans-unit id="EditGradePage_HeaderEditString" translate="yes" xml:space="preserve">
-          <source>EDIT GRADE</source>
-          <target state="final">EDITAR NOTA</target>
-        </trans-unit>
-        <trans-unit id="EditGradePage_HeaderEditWhatIfString" translate="yes" xml:space="preserve">
-          <source>EDIT GRADE (WHAT IF)</source>
-          <target state="final">EDITAR NOTA (QUÉ TAL SI)</target>
-        </trans-unit>
-        <trans-unit id="EditGradePage_MessageNoWeightCategoryBody" translate="yes" xml:space="preserve">
-          <source>You must pick a weight category!</source>
-          <target state="final">¡Debe escoger una categoría de notas!</target>
-        </trans-unit>
-        <trans-unit id="EditGradePage_MessageNoWeightCategoryHeader" translate="yes" xml:space="preserve">
-          <source>No weight category</source>
-          <target state="final">Sin categoría de notas</target>
-        </trans-unit>
-        <trans-unit id="EditingClassScheduleItemView_ButtonDelete.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
-          <source>Delete</source>
-          <target state="final">Eliminar</target>
-        </trans-unit>
-        <trans-unit id="EditingClassScheduleItemView_TextBlockWeekDescription.Text" translate="yes" xml:space="preserve">
-          <source>Leave this on 'Every week' unless you have a two-week schedule.</source>
-          <target state="final">Dejar esto en "Cada semana" a menos que haya configurado un horario de dos semanas.</target>
-        </trans-unit>
-        <trans-unit id="EditingClassScheduleItemView_TextBoxRoom.Header" translate="yes" xml:space="preserve">
-          <source>Room</source>
-          <target state="final">Salón</target>
-        </trans-unit>
-        <trans-unit id="EditingClassScheduleItemView_TextBoxRoom.PlaceholderText" translate="yes" xml:space="preserve">
-          <source>ex: Modern Languages 302</source>
-          <target state="final">ej: Lenguas Modernas 302</target>
-        </trans-unit>
-        <trans-unit id="EditingClassScheduleItemView_TimePickerEnd.Header" translate="yes" xml:space="preserve">
-          <source>To</source>
-          <target state="final">Hasta</target>
-        </trans-unit>
-        <trans-unit id="EditingClassScheduleItemView_TimePickerStart.Header" translate="yes" xml:space="preserve">
-          <source>From</source>
-          <target state="final">De</target>
-        </trans-unit>
-        <trans-unit id="EditingClassScheduleItemView_WeekComboBox.Header" translate="yes" xml:space="preserve">
-          <source>Week</source>
-          <target state="final">Semana</target>
-        </trans-unit>
-        <trans-unit id="String_ExtraCreditAbbreviation" translate="yes" xml:space="preserve">
-          <source>EC</source>
-          <target state="final">EC</target>
-        </trans-unit>
-        <trans-unit id="String_NoNameMessageBody" translate="yes" xml:space="preserve">
-          <source>You must enter a name!</source>
-          <target state="final">¡Debe escribir un nombre!</target>
-        </trans-unit>
-        <trans-unit id="AppBarButtonEdit.Label" translate="yes" xml:space="preserve">
-          <source>Edit</source>
-          <target state="final">Editar</target>
-        </trans-unit>
-        <trans-unit id="EditTaskOrEventPage_ComboBoxClasses.Header" translate="yes" xml:space="preserve">
-          <source>Class</source>
-          <target state="final">Clase</target>
-        </trans-unit>
-        <trans-unit id="EditTaskOrEventPage_DatePickerDate.Header" translate="yes" xml:space="preserve">
-          <source>Date</source>
-          <target state="final">Fecha</target>
-        </trans-unit>
-        <trans-unit id="EditTaskOrEventPage_TextBoxDetails.Header" translate="yes" xml:space="preserve">
-          <source>Details</source>
-          <target state="final">Detalles</target>
-        </trans-unit>
-        <trans-unit id="EditTaskOrEventPage_TextBoxName.Header" translate="yes" xml:space="preserve">
-          <source>Name</source>
-          <target state="final">Nombre</target>
-        </trans-unit>
-        <trans-unit id="ForgotUsername_String_EnterEmailAddressExplanation" translate="yes" xml:space="preserve">
-          <source>Enter your EMAIL ADDRESS to recover your username.</source>
-          <target state="final">Escriba su DIRECCIÓN DE CORREO para recuperar su nombre de usuario.</target>
-        </trans-unit>
-        <trans-unit id="ForgotUsername_String_ErrorFindingUsername" translate="yes" xml:space="preserve">
-          <source>Error finding username</source>
-          <target state="final">No se encuentra el nombre de usuario</target>
-        </trans-unit>
-        <trans-unit id="ForgotUsername_String_FindingUsernameStatusText" translate="yes" xml:space="preserve">
-          <source>Finding username</source>
-          <target state="final">Encontrar nombre de usuario</target>
-        </trans-unit>
-        <trans-unit id="ForgotUsername_String_MessageHeader" translate="yes" xml:space="preserve">
-          <source>Forgot Username</source>
-          <target state="final">Olvidé mi Nombre de Usuario</target>
-        </trans-unit>
-        <trans-unit id="ForgotUsername_String_NoUsernameFoundExplanation" translate="yes" xml:space="preserve">
-          <source>No username was found under the email address of {0}.</source>
-          <target state="final">No se encontró un nombre de usuario relacionado a {0}.</target>
-        </trans-unit>
-        <trans-unit id="ForgotUsername_String_NoUsernameFoundHeader" translate="yes" xml:space="preserve">
-          <source>Nothing found</source>
-          <target state="final">Nada encontrado</target>
-        </trans-unit>
-        <trans-unit id="ForgotUsername_String_YourUsernames" translate="yes" xml:space="preserve">
-          <source>Your usernames are...</source>
-          <target state="final">Sus nombres son...</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_CheckingOnlinePassword" translate="yes" xml:space="preserve">
-          <source>Checking online password</source>
-          <target state="final">Comprobación de contraseñas en línea</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_ExplanationIncorrectPasswordAndLocalAccount" translate="yes" xml:space="preserve">
-          <source>Your password is incorrect. Since this is a local account, there is no way to reset your password. Consider creating an online account in the future.</source>
-          <target state="final">La contraseña es incorrecta. Ya que es una cuenta local, no hay ninguna manera de restablecer la contraseña. Considere crear una cuenta en línea en el futuro.</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_ExplanationIncorrectPasswordAndOffline" translate="yes" xml:space="preserve">
-          <source>Your password didn't match the locally-stored password, and we couldn't connect to the internet to check if you've updated your online password. Please ensure that you are connected to the internet.</source>
-          <target state="final">La contraseña no coincide con la contraseña almacenada localmente, y no podemos conectar a internet. Verifique su conexión a internet.</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_ExplanationOfflineAndNoLocalAccountFound" translate="yes" xml:space="preserve">
-          <source>You might be offline, and no local accounts exist with this username. Check your internet connection.</source>
-          <target state="final">Es posible que esté sin internet, y las cuentas no-locales existen con este nombre de usuario. Compruebe su conexión a internet.</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_ExplanationUsernameExistsLocally" translate="yes" xml:space="preserve">
-          <source>There is already a local account with the username that you picked. Please choose a unique username.</source>
-          <target state="final">Ya existe una cuenta local con el nombre de usuario que usted escogió. Por favor, elija otro nombre de usuario.</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_IncorrectPassword" translate="yes" xml:space="preserve">
-          <source>Incorrect password</source>
-          <target state="final">Contraseña incorrecta</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_LoggingIn" translate="yes" xml:space="preserve">
-          <source>Logging in</source>
-          <target state="final">Iniciando sesión</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_NoAccountFoundHeader" translate="yes" xml:space="preserve">
-          <source>No account found</source>
-          <target state="final">Cuenta no encontrada</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_SyncingAccount" translate="yes" xml:space="preserve">
-          <source>Syncing account</source>
-          <target state="final">Sincronizando su cuenta</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_UsernameEmpty" translate="yes" xml:space="preserve">
-          <source>Username was empty</source>
-          <target state="final">El nombre de usuario estaba vacío</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_UsernameEmptyExplanation" translate="yes" xml:space="preserve">
-          <source>You must enter a username!</source>
-          <target state="final">¡Debe ingresar un nombre de usuario!</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_String_UsernameExists" translate="yes" xml:space="preserve">
-          <source>Username exists</source>
-          <target state="final">El nombre de usuario existe</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_TextBlockForgotPassword.Text" translate="yes" xml:space="preserve">
-          <source>Forgot Password</source>
-          <target state="final">Olvidé mi contraseña</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_TextBlockForgotUsername.Text" translate="yes" xml:space="preserve">
-          <source>Forgot Username</source>
-          <target state="final">Olvidé mi Nombre de Usuario</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_TextBoxPassword.Header" translate="yes" xml:space="preserve">
-          <source>Password</source>
-          <target state="final">Contraseña</target>
-        </trans-unit>
-        <trans-unit id="LoginPage_TextBoxUsername.Header" translate="yes" xml:space="preserve">
-          <source>Username</source>
-          <target state="final">Nombre de usuario</target>
-        </trans-unit>
-        <trans-unit id="QuickAddPage.Title" translate="yes" xml:space="preserve">
+La versione gratuita è limitata a...
+ - 1 semestre
+ - 5 voti per materia
+ - 1 inserimento ricorrente di un'attività/evento
+ - Non è possibile aggiungere le materie come tile secondarie
+ - 1 allegato fotografico per elemento
+
+Una volta acquistata la versione premium, potrai usarla su tutti i tuoi dispositivi.</target>
+  <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+</trans-unit>
+
+		  <trans-unit id="TextBox_Password.Header" translate="yes" xml:space="preserve">
+  <source>Password</source>
+  <target state="final">Password</target>
+</trans-unit>
+		  <trans-unit id="TextBox_Username.Header" translate="yes" xml:space="preserve">
+  <source>Username</source>
+  <target state="final">Nome utente</target>
+</trans-unit>
+		  <trans-unit id="Settings_CalendarIntegration_Title" translate="yes" xml:space="preserve">
+  <source>CALENDAR INTEGRATION</source>
+  <target state="final">INTEGRAZIONE CALENDARIO</target>
+</trans-unit>
+		  <trans-unit id="Settings_CalendarIntegration_ItemClasses_DisplayName" translate="yes" xml:space="preserve">
+  <source>Classes integration</source>
+  <target state="final">Integrazione delle classi</target>
+</trans-unit>
+		  <trans-unit id="Settings_CalendarIntegration_ItemTasks_DisplayName" translate="yes" xml:space="preserve">
+  <source>Tasks integration</source>
+  <target state="final">Integrazione delle attività</target>
+</trans-unit>
+		  <trans-unit id="Settings_LiveTiles_Title" translate="yes" xml:space="preserve">
+  <source>LIVE TILES</source>
+  <target state="final">TILE DINAMICHE</target>
+</trans-unit>
+		  <trans-unit id="Settings_LiveTiles_ItemClassTiles_DisplayName" translate="yes" xml:space="preserve">
+  <source>Class Tiles</source>
+  <target state="final">Tile delle classi</target>
+</trans-unit>
+		  <trans-unit id="Settings_LiveTiles_ItemMainTile_DisplayName" translate="yes" xml:space="preserve">
+  <source>Main Tile</source>
+  <target state="final">Tile principale</target>
+</trans-unit>
+		  <trans-unit id="Settings_LiveTiles_ItemQuickAddTile_DisplayName" translate="yes" xml:space="preserve">
+  <source>Quick Add Tile</source>
+  <target state="final">Tile aggiunta rapida</target>
+</trans-unit>
+		  <trans-unit id="Settings_LiveTiles_ItemScheduleTile_DisplayName" translate="yes" xml:space="preserve">
+  <source>Schedule Tile</source>
+  <target state="final">Tile dell'orario</target>
+</trans-unit>
+		  <trans-unit id="Settings_SyncOptions_Title" translate="yes" xml:space="preserve">
+  <source>SYNC OPTIONS</source>
+  <target state="final">OPZIONI DI SINCRONIZZAZIONE</target>
+</trans-unit>
+		  <trans-unit id="Settings_SyncOptions_ItemImageUploadOptions_DisplayName" translate="yes" xml:space="preserve">
+  <source>Image upload options</source>
+  <target state="final">Opzioni di caricamento immagini</target>
+</trans-unit>
+		  <trans-unit id="Settings_SyncOptions_ItemPushNotifications_DisplayName" translate="yes" xml:space="preserve">
+  <source>Push notifications</source>
+  <target state="final">Notifiche push</target>
+</trans-unit>
+		  <trans-unit id="Settings_ChangeEmailPage_ButtonUpdateEmail_Content" translate="yes" xml:space="preserve">
+  <source>Update email</source>
+  <target state="final">Aggiorna email</target>
+</trans-unit>
+		  <trans-unit id="Settings_Tiles_ClassTile_HeaderText" translate="yes" xml:space="preserve">
+  <source>CLASS TILE</source>
+  <target state="final">TILE DELLA CLASSE</target>
+</trans-unit>
+		  <trans-unit id="Tile_PinTile" translate="yes" xml:space="preserve">
+  <source>Pin tile</source>
+  <target state="final">Aggiungi tile</target>
+</trans-unit>
+		  <trans-unit id="Tile_UnpinTile" translate="yes" xml:space="preserve">
+  <source>Unpin tile</source>
+  <target state="final">Rimuovi tile</target>
+</trans-unit>
+		  <trans-unit id="MainMenuItem_Agenda" translate="yes" xml:space="preserve">
+  <source>Agenda</source>
+  <target state="final">Agenda</target>
+</trans-unit>
+		  <trans-unit id="MainMenuItem_Calendar" translate="yes" xml:space="preserve">
+  <source>Calendar</source>
+  <target state="final">Calendario</target>
+</trans-unit>
+		  <trans-unit id="MainMenuItem_Classes" translate="yes" xml:space="preserve">
+  <source>Classes</source>
+  <target state="final">Classi</target>
+</trans-unit>
+		  <trans-unit id="MainMenuItem_Day" translate="yes" xml:space="preserve">
+  <source>Day</source>
+  <target state="final">Giorno</target>
+</trans-unit>
+		  <trans-unit id="MainMenuItem_Schedule" translate="yes" xml:space="preserve">
+  <source>Schedule</source>
+  <target state="final">Orario</target>
+</trans-unit>
+		  <trans-unit id="MainMenuItem_Settings" translate="yes" xml:space="preserve">
+  <source>Settings</source>
+  <target state="final">Impostazioni</target>
+</trans-unit>
+		  <trans-unit id="MainMenuItem_Years" translate="yes" xml:space="preserve">
+  <source>Years</source>
+  <target state="final">Anni</target>
+</trans-unit>
+		  <trans-unit id="MenuItemCancel" translate="yes" xml:space="preserve">
+  <source>Cancel</source>
+  <target state="final">Annulla</target>
+</trans-unit>
+		  <trans-unit id="MenuItemDelete" translate="yes" xml:space="preserve">
+  <source>Delete</source>
+  <target state="final">Elimina</target>
+</trans-unit>
+
+		  <trans-unit id="MessageFreeSemesterLimitReached" translate="yes" xml:space="preserve">
+  <source>To add more than one semester, you must upgrade to the premium version of Power Planner. Alternatively, you could always delete your current semester.</source>
+  <target state="final">Per aggiungere più di un semestre, è necessario eseguire l'upgrade alla versione premium di Power Planner. In alternativa, puoi sempre eliminare il semestre attuale.</target>
+</trans-unit>
+		  <trans-unit id="SemesterViewEditing_TextBoxName.PlaceholderText" translate="yes" xml:space="preserve">
+  <source>Name</source>
+  <target state="final">Nome</target>
+</trans-unit>
+		  <trans-unit id="SemesterView_ButtonOpenSemester.Content" translate="yes" xml:space="preserve">
+  <source>Open semester</source>
+  <target state="final">Apri semestre</target>
+</trans-unit>
+		  <trans-unit id="SemesterView_HeaderClass.Text" translate="yes" xml:space="preserve">
+  <source>Class</source>
+  <target state="final">Classe</target>
+</trans-unit>
+		  <trans-unit id="SemesterView_HeaderCredits.Text" translate="yes" xml:space="preserve">
+  <source>Credits</source>
+  <target state="final">Crediti</target>
+</trans-unit>
+		  <trans-unit id="SemesterView_HeaderGPA.Text" translate="yes" xml:space="preserve">
+  <source>GPA</source>
+  <target state="final">GPA</target>
+</trans-unit>
+		  <trans-unit id="String_Credits" translate="yes" xml:space="preserve">
+  <source>{0} Credits</source>
+  <target state="final">{0} Crediti</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Include the {0}, the credits will be inserted there</note>
+</trans-unit>
+		  <trans-unit id="String_GPA" translate="yes" xml:space="preserve">
+  <source>{0} GPA</source>
+  <target state="final">{0} GPA</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Include the {0}, the GPA will be inserted there</note>
+</trans-unit>
+		  <trans-unit id="YearsPage_ButtonAddYear.Content" translate="yes" xml:space="preserve">
+  <source>add year</source>
+  <target state="final">aggiungi anno</target>
+</trans-unit>
+		  <trans-unit id="YearsPage_TextBlockOverall.Text" translate="yes" xml:space="preserve">
+  <source>Overall:</source>
+  <target state="final">Totale:</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Include the colon - this is displayed like "Overall: [GPA] / [Credits]"</note>
+</trans-unit>
+		  <trans-unit id="YearView_ButtonAddSemester.Content" translate="yes" xml:space="preserve">
+  <source>add semester</source>
+  <target state="final">aggiungi semestre</target>
+</trans-unit>
+		  <trans-unit id="AddYearPage_MessageNoName_Body" translate="yes" xml:space="preserve">
+  <source>You must enter a name for this year!</source>
+  <target state="final">Devi inserire un nome per quest'anno!</target>
+</trans-unit>
+		  <trans-unit id="AddYearPage_MessageNoName_Title" translate="yes" xml:space="preserve">
+  <source>No name</source>
+  <target state="final">Nessun nome</target>
+</trans-unit>
+		  <trans-unit id="AddYearPage_TextBoxName.Header" translate="yes" xml:space="preserve">
+  <source>Name</source>
+  <target state="final">Nome</target>
+</trans-unit>
+		  <trans-unit id="AddYearPage_TextBoxName.PlaceholderText" translate="yes" xml:space="preserve">
+  <source>ex: Freshman</source>
+  <target state="final">es: Matricola</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Provide an example of a name of a year, like Freshman, Sophomore, Junior, or Senior</note>
+</trans-unit>
+		  <trans-unit id="AddYearPage_Title_Adding" translate="yes" xml:space="preserve">
+  <source>ADD YEAR</source>
+  <target state="final">AGGIUNGI ANNO</target>
+</trans-unit>
+		  <trans-unit id="AddYearPage_Title_Editing" translate="yes" xml:space="preserve">
+  <source>EDIT YEAR</source>
+  <target state="final">MODIFICA ANNO</target>
+</trans-unit>
+		  <trans-unit id="AppBarButtonDelete.Label" translate="yes" xml:space="preserve">
+  <source>Delete</source>
+  <target state="final">Elimina</target>
+</trans-unit>
+		  <trans-unit id="AppBarButtonSave.Label" translate="yes" xml:space="preserve">
+  <source>Save</source>
+  <target state="final">Salva</target>
+</trans-unit>
+		  <trans-unit id="MessageDeleteYear_Body" translate="yes" xml:space="preserve">
+  <source>Are you sure you want to delete this year and all of its semesters, classes, and grades?</source>
+  <target state="final">Sei sicuro di voler eliminare quest'anno e tutti i suoi semestri, classi e voti?</target>
+</trans-unit>
+		  <trans-unit id="MessageDeleteYear_Title" translate="yes" xml:space="preserve">
+  <source>Delete year?</source>
+  <target state="final">Eliminare anno?</target>
+</trans-unit>
+		  <trans-unit id="SemesterView_Total.Text" translate="yes" xml:space="preserve">
+  <source>Total</source>
+  <target state="final">Totale</target>
+</trans-unit>
+		  <trans-unit id="Calendar_FullCalendarAddButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+  <source>Add</source>
+  <target state="final">Aggiungi</target>
+</trans-unit>
+		  <trans-unit id="Calendar_FullCalendarGoToTodayButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+  <source>Go To Today</source>
+  <target state="final">Vai a oggi</target>
+</trans-unit>
+		  <trans-unit id="RelativeDate_Today" translate="yes" xml:space="preserve">
+  <source>Today</source>
+  <target state="final">Oggi</target>
+</trans-unit>
+		  <trans-unit id="RelativeDate_Tomorrow" translate="yes" xml:space="preserve">
+  <source>Tomorrow</source>
+  <target state="final">Domani</target>
+</trans-unit>
+		  <trans-unit id="RelativeDate_Yesterday" translate="yes" xml:space="preserve">
+  <source>Yesterday</source>
+  <target state="final">Ieri</target>
+</trans-unit>
+		  <trans-unit id="RelativeDate_Future" translate="yes" xml:space="preserve">
+  <source>Future</source>
+  <target state="final">Futuro</target>
+</trans-unit>
+		  <trans-unit id="RelativeDate_InThePast" translate="yes" xml:space="preserve">
+  <source>In the past</source>
+  <target state="final">Nel passato</target>
+</trans-unit>
+		  <trans-unit id="RelativeDate_InXDays" translate="yes" xml:space="preserve">
+  <source>In {0} days</source>
+  <target state="final">Tra {0} giorni</target>
+</trans-unit>
+		  <trans-unit id="RelativeDate_WithinXDays" translate="yes" xml:space="preserve">
+  <source>Within {0} days</source>
+  <target state="final">Entro {0} giorni</target>
+</trans-unit>
+
+		  <trans-unit id="String_GoToToday" translate="yes" xml:space="preserve">
+  <source>Go to today</source>
+  <target state="final">Vai a oggi</target>
+</trans-unit>
+		  <trans-unit id="String_NewItem" translate="yes" xml:space="preserve">
+  <source>New item</source>
+  <target state="final">Nuovo elemento</target>
+</trans-unit>
+		  <trans-unit id="String_PinToStart" translate="yes" xml:space="preserve">
+  <source>Pin to Start</source>
+  <target state="final">Aggiungi a Start</target>
+</trans-unit>
+		  <trans-unit id="String_UnpinFromStart" translate="yes" xml:space="preserve">
+  <source>Unpin from Start</source>
+  <target state="final">Rimuovi da Start</target>
+</trans-unit>
+		  <trans-unit id="String_WeekA" translate="yes" xml:space="preserve">
+  <source>Week A</source>
+  <target state="final">Settimana A</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">In the context of the schedule view, for toggling between week A and B</note>
+</trans-unit>
+		  <trans-unit id="String_WeekB" translate="yes" xml:space="preserve">
+  <source>Week B</source>
+  <target state="final">Settimana B</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">In the context of the schedule view, for toggling between week A and B</note>
+</trans-unit>
+		  <trans-unit id="String_TimeToTime" translate="yes" xml:space="preserve">
+  <source>{0} to {1}</source>
+  <target state="final">{0} - {1}</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Ex: "8:00 AM to 8:50 AM"</note>
+</trans-unit>
+		  <trans-unit id="ClassPage_ButtonAddGradeScale.Content" translate="yes" xml:space="preserve">
+  <source>+ add grade scale</source>
+  <target state="final">+ aggiungi scala di valutazione</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_ButtonAddWeightCategory.Content" translate="yes" xml:space="preserve">
+  <source>+ add weight category</source>
+  <target state="final">+ aggiungi categoria di peso</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_ButtonWhatIfMode.Content" translate="yes" xml:space="preserve">
+  <source>What If? Mode</source>
+  <target state="final">Modalità "E se?"</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_ColorPickerEditClassColor.Header" translate="yes" xml:space="preserve">
+  <source>Color</source>
+  <target state="final">Colore</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_EditGrades_TextBlockGPA.Text" translate="yes" xml:space="preserve">
+  <source>GPA</source>
+  <target state="final">GPA</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_EditGrades_TextBlockGradeScales.Text" translate="yes" xml:space="preserve">
+  <source>Grade Scales</source>
+  <target state="final">Scale di valutazione</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_EditGrades_TextBlockName.Text" translate="yes" xml:space="preserve">
+  <source>Name</source>
+  <target state="final">Nome</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_EditGrades_TextBlockStartingGrade.Text" translate="yes" xml:space="preserve">
+  <source>Starting Grade</source>
+  <target state="final">Voto iniziale</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_EditGrades_TextBlockWeight.Text" translate="yes" xml:space="preserve">
+  <source>Weight</source>
+  <target state="final">Peso</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_EditGrades_TextBlockWeightCategories.Text" translate="yes" xml:space="preserve">
+  <source>Weight Categories</source>
+  <target state="final">Categorie di peso</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_PivotItemDetails.Header" translate="yes" xml:space="preserve">
+  <source>Details</source>
+  <target state="final">Dettagli</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_PivotItemEvents.Header" translate="yes" xml:space="preserve">
+  <source>Events</source>
+  <target state="final">Eventi</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_PivotItemGrades.Header" translate="yes" xml:space="preserve">
+  <source>Grades</source>
+  <target state="final">Voti</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_PivotItemTasks.Header" translate="yes" xml:space="preserve">
+  <source>Tasks</source>
+  <target state="final">Compiti</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_PivotItemOverview.Header" translate="yes" xml:space="preserve">
+  <source>Overview</source>
+  <target state="final">Panoramica</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_PivotItemTimes.Header" translate="yes" xml:space="preserve">
+  <source>Times</source>
+  <target state="final">Orari</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_SchedulesNoTimesDetails.Text" translate="yes" xml:space="preserve">
+  <source>Click the edit button in the app bar to add class times</source>
+  <target state="final">Fai clic sul pulsante modifica per aggiungere gli orari delle lezioni</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_SchedulesNoTimesHeader.Text" translate="yes" xml:space="preserve">
+  <source>No Times</source>
+  <target state="final">Nessun orario</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBlockAverageGradesHelpHeader.Text" translate="yes" xml:space="preserve">
+  <source>Average grades</source>
+  <target state="final">Media voti</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBlockClassTimes.Text" translate="yes" xml:space="preserve">
+  <source>CLASS TIMES</source>
+  <target state="final">ORARI LEZIONI</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBlockDetails.Text" translate="yes" xml:space="preserve">
+  <source>DETAILS</source>
+  <target state="final">DETTAGLI</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBlockEvents.Text" translate="yes" xml:space="preserve">
+  <source>EVENTS</source>
+  <target state="final">EVENTI</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBlockGrades.Text" translate="yes" xml:space="preserve">
+  <source>GRADES</source>
+  <target state="final">VOTI</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBlockTasks.Text" translate="yes" xml:space="preserve">
+  <source>TASKS</source>
+  <target state="final">COMPITI</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBlockRoundGradesUpHelpHeader.Text" translate="yes" xml:space="preserve">
+  <source>Round grades up</source>
+  <target state="final">Arrotonda voti</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBoxEditClassName.Header" translate="yes" xml:space="preserve">
+  <source>Name</source>
+  <target state="final">Nome</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBoxEditCredits.Header" translate="yes" xml:space="preserve">
+  <source>Credits</source>
+  <target state="final">Crediti</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBoxEditCredits.PlaceholderText" translate="yes" xml:space="preserve">
+  <source>ex: 4</source>
+  <target state="final">es: 4</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_TextBoxEditWeightCategoryName.PlaceholderText" translate="yes" xml:space="preserve">
+  <source>ex: Exams</source>
+  <target state="final">es: Esami</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_ToggleAverageGrades.Header" translate="yes" xml:space="preserve">
+  <source>Average grades</source>
+  <target state="final">Media voti</target>
+</trans-unit>
+		  <trans-unit id="ClassPage_ToggleRoundGradesUp.Header" translate="yes" xml:space="preserve">
+  <source>Round grades up</source>
+  <target state="final">Arrotonda voti</target>
+</trans-unit>
+
+		  <trans-unit id="String_AddTime" translate="yes" xml:space="preserve">
+  <source>Add time</source>
+  <target state="final">Aggiungi orario</target>
+</trans-unit>
+		  <trans-unit id="String_Cancel" translate="yes" xml:space="preserve">
+  <source>Cancel</source>
+  <target state="final">Annulla</target>
+</trans-unit>
+		  <trans-unit id="String_ConfirmDeleteClassHeader" translate="yes" xml:space="preserve">
+  <source>Delete class?</source>
+  <target state="final">Eliminare la classe?</target>
+</trans-unit>
+		  <trans-unit id="String_ConfirmDeleteClassMessage" translate="yes" xml:space="preserve">
+  <source>Are you sure you want to delete this class and all its contents?</source>
+  <target state="final">Sei sicuro di voler eliminare questa classe e tutto il suo contenuto?</target>
+</trans-unit>
+		  <trans-unit id="String_DeleteClass" translate="yes" xml:space="preserve">
+  <source>Delete class</source>
+  <target state="final">Elimina classe</target>
+</trans-unit>
+		  <trans-unit id="String_EditClass" translate="yes" xml:space="preserve">
+  <source>Edit class</source>
+  <target state="final">Modifica classe</target>
+</trans-unit>
+		  <trans-unit id="String_EditDetails" translate="yes" xml:space="preserve">
+  <source>Edit details</source>
+  <target state="final">Modifica dettagli</target>
+</trans-unit>
+		  <trans-unit id="String_EditGrades" translate="yes" xml:space="preserve">
+  <source>Edit grades</source>
+  <target state="final">Modifica voti</target>
+</trans-unit>
+		  <trans-unit id="String_EditTimes" translate="yes" xml:space="preserve">
+  <source>Edit times</source>
+  <target state="final">Modifica orari</target>
+</trans-unit>
+		  <trans-unit id="String_EventDatePrefix" translate="yes" xml:space="preserve">
+  <source>on</source>
+  <target state="final">il</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Something like "on 3/25/2016"</note>
+</trans-unit>
+		  <trans-unit id="String_GradeScaleCustom" translate="yes" xml:space="preserve">
+  <source>Custom (not saved)</source>
+  <target state="final">Personalizzato (non salvato)</target>
+</trans-unit>
+		  <trans-unit id="String_TaskDatePrefix" translate="yes" xml:space="preserve">
+  <source>due</source>
+  <target state="final">scadenza</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Something like "due 3/25/2016"</note>
+</trans-unit>
+		  <trans-unit id="String_InvalidGradeScalesMessageBody" translate="yes" xml:space="preserve">
+  <source>Your grade scales are invalid. Please ensure that each scale's Start Grade is less than the previous one's Start Grade.</source>
+  <target state="final">Le tue scale di valutazione non sono valide. Assicurati che il voto iniziale di ciascuna scala sia inferiore a quello della scala precedente.</target>
+</trans-unit>
+		  <trans-unit id="String_InvalidGradeScalesMessageHeader" translate="yes" xml:space="preserve">
+  <source>Invalid Grade Scales</source>
+  <target state="final">Scale di valutazione non valide</target>
+</trans-unit>
+		  <trans-unit id="String_InvalidWeightCategoriesMessageBody" translate="yes" xml:space="preserve">
+  <source>Your weight categories are invalid. Please ensure that each weight category has a name and a non-positive value.</source>
+  <target state="final">Le tue categorie di peso non sono valide. Assicurati che ogni categoria abbia un nome e un valore non positivo.</target>
+</trans-unit>
+		  <trans-unit id="String_InvalidWeightCategoriesMessageHeader" translate="yes" xml:space="preserve">
+  <source>Invalid Weight Categories</source>
+  <target state="final">Categorie di peso non valide</target>
+</trans-unit>
+		  <trans-unit id="String_NewEvent" translate="yes" xml:space="preserve">
+  <source>New event</source>
+  <target state="final">Nuovo evento</target>
+</trans-unit>
+		  <trans-unit id="String_NewGrade" translate="yes" xml:space="preserve">
+  <source>New grade</source>
+  <target state="final">Nuovo voto</target>
+</trans-unit>
+		  <trans-unit id="String_NewTask" translate="yes" xml:space="preserve">
+  <source>New task</source>
+  <target state="final">Nuovo compito</target>
+</trans-unit>
+		  <trans-unit id="String_NoClassNameMessageBody" translate="yes" xml:space="preserve">
+  <source>You must enter a name for this class!</source>
+  <target state="final">Devi inserire un nome per questa classe!</target>
+</trans-unit>
+		  <trans-unit id="String_NoNameMessageHeader" translate="yes" xml:space="preserve">
+  <source>No name</source>
+  <target state="final">Nessun nome</target>
+</trans-unit>
+		  <trans-unit id="String_PinClass" translate="yes" xml:space="preserve">
+  <source>Pin class</source>
+  <target state="final">Fissa classe</target>
+</trans-unit>
+		  <trans-unit id="String_PinningClassPremiumFeatureMessage" translate="yes" xml:space="preserve">
+  <source>Pinning classes is a premium feature. Please upgrade to premium to unlock all secondary tile capabilities!</source>
+  <target state="final">Fissare le classi è una funzione premium. Effettua l'upgrade a premium per sbloccare tutte le funzionalità aggiuntive!</target>
+</trans-unit>
+		  <trans-unit id="String_Save" translate="yes" xml:space="preserve">
+  <source>Save</source>
+  <target state="final">Salva</target>
+</trans-unit>
+		  <trans-unit id="String_SaveTimes" translate="yes" xml:space="preserve">
+  <source>Save times</source>
+  <target state="final">Salva orari</target>
+</trans-unit>
+		  <trans-unit id="String_UnpinClass" translate="yes" xml:space="preserve">
+  <source>Unpin class</source>
+  <target state="final">Sblocca classe</target>
+</trans-unit>
+
+		  <trans-unit id="TextBlock_To.Text" translate="yes" xml:space="preserve">
+  <source>to</source>
+  <target state="final">a</target>
+  <note from="MultilingualBuild" annotates="source" priority="2">Something like "10:00 to 10:50"</note>
+</trans-unit>
+		  <trans-unit id="AddClassPage_AddTitle" translate="yes" xml:space="preserve">
+  <source>ADD CLASS</source>
+  <target state="final">AGGIUNGI CLASSE</target>
+</trans-unit>
+		  <trans-unit id="AddClassPage_ColorPickerEditClassColor.Header" translate="yes" xml:space="preserve">
+  <source>Color</source>
+  <target state="final">Colore</target>
+</trans-unit>
+		  <trans-unit id="AddClassPage_TextBoxName.Header" translate="yes" xml:space="preserve">
+  <source>Name</source>
+  <target state="final">Nome</target>
+</trans-unit>
+		  <trans-unit id="ClassSchedulesEditing_TextBlockNoTimes.Text" translate="yes" xml:space="preserve">
+  <source>Click the "+" button in the app bar to add a time</source>
+  <target state="final">Fai clic sul pulsante "+" per aggiungere un orario</target>
+</trans-unit>
+		  <trans-unit id="EditGradePage_HeaderAddString" translate="yes" xml:space="preserve">
+  <source>ADD GRADE</source>
+  <target state="final">AGGIUNGI VOTO</target>
+</trans-unit>
+		  <trans-unit id="EditGradePage_HeaderAddWhatIfString" translate="yes" xml:space="preserve">
+  <source>ADD GRADE (WHAT IF)</source>
+  <target state="final">AGGIUNGI VOTO (E SE)</target>
+</trans-unit>
+		  <trans-unit id="EditGradePage_HeaderEditString" translate="yes" xml:space="preserve">
+  <source>EDIT GRADE</source>
+  <target state="final">MODIFICA VOTO</target>
+</trans-unit>
+		  <trans-unit id="EditGradePage_HeaderEditWhatIfString" translate="yes" xml:space="preserve">
+  <source>EDIT GRADE (WHAT IF)</source>
+  <target state="final">MODIFICA VOTO (E SE)</target>
+</trans-unit>
+		  <trans-unit id="EditGradePage_MessageNoWeightCategoryBody" translate="yes" xml:space="preserve">
+  <source>You must pick a weight category!</source>
+  <target state="final">Devi scegliere una categoria di peso!</target>
+</trans-unit>
+		  <trans-unit id="EditGradePage_MessageNoWeightCategoryHeader" translate="yes" xml:space="preserve">
+  <source>No weight category</source>
+  <target state="final">Nessuna categoria di peso</target>
+</trans-unit>
+		  <trans-unit id="EditingClassScheduleItemView_ButtonDelete.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+  <source>Delete</source>
+  <target state="final">Elimina</target>
+</trans-unit>
+		  <trans-unit id="EditingClassScheduleItemView_TextBlockWeekDescription.Text" translate="yes" xml:space="preserve">
+  <source>Leave this on 'Every week' unless you have a two-week schedule.</source>
+  <target state="final">Lascia selezionato "Ogni settimana" a meno che tu non abbia un orario di due settimane.</target>
+</trans-unit>
+		  <trans-unit id="EditingClassScheduleItemView_TextBoxRoom.Header" translate="yes" xml:space="preserve">
+  <source>Room</source>
+  <target state="final">Aula</target>
+</trans-unit>
+		  <trans-unit id="EditingClassScheduleItemView_TextBoxRoom.PlaceholderText" translate="yes" xml:space="preserve">
+  <source>ex: Modern Languages 302</source>
+  <target state="final">es: Lingue Moderne 302</target>
+</trans-unit>
+		  <trans-unit id="EditingClassScheduleItemView_TimePickerEnd.Header" translate="yes" xml:space="preserve">
+  <source>To</source>
+  <target state="final">Fino a</target>
+</trans-unit>
+		  <trans-unit id="EditingClassScheduleItemView_TimePickerStart.Header" translate="yes" xml:space="preserve">
+  <source>From</source>
+  <target state="final">Da</target>
+</trans-unit>
+		  <trans-unit id="EditingClassScheduleItemView_WeekComboBox.Header" translate="yes" xml:space="preserve">
+  <source>Week</source>
+  <target state="final">Settimana</target>
+</trans-unit>
+		  <trans-unit id="String_ExtraCreditAbbreviation" translate="yes" xml:space="preserve">
+  <source>EC</source>
+  <target state="final">EC</target>
+</trans-unit>
+		  <trans-unit id="String_NoNameMessageBody" translate="yes" xml:space="preserve">
+  <source>You must enter a name!</source>
+  <target state="final">Devi inserire un nome!</target>
+</trans-unit>
+		  <trans-unit id="AppBarButtonEdit.Label" translate="yes" xml:space="preserve">
+  <source>Edit</source>
+  <target state="final">Modifica</target>
+</trans-unit>
+		  <trans-unit id="EditTaskOrEventPage_ComboBoxClasses.Header" translate="yes" xml:space="preserve">
+  <source>Class</source>
+  <target state="final">Classe</target>
+</trans-unit>
+		  <trans-unit id="EditTaskOrEventPage_DatePickerDate.Header" translate="yes" xml:space="preserve">
+  <source>Date</source>
+  <target state="final">Data</target>
+</trans-unit>
+		  <trans-unit id="EditTaskOrEventPage_TextBoxDetails.Header" translate="yes" xml:space="preserve">
+  <source>Details</source>
+  <target state="final">Dettagli</target>
+</trans-unit>
+		  <trans-unit id="EditTaskOrEventPage_TextBoxName.Header" translate="yes" xml:space="preserve">
+  <source>Name</source>
+  <target state="final">Nome</target>
+</trans-unit>
+
+		  <trans-unit id="ForgotUsername_String_EnterEmailAddressExplanation" translate="yes" xml:space="preserve">
+  <source>Enter your EMAIL ADDRESS to recover your username.</source>
+  <target state="final">Inserisci il tuo INDIRIZZO EMAIL per recuperare il tuo nome utente.</target>
+</trans-unit>
+		  <trans-unit id="ForgotUsername_String_ErrorFindingUsername" translate="yes" xml:space="preserve">
+  <source>Error finding username</source>
+  <target state="final">Errore nel trovare il nome utente</target>
+</trans-unit>
+		  <trans-unit id="ForgotUsername_String_FindingUsernameStatusText" translate="yes" xml:space="preserve">
+  <source>Finding username</source>
+  <target state="final">Ricerca del nome utente</target>
+</trans-unit>
+		  <trans-unit id="ForgotUsername_String_MessageHeader" translate="yes" xml:space="preserve">
+  <source>Forgot Username</source>
+  <target state="final">Nome utente dimenticato</target>
+</trans-unit>
+		  <trans-unit id="ForgotUsername_String_NoUsernameFoundExplanation" translate="yes" xml:space="preserve">
+  <source>No username was found under the email address of {0}.</source>
+  <target state="final">Nessun nome utente trovato per l'indirizzo email {0}.</target>
+</trans-unit>
+		  <trans-unit id="ForgotUsername_String_NoUsernameFoundHeader" translate="yes" xml:space="preserve">
+  <source>Nothing found</source>
+  <target state="final">Nessun risultato</target>
+</trans-unit>
+		  <trans-unit id="ForgotUsername_String_YourUsernames" translate="yes" xml:space="preserve">
+  <source>Your usernames are...</source>
+  <target state="final">I tuoi nomi utente sono...</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_CheckingOnlinePassword" translate="yes" xml:space="preserve">
+  <source>Checking online password</source>
+  <target state="final">Verifica della password online</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_ExplanationIncorrectPasswordAndLocalAccount" translate="yes" xml:space="preserve">
+  <source>Your password is incorrect. Since this is a local account, there is no way to reset your password. Consider creating an online account in the future.</source>
+  <target state="final">La tua password è errata. Poiché si tratta di un account locale, non è possibile reimpostarla. Considera di creare un account online in futuro.</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_ExplanationIncorrectPasswordAndOffline" translate="yes" xml:space="preserve">
+  <source>Your password didn't match the locally-stored password, and we couldn't connect to the internet to check if you've updated your online password. Please ensure that you are connected to the internet.</source>
+  <target state="final">La tua password non corrisponde a quella salvata localmente e non possiamo connetterci a Internet per verificare se l'hai aggiornata. Assicurati di essere connesso a Internet.</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_ExplanationOfflineAndNoLocalAccountFound" translate="yes" xml:space="preserve">
+  <source>You might be offline, and no local accounts exist with this username. Check your internet connection.</source>
+  <target state="final">Potresti essere offline e non esistono account locali con questo nome utente. Controlla la tua connessione a Internet.</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_ExplanationUsernameExistsLocally" translate="yes" xml:space="preserve">
+  <source>There is already a local account with the username that you picked. Please choose a unique username.</source>
+  <target state="final">Esiste già un account locale con il nome utente scelto. Scegli un nome utente univoco.</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_IncorrectPassword" translate="yes" xml:space="preserve">
+  <source>Incorrect password</source>
+  <target state="final">Password errata</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_LoggingIn" translate="yes" xml:space="preserve">
+  <source>Logging in</source>
+  <target state="final">Accesso in corso</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_NoAccountFoundHeader" translate="yes" xml:space="preserve">
+  <source>No account found</source>
+  <target state="final">Nessun account trovato</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_SyncingAccount" translate="yes" xml:space="preserve">
+  <source>Syncing account</source>
+  <target state="final">Sincronizzazione dell'account</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_UsernameEmpty" translate="yes" xml:space="preserve">
+  <source>Username was empty</source>
+  <target state="final">Il nome utente era vuoto</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_UsernameEmptyExplanation" translate="yes" xml:space="preserve">
+  <source>You must enter a username!</source>
+  <target state="final">Devi inserire un nome utente!</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_String_UsernameExists" translate="yes" xml:space="preserve">
+  <source>Username exists</source>
+  <target state="final">Il nome utente esiste</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_TextBlockForgotPassword.Text" translate="yes" xml:space="preserve">
+  <source>Forgot Password</source>
+  <target state="final">Password dimenticata</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_TextBlockForgotUsername.Text" translate="yes" xml:space="preserve">
+  <source>Forgot Username</source>
+  <target state="final">Nome utente dimenticato</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_TextBoxPassword.Header" translate="yes" xml:space="preserve">
+  <source>Password</source>
+  <target state="final">Password</target>
+</trans-unit>
+		  <trans-unit id="LoginPage_TextBoxUsername.Header" translate="yes" xml:space="preserve">
+  <source>Username</source>
+  <target state="final">Nome utente</target>
+</trans-unit>
+
+		  <!--Stopped translation here-->
+		  <trans-unit id="QuickAddPage.Title" translate="yes" xml:space="preserve">
           <source>QUICK ADD</source>
           <target state="final">ADICIÓN RÁPIDA</target>
         </trans-unit>
