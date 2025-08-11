@@ -496,7 +496,15 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         public byte[] NoClassColor
         {
             get => _noClassColor;
-            set => SetProperty(ref _noClassColor, value, nameof(NoClassColor));
+            set
+            {
+                // Validate color array if not null
+                if (value != null && value.Length != 3)
+                {
+                    throw new ArgumentException("NoClassColor must be null or a 3-byte RGB array", nameof(value));
+                }
+                SetProperty(ref _noClassColor, value, nameof(NoClassColor));
+            }
         }
 
         public async System.Threading.Tasks.Task SaveDefaultGradeScale(GradeScale[] defaultGradeScale)

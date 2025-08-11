@@ -56,23 +56,37 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private async void OnColorChanged(Color color)
         {
-            var newColorBytes = new byte[] { color.R, color.G, color.B };
-
-            // Don't save if it's the same color
-            if (_account.NoClassColor != null && _account.NoClassColor.Length == 3 &&
-                _account.NoClassColor[0] == newColorBytes[0] &&
-                _account.NoClassColor[1] == newColorBytes[1] &&
-                _account.NoClassColor[2] == newColorBytes[2])
+            try
             {
-                return;
-            }
+                var newColorBytes = new byte[] { color.R, color.G, color.B };
 
-            await SaveColor(newColorBytes);
+                // Don't save if it's the same color
+                if (_account.NoClassColor != null && _account.NoClassColor.Length == 3 &&
+                    _account.NoClassColor[0] == newColorBytes[0] &&
+                    _account.NoClassColor[1] == newColorBytes[1] &&
+                    _account.NoClassColor[2] == newColorBytes[2])
+                {
+                    return;
+                }
+
+                await SaveColor(newColorBytes);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to process color change: {ex.Message}");
+            }
         }
 
         private async void ResetToDefault()
         {
-            await SaveColor(null);
+            try
+            {
+                await SaveColor(null);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to reset to default color: {ex.Message}");
+            }
         }
 
         private async System.Threading.Tasks.Task SaveColor(byte[] colorBytes)
