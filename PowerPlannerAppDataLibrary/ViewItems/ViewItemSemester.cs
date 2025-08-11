@@ -54,10 +54,13 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             {
                 if (_noClassClass == null)
                 {
+                    // Use custom color from account if available, otherwise use default light blue
+                    byte[] noClassColor = Account?.NoClassColor ?? new byte[] { 84, 107, 199 };
+                    
                     _noClassClass = new ViewItemClass(new NoClassDataItemClass()
                     {
                         Name = PowerPlannerResources.GetString("String_NoClass"),
-                        RawColor = new byte[] { 84, 107, 199 },
+                        RawColor = noClassColor,
                         UpperIdentifier = Identifier,
                         Identifier = Identifier
                     })
@@ -68,6 +71,15 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
                 return _noClassClass;
             }
+        }
+
+        /// <summary>
+        /// Clears the cached NoClassClass so it will be recreated with the current account color setting
+        /// </summary>
+        public void InvalidateNoClassClass()
+        {
+            _noClassClass = null;
+            OnPropertyChanged(nameof(NoClassClass));
         }
 
         private class NoClassDataItemClass : DataItemClass
