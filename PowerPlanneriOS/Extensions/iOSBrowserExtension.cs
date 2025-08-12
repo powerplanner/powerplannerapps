@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Foundation;
 using PowerPlannerAppDataLibrary.Extensions;
@@ -10,8 +10,7 @@ namespace PowerPlanneriOS.Extensions
     {
         public override Task OpenUrlAsync(Uri uri)
         {
-            UIApplication.SharedApplication.OpenUrl(new NSUrl(uri.ToString()));
-            return Task.CompletedTask;
+            return UIApplication.SharedApplication.OpenUrlAsync(new NSUrl(uri.ToString()), new UIApplicationOpenUrlOptions());
         }
     }
 }
