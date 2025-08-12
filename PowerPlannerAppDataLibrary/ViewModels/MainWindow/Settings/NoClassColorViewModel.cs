@@ -119,12 +119,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             try
             {
                 var mainScreen = MainScreenViewModel;
-                if (mainScreen?.CurrentYear?.Semesters != null)
+                if (mainScreen?.CurrentSemester != null)
                 {
-                    foreach (var semester in mainScreen.CurrentYear.Semesters)
-                    {
-                        semester.InvalidateNoClassClass();
-                    }
+                    mainScreen.CurrentSemester.InvalidateNoClassClass();
                 }
             }
             catch (Exception ex)
