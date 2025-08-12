@@ -2769,6 +2769,22 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
           <source>Recovering...</source>
           <target state="final">Recuperando...</target>
         </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No Class Color</source>
+          <target state="new">No Class Color</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned. This is useful for colorblind users or when you want to visually distinguish unassigned items.</source>
+          <target state="new">Customize the color of tasks and events that don't have a class assigned. This is useful for colorblind users or when you want to visually distinguish unassigned items.</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_ColorPicker_Header" translate="yes" xml:space="preserve">
+          <source>Choose color for items without a class</source>
+          <target state="new">Choose color for items without a class</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="new">Reset to default</target>
+        </trans-unit>
       </group>
     </body>
   </file>
