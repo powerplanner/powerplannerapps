@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Data;
 
 namespace PowerPlannerUWP.Views.TaskOrEventViews
 {
-    public class IsCompleteToTitleForegroundConverter : IValueConverter
+    public partial class IsCompleteToTitleForegroundConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

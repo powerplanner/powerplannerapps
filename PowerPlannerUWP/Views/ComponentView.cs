@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace PowerPlannerUWP.Views
 {
-    public class ComponentView : ViewHostGeneric
+    public partial class ComponentView : ViewHostGeneric
     {
         public ComponentView()
         {

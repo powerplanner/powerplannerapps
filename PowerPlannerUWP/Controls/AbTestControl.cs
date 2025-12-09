@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Data;
 
 namespace PowerPlannerUWP.Controls
 {
-    public class AbTestControl : UserControl
+    public partial class AbTestControl : UserControl
     {
         private TimeSpan _durationWithFocus = new TimeSpan();
 

@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace PowerPlannerUWP.Converters
 {
-    public class IsCompleteToOpacityConverter : IValueConverter
+    public partial class IsCompleteToOpacityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

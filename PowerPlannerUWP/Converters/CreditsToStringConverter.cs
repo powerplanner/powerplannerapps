@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace PowerPlannerUWP.Converters
 {
-    public class CreditsToStringConverter : IValueConverter
+    public partial class CreditsToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Media;
 
 namespace PowerPlannerUWP.Views
 {
-    public class MainScreenContentViewHostGeneric : ViewHostGeneric
+    public partial class MainScreenContentViewHostGeneric : ViewHostGeneric
     {
         public override void OnViewModelSetOverride()
         {

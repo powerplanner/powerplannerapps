@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Data;
 
 namespace PowerPlannerUWP.Converters
 {
-    public class IsCompleteToVisibilityConverter : IValueConverter
+    public partial class IsCompleteToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

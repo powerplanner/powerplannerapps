@@ -241,7 +241,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
         }
     }
 
-    public class MyFullEventItem : MyBaseEventVisual
+    public partial class MyFullEventItem : MyBaseEventVisual
     {
         public MyFullEventItem()
         {
@@ -295,7 +295,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
         }
     }
 
-    public class MyCollapsedEventItem : MyBaseEventVisual
+    public partial class MyCollapsedEventItem : MyBaseEventVisual
     {
         public const double WIDTH_OF_COLLAPSED_ITEM = 36;
         public static readonly double SPACING_WITH_NO_ADDITIONAL = WIDTH_OF_COLLAPSED_ITEM + 6;
@@ -344,7 +344,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
         }
     }
 
-    public class MyAdditionalItemsVisual : StackPanel
+    public partial class MyAdditionalItemsVisual : StackPanel
     {
         public MyAdditionalItemsVisual()
         {
