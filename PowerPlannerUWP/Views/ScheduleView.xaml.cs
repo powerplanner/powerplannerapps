@@ -534,7 +534,7 @@ namespace PowerPlannerUWP.Views
 
             if (scrollToArea)
             {
-                Rect entireArea;
+                Rect entireArea = new Rect();
                 bool first = true;
 
                 foreach (var s in scheduleItems)

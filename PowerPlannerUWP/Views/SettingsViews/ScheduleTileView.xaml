@@ -6,8 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    xmlns:visualizer="using:NotificationsVisualizerLibrary">
+    mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -37,35 +36,6 @@
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Margin="0,0,0,12"
                     TextWrapping="NoWrap"/>
-
-                <interfaces:MyWrapPanel Margin="0,0,-6,-6">
-
-                    <visualizer:PreviewTile
-                        x:Name="SmallPreviewTile"
-                        TileSize="Small"
-                        IsAnimationEnabled="False"
-                        Margin="0,0,6,6"/>
-
-                    <visualizer:PreviewTile
-                        x:Name="MediumPreviewTile"
-                        TileSize="Medium"
-                        IsAnimationEnabled="False"
-                        Margin="0,0,6,6"/>
-
-                    <visualizer:PreviewTile
-                        x:Name="WidePreviewTile"
-                        TileSize="Wide"
-                        IsAnimationEnabled="False"
-                        Margin="0,0,6,6"/>
-
-                    <visualizer:PreviewTile
-                        x:Name="LargePreviewTile"
-                        TileSize="Large"
-                        IsAnimationEnabled="False"
-                        Margin="0,0,6,6"
-                        Visibility="Collapsed"/>
-
-                </interfaces:MyWrapPanel>
 
                 <TextBlock
                     x:Uid="Settings_ScheduleTilePage_Description"

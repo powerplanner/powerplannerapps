@@ -941,7 +941,7 @@ namespace PowerPlannerUWPLibrary.Extensions
                                                   //appointment.Details = task.Details;
 
             appointment.StartTime = (schedule.DataItem as DataItemSchedule).GetLocalStartDateAndTime(Account, (semester.DataItem as DataItemSemester), (c.DataItem as DataItemClass));
-            appointment.Duration = schedule.EndTime.TimeOfDay - schedule.StartTime.TimeOfDay;
+            appointment.Duration = schedule.EndTimeInSchoolTime.TimeOfDay - schedule.StartTimeInSchoolTime.TimeOfDay;
             appointment.BusyStatus = AppointmentBusyStatus.Busy;
 
             appointment.Recurrence = new AppointmentRecurrence()

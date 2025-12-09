@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <TargetFramework>net8.0-ios</TargetFramework>
+	  <TargetFramework>net10.0-ios</TargetFramework>
 	  <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
     <MtouchSdkVersion>18.1</MtouchSdkVersion>
@@ -41,7 +41,7 @@
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8">
     </PackageReference>
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="3.0.4" />
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
     </PackageReference>
   </ItemGroup>

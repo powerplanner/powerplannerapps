@@ -13,10 +13,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml;
 using InterfacesUWP.Snackbar;
 using BareMvvm.Core.Snackbar;
+using Windows.Devices.PointOfService;
 
 namespace InterfacesUWP.AppWindows
 {
-    public class NativeUwpAppWindow : Grid, INativeAppWindow
+    public partial class NativeUwpAppWindow : Grid, INativeAppWindow
     {
         private GenericViewModelPresenter _presenter;
         private BareSnackbarPresenter _snackbarPresenter = new BareSnackbarPresenter();
@@ -56,13 +57,11 @@ namespace InterfacesUWP.AppWindows
 
         public void Register(PortableAppWindow portableWindow)
         {
-            _presenter.SetBinding(GenericViewModelPresenter.ViewModelProperty, new Binding()
-            {
-                Path = new PropertyPath(nameof(portableWindow.ViewModel)),
-                Source = portableWindow
-            });
-
             portableWindow.PropertyChanged += PortableWindow_PropertyChanged;
+            if (portableWindow.ViewModel != null)
+            {
+                _presenter.ViewModel = portableWindow.ViewModel;
+            }
         }
 
         private void PortableWindow_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -71,6 +70,10 @@ namespace InterfacesUWP.AppWindows
             {
                 case nameof(PortableAppWindow.BackButtonVisibility):
                     UpdateBackButtonVisibility(sender as PortableAppWindow);
+                    break;
+
+                case nameof(PortableAppWindow.ViewModel):
+                    _presenter.ViewModel = (sender as PortableAppWindow).ViewModel;
                     break;
             }
         }

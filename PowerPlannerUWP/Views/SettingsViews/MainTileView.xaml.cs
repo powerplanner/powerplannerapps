@@ -1,5 +1,4 @@
-﻿using NotificationsVisualizerLibrary;
-using PowerPlannerAppDataLibrary.DataLayer;
+﻿using PowerPlannerAppDataLibrary.DataLayer;
 using System;
 using System.Collections.Generic;
 using Windows.Data.Xml.Dom;
@@ -30,57 +29,6 @@ namespace PowerPlannerUWP.Views.SettingsViews
         public MainTileView()
         {
             this.InitializeComponent();
-
-            this.InitializeTiles();
-        }
-
-        private void InitializeTiles()
-        {
-            try
-            {
-                if (LargePreviewTile.DeviceFamily != NotificationsVisualizerLibrary.DeviceFamily.Mobile)
-                    LargePreviewTile.Visibility = Visibility.Visible;
-
-                foreach (var tile in AllTiles())
-                    InitializeTile(tile);
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private IEnumerable<PreviewTile> AllTiles()
-        {
-            return new PreviewTile[]
-            {
-                MediumPreviewTile,
-                WidePreviewTile,
-                LargePreviewTile
-            };
-        }
-
-        private async void InitializeTile(PreviewTile tile)
-        {
-            try
-            {
-                tile.DisplayName = "Power Planner";
-                tile.VisualElements.BackgroundColor = (Color)Resources["SystemColorHighlightColor"];
-                tile.VisualElements.ShowNameOnSquare150x150Logo = true;
-                tile.VisualElements.Square44x44Logo = new Uri("ms-appx:///Assets/Square44x44Logo.png");
-                tile.VisualElements.Square71x71Logo = new Uri("ms-appx:///Assets/Square71x71Logo.png");
-                tile.VisualElements.Square150x150Logo = new Uri("ms-appx:///Assets/Square150x150Logo.png");
-                tile.VisualElements.Square310x310Logo = new Uri("ms-appx:///Assets/Square310x310Logo.png");
-                tile.VisualElements.Wide310x150Logo = new Uri("ms-appx:///Assets/Wide310x150Logo.png");
-
-                await tile.UpdateAsync();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
         }
 
         private void UpdatePreviewAndRealTileNotifications()
@@ -88,7 +36,6 @@ namespace PowerPlannerUWP.Views.SettingsViews
             try
             {
                 UpdateRealTileNotifications();
-                UpdatePreviewTileNotifications();
             }
 
             catch (Exception ex)
@@ -107,47 +54,6 @@ namespace PowerPlannerUWP.Views.SettingsViews
 
             catch (Exception ex)
             {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private async void UpdatePreviewTileNotifications()
-        {
-            try
-            {
-                XmlDocument notifContent = await TileHelper.GetCurrentPrimaryTileNotificationContentAsync(ViewModel.Account);
-
-                if (notifContent == null)
-                {
-                    foreach (var tile in AllTiles())
-                        tile.CreateTileUpdater().Clear();
-                }
-
-                else
-                {
-                    foreach (var tile in AllTiles())
-                        tile.CreateTileUpdater().Update(new TileNotification(notifContent));
-                }
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        public override void OnViewModelLoadedOverride()
-        {
-            base.OnViewModelLoadedOverride();
-
-            try
-            {
-                UpdatePreviewTileNotifications();
-            }
-
-            catch (Exception ex)
-            {
-                base.IsEnabled = false;
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }

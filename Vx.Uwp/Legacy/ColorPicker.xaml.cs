@@ -22,7 +22,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace InterfacesUWP
 {
-    public class ColorToBrushConverter : IValueConverter
+    public partial class ColorToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

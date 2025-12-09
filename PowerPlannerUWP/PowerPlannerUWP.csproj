@@ -1,593 +1,67 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{F0716946-AD99-4AF1-9E5F-87BB75AF0C0A}</ProjectGuid>
-    <OutputType>AppContainerExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PowerPlannerUWP</RootNamespace>
-    <AssemblyName>PowerPlannerUWP</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <ApplicationInsightsResourceId>/subscriptions/47a3db26-28c4-420b-9e28-7571554e6c5a/resourcegroups//subscriptions/47a3db26-28c4-420b-9e28-7571554e6c5a/resourceGroups/Default-Storage-WestUS/providers/microsoft.insights/components/PowerPlannerUWP</ApplicationInsightsResourceId>
-    <AppxBundle>Never</AppxBundle>
-    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
-    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ARM\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>ARM</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
-    <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-  </PropertyGroup>
-  <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="Service References\Application Insights\ConnectedService.json" />
-    <PRIResource Include="Strings\de\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-    <PRIResource Include="Strings\pt\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-    <PRIResource Include="Strings\ar\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-    <PRIResource Include="Strings\es\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-    <PRIResource Include="Strings\en-US\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-    <PRIResource Include="Strings\fr\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="App\InitializeUWP.cs" />
-    <Compile Include="App\LocalizedResources.cs" />
-    <Compile Include="App\PowerPlannerUwpApp.cs" />
-    <Compile Include="App\Secrets.cs" />
-    <None Include="App\Secrets.template.cs" />
-    <Compile Include="BackgroundTasks\InfrequentBackgroundTask.cs" />
-    <Compile Include="BackgroundTasks\RawPushBackgroundTask.cs" />
-    <Compile Include="BackgroundTasks\ToastBackgroundTask.cs" />
-    <Compile Include="Controls\AbTestControl.cs" />
-    <Compile Include="Converters\CreditsToStringConverter.cs" />
-    <Compile Include="Converters\DayOfWeeksToStringConverter.cs" />
-    <Compile Include="Converters\IsCompleteToOpacityConverter.cs" />
-    <Compile Include="Converters\IsCompleteToVisibilityConverter.cs" />
-    <Compile Include="Extensions\UWPBrowserExtension.cs" />
-    <Compile Include="Extensions\UWPEmailExtension.cs" />
-    <Compile Include="Extensions\UWPThemeExtension.cs" />
-    <Compile Include="Flyouts\TaskOrEventFlyout.cs" />
-    <Compile Include="Converters\PercentCompleteToToolTipValueConverter.cs" />
-    <Compile Include="Converters\SkipItemsToStringConverter.cs" />
-    <Compile Include="DataTemplateSelectors\ScheduleAllDayItemTemplateSelector.cs" />
-    <Compile Include="Extensions\UWPAppointmentsExtension.cs" />
-    <Compile Include="Extensions\UWPClassRemindersExtension.cs" />
-    <Compile Include="Extensions\UWPDateTimeFormatterExtension.cs" />
-    <Compile Include="Extensions\UWPImagePickerExtension.cs" />
-    <Compile Include="Extensions\UWPInAppPurchaseExtension.cs" />
-    <Compile Include="Extensions\UWPLanguageExtension.cs" />
-    <Compile Include="Extensions\UWPLocalizationExtension.cs" />
-    <Compile Include="Extensions\UWPNetworkInfoExtension.cs" />
-    <Compile Include="Extensions\UWPPushExtension.cs" />
-    <Compile Include="Extensions\UWPRemindersExtension.cs" />
-    <Compile Include="Extensions\UWPSoundsExtension.cs" />
-    <Compile Include="Extensions\UWPTelemetryExtension.cs" />
-    <Compile Include="Extensions\UWPTilesExtension.cs" />
-    <Compile Include="Helpers\DataPackageHelpers.cs" />
-    <Compile Include="Helpers\KeyPressedHelpers.cs" />
-    <Compile Include="Helpers\QueryStringHelper.cs" />
-    <Compile Include="Helpers\UWPExceptionHelper.cs" />
-    <Compile Include="Helpers\UWPNotificationsHelper.cs" />
-    <Compile Include="TileHelpers\ClassTileHelper.cs" />
-    <Compile Include="TileHelpers\QuickAddTileHelper.cs" />
-    <Compile Include="TileHelpers\ScheduleTileHelper.cs" />
-    <Compile Include="TileHelpers\TileHelper.cs" />
-    <Compile Include="ViewModel\MainWindow\MainScreen\Schedule\ExportSchedulePopupViewModel.cs" />
-    <Compile Include="ViewModel\Promos\PromoOtherPlatformsViewModel.cs" />
-    <Compile Include="ViewModel\Settings\ClassTilesPagedHostViewModel.cs" />
-    <Compile Include="ViewModel\Settings\ScheduleTileViewModel.cs" />
-    <Compile Include="ViewModel\Settings\ClassTilesViewModel.cs" />
-    <Compile Include="ViewModel\Settings\ClassTileViewModel.cs" />
-    <Compile Include="ViewModel\Settings\MainTileViewModel.cs" />
-    <Compile Include="ViewModel\Settings\QuickAddTileViewModel.cs" />
-    <Compile Include="ViewModel\Settings\TileSettingsViewModel.cs" />
-    <Compile Include="Views\AgendaView.xaml.cs">
-      <DependentUpon>AgendaView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CalendarViews\MainCalendarItemView.xaml.cs">
-      <DependentUpon>MainCalendarItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ClassView.xaml.cs">
-      <DependentUpon>ClassView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentView.cs" />
-    <Compile Include="Views\EditClassDetailsView.xaml.cs">
-      <DependentUpon>EditClassDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ExportSchedulePopupView.xaml.cs">
-      <DependentUpon>ExportSchedulePopupView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InitialSyncView.xaml.cs">
-      <DependentUpon>InitialSyncView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PopupComponentView.cs" />
-    <Compile Include="Views\Promos\PromoOtherPlatformsView.xaml.cs">
-      <DependentUpon>PromoOtherPlatformsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\QuickAddView.xaml.cs">
-      <DependentUpon>QuickAddView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScheduleViews\HolidayScheduleItemView.xaml.cs">
-      <DependentUpon>HolidayScheduleItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScheduleViews\MyBaseEventVisual.cs" />
-    <Compile Include="Views\SettingsViews\CalendarIntegrationClassesView.xaml.cs">
-      <DependentUpon>CalendarIntegrationClassesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainContentDayView.xaml.cs">
-      <DependentUpon>MainContentDayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\BaseSettingsSplitView.xaml.cs">
-      <DependentUpon>BaseSettingsSplitView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ClassTileView.xaml.cs">
-      <DependentUpon>ClassTileView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ClassTilesView.xaml.cs">
-      <DependentUpon>ClassTilesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml.cs">
-      <DependentUpon>GoogleCalendarIntegrationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\MainTileView.xaml.cs">
-      <DependentUpon>MainTileView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\QuickAddTileView.xaml.cs">
-      <DependentUpon>QuickAddTileView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\ScheduleTileView.xaml.cs">
-      <DependentUpon>ScheduleTileView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml.cs">
-      <DependentUpon>CalendarIntegrationTasksView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SyncErrorsView.xaml.cs">
-      <DependentUpon>SyncErrorsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TaskOrEventViews\TaskOrEventListViewItem.xaml.cs">
-      <DependentUpon>TaskOrEventListViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml.cs">
-      <DependentUpon>TasksOrEventsGroupedListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PremiumVersionView.xaml.cs">
-      <DependentUpon>PremiumVersionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UwpCompletionSlider.cs" />
-    <Compile Include="Views\MainScreenContentViewHostGeneric.cs" />
-    <Compile Include="Views\ScheduleView.xaml.cs">
-      <DependentUpon>ScheduleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\CompletionSlider.xaml.cs">
-      <DependentUpon>CompletionSlider.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DayViews\DayView.cs" />
-    <Compile Include="Views\DifferentSemesterOverlayControl.xaml.cs">
-      <DependentUpon>DifferentSemesterOverlayControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TaskOrEventViews\TasksOrEventsListHeader.xaml.cs">
-      <DependentUpon>TasksOrEventsListHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TaskOrEventViews\IsCompleteToTitleForegroundConverter.cs" />
-    <Compile Include="Views\MainScreenView.xaml.cs">
-      <DependentUpon>MainScreenView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PopupViewHostGeneric.cs" />
-    <Compile Include="Views\ScheduleViews\EditingAllSchedulesSingleClassControl.xaml.cs">
-      <DependentUpon>EditingAllSchedulesSingleClassControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScheduleViews\EditingScheduleClassTimeListViewItem.xaml.cs">
-      <DependentUpon>EditingScheduleClassTimeListViewItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ScheduleViews\MyScheduleItem.xaml.cs">
-      <DependentUpon>MyScheduleItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WelcomeView.xaml.cs">
-      <DependentUpon>WelcomeView.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-    <None Include="PowerPlannerUWP_TemporaryKey.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\JumpList\Add.targetsize-32_contrast-white.png" />
-    <Content Include="Assets\JumpList\Add.targetsize-32.png" />
-    <Content Include="Assets\LockScreenLogo.scale-100.png" />
-    <Content Include="Assets\LockScreenLogo.scale-125.png" />
-    <Content Include="Assets\LockScreenLogo.scale-150.png" />
-    <Content Include="Assets\LockScreenLogo.scale-400.png" />
-    <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\PromoOtherPlatforms\Android.png" />
-    <None Include="Assets\PromoOtherPlatforms\WindowsPhone.png" />
-    <Content Include="Assets\PromoOtherPlatforms\iPhone.png" />
-    <Content Include="Assets\QuickAddTile\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\QuickAddTile\Square71x71Logo.scale-200.png" />
-    <Content Include="Assets\Sounds\TaskCompleted.mp3" />
-    <Content Include="Assets\Square150x150Logo.scale-100.png" />
-    <Content Include="Assets\Square150x150Logo.scale-125.png" />
-    <Content Include="Assets\Square150x150Logo.scale-150.png" />
-    <Content Include="Assets\Square150x150Logo.scale-400.png" />
-    <Content Include="Assets\Square310x310Logo.scale-100.png" />
-    <Content Include="Assets\Square310x310Logo.scale-125.png" />
-    <Content Include="Assets\Square310x310Logo.scale-150.png" />
-    <Content Include="Assets\Square310x310Logo.scale-200.png" />
-    <Content Include="Assets\Square310x310Logo.scale-400.png" />
-    <Content Include="Assets\Square44x44Logo.scale-100.png" />
-    <Content Include="Assets\Square44x44Logo.scale-125.png" />
-    <Content Include="Assets\Square44x44Logo.scale-150.png" />
-    <Content Include="Assets\Square44x44Logo.scale-400.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-16_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-16_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-20_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-20_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-256_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-256_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-30_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-30_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-32_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-32_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-36_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-36_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-40_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-40_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-60_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-60_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-64_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-64_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-72_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-72_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-80_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-80_altform-unplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-96_altform-lightunplated.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-96_altform-unplated.png" />
-    <Content Include="Assets\Square71x71Logo.scale-100.png" />
-    <Content Include="Assets\Square71x71Logo.scale-125.png" />
-    <Content Include="Assets\Square71x71Logo.scale-150.png" />
-    <Content Include="Assets\Square71x71Logo.scale-200.png" />
-    <None Include="Package.StoreAssociation.xml" />
-    <Content Include="Assets\Square71x71Logo.scale-400.png" />
-    <Content Include="Assets\StoreLogo.scale-100.png" />
-    <Content Include="Assets\StoreLogo.scale-125.png" />
-    <Content Include="Assets\StoreLogo.scale-150.png" />
-    <Content Include="Assets\StoreLogo.scale-200.png" />
-    <Content Include="Assets\StoreLogo.scale-400.png" />
-    <Content Include="Assets\Tiles\Padding\4px.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-125.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-150.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <None Include="Package.xml" />
-    <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="Views\AgendaView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CalendarViews\MainCalendarItemView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ClassView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditClassDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ExportSchedulePopupView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\InitialSyncView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Promos\PromoOtherPlatformsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\QuickAddView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleViews\HolidayScheduleItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\CalendarIntegrationClassesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainContentDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LoginView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\BaseSettingsSplitView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ClassTileView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ClassTilesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\GoogleCalendarIntegrationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\MainTileView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\QuickAddTileView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\ScheduleTileView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\CalendarIntegrationTasksView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SyncErrorsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TaskOrEventViews\TaskOrEventListViewItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\TaskOrEventViews\TasksOrEventsGroupedListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PremiumVersionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CompletionSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DifferentSemesterOverlayControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TaskOrEventViews\TasksOrEventsListHeader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainScreenView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleViews\EditingAllSchedulesSingleClassControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleViews\EditingScheduleClassTimeListViewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ScheduleViews\MyScheduleItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WelcomeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Vx.Uwp\Vx.Uwp.csproj">
-      <Project>{81903242-5242-48df-a80d-b1b52316283b}</Project>
-      <Name>Vx.Uwp</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj">
-      <Project>{b6bd41b2-8886-4e5f-aea4-4db5242a2045}</Project>
-      <Name>PowerPlannerSending</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj">
-      <Project>{175abc4a-4f7b-4cdb-af1a-9cbf67a0601c}</Project>
-      <Name>ToolsPortable</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj">
-      <Project>{D5F159B7-ADDD-4C88-9F45-8A12E37F8052}</Project>
-      <Name>PowerPlanner</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Vx\Vx.csproj">
-      <Project>{ee27eafc-cf11-4122-a161-6fec6336b0e0}</Project>
-      <Name>Vx</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights">
-      <Version>2.22.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.BingAds.UETSdk">
-      <Version>2.1.3</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.14</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
-      <Version>6.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.6</Version>
-    </PackageReference>
-    <PackageReference Include="NotificationsVisualizerLibrary">
-      <Version>1.0.5</Version>
-    </PackageReference>
-    <PackageReference Include="PCLCrypto">
-      <Version>2.1.32-alpha</Version>
-    </PackageReference>
-    <PackageReference Include="sqlite-net-pcl">
-      <Version>1.7.335</Version>
-    </PackageReference>
-    <PackageReference Include="SQLitePCLRaw.bundle_green">
-      <Version>2.1.8</Version>
-    </PackageReference>
-    <PackageReference Include="StorageEverywhereIncludingiOS">
-      <Version>3.0.4</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.19041.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
-  </ItemGroup>
-  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
-    <VisualStudioVersion>14.0</VisualStudioVersion>
-  </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <!--Have to copy the resource files, that's the only way to get the specific file names and types we need for UWP-->
-  <Target Name="BeforeCompile">
-    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.resx" DestinationFiles="Strings\en-US\Resources.resw" />
-    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.ar.resx" DestinationFiles="Strings\ar\Resources.resw" />
-    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.de.resx" DestinationFiles="Strings\de\Resources.resw" />
-    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.es.resx" DestinationFiles="Strings\es\Resources.resw" />
-    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.pt.resx" DestinationFiles="Strings\pt\Resources.resw" />
-    <Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.fr.resx" DestinationFiles="Strings\fr\Resources.resw" />
-  </Target>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+		<UseUwp>true</UseUwp>
+		<Platforms>x86;x64;arm64</Platforms>
+		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<DefaultLanguage>en-US</DefaultLanguage>
+		<PublishAot>true</PublishAot>
+		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.ApplicationInsights">
+			<Version>2.22.0</Version>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+			<Version>7.1.3</Version>
+		</PackageReference>
+		<PackageReference Include="Microsoft.UI.Xaml">
+			<Version>2.8.7</Version>
+		</PackageReference>
+		<PackageReference Include="PCLCrypto">
+			<Version>2.1.32-alpha</Version>
+		</PackageReference>
+		<PackageReference Include="sqlite-net-pcl">
+			<Version>1.7.335</Version>
+		</PackageReference>
+		<PackageReference Include="SQLitePCLRaw.bundle_green">
+			<Version>2.1.8</Version>
+		</PackageReference>
+		<PackageReference Include="StorageEverywhereIncludingiOS">
+			<Version>10.0.0</Version>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Vx.Uwp\Vx.Uwp.csproj" />
+		<ProjectReference Include="$(SolutionDir)\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj" />
+		<ProjectReference Include="$(SolutionDir)\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
+		<ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj" />
+		<ProjectReference Include="..\Vx\Vx.csproj" />
+	</ItemGroup>
+
+	<!--Have to copy the resource files, that's the only way to get the specific file names and types we need for UWP-->
+	<Target Name="BeforeCompile">
+		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.resx" DestinationFiles="Strings\en-US\Resources.resw" />
+		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.ar.resx" DestinationFiles="Strings\ar\Resources.resw" />
+		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.de.resx" DestinationFiles="Strings\de\Resources.resw" />
+		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.es.resx" DestinationFiles="Strings\es\Resources.resw" />
+		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.pt.resx" DestinationFiles="Strings\pt\Resources.resw" />
+		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.fr.resx" DestinationFiles="Strings\fr\Resources.resw" />
+	</Target>
+
+	<ItemGroup>
+		<Compile Remove="App\Secrets.template.cs" />
+	</ItemGroup>
 </Project>

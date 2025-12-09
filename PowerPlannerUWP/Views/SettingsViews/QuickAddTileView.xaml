@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:visualizer="using:NotificationsVisualizerLibrary"
     xmlns:localConverters="using:PowerPlannerUWP.Converters">
 
     <interfacesViews:ViewHostGeneric.Resources>
@@ -44,22 +43,6 @@
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Margin="0,0,0,12"
                     TextWrapping="NoWrap"/>
-
-                <interfaces:MyWrapPanel Margin="0,0,-6,-6">
-
-                    <visualizer:PreviewTile
-                        x:Name="SmallPreviewTile"
-                        TileSize="Small"
-                        IsAnimationEnabled="False"
-                        Margin="0,0,6,6"/>
-
-                    <visualizer:PreviewTile
-                        x:Name="MediumPreviewTile"
-                        TileSize="Medium"
-                        IsAnimationEnabled="False"
-                        Margin="0,0,6,6"/>
-
-                </interfaces:MyWrapPanel>
 
                 <TextBlock
                     x:Uid="Settings_Tiles_QuickAdd_Description"

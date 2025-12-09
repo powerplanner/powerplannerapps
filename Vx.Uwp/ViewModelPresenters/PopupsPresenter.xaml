@@ -26,7 +26,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ItemsControl x:Name="ItemsControlPopups" ItemsSource="{Binding ViewModel.Popups, ElementName=ThisView}">
+            <ItemsControl x:Name="ItemsControlPopups" ItemsSource="{x:Bind ViewModel.Popups, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <local:GenericViewModelPresenter ViewModel="{Binding}" />

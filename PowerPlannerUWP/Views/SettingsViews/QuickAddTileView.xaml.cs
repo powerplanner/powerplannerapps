@@ -1,5 +1,4 @@
-﻿using NotificationsVisualizerLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,50 +27,6 @@ namespace PowerPlannerUWP.Views.SettingsViews
             this.InitializeComponent();
         }
 
-
-        private void InitializeTiles()
-        {
-            try
-            {
-                foreach (var tile in AllTiles())
-                    InitializeTile(tile);
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        private IEnumerable<PreviewTile> AllTiles()
-        {
-            return new PreviewTile[]
-            {
-                SmallPreviewTile,
-                MediumPreviewTile
-            };
-        }
-
-        private async void InitializeTile(PreviewTile tile)
-        {
-            try
-            {
-                tile.DisplayName = "Quick Add";
-
-                tile.VisualElements.ShowNameOnSquare150x150Logo = true;
-                tile.VisualElements.Square44x44Logo = new Uri("ms-appx:///Assets/Square44x44Logo.png");
-                tile.VisualElements.Square71x71Logo = new Uri("ms-appx:///Assets/QuickAddTile/Square71x71Logo.png");
-                tile.VisualElements.Square150x150Logo = new Uri("ms-appx:///Assets/QuickAddTile/Square150x150Logo.png");
-
-                await tile.UpdateAsync();
-            }
-
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
         public override void OnViewModelLoadedOverride()
         {
             base.OnViewModelLoadedOverride();
@@ -81,7 +36,6 @@ namespace PowerPlannerUWP.Views.SettingsViews
             try
             {
                 this.UpdatePinButton();
-                this.InitializeTiles();
             }
 
             catch (Exception ex)

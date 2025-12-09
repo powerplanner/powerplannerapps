@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace InterfacesUWP.ViewModelPresenters
 {
-    public class ViewModelToViewConverter : IValueConverter
+    public partial class ViewModelToViewConverter : IValueConverter
     {
         private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
         private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();

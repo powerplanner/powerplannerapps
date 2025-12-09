@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "PowerPlannerUWP": {
+      "commandName": "MsixPackage"
+    }
+  }
+}
