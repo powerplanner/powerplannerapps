@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Media;
 
 namespace InterfacesUWP.Controls
 {
-    public class NumberTextBox : TextBox
+    public partial class NumberTextBox : TextBox
     {
         public NumberTextBox()
         {

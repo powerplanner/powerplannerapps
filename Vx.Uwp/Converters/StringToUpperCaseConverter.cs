@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using Windows.UI.Xaml.Data;
 
 namespace InterfacesUWP.Converters
 {
-    public class StringToUpperCaseConverter : IValueConverter
+    public partial class StringToUpperCaseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

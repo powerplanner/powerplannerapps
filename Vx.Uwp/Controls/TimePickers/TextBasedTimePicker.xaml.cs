@@ -254,7 +254,7 @@ namespace Vx.Uwp.Controls.TimePickers
         }
     }
 
-    public class TextBasedEndTimePicker : TextBasedTimePicker
+    public partial class TextBasedEndTimePicker : TextBasedTimePicker
     {
         /// <summary>
         /// If this is an end time control, you can use this property so it'll dynamically eliminate values based on start time.

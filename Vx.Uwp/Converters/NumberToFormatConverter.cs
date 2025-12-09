@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace InterfacesUWP.Converters
 {
-    public class NumberToFormatConverter : IValueConverter
+    public partial class NumberToFormatConverter : IValueConverter
     {
         public virtual object Convert(object value, Type targetType, object parameter, string language)
         {

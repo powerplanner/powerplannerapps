@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace InterfacesUWP.Controls
 {
-    public class PopupsPanel : Grid
+    public partial class PopupsPanel : Panel
     {
         protected override Size MeasureOverride(Size availableSize)
         {

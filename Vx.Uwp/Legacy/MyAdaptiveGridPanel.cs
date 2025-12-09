@@ -13,7 +13,7 @@ namespace InterfacesUWP
     /// A grid that displays columns and automatically adapts width-wise. You provide a min-width for columns, and the control
     /// automatically populates how many columns there can be, and then wraps next elements down to the next line.
     /// </summary>
-    public class MyAdaptiveGridPanel : Panel
+    public partial class MyAdaptiveGridPanel : Panel
     {
         public static readonly DependencyProperty MinColumnWidthProperty = DependencyProperty.Register("MinColumnWidth", typeof(double), typeof(MyAdaptiveGridPanel), new PropertyMetadata(100.0, OnMeasureAffectingPropertyChanged));
 

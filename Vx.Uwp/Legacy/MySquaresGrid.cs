@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace InterfacesUWP
 {
-    public class MySquaresGrid : Panel
+    public partial class MySquaresGrid : Panel
     {
         public static readonly DependencyProperty RowsProperty = DependencyProperty.Register("Rows", typeof(int), typeof(MySquaresGrid), new PropertyMetadata(1, OnVisualPropertyChanged));
 

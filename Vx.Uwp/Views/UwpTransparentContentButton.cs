@@ -59,7 +59,7 @@ namespace Vx.Uwp.Views
         }
     }
 
-    public class TransparentButton : Button
+    public partial class TransparentButton : Button
     {
         public TransparentButton()
         {

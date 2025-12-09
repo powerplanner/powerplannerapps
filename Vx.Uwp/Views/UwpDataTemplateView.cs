@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Markup;
 
 namespace Vx.Uwp.Views
 {
-    public class UwpDataTemplateView : ContentControl
+    public partial class UwpDataTemplateView : ContentControl
     {
         public UwpDataTemplateView()
         {

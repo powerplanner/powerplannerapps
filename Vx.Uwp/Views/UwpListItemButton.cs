@@ -32,7 +32,7 @@ namespace Vx.Uwp.Views
         }
     }
 
-    public class TransparentButtonWithHoverBorder : Button
+    public partial class TransparentButtonWithHoverBorder : Button
     {
         public TransparentButtonWithHoverBorder()
         {

@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace Power_Planner_v_3.Converters
 {
-    public class DaysListToStringConverter : IValueConverter
+    public partial class DaysListToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

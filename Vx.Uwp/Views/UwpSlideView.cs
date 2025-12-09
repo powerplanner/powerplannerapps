@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Media;
 
 namespace Vx.Uwp.Views
 {
-    public class UwpSlideView : UwpView<Vx.Views.SlideView, UwpSlideView.MySlideView>
+    public partial class UwpSlideView : UwpView<Vx.Views.SlideView, UwpSlideView.MySlideView>
     {
         private static long _slideViewNum;
         public UwpSlideView()
@@ -57,7 +57,7 @@ namespace Vx.Uwp.Views
             }
         }
 
-        public class MySlideView : FlipView
+        public partial class MySlideView : FlipView
         {
             private int? _minPosition;
             public int? MinPosition

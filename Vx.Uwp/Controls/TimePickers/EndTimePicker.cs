@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Data;
 
 namespace Vx.Uwp.Controls.TimePickers
 {
-    public class EndTimePicker : UserControl
+    public partial class EndTimePicker : UserControl
     {
         private TimePicker _timePicker;
         public event EventHandler<TimeSpan> SelectedTimeChanged;
