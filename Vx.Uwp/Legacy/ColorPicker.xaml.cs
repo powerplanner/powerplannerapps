@@ -59,9 +59,6 @@ namespace InterfacesUWP
 
         public bool Equals(Color other)
         {
-            if (Color == null || other == null)
-                return false;
-
             return Color.Equals(other);
         }
     }

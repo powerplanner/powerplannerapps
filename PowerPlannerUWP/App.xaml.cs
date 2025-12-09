@@ -890,7 +890,7 @@ namespace PowerPlannerUWP
 
             var response = await dialog.ShowAsync();
 
-            if (response == commandDelete)
+            if (object.ReferenceEquals(response, commandDelete))
             {
                 return true;
             }

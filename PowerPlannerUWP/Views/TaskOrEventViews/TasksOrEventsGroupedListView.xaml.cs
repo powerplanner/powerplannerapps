@@ -45,7 +45,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
     }
 
-    public class GroupedLayout : VirtualizingLayout
+    public partial class GroupedLayout : VirtualizingLayout
     {
         public double MinColumnWidth => 300;
 
@@ -491,7 +491,7 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         }
     }
 
-    public class GroupedListViewTemplateSelector : DataTemplateSelector
+    public partial class GroupedListViewTemplateSelector : DataTemplateSelector
     {
         public DataTemplate ItemTemplate { get; set; }
         public DataTemplate HeaderTemplate { get; set; }
