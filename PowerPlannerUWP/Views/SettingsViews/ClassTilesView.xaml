@@ -57,21 +57,21 @@
                             <StackPanel Margin="0,1,0,6">
                                 
                                 <TextBlock
-                                    Text="{x:Bind Class.Name, Mode=OneWay}"
+                                    Text="{x:Bind Class.Name}"
                                     Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                 
                                 <TextBlock
                                     x:Uid="Tiles_TextBlockPinned"
                                     Text="Pinned"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Visibility="{x:Bind IsPinned, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Visibility="{x:Bind IsPinned, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
 
                                 <TextBlock
                                     x:Uid="Tiles_TextBlockNotPinned"
                                     Text="Not pinned"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Visibility="{x:Bind IsPinned, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}"
+                                    Visibility="{x:Bind IsPinned, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
                                 
                             </StackPanel>

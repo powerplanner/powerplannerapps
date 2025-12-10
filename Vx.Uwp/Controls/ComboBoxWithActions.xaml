@@ -18,10 +18,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Viewbox Width="15" Height="15">
-                    <SymbolIcon Symbol="{x:Bind Symbol, Mode=OneWay}"/>
+                    <SymbolIcon Symbol="{x:Bind Symbol}"/>
                 </Viewbox>
                 <TextBlock
-                    Text="{x:Bind Title, Mode=OneWay}"
+                    Text="{x:Bind Title}"
                     Grid.Column="1"
                     Margin="6,0,0,0"/>
             </Grid>
