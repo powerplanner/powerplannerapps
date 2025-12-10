@@ -13,7 +13,7 @@
         x:Name="TimePickerComboBox"
         IsEditable="True"
         HorizontalAlignment="Stretch"
-        Header="{Binding Header, ElementName=ThisControl}"
+        Header="{x:Bind Header, Mode=OneWay}"
         DisplayMemberPath="DisplayText"
         SelectionChanged="TimePickerComboBox_SelectionChanged"
         TextSubmitted="TimePickerComboBox_TextSubmitted"/>

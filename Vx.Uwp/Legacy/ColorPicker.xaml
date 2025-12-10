@@ -15,15 +15,15 @@
 
         <local:ColorToBrushConverter x:Key='ColorToBrushConverter'/>
 
-        <DataTemplate x:Key="Template">
+        <DataTemplate x:Key="Template" x:DataType="local:ColorItem">
 
             <StackPanel Orientation='Horizontal' VerticalAlignment='Center'>
 
-                <Rectangle Fill='{Binding Color, Converter={StaticResource ColorToBrushConverter}}'
+                <Rectangle Fill='{x:Bind Color, Converter={StaticResource ColorToBrushConverter}}'
                     Margin="0,0,6,0"
                     Width="12"
                     Height="12" />
-                <TextBlock Text='{Binding Text}' VerticalAlignment='Center' />
+                <TextBlock Text='{x:Bind Text}' VerticalAlignment='Center' />
 
             </StackPanel>
 
@@ -34,7 +34,7 @@
     <controls:ComboBoxWithActions x:Name="comboBox"
               ItemTemplate="{StaticResource Template}"
               HorizontalAlignment="Stretch"
-              Header="{Binding Header, ElementName=ThisControl}"/>
+              Header="{x:Bind Header, Mode=OneWay}"/>
 
     <FlyoutBase.AttachedFlyout>
         <Flyout x:Name="FlyoutCustomPicker">

@@ -11,17 +11,17 @@
     x:Name="ThisControl">
 
     <UserControl.Resources>
-        <DataTemplate x:Key="ActionTemplate">
+        <DataTemplate x:Key="ActionTemplate" x:DataType="local:ComboBoxAction">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Viewbox Width="15" Height="15">
-                    <SymbolIcon Symbol="{Binding Symbol}"/>
+                    <SymbolIcon Symbol="{x:Bind Symbol, Mode=OneWay}"/>
                 </Viewbox>
                 <TextBlock
-                    Text="{Binding Title}"
+                    Text="{x:Bind Title, Mode=OneWay}"
                     Grid.Column="1"
                     Margin="6,0,0,0"/>
             </Grid>
@@ -31,6 +31,6 @@
     <ComboBox
         x:Name="ComboBox"
         SelectionChanged="ComboBox_SelectionChanged"
-        Header="{Binding Header, ElementName=ThisControl}"
+        Header="{x:Bind Header, Mode=OneWay}"
         HorizontalAlignment="Stretch"/>
 </UserControl>

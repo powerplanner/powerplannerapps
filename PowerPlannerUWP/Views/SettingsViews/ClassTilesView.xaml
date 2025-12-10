@@ -7,6 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:settings="using:PowerPlannerUWP.ViewModel.Settings"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -48,29 +49,29 @@
                     Margin="-12,12,-12,0"
                     x:Name="ListViewClasses"
                     SelectionChanged="ListViewClasses_SelectionChanged"
-                    ItemsSource="{Binding Classes}"
+                    ItemsSource="{x:Bind ViewModel.Classes}"
                     Visibility="Collapsed">
 
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="settings:ClassAndPinnedStatus">
                             <StackPanel Margin="0,1,0,6">
                                 
                                 <TextBlock
-                                    Text="{Binding Class.Name}"
+                                    Text="{x:Bind Class.Name, Mode=OneWay}"
                                     Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                 
                                 <TextBlock
                                     x:Uid="Tiles_TextBlockPinned"
                                     Text="Pinned"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Visibility="{x:Bind IsPinned, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
 
                                 <TextBlock
                                     x:Uid="Tiles_TextBlockNotPinned"
                                     Text="Not pinned"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}"
+                                    Visibility="{x:Bind IsPinned, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
                                 
                             </StackPanel>

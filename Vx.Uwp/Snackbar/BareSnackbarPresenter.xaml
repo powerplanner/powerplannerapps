@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    xmlns:snackbar="using:BareMvvm.Core.Snackbar">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -31,7 +32,7 @@
 
     <Grid>
         <ItemsControl
-            ItemsSource="{Binding DisplayedSnackbars}"
+            ItemsSource="{x:Bind Manager.DisplayedSnackbars}"
             VerticalAlignment="Bottom"
             HorizontalAlignment="Stretch"
             Margin="20,0,20,20">
@@ -41,7 +42,7 @@
                 </TransitionCollection>
             </ItemsControl.ItemContainerTransitions>
             <ItemsControl.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="snackbar:BareSnackbar">
                     <Grid Background="Transparent" HorizontalAlignment="Center" x:Name="Snackbar" Tapped="Snackbar_Tapped">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -52,13 +53,13 @@
                             CornerRadius="4"
                             Grid.ColumnSpan="2"/>
                         <TextBlock
-                            Text="{Binding Message}"
+                            Text="{x:Bind Message}"
                             Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                             Margin="12"/>
                         <Button
                             x:Name="ButtonAction"
-                            Content="{Binding ButtonText}"
-                            Visibility="{Binding ButtonText, Converter={StaticResource NotNullToVisibilityConverter}}"
+                            Content="{x:Bind ButtonText}"
+                            Visibility="{x:Bind ButtonText, Converter={StaticResource NotNullToVisibilityConverter}}"
                             Style="{StaticResource TextBlockButtonStyle}"
                             RequestedTheme="Dark"
                             Foreground="{ThemeResource SnackbarActionForeground}"

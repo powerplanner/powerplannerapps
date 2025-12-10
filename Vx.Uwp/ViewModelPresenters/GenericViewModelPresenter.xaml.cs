@@ -21,6 +21,8 @@ namespace InterfacesUWP.ViewModelPresenters
 {
     public sealed partial class GenericViewModelPresenter : UserControl
     {
+        private static ViewModelToViewConverter _viewModelToViewConverter = new ViewModelToViewConverter();
+
         public GenericViewModelPresenter()
         {
             this.InitializeComponent();
@@ -30,19 +32,16 @@ namespace InterfacesUWP.ViewModelPresenters
 
             this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             this.VerticalContentAlignment = VerticalAlignment.Stretch;
-
-            SetBinding(UserControl.ContentProperty, new Binding()
-            {
-                Path = new PropertyPath(nameof(ViewModel)),
-                Source = this,
-                Converter = new ViewModelToViewConverter()
-            });
         }
 
         public BaseViewModel ViewModel
         {
             get { return (BaseViewModel)GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
+            set
+            {
+                Content = _viewModelToViewConverter.Convert(value, typeof(UIElement), null, null) as UIElement;
+                SetValue(ViewModelProperty, value);
+            }
         }
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...

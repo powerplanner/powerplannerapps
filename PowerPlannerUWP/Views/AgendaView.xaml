@@ -1,6 +1,5 @@
 ﻿<local:MainScreenContentViewHostGeneric
     x:Name="thisPage"
-    xmlns:pages="using:PowerPlannerUWP.Pages"
     x:Class="PowerPlannerUWP.Views.AgendaView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -17,7 +16,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel
-            Visibility="{Binding HasNoItems, Converter={StaticResource BoolToVisibilityConverter}}"
+            Visibility="{x:Bind ViewModel.HasNoItems, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
             VerticalAlignment="Center"
             Margin="20"
             Grid.Row="1">

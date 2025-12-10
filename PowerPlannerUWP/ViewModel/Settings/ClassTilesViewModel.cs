@@ -86,12 +86,12 @@ namespace PowerPlannerUWP.ViewModel.Settings
             var pagedParent = FindAncestor<PagedViewModel>();
             pagedParent.Navigate(new ClassTileViewModel(pagedParent, c.Class));
         }
+    }
 
-        public class ClassAndPinnedStatus
-        {
-            public ViewItemClass Class { get; set; }
+    public class ClassAndPinnedStatus
+    {
+        public ViewItemClass Class { get; set; }
 
-            public bool IsPinned { get; set; }
-        }
+        public bool IsPinned { get; set; }
     }
 }

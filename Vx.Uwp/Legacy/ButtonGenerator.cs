@@ -158,7 +158,11 @@ namespace InterfacesUWP
             BackgroundPressed = Foreground;
             ForegroundPressed = new SolidColorBrush(Colors.White);
 
-            SetBinding(BorderBrushProperty, new Binding() { Path = new PropertyPath("Background"), Source = this });
+            this.RegisterPropertyChangedCallback(BackgroundProperty, (sender, prop) =>
+            {
+                BorderBrush = Background;
+            });
+            BorderBrush = Background;
         }
     }
 
