@@ -19,12 +19,24 @@
 		<DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
+	  <None Remove="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="Resources\Fonts\MaterialIcons-Regular.ttf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Resources\Fonts\MaterialIconsOutlined-Regular.otf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.UI.Xaml">
 			<Version>2.8.7</Version>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj"/>
-		<ProjectReference Include="..\Vx\Vx.csproj"/>
+		<ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
+		<ProjectReference Include="..\Vx\Vx.csproj" />
 	</ItemGroup>
 </Project>
