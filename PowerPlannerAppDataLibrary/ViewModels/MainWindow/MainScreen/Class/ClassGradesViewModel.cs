@@ -88,8 +88,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             set => SetProperty(ref _showWeightCategoriesSummary, value, nameof(ShowWeightCategoriesSummary));
         }
 
-        private IList<object> _itemsWithHeaders;
-        public IList<object> ItemsWithHeaders
+        private MyAppendedObservableLists<object> _itemsWithHeaders;
+        public MyAppendedObservableLists<object> ItemsWithHeaders
         {
             get
             {
@@ -97,7 +97,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 {
                     // Shouldn't be null unless exception loading occurred
                     if (Class.WeightCategories == null)
-                        _itemsWithHeaders = new List<object>();
+                        _itemsWithHeaders = new MyAppendedObservableLists<object>(new object[] { });
                     else
                     {
                         _itemsWithHeaders = new MyAppendedObservableLists<object>(
