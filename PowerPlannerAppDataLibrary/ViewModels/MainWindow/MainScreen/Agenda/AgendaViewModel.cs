@@ -1,22 +1,23 @@
-﻿using PowerPlannerAppDataLibrary.ViewItems;
+﻿using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
+using PowerPlannerAppDataLibrary.Views;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BareMvvm.Core.ViewModels;
 using ToolsPortable;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
-using System.Collections;
-using System.Collections.Specialized;
-using PowerPlannerAppDataLibrary.DataLayer;
-using Vx.Views;
 using Vx;
-using PowerPlannerAppDataLibrary.Views;
-using PowerPlannerAppDataLibrary.Components;
-using PowerPlannerAppDataLibrary.Helpers;
+using Vx.Views;
+using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda.AgendaViewModel;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 {
@@ -390,24 +391,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             InTheFuture
         }
 
-        public class ItemsGroupHeader : BindableBase
-        {
-            public ItemsGroup Group { get; set; }
-
-            public string Header { get; set; }
-
-            public DateTime DateToUseForNewItems { get; set; }
-
-            public IEnumerable<ViewItemClass> Classes { get; set; }
-
-            private bool _collapsed;
-            public bool Collapsed
-            {
-                get => _collapsed;
-                set => SetProperty(ref _collapsed, value, nameof(Collapsed));
-            }
-        }
-
         public void AddTask()
         {
             AddItem(TaskOrEventType.Task);
@@ -432,6 +415,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
+        }
+    }
+
+    public class ItemsGroupHeader : BindableBase
+    {
+        public ItemsGroup Group { get; set; }
+
+        public string Header { get; set; }
+
+        public DateTime DateToUseForNewItems { get; set; }
+
+        public IEnumerable<ViewItemClass> Classes { get; set; }
+
+        private bool _collapsed;
+        public bool Collapsed
+        {
+            get => _collapsed;
+            set => SetProperty(ref _collapsed, value, nameof(Collapsed));
         }
     }
 }

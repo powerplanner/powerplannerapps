@@ -23,7 +23,7 @@
                     MinHeight="100"
                     IsSpellCheckEnabled="True"
                     IsTextPredictionEnabled="True"
-                    Text="{Binding Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{x:Bind ViewModel.Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             </StackPanel>
         </ScrollViewer>

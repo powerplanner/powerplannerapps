@@ -9,23 +9,23 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    x:Name="ThisControl">
+    xmlns:agenda="using:PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda">
 
     <UserControl.Resources>
         <DataTemplate x:Key="ItemTemplate">
             <local:TaskOrEventListViewItem/>
         </DataTemplate>
-        <DataTemplate x:Key="HeaderTemplate">
+        <DataTemplate x:Key="HeaderTemplate" x:DataType="agenda:ItemsGroupHeader">
             <local:TasksOrEventsListHeader
-                Header="{Binding Header, Mode=OneTime, Converter={StaticResource StringToUpperCaseConverter}}"
-                DateToUseForNewItems="{Binding DateToUseForNewItems, Mode=OneTime}"
-                Classes="{Binding Classes, Mode=OneTime}"/>
+                Header="{x:Bind}"
+                DateToUseForNewItems="{x:Bind DateToUseForNewItems, Mode=OneTime}"
+                Classes="{x:Bind Classes, Mode=OneTime}"/>
         </DataTemplate>
     </UserControl.Resources>
 
     <winui:ItemsRepeaterScrollHost>
         <ScrollViewer>
-            <winui:ItemsRepeater ItemsSource="{Binding ItemsSource, ElementName=ThisControl}" Margin="20">
+            <winui:ItemsRepeater ItemsSource="{x:Bind ItemsSource, Mode=OneWay}" Margin="20">
                 <winui:ItemsRepeater.ItemTemplate>
                     <local:GroupedListViewTemplateSelector
                         ItemTemplate="{StaticResource ItemTemplate}"

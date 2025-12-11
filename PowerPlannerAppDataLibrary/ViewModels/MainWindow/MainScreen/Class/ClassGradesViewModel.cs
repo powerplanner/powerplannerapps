@@ -88,8 +88,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             set => SetProperty(ref _showWeightCategoriesSummary, value, nameof(ShowWeightCategoriesSummary));
         }
 
-        private IReadOnlyList<object> _itemsWithHeaders;
-        public IReadOnlyList<object> ItemsWithHeaders
+        private IList<object> _itemsWithHeaders;
+        public IList<object> ItemsWithHeaders
         {
             get
             {

@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:dataLayer="using:PowerPlannerAppDataLibrary.DataLayer"
     Title="SYNC ERRORS">
 
     <views:PopupViewHostGeneric.MainContent>
@@ -15,23 +16,23 @@
             <StackPanel Margin="10">
 
                 <ItemsControl
-                    ItemsSource="{Binding SyncErrors}">
+                    ItemsSource="{x:Bind ViewModel.SyncErrors, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="dataLayer:LoggedError">
                             <StackPanel
                                 Margin="12,0,12,18">
                                 <TextBlock
-                                    Text="{Binding Name}"
+                                    Text="{x:Bind Name}"
                                     Style="{ThemeResource BodyTextBlockStyle}"
                                     TextWrapping="Wrap"
                                     IsTextSelectionEnabled="True"/>
                                 <TextBlock
-                                    Text="{Binding Date}"
+                                    Text="{x:Bind Date}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     TextWrapping="Wrap"
                                     IsTextSelectionEnabled="True"/>
                                 <TextBlock
-                                    Text="{Binding Message}"
+                                    Text="{x:Bind Message}"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
                                     TextWrapping="Wrap"
                                     IsTextSelectionEnabled="True"/>
