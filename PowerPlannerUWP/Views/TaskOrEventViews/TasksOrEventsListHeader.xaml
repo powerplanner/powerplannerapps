@@ -32,7 +32,7 @@
             <Button
                 x:Name="header"
                 Style="{StaticResource HeaderStyle}"
-                Content="{Binding Header, ElementName=ThisControl}"
+                Content="{x:Bind Header.Header, Mode=OneWay, FallbackValue=TODAY, Converter={StaticResource StringToUpperCaseConverter}}"
                 HorizontalAlignment="Stretch"
                 Padding="8,0"
                 Click="header_Click"
@@ -47,7 +47,7 @@
                 Padding="4,4"
                 Width="36"
                 Height="36"
-                Visibility="{Binding Collapsed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert, FallbackValue=Visible}">
+                Visibility="{x:Bind Header.Collapsed, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert, FallbackValue=Visible}">
                 <SymbolIcon Symbol="Add" RenderTransformOrigin="0.5,0.5">
                     <SymbolIcon.RenderTransform>
                         <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
@@ -63,7 +63,7 @@
                 Padding="4,4"
                 Width="36"
                 Height="36"
-                Visibility="{Binding Collapsed, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+                Visibility="{x:Bind Header.Collapsed, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE011;" RenderTransformOrigin="0.5,0.5">
                     <FontIcon.RenderTransform>
                         <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>

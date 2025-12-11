@@ -43,9 +43,38 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             OnRequestAddTime?.Invoke(this, GetClass());
         }
 
+
+
+        public ViewItemClass Class
+        {
+            get { return (ViewItemClass)GetValue(ClassProperty); }
+            set { SetValue(ClassProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Class.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ClassProperty =
+            DependencyProperty.Register(nameof(Class), typeof(ViewItemClass), typeof(EditingAllSchedulesSingleClassControl), new PropertyMetadata(null, OnClassChanged));
+
+        private static void OnClassChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as EditingAllSchedulesSingleClassControl).OnClassChanged(e);
+        }
+
+        private ViewItemClass _currClass;
+        private void OnClassChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (_currClass != null)
+                DeregisterOldClass(_currClass);
+
+            _currClass = e.NewValue as ViewItemClass;
+
+            if (_currClass != null)
+                RegisterNewClass(_currClass);
+        }
+
         public ViewItemClass GetClass()
         {
-            return DataContext as ViewItemClass;
+            return Class;
         }
 
         private void ListViewTimes_ItemClick(object sender, ItemClickEventArgs e)
@@ -94,18 +123,6 @@ namespace PowerPlannerUWP.Views.ScheduleViews
         private void EditingScheduleClassTimeListViewItem_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
             e.Handled = true;
-        }
-
-        private ViewItemClass _currClass;
-        private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-        {
-            if (_currClass != null)
-                DeregisterOldClass(_currClass);
-
-            _currClass = args.NewValue as ViewItemClass;
-
-            if (_currClass != null)
-                RegisterNewClass(_currClass);
         }
 
         private void DeregisterOldClass(ViewItemClass c)

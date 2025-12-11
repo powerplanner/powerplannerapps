@@ -10,8 +10,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     PointerExited="UserControl_PointerExited"
-    PointerMoved="UserControl_PointerMoved"
-    DataContextChanged="UserControl_DataContextChanged">
+    PointerMoved="UserControl_PointerMoved">
 
     <Border Style="{ThemeResource ItemContainer}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="10">
         <Grid>
@@ -29,13 +28,13 @@
                 </Grid.ColumnDefinitions>
 
                 <Rectangle
-                    Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Blue}"
+                    Fill="{x:Bind Class.Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Blue}"
                     Height="18"
                     Width="18"
                     VerticalAlignment="Top"/>
 
                 <TextBlock
-                    Text="{Binding Name, FallbackValue=[Name]}"
+                    Text="{x:Bind Class.Name, Mode=OneWay, FallbackValue=[Name]}"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Grid.Column="1"
                     VerticalAlignment="Center"
@@ -46,7 +45,7 @@
 
 
             <ListView
-                ItemsSource="{Binding GroupedSchedules, ElementName=ThisControl}"
+                ItemsSource="{x:Bind GroupedSchedules, Mode=OneWay}"
                 SelectionMode="None"
                 IsItemClickEnabled="True"
                 ItemClick="ListViewTimes_ItemClick"
@@ -69,7 +68,7 @@
                             PointerExited="EditingScheduleClassTimeListViewItem_PointerExited"
                             PointerMoved="EditingScheduleClassTimeListViewItem_PointerMoved"
                             Background="Transparent">
-                            <local:EditingScheduleClassTimeListViewItem/>
+                            <local:EditingScheduleClassTimeListViewItem Schedules="{Binding}"/>
                         </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>

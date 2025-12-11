@@ -22,9 +22,9 @@
                 <StackPanel Margin="20">
 
                     <TextBlock
-                        Text="{Binding Message}"
+                        Text="{x:Bind ViewModel.Message, Mode=OneWay}"
                         Style="{ThemeResource BodyTextBlockStyle}"
-                        Visibility="{Binding Message, Converter={StaticResource NotNullToVisibilityConverter}}"
+                        Visibility="{x:Bind ViewModel.Message, Mode=OneWay, Converter={StaticResource NotNullToVisibilityConverter}}"
                         Margin="0,0,0,18"/>
 
                     <AutoSuggestBox
@@ -32,10 +32,10 @@
                     x:Name="tbUsername"
                     Header="Username"
                     KeyUp="tbUsername_KeyUp"
-                    ItemsSource="{Binding AccountsWithRememberUsername}"
+                    ItemsSource="{x:Bind ViewModel.AccountsWithRememberUsername}"
                     DisplayMemberPath="Username" TextMemberPath="Username"
                     Loaded="tbUsername_Loaded"
-                        Text="{Binding Username, Mode=TwoWay}">
+                        Text="{x:Bind ViewModel.Username, Mode=TwoWay}">
 
                         <AutoSuggestBox.TextBoxStyle>
                             <Style TargetType="TextBox">
@@ -53,7 +53,7 @@
                     Header="Password"
                     Margin="0,12,0,0"
                     KeyUp="tbPassword_KeyUp"
-                        Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        Password="{x:Bind ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <StackPanel
                     Margin="0,20,0,10"

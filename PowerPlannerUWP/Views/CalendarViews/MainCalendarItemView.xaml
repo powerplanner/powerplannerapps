@@ -12,8 +12,8 @@
     d:DesignWidth="200">
 
     <Grid
-        Background="{Binding Class.Color, Converter={StaticResource ColorToBrushConverter}, Mode=OneTime, FallbackValue={ThemeResource TaskOrEventBrush}}"
-        Opacity="{Binding IsComplete, Converter={StaticResource IsCompleteToOpacityConverter}, Mode=OneTime}"
+        Background="{x:Bind Item.Class.Color, Converter={StaticResource ColorToBrushConverter}, Mode=OneTime}"
+        Opacity="{x:Bind Item.IsComplete, Converter={StaticResource IsCompleteToOpacityConverter}, Mode=OneTime}"
         Margin="0,0,0,2"
         Tapped="Grid_Tapped"
         Height="29"
@@ -28,7 +28,7 @@
             Fill="Black"
             Opacity="0.2"
             Width="10"
-            Visibility="{Binding IsComplete, Converter={StaticResource IsCompleteToVisibilityConverter}, Mode=OneTime}"/>
+            Visibility="{x:Bind Item.IsComplete, Converter={StaticResource IsCompleteToVisibilityConverter}, Mode=OneTime}"/>
 
         <Grid
             Grid.Column="1"
@@ -38,7 +38,7 @@
 
             <TextBlock
                 x:Name="TextBlockName"
-                Text="{Binding Name, Mode=OneTime}"
+                Text="{x:Bind Item.Name, Mode=OneTime}"
                 MaxLines="1"
                 TextWrapping="NoWrap"
                 FontWeight="SemiBold"
@@ -50,7 +50,7 @@
                 Height="1"
                 VerticalAlignment="Center"
                 Margin="0,2,0,0"
-                Visibility="{Binding IsComplete, Converter={StaticResource IsCompleteToVisibilityConverter}, Mode=OneTime}"/>
+                Visibility="{x:Bind Item.IsComplete, Converter={StaticResource IsCompleteToVisibilityConverter}, Mode=OneTime}"/>
         </Grid>
 
     </Grid>

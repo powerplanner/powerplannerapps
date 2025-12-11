@@ -1,7 +1,6 @@
 ﻿<interfacesViews:ViewHostGeneric
     x:Name="ThisPage"
     xmlns:interfacesViews="using:InterfacesUWP.Views"
-    xmlns:pages="using:PowerPlannerUWP.Pages"
     x:Class="PowerPlannerUWP.Views.SettingsViews.CalendarIntegrationClassesView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -22,7 +21,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" IsEnabled="{Binding IsEnabled}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" IsEnabled="{x:Bind ViewModel.IsEnabled, Mode=OneWay}">
             <StackPanel Margin="20">
                 <TextBlock
                     x:Uid="Settings_CalendarIntegration_Classes_Header"
@@ -32,7 +31,7 @@
 
                 <ToggleSwitch
                     x:Name="ToggleSwitchIsEnabled"
-                    IsOn="{Binding IsIntegrationEnabled, Mode=TwoWay}"/>
+                    IsOn="{x:Bind ViewModel.IsIntegrationEnabled, Mode=TwoWay}"/>
 
                 <TextBlock
                     x:Uid="Settings_CalendarIntegration_Classes_Description"

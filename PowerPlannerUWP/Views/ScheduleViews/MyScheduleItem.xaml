@@ -1,5 +1,4 @@
 ﻿<UserControl
-    x:Name="ThisControl"
     x:Class="PowerPlannerUWP.Views.ScheduleViews.MyScheduleItem"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -35,10 +34,10 @@
             Margin="-6"
             Opacity="0"/>
 
-        <StackPanel Background="{Binding ElementName=ThisControl, Path=Schedule.Class.Color, Converter={StaticResource ColorToBrushConverter}}">
+        <StackPanel Background="{x:Bind Schedule.Class.Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}">
 
             <TextBlock
-                Text="{Binding ElementName=ThisControl, Path=Schedule.Class.Name}"
+                Text="{x:Bind Schedule.Class.Name, Mode=OneWay}"
                 Style="{StaticResource ScheduleTextBlockStyle}"
                 TextWrapping="WrapWholeWords"/>
 
@@ -48,7 +47,7 @@
 
             <TextBlock
                 interfaces:TextBlockExtensions.HyperlinkColor="White"
-                interfaces:TextBlockExtensions.RawText="{Binding ElementName=ThisControl, Path=Schedule.Room}"
+                interfaces:TextBlockExtensions.RawText="{x:Bind Schedule.Room, Mode=OneWay}"
                 Style="{StaticResource ScheduleTextBlockStyle}"
                 TextWrapping="WrapWholeWords"/>
 
