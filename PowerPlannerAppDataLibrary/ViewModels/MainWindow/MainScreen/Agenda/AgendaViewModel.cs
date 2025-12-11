@@ -216,8 +216,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             _lastChangedItemsIdentifiers = identifiers;
         }
 
-        private IReadOnlyList<object> _itemsWithHeaders;
-        public IReadOnlyList<object> ItemsWithHeaders
+        private MyHeaderedObservableList<ViewItemTaskOrEvent, ItemsGroupHeader> _itemsWithHeaders;
+        public MyHeaderedObservableList<ViewItemTaskOrEvent, ItemsGroupHeader> ItemsWithHeaders
         {
             get
             {
