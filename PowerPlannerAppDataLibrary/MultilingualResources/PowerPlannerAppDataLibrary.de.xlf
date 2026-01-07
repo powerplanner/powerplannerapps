@@ -2770,21 +2770,25 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
           <source>Recovering...</source>
           <target state="final">Wiederherstellung...</target>
         </trans-unit>
-        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
-          <source>No Class Color</source>
-          <target state="new">No Class Color</target>
+		<trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">Farbe ohne Kurs</target>
         </trans-unit>
-        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
-          <source>Customize the color of tasks and events that don't have a class assigned. This is useful for colorblind users or when you want to visually distinguish unassigned items.</source>
-          <target state="new">Customize the color of tasks and events that don't have a class assigned. This is useful for colorblind users or when you want to visually distinguish unassigned items.</target>
+		  <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">Passen Sie die Farbe von Aufgaben und Ereignissen an, die keinem Kurs zugeordnet sind.</target>
         </trans-unit>
-        <trans-unit id="Settings_NoClassColor_ColorPicker_Header" translate="yes" xml:space="preserve">
-          <source>Choose color for items without a class</source>
-          <target state="new">Choose color for items without a class</target>
-        </trans-unit>
-        <trans-unit id="Settings_NoClassColor_ResetToDefault" translate="yes" xml:space="preserve">
+		  <trans-unit id="Settings_NoClassColor_ResetToDefault" translate="yes" xml:space="preserve">
           <source>Reset to default</source>
-          <target state="new">Reset to default</target>
+          <target state="final">Auf Standard zurücksetzen</target>
+        </trans-unit>
+		  <trans-unit id="Settings_AppTheme_Title" translate="yes" xml:space="preserve">
+          <source>App theme</source>
+          <target state="final">App-Design</target>
+        </trans-unit>
+		  <trans-unit id="Settings_AppTheme_Description" translate="yes" xml:space="preserve">
+          <source>Choose between light, dark, or automatic theme based on your system settings.</source>
+          <target state="final">Wählen Sie zwischen hellem, dunklem oder automatischem Design basierend auf Ihren Systemeinstellungen.</target>
         </trans-unit>
       </group>
     </body>

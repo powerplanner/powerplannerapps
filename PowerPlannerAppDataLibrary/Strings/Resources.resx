@@ -2181,14 +2181,17 @@ Please think about using an online account instead!</value>
 	<data name="String_Recovering" xml:space="preserve">
 	<value>Recovering...</value>
   </data>
+  <data name="Settings_AppTheme_Title" xml:space="preserve">
+    <value>App theme</value>
+  </data>
+  <data name="Settings_AppTheme_Description" xml:space="preserve">
+    <value>Choose between light, dark, or automatic theme based on your system settings.</value>
+  </data>
   <data name="Settings_NoClassColor_Title" xml:space="preserve">
-    <value>No Class Color</value>
+    <value>No class color</value>
   </data>
   <data name="Settings_NoClassColor_Description" xml:space="preserve">
-    <value>Customize the color of tasks and events that don't have a class assigned. This is useful for colorblind users or when you want to visually distinguish unassigned items.</value>
-  </data>
-  <data name="Settings_NoClassColor_ColorPicker_Header" xml:space="preserve">
-    <value>Choose color for items without a class</value>
+    <value>Customize the color of tasks and events that don't have a class assigned.</value>
   </data>
   <data name="Settings_NoClassColor_ResetToDefault" xml:space="preserve">
     <value>Reset to default</value>

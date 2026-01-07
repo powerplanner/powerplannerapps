@@ -640,8 +640,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 accountChanged = true;
             }
 
-            if ((settings.NoClassColor != null && (this.NoClassColor == null || !this.NoClassColor.SequenceEqual(settings.NoClassColor))) ||
-                (settings.NoClassColor == null && this.NoClassColor != null))
+            if (settings.NoClassColor != null && (this.NoClassColor == null || !this.NoClassColor.SequenceEqual(settings.NoClassColor)))
             {
                 this.NoClassColor = settings.NoClassColor;
                 accountChanged = true;

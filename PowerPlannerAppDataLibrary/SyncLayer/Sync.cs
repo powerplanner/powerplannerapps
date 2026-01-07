@@ -1499,14 +1499,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     }
                     if (changedSettings.HasFlag(ChangedSetting.NoClassColor))
                     {
-                        if (account.NoClassColor == null)
-                        {
-                            settings.NoClassColor = Array.Empty<byte>();
-                        }
-                        else
-                        {
-                            settings.NoClassColor = account.NoClassColor;
-                        }
+                        settings.NoClassColor = account.NoClassColor;
                     }
 
                     try

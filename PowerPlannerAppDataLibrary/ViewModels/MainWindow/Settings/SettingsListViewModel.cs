@@ -287,16 +287,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSoundSettings);
             }
 
-            if (HasAccount)
-            {
-                RenderOption(
-                    layout,
-                    MaterialDesign.MaterialDesignIcons.Palette,
-                    PowerPlannerResources.GetString("Settings_NoClassColor_Title"),
-                    PowerPlannerResources.GetString("Settings_NoClassColor_Description"),
-                    OpenNoClassColorSettings);
-            }
-
             if (IsThemeVisible)
             {
                 RenderOption(
@@ -797,11 +787,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 ShowPopup(new LanguageSettingsViewModel(ParentForSubviews));
             }
-        }
-
-        public void OpenNoClassColorSettings()
-        {
-            ShowPopup(new NoClassColorViewModel(ParentForSubviews));
         }
 
         public void ViewSyncErrors()
