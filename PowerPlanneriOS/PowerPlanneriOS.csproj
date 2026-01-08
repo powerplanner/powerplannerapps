@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <TargetFramework>net8.0-ios</TargetFramework>
+	  <TargetFramework>net10.0-ios</TargetFramework>
 	  <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
     <MtouchSdkVersion>18.1</MtouchSdkVersion>
