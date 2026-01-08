@@ -12,6 +12,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	<AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
 	<EnableLLVM>true</EnableLLVM>
+	<!--Revert to .NET 8 trimming behavior-->
+	<TrimMode>partial</TrimMode>
+	<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+	<AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />
