@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFramework>net10.0-android</TargetFramework>
+	<TargetFramework>net8.0-android</TargetFramework>
 	<SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
 	<OutputType>Exe</OutputType>
 	<ApplicationId>com.barebonesdev.powerplanner.dev</ApplicationId>
@@ -12,10 +12,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	<AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
 	<EnableLLVM>true</EnableLLVM>
-	<!--Revert to .NET 8 trimming behavior-->
-	<TrimMode>partial</TrimMode>
-	<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
-	<AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />
