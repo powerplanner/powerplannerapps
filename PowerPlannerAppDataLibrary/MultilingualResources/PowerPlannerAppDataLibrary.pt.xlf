@@ -2769,6 +2769,26 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
           <source>Recovering...</source>
           <target state="final">Recuperando...</target>
         </trans-unit>
+		<trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">Cor sem aula</target>
+        </trans-unit>
+		  <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">Personalize a cor de tarefas e eventos que não têm uma aula atribuída.</target>
+        </trans-unit>
+		  <trans-unit id="Settings_NoClassColor_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">Redefinir para padrão</target>
+        </trans-unit>
+		  <trans-unit id="Settings_AppTheme_Title" translate="yes" xml:space="preserve">
+          <source>App theme</source>
+          <target state="final">Tema do app</target>
+        </trans-unit>
+		  <trans-unit id="Settings_AppTheme_Description" translate="yes" xml:space="preserve">
+          <source>Choose between light, dark, or automatic theme based on your system settings.</source>
+          <target state="final">Escolha entre tema claro, escuro ou automático com base nas configurações do seu sistema.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

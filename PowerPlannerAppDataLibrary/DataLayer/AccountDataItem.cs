@@ -488,9 +488,35 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set => SetProperty(ref _isSoundEffectsDisabled, !value, nameof(IsSoundEffectsEnabled));
         }
 
+        /// <summary>
+        /// The default color for "No Class" items (tasks/events without a class). If null, uses the system default.
+        /// </summary>
+        private byte[] _noClassColor;
+        [DataMember]
+        public byte[] NoClassColor
+        {
+            get => _noClassColor;
+            set
+            {
+                // Validate color array if not null
+                if (value != null && value.Length != 3)
+                {
+                    throw new ArgumentException("NoClassColor must be null or a 3-byte RGB array", nameof(value));
+                }
+                SetProperty(ref _noClassColor, value, nameof(NoClassColor));
+            }
+        }
+
         public async System.Threading.Tasks.Task SaveDefaultGradeScale(GradeScale[] defaultGradeScale)
         {
             _defaultGradeScale = defaultGradeScale;
+            NeedsToSyncSettings = true;
+            await SaveOnThread();
+        }
+
+        public async System.Threading.Tasks.Task SaveNoClassColor(byte[] noClassColor)
+        {
+            NoClassColor = noClassColor;
             NeedsToSyncSettings = true;
             await SaveOnThread();
         }
@@ -611,6 +637,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (settings.DefaultDoesRoundGradesUp != null && this.DefaultDoesRoundGradesUp != settings.DefaultDoesRoundGradesUp.Value)
             {
                 this.DefaultDoesRoundGradesUp = settings.DefaultDoesRoundGradesUp.Value;
+                accountChanged = true;
+            }
+
+            if (settings.NoClassColor != null && (this.NoClassColor == null || !this.NoClassColor.SequenceEqual(settings.NoClassColor)))
+            {
+                this.NoClassColor = settings.NoClassColor;
                 accountChanged = true;
             }
 
