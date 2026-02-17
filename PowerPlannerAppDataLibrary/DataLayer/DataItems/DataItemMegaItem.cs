@@ -2,12 +2,12 @@
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerSending;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
 {
@@ -52,6 +52,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
 
         #endregion
 
+        [NotMapped]
         public TimeOptions TimeOption
         {
             get

@@ -1,7 +1,7 @@
-﻿using PowerPlannerSending;
+using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
-using SQLite;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using System.ComponentModel.DataAnnotations;
 
 /*  ClassAttribute
 /// ClassAttributeUnderClass
@@ -270,17 +271,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         public class AccountApplier<T> : IEnumerable<T> where T : BaseDataItem
         {
             private AccountDataItem _account;
-            private TableQuery<T> _tableQuery;
+            private IQueryable<T> _queryable;
 
-            public AccountApplier(AccountDataItem account, TableQuery<T> tableQuery)
+            public AccountApplier(AccountDataItem account, IQueryable<T> queryable)
             {
                 _account = account;
-                _tableQuery = tableQuery;
+                _queryable = queryable;
             }
 
             public IEnumerator<T> GetEnumerator()
             {
-                return (_tableQuery as IEnumerable<T>).Select(i => ApplyAccount(i)).GetEnumerator();
+                return _queryable.AsEnumerable().Select(i => ApplyAccount(i)).GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -297,14 +298,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 return item;
             }
 
-            public int Count() { return _tableQuery.Count(); }
-            public int Count(Expression<Func<T, bool>> predExpr) { return _tableQuery.Count(predExpr); }
-            public T ElementAt(int index) { return ApplyAccount(_tableQuery.ElementAt(index)); }
-            public T First() { return ApplyAccount(_tableQuery.First()); }
-            public T First(Expression<Func<T, bool>> predExpr) { return ApplyAccount(_tableQuery.First(predExpr)); }
-            public T FirstOrDefault() { return ApplyAccount(_tableQuery.FirstOrDefault()); }
-            public T FirstOrDefault(Expression<Func<T, bool>> predExpr) { return ApplyAccount(_tableQuery.FirstOrDefault(predExpr)); }
-            public AccountApplier<T> Where(Expression<Func<T, bool>> predExpr) { return new AccountApplier<T>(_account, _tableQuery.Where(predExpr)); }
+            public int Count() { return _queryable.Count(); }
+            public int Count(Expression<Func<T, bool>> predExpr) { return _queryable.Count(predExpr); }
+            public T ElementAt(int index) { return ApplyAccount(_queryable.AsEnumerable().ElementAt(index)); }
+            public T First() { return ApplyAccount(_queryable.First()); }
+            public T First(Expression<Func<T, bool>> predExpr) { return ApplyAccount(_queryable.First(predExpr)); }
+            public T FirstOrDefault() { return ApplyAccount(_queryable.FirstOrDefault()); }
+            public T FirstOrDefault(Expression<Func<T, bool>> predExpr) { return ApplyAccount(_queryable.FirstOrDefault(predExpr)); }
+            public AccountApplier<T> Where(Expression<Func<T, bool>> predExpr) { return new AccountApplier<T>(_account, _queryable.Where(predExpr)); }
         }
 
         public AccountDataItem Account { get; private set; }
@@ -607,7 +608,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             get { return Account.LocalAccountId; }
         }
-        public SQLiteConnection _db;
+        public PowerPlannerDbContext _db;
 
         private static WeakReferenceCache<Guid, AccountDataStore> _dataStoreCache = new WeakReferenceCache<Guid, AccountDataStore>();
 
@@ -651,9 +652,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                         dataStore = new AccountDataStore(account);
                         await dataStore.InitializeDatabaseAsync();
                     }
-                    catch (SQLiteException)
+                    catch (Exception ex) when (!(ex is OutOfMemoryException))
                     {
                         // Database corrupted, delete and re-create
+                        TelemetryExtension.Current?.TrackException(ex);
+
                         var file = await FileSystem.Current.GetFileFromPathAsync(GetDatabaseFilePath(localAccountId));
                         if (file == null)
                         {
@@ -720,7 +723,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 {
                     if (existing._db != null)
                     {
-                        existing._db.Close();
+                        existing._db.Dispose();
                         existing._db = null;
                     }
 
@@ -766,17 +769,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             Account = account;
         }
 
-        private static readonly Type[] DataItemTableTypes = new Type[]
-        {
-            typeof(DataItemClass),
-            typeof(DataItemMegaItem),
-            typeof(DataItemGrade),
-            typeof(DataItemSchedule),
-            typeof(DataItemSemester),
-            typeof(DataItemWeightCategory),
-            typeof(DataItemYear)
-        };
-
         public string DatabaseFilePath
         {
             get { return GetDatabaseFilePath(LocalAccountId); }
@@ -797,8 +789,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 await InitializeDatabaseHelperAsync();
             }
-            catch
+            catch (Exception ex)
             {
+                TelemetryExtension.Current?.TrackException(ex);
+
                 if (_db != null)
                 {
                     try
@@ -818,24 +812,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private async System.Threading.Tasks.Task InitializeDatabaseHelperAsync()
         {
             var timeTracker = TimeTracker.Start();
-            _db = new SQLiteConnection(DatabaseFilePath);
-            timeTracker.End(3, "AccountDataStore.InitializeDatabase create SQLiteConnection");
+            _db = new PowerPlannerDbContext(DatabaseFilePath, Account);
 
-            // Create tables for data items (if they don't exist)
-            timeTracker = TimeTracker.Start();
-            foreach (Type t in DataItemTableTypes)
-                _db.CreateTable(t);
-
-            // Create table for storing images to upload
-            _db.CreateTable<ImageToUpload>();
-
-
-            _db.CreateTable<DataInfo>();
-            timeTracker.End(8, "AccountDataStore.InitializeDatabase create tables");
+            // EnsureCreated creates all tables if the database doesn't exist,
+            // and is a no-op if the database already exists (it does NOT update schema).
+            // This matches the old CreateTable behavior which was also a no-op for existing tables.
+            _db.Database.EnsureCreated();
+            timeTracker.End(3, "AccountDataStore.InitializeDatabase create DbContext and EnsureCreated");
 
             // Handle upgrading data
             timeTracker = TimeTracker.Start();
-            var dataInfo = _db.Table<DataInfo>().FirstOrDefault();
+            var dataInfo = _db.DataInfos.FirstOrDefault();
             if (dataInfo == null)
             {
                 // If not found, have to assume we came from version 1
@@ -849,130 +836,27 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             var version = dataInfo.Version;
             if (version < 3)
             {
-                if (_db.GetTableInfo("DataItemHomework").Count > 0)
-                {
-#pragma warning disable 612, 618
-                    _db.CreateTable<DataItemHomework>();
-                    _db.CreateTable<DataItemExam>();
-#pragma warning restore 612, 618
-
-                    var semesters = TableSemesters.ToArray();
-                    var classes = TableClasses.ToArray();
-
-#pragma warning disable CS0618 // Type or member is obsolete
-                    var handleV2update = new Action<BaseDataItemHomeworkExam>((dataItem) =>
-                    {
-                        if (version < 2)
-                        {
-                            dataItem.GradeReceived = Grade.UNGRADED;
-                            dataItem.GradeTotal = 100;
-                            dataItem.IsDropped = false;
-                            dataItem.IndividualWeight = 1;
-                            dataItem.WeightCategoryIdentifier = Guid.Empty;
-                        }
-                    });
-#pragma warning restore CS0618 // Type or member is obsolete
-
-                    using (var batchInserter = new BatchDbInserter(_db, 30))
-                    {
-#pragma warning disable 612, 618
-                        foreach (var h in _db.Table<DataItemHomework>())
-#pragma warning restore 612, 618
-                        {
-                            handleV2update(h);
-
-                            var c = classes.FirstOrDefault(i => h.UpperIdentifier == i.Identifier);
-                            if (c == null)
-                            {
-                                continue;
-                            }
-
-                            batchInserter.Insert(new DataItemMegaItem()
-                            {
-                                MegaItemType = MegaItemType.Homework,
-                                Identifier = h.Identifier,
-                                DateCreated = h.DateCreated,
-                                Updated = h.Updated,
-                                UpperIdentifier = c.Identifier,
-                                AppointmentLocalId = h.AppointmentLocalId,
-#if ANDROID
-                                HasSentReminder = h.HasSentReminder,
-#endif
-                                Date = h.Date,
-                                Details = h.Details,
-                                EndTime = h.EndTime,
-                                GradeReceived = h.GradeReceived,
-                                GradeTotal = h.GradeTotal,
-                                ImageNames = h.ImageNames,
-                                IndividualWeight = h.IndividualWeight,
-                                IsDropped = h.IsDropped,
-                                Name = h.Name,
-                                PercentComplete = h.PercentComplete,
-                                Reminder = h.Reminder,
-                                WeightCategoryIdentifier = h.WeightCategoryIdentifier
-                            });
-                        }
-
-#pragma warning disable 612, 618
-                        foreach (var e in _db.Table<DataItemExam>())
-#pragma warning restore 612, 618
-                        {
-                            handleV2update(e);
-
-                            var c = classes.FirstOrDefault(i => e.UpperIdentifier == i.Identifier);
-                            if (c == null)
-                            {
-                                continue;
-                            }
-
-                            batchInserter.Insert(new DataItemMegaItem()
-                            {
-                                MegaItemType = MegaItemType.Exam,
-                                Identifier = e.Identifier,
-                                DateCreated = e.DateCreated,
-                                Updated = e.Updated,
-                                UpperIdentifier = c.Identifier,
-                                AppointmentLocalId = e.AppointmentLocalId,
-#if ANDROID
-                                HasSentReminder = e.HasSentReminder,
-#endif
-                                Date = e.Date,
-                                Details = e.Details,
-                                EndTime = e.EndTime,
-                                GradeReceived = e.GradeReceived,
-                                GradeTotal = e.GradeTotal,
-                                ImageNames = e.ImageNames,
-                                IndividualWeight = e.IndividualWeight,
-                                IsDropped = e.IsDropped,
-                                Name = e.Name,
-                                Reminder = e.Reminder,
-                                WeightCategoryIdentifier = e.WeightCategoryIdentifier
-                            });
-                        }
-                    }
-
-#pragma warning disable 612, 618
-                    _db.DropTable<DataItemHomework>();
-                    _db.DropTable<DataItemExam>();
-#pragma warning restore 612, 618
-                }
+                // The old Homework/Exam tables have been migrated to MegaItem in a previous release.
+                // For databases still on version < 3, we use raw SQL to read from the legacy tables
+                // and insert into the MegaItem table, then drop the legacy tables.
+                await UpgradeFromVersion2Async(version);
             }
             if (version < 4)
             {
                 // Added StartDate/EndDate to classes
-                _db.Execute("update DataItemClass set StartDate = ?, EndDate = ?", SqlDate.MinValue, SqlDate.MinValue);
+                _db.Database.ExecuteSqlRaw("update DataItemClass set StartDate = {0}, EndDate = {1}", SqlDate.MinValue, SqlDate.MinValue);
             }
             if (version < 5)
             {
                 // Added PassingGrade to classes, which needs to be set to 60% by default
-                _db.Execute("update DataItemClass set PassingGrade = ?", Class.DefaultPassingGrade);
+                _db.Database.ExecuteSqlRaw("update DataItemClass set PassingGrade = {0}", Class.DefaultPassingGrade);
             }
             if (version < 6 && version == 5)
             {
                 // In previous version 5, I accidently was saving a class with the identifier of a semester, wiping out semesters
                 try
                 {
-                    int countDeleted = _db.Execute("delete from DataItemClass where exists (select * from DataItemSemester where DataItemClass.Identifier = DataItemSemester.Identifier and DataItemClass.UpperIdentifier = ?)", Guid.Empty);
+                    int countDeleted = _db.Database.ExecuteSqlRaw("delete from DataItemClass where exists (select * from DataItemSemester where DataItemClass.Identifier = DataItemSemester.Identifier and DataItemClass.UpperIdentifier = {0})", Guid.Empty);
 
                     if (countDeleted > 0)
                     {
@@ -998,7 +882,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                         if (Account.IsOnlineAccount && affectedOnlineAccountsAndSemesters.ContainsKey(Account.AccountId))
                         {
                             Guid semesterToReUpload = affectedOnlineAccountsAndSemesters[Account.AccountId];
-                            string name = _db.ExecuteScalar<string>("select Name from DataItemSemester where Identifier = ?", semesterToReUpload);
+                            string name = _db.Semesters
+                                .Where(s => s.Identifier == semesterToReUpload)
+                                .Select(s => s.Name)
+                                .FirstOrDefault();
                             if (name != null && name != "[Recovered]")
                             {
                                 var changedItems = await ChangedItems.Load(this);
@@ -1034,7 +921,18 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (version < DataInfo.LATEST_VERSION)
             {
                 dataInfo.Version = DataInfo.LATEST_VERSION;
-                _db.InsertOrReplace(dataInfo);
+
+                // Upsert: check if tracked or in DB, then add or update
+                var existingInDb = _db.DataInfos.Find(dataInfo.Key);
+                if (existingInDb != null)
+                {
+                    existingInDb.Version = dataInfo.Version;
+                }
+                else
+                {
+                    _db.DataInfos.Add(dataInfo);
+                }
+                _db.SaveChanges();
             }
             timeTracker.End(3, "AccountDataStore.InitializeDatabase handle upgrade");
 
@@ -1044,44 +942,161 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        private class BatchDbInserter : IDisposable
+        /// <summary>
+        /// Handles the v1/v2 to v3 upgrade: migrating legacy Homework/Exam tables to MegaItem.
+        /// Uses raw SQL since the legacy entity types are no longer mapped in EF Core.
+        /// </summary>
+        private async System.Threading.Tasks.Task UpgradeFromVersion2Async(int version)
         {
-            public int MaxInBatch { get; private set; }
+            // Check if the old DataItemHomework table exists
+            var connection = _db.Database.GetDbConnection();
+            await connection.OpenAsync();
 
-            private SQLiteConnection _db;
-            private List<object> _queued = new List<object>();
-
-            public BatchDbInserter(SQLiteConnection db, int maxInBatch)
+            bool homeworkTableExists = false;
+            try
             {
-                _db = db;
-                MaxInBatch = maxInBatch;
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='DataItemHomework'";
+                    var result = cmd.ExecuteScalar();
+                    homeworkTableExists = Convert.ToInt64(result) > 0;
+                }
+            }
+            catch
+            {
+                // If we can't check, assume the table doesn't exist
             }
 
-            public void Insert(object obj)
-            {
-                _queued.Add(obj);
+            if (!homeworkTableExists)
+                return;
 
-                if (_queued.Count >= MaxInBatch)
+            var classes = TableClasses.ToArray();
+
+            // Read all homework items using raw SQL and insert as MegaItems
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, ImageNames, Date, GradeReceived, GradeTotal, IsDropped, IndividualWeight, EndTime, Reminder, WeightCategoryIdentifier, AppointmentLocalId, PercentComplete"
+#if ANDROID
+                    + ", HasSentReminder"
+#endif
+                    + " FROM DataItemHomework";
+
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    _db.InsertAll(_queued);
-                    _queued.Clear();
+                    while (await reader.ReadAsync())
+                    {
+                        var upperIdentifier = reader.GetGuid(3);
+                        var c = classes.FirstOrDefault(i => upperIdentifier == i.Identifier);
+                        if (c == null)
+                            continue;
+
+                        var megaItem = new DataItemMegaItem()
+                        {
+                            MegaItemType = MegaItemType.Homework,
+                            Identifier = reader.GetGuid(0),
+                            DateCreated = reader.GetDateTime(1),
+                            Updated = reader.GetDateTime(2),
+                            UpperIdentifier = c.Identifier,
+                            Name = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            Details = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            RawImageNames = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            Date = reader.GetDateTime(7),
+                            GradeReceived = reader.GetDouble(8),
+                            GradeTotal = reader.GetDouble(9),
+                            IsDropped = reader.GetBoolean(10),
+                            IndividualWeight = reader.GetDouble(11),
+                            EndTime = reader.GetDateTime(12),
+                            Reminder = reader.GetDateTime(13),
+                            WeightCategoryIdentifier = reader.GetGuid(14),
+                            AppointmentLocalId = reader.IsDBNull(15) ? null : reader.GetString(15),
+                            PercentComplete = reader.GetDouble(16),
+#if ANDROID
+                            HasSentReminder = reader.GetBoolean(17),
+#endif
+                        };
+
+                        if (version < 2)
+                        {
+                            megaItem.GradeReceived = Grade.UNGRADED;
+                            megaItem.GradeTotal = 100;
+                            megaItem.IsDropped = false;
+                            megaItem.IndividualWeight = 1;
+                            megaItem.WeightCategoryIdentifier = Guid.Empty;
+                        }
+
+                        _db.MegaItems.Add(megaItem);
+                    }
                 }
             }
 
-            public void Dispose()
+            // Read all exam items using raw SQL and insert as MegaItems
+            using (var cmd = connection.CreateCommand())
             {
-                if (_queued.Count > 0)
+                cmd.CommandText = "SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, ImageNames, Date, GradeReceived, GradeTotal, IsDropped, IndividualWeight, EndTime, Reminder, WeightCategoryIdentifier, AppointmentLocalId"
+#if ANDROID
+                    + ", HasSentReminder"
+#endif
+                    + " FROM DataItemExam";
+
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    _db.InsertAll(_queued);
+                    while (await reader.ReadAsync())
+                    {
+                        var upperIdentifier = reader.GetGuid(3);
+                        var c = classes.FirstOrDefault(i => upperIdentifier == i.Identifier);
+                        if (c == null)
+                            continue;
+
+                        var megaItem = new DataItemMegaItem()
+                        {
+                            MegaItemType = MegaItemType.Exam,
+                            Identifier = reader.GetGuid(0),
+                            DateCreated = reader.GetDateTime(1),
+                            Updated = reader.GetDateTime(2),
+                            UpperIdentifier = c.Identifier,
+                            Name = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            Details = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            RawImageNames = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            Date = reader.GetDateTime(7),
+                            GradeReceived = reader.GetDouble(8),
+                            GradeTotal = reader.GetDouble(9),
+                            IsDropped = reader.GetBoolean(10),
+                            IndividualWeight = reader.GetDouble(11),
+                            EndTime = reader.GetDateTime(12),
+                            Reminder = reader.GetDateTime(13),
+                            WeightCategoryIdentifier = reader.GetGuid(14),
+                            AppointmentLocalId = reader.IsDBNull(15) ? null : reader.GetString(15),
+#if ANDROID
+                            HasSentReminder = reader.GetBoolean(16),
+#endif
+                        };
+
+                        if (version < 2)
+                        {
+                            megaItem.GradeReceived = Grade.UNGRADED;
+                            megaItem.GradeTotal = 100;
+                            megaItem.IsDropped = false;
+                            megaItem.IndividualWeight = 1;
+                            megaItem.WeightCategoryIdentifier = Guid.Empty;
+                        }
+
+                        _db.MegaItems.Add(megaItem);
+                    }
                 }
             }
+
+            _db.SaveChanges();
+
+            // Drop the legacy tables
+            _db.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS DataItemHomework");
+            _db.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS DataItemExam");
         }
 
         public class DataInfo
         {
             public const int LATEST_VERSION = 7;
 
-            [PrimaryKey]
+            [Key]
             public short Key { get; set; } = 1;
 
             public int Version { get; set; }
@@ -1101,11 +1116,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 try
                 {
-                    _db.Close();
+                    _db.Dispose();
                 }
-                // SQLite exception for "library routine called out of sequence" is normal if the initialization of the database failed,
-                // therefore calling close on the uninitialized database would be invalid. So we don't track that error.
-                catch (SQLiteException) { }
                 catch (Exception ex)
                 {
                     TelemetryExtension.Current?.TrackException(ex);
@@ -1115,85 +1127,79 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        public TableQuery<ImageToUpload> TableImagesToUpload
+        public IQueryable<ImageToUpload> TableImagesToUpload
         {
-            get { return _db.Table<ImageToUpload>(); }
+            get { return _db.ImagesToUpload; }
         }
 
         public AccountApplier<DataItemClass> TableClasses
         {
-            get { return new AccountApplier<DataItemClass>(Account, _db.Table<DataItemClass>()); }
+            get { return new AccountApplier<DataItemClass>(Account, _db.Classes); }
         }
 
         public AccountApplier<DataItemMegaItem> TableMegaItems
         {
-            get { return new AccountApplier<DataItemMegaItem>(Account, _db.Table<DataItemMegaItem>()); }
+            get { return new AccountApplier<DataItemMegaItem>(Account, _db.MegaItems); }
         }
 
         public AccountApplier<DataItemGrade> TableGrades
         {
-            get { return new AccountApplier<DataItemGrade>(Account, _db.Table<DataItemGrade>()); }
+            get { return new AccountApplier<DataItemGrade>(Account, _db.Grades); }
         }
 
         public AccountApplier<DataItemSchedule> TableSchedules
         {
-            get { return new AccountApplier<DataItemSchedule>(Account, _db.Table<DataItemSchedule>()); }
+            get { return new AccountApplier<DataItemSchedule>(Account, _db.Schedules); }
         }
 
         public AccountApplier<DataItemSemester> TableSemesters
         {
-            get { return new AccountApplier<DataItemSemester>(Account, _db.Table<DataItemSemester>()); }
+            get { return new AccountApplier<DataItemSemester>(Account, _db.Semesters); }
         }
 
         public AccountApplier<DataItemWeightCategory> TableWeightCategories
         {
-            get { return new AccountApplier<DataItemWeightCategory>(Account, _db.Table<DataItemWeightCategory>()); }
+            get { return new AccountApplier<DataItemWeightCategory>(Account, _db.WeightCategories); }
         }
 
         public AccountApplier<DataItemYear> TableYears
         {
-            get
-            {
-                return new AccountApplier<DataItemYear>(Account, _db.Table<DataItemYear>());
-            }
+            get { return new AccountApplier<DataItemYear>(Account, _db.Years); }
         }
 
-        public TableQuery<DataItemClass> ActualTableClasses
+        public IQueryable<DataItemClass> ActualTableClasses
         {
-            get { return _db.Table<DataItemClass>(); }
+            get { return _db.Classes; }
         }
 
-        public TableQuery<DataItemMegaItem> ActualTableMegaItems
+        public IQueryable<DataItemMegaItem> ActualTableMegaItems
         {
-            get { return _db.Table<DataItemMegaItem>(); }
+            get { return _db.MegaItems; }
         }
 
-        public TableQuery<DataItemGrade> ActualTableGrades
+        public IQueryable<DataItemGrade> ActualTableGrades
         {
-            get { return _db.Table<DataItemGrade>(); }
+            get { return _db.Grades; }
         }
 
-        public TableQuery<DataItemSchedule> ActualTableSchedules
+        public IQueryable<DataItemSchedule> ActualTableSchedules
         {
-            get { return _db.Table<DataItemSchedule>(); }
+            get { return _db.Schedules; }
         }
 
-        public TableQuery<DataItemSemester> ActualTableSemesters
+        public IQueryable<DataItemSemester> ActualTableSemesters
         {
-            get { return _db.Table<DataItemSemester>(); }
+            get { return _db.Semesters; }
         }
 
-        public TableQuery<DataItemWeightCategory> ActualTableWeightCategories
+        public IQueryable<DataItemWeightCategory> ActualTableWeightCategories
         {
-            get { return _db.Table<DataItemWeightCategory>(); }
+            get { return _db.WeightCategories; }
         }
 
-        public TableQuery<DataItemYear> ActualTableYears
+        public IQueryable<DataItemYear> ActualTableYears
         {
-            get
-            {
-                return _db.Table<DataItemYear>();
-            }
+            get { return _db.Years; }
         }
 
         public enum ProcessType
@@ -1223,16 +1229,18 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             using (await Locks.LockDataForWriteAsync())
             {
-                _db.RunInTransaction(delegate
+                foreach (var u in toUpload)
                 {
-                    foreach (var u in toUpload)
+                    var existing = _db.ImagesToUpload.Find(u);
+                    if (existing == null)
                     {
-                        _db.InsertOrReplace(new ImageToUpload()
+                        _db.ImagesToUpload.Add(new ImageToUpload()
                         {
                             FileName = u
                         });
                     }
-                });
+                }
+                _db.SaveChanges();
             }
         }
 
@@ -1251,7 +1259,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <returns></returns>
         private string GetNextImageToUploadBlocking()
         {
-            var toUpload = TableImagesToUpload.FirstOrDefault();
+            var toUpload = _db.ImagesToUpload.FirstOrDefault();
 
             if (toUpload == null)
                 return null;
@@ -1273,7 +1281,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <param name="fileName"></param>
         private void MarkImageUploadedBlocking(string fileName)
         {
-            _db.Delete<ImageToUpload>(fileName);
+            var toRemove = _db.ImagesToUpload.Find(fileName);
+            if (toRemove != null)
+            {
+                _db.ImagesToUpload.Remove(toRemove);
+                _db.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -1333,9 +1346,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <summary>
         /// Caller should establish data lock
         /// </summary>
-        /// <param name="newItemIdentifiers"></param>
-        /// <param name="editedItems"></param>
-        /// <returns></returns>
         private IEnumerable<Dictionary<string, object>> GetUpdatesBlocking(Guid[] newItemIdentifiers, Tuple<Guid, BaseDataItem.SyncPropertyNames[]>[] editedItems, out bool isBatchingUpdates)
         {
             List<Dictionary<string, object>> answer = new List<Dictionary<string, object>>();
@@ -1366,9 +1376,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                     changes["Identifier"] = item.Identifier;
                     changes["Updated"] = item.Updated;
-                    changes["ItemType"] = item.ItemType; // Include ItemType when updating so properties can be mapped correctly
-                    // Otherwise without this, can't tell whether "GradeReceived" should map to Double1 or Double2, since it depends
-                    // whether it's a Grade or Homework
+                    changes["ItemType"] = item.ItemType;
 
                     foreach (var p in changedProperties)
                     {
@@ -1377,8 +1385,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                     answer.Add(changes);
                 }
-
-                // Else new item
                 else
                 {
                     answer.Add(item.SerializeToDictionary());
@@ -1391,8 +1397,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <summary>
         /// Establishes data lock. Caller is responsible for checking the NeedsAccountToBeSaved property and saving the account
         /// </summary>
-        /// <param name="dataChanges"></param>
-        /// <returns></returns>
         public async System.Threading.Tasks.Task<SaveChangesTasks> ProcessOnlineChanges(DataChanges dataChanges, bool isMultiPart)
         {
             return await ProcessChangesHelper(
@@ -1413,13 +1417,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return saveChangesTask;
         }
 
-
-
-        /// <summary>
-        /// Items in the DataChanges will be modified.
-        /// </summary>
-        /// <param name="dataChanges"></param>
-        /// <returns></returns>
         private async System.Threading.Tasks.Task<SaveChangesTasks> ProcessChangesHelper(DataChanges dataChanges, ProcessType processType)
         {
             SaveChangesTasks pendingTasks = new SaveChangesTasks();
@@ -1437,43 +1434,36 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
             });
 
-
             // If we're not in a multi-part insert...
             if (processType != ProcessType.OnlineMultiPart)
             {
-                // Update the tiles (don't wait on it)
                 try
                 {
                     Debug.WriteLine("Updating tile notifications");
                     pendingTasks.UpdateTilesTask = TilesExtension.Current?.UpdateTileNotificationsForAccountAsync(account, this);
                 }
-
                 catch (Exception ex)
                 {
                     Debug.WriteLine("Failed to update tile notifications");
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 
-                // And update class reminders (don't wait on it)
                 try
                 {
                     Debug.WriteLine("Updating class reminders");
                     pendingTasks.UpdateClassRemindersTask = ClassRemindersExtension.Current?.ResetAllRemindersAsync(account);
                 }
-
                 catch (Exception ex)
                 {
                     Debug.WriteLine("Failed to update class reminders");
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 
-                // And update reminders (don't wait on it)
                 try
                 {
                     Debug.WriteLine("Updating toast reminders");
                     pendingTasks.UpdateRemindersTask = RemindersExtension.Current?.ResetReminders(account, this);
                 }
-
                 catch (Exception ex)
                 {
                     Debug.WriteLine("Failed to update toast reminders");
@@ -1484,11 +1474,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return pendingTasks;
         }
 
-        /// <summary>
-        /// Used for upgrading from Windows 8, no need for data lock since we're not going to be calling this in a multi-threaded fashion.
-        /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
         internal async System.Threading.Tasks.Task ImportItemsAsync(BaseDataItem[] items)
         {
             await System.Threading.Tasks.Task.Run(delegate
@@ -1499,7 +1484,28 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private void ImportItemsBlocking(BaseDataItem[] items)
         {
-            _db.InsertAll(items);
+            AddItemsToDbSets(items);
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        /// Adds items to the appropriate DbSet based on their type
+        /// </summary>
+        private void AddItemsToDbSets(IEnumerable<BaseDataItem> items)
+        {
+            foreach (var item in items)
+            {
+                switch (item)
+                {
+                    case DataItemClass c: _db.Classes.Add(c); break;
+                    case DataItemMegaItem m: _db.MegaItems.Add(m); break;
+                    case DataItemGrade g: _db.Grades.Add(g); break;
+                    case DataItemSchedule s: _db.Schedules.Add(s); break;
+                    case DataItemSemester sem: _db.Semesters.Add(sem); break;
+                    case DataItemWeightCategory w: _db.WeightCategories.Add(w); break;
+                    case DataItemYear y: _db.Years.Add(y); break;
+                }
+            }
         }
 
         private class CommitChangesResponse
@@ -1507,11 +1513,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             public bool NeedsAccountToBeSaved { get; set; }
         }
 
-        /// <summary>
-        /// Items in the DataChanges will be modified.
-        /// </summary>
-        /// <param name="dataChanges"></param>
-        /// <returns></returns>
         private async System.Threading.Tasks.Task<CommitChangesResponse> CommitChanges(AccountDataItem account, DataChanges dataChanges, ProcessType processType)
         {
             if (dataChanges == null)
@@ -1542,107 +1543,89 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             // Then write the new/edited items
             foreach (BaseDataItem edited in dataChanges.EditedItems)
             {
-                // Assign the Updated time if this is local changes
                 if (processType == ProcessType.Local)
                     edited.Updated = now;
 
-                // Find the existing item, if there is one
                 BaseDataItem existing = existingDataItems.FirstOrDefault(i => i.Identifier == edited.Identifier);
 
-                // If there wasn't an existing data item
                 if (existing == null)
                 {
                     if (dataChanges.ShouldCreateNewItem(edited.Identifier))
                     {
-                        // We let this edited item become the item to save
                         BaseDataItem newItem = edited;
 
-                        // And we also assign the DateCreated if this is local
                         if (processType == ProcessType.Local)
                             newItem.DateCreated = now;
 
-                        // Flag that it's a new item
                         if (changedItems != null)
                             changedItems.AddNewItem(newItem.Identifier);
 
-                        // Add it to our collection of new items to save
                         newDataItems.Add(newItem);
                     }
                 }
-
-                // Otherwise we need to copy properties into the existing
                 else
                 {
-                    // Assign account to existing
                     existing.Account = Account;
-
-                    // Apply the changes, while also getting which properties were actually affected
                     var changedPropertyNames = existing.ImportChanges(edited);
 
 #if ANDROID
-                    // We always set HasSentReminder to false when edited
                     if (existing is DataItemMegaItem)
                     {
                         (existing as DataItemMegaItem).HasSentReminder = false;
                     }
 #endif
 
-                    // And then flag that item as edited
                     if (changedItems != null)
                         changedItems.AddEditedItem(existing.Identifier, changedPropertyNames);
                 }
 
-                // Increment the now time so that each one is unique and maintains order
                 now = now.AddTicks(1);
             }
 
-            // And flag the items to delete
             if (changedItems != null)
                 foreach (Guid id in dataChanges.IdentifiersToDelete)
                     changedItems.AddDeletedItem(id);
 
-            
-
-            var savePoint = _db.SaveTransactionPoint();
-
             DeletedItems deletedItems;
 
-            try
+            using (var transaction = _db.Database.BeginTransaction())
             {
-                // Update the existing items
-                timeTracker = TimeTracker.Start();
-                _db.UpdateAll(existingDataItems, false); // Don't run in its own transaction
-                timeTracker.End(3, $"CommitChanges UpdateAll, {existingDataItems.Count} existingDataItems");
+                try
+                {
+                    // Existing items are already tracked by EF Core from GetExistingItems,
+                    // so changes will be detected and saved automatically
+                    timeTracker = TimeTracker.Start();
+                    timeTracker.End(3, $"CommitChanges existing items tracked, {existingDataItems.Count} existingDataItems");
 
-                // Add the new items
-                timeTracker = TimeTracker.Start();
-                _db.InsertAll(newDataItems, false); // Don't run in its own transaction
-                timeTracker.End(3, $"CommitChanges InsertAll, {newDataItems.Count} newDataItems");
+                    // Add the new items
+                    timeTracker = TimeTracker.Start();
+                    AddItemsToDbSets(newDataItems);
+                    timeTracker.End(3, $"CommitChanges AddItemsToDbSets, {newDataItems.Count} newDataItems");
 
-                // And delete the deleted items
-                timeTracker = TimeTracker.Start();
-                deletedItems = RecursiveDelete(dataChanges.IdentifiersToDelete.ToArray());
-                timeTracker.End(3, $"CommitChanges RecursiveDelete, {dataChanges.IdentifiersToDelete.Count()} identifiers to delete");
+                    // And delete the deleted items
+                    timeTracker = TimeTracker.Start();
+                    deletedItems = RecursiveDelete(dataChanges.IdentifiersToDelete.ToArray());
+                    timeTracker.End(3, $"CommitChanges RecursiveDelete, {dataChanges.IdentifiersToDelete.Count()} identifiers to delete");
 
-                // Save the properties that have been changed so we can upload them later
-                if (changedItems != null)
-                    await changedItems.Save();
+                    // Save all tracked changes to the database
+                    _db.SaveChanges();
 
-                _db.Release(savePoint);
+                    if (changedItems != null)
+                        await changedItems.Save();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                _db.RollbackTo(savePoint);
-                throw;
-            }
-
 
             DataChangedEvent dataChangedEvent = new DataChangedEvent(LocalAccountId, newDataItems, existingDataItems, deletedItems, wasLocalChanges: processType == ProcessType.Local, originalChanges: dataChanges);
 
-            // Queue the Appointments to be updated (this saves the account so that it's flagged as Appointments not updated, and then does remaining work on separate thread)
             bool needsSave = false;
 
-            // Only update appointments if we're not in a multi-part sync
             if (processType != ProcessType.OnlineMultiPart)
             {
                 if (AppointmentsExtension.Current != null)
@@ -1654,12 +1637,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 }
             }
 
-            // send out changed event
             if (DataChangedEvent != null)
             {
                 timeTracker = TimeTracker.Start();
 
-                // Don't let errors in UI break our data code
                 try
                 {
                     DataChangedEvent(this, dataChangedEvent);
@@ -1678,8 +1659,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 NeedsAccountToBeSaved = needsSave
             };
-
-            // TODO - update tiles and toasts (should be done on a separate thread since not data-lock critical, but if another change comes in we should cancel the previous thread and simply complete the update on the new thread)
         }
 
         private DeletedItems RecursiveDelete(Guid[] identifiersToDelete)
@@ -1693,7 +1672,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private void RecursiveDeleteHelper(Guid[] identifiersToDelete, DeletedItems into)
         {
-            // If too many, we need to batch it
             if (identifiersToDelete.Length > 500)
             {
                 foreach (Guid[] batched in identifiersToDelete.BatchAsArrays(500))
@@ -1705,22 +1683,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (identifiersToDelete.Length == 0)
                 return;
 
-            // Delete the current level items
             Delete(identifiersToDelete, into);
-
-            // And add those to deleted identifiers
             into.DeletedIdentifiers.AddRange(identifiersToDelete);
 
-            // And now we need to find all children and then recursively delete those
             Guid[] childrenToDelete = FindAllIdentifiersThatAreChildren(identifiersToDelete);
             RecursiveDeleteHelper(childrenToDelete, into);
         }
 
-        /// <summary>
-        /// Doesn't enumerate all tables unless necessary. Enumerates item by item so all of them aren't loaded at once. Looks in most commonly edited tables first since it will stop if it found everything, so mega items are returned first.
-        /// </summary>
-        /// <param name="identifiersToLookFor"></param>
-        /// <returns></returns>
         private IEnumerable<BaseDataItem> FindAll(Guid[] identifiersToLookFor)
         {
             HashSet<Guid> remainingIdentifiersToLookFor = new HashSet<Guid>(identifiersToLookFor);
@@ -1733,79 +1702,34 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             Func<bool> done = () => { return remainingIdentifiersToLookFor.Count == 0; };
 
-
             foreach (var i in FindAll(identifiersToLookFor, ActualTableMegaItems))
-            {
-                yield return found(i);
-            }
-
-            if (done())
-                yield break;
-
-
+            { yield return found(i); }
+            if (done()) yield break;
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableGrades))
-            {
-                yield return found(i);
-            }
-
-            if (done())
-                yield break;
-
-
+            { yield return found(i); }
+            if (done()) yield break;
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableClasses))
-            {
-                yield return found(i);
-            }
-
-            if (done())
-                yield break;
-
-
+            { yield return found(i); }
+            if (done()) yield break;
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableSchedules))
-            {
-                yield return found(i);
-            }
-
-            if (done())
-                yield break;
-
-
+            { yield return found(i); }
+            if (done()) yield break;
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableSemesters))
-            {
-                yield return found(i);
-            }
-
-            if (done())
-                yield break;
-
-
+            { yield return found(i); }
+            if (done()) yield break;
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableYears))
-            {
-                yield return found(i);
-            }
-
-            if (done())
-                yield break;
-
-
+            { yield return found(i); }
+            if (done()) yield break;
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableWeightCategories))
-            {
-                yield return found(i);
-            }
+            { yield return found(i); }
         }
 
-        /// <summary>
-        /// Finds all items with a limit, looks for top-level items first
-        /// </summary>
-        /// <param name="identifiersToLookFor"></param>
-        /// <param name="maxItemsToReturn"></param>
-        /// <returns></returns>
         private IEnumerable<BaseDataItem> FindAllWithLimitAndSorted(Guid[] identifiersToLookFor, int maxItemsToReturn)
         {
             HashSet<Guid> remainingIdentifiersToLookFor = new HashSet<Guid>(identifiersToLookFor);
@@ -1820,66 +1744,36 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             Func<bool> done = () => { return countFound >= maxItemsToReturn || remainingIdentifiersToLookFor.Count == 0; };
 
-
             foreach (var i in FindAll(identifiersToLookFor, ActualTableYears))
-            {
-                yield return found(i);
-                if (done())
-                    yield break;
-            }
+            { yield return found(i); if (done()) yield break; }
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableSemesters))
-            {
-                yield return found(i);
-                if (done())
-                    yield break;
-            }
+            { yield return found(i); if (done()) yield break; }
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableClasses))
-            {
-                yield return found(i);
-                if (done())
-                    yield break;
-            }
+            { yield return found(i); if (done()) yield break; }
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableWeightCategories))
-            {
-                yield return found(i);
-                if (done())
-                    yield break;
-            }
+            { yield return found(i); if (done()) yield break; }
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableMegaItems))
-            {
-                yield return found(i);
-                if (done())
-                    yield break;
-            }
+            { yield return found(i); if (done()) yield break; }
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableGrades))
-            {
-                yield return found(i);
-                if (done())
-                    yield break;
-            }
+            { yield return found(i); if (done()) yield break; }
 
             foreach (var i in FindAll(identifiersToLookFor, ActualTableSchedules))
-            {
-                yield return found(i);
-                if (done())
-                    yield break;
-            }
+            { yield return found(i); if (done()) yield break; }
         }
 
-        private IEnumerable<BaseDataItem> FindAll<T>(Guid[] identifiersToLookFor, TableQuery<T> table) where T : BaseDataItem
+        private IEnumerable<BaseDataItem> FindAll<T>(Guid[] identifiersToLookFor, IQueryable<T> table) where T : BaseDataItem
         {
-            // Max variables is 999
             const int max = 900;
             if (identifiersToLookFor.Length > max)
             {
                 foreach (var grouped in identifiersToLookFor.BatchAsArrays(900))
                 {
-                    foreach (var item in table.Where(i => grouped.Contains(i.Identifier)))
+                    foreach (var item in table.Where(i => grouped.Contains(i.Identifier)).AsEnumerable())
                     {
                         yield return item;
                     }
@@ -1887,7 +1781,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
             else
             {
-                foreach (var item in table.Where(i => identifiersToLookFor.Contains(i.Identifier)))
+                foreach (var item in table.Where(i => identifiersToLookFor.Contains(i.Identifier)).AsEnumerable())
                 {
                     yield return item;
                 }
@@ -1899,45 +1793,31 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             List<Guid> children = new List<Guid>();
 
             children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableMegaItems));
-
             children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableGrades));
-
             children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableSchedules));
-
             children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableClasses));
-
             children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableSemesters));
-
             children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableWeightCategories));
-            
-            // Years don't count since they can't be children
 
             return children.ToArray();
         }
 
-        private IEnumerable<Guid> FindIdentifiersThatAreChildren<T>(Guid[] parentIdentifiers, TableQuery<T> table) where T : BaseDataItemUnderOne
+        private IEnumerable<Guid> FindIdentifiersThatAreChildren<T>(Guid[] parentIdentifiers, IQueryable<T> table) where T : BaseDataItemUnderOne
         {
-            // Have to convert to a class first, since directly selecting identifier doesn't work (it tries to input properties into a Guid class...)
-
-            var items = table.Where(i => parentIdentifiers.Contains(i.UpperIdentifier)).ToArray().Select(i => i.Identifier).ToArray();
-            
+            var items = table.Where(i => parentIdentifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray();
             return items;
         }
 
-        private IEnumerable<Guid> FindIdentifiersThatAreChildrenOfEitherParent<T>(Guid[] parentIdentifiers, TableQuery<T> table) where T : BaseDataItemUnderTwo
+        private IEnumerable<Guid> FindIdentifiersThatAreChildrenOfEitherParent<T>(Guid[] parentIdentifiers, IQueryable<T> table) where T : BaseDataItemUnderTwo
         {
-            // Parameters gets doubled since we're checking two params, so we'll make our limit be 800 total to stay below the 999 SQL limit
             if (parentIdentifiers.Length > 400)
             {
                 List<Guid> answer = new List<Guid>();
-
                 foreach (Guid[] batched in parentIdentifiers.BatchAsArrays(400))
                     answer.AddRange(FindIdentifiersThatAreChildrenOfEitherParent(batched, table));
-
                 return answer;
             }
 
-            // Have to convert to a class first, since directly selecting identifier doesn't work (it tries to input properties into a Guid class...)
             return table.Where(i => parentIdentifiers.Contains(i.UpperIdentifier) || parentIdentifiers.Contains(i.SecondUpperIdentifier)).Select(i => i.Identifier).ToArray();
         }
 
@@ -1945,45 +1825,48 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             int before = into.DeletedTaskEventAppointments.Count;
 
-            // Add the appointment LocalId's of the items we're going to delete
-            // Mono has an exception when selecting the string, so first have to create the whole object...
             into.DeletedTaskEventAppointments.AddRange(ActualTableMegaItems.Where(i =>
                 (i.MegaItemType != MegaItemType.Holiday)
                 && identifiersToDelete.Contains(i.Identifier))
-                .ToArray().Select(i => i.AppointmentLocalId));
+                .AsEnumerable().Select(i => i.AppointmentLocalId));
 
             int after = into.DeletedTaskEventAppointments.Count;
 
-            // If there possibly was a deleted holiday
             if (identifiersToDelete.Length != (after - before) && !into.DidDeleteHoliday)
             {
                 into.DidDeleteHoliday = TableMegaItems.Any(i => i.MegaItemType == MegaItemType.Holiday && identifiersToDelete.Contains(i.Identifier));
             }
 
-            // If there were none to delete
             if (before == after && !into.DidDeleteHoliday)
                 return 0;
 
-            // And then actually delete them, returning the count of deleted
-            return ActualTableMegaItems.Delete(i => identifiersToDelete.Contains(i.Identifier));
+            var toDelete = _db.MegaItems.Where(i => identifiersToDelete.Contains(i.Identifier)).ToList();
+            _db.MegaItems.RemoveRange(toDelete);
+            return toDelete.Count;
         }
 
         private int DeleteSchedules(Guid[] identifiersToDelete, DeletedItems into)
         {
             int before = into.DeletedScheduleAppointments.Count;
 
-            // Add the appointment LocalId's of the items we're going to delete
-            // Mono has an exception when selecting the string, so first have to create the whole object...
-            into.DeletedScheduleAppointments.AddRange(ActualTableSchedules.Where(i => identifiersToDelete.Contains(i.Identifier)).ToArray().Select(i => i.AppointmentLocalId));
+            into.DeletedScheduleAppointments.AddRange(ActualTableSchedules.Where(i => identifiersToDelete.Contains(i.Identifier)).AsEnumerable().Select(i => i.AppointmentLocalId));
 
             int after = into.DeletedScheduleAppointments.Count;
 
-            // If there were none to delete
             if (before == after)
                 return 0;
 
-            // And then actually delete them, returning the count of deleted
-            return ActualTableSchedules.Delete(i => identifiersToDelete.Contains(i.Identifier));
+            var toDelete = _db.Schedules.Where(i => identifiersToDelete.Contains(i.Identifier)).ToList();
+            _db.Schedules.RemoveRange(toDelete);
+            return toDelete.Count;
+        }
+
+        private int DeleteFromDbSet<T>(Guid[] identifiersToDelete, DbSet<T> dbSet) where T : BaseDataItem
+        {
+            var toDelete = dbSet.Where(i => identifiersToDelete.Contains(i.Identifier)).ToList();
+            if (toDelete.Count > 0)
+                dbSet.RemoveRange(toDelete);
+            return toDelete.Count;
         }
 
         private void Delete(Guid[] identifiersToDelete, DeletedItems into)
@@ -1991,65 +1874,49 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             int countDeleted = 0;
 
             countDeleted += DeleteMegaItems(identifiersToDelete, into);
+            if (countDeleted >= identifiersToDelete.Length) return;
 
-            if (countDeleted >= identifiersToDelete.Length)
-                return;
-
-            countDeleted += ActualTableGrades.Delete(i => identifiersToDelete.Contains(i.Identifier));
-
-            if (countDeleted >= identifiersToDelete.Length)
-                return;
+            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Grades);
+            if (countDeleted >= identifiersToDelete.Length) return;
 
             countDeleted += DeleteSchedules(identifiersToDelete, into);
+            if (countDeleted >= identifiersToDelete.Length) return;
 
-            if (countDeleted >= identifiersToDelete.Length)
-                return;
+            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Classes);
+            if (countDeleted >= identifiersToDelete.Length) return;
 
-            countDeleted += ActualTableClasses.Delete(i => identifiersToDelete.Contains(i.Identifier));
+            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Semesters);
+            if (countDeleted >= identifiersToDelete.Length) return;
 
-            if (countDeleted >= identifiersToDelete.Length)
-                return;
+            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.WeightCategories);
+            if (countDeleted >= identifiersToDelete.Length) return;
 
-            countDeleted += ActualTableSemesters.Delete(i => identifiersToDelete.Contains(i.Identifier));
-
-            if (countDeleted >= identifiersToDelete.Length)
-                return;
-
-            countDeleted += ActualTableWeightCategories.Delete(i => identifiersToDelete.Contains(i.Identifier));
-
-            if (countDeleted >= identifiersToDelete.Length)
-                return;
-
-            countDeleted += ActualTableYears.Delete(i => identifiersToDelete.Contains(i.Identifier));
-
-            if (countDeleted >= identifiersToDelete.Length)
-                return;
+            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Years);
         }
 
         private List<BaseDataItem> GetExistingItems(IEnumerable<BaseDataItem> itemsToMatch)
         {
             List<BaseDataItem> existingItems = new List<BaseDataItem>();
 
-            AddExistingItemsOfType<DataItemClass>(itemsToMatch, existingItems);
-            AddExistingItemsOfType<DataItemGrade>(itemsToMatch, existingItems);
-            AddExistingItemsOfType<DataItemMegaItem>(itemsToMatch, existingItems);
-            AddExistingItemsOfType<DataItemSchedule>(itemsToMatch, existingItems);
-            AddExistingItemsOfType<DataItemSemester>(itemsToMatch, existingItems);
-            AddExistingItemsOfType<DataItemWeightCategory>(itemsToMatch, existingItems);
-            AddExistingItemsOfType<DataItemYear>(itemsToMatch, existingItems);
+            AddExistingItemsOfType<DataItemClass>(itemsToMatch, existingItems, _db.Classes);
+            AddExistingItemsOfType<DataItemGrade>(itemsToMatch, existingItems, _db.Grades);
+            AddExistingItemsOfType<DataItemMegaItem>(itemsToMatch, existingItems, _db.MegaItems);
+            AddExistingItemsOfType<DataItemSchedule>(itemsToMatch, existingItems, _db.Schedules);
+            AddExistingItemsOfType<DataItemSemester>(itemsToMatch, existingItems, _db.Semesters);
+            AddExistingItemsOfType<DataItemWeightCategory>(itemsToMatch, existingItems, _db.WeightCategories);
+            AddExistingItemsOfType<DataItemYear>(itemsToMatch, existingItems, _db.Years);
 
             return existingItems;
         }
 
-        private void AddExistingItemsOfType<T>(IEnumerable allItemsToMatch, List<BaseDataItem> listToAddTo) where T : BaseDataItem, new()
+        private void AddExistingItemsOfType<T>(IEnumerable allItemsToMatch, List<BaseDataItem> listToAddTo, DbSet<T> dbSet) where T : BaseDataItem
         {
-            // Only take 500 at once since SQL can only have max of 999 parameters (and might as well stay further below that limit)
             foreach (Guid[] identifiersBatchGroup in allItemsToMatch.OfType<T>().Select(i => i.Identifier).BatchAsArrays(500))
             {
                 if (identifiersBatchGroup.Length == 0)
                     return;
 
-                listToAddTo.AddRange(_db.Table<T>().Where(i => identifiersBatchGroup.Contains(i.Identifier)));
+                listToAddTo.AddRange(dbSet.Where(i => identifiersBatchGroup.Contains(i.Identifier)));
             }
         }
 
@@ -2096,23 +1963,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return TableSemesters.FirstOrDefault(i => i.Identifier == identifier);
         }
 
-
 #region GetClasses
 
         public Guid[] GetClassIdentifiersUnderSemester(Guid semesterIdentifier)
         {
-            return _db.Query<JustIdentifier>($"select {nameof(DataItemClass.Identifier)} from {ActualTableClasses.Table.TableName} where {nameof(DataItemClass.UpperIdentifier)} = ?", semesterIdentifier)
-                .Select(i => i.Identifier)
+            return _db.Classes
+                .Where(c => c.UpperIdentifier == semesterIdentifier)
+                .Select(c => c.Identifier)
                 .ToArray();
         }
 
-        private class JustIdentifier
-        {
-            public Guid Identifier { get; set; }
-        }
-
 #endregion
-
 
         public static BaseDataItem[] GenerateNewDefaultClass(AccountDataItem account, Guid semesterId, string name, byte[] rawColor)
         {
@@ -2145,11 +2006,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             };
         }
 
-        /// <summary>
-        /// Returns Guid.Empty if class not found
-        /// </summary>
-        /// <param name="classId"></param>
-        /// <returns></returns>
         public async Task<Guid> GetSemesterIdForClassAsync(Guid classId)
         {
             return await System.Threading.Tasks.Task.Run(delegate
@@ -2173,40 +2029,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             {
                 using (await Locks.LockDataForWriteAsync())
                 {
-                    _db.BeginTransaction();
-
-                    try
+                    var allIds = homeworkIds.Concat(examIds).ToArray();
+                    foreach (var id in allIds)
                     {
-                        MarkAndroidRemindersSent(ActualTableMegaItems.Table.TableName, homeworkIds.Concat(examIds).ToArray());
-                    }
-
-                    finally
-                    {
-                        _db.Commit();
+                        _db.Database.ExecuteSqlRaw("update DataItemMegaItem set HasSentReminder = 1 where Identifier = {0}", id);
                     }
                 }
             });
         }
-
-        private void MarkAndroidRemindersSent(string table, Guid[] ids)
-        {
-            if (ids == null || ids.Length == 0)
-            {
-                return;
-            }
-
-            foreach (var id in ids)
-            {
-                _db.Execute($"update {table} set HasSentReminder = 1 where Identifier = ?", id);
-            }
-        }
 #endif
 
-        /// <summary>
-        /// Guaranteed that data won't be null
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns>Should always return an initialized list.</returns>
         public async Task<UpcomingItemsForWidgetResponse> GetAllUpcomingItemsForWidgetAsync(DateTime today, int maxItems, bool allowCachedAgenda = true)
         {
             var account = Account;
@@ -2235,7 +2067,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
             catch
             {
-                // If semester not found
                 return new UpcomingItemsForWidgetResponse
                 {
                     NoSemester = true
@@ -2244,13 +2075,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             DateTime dateToStartDisplayingFrom = account.MainTileSettings.GetDateToStartDisplayingOn(today);
 
-            // On Android we won't allow reusing a cached agenda, since this will run when updating for an expired event and we need it to re-load.
             var agendaViewGroup = await AgendaViewItemsGroup.LoadAsync(account.LocalAccountId, scheduleViewGroup.Semester, today, trackChanges: allowCachedAgenda);
 
-            // We're not going to worry about locking changes while we enumerate, since if collection changes while we're enumerating, there'll be a
-            // new incoming reset request anyways
-
-            // Agenda view group doesn't sort, so we have to sort it
             var items = agendaViewGroup.Items.Where(
                 i => i.Date.Date >= dateToStartDisplayingFrom
                 && ((account.MainTileSettings.ShowTasks && i.Type == TaskOrEventType.Task) || (account.MainTileSettings.ShowEvents && i.Type == TaskOrEventType.Event))

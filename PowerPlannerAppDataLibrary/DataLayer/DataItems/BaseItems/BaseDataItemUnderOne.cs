@@ -1,10 +1,10 @@
 ﻿using PowerPlannerSending;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
 {
@@ -12,7 +12,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
     {
         public static readonly DataItemProperty UpperIdentifierProperty = DataItemProperty.Register(SyncPropertyNames.UpperIdentifier);
 
-        [Indexed(Name = "Index_UpperIdentifier")]
         [Column("UpperIdentifier")]
         public Guid UpperIdentifier
         {

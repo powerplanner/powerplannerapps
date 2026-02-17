@@ -1,6 +1,5 @@
 ﻿using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;

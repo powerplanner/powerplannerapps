@@ -1,4 +1,5 @@
-﻿using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Extensions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -726,7 +727,7 @@ namespace PowerPlannerUWPLibrary.Extensions
         {
             foreach (var pair in localIdsToSave)
             {
-                DataStore._db.Execute($"update {table} set AppointmentLocalId = ? where Identifier = ?", pair.Value, pair.Key);
+                DataStore._db.Database.ExecuteSqlRaw($"update {table} set AppointmentLocalId = {{0}} where Identifier = {{1}}", pair.Value, pair.Key);
             }
         }
 
@@ -743,11 +744,8 @@ namespace PowerPlannerUWPLibrary.Extensions
                     return $"Number of items and schedules to save were {_megaItemLocalIdsToSave.Count} and {_scheduleLocalIdsToSave.Count}, respectively.";
                 }))
                 {
-                    DataStore._db.RunInTransaction(delegate
-                    {
-                        UpdateAppointmentLocalIds(DataStore.ActualTableMegaItems.Table.TableName, _megaItemLocalIdsToSave);
-                        UpdateAppointmentLocalIds(DataStore.ActualTableSchedules.Table.TableName, _scheduleLocalIdsToSave);
-                    });
+                    UpdateAppointmentLocalIds("DataItemMegaItem", _megaItemLocalIdsToSave);
+                    UpdateAppointmentLocalIds("DataItemSchedule", _scheduleLocalIdsToSave);
                 }
             }
 
