@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
@@ -41,6 +42,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 // Performance optimizations
                 optionsBuilder.EnableSensitiveDataLogging(false);
                 optionsBuilder.EnableDetailedErrors(false);
+
+                // Disable the thread-safety check. The app uses its own read/write lock
+                // (Locks.LockDataForReadAsync/LockDataForWriteAsync) to coordinate access,
+                // allowing concurrent reads but exclusive writes - the same pattern used
+                // with the previous sqlite-net-pcl implementation. SQLite in WAL mode
+                // supports concurrent readers natively.
+                optionsBuilder.EnableThreadSafetyChecks(false);
             }
         }
 
