@@ -8,6 +8,7 @@
 		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<PublishAot>false</PublishAot><!--AOT causes XAML binding errors I haven't solved yet-->
+		<PublishReadyToRun>true</PublishReadyToRun>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
 		<EnableMsixTooling>true</EnableMsixTooling>
