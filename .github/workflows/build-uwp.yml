@@ -3,8 +3,32 @@ name: Build UWP
 on:
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/build-uwp.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'BuildServer.PowerPlannerUWP.sln'
+      - 'PowerPlannerUWP/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Uwp/**'
+      - 'Vx.StorageEverywhere.Shared/**'
   pull_request:
     branches: [main]
+    paths:
+      - '.github/workflows/build-uwp.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'BuildServer.PowerPlannerUWP.sln'
+      - 'PowerPlannerUWP/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Uwp/**'
+      - 'Vx.StorageEverywhere.Shared/**'
   workflow_dispatch:
 
 env:

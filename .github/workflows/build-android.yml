@@ -3,8 +3,32 @@ name: Build Android
 on:
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/build-android.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'PowerPlannerAndroid/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Droid/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+      - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
   pull_request:
     branches: [main]
+    paths:
+      - '.github/workflows/build-android.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'PowerPlannerAndroid/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Droid/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+      - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
   workflow_dispatch:
 
 # Version format: YYMM.D.run_number (e.g. 2506.15.42)
