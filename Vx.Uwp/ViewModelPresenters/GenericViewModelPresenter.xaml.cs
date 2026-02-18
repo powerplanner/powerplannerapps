@@ -37,15 +37,21 @@ namespace InterfacesUWP.ViewModelPresenters
         public BaseViewModel ViewModel
         {
             get { return (BaseViewModel)GetValue(ViewModelProperty); }
-            set
-            {
-                Content = _viewModelToViewConverter.Convert(value, typeof(UIElement), null, null) as UIElement;
-                SetValue(ViewModelProperty, value);
-            }
+            set { SetValue(ViewModelProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(BaseViewModel), typeof(GenericViewModelPresenter), new PropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(BaseViewModel), typeof(GenericViewModelPresenter), new PropertyMetadata(null, OnViewModelChanged));
+
+        private static void OnViewModelChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as GenericViewModelPresenter).OnViewModelChanged(e);
+        }
+
+        private void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+        {
+            Content = _viewModelToViewConverter.Convert(e.NewValue, typeof(UIElement), null, null) as UIElement;
+        }
     }
 }
