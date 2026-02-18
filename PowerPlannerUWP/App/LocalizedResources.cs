@@ -11,13 +11,21 @@ namespace PowerPlannerUWP
 {
     public static class LocalizedResources
     {
-        private static ResourceLoader resources = new ResourceLoader();
+        private static ResourceLoader resources;
 
+        private static ResourceLoader GetResourceLoader()
+        {
+            if (resources == null)
+            {
+                resources = new ResourceLoader("Resources");
+            }
+            return resources;
+        }
 
         public static string GetString(string resource)
         {
             // We replace periods with forward slash, since that's how UWP requires accessing these
-            return resources.GetString(resource.Replace('.', '/'));
+            return GetResourceLoader().GetString(resource.Replace('.', '/'));
         }
 
         public static class Common
