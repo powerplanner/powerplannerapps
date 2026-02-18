@@ -11,7 +11,8 @@
     xmlns:interfaces="using:InterfacesUWP"
     xmlns:localConverters="using:PowerPlannerUWP.Converters"
     xmlns:views="using:PowerPlannerUWP.Views"
-    xmlns:viewItems="using:PowerPlannerAppDataLibrary.ViewItems">
+    xmlns:viewItems="using:PowerPlannerAppDataLibrary.ViewItems"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <local:MainScreenContentViewHostGeneric.Resources>
 
@@ -96,7 +97,7 @@
                 </DataTemplate>
             </Pivot.HeaderTemplate>
 
-            <PivotItem x:Uid="ClassPage_PivotItemOverview" Header="Overview">
+            <PivotItem Header="{x:Bind data:R.S('ClassPage_PivotItemOverview.Header')}">
 
                 <ScrollViewer x:Name="ScrollViewerHome" Style="{StaticResource PageScrollViewerStyle}" SizeChanged="ScrollViewerHome_SizeChanged">
 
@@ -125,8 +126,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockDetails"
-                                        Text="DETAILS"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockDetails.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <TextBlock
@@ -152,8 +152,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockClassTimes"
-                                        Text="CLASS TIMES"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockClassTimes.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
@@ -181,8 +180,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockTasks"
-                                        Text="TASKS"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockTasks.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
@@ -210,8 +208,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockEvents"
-                                        Text="EVENTS"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockEvents.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
@@ -233,8 +230,7 @@
 
                             <StackPanel>
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockGrades"
-                                        Text="GRADES"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockGrades.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <TextBlock
@@ -265,27 +261,27 @@
             </PivotItem>
 
             <!--Details-->
-            <PivotItem x:Name="PivotItemDetails" x:Uid="ClassPage_PivotItemDetails" Header="Details">
+            <PivotItem x:Name="PivotItemDetails" Header="{x:Bind data:R.S('ClassPage_PivotItemDetails.Header')}">
                 
             </PivotItem>
 
             <!--Class times-->
-            <PivotItem x:Name="PivotItemTimes" x:Uid="ClassPage_PivotItemTimes" Header="Times">
+            <PivotItem x:Name="PivotItemTimes" Header="{x:Bind data:R.S('ClassPage_PivotItemTimes.Header')}">
 
             </PivotItem>
 
             <!--Tasks-->
-            <PivotItem x:Name="PivotItemTasks" x:Uid="ClassPage_PivotItemTasks" Header="Tasks">
+            <PivotItem x:Name="PivotItemTasks" Header="{x:Bind data:R.S('ClassPage_PivotItemTasks.Header')}">
 
             </PivotItem>
 
             <!--Events-->
-            <PivotItem x:Name="PivotItemEvents" x:Uid="ClassPage_PivotItemEvents" Header="Events">
+            <PivotItem x:Name="PivotItemEvents" Header="{x:Bind data:R.S('ClassPage_PivotItemEvents.Header')}">
 
             </PivotItem>
             
             <!--Grades-->
-            <PivotItem x:Name="PivotItemGrades" x:Uid="ClassPage_PivotItemGrades" Header="Grades" Margin="0">
+            <PivotItem x:Name="PivotItemGrades" Header="{x:Bind data:R.S('ClassPage_PivotItemGrades.Header')}" Margin="0">
 
             </PivotItem>
 

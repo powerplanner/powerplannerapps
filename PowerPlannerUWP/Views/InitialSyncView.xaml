@@ -9,7 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    RequestedTheme="Dark">
+    RequestedTheme="Dark"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <Grid Background="{ThemeResource PowerPlannerBlue}">
         <Grid.Transitions>
@@ -38,7 +39,7 @@
                     Visibility="{x:Bind ViewModel.IsSyncing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <TextBlock
-                    x:Name="TextBlockSyncing"
+                    Text="{x:Bind data:R.S('LoginPage_String_SyncingAccount')}"
                     HorizontalAlignment="Center"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Foreground="White"
@@ -46,7 +47,7 @@
                     Visibility="{x:Bind ViewModel.IsSyncing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <TextBlock
-                    x:Name="TextBlockError"
+                    Text="{x:Bind data:R.S('String_SyncError')}"
                     HorizontalAlignment="Center"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Foreground="White"
@@ -85,8 +86,7 @@
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="Setting"/>
                 <TextBlock
-                    x:Uid="WelcomePage_TextBlockSettings"
-                    Text="Settings"
+                    Text="{x:Bind data:R.S('WelcomePage_TextBlockSettings.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     VerticalAlignment="Center"
                     Margin="10,0,0,0"/>

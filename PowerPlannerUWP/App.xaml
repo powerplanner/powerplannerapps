@@ -263,6 +263,7 @@
                     <localconverters:IsCompleteToOpacityConverter x:Key="IsCompleteToOpacityConverter"/>
                     <localconverters:IsCompleteToVisibilityConverter x:Key="IsCompleteToVisibilityConverter"/>
 
+
                     <localconverters:CreditsToStringConverter x:Key="CreditsToStringConverter"/>
 
 

@@ -6,7 +6,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -19,10 +20,9 @@
 
 
             <AppBarButton
-                x:Uid="Tile_ButtonPinTile"
                 x:Name="appBarPin"
                 Icon="Pin"
-                Label="Pin tile"
+                Label="{x:Bind data:R.S('Tile_ButtonPinTile.Label')}"
                 Click="appBarPin_Click"/>
 
         </CommandBar>
@@ -30,16 +30,14 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel Margin="20">
                 <TextBlock
-                    x:Uid="Settings_ScheduleTilePage_Header"
                     x:Name="TextBlockTitle"
-                    Text="SCHEDULE TILE"
+                    Text="{x:Bind data:R.S('Settings_ScheduleTilePage_Header.Text')}"
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Margin="0,0,0,12"
                     TextWrapping="NoWrap"/>
 
                 <TextBlock
-                    x:Uid="Settings_ScheduleTilePage_Description"
-                    Text="The schedule tile displays your upcoming classes, so that you know when and where your next class is! Perfect for when you're learning a new schedule at the start of the year."
+                    Text="{x:Bind data:R.S('Settings_ScheduleTilePage_Description.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     Margin="0,12,0,12"/>
 

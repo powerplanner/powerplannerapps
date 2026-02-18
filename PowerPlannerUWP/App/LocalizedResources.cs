@@ -1,4 +1,5 @@
-﻿using PowerPlannerSending;
+﻿using PowerPlannerAppDataLibrary;
+using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,9 @@ namespace PowerPlannerUWP
 {
     public static class LocalizedResources
     {
-        private static ResourceLoader resources = new ResourceLoader();
-
-
         public static string GetString(string resource)
         {
-            // We replace periods with forward slash, since that's how UWP requires accessing these
-            return resources.GetString(resource.Replace('.', '/'));
+            return PowerPlannerResources.GetString(resource);
         }
 
         public static class Common

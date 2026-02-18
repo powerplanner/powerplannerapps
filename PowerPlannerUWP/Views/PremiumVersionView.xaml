@@ -1,5 +1,6 @@
 ﻿<views:PopupViewHostGeneric
-    x:Uid="Settings_UpdateToPremium"
+    Title="{x:Bind data:R.S('Settings_UpdateToPremium.Title')}"
+
     xmlns:views="using:PowerPlannerUWP.Views"
     x:Class="PowerPlannerUWP.Views.PremiumVersionView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -8,7 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="PREMIUM VERSION">
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
 
     <views:PopupViewHostGeneric.MainContent>
@@ -30,15 +31,17 @@
                         Visibility="Collapsed"/>
 
                     <TextBlock
-                        x:Uid="Settings_UpgradeToPremium_Description"
+                        Text="{x:Bind data:R.S('Settings_UpgradeToPremium_Description.Text')}"
+
                         Style="{ThemeResource BodyTextBlockStyle}"/>
 
 
                     <Button
-                        x:Uid="Settings_UpgradeToPremium_ButtonUpgrade"
                         x:Name="ButtonUpgrade"
                         Click="ButtonUpgrade_Click"
-                        Style="{StaticResource WelcomeButtonStyle}" Content="UPGRADE TO PREMIUM"
+                        Style="{StaticResource WelcomeButtonStyle}"
+                        Content="{x:Bind data:R.S('Settings_UpgradeToPremium_ButtonUpgrade.Content')}"
+
                         Margin="0,20,0,0"/>
 
                 </StackPanel>

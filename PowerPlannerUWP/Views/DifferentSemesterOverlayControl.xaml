@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     
     <Grid>
@@ -30,15 +31,13 @@
 
                 <StackPanel Margin="7,3,7,6">
                     <TextBlock
-                        x:Uid="DifferentSemesterOverlayControl_TextBlockHeader"
-                        Text="Different semester"
+                        Text="{x:Bind data:R.S('DifferentSemesterOverlayControl_TextBlockHeader.Text')}"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         HorizontalAlignment="Center"
                         Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
 
                     <TextBlock
-                        x:Uid="DifferentSemesterOverlayControl_TextBlockDescription"
-                            Text="This is a different semester. Tap this to view all of your semesters."
+                            Text="{x:Bind data:R.S('DifferentSemesterOverlayControl_TextBlockDescription.Text')}"
                             Style="{ThemeResource CaptionTextBlockStyle}"
                             HorizontalAlignment="Center"
                         Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>

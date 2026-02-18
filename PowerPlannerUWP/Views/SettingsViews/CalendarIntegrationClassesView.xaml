@@ -6,7 +6,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -24,8 +25,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" IsEnabled="{x:Bind ViewModel.IsEnabled, Mode=OneWay}">
             <StackPanel Margin="20">
                 <TextBlock
-                    x:Uid="Settings_CalendarIntegration_Classes_Header"
-                    Text="CLASSES CALENDAR INTEGRATION"
+                    Text="{x:Bind data:R.S('Settings_CalendarIntegration_Classes_Header.Text')}"
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Margin="0,0,0,12"/>
 
@@ -34,8 +34,7 @@
                     IsOn="{x:Bind ViewModel.IsIntegrationEnabled, Mode=TwoWay}"/>
 
                 <TextBlock
-                    x:Uid="Settings_CalendarIntegration_Classes_Description"
-                    Text="Power Planner can display your classes in the system calendar, so that you can view your schedule from the Calendar app."
+                    Text="{x:Bind data:R.S('Settings_CalendarIntegration_Classes_Description.Text')}"
                     Margin="0,3,0,0"
                     Style="{ThemeResource BodyTextBlockStyle}"/>
 

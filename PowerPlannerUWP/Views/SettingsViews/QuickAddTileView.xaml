@@ -7,7 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:localConverters="using:PowerPlannerUWP.Converters">
+    xmlns:localConverters="using:PowerPlannerUWP.Converters"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <interfacesViews:ViewHostGeneric.Resources>
 
@@ -26,10 +27,9 @@
 
 
             <AppBarButton
-                x:Uid="Tile_ButtonPinTile"
                 x:Name="appBarPin"
                 Icon="Pin"
-                Label="Pin tile"
+                Label="{x:Bind data:R.S('Tile_ButtonPinTile.Label')}"
                 Click="appBarPin_Click"/>
 
         </CommandBar>
@@ -37,16 +37,14 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel Margin="20">
                 <TextBlock
-                    x:Uid="Settings_Tiles_QuickAdd_Header"
                     x:Name="TextBlockTitle"
-                    Text="QUICK ADD TILE"
+                    Text="{x:Bind data:R.S('Settings_Tiles_QuickAdd_Header.Text')}"
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Margin="0,0,0,12"
                     TextWrapping="NoWrap"/>
 
                 <TextBlock
-                    x:Uid="Settings_Tiles_QuickAdd_Description"
-                    Text="The Quick Add Tile allows you to quickly add a new task or event, by instantly opening the options to add those items when tapped."
+                    Text="{x:Bind data:R.S('Settings_Tiles_QuickAdd_Description.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     Margin="0,12,0,12"/>
 

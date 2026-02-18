@@ -34,9 +34,6 @@ namespace PowerPlannerUWP.Views
         public InitialSyncView()
         {
             this.InitializeComponent();
-
-            TextBlockSyncing.Text = PowerPlannerResources.GetString("LoginPage_String_SyncingAccount");
-            TextBlockError.Text = PowerPlannerResources.GetString("String_SyncError");
         }
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)

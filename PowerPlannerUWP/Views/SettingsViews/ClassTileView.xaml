@@ -7,7 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:localConverters="using:PowerPlannerUWP.Converters">
+    xmlns:localConverters="using:PowerPlannerUWP.Converters"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <interfacesViews:ViewHostGeneric.Resources>
 
@@ -35,44 +36,38 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel Margin="20">
                 <TextBlock
-                    x:Uid="Settings_Tiles_ClassTile_Header"
                     x:Name="TextBlockTitle"
-                    Text="CLASS TILE"
+                    Text="{x:Bind data:R.S('Settings_Tiles_ClassTile_Header.Text')}"
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Margin="0,0,0,12"
                     TextWrapping="NoWrap"/>
 
                 <TextBlock
-                    x:Uid="Settings_Tiles_ClassTile_Explanation"
-                    Text="These settings affect your single class tile. If not already pinned, tap the pin icon!"
+                    Text="{x:Bind data:R.S('Settings_Tiles_ClassTile_Explanation.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     Margin="0,12,0,12"/>
 
                 <ToggleSwitch
-                    x:Uid="Settings_Tiles_ClassTile_ToggleTasks"
                     x:Name="ToggleTasks"
-                    Header="Display incomplete tasks"
+                    Header="{x:Bind data:R.S('Settings_Tiles_ClassTile_ToggleTasks.Header')}"
                     IsOn="{x:Bind ViewModel.Settings.ShowTasks, Mode=OneWay}"
                     Toggled="ToggleTasks_Toggled"/>
 
                 <ToggleSwitch
-                    x:Uid="Settings_Tiles_ClassTile_ToggleExams"
                     x:Name="ToggleEvents"
-                    Header="Display upcoming events"
+                    Header="{x:Bind data:R.S('Settings_Tiles_ClassTile_ToggleExams.Header')}"
                     IsOn="{x:Bind ViewModel.Settings.ShowEvents, Mode=OneWay}"
                     Toggled="ToggleEvents_Toggled"
                     Margin="0,12,0,0"/>
                 
 
                 <TextBlock
-                    x:Uid="Tile_SkipItemsExplanation"
-                    Text="You can also make your live tiles skip past-due items. If you set the option below, it'll ignore any items older than the specified number of days."
+                    Text="{x:Bind data:R.S('Tile_SkipItemsExplanation.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     Margin="0,12,0,0"/>
 
                 <TextBlock
-                    x:Uid="Tile_SkipItems"
-                    Text="Skip items"
+                    Text="{x:Bind data:R.S('Tile_SkipItems.Text')}"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Margin="0,12,0,0"/>
 
@@ -89,7 +84,7 @@
 
                     <TextBlock
                         x:Name="Tile_DaysPastToday"
-                        Text="days past today"
+                        Text="{x:Bind data:R.S('Tile_DaysPastToday.Text')}"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Margin="12,0,0,0"
                         VerticalAlignment="Bottom"/>
@@ -97,35 +92,30 @@
                 </StackPanel>
 
                 <TextBlock
-                    x:Uid="Tile_SkipItemsError"
                     x:Name="TextBlockSkipItemsError"
-                    Text="This must be an integer, or left blank."
+                    Text="{x:Bind data:R.S('Tile_SkipItemsError.Text')}"
                     Foreground="Red"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Visibility="Collapsed"/>
 
 
                 <TextBlock
-                    x:Uid="Tile_SkipExplanation0"
-                    Text="Entering 0 will ignore items due today or earlier"
+                    Text="{x:Bind data:R.S('Tile_SkipExplanation0.Text')}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Margin="0,12,0,0"/>
 
                 <TextBlock
-                    x:Uid="Tile_SkipExplanation1"
-                    Text="Entering 1 will ignore items due yesterday or earlier"
+                    Text="{x:Bind data:R.S('Tile_SkipExplanation1.Text')}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Margin="0,12,0,0"/>
 
                 <TextBlock
-                    x:Uid="Tile_SkipExplanation2"
-                    Text="Entering 2 will ignore items due 2 days ago or earlier"
+                    Text="{x:Bind data:R.S('Tile_SkipExplanation2.Text')}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Margin="0,12,0,0"/>
 
                 <TextBlock
-                    x:Uid="Tile_SkipExplanationBlank"
-                    Text="Leaving this blank means the earliest assignment will be displayed (default behavior)"
+                    Text="{x:Bind data:R.S('Tile_SkipExplanationBlank.Text')}"
                     Style="{ThemeResource CaptionTextBlockStyle}"
                     Margin="0,12,0,0"/>
 

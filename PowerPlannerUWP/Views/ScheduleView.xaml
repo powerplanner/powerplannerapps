@@ -11,7 +11,10 @@
     xmlns:scheduleViews="using:PowerPlannerUWP.Views.ScheduleViews"
     SizeChanged="thisPage_SizeChanged"
     xmlns:calendarViews="using:PowerPlannerUWP.Views.CalendarViews"
-    xmlns:dataTemplateSelectors="using:PowerPlannerUWP.DataTemplateSelectors">
+    xmlns:dataTemplateSelectors="using:PowerPlannerUWP.DataTemplateSelectors"
+    xmlns:data="using:PowerPlannerAppDataLibrary"
+    xmlns:toolsPortable="using:ToolsPortable"
+    xmlns:system="using:System">
 
     <local:MainScreenContentViewHostGeneric.Transitions>
         <TransitionCollection>
@@ -302,37 +305,37 @@
 
 
                         <TextBlock
-                            Text="Sunday"
+                            Text="{x:Bind toolsPortable:LocalizedDateTimeStrings.GetDayName(system:DayOfWeek.Sunday)}"
                             Style="{StaticResource DayHeaderStyle}"
                             Grid.Column="1"/>
 
                         <TextBlock
-                            Text="Monday"
+                            Text="{x:Bind toolsPortable:LocalizedDateTimeStrings.GetDayName(system:DayOfWeek.Monday)}"
                             Style="{StaticResource DayHeaderStyle}"
                             Grid.Column="2"/>
 
                         <TextBlock
-                            Text="Tuesday"
+                            Text="{x:Bind toolsPortable:LocalizedDateTimeStrings.GetDayName(system:DayOfWeek.Tuesday)}"
                             Style="{StaticResource DayHeaderStyle}"
                             Grid.Column="3"/>
 
                         <TextBlock
-                            Text="Wednesday"
+                            Text="{x:Bind toolsPortable:LocalizedDateTimeStrings.GetDayName(system:DayOfWeek.Wednesday)}"
                             Style="{StaticResource DayHeaderStyle}"
                             Grid.Column="4"/>
 
                         <TextBlock
-                            Text="Thursday"
+                            Text="{x:Bind toolsPortable:LocalizedDateTimeStrings.GetDayName(system:DayOfWeek.Thursday)}"
                             Style="{StaticResource DayHeaderStyle}"
                             Grid.Column="5"/>
 
                         <TextBlock
-                            Text="Friday"
+                            Text="{x:Bind toolsPortable:LocalizedDateTimeStrings.GetDayName(system:DayOfWeek.Friday)}"
                             Style="{StaticResource DayHeaderStyle}"
                             Grid.Column="6"/>
 
                         <TextBlock
-                            Text="Saturday"
+                            Text="{x:Bind toolsPortable:LocalizedDateTimeStrings.GetDayName(system:DayOfWeek.Saturday)}"
                             Style="{StaticResource DayHeaderStyle}"
                             Grid.Column="7"/>
 
@@ -416,11 +419,10 @@
                     </ItemsControl>
 
                     <Button
-                        x:Uid="SchedulePage_ButtonAddClass"
                         Grid.Row="1"
                         x:Name="ButtonAddClass"
                         Style="{StaticResource AddItemStyle}"
-                        Content="add class"
+                        Content="{x:Bind data:R.S('SchedulePage_ButtonAddClass.Content')}"
                         Click="ButtonAddClass_Click"
                         Margin="10,0,20,10"
                         HorizontalAlignment="Stretch"/>
@@ -445,14 +447,14 @@
                 Orientation="Vertical"
                 Visibility="{x:Bind ViewModel.IsReturningUserVisible, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock
-                    x:Uid="SchedulePage_TextBlockReturningUser"
+                    Text="{x:Bind data:R.S('SchedulePage_TextBlockReturningUser.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     TextAlignment="Right"/>
 
                 <Button
-                    x:Uid="WelcomePage_ButtonLogin"
                     x:Name="ButtonLogIn"
                     Style="{StaticResource WelcomeButtonStyle}"
+                    Content="{x:Bind data:R.S('WelcomePage_ButtonLogin.Content')}"
                     Margin="0,6,0,0"
                     HorizontalAlignment="Right"
                     Click="ButtonLogIn_Click"
@@ -462,25 +464,22 @@
             <StackPanel VerticalAlignment="Center">
 
                 <TextBlock
-                    x:Uid="SchedulePage_TextBlockWelcomeTitle"
-                    Text="Welcome to Power Planner!"
+                    Text="{x:Bind data:R.S('SchedulePage_TextBlockWelcomeTitle.Text')}"
                     TextWrapping="Wrap"
                     TextAlignment="Center"
                     Style="{ThemeResource TitleTextBlockStyle}"/>
 
                 <TextBlock
-                    x:Uid="SchedulePage_TextBlockWelcomeSubtitle"
-                    Text="To get started, add your classes and schedule!"
+                    Text="{x:Bind data:R.S('SchedulePage_TextBlockWelcomeSubtitle.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     TextAlignment="Center"
                     Margin="0,6,0,0"
                     Opacity="0.6"/>
 
-                <!--This button will be localized via code-->
                 <Button
                     x:Name="ButtonWelcomeAddClass"
                     Style="{StaticResource WelcomeButtonStyle}"
-                    Content="ADD CLASS"
+                    Content="{x:Bind data:PowerPlannerResources.GetCapitalizedString('SchedulePage_ButtonAddClass.Content')}"
                     Margin="0,18,0,0"
                     MaxWidth="300"
                     Click="ButtonAddClass_Click"/>
