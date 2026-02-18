@@ -298,7 +298,7 @@ jobs:
       - name: Upload test artifact (signed bundle)
         uses: actions/upload-artifact@v4
         with:
-          name: test
+          name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_test
           path: bundles/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle
 
       - name: Create msixupload package
@@ -312,7 +312,7 @@ jobs:
       - name: Upload appxupload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: appxupload
+          name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_appxupload
           path: upload/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixupload
 
       - name: Delete intermediate AppxPackages artifacts
