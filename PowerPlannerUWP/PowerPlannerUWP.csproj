@@ -9,6 +9,9 @@
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<PublishAot>false</PublishAot><!--AOT causes XAML binding errors I haven't solved yet-->
 		<PublishReadyToRun>true</PublishReadyToRun>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>partial</TrimMode>
+		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
 		<EnableMsixTooling>true</EnableMsixTooling>
