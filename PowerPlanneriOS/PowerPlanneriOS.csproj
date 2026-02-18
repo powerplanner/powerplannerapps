@@ -135,4 +135,4 @@
 
   <!--For widget-->
   <Import Condition="'$(OS)' != 'Windows_NT'" Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
-</Project></Project>
+</Project>
