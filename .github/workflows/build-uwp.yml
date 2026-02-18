@@ -79,7 +79,7 @@ jobs:
           $manifest = "PowerPlannerUWP/Package.appxmanifest"
           $content = Get-Content $manifest -Raw
           $content = $content -replace '61442BareBonesDev\.PowerPlanner\.Dev', '61442BareBonesDev.PowerPlanner'
-          Set-Content $manifest $content
+          Set-Content $manifest $content -NoNewline -Encoding utf8NoBOM
 
       - name: Update app name
         shell: pwsh
@@ -87,7 +87,7 @@ jobs:
           $manifest = "PowerPlannerUWP/Package.appxmanifest"
           $content = Get-Content $manifest -Raw
           $content = $content -replace 'DisplayName="([^"]+)"', 'DisplayName="Power Planner"'
-          Set-Content $manifest $content
+          Set-Content $manifest $content -NoNewline -Encoding utf8NoBOM
 
       - name: Set version in manifest
         shell: pwsh
@@ -95,7 +95,7 @@ jobs:
           $manifest = "PowerPlannerUWP/Package.appxmanifest"
           $content = Get-Content $manifest -Raw
           $content = $content -replace 'Version="([\d\.]*)"', "Version=`"${{ env.BUILD_VERSION }}.0`""
-          Set-Content $manifest $content
+          Set-Content $manifest $content -NoNewline -Encoding utf8NoBOM
 
       - name: Remove .net10-android from UWP project
         shell: pwsh
@@ -103,7 +103,7 @@ jobs:
           $csproj = "PowerPlannerAppDataLibrary/PowerPlanner.csproj"
           $content = Get-Content $csproj -Raw
           $content = $content -replace ';net10\.0-android<', '<'
-          Set-Content $csproj $content
+          Set-Content $csproj $content -NoNewline -Encoding utf8NoBOM
         continue-on-error: true
 
       - name: Setup NuGet
