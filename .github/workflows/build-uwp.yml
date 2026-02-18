@@ -103,14 +103,18 @@ jobs:
         with:
           nuget-version: '7.x'
 
-      - name: NuGet restore
-        run: nuget restore ${{ env.SOLUTION }}
-
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      - name: NuGet restore
+        run: >-
+          msbuild ${{ env.SOLUTION }} /t:Restore
+          /p:Configuration=${{ env.BUILD_CONFIGURATION }}
+          /p:Platform=${{ env.BUILD_PLATFORM }}
+          /p:RuntimeIdentifier=win-${{ env.BUILD_PLATFORM }}
+
       - name: Build XliffCompiler (dotnet build)
-        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj
+        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj /p:RuntimeIdentifier=win-${{ env.BUILD_PLATFORM }}
 
       - name: Build solution
         run: >-
