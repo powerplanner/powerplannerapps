@@ -27,8 +27,6 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ListView ItemsSource="{x:Bind ViewModel.Popups, Mode=OneWay}" VerticalAlignment="Top"/>
-
             <ItemsControl x:Name="ItemsControlPopups" ItemsSource="{x:Bind ViewModel.Popups, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="viewmodels:BaseViewModel">
