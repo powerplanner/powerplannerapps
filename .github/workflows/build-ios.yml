@@ -159,7 +159,7 @@ jobs:
           -r ios-arm64
           --self-contained
           -p:CodesignProvision="${{ vars.IOS_APP_PROVISIONING_PROFILE_NAME }}"
-          -p:CodesignKey="Apple Distribution: BareBones Dev, LLC (A9B367L69G)"
+          -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Find and copy IPA
