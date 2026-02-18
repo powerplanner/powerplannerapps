@@ -48,7 +48,7 @@
 	</ItemGroup>
 
 	<!--Have to copy the resource files, that's the only way to get the specific file names and types we need for UWP-->
-	<Target Name="BeforeCompile">
+	<Target Name="CopyReswFiles" BeforeTargets="PrepareForBuild">
 		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.resx" DestinationFiles="Strings\en-US\Resources.resw" />
 		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.ar.resx" DestinationFiles="Strings\ar\Resources.resw" />
 		<Copy SourceFiles="..\PowerPlannerAppDataLibrary\Strings\Resources.de.resx" DestinationFiles="Strings\de\Resources.resw" />
