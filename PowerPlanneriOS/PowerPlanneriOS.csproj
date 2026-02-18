@@ -4,7 +4,6 @@
 	  <TargetFramework>net10.0-ios</TargetFramework>
 	  <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
-    <MtouchSdkVersion>18.1</MtouchSdkVersion>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
@@ -136,4 +135,4 @@
 
   <!--For widget-->
   <Import Condition="'$(OS)' != 'Windows_NT'" Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
-</Project>
+</Project></Project>
