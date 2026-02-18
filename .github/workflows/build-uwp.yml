@@ -50,6 +50,14 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Compute RuntimeIdentifier
+        id: rid
+        shell: pwsh
+        run: |
+          $rid = "win-$("${{ matrix.platform }}".ToLowerInvariant())"
+          echo "RUNTIME_ID=$rid" >> $env:GITHUB_OUTPUT
+          Write-Host "RuntimeIdentifier: $rid"
+
       - name: Write secrets.json
         shell: pwsh
         run: |
@@ -111,10 +119,10 @@ jobs:
           msbuild ${{ env.SOLUTION }} /t:Restore
           /p:Configuration=${{ env.BUILD_CONFIGURATION }}
           /p:Platform=${{ env.BUILD_PLATFORM }}
-          /p:RuntimeIdentifier=win-${{ env.BUILD_PLATFORM }}
+          /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
 
       - name: Build XliffCompiler (dotnet build)
-        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj /p:RuntimeIdentifier=win-${{ env.BUILD_PLATFORM }}
+        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
 
       - name: Build solution
         run: >-
@@ -126,7 +134,7 @@ jobs:
           /p:AppxBundle=Always
           /p:UapAppxPackageBuildMode=StoreUpload
           /p:GenerateAppxPackageOnBuild=true
-          /p:RuntimeIdentifier=win-${{ env.BUILD_PLATFORM }}
+          /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Extract symbols from msixupload
