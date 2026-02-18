@@ -14,7 +14,7 @@ namespace PowerPlannerUWP.Converters
             if (value is bool && (bool)value)
                 return 0.7;
 
-            return 1;
+            return 1.0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
