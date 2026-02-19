@@ -175,6 +175,9 @@ jobs:
     needs: publish-internal
     runs-on: ubuntu-latest
     environment: production
+    concurrency:
+      group: android-promote-to-production
+      cancel-in-progress: true
     steps:
       - name: Promote to Google Play (production track)
         uses: kevin-david/promote-play-release@v1
