@@ -240,7 +240,7 @@ namespace PowerPlanneriOS.Controllers
 
             NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
             {
-                _tabBar.BottomAnchor.ConstraintEqualTo(this.View.SafeAreaLayoutGuide.BottomAnchor),
+                _tabBar.BottomAnchor.ConstraintEqualTo(this.View.BottomAnchor),
                 _tabBar.TopAnchor.ConstraintGreaterThanOrEqualTo(this.View.SafeAreaLayoutGuide.TopAnchor)
             });
         }
