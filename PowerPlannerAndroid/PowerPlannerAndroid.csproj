@@ -12,6 +12,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	<AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
 	<EnableLLVM>true</EnableLLVM>
+	<SatelliteResourceLanguages>en;ar;de;es;fr;it;pt</SatelliteResourceLanguages> <!--Need to be specified so trimming doesn't remove these languages-->
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />

@@ -13,6 +13,7 @@
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<SatelliteResourceLanguages>en;ar;de;es;fr;it;pt</SatelliteResourceLanguages> <!--Need to be specified so trimming doesn't remove these languages-->
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>

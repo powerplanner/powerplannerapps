@@ -5,6 +5,7 @@
 	  <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+		<SatelliteResourceLanguages>en;ar;de;es;fr;it;pt</SatelliteResourceLanguages> <!--Need to be specified so trimming doesn't remove these languages-->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <MtouchInterpreter>-all</MtouchInterpreter>
