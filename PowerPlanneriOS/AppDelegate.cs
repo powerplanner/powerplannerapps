@@ -199,11 +199,11 @@ namespace PowerPlanneriOS
 
 #if !DEBUG
             // On release, use the system language selector (in simulator the system settings doesn't support this).
-            LanguageExtension.OpenSystemAppLanguageSelector = delegate
+            LanguageExtension.OpenSystemAppLanguageSelector = async delegate
             {
                 try
                 {
-                    UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+                    await UIApplication.SharedApplication.OpenUrlAsync(new NSUrl(UIApplication.OpenSettingsUrlString), new UIApplicationOpenUrlOptions());
                 }
                 catch (Exception ex)
                 {
