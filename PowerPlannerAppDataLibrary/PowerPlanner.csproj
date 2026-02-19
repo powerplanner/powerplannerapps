@@ -13,6 +13,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>PowerPlannerAppDataLibrary</RootNamespace>
     <AssemblyName>PowerPlannerAppDataLibrary</AssemblyName>
+    <NoWarn>$(NoWarn);NU1903;NU1904</NoWarn> <!--Don't warn about System.Drawing, it's used by XliffCompiler which is just a build step-->
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />
@@ -28,7 +29,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="PCLCrypto" Version="2.1.32-alpha" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.210505.2" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.0" />
     <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
@@ -37,7 +37,7 @@
     <PackageReference Include="XliffCompiler" Version="1.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+	</PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
