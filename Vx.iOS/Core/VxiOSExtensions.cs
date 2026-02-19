@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using UIKit;
 using Vx.iOS.Views;
@@ -288,13 +289,20 @@ namespace Vx.iOS
         {
             if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
             {
-                var systemImageName = glyph.GlyphToSystemImageName();
-                if (systemImageName != null)
-                {
-                    return UIImage.GetSystemImage(systemImageName);
-                }
+                return GetSystemImageForGlyph(glyph);
             }
 
+            return null;
+        }
+
+        [SupportedOSPlatform("ios13.0")]
+        private static UIImage GetSystemImageForGlyph(string glyph)
+        {
+            var systemImageName = glyph.GlyphToSystemImageName();
+            if (systemImageName != null)
+            {
+                return UIImage.GetSystemImage(systemImageName);
+            }
             return null;
         }
 

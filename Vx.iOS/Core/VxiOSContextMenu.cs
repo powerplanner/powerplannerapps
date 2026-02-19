@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using Foundation;
 using UIKit;
 using Vx.Views;
@@ -9,17 +10,20 @@ namespace Vx.iOS
 {
     public static class VxiOSContextMenu
     {
+        [SupportedOSPlatform("ios13.0")]
         public static UIMenu CreateMenu(ContextMenu menu)
         {
             return CreateMenu(menu.Items);
         }
 
+        [SupportedOSPlatform("ios13.0")]
         private static UIMenu CreateMenu(IEnumerable<IMenuItem> contextMenuItems)
         {
             UIMenuElement[] actions = CreateMenuElements(contextMenuItems);
             return UIMenu.Create(actions);
         }
 
+        [SupportedOSPlatform("ios13.0")]
         private static UIMenuElement[] CreateMenuElements(IEnumerable<IMenuItem> contextMenuItems)
         {
             if (contextMenuItems.OfType<MenuSeparator>().Any())
@@ -61,6 +65,7 @@ namespace Vx.iOS
             }
         }
 
+        [SupportedOSPlatform("ios13.0")]
         private static UIMenuElement[] CreateNonSeparatedMenuElements(IEnumerable<IMenuItem> contextMenuItems)
         {
             var actions = new List<UIMenuElement>();
@@ -77,6 +82,7 @@ namespace Vx.iOS
             return actions.ToArray();
         }
 
+        [SupportedOSPlatform("ios13.0")]
         private static UIMenuElement CreateMenuElement(IMenuItem item)
         {
             if (item is MenuItem cmItem)

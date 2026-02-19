@@ -3,6 +3,7 @@ using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using UIKit;
 using Vx.Views;
@@ -138,6 +139,7 @@ namespace Vx.iOS.Views
         }
 
 
+        [SupportedOSPlatform("ios13.0")]
         private class ContextMenuInteractionHandler : NSObject, IUIContextMenuInteractionDelegate
         {
             private iOSView<V, N> _iosView;
