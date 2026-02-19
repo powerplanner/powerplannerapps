@@ -30,14 +30,10 @@
     <ProjectReference Include="..\PowerPlannerAppDataLibrary\PowerPlanner.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.22.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
     <PackageReference Include="PCLCrypto">
       <Version>2.1.32-alpha</Version>
     </PackageReference>
-    <PackageReference Include="sqlite-net-pcl">
-      <Version>1.7.335</Version>
-    </PackageReference>
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.0" />
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>5.0.0-beta</Version>
@@ -65,7 +61,7 @@
       <Version>1.11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Dagger">
-      <Version>2.52.0</Version>
+      <Version>2.57.2.1</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

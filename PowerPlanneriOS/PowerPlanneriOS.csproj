@@ -36,12 +36,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.22.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
     <PackageReference Include="PCLCrypto" Version="2.1.32-alpha">
-    </PackageReference>
-    <PackageReference Include="sqlite-net-pcl" Version="1.7.335">
-    </PackageReference>
-    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8">
     </PackageReference>
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
