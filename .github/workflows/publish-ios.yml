@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows: ["Build iOS"]
     types: [completed]
-    branches: [main]
   workflow_dispatch:
     inputs:
       run_id:
