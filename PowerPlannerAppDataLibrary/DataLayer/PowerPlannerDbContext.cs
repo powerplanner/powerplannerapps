@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
@@ -32,6 +33,37 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         public DbSet<DataItemYear> Years { get; set; }
         public DbSet<ImageToUpload> ImagesToUpload { get; set; }
         public DbSet<AccountDataStore.DataInfo> DataInfos { get; set; }
+
+        /// <summary>
+        /// Value converter for DateTime properties.
+        /// The legacy sqlite-net-pcl library stored DateTime values as ticks (long).
+        /// EF Core SQLite expects text format by default. This converter ensures
+        /// we read/write ticks to remain compatible with legacy databases.
+        /// </summary>
+        private static readonly ValueConverter<DateTime, long> DateTimeToTicksConverter =
+            new ValueConverter<DateTime, long>(
+                v => v.Ticks,
+                v => new DateTime(v, DateTimeKind.Utc));
+
+        /// <summary>
+        /// Value converter for nullable TimeSpan properties.
+        /// The legacy sqlite-net-pcl library stored TimeSpan values as ticks (long).
+        /// </summary>
+        private static readonly ValueConverter<TimeSpan?, long?> NullableTimeSpanToTicksConverter =
+            new ValueConverter<TimeSpan?, long?>(
+                v => v.HasValue ? v.Value.Ticks : null,
+                v => v.HasValue ? new TimeSpan(v.Value) : null);
+
+        /// <summary>
+        /// Value converter for Guid properties.
+        /// The legacy sqlite-net-pcl library stored Guid values as text strings.
+        /// EF Core SQLite stores Guids as BLOB by default, which causes equality
+        /// comparisons to fail against text-formatted GUIDs in legacy databases.
+        /// </summary>
+        private static readonly ValueConverter<Guid, string> GuidToStringConverter =
+            new ValueConverter<Guid, string>(
+                v => v.ToString(),
+                v => Guid.Parse(v));
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -85,9 +117,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 entity.Property(e => e.PassingGrade).HasColumnName("PassingGrade");
                 entity.Property(e => e.LastTaskTimeOption).HasColumnName("LastTaskTimeOption");
                 entity.Property(e => e.LastEventTimeOption).HasColumnName("LastEventTimeOption");
-                entity.Property(e => e.LastTaskDueTime).HasColumnName("LastTaskDueTime");
-                entity.Property(e => e.LastEventStartTime).HasColumnName("LastEventStartTime");
-                entity.Property(e => e.LastEventDuration).HasColumnName("LastEventDurationProperty");
+                entity.Property(e => e.LastTaskDueTime).HasColumnName("LastTaskDueTime").HasConversion(NullableTimeSpanToTicksConverter);
+                entity.Property(e => e.LastEventStartTime).HasColumnName("LastEventStartTime").HasConversion(NullableTimeSpanToTicksConverter);
+                entity.Property(e => e.LastEventDuration).HasColumnName("LastEventDurationProperty").HasConversion(NullableTimeSpanToTicksConverter);
                 entity.Property(e => e.RawImageNames).HasColumnName("ImageNames");
 
                 // Ignore navigation properties that aren't stored in database
@@ -245,6 +277,23 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 entity.ToTable("DataInfo");
                 entity.HasKey(e => e.Key);
             });
+
+            // Apply ticks-based DateTime converter globally for all DateTime properties
+            // to maintain compatibility with legacy sqlite-net-pcl databases
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime))
+                    {
+                        property.SetValueConverter(DateTimeToTicksConverter);
+                    }
+                    else if (property.ClrType == typeof(Guid))
+                    {
+                        property.SetValueConverter(GuidToStringConverter);
+                    }
+                }
+            }
         }
 
         /// <summary>
