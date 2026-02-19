@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 
 using Foundation;
@@ -35,17 +36,23 @@ namespace PowerPlanneriOS.Helpers
 
             if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
             {
-                var appearance = new UINavigationBarAppearance();
-                appearance.ConfigureWithOpaqueBackground();
-                appearance.BackgroundColor = PowerPlannerBlueChromeColor;
-                appearance.TitleTextAttributes = new UIStringAttributes()
-                {
-                    ForegroundColor = navBar.TintColor
-                };
-
-                navBar.StandardAppearance = appearance;
-                navBar.ScrollEdgeAppearance = appearance;
+                SetNavigationBarAppearance(navBar, PowerPlannerBlueChromeColor, navBar.TintColor);
             }
+        }
+
+        [SupportedOSPlatform("ios13.0")]
+        private static void SetNavigationBarAppearance(UINavigationBar navBar, UIColor backgroundColor, UIColor tintColor)
+        {
+            var appearance = new UINavigationBarAppearance();
+            appearance.ConfigureWithOpaqueBackground();
+            appearance.BackgroundColor = backgroundColor;
+            appearance.TitleTextAttributes = new UIStringAttributes()
+            {
+                ForegroundColor = tintColor
+            };
+
+            navBar.StandardAppearance = appearance;
+            navBar.ScrollEdgeAppearance = appearance;
         }
     }
 }

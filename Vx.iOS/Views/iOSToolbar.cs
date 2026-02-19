@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using ToolsPortable;
 using UIKit;
 using Vx.Views;
@@ -60,16 +61,7 @@ namespace Vx.iOS.Views
             {
                 if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
                 {
-                    var appearance = new UINavigationBarAppearance();
-                    appearance.ConfigureWithOpaqueBackground();
-                    appearance.BackgroundColor = View.BackgroundColor;
-                    appearance.TitleTextAttributes = new UIStringAttributes()
-                    {
-                        ForegroundColor = NavBar.TintColor
-                    };
-
-                    NavBar.StandardAppearance = appearance;
-                    NavBar.ScrollEdgeAppearance = appearance;
+                    SetNavigationBarAppearance(NavBar, View.BackgroundColor, NavBar.TintColor);
                 }
             }
 
@@ -213,6 +205,21 @@ namespace Vx.iOS.Views
         private void ButtonMore_Clicked(object sender, EventArgs e)
         {
             ShowSubCommands(VxView.SecondaryCommands, NavBar.TopItem.RightBarButtonItems.First());
+        }
+
+        [SupportedOSPlatform("ios13.0")]
+        private static void SetNavigationBarAppearance(UINavigationBar navBar, UIColor backgroundColor, UIColor tintColor)
+        {
+            var appearance = new UINavigationBarAppearance();
+            appearance.ConfigureWithOpaqueBackground();
+            appearance.BackgroundColor = backgroundColor;
+            appearance.TitleTextAttributes = new UIStringAttributes()
+            {
+                ForegroundColor = tintColor
+            };
+
+            navBar.StandardAppearance = appearance;
+            navBar.ScrollEdgeAppearance = appearance;
         }
     }
 }
