@@ -70,8 +70,8 @@
 
                     <Button
                         x:Name="ButtonLogin"
+                        Content="{x:Bind data:R.S('WelcomePage_ButtonLogin.Content')}"
                         Style="{StaticResource WelcomeButtonStyle}"
-                        Content="{x:Bind data:R.S('WelcomePage_ButtonLogIn.Content')}"
                         Margin="0,0,6,0"
                         Click="ButtonLogin_Click"/>
 
