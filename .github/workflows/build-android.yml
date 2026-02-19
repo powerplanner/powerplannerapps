@@ -148,5 +148,5 @@ jobs:
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android-aab
+          name: com.barebonesdev.powerplanner.${{ env.BUILD_VERSION }}.0.aab
           path: artifacts/*.aab

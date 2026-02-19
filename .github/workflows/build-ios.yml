@@ -204,7 +204,7 @@ jobs:
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-ipa
+          name: PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa
           path: artifacts/*.ipa
 
       - name: Clean up keychain
@@ -220,7 +220,7 @@ jobs:
       - name: Download IPA artifact
         uses: actions/download-artifact@v4
         with:
-          name: ios-ipa
+          pattern: PowerPlanneriOS.*.ipa
           path: artifacts
 
       - name: Upload to TestFlight
