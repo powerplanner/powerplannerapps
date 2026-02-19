@@ -7,6 +7,9 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
 		<SatelliteResourceLanguages>en;ar;de;es;fr;it;pt</SatelliteResourceLanguages> <!--Need to be specified so trimming doesn't remove these languages-->
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <UseInterpreter>true</UseInterpreter>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <MtouchInterpreter>-all</MtouchInterpreter>
   </PropertyGroup>
