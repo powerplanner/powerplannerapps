@@ -170,3 +170,16 @@ jobs:
           packageName: com.barebonesdev.powerplanner
           releaseFiles: artifacts/**/*.aab
           track: internal
+
+  promote-to-production:
+    needs: publish-internal
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Promote to Google Play (production track)
+        uses: kevin-david/promote-play-release@v1
+        with:
+          service-account-json-raw: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          package-name: com.barebonesdev.powerplanner
+          from-track: internal
+          to-track: production
