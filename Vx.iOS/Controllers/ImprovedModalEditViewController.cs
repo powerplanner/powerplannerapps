@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using CoreGraphics;
 using InterfacesiOS.Helpers;
@@ -132,6 +133,7 @@ namespace Vx.iOS.Controllers
     {
         public ImprovedModalDatePickerViewController(UIView parentView, DateTime currentDate) : base(parentView, currentDate) { }
 
+        [SupportedOSPlatform("ios13.4")]
         protected override UIDatePicker GenerateControl()
         {
             var datePicker = new UIDatePicker
@@ -178,6 +180,7 @@ namespace Vx.iOS.Controllers
             _minTime = minTime;
         }
 
+        [SupportedOSPlatform("ios13.4")]
         protected override UIDatePicker GenerateControl()
         {
             var today = DateTime.Today;

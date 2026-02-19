@@ -20,6 +20,7 @@
  */
 
 using System;
+using System.Runtime.Versioning;
 using UIKit;
 using CoreGraphics;
 using InterfacesiOS.Views;
@@ -221,6 +222,7 @@ namespace InterfacesiOS.Controllers
         public ModalDatePickerViewController(string headerText, UIViewController parent)
             : base(CreateDatePicker(), headerText, parent) { }
 
+        [SupportedOSPlatform("ios13.4")]
         private static UIDatePicker CreateDatePicker()
         {
             var datePicker = new UIDatePicker(CGRect.Empty);
