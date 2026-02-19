@@ -159,7 +159,7 @@ jobs:
           /p:Platform=${{ env.BUILD_PLATFORM }}
           /p:AppxBundlePlatforms="${{ env.BUILD_PLATFORM }}"
           /p:AppxPackageDir="${{ github.workspace }}\AppxPackages\\"
-          /p:AppxBundle=Always
+          /p:AppxBundle=Never
           /p:UapAppxPackageBuildMode=StoreUpload
           /p:GenerateAppxPackageOnBuild=true
           /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
