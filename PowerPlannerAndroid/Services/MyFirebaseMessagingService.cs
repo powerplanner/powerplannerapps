@@ -44,12 +44,7 @@ namespace PowerPlannerAndroid.Services
 
         private void ScheduleSyncJob(long accountId)
         {
-            // JobScheduler was added in API 21
-            if (Build.VERSION.SdkInt < BuildVersionCodes.Lollipop)
-            {
-                return;
-            }
-
+            // Min API is 23 (Marshmallow), so JobScheduler (API 21) is always available
             var extras = new PersistableBundle();
             extras.PutLong("AccountId", accountId);
 

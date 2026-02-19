@@ -167,16 +167,8 @@ namespace PowerPlannerAndroid.Extensions
         private static async Task UpdateAndScheduleDayOfNotifications(AccountDataItem account, AgendaViewItemsGroup agendaItems, Context context, NotificationManager notificationManager, DateTime now, bool fromForeground)
         {
             string tagForAccountStartsWith = account.LocalAccountId.ToString();
-            List<StatusBarNotification> existingNotifs;
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.M)
-            {
-                existingNotifs = notificationManager.GetActiveNotifications().Where(i => i.Id == NotificationIds.DAY_OF_NOTIFICATIONS && i.Tag != null && i.Tag.StartsWith(tagForAccountStartsWith)).ToList();
-            }
-            else
-            {
-                // GetActiveNotifications didn't exist before version 23
-                existingNotifs = new List<StatusBarNotification>();
-            }
+            // Min API is 23 (Marshmallow), so GetActiveNotifications is always available (API 23+)
+            List<StatusBarNotification> existingNotifs = notificationManager.GetActiveNotifications().Where(i => i.Id == NotificationIds.DAY_OF_NOTIFICATIONS && i.Tag != null && i.Tag.StartsWith(tagForAccountStartsWith)).ToList();
 
             // If no current semester, or no items, then just clear
             if (agendaItems == null || agendaItems.Items.Count == 0)
@@ -431,16 +423,8 @@ namespace PowerPlannerAndroid.Extensions
                 return;
             }
 
-            StatusBarNotification existing;
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.M)
-            {
-                existing = notificationManager.GetActiveNotifications().FirstOrDefault(i => i.Id == NotificationIds.DAY_BEFORE_NOTIFICATION && i.Tag == tag);
-            }
-            else
-            {
-                // GetActiveNotifications didn't exist till API 23
-                existing = null;
-            }
+            // Min API is 23 (Marshmallow), so GetActiveNotifications is always available (API 23+)
+            StatusBarNotification existing = notificationManager.GetActiveNotifications().FirstOrDefault(i => i.Id == NotificationIds.DAY_BEFORE_NOTIFICATION && i.Tag == tag);
 
             const string EXTRA_UNIQUE_ID = "UniqueId";
             
@@ -748,11 +732,9 @@ namespace PowerPlannerAndroid.Extensions
                 .SetOnlyAlertOnce(true)
                 .SetAutoCancel(true);
 
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.LollipopMr1)
-            {
-                // High priority causes the popup banner to appear
-                builder.SetPriority((int)NotificationPriority.High);
-            }
+            // Min API is 23 (Marshmallow), so LollipopMr1 (API 22) APIs are always available
+            // High priority causes the popup banner to appear
+            builder.SetPriority((int)NotificationPriority.High);
 
             return builder;
         }

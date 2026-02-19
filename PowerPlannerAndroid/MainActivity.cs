@@ -84,12 +84,10 @@ namespace PowerPlannerAndroid
 #endif
 
             // Color the status bar since the theme color provided in themes.xml seemed to stop taking effect in Android 8.0
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-            {
-                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                this.Window.SetStatusBarColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.primaryDark)));
-            }
+            // Min API is 23 (Marshmallow), so Lollipop (API 21) APIs are always available
+            this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+            this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+            this.Window.SetStatusBarColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.primaryDark)));
 
             // Register the window
             _mainAppWindow = new MainAppWindow();
@@ -540,6 +538,7 @@ namespace PowerPlannerAndroid
 
                     if (v < new Version(5, 4, 26, 0) && v >= new Version(5, 4, 22, 0))
                     {
+                        // Min API is 23, so only versions below Oreo (API 26) may have had the issue
                         if (Build.VERSION.SdkInt < BuildVersionCodes.O)
                         {
                             // I broke the app icon in 5.4.22.0 for people not running Oreo
@@ -549,14 +548,13 @@ namespace PowerPlannerAndroid
 
                     if (v < new Version(5, 4, 24, 0))
                     {
-                        if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-                        {
-                            changedText += "\n - The Android app now syncs in the background when you make a change on another device!";
-                        }
+                        // Min API is 23 (Marshmallow), so Lollipop (API 21) APIs are always available
+                        changedText += "\n - The Android app now syncs in the background when you make a change on another device!";
                     }
 
                     if (v < new Version(5, 4, 22, 0))
                     {
+                        // Show Oreo (API 26+) feature announcement
                         if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
                         {
                             changedText += "\n - Adaptive icon added!";
@@ -566,14 +564,8 @@ namespace PowerPlannerAndroid
                     if (v < new Version(5, 4, 20, 0) && v == new Version(5, 4, 18, 0))
                     {
                         // These only get shown to users who were running 5.4.18.0 since that's where I introduced those bugs
-                        if (Build.VERSION.SdkInt < BuildVersionCodes.Kitkat)
-                        {
-                            changedText += "\n - Fixed crashing when trying to add items";
-                        }
-                        else
-                        {
-                            changedText += "\n - Fixed crashes when opening add grade page";
-                        }
+                        // Min API is 23 (Marshmallow), so always show the KitKat+ message
+                        changedText += "\n - Fixed crashes when opening add grade page";
                     }
 
                     if (v < new Version(5, 4, 18, 0))
@@ -582,10 +574,13 @@ namespace PowerPlannerAndroid
                         changedText += "\n - Keyboard now auto-appears";
                     }
 
-                    if (v < new Version(5, 4, 16, 0) && Build.VERSION.SdkInt >= BuildVersionCodes.O && v >= new Version(5, 4, 12, 0))
+                    if (v < new Version(5, 4, 16, 0) && v >= new Version(5, 4, 12, 0))
                     {
-                        // Only show this to Oreo users who were running the app targeted to Oreo (5.4.12.0)
-                        changedText += "\n - Fixed reminders not working on Android 8.0 Oreo devices";
+                        // Only show this to Oreo+ users who were running the app targeted to Oreo (5.4.12.0)
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+                        {
+                            changedText += "\n - Fixed reminders not working on Android 8.0 Oreo devices";
+                        }
                     }
 
                     if (v < new Version(5, 4, 14, 0))
