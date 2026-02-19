@@ -1,0 +1,53 @@
+name: Publish iOS to TestFlight
+
+on:
+  workflow_run:
+    workflows: ["Build iOS"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Build iOS workflow run ID (from the URL of the build run)'
+        required: true
+        type: string
+
+jobs:
+  upload-testflight:
+    runs-on: macos-latest
+    if: >-
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event.workflow_run.conclusion == 'success')
+    steps:
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-ipa
+          path: artifacts
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.run_id || github.event.workflow_run.id }}
+
+      - name: Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        shell: bash
+        run: |
+          # Write the API key .p8 file to a directory altool searches
+          mkdir -p ~/private_keys
+          KEY_PATH="$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+          echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode -o "$KEY_PATH"
+
+          IPA_PATH=$(find artifacts -name "*.ipa" -type f | head -1)
+          if [ -z "$IPA_PATH" ]; then
+            echo "::error::No IPA file found in artifacts"
+            exit 1
+          fi
+          echo "Uploading $IPA_PATH to TestFlight..."
+
+          xcrun altool --upload-app \
+            -f "$IPA_PATH" \
+            -t ios \
+            --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
+            --show-progress
