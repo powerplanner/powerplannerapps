@@ -57,18 +57,42 @@ namespace Vx.iOS.Views
                 {
                     _cmInteractionHandler = new ContextMenuInteractionHandler(this);
                 }
-                if (!View.Interactions.Contains(_cmInteractionHandler.Interaction))
+                if (!HasInteraction())
                 {
-                    View.AddInteraction(_cmInteractionHandler.Interaction);
+                    AddContextMenuInteraction();
                 }
             }
             else
             {
-                if (_cmInteractionHandler != null && View.Interactions.Length > 0)
+                if (_cmInteractionHandler != null && HasAnyInteractions())
                 {
-                    View.RemoveInteraction(View.Interactions[0]);
+                    RemoveFirstInteraction();
                 }
             }
+        }
+
+        [SupportedOSPlatform("ios11.0")]
+        private bool HasInteraction()
+        {
+            return View.Interactions.Contains(_cmInteractionHandler.Interaction);
+        }
+
+        [SupportedOSPlatform("ios11.0")]
+        private void AddContextMenuInteraction()
+        {
+            View.AddInteraction(_cmInteractionHandler.Interaction);
+        }
+
+        [SupportedOSPlatform("ios11.0")]
+        private bool HasAnyInteractions()
+        {
+            return View.Interactions.Length > 0;
+        }
+
+        [SupportedOSPlatform("ios11.0")]
+        private void RemoveFirstInteraction()
+        {
+            View.RemoveInteraction(View.Interactions[0]);
         }
 
         protected void ReconcileContent(View oldContent, View newContent, Action<UIView> afterSubviewAddedAction, Action<UIView> afterTransfer = null)
