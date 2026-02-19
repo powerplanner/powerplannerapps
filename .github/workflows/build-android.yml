@@ -150,3 +150,23 @@ jobs:
         with:
           name: com.barebonesdev.powerplanner.${{ env.BUILD_VERSION }}.0.aab
           path: artifacts/*.aab
+
+  publish-internal:
+    needs: [set-version, build]
+    runs-on: ubuntu-latest
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: com.barebonesdev.powerplanner.*.aab
+          path: artifacts
+
+      - name: Publish to Google Play (internal track)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.barebonesdev.powerplanner
+          releaseFiles: artifacts/**/*.aab
+          track: internal
