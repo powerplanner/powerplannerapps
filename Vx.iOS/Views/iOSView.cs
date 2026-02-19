@@ -3,7 +3,6 @@ using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Text;
 using UIKit;
 using Vx.Views;
@@ -18,7 +17,6 @@ namespace Vx.iOS.Views
         public iOSView()
         {
             base.View = new UIViewWrapper(Activator.CreateInstance<N>());
-            //View.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
         public UIViewWrapper ViewWrapper => base.View;
@@ -27,7 +25,6 @@ namespace Vx.iOS.Views
         public iOSView(N view)
         {
             base.View = new UIViewWrapper(view);
-            //view.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
         protected override void ApplyProperties(V oldView, V newView)
@@ -51,48 +48,24 @@ namespace Vx.iOS.Views
                 View.AddGestureRecognizer(_tapGestureRecognizer);
             }
 
-            if (newView.ContextMenu != null && UIDevice.CurrentDevice.CheckSystemVersion(14, 0))
+            if (newView.ContextMenu != null)
             {
                 if (_cmInteractionHandler == null)
                 {
                     _cmInteractionHandler = new ContextMenuInteractionHandler(this);
                 }
-                if (!HasInteraction())
+                if (!View.Interactions.Contains(_cmInteractionHandler.Interaction))
                 {
-                    AddContextMenuInteraction();
+                    View.AddInteraction(_cmInteractionHandler.Interaction);
                 }
             }
             else
             {
-                if (_cmInteractionHandler != null && HasAnyInteractions())
+                if (_cmInteractionHandler != null && View.Interactions.Length > 0)
                 {
-                    RemoveFirstInteraction();
+                    View.RemoveInteraction(View.Interactions[0]);
                 }
             }
-        }
-
-        [SupportedOSPlatform("ios11.0")]
-        private bool HasInteraction()
-        {
-            return View.Interactions.Contains(_cmInteractionHandler.Interaction);
-        }
-
-        [SupportedOSPlatform("ios11.0")]
-        private void AddContextMenuInteraction()
-        {
-            View.AddInteraction(_cmInteractionHandler.Interaction);
-        }
-
-        [SupportedOSPlatform("ios11.0")]
-        private bool HasAnyInteractions()
-        {
-            return View.Interactions.Length > 0;
-        }
-
-        [SupportedOSPlatform("ios11.0")]
-        private void RemoveFirstInteraction()
-        {
-            View.RemoveInteraction(View.Interactions[0]);
         }
 
         protected void ReconcileContent(View oldContent, View newContent, Action<UIView> afterSubviewAddedAction, Action<UIView> afterTransfer = null)
@@ -163,7 +136,6 @@ namespace Vx.iOS.Views
         }
 
 
-        [SupportedOSPlatform("ios13.0")]
         private class ContextMenuInteractionHandler : NSObject, IUIContextMenuInteractionDelegate
         {
             private iOSView<V, N> _iosView;

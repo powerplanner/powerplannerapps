@@ -48,13 +48,9 @@ namespace PowerPlanneriOS.Controllers
 
             _tableViewClasses = new UITableView()
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                CellLayoutMarginsFollowReadableWidth = false
             };
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
-            {
-                // Stretch to full width even on iPad
-                _tableViewClasses.CellLayoutMarginsFollowReadableWidth = false;
-            }
             _tableViewClasses.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
             var tableViewClassesSource = new BareUITableViewSource<UIClassView>(_tableViewClasses, ViewModel.MainScreenViewModel.Classes);
             tableViewClassesSource.ItemSelected += new WeakEventHandler<object>(TableViewClassesSource_ItemSelected).Handler;

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Text;
 using UIKit;
 using Vx.iOS.Views;
@@ -280,22 +279,11 @@ namespace Vx.iOS
             }
         }
 
-        /// <summary>
-        /// Before iOS 13, this returns null.
-        /// </summary>
-        /// <param name="glyph"></param>
-        /// <returns></returns>
         public static UIImage GlyphToUIImage(this string glyph)
         {
-            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
-            {
-                return GetSystemImageForGlyph(glyph);
-            }
-
-            return null;
+            return GetSystemImageForGlyph(glyph);
         }
 
-        [SupportedOSPlatform("ios13.0")]
         private static UIImage GetSystemImageForGlyph(string glyph)
         {
             var systemImageName = glyph.GlyphToSystemImageName();

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Runtime.Versioning;
 using Foundation;
 using UIKit;
 
 namespace NewSingleViewTemplate {
 	[Register ("SceneDelegate")]
-	[SupportedOSPlatform("ios13.0")]
 	public class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 
 		[Export ("window")]

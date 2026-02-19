@@ -19,7 +19,7 @@ using PowerPlannerAppDataLibrary;
 
 namespace PowerPlanneriOS.Controllers
 {
-    public class MainScreenViewController : PagedViewModelWithPopupsPresenter, IUIAlertViewDelegate
+    public class MainScreenViewController : PagedViewModelWithPopupsPresenter
     {
         public static nfloat TAB_BAR_HEIGHT = 0;
         private static WeakReferenceList<Action> OnTabBarHeightChangedListeners = new WeakReferenceList<Action>();
@@ -147,17 +147,6 @@ namespace PowerPlanneriOS.Controllers
 
         private void UpdateSyncStates()
         {
-            switch (ViewModel.SyncState)
-            {
-                case MainScreenViewModel.SyncStates.Done:
-                    UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
-                    break;
-
-                case MainScreenViewModel.SyncStates.Syncing:
-                case MainScreenViewModel.SyncStates.UploadingImages:
-                    UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
-                    break;
-            }
         }
 
         private void UpdateSelectedTab()
@@ -240,10 +229,7 @@ namespace PowerPlanneriOS.Controllers
                     _tabBarItemClasses,
                     _tabBarItemMore
                 },
-                //BarTintColor = ColorResources.PowerPlannerBlueChromeColor,
-                //UnselectedItemTintColor = UIColor.White,
-                //SelectedImageTintColor = UIColor.White
-                SelectedImageTintColor = ColorResources.PowerPlannerAccentBlue
+                TintColor = ColorResources.PowerPlannerAccentBlue
             };
             _tabBar.ItemSelected += new WeakEventHandler<UITabBarItemEventArgs>(_tabBar_ItemSelected).Handler;
 
@@ -254,8 +240,8 @@ namespace PowerPlanneriOS.Controllers
 
             NSLayoutConstraint.ActivateConstraints(new NSLayoutConstraint[]
             {
-                _tabBar.BottomAnchor.ConstraintEqualTo(this.BottomLayoutGuide.BottomAnchor),
-                _tabBar.TopAnchor.ConstraintGreaterThanOrEqualTo(this.TopLayoutGuide.TopAnchor)
+                _tabBar.BottomAnchor.ConstraintEqualTo(this.View.SafeAreaLayoutGuide.BottomAnchor),
+                _tabBar.TopAnchor.ConstraintGreaterThanOrEqualTo(this.View.SafeAreaLayoutGuide.TopAnchor)
             });
         }
 
@@ -342,28 +328,38 @@ namespace PowerPlanneriOS.Controllers
                 // If the user previously clicked No thanks, we'll try the new in-app review dialog
                 else if (!PowerPlannerAppDataLibrary.Helpers.Settings.HasReviewedOrEmailedDev)
                 {
-                    if (UIDevice.CurrentDevice.CheckSystemVersion(10, 3))
-                    {
 #if !DEBUG
-                        // This will only sometimes show a dialog, at most 3 times a year
-                        // It will still display if they already rated, meaning users who previously clicked
-                        // No thanks on my own dialog will persistently get this dialog, but that should be ok
-                        StoreKit.SKStoreReviewController.RequestReview();
-#endif
+                    // This will only sometimes show a dialog, at most 3 times a year
+                    // It will still display if they already rated, meaning users who previously clicked
+                    // No thanks on my own dialog will persistently get this dialog, but that should be ok
+                    var windowScene = View?.Window?.WindowScene;
+                    if (windowScene != null)
+                    {
+                        if (OperatingSystem.IsIOSVersionAtLeast(18))
+                        {
+                            StoreKit.AppStore.RequestReview(windowScene);
+                        }
+                        else
+                        {
+#pragma warning disable CA1422 // RequestReview(UIWindowScene) is obsoleted on iOS 18.0
+                            StoreKit.SKStoreReviewController.RequestReview(windowScene);
+#pragma warning restore CA1422
+                        }
                     }
+#endif
                 }
             }
 
             catch { }
         }
 
-        private static void OpenStoreReview()
+        private static async void OpenStoreReview()
         {
             var url = $"itms-apps://itunes.apple.com/app/id1278178608?action=write-review";
             bool opened = false;
             try
             {
-                opened = UIApplication.SharedApplication.OpenUrl(new NSUrl(url));
+                opened = await UIApplication.SharedApplication.OpenUrlAsync(new NSUrl(url), new UIApplicationOpenUrlOptions());
             }
             catch { }
 

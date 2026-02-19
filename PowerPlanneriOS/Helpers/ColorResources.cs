@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Text;
 
 using Foundation;
@@ -26,29 +25,17 @@ namespace PowerPlanneriOS.Helpers
             navBar.TintColor = UIColor.White;
             navBar.Translucent = false;
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
+            navBar.TitleTextAttributes = new UIStringAttributes()
             {
-                navBar.TitleTextAttributes = new UIStringAttributes()
-                {
-                    ForegroundColor = UIColor.White
-                };
-            }
+                ForegroundColor = UIColor.White
+            };
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
-            {
-                SetNavigationBarAppearance(navBar, PowerPlannerBlueChromeColor, navBar.TintColor);
-            }
-        }
-
-        [SupportedOSPlatform("ios13.0")]
-        private static void SetNavigationBarAppearance(UINavigationBar navBar, UIColor backgroundColor, UIColor tintColor)
-        {
             var appearance = new UINavigationBarAppearance();
             appearance.ConfigureWithOpaqueBackground();
-            appearance.BackgroundColor = backgroundColor;
+            appearance.BackgroundColor = PowerPlannerBlueChromeColor;
             appearance.TitleTextAttributes = new UIStringAttributes()
             {
-                ForegroundColor = tintColor
+                ForegroundColor = navBar.TintColor
             };
 
             navBar.StandardAppearance = appearance;

@@ -13,31 +13,61 @@ namespace InterfacesiOS.Extensions
     internal class IOSMessageDialog
     {
         private TaskCompletionSource<bool> _completionSource = new TaskCompletionSource<bool>();
-        private UIAlertView _alertView;
 
         private IOSMessageDialog(PortableMessageDialog dialog)
         {
-            IUIAlertViewDelegate del = null;
+            var alert = UIAlertController.Create(dialog.Title, dialog.Content, UIAlertControllerStyle.Alert);
+
             if (dialog.PositiveText != null)
             {
-                _alertView = new UIAlertView(dialog.Title, dialog.Content, del, dialog.NegativeText ?? "Cancel", dialog.PositiveText);
+                alert.AddAction(UIAlertAction.Create(dialog.NegativeText ?? "Cancel", UIAlertActionStyle.Cancel, _ => _completionSource.TrySetResult(false)));
+                alert.AddAction(UIAlertAction.Create(dialog.PositiveText, UIAlertActionStyle.Default, _ => _completionSource.TrySetResult(true)));
             }
             else
             {
-                _alertView = new UIAlertView(dialog.Title, dialog.Content, del, dialog.NegativeText ?? "Ok");
+                alert.AddAction(UIAlertAction.Create(dialog.NegativeText ?? "Ok", UIAlertActionStyle.Default, _ => _completionSource.TrySetResult(false)));
             }
-            _alertView.Clicked += _alertView_Clicked;
+
+            _alert = alert;
         }
 
-        private void _alertView_Clicked(object sender, UIButtonEventArgs e)
-        {
-            _completionSource.SetResult(e.ButtonIndex == 1);
-        }
+        private readonly UIAlertController _alert;
 
         private Task<bool> Show()
         {
-            _alertView.Show();
+            var viewController = GetTopViewController();
+            viewController?.PresentViewController(_alert, true, null);
             return _completionSource.Task;
+        }
+
+        private static UIViewController GetTopViewController()
+        {
+            UIWindow window = null;
+
+            foreach (var scene in UIApplication.SharedApplication.ConnectedScenes)
+            {
+                if (scene is UIWindowScene windowScene)
+                {
+                    foreach (var w in windowScene.Windows)
+                    {
+                        if (w.IsKeyWindow)
+                        {
+                            window = w;
+                            break;
+                        }
+                    }
+                    if (window != null) break;
+                }
+            }
+
+            if (window == null) return null;
+
+            var vc = window.RootViewController;
+            while (vc?.PresentedViewController != null)
+            {
+                vc = vc.PresentedViewController;
+            }
+            return vc;
         }
 
         public static Task<bool> Show(PortableMessageDialog dialog)

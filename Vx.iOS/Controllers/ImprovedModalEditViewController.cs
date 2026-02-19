@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using CoreGraphics;
 using InterfacesiOS.Helpers;
@@ -133,25 +132,16 @@ namespace Vx.iOS.Controllers
     {
         public ImprovedModalDatePickerViewController(UIView parentView, DateTime currentDate) : base(parentView, currentDate) { }
 
-        [SupportedOSPlatform("ios13.4")]
         protected override UIDatePicker GenerateControl()
         {
             var datePicker = new UIDatePicker
             {
                 Mode = UIDatePickerMode.Date,
-                Date = BareUIHelper.DateTimeToNSDate(InitialValue)
+                Date = BareUIHelper.DateTimeToNSDate(InitialValue),
+                PreferredDatePickerStyle = UIDatePickerStyle.Inline
             };
 
-            if (SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
-            {
-                datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
-            }
-
-            // If calendar type (when wheels property was introduced, that's when calendar type appeared)
-            if (SdkSupportHelper.IsUIDatePickerWheelsStyleSupported)
-            {
-                datePicker.ValueChanged += DatePicker_ValueChanged;
-            }
+            datePicker.ValueChanged += DatePicker_ValueChanged;
 
             return datePicker;
         }
@@ -180,7 +170,6 @@ namespace Vx.iOS.Controllers
             _minTime = minTime;
         }
 
-        [SupportedOSPlatform("ios13.4")]
         protected override UIDatePicker GenerateControl()
         {
             var today = DateTime.Today;
@@ -189,13 +178,9 @@ namespace Vx.iOS.Controllers
             {
                 Mode = UIDatePickerMode.Time,
                 Date = BareUIHelper.DateTimeToNSDate(today.Add(InitialValue)),
-                MinimumDate = BareUIHelper.DateTimeToNSDate(today.Add(_minTime))
+                MinimumDate = BareUIHelper.DateTimeToNSDate(today.Add(_minTime)),
+                PreferredDatePickerStyle = UIDatePickerStyle.Wheels
             };
-
-            if (SdkSupportHelper.IsUIDatePickerWheelsStyleSupported)
-            {
-                datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Wheels;
-            }
 
             return datePicker;
         }

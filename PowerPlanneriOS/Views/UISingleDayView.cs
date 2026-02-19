@@ -69,13 +69,9 @@ namespace PowerPlanneriOS.Views
 
             _items = new UITableView()
             {
-                SeparatorInset = UIEdgeInsets.Zero
+                SeparatorInset = UIEdgeInsets.Zero,
+                CellLayoutMarginsFollowReadableWidth = false
             };
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
-            {
-                // Stretch to full width even on iPad
-                _items.CellLayoutMarginsFollowReadableWidth = false;
-            }
             _scheduleSnapshot = new UIDayScheduleSnapshot();
             _scheduleSnapshot.OnRequestViewClass += new WeakEventHandler<ViewItemClass>(_scheduleSnapshot_OnRequestViewClass).Handler;
             _items.TableFooterView = _scheduleSnapshot;

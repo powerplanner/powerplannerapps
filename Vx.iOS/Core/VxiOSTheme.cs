@@ -21,7 +21,7 @@ namespace Vx.iOS
 
         public override Color PopupPageBackgroundAltColor => UIColorCompat.SystemGroupedBackgroundColor.ToVx();
 
-        public override bool IsDarkTheme => SdkSupportHelper.IsUserInterfaceStyleSupported ? NativeiOSApplication.Current.Window.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark : false;
+        public override bool IsDarkTheme => NativeiOSApplication.Current.Window.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark;
 
         public override float BodyFontSize => 15;
 

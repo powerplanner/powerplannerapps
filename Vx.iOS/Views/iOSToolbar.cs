@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Versioning;
 using ToolsPortable;
 using UIKit;
 using Vx.Views;
@@ -48,21 +47,15 @@ namespace Vx.iOS.Views
             {
                 NavBar.TintColor = newView.ForegroundColor.ToUI();
 
-                if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
+                NavBar.TitleTextAttributes = new UIStringAttributes()
                 {
-                    NavBar.TitleTextAttributes = new UIStringAttributes()
-                    {
-                        ForegroundColor = newView.ForegroundColor.ToUI()
-                    };
-                }
+                    ForegroundColor = newView.ForegroundColor.ToUI()
+                };
             }
 
             if (oldView?.BackgroundColor != newView.BackgroundColor || oldView?.ForegroundColor != newView.ForegroundColor)
             {
-                if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
-                {
-                    SetNavigationBarAppearance(NavBar, View.BackgroundColor, NavBar.TintColor);
-                }
+                SetNavigationBarAppearance(NavBar, View.BackgroundColor, NavBar.TintColor);
             }
 
             NavBar.TopItem.Title = newView.Title;
@@ -207,7 +200,6 @@ namespace Vx.iOS.Views
             ShowSubCommands(VxView.SecondaryCommands, NavBar.TopItem.RightBarButtonItems.First());
         }
 
-        [SupportedOSPlatform("ios13.0")]
         private static void SetNavigationBarAppearance(UINavigationBar navBar, UIColor backgroundColor, UIColor tintColor)
         {
             var appearance = new UINavigationBarAppearance();
