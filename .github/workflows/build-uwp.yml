@@ -165,19 +165,18 @@ jobs:
           /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
-      - name: Extract symbols from msixupload
+      - name: Extract msixupload
         shell: pwsh
         run: |
           $uploadFile = Get-ChildItem -Path AppxPackages -Filter "*.msixupload" -Recurse | Select-Object -First 1
           Copy-Item $uploadFile.FullName "AppxPackages\PowerPlannerUWP.msixupload.zip"
           Expand-Archive -Path "AppxPackages\PowerPlannerUWP.msixupload.zip" -DestinationPath "AppxPackages\Extracted"
-          Copy-Item "AppxPackages\Extracted\*.appxsym" "AppxPackages\" -Force
 
       - name: Upload AppxPackages artifact
         uses: actions/upload-artifact@v4
         with:
           name: AppxPackages_${{ matrix.platform }}
-          path: AppxPackages/
+          path: AppxPackages/Extracted/
 
   merge-bundle:
     needs: [set-version, build]
@@ -186,11 +185,6 @@ jobs:
       BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
       - name: Download AppxPackages x86
         uses: actions/download-artifact@v4
         with:
@@ -209,12 +203,13 @@ jobs:
           name: AppxPackages_ARM64
           path: AppxPackages/
 
-      - name: Collect bundles and symbols
+      - name: Collect msix and symbols
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path bundles -Force
+          New-Item -ItemType Directory -Path unbundled -Force
           New-Item -ItemType Directory -Path symbols -Force
-          Get-ChildItem -Path AppxPackages -Filter "*.msixbundle" -Recurse | Copy-Item -Destination bundles/ -Force
+          Get-ChildItem -Path AppxPackages -Filter "*.msix" -Recurse | Copy-Item -Destination unbundled/ -Force
           Get-ChildItem -Path AppxPackages -Filter "*.appxsym" -Recurse | Copy-Item -Destination symbols/ -Force
 
       - name: Find MakeAppx.exe
@@ -228,42 +223,12 @@ jobs:
           echo "MAKEAPPX=$($makeappx.FullName)" >> $env:GITHUB_OUTPUT
           Write-Host "Found MakeAppx: $($makeappx.FullName)"
 
-      - name: Unbundle ARM64
-        shell: cmd
-        working-directory: bundles
-        run: >-
-          "${{ steps.find-makeappx.outputs.MAKEAPPX }}" unbundle
-          /p PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_ARM64.msixbundle
-          /d unbundled
-
-      - name: Unbundle x86
-        shell: cmd
-        working-directory: bundles
-        run: >-
-          "${{ steps.find-makeappx.outputs.MAKEAPPX }}" unbundle
-          /p PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86.msixbundle
-          /d unbundledx86
-
-      - name: Unbundle x64
-        shell: cmd
-        working-directory: bundles
-        run: >-
-          "${{ steps.find-makeappx.outputs.MAKEAPPX }}" unbundle
-          /p PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x64.msixbundle
-          /d unbundledx64
-
-      - name: Copy x86 and x64 appx into ARM64 unbundled folder
-        shell: pwsh
-        run: |
-          Copy-Item "bundles/unbundledx86/*_x86.msix" "bundles/unbundled/" -Force
-          Copy-Item "bundles/unbundledx64/*_x64.msix" "bundles/unbundled/" -Force
-
       - name: Create merged bundle
         shell: cmd
         working-directory: bundles
         run: >-
           "${{ steps.find-makeappx.outputs.MAKEAPPX }}" bundle
-          /d unbundled
+          /d ..\unbundled
           /p PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle
           /bv ${{ env.BUILD_VERSION }}.0
 
