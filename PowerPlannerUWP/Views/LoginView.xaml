@@ -93,11 +93,10 @@
                 <Button
                     Grid.Row="1"
                     x:Name="buttonLogin"
+                    Content="{x:Bind data:R.S('WelcomePage_ButtonLogin.Content')}"
                     Style="{StaticResource WelcomeButtonStyle}"
                     Click="buttonLogin_Click"
-                    Margin="20,0,20,20">
-                    <TextBlock Text="{x:Bind data:R.S('WelcomePage_ButtonLogin.Content')}"/>
-                </Button>
+                    Margin="20,0,20,20"/>
             </Grid>
         </ScrollViewer>
     </views:PopupViewHostGeneric.MainContent>
