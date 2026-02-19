@@ -11,6 +11,10 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.App;
 
+// StoreKit v1 APIs are obsoleted in iOS 18 but StoreKit v2 (the replacement) is Swift-only
+// and has no C# bindings available. These APIs still function and are required for .NET iOS apps.
+#pragma warning disable CA1422
+
 namespace PowerPlanneriOS.Helpers
 {
     public static class InAppPurchaseHelper
@@ -284,3 +288,5 @@ namespace PowerPlanneriOS.Helpers
         }
     }
 }
+
+#pragma warning restore CA1422

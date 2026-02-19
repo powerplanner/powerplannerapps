@@ -16,21 +16,15 @@ namespace Vx.iOS.Views
             View.SeparatorInset = UIEdgeInsets.Zero;
             View.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
-            {
-                // Stretch to full width even on iPad
-                View.CellLayoutMarginsFollowReadableWidth = false;
-            }
+            // Stretch to full width even on iPad
+            View.CellLayoutMarginsFollowReadableWidth = false;
 
             View.RowHeight = UITableView.AutomaticDimension;
             View.EstimatedRowHeight = 44;
 
             View.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
-            {
-                View.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
-            }
+            View.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
 
             View.AllowsSelection = false;
         }

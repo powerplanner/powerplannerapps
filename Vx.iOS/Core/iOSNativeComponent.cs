@@ -18,10 +18,19 @@ namespace Vx.iOS
 
         public VxComponent Component { get; private set; }
 
+        private IUITraitChangeRegistration _traitChangeRegistration;
+
         public iOSNativeComponent(VxComponent component)
         {
             Component = component;
             _rendered = !component.DelayFirstRenderTillSizePresent;
+
+            _traitChangeRegistration = this.RegisterForTraitChanges(
+                [typeof(UITraitUserInterfaceStyle)],
+                (self, previousTraitCollection) =>
+                {
+                    ThemeChanged?.Invoke(this, null);
+                });
         }
 
         public SizeF ComponentSize => new SizeF((float)this.Bounds.Width, (float)this.Bounds.Height);
@@ -55,16 +64,6 @@ namespace Vx.iOS
                         ComponentSizeChanged?.Invoke(this, newSize);
                     }
                 }
-            }
-        }
-
-        public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
-        {
-            base.TraitCollectionDidChange(previousTraitCollection);
-
-            if (SdkSupportHelper.IsUserInterfaceStyleSupported && previousTraitCollection != null && previousTraitCollection.UserInterfaceStyle != TraitCollection.UserInterfaceStyle)
-            {
-                ThemeChanged?.Invoke(this, null);
             }
         }
 

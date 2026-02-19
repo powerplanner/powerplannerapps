@@ -106,7 +106,16 @@ namespace PowerPlanneriOS.Controllers
             UIPopoverPresentationController presentationPopover = actionSheetMoreOptions.PopoverPresentationController;
             if (presentationPopover != null)
             {
-                presentationPopover.BarButtonItem = NavItem.RightBarButtonItems.First();
+                if (OperatingSystem.IsIOSVersionAtLeast(16))
+                {
+                    presentationPopover.SourceItem = NavItem.RightBarButtonItems.First();
+                }
+                else
+                {
+#pragma warning disable CA1422 // BarButtonItem is obsoleted on iOS 16.0 but needed for iOS 14-15
+                    presentationPopover.BarButtonItem = NavItem.RightBarButtonItems.First();
+#pragma warning restore CA1422
+                }
                 presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
             }
 
@@ -132,10 +141,7 @@ namespace PowerPlanneriOS.Controllers
 
         private void UpdateNookInsets()
         {
-            if (SdkSupportHelper.IsSafeAreaInsetsSupported)
-            {
-                ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
-            }
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
         }
 
         private void AfterViewChanged(UIView view)

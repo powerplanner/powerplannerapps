@@ -182,15 +182,7 @@ namespace InterfacesiOS.Controllers
                 var insets = new UIEdgeInsets(
                     _keyboardTopOffset, 0, height, 0);
                 _scrollViewForKeyboardOffset.ContentInset = insets;
-
-                if (SdkSupportHelper.IsVerticalScrollIndicatorInsetsSupported)
-                {
-                    _scrollViewForKeyboardOffset.VerticalScrollIndicatorInsets = insets;
-                }
-                else
-                {
-                    _scrollViewForKeyboardOffset.ScrollIndicatorInsets = insets;
-                }
+                _scrollViewForKeyboardOffset.VerticalScrollIndicatorInsets = insets;
 
                 if (height > 0)
                 {

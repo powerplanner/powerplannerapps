@@ -29,8 +29,6 @@ namespace PowerPlanneriOS.Controllers
 
         public PopupViewController()
         {
-            AutomaticallyAdjustsScrollViewInsets = false;
-
             _contentView = new UIView()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false

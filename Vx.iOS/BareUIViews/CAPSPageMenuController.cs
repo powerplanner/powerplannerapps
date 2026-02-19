@@ -366,7 +366,23 @@ namespace InterfacesiOS.Views
 
                 if (scrollView.ContentOffset.X >= 0 && scrollView.ContentOffset.X <= (_controllers.Count - 1) * this.View.Frame.Width)
                 {
-                    if ((_currentOrientationIsPortrait && UIApplication.SharedApplication.StatusBarOrientation.IsPortrait()) || (!_currentOrientationIsPortrait && UIApplication.SharedApplication.StatusBarOrientation.IsLandscape()))
+                    var windowScene = this.View.Window?.WindowScene;
+                    UIInterfaceOrientation sceneOrientation;
+                    if (OperatingSystem.IsIOSVersionAtLeast(26) && windowScene != null)
+                    {
+                        sceneOrientation = windowScene.EffectiveGeometry.InterfaceOrientation;
+                    }
+                    else if (windowScene != null)
+                    {
+#pragma warning disable CA1422 // Validated by OS version check above
+                        sceneOrientation = windowScene.InterfaceOrientation;
+#pragma warning restore CA1422
+                    }
+                    else
+                    {
+                        sceneOrientation = UIInterfaceOrientation.Portrait;
+                    }
+                    if ((_currentOrientationIsPortrait && sceneOrientation.IsPortrait()) || (!_currentOrientationIsPortrait && sceneOrientation.IsLandscape()))
                     {
                         // Check if scroll direction changed
                         if (!_didTapMenuItemToScroll)

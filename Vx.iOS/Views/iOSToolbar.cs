@@ -47,30 +47,15 @@ namespace Vx.iOS.Views
             {
                 NavBar.TintColor = newView.ForegroundColor.ToUI();
 
-                if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
+                NavBar.TitleTextAttributes = new UIStringAttributes()
                 {
-                    NavBar.TitleTextAttributes = new UIStringAttributes()
-                    {
-                        ForegroundColor = newView.ForegroundColor.ToUI()
-                    };
-                }
+                    ForegroundColor = newView.ForegroundColor.ToUI()
+                };
             }
 
             if (oldView?.BackgroundColor != newView.BackgroundColor || oldView?.ForegroundColor != newView.ForegroundColor)
             {
-                if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
-                {
-                    var appearance = new UINavigationBarAppearance();
-                    appearance.ConfigureWithOpaqueBackground();
-                    appearance.BackgroundColor = View.BackgroundColor;
-                    appearance.TitleTextAttributes = new UIStringAttributes()
-                    {
-                        ForegroundColor = NavBar.TintColor
-                    };
-
-                    NavBar.StandardAppearance = appearance;
-                    NavBar.ScrollEdgeAppearance = appearance;
-                }
+                SetNavigationBarAppearance(NavBar, View.BackgroundColor, NavBar.TintColor);
             }
 
             NavBar.TopItem.Title = newView.Title;
@@ -213,6 +198,20 @@ namespace Vx.iOS.Views
         private void ButtonMore_Clicked(object sender, EventArgs e)
         {
             ShowSubCommands(VxView.SecondaryCommands, NavBar.TopItem.RightBarButtonItems.First());
+        }
+
+        private static void SetNavigationBarAppearance(UINavigationBar navBar, UIColor backgroundColor, UIColor tintColor)
+        {
+            var appearance = new UINavigationBarAppearance();
+            appearance.ConfigureWithOpaqueBackground();
+            appearance.BackgroundColor = backgroundColor;
+            appearance.TitleTextAttributes = new UIStringAttributes()
+            {
+                ForegroundColor = tintColor
+            };
+
+            navBar.StandardAppearance = appearance;
+            navBar.ScrollEdgeAppearance = appearance;
         }
     }
 }

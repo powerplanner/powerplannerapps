@@ -151,7 +151,7 @@ namespace InterfacesiOS.Controllers
             _doneButton.StretchHeight(header, top: 0);
             _headerLabel.SetContentHuggingPriority(0, UILayoutConstraintAxis.Horizontal);
 
-            var safeAreaInsets = SdkSupportHelper.IsSafeAreaInsetsSupported ? _parent.View.SafeAreaInsets : new UIEdgeInsets();
+            var safeAreaInsets = _parent.View.SafeAreaInsets;
 
             header.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|-{Math.Max(16, safeAreaInsets.Left).ToString(CultureInfo.InvariantCulture)}-[cancel][header][done]-{Math.Max(16, safeAreaInsets.Right).ToString(CultureInfo.InvariantCulture)}-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
                 "cancel", _cancelButton,
@@ -200,17 +200,10 @@ namespace InterfacesiOS.Controllers
             DismissViewController(true, null);
         }
 
-        public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
+        public override void ViewWillTransitionToSize(CGSize toSize, IUIViewControllerTransitionCoordinator coordinator)
         {
-            base.DidRotate(fromInterfaceOrientation);
-
-            if (InterfaceOrientation == UIInterfaceOrientation.Portrait ||
-                InterfaceOrientation == UIInterfaceOrientation.LandscapeLeft ||
-                InterfaceOrientation == UIInterfaceOrientation.LandscapeRight)
-            {
-                //UpdateLayout(true);
-                View.SetNeedsDisplay();
-            }
+            base.ViewWillTransitionToSize(toSize, coordinator);
+            View.SetNeedsDisplay();
         }
     }
 
@@ -224,12 +217,7 @@ namespace InterfacesiOS.Controllers
         private static UIDatePicker CreateDatePicker()
         {
             var datePicker = new UIDatePicker(CGRect.Empty);
-
-            if (SdkSupportHelper.IsUIDatePickerInlineStyleSupported)
-            {
-                datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
-            }
-
+            datePicker.PreferredDatePickerStyle = UIDatePickerStyle.Inline;
             return datePicker;
         }
     }
@@ -346,7 +334,7 @@ namespace InterfacesiOS.Controllers
             toViewController.View.Frame = new CGRect(0, 0, fromFrame.Width,
                                                              fromFrame.Height);
 
-            var startingPoint = GetStartingPoint(fromViewController.InterfaceOrientation);
+            var startingPoint = GetStartingPoint();
             toViewController._slidingView.Frame = new CGRect(startingPoint.X, startingPoint.Y,
                                                              fromFrame.Width,
                                                              fromFrame.Height);
@@ -356,7 +344,7 @@ namespace InterfacesiOS.Controllers
                                  {
                                      toViewController.View.BackgroundColor = new UIColor(0, 0.3f);
 
-                                     var endingPoint = GetEndingPoint(fromViewController.InterfaceOrientation);
+                                     var endingPoint = GetEndingPoint();
                                      toViewController._slidingView.Frame = new CGRect(endingPoint.X, endingPoint.Y, fromFrame.Width,
                                                                                       fromFrame.Height);
                                      //fromViewController.View.Alpha = 0.5f;
@@ -365,13 +353,13 @@ namespace InterfacesiOS.Controllers
                                 );
         }
 
-        CGPoint GetStartingPoint(UIInterfaceOrientation orientation)
+        CGPoint GetStartingPoint()
         {
             var screenBounds = UIScreen.MainScreen.Bounds;
             return new CGPoint(0, screenBounds.Height);
         }
 
-        CGPoint GetEndingPoint(UIInterfaceOrientation orientation)
+        CGPoint GetEndingPoint()
         {
             return new CGPoint(0, 0);
         }

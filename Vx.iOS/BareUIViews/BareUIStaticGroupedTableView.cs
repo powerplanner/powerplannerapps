@@ -22,28 +22,56 @@ namespace InterfacesiOS.Views
             _staticViewSource?.ClearAll();
         }
 
+        private static void ConfigureCellContent(UITableViewCell cell, string text, string secondaryText = null, UIFont font = null, UIColor textColor = null, int numberOfLines = 1, int secondaryNumberOfLines = 1)
+        {
+            var content = UIListContentConfiguration.CellConfiguration;
+            content.Text = text;
+            if (secondaryText != null)
+                content.SecondaryText = secondaryText;
+            if (font != null)
+                content.TextProperties.Font = font;
+            if (textColor != null)
+                content.TextProperties.Color = textColor;
+            content.TextProperties.NumberOfLines = numberOfLines;
+            if (secondaryNumberOfLines != 1)
+                content.SecondaryTextProperties.NumberOfLines = secondaryNumberOfLines;
+            cell.ContentConfiguration = content;
+        }
+
+        private static void ConfigureValueCellContent(UITableViewCell cell, string text)
+        {
+            var content = UIListContentConfiguration.ValueCellConfiguration;
+            content.Text = text;
+            cell.ContentConfiguration = content;
+        }
+
+        private static void ConfigureSubtitleCellContent(UITableViewCell cell, string text, string secondaryText, int secondaryNumberOfLines = 1)
+        {
+            var content = UIListContentConfiguration.SubtitleCellConfiguration;
+            content.Text = text;
+            content.SecondaryText = secondaryText;
+            content.SecondaryTextProperties.NumberOfLines = secondaryNumberOfLines;
+            cell.ContentConfiguration = content;
+        }
+
         public void AddDescriptionCell(string title)
         {
             var cell = new UITableViewCell(UITableViewCellStyle.Default, "TableCell");
-            cell.TextLabel.Text = title;
-            cell.TextLabel.Lines = 0;
+            ConfigureCellContent(cell, title, numberOfLines: 0);
             AddCell(cell, null);
         }
 
         public void AddCaptionDescriptionCell(string title)
         {
             var cell = new UITableViewCell(UITableViewCellStyle.Default, "TableCell");
-            cell.TextLabel.Text = title;
-            cell.TextLabel.Lines = 0;
-            cell.TextLabel.Font = UIFont.PreferredCaption1;
-            cell.TextLabel.TextColor = UIColor.LightGray;
+            ConfigureCellContent(cell, title, font: UIFont.PreferredCaption1, textColor: UIColor.LightGray, numberOfLines: 0);
             AddCell(cell, null);
         }
 
         public void AddCell(string title, Action invokeAction)
         {
             var cell = new UITableViewCell(UITableViewCellStyle.Default, "TableCell");
-            cell.TextLabel.Text = title;
+            ConfigureCellContent(cell, title);
             AddCell(cell, invokeAction);
         }
 
@@ -55,15 +83,34 @@ namespace InterfacesiOS.Views
         public void AddValueCell(string title, Binding.BindingHost bindingHost, string bindingValuePropertyName, Func<object, string> converter, Action invokeAction)
         {
             var cell = new UITableViewCell(UITableViewCellStyle.Value1, "Value1Cell");
-            cell.TextLabel.Text = title;
-            bindingHost.SetLabelTextBinding(cell.DetailTextLabel, bindingValuePropertyName, converter: converter);
+            ConfigureValueCellContent(cell, title);
+
+            // Use binding to update the secondary text via content configuration
+            bindingHost.SetBinding(bindingValuePropertyName, value =>
+            {
+                string valueText;
+                if (converter != null)
+                    valueText = converter.Invoke(value);
+                else if (value is string valueStr)
+                    valueText = valueStr;
+                else if (value == null)
+                    valueText = "";
+                else
+                    valueText = value.ToString();
+
+                var content = UIListContentConfiguration.ValueCellConfiguration;
+                content.Text = title;
+                content.SecondaryText = valueText;
+                cell.ContentConfiguration = content;
+            });
+
             AddCell(cell, invokeAction);
         }
 
         public void AddTextFieldCell(string title, Binding.BindingHost bindingHost, string bindingValuePropertyName, Action<BareUITextField> customizeTextField = null)
         {
             var cell = new BareUITableViewCellWithTextField(UITableViewCellStyle.Value1);
-            cell.TextLabel.Text = title;
+            cell.SetTitleText(title);
             bindingHost.SetTextFieldBinding(cell.TextField, bindingValuePropertyName);
 
             customizeTextField?.Invoke(cell.TextField);
@@ -79,9 +126,7 @@ namespace InterfacesiOS.Views
         public void AddCheckableCellWithDescription(string title, string description, Binding.BindingHost bindingHost, string bindingValuePropertyName)
         {
             var cell = new UITableViewCell(UITableViewCellStyle.Subtitle, "CheckableDescriptionCell");
-            cell.TextLabel.Text = title;
-            cell.DetailTextLabel.Text = description;
-            cell.DetailTextLabel.Lines = 0;
+            ConfigureSubtitleCellContent(cell, title, description, secondaryNumberOfLines: 0);
             bindingHost.SetIsCheckedBinding(cell, bindingValuePropertyName);
             AddCell(cell, delegate
             {

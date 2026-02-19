@@ -33,7 +33,16 @@ namespace PowerPlanneriOS.Helpers
             UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
             if (presentationPopover != null)
             {
-                presentationPopover.BarButtonItem = barButton;
+                if (OperatingSystem.IsIOSVersionAtLeast(16))
+                {
+                    presentationPopover.SourceItem = barButton;
+                }
+                else
+                {
+#pragma warning disable CA1422 // BarButtonItem is obsoleted on iOS 16.0 but needed for iOS 14-15
+                    presentationPopover.BarButtonItem = barButton;
+#pragma warning restore CA1422
+                }
                 presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
             }
 
@@ -44,17 +53,25 @@ namespace PowerPlanneriOS.Helpers
         public static UIButton CreatePowerPlannerBlueButton(string title)
         {
             var button = new UIButton(UIButtonType.System);
-            button.SetTitle(title, UIControlState.Normal);
-            button.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
-            button.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
-            button.ContentEdgeInsets = new UIEdgeInsets()
+
+            if (OperatingSystem.IsIOSVersionAtLeast(15))
             {
-                Left = 8,
-                Right = 8,
-                Top = 8,
-                Bottom = 8
-            };
-            button.Layer.CornerRadius = 10;
+                var config = UIButtonConfiguration.PlainButtonConfiguration;
+                config.ContentInsets = new NSDirectionalEdgeInsets(8, 8, 8, 8);
+                config.Background.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
+                config.Background.CornerRadius = 10;
+                config.BaseForegroundColor = new UIColor(1, 1);
+                config.Title = title;
+                button.Configuration = config;
+            }
+            else
+            {
+                button.SetTitle(title, UIControlState.Normal);
+                button.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
+                button.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
+                button.Layer.CornerRadius = 10;
+                button.ContentEdgeInsets = new UIEdgeInsets(8, 8, 8, 8);
+            }
 
             return button;
         }

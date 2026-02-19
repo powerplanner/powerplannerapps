@@ -12,8 +12,6 @@ namespace PowerPlanneriOS.Controllers.Settings.Grades
     {
         public ConfigureClassGradesViewController()
         {
-            AutomaticallyAdjustsScrollViewInsets = false;
-
             // Only purpose of this is to show the navigation bar, otherwise this is just a normal paged view model host
             MyNavigationController.NavigationBarHidden = false;
 
