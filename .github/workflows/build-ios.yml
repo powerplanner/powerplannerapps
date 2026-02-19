@@ -212,3 +212,39 @@ jobs:
         shell: bash
         run: |
           security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" || true
+
+  upload-testflight:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-ipa
+          path: artifacts
+
+      - name: Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        shell: bash
+        run: |
+          # Write the API key .p8 file to a directory altool searches
+          mkdir -p ~/private_keys
+          KEY_PATH="$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+          echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode -o "$KEY_PATH"
+
+          IPA_PATH=$(find artifacts -name "*.ipa" -type f | head -1)
+          if [ -z "$IPA_PATH" ]; then
+            echo "::error::No IPA file found in artifacts"
+            exit 1
+          fi
+          echo "Uploading $IPA_PATH to TestFlight..."
+
+          xcrun altool --upload-app \
+            -f "$IPA_PATH" \
+            -t ios \
+            --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
+            --show-progress
