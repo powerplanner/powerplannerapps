@@ -31,9 +31,6 @@ namespace PowerPlannerAndroid.Services
             return new WidgetScheduleFactory(ApplicationContext, appWidgetId);
         }
 
-        /// <summary>
-        /// Result of loading schedule widget data.
-        /// </summary>
         public class WidgetScheduleData
         {
             public List<object> Items { get; set; }
@@ -41,10 +38,7 @@ namespace PowerPlannerAndroid.Services
             public DateTime Now { get; set; }
         }
 
-        /// <summary>
-        /// Loads schedule widget data. Shared between the RemoteViewsService path and the RemoteCollectionItems path.
-        /// </summary>
-        public static async System.Threading.Tasks.Task<WidgetScheduleData> LoadScheduleDataAsync(Context context)
+        public static async System.Threading.Tasks.Task<WidgetScheduleData> LoadDataAsync(Context context)
         {
             var result = new WidgetScheduleData();
             result.Now = DateTime.Now;
@@ -56,88 +50,85 @@ namespace PowerPlannerAndroid.Services
 
             try
             {
-                await System.Threading.Tasks.Task.Run(async delegate
+                var account = await AccountsManager.GetLastLogin();
+
+                if (account != null)
                 {
-                    var account = await AccountsManager.GetLastLogin();
+                    result.LocalAccountId = account.LocalAccountId;
+                    hasAccount = true;
 
-                    if (account != null)
+                    const int DAYS_INCLUDING_TODAY = 7;
+                    var scheduleTileData = await ScheduleTileDataHelper.LoadAsync(account, result.Now.Date, DAYS_INCLUDING_TODAY);
+
+                    if (scheduleTileData.HasSemester)
                     {
-                        result.LocalAccountId = account.LocalAccountId;
-                        hasAccount = true;
+                        hasSemester = true;
 
-                        const int DAYS_INCLUDING_TODAY = 7;
-                        var scheduleTileData = await ScheduleTileDataHelper.LoadAsync(account, result.Now.Date, DAYS_INCLUDING_TODAY);
+                        items = new List<object>();
 
-                        if (scheduleTileData.HasSemester)
+                        foreach (var dayData in scheduleTileData.GetDataForAllDays())
                         {
-                            hasSemester = true;
-
-                            items = new List<object>();
-
-                            foreach (var dayData in scheduleTileData.GetDataForAllDays())
+                            if (dayData.Holidays.Any())
                             {
-                                if (dayData.Holidays.Any())
+                                // If we already displayed these holidays, skip subsequent duplicate days
+                                if (items.Count >= dayData.Holidays.Length && items.TakeLast(dayData.Holidays.Length).SequenceEqual(dayData.Holidays))
                                 {
-                                    // If we already displayed these holidays, skip subsequent duplicate days
-                                    if (items.Count >= dayData.Holidays.Length && items.TakeLast(dayData.Holidays.Length).SequenceEqual(dayData.Holidays))
-                                    {
-                                        // Skip
-                                    }
-                                    else
-                                    {
-                                        // If not today
-                                        if (!dayData.IsToday)
-                                        {
-                                            // We add the date header only for non-today
-                                            items.Add(dayData.Date);
-                                        }
-
-                                        items.AddRange(dayData.Holidays);
-                                    }
+                                    // Skip
                                 }
-
-                                else if (dayData.Schedules.Any())
+                                else
                                 {
                                     // If not today
                                     if (!dayData.IsToday)
                                     {
-                                        // If there's currently no items
-                                        if (items.Count == 0)
-                                        {
-                                            // Add the text saying no class today!
-                                            items.Add(PowerPlannerResources.GetString("String_NoClassToday"));
-                                        }
-
                                         // We add the date header only for non-today
                                         items.Add(dayData.Date);
                                     }
 
-                                    // If today
-                                    if (dayData.IsToday)
-                                    {
-                                        foreach (var s in dayData.Schedules)
-                                        {
-                                            if (s.EndTimeInLocalTime(dayData.Date) > result.Now)
-                                            {
-                                                items.Add(s);
-                                                schedulesToday.Add(s);
-                                            }
-                                        }
+                                    items.AddRange(dayData.Holidays);
+                                }
+                            }
 
-                                        if (items.Count == 0)
+                            else if (dayData.Schedules.Any())
+                            {
+                                // If not today
+                                if (!dayData.IsToday)
+                                {
+                                    // If there's currently no items
+                                    if (items.Count == 0)
+                                    {
+                                        // Add the text saying no class today!
+                                        items.Add(PowerPlannerResources.GetString("String_NoClassToday"));
+                                    }
+
+                                    // We add the date header only for non-today
+                                    items.Add(dayData.Date);
+                                }
+
+                                // If today
+                                if (dayData.IsToday)
+                                {
+                                    foreach (var s in dayData.Schedules)
+                                    {
+                                        if (s.EndTimeInLocalTime(dayData.Date) > result.Now)
                                         {
-                                            items.Add(PowerPlannerResources.GetString("String_NoMoreClasses"));
+                                            items.Add(s);
+                                            schedulesToday.Add(s);
                                         }
                                     }
-                                    else
+
+                                    if (items.Count == 0)
                                     {
-                                        items.AddRange(dayData.Schedules);
+                                        items.Add(PowerPlannerResources.GetString("String_NoMoreClasses"));
                                     }
+                                }
+                                else
+                                {
+                                    items.AddRange(dayData.Schedules);
                                 }
                             }
                         }
                     }
-                });
+                }
 
                 if (items == null || items.Count == 0)
                 {
@@ -193,15 +184,6 @@ namespace PowerPlannerAndroid.Services
             return result;
         }
 
-        /// <summary>
-        /// Creates a RemoteViews for the given schedule widget item. Shared between both paths.
-        /// </summary>
-        /// <param name="packageName">The package name for creating RemoteViews.</param>
-        /// <param name="item">The item to render.</param>
-        /// <param name="position">The position in the items list (used to find the date header for schedule items).</param>
-        /// <param name="allItems">The full items list (used to look back for a date header).</param>
-        /// <param name="now">The current time.</param>
-        /// <param name="localAccountId">The local account ID for building click intents.</param>
         public static RemoteViews CreateRemoteViewForItem(string packageName, object item, int position, List<object> allItems, DateTime now, Guid localAccountId)
         {
             if (item is DateTime dateItem)
@@ -365,32 +347,10 @@ namespace PowerPlannerAndroid.Services
             {
                 try
                 {
-                    // The problem is that if I create an async task, even if I use the Wait() syntax,
-                    // the system seems to just deadlock and the widget never loads.
-                    // So I need to just do the loading on its own non-blocking thread, and then
-                    // when it's done, I call the notifyDataSetChanged and will update the data.
-
-                    var updateTask = LoadScheduleDataAsync(_context);
-
-                    int times = 0;
-                    // IsCompleted returns true when either RanToCompletion, Faulted, or Canceled
-                    while (!updateTask.IsCompleted && times < 20)
-                    {
-                        System.Threading.Thread.Sleep(500);
-                        times++;
-                    }
-
-                    if (updateTask.IsCompletedSuccessfully)
-                    {
-                        var data = updateTask.Result;
-                        _items = data.Items;
-                        _now = data.Now;
-                        _localAccountId = data.LocalAccountId;
-                    }
-                    else if (updateTask.IsFaulted)
-                    {
-                        TelemetryExtension.Current?.TrackException(updateTask.Exception);
-                    }
+                    var data = LoadDataAsync(_context).GetAwaiter().GetResult();
+                    _items = data.Items;
+                    _now = data.Now;
+                    _localAccountId = data.LocalAccountId;
                 }
                 catch (Exception ex)
                 {

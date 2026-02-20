@@ -83,7 +83,10 @@ namespace PowerPlannerAndroid
             // Min API is 23 (Marshmallow), so Lollipop (API 21) APIs are always available
             // Status bar color is now handled by drawing proper background behind the status bar insets
             // (via StatusBarSpacer views in layouts) rather than using the deprecated SetStatusBarColor API.
-            this.Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
+            if (!OperatingSystem.IsAndroidVersionAtLeast(35))
+            {
+                this.Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
+            }
 
             // Register the window
             _mainAppWindow = new MainAppWindow();

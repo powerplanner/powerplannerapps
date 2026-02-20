@@ -36,9 +36,6 @@ namespace PowerPlannerAndroid.Services
             return new WidgetAgendaFactory(ApplicationContext, appWidgetId);
         }
 
-        /// <summary>
-        /// Result of loading agenda widget data.
-        /// </summary>
         public class WidgetAgendaData
         {
             public List<object> Items { get; set; }
@@ -46,10 +43,7 @@ namespace PowerPlannerAndroid.Services
             public DateTime Now { get; set; }
         }
 
-        /// <summary>
-        /// Loads agenda widget data. Shared between the RemoteViewsService path and the RemoteCollectionItems path.
-        /// </summary>
-        public static async System.Threading.Tasks.Task<WidgetAgendaData> LoadAgendaDataAsync(Context context)
+        public static async System.Threading.Tasks.Task<WidgetAgendaData> LoadDataAsync(Context context)
         {
             var result = new WidgetAgendaData();
             result.Now = DateTime.Now;
@@ -62,45 +56,42 @@ namespace PowerPlannerAndroid.Services
 
             try
             {
-                await System.Threading.Tasks.Task.Run(async delegate
+                var account = await AccountsManager.GetLastLogin();
+
+                AccountDataStore data = null;
+
+                if (account != null)
                 {
-                    var account = await AccountsManager.GetLastLogin();
+                    result.LocalAccountId = account.LocalAccountId;
+                    data = await AccountDataStore.Get(account.LocalAccountId);
+                }
 
-                    AccountDataStore data = null;
+                if (data != null)
+                {
+                    hasAccount = true;
 
-                    if (account != null)
+                    var resp = await data.GetAllUpcomingItemsForWidgetAsync(result.Now.Date, 20);
+                    tasks = resp.Items;
+                    isDisabledInSettings = resp.IsDisabledInSettings;
+                    hasSemester = !resp.NoSemester;
+
+                    if (tasks != null)
                     {
-                        result.LocalAccountId = account.LocalAccountId;
-                        data = await AccountDataStore.Get(account.LocalAccountId);
-                    }
-
-                    if (data != null)
-                    {
-                        hasAccount = true;
-
-                        var resp = await data.GetAllUpcomingItemsForWidgetAsync(result.Now.Date, 20);
-                        tasks = resp.Items;
-                        isDisabledInSettings = resp.IsDisabledInSettings;
-                        hasSemester = !resp.NoSemester;
-
-                        if (tasks != null)
+                        // Add date headers
+                        items = new List<object>();
+                        DateTime lastHeader = DateTime.MinValue;
+                        foreach (var t in tasks)
                         {
-                            // Add date headers
-                            items = new List<object>();
-                            DateTime lastHeader = DateTime.MinValue;
-                            foreach (var t in tasks)
+                            if (lastHeader != t.Date.Date)
                             {
-                                if (lastHeader != t.Date.Date)
-                                {
-                                    items.Add(t.Date.Date);
-                                    lastHeader = t.Date.Date;
-                                }
-
-                                items.Add(t);
+                                items.Add(t.Date.Date);
+                                lastHeader = t.Date.Date;
                             }
+
+                            items.Add(t);
                         }
                     }
-                });
+                }
 
                 if (items == null || items.Count == 0)
                 {
@@ -164,9 +155,6 @@ namespace PowerPlannerAndroid.Services
             return result;
         }
 
-        /// <summary>
-        /// Creates a RemoteViews for the given agenda widget item. Shared between both paths.
-        /// </summary>
         public static RemoteViews CreateRemoteViewForItem(string packageName, object item, DateTime now, Guid localAccountId)
         {
             if (item is DateTime dateItem)
@@ -348,32 +336,10 @@ namespace PowerPlannerAndroid.Services
             {
                 try
                 {
-                    // The problem is that if I create an async task, even if I use the Wait() syntax,
-                    // the system seems to just deadlock and the widget never loads.
-                    // So I need to just do the loading on its own non-blocking thread, and then
-                    // when it's done, I call the notifyDataSetChanged and will update the data.
-
-                    var updateTask = LoadAgendaDataAsync(_context);
-
-                    int times = 0;
-                    // IsCompleted returns true when either RanToCompletion, Faulted, or Canceled
-                    while (!updateTask.IsCompleted && times < 20)
-                    {
-                        System.Threading.Thread.Sleep(500);
-                        times++;
-                    }
-
-                    if (updateTask.IsCompletedSuccessfully)
-                    {
-                        var data = updateTask.Result;
-                        _items = data.Items;
-                        _now = data.Now;
-                        _localAccountId = data.LocalAccountId;
-                    }
-                    else if (updateTask.IsFaulted)
-                    {
-                        TelemetryExtension.Current?.TrackException(updateTask.Exception);
-                    }
+                    var data = LoadDataAsync(_context).GetAwaiter().GetResult();
+                    _items = data.Items;
+                    _now = data.Now;
+                    _localAccountId = data.LocalAccountId;
                 }
                 catch (Exception ex)
                 {

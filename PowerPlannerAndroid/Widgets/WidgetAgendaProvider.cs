@@ -21,16 +21,28 @@ namespace PowerPlannerAndroid.Widgets
     [MetaData("android.appwidget.provider", Resource = "@xml/widgetagendainfo")]
     public class WidgetAgendaProvider : AppWidgetProvider
     {
-        public override void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+        public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
         {
             try
             {
                 if (OperatingSystem.IsAndroidVersionAtLeast(31))
                 {
-                    // On API 31+, use RemoteCollectionItems. Data loading is handled
-                    // asynchronously in OnReceive via GoAsync(), so by the time OnUpdate
-                    // is called the data is already loaded and stored in _pendingData.
-                    UpdateWithRemoteCollectionItems(context, appWidgetManager, appWidgetIds);
+                    // On API 31+, use RemoteCollectionItems (the modern API).
+                    // Use GoAsync() so the broadcast receiver isn't killed while we load data.
+                    var pendingResult = GoAsync();
+                    try
+                    {
+                        var data = await WidgetAgendaService.LoadDataAsync(context);
+                        UpdateWithRemoteCollectionItems(context, appWidgetManager, appWidgetIds, data);
+                    }
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+                    finally
+                    {
+                        pendingResult.Finish();
+                    }
                 }
                 else
                 {
@@ -40,63 +52,20 @@ namespace PowerPlannerAndroid.Widgets
 
             catch (Exception ex)
             {
-                TelemetryExtension.Current.TrackException(ex);
+                TelemetryExtension.Current?.TrackException(ex);
             }
 
             TelemetryExtension.Current?.TrackEvent("Widget_Agenda_OnUpdate");
             base.OnUpdate(context, appWidgetManager, appWidgetIds);
         }
 
-        [ThreadStatic]
-        private static WidgetAgendaService.WidgetAgendaData _pendingData;
-
-        public override void OnReceive(Context context, Intent intent)
-        {
-            if (OperatingSystem.IsAndroidVersionAtLeast(31)
-                && intent.Action == AppWidgetManager.ActionAppwidgetUpdate)
-            {
-                // Use GoAsync() so the broadcast receiver isn't killed while we load data
-                var pendingResult = GoAsync();
-                System.Threading.Tasks.Task.Run(async () =>
-                {
-                    try
-                    {
-                        _pendingData = await WidgetAgendaService.LoadAgendaDataAsync(context);
-                    }
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
-                        _pendingData = null;
-                    }
-
-                    try
-                    {
-                        // Call base which will invoke OnUpdate on this thread
-                        base.OnReceive(context, intent);
-                    }
-                    finally
-                    {
-                        _pendingData = null;
-                        pendingResult.Finish();
-                    }
-                });
-            }
-            else
-            {
-                base.OnReceive(context, intent);
-            }
-        }
-
         [System.Runtime.Versioning.SupportedOSPlatform("android31.0")]
-        private static void UpdateWithRemoteCollectionItems(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+        private void UpdateWithRemoteCollectionItems(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, WidgetAgendaService.WidgetAgendaData data)
         {
-            var data = _pendingData;
-
             foreach (var appWidgetId in appWidgetIds)
             {
                 var views = CreateBaseRemoteViews(context, appWidgetId);
 
-                // Build the collection items (always set an adapter, even if empty, to clear "Loading..." state)
                 var builder = new RemoteViews.RemoteCollectionItems.Builder();
                 builder.SetHasStableIds(false);
                 builder.SetViewTypeCount(3);
@@ -113,32 +82,24 @@ namespace PowerPlannerAndroid.Widgets
                 views.SetRemoteAdapter(Resource.Id.WidgetAgendaListView, builder.Build());
 
                 appWidgetManager.UpdateAppWidget(appWidgetId, views);
-                Android.Util.Log.Debug("WidgetAgendaProvider", "Updated Widget (RemoteCollectionItems)");
             }
         }
 
+        [System.Runtime.Versioning.ObsoletedOSPlatform("android35.0")]
         private static void UpdateWithRemoteAdapter(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
         {
             foreach (var appWidgetId in appWidgetIds)
             {
-                // Set up the intent that starts the widget agenda items service, which will provide the views for the collection
                 Intent intent = new Intent(context, typeof(WidgetAgendaService));
                 intent.SetPackage(context.PackageName);
-
-                // Add the app widget ID to the intent extras
                 intent.PutExtra(AppWidgetManager.ExtraAppwidgetId, appWidgetId);
                 intent.SetData(Android.Net.Uri.Parse(intent.ToUri(Android.Content.IntentUriType.AndroidAppScheme)));
 
                 var views = CreateBaseRemoteViews(context, appWidgetId);
 
-                // Set up the list adapter to use our service that generates the items
-#pragma warning disable CA1422 // Validate platform compatibility - needed for API < 31
                 views.SetRemoteAdapter(Resource.Id.WidgetAgendaListView, intent);
-#pragma warning restore CA1422
 
-                // Update the widget
                 appWidgetManager.UpdateAppWidget(appWidgetId, views);
-                Android.Util.Log.Debug("WidgetAgendaProvider", "Updated Widget (RemoteAdapter)");
             }
         }
 

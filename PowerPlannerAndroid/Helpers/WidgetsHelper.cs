@@ -58,13 +58,14 @@ namespace PowerPlannerAndroid.Helpers
 
                 if (OperatingSystem.IsAndroidVersionAtLeast(31))
                 {
-                    // On Android 31+, we use RemoteCollectionItems instead of RemoteViewsService,
-                    // so we need to trigger a full widget update via broadcast rather than
-                    // NotifyAppWidgetViewDataChanged (which only works with RemoteViewsService).
+                    // On API 31+, we use RemoteCollectionItems instead of RemoteViewsService,
+                    // so trigger a full widget update via broadcast which will reload data
+                    // in OnUpdate and build RemoteCollectionItems.
                     SendUpdateBroadcast<WidgetAgendaProvider>(widgetIds);
                 }
                 else
                 {
+                    // On older APIs, notify the RemoteViewsService to reload data via OnDataSetChanged
                     foreach (var id in widgetIds)
                     {
                         AppWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetAgendaListView);
@@ -91,9 +92,6 @@ namespace PowerPlannerAndroid.Helpers
 
                 if (OperatingSystem.IsAndroidVersionAtLeast(31))
                 {
-                    // On Android 31+, we use RemoteCollectionItems instead of RemoteViewsService,
-                    // so we need to trigger a full widget update via broadcast rather than
-                    // NotifyAppWidgetViewDataChanged (which only works with RemoteViewsService).
                     SendUpdateBroadcast<WidgetScheduleProvider>(widgetIds);
                 }
                 else
