@@ -46,6 +46,15 @@ namespace InterfacesDroid.App
             // Register the calling assembly (the app) as a ValueConverter source
             BareMvvm.Core.Bindings.BindingApplicator.RegisterAssembly(System.Reflection.Assembly.GetCallingAssembly());
 
+            // Capture the true device culture before any language override is applied
+            try
+            {
+                var androidLocale = Java.Util.Locale.Default;
+                string dotNetLocale = androidLocale.ToString().Replace('_', '-');
+                Vx.Extensions.CultureOverride.SetOriginalCultureInfo(new CultureInfo(dotNetLocale));
+            }
+            catch { }
+
             // These classes won't be linked away because of the code,
             // but we also won't have to construct unnecessarily either,
             // hence the if statement with (hopefully) impossible
@@ -126,15 +135,7 @@ namespace InterfacesDroid.App
 
         private CultureInfo GetCultureInfo()
         {
-            // For now, we're just going to leave it en-US for safety, since we're not sure it'll work well in other locales
-            return new CultureInfo("en-US");
-
-            // https://github.com/conceptdev/xamarin-forms-samples/blob/master/TodoL10nResx/PCL/Todo.Android/Locale_Android.cs
-            //var androidLocale = Java.Util.Locale.Default;
-
-            //string dotNetLocale = androidLocale.ToString().Replace('_', '-');
-
-            //return new CultureInfo(dotNetLocale);
+            return CultureInfo.CurrentCulture;
         }
     }
 }

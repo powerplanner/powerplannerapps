@@ -37,5 +37,10 @@ namespace PowerPlannerUWP.Extensions
         {
             return FormatAsShortTime(time).TrimEnd('A', 'P', 'M', 'a', 'p', 'm', ' ');
         }
+
+        public override void ClearCache()
+        {
+            _cachedShortTimes = new string[1440];
+        }
     }
 }

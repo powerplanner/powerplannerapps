@@ -9,28 +9,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Extensions;
 using Windows.UI.Xaml;
 using Windows.ApplicationModel.Activation;
 using Windows.Globalization;
+using Windows.System.UserProfile;
 
 namespace InterfacesUWP.App
 {
     public abstract class NativeUwpApplication : Application
     {
-        public static readonly CultureInfo OriginalCultureInfo = CultureInfo.CurrentUICulture;
+        public static CultureInfo OriginalCultureInfo => CultureOverride.OriginalCultureInfo;
 
         public NativeUwpApplication()
         {
+            // Capture the true device culture before any override is applied.
+            // On UWP, if PrimaryLanguageOverride was set in a previous session,
+            // CultureInfo.CurrentUICulture is already the overridden culture at startup,
+            // so we must get the actual device language from GlobalizationPreferences.
+            try
+            {
+                var deviceLanguage = GlobalizationPreferences.Languages.FirstOrDefault();
+                if (!string.IsNullOrEmpty(deviceLanguage))
+                {
+                    CultureOverride.SetOriginalCultureInfo(new CultureInfo(deviceLanguage));
+                }
+            }
+            catch { }
+
             // Set culture info based on app language overrides
             try
             {
                 if (ApplicationLanguages.PrimaryLanguageOverride != null && ApplicationLanguages.PrimaryLanguageOverride.Length > 0)
                 {
-                    CultureInfo cultureInfo = new CultureInfo(ApplicationLanguages.PrimaryLanguageOverride);
-                    CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-                    CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-                    CultureInfo.CurrentCulture = cultureInfo;
-                    CultureInfo.CurrentUICulture = cultureInfo;
+                    CultureOverride.ApplyCultureOverride(ApplicationLanguages.PrimaryLanguageOverride);
                 }
             }
             catch { }
