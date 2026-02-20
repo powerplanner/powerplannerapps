@@ -131,7 +131,7 @@ namespace PowerPlanneriOS.Welcome
                 }
                 safeView.Add(buttonSettings);
                 buttonSettings.TouchUpInside += new WeakEventHandler(delegate { OpenAboutPageAsPopup(); }).Handler;
-                buttonSettings.PinToTop(safeView, top: UIDevice.CurrentDevice.CheckSystemVersion(11, 0) ? 12 : 28); // We do this comparison since on iOS 11 the safe view adds extra padding
+                buttonSettings.PinToTop(safeView, top: 12); // The safe view adds extra padding on devices with notch
                 buttonSettings.PinToLeft(safeView, left: 12);
                 buttonSettings.SetHeight(30);
             }

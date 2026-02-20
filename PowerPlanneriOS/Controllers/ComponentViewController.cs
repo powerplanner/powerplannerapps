@@ -47,10 +47,7 @@ namespace PowerPlanneriOS.Controllers
 
         private void UpdateNookInsets()
         {
-            if (SdkSupportHelper.IsSafeAreaInsetsSupported)
-            {
-                ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
-            }
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)View.SafeAreaInsets.Left, 0, (float)View.SafeAreaInsets.Right, (float)View.SafeAreaInsets.Bottom));
         }
     }
 }

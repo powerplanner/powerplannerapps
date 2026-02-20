@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using Windows.UI.Xaml;
 
 namespace Vx.Uwp.Views
 {
-    public abstract class UwpView<V, N> : NativeView<V, N> where V : View where N : FrameworkElement
+    public abstract class UwpView<V, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] N> : NativeView<V, N> where V : View where N : FrameworkElement
     {
         public UwpView() : this(Activator.CreateInstance<N>()) { }
 

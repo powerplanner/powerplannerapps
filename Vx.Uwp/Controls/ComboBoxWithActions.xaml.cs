@@ -184,7 +184,7 @@ namespace InterfacesUWP.Controls
             }
         }
 
-        private class ComboBoxWithActionsItemTemplateSelector : DataTemplateSelector
+        internal partial class ComboBoxWithActionsItemTemplateSelector : DataTemplateSelector
         {
             public DataTemplate ItemTemplate { get; set; }
 

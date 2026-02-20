@@ -17,7 +17,6 @@ namespace Vx.iOS.Views
         public iOSView()
         {
             base.View = new UIViewWrapper(Activator.CreateInstance<N>());
-            //View.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
         public UIViewWrapper ViewWrapper => base.View;
@@ -26,7 +25,6 @@ namespace Vx.iOS.Views
         public iOSView(N view)
         {
             base.View = new UIViewWrapper(view);
-            //view.TranslatesAutoresizingMaskIntoConstraints = false;
         }
 
         protected override void ApplyProperties(V oldView, V newView)
@@ -50,7 +48,7 @@ namespace Vx.iOS.Views
                 View.AddGestureRecognizer(_tapGestureRecognizer);
             }
 
-            if (newView.ContextMenu != null && UIDevice.CurrentDevice.CheckSystemVersion(14, 0))
+            if (newView.ContextMenu != null)
             {
                 if (_cmInteractionHandler == null)
                 {

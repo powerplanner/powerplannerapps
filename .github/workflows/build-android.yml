@@ -1,0 +1,188 @@
+name: Build Android
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-android.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'PowerPlannerAndroid/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Droid/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+      - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-android.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'PowerPlannerAndroid/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Droid/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+      - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
+  workflow_dispatch:
+
+# Version format: YYMM.D.run_number (e.g. 2506.15.42)
+# Azure DevOps used: $(date:yyMM).$(DayOfMonth)$(rev:.r)
+# VersionCode must always increase for Google Play. The old Azure DevOps pipeline
+# used 50000000 + BuildId. Set the VERSION_CODE_OFFSET repository variable to
+# your last Azure DevOps BuildId (or higher) so that new version codes exceed
+# the previous ones. The last Azure DevOps BuildId was 1847, so 2000 is used
+# as a default buffer.
+
+jobs:
+  set-version:
+    runs-on: windows-latest
+    outputs:
+      build_version: ${{ steps.version.outputs.version }}
+      version_code: ${{ steps.version.outputs.version_code }}
+    steps:
+      - name: Compute version
+        id: version
+        shell: pwsh
+        run: |
+          $now = [System.DateTimeOffset]::UtcNow
+          $yymm = $now.ToString("yyMM")
+          $day = $now.Day
+          $version = "$yymm.$day.${{ github.run_number }}"
+          $offsetStr = "${{ vars.VERSION_CODE_OFFSET }}"
+          $offset = if ($offsetStr) { [int]$offsetStr } else { 2000 }
+          $versionCode = 50000000 + $offset + ${{ github.run_number }}
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+          echo "version_code=$versionCode" >> $env:GITHUB_OUTPUT
+          Write-Host "Build version: $version"
+          Write-Host "Version code: $versionCode"
+
+  build:
+    needs: set-version
+    runs-on: windows-latest
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+      VERSION_CODE: ${{ needs.set-version.outputs.version_code }}
+      BUILD_CONFIGURATION: Release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+          dotnet-quality: 'ga'
+
+      - name: Install Android workload
+        run: dotnet workload install android
+
+      - name: Write secrets.json
+        shell: pwsh
+        run: |
+          '${{ secrets.SECRETS_JSON }}' | Out-File -FilePath secrets.json -Encoding utf8
+
+      - name: Apply secrets
+        shell: pwsh
+        run: ./ApplySecrets.ps1
+
+      - name: Write keystore
+        shell: pwsh
+        run: |
+          $bytes = [Convert]::FromBase64String('${{ secrets.ANDROID_KEYSTORE_BASE64 }}')
+          [IO.File]::WriteAllBytes("${{ runner.temp }}\keystore.jks", $bytes)
+
+      - name: Update app name
+        shell: pwsh
+        run: |
+          $manifest = "PowerPlannerAndroid/Properties/AndroidManifest.xml"
+          $content = Get-Content $manifest -Raw
+          $content = $content -creplace 'android:label="([^"]+)"', 'android:label="Power Planner"'
+          Set-Content $manifest $content -NoNewline -Encoding UTF8
+
+      - name: Restore PowerPlannerAndroid
+        run: dotnet restore PowerPlannerAndroid/PowerPlannerAndroid.csproj
+
+      - name: Build XliffCompiler (dotnet build PowerPlanner)
+        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj
+
+      - name: Publish PowerPlannerAndroid
+        run: >-
+          dotnet publish PowerPlannerAndroid/PowerPlannerAndroid.csproj
+          -c ${{ env.BUILD_CONFIGURATION }}
+          /t:SignAndroidPackage
+          /p:ApplicationId="com.barebonesdev.powerplanner"
+          /p:ApplicationVersion="${{ env.VERSION_CODE }}"
+          /p:ApplicationDisplayVersion="${{ env.BUILD_VERSION }}.0"
+          /p:AndroidKeyStore=true
+          /p:AndroidSigningStorePass=${{ secrets.ANDROID_SIGNING_STORE_PASS }}
+          /p:AndroidSigningKeyAlias=${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+          /p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_KEY_PASS }}
+          /p:AndroidSigningKeyStore=${{ runner.temp }}\keystore.jks
+          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
+
+      - name: Find and rename AAB
+        id: find-aab
+        shell: pwsh
+        run: |
+          $aab = Get-ChildItem -Path . -Filter "com.barebonesdev.powerplanner-Signed.aab" -Recurse | Select-Object -First 1
+          if (-not $aab) {
+            Write-Error "No signed AAB found"
+            exit 1
+          }
+          $newName = "com.barebonesdev.powerplanner.${{ env.BUILD_VERSION }}.0.aab"
+          $destDir = "${{ github.workspace }}\artifacts"
+          New-Item -ItemType Directory -Path $destDir -Force
+          Copy-Item $aab.FullName "$destDir\$newName"
+          echo "AAB_PATH=$destDir\$newName" >> $env:GITHUB_OUTPUT
+          Write-Host "AAB: $destDir\$newName"
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: com.barebonesdev.powerplanner.${{ env.BUILD_VERSION }}.0.aab
+          path: artifacts/*.aab
+
+  publish-internal:
+    needs: [set-version, build]
+    runs-on: ubuntu-latest
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: com.barebonesdev.powerplanner.*.aab
+          path: artifacts
+
+      - name: Publish to Google Play (internal track)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.barebonesdev.powerplanner
+          releaseFiles: artifacts/**/*.aab
+          track: internal
+
+  promote-to-production:
+    needs: publish-internal
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: android-promote-to-production
+      cancel-in-progress: true
+    steps:
+      - name: Promote to Google Play (production track)
+        uses: kevin-david/promote-play-release@v1
+        with:
+          service-account-json-raw: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          package-name: com.barebonesdev.powerplanner
+          from-track: internal
+          to-track: production

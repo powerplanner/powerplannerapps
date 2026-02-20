@@ -12,45 +12,42 @@ namespace InterfacesiOS.Views
     public class BareUITableViewCellWithTextField : UITableViewCell
     {
         private BareUITextField _textField;
+        private UILabel _titleLabel;
 
         public BareUITableViewCellWithTextField(UITableViewCellStyle cellStyle) : base(cellStyle, null)
         {
-            var toReplace = base.DetailTextLabel;
-            toReplace.Hidden = true;
+            _titleLabel = new UILabel()
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Font = UIFont.PreferredBody
+            };
 
             _textField = new BareUITextField()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Font = toReplace.Font,
-                TextColor = toReplace.TextColor,
-                TextAlignment = toReplace.TextAlignment,
-                AdjustsFontSizeToFitWidth = toReplace.AdjustsFontSizeToFitWidth
+                Font = UIFont.PreferredBody,
+                TextColor = UIColor.SecondaryLabel,
+                TextAlignment = UITextAlignment.Right
             };
 
-            // Impersonate UILabel with an identical UITextField
-            // Good example here: https://stackoverflow.com/a/40643511/1454643
+            this.ContentView.AddSubview(_titleLabel);
             this.ContentView.AddSubview(_textField);
 
-            _textField.LeftAnchor.ConstraintEqualTo(toReplace.LeftAnchor).Active = true;
-            _textField.RightAnchor.ConstraintEqualTo(toReplace.RightAnchor).Active = true;
-            _textField.TopAnchor.ConstraintEqualTo(toReplace.TopAnchor).Active = true;
-            _textField.BottomAnchor.ConstraintEqualTo(toReplace.BottomAnchor).Active = true;
+            var margins = this.ContentView.LayoutMarginsGuide;
 
-            _textField.AddTarget(delegate
-            {
-                toReplace.Text = _textField.Text;
-            }, UIControlEvent.EditingDidEnd);
+            _titleLabel.LeadingAnchor.ConstraintEqualTo(margins.LeadingAnchor).Active = true;
+            _titleLabel.CenterYAnchor.ConstraintEqualTo(margins.CenterYAnchor).Active = true;
+            _titleLabel.SetContentHuggingPriority((float)UILayoutPriority.DefaultHigh, UILayoutConstraintAxis.Horizontal);
+            _titleLabel.SetContentCompressionResistancePriority((float)UILayoutPriority.DefaultHigh, UILayoutConstraintAxis.Horizontal);
 
-            _textField.AddTarget(delegate
-            {
-                toReplace.Text = _textField.Text;
-            }, UIControlEvent.EditingDidEndOnExit);
+            _textField.LeadingAnchor.ConstraintEqualTo(_titleLabel.TrailingAnchor, 8).Active = true;
+            _textField.TrailingAnchor.ConstraintEqualTo(margins.TrailingAnchor).Active = true;
+            _textField.CenterYAnchor.ConstraintEqualTo(margins.CenterYAnchor).Active = true;
+        }
 
-            // Need KVO since if text set programmatically, need to update
-            _textField.AddObserver("Text", default(NSKeyValueObservingOptions), delegate
-            {
-                toReplace.Text = _textField.Text;
-            });
+        public void SetTitleText(string title)
+        {
+            _titleLabel.Text = title;
         }
 
         public BareUITextField TextField => _textField;

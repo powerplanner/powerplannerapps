@@ -23,7 +23,7 @@ namespace Vx.Uwp.Views
         }
     }
 
-    public class LinearLayout : Panel
+    public partial class LinearLayout : Panel
     {
         private Vx.Views.Orientation _orientation;
         public Vx.Views.Orientation Orientation

@@ -157,7 +157,7 @@ namespace PowerPlanneriOS.Controllers
                 _loadingIndicatorView.Add(topSpacer);
                 _loadingIndicatorView.Add(bottomSpacer);
 
-                _loadingIndicator = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.WhiteLarge)
+                _loadingIndicator = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Large)
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Color = ColorResources.PowerPlannerAccentBlue

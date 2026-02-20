@@ -1,5 +1,4 @@
 ﻿using PowerPlannerSending;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
 {
@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
         }
 
 
-        [SQLite.Ignore]
+        [NotMapped]
         public string[] ImageNames
         {
             get

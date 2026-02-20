@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Media;
 
 namespace InterfacesUWP
 {
-    public class ButtonAdvanced : Button
+    public partial class ButtonAdvanced : Button
     {
         public new event RoutedEventHandler Click;
 
@@ -133,7 +133,7 @@ namespace InterfacesUWP
         # endregion
     }
 
-    public class ButtonDefault : ButtonAdvanced
+    public partial class ButtonDefault : ButtonAdvanced
     {
         public ButtonDefault()
         {
@@ -147,7 +147,7 @@ namespace InterfacesUWP
         }
     }
 
-    public class ButtonSecondary : ButtonAdvanced
+    public partial class ButtonSecondary : ButtonAdvanced
     {
         public ButtonSecondary()
         {
@@ -158,7 +158,11 @@ namespace InterfacesUWP
             BackgroundPressed = Foreground;
             ForegroundPressed = new SolidColorBrush(Colors.White);
 
-            SetBinding(BorderBrushProperty, new Binding() { Path = new PropertyPath("Background"), Source = this });
+            this.RegisterPropertyChangedCallback(BackgroundProperty, (sender, prop) =>
+            {
+                BorderBrush = Background;
+            });
+            BorderBrush = Background;
         }
     }
 

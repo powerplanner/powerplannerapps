@@ -51,10 +51,8 @@ using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using Windows.ApplicationModel.DataTransfer;
 using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
-using Microsoft.BingAds.UETSdk;
 
 namespace PowerPlannerUWP
 {
@@ -549,18 +547,6 @@ namespace PowerPlannerUWP
 
                 // Set up the min window size
                 view.SetPreferredMinSize(new Size(300, 300));
-
-
-
-                // Set up status bar
-                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-                {
-                    var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-
-                    statusBar.BackgroundColor = (Color)Application.Current.Resources["PowerPlannerBlueColor"];
-                    statusBar.BackgroundOpacity = 1;
-                    statusBar.ForegroundColor = Colors.White;
-                }
             }
 
             catch (Exception ex)
@@ -904,7 +890,7 @@ namespace PowerPlannerUWP
 
             var response = await dialog.ShowAsync();
 
-            if (response == commandDelete)
+            if (object.ReferenceEquals(response, commandDelete))
             {
                 return true;
             }

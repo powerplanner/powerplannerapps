@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Reflection;
@@ -15,12 +16,12 @@ namespace InterfacesiOS.ViewModelPresenters
         private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
         private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
 
-        public static void AddMapping(Type viewModelType, Type viewType)
+        public static void AddMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
         {
             ViewModelToViewMappings[viewModelType] = viewType;
         }
 
-        public static void AddGenericMapping(Type genericViewModelType, Type genericViewType)
+        public static void AddGenericMapping(Type genericViewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] Type genericViewType)
         {
             GenericViewModelToViewMappings[genericViewModelType] = genericViewType;
         }
@@ -40,6 +41,12 @@ namespace InterfacesiOS.ViewModelPresenters
             return false;
         }
 
+        // Trim safety is ensured by the DynamicallyAccessedMembers annotations on AddMapping/AddGenericMapping parameters.
+        // The trimmer cannot track annotations through dictionary lookups, so we suppress the warnings here.
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2057", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
         public static UIViewController Convert(BaseViewModel viewModel)
         {
             if (viewModel == null)
@@ -123,6 +130,8 @@ namespace InterfacesiOS.ViewModelPresenters
             return view;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
         public static BaseViewModel GetViewModelFromView(UIViewController view)
         {
             // Get the ViewModel property

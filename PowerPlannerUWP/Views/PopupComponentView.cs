@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace PowerPlannerUWP.Views
 {
-    public class PopupComponentView : PopupViewHostGeneric
+    public partial class PopupComponentView : PopupViewHostGeneric
     {
         public new PopupComponentViewModel ViewModel
         {

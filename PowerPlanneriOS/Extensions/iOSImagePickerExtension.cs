@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using InterfacesiOS.App;
 using NetworkExtension;
@@ -11,6 +12,7 @@ using UIKit;
 
 namespace PowerPlanneriOS.Extensions
 {
+    [SupportedOSPlatform("ios14.0")]
     public class iOSImagePickerExtension : ImagePickerExtension
     {
         public override async Task<IFile[]> PickImagesAsync()

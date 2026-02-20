@@ -164,7 +164,7 @@ namespace PowerPlannerUWP.TileHelpers
             {
                 if (!UWPExceptionHelper.TrackIfNotificationsIssue(ex, "Tiles"))
                 {
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -413,7 +413,7 @@ namespace PowerPlannerUWP.TileHelpers
             {
                 if (!UWPExceptionHelper.TrackIfNotificationsIssue(ex, "Tiles"))
                 {
-                    throw ex;
+                    throw;
                 }
             }
         }

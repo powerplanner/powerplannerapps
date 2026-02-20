@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace InterfacesUWP.Converters
 {
-    public class TimeSpanToDateTimeConverter : IValueConverter
+    public partial class TimeSpanToDateTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

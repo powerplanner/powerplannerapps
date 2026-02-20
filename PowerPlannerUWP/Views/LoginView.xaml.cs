@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Input;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -61,7 +62,7 @@ namespace PowerPlannerUWP.Views
                 {
                     _loadingCheckingOnlinePassword = new LoadingPopup()
                     {
-                        Text = LocalizedResources.GetString("LoginPage_String_CheckingOnlinePassword")
+                        Text = R.S("LoginPage_String_CheckingOnlinePassword")
                     };
                 }
 
@@ -83,7 +84,7 @@ namespace PowerPlannerUWP.Views
                 {
                     _loadingPopupIsLoggingInOnline = new LoadingPopup()
                     {
-                        Text = LocalizedResources.GetString("LoginPage_String_LoggingIn")
+                        Text = R.S("LoginPage_String_LoggingIn")
                     };
                 }
 
@@ -98,17 +99,17 @@ namespace PowerPlannerUWP.Views
 
         private void AlertInvalidUsername()
         {
-            ShowMessage(string.Format(LocalizedResources.GetString("String_InvalidUsernameExplanation"), string.Join(" ", StringTools.VALID_SPECIAL_URL_CHARS)), LocalizedResources.GetString("String_InvalidUsername"));
+            ShowMessage(string.Format(R.S("String_InvalidUsernameExplanation"), string.Join(" ", StringTools.VALID_SPECIAL_URL_CHARS)), R.S("String_InvalidUsername"));
         }
 
         private void AlertUsernameEmpty()
         {
-            ShowMessage(LocalizedResources.GetString("LoginPage_String_UsernameEmptyExplanation"), LocalizedResources.GetString("LoginPage_String_UsernameEmpty"));
+            ShowMessage(R.S("LoginPage_String_UsernameEmptyExplanation"), R.S("LoginPage_String_UsernameEmpty"));
         }
 
         private void AlertUsernameExistsLocally()
         {
-            ShowMessage(LocalizedResources.GetString("LoginPage_String_ExplanationUsernameExistsLocally"), LocalizedResources.GetString("LoginPage_String_UsernameExists"));
+            ShowMessage(R.S("LoginPage_String_ExplanationUsernameExistsLocally"), R.S("LoginPage_String_UsernameExists"));
         }
 
         private void AlertUserUpgradeAccountNeeded(string error)

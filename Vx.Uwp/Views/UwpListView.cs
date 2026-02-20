@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -43,7 +44,15 @@ namespace Vx.Uwp.Views
 
             if (!object.ReferenceEquals(oldView?.Items, newView.Items))
             {
-                View.ItemsSource = newView.Items;
+                // For some reason we need to cast this for it to work correctly in .NET 10...
+                if (newView.Items is MyAppendedObservableLists<object> appendedObservableList)
+                {
+                    View.ItemsSource = appendedObservableList;
+                }
+                else
+                {
+                    View.ItemsSource = newView.Items;
+                }
             }
 
             if (newView.ItemTemplate != null)

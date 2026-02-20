@@ -34,16 +34,23 @@ namespace Vx.iOS.Views
         protected static UIButton CreateRoundedButton(UIColor foregroundColor, UIColor backgroundColor)
         {
             var button = new UIButton(UIButtonType.System);
-            button.SetTitleColor(foregroundColor, UIControlState.Normal);
-            button.BackgroundColor = backgroundColor;
-            button.ContentEdgeInsets = new UIEdgeInsets()
+
+            if (OperatingSystem.IsIOSVersionAtLeast(15))
             {
-                Left = 9,
-                Right = 9,
-                Top = 9,
-                Bottom = 9
-            };
-            button.Layer.CornerRadius = 10;
+                var config = UIButtonConfiguration.PlainButtonConfiguration;
+                config.ContentInsets = new NSDirectionalEdgeInsets(9, 9, 9, 9);
+                config.Background.BackgroundColor = backgroundColor;
+                config.Background.CornerRadius = 10;
+                config.BaseForegroundColor = foregroundColor;
+                button.Configuration = config;
+            }
+            else
+            {
+                button.SetTitleColor(foregroundColor, UIControlState.Normal);
+                button.BackgroundColor = backgroundColor;
+                button.Layer.CornerRadius = 10;
+                button.ContentEdgeInsets = new UIEdgeInsets(9, 9, 9, 9);
+            }
 
             return button;
         }

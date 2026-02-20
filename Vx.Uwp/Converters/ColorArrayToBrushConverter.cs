@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Data;
 
 namespace InterfacesUWP.Converters
 {
-    public class ColorArrayToBrushConverter : IValueConverter
+    public partial class ColorArrayToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -27,9 +27,24 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             this.InitializeComponent();
         }
 
-        private void UserControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        public IEnumerable<ViewItemSchedule> Schedules
         {
-            IEnumerable<ViewItemSchedule> schedules = DataContext as IEnumerable<ViewItemSchedule>;
+            get { return (IEnumerable<ViewItemSchedule>)GetValue(SchedulesProperty); }
+            set { SetValue(SchedulesProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Schedules.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SchedulesProperty =
+            DependencyProperty.Register(nameof(Schedules), typeof(IEnumerable<ViewItemSchedule>), typeof(EditingScheduleClassTimeListViewItem), new PropertyMetadata(null));
+
+        private static void OnSchedulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as EditingScheduleClassTimeListViewItem).OnSchedulesChanged(e);
+        }
+
+        private void OnSchedulesChanged(DependencyPropertyChangedEventArgs e)
+        {
+            IEnumerable<ViewItemSchedule> schedules = Schedules;
             if (schedules == null || !schedules.Any())
                 return;
 

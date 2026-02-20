@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Data;
 
 namespace Power_Planner_v_3.Converters
 {
-    public class TimeSpanToStringConverter : IValueConverter
+    public partial class TimeSpanToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

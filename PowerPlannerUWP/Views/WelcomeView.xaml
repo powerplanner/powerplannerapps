@@ -9,7 +9,8 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    SizeChanged="thisPage_SizeChanged">
+    SizeChanged="thisPage_SizeChanged"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <interfacesViews:ViewHostGeneric.Resources>
 
@@ -47,9 +48,8 @@
                         TextAlignment="Center"/>
 
                     <TextBlock
-                        x:Uid="WelcomePage_TextBlockSubtitle"
+                        Text="{x:Bind data:R.S('WelcomePage_TextBlockSubtitle.Text')}"
                         x:Name="TextBlockSubtitle"
-                        Text="The ultimate homework planner."
                         Style="{ThemeResource BaseTextBlockStyle}"
                         TextAlignment="Center"
                         Margin="0,14,0,24"
@@ -69,17 +69,15 @@
                     </Grid.ColumnDefinitions>
 
                     <Button
-                        x:Uid="WelcomePage_ButtonLogIn"
                         x:Name="ButtonLogin"
+                        Content="{x:Bind data:R.S('WelcomePage_ButtonLogin.Content')}"
                         Style="{StaticResource WelcomeButtonStyle}"
-                        Content="LOG IN"
                         Margin="0,0,6,0"
                         Click="ButtonLogin_Click"/>
 
                     <Button
-                        x:Uid="WelcomePage_ButtonCreateAccount"
                         x:Name="ButtonCreateAccount"
-                        Content="CREATE ACCOUNT"
+                        Content="{x:Bind data:R.S('WelcomePage_ButtonCreateAccount.Content')}"
                         Style="{StaticResource WelcomeButtonStyle}"
                         Grid.Column="1"
                         Margin="6,0,0,0"
@@ -110,8 +108,7 @@
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="Setting"/>
                 <TextBlock
-                    x:Uid="WelcomePage_TextBlockSettings"
-                    Text="Settings"
+                    Text="{x:Bind data:R.S('WelcomePage_TextBlockSettings.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     VerticalAlignment="Center"
                     Margin="10,0,0,0"/>

@@ -21,7 +21,7 @@
             x:Name="ImageContainer">
 
             <Image
-                Source="{Binding Source, ElementName=thisControl}"
+                Source="{x:Bind Source, Mode=OneWay}"
                 Stretch="Uniform"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"/>

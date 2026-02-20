@@ -199,11 +199,11 @@ namespace PowerPlanneriOS
 
 #if !DEBUG
             // On release, use the system language selector (in simulator the system settings doesn't support this).
-            LanguageExtension.OpenSystemAppLanguageSelector = delegate
+            LanguageExtension.OpenSystemAppLanguageSelector = async delegate
             {
                 try
                 {
-                    UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+                    await UIApplication.SharedApplication.OpenUrlAsync(new NSUrl(UIApplication.OpenSettingsUrlString), new UIApplicationOpenUrlOptions());
                 }
                 catch (Exception ex)
                 {
@@ -215,16 +215,12 @@ namespace PowerPlanneriOS
             // Register custom views
             Vx.iOS.VxiOSExtensions.RegisterCustomView(v => v is CompletionSlider, v => new iOSCompletionSlider());
 
-            if (SdkSupportHelper.IsNotificationsSupported)
-            {
-                UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
-
-                RemindersExtension.Current = new IOSRemindersExtension();
-            }
+            UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
+            RemindersExtension.Current = new IOSRemindersExtension();
 
             // Get whether launched from shortcut
             ShortcutAction? shortcutAction = null;
-            if (launchOptions != null && UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+            if (launchOptions != null)
             {
                 var shortcutItem = launchOptions[UIApplication.LaunchOptionsShortcutItemKey] as UIApplicationShortcutItem;
                 shortcutAction = ConvertShortcutItem(shortcutItem);
@@ -309,7 +305,7 @@ namespace PowerPlanneriOS
 
             public override void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
             {
-                completionHandler(UNNotificationPresentationOptions.Alert);
+                completionHandler(UNNotificationPresentationOptions.List | UNNotificationPresentationOptions.Banner | UNNotificationPresentationOptions.Sound);
             }
 
             public override void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
@@ -407,7 +403,9 @@ namespace PowerPlanneriOS
         public static Func<MainWindowViewModel, Task> _handleLaunchAction;
         private async void RegisterWindow(ShortcutAction? shortcutAction)
         {
+#pragma warning disable CA1422 // UIWindow(CGRect) is obsoleted on iOS 26.0, but needed for pre-scene-based lifecycle
             this.Window = new UIWindow(UIScreen.MainScreen.Bounds);
+#pragma warning restore CA1422
 
             Window.BackgroundColor = UIColorCompat.SystemBackgroundColor;
             Window.TintColor = ColorResources.PowerPlannerAccentBlue;

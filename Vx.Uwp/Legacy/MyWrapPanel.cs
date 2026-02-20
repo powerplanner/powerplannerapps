@@ -14,7 +14,7 @@ namespace InterfacesUWP
     /// <summary>
     /// 
     /// </summary>
-    public class MyWrapPanel : Panel
+    public partial class MyWrapPanel : Panel
     {
         public Orientation Orientation
         {

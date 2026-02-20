@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Input;
 
 namespace InterfacesUWP
 {
-    public class MyContentControl : ContentControl
+    public partial class MyContentControl : ContentControl
     {
         public event EventHandler MouseDownChanged, MouseOverChanged;
 

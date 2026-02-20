@@ -279,22 +279,18 @@ namespace Vx.iOS
             }
         }
 
-        /// <summary>
-        /// Before iOS 13, this returns null.
-        /// </summary>
-        /// <param name="glyph"></param>
-        /// <returns></returns>
         public static UIImage GlyphToUIImage(this string glyph)
         {
-            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
-            {
-                var systemImageName = glyph.GlyphToSystemImageName();
-                if (systemImageName != null)
-                {
-                    return UIImage.GetSystemImage(systemImageName);
-                }
-            }
+            return GetSystemImageForGlyph(glyph);
+        }
 
+        private static UIImage GetSystemImageForGlyph(string glyph)
+        {
+            var systemImageName = glyph.GlyphToSystemImageName();
+            if (systemImageName != null)
+            {
+                return UIImage.GetSystemImage(systemImageName);
+            }
             return null;
         }
 

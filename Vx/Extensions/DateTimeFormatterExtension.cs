@@ -20,5 +20,9 @@ namespace Vx.Extensions
         {
             return FormatAsShortTime(time).TrimEnd('A', 'P', 'M', 'a', 'p', 'm', ' ');
         }
+
+        public virtual void ClearCache()
+        {
+        }
     }
 }

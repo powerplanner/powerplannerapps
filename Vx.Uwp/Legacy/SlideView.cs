@@ -25,7 +25,7 @@ namespace InterfacesUWP
         void MovePrevious();
     }
 
-    public class SlideView : MyContentControl
+    public partial class SlideView : MyContentControl
     {
         # region Instance Variables
 

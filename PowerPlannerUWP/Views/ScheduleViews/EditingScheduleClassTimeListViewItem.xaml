@@ -8,8 +8,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    xmlns:localConverters="using:PowerPlannerUWP.Converters"
-    DataContextChanged="UserControl_DataContextChanged">
+    xmlns:localConverters="using:PowerPlannerUWP.Converters">
 
     <UserControl.Resources>
 
@@ -31,8 +30,7 @@
         <TextBlock
             x:Name="TextBlockRoom"
             Style="{ThemeResource CaptionTextBlockStyle}"
-            Opacity="0.6"
-            Visibility="{Binding Room, Converter={StaticResource StringToVisibilityConverter}}"/>
+            Opacity="0.6"/>
 
         <TextBlock
             x:Name="TextBlockWeek"

@@ -1,6 +1,5 @@
 ﻿using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.Helpers;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
 {

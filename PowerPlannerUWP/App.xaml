@@ -263,6 +263,7 @@
                     <localconverters:IsCompleteToOpacityConverter x:Key="IsCompleteToOpacityConverter"/>
                     <localconverters:IsCompleteToVisibilityConverter x:Key="IsCompleteToVisibilityConverter"/>
 
+
                     <localconverters:CreditsToStringConverter x:Key="CreditsToStringConverter"/>
 
 
@@ -319,7 +320,7 @@
                     </DataTemplate>
 
                     <DataTemplate x:Key="DataTemplateHolidayScheduleItem">
-                        <scheduleViews:HolidayScheduleItemView />
+                        <scheduleViews:HolidayScheduleItemView Holiday="{Binding}"/>
                     </DataTemplate>
 
                     <Style x:Key="DestructiveButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">

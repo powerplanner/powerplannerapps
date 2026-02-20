@@ -263,7 +263,7 @@ namespace PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule
                 catch (Exception ex)
                 {
                     randomAccessStream.Dispose();
-                    throw ex;
+                    throw;
                 }
             }
 

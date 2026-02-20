@@ -500,7 +500,6 @@ namespace PowerPlannerUWP.Views
         private void GoToWelcomeState()
         {
             VisualStateManager.GoToState(this, "WelcomeState", true);
-            ButtonWelcomeAddClass.Content = PowerPlannerResources.GetString("SchedulePage_ButtonAddClass/Content").ToUpper();
         }
 
         private void ButtonAddClass_Click(object sender, RoutedEventArgs e)
@@ -534,7 +533,7 @@ namespace PowerPlannerUWP.Views
 
             if (scrollToArea)
             {
-                Rect entireArea;
+                Rect entireArea = new Rect();
                 bool first = true;
 
                 foreach (var s in scheduleItems)

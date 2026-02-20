@@ -47,8 +47,7 @@ namespace PowerPlanneriOS.Controllers
                     icon.SetHeight(100);
                     viewCenterContainer.AddArrangedSubview(icon);
 
-                    // In iOS 13, WhiteLarge was deprecated and Large was added
-                    var progressRing = new UIActivityIndicatorView(UIDevice.CurrentDevice.CheckSystemVersion(13, 0) ? UIActivityIndicatorViewStyle.Large : UIActivityIndicatorViewStyle.WhiteLarge)
+                    var progressRing = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Large)
                     {
                         TranslatesAutoresizingMaskIntoConstraints = false,
                         Color = UIColor.White
@@ -139,7 +138,8 @@ namespace PowerPlanneriOS.Controllers
                 safeView.Add(buttonSettings);
 
                 buttonSettings.TouchUpInside += new WeakEventHandler(delegate { ViewModel.OpenSettings(asPopup: true); }).Handler;
-                buttonSettings.PinToTop(safeView, top: UIDevice.CurrentDevice.CheckSystemVersion(11, 0) ? 12 : 28); // We do this comparison since on iOS 11 the safe view adds extra padding
+                buttonSettings.PinToTop(safeView, top: 12); // The safe view adds extra padding on devices with notch
+
                 buttonSettings.PinToLeft(safeView, left: 12);
                 buttonSettings.SetHeight(30);
             }

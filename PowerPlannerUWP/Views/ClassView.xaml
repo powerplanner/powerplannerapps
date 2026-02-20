@@ -10,7 +10,9 @@
     xmlns:taskOrEventViews="using:PowerPlannerUWP.Views.TaskOrEventViews"
     xmlns:interfaces="using:InterfacesUWP"
     xmlns:localConverters="using:PowerPlannerUWP.Converters"
-    xmlns:views="using:PowerPlannerUWP.Views">
+    xmlns:views="using:PowerPlannerUWP.Views"
+    xmlns:viewItems="using:PowerPlannerAppDataLibrary.ViewItems"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <local:MainScreenContentViewHostGeneric.Resources>
 
@@ -40,9 +42,9 @@
             <Setter Property="FontWeight" Value="SemiLight"/>
         </Style>
 
-        <DataTemplate x:Key="DataTemplateDayPreview">
+        <DataTemplate x:Key="DataTemplateDayPreview" x:DataType="viewItems:ViewItemSchedule">
             <TextBlock
-                Text="{Binding DayOfWeekInLocalTime, Mode=OneTime, Converter={StaticResource DayOfWeekToStringConverter}}"
+                Text="{x:Bind DayOfWeekInLocalTime, Mode=OneTime, Converter={StaticResource DayOfWeekToStringConverter}}"
                 Style="{ThemeResource CaptionTextBlockStyle}"
                 MaxLines="1"
                 TextTrimming="CharacterEllipsis"/>
@@ -51,10 +53,10 @@
         <Style x:Key="TasksOrEventsPreviewItemsControlStyle" TargetType="ItemsControl">
             <Setter Property="ItemTemplate">
                 <Setter.Value>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="viewItems:ViewItemTaskOrEvent">
 
                         <TextBlock
-                            Text="{Binding Name}"
+                            Text="{x:Bind Name}"
                             Style="{StaticResource CaptionTextBlockStyle}"
                             MaxLines="1"
                             TextTrimming="CharacterEllipsis"/>
@@ -95,7 +97,7 @@
                 </DataTemplate>
             </Pivot.HeaderTemplate>
 
-            <PivotItem x:Uid="ClassPage_PivotItemOverview" Header="Overview">
+            <PivotItem Header="{x:Bind data:R.S('ClassPage_PivotItemOverview.Header')}">
 
                 <ScrollViewer x:Name="ScrollViewerHome" Style="{StaticResource PageScrollViewerStyle}" SizeChanged="ScrollViewerHome_SizeChanged">
 
@@ -124,12 +126,11 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockDetails"
-                                        Text="DETAILS"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockDetails.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <TextBlock
-                                        Text="{Binding ViewItemsGroupClass.Class.Details, FallbackValue=[details]}"
+                                        Text="{x:Bind ViewModel.ViewItemsGroupClass.Class.Details, Mode=OneWay, FallbackValue=[details]}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         TextTrimming="CharacterEllipsis"
                                         Grid.Row="1"/>
@@ -151,12 +152,11 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockClassTimes"
-                                        Text="CLASS TIMES"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockClassTimes.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
-                                        ItemsSource="{Binding ViewItemsGroupClass.Class.Schedules}"
+                                        ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Class.Schedules}"
                                         Grid.Row="1"
                                         ItemTemplate="{StaticResource DataTemplateDayPreview}">
                                 </ItemsControl>
@@ -180,12 +180,11 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockTasks"
-                                        Text="TASKS"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockTasks.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
-                                        ItemsSource="{Binding ViewItemsGroupClass.Tasks}"
+                                        ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Tasks}"
                                         Grid.Row="1"
                                         Style="{StaticResource TasksOrEventsPreviewItemsControlStyle}">
                                 </ItemsControl>
@@ -209,12 +208,11 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockEvents"
-                                        Text="EVENTS"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockEvents.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <ItemsControl
-                                        ItemsSource="{Binding ViewItemsGroupClass.Events}"
+                                        ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Events}"
                                         Grid.Row="1"
                                         Style="{StaticResource TasksOrEventsPreviewItemsControlStyle}">
                                 </ItemsControl>
@@ -232,22 +230,21 @@
 
                             <StackPanel>
                                 <TextBlock
-                                    x:Uid="ClassPage_TextBlockGrades"
-                                        Text="GRADES"
+                                    Text="{x:Bind data:R.S('ClassPage_TextBlockGrades.Text')}"
                                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
                                 <TextBlock
-                                        Text="{Binding ViewItemsGroupClass.Class.Grade, Converter={StaticResource NumberToFormatConverter}, ConverterParameter='0.##%', FallbackValue=[percent]}"
+                                        Text="{x:Bind ViewModel.ViewItemsGroupClass.Class.Grade, Mode=OneWay, Converter={StaticResource NumberToFormatConverter}, ConverterParameter='0.##%', FallbackValue=[percent]}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         MaxLines="1"/>
 
                                 <TextBlock
-                                        Text="{Binding ViewItemsGroupClass.Class.GpaString}"
+                                        Text="{x:Bind ViewModel.ViewItemsGroupClass.Class.GpaString, Mode=OneWay}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         MaxLines="1"/>
 
                                 <TextBlock
-                                        Text="{Binding ViewItemsGroupClass.Class.Credits, Converter={StaticResource CreditsToStringConverter}, ConverterParameter=IncludeCredits}"
+                                        Text="{x:Bind ViewModel.ViewItemsGroupClass.Class.Credits, Mode=OneWay, Converter={StaticResource CreditsToStringConverter}, ConverterParameter=IncludeCredits}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         MaxLines="1"
                                         Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
@@ -264,27 +261,27 @@
             </PivotItem>
 
             <!--Details-->
-            <PivotItem x:Name="PivotItemDetails" x:Uid="ClassPage_PivotItemDetails" Header="Details">
+            <PivotItem x:Name="PivotItemDetails" Header="{x:Bind data:R.S('ClassPage_PivotItemDetails.Header')}">
                 
             </PivotItem>
 
             <!--Class times-->
-            <PivotItem x:Name="PivotItemTimes" x:Uid="ClassPage_PivotItemTimes" Header="Times">
+            <PivotItem x:Name="PivotItemTimes" Header="{x:Bind data:R.S('ClassPage_PivotItemTimes.Header')}">
 
             </PivotItem>
 
             <!--Tasks-->
-            <PivotItem x:Name="PivotItemTasks" x:Uid="ClassPage_PivotItemTasks" Header="Tasks">
+            <PivotItem x:Name="PivotItemTasks" Header="{x:Bind data:R.S('ClassPage_PivotItemTasks.Header')}">
 
             </PivotItem>
 
             <!--Events-->
-            <PivotItem x:Name="PivotItemEvents" x:Uid="ClassPage_PivotItemEvents" Header="Events">
+            <PivotItem x:Name="PivotItemEvents" Header="{x:Bind data:R.S('ClassPage_PivotItemEvents.Header')}">
 
             </PivotItem>
             
             <!--Grades-->
-            <PivotItem x:Name="PivotItemGrades" x:Uid="ClassPage_PivotItemGrades" Header="Grades" Margin="0">
+            <PivotItem x:Name="PivotItemGrades" Header="{x:Bind data:R.S('ClassPage_PivotItemGrades.Header')}" Margin="0">
 
             </PivotItem>
 
@@ -294,7 +291,7 @@
 
             <Rectangle
                     Height="4"
-                    Fill="{Binding ViewItemsGroupClass.Class.Color, Converter={StaticResource ColorToBrushConverter}}"
+                    Fill="{x:Bind ViewModel.ViewItemsGroupClass.Class.Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}"
                     VerticalAlignment="Center"
                 Margin="20,0,20,0"/>
 
@@ -303,7 +300,7 @@
                 x:Name="BorderClassName">
 
                 <TextBlock
-                    Text="{Binding ViewItemsGroupClass.Class.Name}"
+                    Text="{x:Bind ViewModel.ViewItemsGroupClass.Class.Name, Mode=OneWay}"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Margin="6,0,6,0"
                     TextWrapping="NoWrap"

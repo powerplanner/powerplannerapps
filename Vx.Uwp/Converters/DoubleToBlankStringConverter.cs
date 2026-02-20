@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace InterfacesUWP.Converters
 {
-    public class DoubleToBlankStringConverter : IValueConverter
+    public partial class DoubleToBlankStringConverter : IValueConverter
     {
         private double getBlank(object parameter)
         {

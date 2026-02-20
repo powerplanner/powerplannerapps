@@ -1,5 +1,6 @@
 ﻿<views:PopupViewHostGeneric
-    x:Uid="LoginPage"
+    Title="{x:Bind data:R.S('LoginPage.Title')}"
+
     xmlns:views="using:PowerPlannerUWP.Views"
     x:Name="thisPage"
     x:Class="PowerPlannerUWP.Views.LoginView"
@@ -9,7 +10,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="LOG IN">
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -22,20 +23,20 @@
                 <StackPanel Margin="20">
 
                     <TextBlock
-                        Text="{Binding Message}"
+                        Text="{x:Bind ViewModel.Message, Mode=OneWay}"
                         Style="{ThemeResource BodyTextBlockStyle}"
-                        Visibility="{Binding Message, Converter={StaticResource NotNullToVisibilityConverter}}"
+                        Visibility="{x:Bind ViewModel.Message, Mode=OneWay, Converter={StaticResource NotNullToVisibilityConverter}}"
                         Margin="0,0,0,18"/>
 
                     <AutoSuggestBox
-                    x:Uid="LoginPage_TextBoxUsername"
                     x:Name="tbUsername"
-                    Header="Username"
+                    Header="{x:Bind data:R.S('LoginPage_TextBoxUsername.Header')}"
+
                     KeyUp="tbUsername_KeyUp"
-                    ItemsSource="{Binding AccountsWithRememberUsername}"
+                    ItemsSource="{x:Bind ViewModel.AccountsWithRememberUsername}"
                     DisplayMemberPath="Username" TextMemberPath="Username"
                     Loaded="tbUsername_Loaded"
-                        Text="{Binding Username, Mode=TwoWay}">
+                        Text="{x:Bind ViewModel.Username, Mode=TwoWay}">
 
                         <AutoSuggestBox.TextBoxStyle>
                             <Style TargetType="TextBox">
@@ -48,12 +49,12 @@
                     </AutoSuggestBox>
 
                     <PasswordBox
-                    x:Uid="LoginPage_TextBoxPassword"
                     x:Name="tbPassword"
-                    Header="Password"
+                    Header="{x:Bind data:R.S('LoginPage_TextBoxPassword.Header')}"
+
                     Margin="0,12,0,0"
                     KeyUp="tbPassword_KeyUp"
-                        Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        Password="{x:Bind ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <StackPanel
                     Margin="0,20,0,10"
@@ -61,8 +62,8 @@
                     HorizontalAlignment="Right">
 
                         <TextBlock
-                        x:Uid="LoginPage_TextBlockForgotUsername"
-                    Text="Forgot Username"
+                    Text="{x:Bind data:R.S('LoginPage_TextBlockForgotUsername.Text')}"
+
                     Foreground="{StaticResource PowerPlannerSecondaryBlue}"
                     FontSize="14"
                     x:Name="textBlockForgotUsername"
@@ -75,8 +76,8 @@
                     Foreground="{StaticResource PowerPlannerSecondaryBlue}"/>
 
                         <TextBlock
-                        x:Uid="LoginPage_TextBlockForgotPassword"
-                    Text="Forgot Password"
+                    Text="{x:Bind data:R.S('LoginPage_TextBlockForgotPassword.Text')}"
+
                     x:Name="textBlockForgotPassword"
                     FontSize="14"
                     Foreground="{StaticResource PowerPlannerSecondaryBlue}"
@@ -91,9 +92,8 @@
 
                 <Button
                     Grid.Row="1"
-                    x:Uid="WelcomePage_ButtonLogIn"
                     x:Name="buttonLogin"
-                    Content="LOG IN"
+                    Content="{x:Bind data:R.S('WelcomePage_ButtonLogin.Content')}"
                     Style="{StaticResource WelcomeButtonStyle}"
                     Click="buttonLogin_Click"
                     Margin="20,0,20,20"/>

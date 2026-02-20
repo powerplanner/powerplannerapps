@@ -32,13 +32,10 @@ namespace PowerPlanneriOS.Helpers
         {
             try
             {
-                if (UIDevice.CurrentDevice.CheckSystemVersion(14,0))
-                {
-                    await UpdatePrimaryWidgetAsync();
-                    await UpdateScheduleWidget(reload: false);
+                await UpdatePrimaryWidgetAsync();
+                await UpdateScheduleWidget(reload: false);
 
-                    Reload();
-                }
+                Reload();
             }
             catch (Exception ex)
             {
@@ -48,10 +45,7 @@ namespace PowerPlanneriOS.Helpers
 
         private static void Reload()
         {
-            if (UIDevice.CurrentDevice.CheckSystemVersion(14,0))
-            {
-                ReloadWidgets();
-            }
+            ReloadWidgets();
         }
 
         private static SimpleAsyncWorkerQueue _primaryWidgetWorkQueue = new SimpleAsyncWorkerQueue();
@@ -95,11 +89,6 @@ namespace PowerPlanneriOS.Helpers
         private static SimpleAsyncWorkerQueue _scheduleWidgetWorkQueue = new SimpleAsyncWorkerQueue();
         public static async Task UpdateScheduleWidget(bool reload = true)
         {
-            if (!UIDevice.CurrentDevice.CheckSystemVersion(14,0))
-            {
-                return;
-            }
-
             await _scheduleWidgetWorkQueue.QueueOrMergeAsync("schedule", async delegate
             {
                 try

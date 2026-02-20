@@ -18,6 +18,7 @@ namespace PowerPlannerUWP.Extensions
         public override void SetLanguageOverrideCode(string code)
         {
             ApplicationLanguages.PrimaryLanguageOverride = code;
+            ApplyCultureOverride(code);
         }
     }
 }

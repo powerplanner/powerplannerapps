@@ -25,27 +25,21 @@ namespace PowerPlanneriOS.Helpers
             navBar.TintColor = UIColor.White;
             navBar.Translucent = false;
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
+            navBar.TitleTextAttributes = new UIStringAttributes()
             {
-                navBar.TitleTextAttributes = new UIStringAttributes()
-                {
-                    ForegroundColor = UIColor.White
-                };
-            }
+                ForegroundColor = UIColor.White
+            };
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+            var appearance = new UINavigationBarAppearance();
+            appearance.ConfigureWithOpaqueBackground();
+            appearance.BackgroundColor = PowerPlannerBlueChromeColor;
+            appearance.TitleTextAttributes = new UIStringAttributes()
             {
-                var appearance = new UINavigationBarAppearance();
-                appearance.ConfigureWithOpaqueBackground();
-                appearance.BackgroundColor = PowerPlannerBlueChromeColor;
-                appearance.TitleTextAttributes = new UIStringAttributes()
-                {
-                    ForegroundColor = navBar.TintColor
-                };
+                ForegroundColor = navBar.TintColor
+            };
 
-                navBar.StandardAppearance = appearance;
-                navBar.ScrollEdgeAppearance = appearance;
-            }
+            navBar.StandardAppearance = appearance;
+            navBar.ScrollEdgeAppearance = appearance;
         }
     }
 }

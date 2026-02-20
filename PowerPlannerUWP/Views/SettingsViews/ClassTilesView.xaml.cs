@@ -46,7 +46,7 @@ namespace PowerPlannerUWP.Views.SettingsViews
 
         private void ListViewClasses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ClassTilesViewModel.ClassAndPinnedStatus item = ListViewClasses.SelectedItem as ClassTilesViewModel.ClassAndPinnedStatus;
+            ClassAndPinnedStatus item = ListViewClasses.SelectedItem as ClassAndPinnedStatus;
             if (item == null)
                 return;
 

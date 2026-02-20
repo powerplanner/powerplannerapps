@@ -1,5 +1,4 @@
 ﻿using PowerPlannerSending;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,8 @@ using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using System.IO;
 using ToolsPortable;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
 {
@@ -36,7 +37,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
         private const string DATE_CREATED = "DateCreated";
         private const string UPDATED = "Updated";
 
-        [SQLite.Ignore]
+        [NotMapped]
         public AccountDataItem Account { get; internal set; }
 
         private Dictionary<DataItemProperty, object> _propertyValues = new Dictionary<DataItemProperty, object>();
@@ -379,7 +380,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             return this is DataItemYear || this is DataItemTeacher || this is DataItemClassAttribute || this is DataItemClassSubject;
         }
 
-        [PrimaryKey, Indexed(Name="Index_Identifier")]
+        [Key]
         [Column(IDENTIFIER)]
         public Guid Identifier { get; set; }
 

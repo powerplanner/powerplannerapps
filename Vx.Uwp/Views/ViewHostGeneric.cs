@@ -49,7 +49,7 @@ namespace InterfacesUWP.Views
     }
 #endif
 
-    public class ViewHostGeneric : Page
+    public partial class ViewHostGeneric : Page
     {
         public ViewHostGeneric()
         {

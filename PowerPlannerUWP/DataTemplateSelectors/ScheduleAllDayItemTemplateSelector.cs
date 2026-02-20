@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace PowerPlannerUWP.DataTemplateSelectors
 {
-    public class ScheduleAllDayItemTemplateSelector : DataTemplateSelector
+    public partial class ScheduleAllDayItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate HolidayTemplate { get; set; }
         public DataTemplate ItemTemplate { get; set; }

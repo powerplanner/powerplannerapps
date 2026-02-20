@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Data;
 
 namespace InterfacesUWP.Converters
 {
-    public class EnumToVisibilityConverter : IValueConverter
+    public partial class EnumToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

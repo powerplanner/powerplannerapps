@@ -9,21 +9,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="CLASS DETAILS"
-    KeyUp="Popup_KeyUp">
+    KeyUp="Popup_KeyUp"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="10">
 
                 <TextBox
-                    x:Uid="EditTaskOrEventPage_TextBoxDetails"
-                    Header="Details"
+                    Header="{x:Bind data:R.S('EditTaskOrEventPage_TextBoxDetails.Header')}"
                     AcceptsReturn="True"
                     TextWrapping="Wrap"
                     MinHeight="100"
                     IsSpellCheckEnabled="True"
                     IsTextPredictionEnabled="True"
-                    Text="{Binding Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{x:Bind ViewModel.Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             </StackPanel>
         </ScrollViewer>

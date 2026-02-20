@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using BareMvvm.Core.Binding;
 using BareMvvm.Core.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -20,6 +21,8 @@ namespace InterfacesUWP.ViewModelPresenters
 {
     public sealed partial class PagedViewModelPresenter : UserControl
     {
+        private BindingHost _viewModelBinding = new BindingHost();
+        private ViewModelToViewConverter _viewModelToViewConverter = new ViewModelToViewConverter();
         public PagedViewModelPresenter()
         {
             this.InitializeComponent();
@@ -30,18 +33,17 @@ namespace InterfacesUWP.ViewModelPresenters
             this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             this.VerticalContentAlignment = VerticalAlignment.Stretch;
 
-            SetBinding(ContentProperty, new Binding()
+            _viewModelBinding = new BindingHost();
+            _viewModelBinding.SetBinding<BaseViewModel>(nameof(ViewModel.Content), (content) =>
             {
-                Path = new PropertyPath(nameof(ViewModel) + "." + nameof(ViewModel.Content)),
-                Source = this,
-                Converter = new ViewModelToViewConverter()
+                this.Content = _viewModelToViewConverter.Convert(content, typeof(UIElement), null, null) as UIElement;
             });
         }
 
         public PagedViewModel ViewModel
         {
             get { return (PagedViewModel)GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
+            set { _viewModelBinding.DataContext = value; SetValue(ViewModelProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...

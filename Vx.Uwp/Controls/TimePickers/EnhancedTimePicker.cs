@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Data;
 
 namespace Vx.Uwp.Controls.TimePickers
 {
-    public class EnhancedTimePicker : UserControl
+    public partial class EnhancedTimePicker : UserControl
     {
         public event EventHandler<TimeSpan> SelectedTimeChanged;
 
@@ -131,7 +131,7 @@ namespace Vx.Uwp.Controls.TimePickers
         }
     }
 
-    public class EnhancedEndTimePicker : EnhancedTimePicker
+    public partial class EnhancedEndTimePicker : EnhancedTimePicker
     {
         protected override TextBasedTimePicker CreateTextBasedTimePicker()
         {

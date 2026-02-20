@@ -9,7 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    RequestedTheme="Dark">
+    RequestedTheme="Dark"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <Grid Background="{ThemeResource PowerPlannerBlue}">
         <Grid.Transitions>
@@ -35,23 +36,23 @@
                     Width="40"
                     Height="40"
                     Margin="0,24,0,0"
-                    Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.IsSyncing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <TextBlock
-                    x:Name="TextBlockSyncing"
+                    Text="{x:Bind data:R.S('LoginPage_String_SyncingAccount')}"
                     HorizontalAlignment="Center"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Foreground="White"
                     Margin="0,12,0,0"
-                    Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.IsSyncing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <TextBlock
-                    x:Name="TextBlockError"
+                    Text="{x:Bind data:R.S('String_SyncError')}"
                     HorizontalAlignment="Center"
                     Style="{ThemeResource SubtitleTextBlockStyle}"
                     Foreground="White"
                     Margin="0,12,0,0"
-                    Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                    Visibility="{x:Bind ViewModel.IsSyncing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
 
                 <Button
                     x:Name="ButtonSyncAgain"
@@ -61,13 +62,13 @@
                     Margin="0,24,0,0"
                     Click="ButtonSyncAgain_Click"
                     Style="{ThemeResource PowerPlannerSecondaryBlueButtonStyle}"
-                    Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                    Visibility="{x:Bind ViewModel.IsSyncing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
 
                 <TextBlock
-                    Text="{Binding Error}"
+                    Text="{x:Bind ViewModel.Error, Mode=OneWay}"
                     Foreground="White"
                     Margin="0,24,0,0"
-                    Visibility="{Binding Error, Converter={StaticResource StringToVisibilityConverter}}"
+                    Visibility="{x:Bind ViewModel.Error, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}"
                     TextWrapping="Wrap"/>
             </StackPanel>
         </ScrollViewer>
@@ -80,13 +81,12 @@
             Margin="15"
             Padding="5"
             Click="ButtonSettings_Click"
-            Visibility="{Binding IsSyncing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+            Visibility="{x:Bind ViewModel.IsSyncing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
 
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="Setting"/>
                 <TextBlock
-                    x:Uid="WelcomePage_TextBlockSettings"
-                    Text="Settings"
+                    Text="{x:Bind data:R.S('WelcomePage_TextBlockSettings.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     VerticalAlignment="Center"
                     Margin="10,0,0,0"/>

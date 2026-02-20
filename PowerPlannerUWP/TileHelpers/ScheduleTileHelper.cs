@@ -154,7 +154,7 @@ namespace PowerPlannerUWP.TileHelpers
             {
                 if (!UWPExceptionHelper.TrackIfNotificationsIssue(ex, "Tiles") && !UWPExceptionHelper.TrackIfElementNotFound(ex, "Tiles"))
                 {
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -328,7 +328,7 @@ namespace PowerPlannerUWP.TileHelpers
 
         private static void Schedule(TileUpdater updater, XmlDocument content, DateTime deliveryTime, DateTime? expirationTime)
         {
-            if (deliveryTime == null || deliveryTime < DateTime.Now.AddSeconds(30))
+            if (deliveryTime < DateTime.Now.AddSeconds(30))
             {
                 var tileNotif = new TileNotification(content);
                 if (expirationTime != null)

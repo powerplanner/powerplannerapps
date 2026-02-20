@@ -19,7 +19,7 @@ using Vx.Uwp;
 
 namespace PowerPlannerUWP.Views
 {
-    public class PopupViewHostGeneric : ViewHostGeneric
+    public partial class PopupViewHostGeneric : ViewHostGeneric
     {
         private PopupViewHostComponent _popupViewHostComponent = new PopupViewHostComponent();
 

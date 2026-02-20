@@ -159,15 +159,13 @@ namespace InterfacesiOS.ViewModelPresenters
             }
         }
 
-        private static bool SupportsModalInPresentation = UIDevice.CurrentDevice.CheckSystemVersion(13, 0);
-
         private void UpdateLightDismiss()
         {
             if (ViewModel == null || _destroyed)
             {
                 return;
             }
-            else if (SupportsModalInPresentation)
+            else
             {
                 _listPresenter.ModalInPresentation = !ViewModel.CurrentPopupAllowsLightDismiss;
             }

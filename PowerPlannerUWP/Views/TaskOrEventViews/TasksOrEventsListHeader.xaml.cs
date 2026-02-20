@@ -1,6 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
@@ -33,6 +34,16 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
             this.InitializeComponent();
         }
 
+        public ItemsGroupHeader Header
+        {
+            get { return (ItemsGroupHeader)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register(nameof(Header), typeof(ItemsGroupHeader), typeof(TasksOrEventsListHeader), new PropertyMetadata(null));
+
         public DateTime? DateToUseForNewItems
         {
             get { return (DateTime?)GetValue(DateToUseForNewItemsProperty); }
@@ -42,16 +53,6 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
         // Using a DependencyProperty as the backing store for DateToUseForNewItems.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DateToUseForNewItemsProperty =
             DependencyProperty.Register(nameof(DateToUseForNewItems), typeof(DateTime?), typeof(TasksOrEventsListHeader), new PropertyMetadata(null));
-
-        public string Header
-        {
-            get { return (string)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register(nameof(Header), typeof(string), typeof(TasksOrEventsListHeader), new PropertyMetadata("TODAY"));
 
         public bool AllowHolidays { get; set; }
 
@@ -126,10 +127,9 @@ namespace PowerPlannerUWP.Views.TaskOrEventViews
 
         private void header_Click(object sender, RoutedEventArgs e)
         {
-            var collapsedProp = DataContext.GetType().GetProperty("Collapsed");
-            if (collapsedProp != null && collapsedProp.PropertyType == typeof(bool))
+            if (Header != null)
             {
-                collapsedProp.SetValue(DataContext, !(bool)collapsedProp.GetValue(DataContext));
+                Header.Collapsed = !Header.Collapsed;
             }
         }
 

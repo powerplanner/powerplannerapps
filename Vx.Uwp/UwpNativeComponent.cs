@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Vx.Uwp
 {
-    public class UwpNativeComponent : ContentControl, INativeComponent
+    public partial class UwpNativeComponent : ContentControl, INativeComponent
     {
         public SizeF ComponentSize => new SizeF((float)this.ActualWidth, (float)this.ActualHeight);
 

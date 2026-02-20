@@ -49,23 +49,16 @@ namespace InterfacesDroid.Helpers
         {
             try
             {
-                //Ensure the device is running Android Froyo or higher because UIMode was added in Android Froyo, API 8.0
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.Froyo)
-                {
-                    var uiModeFlags = context.Resources.Configuration.UiMode & UiMode.NightMask;
+                // Min API is 23 (Marshmallow), so UIMode (API 8, Froyo) is always available
+                var uiModeFlags = context.Resources.Configuration.UiMode & UiMode.NightMask;
 
-                    switch (uiModeFlags)
-                    {
-                        case UiMode.NightYes:
-                            return true;
-
-                        default:
-                            return false;
-                    }
-                }
-                else
+                switch (uiModeFlags)
                 {
-                    return false;
+                    case UiMode.NightYes:
+                        return true;
+
+                    default:
+                        return false;
                 }
             }
             catch { return false; }

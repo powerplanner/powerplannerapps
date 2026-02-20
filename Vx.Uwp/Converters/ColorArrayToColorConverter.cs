@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Data;
 
 namespace InterfacesUWP.Converters
 {
-    public class ColorArrayToColorConverter : IValueConverter
+    public partial class ColorArrayToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

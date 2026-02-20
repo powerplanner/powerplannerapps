@@ -1,0 +1,250 @@
+name: Build iOS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-ios.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'PowerPlanneriOS/**'
+      - 'PowerPlanneriOSWidget/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.iOS/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+      - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-ios.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'PowerPlanneriOS/**'
+      - 'PowerPlanneriOSWidget/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.iOS/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+      - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
+  workflow_dispatch:
+
+# Version format: YYMM.D.run_number (e.g. 2506.15.42)
+# Azure DevOps used: $(date:yyMM).$(DayOfMonth)$(rev:.r)
+
+jobs:
+  set-version:
+    runs-on: macos-latest
+    outputs:
+      build_version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Compute version
+        id: version
+        shell: bash
+        run: |
+          yymm=$(date -u +"%y%m")
+          day=$(date -u +"%-d")
+          version="$yymm.$day.${{ github.run_number }}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Build version: $version"
+
+  build:
+    needs: set-version
+    runs-on: macos-latest
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+      BUILD_CONFIGURATION: Release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Select Xcode 26.2
+        run: sudo xcode-select -s /Applications/Xcode_26.2.app
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+          dotnet-quality: 'ga'
+
+      - name: Install iOS workload
+        run: dotnet workload install ios
+
+      - name: Write secrets.json
+        shell: bash
+        run: |
+          echo '${{ secrets.SECRETS_JSON }}' > secrets.json
+
+      - name: Apply secrets
+        shell: pwsh
+        run: ./ApplySecrets.ps1
+
+      - name: Install Apple certificate
+        env:
+          P12_BASE64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ github.run_id }}
+        shell: bash
+        run: |
+          CERT_PATH="$RUNNER_TEMP/certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+          echo -n "$P12_BASE64" | base64 --decode -o "$CERT_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          security import "$CERT_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain-db
+
+      - name: Install App Store provisioning profile
+        env:
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        shell: bash
+        run: |
+          PP_PATH="$RUNNER_TEMP/app.mobileprovision"
+          echo -n "$PROVISIONING_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+          echo "Installed provisioning profile: $UUID"
+
+      - name: Install Widget provisioning profile
+        env:
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_WIDGET_PROVISIONING_PROFILE_BASE64 }}
+        shell: bash
+        run: |
+          PP_PATH="$RUNNER_TEMP/widget.mobileprovision"
+          echo -n "$PROVISIONING_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+          echo "Installed widget provisioning profile: $UUID"
+
+      - name: Set version in Info.plist files
+        shell: bash
+        run: |
+          VERSION="${{ env.BUILD_VERSION }}"
+
+          # Main app
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOS/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION.0" PowerPlanneriOS/Info.plist
+
+          # NativeWidget
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOSWidget/NativeWidget/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION.0" PowerPlanneriOSWidget/NativeWidget/Info.plist
+
+          # NativeApp
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOSWidget/NativeApp/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION.0" PowerPlanneriOSWidget/NativeApp/Info.plist
+
+      - name: Add application-identifier to widget Entitlements
+        shell: bash
+        run: |
+          /usr/libexec/PlistBuddy -c 'add application-identifier string A9B367L69G.com.barebonesdev.powerplanner.widget' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
+
+      - name: Switch aps-environment to production
+        shell: bash
+        run: |
+          sed -i '' 's|<string>development</string>|<string>production</string>|' PowerPlanneriOS/Entitlements.plist
+
+      - name: Set NativeWidget provisioning profile
+        shell: bash
+        run: |
+          sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner\.widget;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner.widget; PROVISIONING_PROFILE_SPECIFIER = ${{ vars.IOS_WIDGET_PROVISIONING_PROFILE_NAME }};|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
+
+      - name: Set NativeApp provisioning profile
+        shell: bash
+        run: |
+          sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner; PROVISIONING_PROFILE_SPECIFIER = ${{ vars.IOS_APP_PROVISIONING_PROFILE_NAME }};|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
+
+      - name: Restore workloads
+        run: dotnet workload restore PowerPlanneriOS/PowerPlanneriOS.csproj
+
+      - name: Restore PowerPlanneriOS
+        run: dotnet restore PowerPlanneriOS/PowerPlanneriOS.csproj
+
+      - name: Build XliffCompiler (dotnet build PowerPlanner)
+        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj -c Release
+
+      - name: Publish PowerPlanneriOS
+        run: >-
+          dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj
+          -c Release
+          -r ios-arm64
+          --self-contained
+          -p:CodesignProvision="${{ vars.IOS_APP_PROVISIONING_PROFILE_NAME }}"
+          -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
+          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
+
+      - name: Find and copy IPA
+        id: find-ipa
+        shell: bash
+        run: |
+          ipa=$(find . -name "*.ipa" -type f | head -1)
+          if [ -z "$ipa" ]; then
+            echo "No IPA found"
+            exit 1
+          fi
+          mkdir -p artifacts
+          cp "$ipa" "artifacts/PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa"
+          echo "IPA: artifacts/PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa"
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa
+          path: artifacts/*.ipa
+
+      - name: Clean up keychain
+        if: always()
+        shell: bash
+        run: |
+          security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" || true
+
+  upload-testflight:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: PowerPlanneriOS.*.ipa
+          path: artifacts
+
+      - name: Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        shell: bash
+        run: |
+          # Write the API key .p8 file to a directory altool searches
+          mkdir -p ~/private_keys
+          KEY_PATH="$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+          echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode -o "$KEY_PATH"
+
+          IPA_PATH=$(find artifacts -name "*.ipa" -type f | head -1)
+          if [ -z "$IPA_PATH" ]; then
+            echo "::error::No IPA file found in artifacts"
+            exit 1
+          fi
+          echo "Uploading $IPA_PATH to TestFlight..."
+
+          xcrun altool --upload-app \
+            -f "$IPA_PATH" \
+            -t ios \
+            --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
+            --show-progress

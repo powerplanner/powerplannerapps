@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WinRT;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -20,6 +21,8 @@ namespace InterfacesUWP.ViewModelPresenters
 {
     public sealed partial class GenericViewModelPresenter : UserControl
     {
+        private static ViewModelToViewConverter _viewModelToViewConverter = new ViewModelToViewConverter();
+
         public GenericViewModelPresenter()
         {
             this.InitializeComponent();
@@ -29,13 +32,6 @@ namespace InterfacesUWP.ViewModelPresenters
 
             this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             this.VerticalContentAlignment = VerticalAlignment.Stretch;
-
-            SetBinding(UserControl.ContentProperty, new Binding()
-            {
-                Path = new PropertyPath(nameof(ViewModel)),
-                Source = this,
-                Converter = new ViewModelToViewConverter()
-            });
         }
 
         public BaseViewModel ViewModel
@@ -46,6 +42,16 @@ namespace InterfacesUWP.ViewModelPresenters
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(BaseViewModel), typeof(GenericViewModelPresenter), new PropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(BaseViewModel), typeof(GenericViewModelPresenter), new PropertyMetadata(null, OnViewModelChanged));
+
+        private static void OnViewModelChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as GenericViewModelPresenter).OnViewModelChanged(e);
+        }
+
+        private void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+        {
+            Content = _viewModelToViewConverter.Convert(e.NewValue, typeof(UIElement), null, null) as UIElement;
+        }
     }
 }

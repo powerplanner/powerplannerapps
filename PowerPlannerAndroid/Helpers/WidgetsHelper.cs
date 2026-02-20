@@ -51,9 +51,25 @@ namespace PowerPlannerAndroid.Helpers
             {
                 int[] widgetIds = AppWidgetManager.GetAppWidgetIds(new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(WidgetAgendaProvider)).Name));
 
-                foreach (var id in widgetIds)
+                if (widgetIds.Length == 0)
                 {
-                    AppWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetAgendaListView);
+                    return;
+                }
+
+                if (OperatingSystem.IsAndroidVersionAtLeast(31))
+                {
+                    // On API 31+, we use RemoteCollectionItems instead of RemoteViewsService,
+                    // so trigger a full widget update via broadcast which will reload data
+                    // in OnUpdate and build RemoteCollectionItems.
+                    SendUpdateBroadcast<WidgetAgendaProvider>(widgetIds);
+                }
+                else
+                {
+                    // On older APIs, notify the RemoteViewsService to reload data via OnDataSetChanged
+                    foreach (var id in widgetIds)
+                    {
+                        AppWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetAgendaListView);
+                    }
                 }
             }
 
@@ -69,9 +85,21 @@ namespace PowerPlannerAndroid.Helpers
             {
                 int[] widgetIds = AppWidgetManager.GetAppWidgetIds(new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(WidgetScheduleProvider)).Name));
 
-                foreach (var id in widgetIds)
+                if (widgetIds.Length == 0)
                 {
-                    AppWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetScheduleListView);
+                    return;
+                }
+
+                if (OperatingSystem.IsAndroidVersionAtLeast(31))
+                {
+                    SendUpdateBroadcast<WidgetScheduleProvider>(widgetIds);
+                }
+                else
+                {
+                    foreach (var id in widgetIds)
+                    {
+                        AppWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetScheduleListView);
+                    }
                 }
             }
 
@@ -79,6 +107,15 @@ namespace PowerPlannerAndroid.Helpers
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+        }
+
+        private static void SendUpdateBroadcast<TProvider>(int[] widgetIds) where TProvider : AppWidgetProvider
+        {
+            var context = Application.Context;
+            var intent = new Intent(context, typeof(TProvider));
+            intent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+            intent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, widgetIds);
+            context.SendBroadcast(intent);
         }
     }
 }

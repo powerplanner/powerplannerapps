@@ -54,16 +54,13 @@ namespace PowerPlanneriOS.Extensions
 
                 _asked = true;
 
-                if (SdkSupportHelper.IsNotificationsSupported)
+                // If it has already been asked for before, this doesn't prompt anything
+                // This gets called when user adds a task or logs into an account. That should cover every potential entry point.
+                // As new users, there's nothing to notify till they added a task... or if they log into an account with tasks.
+                UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, err) =>
                 {
-                    // If it has already been asked for before, this doesn't prompt anything
-                    // This gets called when user adds a task or logs into an account. That should cover every potential entry point.
-                    // As new users, there's nothing to notify till they added a task... or if they log into an account with tasks.
-                    UNUserNotificationCenter.Current.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, err) =>
-                    {
-                        // Don't need to do anything to handle approval
-                    });
-                }
+                    // Don't need to do anything to handle approval
+                });
             }
             catch (Exception ex)
             {

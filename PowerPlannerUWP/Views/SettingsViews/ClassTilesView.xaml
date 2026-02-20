@@ -7,36 +7,34 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:settings="using:PowerPlannerUWP.ViewModel.Settings"
+    mc:Ignorable="d"
+    xmlns:data="using:PowerPlannerAppDataLibrary">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel Margin="20">
                 <TextBlock
-                    x:Uid="Settings_Tiles_ClassTiles_Header"
-                    Text="CLASS TILES"
+                    Text="{x:Bind data:R.S('Settings_Tiles_ClassTiles_Header.Text')}"
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Margin="0,0,0,12"/>
 
                 <TextBlock
-                    x:Uid="Settings_Tiles_ClassTiles_Description"
-                    Text="You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it."
+                    Text="{x:Bind data:R.S('Settings_Tiles_ClassTiles_Description.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"/>
 
                 <TextBlock
-                    x:Uid="Settings_Tiles_ClassTiles_TextBlockNoSemester"
                     x:Name="TextBlockNoSemester"
-                    Text="You must select a semester first. Please open the menu, click Years, and open a semester."
+                    Text="{x:Bind data:R.S('Settings_Tiles_ClassTiles_TextBlockNoSemester.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     Foreground="Red"
                     Margin="0,12,0,0"
                     Visibility="Collapsed"/>
 
                 <TextBlock
-                    x:Uid="Settings_Tiles_ClassTiles_TextBlockNoClasses"
                     x:Name="TextBlockNoClasses"
-                    Text="Looks like you don't have any classes. Add some classes first and then check this page."
+                    Text="{x:Bind data:R.S('Settings_Tiles_ClassTiles_TextBlockNoClasses.Text')}"
                     Style="{ThemeResource BodyTextBlockStyle}"
                     Foreground="Red"
                     Margin="0,12,0,0"
@@ -48,29 +46,27 @@
                     Margin="-12,12,-12,0"
                     x:Name="ListViewClasses"
                     SelectionChanged="ListViewClasses_SelectionChanged"
-                    ItemsSource="{Binding Classes}"
+                    ItemsSource="{x:Bind ViewModel.Classes}"
                     Visibility="Collapsed">
 
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="settings:ClassAndPinnedStatus">
                             <StackPanel Margin="0,1,0,6">
                                 
                                 <TextBlock
-                                    Text="{Binding Class.Name}"
+                                    Text="{x:Bind Class.Name}"
                                     Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                 
                                 <TextBlock
-                                    x:Uid="Tiles_TextBlockPinned"
-                                    Text="Pinned"
+                                    Text="{x:Bind data:R.S('Tiles_TextBlockPinned.Text')}"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Visibility="{x:Bind IsPinned, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
 
                                 <TextBlock
-                                    x:Uid="Tiles_TextBlockNotPinned"
-                                    Text="Not pinned"
+                                    Text="{x:Bind data:R.S('Tiles_TextBlockNotPinned.Text')}"
                                     Style="{ThemeResource BodyTextBlockStyle}"
-                                    Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}"
+                                    Visibility="{x:Bind IsPinned, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=reverse}"
                                     Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
                                 
                             </StackPanel>

@@ -1,0 +1,356 @@
+name: Build UWP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-uwp.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'BuildServer.PowerPlannerUWP.sln'
+      - 'PowerPlannerUWP/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Uwp/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-uwp.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'BuildServer.PowerPlannerUWP.sln'
+      - 'PowerPlannerUWP/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.Uwp/**'
+      - 'Vx.StorageEverywhere.Shared/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+env:
+  SOLUTION: BuildServer.PowerPlannerUWP.sln
+
+# Version format: YYMM.D.run_number (e.g. 2506.15.42)
+# Azure DevOps used: $(date:yyMM).$(DayOfMonth)$(rev:.r)
+# GitHub Actions doesn't have a direct equivalent for DayOfMonth/rev,
+# so we compute it in the "set-version" step below.
+
+jobs:
+  set-version:
+    runs-on: windows-latest
+    outputs:
+      build_version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Compute version
+        id: version
+        shell: pwsh
+        run: |
+          $now = [System.DateTimeOffset]::UtcNow
+          $yymm = $now.ToString("yyMM")
+          $day = $now.Day
+          $version = "$yymm.$day.${{ github.run_number }}"
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Build version: $version"
+
+  build:
+    needs: set-version
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [x86, x64, ARM64]
+      fail-fast: false
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+      BUILD_PLATFORM: ${{ matrix.platform }}
+      BUILD_CONFIGURATION: Release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Compute RuntimeIdentifier
+        id: rid
+        shell: pwsh
+        run: |
+          $rid = "win-$("${{ matrix.platform }}".ToLowerInvariant())"
+          echo "RUNTIME_ID=$rid" >> $env:GITHUB_OUTPUT
+          Write-Host "RuntimeIdentifier: $rid"
+
+      - name: Write secrets.json
+        shell: pwsh
+        run: |
+          '${{ secrets.SECRETS_JSON }}' | Out-File -FilePath secrets.json -Encoding utf8
+
+      - name: Apply secrets
+        shell: pwsh
+        run: ./ApplySecrets.ps1
+
+      - name: Write StoreKey.pfx
+        shell: pwsh
+        run: |
+          $bytes = [Convert]::FromBase64String('${{ secrets.STORE_KEY_PFX_BASE64 }}')
+          [IO.File]::WriteAllBytes("${{ github.workspace }}\PowerPlannerUWP\StoreKey.pfx", $bytes)
+
+      - name: Update app identity
+        shell: pwsh
+        run: |
+          $manifest = "PowerPlannerUWP/Package.appxmanifest"
+          $content = Get-Content $manifest -Raw
+          $content = $content -replace '61442BareBonesDev\.PowerPlanner\.Dev', '61442BareBonesDev.PowerPlanner'
+          Set-Content $manifest $content -NoNewline -Encoding UTF8
+
+      - name: Update app name
+        shell: pwsh
+        run: |
+          $manifest = "PowerPlannerUWP/Package.appxmanifest"
+          $content = Get-Content $manifest -Raw
+          $content = $content -creplace 'DisplayName="([^"]+)"', 'DisplayName="Power Planner"'
+          Set-Content $manifest $content -NoNewline -Encoding UTF8
+
+      - name: Set version in manifest
+        shell: pwsh
+        run: |
+          $manifest = "PowerPlannerUWP/Package.appxmanifest"
+          $content = Get-Content $manifest -Raw
+          $content = $content -creplace '\sVersion="([\d\.]*)"', " Version=`"${{ env.BUILD_VERSION }}.0`""
+          Set-Content $manifest $content -NoNewline -Encoding UTF8
+
+      - name: Remove .net10-android from UWP project
+        shell: pwsh
+        run: |
+          $csproj = "PowerPlannerAppDataLibrary/PowerPlanner.csproj"
+          $content = Get-Content $csproj -Raw
+          $content = $content -replace ';net10\.0-android<', '<'
+          Set-Content $csproj $content -NoNewline -Encoding UTF8
+        continue-on-error: true
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+        with:
+          nuget-version: '7.x'
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: NuGet restore
+        run: >-
+          msbuild ${{ env.SOLUTION }} /t:Restore
+          /p:Configuration=${{ env.BUILD_CONFIGURATION }}
+          /p:Platform=${{ env.BUILD_PLATFORM }}
+          /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
+
+      - name: Build XliffCompiler (dotnet build)
+        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
+
+      - name: Build solution
+        run: >-
+          msbuild ${{ env.SOLUTION }}
+          /p:Configuration=${{ env.BUILD_CONFIGURATION }}
+          /p:Platform=${{ env.BUILD_PLATFORM }}
+          /p:AppxBundlePlatforms="${{ env.BUILD_PLATFORM }}"
+          /p:AppxPackageDir="${{ github.workspace }}\AppxPackages\\"
+          /p:AppxBundle=Never
+          /p:UapAppxPackageBuildMode=StoreUpload
+          /p:GenerateAppxPackageOnBuild=true
+          /p:RuntimeIdentifier=${{ steps.rid.outputs.RUNTIME_ID }}
+          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
+
+      - name: Extract msixupload
+        shell: pwsh
+        run: |
+          $uploadFile = Get-ChildItem -Path AppxPackages -Filter "*.msixupload" -Recurse | Select-Object -First 1
+          Copy-Item $uploadFile.FullName "AppxPackages\PowerPlannerUWP.msixupload.zip"
+          Expand-Archive -Path "AppxPackages\PowerPlannerUWP.msixupload.zip" -DestinationPath "AppxPackages\Extracted"
+
+      - name: Upload AppxPackages artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AppxPackages_${{ matrix.platform }}
+          path: AppxPackages/Extracted/
+
+  merge-bundle:
+    needs: [set-version, build]
+    runs-on: windows-latest
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+
+    steps:
+      - name: Download AppxPackages x86
+        uses: actions/download-artifact@v4
+        with:
+          name: AppxPackages_x86
+          path: AppxPackages/
+
+      - name: Download AppxPackages x64
+        uses: actions/download-artifact@v4
+        with:
+          name: AppxPackages_x64
+          path: AppxPackages/
+
+      - name: Download AppxPackages ARM64
+        uses: actions/download-artifact@v4
+        with:
+          name: AppxPackages_ARM64
+          path: AppxPackages/
+
+      - name: Collect msix and symbols
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path bundles -Force
+          New-Item -ItemType Directory -Path unbundled -Force
+          New-Item -ItemType Directory -Path symbols -Force
+          Get-ChildItem -Path AppxPackages -Filter "*.msix" -Recurse | Copy-Item -Destination unbundled/ -Force
+          Get-ChildItem -Path AppxPackages -Filter "*.appxsym" -Recurse | Copy-Item -Destination symbols/ -Force
+
+      - name: Find MakeAppx.exe
+        id: find-makeappx
+        shell: pwsh
+        run: |
+          $makeappx = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin" -Filter "makeappx.exe" -Recurse |
+            Where-Object { $_.FullName -match "x64" } |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1
+          echo "MAKEAPPX=$($makeappx.FullName)" >> $env:GITHUB_OUTPUT
+          Write-Host "Found MakeAppx: $($makeappx.FullName)"
+
+      - name: Create merged bundle
+        shell: cmd
+        working-directory: bundles
+        run: >-
+          "${{ steps.find-makeappx.outputs.MAKEAPPX }}" bundle
+          /d ..\unbundled
+          /p PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle
+          /bv ${{ env.BUILD_VERSION }}.0
+
+      - name: Sign package (optional, continues on error)
+        shell: pwsh
+        working-directory: bundles
+        continue-on-error: true
+        env:
+          SIGN_CERT_BASE64: ${{ secrets.SIGN_CERT_PFX_BASE64 }}
+          SIGN_CERT_PASSWORD: ${{ secrets.SIGN_CERT_PASSWORD }}
+        run: |
+          if (-not $env:SIGN_CERT_BASE64) {
+            Write-Host "No signing certificate provided, skipping signing."
+            exit 0
+          }
+
+          $certPath = "${{ runner.temp }}\SignCert.pfx"
+          $bytes = [Convert]::FromBase64String($env:SIGN_CERT_BASE64)
+          [IO.File]::WriteAllBytes($certPath, $bytes)
+
+          $signtool = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin" -Filter "signtool.exe" -Recurse |
+            Where-Object { $_.FullName -match "x64" } |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1
+
+          Write-Host "Signing appxbundle for testing purposes"
+          Write-Host "Store doesn't require a signed upload"
+          Write-Host "Will continue even if errors out, so that expired cert doesn't stop us"
+
+          & $signtool.FullName sign /debug /a /v /fd SHA256 /f $certPath /p $env:SIGN_CERT_PASSWORD "PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle"
+
+      - name: Upload test artifact (signed bundle)
+        uses: actions/upload-artifact@v4
+        with:
+          name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_test
+          path: bundles/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle
+
+      - name: Create msixupload package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path upload -Force
+          Copy-Item "bundles/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle" "upload/" -Force
+          Copy-Item "symbols/*.appxsym" "upload/" -Force
+          Compress-Archive -Path "upload/*" -DestinationPath "upload/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixupload"
+
+      - name: Upload appxupload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_appxupload
+          path: upload/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixupload
+
+      - name: Delete intermediate AppxPackages artifacts
+        if: always()
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GH_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+
+          $artifactsUrl = "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts"
+          $response = Invoke-RestMethod -Uri $artifactsUrl -Headers $headers -Method Get
+
+          $toDelete = @($response.artifacts | Where-Object { $_.name -like 'AppxPackages_*' })
+          if ($toDelete.Count -eq 0) {
+            Write-Host "No intermediate AppxPackages artifacts found to delete."
+            exit 0
+          }
+
+          foreach ($artifact in $toDelete) {
+            $deleteUrl = "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$($artifact.id)"
+            Invoke-RestMethod -Uri $deleteUrl -Headers $headers -Method Delete | Out-Null
+            Write-Host "Deleted artifact: $($artifact.name) (id: $($artifact.id))"
+          }
+
+  publish-to-store:
+    needs: [set-version, merge-bundle]
+    runs-on: windows-latest
+    environment: production
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+
+    steps:
+      - name: Download msixupload artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_appxupload
+          path: upload/
+
+      - name: Setup .NET 9 runtime
+        run: winget install Microsoft.DotNet.DesktopRuntime.9 --accept-source-agreements --accept-package-agreements
+        continue-on-error: true
+
+      - name: Install Microsoft Store Developer CLI
+        run: winget install "Microsoft Store Developer CLI" --accept-source-agreements --accept-package-agreements
+
+      - name: Configure Store credentials
+        shell: pwsh
+        run: >-
+          msstore reconfigure
+          --tenantId "${{ secrets.PARTNER_CENTER_TENANT_ID }}"
+          --sellerId "${{ secrets.PARTNER_CENTER_SELLER_ID }}"
+          --clientId "${{ secrets.PARTNER_CENTER_CLIENT_ID }}"
+          --clientSecret "${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}"
+
+      - name: Delete pending submission (if any)
+        shell: pwsh
+        continue-on-error: true
+        run: msstore submission delete "${{ vars.PARTNER_CENTER_STORE_APP_ID }}" --no-confirm
+
+      - name: Publish to Microsoft Store
+        shell: pwsh
+        run: |
+          $msixupload = Get-ChildItem -Path upload -Filter "*.msixupload" | Select-Object -First 1
+          if (-not $msixupload) {
+            Write-Error "No msixupload file found"
+            exit 1
+          }
+          Write-Host "Publishing $($msixupload.Name) to Microsoft Store..."
+          msstore publish upload "$($msixupload.FullName)"
+          -id "${{ vars.PARTNER_CENTER_STORE_APP_ID }}"
+          --packageRolloutPercentage 100

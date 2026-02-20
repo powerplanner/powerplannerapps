@@ -198,17 +198,10 @@ namespace InterfacesiOS.Views
 
         public static UIView StretchWithToReadableContentGuide(this UIView view, UIView parentView, int fallbackLeft = 16, int fallbackRight = 16)
         {
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
-            {
-                // https://useyourloaf.com/blog/readable-content-guides/
-                var guide = parentView.ReadableContentGuide;
-                guide.LeadingAnchor.ConstraintEqualTo(view.LeadingAnchor).Active = true;
-                guide.TrailingAnchor.ConstraintEqualTo(view.TrailingAnchor).Active = true;
-            }
-            else
-            {
-                StretchWidth(view, parentView, fallbackLeft, fallbackRight);
-            }
+            // https://useyourloaf.com/blog/readable-content-guides/
+            var guide = parentView.ReadableContentGuide;
+            guide.LeadingAnchor.ConstraintEqualTo(view.LeadingAnchor).Active = true;
+            guide.TrailingAnchor.ConstraintEqualTo(view.TrailingAnchor).Active = true;
 
             return view;
         }

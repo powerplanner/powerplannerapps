@@ -10,7 +10,7 @@ using Vx.Uwp;
 
 namespace PowerPlannerUWP.Views.DayViews
 {
-    public class DayView : SlideView
+    public partial class DayView : SlideView
     {
         private class DayGenerator : SlideViewContentGenerator
         {

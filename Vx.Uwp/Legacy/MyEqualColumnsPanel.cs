@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 
 namespace InterfacesUWP
 {
-    public class MyEqualColumnsPanel : Panel, IScrollSnapPointsInfo
+    public partial class MyEqualColumnsPanel : Panel, IScrollSnapPointsInfo
     {
         protected override Size MeasureOverride(Size availableSize)
         {

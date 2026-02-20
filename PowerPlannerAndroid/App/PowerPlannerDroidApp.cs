@@ -82,6 +82,15 @@ namespace PowerPlannerAndroid.App
             BrowserExtension.Current = new DroidBrowserExtension();
             EmailExtension.Current = new DroidEmailExtension();
             ThemeExtension.Current = new DroidThemeExtension();
+            LanguageExtension.Current = new DroidLanguageExtension();
+
+            // Apply any saved language override to CultureInfo so that
+            // DateTime.ToString() and other culture-sensitive APIs use the correct locale
+            var languageOverride = PowerPlannerAppDataLibrary.Helpers.Settings.LanguageOverride;
+            if (languageOverride != null)
+            {
+                LanguageExtension.ApplyCultureOverride(languageOverride);
+            }
 
             // Initialize custom views
             VxDroidExtensions.RegisterCustomView(v => v is CompletionSlider, v => new DroidCompletionSlider());

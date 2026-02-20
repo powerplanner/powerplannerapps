@@ -131,6 +131,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 LanguageExtension.Current?.SetLanguageOverrideCode(SelectedOption.LanguageCode);
                 Helpers.Settings.LanguageOverride = SelectedOption.LanguageCode == "" ? null : SelectedOption.LanguageCode;
+                LanguageExtension.ApplyCultureOverride(SelectedOption.LanguageCode);
                 PowerPlannerResources.ResetCultureInfo();
 
                 TelemetryExtension.Current?.TrackEvent("ChangedLanguage", new Dictionary<string, string>()

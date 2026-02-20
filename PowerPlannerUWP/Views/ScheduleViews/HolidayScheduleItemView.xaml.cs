@@ -26,9 +26,19 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             this.InitializeComponent();
         }
 
+        public ViewItemHoliday Holiday
+        {
+            get { return (ViewItemHoliday)GetValue(HolidayProperty); }
+            set { SetValue(HolidayProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Holiday.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HolidayProperty =
+            DependencyProperty.Register(nameof(Holiday), typeof(ViewItemHoliday), typeof(HolidayScheduleItemView), new PropertyMetadata(null));
+
         private void Border_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            PowerPlannerApp.Current.GetMainScreenViewModel()?.ViewHoliday(DataContext as ViewItemHoliday);
+            PowerPlannerApp.Current.GetMainScreenViewModel()?.ViewHoliday(Holiday);
 
             e.Handled = true;
         }

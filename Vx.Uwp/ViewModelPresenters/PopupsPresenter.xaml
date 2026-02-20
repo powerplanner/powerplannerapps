@@ -6,6 +6,7 @@
     xmlns:local="using:InterfacesUWP.ViewModelPresenters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:BareMvvm.Core.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -26,10 +27,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ItemsControl x:Name="ItemsControlPopups" ItemsSource="{Binding ViewModel.Popups, ElementName=ThisView}">
+            <ItemsControl x:Name="ItemsControlPopups" ItemsSource="{x:Bind ViewModel.Popups, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <local:GenericViewModelPresenter ViewModel="{Binding}" />
+                    <DataTemplate x:DataType="viewmodels:BaseViewModel">
+                        <local:GenericViewModelPresenter ViewModel="{x:Bind}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
