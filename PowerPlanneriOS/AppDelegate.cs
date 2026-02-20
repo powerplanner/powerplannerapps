@@ -305,7 +305,7 @@ namespace PowerPlanneriOS
 
             public override void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
             {
-                completionHandler(UNNotificationPresentationOptions.List | UNNotificationPresentationOptions.Banner);
+                completionHandler(UNNotificationPresentationOptions.List | UNNotificationPresentationOptions.Banner | UNNotificationPresentationOptions.Sound);
             }
 
             public override void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
