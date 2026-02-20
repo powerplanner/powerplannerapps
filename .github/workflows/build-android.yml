@@ -127,6 +127,7 @@ jobs:
           /p:AndroidSigningKeyAlias=${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
           /p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_KEY_PASS }}
           /p:AndroidSigningKeyStore=${{ runner.temp }}\keystore.jks
+          /p:AndroidIncludeDebugSymbols=true
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Find and rename AAB
