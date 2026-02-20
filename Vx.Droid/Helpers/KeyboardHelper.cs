@@ -59,7 +59,8 @@ namespace InterfacesDroid.Helpers
                     }
                 };
 
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat && editText.IsAttachedToWindow)
+                // Min API is 23 (Marshmallow), so KitKat (API 19) APIs are always available
+                if (editText.IsAttachedToWindow)
                 {
                     handler(editText, null);
                 }

@@ -46,11 +46,9 @@ namespace PowerPlannerAndroid.Views.Controls
                 if (iconDrawable != null)
                 {
                     icon.SetImageDrawable(iconDrawable);
-                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-                    {
-                        icon.ImageTintList = new Android.Content.Res.ColorStateList(new int[][] { new int[0] }, new int[] {
-                            ColorTools.IsInNightMode(this.Context) ? new Color(84, 107, 199) : new Color(46, 54, 109) });
-                    }
+                    // Min API is 23 (Marshmallow), so Lollipop (API 21) APIs are always available
+                    icon.ImageTintList = new Android.Content.Res.ColorStateList(new int[][] { new int[0] }, new int[] {
+                        ColorTools.IsInNightMode(this.Context) ? new Color(84, 107, 199) : new Color(46, 54, 109) });
                 }
 
                 base.AddView(icon);
