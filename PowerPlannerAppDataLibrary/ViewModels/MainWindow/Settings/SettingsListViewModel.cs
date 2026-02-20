@@ -333,7 +333,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     Children =
                     {
-                        MainScreenViewModel.IsCompactMode ? new Toolbar
+                        MainScreenViewModel == null || MainScreenViewModel.IsCompactMode ? new Toolbar
                         {
                             Title = Title
                         }.InnerToolbarThemed() : null,
