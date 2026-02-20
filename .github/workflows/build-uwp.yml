@@ -306,3 +306,51 @@ jobs:
             Invoke-RestMethod -Uri $deleteUrl -Headers $headers -Method Delete | Out-Null
             Write-Host "Deleted artifact: $($artifact.name) (id: $($artifact.id))"
           }
+
+  publish-to-store:
+    needs: [set-version, merge-bundle]
+    runs-on: windows-latest
+    environment: production
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+
+    steps:
+      - name: Download msixupload artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_appxupload
+          path: upload/
+
+      - name: Setup .NET 9 runtime
+        run: winget install Microsoft.DotNet.DesktopRuntime.9 --accept-source-agreements --accept-package-agreements
+        continue-on-error: true
+
+      - name: Install Microsoft Store Developer CLI
+        run: winget install "Microsoft Store Developer CLI" --accept-source-agreements --accept-package-agreements
+
+      - name: Configure Store credentials
+        shell: pwsh
+        run: >-
+          msstore reconfigure
+          --tenantId "${{ secrets.PARTNER_CENTER_TENANT_ID }}"
+          --sellerId "${{ secrets.PARTNER_CENTER_SELLER_ID }}"
+          --clientId "${{ secrets.PARTNER_CENTER_CLIENT_ID }}"
+          --clientSecret "${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}"
+
+      - name: Delete pending submission (if any)
+        shell: pwsh
+        continue-on-error: true
+        run: msstore submission delete "${{ vars.PARTNER_CENTER_STORE_APP_ID }}" --no-confirm
+
+      - name: Publish to Microsoft Store
+        shell: pwsh
+        run: |
+          $msixupload = Get-ChildItem -Path upload -Filter "*.msixupload" | Select-Object -First 1
+          if (-not $msixupload) {
+            Write-Error "No msixupload file found"
+            exit 1
+          }
+          Write-Host "Publishing $($msixupload.Name) to Microsoft Store..."
+          msstore publish upload "$($msixupload.FullName)"
+          -id "${{ vars.PARTNER_CENTER_STORE_APP_ID }}"
+          --packageRolloutPercentage 100
