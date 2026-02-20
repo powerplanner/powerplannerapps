@@ -11,13 +11,30 @@ using System.Threading.Tasks;
 using ToolsPortable;
 using Windows.UI.Xaml;
 using Windows.ApplicationModel.Activation;
+using Windows.Globalization;
 
 namespace InterfacesUWP.App
 {
     public abstract class NativeUwpApplication : Application
     {
+        public static readonly CultureInfo OriginalCultureInfo = CultureInfo.CurrentUICulture;
+
         public NativeUwpApplication()
         {
+            // Set culture info based on app language overrides
+            try
+            {
+                if (ApplicationLanguages.PrimaryLanguageOverride != null && ApplicationLanguages.PrimaryLanguageOverride.Length > 0)
+                {
+                    CultureInfo cultureInfo = new CultureInfo(ApplicationLanguages.PrimaryLanguageOverride);
+                    CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+                    CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+                    CultureInfo.CurrentCulture = cultureInfo;
+                    CultureInfo.CurrentUICulture = cultureInfo;
+                }
+            }
+            catch { }
+
             // Register the view model to view mappings
             foreach (var mapping in GetViewModelToViewMappings())
             {
