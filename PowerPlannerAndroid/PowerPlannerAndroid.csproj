@@ -11,7 +11,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	<AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-	<EnableLLVM>true</EnableLLVM>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />

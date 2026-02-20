@@ -1417,7 +1417,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             SchoolTimeZone,
             DefaultGradeScale,
             DefaultDoesAverageGradeTotals,
-            DefaultDoesRoundGradesUp
+            DefaultDoesRoundGradesUp,
+            NoClassColor
         }
 
         public static System.Threading.Tasks.Task SyncSettings(AccountDataItem account)
@@ -1429,7 +1430,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 ChangedSetting.SchoolTimeZone |
                 ChangedSetting.DefaultGradeScale |
                 ChangedSetting.DefaultDoesAverageGradeTotals |
-                ChangedSetting.DefaultDoesRoundGradesUp);
+                ChangedSetting.DefaultDoesRoundGradesUp |
+                ChangedSetting.NoClassColor);
         }
 
         private static SyncSettingsMultiWorkerQueue _syncSettingsMultiWorkerQueue = new SyncSettingsMultiWorkerQueue();
@@ -1494,6 +1496,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     if (changedSettings.HasFlag(ChangedSetting.DefaultDoesRoundGradesUp))
                     {
                         settings.DefaultDoesRoundGradesUp = account.DefaultDoesRoundGradesUp;
+                    }
+                    if (changedSettings.HasFlag(ChangedSetting.NoClassColor))
+                    {
+                        settings.NoClassColor = account.NoClassColor;
                     }
 
                     try

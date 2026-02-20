@@ -48,16 +48,24 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         }
 
         private ViewItemClass _noClassClass;
+        private byte[] _cachedNoClassColor; // Track the color used to create the cached NoClassClass
+        
         public ViewItemClass NoClassClass
         {
             get
             {
-                if (_noClassClass == null)
+                // Get the current account color
+                byte[] currentColor = Account?.NoClassColor ?? new byte[] { 84, 107, 199 };
+                
+                // If we don't have a cached instance, or if the color has changed, create a new one
+                if (_noClassClass == null || _cachedNoClassColor == null || !_cachedNoClassColor.SequenceEqual(currentColor))
                 {
+                    _cachedNoClassColor = currentColor;
+                    
                     _noClassClass = new ViewItemClass(new NoClassDataItemClass()
                     {
                         Name = PowerPlannerResources.GetString("String_NoClass"),
-                        RawColor = new byte[] { 84, 107, 199 },
+                        RawColor = currentColor,
                         UpperIdentifier = Identifier,
                         Identifier = Identifier
                     })
@@ -68,6 +76,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
                 return _noClassClass;
             }
+        }
+
+        /// <summary>
+        /// Clears the cached NoClassClass so it will be recreated with the current account color setting
+        /// </summary>
+        public void InvalidateNoClassClass()
+        {
+            _noClassClass = null;
+            _cachedNoClassColor = null;
+            OnPropertyChanged(nameof(NoClassClass));
         }
 
         private class NoClassDataItemClass : DataItemClass
