@@ -30,7 +30,7 @@ jobs:
   set-version:
     runs-on: macos-latest
     environment:
-      name: build-approval
+      name: ${{ github.event_name == 'workflow_dispatch' && 'build-no-approval' || 'build-approval' }}
     outputs:
       build_version: ${{ steps.version.outputs.version }}
     steps:
