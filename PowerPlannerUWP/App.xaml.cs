@@ -650,7 +650,7 @@ namespace PowerPlannerUWP
                 Version v;
                 AppSettings.Current.TryGetValue(VERSION, out o);
 
-                // If new user
+                // If new user TEST
                 if (o == null)
                 {
                     // Set to current version
