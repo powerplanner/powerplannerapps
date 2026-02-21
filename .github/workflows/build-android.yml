@@ -1,20 +1,6 @@
 name: Build Android
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/build-android.yml'
-      - 'ApplySecrets.ps1'
-      - 'secrets.template.json'
-      - 'PowerPlannerAndroid/**'
-      - 'PowerPlannerAppDataLibrary/**'
-      - 'portablelibraries/**'
-      - 'shared/**'
-      - 'Vx/**'
-      - 'Vx.Droid/**'
-      - 'Vx.StorageEverywhere.Shared/**'
-      - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
   pull_request:
     branches: [main]
     paths:
@@ -30,6 +16,11 @@ on:
       - 'Vx.StorageEverywhere.Shared/**'
       - 'Vx.StorageEverywhere.Shared.AndroidIos/**'
   workflow_dispatch:
+    inputs:
+      source_ref:
+        description: 'Branch, tag, or commit SHA to build'
+        required: false
+        default: 'main'
 
 # Version format: YYMM.D.run_number (e.g. 2506.15.42)
 # Azure DevOps used: $(date:yyMM).$(DayOfMonth)$(rev:.r)
@@ -42,6 +33,8 @@ on:
 jobs:
   set-version:
     runs-on: windows-latest
+    environment:
+      name: build-approval
     outputs:
       build_version: ${{ steps.version.outputs.version }}
       version_code: ${{ steps.version.outputs.version_code }}
@@ -74,6 +67,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
 
       - name: Setup .NET

@@ -1,20 +1,6 @@
 name: Build UWP
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/build-uwp.yml'
-      - 'ApplySecrets.ps1'
-      - 'secrets.template.json'
-      - 'BuildServer.PowerPlannerUWP.sln'
-      - 'PowerPlannerUWP/**'
-      - 'PowerPlannerAppDataLibrary/**'
-      - 'portablelibraries/**'
-      - 'shared/**'
-      - 'Vx/**'
-      - 'Vx.Uwp/**'
-      - 'Vx.StorageEverywhere.Shared/**'
   pull_request:
     branches: [main]
     paths:
@@ -30,6 +16,11 @@ on:
       - 'Vx.Uwp/**'
       - 'Vx.StorageEverywhere.Shared/**'
   workflow_dispatch:
+    inputs:
+      source_ref:
+        description: 'Branch, tag, or commit SHA to build'
+        required: false
+        default: 'main'
 
 permissions:
   contents: read
@@ -46,6 +37,8 @@ env:
 jobs:
   set-version:
     runs-on: windows-latest
+    environment:
+      name: build-approval
     outputs:
       build_version: ${{ steps.version.outputs.version }}
     steps:
@@ -76,6 +69,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
 
       - name: Compute RuntimeIdentifier
