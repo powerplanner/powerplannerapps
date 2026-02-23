@@ -66,28 +66,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public async Task<IDisposable> LockForReadAsync(Func<string> customMessage, [CallerMemberName]string callerName = null, [CallerFilePath]string callerFilePath = null)
         {
-            try
-            {
-                // iOS doesn't seem to allow simultaneous SQL read operations at a time, so instead will redirect everything to write locks.
-                // Otherwise that's where I'm getting the crashing from when reminders are trying to be set while other data is also being loaded.
-                if (SyncLayer.SyncExtensions.GetPlatform() == "iOS")
-                {
-                    return await LockForWriteAsync(customMessage, callerName, callerFilePath);
-                }
-
-                IDisposable answer = new LockingTracker(
-                    this,
-                    await _lock.LockReadAsync(MILLISECOND_TIMEOUT),
-                    false,
-                    customMessage,
-                    callerName,
-                    callerFilePath);
-                return answer;
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException("Timeout for read lock reached. " + GetLocksThatAreHeld() + "Caller name: " + callerName + ". File: " + callerFilePath, ex);
-            }
+            // EF Core's DbContext is not thread-safe. Since a single DbContext is shared per account,
+            // concurrent read locks would allow multiple threads to access it simultaneously,
+            // corrupting the SQLite connection handle (causing ArgumentNullException in sqlite3_prepare_v2).
+            // Redirect all reads to write locks to ensure exclusive access.
+            return await LockForWriteAsync(customMessage, callerName, callerFilePath);
         }
 
         private string GetLocksThatAreHeld()
