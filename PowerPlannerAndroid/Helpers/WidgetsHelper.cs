@@ -17,18 +17,9 @@ namespace PowerPlannerAndroid.Helpers
 {
     public static class WidgetsHelper
     {
-        private static AppWidgetManager _appWidgetManager;
-        private static AppWidgetManager AppWidgetManager
+        private static AppWidgetManager GetAppWidgetManager()
         {
-            get
-            {
-                if (_appWidgetManager == null)
-                {
-                    _appWidgetManager = AppWidgetManager.GetInstance(Application.Context);
-                }
-
-                return _appWidgetManager;
-            }
+            return AppWidgetManager.GetInstance(Application.Context);
         }
 
         public static void UpdateAllWidgets()
@@ -49,7 +40,8 @@ namespace PowerPlannerAndroid.Helpers
         {
             try
             {
-                int[] widgetIds = AppWidgetManager.GetAppWidgetIds(new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(WidgetAgendaProvider)).Name));
+                var appWidgetManager = GetAppWidgetManager();
+                int[] widgetIds = appWidgetManager.GetAppWidgetIds(new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(WidgetAgendaProvider)).Name));
 
                 if (widgetIds.Length == 0)
                 {
@@ -68,7 +60,7 @@ namespace PowerPlannerAndroid.Helpers
                     // On older APIs, notify the RemoteViewsService to reload data via OnDataSetChanged
                     foreach (var id in widgetIds)
                     {
-                        AppWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetAgendaListView);
+                        appWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetAgendaListView);
                     }
                 }
             }
@@ -83,7 +75,8 @@ namespace PowerPlannerAndroid.Helpers
         {
             try
             {
-                int[] widgetIds = AppWidgetManager.GetAppWidgetIds(new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(WidgetScheduleProvider)).Name));
+                var appWidgetManager = GetAppWidgetManager();
+                int[] widgetIds = appWidgetManager.GetAppWidgetIds(new ComponentName(Application.Context, Java.Lang.Class.FromType(typeof(WidgetScheduleProvider)).Name));
 
                 if (widgetIds.Length == 0)
                 {
@@ -98,7 +91,7 @@ namespace PowerPlannerAndroid.Helpers
                 {
                     foreach (var id in widgetIds)
                     {
-                        AppWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetScheduleListView);
+                        appWidgetManager.NotifyAppWidgetViewDataChanged(id, Resource.Id.WidgetScheduleListView);
                     }
                 }
             }
