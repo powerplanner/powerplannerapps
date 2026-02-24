@@ -18,7 +18,6 @@ namespace PowerPlannerAndroid.Extensions
     public class DroidTelemetryExtension : TelemetryExtension
     {
         private static TelemetryClient _client;
-        private static string _systemId;
 
         static DroidTelemetryExtension()
         {
@@ -29,14 +28,10 @@ namespace PowerPlannerAndroid.Extensions
                 config.ConnectionString = Secrets.AppCenterAppSecret;
                 _client = new TelemetryClient(config);
 
-                _systemId = Settings.DeviceId;
-
                 _client.Context.Component.Version = Variables.VERSION.ToString();
                 _client.Context.Device.OperatingSystem = "Android " + Build.VERSION.Release;
                 _client.Context.Device.Type = GetDeviceType();
                 _client.Context.Session.Id = Guid.NewGuid().ToString();
-                // client.Context.Device.Id doesn't work (doesn't send up anything).
-                _client.Context.GlobalProperties.Add("Device Id", _systemId);
             }
             catch
             {

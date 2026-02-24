@@ -16,7 +16,6 @@ namespace PowerPlanneriOS.Extensions
     public class iOSTelemetryExtension : TelemetryExtension
     {
         private static TelemetryClient _client;
-        private static string _systemId;
 
         static iOSTelemetryExtension()
         {
@@ -29,14 +28,10 @@ namespace PowerPlanneriOS.Extensions
 
                 var device = UIDevice.CurrentDevice;
 
-                _systemId = device.IdentifierForVendor?.AsString() ?? Settings.DeviceId;
-
                 _client.Context.Component.Version = Variables.VERSION.ToString();
                 _client.Context.Device.OperatingSystem = device.SystemName + " " + device.SystemVersion;
                 _client.Context.Device.Type = GetDeviceType();
                 _client.Context.Session.Id = Guid.NewGuid().ToString();
-                // client.Context.Device.Id doesn't work (doesn't send up anything).
-                _client.Context.GlobalProperties.Add("Device Id", _systemId);
             }
             catch
             {

@@ -18,7 +18,6 @@ namespace PowerPlannerUWP.Extensions
     public class UWPTelemetryExtension : TelemetryExtension
     {
         private static TelemetryClient _client;
-        private static string _systemId;
 
         static UWPTelemetryExtension()
         {
@@ -29,21 +28,9 @@ namespace PowerPlannerUWP.Extensions
                 config.ConnectionString = Secrets.AppCenterAppSecret;
                 _client = new TelemetryClient(config);
 
-                var id = SystemIdentification.GetSystemIdForPublisher();
-                if (id.Id != null)
-                {
-                    _systemId = CryptographicBuffer.EncodeToBase64String(id.Id);
-                }
-                else
-                {
-                    _systemId = Settings.DeviceId;
-                }
-
                 _client.Context.Component.Version = Variables.VERSION.ToString();
                 _client.Context.Device.OperatingSystem = "Windows 10.0." + DeviceInfo.BuildNumber;
                 _client.Context.Session.Id = Guid.NewGuid().ToString();
-                // client.Context.Device.Id doesn't work (doesn't send up anything).
-                _client.Context.GlobalProperties.Add("Device Id", _systemId);
             }
             catch
             {
