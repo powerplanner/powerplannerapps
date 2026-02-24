@@ -41,7 +41,12 @@ namespace PowerPlannerAndroid.Widgets
                     }
                     finally
                     {
-                        pendingResult.Finish();
+                        try
+                        {
+                            // Sometimes throws ObjectDisposedException
+                            pendingResult.Finish();
+                        }
+                        catch (ObjectDisposedException) { }
                     }
                 }
                 else
