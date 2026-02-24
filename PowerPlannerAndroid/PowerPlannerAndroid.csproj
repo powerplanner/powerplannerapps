@@ -50,9 +50,6 @@
     <PackageReference Include="Xamarin.Build.Download">
       <Version>0.11.4</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Firebase.Iid">
-      <Version>121.1.0.17</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Messaging">
       <Version>124.0.0.1</Version>
     </PackageReference>

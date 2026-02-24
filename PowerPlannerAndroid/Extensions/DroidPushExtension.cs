@@ -11,7 +11,6 @@ using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.Extensions;
 using Android.Gms.Common;
-using Firebase.Iid;
 using Firebase.Messaging;
 using Android.Gms.Tasks;
 
@@ -19,14 +18,34 @@ namespace PowerPlannerAndroid.Extensions
 {
     public class DroidPushExtension : PushExtension
     {
+        private bool _tooManyRegistrations = false;
         public override async Task<string> GetPushChannelUri()
         {
+            if (_tooManyRegistrations)
+            {
+                return null;
+            }
+
             try
             {
                 // If Google Play services available
                 if (GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Application.Context) == ConnectionResult.Success)
                 {
-                    string token = (await GmsTaskExtensions.ToAwaitableTask(FirebaseMessaging.Instance.GetToken()))?.ToString();
+                    string token;
+                    try
+                    {
+                        token = (await GmsTaskExtensions.ToAwaitableTask(FirebaseMessaging.Instance.GetToken()))?.ToString();
+                    }
+                    catch (Java.IO.IOException ex) when (ex.Message != null && ex.Message.Contains("TOO_MANY_REGISTRATIONS"))
+                    {
+                        // TOO_MANY_REGISTRATIONS means too many stale tokens have accumulated.
+                        // This is probably just occurring on Firebase test devices. There's no resolution other than devce hard reset.
+                        // See https://github.com/firebase/firebase-android-sdk/issues/6958 for more info.
+                        TelemetryExtension.Current?.TrackEvent("Error_PushChannel_TooManyRegistrations");
+                        token = null;
+                        _tooManyRegistrations = true;
+                    }
+
                     System.Diagnostics.Debug.WriteLine("FirebaseToken: " + token);
                     return token;
                 }
