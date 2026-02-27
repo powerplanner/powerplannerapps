@@ -63,15 +63,21 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
                 var currentTimeZone = TimeZoneInfo.Local;
 
+                var sourceDateTime = DateTime.SpecifyKind(rawDateTime, DateTimeKind.Unspecified);
+
                 // If the time doesn't exist in the source time zone, like 3/12/2023 2:59:04 AM for PST time zone
-                // Note that we shouldn't have allowed them to enter this time in the first place
-                while (account.SchoolTimeZone.IsInvalidTime(rawDateTime))
+                // Note that we shouldn't have allowed them to enter this time in the first place.
+                // Another repro is:
+                // - Set account's SchoolTimeZone to UTC+2 Athens
+                // - Enter a due date of 3/29/2026 3:01 AM, save that
+                // - View the account when in Seattle time zone
+                while (account.SchoolTimeZone.IsInvalidTime(sourceDateTime))
                 {
                     // Keep fast-forwarding the time till we reach something valid
-                    rawDateTime = rawDateTime.AddHours(1);
+                    sourceDateTime = sourceDateTime.AddHours(1);
                 }
 
-                return TimeZoneInfo.ConvertTime(DateTime.SpecifyKind(rawDateTime, DateTimeKind.Unspecified), sourceTimeZone: account.SchoolTimeZone, destinationTimeZone: currentTimeZone);
+                return TimeZoneInfo.ConvertTime(sourceDateTime, sourceTimeZone: account.SchoolTimeZone, destinationTimeZone: currentTimeZone);
             }
             catch (Exception ex)
             {
