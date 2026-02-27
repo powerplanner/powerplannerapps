@@ -107,7 +107,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
             catch (Exception ex)
             {
-                TelemetryExtension.Current?.TrackException(ex);
+                if (!ExceptionHelper.IsHttpWebIssue(ex))
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+
                 var dontWait = new PortableMessageDialog(PowerPlannerResources.GetStringOfflineExplanation(), PowerPlannerResources.GetString("ForgotUsername_String_ErrorFindingUsername")).ShowAsync();
             }
 

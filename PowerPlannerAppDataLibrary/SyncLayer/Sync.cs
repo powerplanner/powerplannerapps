@@ -1586,7 +1586,11 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
 
             catch (Exception ex)
             {
-                TelemetryExtension.Current?.TrackException(ex);
+                if (!ExceptionHelper.IsHttpWebIssue(ex))
+                {
+                    TelemetryExtension.Current?.TrackException(ex);
+                }
+
             }
 
             return false;

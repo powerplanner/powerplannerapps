@@ -24,14 +24,6 @@ namespace PowerPlannerAppDataLibrary
         /// </summary>
         public static ApiKeyCombo ApiKey { get; set; }
 
-        public static async Task<ForgotUsernameResponse> ForgotUsername(string email)
-        {
-            return await WebHelper.Download<ForgotUsernameRequest, ForgotUsernameResponse>(ClientApiUrl + "forgotusernamemodern", new ForgotUsernameRequest()
-            {
-                Email = email
-            }, ApiKey);
-        }
-
 
         /// <summary>
         /// Returns something like https://powerplannerstorage.blob.core.windows.net/modern-91353/Images/635121668276610139-58978167.jpg

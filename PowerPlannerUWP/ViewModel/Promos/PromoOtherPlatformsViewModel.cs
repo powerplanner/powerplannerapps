@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
+using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerSending;
@@ -53,12 +54,25 @@ namespace PowerPlannerUWP.ViewModel.Promos
                 if (hasContent)
                 {
                     // Try downloading and then show
-                    ShouldSuggestOtherPlatformsResponse response = await account.PostAuthenticatedAsync<ShouldSuggestOtherPlatformsRequest, ShouldSuggestOtherPlatformsResponse>(
-                    Website.ClientApiUrl + "shouldsuggestotherplatforms",
-                    new ShouldSuggestOtherPlatformsRequest()
+                    ShouldSuggestOtherPlatformsResponse response;
+
+                    try
                     {
-                        CurrentPlatform = "Windows 10"
-                    });
+                        response = await account.PostAuthenticatedAsync<ShouldSuggestOtherPlatformsRequest, ShouldSuggestOtherPlatformsResponse>(
+                        Website.ClientApiUrl + "shouldsuggestotherplatforms",
+                        new ShouldSuggestOtherPlatformsRequest()
+                        {
+                            CurrentPlatform = "Windows 10"
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!ExceptionHelper.IsHttpWebIssue(ex))
+                        {
+                            TelemetryExtension.Current?.TrackException(ex);
+                        }
+                        return false;
+                    }
 
                     if (response.ShouldSuggest)
                     {
