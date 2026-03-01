@@ -43,9 +43,6 @@ namespace InterfacesDroid.App
 
         protected NativeDroidApplication(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
-            // Register the calling assembly (the app) as a ValueConverter source
-            BareMvvm.Core.Bindings.BindingApplicator.RegisterAssembly(System.Reflection.Assembly.GetCallingAssembly());
-
             // Capture the true device culture before any language override is applied
             try
             {
@@ -85,10 +82,6 @@ namespace InterfacesDroid.App
             // This will be called whenever anything happens for the first time - including a receiver or service being started.
 
             _current = new WeakReference<NativeDroidApplication>(this);
-
-            ViewPump.Init(ViewPump.InvokeBuilder()
-                .AddInterceptor(new BindingInterceptor())
-                .Build());
 
             // Register the view model to view mappings
             foreach (var mapping in GetViewModelToViewMappings())

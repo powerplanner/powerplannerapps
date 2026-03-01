@@ -188,24 +188,6 @@ public class Grade : BindableBase
 Notice that you have to explicitly reference (via `nameof`) the dependent properties you want to listen to. When one of those properties changes, the computation will run again, and if the result changes, it will trigger a property change event for that property.
 
 
-### Android-specific binding examples
-
-```xml
-    <androidx.appcompat.widget.SwitchCompat
-      android:id="@+id/SwitchRepeats"
-      android:text="{RepeatingEntry_CheckBoxRepeats.Content}"
-      android:textSize="16sp"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="16dp"
-      local:Binding="{Source=Repeats, Target=Checked, Mode=TwoWay}; {Source=IsRepeatsVisible, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
-```
-
-Converters are auto-discovered using reflection and their class name.
-
-There are some **implicit converters** which live in **BindingApplicator.SetTargetProperty**.
-
-
 ### iOS-specific binding examples
 
 Within a ViewController, to add a generic binding that can perform any action, do the following... But note there's specific bindings for common tasks like binding text that you should use instead.
@@ -299,23 +281,6 @@ UWP supports localization within the XAML markup, using `x:Uid`. For example, th
 ![image](https://user-images.githubusercontent.com/13246069/61190767-5251c680-a656-11e9-8bc2-d5d868648011.png)
 
 The resources can use `.` to set properties, like the `.Label` causes the label property to be localized with the value in the resources.
-
-
-### Android-specific localization considerations
-
-In Android, you can also localize directly in the XML layout views. But this uses custom syntax part of a custom Android layout binding language.
-
-```xml
-<TextView
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:text="{Settings_GradeOptions_GpaType_StandardExplanation.Text}"
-  android:textSize="12sp"
-  android:textColor="#000000"
-  android:layout_marginTop="4dp"/>
-```
-
-Simply place the resource string's id within `{}`. I can't remember whether localization is supported on any text property, or only specific ones like TextView.text... it might be supported on any.
 
 
 ## Helpful code snippets

@@ -14,6 +14,7 @@ using InterfacesDroid.Views;
 using InterfacesDroid.DataTemplates;
 using PowerPlannerAppDataLibrary.DataLayer;
 using InterfacesDroid.Themes;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -24,6 +25,8 @@ namespace PowerPlannerAndroid.Views
         public SyncErrorsView(ViewGroup root) : base(Resource.Layout.SyncErrors, root)
         {
             Title = "SYNC ERRORS";
+
+            FindViewById<TextView>(Resource.Id.SyncErrors_Description).Text = R.S("SyncErrors_Description");
         }
 
         public override void OnViewModelLoadedOverride()

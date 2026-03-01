@@ -12,6 +12,7 @@ using PowerPlannerAndroid.Helpers;
 using PowerPlannerAndroid.ViewHosts;
 using PowerPlannerAndroid.Views.Controls;
 using PowerPlannerAndroid.Views.ListItems;
+using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
@@ -70,7 +71,15 @@ namespace PowerPlannerAndroid.Views
 
             scrollViewSchedule.ViewChanging += new WeakEventHandler(ScrollViewSchedule_ViewChanging).Handler;
 
+            FindViewById<Button>(Resource.Id.ButtonLogIn).Text = R.S("WelcomePage_ButtonLogin.Content");
             FindViewById<Button>(Resource.Id.ButtonLogIn).Click += new WeakEventHandler(ScheduleView_Click).Handler;
+
+            FindViewById<Button>(Resource.Id.ButtonAddClass).Text = R.S("SchedulePage_ButtonAddClass.Content");
+            FindViewById<Button>(Resource.Id.ButtonWelcomeAddClass).Text = R.S("SchedulePage_ButtonAddClass.Content");
+            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewReturningUser).Text = R.S("SchedulePage_TextBlockReturningUser.Text");
+
+            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeTitle).Text = R.S("SchedulePage_TextBlockWelcomeTitle.Text");
+            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeSubtitle).Text = R.S("SchedulePage_TextBlockWelcomeSubtitle.Text");
         }
 
         private void ScheduleView_Click(object sender, EventArgs e)

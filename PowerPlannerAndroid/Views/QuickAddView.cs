@@ -20,11 +20,13 @@ namespace PowerPlannerAndroid.Views
         {
             Title = PowerPlannerResources.GetString("QuickAddPage.Title").ToUpper();
 
+            FindViewById<Button>(Resource.Id.ButtonAddTask).Text = R.S("String_AddTask");
             FindViewById<Button>(Resource.Id.ButtonAddTask).Click += delegate
             {
                 ViewModel.AddTask();
             };
 
+            FindViewById<Button>(Resource.Id.ButtonAddEvent).Text = R.S("String_AddEvent");
             FindViewById<Button>(Resource.Id.ButtonAddEvent).Click += delegate
             {
                 ViewModel.AddEvent();

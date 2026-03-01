@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
         <TextView
-            android:text="{SyncErrors_Description}"
+            android:id="@+id/SyncErrors_Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <LinearLayout

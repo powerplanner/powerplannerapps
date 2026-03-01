@@ -13,13 +13,11 @@
     android:padding="16dp">
 
     <Button
-      android:text="{String_AddTask}"
       style="@style/AddYearButton"
       android:id="@+id/ButtonAddTask"
       android:layout_marginBottom="8dp"/>
 
     <Button
-      android:text="{String_AddEvent}"
       style="@style/AddYearButton"
       android:id="@+id/ButtonAddEvent"
       android:layout_marginTop="8dp"/>

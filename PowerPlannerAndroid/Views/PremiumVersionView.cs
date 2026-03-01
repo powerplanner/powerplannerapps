@@ -20,8 +20,20 @@ namespace PowerPlannerAndroid.Views
         {
             Title = PowerPlannerResources.GetString("Settings_UpdateToPremium.Title");
 
+            FindViewById<Button>(Resource.Id.ButtonUpgradeToPremium).Text = R.S("Settings_UpgradeToPremium_ButtonUpgrade.Content");
             FindViewById<Button>(Resource.Id.ButtonUpgradeToPremium).Click += ButtonUpgradeToPremium_Click;
             FindViewById<TextView>(Resource.Id.TextViewPremiumExplanation).Text = PowerPlannerResources.GetStringPremiumDescription(0, 1, 2);
+        }
+
+        public override void OnViewModelSetOverride()
+        {
+            if (!string.IsNullOrWhiteSpace(ViewModel.ContextualMessage))
+            {
+                FindViewById<TextView>(Resource.Id.PremiumView_ContextualMessage).Text = ViewModel.ContextualMessage;
+                FindViewById<TextView>(Resource.Id.PremiumView_ContextualMessage).Visibility = ViewStates.Visible;
+            }
+
+            base.OnViewModelSetOverride();
         }
 
         private void ButtonUpgradeToPremium_Click(object sender, EventArgs e)

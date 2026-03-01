@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.View;
 using InterfacesDroid.Views;
+using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 
 namespace PowerPlannerAndroid.Views
@@ -23,7 +24,11 @@ namespace PowerPlannerAndroid.Views
 
         protected override async void OnViewCreated()
         {
+            FindViewById<TextView>(Resource.Id.WelcomePage_TextViewSubtitle).Text = R.S("WelcomePage_TextBlockSubtitle.Text");
+
+            FindViewById<Button>(Resource.Id.ButtonLogin).Text = R.S("WelcomePage_ButtonLogin.Content");
             FindViewById<Button>(Resource.Id.ButtonLogin).Click += ButtonLogin_Click;
+            FindViewById<Button>(Resource.Id.ButtonCreateAccount).Text = R.S("WelcomePage_ButtonCreateAccount.Content");
             FindViewById<Button>(Resource.Id.ButtonCreateAccount).Click += ButtonCreateAccount_Click;
 
             ViewCompat.SetOnApplyWindowInsetsListener(this, this);

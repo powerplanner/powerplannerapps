@@ -14,10 +14,8 @@
             style="@style/FullWidthEditText"
             android:id="@+id/EditTextDetails"
             android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-            android:hint="{ClassPage_PivotItemDetails.Header}"
             android:minLines="5"
-            android:gravity="top"
-            local:Binding="{Source=Details, Target=Text, Mode=TwoWay}"/>
+            android:gravity="top"/>
         
     </LinearLayout>
 

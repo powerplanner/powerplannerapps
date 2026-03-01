@@ -16,6 +16,7 @@ using BareMvvm.Core.App;
 using ToolsPortable;
 using System.ComponentModel;
 using Google.Android.Material.FloatingActionButton;
+using PowerPlannerAppDataLibrary;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
@@ -61,8 +62,11 @@ namespace PowerPlannerAndroid.Views.Controls
             _sectionHoliday = FindViewById<View>(Resource.Id.FloadingAddItemAddHolidaySection);
             _sectionHoliday.Click += _actionButtonAddHoliday_Click;
             _textViewAddTask = FindViewById<TextView>(Resource.Id.FloatingAddItemAddTaskText);
+            _textViewAddTask.Text = R.S("String_AddTask");
             _textViewAddEvent = FindViewById<TextView>(Resource.Id.FloatingAddItemAddEventText);
+            _textViewAddEvent.Text = R.S("String_AddEvent");
             _textViewAddHoliday = FindViewById<TextView>(Resource.Id.FloatingAddItemAddHolidayText);
+            _textViewAddHoliday.Text = R.S("String_AddHoliday");
 
             _actionButtonAddEvent = FindViewById<FloatingActionButton>(Resource.Id.FloatingActionButtonAddEvent);
             _actionButtonAddEvent.Click += _actionButtonAddEvent_Click;

@@ -94,7 +94,6 @@
             <Button
                 android:id="@+id/ButtonAddClass"
                 style="@style/AddItemButton"
-                android:text="{SchedulePage_ButtonAddClass.Content}"
                 android:layout_marginTop="5dp"/>
             
         </LinearLayout>
@@ -118,14 +117,13 @@
             android:orientation="vertical">
 
             <TextView
+			  android:id="@+id/SchedulePage_TextViewReturningUser"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:text="{SchedulePage_TextBlockReturningUser.Text}"
               android:layout_marginTop="16dp"/>
       
             <Button
               style="@style/PowerPlannerBlueButton"
-              android:text="{WelcomePage_ButtonLogin.Content}"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginTop="8dp"
@@ -141,25 +139,24 @@
             android:layout_gravity="center_vertical">
 
             <TextView
+              android:id="@+id/SchedulePage_TextViewWelcomeTitle"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:text="{SchedulePage_TextBlockWelcomeTitle.Text}"
               android:textAlignment="center"
               android:gravity="center_horizontal"
               style="@android:style/TextAppearance.Large"/>
 
-            <TextView
+			<TextView
+              android:id="@+id/SchedulePage_TextViewWelcomeSubtitle"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginTop="8dp"
-              android:text="{SchedulePage_TextBlockWelcomeSubtitle.Text}"
               android:textAlignment="center"
               android:gravity="center_horizontal"
               style="@android:style/TextAppearance.Small"/>
       
             <Button
               style="@style/PowerPlannerBlueButton"
-              android:text="{SchedulePage_ButtonAddClass.Content}"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginTop="16dp"
