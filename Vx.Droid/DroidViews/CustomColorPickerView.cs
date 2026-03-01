@@ -17,7 +17,7 @@ using Vx.Droid;
 
 namespace InterfacesDroid.Views
 {
-    public class CustomColorPickerView : InflatedViewWithBinding
+    public class CustomColorPickerView : InflatedViewWithBindingHost
     {
         private Channel m_channelR = new Channel()
         {

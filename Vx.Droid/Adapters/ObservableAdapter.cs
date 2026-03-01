@@ -27,12 +27,12 @@ namespace InterfacesDroid.Adapters
             if (dropDownItemResourceId != null)
                 createDropDownViewFunction = (root) =>
                 {
-                    return new InflatedViewWithBinding(dropDownItemResourceId.Value, root);
+                    return new InflatedViewWithBindingHost(dropDownItemResourceId.Value, root);
                 };
 
             return new ObserableAdapterWithBinding<T>(list, (root) =>
             {
-                return new InflatedViewWithBinding(itemResourceId, root);
+                return new InflatedViewWithBindingHost(itemResourceId, root);
             }, createDropDownViewFunction);
         }
 
