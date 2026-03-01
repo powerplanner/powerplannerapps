@@ -14,10 +14,13 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using InterfacesDroid.DataTemplates;
 using ToolsPortable;
 using System.Collections.Specialized;
+using System.Drawing;
+using Xamarin.Essentials;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAndroid.Views.ListItems
 {
-    public class ListItemEditingScheduleClassView : InflatedViewWithBinding
+    public class ListItemEditingScheduleClassView : InflatedViewWithBindingHost
     {
         public event EventHandler<ViewItemClass> OnEditClassRequested;
         public event EventHandler<ViewItemClass> OnAddClassTimeRequested;
@@ -28,6 +31,16 @@ namespace PowerPlannerAndroid.Views.ListItems
         public ListItemEditingScheduleClassView(ViewGroup root, ViewItemClass c) : base(Resource.Layout.ListItemEditingScheduleClass, root)
         {
             DataContext = c;
+
+            BindingHost.SetBinding<byte[]>(nameof(c.Color), (color) =>
+            {
+                FindViewById(Resource.Id.ListItemEditingScheduleClass_ColorContainer).SetBackgroundColor(ColorBytesHelper.ToColor(color).ToPlatformColor());
+            });
+
+            BindingHost.SetBinding<string>(nameof(c.Name), (name) =>
+            {
+               FindViewById<TextView>(Resource.Id.ListItemEditingScheduleClass_ClassName).Text = name;
+            });
 
             FindViewById<Button>(Resource.Id.ButtonAddTime).Click += delegate { OnAddClassTimeRequested?.Invoke(this, (ViewItemClass)DataContext); };
             FindViewById(Resource.Id.ListItemEditingScheduleClass_ClassName).Click += delegate { OnEditClassRequested?.Invoke(this, (ViewItemClass)DataContext); };

@@ -55,7 +55,7 @@ namespace InterfacesDroid.Views
     }
 #endif
 
-    public abstract class ViewHostGeneric : InflatedViewWithBinding
+    public abstract class ViewHostGeneric : InflatedViewWithBindingHost
     {
         public BaseViewModel ViewModel
         {

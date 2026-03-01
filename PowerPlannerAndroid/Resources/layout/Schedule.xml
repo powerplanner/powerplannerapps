@@ -14,19 +14,6 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:visibility="gone">
-        <InterfacesDroid.Views.MyZoomAndPanView
-            android:id="@+id/ScrollViewSchedule"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/ScheduleHost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"/>
-        
-        </InterfacesDroid.Views.MyZoomAndPanView>
       
         <!--Week and change week bar-->
       <androidx.appcompat.widget.Toolbar
@@ -44,8 +31,7 @@
             android:layout_height="wrap_content"
             style="@android:style/TextAppearance.Medium"
             android:gravity="bottom"
-            android:textColor="#FFFFFF"
-            local:Binding="{Source=DisplayStartDate, Target=Text, Converter=WeekDateToStringConverter}"/>
+            android:textColor="#FFFFFF"/>
 
           <TextView
             android:layout_width="wrap_content"
@@ -62,8 +48,7 @@
             android:layout_height="wrap_content"
             style="@android:style/TextAppearance.Medium"
             android:gravity="bottom"
-            android:textColor="#FFFFFF"
-            local:Binding="{Source=DisplayEndDate, Target=Text, Converter=WeekDateToStringConverter}"/>
+            android:textColor="#FFFFFF"/>
 
           <TextView
             android:layout_width="wrap_content"
@@ -71,16 +56,14 @@
             style="@android:style/TextAppearance.Small"
             android:gravity="bottom"
             android:textColor="#FFFFFF"
-            android:layout_marginStart="8dp"
-            local:Binding="{Source=DisplayStartDate, Target=Text, Converter=DateTimeToStringConverter, ConverterParameter=yyyy}"/>
+            android:layout_marginStart="8dp"/>
 
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@android:style/TextAppearance.Small"
             android:gravity="bottom"
-            android:textColor="#FFFFFF"
-            local:Binding="{Source=CurrentWeek, Target=Text, Converter=ScheduleViewCurrentWeekToStringConverter}; {Source=HasTwoWeekSchedule, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
+            android:textColor="#FFFFFF"/>
           
         </LinearLayout>
         
@@ -132,8 +115,7 @@
             android:id="@+id/ReturningUserContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            local:Binding="{Source=IsReturningUserVisible, Target=Visibility}">
+            android:orientation="vertical">
 
             <TextView
               android:layout_width="match_parent"

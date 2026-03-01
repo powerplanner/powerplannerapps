@@ -17,6 +17,7 @@ using ToolsPortable;
 using Android.Graphics;
 using PowerPlannerAppDataLibrary;
 using InterfacesDroid.Bindings.Programmatic;
+using BareMvvm.Core.Binding;
 
 namespace PowerPlannerAndroid.Views.ListItems
 {
@@ -24,28 +25,28 @@ namespace PowerPlannerAndroid.Views.ListItems
     {
         public ViewItemSchedule Schedule { get; private set; }
 
-        private BindingInstance m_classColorBindingInstance;
-        private BindingInstance m_classNameBindingInstance;
+        private BindingHost _classBindingHost = new BindingHost();
 
         public MyScheduleItemView(Context context, ViewItemSchedule s, DateTime date) : base(context)
         {
             Schedule = s;
+            _classBindingHost.DataContext = s.Class;
 
             base.Orientation = Orientation.Vertical;
             base.SetPaddingRelative(ThemeHelper.AsPx(context, 5), ThemeHelper.AsPx(context, 5), 0, 0);
 
-            m_classColorBindingInstance = Binding.SetBinding(s.Class, nameof(s.Class.Color), (c) =>
+            _classBindingHost.SetBinding<byte[]>(nameof(ViewItemClass.Color), color =>
             {
-                base.Background = new ColorDrawable(ColorTools.GetColor(c.Color));
+                base.Background = new ColorDrawable(ColorTools.GetColor(color));
             });
 
             // Can't figure out how to let both class name and room wrap while giving more importance
             // to room like I did on UWP, so just limiting name to 2 lines for now till someone complains.
             var textViewName = CreateTextView("");
 
-            m_classNameBindingInstance = Binding.SetBinding(s.Class, nameof(s.Class.Name), (c) =>
+            _classBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), className =>
             {
-                textViewName.Text = c.Name;
+                textViewName.Text = className;
             });
 
             textViewName.SetMaxLines(2);
@@ -57,6 +58,18 @@ namespace PowerPlannerAndroid.Views.ListItems
             {
                 base.AddView(CreateTextView(s.Room, autoLink: true));
             }
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            _classBindingHost.Detach();
+            base.OnDetachedFromWindow();
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            _classBindingHost.DataContext = Schedule.Class;
+            base.OnAttachedToWindow();
         }
 
         public static string GetStringTimeToTime(ViewItemSchedule s, DateTime date)

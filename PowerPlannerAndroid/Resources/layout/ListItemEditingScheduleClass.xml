@@ -13,10 +13,10 @@
         android:orientation="horizontal">
 
         <View
+            android:id="@+id/ListItemEditingScheduleClass_ColorContainer"
             android:layout_width="8dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            local:Binding="{Source=Color, Target=Background, Converter=ColorArrayToDrawableConverter}"/>
+            android:layout_marginRight="10dp"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -29,7 +29,6 @@
                 style="@android:style/TextAppearance.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                local:Binding="{Source=Name, Target=Text, Mode=OneWay}"
                 android:layout_marginBottom="8dp"
                 android:clickable="true"/>
 
