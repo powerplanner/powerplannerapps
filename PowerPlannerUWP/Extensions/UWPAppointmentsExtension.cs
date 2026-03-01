@@ -99,6 +99,10 @@ namespace PowerPlannerUWP.Extensions
 
                     ThrowIfCanceled();
                 }
+                catch (InvalidOperationException)
+                {
+                    // If changes are made while it's working, it might hit an InvalidOperationException for concurrent operations, but that's okay. We will just end up doing another reset with the new changes, so we can just treat it as a failure and end this task, since the next one will fix everything.
+                }
                 catch (OperationCanceledException)
                 {
                     throw;
