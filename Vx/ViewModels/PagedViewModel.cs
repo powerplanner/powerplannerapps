@@ -117,6 +117,7 @@ namespace BareMvvm.Core.ViewModels
                 foreach (var b in BackStack)
                 {
                     b.PauseRendering();
+                    b.OnRemovedFromViewModel();
                 }
                 BackStack.Clear();
                 UpdateRequestedBackButtonVisibility();
@@ -125,6 +126,7 @@ namespace BareMvvm.Core.ViewModels
             var oldContent = Content;
             oldContent?.PauseRendering();
             Content = null;
+            oldContent?.OnRemovedFromViewModel();
             OnPresenterNeedsToClearAll?.Invoke(this, null);
         }
 
@@ -135,6 +137,7 @@ namespace BareMvvm.Core.ViewModels
                 foreach (var b in BackStack)
                 {
                     b.PauseRendering();
+                    b.OnRemovedFromViewModel();
                 }
                 BackStack.Clear();
                 UpdateRequestedBackButtonVisibility();
@@ -172,6 +175,7 @@ namespace BareMvvm.Core.ViewModels
                 Content = viewModel;
                 viewModel.ResumeRendering();
                 OnPresenterNeedsToGoBack?.Invoke(this, null);
+                oldContent?.OnRemovedFromViewModel();
                 return true;
             }
 
@@ -191,6 +195,7 @@ namespace BareMvvm.Core.ViewModels
                     Content = null;
                     model.PauseRendering();
                     OnPresenterNeedsToClearAll?.Invoke(this, null);
+                    model.OnRemovedFromViewModel();
                     return true;
                 }
             }
@@ -200,6 +205,7 @@ namespace BareMvvm.Core.ViewModels
                 {
                     model.PauseRendering();
                     OnPresenterNeedsToRemoveModelFromBackStack?.Invoke(this, model);
+                    model.OnRemovedFromViewModel();
                     return true;
                 }
             }
@@ -232,7 +238,10 @@ namespace BareMvvm.Core.ViewModels
             viewModel.ResumeRendering();
 
             if (old != null)
+            {
                 OnPresenterNeedsToReplaceCurrent?.Invoke(this, new Tuple<BaseViewModel, BaseViewModel>(old, viewModel));
+                old.OnRemovedFromViewModel();
+            }
             else
                 OnPresenterNeedsToNavigate?.Invoke(this, viewModel);
         }
@@ -261,6 +270,7 @@ namespace BareMvvm.Core.ViewModels
                 BackStack[index] = newModel;
                 newModel.ResumeRendering();
                 OnPresenterNeedsToReplaceWithinBackStack?.Invoke(this, new Tuple<BaseViewModel, BaseViewModel>(modelToReplace, newModel));
+                modelToReplace.OnRemovedFromViewModel();
             }
         }
 

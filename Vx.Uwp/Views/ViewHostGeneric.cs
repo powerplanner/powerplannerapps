@@ -69,6 +69,7 @@ namespace InterfacesUWP.Views
         {
             ViewModel.ViewFocused += new WeakEventHandler<EventArgs>(ViewModel_ViewFocused).Handler;
             ViewModel.ViewLostFocus += new WeakEventHandler<EventArgs>(ViewModel_ViewLostFocus).Handler;
+            ViewModel.RemovedFromViewModel += new WeakEventHandler<EventArgs>(ViewModel_RemovedFromViewModel).Handler;
 
             if (ViewModel.IsFocused)
             {
@@ -76,6 +77,13 @@ namespace InterfacesUWP.Views
             }
             
             OnViewModelSetOverride();
+        }
+
+        private void ViewModel_RemovedFromViewModel(object sender, EventArgs e)
+        {
+            // Clear DataContext to break the strong reference from this view to the
+            // ViewModel, allowing the ViewModel to be garbage collected.
+            DataContext = null;
         }
 
         private void ViewModel_ViewLostFocus(object sender, EventArgs e)

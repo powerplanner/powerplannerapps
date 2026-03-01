@@ -227,13 +227,17 @@ namespace BareMvvm.Core.ViewModels
         {
             if (FullScreenPopup != null)
             {
+                var old = FullScreenPopup;
                 FullScreenPopup = null;
+                old.OnRemovedFromViewModel();
                 return true;
             }
 
             if (Popups.Count > 0)
             {
+                var old = Popups[Popups.Count - 1];
                 Popups.RemoveAt(Popups.Count - 1);
+                old.OnRemovedFromViewModel();
                 return true;
             }
 
@@ -245,11 +249,13 @@ namespace BareMvvm.Core.ViewModels
             if (FullScreenPopup == model)
             {
                 FullScreenPopup = null;
+                model.OnRemovedFromViewModel();
                 return true;
             }
 
             if (Popups.Remove(model))
             {
+                model.OnRemovedFromViewModel();
                 return true;
             }
 
@@ -265,8 +271,22 @@ namespace BareMvvm.Core.ViewModels
             {
                 await HandleUserInteractionAsync("ClearPopups", delegate
                 {
-                    FullScreenPopup = null;
-                    Popups.Clear();
+                    if (FullScreenPopup != null)
+                    {
+                        var oldFullScreen = FullScreenPopup;
+                        FullScreenPopup = null;
+                        oldFullScreen.OnRemovedFromViewModel();
+                    }
+
+                    if (Popups.Count > 0)
+                    {
+                        var oldPopups = Popups.ToArray();
+                        Popups.Clear();
+                        foreach (var p in oldPopups)
+                        {
+                            p.OnRemovedFromViewModel();
+                        }
+                    }
                 });
             }
             catch (Exception ex)
