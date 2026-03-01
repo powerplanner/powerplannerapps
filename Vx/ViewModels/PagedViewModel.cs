@@ -240,7 +240,10 @@ namespace BareMvvm.Core.ViewModels
             if (old != null)
             {
                 OnPresenterNeedsToReplaceCurrent?.Invoke(this, new Tuple<BaseViewModel, BaseViewModel>(old, viewModel));
-                old.OnRemovedFromViewModel();
+                if (old != viewModel)
+                {
+                    old.OnRemovedFromViewModel();
+                }
             }
             else
                 OnPresenterNeedsToNavigate?.Invoke(this, viewModel);
