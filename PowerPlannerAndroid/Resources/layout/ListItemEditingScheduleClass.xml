@@ -42,7 +42,6 @@
                 android:id="@+id/ButtonAddTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="{String_AddTime}"
                 style="@style/BorderlessButton"/>
 
         </LinearLayout>
