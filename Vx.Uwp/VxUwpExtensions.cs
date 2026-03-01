@@ -300,9 +300,9 @@ namespace Vx.Uwp
 
         public static FrameworkElement Render(this VxComponent component)
         {
-            if (component.NativeComponent != null)
+            if (component.NativeComponent != null && component.NativeComponent.TryGetTarget(out INativeComponent existing))
             {
-                return component.NativeComponent as UwpNativeComponent;
+                return existing as UwpNativeComponent;
             }
 
             var nativeComponent = new UwpNativeComponent(component);

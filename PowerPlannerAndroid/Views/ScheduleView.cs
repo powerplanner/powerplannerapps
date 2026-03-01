@@ -187,23 +187,37 @@ namespace PowerPlannerAndroid.Views
 
         private void ViewModel_OnItemsForDateChanged(object sender, DateTime e)
         {
-            RenderAllDayItems(e);
+            try
+            {
+                RenderAllDayItems(e);
 
-            if (ResetAllDayItemsViewsHeight())
-            {
-                // If the height of all day items have changed cause of this,
-                // we need to re-render all items on all days
-                RenderAllDates();
+                if (ResetAllDayItemsViewsHeight())
+                {
+                    // If the height of all day items have changed cause of this,
+                    // we need to re-render all items on all days
+                    RenderAllDates();
+                }
+                else
+                {
+                    RenderDate(e);
+                }
             }
-            else
+            catch (ObjectDisposedException)
             {
-                RenderDate(e);
+
             }
         }
 
         private void ViewModel_OnFullReset(object sender, EventArgs e)
         {
-            RenderSchedule();
+            try
+            {
+                RenderSchedule();
+            }
+            catch (ObjectDisposedException)
+            {
+
+            }
         }
 
         private AllDayItemsView GetAllDayItemsView(DayOfWeek day)
@@ -275,15 +289,22 @@ namespace PowerPlannerAndroid.Views
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            try
             {
-                case nameof(ViewModel.LayoutMode):
-                    UpdateLayoutMode();
-                    break;
+                switch (e.PropertyName)
+                {
+                    case nameof(ViewModel.LayoutMode):
+                        UpdateLayoutMode();
+                        break;
 
-                case nameof(ViewModel.HasAllDayItems):
-                    RenderSchedule();
-                    break;
+                    case nameof(ViewModel.HasAllDayItems):
+                        RenderSchedule();
+                        break;
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+
             }
         }
 

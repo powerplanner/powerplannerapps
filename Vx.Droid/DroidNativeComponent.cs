@@ -75,5 +75,17 @@ namespace Vx.Droid
                 base.AddView(view.CreateDroidView(null));
             }
         }
+
+        protected override void OnDetachedFromWindow()
+        {
+            Component?.PauseRendering();
+            base.OnDetachedFromWindow();
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            Component?.ResumeRendering();
+            base.OnAttachedToWindow();
+        }
     }
 }

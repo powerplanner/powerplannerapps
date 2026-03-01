@@ -112,5 +112,17 @@ namespace InterfacesDroid.Views
 
             OnViewModelLoadedOverride();
         }
+
+        protected override void OnDetachedFromWindow()
+        {
+            ViewModel?.PauseRendering();
+            base.OnDetachedFromWindow();
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            ViewModel?.ResumeRendering();
+            base.OnAttachedToWindow();
+        }
     }
 }

@@ -15,18 +15,19 @@ namespace Vx.Views
     public abstract class VxComponent : View
     {
         public event EventHandler Rendered;
+        private bool _isRenderingPaused;
 
         protected virtual View Render()
         {
             return null;
         }
 
-        public INativeComponent NativeComponent { get; set; }
+        public WeakReference<INativeComponent> NativeComponent { get; set; }
 
         public void InitializeForDisplay(INativeComponent nativeComponent)
         {
-            NativeComponent = nativeComponent;
-            InitializeForDisplay();
+            NativeComponent = new WeakReference<INativeComponent>(nativeComponent);
+            InitializeForDisplayInternal(nativeComponent);
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace Vx.Views
         public virtual bool DelayFirstRenderTillSizePresent => false;
 
         private bool _hasInitializedForDisplay;
-        private void InitializeForDisplay()
+        private void InitializeForDisplayInternal(INativeComponent nativeComponent)
         {
             //if (IsDependentOnBindingContext && BindingContext == null)
             //{
@@ -49,9 +50,9 @@ namespace Vx.Views
 
             _hasInitializedForDisplay = true;
 
-            NativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
-            NativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
-            NativeComponent.MouseOverChanged += new WeakEventHandler<bool>(NativeComponent_MouseOverChanged).Handler;
+            nativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
+            nativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
+            nativeComponent.MouseOverChanged += new WeakEventHandler<bool>(NativeComponent_MouseOverChanged).Handler;
 
             Initialize();
 
@@ -396,6 +397,11 @@ namespace Vx.Views
                 _dirty = true;
             }
 
+            if (_isRenderingPaused)
+            {
+                return;
+            }
+
             PortableDispatcher.GetCurrentDispatcher().Run(RenderActual);
         }
 
@@ -417,6 +423,18 @@ namespace Vx.Views
 
         private void RenderActual()
         {
+            INativeComponent nativeComponent;
+            if (NativeComponent == null || !NativeComponent.TryGetTarget(out nativeComponent))
+            {
+                Detach();
+                return;
+            }
+
+            if (_isRenderingPaused)
+            {
+                return;
+            }
+
             var now = DateTime.Now;
 
             View newView = Render();
@@ -427,7 +445,7 @@ namespace Vx.Views
                 if (oldView == null || newView == null || oldView.GetType() != newView.GetType())
                 {
                     RenderedContent = newView;
-                    NativeComponent.ChangeView(newView);
+                    nativeComponent.ChangeView(newView);
                 }
 
                 else
@@ -468,6 +486,7 @@ namespace Vx.Views
 
         protected virtual void Detach()
         {
+            _hasInitializedForDisplay = false;
             UnsubscribeFromStates();
             UnsubscribeFromProperties();
             UnsubscribeFromCollections();
@@ -513,7 +532,22 @@ namespace Vx.Views
         /// <summary>
         /// To observe size, override <see cref="OnSizeChanged(SizeF)"/>.
         /// </summary>
-        public SizeF Size => NativeComponent.ComponentSize;
+        public SizeF Size
+        {
+            get
+            {
+               INativeComponent nativeComponent;
+                if (NativeComponent != null && NativeComponent.TryGetTarget(out nativeComponent))
+                {
+                    return nativeComponent.ComponentSize;
+                }
+                else
+                {
+                    return SizeF.Empty;
+                }
+            }
+
+        }
 
         /// <summary>
         /// To use this, override <see cref="SubscribeToIsMouseOver"/>.
@@ -546,6 +580,30 @@ namespace Vx.Views
         protected virtual void OnMouseOverChanged(bool isMouseOver)
         {
             // Nothing here
+        }
+
+        /// <summary>
+        /// Host apps should call this when the view does not need to update (app is minimized, navigating away from page, etc).
+        /// </summary>
+        public void PauseRendering()
+        {
+            _isRenderingPaused = true;
+        }
+
+        /// <summary>
+        /// Host apps should call this if they previously called PauseRendering, and now need to show UI updates. This will also trigger a render if there were any MarkDirty calls while rendering was paused.
+        /// </summary>
+        public void ResumeRendering()
+        {
+            if (_isRenderingPaused)
+            {
+                _isRenderingPaused = false;
+
+                if (_dirty)
+                {
+                    RenderOnDemand();
+                }
+            }
         }
     }
 }

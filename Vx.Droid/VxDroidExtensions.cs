@@ -220,9 +220,9 @@ namespace Vx.Droid
 
         public static Android.Views.View Render(this VxComponent component)
         {
-            if (component.NativeComponent != null)
+            if (component.NativeComponent != null && component.NativeComponent.TryGetTarget(out INativeComponent existing))
             {
-                return component.NativeComponent as DroidNativeComponent;
+                return existing as DroidNativeComponent;
             }
 
             var nativeComponent = new DroidNativeComponent(ApplicationContext, component);
