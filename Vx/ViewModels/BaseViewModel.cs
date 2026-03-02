@@ -63,6 +63,13 @@ namespace BareMvvm.Core.ViewModels
         public event EventHandler<bool> AllowLightDismissChanged;
 
         /// <summary>
+        /// Fired when the view model has been permanently removed from the view model tree
+        /// (e.g., replaced as content in a PagedViewModel and not placed in the back stack).
+        /// Views should listen to this to clean up strong references (like DataContext) to allow garbage collection.
+        /// </summary>
+        public event EventHandler RemovedFromViewModel;
+
+        /// <summary>
         /// Can override this to true for screens where emails/usernames/etc should be autofilled
         /// </summary>
         public virtual bool ImportantForAutofill => false;
@@ -750,6 +757,25 @@ namespace BareMvvm.Core.ViewModels
         {
             IsCurrentNavigatedPage = false;
             NavigatedFrom?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// Called when this view model has been permanently removed from the view model tree
+        /// (e.g., replaced as content of a PagedViewModel and not placed in the back stack).
+        /// Views should clean up strong references to allow garbage collection.
+        /// </summary>
+        public virtual void OnRemovedFromViewModel()
+        {
+            RemovedFromViewModel?.Invoke(this, EventArgs.Empty);
+
+            // Also remove any children recursively
+            foreach (var child in GetChildren())
+            {
+                if (child != null)
+                {
+                    child.OnRemovedFromViewModel();
+                }
+            }
         }
 
         protected bool ValidateAllInputs(bool showValidationErrorMessage = true, Dictionary<string, Action<TextField>> customValidators = null)
