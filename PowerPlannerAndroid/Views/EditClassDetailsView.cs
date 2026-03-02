@@ -26,29 +26,26 @@ namespace PowerPlannerAndroid.Views
         {
             FindViewById<EditText>(Resource.Id.EditTextDetails).Hint = R.S("ClassPage_PivotItemDetails.Header");
 
-            BindingHost.SetBinding<string>(nameof(ViewModel.Details), details =>
-            {
-                FindViewById<EditText>(Resource.Id.EditTextDetails).Text = details;
-            });
-
-            FindViewById<EditText>(Resource.Id.EditTextDetails).TextChanged += EditClassDetailsView_TextChanged;
-
             base.OnViewCreated();
-        }
-
-        private void EditClassDetailsView_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            if (ViewModel != null)
-            {
-                ViewModel.Details = (sender as EditText).Text;
-            }
         }
 
         public override void OnViewModelLoadedOverride()
         {
             SetMenu(Resource.Menu.edit_class_details_menu);
 
-            KeyboardHelper.FocusAndShow(FindViewById<EditText>(Resource.Id.EditTextDetails));
+            var editTextDetails = FindViewById<EditText>(Resource.Id.EditTextDetails);
+            editTextDetails.Text = ViewModel.Details;
+            editTextDetails.TextChanged += EditClassDetailsView_TextChanged;
+
+            KeyboardHelper.FocusAndShow(editTextDetails);
+        }
+
+        private void EditClassDetailsView_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
+        {
+            if (ViewModel != null)
+            {
+                ViewModel.Details = e.Text.ToString();
+            }
         }
 
         public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
