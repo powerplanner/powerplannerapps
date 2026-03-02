@@ -119,6 +119,8 @@ namespace Vx.Views
             // Enable hot reload by refreshing every second since we can't subscribe to MetadataUpdateHandler yet
             if (System.Diagnostics.Debugger.IsAttached && VxPlatform.Current == Platform.Uwp)
             {
+                // Use a WeakReference to avoid preventing GC of this component
+                var weakThis = new WeakReference<VxComponent>(this);
                 Func<Task> loop = async () =>
                 {
                     try
@@ -127,7 +129,14 @@ namespace Vx.Views
                         {
                             await Task.Delay(1000);
 
-                            MarkDirty();
+                            if (weakThis.TryGetTarget(out var component))
+                            {
+                                component.MarkDirty();
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                     }
                     catch { }
