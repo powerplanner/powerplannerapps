@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using BareMvvm.Core.Binding;
 using InterfacesDroid.Themes;
 using ToolsPortable;
 using Vx.Droid;
@@ -121,19 +114,23 @@ namespace InterfacesDroid.Views
         private class CustomColorPickerChannelView : InflatedView
         {
             private Channel m_channel;
+            private BindingHost _bindingHost = new BindingHost();
 
             public CustomColorPickerChannelView(ViewGroup root, Channel c) : base(root.Context, Resource.Layout.CustomColorPickerChannelView)
             {
-                // Apparently the XML bindings don't work when it's running inside of Power Planner, so changing to programmatic
                 m_channel = c;
+                _bindingHost.DataContext = c;
+
                 FindViewById<TextView>(Resource.Id.Label).Text = c.Name;
                 var valueText = FindViewById<TextView>(Resource.Id.ColorValue);
                 var seekBar = FindViewById<SeekBar>(Resource.Id.ColorSeekBar);
-                Bindings.Programmatic.Binding.SetBinding(c, nameof(c.Value), delegate
+
+                _bindingHost.SetBinding<int>(nameof(c.Value), channelValue =>
                 {
-                    valueText.Text = c.Value.ToString();
-                    seekBar.Progress = c.Value;
+                    valueText.Text = channelValue.ToString();
+                    seekBar.Progress = channelValue;
                 });
+
                 seekBar.ProgressChanged += new WeakEventHandler<SeekBar.ProgressChangedEventArgs>(SeekBar_ProgressChanged).Handler;
             }
 

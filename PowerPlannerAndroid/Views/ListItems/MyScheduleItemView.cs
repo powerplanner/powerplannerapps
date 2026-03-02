@@ -1,22 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using PowerPlannerAppDataLibrary.ViewItems;
 using InterfacesDroid.Themes;
 using Android.Graphics.Drawables;
 using InterfacesDroid.Helpers;
-using ToolsPortable;
 using Android.Graphics;
 using PowerPlannerAppDataLibrary;
-using InterfacesDroid.Bindings.Programmatic;
 using BareMvvm.Core.Binding;
 
 namespace PowerPlannerAndroid.Views.ListItems

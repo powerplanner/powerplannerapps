@@ -1,12 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using BareMvvm.Core.ViewModels;
@@ -14,7 +8,7 @@ using InterfacesDroid.Themes;
 using InterfacesDroid.Helpers;
 using ToolsPortable;
 using Android.Util;
-using InterfacesDroid.Bindings.Programmatic;
+using BareMvvm.Core.Binding;
 
 namespace InterfacesDroid.ViewModelPresenters
 {
@@ -203,9 +197,15 @@ namespace InterfacesDroid.ViewModelPresenters
             _fullScreenPresenter.Visibility = ViewStates.Gone;
 
             base.AddView(_fullScreenPresenter);
+
+            _bindingHost.SetBinding<BaseViewModel>(nameof(ViewModel.FullScreenPopup), fullScreenPopup =>
+            {
+                _fullScreenPresenter.ViewModel = fullScreenPopup;
+                _fullScreenPresenter.Visibility = fullScreenPopup != null ? ViewStates.Visible : ViewStates.Gone;
+            });
         }
 
-        private BindingInstance _fullScreenBindingInstance;
+        private BindingHost _bindingHost = new BindingHost();
         private PagedViewModelWithPopups _viewModel;
         public PagedViewModelWithPopups ViewModel
         {
@@ -218,6 +218,7 @@ namespace InterfacesDroid.ViewModelPresenters
                 }
                 
                 _viewModel = value;
+                _bindingHost.DataContext = value;
 
                 // Set it on the paged too
                 _pagedViewModelPresenter.ViewModel = value;
@@ -225,13 +226,7 @@ namespace InterfacesDroid.ViewModelPresenters
                 // And popups presenter
                 _popupsPresenter.ViewModel = value;
 
-                // And full screen presenter
-                _fullScreenBindingInstance?.Dispose();
-                _fullScreenBindingInstance = Binding.SetBinding(value, nameof(value.FullScreenPopup), f =>
-                {
-                    _fullScreenPresenter.ViewModel = f.FullScreenPopup;
-                    _fullScreenPresenter.Visibility = f.FullScreenPopup != null ? ViewStates.Visible : ViewStates.Gone;
-                });
+                // Full screen popup is configured via the binding in Initialize()
             }
         }
 
