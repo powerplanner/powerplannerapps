@@ -19,7 +19,7 @@ Power Planner is a cross-platform academic app for students with UWP (Windows), 
 **CRITICAL BUILD REQUIREMENTS:**
 - **Full Development**: Requires Windows with Visual Studio 2019+ with Xamarin and UWP SDKs
 - **Limited Development**: Linux/Mac can build some components but NOT mobile apps or UWP
-- **.NET SDK**: Requires .NET 8 with MAUI workloads for mobile development (Windows only)
+- **.NET SDK**: Requires .NET 10 with MAUI workloads for mobile development (Windows only)
 
 ### What CAN Be Built (All Platforms)
 - **Shared libraries**: `dotnet build portablelibraries/ToolsPortable/ToolsPortable/ToolsPortable.csproj` -- takes 3-5 seconds. NEVER CANCEL.
@@ -34,6 +34,8 @@ Power Planner is a cross-platform academic app for students with UWP (Windows), 
 - **Full solution**: `PowerPlannerApps.sln` - contains platform-specific projects
 
 ## Testing
+
+Tests aren't actively used, they're all legacy.
 
 ### Available Tests  
 - **Legacy .NET Framework tests**: `PowerPlannerAppDataLibraryUnitTests/` - requires Windows with .NET Framework 4.6.1
@@ -89,7 +91,6 @@ When making changes to the codebase:
 ### Making Code Changes in Full Environment (Windows)
 1. **Complete all limited environment steps** first
 2. **Build complete solution**: `PowerPlannerApps.sln` in Visual Studio
-3. **Run full test suite**: All test projects in Visual Studio
 4. **Deploy to devices**: Test on actual Android/iOS/UWP devices
 5. **Validate end-to-end scenarios**: Complete user workflows
 
