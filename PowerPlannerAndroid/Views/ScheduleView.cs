@@ -8,6 +8,7 @@ using InterfacesDroid.DataTemplates;
 using InterfacesDroid.Helpers;
 using InterfacesDroid.Themes;
 using InterfacesDroid.Views;
+using PowerPlannerAndroid.Converters;
 using PowerPlannerAndroid.Helpers;
 using PowerPlannerAndroid.ViewHosts;
 using PowerPlannerAndroid.Views.Controls;
@@ -80,6 +81,27 @@ namespace PowerPlannerAndroid.Views
 
             FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeTitle).Text = R.S("SchedulePage_TextBlockWelcomeTitle.Text");
             FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeSubtitle).Text = R.S("SchedulePage_TextBlockWelcomeSubtitle.Text");
+
+            BindingHost.SetBinding<DateTime>(nameof(ViewModel.DisplayStartDate), displayStartDate =>
+            {
+                FindViewById<TextView>(Resource.Id.Schedule_DisplayStartDateWeek).Text = WeekDateToStringConverter.Convert(displayStartDate);
+                FindViewById<TextView>(Resource.Id.Schedule_DisplayStartDateYear).Text = displayStartDate.ToString("yyyy");
+            });
+
+            BindingHost.SetBinding<DateTime>(nameof(ViewModel.DisplayEndDate), displayEndDate =>
+            {
+                FindViewById<TextView>(Resource.Id.Schedule_DisplayEndDateWeek).Text = WeekDateToStringConverter.Convert(displayEndDate);
+            });
+
+            BindingHost.SetBinding<PowerPlannerSending.Schedule.Week>(nameof(ViewModel.CurrentWeek), currentWeek =>
+            {
+                FindViewById<TextView>(Resource.Id.Schedule_CurrentWeek).Text = $", {PowerPlannerResources.GetLocalizedWeek(currentWeek)}";
+            });
+
+            BindingHost.SetBinding<bool>(nameof(ViewModel.HasTwoWeekSchedule), hasTwoWeekSchedule =>
+            {
+                FindViewById(Resource.Id.Schedule_CurrentWeek).Visibility = hasTwoWeekSchedule ? ViewStates.Visible : ViewStates.Gone;
+            });
         }
 
         private void ScheduleView_Click(object sender, EventArgs e)
