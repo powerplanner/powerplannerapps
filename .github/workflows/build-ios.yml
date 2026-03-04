@@ -241,3 +241,57 @@ jobs:
             --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
             --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
             --show-progress
+
+  promote-to-production:
+    needs:
+      - upload-testflight
+      - set-version
+    runs-on: macos-latest
+    environment: production  # Use a protected environment requiring approval
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+    steps:
+      - name: Install Fastlane
+        run: |
+          gem install fastlane --no-document
+
+      - name: Write App Store Connect API key
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        run: |
+          mkdir -p ~/private_keys
+          echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode \
+            -o "$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+
+      - name: Create Fastlane API key JSON
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+        run: |
+          cat > api_key.json <<EOF
+          {
+            "key_id": "${APP_STORE_CONNECT_API_KEY_ID}",
+            "issuer_id": "${APP_STORE_CONNECT_API_ISSUER_ID}",
+            "key_filepath": "$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+          }
+          EOF
+
+      - name: Publish to App Store
+        env:
+          BUILD_NUMBER: ${{ env.BUILD_VERSION }}.0
+          APP_VERSION: ${{ env.BUILD_VERSION }}
+        run: |
+          SUBMIT_FLAG="--submit_for_review"
+
+          fastlane deliver \
+            --api_key_path api_key.json \
+            --app_identifier "com.barebonesdev.powerplanner" \
+            --app_version "$APP_VERSION" \
+            --build_number "$BUILD_NUMBER" \
+            --skip_metadata \
+            --skip_screenshots \
+            --automatic_release "true" \
+            --force \
+            $SUBMIT_FLAG
