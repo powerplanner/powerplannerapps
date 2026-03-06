@@ -19,10 +19,11 @@
 
             <TextView
                 style="@android:style/TextAppearance.Medium"
+                android:id="@+id/PremiumView_ContextualMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                local:Binding="{Source=ContextualMessage, Target=Text, Mode=OneTime}; {Source=ContextualMessage, Target=Visibility, Converter=StringToVisibilityConverter}"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"/>
 
             <TextView
@@ -37,7 +38,6 @@
 
     <Button
         style="@style/PowerPlannerBlueButton"
-        android:text="{Settings_UpgradeToPremium_ButtonUpgrade.Content}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

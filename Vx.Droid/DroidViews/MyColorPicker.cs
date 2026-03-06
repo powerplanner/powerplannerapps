@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
+using Android.Graphics;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Java.Lang;
-using Android.Graphics;
-using InterfacesDroid.Themes;
-using Android.Graphics.Drawables;
-using InterfacesDroid.Dialogs;
-using ToolsPortable;
+using BareMvvm.Core.Binding;
 using Google.Android.Material.TextField;
+using InterfacesDroid.Dialogs;
+using InterfacesDroid.Themes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using ToolsPortable;
+using static Android.Renderscripts.ScriptGroup;
 
 namespace InterfacesDroid.Views
 {
@@ -292,32 +288,46 @@ namespace InterfacesDroid.Views
 
                 ColorItem item = Items[position];
 
-                LinearLayout layout = new LinearLayout(parent.Context)
+                ColorItemView colorItemView = new ColorItemView(item, parent.Context)
                 {
-                    Orientation = Orientation.Horizontal,
                     LayoutParameters = new AbsListView.LayoutParams(
                         AbsListView.LayoutParams.MatchParent,
                         ThemeHelper.AsPx(parent.Context, 62))
                 };
-                layout.SetPaddingRelative(ThemeHelper.AsPx(parent.Context, 16), 0, 0, 0);
+                colorItemView.SetPaddingRelative(ThemeHelper.AsPx(parent.Context, 16), 0, 0, 0);
 
-                var colorSquare = new View(parent.Context)
+                return colorItemView;
+            }
+        }
+
+        public class ColorItemView : LinearLayout
+        {
+            private BindingHost _bindingHost = new BindingHost();
+            private View _colorSquare;
+            public ColorItemView(ColorItem item, Context context) : base(context)
+            {
+                Orientation = Orientation.Horizontal;
+                _bindingHost.DataContext = item;
+
+                _colorSquare = new View(context)
                 {
                     LayoutParameters = new LinearLayout.LayoutParams(
-                        ThemeHelper.AsPx(parent.Context, 20),
-                        ThemeHelper.AsPx(parent.Context, 20))
+                        ThemeHelper.AsPx(context, 20),
+                        ThemeHelper.AsPx(context, 20))
                     {
-                        RightMargin = ThemeHelper.AsPx(parent.Context, 8),
+                        RightMargin = ThemeHelper.AsPx(context, 8),
                         Gravity = GravityFlags.CenterVertical
                     }
                 };
-                Bindings.Programmatic.Binding.SetBinding(item, nameof(item.Color), delegate
-                {
-                    colorSquare.SetBackgroundColor(item.Color);
-                });
-                layout.AddView(colorSquare);
 
-                layout.AddView(new TextView(parent.Context)
+                _bindingHost.SetBinding<Color>(nameof(item.Color), color =>
+                {
+                    _colorSquare.SetBackgroundColor(color);
+                });
+
+                this.AddView(_colorSquare);
+
+                this.AddView(new TextView(context)
                 {
                     Text = item.Text,
                     LayoutParameters = new LinearLayout.LayoutParams(
@@ -327,8 +337,6 @@ namespace InterfacesDroid.Views
                         Gravity = GravityFlags.CenterVertical
                     }
                 });
-
-                return layout;
             }
         }
 

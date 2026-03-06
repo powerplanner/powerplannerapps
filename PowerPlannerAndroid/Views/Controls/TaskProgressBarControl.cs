@@ -18,7 +18,7 @@ using AndroidX.Core.Content;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
-    public class TaskProgressBarControl : InflatedViewWithBinding, SeekBar.IOnSeekBarChangeListener
+    public class TaskProgressBarControl : InflatedViewWithBindingHost, SeekBar.IOnSeekBarChangeListener
     {
         /// <summary>
         /// Event for when the progress has been changed and committed by the user (user let go).
