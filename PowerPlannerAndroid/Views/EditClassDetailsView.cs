@@ -22,11 +22,30 @@ namespace PowerPlannerAndroid.Views
             Title = PowerPlannerResources.GetString("String_EditDetails").ToUpper();
         }
 
+        protected override void OnViewCreated()
+        {
+            FindViewById<EditText>(Resource.Id.EditTextDetails).Hint = R.S("ClassPage_PivotItemDetails.Header");
+
+            base.OnViewCreated();
+        }
+
         public override void OnViewModelLoadedOverride()
         {
             SetMenu(Resource.Menu.edit_class_details_menu);
 
-            KeyboardHelper.FocusAndShow(FindViewById<EditText>(Resource.Id.EditTextDetails));
+            var editTextDetails = FindViewById<EditText>(Resource.Id.EditTextDetails);
+            editTextDetails.Text = ViewModel.Details;
+            editTextDetails.TextChanged += EditClassDetailsView_TextChanged;
+
+            KeyboardHelper.FocusAndShow(editTextDetails);
+        }
+
+        private void EditClassDetailsView_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
+        {
+            if (ViewModel != null)
+            {
+                ViewModel.Details = e.Text.ToString();
+            }
         }
 
         public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)

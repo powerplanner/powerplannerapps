@@ -41,23 +41,30 @@ namespace InterfacesDroid.Adapters
                 var oldFooter = _footer;
                 _footer = value;
 
-                // If added footer
-                if (oldFooter == null)
+                try
                 {
-                    NotifyItemInserted(GetFooterPosition());
-                }
-                else
-                {
-                    // If removed footer
-                    if (value == null)
+                    // If added footer
+                    if (oldFooter == null)
                     {
-                        NotifyItemRemoved(GetFooterPosition());
+                        NotifyItemInserted(GetFooterPosition());
                     }
-                    // Else footer was changed
                     else
                     {
-                        NotifyItemChanged(GetFooterPosition());
+                        // If removed footer
+                        if (value == null)
+                        {
+                            NotifyItemRemoved(GetFooterPosition());
+                        }
+                        // Else footer was changed
+                        else
+                        {
+                            NotifyItemChanged(GetFooterPosition());
+                        }
                     }
+                }
+                catch (ObjectDisposedException)
+                {
+                    HandleObjectDisposed();
                 }
             }
         }
@@ -93,11 +100,7 @@ namespace InterfacesDroid.Adapters
             set
             {
                 // Unregister old
-                var old = ItemsSource;
-                if (old is INotifyCollectionChanged)
-                {
-                    (old as INotifyCollectionChanged).CollectionChanged -= _collectionChangedHandler;
-                }
+                UnregisterItemsSourceListener();
 
                 _itemsSource = value;
 
@@ -108,62 +111,91 @@ namespace InterfacesDroid.Adapters
                     (value as INotifyCollectionChanged).CollectionChanged += _collectionChangedHandler;
                 }
 
-                NotifyDataSetChanged();
+                try
+                {
+                    NotifyDataSetChanged();
+                }
+                catch (ObjectDisposedException)
+                {
+                    HandleObjectDisposed();
+                }
+            }
+        }
+
+        private void HandleObjectDisposed()
+        {
+            UnregisterItemsSourceListener();
+            _itemsSource = null;
+        }
+
+        private void UnregisterItemsSourceListener()
+        {
+            var old = ItemsSource;
+            if (old is INotifyCollectionChanged)
+            {
+                (old as INotifyCollectionChanged).CollectionChanged -= _collectionChangedHandler;
             }
         }
 
         private void ItemsSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+            try
             {
-                case NotifyCollectionChangedAction.Add:
-                    // If list was currently empty and was showing the empty view
-                    if (ItemsSource.Count == e.NewItems.Count && CreateViewHolderForEmptyList != null)
-                    {
-                        NotifyItemRangeChanged(0, 1);
-
-                        if (e.NewItems.Count > 1)
+                switch (e.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
+                        // If list was currently empty and was showing the empty view
+                        if (ItemsSource.Count == e.NewItems.Count && CreateViewHolderForEmptyList != null)
                         {
-                            NotifyItemRangeInserted(1, e.NewItems.Count - 1);
+                            NotifyItemRangeChanged(0, 1);
+
+                            if (e.NewItems.Count > 1)
+                            {
+                                NotifyItemRangeInserted(1, e.NewItems.Count - 1);
+                            }
                         }
-                    }
-                    else
-                    {
-                        NotifyItemRangeInserted(e.NewStartingIndex, e.NewItems.Count);
-                    }
-                    break;
-
-                case NotifyCollectionChangedAction.Remove:
-                    // If removed all items
-                    if (ItemsSource.Count == 0 && CreateViewHolderForEmptyList != null)
-                    {
-                        NotifyItemRangeChanged(0, 1);
-
-                        if (e.OldItems.Count > 1)
+                        else
                         {
-                            NotifyItemRangeRemoved(1, e.OldItems.Count - 1);
+                            NotifyItemRangeInserted(e.NewStartingIndex, e.NewItems.Count);
                         }
-                    }
-                    else
-                    {
-                        NotifyItemRangeRemoved(e.OldStartingIndex, e.OldItems.Count);
-                    }
-                    break;
+                        break;
 
-                case NotifyCollectionChangedAction.Replace:
-                    NotifyItemRangeChanged(e.NewStartingIndex, e.NewItems.Count);
-                    break;
+                    case NotifyCollectionChangedAction.Remove:
+                        // If removed all items
+                        if (ItemsSource.Count == 0 && CreateViewHolderForEmptyList != null)
+                        {
+                            NotifyItemRangeChanged(0, 1);
 
-                case NotifyCollectionChangedAction.Move:
-                    for (int i = 0; i < e.NewItems.Count; i++)
-                    {
-                        NotifyItemMoved(e.OldStartingIndex + i, e.NewStartingIndex + i);
-                    }
-                    break;
+                            if (e.OldItems.Count > 1)
+                            {
+                                NotifyItemRangeRemoved(1, e.OldItems.Count - 1);
+                            }
+                        }
+                        else
+                        {
+                            NotifyItemRangeRemoved(e.OldStartingIndex, e.OldItems.Count);
+                        }
+                        break;
 
-                case NotifyCollectionChangedAction.Reset:
-                    NotifyDataSetChanged();
-                    break;
+                    case NotifyCollectionChangedAction.Replace:
+                        NotifyItemRangeChanged(e.NewStartingIndex, e.NewItems.Count);
+                        break;
+
+                    case NotifyCollectionChangedAction.Move:
+                        for (int i = 0; i < e.NewItems.Count; i++)
+                        {
+                            NotifyItemMoved(e.OldStartingIndex + i, e.NewStartingIndex + i);
+                        }
+                        break;
+
+                    case NotifyCollectionChangedAction.Reset:
+                        NotifyDataSetChanged();
+                        break;
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                HandleObjectDisposed();
             }
         }
 

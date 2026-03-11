@@ -225,9 +225,9 @@ namespace Vx.iOS
 
         public static iOSNativeComponent Render(this VxComponent component, Action<UIView> afterViewChanged = null)
         {
-            if (component.NativeComponent != null)
+            if (component.NativeComponent != null && component.NativeComponent.TryGetTarget(out INativeComponent existing))
             {
-                return component.NativeComponent as iOSNativeComponent;
+                return existing as iOSNativeComponent;
             }
 
             var nativeComponent = new iOSNativeComponent(component)

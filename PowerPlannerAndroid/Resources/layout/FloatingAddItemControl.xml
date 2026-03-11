@@ -30,7 +30,6 @@
             android:layout_marginBottom="16dp">
             <TextView
                 android:id="@+id/FloatingAddItemAddHolidayText"
-                android:text="{String_AddHoliday}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
@@ -65,7 +64,6 @@
             android:layout_marginBottom="16dp">
             <TextView
                 android:id="@+id/FloatingAddItemAddEventText"
-                android:text="{String_AddEvent}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
@@ -99,7 +97,6 @@
             android:layout_marginBottom="16dp">
             <TextView
                 android:id="@+id/FloatingAddItemAddTaskText"
-                android:text="{String_AddTask}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"

@@ -34,11 +34,13 @@ namespace BareMvvm.Core.ViewModels
 
         public override void ShowPopup(BaseViewModel viewModel)
         {
+            viewModel.ResumeRendering();
             Popups.Add(viewModel);
         }
 
         public void ShowFullScreenPopup(BaseViewModel viewModel)
         {
+            viewModel.ResumeRendering();
             FullScreenPopup = viewModel;
         }
 

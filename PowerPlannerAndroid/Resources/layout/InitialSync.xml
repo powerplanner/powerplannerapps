@@ -29,33 +29,31 @@
                 android:scaleType="centerInside"/>
 
             <ProgressBar
+                android:id="@+id/InitialSync_ProgressBar"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
                 android:indeterminateTint="#cccccc"
-                android:progressBackgroundTint="#66ffffff"
-                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
-        
-            <TextView
+                android:progressBackgroundTint="#66ffffff"/>
+
+			<TextView
+                android:id="@+id/InitialSync_SyncingText"
                 style="@android:style/TextAppearance.Medium"
-                android:text="{LoginPage_String_SyncingAccount}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:textColor="#cccccc"
-                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter}"/>
-        
-            <TextView
+                android:textColor="#cccccc"/>
+
+			<TextView
+                android:id="@+id/InitialSync_SyncErrorHeader"
                 style="@android:style/TextAppearance.Medium"
-                android:text="{String_SyncError}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="12dp"
-                android:textColor="#cccccc"
-                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}"/>
+                android:textColor="#cccccc"/>
         
             <Button
                 style="@style/PowerPlannerBlueButton"
@@ -66,31 +64,29 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:layout_marginTop="8dp"
-                android:id="@+id/ButtonSyncAgain"
-                local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}"/>
-        
-            <TextView
+                android:id="@+id/ButtonSyncAgain"/>
+
+			<TextView
+                android:id="@+id/InitialSync_SyncErrorText"
                 style="@android:style/TextAppearance.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:textColor="#ffffff"
-                local:Binding="{Source=Error, Target=Text}; {Source=Error, Target=Visibility, Converter=StringToVisibilityConverter}"/>
+                android:textColor="#ffffff"/>
     
         </LinearLayout>
     </ScrollView>
-        
-    <LinearLayout
+
+	<LinearLayout
+        android:id="@+id/InitialSync_ResyncContainer"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        local:Binding="{Source=IsSyncing, Target=Visibility, Converter=BoolToVisibilityConverter, ConverterParameter=Invert}">
+        android:layout_marginBottom="16dp">
         <Button
             style="@style/PowerPlannerBlueButton"
-            android:text="{MainMenuItem_Settings}"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

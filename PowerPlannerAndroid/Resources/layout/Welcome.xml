@@ -24,8 +24,8 @@
             android:textColor="#ffffff"/>
         
         <TextView
+            android:id="@+id/WelcomePage_TextViewSubtitle"
             style="@android:style/TextAppearance.Medium"
-            android:text="{WelcomePage_TextBlockSubtitle.Text}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -43,7 +43,6 @@
         android:layout_marginBottom="16dp">
         <Button
             style="@style/PowerPlannerBlueButton"
-            android:text="{WelcomePage_ButtonLogin.Content}"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -53,7 +52,6 @@
             android:layout_height="match_parent"/>
         <Button
             style="@style/PowerPlannerBlueButton"
-            android:text="{WelcomePage_ButtonCreateAccount.Content}"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
