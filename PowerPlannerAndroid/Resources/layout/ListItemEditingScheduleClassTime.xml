@@ -8,19 +8,19 @@
     android:orientation="vertical">
             
     <TextView
+        android:id="@+id/ListItemEditingScheduleClassTime_DaysText"
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        local:Binding="{Source=DaysText, Target=Text, Mode=OneWay}"/>
+        android:layout_height="wrap_content"/>
 
-    <TextView
+	<TextView
+        android:id="@+id/ListItemEditingScheduleClassTime_TimeText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        local:Binding="{Source=TimeText, Target=Text, Mode=OneWay}"/>
+        android:layout_height="wrap_content"/>
 
-    <TextView
+	<TextView
+        android:id="@+id/ListItemEditingScheduleClassTime_RoomText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        local:Binding="{Source=Room, Target=Text, Mode=OneWay}"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

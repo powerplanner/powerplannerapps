@@ -37,24 +37,27 @@
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>5.0.0-beta</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Android.Glide" Version="4.16.0.6" />
+    <PackageReference Include="Xamarin.Android.Glide" Version="5.0.5.1" />
     <PackageReference Include="Xamarin.Android.Google.BillingClient">
       <Version>6.1.0.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.PhotoView">
       <Version>2.1.4</Version>
     </PackageReference>
+	<!--Need these two Jvm packages to address .NET issue https://github.com/dotnet/android-libraries/issues/1341-->
+	<PackageReference Include="Xamarin.AndroidX.Compose.Runtime.Annotation.Jvm" Version="1.10.0.1" ExcludeAssets="all" />
+	<PackageReference Include="Xamarin.AndroidX.DataStore.Preferences.Core.Jvm" Version="1.2.0.1" ExcludeAssets="all" />
     <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4">
-      <Version>1.0.0.28</Version>
+      <Version>1.0.0.35</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Build.Download">
       <Version>0.11.4</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Messaging">
-      <Version>124.0.0.1</Version>
+      <Version>125.0.1.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Android.Material">
-      <Version>1.11.0.2</Version>
+      <Version>1.13.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Dagger">
       <Version>2.57.2.1</Version>

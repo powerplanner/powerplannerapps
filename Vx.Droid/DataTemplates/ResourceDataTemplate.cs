@@ -24,7 +24,7 @@ namespace InterfacesDroid.DataTemplates
 
         public View CreateView(object dataContext, ViewGroup root)
         {
-            return new InflatedViewWithBinding(ResourceId, root)
+            return new InflatedViewWithBindingHost(ResourceId, root)
             {
                 DataContext = dataContext
             };

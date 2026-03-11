@@ -1,25 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
-using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using BareMvvm.Core.App;
-using System.Threading.Tasks;
-using BareMvvm.Core.Windows;
-using InterfacesDroid.Windows;
 using InterfacesDroid.ViewModelPresenters;
 using ToolsPortable;
-using InterfacesDroid.Activities;
 using InterfacesDroid.Extensions;
 using System.Globalization;
-using IO.Github.Inflationx.Viewpump;
-using InterfacesDroid.Bindings;
 
 namespace InterfacesDroid.App
 {
@@ -43,9 +31,6 @@ namespace InterfacesDroid.App
 
         protected NativeDroidApplication(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
-            // Register the calling assembly (the app) as a ValueConverter source
-            BareMvvm.Core.Bindings.BindingApplicator.RegisterAssembly(System.Reflection.Assembly.GetCallingAssembly());
-
             // Capture the true device culture before any language override is applied
             try
             {
@@ -85,10 +70,6 @@ namespace InterfacesDroid.App
             // This will be called whenever anything happens for the first time - including a receiver or service being started.
 
             _current = new WeakReference<NativeDroidApplication>(this);
-
-            ViewPump.Init(ViewPump.InvokeBuilder()
-                .AddInterceptor(new BindingInterceptor())
-                .Build());
 
             // Register the view model to view mappings
             foreach (var mapping in GetViewModelToViewMappings())

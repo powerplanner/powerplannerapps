@@ -1,41 +1,22 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using InterfacesDroid.Views;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary;
 using InterfacesDroid.ViewModelPresenters;
-using InterfacesDroid.DataTemplates;
-using Android.Graphics;
-using Android.Graphics.Drawables;
-using InterfacesDroid.Themes;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAndroid.ViewHosts;
-using InterfacesDroid.Helpers;
-using BareMvvm.Core.App;
 using ToolsPortable;
-using InterfacesDroid.Bindings.Programmatic;
-using PowerPlannerAndroid.Views.ListItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using System.ComponentModel;
-using static Android.Views.View;
 using PowerPlannerAppDataLibrary.DataLayer;
-using PowerPlannerAndroid.Helpers;
 using System.Collections.Specialized;
 using Google.Android.Material.BottomNavigation;
-using AndroidX.DrawerLayout.Widget;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using AndroidX.Core.View;
+using BareMvvm.Core.Binding;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -44,6 +25,7 @@ namespace PowerPlannerAndroid.Views
         private PagedViewModelPresenter _contentPresenter;
         private PopupsPresenter _popupsPresenter;
         private ProgressBar _syncProgressBar;
+        private BindingHost _selectedClassBindingHost = new BindingHost();
         public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
@@ -55,6 +37,15 @@ namespace PowerPlannerAndroid.Views
             _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
 
             ViewCompat.SetOnApplyWindowInsetsListener(FindViewById(Resource.Id.MainContentView), this);
+
+            // Handle class name changing in toolbar
+            _selectedClassBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), selectedClassName =>
+            {
+                if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes && selectedClassName != null)
+                {
+                    Toolbar.Title = selectedClassName;
+                }
+            });
         }
 
         public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
@@ -308,39 +299,15 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private BindingInstance _selectedClassNameBinding;
-        private BindingInstance _calendarTitleBinding;
-        private BindingInstance _calendarBackBinding;
         private void UpdateActionBarTitle()
         {
             Toolbar.Visibility = ViewStates.Visible;
-            
-            if (_selectedClassNameBinding != null)
-            {
-                _selectedClassNameBinding.Dispose();
-                _selectedClassNameBinding = null;
-            }
-
-            if (_calendarTitleBinding != null)
-            {
-                _calendarTitleBinding.Dispose();
-                _calendarTitleBinding = null;
-            }
-
-            if (_calendarBackBinding != null)
-            {
-                _calendarBackBinding.Dispose();
-                _calendarBackBinding = null;
-            }
 
             if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
             {
                 if (ViewModel.SelectedClass != null)
                 {
-                    _selectedClassNameBinding = ViewModel.SelectedClass.SetBinding(nameof(ViewItemClass.Name), (c) =>
-                    {
-                        Toolbar.Title = c.Name;
-                    });
+                    Toolbar.Title = ViewModel.SelectedClass.Name;
                 }
                 else
                     Toolbar.Title = PowerPlannerResources.GetStringMenuItem(NavigationManager.MainMenuSelections.Classes);
@@ -409,6 +376,7 @@ namespace PowerPlannerAndroid.Views
 
         private void OnSelectedClassChanged()
         {
+            _selectedClassBindingHost.DataContext = ViewModel.SelectedClass;
             UpdateActionBarTitle();
         }
     }

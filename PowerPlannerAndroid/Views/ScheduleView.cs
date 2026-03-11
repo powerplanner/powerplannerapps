@@ -1,31 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
-using InterfacesDroid.Views;
-using InterfacesDroid.DataTemplates;
-using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerAndroid.Views.ListItems;
-using InterfacesDroid.Themes;
-using ToolsPortable;
-using PowerPlannerAndroid.ViewHosts;
-using PowerPlannerAppDataLibrary.ViewLists;
-using System.ComponentModel;
-using Android.Graphics.Drawables;
-using Android.Graphics;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAndroid.Views.Controls;
-using InterfacesDroid.Helpers;
 using AndroidX.Core.Content;
+using InterfacesDroid.DataTemplates;
+using InterfacesDroid.Helpers;
+using InterfacesDroid.Themes;
+using InterfacesDroid.Views;
+using PowerPlannerAndroid.Converters;
 using PowerPlannerAndroid.Helpers;
+using PowerPlannerAndroid.ViewHosts;
+using PowerPlannerAndroid.Views.Controls;
+using PowerPlannerAndroid.Views.ListItems;
+using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewLists;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using ToolsPortable;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -45,6 +41,25 @@ namespace PowerPlannerAndroid.Views
 
         public ScheduleView(ViewGroup root) : base(Resource.Layout.Schedule, root)
         {
+            // Programmatically add zoom and pan view, since if loading it through XML it causes memory leaks
+            var normalContent = FindViewById<LinearLayout>(Resource.Id.NormalContent);
+
+            var scrollViewSchedule = new MyZoomAndPanView(Context)
+            {
+                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, 0, 1)
+            };
+
+            _scheduleHost = new LinearLayout(Context)
+            {
+                LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent),
+                Orientation = Orientation.Horizontal
+            };
+
+            scrollViewSchedule.AddView(_scheduleHost);
+
+            normalContent.AddView(scrollViewSchedule, 0);
+
+
             _normalContent = FindViewById(Resource.Id.NormalContent);
             _editingContent = FindViewById(Resource.Id.EditingContent);
             _welcomeContent = FindViewById(Resource.Id.WelcomeContent);
@@ -53,12 +68,40 @@ namespace PowerPlannerAndroid.Views
             MenuInflater inflater = new MenuInflater(Context);
             inflater.Inflate(Resource.Menu.schedule_week_menu, _weekToolbar.Menu);
             LocalizationHelper.LocalizeMenu(_weekToolbar.Menu);
-            _weekToolbar.MenuItemClick += _weekToolbar_MenuItemClick;
+            _weekToolbar.MenuItemClick += new WeakEventHandler<AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs>(_weekToolbar_MenuItemClick).Handler;
 
-            var scrollViewSchedule = FindViewById<MyZoomAndPanView>(Resource.Id.ScrollViewSchedule);
-            scrollViewSchedule.ViewChanging += ScrollViewSchedule_ViewChanging;
+            scrollViewSchedule.ViewChanging += new WeakEventHandler(ScrollViewSchedule_ViewChanging).Handler;
 
+            FindViewById<Button>(Resource.Id.ButtonLogIn).Text = R.S("WelcomePage_ButtonLogin.Content");
             FindViewById<Button>(Resource.Id.ButtonLogIn).Click += new WeakEventHandler(ScheduleView_Click).Handler;
+
+            FindViewById<Button>(Resource.Id.ButtonAddClass).Text = R.S("SchedulePage_ButtonAddClass.Content");
+            FindViewById<Button>(Resource.Id.ButtonWelcomeAddClass).Text = R.S("SchedulePage_ButtonAddClass.Content");
+            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewReturningUser).Text = R.S("SchedulePage_TextBlockReturningUser.Text");
+
+            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeTitle).Text = R.S("SchedulePage_TextBlockWelcomeTitle.Text");
+            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeSubtitle).Text = R.S("SchedulePage_TextBlockWelcomeSubtitle.Text");
+
+            BindingHost.SetBinding<DateTime>(nameof(ViewModel.DisplayStartDate), displayStartDate =>
+            {
+                FindViewById<TextView>(Resource.Id.Schedule_DisplayStartDateWeek).Text = WeekDateToStringConverter.Convert(displayStartDate);
+                FindViewById<TextView>(Resource.Id.Schedule_DisplayStartDateYear).Text = displayStartDate.ToString("yyyy");
+            });
+
+            BindingHost.SetBinding<DateTime>(nameof(ViewModel.DisplayEndDate), displayEndDate =>
+            {
+                FindViewById<TextView>(Resource.Id.Schedule_DisplayEndDateWeek).Text = WeekDateToStringConverter.Convert(displayEndDate);
+            });
+
+            BindingHost.SetBinding<PowerPlannerSending.Schedule.Week>(nameof(ViewModel.CurrentWeek), currentWeek =>
+            {
+                FindViewById<TextView>(Resource.Id.Schedule_CurrentWeek).Text = $", {PowerPlannerResources.GetLocalizedWeek(currentWeek)}";
+            });
+
+            BindingHost.SetBinding<bool>(nameof(ViewModel.HasTwoWeekSchedule), hasTwoWeekSchedule =>
+            {
+                FindViewById(Resource.Id.Schedule_CurrentWeek).Visibility = hasTwoWeekSchedule ? ViewStates.Visible : ViewStates.Gone;
+            });
         }
 
         private void ScheduleView_Click(object sender, EventArgs e)
@@ -123,8 +166,8 @@ namespace PowerPlannerAndroid.Views
         {
             ViewModel.InitializeArrangers(HEIGHT_OF_HOUR, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM);
 
-            FindViewById<Button>(Resource.Id.ButtonAddClass).Click += delegate { ViewModel.AddClass(); };
-            FindViewById<Button>(Resource.Id.ButtonWelcomeAddClass).Click += delegate { ViewModel.AddClass(); };
+            FindViewById<Button>(Resource.Id.ButtonAddClass).Click += new WeakEventHandler(ButtonAddClass_Click).Handler;
+            FindViewById<Button>(Resource.Id.ButtonWelcomeAddClass).Click += new WeakEventHandler(ButtonAddClass_Click).Handler;
 
             ViewModel.OnFullReset += new WeakEventHandler(ViewModel_OnFullReset).Handler;
             ViewModel.OnItemsForDateChanged += new WeakEventHandler<DateTime>(ViewModel_OnItemsForDateChanged).Handler;
@@ -139,8 +182,7 @@ namespace PowerPlannerAndroid.Views
             UpdateLayoutMode();
 
             // First prepare the schedule host
-            _scheduleHost = FindViewById<LinearLayout>(Resource.Id.ScheduleHost);
-            _scheduleHost.Click += ScheduleHost_Click;
+            _scheduleHost.Click += new WeakEventHandler(ScheduleHost_Click).Handler;
             _scheduleHost.AddView(CreateColumn(0));
             DayOfWeek dayOfWeek = ViewModel.FirstDayOfWeek;
             for (int i = 0; i < 7; i++, dayOfWeek++)
@@ -160,25 +202,44 @@ namespace PowerPlannerAndroid.Views
             RenderSchedule();
         }
 
+        private void ButtonAddClass_Click(object sender, EventArgs e)
+        {
+            ViewModel.AddClass();
+        }
+
         private void ViewModel_OnItemsForDateChanged(object sender, DateTime e)
         {
-            RenderAllDayItems(e);
+            try
+            {
+                RenderAllDayItems(e);
 
-            if (ResetAllDayItemsViewsHeight())
-            {
-                // If the height of all day items have changed cause of this,
-                // we need to re-render all items on all days
-                RenderAllDates();
+                if (ResetAllDayItemsViewsHeight())
+                {
+                    // If the height of all day items have changed cause of this,
+                    // we need to re-render all items on all days
+                    RenderAllDates();
+                }
+                else
+                {
+                    RenderDate(e);
+                }
             }
-            else
+            catch (ObjectDisposedException)
             {
-                RenderDate(e);
+
             }
         }
 
         private void ViewModel_OnFullReset(object sender, EventArgs e)
         {
-            RenderSchedule();
+            try
+            {
+                RenderSchedule();
+            }
+            catch (ObjectDisposedException)
+            {
+
+            }
         }
 
         private AllDayItemsView GetAllDayItemsView(DayOfWeek day)
@@ -221,9 +282,9 @@ namespace PowerPlannerAndroid.Views
         {
             var view = new ListItemEditingScheduleClassView(root, c);
 
-            view.OnAddClassTimeRequested += View_OnAddClassTimeRequested;
-            view.OnEditClassTimesRequested += View_OnEditClassTimesRequested;
-            view.OnEditClassRequested += View_OnEditClassRequested;
+            view.OnAddClassTimeRequested += new WeakEventHandler<ViewItemClass>(View_OnAddClassTimeRequested).Handler;
+            view.OnEditClassTimesRequested += new WeakEventHandler<ViewItemSchedule[]>(View_OnEditClassTimesRequested).Handler;
+            view.OnEditClassRequested += new WeakEventHandler<ViewItemClass>(View_OnEditClassRequested).Handler;
 
             return view;
         }
@@ -250,15 +311,22 @@ namespace PowerPlannerAndroid.Views
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            try
             {
-                case nameof(ViewModel.LayoutMode):
-                    UpdateLayoutMode();
-                    break;
+                switch (e.PropertyName)
+                {
+                    case nameof(ViewModel.LayoutMode):
+                        UpdateLayoutMode();
+                        break;
 
-                case nameof(ViewModel.HasAllDayItems):
-                    RenderSchedule();
-                    break;
+                    case nameof(ViewModel.HasAllDayItems):
+                        RenderSchedule();
+                        break;
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+
             }
         }
 
@@ -415,7 +483,7 @@ namespace PowerPlannerAndroid.Views
             {
                 var scheduleItem = new MyScheduleItemView(Context, s.Item, date);
                 scheduleItem.Clickable = true;
-                scheduleItem.Click += ScheduleItem_Click;
+                scheduleItem.Click += new WeakEventHandler(ScheduleItem_Click).Handler;
 
                 AddVisualItem(scheduleItem, s, date.DayOfWeek);
             }

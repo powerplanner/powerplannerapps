@@ -9,6 +9,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using StorageEverywhere;
 using UIKit;
+using Vx;
 
 namespace PowerPlanneriOS.Extensions
 {
@@ -35,7 +36,13 @@ namespace PowerPlanneriOS.Extensions
 
             // Present the picker
             var currContent = PowerPlannerAppDataLibrary.App.PowerPlannerApp.Current.GetMainScreenViewModel().GetFinalContent();
-            var currController = InterfacesiOS.Views.BareUIHelper.GetViewController(currContent.NativeComponent as Vx.iOS.iOSNativeComponent);
+
+            INativeComponent nativeComponent;
+            if (currContent.NativeComponent == null || !currContent.NativeComponent.TryGetTarget(out nativeComponent))
+            {
+                throw new InvalidOperationException("NativeComponent was null in " + currContent.GetType().Name);
+            }
+            var currController = InterfacesiOS.Views.BareUIHelper.GetViewController(nativeComponent as Vx.iOS.iOSNativeComponent);
             currController.PresentViewController(picker, true, null);
 
             return await tcs.Task;
