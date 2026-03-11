@@ -78,13 +78,15 @@ namespace Vx.Droid
 
         protected override void OnDetachedFromWindow()
         {
-            Component?.PauseRendering();
+            // Pause / resume has issues when used in SlideView, disabling for now.
+            //Component?.PauseRendering();
             base.OnDetachedFromWindow();
         }
 
         protected override void OnAttachedToWindow()
         {
-            Component?.ResumeRendering();
+            // Pause / resume has issues when used in SlideView, disabling for now.
+            //Component?.ResumeRendering();
             base.OnAttachedToWindow();
         }
     }
