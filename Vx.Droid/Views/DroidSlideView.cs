@@ -28,15 +28,31 @@ namespace Vx.Droid.Views
         private class PageChangeCallback : ViewPager2.OnPageChangeCallback
         {
             private DroidSlideView _droidSlideView;
+            private bool _isUserInitiated;
 
             public PageChangeCallback(DroidSlideView droidSlideView)
             {
                 _droidSlideView = droidSlideView;
             }
 
+            public override void OnPageScrollStateChanged(int state)
+            {
+                if (state == ViewPager2.ScrollStateDragging)
+                {
+                    _isUserInitiated = true;
+                }
+                else if (state == ViewPager2.ScrollStateIdle)
+                {
+                    _isUserInitiated = false;
+                }
+            }
+
             public override void OnPageSelected(int position)
             {
-                _droidSlideView.VxView?.Position?.ValueChanged?.Invoke(GetVxPosition(position, _droidSlideView.VxView?.MinPosition, _droidSlideView.VxView?.MaxPosition));
+                if (_isUserInitiated)
+                {
+                    _droidSlideView.VxView?.Position?.ValueChanged?.Invoke(GetVxPosition(position, _droidSlideView.VxView?.MinPosition, _droidSlideView.VxView?.MaxPosition));
+                }
             }
         }
 
