@@ -671,7 +671,8 @@ namespace PowerPlannerUWP
 
                     if (v <= new Version(2603, 2, 51, 99) && v >= new Version(2601, 1))
                     {
-                        changedText += "\n - Fixed the days of week on Schedule page for users where Monday is first day of week";
+                        changedText += "\n - Fixed display of class times when editing class schedule";
+                        changedText += "\n - Fixed days of week on Schedule page for users where Monday is first day of week";
                     }
 
                     if (v <= new Version(2408, 23, 3, 99))

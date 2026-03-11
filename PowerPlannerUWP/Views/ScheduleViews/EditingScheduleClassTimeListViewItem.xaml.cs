@@ -35,7 +35,7 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
         // Using a DependencyProperty as the backing store for Schedules.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SchedulesProperty =
-            DependencyProperty.Register(nameof(Schedules), typeof(IEnumerable<ViewItemSchedule>), typeof(EditingScheduleClassTimeListViewItem), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Schedules), typeof(IEnumerable<ViewItemSchedule>), typeof(EditingScheduleClassTimeListViewItem), new PropertyMetadata(null, OnSchedulesChanged));
 
         private static void OnSchedulesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
