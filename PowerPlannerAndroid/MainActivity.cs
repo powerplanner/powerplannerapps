@@ -377,6 +377,11 @@ namespace PowerPlannerAndroid
                     string changedText = "";
 
 
+                    if (v <= new Version(2603, 11, 52, 99) && v >= new Version(2601, 0))
+                    {
+                        changedText += "\n - Fixed bug where clicking calendar dates showed random days";
+                    }
+
                     if (v <= new Version(2402, 19, 0, 0))
                     {
                         changedText += "\n - Ability to move semesters and classes to different semesters and years!";
