@@ -470,7 +470,7 @@ namespace PowerPlannerUWP.Extensions
                     if (this.IsClassesEnabled && allData.Semester != null)
                     {
                         Guid[] newScheduleIdentifiers = DataChangedEvent.NewItems.OfType<DataItemSchedule>().Select(i => i.Identifier).ToArray();
-                        var newSchedules = allData.Classes.Values.SelectMany(i => i.Schedules).Where(i => newScheduleIdentifiers.Contains(i.Identifier)).ToArray();
+                        var newSchedules = allData.AllSchedules.Where(i => newScheduleIdentifiers.Contains(i.Identifier)).ToArray();
                         await AddNewSchedules(allData.Semester, allData.Classes, newSchedules);
                         await AddNewHolidays(DataChangedEvent.NewItems.OfType<DataItemMegaItem>().Where(i => i.MegaItemType == PowerPlannerSending.MegaItemType.Holiday));
                     }
@@ -537,7 +537,7 @@ namespace PowerPlannerUWP.Extensions
                     if (this.IsClassesEnabled && allData.Semester != null)
                     {
                         var editedScheduleIdentifiers = allData.SchedulesWithEditedParents.Select(i => i.Identifier).Union(DataChangedEvent.EditedItems.OfType<DataItemSchedule>().Select(i => i.Identifier)).ToArray();
-                        foreach (var edited in allData.Classes.Values.SelectMany(i => i.Schedules).Where(i => editedScheduleIdentifiers.Contains(i.Identifier)))
+                        foreach (var edited in allData.AllSchedules.Where(i => editedScheduleIdentifiers.Contains(i.Identifier)))
                         {
                             ThrowIfCanceled();
 
@@ -580,6 +580,12 @@ namespace PowerPlannerUWP.Extensions
                             }
                         }
                     }
+                }
+                catch (InvalidOperationException)
+                {
+                    // Collection was modified during enumeration due to concurrent data changes.
+                    // Return false to trigger a reset that will restore full consistency.
+                    return false;
                 }
                 catch (OperationCanceledException)
                 {
@@ -626,6 +632,11 @@ namespace PowerPlannerUWP.Extensions
 
                 public List<ViewItemSchedule> SchedulesWithEditedParents = new List<ViewItemSchedule>();
 
+                /// <summary>
+                /// A snapshot of all schedules taken under the DataChangeLock, so we don't enumerate live collections later.
+                /// </summary>
+                public List<ViewItemSchedule> AllSchedules = new List<ViewItemSchedule>();
+
                 public bool HasSemester()
                 {
                     return Semester != null;
@@ -657,6 +668,10 @@ namespace PowerPlannerUWP.Extensions
                             {
                                 answer.Classes[c.Identifier] = c;
                             }
+
+                            // Snapshot all schedules while under the lock to avoid enumerating
+                            // live collections later (which can throw InvalidOperationException)
+                            answer.AllSchedules.AddRange(scheduleViewItemsGroup.Classes.SelectMany(i => i.Schedules));
                         }
 
                         using (await Locks.LockDataForReadAsync())
@@ -700,7 +715,7 @@ namespace PowerPlannerUWP.Extensions
                                         affectedClassesForSchedule = classIdentifiersNeedingChildrenLoaded;
 
                                     if (affectedClassesForSchedule.Length > 0)
-                                        answer.SchedulesWithEditedParents.AddRange(answer.Classes.Values.Where(i => affectedClassesForSchedule.Contains(i.Identifier)).SelectMany(i => i.Schedules));
+                                        answer.SchedulesWithEditedParents.AddRange(answer.AllSchedules.Where(i => affectedClassesForSchedule.Contains(i.Class.Identifier)));
 
                                     ThrowIfCanceled();
                                 }
@@ -842,9 +857,25 @@ namespace PowerPlannerUWP.Extensions
         {
             lock (_lock)
             {
-                _activeHelpers.Clear();
+                bool shouldQueueReset = this is AppointmentsUpdateHelper;
 
-                CompleteTaskThatWaitsForAll();
+                // Remove all helpers for this account (preserve other accounts' queued work)
+                for (int i = _activeHelpers.Count - 1; i >= 0; i--)
+                {
+                    if (_activeHelpers[i].Account.LocalAccountId == this.Account.LocalAccountId)
+                    {
+                        _activeHelpers.RemoveAt(i);
+                    }
+                }
+
+                // If an update failed, queue a full reset to restore consistency.
+                // Don't do this for reset failures to avoid infinite retry loops.
+                if (shouldQueueReset)
+                {
+                    _activeHelpers.Add(new AppointmentsResetHelper(this.Account, this.DataStore));
+                }
+
+                _ = StartNextHelper();
             }
         }
 

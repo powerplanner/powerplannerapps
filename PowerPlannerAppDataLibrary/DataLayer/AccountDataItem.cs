@@ -87,7 +87,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set { SetProperty(ref _isAppointmentsUpToDate, value, "IsAppointmentsUpToDate"); }
         }
 
-        private bool _isTasksCalendarIntegrationDisabled;
+        private bool _isTasksCalendarIntegrationDisabled = true;
         /// <summary>
         /// Gets and sets a value indicating whether the Tasks calendar integration with system calendar has been disabled.
         /// </summary>
@@ -98,7 +98,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set { SetProperty(ref _isTasksCalendarIntegrationDisabled, value, "IsTasksCalendarIntegrationDisabled"); }
         }
 
-        private bool _isClassesCalendarIntegrationDisabled;
+        private bool _isClassesCalendarIntegrationDisabled = true;
         /// <summary>
         /// Gets and sets a value indicating whether the Classes calendar integration with system calendar has been disabled.
         /// </summary>
