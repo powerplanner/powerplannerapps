@@ -35,7 +35,7 @@
 			<Version>2.8.7</Version>
 		</PackageReference>
 		<PackageReference Include="StorageEverywhereIncludingiOS">
-			<Version>10.0.0</Version>
+			<Version>10.0.1</Version>
 		</PackageReference>
 	</ItemGroup>
 
