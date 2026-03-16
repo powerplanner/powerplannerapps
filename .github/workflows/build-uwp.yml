@@ -330,6 +330,7 @@ jobs:
           --sellerId "${{ secrets.PARTNER_CENTER_SELLER_ID }}"
           --clientId "${{ secrets.PARTNER_CENTER_CLIENT_ID }}"
           --clientSecret "${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}"
+          -v
 
       - name: Delete pending submission (if any)
         shell: pwsh
