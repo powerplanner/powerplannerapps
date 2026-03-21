@@ -28,6 +28,7 @@ using PowerPlannerAppDataLibrary;
 using PowerPlannerUWP.TileHelpers;
 using PowerPlannerAppDataLibrary.Components;
 using Vx.Uwp;
+using Vx.Extensions;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -334,14 +335,14 @@ namespace PowerPlannerUWP.Views
                 DateTime classStartTime = today.Add(ViewModel.StartTime);
                 DateTime classEndTime = today.Add(ViewModel.EndTime);
 
-                var timeFormatter = new DateTimeFormatter("{hour.integer}‎:‎{minute.integer(2)}");
+                var timeFormatter = DateTimeFormatterExtension.Current;
 
                 // Fill in the times on the left column
                 for (DateTime tempClassStartTime = classStartTime; classEndTime >= tempClassStartTime; tempClassStartTime = tempClassStartTime.AddHours(1))
                 {
                     GridTimes.Children.Add(new TextBlock()
                     {
-                        Text = timeFormatter.Format(tempClassStartTime),
+                        Text = timeFormatter.FormatAsShortTimeWithoutAmPm(tempClassStartTime),
                         Style = (Style)Resources["TimeStyle"],
                         Margin = new Thickness
                             (

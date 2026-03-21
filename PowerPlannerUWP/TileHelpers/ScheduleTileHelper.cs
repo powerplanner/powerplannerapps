@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Extensions;
 using Windows.Data.Xml.Dom;
 using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Notifications;
@@ -677,12 +678,12 @@ namespace PowerPlannerUWP.TileHelpers
 
         private static string GetTimeString(DateTime time)
         {
-            return new DateTimeFormatter("{hour.integer}‎:‎{minute.integer(2)}").Format(DateTime.SpecifyKind(time, DateTimeKind.Local));
+            return DateTimeFormatterExtension.Current.FormatAsShortTimeWithoutAmPm(DateTime.SpecifyKind(time, DateTimeKind.Local));
         }
 
         private static string GetTimeStringWithAmPm(DateTime time)
         {
-            return new DateTimeFormatter("shorttime").Format(DateTime.SpecifyKind(time, DateTimeKind.Local));
+            return DateTimeFormatterExtension.Current.FormatAsShortTime(DateTime.SpecifyKind(time, DateTimeKind.Local));
         }
 
         private static TileBindingContentAdaptive GenerateTileNotificationMediumContent(IEnumerable<ViewItemSchedule> schedules, DateTime date)

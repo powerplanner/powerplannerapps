@@ -269,23 +269,13 @@
 
 
 
-                    <converters:ColorArrayToColorConverter x:Key="ColorArrayToColorConverter"/>
-                    <converters:ColorArrayToBrushConverter x:Key="ColorArrayToBrushConverter"/>
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
                     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
-                    <converters:TimeSpanToDateTimeConverter x:Key="TimeSpanToDateTimeConverter"/>
-                    <converters:ListToVisibilityConverter x:Key="ListToVisibilityConverter"/>
-                    <converters:DateToLongDateConverter x:Key="DateToLongDateConverter"/>
-                    <converters:DoubleToBlankStringConverter x:Key="DoubleToBlankStringConverter"/>
                     <converters:NumberToFormatConverter x:Key="NumberToFormatConverter"/>
-                    <converters:DateToStringConverter x:Key="DateToStringConverter"/>
                     <converters:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
-                    <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
                     <converters:DayOfWeekToStringConverter x:Key="DayOfWeekToStringConverter"/>
                     <converters:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
-                    <converters:DateToTimeConverter x:Key="DateToTimeConverter"/>
                     <converters:StringToUpperCaseConverter x:Key="StringToUpperCaseConverter"/>
-                    <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
 
 
                     <Style x:Key="BlankListViewItemContainerStyle" TargetType="ListViewItem">

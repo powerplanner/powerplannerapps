@@ -669,6 +669,11 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
+                    if (v <= new Version(2603, 16, 58, 99) && v >= new Version(2601, 1))
+                    {
+                        changedText += "\n - Fixed 24hr time formatting issues";
+                    }
+
                     if (v <= new Version(2603, 2, 51, 99) && v >= new Version(2601, 1))
                     {
                         changedText += "\n - Fixed display of class times when editing class schedule";

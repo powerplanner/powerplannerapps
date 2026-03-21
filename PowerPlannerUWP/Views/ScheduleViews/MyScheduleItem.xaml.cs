@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Vx.Extensions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Globalization.DateTimeFormatting;
@@ -48,8 +49,8 @@ namespace PowerPlannerUWP.Views.ScheduleViews
             if (Schedule == null)
                 return;
 
-            var timeFormatter = new DateTimeFormatter("shorttime");
-            TextBlockTime.Text = string.Format(LocalizedResources.GetString("String_TimeToTime"), timeFormatter.Format(Schedule.StartTimeInLocalTime(Date)), timeFormatter.Format(Schedule.EndTimeInLocalTime(Date)));
+            var timeFormatter = DateTimeFormatterExtension.Current;
+            TextBlockTime.Text = string.Format(LocalizedResources.GetString("String_TimeToTime"), timeFormatter.FormatAsShortTime(Schedule.StartTimeInLocalTime(Date)), timeFormatter.FormatAsShortTime(Schedule.EndTimeInLocalTime(Date)));
         }
 
         public bool IsHighlighted

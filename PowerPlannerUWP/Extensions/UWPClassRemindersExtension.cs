@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Extensions;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation.Metadata;
 using Windows.Globalization.DateTimeFormatting;
@@ -22,7 +23,7 @@ namespace PowerPlannerUWP.Extensions
     public class UWPClassRemindersExtension : ClassRemindersExtension
     {
         private const string ClassRemindersGroupPrefix = "cr";
-        private static DateTimeFormatter _timeFormatter = new DateTimeFormatter("shorttime");
+        private static DateTimeFormatterExtension _timeFormatter = DateTimeFormatterExtension.Current;
         private static string _timeToTime = LocalizedResources.GetString("String_TimeToTime");
 
         protected override Task ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
@@ -138,7 +139,7 @@ namespace PowerPlannerUWP.Extensions
                 }.SerializeToString(), ToastActivationType.Foreground)
                 .SetToastScenario(ToastScenario.Reminder)
                 .AddText(c.Name)
-                .AddText(string.Format(_timeToTime, _timeFormatter.Format(s.StartTimeInLocalTime(date)), _timeFormatter.Format(s.EndTimeInLocalTime(date))));
+                .AddText(string.Format(_timeToTime, _timeFormatter.FormatAsShortTime(s.StartTimeInLocalTime(date)), _timeFormatter.FormatAsShortTime(s.EndTimeInLocalTime(date))));
 
             if (!string.IsNullOrWhiteSpace(s.Room))
             {

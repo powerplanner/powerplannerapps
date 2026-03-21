@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToolsPortable;
+using Vx.Extensions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Globalization.DateTimeFormatting;
@@ -50,11 +51,11 @@ namespace PowerPlannerUWP.Views.ScheduleViews
 
             ViewItemSchedule first = schedules.First();
 
-            var timeFormatter = new DateTimeFormatter("shorttime");
+            var timeFormatter = DateTimeFormatterExtension.Current;
 
             TextBlockDayOfWeeks.Text = string.Join(", ", schedules.Select(i => i.DayOfWeek).Distinct().OrderBy(i => i).Select(i => DateTools.ToLocalizedString(i)));
             // Editing view, so we use School Time
-            TextBlockName.Text = LocalizedResources.Common.GetStringTimeToTime(timeFormatter.Format(first.StartTimeInSchoolTime), timeFormatter.Format(first.EndTimeInSchoolTime));
+            TextBlockName.Text = LocalizedResources.Common.GetStringTimeToTime(timeFormatter.FormatAsShortTime(first.StartTimeInSchoolTime), timeFormatter.FormatAsShortTime(first.EndTimeInSchoolTime));
             if (string.IsNullOrWhiteSpace(first.Room))
             {
                 TextBlockRoom.Visibility = Visibility.Collapsed;
