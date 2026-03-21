@@ -52,6 +52,7 @@ namespace PowerPlannerUWP
             //ScheduleTileExtension.Current = new UWPSch
             //TelemetryExtension.Current = new 
             TilesExtension.Current = new UWPTilesExtension();
+            DateTimeFormatterExtension.Current = new UWPDateTimeFormatterExtension();
             ImagePickerExtension.Current = new UWPImagePickerExtension();
             LanguageExtension.Current = new UWPLanguageExtension();
             SoundsExtension.Current = new UWPSoundsExtension();

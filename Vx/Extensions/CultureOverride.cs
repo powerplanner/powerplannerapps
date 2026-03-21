@@ -31,6 +31,23 @@ namespace Vx.Extensions
         }
 
         /// <summary>
+        /// The user's regional format culture, captured before any app-level overrides.
+        /// Reflects the user's OS regional format settings including customized date/time
+        /// patterns (e.g. 12-hour vs 24-hour clock). This is separate from
+        /// <see cref="OriginalCultureInfo"/> which tracks the display language.
+        /// </summary>
+        public static CultureInfo UserRegionalCulture { get; private set; }
+
+        /// <summary>
+        /// Saves the user's regional format culture. Must be called before
+        /// <see cref="ApplyCultureOverride"/> since that overwrites CurrentCulture.
+        /// </summary>
+        public static void SetUserRegionalCulture(CultureInfo culture)
+        {
+            UserRegionalCulture = culture;
+        }
+
+        /// <summary>
         /// Applies the given language code to CultureInfo.CurrentCulture, CurrentUICulture,
         /// DefaultThreadCurrentCulture, and DefaultThreadCurrentUICulture so that
         /// DateTime.ToString() and other culture-sensitive APIs use the correct locale.

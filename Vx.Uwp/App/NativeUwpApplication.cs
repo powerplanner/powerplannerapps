@@ -23,7 +23,17 @@ namespace InterfacesUWP.App
 
         public NativeUwpApplication()
         {
-            // Capture the true device culture before any override is applied.
+            // Capture the user's regional format culture before any override is applied.
+            // CultureInfo.CurrentCulture reflects the user's regional format settings
+            // (including customized time patterns like 12/24-hour clock) and is NOT
+            // affected by PrimaryLanguageOverride (which only affects CurrentUICulture).
+            try
+            {
+                CultureOverride.SetUserRegionalCulture(CultureInfo.CurrentCulture);
+            }
+            catch { }
+
+            // Capture the true device display language before any override is applied.
             // On UWP, if PrimaryLanguageOverride was set in a previous session,
             // CultureInfo.CurrentUICulture is already the overridden culture at startup,
             // so we must get the actual device language from GlobalizationPreferences.
