@@ -315,5 +315,6 @@ jobs:
             --build_number "$BUILD_NUMBER" \
             --skip_screenshots \
             --automatic_release "true" \
+            --precheck_include_in_app_purchases false \
             --force \
             $SUBMIT_FLAG
