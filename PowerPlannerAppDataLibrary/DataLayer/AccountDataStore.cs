@@ -561,6 +561,11 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                         answer = new Dictionary<Guid, ChangedPropertiesOfDataItem>();
                     }
 
+                    if (answer == null)
+                    {
+                        answer = new Dictionary<Guid, ChangedPropertiesOfDataItem>();
+                    }
+
                     dataStore._loadedChangedItems = new ChangedItems(localAccountId, answer);
                     return dataStore._loadedChangedItems;
                 }
