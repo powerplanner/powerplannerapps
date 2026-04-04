@@ -23,7 +23,7 @@ on:
         required: false
         default: 'main'
       whats_new:
-        description: 'Release notes (What\'s New) for the App Store submission'
+        description: 'Release notes (Whats New) for the App Store submission'
         required: false
         default: 'Bug fixes and improvements'
 
