@@ -1792,7 +1792,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 itemType = "Event";
             }
 
-            TelemetryExtension.Current?.TrackEvent($"TimeOption_{itemType}_{name}");
+            TelemetryExtension.Current.TrackMetric("TimeOption", 1, "ItemType", itemType, "TimeOption", name);
         }
     }
 }

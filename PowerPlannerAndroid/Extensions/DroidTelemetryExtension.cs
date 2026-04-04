@@ -91,6 +91,33 @@ namespace PowerPlannerAndroid.Extensions
             catch { }
         }
 
+        public override void TrackMetric(string metricId, double metricValue)
+        {
+            try
+            {
+                _developerLogs.Add("Metric: " + metricId + ":" + metricValue);
+
+                _client.GetMetric(metricId).TrackValue(1);
+            }
+            catch { }
+        }
+
+        public override void TrackMetric(string metricId, double metricValue, string dim1Label, string dim1Value)
+        {
+            string str = "Metric: " + metricId + ":" + metricValue + ":" + dim1Label + ":" + dim1Value;
+            _developerLogs.Add(str);
+
+            _client.GetMetric(metricId, dim1Label).TrackValue(metricValue, dim1Value);
+        }
+
+        public override void TrackMetric(string metricId, double metricValue, string dim1Label, string dim1Value, string dim2Label, string dim2Value)
+        {
+            string str = "Metric: " + metricId + ":" + metricValue + ":" + dim1Label + ":" + dim1Value + ":" + dim2Label + ":" + dim2Value;
+            _developerLogs.Add(str);
+
+            _client.GetMetric(metricId, dim1Label, dim2Label).TrackValue(metricValue, dim1Value, dim2Value);
+        }
+
         private string _lastPageName;
         public override string LastPageName => _lastPageName;
         public override void TrackPageVisited(string pageName)

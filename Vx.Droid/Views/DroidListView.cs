@@ -31,6 +31,31 @@ namespace Vx.Droid.Views
 
             // Ensures padding will be added within the scrolling portion
             View.SetClipToPadding(false);
+
+            View.AddOnAttachStateChangeListener(new DetachListener(this));
+        }
+
+        private void OnDetachedFromWindow()
+        {
+            _adapter.ItemsSource = null;
+            _currentItems = null;
+        }
+
+        private class DetachListener : Java.Lang.Object, Android.Views.View.IOnAttachStateChangeListener
+        {
+            private readonly DroidListView _owner;
+
+            public DetachListener(DroidListView owner)
+            {
+                _owner = owner;
+            }
+
+            public void OnViewAttachedToWindow(Android.Views.View attachedView) { }
+
+            public void OnViewDetachedFromWindow(Android.Views.View detachedView)
+            {
+                _owner.OnDetachedFromWindow();
+            }
         }
 
         private void ItemClicked(object item)

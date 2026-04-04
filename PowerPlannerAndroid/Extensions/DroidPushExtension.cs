@@ -41,9 +41,15 @@ namespace PowerPlannerAndroid.Extensions
                         // TOO_MANY_REGISTRATIONS means too many stale tokens have accumulated.
                         // This is probably just occurring on Firebase test devices. There's no resolution other than devce hard reset.
                         // See https://github.com/firebase/firebase-android-sdk/issues/6958 for more info.
-                        TelemetryExtension.Current?.TrackEvent("Error_PushChannel_TooManyRegistrations");
+                        TelemetryExtension.Current?.TrackMetric("Error_PushChannel_TooManyRegistrations", 1);
                         token = null;
                         _tooManyRegistrations = true;
+                    }
+                    catch (Java.IO.IOException ex) when (ex.Message != null && ex.Message.Contains("SERVICE_NOT_AVAILABLE"))
+                    {
+                        // Probably intermittent issue, maybe should try exponential backoff, but just catching it for now.
+                        TelemetryExtension.Current?.TrackMetric("Error_PushChannel_ServiceNotAvailable", 1);
+                        token = null;
                     }
 
                     System.Diagnostics.Debug.WriteLine("FirebaseToken: " + token);
