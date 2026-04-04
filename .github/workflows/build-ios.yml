@@ -22,6 +22,10 @@ on:
         description: 'Branch, tag, or commit SHA to build'
         required: false
         default: 'main'
+      whats_new:
+        description: 'Release notes (What\'s New) for the App Store submission'
+        required: false
+        default: 'Bug fixes and improvements'
 
 # Version format: YYMM.D.run_number (e.g. 2506.15.42)
 # Azure DevOps used: $(date:yyMM).$(DayOfMonth)$(rev:.r)
@@ -269,19 +273,33 @@ jobs:
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+        shell: bash
         run: |
-          cat > api_key.json <<EOF
-          {
-            "key_id": "${APP_STORE_CONNECT_API_KEY_ID}",
-            "issuer_id": "${APP_STORE_CONNECT_API_ISSUER_ID}",
-            "key_filepath": "$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+          python3 << 'PYEOF'
+          import json, os
+          key_path = os.path.expanduser("~/private_keys/AuthKey_" + os.environ["APP_STORE_CONNECT_API_KEY_ID"] + ".p8")
+          data = {
+              "key_id": os.environ["APP_STORE_CONNECT_API_KEY_ID"],
+              "issuer_id": os.environ["APP_STORE_CONNECT_API_ISSUER_ID"],
+              "key": open(key_path).read(),
+              "in_house": False
           }
-          EOF
+          with open("api_key.json", "w") as f:
+              json.dump(data, f)
+          PYEOF
 
       - name: Create deliver configuration
         run: |
           mkdir -p fastlane
           echo 'app_identifier "com.barebonesdev.powerplanner"' > fastlane/Deliverfile
+
+      - name: Create release notes
+        shell: bash
+        env:
+          WHATS_NEW: ${{ github.event.inputs.whats_new || 'Bug fixes and improvements' }}
+        run: |
+          mkdir -p fastlane/metadata/en-US
+          printf '%s\n' "$WHATS_NEW" > fastlane/metadata/en-US/release_notes.txt
 
       - name: Publish to App Store
         env:
@@ -295,7 +313,6 @@ jobs:
             --app_identifier "com.barebonesdev.powerplanner" \
             --app_version "$APP_VERSION" \
             --build_number "$BUILD_NUMBER" \
-            --skip_metadata \
             --skip_screenshots \
             --automatic_release "true" \
             --force \
