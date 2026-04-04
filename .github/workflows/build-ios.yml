@@ -278,6 +278,11 @@ jobs:
           }
           EOF
 
+      - name: Create deliver configuration
+        run: |
+          mkdir -p fastlane
+          echo 'app_identifier "com.barebonesdev.powerplanner"' > fastlane/Deliverfile
+
       - name: Publish to App Store
         env:
           BUILD_NUMBER: ${{ env.BUILD_VERSION }}.0
