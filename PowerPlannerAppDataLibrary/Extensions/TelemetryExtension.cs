@@ -30,6 +30,12 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public abstract void TrackEvent(string eventName, IDictionary<string, string> properties = null);
 
+        public abstract void TrackMetric(string metricId, double metricValue);
+
+        public abstract void TrackMetric(string metricId, double metricValue, string dim1Label, string dim1Value);
+
+        public abstract void TrackMetric(string metricId, double metricValue, string dim1Label, string dim1Value, string dim2Label, string dim2Value);
+
         protected static string EventToString(string eventName, IDictionary<string, string> properties = null)
         {
             string s = $"Event: {eventName}";
@@ -118,6 +124,26 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
             System.Diagnostics.Debug.WriteLine(e);
             _developerLogs.Add(e);
+        }
+
+        public override void TrackMetric(string metricId, double metricValue)
+        {
+            System.Diagnostics.Debug.WriteLine("Metric: " + metricId + ":" + metricValue);
+            _developerLogs.Add("Metric: " + metricId + ":" + metricValue);
+        }
+
+        public override void TrackMetric(string metricId, double metricValue, string dim1Label, string dim1Value)
+        {
+            string str = "Metric: " + metricId + ":" + metricValue + ":" + dim1Label + ":" + dim1Value;
+            System.Diagnostics.Debug.WriteLine(str);
+            _developerLogs.Add(str);
+        }
+
+        public override void TrackMetric(string metricId, double metricValue, string dim1Label, string dim1Value, string dim2Label, string dim2Value)
+        {
+            string str = "Metric: " + metricId + ":" + metricValue + ":" + dim1Label + ":" + dim1Value + ":" + dim2Label + ":" + dim2Value;
+            System.Diagnostics.Debug.WriteLine(str);
+            _developerLogs.Add(str);
         }
 
         public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null, IDictionary<string, string> properties = null)
