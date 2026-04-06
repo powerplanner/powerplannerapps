@@ -376,6 +376,10 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2604, 4, 62, 99))
+                    {
+                        changedText += "\n - Fixed class reminders incorrectly appearing when there's a holiday";
+                    }
 
                     if (v <= new Version(2603, 11, 52, 99) && v >= new Version(2601, 0))
                     {
