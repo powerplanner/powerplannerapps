@@ -522,8 +522,10 @@ namespace PowerPlannerUWP
             {
                 var view = ApplicationView.GetForCurrentView();
 
-                // Apply themed title bar colors (will use cached/default theme)
-                Helpers.UwpThemeColorApplier.UpdateTitleBarFromTheme();
+                // Apply themed colors to XAML brush resources and title bar
+                // using cached/default theme from SharedInitialization
+                var colors = ThemeColorGenerator.Generate(Vx.Views.Theme.Current.ChromeColor);
+                Helpers.UwpThemeColorApplier.Apply(colors);
 
                 // Set up the min window size
                 view.SetPreferredMinSize(new Size(300, 300));
