@@ -2181,4 +2181,13 @@ Please think about using an online account instead!</value>
 	<data name="String_Recovering" xml:space="preserve">
 	<value>Recovering...</value>
   </data>
+  <data name="Settings_ThemeColor_Title" xml:space="preserve">
+    <value>Theme Color</value>
+  </data>
+  <data name="Settings_ThemeColor_Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Settings_ThemeColor_Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
 </root>

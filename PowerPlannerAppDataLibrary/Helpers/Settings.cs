@@ -102,6 +102,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         private const string OWNS_IN_APP_PURCHASE = "OwnsInAppPurchase";
         private const string LANGUAGE_OVERRIDE = "LanguageOverride";
         private const string THEME_OVERRIDE = "ThemeOverride";
+        private const string CACHED_PRIMARY_THEME_COLOR = "CachedPrimaryThemeColor";
 
         #endregion
 
@@ -279,6 +280,22 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             get => AppSettings.GetEnumOrDefault(THEME_OVERRIDE, Themes.Automatic);
             set => AppSettings.AddOrUpdateEnum(THEME_OVERRIDE, value);
+        }
+
+        /// <summary>
+        /// Hex string of the user's primary theme color, cached for instant startup.
+        /// Updated whenever the theme color is applied from account data.
+        /// </summary>
+        public static string CachedPrimaryThemeColor
+        {
+            get => AppSettings.GetValueOrDefault(CACHED_PRIMARY_THEME_COLOR, null) as string;
+            set
+            {
+                if (value != null)
+                    AppSettings.AddOrUpdateValue(CACHED_PRIMARY_THEME_COLOR, value);
+                else
+                    AppSettings.Remove(CACHED_PRIMARY_THEME_COLOR);
+            }
         }
 
         public static class NavigationManagerSettings

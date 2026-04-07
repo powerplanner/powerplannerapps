@@ -473,6 +473,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set => SetProperty(ref _defaultDoesRoundGradesUp, value, nameof(DefaultDoesRoundGradesUp));
         }
 
+        private byte[] _primaryThemeColor;
+        [DataMember]
+        public byte[] PrimaryThemeColor
+        {
+            get => _primaryThemeColor;
+            set => SetProperty(ref _primaryThemeColor, value, nameof(PrimaryThemeColor));
+        }
+
         /// <summary>
         /// Negating since this was added later and will default to false for upgraded accounts.
         /// </summary>
@@ -611,6 +619,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (settings.DefaultDoesRoundGradesUp != null && this.DefaultDoesRoundGradesUp != settings.DefaultDoesRoundGradesUp.Value)
             {
                 this.DefaultDoesRoundGradesUp = settings.DefaultDoesRoundGradesUp.Value;
+                accountChanged = true;
+            }
+
+            if (settings.PrimaryThemeColor != null && (this.PrimaryThemeColor == null || !this.PrimaryThemeColor.SequenceEqual(settings.PrimaryThemeColor)))
+            {
+                this.PrimaryThemeColor = settings.PrimaryThemeColor;
                 accountChanged = true;
             }
 
@@ -984,6 +998,23 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             _ = RemindersExtension.Current?.ResetReminders(this, dataStore);
 
             _ = TilesExtension.Current?.UpdateTileNotificationsForAccountAsync(this, dataStore);
+        }
+
+        public async System.Threading.Tasks.Task SetPrimaryThemeColorAsync(byte[] color, bool uploadSettings = true)
+        {
+            if (PrimaryThemeColor != null && color != null && PrimaryThemeColor.SequenceEqual(color))
+                return;
+            if (PrimaryThemeColor == null && color == null)
+                return;
+
+            PrimaryThemeColor = color;
+            NeedsToSyncSettings = true;
+            await AccountsManager.Save(this);
+
+            if (uploadSettings && IsOnlineAccount)
+            {
+                _ = Sync.SyncSettings(this, Sync.ChangedSetting.PrimaryThemeColor);
+            }
         }
 
         /// <summary>

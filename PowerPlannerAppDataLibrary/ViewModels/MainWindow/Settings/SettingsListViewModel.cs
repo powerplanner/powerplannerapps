@@ -297,6 +297,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenThemeSettings);
             }
 
+            if (HasAccount)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.Palette,
+                    PowerPlannerResources.GetString("Settings_ThemeColor_Title"),
+                    GetCurrentThemeColorName(),
+                    OpenThemeColorSettings);
+            }
+
             RenderOption(
                 layout,
                 MaterialDesign.MaterialDesignIcons.Translate,
@@ -775,6 +785,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public void OpenThemeSettings()
         {
             ShowPopup(new ThemeSettingsViewModel(ParentForSubviews));
+        }
+
+        public void OpenThemeColorSettings()
+        {
+            ShowPopup(new ThemeColorSettingsViewModel(ParentForSubviews));
+        }
+
+        private string GetCurrentThemeColorName()
+        {
+            var currentColor = Account?.PrimaryThemeColor?.ToColor() ?? Helpers.ThemeColorGenerator.DefaultPrimary;
+            if (currentColor.A == 0 && currentColor.R == 0 && currentColor.G == 0 && currentColor.B == 0)
+            {
+                currentColor = Helpers.ThemeColorGenerator.DefaultPrimary;
+            }
+            var match = ThemeColorSettingsViewModel.ColorOptions.FirstOrDefault(o => o.Color == currentColor);
+            return match?.Name ?? PowerPlannerResources.GetString("Settings_ThemeColor_Default");
         }
 
         public void OpenLanguageSettings()

@@ -2772,6 +2772,18 @@ Once you purchase the premium version, you own the premium version on all your d
           <source>Recovering...</source>
           <target state="final">جارٍ الاستعادة...</target>
         </trans-unit>
+        <trans-unit id="Settings_ThemeColor_Title" translate="yes" xml:space="preserve">
+          <source>Theme Color</source>
+          <target state="new">Theme Color</target>
+        </trans-unit>
+        <trans-unit id="Settings_ThemeColor_Preview" translate="yes" xml:space="preserve">
+          <source>Preview</source>
+          <target state="new">Preview</target>
+        </trans-unit>
+        <trans-unit id="Settings_ThemeColor_Default" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="new">Default</target>
+        </trans-unit>
       </group>
     </body>
   </file>

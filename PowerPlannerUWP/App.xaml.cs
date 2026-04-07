@@ -522,28 +522,8 @@ namespace PowerPlannerUWP
             {
                 var view = ApplicationView.GetForCurrentView();
 
-                // Set up the title bar
-                var titleBar = view.TitleBar;
-
-                titleBar.BackgroundColor = Color.FromArgb(255, 26, 32, 74);
-                titleBar.ForegroundColor = Colors.White;
-
-                titleBar.InactiveBackgroundColor = Color.FromArgb(255, 73, 79, 117);
-                titleBar.InactiveForegroundColor = Colors.LightGray;
-
-
-                titleBar.ButtonBackgroundColor = titleBar.BackgroundColor;
-                titleBar.ButtonForegroundColor = titleBar.ForegroundColor;
-
-                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(255, 75, 96, 179);
-                titleBar.ButtonHoverForegroundColor = Colors.White;
-
-                titleBar.ButtonInactiveBackgroundColor = titleBar.InactiveBackgroundColor;
-                titleBar.ButtonInactiveForegroundColor = titleBar.InactiveForegroundColor;
-
-                titleBar.ButtonPressedBackgroundColor = Color.FromArgb(255, 84, 107, 199);
-                titleBar.ButtonPressedForegroundColor = Colors.White;
-
+                // Apply themed title bar colors (will use cached/default theme)
+                Helpers.UwpThemeColorApplier.UpdateTitleBarFromTheme();
 
                 // Set up the min window size
                 view.SetPreferredMinSize(new Size(300, 300));
