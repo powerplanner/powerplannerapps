@@ -58,7 +58,10 @@ namespace PowerPlannerAndroid.Extensions
             // Give ourselves 5 second buffer
             DateTime now = DateTime.Now.AddSeconds(5);
 
-            var currSchedule = FindCurrentReminder(account, scheduleViewItemsGroup, now, out DateTime dateOfClass);
+            // Load holidays so we can skip scheduling reminders on holiday days
+            var holidayHelper = await SchedulesOnDayExcludingHolidays.LoadAsync(account.LocalAccountId, scheduleViewItemsGroup.Semester, now.Date, now.Date.AddDays(16));
+
+            var currSchedule = FindCurrentReminder(account, scheduleViewItemsGroup, now, holidayHelper, out DateTime dateOfClass);
             if (currSchedule == null)
             {
                 // Remove any existing
@@ -74,10 +77,10 @@ namespace PowerPlannerAndroid.Extensions
                 }
             }
 
-            ScheduleNext(account, scheduleViewItemsGroup, now, currSchedule);
+            ScheduleNext(account, scheduleViewItemsGroup, now, currSchedule, holidayHelper);
         }
 
-        private static void ScheduleNext(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now, ViewItemSchedule currSchedule)
+        private static void ScheduleNext(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now, ViewItemSchedule currSchedule, SchedulesOnDayExcludingHolidays holidayHelper)
         {
             var startTimeToLookFrom = now;
             if (currSchedule != null && currSchedule.StartTimeInLocalTime(now) > now)
@@ -86,7 +89,7 @@ namespace PowerPlannerAndroid.Extensions
                 startTimeToLookFrom = currSchedule.StartTimeInLocalTime(now).AddSeconds(1);
             }
 
-            var nextSchedule = FindNextSchedule(account, scheduleViewItemsGroup, startTimeToLookFrom, now.Date.AddDays(15)); // 15 days should cover week a/b
+            var nextSchedule = FindNextSchedule(account, scheduleViewItemsGroup, startTimeToLookFrom, now.Date.AddDays(15), holidayHelper); // 15 days should cover week a/b
 
             DateTime? nextUpdateTime = null;
 
@@ -141,7 +144,11 @@ namespace PowerPlannerAndroid.Extensions
             }
 
             DateTime now = DateTime.Now;
-            var currSchedule = FindCurrentReminder(account, scheduleViewItemsGroup, now, out DateTime dateOfClass);
+
+            // Load holidays so we can skip scheduling reminders on holiday days
+            var holidayHelper = await SchedulesOnDayExcludingHolidays.LoadAsync(localAccountId, scheduleViewItemsGroup.Semester, now.Date, now.Date.AddDays(16));
+
+            var currSchedule = FindCurrentReminder(account, scheduleViewItemsGroup, now, holidayHelper, out DateTime dateOfClass);
 
             if (currSchedule == null)
             {
@@ -154,7 +161,7 @@ namespace PowerPlannerAndroid.Extensions
             }
 
             // Schedule the next change
-            ScheduleNext(account, scheduleViewItemsGroup, now, currSchedule);
+            ScheduleNext(account, scheduleViewItemsGroup, now, currSchedule, holidayHelper);
         }
 
         private static void ShowNotification(NotificationManager notifManager, Context context, Guid localAccountId, ViewItemSchedule currSchedule, DateTime date, bool silentUpdate = false)
@@ -190,12 +197,12 @@ namespace PowerPlannerAndroid.Extensions
             notifManager.Notify(NotificationIds.CLASS_REMINDER_NOTIFICATION, builder.Build());
         }
 
-        private static ViewItemSchedule FindCurrentReminder(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now, out DateTime dateOfClass)
+        private static ViewItemSchedule FindCurrentReminder(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now, SchedulesOnDayExcludingHolidays holidayHelper, out DateTime dateOfClass)
         {
             dateOfClass = now.Date;
             var beforeTime = account.ClassRemindersTimeSpan.GetValueOrDefault();
 
-            SchedulesOnDay schedulesToday = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, dateOfClass, account.GetWeekOnDifferentDate(dateOfClass), trackChanges: false);
+            SchedulesOnDay schedulesToday = holidayHelper.Get(account, scheduleViewItemsGroup.Classes, dateOfClass, account.GetWeekOnDifferentDate(dateOfClass));
 
             var currSchedule = schedulesToday.OrderByDescending(i => i.StartTimeInLocalTime(now)).FirstOrDefault(i => now >= i.StartTimeInLocalTime(now).Subtract(beforeTime) && now <= i.EndTimeInLocalTime(now));
             if (currSchedule != null)
@@ -206,7 +213,7 @@ namespace PowerPlannerAndroid.Extensions
 
             // Otherwise, might be a schedule tomorrow at like 1am
             dateOfClass = now.Date.AddDays(1);
-            SchedulesOnDay schedulesTomorrow = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, dateOfClass, account.GetWeekOnDifferentDate(dateOfClass), trackChanges: false);
+            SchedulesOnDay schedulesTomorrow = holidayHelper.Get(account, scheduleViewItemsGroup.Classes, dateOfClass, account.GetWeekOnDifferentDate(dateOfClass));
 
 
             currSchedule = schedulesTomorrow.FirstOrDefault(i => now >= i.StartTimeInLocalTime(now).Subtract(beforeTime) && now <= i.EndTimeInLocalTime(now));
@@ -218,9 +225,9 @@ namespace PowerPlannerAndroid.Extensions
             notificationManager.Cancel(NotificationIds.CLASS_REMINDER_NOTIFICATION);
         }
 
-        private static Tuple<DateTime, ViewItemSchedule> FindNextSchedule(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now, DateTime maxDate)
+        private static Tuple<DateTime, ViewItemSchedule> FindNextSchedule(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup, DateTime now, DateTime maxDate, SchedulesOnDayExcludingHolidays holidayHelper)
         {
-            var schedulesOnDay = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, now.Date, account.GetWeekOnDifferentDate(now.Date), trackChanges: false);
+            var schedulesOnDay = holidayHelper.Get(account, scheduleViewItemsGroup.Classes, now.Date, account.GetWeekOnDifferentDate(now.Date));
 
             ViewItemSchedule nextSchedule = schedulesOnDay.FirstOrDefault(i => i.StartTimeInLocalTime(now) > now);
 
@@ -235,14 +242,7 @@ namespace PowerPlannerAndroid.Extensions
                 return null;
             }
 
-            return FindNextSchedule(account, scheduleViewItemsGroup, now, maxDate);
-        }
-
-        private static void ScheduleNextAlarm(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
-        {
-            DateTime now = DateTime.Now.AddSeconds(5);
-
-            SchedulesOnDay schedulesToday = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, now.Date, account.GetWeekOnDifferentDate(now.Date), trackChanges: false);
+            return FindNextSchedule(account, scheduleViewItemsGroup, now, maxDate, holidayHelper);
         }
     }
 }
