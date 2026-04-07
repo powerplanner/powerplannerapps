@@ -78,6 +78,7 @@ namespace Vx.Uwp.Views
 
             _tb.Text = newView.Text;
             View.IsEnabled = newView.IsEnabled;
+            View.Foreground = Vx.Views.Theme.Current.AccentColor.ToUwpBrush();
         }
     }
 }
