@@ -6,6 +6,7 @@ using System.Text;
 using Foundation;
 using UIKit;
 using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Helpers;
 using BareMvvm.Core.App;
 using System.Threading.Tasks;
 using InterfacesiOS.Views;
@@ -29,6 +30,8 @@ namespace PowerPlanneriOS.App
 
         protected override Task InitializeAsyncOverride()
         {
+            ThemeColorApplier.PlatformThemeApplier = iOSThemeColorApplier.Apply;
+
             BareSnackbarPresenter.ButtonTextColor = ColorResources.PowerPlannerAccentBlue;
 
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for iOS"; };
