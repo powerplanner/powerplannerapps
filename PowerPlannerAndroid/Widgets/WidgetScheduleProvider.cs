@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Appwidget;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAndroid.Helpers;
 using PowerPlannerAndroid.Services;
 using PowerPlannerAppDataLibrary;
 
@@ -113,6 +114,9 @@ namespace PowerPlannerAndroid.Widgets
         {
             // Instantiate the widget layout
             var views = new RemoteViews(context.PackageName, Resource.Layout.WidgetSchedule);
+
+            // Apply the user's current theme color to the header
+            views.SetInt(Resource.Id.WidgetScheduleHeader, "setBackgroundColor", DroidThemeColorApplier.GetWidgetHeaderColor());
 
             // Localize header text
             views.SetTextViewText(Resource.Id.WidgetScheduleHeaderText, PowerPlannerResources.GetString("MainMenuItem_Schedule"));
