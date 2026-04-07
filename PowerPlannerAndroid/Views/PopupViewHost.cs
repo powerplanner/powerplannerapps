@@ -77,6 +77,23 @@ namespace PowerPlannerAndroid.Views
             }
 
             ViewCompat.SetOnApplyWindowInsetsListener(popupView, this);
+
+            // Apply current theme colors and listen for future changes
+            ApplyThemeColors(DroidThemeColorApplier.Current);
+            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
+        }
+
+        private void ApplyThemeColors(ThemeColors colors)
+        {
+            try
+            {
+                _statusBarSpacer?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(colors.PrimaryDark));
+                Toolbar?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(colors.Primary));
+            }
+            catch (Exception ex)
+            {
+                PowerPlannerAppDataLibrary.Extensions.TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public virtual WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
