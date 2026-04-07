@@ -44,6 +44,14 @@ namespace Vx.Uwp.Views
         {
             View.Style = Application.Current.Resources["AccentButtonStyle"] as Style;
         }
+
+        protected override void ApplyProperties(Vx.Views.Button oldView, Vx.Views.Button newView)
+        {
+            base.ApplyProperties(oldView, newView);
+
+            View.Background = Vx.Views.Theme.Current.ChromeColor.ToUwpBrush();
+            View.BorderBrush = Vx.Views.Theme.Current.ChromeColor.ToUwpBrush();
+        }
     }
 
     public class UwpTextButton : UwpView<Vx.Views.TextButton, HyperlinkButton>
