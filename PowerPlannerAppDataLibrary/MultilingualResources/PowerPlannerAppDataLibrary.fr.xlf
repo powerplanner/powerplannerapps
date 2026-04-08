@@ -2768,17 +2768,17 @@ Une fois que vous avez acheté la version premium, vous possédez la version pre
           <source>Recovering...</source>
           <target state="final">Récupération...</target>
         </trans-unit>
-        <trans-unit id="Settings_ThemeColor_Title" translate="yes" xml:space="preserve">
-          <source>Theme Color</source>
-          <target state="new">Theme Color</target>
+        <trans-unit id="Settings_AccentColor_Title" translate="yes" xml:space="preserve">
+          <source>Accent color</source>
+          <target state="final">Couleur d'accentuation</target>
         </trans-unit>
-        <trans-unit id="Settings_ThemeColor_Preview" translate="yes" xml:space="preserve">
+        <trans-unit id="Settings_AccentColor_Preview" translate="yes" xml:space="preserve">
           <source>Preview</source>
-          <target state="new">Preview</target>
+          <target state="final">Aperçu</target>
         </trans-unit>
-        <trans-unit id="Settings_ThemeColor_Default" translate="yes" xml:space="preserve">
-          <source>Default</source>
-          <target state="new">Default</target>
+        <trans-unit id="Settings_Appearance_Title" translate="yes" xml:space="preserve">
+          <source>Appearance</source>
+          <target state="final">Apparence</target>
         </trans-unit>
       </group>
     </body>

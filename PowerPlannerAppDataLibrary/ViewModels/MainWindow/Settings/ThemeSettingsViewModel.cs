@@ -85,7 +85,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             // Light/dark/auto theme selector
             content.Add(new ComboBox
             {
-                Header = PowerPlannerResources.GetString("String_Theme"),
+                Header = PowerPlannerResources.GetString("Settings_Appearance_Title"),
                 Items = Options,
                 ItemTemplate = v => new TextBlock
                 {
@@ -101,7 +101,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 content.Add(new TextBlock
                 {
-                    Text = PowerPlannerResources.GetString("Settings_ThemeColor_Title"),
+                    Text = PowerPlannerResources.GetString("Settings_AccentColor_Title"),
                     FontWeight = FontWeights.Bold,
                     Margin = new Thickness(0, 24, 0, 6)
                 });
@@ -140,7 +140,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 // Preview strip
                 content.Add(new TextBlock
                 {
-                    Text = PowerPlannerResources.GetString("Settings_ThemeColor_Preview"),
+                    Text = PowerPlannerResources.GetString("Settings_AccentColor_Preview"),
                     FontWeight = FontWeights.Bold,
                     Margin = new Thickness(0, 18, 0, 6)
                 });
