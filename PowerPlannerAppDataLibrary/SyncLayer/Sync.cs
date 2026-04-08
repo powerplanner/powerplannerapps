@@ -1501,7 +1501,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     }
                     if (changedSettings.HasFlag(ChangedSetting.PrimaryThemeColor))
                     {
-                        settings.PrimaryThemeColor = account.PrimaryThemeColor;
+                        settings.PrimaryThemeColor = account.CustomPrimaryThemeColor;
                     }
                     if (changedSettings.HasFlag(ChangedSetting.NoClassColor))
                     {

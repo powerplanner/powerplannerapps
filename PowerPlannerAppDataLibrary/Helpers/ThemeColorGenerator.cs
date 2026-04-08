@@ -18,7 +18,8 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
     public static class ThemeColorGenerator
     {
-        public static readonly Color DefaultPrimary = Color.FromArgb(46, 54, 109); // #2E366D
+        public static readonly byte[] DefaultPrimaryArray = new byte[] { 46, 54, 109 }; // #2E366D
+        public static readonly Color DefaultPrimary = DefaultPrimaryArray.ToColor();
 
         public static ThemeColors Generate(Color primary)
         {

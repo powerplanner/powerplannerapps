@@ -21,12 +21,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             var primary = account?.PrimaryThemeColor?.ToColor() ?? ThemeColorGenerator.DefaultPrimary;
 
-            // If ToColor returned default (empty), use the default primary
-            if (primary.A == 0 && primary.R == 0 && primary.G == 0 && primary.B == 0)
-            {
-                primary = ThemeColorGenerator.DefaultPrimary;
-            }
-
             var colors = ThemeColorGenerator.Generate(primary);
 
             Theme.Current.ChromeColor = colors.Primary;
@@ -34,7 +28,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
             Theme.DefaultDarkAccentColor = colors.DarkAccent;
 
             // Cache for next startup
-            if (account?.PrimaryThemeColor != null && account.PrimaryThemeColor.Length >= 3)
+            if (account?.PrimaryThemeColor != null && !account.PrimaryThemeColor.SequenceEqual(ThemeColorGenerator.DefaultPrimaryArray) && account.PrimaryThemeColor.Length >= 3)
             {
                 Settings.CachedPrimaryThemeColor = $"#{primary.R:X2}{primary.G:X2}{primary.B:X2}";
             }

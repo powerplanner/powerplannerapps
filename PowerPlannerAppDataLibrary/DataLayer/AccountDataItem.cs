@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using ToolsPortable;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.DataLayer
 {
@@ -473,12 +474,17 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set => SetProperty(ref _defaultDoesRoundGradesUp, value, nameof(DefaultDoesRoundGradesUp));
         }
 
-        private byte[] _primaryThemeColor;
+        private byte[] _customPrimaryThemeColor;
         [DataMember]
+        public byte[] CustomPrimaryThemeColor
+        {
+            get => _customPrimaryThemeColor;
+            set => SetProperties(ref _customPrimaryThemeColor, value, nameof(CustomPrimaryThemeColor), nameof(PrimaryThemeColor));
+        }
+
         public byte[] PrimaryThemeColor
         {
-            get => _primaryThemeColor;
-            set => SetProperty(ref _primaryThemeColor, value, nameof(PrimaryThemeColor));
+            get => CustomPrimaryThemeColor ?? ThemeColorGenerator.DefaultPrimaryArray;
         }
 
         /// <summary>
@@ -653,9 +659,9 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 accountChanged = true;
             }
 
-            if (settings.PrimaryThemeColor != null && (this.PrimaryThemeColor == null || !this.PrimaryThemeColor.SequenceEqual(settings.PrimaryThemeColor)))
+            if (settings.PrimaryThemeColor != null && (this.CustomPrimaryThemeColor == null || !this.CustomPrimaryThemeColor.SequenceEqual(settings.PrimaryThemeColor)))
             {
-                this.PrimaryThemeColor = settings.PrimaryThemeColor;
+                this.CustomPrimaryThemeColor = settings.PrimaryThemeColor;
                 accountChanged = true;
             }
 
@@ -1039,12 +1045,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public async System.Threading.Tasks.Task SetPrimaryThemeColorAsync(byte[] color, bool uploadSettings = true)
         {
-            if (PrimaryThemeColor != null && color != null && PrimaryThemeColor.SequenceEqual(color))
+            if (CustomPrimaryThemeColor != null && color != null && CustomPrimaryThemeColor.SequenceEqual(color))
                 return;
-            if (PrimaryThemeColor == null && color == null)
+            if (CustomPrimaryThemeColor == null && color == null)
                 return;
 
-            PrimaryThemeColor = color;
+            CustomPrimaryThemeColor = color;
             NeedsToSyncSettings = true;
             await AccountsManager.Save(this);
 

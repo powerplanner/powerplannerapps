@@ -314,16 +314,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 if (IsColorDirty && _account != null)
                 {
                     var color = _selectedColor.Value;
-                    byte[] colorBytes;
-
-                    if (color == ThemeColorGenerator.DefaultPrimary)
-                    {
-                        colorBytes = null;
-                    }
-                    else
-                    {
-                        colorBytes = new byte[] { color.R, color.G, color.B };
-                    }
+                    byte[] colorBytes = new byte[] { color.R, color.G, color.B };
 
                     await _account.SetPrimaryThemeColorAsync(colorBytes, uploadSettings: false);
                     ThemeColorApplier.Apply(_account);
