@@ -18,6 +18,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using AndroidX.Core.View;
 using BareMvvm.Core.Binding;
 using PowerPlannerAndroid.Helpers;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAndroid.Views
 {
