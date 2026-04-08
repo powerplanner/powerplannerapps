@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using InterfacesDroid.Views;
+using Vx.Droid;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -17,6 +18,7 @@ namespace PowerPlannerAndroid.Views
     {
         public SplashScreenView(Context context) : base(context, Resource.Layout.SplashScreen)
         {
+            FindViewById(Resource.Id.SplashRoot).SetBackgroundColor(Vx.Views.Theme.Current.ChromeColor.ToDroid());
         }
     }
 }

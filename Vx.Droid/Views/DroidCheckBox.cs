@@ -1,10 +1,12 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.CheckBox;
+using InterfacesDroid.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,24 @@ namespace Vx.Droid.Views
         {
             View.CheckedChange += View_CheckedChange;
             View.SetMinimumHeight(0);
+
+            UpdateCheckedTint();
+            View.ViewAttachedToWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged += UpdateCheckedTint;
+            View.ViewDetachedFromWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged -= UpdateCheckedTint;
+        }
+
+        private void UpdateCheckedTint()
+        {
+            var accentColor = Vx.Views.Theme.Current.AccentColor.ToDroid();
+            View.ButtonTintList = new ColorStateList(
+                new int[][] {
+                    new int[] { Android.Resource.Attribute.StateChecked },
+                    new int[] { }
+                },
+                new int[] {
+                    accentColor,
+                    View.CurrentTextColor  // unchecked state keeps default
+                });
         }
 
         private void View_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)

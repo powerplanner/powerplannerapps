@@ -79,9 +79,20 @@ namespace PowerPlannerAndroid.Views
 
             ViewCompat.SetOnApplyWindowInsetsListener(popupView, this);
 
-            // Apply current theme colors and listen for future changes
+            // Apply current theme colors (subscription moved to OnAttachedToWindow)
             ApplyThemeColors(DroidThemeColorApplier.Current);
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
             DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
+            base.OnDetachedFromWindow();
         }
 
         private void ApplyThemeColors(ThemeColors colors)

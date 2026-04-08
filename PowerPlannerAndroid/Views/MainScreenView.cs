@@ -40,9 +40,8 @@ namespace PowerPlannerAndroid.Views
 
             ViewCompat.SetOnApplyWindowInsetsListener(FindViewById(Resource.Id.MainContentView), this);
 
-            // Apply current theme colors and listen for future changes
+            // Apply current theme colors (subscription moved to OnAttachedToWindow)
             ApplyThemeColors(DroidThemeColorApplier.Current);
-            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
 
             // Handle class name changing in toolbar
             _selectedClassBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), selectedClassName =>
@@ -73,6 +72,18 @@ namespace PowerPlannerAndroid.Views
             {
                 PowerPlannerAppDataLibrary.Extensions.TelemetryExtension.Current?.TrackException(ex);
             }
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
+            base.OnDetachedFromWindow();
         }
 
         public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)

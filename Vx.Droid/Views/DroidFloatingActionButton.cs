@@ -21,10 +21,28 @@ namespace Vx.Droid.Views
             // Always add icon for now
             View.SetImageResource(Resource.Drawable.add_48px);
 
-            ViewCompat.SetBackgroundTintList(View, ColorTools.GetColorStateList(Vx.Views.Theme.Current.ChromeColor.ToDroid()));
+            UpdateBackgroundTint();
             View.ImageTintList = ColorTools.GetColorStateList(Android.Graphics.Color.White);
 
             View.Click += View_Click;
+            View.ViewAttachedToWindow += View_AttachedToWindow;
+            View.ViewDetachedFromWindow += View_DetachedFromWindow;
+        }
+
+        private void View_AttachedToWindow(object sender, View.ViewAttachedToWindowEventArgs e)
+        {
+            Vx.Views.Theme.ChromeColorChanged += UpdateBackgroundTint;
+        }
+
+        private void View_DetachedFromWindow(object sender, View.ViewDetachedFromWindowEventArgs e)
+        {
+            Vx.Views.Theme.ChromeColorChanged -= UpdateBackgroundTint;
+        }
+
+        private void UpdateBackgroundTint()
+        {
+            ViewCompat.SetBackgroundTintList(View, ColorTools.GetColorStateList(Vx.Views.Theme.Current.ChromeColor.ToDroid()));
+            View.RippleColor = Android.Content.Res.ColorStateList.ValueOf(Vx.Views.Theme.Current.ChromeLightColor.ToDroid()).DefaultColor;
         }
 
         private void View_Click(object sender, EventArgs e)

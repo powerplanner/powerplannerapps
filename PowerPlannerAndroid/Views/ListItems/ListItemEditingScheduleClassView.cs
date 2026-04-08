@@ -18,6 +18,7 @@ using System.Drawing;
 using Xamarin.Essentials;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAndroid.Helpers;
 
 namespace PowerPlannerAndroid.Views.ListItems
 {
@@ -46,6 +47,12 @@ namespace PowerPlannerAndroid.Views.ListItems
             var buttonAddTime = FindViewById<Button>(Resource.Id.ButtonAddTime);
             buttonAddTime.Text = R.S("String_AddTime");
             buttonAddTime.Click += delegate { OnAddClassTimeRequested?.Invoke(this, (ViewItemClass)DataContext); };
+
+            var accentColor = new Android.Graphics.Color(
+                DroidThemeColorApplier.Current.Accent.R,
+                DroidThemeColorApplier.Current.Accent.G,
+                DroidThemeColorApplier.Current.Accent.B);
+            buttonAddTime.SetTextColor(accentColor);
             FindViewById(Resource.Id.ListItemEditingScheduleClass_ClassName).Click += delegate { OnEditClassRequested?.Invoke(this, (ViewItemClass)DataContext); };
 
             _timesItemsControlWrapper = new ItemsControlWrapper(FindViewById<ViewGroup>(Resource.Id.ViewGroupClassTimes))

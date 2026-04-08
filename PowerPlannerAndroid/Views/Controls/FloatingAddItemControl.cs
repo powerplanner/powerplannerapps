@@ -15,8 +15,12 @@ using InterfacesDroid.Themes;
 using BareMvvm.Core.App;
 using ToolsPortable;
 using System.ComponentModel;
+using AndroidX.Core.View;
 using Google.Android.Material.FloatingActionButton;
+using InterfacesDroid.Helpers;
+using PowerPlannerAndroid.Helpers;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAndroid.Views.Controls
 {
@@ -77,7 +81,22 @@ namespace PowerPlannerAndroid.Views.Controls
             _expandedBackground = FindViewById<View>(Resource.Id.FloatingAddItemExpandedBackground);
             _expandedBackground.Click += _expandedBackground_Click;
 
+            ApplyThemeColors(DroidThemeColorApplier.Current);
+
             CollapseExpanded();
+        }
+
+        private void ApplyThemeColors(ThemeColors colors)
+        {
+            var tint = ColorTools.GetColorStateList(DroidThemeColorApplier.ToDroid(colors.Primary));
+            ViewCompat.SetBackgroundTintList(_actionButtonAdd, tint);
+            ViewCompat.SetBackgroundTintList(_actionButtonAddEvent, tint);
+            ViewCompat.SetBackgroundTintList(_actionButtonAddHoliday, tint);
+
+            var ripple = Android.Content.Res.ColorStateList.ValueOf(DroidThemeColorApplier.ToDroid(colors.PrimaryLight));
+            _actionButtonAdd.RippleColor = ripple.DefaultColor;
+            _actionButtonAddEvent.RippleColor = ripple.DefaultColor;
+            _actionButtonAddHoliday.RippleColor = ripple.DefaultColor;
         }
 
         private void _sectionTask_Click(object sender, EventArgs e)
@@ -94,8 +113,15 @@ namespace PowerPlannerAndroid.Views.Controls
         protected override void OnAttachedToWindow()
         {
             PortableApp.Current.GetCurrentWindow().BackPressed += new WeakEventHandler<CancelEventArgs>(FloatingAddItemControl_BackPressed).Handler;
+            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
 
             base.OnAttachedToWindow();
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
+            base.OnDetachedFromWindow();
         }
 
         private void FloatingAddItemControl_BackPressed(object sender, System.ComponentModel.CancelEventArgs e)

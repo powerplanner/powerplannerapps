@@ -14,6 +14,7 @@ using PowerPlannerAndroid.ViewHosts;
 using PowerPlannerAndroid.Views.Controls;
 using PowerPlannerAndroid.Views.ListItems;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
@@ -37,6 +38,7 @@ namespace PowerPlannerAndroid.Views
         private ItemsControlWrapper _itemsWrapperEditingClasses;
         private AndroidX.AppCompat.Widget.Toolbar _weekToolbar;
 
+        private Button _buttonAddClass;
         private LinearLayout _scheduleHost;
 
         public ScheduleView(ViewGroup root) : base(Resource.Layout.Schedule, root)
@@ -75,7 +77,8 @@ namespace PowerPlannerAndroid.Views
             FindViewById<Button>(Resource.Id.ButtonLogIn).Text = R.S("WelcomePage_ButtonLogin.Content");
             FindViewById<Button>(Resource.Id.ButtonLogIn).Click += new WeakEventHandler(ScheduleView_Click).Handler;
 
-            FindViewById<Button>(Resource.Id.ButtonAddClass).Text = R.S("SchedulePage_ButtonAddClass.Content");
+            _buttonAddClass = FindViewById<Button>(Resource.Id.ButtonAddClass);
+            _buttonAddClass.Text = R.S("SchedulePage_ButtonAddClass.Content");
             FindViewById<Button>(Resource.Id.ButtonWelcomeAddClass).Text = R.S("SchedulePage_ButtonAddClass.Content");
             FindViewById<TextView>(Resource.Id.SchedulePage_TextViewReturningUser).Text = R.S("SchedulePage_TextBlockReturningUser.Text");
 
@@ -102,6 +105,33 @@ namespace PowerPlannerAndroid.Views
             {
                 FindViewById(Resource.Id.Schedule_CurrentWeek).Visibility = hasTwoWeekSchedule ? ViewStates.Visible : ViewStates.Gone;
             });
+
+            // Apply current theme colors
+            ApplyThemeColors(DroidThemeColorApplier.Current);
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
+            base.OnDetachedFromWindow();
+        }
+
+        private void ApplyThemeColors(ThemeColors colors)
+        {
+            _weekToolbar?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(colors.Primary));
+
+            var accentColor = new Android.Graphics.Color(colors.Accent.R, colors.Accent.G, colors.Accent.B);
+            _buttonAddClass?.SetTextColor(accentColor);
+            if (_buttonAddClass is Google.Android.Material.Button.MaterialButton mb)
+            {
+                mb.IconTint = Android.Content.Res.ColorStateList.ValueOf(accentColor);
+            }
         }
 
         private void ScheduleView_Click(object sender, EventArgs e)

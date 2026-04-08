@@ -35,9 +35,28 @@ namespace Vx.Views
         public static Color DefaultDarkAccentColor { get; set; } = Color.Blue;
 
         /// <summary>
+        /// Fires whenever <see cref="ChromeColor"/> is changed on the current theme.
+        /// </summary>
+        public static event Action ChromeColorChanged;
+
+        /// <summary>
         /// Background color of buttons, titlebars, etc
         /// </summary>
-        public Color ChromeColor { get; set; } = Color.Blue;
+        private Color _chromeColor = Color.Blue;
+        public Color ChromeColor
+        {
+            get => _chromeColor;
+            set
+            {
+                _chromeColor = value;
+                ChromeColorChanged?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// Lighter variant of <see cref="ChromeColor"/>, used for ripple/pressed states.
+        /// </summary>
+        public Color ChromeLightColor { get; set; } = Color.Blue;
 
         public abstract Color ForegroundColor { get; }
 
