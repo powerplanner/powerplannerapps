@@ -1,10 +1,10 @@
-﻿using StorageEverywhere;
-using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
+﻿using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.Extensions.Telemetry;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerSending;
+using StorageEverywhere;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +12,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using ToolsPortable;
-using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.DataLayer
 {
@@ -662,6 +661,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (settings.PrimaryThemeColor != null && (this.CustomPrimaryThemeColor == null || !this.CustomPrimaryThemeColor.SequenceEqual(settings.PrimaryThemeColor)))
             {
                 this.CustomPrimaryThemeColor = settings.PrimaryThemeColor;
+                ThemeColorApplier.Apply(this);
                 accountChanged = true;
             }
 
