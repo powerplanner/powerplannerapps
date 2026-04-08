@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         };
 
         private VxState<Color> _selectedColor;
+        private VxState<Color> _noClassColor;
         private AccountDataItem _account;
 
         public ThemeSettingsViewModel(BaseViewModel parent) : base(parent)
@@ -68,6 +70,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
 
             _selectedColor = new VxState<Color>(currentColor);
+            _noClassColor = new VxState<Color>((_account?.NoClassColor ?? AccountDataItem.DefaultNoClassColor).ToColor());
         }
 
         private Color OriginalColor => _account?.PrimaryThemeColor?.ToColor() is Color c && c.A != 0
@@ -76,16 +79,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private bool IsThemeDirty => _theme.Value != Helpers.Settings.ThemeOverride;
         private bool IsColorDirty => _selectedColor.Value != OriginalColor;
-        private bool IsDirty => IsThemeDirty || IsColorDirty;
+        private bool IsNoClassColorDirty => _account != null && (_account.NoClassColor == null
+            ? _noClassColor.Value != AccountDataItem.DefaultNoClassColor.ToColor()
+            : _noClassColor.Value != _account.NoClassColor.ToColor());
+        private bool IsDirty => IsThemeDirty || IsColorDirty || IsNoClassColorDirty;
 
         protected override View Render()
         {
             var content = new List<View>();
 
+            content.Add(new TextBlock
+            {
+                Text = PowerPlannerResources.GetString("Settings_Appearance_Title"),
+                FontSize = Theme.Current.SubtitleFontSize,
+                FontWeight = FontWeights.SemiBold,
+                Margin = new Thickness(0, 0, 0, 6)
+            });
+
             // Light/dark/auto theme selector
             content.Add(new ComboBox
             {
-                Header = PowerPlannerResources.GetString("Settings_Appearance_Title"),
                 Items = Options,
                 ItemTemplate = v => new TextBlock
                 {
@@ -102,7 +115,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 content.Add(new TextBlock
                 {
                     Text = PowerPlannerResources.GetString("Settings_AccentColor_Title"),
-                    FontWeight = FontWeights.Bold,
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    FontWeight = FontWeights.SemiBold,
                     Margin = new Thickness(0, 24, 0, 6)
                 });
 
@@ -121,8 +135,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     {
                         BackgroundColor = option.Color,
                         CornerRadius = 24,
-                        Width = 40,
-                        Height = 40,
+                        Width = 36,
+                        Height = 36,
                         Margin = new Thickness(4),
                         Content = isSelected ? new FontIcon
                         {
@@ -161,13 +175,46 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 });
             }
 
+            // No class color section (only when logged in )
+            if (_account != null)
+            {
+                content.Add(new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("Settings_NoClassColor_Title"),
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    FontWeight = FontWeights.SemiBold,
+                    Margin = new Thickness(0, 24, 0, 0)
+                });
+
+                content.Add(new TextBlock
+                {
+                    Text = PowerPlannerResources.GetString("Settings_NoClassColor_Description"),
+                    Margin = new Thickness(0, 6, 0, 0)
+                });
+
+                content.Add(new ColorPicker
+                {
+                    Header = PowerPlannerResources.GetString("AddClassPage_ColorPickerEditClassColor.Header"),
+                    Color = VxValue.Create(_noClassColor.Value, v => _noClassColor.Value = v),
+                    Margin = new Thickness(0, 18, 0, 0)
+                });
+
+                content.Add(new TextButton
+                {
+                    Text = PowerPlannerResources.GetString("Settings_ResetToDefault"),
+                    Click = ResetNoClassColorToDefault,
+                    IsEnabled = _noClassColor.Value != AccountDataItem.DefaultNoClassColor.ToColor(),
+                    Margin = new Thickness(0, 6, 0, 6),
+                    HorizontalAlignment = HorizontalAlignment.Right
+                });
+            }
+
             // Save button
             content.Add(new AccentButton
             {
                 Text = PowerPlannerResources.GetString("Settings_SchoolTimeZone_ButtonSave.Content"),
                 Click = SaveChanges,
-                Margin = new Thickness(0, 18, 0, 0),
-                IsEnabled = IsDirty
+                Margin = new Thickness(0, 18, 0, 0)
             });
 
             if (IsThemeDirty)
@@ -180,6 +227,42 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
 
             return RenderGenericPopupContent(content);
+        }
+
+        private void ResetNoClassColorToDefault()
+        {
+            _noClassColor.Value = AccountDataItem.DefaultNoClassColor.ToColor();
+        }
+
+        private async System.Threading.Tasks.Task SaveNoClassColor(byte[] colorBytes)
+        {
+            try
+            {
+                await _account.SaveNoClassColor(colorBytes);
+
+                // Invalidate all semesters' NoClassClass to pick up the new color
+                InvalidateNoClassColorInSemesters();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to save no class color: {ex.Message}");
+            }
+        }
+
+        private void InvalidateNoClassColorInSemesters()
+        {
+            try
+            {
+                var mainScreen = MainScreenViewModel;
+                if (mainScreen?.CurrentSemester != null)
+                {
+                    mainScreen.CurrentSemester.InvalidateNoClassClass();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to invalidate no class color in semesters: {ex.Message}");
+            }
         }
 
         private string GetSelectedColorName()
@@ -207,13 +290,44 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         colorBytes = new byte[] { color.R, color.G, color.B };
                     }
 
-                    await _account.SetPrimaryThemeColorAsync(colorBytes);
+                    await _account.SetPrimaryThemeColorAsync(colorBytes, uploadSettings: false);
                     ThemeColorApplier.Apply(_account);
 
                     TelemetryExtension.Current?.TrackEvent("ChangedThemeColor", new Dictionary<string, string>()
                     {
                         { "Color", GetSelectedColorName() }
                     });
+                }
+
+                // Save no class color if changed
+                if (IsNoClassColorDirty && _account != null)
+                {
+                    var color = _noClassColor.Value;
+                    byte[] colorBytes = new byte[] { color.R, color.G, color.B };
+                    await SaveNoClassColor(colorBytes);
+
+                    TelemetryExtension.Current?.TrackEvent("ChangedNoClassColor");
+                }
+
+                // Sync changed settings
+                if (_account != null && _account.IsOnlineAccount && IsColorDirty || IsNoClassColorDirty)
+                {
+                    Sync.ChangedSetting changedSettings;
+                    if (IsColorDirty && IsNoClassColorDirty)
+                    {
+                        changedSettings = Sync.ChangedSetting.PrimaryThemeColor | Sync.ChangedSetting.NoClassColor;
+                    }
+                    else if (IsColorDirty)
+                    {
+                        changedSettings = Sync.ChangedSetting.PrimaryThemeColor;
+                    }
+                    else // IsNoClassColorDirty
+                    {
+                        changedSettings = Sync.ChangedSetting.NoClassColor;
+                    }
+
+                    // Sync the setting to the server
+                    _ = Sync.SyncSettings(_account, changedSettings);
                 }
 
                 // Save light/dark theme if changed (triggers relaunch)

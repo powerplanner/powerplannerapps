@@ -2782,6 +2782,18 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
           <source>Appearance</source>
           <target state="final">Erscheinungsbild</target>
         </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">Farbe ohne Fach</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">Passe die Farbe von Aufgaben und Terminen an, denen kein Fach zugewiesen ist.</target>
+        </trans-unit>
+        <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">Auf Standard zurücksetzen</target>
+        </trans-unit>
       </group>
     </body>
   </file>

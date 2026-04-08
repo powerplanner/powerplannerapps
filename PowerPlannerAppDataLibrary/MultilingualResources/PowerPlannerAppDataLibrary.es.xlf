@@ -2781,6 +2781,18 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
           <source>Appearance</source>
           <target state="final">Apariencia</target>
         </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">Color sin clase</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">Personaliza el color de las tareas y eventos que no tienen una clase asignada.</target>
+        </trans-unit>
+        <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">Restablecer a predeterminado</target>
+        </trans-unit>
       </group>
     </body>
   </file>

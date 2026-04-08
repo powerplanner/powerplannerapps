@@ -2784,6 +2784,18 @@ Once you purchase the premium version, you own the premium version on all your d
           <source>Appearance</source>
           <target state="final">المظهر</target>
         </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">لون بدون مادة</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">خصّص لون المهام والأحداث التي لم يُسنَد إليها أي مادة دراسية.</target>
+        </trans-unit>
+        <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">إعادة تعيين إلى الافتراضي</target>
+        </trans-unit>
       </group>
     </body>
   </file>

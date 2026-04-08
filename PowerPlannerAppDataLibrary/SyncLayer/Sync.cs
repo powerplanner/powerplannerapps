@@ -1418,7 +1418,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
             DefaultGradeScale,
             DefaultDoesAverageGradeTotals,
             DefaultDoesRoundGradesUp,
-            PrimaryThemeColor
+            PrimaryThemeColor,
+            NoClassColor
         }
 
         public static System.Threading.Tasks.Task SyncSettings(AccountDataItem account)
@@ -1431,7 +1432,8 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                 ChangedSetting.DefaultGradeScale |
                 ChangedSetting.DefaultDoesAverageGradeTotals |
                 ChangedSetting.DefaultDoesRoundGradesUp |
-                ChangedSetting.PrimaryThemeColor);
+                ChangedSetting.PrimaryThemeColor |
+                ChangedSetting.NoClassColor);
         }
 
         private static SyncSettingsMultiWorkerQueue _syncSettingsMultiWorkerQueue = new SyncSettingsMultiWorkerQueue();
@@ -1500,6 +1502,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                     if (changedSettings.HasFlag(ChangedSetting.PrimaryThemeColor))
                     {
                         settings.PrimaryThemeColor = account.PrimaryThemeColor;
+                    }
+                    if (changedSettings.HasFlag(ChangedSetting.NoClassColor))
+                    {
+                        settings.NoClassColor = account.NoClassColor;
                     }
 
                     try
