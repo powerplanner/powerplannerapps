@@ -54,6 +54,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         };
 
         private VxState<Color> _selectedColor;
+        private VxState<bool> _isCustomColor;
         private VxState<Color> _noClassColor;
         private AccountDataItem _account;
 
@@ -70,6 +71,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
 
             _selectedColor = new VxState<Color>(currentColor);
+            _isCustomColor = new VxState<bool>(!ColorOptions.Any(o => o.Color == currentColor));
             _noClassColor = new VxState<Color>((_account?.NoClassColor ?? AccountDataItem.DefaultNoClassColor).ToColor());
         }
 
@@ -129,7 +131,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 foreach (var option in ColorOptions)
                 {
-                    bool isSelected = option.Color == _selectedColor.Value;
+                    bool isSelected = !_isCustomColor.Value && option.Color == _selectedColor.Value;
 
                     swatchGrid.Children.Add(new Border
                     {
@@ -146,10 +148,43 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                             HorizontalAlignment = HorizontalAlignment.Center,
                             VerticalAlignment = VerticalAlignment.Center
                         } : null
-                    }.WrapWithClick(() => _selectedColor.Value = option.Color));
+                    }.WrapWithClick(() =>
+                    {
+                        _selectedColor.Value = option.Color;
+                        _isCustomColor.Value = false;
+                    }));
                 }
 
+                // Custom color swatch
+                bool isCustomSelected = _isCustomColor.Value;
+                swatchGrid.Children.Add(new Border
+                {
+                    BackgroundColor = isCustomSelected ? _selectedColor.Value : Color.FromArgb(120, 120, 120),
+                    CornerRadius = 24,
+                    Width = 36,
+                    Height = 36,
+                    Margin = new Thickness(4),
+                    Content = new FontIcon
+                    {
+                        Glyph = isCustomSelected ? MaterialDesign.MaterialDesignIcons.Check : MaterialDesign.MaterialDesignIcons.Palette,
+                        FontSize = 20,
+                        Color = Color.White,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    }
+                }.WrapWithClick(() => _isCustomColor.Value = true));
+
                 content.Add(swatchGrid);
+
+                if (_isCustomColor.Value)
+                {
+                    content.Add(new ColorPicker
+                    {
+                        Header = "Custom color",
+                        Color = VxValue.Create(_selectedColor.Value, v => _selectedColor.Value = v),
+                        Margin = new Thickness(0, 12, 0, 0)
+                    });
+                }
 
                 // Preview strip
                 content.Add(new TextBlock
