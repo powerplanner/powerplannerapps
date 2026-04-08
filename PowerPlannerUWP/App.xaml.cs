@@ -149,6 +149,13 @@ namespace PowerPlannerUWP
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            // If they have a custom theme color, show the extended splash screen
+            if (Settings.CachedPrimaryThemeColor != null && args.PreviousExecutionState != ApplicationExecutionState.Running)
+            {
+                Window.Current.Content = new ExtendedSplash(args.SplashScreen);
+                Window.Current.Activate();
+            }
+
             base.OnLaunched(args);
         }
 
@@ -217,10 +224,11 @@ namespace PowerPlannerUWP
 
                 // If no windows, need to register window
                 mainAppWindow = PowerPlannerApp.Current.Windows.OfType<MainAppWindow>().FirstOrDefault();
+                NativeUwpAppWindow nativeWindow = null;
                 if (mainAppWindow == null)
                 {
                     // This configures the view models, does NOT call Activate yet
-                    var nativeWindow = new NativeUwpAppWindow();
+                    nativeWindow = new NativeUwpAppWindow();
                     mainAppWindow = new MainAppWindow();
                     await PowerPlannerApp.Current.RegisterWindowAsync(mainAppWindow, nativeWindow);
 
@@ -308,6 +316,8 @@ namespace PowerPlannerUWP
                     await mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
                 }
 
+                // Show the window content and activate the window
+                nativeWindow?.DisplayWindowContent();
                 Window.Current.Activate();
 
                 // Listen to window activation changes

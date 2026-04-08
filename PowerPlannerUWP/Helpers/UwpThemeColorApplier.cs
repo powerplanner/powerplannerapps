@@ -79,12 +79,12 @@ namespace PowerPlannerUWP.Helpers
             var view = ApplicationView.GetForCurrentView();
             var titleBar = view.TitleBar;
 
-            var darkColor = ToUwpColor(colors.PrimaryDark);
+            var darkColor = ToUwpColor(colors.PrimaryDarkest);
             var hoverColor = ToUwpColor(colors.PrimaryHover);
             var lightColor = ToUwpColor(colors.PrimaryLight);
 
-            // Generate an inactive color (lighter variant of primary dark)
-            var inactiveColor = ToUwpColor(colors.PrimaryHover);
+            // Generate an inactive color (lighter variant of primary)
+            var inactiveColor = ToUwpColor(colors.PrimaryInactive);
 
             titleBar.BackgroundColor = darkColor;
             titleBar.ForegroundColor = Colors.White;

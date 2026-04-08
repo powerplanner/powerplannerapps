@@ -36,11 +36,14 @@ namespace InterfacesUWP.AppWindows
 
             Window = Window.Current;
 
-            Window.Content = this;
-
             // Back button
             _navigationManager = SystemNavigationManagerEnhanced.GetForCurrentView();
             _navigationManager.BackRequested += new WeakEventHandler<BackRequestedEventArgs>(_navigationManager_BackRequested).Handler;
+        }
+
+        public void DisplayWindowContent()
+        {
+            Window.Content = this;
         }
 
         private void _navigationManager_BackRequested(object sender, global::Windows.UI.Core.BackRequestedEventArgs e)

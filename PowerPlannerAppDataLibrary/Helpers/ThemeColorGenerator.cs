@@ -8,7 +8,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
         public Color Primary { get; set; }
         public Color PrimaryLight { get; set; }
         public Color PrimaryHover { get; set; }
+        public Color PrimaryDarkest { get; set; }
         public Color PrimaryDark { get; set; }
+        public Color PrimaryInactive { get; set; }
         public Color Accent { get; set; }
         public Color DarkAccent { get; set; }
         public Color IOSChrome { get; set; }
@@ -25,11 +27,22 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 Primary = primary,
                 PrimaryLight = AdjustLightness(primary, 0.20),
                 PrimaryHover = AdjustLightness(primary, 0.12),
-                PrimaryDark = AdjustLightness(primary, -0.15),
+                PrimaryDark = AdjustLightness(primary, -0.09),
+                PrimaryDarkest = AdjustLightness(primary, -0.15),
+                PrimaryInactive = GeneratePrimaryInactive(primary),
                 Accent = GenerateAccent(primary),
                 DarkAccent = GenerateDarkAccent(primary),
                 IOSChrome = AdjustLightness(primary, 0.25)
             };
+        }
+
+        private static Color GeneratePrimaryInactive(Color primary)
+        {
+            RgbToHsl(primary.R, primary.G, primary.B, out double h, out double s, out double l);
+            s *= 0.55;
+            l = Clamp(l + 0.08, 0.0, 1.0);
+            HslToRgb(h, s, l, out int r, out int g, out int b);
+            return Color.FromArgb(r, g, b);
         }
 
         private static Color GenerateAccent(Color primary)
