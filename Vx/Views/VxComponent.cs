@@ -54,6 +54,24 @@ namespace Vx.Views
             nativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
             nativeComponent.MouseOverChanged += new WeakEventHandler<bool>(NativeComponent_MouseOverChanged).Handler;
 
+            // Subscribe to programmatic theme color changes (e.g., user changes primary color at runtime).
+            // Use a weak reference so the static event doesn't prevent GC of the component.
+            // The delegate self-unsubscribes when the component is collected.
+            var weakThis = new WeakReference<VxComponent>(this);
+            Action handler = null;
+            handler = () =>
+            {
+                if (weakThis.TryGetTarget(out var comp))
+                {
+                    comp.MarkDirty();
+                }
+                else
+                {
+                    Theme.ChromeColorChanged -= handler;
+                }
+            };
+            Theme.ChromeColorChanged += handler;
+
             Initialize();
 
             //if (IsRootComponent && _additionalComponentsToInitialize != null)
