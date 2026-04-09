@@ -26,7 +26,7 @@ namespace PowerPlannerUWP.Extensions
         private static DateTimeFormatterExtension _timeFormatter = DateTimeFormatterExtension.Current;
         private static string _timeToTime = LocalizedResources.GetString("String_TimeToTime");
 
-        protected override Task ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
+        protected override async Task ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace PowerPlannerUWP.Extensions
 
                 if (scheduleViewItemsGroup == null)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 // This will be initialized
@@ -65,12 +65,15 @@ namespace PowerPlannerUWP.Extensions
                 var today = DateTime.Today;
                 var end = today.AddDays(8); // Schedule out for 8 days
 
+                // Load holidays so we can skip scheduling reminders on holiday days
+                var holidayHelper = await SchedulesOnDayExcludingHolidays.LoadAsync(account.LocalAccountId, scheduleViewItemsGroup.Semester, today, end);
+
                 Dictionary<ViewItemSchedule, XmlDocument> generatedPayloads = new Dictionary<ViewItemSchedule, XmlDocument>();
 
                 for (; today.Date < end.Date; today = today.AddDays(1).Date)
                 {
                     // No need to lock changes, if changes occur an exception might occur, but that's fine, reminders would be reset once again anyways
-                    var schedulesOnDay = SchedulesOnDay.Get(account, scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today), trackChanges: false);
+                    var schedulesOnDay = holidayHelper.Get(account, scheduleViewItemsGroup.Classes, today, account.GetWeekOnDifferentDate(today));
 
                     foreach (var s in schedulesOnDay)
                     {
@@ -104,13 +107,13 @@ namespace PowerPlannerUWP.Extensions
                             {
                                 // If OS is in a bad state, we'll just stop
                                 TelemetryExtension.Current?.TrackException(new Exception("Adding toast to schedule failed: " + ex.Message, ex));
-                                return Task.CompletedTask;
+                                return;
                             }
                         }
                     }
                 }
 
-                return Task.CompletedTask;
+                return;
             }
             catch (Exception ex)
             {
@@ -122,7 +125,7 @@ namespace PowerPlannerUWP.Extensions
                     TelemetryExtension.Current?.TrackException(ex);
                 }
 
-                return Task.CompletedTask;
+                return;
             }
         }
 

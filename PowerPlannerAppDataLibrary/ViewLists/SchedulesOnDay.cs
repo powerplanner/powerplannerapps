@@ -66,6 +66,19 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             base.AddRange(other);
         }
 
+        private SchedulesOnDay()
+        {
+            // Empty constructor for CreateEmpty
+        }
+
+        /// <summary>
+        /// Creates an empty SchedulesOnDay (no schedules). Useful when a day should be skipped (e.g. holidays).
+        /// </summary>
+        public static SchedulesOnDay CreateEmpty()
+        {
+            return new SchedulesOnDay();
+        }
+
         private static List<WeakReference<SchedulesOnDay>> _cached = new List<WeakReference<SchedulesOnDay>>();
 
         public static void ClearCached()
