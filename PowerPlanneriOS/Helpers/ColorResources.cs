@@ -15,7 +15,7 @@ namespace PowerPlanneriOS.Helpers
         /// Dynamic chrome color that reads from the current theme colors.
         /// </summary>
         public static UIColor PowerPlannerBlueChromeColor =>
-            iOSThemeColorApplier.ToUIColor(iOSThemeColorApplier.Current.IOSChrome);
+            iOSThemeColorApplier.ToUIColor(iOSThemeColorApplier.Current.PrimaryDark);
 
         /// <summary>
         /// Dynamic accent color that reads from the current theme colors.

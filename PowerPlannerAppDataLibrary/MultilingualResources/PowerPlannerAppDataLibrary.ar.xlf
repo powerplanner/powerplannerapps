@@ -404,6 +404,10 @@ Click Continue to login (which might cause duplicates).</source>
           <source>SCHEDULE TILE</source>
           <target state="final">بلاطة الجدول الزمني </target>
         </trans-unit>
+        <trans-unit id="Settings_Theme.Subtitle" translate="yes" xml:space="preserve">
+          <source>Adjust theme colors</source>
+          <target state="final">ضبط ألوان السمة</target>
+        </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
           <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
           <target state="final">يمكنك تثبيت بلاطة لكل صف دراسي، سوف تعرض الواجبات المنزلية والامتحانات القادمة لذلك الصف الدراسي الخاص بك. بالإضافة إلى ذلك، سوف تنقلك مباشرة إلى صفحة الصف عند النقر عليها.</target>

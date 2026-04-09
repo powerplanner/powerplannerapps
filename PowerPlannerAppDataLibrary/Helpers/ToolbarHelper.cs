@@ -12,7 +12,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             if (VxPlatform.Current == Platform.iOS)
             {
-                toolbar.BackgroundColor = ThemeColorGenerator.Generate(Theme.Current.ChromeColor).IOSChrome;
+                toolbar.BackgroundColor = ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryDark;
             }
 
             return toolbar;

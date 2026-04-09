@@ -13,7 +13,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
         public Color PrimaryInactive { get; set; }
         public Color Accent { get; set; }
         public Color DarkAccent { get; set; }
-        public Color IOSChrome { get; set; }
     }
 
     public static class ThemeColorGenerator
@@ -32,8 +31,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 PrimaryDarkest = AdjustLightness(primary, -0.15),
                 PrimaryInactive = GeneratePrimaryInactive(primary),
                 Accent = GenerateAccent(primary),
-                DarkAccent = GenerateDarkAccent(primary),
-                IOSChrome = AdjustLightness(primary, 0.25)
+                DarkAccent = GenerateDarkAccent(primary)
             };
         }
 

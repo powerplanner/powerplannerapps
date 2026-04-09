@@ -403,6 +403,10 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
           <source>SCHEDULE TILE</source>
           <target state="final">STUNDENPLAN KACHEL</target>
         </trans-unit>
+        <trans-unit id="Settings_Theme.Subtitle" translate="yes" xml:space="preserve">
+          <source>Adjust theme colors</source>
+          <target state="final">Designfarben anpassen</target>
+        </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
           <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
           <target state="final">Sie können für jede Klasse eine Kachel anheften, welche Ihre anstehenden Aufgaben und Ereignisse für diesen Kurs anzeigen. Darüber hinaus werde es automatisch zu diesem Kurs starten, wenn Sie darauf klicken.</target>

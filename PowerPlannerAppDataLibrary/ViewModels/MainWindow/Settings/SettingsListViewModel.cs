@@ -287,13 +287,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenSoundSettings);
             }
 
-            if (IsThemeVisible)
+            if (ThemeExtension.Current != null || HasAccount)
             {
                 RenderOption(
                     layout,
                     MaterialDesign.MaterialDesignIcons.DesignServices,
                     PowerPlannerResources.GetString("String_Theme"),
-                    Helpers.Settings.ThemeOverride.ToLocalizedString(),
+                    ThemeExtension.Current != null ? Helpers.Settings.ThemeOverride.ToLocalizedString() : R.S("Settings_Theme.Subtitle"),
                     OpenThemeSettings);
             }
 
@@ -429,8 +429,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public bool IsSchoolTimeZoneVisible => HasAccount;
 
         public bool IsSoundEffectsVisible => HasAccount && VxPlatform.Current == Platform.Uwp;
-
-        public bool IsThemeVisible => ThemeExtension.Current != null;
 
         public bool IsViewYearsAndSemestersVisible => HasAccount && MainScreenViewModel != null;
 

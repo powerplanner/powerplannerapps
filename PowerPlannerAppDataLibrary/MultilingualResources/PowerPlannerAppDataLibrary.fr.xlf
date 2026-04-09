@@ -438,6 +438,10 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
           <source>SCHEDULE TILE</source>
           <target state="final" state-qualifier="mt-suggestion">HORAIRE TUILE</target>
         </trans-unit>
+        <trans-unit id="Settings_Theme.Subtitle" translate="yes" xml:space="preserve">
+          <source>Adjust theme colors</source>
+          <target state="final">Ajuster les couleurs du thème</target>
+        </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
           <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
           <target state="final" state-qualifier="mt-suggestion">Vous pouvez épingler une tuile pour chaque classe, et elle affichera vos tâches et événements à venir pour cette classe. De plus, il va lancer directement dans cette classe lorsque vous cliquez dessus.</target>

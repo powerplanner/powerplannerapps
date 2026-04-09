@@ -439,6 +439,9 @@ Click Continue to login (which might cause duplicates).</value>
   <data name="Settings_ScheduleTilePage_Header.Text" xml:space="preserve">
     <value>SCHEDULE TILE</value>
   </data>
+  <data name="Settings_Theme.Subtitle" xml:space="preserve">
+    <value>Adjust theme colors</value>
+  </data>
   <data name="Settings_Tiles_ClassTiles_Description.Text" xml:space="preserve">
     <value>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</value>
   </data>

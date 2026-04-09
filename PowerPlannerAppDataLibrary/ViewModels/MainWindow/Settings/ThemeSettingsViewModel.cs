@@ -90,24 +90,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             var content = new List<View>();
 
-            content.Add(new TextBlock
+            if (ThemeExtension.Current != null)
             {
-                Text = PowerPlannerResources.GetString("Settings_Appearance_Title"),
-                FontSize = Theme.Current.SubtitleFontSize,
-                FontWeight = FontWeights.SemiBold,
-                Margin = new Thickness(0, 0, 0, 6)
-            });
-
-            // Light/dark/auto theme selector
-            content.Add(new ComboBox
-            {
-                Items = Options,
-                ItemTemplate = v => new TextBlock
+                content.Add(new TextBlock
                 {
-                    Text = ((Themes)v).ToLocalizedString()
-                },
-                SelectedItem = VxValue.Create<object>(_theme.Value, v => _theme.Value = (Themes)v)
-            });
+                    Text = PowerPlannerResources.GetString("Settings_Appearance_Title"),
+                    FontSize = Theme.Current.SubtitleFontSize,
+                    FontWeight = FontWeights.SemiBold,
+                    Margin = new Thickness(0, 0, 0, 6)
+                });
+
+                // Light/dark/auto theme selector
+                content.Add(new ComboBox
+                {
+                    Items = Options,
+                    ItemTemplate = v => new TextBlock
+                    {
+                        Text = ((Themes)v).ToLocalizedString()
+                    },
+                    SelectedItem = VxValue.Create<object>(_theme.Value, v => _theme.Value = (Themes)v)
+                });
+            }
 
             // Theme color section (only when logged in)
             if (_account != null)
