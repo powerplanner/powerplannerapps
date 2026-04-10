@@ -1,6 +1,8 @@
 ﻿using PowerPlannerAppAuthLibrary;
+using PowerPlannerAppDataLibrary.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,9 +32,24 @@ namespace PowerPlannerAppDataLibrary.App
             // Pipe localizer so it works on Android from portable binding library
             PortableLocalizedResources.LocalizerExtension = PowerPlannerResources.GetString;
 
-            Theme.DefaultAccentColor = System.Drawing.Color.FromArgb(84, 107, 199);
-            Theme.DefaultDarkAccentColor = System.Drawing.Color.FromArgb(100, 127, 234); // Lighter than normal so shows up on black backgrounds
-            Theme.Current.ChromeColor = System.Drawing.Color.FromArgb(46, 54, 109);
+            Color primary = ThemeColorGenerator.DefaultPrimary;
+            var cached = Settings.CachedPrimaryThemeColor;
+            if (cached != null)
+            {
+                try
+                {
+                    primary = ColorTranslator.FromHtml(cached);
+                }
+                catch
+                {
+                    // Invalid cached value, fall back to default
+                }
+            }
+            var colors = ThemeColorGenerator.Generate(primary);
+            Theme.DefaultAccentColor = colors.Accent;
+            Theme.DefaultDarkAccentColor = colors.DarkAccent;
+            Theme.Current.ChromeColor = colors.Primary;
+            Theme.Current.ChromeLightColor = colors.PrimaryLight;
         }
 
         private static void SetUpApiKey()

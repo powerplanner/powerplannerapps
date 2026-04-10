@@ -404,6 +404,10 @@ Click Continue to login (which might cause duplicates).</source>
           <source>SCHEDULE TILE</source>
           <target state="final">بلاطة الجدول الزمني </target>
         </trans-unit>
+        <trans-unit id="Settings_Theme.Subtitle" translate="yes" xml:space="preserve">
+          <source>Adjust theme colors</source>
+          <target state="final">ضبط ألوان السمة</target>
+        </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
           <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
           <target state="final">يمكنك تثبيت بلاطة لكل صف دراسي، سوف تعرض الواجبات المنزلية والامتحانات القادمة لذلك الصف الدراسي الخاص بك. بالإضافة إلى ذلك، سوف تنقلك مباشرة إلى صفحة الصف عند النقر عليها.</target>
@@ -2771,6 +2775,30 @@ Once you purchase the premium version, you own the premium version on all your d
         <trans-unit id="String_Recovering" translate="yes" xml:space="preserve">
           <source>Recovering...</source>
           <target state="final">جارٍ الاستعادة...</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Title" translate="yes" xml:space="preserve">
+          <source>Accent color</source>
+          <target state="final">لون التمييز</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Preview" translate="yes" xml:space="preserve">
+          <source>Preview</source>
+          <target state="final">معاينة</target>
+        </trans-unit>
+        <trans-unit id="Settings_Appearance_Title" translate="yes" xml:space="preserve">
+          <source>Appearance</source>
+          <target state="final">المظهر</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">لون بدون مادة</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">خصّص لون المهام والأحداث التي لم يُسنَد إليها أي مادة دراسية.</target>
+        </trans-unit>
+        <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">إعادة تعيين إلى الافتراضي</target>
         </trans-unit>
       </group>
     </body>

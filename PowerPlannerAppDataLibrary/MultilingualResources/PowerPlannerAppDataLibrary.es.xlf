@@ -402,6 +402,10 @@ Haga clic en Continuar para iniciar la sesión (lo que podría causar duplicados
           <source>SCHEDULE TILE</source>
           <target state="final">ICONO DEL HORARIO</target>
         </trans-unit>
+        <trans-unit id="Settings_Theme.Subtitle" translate="yes" xml:space="preserve">
+          <source>Adjust theme colors</source>
+          <target state="final">Ajustar colores del tema</target>
+        </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
           <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
           <target state="final">Puede anclar un icono para cada clase, esto mostrará su próxima tarea o evento para esa clase. Además, de mostrarla al hacer clic en ella.</target>
@@ -2768,6 +2772,30 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
         <trans-unit id="String_Recovering" translate="yes" xml:space="preserve">
           <source>Recovering...</source>
           <target state="final">Recuperando...</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Title" translate="yes" xml:space="preserve">
+          <source>Accent color</source>
+          <target state="final">Color de acento</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Preview" translate="yes" xml:space="preserve">
+          <source>Preview</source>
+          <target state="final">Vista previa</target>
+        </trans-unit>
+        <trans-unit id="Settings_Appearance_Title" translate="yes" xml:space="preserve">
+          <source>Appearance</source>
+          <target state="final">Apariencia</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">Color sin clase</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">Personaliza el color de las tareas y eventos que no tienen una clase asignada.</target>
+        </trans-unit>
+        <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">Restablecer a predeterminado</target>
         </trans-unit>
       </group>
     </body>

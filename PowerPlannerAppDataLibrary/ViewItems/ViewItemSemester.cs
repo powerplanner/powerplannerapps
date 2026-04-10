@@ -52,12 +52,16 @@ namespace PowerPlannerAppDataLibrary.ViewItems
         {
             get
             {
+                // Get the current account color
+                byte[] currentColor = Account?.NoClassColor ?? AccountDataItem.DefaultNoClassColor;
+
+                // If we don't have a cached instance
                 if (_noClassClass == null)
                 {
                     _noClassClass = new ViewItemClass(new NoClassDataItemClass()
                     {
                         Name = PowerPlannerResources.GetString("String_NoClass"),
-                        RawColor = new byte[] { 84, 107, 199 },
+                        RawColor = currentColor,
                         UpperIdentifier = Identifier,
                         Identifier = Identifier
                     })
@@ -67,6 +71,17 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 }
 
                 return _noClassClass;
+            }
+        }
+
+        /// <summary>
+        /// Updates the NoClassClass so it will be recreated with the current account color setting
+        /// </summary>
+        public void UpdateNoClassColor()
+        {
+            if (_noClassClass != null)
+            {
+                _noClassClass.SetColor(Account?.NoClassColor ?? AccountDataItem.DefaultNoClassColor);
             }
         }
 

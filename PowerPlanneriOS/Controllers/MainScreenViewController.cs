@@ -228,10 +228,12 @@ namespace PowerPlanneriOS.Controllers
                     _tabBarItemSchedule,
                     _tabBarItemClasses,
                     _tabBarItemMore
-                },
-                TintColor = ColorResources.PowerPlannerAccentBlue
+                }
             };
             _tabBar.ItemSelected += new WeakEventHandler<UITabBarItemEventArgs>(_tabBar_ItemSelected).Handler;
+
+            ColorResources.ConfigureTabBar(_tabBar);
+            iOSThemeColorApplier.ThemeChanged += new WeakEventHandler<PowerPlannerAppDataLibrary.Helpers.ThemeColors>((s, _) => ColorResources.ConfigureTabBar(_tabBar)).Handler;
 
             var tabBarContainer = _tabBar;
 

@@ -205,6 +205,19 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             private set { SetProperty(ref _color, value, "Color"); }
         }
 
+        /// <summary>
+        /// Should only be used for the NoClassClass, to update the color when the account color changes. Otherwise, color should only be set through the DataItemClass that is passed in on construction, and then updated through that DataItemClass.
+        /// </summary>
+        /// <param name="color"></param>
+        internal void SetColor(byte[] color)
+        {
+            if (!IsNoClassClass)
+            {
+                throw new InvalidOperationException("Should only be setting color through this method for the NoClassClass");
+            }
+            Color = color;
+        }
+
         private byte _position;
         public byte Position
         {

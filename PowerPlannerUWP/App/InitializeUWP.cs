@@ -2,8 +2,10 @@
 using InterfacesUWP.App;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
 using PowerPlannerUWP.Extensions;
+using PowerPlannerUWP.Helpers;
 using PowerPlannerUWP.Views;
 using System;
 using ToolsPortable;
@@ -59,6 +61,9 @@ namespace PowerPlannerUWP
             BrowserExtension.Current = new UWPBrowserExtension();
             EmailExtension.Current = new UWPEmailExtension();
             ThemeExtension.Current = new UWPThemeExtension();
+
+            // Register platform-specific theme color applier
+            ThemeColorApplier.PlatformThemeApplier = UwpThemeColorApplier.Apply;
 
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is PowerPlannerAppDataLibrary.Views.CompletionSlider, v => new UwpCompletionSlider());

@@ -1,10 +1,10 @@
-﻿using StorageEverywhere;
-using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
+﻿using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerAppDataLibrary.Extensions.Telemetry;
+using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerSending;
+using StorageEverywhere;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -473,6 +473,19 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             set => SetProperty(ref _defaultDoesRoundGradesUp, value, nameof(DefaultDoesRoundGradesUp));
         }
 
+        private byte[] _customPrimaryThemeColor;
+        [DataMember]
+        public byte[] CustomPrimaryThemeColor
+        {
+            get => _customPrimaryThemeColor;
+            set => SetProperties(ref _customPrimaryThemeColor, value, nameof(CustomPrimaryThemeColor), nameof(PrimaryThemeColor));
+        }
+
+        public byte[] PrimaryThemeColor
+        {
+            get => CustomPrimaryThemeColor ?? ThemeColorGenerator.DefaultPrimaryArray;
+        }
+
         /// <summary>
         /// Negating since this was added later and will default to false for upgraded accounts.
         /// </summary>
@@ -486,6 +499,37 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             get => !_isSoundEffectsDisabled;
             set => SetProperty(ref _isSoundEffectsDisabled, !value, nameof(IsSoundEffectsEnabled));
+        }
+
+        /// <summary>
+        /// Default light blue color used when no custom color is set
+        /// </summary>
+        public static readonly byte[] DefaultNoClassColor = new byte[] { 84, 107, 199 };
+
+        /// <summary>
+        /// The default color for "No Class" items (tasks/events without a class). If null, uses the system default.
+        /// </summary>
+        private byte[] _noClassColor;
+        [DataMember]
+        public byte[] NoClassColor
+        {
+            get => _noClassColor;
+            set
+            {
+                // Validate color array if not null
+                if (value != null && value.Length != 3)
+                {
+                    throw new ArgumentException("NoClassColor must be null or a 3-byte RGB array", nameof(value));
+                }
+                SetProperty(ref _noClassColor, value, nameof(NoClassColor));
+            }
+        }
+
+        public async System.Threading.Tasks.Task SaveNoClassColor(byte[] noClassColor)
+        {
+            NoClassColor = noClassColor;
+            NeedsToSyncSettings = true;
+            await SaveOnThread();
         }
 
         public async System.Threading.Tasks.Task SaveDefaultGradeScale(GradeScale[] defaultGradeScale)
@@ -611,6 +655,19 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (settings.DefaultDoesRoundGradesUp != null && this.DefaultDoesRoundGradesUp != settings.DefaultDoesRoundGradesUp.Value)
             {
                 this.DefaultDoesRoundGradesUp = settings.DefaultDoesRoundGradesUp.Value;
+                accountChanged = true;
+            }
+
+            if (settings.PrimaryThemeColor != null && (this.CustomPrimaryThemeColor == null || !this.CustomPrimaryThemeColor.SequenceEqual(settings.PrimaryThemeColor)))
+            {
+                this.CustomPrimaryThemeColor = settings.PrimaryThemeColor;
+                ThemeColorApplier.Apply(this);
+                accountChanged = true;
+            }
+
+            if (settings.NoClassColor != null && (this.NoClassColor == null || !this.NoClassColor.SequenceEqual(settings.NoClassColor)))
+            {
+                this.NoClassColor = settings.NoClassColor;
                 accountChanged = true;
             }
 
@@ -984,6 +1041,23 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             _ = RemindersExtension.Current?.ResetReminders(this, dataStore);
 
             _ = TilesExtension.Current?.UpdateTileNotificationsForAccountAsync(this, dataStore);
+        }
+
+        public async System.Threading.Tasks.Task SetPrimaryThemeColorAsync(byte[] color, bool uploadSettings = true)
+        {
+            if (CustomPrimaryThemeColor != null && color != null && CustomPrimaryThemeColor.SequenceEqual(color))
+                return;
+            if (CustomPrimaryThemeColor == null && color == null)
+                return;
+
+            CustomPrimaryThemeColor = color;
+            NeedsToSyncSettings = true;
+            await AccountsManager.Save(this);
+
+            if (uploadSettings && IsOnlineAccount)
+            {
+                _ = Sync.SyncSettings(this, Sync.ChangedSetting.PrimaryThemeColor);
+            }
         }
 
         /// <summary>

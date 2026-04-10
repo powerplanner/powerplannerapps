@@ -17,6 +17,8 @@ using PowerPlannerAppDataLibrary;
 using Google.Android.Material.Tabs;
 using AndroidX.ViewPager.Widget;
 using Vx.Droid;
+using PowerPlannerAndroid.Helpers;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -31,6 +33,27 @@ namespace PowerPlannerAndroid.Views
         {
             _tabLayout = FindViewById<TabLayout>(Resource.Id.ClassPagerTabs);
             _viewPager = FindViewById<ViewPager>(Resource.Id.ClassPager);
+
+            ApplyThemeColors(DroidThemeColorApplier.Current);
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
+            base.OnDetachedFromWindow();
+        }
+
+        private void ApplyThemeColors(ThemeColors colors)
+        {
+            var accentColor = DroidThemeColorApplier.ToDroid(colors.Accent);
+            _tabLayout.SetSelectedTabIndicatorColor(accentColor);
+            _tabLayout.SetTabTextColors(_tabLayout.TabTextColors.DefaultColor, accentColor);
         }
 
         private void _viewPager_PageSelected(object sender, ViewPager.PageSelectedEventArgs e)

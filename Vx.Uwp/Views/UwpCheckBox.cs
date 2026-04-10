@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace Vx.Uwp.Views
 {
@@ -30,6 +31,12 @@ namespace Vx.Uwp.Views
             View.IsChecked = newView.IsChecked?.Value ?? false;
             View.Content = newView.Text;
             View.IsEnabled = newView.IsEnabled;
+
+            var accentBrush = Vx.Views.Theme.Current.ChromeColor.ToUwpBrush();
+            View.Resources["CheckBoxCheckBackgroundFillChecked"] = accentBrush;
+            View.Resources["CheckBoxCheckBackgroundFillCheckedPointerOver"] = accentBrush;
+            View.Resources["CheckBoxCheckBackgroundFillCheckedPressed"] = accentBrush;
+            View.Resources["CheckBoxCheckBackgroundFillCheckedDisabled"] = accentBrush;
         }
     }
 }

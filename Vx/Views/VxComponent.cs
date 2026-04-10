@@ -53,6 +53,7 @@ namespace Vx.Views
             nativeComponent.ComponentSizeChanged += new WeakEventHandler<SizeF>(NativeComponent_ComponentSizeChanged).Handler;
             nativeComponent.ThemeChanged += new WeakEventHandler(NativeComponent_ThemeChanged).Handler;
             nativeComponent.MouseOverChanged += new WeakEventHandler<bool>(NativeComponent_MouseOverChanged).Handler;
+            Theme.ThemeChanged += new WeakEventHandler(Theme_ThemeChanged).Handler;
 
             Initialize();
 
@@ -78,6 +79,11 @@ namespace Vx.Views
             RenderActual();
 
             EnableHotReload();
+        }
+
+        private void Theme_ThemeChanged(object sender, EventArgs e)
+        {
+            MarkDirty();
         }
 
         private void NativeComponent_MouseOverChanged(object sender, bool e)

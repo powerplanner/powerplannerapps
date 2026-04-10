@@ -17,6 +17,8 @@ using Google.Android.Material.BottomNavigation;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using AndroidX.Core.View;
 using BareMvvm.Core.Binding;
+using PowerPlannerAndroid.Helpers;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -38,6 +40,9 @@ namespace PowerPlannerAndroid.Views
 
             ViewCompat.SetOnApplyWindowInsetsListener(FindViewById(Resource.Id.MainContentView), this);
 
+            // Apply current theme colors (subscription moved to OnAttachedToWindow)
+            ApplyThemeColors(DroidThemeColorApplier.Current);
+
             // Handle class name changing in toolbar
             _selectedClassBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), selectedClassName =>
             {
@@ -46,6 +51,39 @@ namespace PowerPlannerAndroid.Views
                     Toolbar.Title = selectedClassName;
                 }
             });
+        }
+
+        private void ApplyThemeColors(ThemeColors colors)
+        {
+            try
+            {
+                var primaryDark = DroidThemeColorApplier.ToDroid(colors.PrimaryDark);
+                var primary = DroidThemeColorApplier.ToDroid(colors.Primary);
+
+                FindViewById(Resource.Id.StatusBarSpacer)?.SetBackgroundColor(primaryDark);
+                Toolbar?.SetBackgroundColor(primary);
+
+                var bottomNav = FindViewById<Google.Android.Material.BottomNavigation.BottomNavigationView>(Resource.Id.BottomNav);
+                bottomNav?.SetBackgroundColor(primaryDark);
+
+                FindViewById(Resource.Id.BottomInsets)?.SetBackgroundColor(primaryDark);
+            }
+            catch (Exception ex)
+            {
+                PowerPlannerAppDataLibrary.Extensions.TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
+            base.OnDetachedFromWindow();
         }
 
         public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)

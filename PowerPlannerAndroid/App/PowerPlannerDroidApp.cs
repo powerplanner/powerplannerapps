@@ -27,6 +27,8 @@ using BareMvvm.Core.ViewModels;
 using Vx.Extensions;
 using Vx.Droid;
 using PowerPlannerAppDataLibrary.Views;
+using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAndroid.Helpers;
 
 namespace PowerPlannerAndroid.App
 {
@@ -83,6 +85,9 @@ namespace PowerPlannerAndroid.App
             EmailExtension.Current = new DroidEmailExtension();
             ThemeExtension.Current = new DroidThemeExtension();
             LanguageExtension.Current = new DroidLanguageExtension();
+
+            // Register platform-specific theme color applier
+            ThemeColorApplier.PlatformThemeApplier = DroidThemeColorApplier.Apply;
 
             // Apply any saved language override to CultureInfo so that
             // DateTime.ToString() and other culture-sensitive APIs use the correct locale

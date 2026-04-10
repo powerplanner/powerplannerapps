@@ -105,6 +105,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             base.Popups.Clear();
 
             CurrentAccount = account;
+            ThemeColorApplier.Apply(account);
 
             if (account == null)
             {

@@ -234,7 +234,7 @@ namespace Vx.Droid
             return view.CreateNativeView(parentView).View as Android.Views.View;
         }
 
-        internal static Android.Graphics.Color ToDroid(this Color color)
+        public static Android.Graphics.Color ToDroid(this Color color)
         {
             return new Android.Graphics.Color(color.ToArgb());
         }

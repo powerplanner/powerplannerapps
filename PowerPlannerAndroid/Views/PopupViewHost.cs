@@ -13,6 +13,7 @@ using InterfacesDroid.Views;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAndroid.Helpers;
 using AndroidX.Core.View;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -77,6 +78,34 @@ namespace PowerPlannerAndroid.Views
             }
 
             ViewCompat.SetOnApplyWindowInsetsListener(popupView, this);
+
+            // Apply current theme colors (subscription moved to OnAttachedToWindow)
+            ApplyThemeColors(DroidThemeColorApplier.Current);
+        }
+
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
+            base.OnDetachedFromWindow();
+        }
+
+        private void ApplyThemeColors(ThemeColors colors)
+        {
+            try
+            {
+                _statusBarSpacer?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(colors.PrimaryDark));
+                Toolbar?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(colors.Primary));
+            }
+            catch (Exception ex)
+            {
+                PowerPlannerAppDataLibrary.Extensions.TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public virtual WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)

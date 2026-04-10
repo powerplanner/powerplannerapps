@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Appwidget;
+using PowerPlannerAndroid.Helpers;
 using PowerPlannerAndroid.Services;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Extensions;
@@ -113,6 +114,9 @@ namespace PowerPlannerAndroid.Widgets
             // Instantiate the widget layout
             var views = new RemoteViews(context.PackageName, Resource.Layout.WidgetAgenda);
 
+            // Apply the user's current theme color to the header
+            views.SetInt(Resource.Id.WidgetAgendaHeader, "setBackgroundColor", GetThemeHeaderColor());
+
             // This is displayed while the list view loads.
             // My list view will always have items, so this will act as loading text.
             views.SetEmptyView(Resource.Id.WidgetAgendaListView, Resource.Id.WidgetAgendaEmptyView);
@@ -138,6 +142,11 @@ namespace PowerPlannerAndroid.Widgets
             views.SetPendingIntentTemplate(Resource.Id.WidgetAgendaListView, pendingItemClickIntent);
 
             return views;
+        }
+
+        private static int GetThemeHeaderColor()
+        {
+            return DroidThemeColorApplier.GetWidgetHeaderColor();
         }
     }
 }

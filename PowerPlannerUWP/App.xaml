@@ -368,9 +368,9 @@
 
                     <Style x:Key="AccentButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
                         <Setter Property="Foreground" Value="White" />
-                        <Setter Property="Background" Value="{ThemeResource AccentButtonBackground}" />
+                        <Setter Property="Background" Value="{StaticResource PowerPlannerBlue}" />
                         <Setter Property="BackgroundSizing" Value="OuterBorderEdge" />
-                        <Setter Property="BorderBrush" Value="{ThemeResource AccentButtonBorderBrush}" />
+                        <Setter Property="BorderBrush" Value="{StaticResource PowerPlannerBlue}" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
@@ -401,10 +401,10 @@
 
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBackgroundPointerOver}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PowerPlannerBlueHover}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBorderBrushPointerOver}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PowerPlannerBlueHover}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
                                                             <DiscreteObjectKeyFrame KeyTime="0" Value="White" />
@@ -417,10 +417,10 @@
 
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBackgroundPressed}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PowerPlannerBlueSelected}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBorderBrushPressed}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PowerPlannerBlueSelected}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
                                                             <DiscreteObjectKeyFrame KeyTime="0" Value="LightGray" />
@@ -433,10 +433,10 @@
 
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBackgroundDisabled}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PowerPlannerDarkerBlue}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonBorderBrushDisabled}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PowerPlannerDarkerBlue}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
                                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentButtonForegroundDisabled}" />

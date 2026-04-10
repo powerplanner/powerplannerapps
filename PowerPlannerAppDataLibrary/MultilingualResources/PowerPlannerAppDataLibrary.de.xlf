@@ -403,6 +403,10 @@ Klicken Sie auf weiter zum Login (was Duplikate verursachen kann).</target>
           <source>SCHEDULE TILE</source>
           <target state="final">STUNDENPLAN KACHEL</target>
         </trans-unit>
+        <trans-unit id="Settings_Theme.Subtitle" translate="yes" xml:space="preserve">
+          <source>Adjust theme colors</source>
+          <target state="final">Designfarben anpassen</target>
+        </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
           <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
           <target state="final">Sie können für jede Klasse eine Kachel anheften, welche Ihre anstehenden Aufgaben und Ereignisse für diesen Kurs anzeigen. Darüber hinaus werde es automatisch zu diesem Kurs starten, wenn Sie darauf klicken.</target>
@@ -2769,6 +2773,30 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
         <trans-unit id="String_Recovering" translate="yes" xml:space="preserve">
           <source>Recovering...</source>
           <target state="final">Wiederherstellung...</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Title" translate="yes" xml:space="preserve">
+          <source>Accent color</source>
+          <target state="final">Akzentfarbe</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Preview" translate="yes" xml:space="preserve">
+          <source>Preview</source>
+          <target state="final">Vorschau</target>
+        </trans-unit>
+        <trans-unit id="Settings_Appearance_Title" translate="yes" xml:space="preserve">
+          <source>Appearance</source>
+          <target state="final">Erscheinungsbild</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">Farbe ohne Fach</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">Passe die Farbe von Aufgaben und Terminen an, denen kein Fach zugewiesen ist.</target>
+        </trans-unit>
+        <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">Auf Standard zurücksetzen</target>
         </trans-unit>
       </group>
     </body>

@@ -439,6 +439,9 @@ Click Continue to login (which might cause duplicates).</value>
   <data name="Settings_ScheduleTilePage_Header.Text" xml:space="preserve">
     <value>SCHEDULE TILE</value>
   </data>
+  <data name="Settings_Theme.Subtitle" xml:space="preserve">
+    <value>Adjust theme colors</value>
+  </data>
   <data name="Settings_Tiles_ClassTiles_Description.Text" xml:space="preserve">
     <value>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</value>
   </data>
@@ -2180,5 +2183,23 @@ Please think about using an online account instead!</value>
   </data>
 	<data name="String_Recovering" xml:space="preserve">
 	<value>Recovering...</value>
+  </data>
+  <data name="Settings_AccentColor_Title" xml:space="preserve">
+    <value>Accent color</value>
+  </data>
+  <data name="Settings_AccentColor_Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Settings_Appearance_Title" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_NoClassColor_Title" xml:space="preserve">
+    <value>No class color</value>
+  </data>
+  <data name="Settings_NoClassColor_Description" xml:space="preserve">
+    <value>Customize the color of tasks and events that don't have a class assigned.</value>
+  </data>
+  <data name="Settings_ResetToDefault" xml:space="preserve">
+    <value>Reset to default</value>
   </data>
 </root>

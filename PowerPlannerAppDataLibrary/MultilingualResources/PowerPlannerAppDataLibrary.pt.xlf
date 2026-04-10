@@ -402,6 +402,10 @@ Clique em continuar para fazer o login (que pode causar duplicatas).</target>
           <source>SCHEDULE TILE</source>
           <target state="final">BLOCO DE HORÁRIO</target>
         </trans-unit>
+        <trans-unit id="Settings_Theme.Subtitle" translate="yes" xml:space="preserve">
+          <source>Adjust theme colors</source>
+          <target state="final">Ajustar cores do tema</target>
+        </trans-unit>
         <trans-unit id="Settings_Tiles_ClassTiles_Description.Text" translate="yes" xml:space="preserve">
           <source>You can pin a tile for every class, and it'll display your upcoming tasks and events for that class. Plus, it'll launch straight into that class when you click it.</source>
           <target state="final">Você pode fixar um bloco para todas as aulas, e eles irão exibir os tarefas e eventos futuras para esta aula. Além disso, vão abrir diretamente na aula que você clicou.</target>
@@ -2768,6 +2772,30 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
         <trans-unit id="String_Recovering" translate="yes" xml:space="preserve">
           <source>Recovering...</source>
           <target state="final">Recuperando...</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Title" translate="yes" xml:space="preserve">
+          <source>Accent color</source>
+          <target state="final">Cor de destaque</target>
+        </trans-unit>
+        <trans-unit id="Settings_AccentColor_Preview" translate="yes" xml:space="preserve">
+          <source>Preview</source>
+          <target state="final">Pré-visualização</target>
+        </trans-unit>
+        <trans-unit id="Settings_Appearance_Title" translate="yes" xml:space="preserve">
+          <source>Appearance</source>
+          <target state="final">Aparência</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Title" translate="yes" xml:space="preserve">
+          <source>No class color</source>
+          <target state="final">Cor sem disciplina</target>
+        </trans-unit>
+        <trans-unit id="Settings_NoClassColor_Description" translate="yes" xml:space="preserve">
+          <source>Customize the color of tasks and events that don't have a class assigned.</source>
+          <target state="final">Personalize a cor das tarefas e eventos que não têm uma disciplina atribuída.</target>
+        </trans-unit>
+        <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
+          <source>Reset to default</source>
+          <target state="final">Redefinir para padrão</target>
         </trans-unit>
       </group>
     </body>

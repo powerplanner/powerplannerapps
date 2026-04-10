@@ -213,7 +213,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             {
                 Content = new Border
                 {
-                    BackgroundColor = SelectedItem == MainMenuSelections.Settings ? Theme.Current.AccentColor : System.Drawing.Color.Transparent,
+                    BackgroundColor = SelectedItem == MainMenuSelections.Settings ? ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryLight : System.Drawing.Color.Transparent,
                     Content = new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("MainMenuItem_Settings"),
@@ -317,7 +317,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             SelectedItem = i;
                         }
                     },
-                    BackgroundColor = SelectedItem == i ? Theme.Current.AccentColor : System.Drawing.Color.Transparent
+                    BackgroundColor = SelectedItem == i ? ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryLight : System.Drawing.Color.Transparent
                 });
 
                 if (i == MainMenuSelections.Classes && SelectedItem == MainMenuSelections.Classes)
@@ -360,7 +360,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                     SelectClassWithinSemester(c);
                                 }
                             },
-                            BackgroundColor = SelectedClass == c ? System.Drawing.Color.FromArgb(65, 167, 240) : Theme.Current.AccentColor
+                            BackgroundColor = SelectedClass == c ? ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryHover : ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryLight
                         }.AllowDropTaskOrEventOnClass(c));
                     }
                 }

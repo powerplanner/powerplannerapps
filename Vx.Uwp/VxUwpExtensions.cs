@@ -320,12 +320,12 @@ namespace Vx.Uwp
             return view.CreateNativeView(null).View as FrameworkElement;
         }
 
-        internal static Windows.UI.Color ToUwpColor(this System.Drawing.Color color)
+        public static Windows.UI.Color ToUwpColor(this System.Drawing.Color color)
         {
             return Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
 
-        internal static SolidColorBrush ToUwpBrush(this System.Drawing.Color color)
+        public static SolidColorBrush ToUwpBrush(this System.Drawing.Color color)
         {
             return new SolidColorBrush(color.ToUwpColor());
         }

@@ -149,6 +149,13 @@ namespace PowerPlannerUWP
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            // If they have a custom theme color, show the extended splash screen
+            if (Settings.CachedPrimaryThemeColor != null && args.PreviousExecutionState != ApplicationExecutionState.Running)
+            {
+                Window.Current.Content = new ExtendedSplash(args.SplashScreen);
+                Window.Current.Activate();
+            }
+
             base.OnLaunched(args);
         }
 
@@ -217,10 +224,11 @@ namespace PowerPlannerUWP
 
                 // If no windows, need to register window
                 mainAppWindow = PowerPlannerApp.Current.Windows.OfType<MainAppWindow>().FirstOrDefault();
+                NativeUwpAppWindow nativeWindow = null;
                 if (mainAppWindow == null)
                 {
                     // This configures the view models, does NOT call Activate yet
-                    var nativeWindow = new NativeUwpAppWindow();
+                    nativeWindow = new NativeUwpAppWindow();
                     mainAppWindow = new MainAppWindow();
                     await PowerPlannerApp.Current.RegisterWindowAsync(mainAppWindow, nativeWindow);
 
@@ -308,6 +316,8 @@ namespace PowerPlannerUWP
                     await mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
                 }
 
+                // Show the window content and activate the window
+                nativeWindow?.DisplayWindowContent();
                 Window.Current.Activate();
 
                 // Listen to window activation changes
@@ -522,28 +532,10 @@ namespace PowerPlannerUWP
             {
                 var view = ApplicationView.GetForCurrentView();
 
-                // Set up the title bar
-                var titleBar = view.TitleBar;
-
-                titleBar.BackgroundColor = Color.FromArgb(255, 26, 32, 74);
-                titleBar.ForegroundColor = Colors.White;
-
-                titleBar.InactiveBackgroundColor = Color.FromArgb(255, 73, 79, 117);
-                titleBar.InactiveForegroundColor = Colors.LightGray;
-
-
-                titleBar.ButtonBackgroundColor = titleBar.BackgroundColor;
-                titleBar.ButtonForegroundColor = titleBar.ForegroundColor;
-
-                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(255, 75, 96, 179);
-                titleBar.ButtonHoverForegroundColor = Colors.White;
-
-                titleBar.ButtonInactiveBackgroundColor = titleBar.InactiveBackgroundColor;
-                titleBar.ButtonInactiveForegroundColor = titleBar.InactiveForegroundColor;
-
-                titleBar.ButtonPressedBackgroundColor = Color.FromArgb(255, 84, 107, 199);
-                titleBar.ButtonPressedForegroundColor = Colors.White;
-
+                // Apply themed colors to XAML brush resources and title bar
+                // using cached/default theme from SharedInitialization
+                var colors = ThemeColorGenerator.Generate(Vx.Views.Theme.Current.ChromeColor);
+                Helpers.UwpThemeColorApplier.Apply(colors);
 
                 // Set up the min window size
                 view.SetPreferredMinSize(new Size(300, 300));
@@ -668,6 +660,11 @@ namespace PowerPlannerUWP
 
 
                     string changedText = "";
+
+                    if (v <= new Version(2604, 7, 1, 99))
+                    {
+                        changedText += "\n - Custom theme colors added! Go to settings to pick your favorite color for the app!";
+                    }
 
                     if (v <= new Version(2604, 4, 62, 99))
                     {
