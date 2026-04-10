@@ -260,7 +260,7 @@ namespace PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule
                     };
                 }
 
-                catch (Exception ex)
+                catch
                 {
                     randomAccessStream.Dispose();
                     throw;
