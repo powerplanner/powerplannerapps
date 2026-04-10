@@ -313,6 +313,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         {
             try
             {
+                bool changedThemeColor = false;
+                bool changedNoClassColor = false;
+
                 // Save theme color if changed
                 if (IsColorDirty && _account != null)
                 {
@@ -326,6 +329,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     {
                         { "Color", GetSelectedColorName() }
                     });
+
+                    changedThemeColor = true;
                 }
 
                 // Save no class color if changed
@@ -336,21 +341,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     await SaveNoClassColor(colorBytes);
 
                     TelemetryExtension.Current?.TrackEvent("ChangedNoClassColor");
+
+                    changedNoClassColor = true;
                 }
 
                 // Sync changed settings
-                if (_account != null && _account.IsOnlineAccount && IsColorDirty || IsNoClassColorDirty)
+                if (_account != null && _account.IsOnlineAccount && (changedThemeColor || changedNoClassColor))
                 {
                     Sync.ChangedSetting changedSettings;
-                    if (IsColorDirty && IsNoClassColorDirty)
+                    if (changedThemeColor && changedNoClassColor)
                     {
                         changedSettings = Sync.ChangedSetting.PrimaryThemeColor | Sync.ChangedSetting.NoClassColor;
                     }
-                    else if (IsColorDirty)
+                    else if (changedThemeColor)
                     {
                         changedSettings = Sync.ChangedSetting.PrimaryThemeColor;
                     }
-                    else // IsNoClassColorDirty
+                    else // changedNoClassColor
                     {
                         changedSettings = Sync.ChangedSetting.NoClassColor;
                     }
