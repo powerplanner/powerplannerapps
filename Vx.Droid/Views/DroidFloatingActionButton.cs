@@ -31,12 +31,17 @@ namespace Vx.Droid.Views
 
         private void View_AttachedToWindow(object sender, View.ViewAttachedToWindowEventArgs e)
         {
-            Vx.Views.Theme.ChromeColorChanged += UpdateBackgroundTint;
+            Vx.Views.Theme.ThemeChanged += Theme_ThemeChanged;
+        }
+
+        private void Theme_ThemeChanged(object sender, EventArgs e)
+        {
+            UpdateBackgroundTint();
         }
 
         private void View_DetachedFromWindow(object sender, View.ViewDetachedFromWindowEventArgs e)
         {
-            Vx.Views.Theme.ChromeColorChanged -= UpdateBackgroundTint;
+            Vx.Views.Theme.ThemeChanged -= Theme_ThemeChanged;
         }
 
         private void UpdateBackgroundTint()

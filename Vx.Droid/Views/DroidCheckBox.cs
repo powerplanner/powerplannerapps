@@ -22,8 +22,13 @@ namespace Vx.Droid.Views
             View.SetMinimumHeight(0);
 
             UpdateCheckedTint();
-            View.ViewAttachedToWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged += UpdateCheckedTint;
-            View.ViewDetachedFromWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged -= UpdateCheckedTint;
+            View.ViewAttachedToWindow += (s, e) => Vx.Views.Theme.ThemeChanged += ThemeChanged;
+            View.ViewDetachedFromWindow += (s, e) => Vx.Views.Theme.ThemeChanged -= ThemeChanged;
+        }
+
+        private void ThemeChanged(object sender, EventArgs e)
+        {
+            UpdateCheckedTint();
         }
 
         private void UpdateCheckedTint()

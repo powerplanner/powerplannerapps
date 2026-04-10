@@ -38,6 +38,8 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 Settings.CachedPrimaryThemeColor = null;
             }
 
+            Theme.NotifyThemeChanged();
+
             // Notify platform-specific code
             PlatformThemeApplier?.Invoke(colors);
         }

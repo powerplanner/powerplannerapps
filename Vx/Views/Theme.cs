@@ -7,6 +7,8 @@ namespace Vx.Views
 {
     public abstract class Theme
     {
+        public static event EventHandler ThemeChanged;
+
         private static Theme _currentTheme;
         public static Theme Current
         {
@@ -35,23 +37,9 @@ namespace Vx.Views
         public static Color DefaultDarkAccentColor { get; set; } = Color.Blue;
 
         /// <summary>
-        /// Fires whenever <see cref="ChromeColor"/> is changed on the current theme.
-        /// </summary>
-        public static event Action ChromeColorChanged;
-
-        /// <summary>
         /// Background color of buttons, titlebars, etc
         /// </summary>
-        private Color _chromeColor = Color.Blue;
-        public Color ChromeColor
-        {
-            get => _chromeColor;
-            set
-            {
-                _chromeColor = value;
-                ChromeColorChanged?.Invoke();
-            }
-        }
+        public Color ChromeColor { get; set; } = Color.Blue;
 
         /// <summary>
         /// Lighter variant of <see cref="ChromeColor"/>, used for ripple/pressed states.
@@ -106,5 +94,10 @@ namespace Vx.Views
         public virtual float TitleFontSize => 24;
 
         public virtual float HeaderFontSize => 38;
+
+        public static void NotifyThemeChanged()
+        {
+            ThemeChanged?.Invoke(null, EventArgs.Empty);
+        }
     }
 }

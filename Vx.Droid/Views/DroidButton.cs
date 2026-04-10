@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ToolsPortable;
+using Vx.Views;
 
 namespace Vx.Droid.Views
 {
@@ -19,8 +21,13 @@ namespace Vx.Droid.Views
         public DroidButton() : this(new MaterialButton(VxDroidExtensions.ApplicationContext, null, Resource.Attribute.materialButtonOutlinedStyle))
         {
             UpdateOutlinedColors();
-            View.ViewAttachedToWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged += UpdateOutlinedColors;
-            View.ViewDetachedFromWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged -= UpdateOutlinedColors;
+            View.ViewAttachedToWindow += (s, e) => Theme.ThemeChanged += ThemeChanged;
+            View.ViewDetachedFromWindow += (s, e) => Theme.ThemeChanged -= ThemeChanged;
+        }
+
+        private void ThemeChanged(object sender, EventArgs e)
+        {
+            UpdateOutlinedColors();
         }
 
         private void UpdateOutlinedColors()
@@ -60,8 +67,13 @@ namespace Vx.Droid.Views
             View.SetMinimumWidth(0); // Both must be called since max of the two is used
 
             UpdateTextColor();
-            View.ViewAttachedToWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged += UpdateTextColor;
-            View.ViewDetachedFromWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged -= UpdateTextColor;
+            View.ViewAttachedToWindow += (s, e) => Theme.ThemeChanged += ThemeChanged;
+            View.ViewDetachedFromWindow += (s, e) => Theme.ThemeChanged -= ThemeChanged;
+        }
+
+        private void ThemeChanged(object sender, EventArgs e)
+        {
+            UpdateTextColor();
         }
 
         private void UpdateTextColor()
@@ -75,8 +87,13 @@ namespace Vx.Droid.Views
         public DroidAccentButton() : base(new MaterialButton(VxDroidExtensions.ApplicationContext))
         {
             UpdateColors();
-            View.ViewAttachedToWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged += UpdateColors;
-            View.ViewDetachedFromWindow += (s, e) => Vx.Views.Theme.ChromeColorChanged -= UpdateColors;
+            View.ViewAttachedToWindow += (s, e) => Theme.ThemeChanged += ThemeChanged;
+            View.ViewDetachedFromWindow += (s, e) => Theme.ThemeChanged -= ThemeChanged;
+        }
+
+        private void ThemeChanged(object sender, EventArgs e)
+        {
+            UpdateColors();
         }
 
         private void UpdateColors()
