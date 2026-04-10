@@ -26,7 +26,7 @@ namespace PowerPlanneriOS.Helpers
                 Current = colors;
 
                 // Update global window tint color (accent)
-                NativeiOSApplication.Current.Window.TintColor = ToUIColor(colors.Accent);
+                NativeiOSApplication.Current.Window.TintColor = ToUIColor(colors.DarkAccent);
 
                 // Update snackbar button text color
                 InterfacesiOS.Views.BareSnackbarPresenter.ButtonTextColor = ToUIColor(colors.Accent);
