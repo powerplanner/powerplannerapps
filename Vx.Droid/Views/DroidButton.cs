@@ -32,7 +32,7 @@ namespace Vx.Droid.Views
 
         private void UpdateOutlinedColors()
         {
-            var accentColor = Vx.Views.Theme.Current.AccentColor.ToDroid();
+            var accentColor = Vx.Views.Theme.Current.DarkAccentColor.ToDroid();
             View.SetTextColor(accentColor);
             View.StrokeColor = ColorTools.GetColorStateList(accentColor);
         }
@@ -78,7 +78,7 @@ namespace Vx.Droid.Views
 
         private void UpdateTextColor()
         {
-            View.SetTextColor(Vx.Views.Theme.Current.AccentColor.ToDroid());
+            View.SetTextColor(Vx.Views.Theme.Current.DarkAccentColor.ToDroid());
         }
     }
 
