@@ -278,8 +278,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 await _account.SaveNoClassColor(colorBytes);
 
-                // Invalidate all semesters' NoClassClass to pick up the new color
-                InvalidateNoClassColorInSemesters();
+                // Update all semesters' NoClassClass to pick up the new color
+                UpdateNoClassColorInSemesters();
             }
             catch (Exception ex)
             {
@@ -287,14 +287,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
         }
 
-        private void InvalidateNoClassColorInSemesters()
+        private void UpdateNoClassColorInSemesters()
         {
             try
             {
                 var mainScreen = MainScreenViewModel;
                 if (mainScreen?.CurrentSemester != null)
                 {
-                    mainScreen.CurrentSemester.InvalidateNoClassClass();
+                    mainScreen.CurrentSemester.UpdateNoClassColor();
                 }
             }
             catch (Exception ex)

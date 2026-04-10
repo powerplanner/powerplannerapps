@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using InterfacesiOS.App;
 using PowerPlannerAppDataLibrary.Helpers;
 using UIKit;
 
@@ -10,7 +11,7 @@ namespace PowerPlanneriOS.Helpers
         /// <summary>
         /// Fires when theme colors have been updated. Views can subscribe to update their appearance.
         /// </summary>
-        public static event Action<ThemeColors> ThemeChanged;
+        public static event EventHandler<ThemeColors> ThemeChanged;
 
         /// <summary>
         /// The currently applied theme colors, initialized to defaults.
@@ -25,12 +26,12 @@ namespace PowerPlanneriOS.Helpers
                 Current = colors;
 
                 // Update global window tint color (accent)
-                foreach (var window in UIApplication.SharedApplication.Windows)
-                {
-                    window.TintColor = ToUIColor(colors.Accent);
-                }
+                NativeiOSApplication.Current.Window.TintColor = ToUIColor(colors.Accent);
 
-                ThemeChanged?.Invoke(colors);
+                // Update snackbar button text color
+                InterfacesiOS.Views.BareSnackbarPresenter.ButtonTextColor = ToUIColor(colors.Accent);
+
+                ThemeChanged?.Invoke(null, colors);
             }
             catch (Exception ex)
             {

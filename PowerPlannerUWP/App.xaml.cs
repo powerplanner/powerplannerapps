@@ -661,6 +661,11 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
+                    if (v <= new Version(2604, 7, 1, 99))
+                    {
+                        changedText += "\n - Custom theme colors added! Go to settings to pick your favorite color for the app!";
+                    }
+
                     if (v <= new Version(2604, 4, 62, 99))
                     {
                         changedText += "\n - Fixed class reminders incorrectly appearing when there's a holiday";

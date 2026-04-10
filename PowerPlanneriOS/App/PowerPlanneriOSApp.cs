@@ -32,8 +32,6 @@ namespace PowerPlanneriOS.App
         {
             ThemeColorApplier.PlatformThemeApplier = iOSThemeColorApplier.Apply;
 
-            BareSnackbarPresenter.ButtonTextColor = ColorResources.PowerPlannerAccentBlue;
-
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for iOS"; };
 
             // Note that there's several places my code takes a dependency on this to change behavior for iOS version
