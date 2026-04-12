@@ -347,5 +347,4 @@ jobs:
           }
           Write-Host "Publishing $($msixupload.Name) to Microsoft Store..."
           msstore publish "$($msixupload.FullName)" `
-          -id "${{ vars.PARTNER_CENTER_STORE_APP_ID }}" `
-          --packageRolloutPercentage 100
+          -id "${{ vars.PARTNER_CENTER_STORE_APP_ID }}"
