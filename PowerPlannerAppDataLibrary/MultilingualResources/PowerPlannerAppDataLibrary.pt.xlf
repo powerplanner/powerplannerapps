@@ -2235,6 +2235,14 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Tutorials and FAQ</source>
           <target state="final" state-qualifier="mt-suggestion">Tutoriais e FAQ</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_OtherAppsItem.Title" translate="yes" xml:space="preserve">
+          <source>Other Apps</source>
+          <target state="final">Outros aplicativos</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_OtherAppsItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Check out our other apps</source>
+          <target state="final">Confira nossos outros aplicativos</target>
+        </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Content" translate="yes" xml:space="preserve">
           <source>The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</source>
           <target state="final" state-qualifier="mt-suggestion">A hora de início que você entrou não é válida! Você pode escrever '(hora):(minuto)', '(hora):(minuto) (AM/PM)' ou '(hora)h(minuto)m'.</target>

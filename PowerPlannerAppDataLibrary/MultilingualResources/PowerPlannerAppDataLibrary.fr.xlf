@@ -270,6 +270,14 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
           <source>Tutorials and FAQ</source>
           <target state="final" state-qualifier="mt-suggestion">Tutoriels et FAQ</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_OtherAppsItem.Title" translate="yes" xml:space="preserve">
+          <source>Other Apps</source>
+          <target state="final">Autres applications</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_OtherAppsItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Check out our other apps</source>
+          <target state="final">Découvrez nos autres applications</target>
+        </trans-unit>
         <trans-unit id="Settings_MainPage_AboutItem.Title" translate="yes" xml:space="preserve">
           <source>About</source>
           <target state="final">À propos de</target>

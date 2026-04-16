@@ -2238,6 +2238,14 @@ Please think about using an online account instead!</source>
           <source>Tutorials and FAQ</source>
           <target state="final" state-qualifier="mt-suggestion">الدروس والاسئله الشائعة</target>
         </trans-unit>
+        <trans-unit id="Settings_MainPage_OtherAppsItem.Title" translate="yes" xml:space="preserve">
+          <source>Other Apps</source>
+          <target state="final">تطبيقات أخرى</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_OtherAppsItem.Subtitle" translate="yes" xml:space="preserve">
+          <source>Check out our other apps</source>
+          <target state="final">تعرّف على تطبيقاتنا الأخرى</target>
+        </trans-unit>
         <trans-unit id="EditingClassScheduleItemView_InvalidStartTime.Content" translate="yes" xml:space="preserve">
           <source>The start time you entered is not valid! You can write '(hour):(minute)', '(hour):(minute) (AM/PM)' or '(hour)h(minute)m'.</source>
           <target state="final" state-qualifier="mt-suggestion">وقت البدء الذي أدخلته غير صالح! يمكنك كتابة '(ساعة) :(دقيقة)' أو '(ساعة) :(دقيقة) (صباحاً/مساءً)" أو '(ساعة) ح (دقيقة)م'.</target>
