@@ -62,8 +62,8 @@ jobs:
           ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
 
-      - name: Select Xcode 26.2
-        run: sudo xcode-select -s /Applications/Xcode_26.2.app
+      - name: Select Xcode 26.3
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
