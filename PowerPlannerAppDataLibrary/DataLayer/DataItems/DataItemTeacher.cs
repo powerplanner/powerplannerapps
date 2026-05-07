@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -42,12 +43,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             set { SetValue(RawPhoneNumbersProperty, value); }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "PhoneNumber type is preserved as it is used in serialization throughout the application.")]
         public PhoneNumber[] GetPhoneNumbers()
         {
             // Cannot cache these values since the underlying dictionary that stores the properties might change, and there'd be no way of this knowing that it changed
             return DeserializeFromString<PhoneNumber[]>(RawPhoneNumbers);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Serialized types are preserved.")]
         public void SetPhoneNumbers(PhoneNumber[] value)
         {
             RawPhoneNumbers = SerializeToString(value);
@@ -62,11 +65,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             set { SetValue(RawEmailAddressesProperty, value); }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "EmailAddress type is preserved as it is used in serialization throughout the application.")]
         public EmailAddress[] GetEmailAddresses()
         {
             return DeserializeFromString<EmailAddress[]>(RawEmailAddresses);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Serialized types are preserved.")]
         public void SetEmailAddresses(EmailAddress[] value)
         {
             RawEmailAddresses = SerializeToString(value);
@@ -81,11 +86,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             set { SetValue(RawPostalAddressesProperty, value); }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "PostalAddress type is preserved as it is used in serialization throughout the application.")]
         public PostalAddress[] GetPostalAddresses()
         {
             return DeserializeFromString<PostalAddress[]>(RawPostalAddresses);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Serialized types are preserved.")]
         public void SetPostalAddresses(PostalAddress[] value)
         {
             RawPostalAddresses = SerializeToString(value);
@@ -100,11 +107,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             set { SetValue(RawOfficeLocationsProperty, value); }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Serialized types are preserved.")]
         public string[] GetOfficeLocations()
         {
             return DeserializeFromString<string[]>(RawOfficeLocations);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Serialized types are preserved.")]
         public void SetOfficeLocations(string[] value)
         {
             RawOfficeLocations = SerializeToString(value);

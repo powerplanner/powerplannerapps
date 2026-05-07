@@ -2,6 +2,7 @@
 using PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ToolsPortable;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -177,11 +178,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems
             set { SetValue(LastEventDurationProperty, value); }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "GradeScale type is preserved as it is used in serialization throughout the application.")]
         public GradeScale[] GetGradeScales()
         {
             return DeserializeFromString<GradeScale[]>(RawGradeScales);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "GradeScale type is preserved as it is used in serialization throughout the application.")]
         public void SetGradeScales(GradeScale[] value)
         {
             RawGradeScales = SerializeToString(value);

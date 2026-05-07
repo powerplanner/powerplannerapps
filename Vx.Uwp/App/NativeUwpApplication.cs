@@ -4,6 +4,7 @@ using InterfacesUWP.Extensions;
 using InterfacesUWP.ViewModelPresenters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -109,6 +110,7 @@ namespace InterfacesUWP.App
 
         public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
 
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public abstract Type GetPortableAppType();
 
         private CultureInfo GetCultureInfo()
