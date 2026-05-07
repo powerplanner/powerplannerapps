@@ -68,11 +68,13 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.x'
-          dotnet-quality: 'ga'
+          dotnet-version: '11.x'
+          dotnet-quality: 'preview'
 
       - name: Install iOS workload
-        run: dotnet workload install ios
+        run: |
+          dotnet workload update
+          dotnet workload install ios
 
       - name: Write secrets.json
         shell: bash

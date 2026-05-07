@@ -119,14 +119,20 @@ jobs:
           $content = $content -creplace '\sVersion="([\d\.]*)"', " Version=`"${{ env.BUILD_VERSION }}.0`""
           Set-Content $manifest $content -NoNewline -Encoding UTF8
 
-      - name: Remove .net10-android from UWP project
+      - name: Remove .net11-android from UWP project
         shell: pwsh
         run: |
           $csproj = "PowerPlannerAppDataLibrary/PowerPlanner.csproj"
           $content = Get-Content $csproj -Raw
-          $content = $content -replace ';net10\.0-android<', '<'
+          $content = $content -replace ';net11\.0-android<', '<'
           Set-Content $csproj $content -NoNewline -Encoding UTF8
         continue-on-error: true
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.x'
+          dotnet-quality: 'preview'
 
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
