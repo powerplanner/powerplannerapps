@@ -72,7 +72,9 @@ jobs:
           dotnet-quality: 'preview'
 
       - name: Install iOS workload
-        run: dotnet workload install ios
+        run: |
+          dotnet workload update
+          dotnet workload install ios
 
       - name: Write secrets.json
         shell: bash

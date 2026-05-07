@@ -128,6 +128,12 @@ jobs:
           Set-Content $csproj $content -NoNewline -Encoding UTF8
         continue-on-error: true
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.x'
+          dotnet-quality: 'preview'
+
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
         with:

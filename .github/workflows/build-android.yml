@@ -77,7 +77,9 @@ jobs:
           dotnet-quality: 'preview'
 
       - name: Install Android workload
-        run: dotnet workload install android
+        run: |
+          dotnet workload update
+          dotnet workload install android
 
       - name: Write secrets.json
         shell: pwsh
