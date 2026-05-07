@@ -10,7 +10,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public abstract class iOSView<V, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] N> : NativeView<V, UIViewWrapper> where V : View where N : UIView
+    public abstract class iOSView<V, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] N> : NativeView<V, UIViewWrapper> where V : View where N : UIView
     {
         private UITapGestureRecognizer _tapGestureRecognizer;
         private ContextMenuInteractionHandler _cmInteractionHandler;
