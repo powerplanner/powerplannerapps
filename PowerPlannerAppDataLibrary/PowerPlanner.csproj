@@ -14,6 +14,8 @@
     <RootNamespace>PowerPlannerAppDataLibrary</RootNamespace>
     <AssemblyName>PowerPlannerAppDataLibrary</AssemblyName>
     <NoWarn>$(NoWarn);NU1903;NU1904</NoWarn> <!--Don't warn about System.Drawing, it's used by XliffCompiler which is just a build step-->
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />

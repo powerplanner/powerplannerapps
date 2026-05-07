@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             ShowViewModel<PushSettingsViewModel>();
         }
 
-        private void ShowViewModel<T>() where T : BaseViewModel
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "View model types are preserved as they are directly referenced in code.")]
+        private void ShowViewModel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>() where T : BaseViewModel
         {
             ShowPopup(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
         }

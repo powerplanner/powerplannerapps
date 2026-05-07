@@ -4,6 +4,7 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
     public static class PromoRegistrations
     {
         private static bool _hasBeenRequestedThisSession;
-        public static readonly List<Type> Registrations = new List<Type>()
+        public static readonly List<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type> Registrations = new List<Type>()
         {
             //typeof(PromoPriceIncreaseViewModel.Registration)
         };

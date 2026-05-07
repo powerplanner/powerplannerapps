@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Vx.Views;
@@ -63,6 +64,8 @@ namespace Vx
         internal Action<View, View> OnApplyPropertiesValidationHook { get; set; }
 #endif
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
         private void HandleInnerComponent(VxComponent oldView, VxComponent newView)
         {
             if (oldView == null)

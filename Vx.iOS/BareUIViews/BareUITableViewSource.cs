@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -11,7 +12,7 @@ using ToolsPortable;
 
 namespace InterfacesiOS.Views
 {
-    public  class BareUITableViewSource<V> : UITableViewSource where V : UIView
+    public  class BareUITableViewSource<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] V> : UITableViewSource where V : UIView
     {
         public IEnumerable ItemsSource { get; private set; }
         public UITableView TableView { get; private set; }
@@ -34,6 +35,7 @@ namespace InterfacesiOS.Views
             TableView.ReloadData();
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "V has DynamicallyAccessedMembers annotation preserving public properties.")]
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             object item = ItemsSource.OfType<object>().ElementAt(indexPath.Row);
@@ -55,6 +57,7 @@ namespace InterfacesiOS.Views
             return cell;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2091", Justification = "V has DynamicallyAccessedMembers annotation.")]
         protected virtual UIView CreateView()
         {
             return Activator.CreateInstance<V>();

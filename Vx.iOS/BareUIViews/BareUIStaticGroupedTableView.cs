@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -123,6 +124,7 @@ namespace InterfacesiOS.Views
         /// <param name="description"></param>
         /// <param name="bindingHost"></param>
         /// <param name="bindingValuePropertyName"></param>
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "Binding data context types are preserved by the application.")]
         public void AddCheckableCellWithDescription(string title, string description, Binding.BindingHost bindingHost, string bindingValuePropertyName)
         {
             var cell = new UITableViewCell(UITableViewCellStyle.Subtitle, "CheckableDescriptionCell");

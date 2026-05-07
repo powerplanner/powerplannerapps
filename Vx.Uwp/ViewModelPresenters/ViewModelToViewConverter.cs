@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,12 @@ namespace InterfacesUWP.ViewModelPresenters
         private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
         private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
 
-        public static void AddMapping(Type viewModelType, Type viewType)
+        public static void AddMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
         {
             ViewModelToViewMappings[viewModelType] = viewType;
         }
 
-        public static void AddGenericMapping(Type viewModelType, Type viewType)
+        public static void AddGenericMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
         {
             GenericViewModelToViewMappings[viewModelType] = viewType;
         }
@@ -40,6 +41,8 @@ namespace InterfacesUWP.ViewModelPresenters
             return false;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value == null)

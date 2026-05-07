@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -134,6 +135,7 @@ namespace InterfacesiOS.App
 
         public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
 
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public abstract Type GetPortableAppType();
 
         private CultureInfo GetCultureInfo()

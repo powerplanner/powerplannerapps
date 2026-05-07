@@ -1,6 +1,7 @@
 ﻿using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -161,6 +162,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             return changedSyncProperties;
         }
 
+        [RequiresUnreferencedCode("JSON serialization may require types that cannot be statically analyzed.")]
         public static string SerializeToString(object obj)
         {
             if (obj == null)
@@ -176,6 +178,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             }
         }
 
+        [RequiresUnreferencedCode("JSON deserialization may require types that cannot be statically analyzed.")]
         public static T DeserializeFromString<T>(string str)
         {
             if (str == null)

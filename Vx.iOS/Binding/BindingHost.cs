@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -116,6 +117,7 @@ namespace InterfacesiOS.Binding
             }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "Date picker type is known and preserved.")]
         public void SetDateBinding(BareUIInlineDatePicker datePicker, string propertyPath)
         {
             var reg = SetBinding(propertyPath, value =>
@@ -155,6 +157,7 @@ namespace InterfacesiOS.Binding
             };
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "Time picker type is known and preserved.")]
         public void SetTimeBinding(BareUIInlineTimePicker timePicker, string propertyPath)
         {
             var reg = SetBinding(propertyPath, value =>
@@ -295,6 +298,7 @@ namespace InterfacesiOS.Binding
             });
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "Binding data context types are preserved by the application.")]
         public void SetTableViewSourceBinding(UITableView tableView, string propertyPath, Func<UITableViewSource> createTableSourceAction)
         {
             SetBinding(propertyPath, value =>

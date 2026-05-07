@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 
@@ -69,6 +70,7 @@ namespace Vx.Views
             base.SetValueSilently(value);
         }
 
+        [RequiresUnreferencedCode("CreateBound uses reflection to access properties by name.")]
         internal static VxState<T> CreateBound(string propertyName, object source)
         {
             var prop = source.GetType().GetProperty(propertyName);

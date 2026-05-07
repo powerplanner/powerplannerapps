@@ -4,6 +4,7 @@ using PowerPlannerAppDataLibrary.Converters;
 using PowerPlannerAppDataLibrary.DataLayer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Vx;
 using Vx.Views;
@@ -71,7 +72,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             ShowViewModel<ConfigureDefaultGradeScaleViewModel>();
         }
 
-        private void ShowViewModel<T>() where T : BaseViewModel
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "View model types are preserved as they are directly referenced in code.")]
+        private void ShowViewModel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>() where T : BaseViewModel
         {
             ShowPopup(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
         }

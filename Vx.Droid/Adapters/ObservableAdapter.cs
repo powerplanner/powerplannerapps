@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -218,6 +219,7 @@ namespace InterfacesDroid.Adapters
                 return List[position].GetHashCode();
             }
 
+            [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types used with adapters are preserved by the application.")]
             public override View GetView(int position, View convertView, ViewGroup parent)
             {
                 T item = this[position];
@@ -235,6 +237,7 @@ namespace InterfacesDroid.Adapters
                 return convertView;
             }
 
+            [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types used with adapters are preserved by the application.")]
             public override View GetDropDownView(int position, View convertView, ViewGroup parent)
             {
                 if (CreateDropDownViewFunction == null)

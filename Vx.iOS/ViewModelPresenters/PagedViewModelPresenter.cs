@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -209,6 +210,7 @@ namespace InterfacesiOS.ViewModelPresenters
             ViewModel_OnPresenterNeedsToClearAll(null, null);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View controller types are preserved by the application via ViewModelToViewConverter mappings.")]
         private static void RecursivelyDestroyDescendants(UIViewController controller)
         {
             foreach (var c in controller.ChildViewControllers)

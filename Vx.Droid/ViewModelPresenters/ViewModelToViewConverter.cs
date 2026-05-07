@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -21,17 +22,17 @@ namespace InterfacesDroid.ViewModelPresenters
         private static Dictionary<Type, Type> ViewModelToSplashMappings = new Dictionary<Type, Type>();
         private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
 
-        public static void AddMapping(Type viewModelType, Type viewType)
+        public static void AddMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
         {
             ViewModelToViewMappings[viewModelType] = viewType;
         }
 
-        public static void AddSplashMapping(Type viewModelType, Type viewType)
+        public static void AddSplashMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
         {
             ViewModelToSplashMappings[viewModelType] = viewType;
         }
 
-        public static void AddGenericMapping(Type viewModelType, Type viewType)
+        public static void AddGenericMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
         {
             GenericViewModelToViewMappings[viewModelType] = viewType;
         }
@@ -51,6 +52,8 @@ namespace InterfacesDroid.ViewModelPresenters
             return false;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping preserve public properties.")]
         public static View GetSplash(ViewGroup root, object viewModel)
         {
             if (viewModel == null)
@@ -66,6 +69,8 @@ namespace InterfacesDroid.ViewModelPresenters
             return null;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping preserve public properties.")]
         public static View Convert(ViewGroup root, object value)
         {
             if (value == null)
@@ -132,6 +137,7 @@ namespace InterfacesDroid.ViewModelPresenters
             return view;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
         private static View CreateView(ViewGroup root, Type viewType)
         {
             try

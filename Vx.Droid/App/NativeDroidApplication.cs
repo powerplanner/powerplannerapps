@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using Android.App;
 using Android.Runtime;
@@ -112,6 +113,7 @@ namespace InterfacesDroid.App
         public abstract Dictionary<Type, Type> GetViewModelToSplashMappings();
         public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
 
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public abstract Type GetPortableAppType();
 
         private CultureInfo GetCultureInfo()
