@@ -98,6 +98,7 @@ namespace Vx.Uwp.Views
             }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "UWP FrameworkElement types are preserved by the runtime.")]
         private void View_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (VxView?.Tapped != null)

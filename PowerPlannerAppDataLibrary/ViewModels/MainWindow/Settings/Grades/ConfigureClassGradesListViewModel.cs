@@ -5,6 +5,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -127,12 +128,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
             ShowClassViewModel<ConfigureClassPassingGradeViewModel>();
         }
 
-        private void ShowClassViewModel<T>() where T : BaseViewModel
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "View model types are preserved as they are directly referenced in code.")]
+        private void ShowClassViewModel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>() where T : BaseViewModel
         {
             FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), FindAncestor<PagedViewModelWithPopups>(), Class) as BaseViewModel);
         }
 
-        public static void ShowViewModel<T>(BaseViewModel current) where T : BaseViewModel
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "View model types are preserved as they are directly referenced in code.")]
+        public static void ShowViewModel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(BaseViewModel current) where T : BaseViewModel
         {
             current.FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), current.FindAncestor<PagedViewModelWithPopups>()) as BaseViewModel);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -168,6 +169,8 @@ namespace Vx.Views
             }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
         private IEnumerable<VxState> AllStates()
         {
             var stateType = typeof(VxState);
@@ -259,6 +262,8 @@ namespace Vx.Views
             }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
         private IEnumerable<INotifyPropertyChanged> AllSubscribeablePropertyValues()
         {
             var seenProps = new HashSet<string>();

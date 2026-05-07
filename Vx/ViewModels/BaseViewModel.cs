@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -752,6 +753,8 @@ namespace BareMvvm.Core.ViewModels
             NavigatedFrom?.Invoke(this, new EventArgs());
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "BaseViewModel subclasses are preserved by the application as they are directly instantiated.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2072", Justification = "BaseViewModel subclasses are preserved by the application as they are directly instantiated.")]
         protected bool ValidateAllInputs(bool showValidationErrorMessage = true, Dictionary<string, Action<TextField>> customValidators = null)
         {
             var props = this.GetType().GetRuntimeProperties().Where(i => i.PropertyType == typeof(TextField));

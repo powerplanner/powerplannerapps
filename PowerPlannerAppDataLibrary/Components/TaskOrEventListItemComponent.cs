@@ -3,6 +3,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Vx.Views;
 
@@ -89,6 +90,7 @@ namespace PowerPlannerAppDataLibrary.Components
             return answer;
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "ViewItemTaskOrEvent is a well-known type whose properties are preserved.")]
         private static string GetSubtitle(ViewItemTaskOrEvent Item, bool IncludeDate, bool IncludeClass)
         {
             string txt;

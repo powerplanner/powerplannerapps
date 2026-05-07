@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -12,6 +13,7 @@ namespace InterfacesiOS.Binding
 {
     public static class LabelBinding
     {
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "Binding source types are preserved by the application.")]
         public static void BindText(UILabel label, INotifyPropertyChanged source, string propertyName)
         {
             Action applyFromData = delegate

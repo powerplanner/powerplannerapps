@@ -1,6 +1,7 @@
 ﻿using BareMvvm.Core.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Vx.Views;
 
@@ -30,7 +31,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
             };
         }
 
-        private View RenderOption<T>(string name) where T : PopupComponentViewModel
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "View model types are preserved as they are directly referenced in code.")]
+        private View RenderOption<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string name) where T : PopupComponentViewModel
         {
             return new TransparentContentButton
             {

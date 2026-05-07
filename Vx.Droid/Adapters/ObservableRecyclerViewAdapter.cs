@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Android.App;
@@ -278,6 +279,7 @@ namespace InterfacesDroid.Adapters
         /// </summary>
         /// <param name="holder"></param>
         /// <param name="item"></param>
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types used with adapters are preserved by the application.")]
         protected virtual void OnBindViewHolder(RecyclerView.ViewHolder holder, object item)
         {
 #if DEBUG

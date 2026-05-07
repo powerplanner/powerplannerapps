@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -12,8 +13,10 @@ using Android.Widget;
 
 namespace InterfacesDroid.DataTemplates
 {
-    public class ViewDataTemplate<TView> : IDataTemplate where TView : View
+    public class ViewDataTemplate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TView> : IDataTemplate where TView : View
     {
+        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "TView has DynamicallyAccessedMembers annotation preserving public constructors and properties.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "TView has DynamicallyAccessedMembers annotation preserving public constructors and properties.")]
         public View CreateView(object dataContext, ViewGroup root)
         {
             View view = (View)Activator.CreateInstance(typeof(TView), args: new object[] { root.Context });

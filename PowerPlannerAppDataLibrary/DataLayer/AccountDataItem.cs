@@ -7,6 +7,7 @@ using PowerPlannerSending;
 using StorageEverywhere;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -828,7 +829,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        public async Task<T> PostAuthenticatedAsync<K, T>(string url, K postData, System.Threading.CancellationToken? cancellationToken = null)
+        public async Task<T> PostAuthenticatedAsync<K, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] T>(string url, K postData, System.Threading.CancellationToken? cancellationToken = null)
             where K : PartialLoginRequest
             where T : PlainResponse
         {
