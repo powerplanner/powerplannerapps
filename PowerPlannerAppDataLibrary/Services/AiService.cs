@@ -21,6 +21,8 @@ namespace PowerPlannerAppDataLibrary.Services
 
         public string DescriptionOfChanges { get; private set; }
 
+        public const int LIMIT = 100;
+
         public async Task<List<AiProposedChange>> GenerateChangesAsync(
             string userInput,
             MyObservableList<ViewItemClass> classes,
@@ -110,14 +112,13 @@ namespace PowerPlannerAppDataLibrary.Services
             }
 
             // Build existing items (up to limit, sorted by date proximity to today)
-            const int limit = 20;
             var today = DateOnly.FromDateTime(DateTime.Today);
             var existingItemInfos = new List<ExistingItemInfo>();
             var existingCompletedItemInfos = new List<ExistingItemInfo>();
 
             foreach (var item in semesterItems.Items
                 .OrderBy(i => Math.Abs((i.DateInSchoolTime.Date - DateTime.Today).Days))
-                .Take(limit))
+                .Take(LIMIT))
             {
                 var info = new ExistingItemInfo
                 {

@@ -2826,8 +2826,8 @@ Uma vez que você compra a versão premium, você possui a versão premium em to
           <target state="final">Mover meus itens atrasados para hoje</target>
         </trans-unit>
         <trans-unit id="AiEdit_Description" translate="yes" xml:space="preserve">
-          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to 20 visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
-          <target state="final">Recurso beta, requer internet. Tem contexto das suas aulas, horário de aulas, mês atual e até 20 itens visíveis. Permite adicionar / editar / excluir tarefas, eventos ou feriados, e pode editar vários de uma vez!</target>
+          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
+          <target state="final">Recurso beta, requer internet. Tem contexto das suas aulas, horário de aulas, mês atual e até {0} itens visíveis. Permite adicionar / editar / excluir tarefas, eventos ou feriados, e pode editar vários de uma vez!</target>
         </trans-unit>
         <trans-unit id="AiEdit_ErrorGeneric" translate="yes" xml:space="preserve">
           <source>Something went wrong. Please try again.</source>

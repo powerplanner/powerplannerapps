@@ -456,7 +456,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 new TextBlock
                 {
-                    Text = R.S("AiEdit_Description"),
+                    Text = string.Format(R.S("AiEdit_Description"), AiService.LIMIT),
                     FontSize = Theme.Current.CaptionFontSize,
                     TextColor = Theme.Current.SubtleForegroundColor,
                     Margin = new Thickness(0, 6, 0, 0)

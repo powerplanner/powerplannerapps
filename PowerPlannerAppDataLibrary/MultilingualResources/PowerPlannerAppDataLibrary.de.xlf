@@ -2827,8 +2827,8 @@ Sobald Sie die Premium-Version gekauft haben, besitzen Sie die Premium-Version a
           <target state="final">Meine überfälligen Elemente auf heute verschieben</target>
         </trans-unit>
         <trans-unit id="AiEdit_Description" translate="yes" xml:space="preserve">
-          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to 20 visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
-          <target state="final">Beta-Funktion, erfordert Internet. Hat Kontext deiner Kurse, des Stundenplans, des aktuellen Monats und bis zu 20 sichtbarer Elemente. Ermöglicht das Hinzufügen / Bearbeiten / Löschen von Aufgaben, Terminen oder Ferien und kann mehrere gleichzeitig bearbeiten!</target>
+          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
+          <target state="final">Beta-Funktion, erfordert Internet. Hat Kontext deiner Kurse, des Stundenplans, des aktuellen Monats und bis zu {0} sichtbarer Elemente. Ermöglicht das Hinzufügen / Bearbeiten / Löschen von Aufgaben, Terminen oder Ferien und kann mehrere gleichzeitig bearbeiten!</target>
         </trans-unit>
         <trans-unit id="AiEdit_ErrorGeneric" translate="yes" xml:space="preserve">
           <source>Something went wrong. Please try again.</source>

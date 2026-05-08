@@ -2829,8 +2829,8 @@ Once you purchase the premium version, you own the premium version on all your d
           <target state="final">نقل عناصري المتأخرة إلى اليوم</target>
         </trans-unit>
         <trans-unit id="AiEdit_Description" translate="yes" xml:space="preserve">
-          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to 20 visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
-          <target state="final">ميزة تجريبية، تتطلب الإنترنت. لديها سياق فصولك وجدول الحصص والشهر الحالي وحتى 20 عنصرًا مرئيًا. تتيح إضافة / تعديل / حذف أي مهام أو أحداث أو عطلات، ويمكنها تعديل عدة عناصر!</target>
+          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
+          <target state="final">ميزة تجريبية، تتطلب الإنترنت. لديها سياق فصولك وجدول الحصص والشهر الحالي وحتى {0} عنصرًا مرئيًا. تتيح إضافة / تعديل / حذف أي مهام أو أحداث أو عطلات، ويمكنها تعديل عدة عناصر!</target>
         </trans-unit>
         <trans-unit id="AiEdit_ErrorGeneric" translate="yes" xml:space="preserve">
           <source>Something went wrong. Please try again.</source>

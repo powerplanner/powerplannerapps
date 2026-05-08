@@ -35,8 +35,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.AiChangeHe
                     {
                         Children =
                         {
-                            new TextBlock { Text = newValue, FontSize = Theme.Current.CaptionFontSize },
-                            new TextBlock { Text = oldValue, Strikethrough = true, TextColor = Theme.Current.SubtleForegroundColor, FontSize = Theme.Current.CaptionFontSize }
+                            new TextBlock { Text = oldValue, Strikethrough = true, TextColor = Theme.Current.SubtleForegroundColor, FontSize = Theme.Current.CaptionFontSize },
+                            new TextBlock { Text = newValue, FontSize = Theme.Current.CaptionFontSize }
                         }
                     }.LinearLayoutWeight(1)
                 }

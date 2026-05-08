@@ -2224,7 +2224,7 @@ Please think about using an online account instead!</value>
     <value>Move my overdue items to today</value>
   </data>
   <data name="AiEdit_Description" xml:space="preserve">
-    <value>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to 20 visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</value>
+    <value>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</value>
   </data>
   <data name="AiEdit_ErrorGeneric" xml:space="preserve">
     <value>Something went wrong. Please try again.</value>
