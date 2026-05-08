@@ -68,11 +68,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.x'
-          dotnet-quality: 'ga'
+          dotnet-version: '10.0.202'
 
       - name: Install iOS workload
-        run: dotnet workload install ios
+        run: dotnet workload install ios android --version 10.0.202
 
       - name: Write secrets.json
         shell: bash
@@ -165,9 +164,6 @@ jobs:
         shell: bash
         run: |
           sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner; PROVISIONING_PROFILE_SPECIFIER = ${{ vars.IOS_APP_PROVISIONING_PROFILE_NAME }};|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
-
-      - name: Restore workloads
-        run: dotnet workload restore PowerPlanneriOS/PowerPlanneriOS.csproj
 
       - name: Restore PowerPlanneriOS
         run: dotnet restore PowerPlanneriOS/PowerPlanneriOS.csproj

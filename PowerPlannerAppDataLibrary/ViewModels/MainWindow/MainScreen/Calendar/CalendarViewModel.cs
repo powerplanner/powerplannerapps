@@ -247,6 +247,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }
 
+        private bool _showEditWithAiInPrimaryCommands = true;
+        public bool ShowEditWithAiInPrimaryCommands
+        {
+            get => _showEditWithAiInPrimaryCommands;
+            set => SetProperty(ref _showEditWithAiInPrimaryCommands, value, nameof(ShowEditWithAiInPrimaryCommands));
+        }
+
         private bool _showGoToTodayInPrimaryCommands = true;
         public bool ShowGoToTodayInPrimaryCommands
         {
@@ -447,6 +454,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }));
         }
 
+        private void OpenEditWithAi()
+        {
+            MainScreenViewModel.ShowPopup(new AiEditWithAiViewModel(
+                MainScreenViewModel,
+                MainScreenViewModel.Classes,
+                MainScreenViewModel.CurrentSemester,
+                SemesterItemsViewGroup,
+                DateOnly.FromDateTime(DisplayMonth)));
+        }
+
         private DateTime? GetDateForAdd(DateTime? dueDate, bool useSelectedDate)
         {
             if (dueDate == null)
@@ -584,7 +601,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             else
                 ViewSizeState = ViewSizeStates.FullSize;
 
-            ShowGoToTodayInPrimaryCommands = Size.Width >= 435;
+            ShowEditWithAiInPrimaryCommands = VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android || Size.Width >= 435;
+            ShowGoToTodayInPrimaryCommands = Size.Width > 460;
         }
 
         protected override View Render()
@@ -660,9 +678,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 });
 
                 // Add button is displayed as floating action button sometimes on Android
+                bool hasAddButtonInToolbar = false;
                 if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
+                    hasAddButtonInToolbar = true;
+                }
+
+                var editWithAiMenuItem = new MenuItem
+                {
+                    Text = R.S("AiEdit_Title"),
+                    Glyph = MaterialDesign.MaterialDesignIcons.Bolt,
+                    Click = OpenEditWithAi
+                };
+                if (ShowEditWithAiInPrimaryCommands)
+                {
+                    toolbar.PrimaryCommands.Insert(hasAddButtonInToolbar ? 1 : 0, editWithAiMenuItem);
+                }
+                else
+                {
+                    // On narrow views, show it in secondary commands (without a glyph)
+                    editWithAiMenuItem.Glyph = null;
+                    toolbar.SecondaryCommands.Add(editWithAiMenuItem);
                 }
             }
 

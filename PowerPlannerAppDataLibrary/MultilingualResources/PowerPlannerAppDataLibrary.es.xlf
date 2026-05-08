@@ -2805,6 +2805,66 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
           <source>Reset to default</source>
           <target state="final">Restablecer a predeterminado</target>
         </trans-unit>
+        <trans-unit id="AiEdit_Title" translate="yes" xml:space="preserve">
+          <source>Edit with AI</source>
+          <target state="final">Editar con IA</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorEmpty" translate="yes" xml:space="preserve">
+          <source>Please describe the changes you'd like to make.</source>
+          <target state="final">Por favor, describe los cambios que te gustaría hacer.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Placeholder" translate="yes" xml:space="preserve">
+          <source>Ask to add or edit tasks / events / holidays!</source>
+          <target state="final">¡Pide agregar o editar tareas / eventos / días festivos!</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Header" translate="yes" xml:space="preserve">
+          <source>Describe your changes</source>
+          <target state="final">Describe tus cambios</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_SuggestedPrompt_MoveOverdue" translate="yes" xml:space="preserve">
+          <source>Move my overdue items to today</source>
+          <target state="final">Mover mis elementos atrasados a hoy</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Description" translate="yes" xml:space="preserve">
+          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
+          <target state="final">Función beta, requiere internet. Tiene contexto de tus clases, horario de clases, mes actual y hasta {0} elementos visibles. ¡Permite agregar / editar / eliminar tareas, eventos o días festivos, y puede editar varios a la vez!</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorGeneric" translate="yes" xml:space="preserve">
+          <source>Something went wrong. Please try again.</source>
+          <target state="final">Algo salió mal. Por favor, inténtalo de nuevo.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_PreviewResults" translate="yes" xml:space="preserve">
+          <source>Preview results</source>
+          <target state="final">Vista previa de resultados</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_SaveChanges" translate="yes" xml:space="preserve">
+          <source>Save changes</source>
+          <target state="final">Guardar cambios</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorSaveFailed" translate="yes" xml:space="preserve">
+          <source>Failed to save changes. Please try again.</source>
+          <target state="final">No se pudieron guardar los cambios. Por favor, inténtalo de nuevo.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_MinorChanges" translate="yes" xml:space="preserve">
+          <source>(minor changes)</source>
+          <target state="final">(cambios menores)</target>
+        </trans-unit>
+        <trans-unit id="String_UnknownItem" translate="yes" xml:space="preserve">
+          <source>Unknown item</source>
+          <target state="final">Elemento desconocido</target>
+        </trans-unit>
+        <trans-unit id="String_UnknownClass" translate="yes" xml:space="preserve">
+          <source>Unknown Class</source>
+          <target state="final">Clase desconocida</target>
+        </trans-unit>
+        <trans-unit id="String_Type" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="final">Tipo</target>
+        </trans-unit>
+        <trans-unit id="String_Progress" translate="yes" xml:space="preserve">
+          <source>Progress</source>
+          <target state="final">Progreso</target>
+        </trans-unit>
       </group>
     </body>
   </file>

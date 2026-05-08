@@ -416,6 +416,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         {
             MainScreenViewModel.ShowItem(item);
         }
+
+        private void OpenEditWithAi()
+        {
+            var semesterItems = SemesterItemsViewGroup.Load(MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester);
+            MainScreenViewModel.ShowPopup(new TasksOrEvents.AiEditWithAiViewModel(
+                MainScreenViewModel,
+                MainScreenViewModel.Classes,
+                MainScreenViewModel.CurrentSemester,
+                semesterItems,
+                DateOnly.FromDateTime(DateTime.Today)));
+        }
     }
 
     public class ItemsGroupHeader : BindableBase

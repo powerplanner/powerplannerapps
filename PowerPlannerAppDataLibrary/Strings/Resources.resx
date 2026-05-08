@@ -2208,4 +2208,49 @@ Please think about using an online account instead!</value>
   <data name="Settings_ResetToDefault" xml:space="preserve">
     <value>Reset to default</value>
   </data>
+  <data name="AiEdit_Title" xml:space="preserve">
+    <value>Edit with AI</value>
+  </data>
+  <data name="AiEdit_ErrorEmpty" xml:space="preserve">
+    <value>Please describe the changes you'd like to make.</value>
+  </data>
+  <data name="AiEdit_Placeholder" xml:space="preserve">
+    <value>Ask to add or edit tasks / events / holidays!</value>
+  </data>
+  <data name="AiEdit_Header" xml:space="preserve">
+    <value>Describe your changes</value>
+  </data>
+  <data name="AiEdit_SuggestedPrompt_MoveOverdue" xml:space="preserve">
+    <value>Move my overdue items to today</value>
+  </data>
+  <data name="AiEdit_Description" xml:space="preserve">
+    <value>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</value>
+  </data>
+  <data name="AiEdit_ErrorGeneric" xml:space="preserve">
+    <value>Something went wrong. Please try again.</value>
+  </data>
+  <data name="AiEdit_PreviewResults" xml:space="preserve">
+    <value>Preview results</value>
+  </data>
+  <data name="AiEdit_SaveChanges" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="AiEdit_ErrorSaveFailed" xml:space="preserve">
+    <value>Failed to save changes. Please try again.</value>
+  </data>
+  <data name="AiEdit_MinorChanges" xml:space="preserve">
+    <value>(minor changes)</value>
+  </data>
+  <data name="String_UnknownItem" xml:space="preserve">
+    <value>Unknown item</value>
+  </data>
+  <data name="String_UnknownClass" xml:space="preserve">
+    <value>Unknown Class</value>
+  </data>
+  <data name="String_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="String_Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
 </root>
