@@ -71,7 +71,7 @@ jobs:
           dotnet-version: '10.0.202'
 
       - name: Install iOS workload
-        run: dotnet workload install ios --version 10.0.202
+        run: dotnet workload install ios android --version 10.0.202
 
       - name: Write secrets.json
         shell: bash
