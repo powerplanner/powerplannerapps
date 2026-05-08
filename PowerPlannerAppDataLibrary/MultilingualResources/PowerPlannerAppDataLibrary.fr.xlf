@@ -2804,6 +2804,66 @@ Une fois que vous avez acheté la version premium, vous possédez la version pre
           <source>Reset to default</source>
           <target state="final">Réinitialiser par défaut</target>
         </trans-unit>
+        <trans-unit id="AiEdit_Title" translate="yes" xml:space="preserve">
+          <source>Edit with AI</source>
+          <target state="final">Modifier avec l'IA</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorEmpty" translate="yes" xml:space="preserve">
+          <source>Please describe the changes you'd like to make.</source>
+          <target state="final">Veuillez décrire les modifications que vous souhaitez apporter.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Placeholder" translate="yes" xml:space="preserve">
+          <source>Ask to add or edit tasks / events / holidays!</source>
+          <target state="final">Demandez à ajouter ou modifier des tâches / événements / vacances !</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Header" translate="yes" xml:space="preserve">
+          <source>Describe your changes</source>
+          <target state="final">Décrivez vos modifications</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_SuggestedPrompt_MoveOverdue" translate="yes" xml:space="preserve">
+          <source>Move my overdue items to today</source>
+          <target state="final">Déplacer mes éléments en retard à aujourd'hui</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Description" translate="yes" xml:space="preserve">
+          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to 20 visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
+          <target state="final">Fonctionnalité bêta, nécessite internet. Dispose du contexte de vos cours, de votre emploi du temps, du mois en cours et de jusqu'à 20 éléments visibles. Permet d'ajouter / modifier / supprimer des tâches, événements ou vacances, et peut en modifier plusieurs !</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorGeneric" translate="yes" xml:space="preserve">
+          <source>Something went wrong. Please try again.</source>
+          <target state="final">Une erreur s'est produite. Veuillez réessayer.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_PreviewResults" translate="yes" xml:space="preserve">
+          <source>Preview results</source>
+          <target state="final">Aperçu des résultats</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_SaveChanges" translate="yes" xml:space="preserve">
+          <source>Save changes</source>
+          <target state="final">Enregistrer les modifications</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorSaveFailed" translate="yes" xml:space="preserve">
+          <source>Failed to save changes. Please try again.</source>
+          <target state="final">Impossible d'enregistrer les modifications. Veuillez réessayer.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_MinorChanges" translate="yes" xml:space="preserve">
+          <source>(minor changes)</source>
+          <target state="final">(modifications mineures)</target>
+        </trans-unit>
+        <trans-unit id="String_UnknownItem" translate="yes" xml:space="preserve">
+          <source>Unknown item</source>
+          <target state="final">Élément inconnu</target>
+        </trans-unit>
+        <trans-unit id="String_UnknownClass" translate="yes" xml:space="preserve">
+          <source>Unknown Class</source>
+          <target state="final">Cours inconnu</target>
+        </trans-unit>
+        <trans-unit id="String_Type" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="final">Type</target>
+        </trans-unit>
+        <trans-unit id="String_Progress" translate="yes" xml:space="preserve">
+          <source>Progress</source>
+          <target state="final">Progression</target>
+        </trans-unit>
       </group>
     </body>
   </file>

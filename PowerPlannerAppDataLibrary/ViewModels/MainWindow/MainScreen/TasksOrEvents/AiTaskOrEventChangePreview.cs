@@ -28,21 +28,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 case AiChangeOperation.Add:
                     accentColor = Color.FromArgb(255, 76, 175, 80); // Green
-                    operationLabel = "ADD";
+                    operationLabel = R.S("Calendar_FullCalendarAddButton.ToolTipService.ToolTip");
                     break;
                 case AiChangeOperation.Edit:
                     accentColor = Color.FromArgb(255, 255, 193, 7); // Yellow/Orange
-                    operationLabel = "EDIT";
+                    operationLabel = R.S("AppBarButtonEdit.Label");
                     break;
                 case AiChangeOperation.Delete:
                     accentColor = Color.FromArgb(255, 244, 67, 54); // Red
-                    operationLabel = "DELETE";
+                    operationLabel = R.S("MenuItemDelete");
                     break;
                 default:
                     accentColor = Color.Gray;
                     operationLabel = "";
                     break;
             }
+
+            operationLabel = operationLabel.ToUpper();
 
             // Find existing item for edit/delete context
             BaseViewItemMegaItem existingItem = null;
@@ -52,7 +54,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
 
             // Build the item name - use existing name if the change doesn't provide one
-            string itemName = change.Name ?? (existingItem?.Name) ?? "Unknown item";
+            string itemName = change.Name ?? (existingItem?.Name) ?? R.S("String_UnknownItem");
 
             var contentLayout = new LinearLayout
             {
@@ -128,7 +130,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             // Name change
             if (!string.IsNullOrEmpty(change.Name) && change.Name != existingItem.Name)
             {
-                lines.Add(AiChangePreviewHelper.RenderChange("Name", existingItem.Name, change.Name));
+                lines.Add(AiChangePreviewHelper.RenderChange(R.S("EditTaskOrEventPage_TextBoxName.Header"), existingItem.Name, change.Name));
             }
 
             // Class change
@@ -139,22 +141,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 if (existingItem is ViewItemTaskOrEvent taskOrEvent)
                 {
-                    oldClassName = taskOrEvent.Class?.Name ?? "No Class";
+                    oldClassName = taskOrEvent.Class?.Name ?? R.S("String_NoClass");
                 }
 
                 if (change.ClassId.Value == currentItems.Semester.Identifier)
                 {
-                    newClassName = "No Class";
+                    newClassName = R.S("String_NoClass");
                 }
                 else
                 {
                     var newClass = currentItems.Classes.FirstOrDefault(c => c.Identifier == change.ClassId.Value);
-                    newClassName = newClass?.Name ?? "Unknown Class";
+                    newClassName = newClass?.Name ?? R.S("String_UnknownClass");
                 }
 
                 if (oldClassName != null && oldClassName != newClassName)
                 {
-                    lines.Add(AiChangePreviewHelper.RenderChange("Class", oldClassName, newClassName));
+                    lines.Add(AiChangePreviewHelper.RenderChange(R.S("EditTaskOrEventPage_ComboBoxClasses.Header"), oldClassName, newClassName));
                 }
             }
 
@@ -165,14 +167,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 var newDate = change.Date.Value.ToString("MMM d, yyyy");
                 if (oldDate != newDate)
                 {
-                    lines.Add(AiChangePreviewHelper.RenderChange("Date", oldDate, newDate));
+                    lines.Add(AiChangePreviewHelper.RenderChange(R.S("EditTaskOrEventPage_DatePickerDate.Header"), oldDate, newDate));
                 }
             }
 
             // Time change
             if (!string.IsNullOrEmpty(change.Time))
             {
-                lines.Add(AiChangePreviewHelper.RenderChange("Time", "TODO", change.Time));
+                lines.Add(AiChangePreviewHelper.RenderChange(R.S("String_Time"), "", change.Time));
             }
 
             // Details change
@@ -180,11 +182,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 if (string.IsNullOrEmpty(existingItem.Details))
                 {
-                    lines.Add(AiChangePreviewHelper.RenderChange("Details", "", change.Details));
+                    lines.Add(AiChangePreviewHelper.RenderChange(R.S("EditTaskOrEventPage_TextBoxDetails.Header"), "", change.Details));
                 }
                 else
                 {
-                    lines.Add(AiChangePreviewHelper.RenderChange("Details", existingItem.Details, change.Details));
+                    lines.Add(AiChangePreviewHelper.RenderChange(R.S("EditTaskOrEventPage_TextBoxDetails.Header"), existingItem.Details, change.Details));
                 }
             }
 
@@ -192,7 +194,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             if (change.PercentComplete.HasValue)
             {
                 double existingPercent = existingItem is ViewItemTaskOrEvent taskOrEvent ? taskOrEvent.PercentComplete : 0;
-                lines.Add(AiChangePreviewHelper.RenderChange("Progress", $"{(int)(existingPercent * 100)}%", $"{(int)(change.PercentComplete.Value * 100)}%"));
+                lines.Add(AiChangePreviewHelper.RenderChange(R.S("String_Progress"), $"{(int)(existingPercent * 100)}%", $"{(int)(change.PercentComplete.Value * 100)}%"));
             }
 
             if (existingItem is ViewItemHoliday holiday)
@@ -203,14 +205,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     var newDate = change.EndDate.Value.ToString("MMM d, yyyy");
                     if (oldDate != newDate)
                     {
-                        lines.Add(AiChangePreviewHelper.RenderChange("End", oldDate, newDate));
+                        lines.Add(AiChangePreviewHelper.RenderChange(R.S("AddHolidayView_DatePickerEnd.Header"), oldDate, newDate));
                     }
                 }
             }
 
             if (lines.Count == 0)
             {
-                lines.Add(new TextBlock { Text = "(minor changes)" });
+                lines.Add(new TextBlock { Text = R.S("AiEdit_MinorChanges") });
             }
 
             return lines;
@@ -222,15 +224,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
             if (change.Type.HasValue)
             {
-                lines.Add(AiChangePreviewHelper.RenderNewProperty("Type", change.Type.Value.ToString()));
+                lines.Add(AiChangePreviewHelper.RenderNewProperty(R.S("String_Type"), change.Type.Value.ToString()));
             }
 
             if (change.Type == AiItemType.Task || change.Type == AiItemType.Event)
             {
                 // Get the class from current items
                 var c = change.ClassId == currentItems.Semester.Identifier ? currentItems.Semester.NoClassClass : currentItems.Classes.FirstOrDefault(c => c.Identifier == change.ClassId);
-                var cName = c != null ? c.Name : "Unknown Class";
-                lines.Add(AiChangePreviewHelper.RenderNewProperty("Class", cName));
+                var cName = c != null ? c.Name : R.S("String_UnknownClass");
+                lines.Add(AiChangePreviewHelper.RenderNewProperty(R.S("EditTaskOrEventPage_ComboBoxClasses.Header"), cName));
             }
 
             if (change.Date.HasValue)
@@ -238,11 +240,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 var datePart = change.Date.Value.ToString("MMM d, yyyy");
                 if (!string.IsNullOrEmpty(change.Time) && change.Time.ToLowerInvariant() != "allday")
                 {
-                    lines.Add(AiChangePreviewHelper.RenderNewProperty("Date", $"{datePart}, {change.Time}"));
+                    lines.Add(AiChangePreviewHelper.RenderNewProperty(R.S("EditTaskOrEventPage_DatePickerDate.Header"), $"{datePart}, {change.Time}"));
                 }
                 else
                 {
-                    lines.Add(AiChangePreviewHelper.RenderNewProperty("Date", datePart));
+                    lines.Add(AiChangePreviewHelper.RenderNewProperty(R.S("EditTaskOrEventPage_DatePickerDate.Header"), datePart));
                 }
             }
 
@@ -250,13 +252,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 if (change.EndDate != null && change.EndDate.Value != change.Date)
                 {
-                    lines.Add(AiChangePreviewHelper.RenderNewProperty("End", change.EndDate.Value.ToString("MMM d, yyyy")));
+                    lines.Add(AiChangePreviewHelper.RenderNewProperty(R.S("AddHolidayView_DatePickerEnd.Header"), change.EndDate.Value.ToString("MMM d, yyyy")));
                 }
             }
 
             if (!string.IsNullOrEmpty(change.Details))
             {
-                lines.Add(AiChangePreviewHelper.RenderNewProperty("Details", change.Details));
+                lines.Add(AiChangePreviewHelper.RenderNewProperty(R.S("EditTaskOrEventPage_TextBoxDetails.Header"), change.Details));
             }
 
             return lines;

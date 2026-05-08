@@ -687,7 +687,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 var editWithAiMenuItem = new MenuItem
                 {
-                    Text = "Edit with AI",
+                    Text = R.S("AiEdit_Title"),
                     Glyph = MaterialDesign.MaterialDesignIcons.Bolt,
                     Click = OpenEditWithAi
                 };

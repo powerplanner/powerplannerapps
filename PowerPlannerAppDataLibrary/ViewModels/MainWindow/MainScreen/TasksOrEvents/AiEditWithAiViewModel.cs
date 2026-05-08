@@ -78,7 +78,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             _semesterItems = semesterItems;
             _displayMonth = displayMonth;
 
-            Title = "Edit with AI";
+            Title = R.S("AiEdit_Title");
             UseCancelForBack();
         }
 
@@ -86,7 +86,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             if (string.IsNullOrWhiteSpace(UserInput))
             {
-                ErrorMessage = "Please describe the changes you'd like to make.";
+                ErrorMessage = R.S("AiEdit_ErrorEmpty");
                 return;
             }
             
@@ -113,7 +113,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
             catch (Exception ex)
             {
-                ErrorMessage = "Something went wrong. Please try again.";
+                ErrorMessage = R.S("AiEdit_ErrorGeneric");
                 TelemetryExtension.Current?.TrackException(ex);
             }
             finally
@@ -163,7 +163,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
             catch (Exception ex)
             {
-                ErrorMessage = "Failed to save changes. Please try again.";
+                ErrorMessage = R.S("AiEdit_ErrorSaveFailed");
                 TelemetryExtension.Current?.TrackException(ex);
             }
         }
@@ -422,7 +422,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
         }
 
-        private const string MoveOverdueToTodayPrompt = "Move my overdue items to today";
+        private string MoveOverdueToTodayPrompt => R.S("AiEdit_SuggestedPrompt_MoveOverdue");
 
         private View RenderInputState()
         {
@@ -432,9 +432,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 new MultilineTextBox
                 {
                     Text = VxValue.Create(UserInput, v => UserInput = v),
-                    PlaceholderText = "Ask to add or edit tasks / events / holidays!",
+                    PlaceholderText = R.S("AiEdit_Placeholder"),
                     AutoFocus = true,
-                    Header = "Describe your changes"
+                    Header = R.S("AiEdit_Header")
                 },
 
                 UserInput == suggestedPrompt ? null : new Border
@@ -456,7 +456,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 new TextBlock
                 {
-                    Text = "Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to 20 visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!",
+                    Text = R.S("AiEdit_Description"),
                     FontSize = Theme.Current.CaptionFontSize,
                     TextColor = Theme.Current.SubtleForegroundColor,
                     Margin = new Thickness(0, 6, 0, 0)
@@ -475,7 +475,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
             views.Add(new AccentButton
             {
-                Text = "Preview results",
+                Text = R.S("AiEdit_PreviewResults"),
                 Click = () => _ = PreviewResults(),
                 IsEnabled = !IsLoading,
                 Margin = new Thickness(0, 12, 0, 0)
@@ -541,14 +541,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                         {
                             new Button
                             {
-                                Text = "Back",
+                                Text = R.S("String_Back"),
                                 Click = GoBack,
                                 Margin = new Thickness(0, 0, 6, 0)
                             }.LinearLayoutWeight(0.5f),
 
                             new AccentButton
                             {
-                                Text = "Save changes",
+                                Text = R.S("AiEdit_SaveChanges"),
                                 Click = () => _ = SaveChanges(),
                                 Margin = new Thickness(6, 0, 0, 0)
                             }.LinearLayoutWeight(1)
