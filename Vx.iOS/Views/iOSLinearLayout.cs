@@ -117,7 +117,7 @@ namespace Vx.iOS.Views
         }
     }
 
-    
+
 
     public class UILinearLayout : UIPanel
     {
@@ -153,13 +153,12 @@ namespace Vx.iOS.Views
         {
             bool usingWeights = ArrangedSubviews.Any(i => GetWeight(i) > 0);
 
-            UIViewWrapper prev = null;
-            UIViewWrapper curr = null;
             UIViewWrapper firstWeighted = null;
 
             for (int i = 0; i < ArrangedSubviews.Count; i++)
             {
-                curr = ArrangedSubviews[i];
+                var curr = ArrangedSubviews[i];
+                UIViewWrapper prev = i > 0 ? ArrangedSubviews[i - 1] : null;
                 UIViewWrapper next = ArrangedSubviews.ElementAtOrDefault(i + 1);
 
                 UpdateConstraints(curr, prev, next, usingWeights, firstWeighted);
@@ -168,8 +167,6 @@ namespace Vx.iOS.Views
                 {
                     firstWeighted = curr;
                 }
-
-                prev = curr;
             }
         }
 
@@ -193,18 +190,19 @@ namespace Vx.iOS.Views
         {
             var weight = GetWeight(curr);
 
-            // https://betterprogramming.pub/what-are-content-hugging-and-compression-resistance-in-swift-60275f6dc69e
-            // ContentHugging: Defaults to 250. Higher value means hug the view (don't expand unnecessarily beyond intrinsic size).
-            // CompressionResistance: Defaults to 750. Higher value means resist shrinking beyond the view's intrinsic size.
+            // ContentHugging: Higher value means resist expanding beyond intrinsic size.
+            // CompressionResistance: Higher value means resist shrinking below intrinsic size.
             curr.View.SetContentHuggingPriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
-            curr.View.SetContentHuggingPriority(250, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical); // Reset other direction to default
-            //curr.View.SetContentCompressionResistancePriority(weight == 0 ? 0 : 1000, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
-            //curr.View.SetContentCompressionResistancePriority(750, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical); // Reset other direction to default
+            curr.View.SetContentHuggingPriority(250, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical);
+            // Compression resistance: non-weighted items should strongly resist shrinking,
+            // weighted items should allow shrinking to fill remaining space
+            curr.View.SetContentCompressionResistancePriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
 
             WrapperConstraint? leftConstraint, topConstraint, rightConstraint, bottomConstraint, widthConstraint = null, heightConstraint = null;
 
             if (IsVertical)
             {
+                // TOP constraint: always set for every item to create a complete chain
                 if (prev == null)
                 {
                     topConstraint = new WrapperConstraint(
@@ -220,14 +218,24 @@ namespace Vx.iOS.Views
                         prev.Margin.Bottom);
                 }
 
+                // BOTTOM constraint: when using weights, set for EVERY item
+                // to create a fully-determined constraint chain top-to-bottom.
+                // Without this, Auto Layout can't determine the weighted item's
+                // height because custom UIViews have no intrinsic content size.
                 if (next == null)
                 {
                     bottomConstraint = new WrapperConstraint(
                         this,
-                        NSLayoutAttribute.Bottom)
-                    {
-                        GreaterThanOrEqual = !usingWeights
-                    };
+                        NSLayoutAttribute.Bottom);
+                }
+                else if (usingWeights)
+                {
+                    // Connect this item's bottom to the next item's top
+                    bottomConstraint = new WrapperConstraint(
+                        next.View,
+                        NSLayoutAttribute.Top,
+                        1,
+                        next.Margin.Top);
                 }
                 else
                 {
@@ -248,6 +256,8 @@ namespace Vx.iOS.Views
                 {
                     throw new NotImplementedException("Cannot have multiline text blocks within a horizontal linear layout unless it has a fixed width or weight. Disable text wrapping on your TextBlock.");
                 }
+
+                // LEFT constraint: always set
                 if (prev == null)
                 {
                     leftConstraint = new WrapperConstraint(
@@ -263,14 +273,20 @@ namespace Vx.iOS.Views
                         prev.Margin.Right);
                 }
 
+                // RIGHT constraint: when using weights, set for EVERY item
                 if (next == null)
                 {
                     rightConstraint = new WrapperConstraint(
                         this,
-                        NSLayoutAttribute.Right)
-                    {
-                        GreaterThanOrEqual = !usingWeights
-                    };
+                        NSLayoutAttribute.Right);
+                }
+                else if (usingWeights)
+                {
+                    rightConstraint = new WrapperConstraint(
+                        next.View,
+                        NSLayoutAttribute.Left,
+                        1,
+                        next.Margin.Left);
                 }
                 else
                 {
