@@ -678,9 +678,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 });
 
                 // Add button is displayed as floating action button sometimes on Android
+                bool hasAddButtonInToolbar = false;
                 if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
+                    hasAddButtonInToolbar = true;
                 }
 
                 var editWithAiMenuItem = new MenuItem
@@ -691,7 +693,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 };
                 if (ShowEditWithAiInPrimaryCommands)
                 {
-                    toolbar.PrimaryCommands.Insert(1, editWithAiMenuItem);
+                    toolbar.PrimaryCommands.Insert(hasAddButtonInToolbar ? 1 : 0, editWithAiMenuItem);
                 }
                 else
                 {

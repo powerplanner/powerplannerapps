@@ -167,6 +167,9 @@ namespace Vx.Droid.Views
 
                 case MaterialDesign.MaterialDesignIcons.Today:
                     return Resource.Drawable.today_24px;
+
+                case MaterialDesign.MaterialDesignIcons.Bolt:
+                    return Resource.Drawable.bolt_24px;
                 //case MaterialDesign.MaterialDesignIcons.Check:
                 //case MaterialDesign.MaterialDesignIcons.Save:
                 //    return Resource.Drawable.ic_check_white_36dp;
@@ -178,7 +181,7 @@ namespace Vx.Droid.Views
                 //    return Resource.Drawable.ic_edit_white_24dp;
 
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("The glyph '" + glyph + "' does not have a mapped Android resource.");
             }
         }
     }
