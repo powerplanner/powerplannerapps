@@ -178,14 +178,8 @@ namespace PowerPlannerAppDataLibrary.Services
             };
 
             // Make HTTP call
-            var jsonOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            };
-
-            var json = JsonSerializer.Serialize(request, jsonOptions);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            var json = JsonSerializer.Serialize(request, AiServiceJsonContext.Default.GenerateItemsRequest);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Post, ApiUrl);
             httpRequest.Content = content;
@@ -198,7 +192,7 @@ namespace PowerPlannerAppDataLibrary.Services
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<GenerateItemsResponse>(responseJson, jsonOptions);
+            var result = JsonSerializer.Deserialize(responseJson, AiServiceJsonContext.Default.GenerateItemsResponse);
 
             // Map response
             DescriptionOfChanges = result.DescriptionOfChanges;
@@ -269,11 +263,11 @@ namespace PowerPlannerAppDataLibrary.Services
 
         #region Request/Response DTOs
 
-        private enum ItemType { Task, Event, Holiday }
+        internal enum ItemType { Task, Event, Holiday }
 
-        private enum OperationType { Add, Edit, Delete }
+        internal enum OperationType { Add, Edit, Delete }
 
-        private class GenerateItemsRequest
+        internal class GenerateItemsRequest
         {
             [JsonPropertyName("userInput")]
             public string UserInput { get; set; } = "";
@@ -282,7 +276,7 @@ namespace PowerPlannerAppDataLibrary.Services
             public RequestContext Context { get; set; }
         }
 
-        private class RequestContext
+        internal class RequestContext
         {
             [JsonPropertyName("today")]
             public DateOnly? Today { get; set; }
@@ -303,7 +297,7 @@ namespace PowerPlannerAppDataLibrary.Services
             public List<ExistingItemInfo> ExistingCompletedItems { get; set; }
         }
 
-        private class ClassInfo
+        internal class ClassInfo
         {
             [JsonPropertyName("id")]
             public int? Id { get; set; }
@@ -315,7 +309,7 @@ namespace PowerPlannerAppDataLibrary.Services
             public List<ScheduleInfo> Schedules { get; set; }
         }
 
-        private class ScheduleInfo
+        internal class ScheduleInfo
         {
             [JsonPropertyName("dayOfWeek")]
             public DayOfWeek DayOfWeek { get; set; }
@@ -327,7 +321,7 @@ namespace PowerPlannerAppDataLibrary.Services
             public TimeSpan? EndTime { get; set; }
         }
 
-        private class ItemInfo
+        internal class ItemInfo
         {
             [JsonPropertyName("name")]
             public string Name { get; set; }
@@ -357,13 +351,13 @@ namespace PowerPlannerAppDataLibrary.Services
             public string Details { get; set; }
         }
 
-        private class ExistingItemInfo : ItemInfo
+        internal class ExistingItemInfo : ItemInfo
         {
             [JsonPropertyName("id")]
             public int? Id { get; set; }
         }
 
-        private class GenerateItemsResponse
+        internal class GenerateItemsResponse
         {
             [JsonPropertyName("changes")]
             public List<ProposedChange> Changes { get; set; } = new();
@@ -372,7 +366,7 @@ namespace PowerPlannerAppDataLibrary.Services
             public string DescriptionOfChanges { get; set; } = "";
         }
 
-        private class ProposedChange : ItemInfo
+        internal class ProposedChange : ItemInfo
         {
             [JsonPropertyName("operation")]
             public OperationType Operation { get; set; }
@@ -382,5 +376,14 @@ namespace PowerPlannerAppDataLibrary.Services
         }
 
         #endregion
+    }
+
+    [JsonSourceGenerationOptions(
+        PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonSerializable(typeof(AiService.GenerateItemsRequest))]
+    [JsonSerializable(typeof(AiService.GenerateItemsResponse))]
+    internal partial class AiServiceJsonContext : JsonSerializerContext
+    {
     }
 }
