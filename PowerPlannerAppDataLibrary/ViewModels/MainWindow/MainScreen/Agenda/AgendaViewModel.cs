@@ -109,7 +109,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                             Title = "Agenda",
                             PrimaryCommands =
                             {
-                                ToolbarHelper.AddCommand(AddTask, AddEvent)
+                                ToolbarHelper.AddCommand(AddTask, AddEvent, editWithAi: () => OpenEditWithAi())
                             }
                         }.PowerPlannerThemed(),
 
@@ -415,6 +415,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
+        }
+
+        private void OpenEditWithAi()
+        {
+            var semesterItems = SemesterItemsViewGroup.Load(MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester);
+            MainScreenViewModel.ShowPopup(new TasksOrEvents.AiEditWithAiViewModel(
+                MainScreenViewModel,
+                MainScreenViewModel.Classes,
+                MainScreenViewModel.CurrentSemester,
+                semesterItems,
+                DateOnly.FromDateTime(DateTime.Today)));
         }
     }
 

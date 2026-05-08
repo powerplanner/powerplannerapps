@@ -447,6 +447,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }));
         }
 
+        private void OpenEditWithAi()
+        {
+            MainScreenViewModel.ShowPopup(new AiEditWithAiViewModel(
+                MainScreenViewModel,
+                MainScreenViewModel.Classes,
+                MainScreenViewModel.CurrentSemester,
+                SemesterItemsViewGroup,
+                DateOnly.FromDateTime(DisplayMonth)));
+        }
+
         private DateTime? GetDateForAdd(DateTime? dueDate, bool useSelectedDate)
         {
             if (dueDate == null)
@@ -662,7 +672,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 // Add button is displayed as floating action button sometimes on Android
                 if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
-                    toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
+                    toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday(), editWithAi: () => OpenEditWithAi()));
                 }
             }
 
