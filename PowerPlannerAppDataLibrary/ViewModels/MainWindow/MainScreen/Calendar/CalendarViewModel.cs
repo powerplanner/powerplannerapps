@@ -247,6 +247,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }
 
+        private bool _showEditWithAiInPrimaryCommands = true;
+        public bool ShowEditWithAiInPrimaryCommands
+        {
+            get => _showEditWithAiInPrimaryCommands;
+            set => SetProperty(ref _showEditWithAiInPrimaryCommands, value, nameof(ShowEditWithAiInPrimaryCommands));
+        }
+
         private bool _showGoToTodayInPrimaryCommands = true;
         public bool ShowGoToTodayInPrimaryCommands
         {
@@ -594,7 +601,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             else
                 ViewSizeState = ViewSizeStates.FullSize;
 
-            ShowGoToTodayInPrimaryCommands = Size.Width >= 435;
+            ShowEditWithAiInPrimaryCommands = Size.Width >= 435;
+            ShowGoToTodayInPrimaryCommands = Size.Width > 460;
         }
 
         protected override View Render()
@@ -672,7 +680,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 // Add button is displayed as floating action button sometimes on Android
                 if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
-                    toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday(), editWithAi: () => OpenEditWithAi()));
+                    toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
+                }
+
+                var editWithAiMenuItem = new MenuItem
+                {
+                    Text = "Edit with AI",
+                    Glyph = MaterialDesign.MaterialDesignIcons.Bolt,
+                    Click = OpenEditWithAi
+                };
+                if (ShowEditWithAiInPrimaryCommands)
+                {
+                    toolbar.PrimaryCommands.Insert(1, editWithAiMenuItem);
+                }
+                else
+                {
+                    // On narrow views, show it in secondary commands (without a glyph)
+                    editWithAiMenuItem.Glyph = null;
+                    toolbar.SecondaryCommands.Add(editWithAiMenuItem);
                 }
             }
 

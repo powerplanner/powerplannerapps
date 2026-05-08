@@ -1,21 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Extensions;
-using PowerPlannerSending;
-using Task = System.Threading.Tasks.Task;
 using PowerPlannerAppDataLibrary.Services;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerSending;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
 using ToolsPortable;
 using Vx.Views;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Task = System.Threading.Tasks.Task;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -88,6 +89,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 ErrorMessage = "Please describe the changes you'd like to make.";
                 return;
             }
+            
+            TelemetryExtension.Current?.TrackEvent("AIEdit_PreviewResults");
 
             IsLoading = true;
             ErrorMessage = null;
@@ -123,6 +126,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             try
             {
+                TelemetryExtension.Current?.TrackEvent("AIEdit_SaveChanges", new Dictionary<string, string>
+                {
+                    { "Changes", ProposedChanges.Count.ToString() }
+                });
+
                 var changes = new DataChanges();
 
                 foreach (var change in ProposedChanges.Where(c => c.IsSelected))
@@ -189,6 +197,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     ? (taskOrEvent.Class.IsNoClassClass ? PowerPlannerSending.MegaItemType.Task : PowerPlannerSending.MegaItemType.Homework)
                     : (taskOrEvent.Class.IsNoClassClass ? PowerPlannerSending.MegaItemType.Event : PowerPlannerSending.MegaItemType.Exam);
             }
+            else
+            {
+                dataItem.MegaItemType = MegaItemType.Holiday;
+            }
 
             ApplyChangeToDataItem(dataItem, change, isNew: false);
             changes.Add(dataItem);
@@ -229,6 +241,33 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     dataItem.WeightCategoryIdentifier = Guid.Empty;
                 }
             }
+            else if (change.ClassId.HasValue)
+            {
+                // Editing: class is changing
+                if (hasClass)
+                {
+                    dataItem.UpperIdentifier = change.ClassId.Value;
+
+                    // Update MegaItemType to match class vs no-class distinction
+                    var effectiveType = GetEffectiveType(dataItem.MegaItemType);
+                    if (effectiveType == AiItemType.Task)
+                        dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Homework;
+                    else if (effectiveType == AiItemType.Event)
+                        dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Exam;
+                }
+                else
+                {
+                    // Moving to No Class
+                    dataItem.UpperIdentifier = _semester.Identifier;
+                    dataItem.WeightCategoryIdentifier = Guid.Empty;
+
+                    var effectiveType = GetEffectiveType(dataItem.MegaItemType);
+                    if (effectiveType == AiItemType.Task)
+                        dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Task;
+                    else if (effectiveType == AiItemType.Event)
+                        dataItem.MegaItemType = PowerPlannerSending.MegaItemType.Event;
+                }
+            }
 
             if (change.Name != null)
             {
@@ -251,24 +290,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 var date = change.Date.Value.ToDateTime(TimeOnly.MinValue);
                 date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
-                if (itemType == AiItemType.Holiday)
+                if (dataItem.MegaItemType == MegaItemType.Holiday)
                 {
                     dataItem.Date = date;
-                    if (change.EndDate.HasValue)
-                    {
-                        var endDate = change.EndDate.Value.ToDateTime(TimeOnly.MinValue);
-                        endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
-                        dataItem.EndTime = endDate.AddDays(1).AddSeconds(-1);
-                    }
-                    else
-                    {
-                        dataItem.EndTime = date.AddDays(1).AddSeconds(-1);
-                    }
                 }
                 else
                 {
                     var effectiveType = isNew ? itemType : GetEffectiveType(dataItem.MegaItemType);
                     ApplyTimeEncoding(dataItem, date, change.Time, change.EndTime, effectiveType);
+                }
+            }
+
+            if (dataItem.MegaItemType == MegaItemType.Holiday)
+            {
+                if (change.EndDate.HasValue)
+                {
+                    var endDate = change.EndDate.Value.ToDateTime(TimeOnly.MinValue);
+                    endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+                    dataItem.EndTime = endDate.AddDays(1).AddSeconds(-1);
+                }
+                else if (isNew)
+                {
+                    dataItem.EndTime = dataItem.Date;
                 }
             }
         }
@@ -362,7 +405,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
         }
 
-        public void GoBack()
+        public new void GoBack()
         {
             State = ViewState.Input;
         }
@@ -379,16 +422,45 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             }
         }
 
+        private const string MoveOverdueToTodayPrompt = "Move my overdue items to today";
+
         private View RenderInputState()
         {
+            var suggestedPrompt = MoveOverdueToTodayPrompt;
             var views = new List<View>
             {
                 new MultilineTextBox
                 {
                     Text = VxValue.Create(UserInput, v => UserInput = v),
-                    PlaceholderText = "Describe changes...",
-                    AutoFocus = true
-                }
+                    PlaceholderText = "Ask to add or edit tasks / events / holidays!",
+                    AutoFocus = true,
+                    Header = "Describe your changes"
+                },
+
+                UserInput == suggestedPrompt ? null : new Border
+                {
+                    BackgroundColor = Theme.Current.PopupPageBackgroundAltColor,
+                    CornerRadius = 6,
+                    Padding = new Thickness(2),
+                    Content = new TextBlock
+                    {
+                        Text = "✨ " + suggestedPrompt,
+                        FontSize = Theme.Current.CaptionFontSize
+                    },
+                    Tapped = () =>
+                    {
+                        UserInput = suggestedPrompt;
+                        _ = PreviewResults();
+                    }
+                },
+
+                new TextBlock
+                {
+                    Text = "Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to 20 visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!",
+                    FontSize = Theme.Current.CaptionFontSize,
+                    TextColor = Theme.Current.SubtleForegroundColor,
+                    Margin = new Thickness(0, 6, 0, 0)
+                },
             };
 
             if (ErrorMessage != null)
@@ -423,262 +495,83 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         private View RenderPreviewState()
         {
-            var views = new List<View>();
+            var views = new LinearLayout()
+            {
+                Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, Theme.Current.PageMargin, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin)
+            };
 
             if (!string.IsNullOrEmpty(DescriptionOfChanges))
             {
-                views.Add(new TextBlock
+                views.Children.Add(new TextBlock
                 {
                     Text = DescriptionOfChanges,
                     WrapText = true,
                     Margin = new Thickness(0, 0, 0, 12)
                 });
             }
-
+            
             if (ProposedChanges != null)
             {
                 foreach (var change in ProposedChanges)
                 {
-                    var changeView = RenderChangeItem(change);
-                    views.Add(changeView);
+                    var changeView = AiTaskOrEventChangePreview.RenderChangeItem(change, new AiTaskOrEventChangePreview.CurrentItems
+                    {
+                        SemesterItems = _semesterItems,
+                        Semester = _semester,
+                        Classes = _classes
+                    });
+                    views.Children.Add(changeView);
                 }
             }
 
-            views.Add(new AccentButton
+            return new LinearLayout
             {
-                Text = "Save changes",
-                Click = () => _ = SaveChanges(),
-                Margin = new Thickness(0, 12, 0, 0)
-            });
-
-            views.Add(new Button
-            {
-                Text = "Back",
-                Click = GoBack,
-                Margin = new Thickness(0, 6, 0, 0)
-            });
-
-            return RenderGenericPopupContent(views);
-        }
-
-        private View RenderChangeItem(AiProposedChange change)
-        {
-            Color accentColor;
-            string operationLabel;
-            switch (change.Operation)
-            {
-                case AiChangeOperation.Add:
-                    accentColor = Color.FromArgb(255, 76, 175, 80); // Green
-                    operationLabel = "ADD";
-                    break;
-                case AiChangeOperation.Edit:
-                    accentColor = Color.FromArgb(255, 255, 193, 7); // Yellow/Orange
-                    operationLabel = "EDIT";
-                    break;
-                case AiChangeOperation.Delete:
-                    accentColor = Color.FromArgb(255, 244, 67, 54); // Red
-                    operationLabel = "DELETE";
-                    break;
-                default:
-                    accentColor = Color.Gray;
-                    operationLabel = "";
-                    break;
-            }
-
-            // Find existing item for edit/delete context
-            BaseViewItemMegaItem existingItem = null;
-            if (change.ExistingItemId.HasValue)
-            {
-                existingItem = _semesterItems.Items.FirstOrDefault(i => i.Identifier == change.ExistingItemId.Value);
-            }
-
-            // Build the item name - use existing name if the change doesn't provide one
-            string itemName = change.Name ?? (existingItem?.Name) ?? "Unknown item";
-
-            var contentLayout = new LinearLayout
-            {
-                Orientation = Orientation.Vertical,
                 Children =
                 {
-                    // Item name and operation badge
+                    new ScrollView
+                    {
+                        Content = views
+                    }.LinearLayoutWeight(1),
+
                     new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, Theme.Current.PageMargin / 2, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
                         Children =
                         {
-                            new TextBlock
+                            new Button
                             {
-                                Text = operationLabel,
-                                FontSize = 10,
-                                TextColor = accentColor,
-                                VerticalAlignment = VerticalAlignment.Center,
-                                Margin = new Thickness(0, 0, 6, 0),
-                                WrapText = false
-                            },
+                                Text = "Back",
+                                Click = GoBack,
+                                Margin = new Thickness(0, 0, 6, 0)
+                            }.LinearLayoutWeight(0.5f),
 
-                            new TextBlock
+                            new AccentButton
                             {
-                                Text = itemName,
-                                FontWeight = FontWeights.SemiBold,
-                                WrapText = true,
-                                VerticalAlignment = VerticalAlignment.Center
+                                Text = "Save changes",
+                                Click = () => _ = SaveChanges(),
+                                Margin = new Thickness(6, 0, 0, 0)
                             }.LinearLayoutWeight(1)
                         }
                     }
                 }
             };
 
-            // For edits, show before → after details
-            if (change.Operation == AiChangeOperation.Edit && existingItem != null)
-            {
-                var detailLines = GetEditDetails(change, existingItem);
-                foreach (var line in detailLines)
-                {
-                    contentLayout.Children.Add(new TextBlock
-                    {
-                        Text = line,
-                        FontSize = Theme.Current.CaptionFontSize,
-                        TextColor = Theme.Current.SubtleForegroundColor,
-                        WrapText = true,
-                        Margin = new Thickness(0, 2, 0, 0)
-                    });
-                }
-            }
-            // For adds, show key details
-            else if (change.Operation == AiChangeOperation.Add)
-            {
-                var detailLines = GetAddDetails(change);
-                foreach (var line in detailLines)
-                {
-                    contentLayout.Children.Add(new TextBlock
-                    {
-                        Text = line,
-                        FontSize = Theme.Current.CaptionFontSize,
-                        TextColor = Theme.Current.SubtleForegroundColor,
-                        WrapText = true,
-                        Margin = new Thickness(0, 2, 0, 0)
-                    });
-                }
-            }
-            // For deletes, show existing item info
-            else if (change.Operation == AiChangeOperation.Delete && existingItem != null)
-            {
-                var datePart = existingItem.DateInSchoolTime.ToString("MMM d, yyyy");
-                contentLayout.Children.Add(new TextBlock
-                {
-                    Text = datePart,
-                    FontSize = Theme.Current.CaptionFontSize,
-                    TextColor = Theme.Current.SubtleForegroundColor,
-                    Margin = new Thickness(0, 2, 0, 0)
-                });
-            }
+            //views.Add(new AccentButton
+            //{
+            //    Text = "Save changes",
+            //    Click = () => _ = SaveChanges(),
+            //    Margin = new Thickness(0, 12, 0, 0)
+            //});
 
-            return contentLayout;
+            //views.Add(new Button
+            //{
+            //    Text = "Back",
+            //    Click = GoBack,
+            //    Margin = new Thickness(0, 6, 0, 0)
+            //});
 
-            return new LinearLayout
-            {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(0, 6, 0, 6),
-                Children =
-                {
-                    new CheckBox
-                    {
-                        IsChecked = VxValue.Create(change.IsSelected, v => change.IsSelected = v), 
-                    },
-
-                    contentLayout.LinearLayoutWeight(1)
-                }
-            };
-        }
-
-        private List<string> GetEditDetails(AiProposedChange change, BaseViewItemMegaItem existingItem)
-        {
-            var lines = new List<string>();
-
-            // Date change
-            if (change.Date.HasValue)
-            {
-                var oldDate = existingItem.DateInSchoolTime.ToString("MMM d, yyyy");
-                var newDate = change.Date.Value.ToString("MMM d, yyyy");
-                if (oldDate != newDate)
-                {
-                    lines.Add($"Date: {oldDate} → {newDate}");
-                }
-            }
-
-            // Name change
-            if (!string.IsNullOrEmpty(change.Name) && change.Name != existingItem.Name)
-            {
-                lines.Add($"Name: \"{existingItem.Name}\" → \"{change.Name}\"");
-            }
-
-            // Time change
-            if (!string.IsNullOrEmpty(change.Time))
-            {
-                lines.Add($"Time: {change.Time}");
-            }
-
-            // Details change
-            if (change.Details != null && change.Details != existingItem.Details)
-            {
-                if (string.IsNullOrEmpty(existingItem.Details))
-                {
-                    lines.Add($"Details: \"{Truncate(change.Details, 50)}\"");
-                }
-                else
-                {
-                    lines.Add($"Details: \"{Truncate(existingItem.Details, 30)}\" → \"{Truncate(change.Details, 30)}\"");
-                }
-            }
-
-            // Percent complete change
-            if (change.PercentComplete.HasValue)
-            {
-                lines.Add($"Progress: {(int)(change.PercentComplete.Value * 100)}%");
-            }
-
-            if (lines.Count == 0)
-            {
-                lines.Add("(minor changes)");
-            }
-
-            return lines;
-        }
-
-        private List<string> GetAddDetails(AiProposedChange change)
-        {
-            var lines = new List<string>();
-
-            if (change.Type.HasValue)
-            {
-                lines.Add(change.Type.Value.ToString());
-            }
-
-            if (change.Date.HasValue)
-            {
-                var datePart = change.Date.Value.ToString("MMM d, yyyy");
-                if (!string.IsNullOrEmpty(change.Time) && change.Time.ToLowerInvariant() != "allday")
-                {
-                    lines.Add($"{datePart}, {change.Time}");
-                }
-                else
-                {
-                    lines.Add(datePart);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(change.Details))
-            {
-                lines.Add(Truncate(change.Details, 60));
-            }
-
-            return lines;
-        }
-
-        private static string Truncate(string value, int maxLength)
-        {
-            if (string.IsNullOrEmpty(value)) return "";
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "…";
+            //return RenderGenericPopupContent(views);
         }
     }
 }

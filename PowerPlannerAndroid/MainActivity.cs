@@ -376,6 +376,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2605, 7, 0, 0))
+                    {
+                        changedText += "\n - Edit with AI beta feature! Try it on the calendar page, click the ⚡ icon.";
+                    }
+
                     if (v <= new Version(2604, 7, 1, 99))
                     {
                         changedText += "\n - Custom theme colors added! Go to settings to pick your favorite color for the app!";

@@ -16,8 +16,8 @@ namespace PowerPlannerAppDataLibrary.Services
     public class AiService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        //private const string ApiUrl = "https://powerplannerai-gjfgfzfecwhhapey.westus-01.azurewebsites.net/api/ai/generate-items";
-        private const string ApiUrl = "http://localhost:7074/api/ai/generate-items";
+        private const string ApiUrl = "https://powerplannerai-gjfgfzfecwhhapey.westus-01.azurewebsites.net/api/ai/generate-items";
+        //private const string ApiUrl = "http://localhost:7074/api/ai/generate-items";
 
         public string DescriptionOfChanges { get; private set; }
 
@@ -29,6 +29,22 @@ namespace PowerPlannerAppDataLibrary.Services
             DateOnly displayMonth,
             string accountToken)
         {
+            if (userInput == "Move my overdue items to today")
+            {
+                var overdue = semesterItems.Items.OfType<ViewItemTaskOrEvent>()
+                    .Where(i => i.DateInSchoolTime.Date < DateTime.Today && !i.IsComplete)
+                    .ToList();
+
+                await Task.Delay(50);
+
+                return overdue.Select(i => new AiProposedChange
+                {
+                    Operation = AiChangeOperation.Edit,
+                    ExistingItemId = i.Identifier,
+                    Date = DateOnly.FromDateTime(DateTime.Today)
+                }).ToList();
+            }
+
             // Build ID mappings
             var guidToInt = new Dictionary<Guid, int>();
             var intToGuid = new Dictionary<int, Guid>();
@@ -93,36 +109,59 @@ namespace PowerPlannerAppDataLibrary.Services
                 });
             }
 
-            // Build existing items (up to 100, sorted by date proximity to today)
+            // Build existing items (up to limit, sorted by date proximity to today)
+            const int limit = 20;
             var today = DateOnly.FromDateTime(DateTime.Today);
-            var existingItemInfos = semesterItems.Items
+            var existingItemInfos = new List<ExistingItemInfo>();
+            var existingCompletedItemInfos = new List<ExistingItemInfo>();
+
+            foreach (var item in semesterItems.Items
                 .OrderBy(i => Math.Abs((i.DateInSchoolTime.Date - DateTime.Today).Days))
-                .Take(20)
-                .Select(item =>
+                .Take(limit))
+            {
+                var info = new ExistingItemInfo
                 {
-                    var info = new ExistingItemInfo
-                    {
-                        Id = guidToInt[item.Identifier],
-                        Name = item.Name,
-                        Date = DateOnly.FromDateTime(item.DateInSchoolTime.Date),
-                        Details = item.Details
-                    };
+                    Id = guidToInt[item.Identifier],
+                    Name = item.Name,
+                    Date = DateOnly.FromDateTime(item.DateInSchoolTime.Date),
+                    Details = item.Details
+                };
 
-                    if (item is ViewItemTaskOrEvent taskOrEvent)
+                if (item is ViewItemTaskOrEvent taskOrEvent)
+                {
+                    info.Type = taskOrEvent.Type == TaskOrEventType.Task ? ItemType.Task : ItemType.Event;
+                    info.ClassId = guidToInt.ContainsKey(taskOrEvent.Class.Identifier) ? guidToInt[taskOrEvent.Class.Identifier] : 0;
+
+                    if (taskOrEvent.Type == TaskOrEventType.Task)
                     {
-                        info.Type = taskOrEvent.Type == TaskOrEventType.Task ? ItemType.Task : ItemType.Event;
-                        info.ClassId = guidToInt.ContainsKey(taskOrEvent.Class.Identifier) ? guidToInt[taskOrEvent.Class.Identifier] : 0;
-                    }
-                    else if (item is ViewItemHoliday holiday)
-                    {
-                        info.Type = ItemType.Holiday;
-                        info.ClassId = 0;
-                        info.EndDate = DateOnly.FromDateTime(holiday.EndTime.Date);
+                        info.PercentComplete = taskOrEvent.PercentComplete;
                     }
 
-                    return info;
-                })
-                .ToList();
+                    if (taskOrEvent.IsComplete)
+                    {
+                        existingCompletedItemInfos.Add(info);
+                    }
+                    else
+                    {
+                        existingItemInfos.Add(info);
+                    }
+                }
+                else if (item is ViewItemHoliday holiday)
+                {
+                    info.Type = ItemType.Holiday;
+                    info.ClassId = 0;
+                    info.EndDate = DateOnly.FromDateTime(holiday.EndTime.Date);
+
+                    if (holiday.EndTime < DateTime.Today)
+                    {
+                        existingCompletedItemInfos.Add(info);
+                    }
+                    else
+                    {
+                        existingItemInfos.Add(info);
+                    }
+                }
+            }
 
             var request = new GenerateItemsRequest
             {
@@ -133,7 +172,8 @@ namespace PowerPlannerAppDataLibrary.Services
                     TodayDayOfWeek = DateTime.Today.DayOfWeek,
                     DisplayMonth = displayMonth,
                     Classes = classInfos,
-                    ExistingItems = existingItemInfos
+                    ExistingItems = existingItemInfos,
+                    ExistingCompletedItems = existingCompletedItemInfos
                 }
             };
 
@@ -258,6 +298,9 @@ namespace PowerPlannerAppDataLibrary.Services
 
             [JsonPropertyName("existingItems")]
             public List<ExistingItemInfo> ExistingItems { get; set; }
+
+            [JsonPropertyName("existingCompletedItems")]
+            public List<ExistingItemInfo> ExistingCompletedItems { get; set; }
         }
 
         private class ClassInfo

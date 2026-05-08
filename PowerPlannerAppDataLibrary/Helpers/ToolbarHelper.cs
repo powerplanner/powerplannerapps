@@ -24,7 +24,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
             return toolbar;
         }
 
-        public static MenuItem AddCommand(Action addTask, Action addEvent, Action addHoliday = null, Action editWithAi = null)
+        public static MenuItem AddCommand(Action addTask, Action addEvent, Action addHoliday = null)
         {
             return new MenuItem
             {
@@ -32,12 +32,6 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 Glyph = MaterialDesign.MaterialDesignIcons.Add,
                 SubItems =
                 {
-                    editWithAi != null ? new MenuItem
-                    {
-                        Text = "Edit with AI",
-                        Click = editWithAi
-                    } : null,
-
                     new MenuItem
                     {
                         Text = PowerPlannerResources.GetString("String_AddTask"),

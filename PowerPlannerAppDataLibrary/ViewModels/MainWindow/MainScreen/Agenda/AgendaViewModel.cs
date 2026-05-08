@@ -109,7 +109,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                             Title = "Agenda",
                             PrimaryCommands =
                             {
-                                ToolbarHelper.AddCommand(AddTask, AddEvent, editWithAi: () => OpenEditWithAi())
+                                ToolbarHelper.AddCommand(AddTask, AddEvent)
                             }
                         }.PowerPlannerThemed(),
 
