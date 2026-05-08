@@ -330,6 +330,9 @@ namespace Vx.iOS
                 case MaterialDesign.MaterialDesignIcons.Close:
                     return "xmark";
 
+                case MaterialDesign.MaterialDesignIcons.Bolt:
+                    return "bolt";
+
                 default:
                     return null;
             }
