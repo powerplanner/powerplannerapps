@@ -373,7 +373,15 @@ namespace Vx.iOS
                         }
                         else
                         {
-                            btn = new UIBarButtonItem { Title = command.Text };
+                            var systemImage = command.Glyph.GlyphToUIImage();
+                            if (systemImage != null)
+                            {
+                                btn = new UIBarButtonItem(systemImage, UIBarButtonItemStyle.Plain, null);
+                            }
+                            else
+                            {
+                                btn = new UIBarButtonItem { Title = command.Text };
+                            }
                         }
                     }
                     break;
