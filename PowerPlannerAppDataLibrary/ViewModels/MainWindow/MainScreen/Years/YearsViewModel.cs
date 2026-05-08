@@ -100,18 +100,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             List<View> adaptiveGridPanelChildren;
 
-            if (Vx.VxPlatform.Current == Vx.Platform.Uwp)
-            {
-                var adaptiveGridPanel = new AdaptiveGridPanel();
-                linearLayout.Children.Add(adaptiveGridPanel);
-                adaptiveGridPanelChildren = adaptiveGridPanel.Children;
-            }
-            else
-            {
-                var adaptiveGridPanel = new AdaptiveGridPanelComponent();
-                linearLayout.Children.Add(adaptiveGridPanel);
-                adaptiveGridPanelChildren = adaptiveGridPanel.Children;
-            }
+            var adaptiveGridPanel = new AdaptiveGridPanel();
+            linearLayout.Children.Add(adaptiveGridPanel);
+            adaptiveGridPanelChildren = adaptiveGridPanel.Children;
 
             SubscribeToCollection(YearsViewItemsGroup.School.Years);
             foreach (var year in YearsViewItemsGroup.School.Years)

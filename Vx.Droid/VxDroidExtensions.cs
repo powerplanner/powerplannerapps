@@ -183,6 +183,11 @@ namespace Vx.Droid
                     return new DroidWrapGrid();
                 }
 
+                if (view is Vx.Views.AdaptiveGridPanel)
+                {
+                    return new DroidAdaptiveGridPanel();
+                }
+
                 if (view is Vx.Views.ProgressBar)
                 {
                     return new DroidProgressBar();
