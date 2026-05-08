@@ -601,7 +601,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             else
                 ViewSizeState = ViewSizeStates.FullSize;
 
-            ShowEditWithAiInPrimaryCommands = Size.Width >= 435;
+            ShowEditWithAiInPrimaryCommands = VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android || Size.Width >= 435;
             ShowGoToTodayInPrimaryCommands = Size.Width > 460;
         }
 
