@@ -351,7 +351,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 };
             }
 
-            if (VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android)
+            if (VxPlatform.Current == Platform.iOS)
             {
                 return new LinearLayout
                 {
