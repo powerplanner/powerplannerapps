@@ -441,15 +441,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             ViewModel.OpenDay(date);
                         }
                     },
-                    Orientation = Orientation.Vertical
+                    Orientation = Orientation.Vertical,
+                    AllowOverflowAndClip = IsFullSize
                 };
 
+                // COMPACT MODE: Show circles for each item on the day
                 if (!IsFullSize)
                 {
                     var itemCircles = new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
-                        Margin = new Thickness(5,0,5,5)
+                        Margin = new Thickness(5,0,5,5),
+                        AllowOverflowAndClip = true
                     };
 
                     foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
@@ -483,15 +486,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     linearLayout.Children.Add(tbDay);
                     linearLayout.Children.Add(itemCircles.LinearLayoutWeight(1));
                 }
+                // FULL SIZE MODE: Show items on the day
                 else
                 {
+                    // DAY NUMBER AND OPTIONAL HOLIDAY NAME AND ADD BUTTON
                     linearLayout.Children.Add(new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
                         Children =
                         {
+                            // DAY NUMBER
                             tbDay.LinearLayoutWeight(holidays.Any() ? 0 : 1),
 
+                            // HOLIDAY NAME (OPTIONAL)
                             holidays.Any() ? new TextBlock
                             {
                                 Text = holidays.First().Name,
@@ -501,6 +508,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                 VerticalAlignment = VerticalAlignment.Center
                             }.LinearLayoutWeight(1) : null,
 
+                            // ADD BUTTON
                             new TransparentContentButton
                             {
                                 AltText = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
@@ -538,10 +546,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         }
                     });
 
-                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
+                    // ADD THE ITEMS ON THE DAY
+                    if (itemsOnDay.OfType<ViewItemTaskOrEvent>().Any())
                     {
-                        linearLayout.Children.Add(RenderDayItem(item));
+                        foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
+                        {
+                            linearLayout.Children.Add(RenderDayItem(item));
+                        }
                     }
+
                 }
 
                 return new Border

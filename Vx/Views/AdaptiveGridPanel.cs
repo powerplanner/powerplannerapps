@@ -6,7 +6,8 @@ using System.Text;
 namespace Vx.Views
 {
     /// <summary>
-    /// Currently only UWP, but can use <see cref="AdaptiveGridPanelComponent"/> on Android/iOS
+    /// Adaptive grid panel that automatically arranges children into columns based on available width.
+    /// Supported on UWP, Android, and iOS.
     /// </summary>
     public class AdaptiveGridPanel : View
     {
@@ -15,101 +16,5 @@ namespace Vx.Views
         public float MinColumnWidth { get; set; } = 250;
 
         public float ColumnSpacing { get; set; } = 24;
-    }
-
-    public class AdaptiveGridPanelComponent : VxComponent
-    {
-        public List<View> Children { get; private set; } = new List<View>();
-
-        public float MinColumnWidth { get; set; } = 250;
-
-        private int _renderedCols;
-
-        public float ColumnSpacing { get; set; } = 24;
-
-        protected override View Render()
-        {
-            var numOfCols = CalcNumberOfColumns();
-            _renderedCols = numOfCols;
-
-            // Android currently doesn't support adaptive width for some reason, leaving as single column for now on Android
-            if (numOfCols == 1 || Children.Count <= 1 || Size.Width == 0 || VxPlatform.Current == Platform.Android)
-            {
-                var layout = new LinearLayout();
-                layout.Children.AddRange(Children);
-                return layout;
-            }
-
-            // When we have too few children, stretch them
-            numOfCols = Children.Count < numOfCols ? Children.Count : numOfCols;
-
-            int col = 0;
-            var parentLayout = new LinearLayout();
-            LinearLayout currHorizLayout = null;
-            foreach (var child in Children)
-            {
-                if (currHorizLayout == null || col == numOfCols)
-                {
-                    col = 0;
-
-                    currHorizLayout = new LinearLayout()
-                    {
-                        Orientation = Orientation.Horizontal
-                    };
-
-                    parentLayout.Children.Add(currHorizLayout);
-                }
-
-                if (currHorizLayout.Children.Count > 0)
-                {
-                    currHorizLayout.Children.Add(new Border
-                    {
-                        Width = ColumnSpacing
-                    });
-                }
-
-                currHorizLayout.Children.Add(child.LinearLayoutWeight(1));
-
-                col++;
-            }
-
-            // If we didn't finish the last column
-            if (currHorizLayout != null)
-            {
-                for (int c = col; c < numOfCols; c++)
-                {
-                    if (currHorizLayout.Children.Count > 0)
-                    {
-                        currHorizLayout.Children.Add(new Border
-                        {
-                            Width = ColumnSpacing
-                        });
-                    }
-
-                    currHorizLayout.Children.Add(new Border().LinearLayoutWeight(1));
-                }
-            }
-
-            return parentLayout;
-        }
-
-        protected override void OnSizeChanged(SizeF size, SizeF previousSize)
-        {
-            var calc = CalcNumberOfColumns();
-            if (_renderedCols != calc)
-            {
-                MarkDirty();
-            }
-        }
-
-        private int CalcNumberOfColumns()
-        {
-            // ColWidth * Cols + ColSpacing * (Cols - 1) = TotalWidth
-            // ColWidth * Cols + ColSpacing * Cols - ColSpacing = TotalWidth
-            // Cols * (ColWidth + ColSpacing) = TotalWidth - ColSpacing
-            // Cols = (TotalWidth - ColSpacing) / (ColWidth + ColSpacing)
-            int cols = (int)((Size.Width - ColumnSpacing) / (MinColumnWidth + ColumnSpacing));
-            return cols >= 1 ? cols : 1;
-        }
     }
 }

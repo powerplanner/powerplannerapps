@@ -98,9 +98,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             else
             {
-                return DisplayMonth.ToString("MMMM yyyy");
+                if (!ShowGoToTodayInPrimaryCommands)
+                {
+                    // Shorter month name for smaller screens
+                    return DisplayMonth.ToString("MMM yyyy");
+                }
+                else
+                {
+                    return DisplayMonth.ToString("MMMM yyyy");
+                }
             }
-        }, new string[] { nameof(DisplayState), nameof(SelectedDate), nameof(DisplayMonth) });
+        }, new string[] { nameof(DisplayState), nameof(SelectedDate), nameof(DisplayMonth), nameof(ShowGoToTodayInPrimaryCommands) });
 
         public override bool CanGoBack => CachedComputation<bool>(delegate
         {

@@ -15,6 +15,7 @@ namespace Vx.iOS.Views
             Multiplier = multiplier;
             Constant = constant;
             GreaterThanOrEqual = false;
+            Priority = 1000;
         }
 
         public WrapperConstraint(UIView otherView, NSLayoutAttribute otherViewAttribute)
@@ -24,6 +25,7 @@ namespace Vx.iOS.Views
             Multiplier = 1;
             Constant = 0;
             GreaterThanOrEqual = false;
+            Priority = 1000;
         }
 
         public UIView OtherView;
@@ -31,6 +33,7 @@ namespace Vx.iOS.Views
         public nfloat Multiplier;
         public nfloat Constant;
         public bool GreaterThanOrEqual;
+        public float Priority;
     }
 
     public class UIGuideWrapper : UIViewOrGuideWrapper
@@ -71,7 +74,7 @@ namespace Vx.iOS.Views
 
         private NSLayoutConstraint TransformLeftConstraint(WrapperConstraint constraint)
         {
-            return NSLayoutConstraint.Create(
+            var c = NSLayoutConstraint.Create(
                 ViewOrGuide,
                 NSLayoutAttribute.Left,
                 PinLeft && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
@@ -79,11 +82,13 @@ namespace Vx.iOS.Views
                 constraint.OtherViewAttribute,
                 constraint.Multiplier,
                 constraint.Constant + Margin.Left);
+            if (constraint.Priority < 1000) c.Priority = constraint.Priority;
+            return c;
         }
 
         private NSLayoutConstraint TransformRightConstraint(WrapperConstraint constraint)
         {
-            return NSLayoutConstraint.Create(
+            var c = NSLayoutConstraint.Create(
                 constraint.OtherView,
                 constraint.OtherViewAttribute,
                 PinRight && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
@@ -91,11 +96,13 @@ namespace Vx.iOS.Views
                 NSLayoutAttribute.Right,
                 constraint.Multiplier,
                 Margin.Right + constraint.Constant);
+            if (constraint.Priority < 1000) c.Priority = constraint.Priority;
+            return c;
         }
 
         private NSLayoutConstraint TransformTopConstraint(WrapperConstraint constraint)
         {
-            return NSLayoutConstraint.Create(
+            var c = NSLayoutConstraint.Create(
                 ViewOrGuide,
                 NSLayoutAttribute.Top,
                 PinTop && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
@@ -103,11 +110,13 @@ namespace Vx.iOS.Views
                 constraint.OtherViewAttribute,
                 constraint.Multiplier,
                 Margin.Top + constraint.Constant);
+            if (constraint.Priority < 1000) c.Priority = constraint.Priority;
+            return c;
         }
 
         private NSLayoutConstraint TransformBottomConstraint(WrapperConstraint constraint)
         {
-            return NSLayoutConstraint.Create(
+            var c = NSLayoutConstraint.Create(
                 constraint.OtherView,
                 constraint.OtherViewAttribute,
                 PinBottom && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
@@ -115,6 +124,8 @@ namespace Vx.iOS.Views
                 NSLayoutAttribute.Bottom,
                 constraint.Multiplier,
                 Margin.Bottom + constraint.Constant);
+            if (constraint.Priority < 1000) c.Priority = constraint.Priority;
+            return c;
         }
 
         private NSLayoutConstraint _topConstraint;

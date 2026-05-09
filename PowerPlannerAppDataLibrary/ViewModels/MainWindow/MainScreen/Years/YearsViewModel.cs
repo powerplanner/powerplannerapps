@@ -100,18 +100,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             List<View> adaptiveGridPanelChildren;
 
-            if (Vx.VxPlatform.Current == Vx.Platform.Uwp)
-            {
-                var adaptiveGridPanel = new AdaptiveGridPanel();
-                linearLayout.Children.Add(adaptiveGridPanel);
-                adaptiveGridPanelChildren = adaptiveGridPanel.Children;
-            }
-            else
-            {
-                var adaptiveGridPanel = new AdaptiveGridPanelComponent();
-                linearLayout.Children.Add(adaptiveGridPanel);
-                adaptiveGridPanelChildren = adaptiveGridPanel.Children;
-            }
+            var adaptiveGridPanel = new AdaptiveGridPanel();
+            linearLayout.Children.Add(adaptiveGridPanel);
+            adaptiveGridPanelChildren = adaptiveGridPanel.Children;
 
             SubscribeToCollection(YearsViewItemsGroup.School.Years);
             foreach (var year in YearsViewItemsGroup.School.Years)
@@ -180,18 +171,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                             Orientation = Orientation.Horizontal,
                             Children =
                             {
+                                // YEAR
                                 new TextBlock
                                 {
                                     Text = year.Name,
                                     FontSize = Theme.Current.TitleFontSize,
-                                    Margin = new Thickness(0, 0, 6, 0)
-                                    // iOS needs this view TO wrap so that it fills the width correctly
+                                    Margin = new Thickness(0, 0, 6, 0),
+                                    WrapText = false
                                 }.LinearLayoutWeight(1),
 
+                                // GPA AND CREDITS (TO THE RIGHT)
                                 new LinearLayout
                                 {
+                                    // VERTICAL CHILDREN
                                     Children =
                                     {
+                                        // GPA (includes crossed out GPA if applicable)
                                         new LinearLayout
                                         {
                                             Orientation = Orientation.Horizontal,

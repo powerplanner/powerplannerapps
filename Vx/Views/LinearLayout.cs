@@ -14,6 +14,11 @@ namespace Vx.Views
 
         public Color BackgroundColor { get; set; }
 
+        /// <summary>
+        /// Only used / needed on iOS. If true, the layout will allow its children to draw outside its bounds. If false, children will be clipped to the layout's bounds.
+        /// </summary>
+        public bool AllowOverflowAndClip { get; set; }
+
         public float TotalWeight()
         {
             return Children.Sum(i => GetWeight(i));

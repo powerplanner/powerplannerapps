@@ -302,17 +302,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     ShowWeightHeaderAsSum = showWeightHeaderAsSum
                 };
 
-                var unassignedPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
-                {
-                    MinColumnWidth = minColumnWidth,
-                    ColumnSpacing = columnSpacing
-                } : (View)new AdaptiveGridPanelComponent
+                var unassignedPanel = new AdaptiveGridPanel
                 {
                     MinColumnWidth = minColumnWidth,
                     ColumnSpacing = columnSpacing
                 };
 
-                List<View> unassignedPanelChildren = VxPlatform.Current == Platform.Uwp ? (unassignedPanel as AdaptiveGridPanel).Children : (unassignedPanel as AdaptiveGridPanelComponent).Children;
+                List<View> unassignedPanelChildren = unassignedPanel.Children;
 
                 foreach (var t in ViewItemsGroup.UnassignedItems)
                 {
@@ -478,17 +474,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 SubscribeToCollection(Class.WeightCategories);
 
-                var gridPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
+                var gridPanel = new AdaptiveGridPanel
                 {
                     MinColumnWidth = MinColumnWidth,
                     ColumnSpacing = ColumnSpacing
-                } : (View)new AdaptiveGridPanelComponent
-                {
-                    MinColumnWidth = VxPlatform.Current == Platform.iOS ? 50000 : MinColumnWidth, // iOS doesn't work with this component at this time
-                    ColumnSpacing = ColumnSpacing
                 };
 
-                List<View> gridPanelChildren = VxPlatform.Current == Platform.Uwp ? (gridPanel as AdaptiveGridPanel).Children : (gridPanel as AdaptiveGridPanelComponent).Children;
+                List<View> gridPanelChildren = gridPanel.Children;
 
                 foreach (var weight in Class.WeightCategories)
                 {
