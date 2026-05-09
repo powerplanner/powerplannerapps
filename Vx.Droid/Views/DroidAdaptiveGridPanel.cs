@@ -1,5 +1,6 @@
 using Android.Content;
 using Android.Views;
+using Android.Widget;
 using InterfacesDroid.Themes;
 using System;
 using Vx.Views;
@@ -20,12 +21,15 @@ namespace Vx.Droid.Views
             View.ColumnSpacing = ThemeHelper.AsPx(View.Context, newView.ColumnSpacing);
 
             ReconcileChildren(oldView?.Children, newView.Children, View);
+
+            View.UpdateChildLayoutParams(View.ColumnCount);
         }
 
-        public class AdaptiveGridPanelLayout : ViewGroup
+        public class AdaptiveGridPanelLayout : GridLayout
         {
             private int _minColumnWidth = 250;
             private int _columnSpacing = 24;
+            private int _lastWidth = -1;
 
             public AdaptiveGridPanelLayout(Context context) : base(context)
             {
@@ -39,6 +43,7 @@ namespace Vx.Droid.Views
                     if (_minColumnWidth != value)
                     {
                         _minColumnWidth = value;
+                        _lastWidth = -1;
                         RequestLayout();
                     }
                 }
@@ -52,6 +57,7 @@ namespace Vx.Droid.Views
                     if (_columnSpacing != value)
                     {
                         _columnSpacing = value;
+                        _lastWidth = -1;
                         RequestLayout();
                     }
                 }
@@ -70,100 +76,46 @@ namespace Vx.Droid.Views
                 return cols;
             }
 
-            private int GetColumnWidth(int totalWidth, int numColumns)
-            {
-                if (numColumns <= 1)
-                    return totalWidth;
-                return (totalWidth - _columnSpacing * (numColumns - 1)) / numColumns;
-            }
-
             protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
             {
                 int widthSize = MeasureSpec.GetSize(widthMeasureSpec);
-                int childCount = ChildCount;
 
-                if (widthSize == 0 || childCount == 0)
+                if (widthSize > 0 && widthSize != _lastWidth)
                 {
-                    SetMeasuredDimension(widthSize, 0);
-                    return;
-                }
-
-                // Stretch if only one child
-                if (childCount == 1)
-                {
-                    var child = GetChildAt(0);
-                    child.Measure(
-                        MeasureSpec.MakeMeasureSpec(widthSize, MeasureSpecMode.Exactly),
-                        MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified));
-                    SetMeasuredDimension(widthSize, child.MeasuredHeight);
-                    return;
-                }
-
-                int numColumns = GetNumberOfColumns(widthSize, childCount);
-                int columnWidth = GetColumnWidth(widthSize, numColumns);
-
-                int totalHeight = 0;
-                int i = 0;
-
-                while (i < childCount)
-                {
-                    int rowHeight = 0;
-
-                    for (int col = 0; col < numColumns && i < childCount; col++, i++)
+                    _lastWidth = widthSize;
+                    int numColumns = GetNumberOfColumns(widthSize, ChildCount);
+                    if (ColumnCount != numColumns)
                     {
-                        var child = GetChildAt(i);
-                        child.Measure(
-                            MeasureSpec.MakeMeasureSpec(columnWidth, MeasureSpecMode.Exactly),
-                            MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified));
-                        rowHeight = Math.Max(rowHeight, child.MeasuredHeight);
+                        UpdateChildLayoutParams(numColumns);
+                        ColumnCount = numColumns;
                     }
-
-                    totalHeight += rowHeight;
                 }
 
-                SetMeasuredDimension(widthSize, totalHeight);
+                base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
             }
 
-            protected override void OnLayout(bool changed, int l, int t, int r, int b)
+            internal void UpdateChildLayoutParams(int numColumns)
             {
-                int width = r - l;
-                int childCount = ChildCount;
+                int halfSpacing = _columnSpacing / 2;
 
-                if (width == 0 || childCount == 0)
-                    return;
-
-                if (childCount == 1)
+                for (int i = 0; i < ChildCount; i++)
                 {
-                    var child = GetChildAt(0);
-                    child.Layout(0, 0, width, child.MeasuredHeight);
-                    return;
-                }
+                    var child = GetChildAt(i);
+                    int col = i % numColumns;
 
-                int numColumns = GetNumberOfColumns(width, childCount);
-                int columnWidth = GetColumnWidth(width, numColumns);
+                    var lp = new GridLayout.LayoutParams(
+                        GridLayout.InvokeSpec(GridLayout.Undefined, 1f),
+                        GridLayout.InvokeSpec(GridLayout.Undefined, 1f));
+                    lp.Width = 0;
 
-                int y = 0;
-                int i = 0;
-
-                while (i < childCount)
-                {
-                    int rowHeight = 0;
-
-                    // First pass: determine row height
-                    for (int col = 0; col < numColumns && i + col < childCount; col++)
+                    if (numColumns > 1)
                     {
-                        rowHeight = Math.Max(rowHeight, GetChildAt(i + col).MeasuredHeight);
+                        int leftMargin = col == 0 ? 0 : halfSpacing;
+                        int rightMargin = col == numColumns - 1 ? 0 : halfSpacing;
+                        lp.SetMargins(leftMargin, 0, rightMargin, 0);
                     }
 
-                    // Second pass: arrange children
-                    for (int col = 0; col < numColumns && i < childCount; col++, i++)
-                    {
-                        var child = GetChildAt(i);
-                        int x = col * (columnWidth + _columnSpacing);
-                        child.Layout(x, y, x + columnWidth, y + child.MeasuredHeight);
-                    }
-
-                    y += rowHeight;
+                    child.LayoutParameters = lp;
                 }
             }
         }
