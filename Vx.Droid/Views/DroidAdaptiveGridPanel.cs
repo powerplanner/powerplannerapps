@@ -95,8 +95,10 @@ namespace Vx.Droid.Views
                     int numColumns = GetNumberOfColumns(widthSize, ChildCount);
                     if (ColumnCount != numColumns)
                     {
-                        ColumnCount = numColumns;
+                        // Set to max first to avoid constraint violations during transition
+                        ColumnCount = Math.Max(ColumnCount, numColumns);
                         UpdateChildLayoutParams(numColumns);
+                        ColumnCount = numColumns;
                     }
                 }
 
