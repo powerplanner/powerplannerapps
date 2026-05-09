@@ -3,6 +3,7 @@ using Android.Views;
 using Android.Widget;
 using InterfacesDroid.Themes;
 using System;
+using System.Collections.Generic;
 using Vx.Views;
 
 namespace Vx.Droid.Views
@@ -22,6 +23,9 @@ namespace Vx.Droid.Views
 
             ReconcileChildren(oldView?.Children, newView.Children, View);
 
+            // Reset cached width so OnMeasure recalculates column count
+            // with the updated child count
+            View.ResetLastWidth();
             View.UpdateChildLayoutParams(View.ColumnCount);
         }
 
@@ -63,6 +67,11 @@ namespace Vx.Droid.Views
                 }
             }
 
+            internal void ResetLastWidth()
+            {
+                _lastWidth = -1;
+            }
+
             private int GetNumberOfColumns(int width, int childCount)
             {
                 if (childCount <= 1)
@@ -94,6 +103,29 @@ namespace Vx.Droid.Views
                 base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
             }
 
+            private Dictionary<Android.Views.View, (int Left, int Top, int Right, int Bottom)> _childOriginalMargins = new Dictionary<Android.Views.View, (int, int, int, int)>();
+
+            public override void OnViewAdded(Android.Views.View child)
+            {
+                base.OnViewAdded(child);
+                var lp = child.LayoutParameters as GridLayout.LayoutParams;
+                if (lp != null)
+                {
+                    _childOriginalMargins[child] = (lp.LeftMargin, lp.TopMargin, lp.RightMargin, lp.BottomMargin);
+                }
+            }
+
+            internal void UpdateChildOriginalMargins(Android.Views.View child, int left, int top, int right, int bottom)
+            {
+                _childOriginalMargins[child] = (left, top, right, bottom);
+            }
+
+            public override void OnViewRemoved(Android.Views.View child)
+            {
+                base.OnViewRemoved(child);
+                _childOriginalMargins.Remove(child);
+            }
+
             internal void UpdateChildLayoutParams(int numColumns)
             {
                 int halfSpacing = _columnSpacing / 2;
@@ -103,17 +135,23 @@ namespace Vx.Droid.Views
                     var child = GetChildAt(i);
                     int col = i % numColumns;
 
+                    _childOriginalMargins.TryGetValue(child, out var originalMargins);
+
                     var lp = new GridLayout.LayoutParams(
                         GridLayout.InvokeSpec(GridLayout.Undefined, 1f),
                         GridLayout.InvokeSpec(GridLayout.Undefined, 1f));
                     lp.Width = 0;
 
+                    int leftMargin = originalMargins.Left;
+                    int rightMargin = originalMargins.Right;
+
                     if (numColumns > 1)
                     {
-                        int leftMargin = col == 0 ? 0 : halfSpacing;
-                        int rightMargin = col == numColumns - 1 ? 0 : halfSpacing;
-                        lp.SetMargins(leftMargin, 0, rightMargin, 0);
+                        leftMargin += col == 0 ? 0 : halfSpacing;
+                        rightMargin += col == numColumns - 1 ? 0 : halfSpacing;
                     }
+
+                    lp.SetMargins(leftMargin, originalMargins.Top, rightMargin, originalMargins.Bottom);
 
                     child.LayoutParameters = lp;
                 }
