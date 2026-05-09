@@ -87,6 +87,7 @@ namespace Vx.iOS.Views
             View.BackgroundColor = newView.BackgroundColor.ToUI();
 
             View.Orientation = newView.Orientation;
+            View.AllowOverflowAndClip = newView.AllowOverflowAndClip;
 
             ReconcileList(
                 oldView?.Children,
@@ -121,6 +122,11 @@ namespace Vx.iOS.Views
 
     public class UILinearLayout : UIPanel
     {
+        public UILinearLayout()
+        {
+            ClipsToBounds = true;
+        }
+
         private Orientation _orientation;
         public Orientation Orientation
         {
@@ -135,7 +141,19 @@ namespace Vx.iOS.Views
             }
         }
 
-
+        private bool _allowOverflowAndClip;
+        public bool AllowOverflowAndClip
+        {
+            get => _allowOverflowAndClip;
+            set
+            {
+                if (value != _allowOverflowAndClip)
+                {
+                    _allowOverflowAndClip = value;
+                    SetNeedsUpdateConstraints();
+                }
+            }
+        }
 
         private const string WEIGHT = "Weight";
 
@@ -191,12 +209,13 @@ namespace Vx.iOS.Views
             var weight = GetWeight(curr);
 
             // ContentHugging: Higher value means resist expanding beyond intrinsic size.
+            // Non-weighted items should NOT expand, therefore higher value.
             // CompressionResistance: Higher value means resist shrinking below intrinsic size.
             curr.View.SetContentHuggingPriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
             curr.View.SetContentHuggingPriority(250, IsVertical ? UILayoutConstraintAxis.Horizontal : UILayoutConstraintAxis.Vertical);
             // Compression resistance: non-weighted items should strongly resist shrinking,
             // weighted items should allow shrinking to fill remaining space
-            curr.View.SetContentCompressionResistancePriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
+            // curr.View.SetContentCompressionResistancePriority(weight == 0 ? 1000 : 1, IsVertical ? UILayoutConstraintAxis.Vertical : UILayoutConstraintAxis.Horizontal);
 
             WrapperConstraint? leftConstraint, topConstraint, rightConstraint, bottomConstraint, widthConstraint = null, heightConstraint = null;
 
@@ -224,18 +243,16 @@ namespace Vx.iOS.Views
                 // height because custom UIViews have no intrinsic content size.
                 if (next == null)
                 {
-                    bottomConstraint = new WrapperConstraint(
+                    var bc = new WrapperConstraint(
                         this,
                         NSLayoutAttribute.Bottom);
-                }
-                else if (usingWeights)
-                {
-                    // Connect this item's bottom to the next item's top
-                    bottomConstraint = new WrapperConstraint(
-                        next.View,
-                        NSLayoutAttribute.Top,
-                        1,
-                        next.Margin.Top);
+                    if (AllowOverflowAndClip)
+                    {
+                        // Allows children to draw outside the bounds of the layout, but still allows the layout to be sized to fit its children.
+                        bc.GreaterThanOrEqual = true;
+                        bc.Priority = 749;
+                    }
+                    bottomConstraint = bc;
                 }
                 else
                 {
@@ -276,17 +293,16 @@ namespace Vx.iOS.Views
                 // RIGHT constraint: when using weights, set for EVERY item
                 if (next == null)
                 {
-                    rightConstraint = new WrapperConstraint(
+                    var rc = new WrapperConstraint(
                         this,
                         NSLayoutAttribute.Right);
-                }
-                else if (usingWeights)
-                {
-                    rightConstraint = new WrapperConstraint(
-                        next.View,
-                        NSLayoutAttribute.Left,
-                        1,
-                        next.Margin.Left);
+                    if (AllowOverflowAndClip)
+                    {
+                        // Allows children to draw outside the bounds of the layout, but still allows the layout to be sized to fit its children.
+                        rc.GreaterThanOrEqual = true;
+                        rc.Priority = 749;
+                    }
+                    rightConstraint = rc;
                 }
                 else
                 {
