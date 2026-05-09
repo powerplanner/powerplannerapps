@@ -95,8 +95,8 @@ namespace Vx.Droid.Views
                     int numColumns = GetNumberOfColumns(widthSize, ChildCount);
                     if (ColumnCount != numColumns)
                     {
-                        UpdateChildLayoutParams(numColumns);
                         ColumnCount = numColumns;
+                        UpdateChildLayoutParams(numColumns);
                     }
                 }
 
@@ -133,13 +133,14 @@ namespace Vx.Droid.Views
                 for (int i = 0; i < ChildCount; i++)
                 {
                     var child = GetChildAt(i);
+                    int row = i / numColumns;
                     int col = i % numColumns;
 
                     _childOriginalMargins.TryGetValue(child, out var originalMargins);
 
                     var lp = new GridLayout.LayoutParams(
-                        GridLayout.InvokeSpec(GridLayout.Undefined, 1f),
-                        GridLayout.InvokeSpec(GridLayout.Undefined, 1f));
+                        GridLayout.InvokeSpec(row),
+                        GridLayout.InvokeSpec(col, 1f));
                     lp.Width = 0;
 
                     int leftMargin = originalMargins.Left;
