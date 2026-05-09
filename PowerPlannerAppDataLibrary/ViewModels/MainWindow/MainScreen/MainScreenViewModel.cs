@@ -804,6 +804,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             { typeof(ClassesViewModel), MainMenuSelections.Classes },
             { typeof(YearsViewModel), MainMenuSelections.Years },
             { typeof(SettingsViewModel), MainMenuSelections.Settings },
+            { typeof(SettingsListViewModel), MainMenuSelections.Settings },
             { typeof(ClassWhatIfViewModel), MainMenuSelections.Classes }
         };
 
@@ -1236,7 +1237,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         break;
 
                     case MainMenuSelections.Settings:
-                        SetContent(new SettingsViewModel(this));
+                        if (PowerPlannerApp.ShowSettingsPagesAsPopups)
+                            SetContent(new SettingsListViewModel(this));
+                        else
+                            SetContent(new SettingsViewModel(this));
                         break;
                 }
             }

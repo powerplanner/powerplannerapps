@@ -351,6 +351,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 };
             }
 
+            if (VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android)
+            {
+                return new LinearLayout
+                {
+                    Children =
+                    {
+                        new Toolbar
+                        {
+                            Title = Title
+                        }.PowerPlannerThemed(),
+
+                        new ScrollView(layout).LinearLayoutWeight(1)
+                    }
+                };
+            }
+
             return new ScrollView(layout);
         }
 
