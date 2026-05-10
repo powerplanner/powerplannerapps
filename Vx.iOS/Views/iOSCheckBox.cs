@@ -1,4 +1,5 @@
 ﻿using System;
+using CoreGraphics;
 using Foundation;
 using UIKit;
 using Vx.Views;
@@ -8,7 +9,8 @@ namespace Vx.iOS.Views
     public class iOSCheckBox : iOSView<CheckBox, UIControl>
     {
         private UILabel _label;
-        private UISwitch _switch;
+        private UIButton _checkbox;
+        private bool _isChecked;
 
         public iOSCheckBox()
         {
@@ -21,30 +23,38 @@ namespace Vx.iOS.Views
             View.Add(_label);
             _label.StretchHeight(View, 5, 5); // We pad to match how Windows checkboxes are padded
 
-            _switch = new UISwitch() { TranslatesAutoresizingMaskIntoConstraints = false };
-            View.Add(_switch);
-            _switch.StretchHeight(View, 5, 5);
+            _checkbox = new UIButton(UIButtonType.System)
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+            _checkbox.SetPreferredSymbolConfiguration(UIImageSymbolConfiguration.Create(UIFont.PreferredBody.PointSize), UIControlState.Normal);
+            UpdateCheckboxImage();
+            View.Add(_checkbox);
+            _checkbox.StretchHeight(View, 5, 5);
 
             // Idk why, but on the add task page, if the keyboard is up, this doesn't get hit
             // even though on the inline edit controls the same code works. I investigated for 20 mins
             // and couldn't figure it out. It works on the edit schedule times page for some reason.
             View.TouchUpInside += View_TouchUpInside;
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[label]-16-[switch]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null,
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[checkbox]-16-[label]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null,
                 new NSDictionary(
                     "label", _label,
-                    "switch", _switch
+                    "checkbox", _checkbox
                     )));
 
-            _switch.ValueChanged += _switch_ValueChanged;
+            _checkbox.TouchUpInside += _checkbox_TouchUpInside;
         }
 
-        private void _switch_ValueChanged(object sender, EventArgs e)
+        private void UpdateCheckboxImage()
         {
-            if (VxView.IsChecked != null && VxView.IsChecked.Value != _switch.On)
-            {
-                VxView.IsChecked.ValueChanged?.Invoke(_switch.On);
-            }
+            var symbolName = _isChecked ? "checkmark.square.fill" : "square";
+            _checkbox.SetImage(UIImage.GetSystemImage(symbolName), UIControlState.Normal);
+        }
+
+        private void _checkbox_TouchUpInside(object sender, EventArgs e)
+        {
+            Toggle();
         }
 
         private void View_TouchUpInside(object sender, EventArgs e)
@@ -54,11 +64,17 @@ namespace Vx.iOS.Views
                 return;
             }
 
-            _switch.On = !_switch.On;
+            Toggle();
+        }
 
-            if (VxView.IsChecked != null && VxView.IsChecked.Value != _switch.On)
+        private void Toggle()
+        {
+            _isChecked = !_isChecked;
+            UpdateCheckboxImage();
+
+            if (VxView.IsChecked != null && VxView.IsChecked.Value != _isChecked)
             {
-                VxView.IsChecked.ValueChanged?.Invoke(_switch.On);
+                VxView.IsChecked.ValueChanged?.Invoke(_isChecked);
             }
         }
 
@@ -68,9 +84,11 @@ namespace Vx.iOS.Views
 
             _label.Text = newView.Text;
 
-            _switch.On = newView.IsChecked?.Value ?? false;
+            _isChecked = newView.IsChecked?.Value ?? false;
+            UpdateCheckboxImage();
 
-            _switch.Enabled = newView.IsEnabled;
+            _checkbox.Enabled = newView.IsEnabled;
+            _checkbox.Alpha = newView.IsEnabled ? 1.0f : 0.4f;
         }
     }
 }
