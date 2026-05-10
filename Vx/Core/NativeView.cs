@@ -218,7 +218,7 @@ namespace Vx
                         oldList.RemoveAt(i);
                         i--;
                     }
-                    else if (oldItem.GetType() == newItem.GetType())
+                    else if (oldItem.GetType() == newItem.GetType() && oldItem.Id == newItem.Id)
                     {
 #if DEBUG
                         if (oldItem.NativeView == null)

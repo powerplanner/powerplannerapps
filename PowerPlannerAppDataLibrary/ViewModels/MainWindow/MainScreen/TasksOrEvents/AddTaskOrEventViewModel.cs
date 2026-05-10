@@ -143,55 +143,86 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 Margin = new Thickness(0, 18, 0, 0)
             });
 
-            views.Add(new TextBlock
+            if (_subtasks.Value.Length == 0)
             {
-                Text = "Subtasks",
-                Margin = new Thickness(0, 18, 0, 0),
-                WrapText = false
-            });
-
-            foreach (var subtask in _subtasks.Value)
-            {
-                views.Add(new LinearLayout
+                views.Add(new TextButton
                 {
-                    Orientation = Orientation.Horizontal,
-                    Children =
+                    Text = "Add subtasks",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new Thickness(0, 6, 0, 0),
+                    Click = () =>
                     {
-                        new CheckBox
+                        _subtaskToFocus = new ViewItemSubtask();
+                        _subtasks.Value = new ViewItemSubtask[]
                         {
-                            IsChecked = VxValue.Create(subtask.IsComplete, v => { subtask.IsComplete = v; MarkDirty(); })
-                        },
-
-                        new TextBox
-                        {
-                            PlaceholderText = "Title of subtask",
-                            Text = VxValue.Create(subtask.Name, v => { subtask.Name = v; MarkDirty(); })
-
-                        }.LinearLayoutWeight(1),
-
-                        new TransparentContentButton
-                        {
-                            AltText = PowerPlannerResources.GetMenuItemDelete(),
-                            Content = new FontIcon
-                            {
-                                Glyph = MaterialDesign.MaterialDesignIcons.Close,
-                                FontSize = 20,
-                                Color = System.Drawing.Color.Red
-                            },
-                            Click = () => { _subtasks.Value = _subtasks.Value.Except(new[] { subtask }).ToArray(); }
-                        }
+                            _subtaskToFocus
+                        };
                     }
                 });
             }
 
-            views.Add(new Button()
+            if (_subtasks.Value.Length > 0)
             {
-                Text = "Add subtask",
-                Click = () => {
-                    _subtasks.Value = _subtasks.Value.Append(new ViewItemSubtask()).ToArray();
-                },
-                Margin = new Thickness(0, 6, 0, 0)
-            });
+                for (int i = 0; i < _subtasks.Value.Length; i++)
+                {
+                    var subtask = _subtasks.Value[i];
+                    views.Add(new LinearLayout
+                    {
+                        // Unique ID so that adding new will auto-focus the new text box
+                        Id = "NewSubtask" + subtask.GetHashCode(),
+                        Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(0, i == 0 ? 12 : 2, 0, 0),
+                        Children =
+                        {
+                            new CheckBox
+                            {
+                                IsChecked = VxValue.Create(subtask.IsComplete, v => { subtask.IsComplete = v; MarkDirty(); })
+                            },
+
+                            new TextBox
+                            {
+                                PlaceholderText = "Subtask " + (i + 1),
+                                AutoFocus = _subtaskToFocus == subtask,
+                                Text = VxValue.Create(subtask.Name, v => { subtask.Name = v; MarkDirty(); }),
+                                OnSubmit = () =>
+                                {
+                                    int index = _subtasks.Value.IndexOf(subtask);
+                                    var newSubtask = new ViewItemSubtask();
+                                    _subtaskToFocus = newSubtask;
+                                    _subtasks.Value = _subtasks.Value.Take(index + 1)
+                                        .Append(newSubtask)
+                                        .Concat(_subtasks.Value.Skip(index + 1))
+                                        .ToArray();
+                                }
+                            }.LinearLayoutWeight(1),
+
+                            new TransparentContentButton
+                            {
+                                AltText = PowerPlannerResources.GetMenuItemDelete(),
+                                Content = new FontIcon
+                                {
+                                    Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                                    FontSize = 20,
+                                    Color = System.Drawing.Color.Red
+                                },
+                                Click = () => { _subtasks.Value = _subtasks.Value.Except(new[] { subtask }).ToArray(); }
+                            }
+                        }
+                    });
+                }
+
+                views.Add(new TextButton
+                {
+                    Text = "+ Add another subtask",
+                    Margin = new Thickness(0, 6, 0, 0),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Click = () =>
+                    {
+                        _subtaskToFocus = new ViewItemSubtask();
+                        _subtasks.Value = _subtasks.Value.Append(_subtaskToFocus).ToArray();
+                    }
+                });
+            }
 
             if (IsRepeatsVisible)
             {
@@ -997,6 +1028,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         }
 
         private VxState<ViewItemSubtask[]> _subtasks = new VxState<ViewItemSubtask[]>(new ViewItemSubtask[0]);
+        private ViewItemSubtask _subtaskToFocus = null;
 
         private ViewItemWeightCategory[] _weightCategories;
         public ViewItemWeightCategory[] WeightCategories
