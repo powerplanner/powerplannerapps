@@ -9,7 +9,7 @@ namespace BareMvvm.Core
 {
     public class TextField : BindableBase
     {
-        public TextField(string initialText = "", bool required = false, IInputValidator inputValidator = null, int? minLength = null, int? maxLength = null, TextField mustMatch = null, BaseViewModel viewModel = null, bool ignoreOuterSpaces = false, bool reportValidatorInvalidInstantly = false)
+        public TextField(string initialText = "", bool required = false, IInputValidator inputValidator = null, int? minLength = null, int? maxLength = null, TextField mustMatch = null, BaseViewModel viewModel = null, bool ignoreOuterSpaces = false, bool reportValidatorInvalidInstantly = false, bool showCheckmark = true)
         {
             _text = initialText;
             Required = required;
@@ -19,6 +19,7 @@ namespace BareMvvm.Core
             MustMatch = mustMatch;
             IgnoreOuterSpaces = ignoreOuterSpaces;
             ReportValidatorInvalidInstantly = reportValidatorInvalidInstantly;
+            ShowCheckmark = showCheckmark;
 
             if (MustMatch != null)
             {
@@ -80,6 +81,8 @@ namespace BareMvvm.Core
         public bool IgnoreOuterSpaces { get; private set; }
 
         public bool ReportValidatorInvalidInstantly { get; private set; }
+
+        public bool ShowCheckmark { get; private set; }
 
         public void Validate(bool forceValidate = true, bool? overrideRequired = null)
         {

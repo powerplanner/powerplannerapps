@@ -23,6 +23,7 @@ using Vx;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
 using PowerPlannerAppDataLibrary.Components.ImageAttachments;
+using BareMvvm.Core;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
@@ -40,10 +41,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             List<View> views = new List<View>()
             {
-                new TextBox
+                new TextBox(Name)
                 {
                     Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxName.Header"),
-                    Text = VxValue.Create(Name, v => Name = v),
                     AutoFocus = State == OperationState.Adding,
                     OnSubmit = Save
                 }
@@ -730,6 +730,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 State = OperationState.Adding,
                 AddParams = addParams,
                 Classes = classes,
+                Name = GenerateNameField(""),
                 Date = date.Date,
                 Type = addParams.Type,
                 IsClassPickerVisible = !addParams.HideClassPicker,
@@ -774,7 +775,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 Account = account,
                 State = OperationState.Adding,
                 CloneParams = cloneParams,
-                Name = cloneParams.Item.Name,
+                Name = GenerateNameField(cloneParams.Item.Name),
                 Classes = GetClassesWithNoClassClass(c.Semester.Classes),
                 Date = cloneParams.Item.DateInSchoolTime.Date,
                 Details = cloneParams.Item.Details,
@@ -863,7 +864,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 Account = account,
                 State = OperationState.Editing,
                 EditParams = editParams,
-                Name = editParams.Item.Name,
+                Name = GenerateNameField(editParams.Item.Name),
                 Classes = GetClassesWithNoClassClass(c.Semester.Classes),
                 Date = editParams.Item.DateInSchoolTime.Date,
                 Details = editParams.Item.Details,
@@ -943,11 +944,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             return answer.ToArray();
         }
 
-        private string _name = "";
-        public string Name
+        [VxSubscribe]
+        public TextField Name { get; private set; }
+
+        private static TextField GenerateNameField(string initialText)
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value, nameof(Name)); }
+            return new TextField(initialText, required: true, ignoreOuterSpaces: true, showCheckmark: false);
         }
 
         private DateTime _date = DateTime.Today;
@@ -1432,7 +1434,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
         {
             try
             {
-                string name = Name.Trim();
+                string name = Name.Text.Trim();
+                if (!ValidateAllInputs())
+                {
+                    return;
+                }
+
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     await new PortableMessageDialog(PowerPlannerResources.GetStringNoNameMessageBody(), PowerPlannerResources.GetStringNoNameMessageHeader()).ShowAsync();
@@ -1779,7 +1786,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 dataItem.Identifier = EditParams.Item.Identifier;
             }
 
-            dataItem.Name = Name;
+            dataItem.Name = Name.Text.Trim();
             dataItem.Date = DateTime.SpecifyKind(date, DateTimeKind.Utc).Date;
 
             dataItem.Details = ViewItemSubtask.ProduceDetailsWithSubtasks(Details.Trim(), _subtasks);

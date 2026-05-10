@@ -17,7 +17,14 @@ namespace Vx.Views
         public TextBox(TextField textField)
         {
             Text = VxValue.Create(textField);
-            ValidationState = textField.ValidationState;
+            if (!textField.ShowCheckmark && textField.ValidationState == InputValidationState.Valid)
+            {
+                ValidationState = null;
+            }
+            else
+            {
+                ValidationState = textField.ValidationState;
+            }
             HasFocusChanged = f => textField.HasFocus = f;
         }
 
