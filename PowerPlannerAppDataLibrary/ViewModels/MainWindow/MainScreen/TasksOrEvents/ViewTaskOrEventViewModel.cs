@@ -72,53 +72,65 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
         protected override View Render()
         {
+            var mainContent = new LinearLayout
+            {
+                Margin = new Thickness(
+                    Theme.Current.PageMargin + NookInsets.Left,
+                    Theme.Current.PageMargin,
+                    Theme.Current.PageMargin + NookInsets.Right,
+                    Theme.Current.PageMargin + (IsCompletionSliderVisible ? 0 : NookInsets.Bottom)),
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = Item.Name,
+                        FontSize = Theme.Current.TitleFontSize,
+                        IsTextSelectionEnabled = true
+                    },
+
+                    new TextBlock
+                    {
+                        Text = Item.Subtitle,
+
+                        // Theoretically their class should never be null, but sometimes people have null classes somehow...
+                        TextColor = Item.Class != null ? Item.Class.Color.ToColor() : Theme.Current.ForegroundColor,
+
+                        Margin = new Thickness(0, 3, 0, 0),
+                        IsTextSelectionEnabled = true
+                    },
+
+                    !string.IsNullOrWhiteSpace(Item.Details) ? new HyperlinkTextBlock
+                    {
+                        Text = Item.Details,
+                        Margin = new Thickness(0, 18, 0, 0),
+                        IsTextSelectionEnabled = true
+                    } : null,
+                }
+            };
+
+            foreach (var t in Item.Subtasks)
+            {
+                mainContent.Children.Add(new CheckBox()
+                {
+                    IsChecked = VxValue.Create(t.IsComplete, v => UpdateSubtask(t, v)),
+                    Text = t.Name,
+                    Margin = new Thickness(0, 6, 0, 0)
+                });
+            }
+
+            mainContent.Children.Add(new ImagesComponent
+            {
+                ImageAttachments = Item.ImageAttachments,
+                Margin = new Thickness(0, 18, 0, 0)
+            });
+
             return new LinearLayout
             {
                 Children =
                 {
                     new ScrollView
                     {
-                        Content = new LinearLayout
-                        {
-                            Margin = new Thickness(
-                                Theme.Current.PageMargin + NookInsets.Left,
-                                Theme.Current.PageMargin,
-                                Theme.Current.PageMargin + NookInsets.Right,
-                                Theme.Current.PageMargin + (IsCompletionSliderVisible ? 0 : NookInsets.Bottom)),
-                            Children =
-                            {
-                                new TextBlock
-                                {
-                                    Text = Item.Name,
-                                    FontSize = Theme.Current.TitleFontSize,
-                                    IsTextSelectionEnabled = true
-                                },
-
-                                new TextBlock
-                                {
-                                    Text = Item.Subtitle,
-
-                                    // Theoretically their class should never be null, but sometimes people have null classes somehow...
-                                    TextColor = Item.Class != null ? Item.Class.Color.ToColor() : Theme.Current.ForegroundColor,
-
-                                    Margin = new Thickness(0, 3, 0, 0),
-                                    IsTextSelectionEnabled = true
-                                },
-
-                                !string.IsNullOrWhiteSpace(Item.Details) ? new HyperlinkTextBlock
-                                {
-                                    Text = Item.Details,
-                                    Margin = new Thickness(0, 18, 0, 0),
-                                    IsTextSelectionEnabled = true
-                                } : null,
-
-                                new ImagesComponent
-                                {
-                                    ImageAttachments = Item.ImageAttachments,
-                                    Margin = new Thickness(0, 18, 0, 0)
-                                }
-                            }
-                        }
+                        Content = mainContent
                     }.LinearLayoutWeight(1),
 
                     IsCompletionSliderVisible ? (View)new CompletionSlider
@@ -141,6 +153,30 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     } : null
                 }
             };
+        }
+
+        private void UpdateSubtask(ViewItemSubtask subtask, bool isComplete)
+        {
+            if (Item == null || subtask.IsComplete == isComplete)
+            {
+                return;
+            }
+
+            subtask.IsComplete = isComplete;
+
+            TryStartDataOperationAndThenNavigate(delegate
+            {
+                DataChanges changes = new DataChanges();
+
+                changes.Add(new DataItemMegaItem()
+                {
+                    Identifier = Item.Identifier,
+                    Details = ViewItemSubtask.ProduceDetailsWithSubtasks(Item.Details, Item.Subtasks)
+                });
+
+                return PowerPlannerApp.Current.SaveChanges(changes);
+
+            }, null);
         }
 
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -156,11 +156,31 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             get => Type == TaskOrEventType.Event;
         }
 
+        private ViewItemSubtask[] _subtasks = Array.Empty<ViewItemSubtask>();
+        public ViewItemSubtask[] Subtasks
+        {
+            get => _subtasks;
+            set
+            {
+                if (!value.SequenceEqual(_subtasks))
+                {
+                    _subtasks = value;
+                    OnPropertyChanged(nameof(Subtasks));
+                }
+            }
+        }
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);
 
             DataItemMegaItem i = dataItem as DataItemMegaItem;
+
+            if (ViewItemSubtask.ExtractSubtasksFromDetails(i.Details, out string cleanedDetails, out ViewItemSubtask[] subtasks))
+            {
+                Details = cleanedDetails;
+                Subtasks = subtasks;
+            }
 
             switch (i.MegaItemType)
             {

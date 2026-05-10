@@ -143,6 +143,56 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 Margin = new Thickness(0, 18, 0, 0)
             });
 
+            views.Add(new TextBlock
+            {
+                Text = "Subtasks",
+                Margin = new Thickness(0, 18, 0, 0),
+                WrapText = false
+            });
+
+            foreach (var subtask in _subtasks.Value)
+            {
+                views.Add(new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new CheckBox
+                        {
+                            IsChecked = VxValue.Create(subtask.IsComplete, v => { subtask.IsComplete = v; MarkDirty(); })
+                        },
+
+                        new TextBox
+                        {
+                            PlaceholderText = "Title of subtask",
+                            Text = VxValue.Create(subtask.Name, v => { subtask.Name = v; MarkDirty(); })
+
+                        }.LinearLayoutWeight(1),
+
+                        new TransparentContentButton
+                        {
+                            AltText = PowerPlannerResources.GetMenuItemDelete(),
+                            Content = new FontIcon
+                            {
+                                Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                                FontSize = 20,
+                                Color = System.Drawing.Color.Red
+                            },
+                            Click = () => { _subtasks.Value = _subtasks.Value.Except(new[] { subtask }).ToArray(); }
+                        }
+                    }
+                });
+            }
+
+            views.Add(new Button()
+            {
+                Text = "Add subtask",
+                Click = () => {
+                    _subtasks.Value = _subtasks.Value.Append(new ViewItemSubtask()).ToArray();
+                },
+                Margin = new Thickness(0, 6, 0, 0)
+            });
+
             if (IsRepeatsVisible)
             {
                 views.Add(new CheckBox
@@ -701,7 +751,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 ImageNames = cloneParams.Item.ImageNames.ToArray(),
                 IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c, // Assign class last, since it also assigns weight categories
-                SelectedWeightCategory = cloneParams.Item.WeightCategory
+                SelectedWeightCategory = cloneParams.Item.WeightCategory,
+                _subtasks = new VxState<ViewItemSubtask[]>(cloneParams.Item.Subtasks.Select(i => i.Clone()).ToArray())
             };
 
             // Assign existing image attachments
@@ -788,7 +839,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 Type = type,
                 ImageNames = editParams.Item.ImageNames.ToArray(),
                 IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
-                Class = c // Assign class last, since it also assigns weight categories
+                Class = c, // Assign class last, since it also assigns weight categories
+                _subtasks = new VxState<ViewItemSubtask[]>(editParams.Item.Subtasks.Select(i => i.Clone()).ToArray())
             };
 
             // Assign existing image attachments
@@ -943,6 +995,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             get { return _details; }
             set { SetProperty(ref _details, value, nameof(Details)); }
         }
+
+        private VxState<ViewItemSubtask[]> _subtasks = new VxState<ViewItemSubtask[]>(new ViewItemSubtask[0]);
 
         private ViewItemWeightCategory[] _weightCategories;
         public ViewItemWeightCategory[] WeightCategories
@@ -1695,7 +1749,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
             dataItem.Name = Name;
             dataItem.Date = DateTime.SpecifyKind(date, DateTimeKind.Utc).Date;
-            dataItem.Details = Details.Trim();
+
+            dataItem.Details = ViewItemSubtask.ProduceDetailsWithSubtasks(Details.Trim(), _subtasks);
 
             dataItem.UpperIdentifier = Class.Identifier;
             if (Class.IsNoClassClass)
