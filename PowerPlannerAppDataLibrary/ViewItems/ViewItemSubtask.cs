@@ -7,7 +7,7 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 {
     public class ViewItemSubtask
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public bool IsComplete { get; set; }
 
         public ViewItemSubtask Clone()
