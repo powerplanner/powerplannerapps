@@ -16,7 +16,7 @@ namespace Vx.iOS.Views
         {
             _label = new UILabel()
             {
-                Lines = 1,
+                Lines = 0,
                 Font = UIFont.PreferredBody,
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
