@@ -376,6 +376,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2605, 10, 0, 0))
+                    {
+                        changedText += "\n - Add checklists to tasks / events! Try it when adding a task, below the details text box!";
+                    }
+
                     if (v <= new Version(2605, 7, 0, 0))
                     {
                         changedText += "\n - Edit with AI beta feature! Try it on the calendar page, click the ⚡ icon.";
