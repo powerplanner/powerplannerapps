@@ -6,7 +6,19 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSCheckBox : iOSView<CheckBox, UIControl>
+    public class UICheckBoxControl : UIControl
+    {
+        public override CGSize IntrinsicContentSize
+        {
+            get
+            {
+                var size = SystemLayoutSizeFittingSize(UILayoutFittingCompressedSize);
+                return size;
+            }
+        }
+    }
+
+    public class iOSCheckBox : iOSView<CheckBox, UICheckBoxControl>
     {
         private UILabel _label;
         private UIButton _checkbox;
