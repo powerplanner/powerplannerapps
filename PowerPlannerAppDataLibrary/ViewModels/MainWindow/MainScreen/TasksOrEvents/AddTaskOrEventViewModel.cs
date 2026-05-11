@@ -43,7 +43,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 new TextBox(Name)
                 {
-                    Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxName.Header"),
+                    Header = R.S("EditTaskOrEventPage_TextBoxName.Header"),
                     AutoFocus = State == OperationState.Adding,
                     OnSubmit = Save
                 }
@@ -53,13 +53,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                     IsDatePickerVisible ? new DatePicker
                     {
-                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_DatePickerDate.Header"),
+                        Header = R.S("EditTaskOrEventPage_DatePickerDate.Header"),
                         Value = VxValue.Create<DateTime?>(Date, v => Date = v.GetValueOrDefault(Date))
                     } : null,
 
                     IsClassPickerVisible ? new ComboBox
                     {
-                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_ComboBoxClasses.Header"),
+                        Header = R.S("EditTaskOrEventPage_ComboBoxClasses.Header"),
                         Items = Classes,
                         SelectedItem = VxValue.Create<object>(Class, v => Class = v as ViewItemClass),
                         ItemTemplate = c => new LinearLayout
@@ -94,14 +94,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                     IsWeightCategoryPickerVisible ? new ComboBox
                     {
-                        Header = PowerPlannerResources.GetString("EditTaskOrEventPage_ComboBoxWeightCategory.Header"),
+                        Header = R.S("EditTaskOrEventPage_ComboBoxWeightCategory.Header"),
                         Items = WeightCategories,
                         SelectedItem = VxValue.Create<object>(SelectedWeightCategory, v => SelectedWeightCategory = v as ViewItemWeightCategory)
                     } : null,
 
                     new ComboBox
                     {
-                        Header = PowerPlannerResources.GetString("String_Time"),
+                        Header = R.S("String_Time"),
                         Items = TimeOptions,
                         SelectedItem = VxValue.Create<object>(SelectedTimeOption, v => SelectedTimeOption = v as string)
                     }
@@ -117,7 +117,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                     Value = VxValue.Create(StartTime, v => StartTime = v)
                 }, IsEndTimePickerVisible ? new EndTimePicker
                 {
-                    Header = PowerPlannerResources.GetString("String_EndTime"),
+                    Header = R.S("String_EndTime"),
                     Margin = new Thickness(0, 12, 0, 0),
                     Value = VxValue.Create(EndTime, v => EndTime = v),
                     StartTime = StartTime
@@ -128,7 +128,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 views.Add(new TextBlock
                 {
-                    Text = PowerPlannerResources.GetString("DifferentTimeZoneWarning.Text"),
+                    Text = R.S("DifferentTimeZoneWarning.Text"),
                     FontSize = Theme.Current.CaptionFontSize,
                     TextColor = Color.Red,
                     Margin = new Thickness(0, 6, 0, 6)
@@ -137,7 +137,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
             views.Add(new MultilineTextBox
             {
-                Header = PowerPlannerResources.GetString("EditTaskOrEventPage_TextBoxDetails.Header"),
+                Header = R.S("EditTaskOrEventPage_TextBoxDetails.Header"),
                 Height = 180, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
                 Text = VxValue.Create(Details, v => Details = v),
                 Margin = new Thickness(0, 18, 0, 0)
@@ -147,7 +147,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 views.Add(new TextButton
                 {
-                    Text = "Add checklist",
+                    Text = R.S("String_AddChecklist"),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(0, 6, 0, 0),
                     Click = () =>
@@ -214,7 +214,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 views.Add(new TextButton
                 {
-                    Text = "+ Add item",
+                    Text = R.S("String_AddChecklistItem"),
                     Margin = new Thickness(0, 6, 0, 0),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Click = () =>
@@ -229,7 +229,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 views.Add(new CheckBox
                 {
-                    Text = PowerPlannerResources.GetString("RepeatingEntry_CheckBoxRepeats.Content"),
+                    Text = R.S("RepeatingEntry_CheckBoxRepeats.Content"),
                     Margin = new Thickness(0, 18, 0, 0),
                     IsChecked = VxValue.Create(Repeats, v => Repeats = v)
                 });
@@ -247,7 +247,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                             {
                                 ShowRepeatingPremiumTrial ? new TextBlock
                                 {
-                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockTryForFree.Text"),
+                                    Text = R.S("RepeatingEntry_TextBlockTryForFree.Text"),
                                     TextColor = Color.Red,
                                     FontWeight = FontWeights.Bold,
                                     Margin = new Thickness(0, 0, 0, 18)
@@ -255,14 +255,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                                 ShowRepeatingMustUpgradeToPremium ? new TextBlock
                                 {
-                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockMustUpgrade.Text"),
+                                    Text = R.S("RepeatingEntry_TextBlockMustUpgrade.Text"),
                                     TextColor = Color.Red,
                                     FontWeight = FontWeights.Bold
                                 } : null,
 
                                 ShowRepeatingMustUpgradeToPremium ? new AccentButton
                                 {
-                                    Text = PowerPlannerResources.GetString("Settings_UpgradeToPremium_ButtonUpgrade.Content"),
+                                    Text = R.S("Settings_UpgradeToPremium_ButtonUpgrade.Content"),
                                     Click = UpgradeToPremiumForRepeating,
                                     Margin = new Thickness(0, 18, 0, 0)
                                 } : null,
@@ -274,7 +274,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                                 new TextBlock
                                 {
-                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockNoteCannotBulkEdit.Text"),
+                                    Text = R.S("RepeatingEntry_TextBlockNoteCannotBulkEdit.Text"),
                                     TextColor = Theme.Current.SubtleForegroundColor,
                                     FontSize = Theme.Current.CaptionFontSize,
                                     Margin = new Thickness(0, 18, 0, 0)
@@ -287,7 +287,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
             views.Add(new TextBlock
             {
-                Text = PowerPlannerResources.GetString("String_ImageAttachments"),
+                Text = R.S("String_ImageAttachments"),
                 WrapText = false,
                 Margin = new Thickness(0, 18, 0, 0)
             });
@@ -372,7 +372,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                             {
                                 new TextBlock
                                 {
-                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatEvery.Text"),
+                                    Text = R.S("RepeatingEntry_TextBlockRepeatEvery.Text"),
                                     VerticalAlignment = VerticalAlignment.Center,
                                     WrapText = false
                                 },
@@ -393,7 +393,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                         ViewModel.AreDayCheckBoxesVisible ? new TextBlock
                         {
-                            Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockRepeatOn.Text"),
+                            Text = R.S("RepeatingEntry_TextBlockRepeatOn.Text"),
                             Margin = new Thickness(0, 18, 0, 0)
                         } : null,
 
@@ -401,7 +401,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                         new TextBlock
                         {
-                            Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockEnds.Text"),
+                            Text = R.S("RepeatingEntry_TextBlockEnds.Text"),
                             Margin = new Thickness(0, 18, 0, 0)
                         },
 
@@ -413,7 +413,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                             {
                                 new CheckBox
                                 {
-                                    Text = PowerPlannerResources.GetString("RepeatingEntry_RadioButtonEndsOn.Content"),
+                                    Text = R.S("RepeatingEntry_RadioButtonEndsOn.Content"),
                                     IsChecked = VxValue.Create(ViewModel.IsEndDateChecked, v =>
                                     {
                                         ViewModel.IsEndDateChecked = v;
@@ -438,7 +438,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                             {
                                 new CheckBox
                                 {
-                                    Text = PowerPlannerResources.GetString("RepeatingEntry_RadioButtonEndsAfter.Content"),
+                                    Text = R.S("RepeatingEntry_RadioButtonEndsAfter.Content"),
                                     IsChecked = VxValue.Create(ViewModel.IsEndOccurrencesChecked, v =>
                                     {
                                         ViewModel.IsEndOccurrencesChecked = v;
@@ -455,7 +455,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                                 new TextBlock
                                 {
-                                    Text = PowerPlannerResources.GetString("RepeatingEntry_TextBlockOccurrences.Text"),
+                                    Text = R.S("RepeatingEntry_TextBlockOccurrences.Text"),
                                     VerticalAlignment = VerticalAlignment.Center,
                                     Margin = new Thickness(6, 0, 0, 0),
                                     WrapText = false
@@ -506,10 +506,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             switch (Type)
             {
                 case PowerPlannerAppDataLibrary.ViewItems.TaskOrEventType.Event:
-                    return PowerPlannerResources.GetString("String_StartTime");
+                    return R.S("String_StartTime");
 
                 default:
-                    return PowerPlannerResources.GetString("String_DueTime");
+                    return R.S("String_DueTime");
             }
         }
 
@@ -521,18 +521,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             {
                 if (value == TaskOrEventType.Task)
                 {
-                    TimeOption_BeforeClass = PowerPlannerResources.GetString("TimeOption_BeforeClass");
-                    TimeOption_StartOfClass = PowerPlannerResources.GetString("TimeOption_StartOfClass");
-                    TimeOption_DuringClass = PowerPlannerResources.GetString("TimeOption_DuringClass");
-                    TimeOption_EndOfClass = PowerPlannerResources.GetString("TimeOption_EndOfClass");
-                    TimeOption_AllDay = PowerPlannerResources.GetString("TimeOption_EndOfDay");
-                    TimeOption_Custom = PowerPlannerResources.GetString("TimeOption_CustomDueTime");
+                    TimeOption_BeforeClass = R.S("TimeOption_BeforeClass");
+                    TimeOption_StartOfClass = R.S("TimeOption_StartOfClass");
+                    TimeOption_DuringClass = R.S("TimeOption_DuringClass");
+                    TimeOption_EndOfClass = R.S("TimeOption_EndOfClass");
+                    TimeOption_AllDay = R.S("TimeOption_EndOfDay");
+                    TimeOption_Custom = R.S("TimeOption_CustomDueTime");
                 }
                 else
                 {
-                    TimeOption_DuringClass = PowerPlannerResources.GetString("TimeOption_DuringClass");
-                    TimeOption_AllDay = PowerPlannerResources.GetString("TimeOption_AllDay");
-                    TimeOption_Custom = PowerPlannerResources.GetString("TimeOption_CustomTime");
+                    TimeOption_DuringClass = R.S("TimeOption_DuringClass");
+                    TimeOption_AllDay = R.S("TimeOption_AllDay");
+                    TimeOption_Custom = R.S("TimeOption_CustomTime");
                 }
 
                 _type = value;
@@ -723,7 +723,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             }
 
-            string title = PowerPlannerResources.GetString(addParams.Type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
+            string title = R.S(addParams.Type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
 
             return new AddTaskOrEventViewModel(parent, title)
             {
@@ -769,7 +769,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 throw new NullReferenceException("Classes of the semester was null. Item id " + cloneParams.Item.Identifier);
             }
 
-            string title = PowerPlannerResources.GetString(type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
+            string title = R.S(type == TaskOrEventType.Task ? "String_AddTask" : "String_AddEvent");
 
             var model = new AddTaskOrEventViewModel(parent, title)
             {
@@ -858,7 +858,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 throw new NullReferenceException("Classes of the semester was null. Item id " + editParams.Item.Identifier);
             }
 
-            string title = PowerPlannerResources.GetString(type == TaskOrEventType.Task ? "String_EditTask" : "String_EditEvent");
+            string title = R.S(type == TaskOrEventType.Task ? "String_EditTask" : "String_EditEvent");
 
             var model = new AddTaskOrEventViewModel(parent, title)
             {
@@ -1455,7 +1455,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 if (IsEndTimePickerVisible && EndTime <= StartTime)
                 {
-                    new PortableMessageDialog(PowerPlannerResources.GetString("EditingClassScheduleItemView_LowEndTime.Content"), PowerPlannerResources.GetString("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
+                    new PortableMessageDialog(R.S("EditingClassScheduleItemView_LowEndTime.Content"), R.S("EditingClassScheduleItemView_InvalidEndTime.Title")).Show();
                     return;
                 }
 

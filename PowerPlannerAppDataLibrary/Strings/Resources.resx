@@ -1807,6 +1807,15 @@ Please think about using an online account instead!</value>
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>Image attachments</value>
   </data>
+  <data name="String_AddChecklist" xml:space="preserve">
+    <value>Add checklist</value>
+  </data>
+  <data name="String_AddChecklistItem" xml:space="preserve">
+    <value>+ Add item</value>
+  </data>
+  <data name="String_ChecklistItemsCompleted" xml:space="preserve">
+    <value>items completed</value>
+  </data>
   <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
     <value>Returning user?</value>
   </data>

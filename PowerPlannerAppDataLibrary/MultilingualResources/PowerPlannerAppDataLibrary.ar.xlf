@@ -2150,6 +2150,18 @@ Please think about using an online account instead!</source>
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">مرفقات الصور</target>
         </trans-unit>
+        <trans-unit id="String_AddChecklist" translate="yes" xml:space="preserve">
+          <source>Add checklist</source>
+          <target state="final">إضافة قائمة تحقق</target>
+        </trans-unit>
+        <trans-unit id="String_AddChecklistItem" translate="yes" xml:space="preserve">
+          <source>+ Add item</source>
+          <target state="final">+ إضافة عنصر</target>
+        </trans-unit>
+        <trans-unit id="String_ChecklistItemsCompleted" translate="yes" xml:space="preserve">
+          <source>items completed</source>
+          <target state="final">عناصر مكتملة</target>
+        </trans-unit>
         <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
           <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
           <target state="final">من أجل استخدام دمج جوجل التقويم، يجب عليك أولاً إنشاء حساب Power Planner!</target>

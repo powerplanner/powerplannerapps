@@ -147,7 +147,7 @@ namespace PowerPlannerAppDataLibrary.Components
                     // CHECKLIST + IMAGE ATTACHMENTS
                     else
                     {
-                        return $"{checklistPart} - {IMAGE_ATTACHMENT_SYMBOL} image attachment";
+                        return $"{checklistPart} - {IMAGE_ATTACHMENT_SYMBOL} {R.S("String_ImageAttachments").ToLower()}";
                     }
                 }
                 // CHECKST + DETAILS
@@ -157,7 +157,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 }
                 else
                 {
-                    return checklistPart + " items completed";
+                    return checklistPart + " " + R.S("String_ChecklistItemsCompleted");
                 }
             }
             else if (hasImageAttachments)
@@ -168,7 +168,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 }
                 else
                 {
-                    return IMAGE_ATTACHMENT_SYMBOL + " image attachment";
+                    return IMAGE_ATTACHMENT_SYMBOL + " " + R.S("String_ImageAttachments").ToLower();
                 }
             }
             else

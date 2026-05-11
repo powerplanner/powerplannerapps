@@ -2147,6 +2147,18 @@ Por favor, pense sobre o uso de uma conta online em vez disso!</target>
           <source>Image attachments</source>
           <target state="final" state-qualifier="mt-suggestion">Anexos de imagem</target>
         </trans-unit>
+        <trans-unit id="String_AddChecklist" translate="yes" xml:space="preserve">
+          <source>Add checklist</source>
+          <target state="final">Adicionar lista de verificação</target>
+        </trans-unit>
+        <trans-unit id="String_AddChecklistItem" translate="yes" xml:space="preserve">
+          <source>+ Add item</source>
+          <target state="final">+ Adicionar item</target>
+        </trans-unit>
+        <trans-unit id="String_ChecklistItemsCompleted" translate="yes" xml:space="preserve">
+          <source>items completed</source>
+          <target state="final">itens concluídos</target>
+        </trans-unit>
         <trans-unit id="Settings_GoogleCalendar_NoAccountMessage" translate="yes" xml:space="preserve">
           <source>In order to use the Google Calendar integration, you must first create a Power Planner account!</source>
           <target state="final" state-qualifier="mt-suggestion">Para utilizar a integração do Google Calendar, você deve primeiro criar uma conta de Power Planner!</target>
