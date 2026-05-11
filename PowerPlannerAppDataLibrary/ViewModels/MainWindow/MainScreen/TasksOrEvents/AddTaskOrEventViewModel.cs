@@ -1580,6 +1580,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                         NavigationManager.SetPreviousAddItemDate(Date.Date);
 
+                        if (_checklist.Value != null && _checklist.Value.Length > 0)
+                        {
+                            TelemetryExtension.Current?.TrackMetric("SavedChecklist", 1);
+                        }
+
                         if (SelectedTimeOption == TimeOption_AllDay)
                         {
                             TrackTimeOption("AllDay");
