@@ -37,7 +37,7 @@ namespace Vx.iOS.Views
             // and couldn't figure it out. It works on the edit schedule times page for some reason.
             View.TouchUpInside += View_TouchUpInside;
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[checkbox]-16-[label]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null,
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[checkbox]-12-[label]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null,
                 new NSDictionary(
                     "label", _label,
                     "checkbox", _checkbox
