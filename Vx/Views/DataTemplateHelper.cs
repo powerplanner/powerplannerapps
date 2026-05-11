@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 namespace Vx.Views
 {
     public static class DataTemplateHelper
@@ -34,11 +35,26 @@ namespace Vx.Views
 
             public Func<object, View> Template { get => GetState<Func<object, View>>(); set => SetState(value); }
 
+            private INotifyPropertyChanged _prevData;
+
             protected override View Render()
             {
                 if (Template == null || Data == null)
                 {
                     return null;
+                }
+
+                if (_prevData != null)
+                {
+                    Unsubscribe(_prevData);
+                    _prevData = null;
+                }
+
+                if (Data is INotifyPropertyChanged notifyPropertyChanged)
+                {
+                    // Subscribe to the data, so that if changes occur, it re-renders
+                    Subscribe(notifyPropertyChanged);
+                    _prevData = notifyPropertyChanged;
                 }
 
                 return Template(Data);
