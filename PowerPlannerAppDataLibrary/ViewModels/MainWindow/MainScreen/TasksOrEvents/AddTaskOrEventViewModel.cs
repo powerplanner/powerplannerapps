@@ -203,7 +203,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                 {
                                     Glyph = MaterialDesign.MaterialDesignIcons.Close,
                                     FontSize = 20,
-                                    Color = System.Drawing.Color.Red
+                                    Color = System.Drawing.Color.Red,
+                                    Margin = new Thickness(6)
                                 },
                                 Click = () => { _checklist.Value = _checklist.Value.Except(new[] { item }).ToArray(); }
                             }
