@@ -8,12 +8,21 @@ namespace Vx.iOS.Views
 {
     public class UICheckBoxControl : UIControl
     {
+        public UIButton CheckboxButton { get; set; }
+        public UILabel Label { get; set; }
+
         public override CGSize IntrinsicContentSize
         {
             get
             {
-                var size = SystemLayoutSizeFittingSize(UILayoutFittingCompressedSize);
-                return size;
+                if (CheckboxButton == null || Label == null)
+                    return base.IntrinsicContentSize;
+
+                var checkboxSize = CheckboxButton.IntrinsicContentSize;
+                var labelSize = Label.IntrinsicContentSize;
+                var width = checkboxSize.Width + 12 + labelSize.Width;
+                var height = (nfloat)Math.Max(checkboxSize.Height, labelSize.Height) + 10; // 5+5 padding
+                return new CGSize(width, height);
             }
         }
     }
@@ -33,6 +42,7 @@ namespace Vx.iOS.Views
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
             View.Add(_label);
+            View.Label = _label;
             _label.StretchHeight(View, 5, 5); // We pad to match how Windows checkboxes are padded
 
             _checkbox = new UIButton(UIButtonType.System)
@@ -42,6 +52,7 @@ namespace Vx.iOS.Views
             _checkbox.SetPreferredSymbolConfiguration(UIImageSymbolConfiguration.Create(UIFont.PreferredBody.PointSize), UIControlState.Normal);
             UpdateCheckboxImage();
             View.Add(_checkbox);
+            View.CheckboxButton = _checkbox;
             _checkbox.StretchHeight(View, 5, 5);
 
             // Idk why, but on the add task page, if the keyboard is up, this doesn't get hit
