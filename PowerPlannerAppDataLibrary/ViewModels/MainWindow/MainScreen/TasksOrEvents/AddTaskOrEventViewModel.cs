@@ -342,7 +342,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                     var rightSide = new LinearLayout
                     {
-                        Margin = new Thickness(6, 0, 0, 0)
+                        Margin = new Thickness(6, 0, 0, 0),
+                        AllowOverflowAndClip = true, // On iOS, helps ensure it gets displayed at the top
                     };
 
                     foreach (var right in ViewModel.DayCheckBoxesRightSide)
