@@ -108,14 +108,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 }
             };
 
-            foreach (var t in Item.Subtasks)
+            bool firstSubtask = true;
+            foreach (var t in Item.Checklist)
             {
                 mainContent.Children.Add(new CheckBox()
                 {
                     IsChecked = VxValue.Create(t.IsComplete, v => UpdateSubtask(t, v)),
                     Text = t.Name,
-                    Margin = new Thickness(0, 6, 0, 0)
+                    Margin = new Thickness(0, firstSubtask ? 8 : 4, 0, 0)
                 });
+                firstSubtask = false;
             }
 
             mainContent.Children.Add(new ImagesComponent
@@ -155,7 +157,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             };
         }
 
-        private void UpdateSubtask(ViewItemSubtask subtask, bool isComplete)
+        private void UpdateSubtask(ViewItemChecklistItem subtask, bool isComplete)
         {
             if (Item == null || subtask.IsComplete == isComplete)
             {
@@ -171,7 +173,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 changes.Add(new DataItemMegaItem()
                 {
                     Identifier = Item.Identifier,
-                    Details = ViewItemSubtask.ProduceDetailsWithSubtasks(Item.Details, Item.Subtasks)
+                    Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Item.Details, Item.Checklist)
                 });
 
                 return PowerPlannerApp.Current.SaveChanges(changes);

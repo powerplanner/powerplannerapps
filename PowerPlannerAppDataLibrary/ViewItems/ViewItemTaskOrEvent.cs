@@ -156,19 +156,21 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             get => Type == TaskOrEventType.Event;
         }
 
-        private ViewItemSubtask[] _subtasks = Array.Empty<ViewItemSubtask>();
-        public ViewItemSubtask[] Subtasks
+        private ViewItemChecklistItem[] _checklist = Array.Empty<ViewItemChecklistItem>();
+        public ViewItemChecklistItem[] Checklist
         {
-            get => _subtasks;
+            get => _checklist;
             set
             {
-                if (!value.SequenceEqual(_subtasks))
+                if (!value.SequenceEqual(_checklist))
                 {
-                    _subtasks = value;
-                    OnPropertyChanged(nameof(Subtasks));
+                    _checklist = value;
+                    OnPropertyChanged(nameof(Checklist));
                 }
             }
         }
+
+        protected override bool SkipPopulatingDetails => true;
 
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
@@ -176,10 +178,15 @@ namespace PowerPlannerAppDataLibrary.ViewItems
 
             DataItemMegaItem i = dataItem as DataItemMegaItem;
 
-            if (ViewItemSubtask.ExtractSubtasksFromDetails(i.Details, out string cleanedDetails, out ViewItemSubtask[] subtasks))
+            if (ViewItemChecklistItem.ExtractChecklistFromDetails(i.Details, out string cleanedDetails, out ViewItemChecklistItem[] checklist))
             {
                 Details = cleanedDetails;
-                Subtasks = subtasks;
+                Checklist = checklist;
+            }
+            else
+            {
+                Details = i.Details.Trim();
+                Checklist = Array.Empty<ViewItemChecklistItem>();
             }
 
             switch (i.MegaItemType)

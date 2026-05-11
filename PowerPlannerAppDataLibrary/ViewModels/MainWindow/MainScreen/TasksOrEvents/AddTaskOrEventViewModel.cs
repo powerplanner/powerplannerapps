@@ -143,55 +143,55 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 Margin = new Thickness(0, 18, 0, 0)
             });
 
-            if (_subtasks.Value.Length == 0)
+            if (_checklist.Value.Length == 0)
             {
                 views.Add(new TextButton
                 {
-                    Text = "Add subtasks",
+                    Text = "Add checklist",
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(0, 6, 0, 0),
                     Click = () =>
                     {
-                        _subtaskToFocus = new ViewItemSubtask();
-                        _subtasks.Value = new ViewItemSubtask[]
+                        _checklistItemToFocus = new ViewItemChecklistItem();
+                        _checklist.Value = new ViewItemChecklistItem[]
                         {
-                            _subtaskToFocus
+                            _checklistItemToFocus
                         };
                     }
                 });
             }
 
-            if (_subtasks.Value.Length > 0)
+            if (_checklist.Value.Length > 0)
             {
-                for (int i = 0; i < _subtasks.Value.Length; i++)
+                for (int i = 0; i < _checklist.Value.Length; i++)
                 {
-                    var subtask = _subtasks.Value[i];
+                    var item = _checklist.Value[i];
                     views.Add(new LinearLayout
                     {
                         // Unique ID so that adding new will auto-focus the new text box
-                        Id = "NewSubtask" + subtask.GetHashCode(),
+                        Id = "ChecklistItem" + item.GetHashCode(),
                         Orientation = Orientation.Horizontal,
                         Margin = new Thickness(0, i == 0 ? 12 : 2, 0, 0),
                         Children =
                         {
                             new CheckBox
                             {
-                                IsChecked = VxValue.Create(subtask.IsComplete, v => { subtask.IsComplete = v; MarkDirty(); })
+                                IsChecked = VxValue.Create(item.IsComplete, v => { item.IsComplete = v; MarkDirty(); })
                             },
 
                             new TextBox
                             {
-                                PlaceholderText = "Subtask " + (i + 1),
-                                AutoFocus = _subtaskToFocus == subtask,
-                                Text = VxValue.Create(subtask.Name, v => { subtask.Name = v; MarkDirty(); }),
+                                PlaceholderText = "Item " + (i + 1),
+                                AutoFocus = _checklistItemToFocus == item,
+                                Text = VxValue.Create(item.Name, v => { item.Name = v; MarkDirty(); }),
                                 OnSubmit = () =>
                                 {
-                                    int index = _subtasks.Value.IndexOf(subtask);
-                                    var newSubtask = new ViewItemSubtask();
-                                    _subtaskToFocus = newSubtask;
-                                    _subtasks.Value = _subtasks.Value.Take(index + 1)
-                                        .Append(newSubtask)
-                                        .Concat(_subtasks.Value.Skip(index + 1))
+                                    int index = _checklist.Value.IndexOf(item);
+                                    var newItem = new ViewItemChecklistItem();
+                                    _checklistItemToFocus = newItem;
+                                    _checklist.Value = _checklist.Value.Take(index + 1)
+                                        .Append(newItem)
+                                        .Concat(_checklist.Value.Skip(index + 1))
                                         .ToArray();
                                 }
                             }.LinearLayoutWeight(1),
@@ -205,7 +205,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                                     FontSize = 20,
                                     Color = System.Drawing.Color.Red
                                 },
-                                Click = () => { _subtasks.Value = _subtasks.Value.Except(new[] { subtask }).ToArray(); }
+                                Click = () => { _checklist.Value = _checklist.Value.Except(new[] { item }).ToArray(); }
                             }
                         }
                     });
@@ -213,13 +213,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                 views.Add(new TextButton
                 {
-                    Text = "+ Add another subtask",
+                    Text = "+ Add item",
                     Margin = new Thickness(0, 6, 0, 0),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Click = () =>
                     {
-                        _subtaskToFocus = new ViewItemSubtask();
-                        _subtasks.Value = _subtasks.Value.Append(_subtaskToFocus).ToArray();
+                        _checklistItemToFocus = new ViewItemChecklistItem();
+                        _checklist.Value = _checklist.Value.Append(_checklistItemToFocus).ToArray();
                     }
                 });
             }
@@ -784,7 +784,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c, // Assign class last, since it also assigns weight categories
                 SelectedWeightCategory = cloneParams.Item.WeightCategory,
-                _subtasks = new VxState<ViewItemSubtask[]>(cloneParams.Item.Subtasks.Select(i => i.Clone()).ToArray())
+                _checklist = new VxState<ViewItemChecklistItem[]>(cloneParams.Item.Checklist.Select(i => i.Clone()).ToArray())
             };
 
             // Assign existing image attachments
@@ -872,7 +872,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 ImageNames = editParams.Item.ImageNames.ToArray(),
                 IsInDifferentTimeZone = parent.FindAncestorOrSelf<MainScreenViewModel>().CurrentAccount.IsInDifferentTimeZone,
                 Class = c, // Assign class last, since it also assigns weight categories
-                _subtasks = new VxState<ViewItemSubtask[]>(editParams.Item.Subtasks.Select(i => i.Clone()).ToArray())
+                _checklist = new VxState<ViewItemChecklistItem[]>(editParams.Item.Checklist.Select(i => i.Clone()).ToArray())
             };
 
             // Assign existing image attachments
@@ -1029,8 +1029,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             set { SetProperty(ref _details, value, nameof(Details)); }
         }
 
-        private VxState<ViewItemSubtask[]> _subtasks = new VxState<ViewItemSubtask[]>(new ViewItemSubtask[0]);
-        private ViewItemSubtask _subtaskToFocus = null;
+        private VxState<ViewItemChecklistItem[]> _checklist = new VxState<ViewItemChecklistItem[]>(new ViewItemChecklistItem[0]);
+        private ViewItemChecklistItem _checklistItemToFocus = null;
 
         private ViewItemWeightCategory[] _weightCategories;
         public ViewItemWeightCategory[] WeightCategories
@@ -1789,7 +1789,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             dataItem.Name = Name.Text.Trim();
             dataItem.Date = DateTime.SpecifyKind(date, DateTimeKind.Utc).Date;
 
-            dataItem.Details = ViewItemSubtask.ProduceDetailsWithSubtasks(Details.Trim(), _subtasks);
+            dataItem.Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Details.Trim(), _checklist);
 
             dataItem.UpperIdentifier = Class.Identifier;
             if (Class.IsNoClassClass)

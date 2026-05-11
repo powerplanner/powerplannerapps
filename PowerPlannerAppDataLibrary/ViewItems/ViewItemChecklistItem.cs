@@ -5,52 +5,52 @@ using System.Text;
 
 namespace PowerPlannerAppDataLibrary.ViewItems
 {
-    public class ViewItemSubtask
+    public class ViewItemChecklistItem
     {
         public string Name { get; set; } = "";
         public bool IsComplete { get; set; }
 
-        public ViewItemSubtask Clone()
+        public ViewItemChecklistItem Clone()
         {
-            return new ViewItemSubtask
+            return new ViewItemChecklistItem
             {
                 Name = Name,
                 IsComplete = IsComplete
             };
         }
 
-        public static bool ExtractSubtasksFromDetails(string details, out string cleanedDetails, out ViewItemSubtask[] subtasks)
+        public static bool ExtractChecklistFromDetails(string details, out string cleanedDetails, out ViewItemChecklistItem[] checklist)
         {
-            // Handle extracting subtasks from details before passing to base method
+            // Handle extracting checklist from details before passing to base method
             if (details != null)
             {
                 string[] lines = details.ReplaceLineEndings().Split(Environment.NewLine);
-                int countOfSubtasks = lines.Count(i => i.StartsWith("- [ ] ") || i.StartsWith("- [x] ", StringComparison.CurrentCultureIgnoreCase));
-                if (countOfSubtasks > 0)
+                int countOfItems = lines.Count(i => i.StartsWith("- [ ] ") || i.StartsWith("- [x] ", StringComparison.CurrentCultureIgnoreCase));
+                if (countOfItems > 0)
                 {
-                    subtasks = new ViewItemSubtask[countOfSubtasks];
-                    string[] cleanedLines = new string[lines.Length - countOfSubtasks];
+                    checklist = new ViewItemChecklistItem[countOfItems];
+                    string[] cleanedLines = new string[lines.Length - countOfItems];
 
-                    int subtaskIndex = 0;
+                    int itemIndex = 0;
                     int cleanedLinesIndex = 0;
                     foreach (var line in lines)
                     {
                         if (line.StartsWith("- [ ] "))
                         {
-                            subtasks[subtaskIndex] = new ViewItemSubtask
+                            checklist[itemIndex] = new ViewItemChecklistItem
                             {
                                 Name = line.Substring(6).Trim()
                             };
-                            subtaskIndex++;
+                            itemIndex++;
                         }
                         else if (line.StartsWith("- [x] ", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            subtasks[subtaskIndex] = new ViewItemSubtask
+                            checklist[itemIndex] = new ViewItemChecklistItem
                             {
                                 Name = line.Substring(6).Trim(),
                                 IsComplete = true
                             };
-                            subtaskIndex++;
+                            itemIndex++;
                         }
                         else
                         {
@@ -64,22 +64,22 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 }
                 else
                 {
-                    subtasks = Array.Empty<ViewItemSubtask>();
+                    checklist = Array.Empty<ViewItemChecklistItem>();
                     cleanedDetails = details;
                     return false;
                 }
             }
             else
             {
-                subtasks = Array.Empty<ViewItemSubtask>();
+                checklist = Array.Empty<ViewItemChecklistItem>();
                 cleanedDetails = details;
                 return false;
             }
         }
 
-        public static string ProduceDetailsWithSubtasks(string details, ViewItemSubtask[] subtasks)
+        public static string ProduceDetailsWithChecklist(string details, ViewItemChecklistItem[] checklist)
         {
-            if (subtasks == null || subtasks.Length == 0)
+            if (checklist == null || checklist.Where(i => !string.IsNullOrWhiteSpace(i.Name)).Count() == 0)
             {
                 return details;
             }
@@ -90,11 +90,11 @@ namespace PowerPlannerAppDataLibrary.ViewItems
                 sb.Append(details.ReplaceLineEndings());
                 sb.Append(Environment.NewLine);
             }
-            foreach (var subtask in subtasks)
+            foreach (var item in checklist.Where(i => !string.IsNullOrWhiteSpace(i.Name)))
             {
-                string checkbox = subtask.IsComplete ? "- [x] " : "- [ ] ";
+                string checkbox = item.IsComplete ? "- [x] " : "- [ ] ";
                 sb.Append(checkbox);
-                sb.Append(subtask.Name.ReplaceLineEndings(" "));
+                sb.Append(item.Name.ReplaceLineEndings(" "));
                 sb.Append(Environment.NewLine);
             }
             return sb.ToString().TrimEnd();

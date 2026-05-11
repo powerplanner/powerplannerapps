@@ -14,6 +14,7 @@ namespace Vx.Uwp.Views
         {
             View.Checked += View_Checked;
             View.Unchecked += View_Checked;
+            View.MinWidth = 0;
         }
 
         private void View_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
