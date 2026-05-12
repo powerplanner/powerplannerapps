@@ -156,11 +156,38 @@ namespace PowerPlannerAppDataLibrary.ViewItems
             get => Type == TaskOrEventType.Event;
         }
 
+        private ViewItemChecklistItem[] _checklist = Array.Empty<ViewItemChecklistItem>();
+        public ViewItemChecklistItem[] Checklist
+        {
+            get => _checklist;
+            set
+            {
+                if (!value.SequenceEqual(_checklist))
+                {
+                    _checklist = value;
+                    OnPropertyChanged(nameof(Checklist));
+                }
+            }
+        }
+
+        protected override bool SkipPopulatingDetails => true;
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);
 
             DataItemMegaItem i = dataItem as DataItemMegaItem;
+
+            if (ViewItemChecklistItem.ExtractChecklistFromDetails(i.Details, out string cleanedDetails, out ViewItemChecklistItem[] checklist))
+            {
+                Details = cleanedDetails;
+                Checklist = checklist;
+            }
+            else
+            {
+                Details = i.Details.Trim();
+                Checklist = Array.Empty<ViewItemChecklistItem>();
+            }
 
             switch (i.MegaItemType)
             {

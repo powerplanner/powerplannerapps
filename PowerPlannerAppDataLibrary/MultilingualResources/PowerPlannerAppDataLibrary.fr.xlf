@@ -2214,6 +2214,18 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Image attachments</source>
           <target state="final">Images en pièces jointes</target>
         </trans-unit>
+        <trans-unit id="String_AddChecklist" translate="yes" xml:space="preserve">
+          <source>Add checklist</source>
+          <target state="final">Ajouter une liste de contrôle</target>
+        </trans-unit>
+        <trans-unit id="String_AddChecklistItem" translate="yes" xml:space="preserve">
+          <source>+ Add item</source>
+          <target state="final">+ Ajouter un élément</target>
+        </trans-unit>
+        <trans-unit id="String_ChecklistItemsCompleted" translate="yes" xml:space="preserve">
+          <source>items completed</source>
+          <target state="final">éléments terminés</target>
+        </trans-unit>
         <trans-unit id="SchedulePage_TextBlockReturningUser.Text" translate="yes" xml:space="preserve">
           <source>Returning user?</source>
           <target state="final" state-qualifier="mt-suggestion">Utilisateur de retour?</target>

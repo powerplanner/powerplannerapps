@@ -320,6 +320,15 @@ namespace Vx.Views
             }
         }
 
+        protected void Unsubscribe(INotifyPropertyChanged obj)
+        {
+            if (obj != null)
+            {
+                UnsubscribeToPropertyValue(obj);
+                _subscribed?.Remove(obj);
+            }
+        }
+
         private WeakReferenceList<INotifyCollectionChanged> _subscribedCollections;
         private NotifyCollectionChangedEventHandler _collectionChangedHandler;
         protected void SubscribeToCollection(INotifyCollectionChanged col)

@@ -42,7 +42,24 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
             BaseDataItemWithImages i = dataItem as BaseDataItemWithImages;
 
-            ImageNames = i.ImageNames;
+            if (ImageNames == null)
+            {
+                if (i.ImageNames != null)
+                {
+                    ImageNames = i.ImageNames;
+                }
+            }
+            else
+            {
+                if (i.ImageNames == null)
+                {
+                    ImageNames = null;
+                }
+                else if (!ImageNames.SequenceEqual(i.ImageNames))
+                {
+                    ImageNames = i.ImageNames;
+                }
+            }
         }
     }
 }

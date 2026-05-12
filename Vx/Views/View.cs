@@ -13,6 +13,11 @@ namespace Vx.Views
 
     public class View : IView
     {
+        /// <summary>
+        /// If set, when reconciling views, will ensure that even if it matches the view type, it creates a new one.
+        /// </summary>
+        public string Id { get; set; }
+
         public NativeView NativeView { get; internal set; }
 
         private Dictionary<string, object> _attachedProperties = new Dictionary<string, object>();

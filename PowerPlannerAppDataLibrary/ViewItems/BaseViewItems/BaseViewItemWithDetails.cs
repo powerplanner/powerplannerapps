@@ -22,13 +22,18 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
             set { SetProperty(ref _details, value, "Details", "ListItemTertiaryText"); }
         }
 
+        protected virtual bool SkipPopulatingDetails { get; } = false;
+
         protected override void PopulateFromDataItemOverride(BaseDataItem dataItem)
         {
             base.PopulateFromDataItemOverride(dataItem);
 
-            BaseDataItemWithDetails i = dataItem as BaseDataItemWithDetails;
+            if (!SkipPopulatingDetails)
+            {
+                BaseDataItemWithDetails i = dataItem as BaseDataItemWithDetails;
 
-            Details = i.Details;
+                Details = i.Details;
+            }
         }
     }
 }
