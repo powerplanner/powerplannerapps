@@ -176,6 +176,13 @@ namespace Vx.Droid.Views
                 };
             }
 
+            View.SetMinimumWidth(ThemeHelper.AsPx(View.Context, newView.MinWidth));
+
+            if (View is Android.Widget.TextView textView)
+            {
+                textView.SetMaxWidth(float.IsPositiveInfinity(newView.MaxWidth) ? int.MaxValue : ThemeHelper.AsPx(View.Context, newView.MaxWidth));
+            }
+
             View.Alpha = newView.Opacity;
         }
 

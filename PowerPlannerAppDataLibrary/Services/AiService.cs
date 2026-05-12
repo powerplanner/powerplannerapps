@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -9,6 +10,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
+using PowerPlannerSending;
 using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.Services
@@ -16,8 +18,10 @@ namespace PowerPlannerAppDataLibrary.Services
     public class AiService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        private const string ApiUrl = "https://powerplannerai-gjfgfzfecwhhapey.westus-01.azurewebsites.net/api/ai/generate-items";
-        //private const string ApiUrl = "http://localhost:7074/api/ai/generate-items";
+        //private const string BaseApiUrl = "https://powerplannerai-gjfgfzfecwhhapey.westus-01.azurewebsites.net";
+        private const string BaseApiUrl = "http://localhost:7074";
+        private const string GenerateItemsApiUrl = BaseApiUrl + "/api/ai/generate-items";
+        private const string GenerateClassesApiUrl = BaseApiUrl + "/api/ai/generate-classes";
 
         public string DescriptionOfChanges { get; private set; }
 
@@ -37,7 +41,7 @@ namespace PowerPlannerAppDataLibrary.Services
                     .Where(i => i.DateInSchoolTime.Date < DateTime.Today && !i.IsComplete)
                     .ToList();
 
-                await Task.Delay(50);
+                await System.Threading.Tasks.Task.Delay(50);
 
                 return overdue.Select(i => new AiProposedChange
                 {
@@ -182,7 +186,7 @@ namespace PowerPlannerAppDataLibrary.Services
             var json = JsonSerializer.Serialize(request, AiServiceJsonContext.Default.GenerateItemsRequest);
             var content = new StringContent(json, System.Text.Encoding.UTF8, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, ApiUrl);
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, GenerateItemsApiUrl);
             httpRequest.Content = content;
             if (!string.IsNullOrEmpty(accountToken))
             {
@@ -377,6 +381,98 @@ namespace PowerPlannerAppDataLibrary.Services
         }
 
         #endregion
+
+        public async Task<GenerateClassesResponse> GenerateClassesAsync(
+            string userInput,
+            DateOnly? semesterStartDate,
+            DateOnly? semesterEndDate,
+            string accountToken)
+        {
+            var request = new GenerateClassesRequest
+            {
+                UserInput = userInput,
+                SemesterStartDate = semesterStartDate,
+                SemesterEndDate = semesterEndDate
+            };
+
+            var json = JsonSerializer.Serialize(request, AiServiceJsonContext.Default.GenerateClassesRequest);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, GenerateClassesApiUrl);
+            httpRequest.Content = content;
+            if (!string.IsNullOrEmpty(accountToken))
+            {
+                httpRequest.Headers.Add("Authorization", $"Bearer {accountToken}");
+            }
+
+            var response = await _httpClient.SendAsync(httpRequest);
+            response.EnsureSuccessStatusCode();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize(responseJson, AiServiceJsonContext.Default.GenerateClassesResponse);
+        }
+
+        public class GenerateClassesRequest
+        {
+            [JsonPropertyName("userInput")]
+            public string UserInput { get; set; } = "";
+
+            [JsonPropertyName("semesterStartDate")]
+            public DateOnly? SemesterStartDate { get; set; }
+
+            [JsonPropertyName("semesterEndDate")]
+            public DateOnly? SemesterEndDate { get; set; }
+        }
+
+        public class GenerateClassesResponse
+        {
+            [JsonPropertyName("classes")]
+            public List<ProposedClass> Classes { get; set; } = new();
+        }
+
+        public class ProposedClass
+        {
+            [JsonPropertyName("name")]
+            public string Name { get; set; } = "";
+
+            [JsonPropertyName("color")]
+            public byte[] Color { get; set; }
+
+            [JsonPropertyName("details")]
+            public string? Details { get; set; }
+
+            [JsonPropertyName("startDate")]
+            public DateOnly? StartDate { get; set; }
+
+            [JsonPropertyName("endDate")]
+            public DateOnly? EndDate { get; set; }
+
+            [JsonPropertyName("schedules")]
+            public List<ProposedSchedule> Schedules { get; set; } = new();
+        }
+
+        public class ProposedSchedule
+        {
+            [JsonPropertyName("dayOfWeeks")]
+            public List<DayOfWeek> DayOfWeeks { get; set; } = new();
+
+            [JsonPropertyName("startTime")]
+            public TimeSpan StartTime { get; set; } = TimeSpan.Zero;
+
+            [JsonPropertyName("endTime")]
+            public TimeSpan EndTime { get; set; } = TimeSpan.Zero;
+
+            [JsonPropertyName("room")]
+            public string Room { get; set; }
+
+            [JsonPropertyName("scheduleWeek")]
+            public Schedule.Week ScheduleWeek { get; set; } = 0;
+
+            /// <summary>
+            /// Used by the preview to indicate whether that item is opened
+            /// </summary>
+            public bool IsEditing { get; set; }
+        }
     }
 
     [JsonSourceGenerationOptions(
@@ -384,6 +480,8 @@ namespace PowerPlannerAppDataLibrary.Services
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonSerializable(typeof(AiService.GenerateItemsRequest))]
     [JsonSerializable(typeof(AiService.GenerateItemsResponse))]
+    [JsonSerializable(typeof(AiService.GenerateClassesRequest))]
+    [JsonSerializable(typeof(AiService.GenerateClassesResponse))]
     internal partial class AiServiceJsonContext : JsonSerializerContext
     {
     }
