@@ -1480,6 +1480,60 @@ Please think about using an online account instead!</value>
   <data name="SchedulePage_TextBlockWelcomeSubtitle.Text" xml:space="preserve">
     <value>To get started, add your classes and schedule!</value>
   </data>
+  <data name="ScheduleWelcome_ButtonAddWithAi" xml:space="preserve">
+    <value>✨ Add classes and schedules with AI</value>
+  </data>
+  <data name="ScheduleWelcome_TextOrManually" xml:space="preserve">
+    <value>Or, add classes manually...</value>
+  </data>
+  <data name="AddClassesWithAi_Title" xml:space="preserve">
+    <value>Add with AI</value>
+  </data>
+  <data name="AddClassesWithAi_Description" xml:space="preserve">
+    <value>Enter your class schedule in the text box below, and we'll use AI to create your classes and schedule in Power Planner!</value>
+  </data>
+  <data name="AddClassesWithAi_PlaceholderText" xml:space="preserve">
+    <value>Enter your class schedule in any format, ex:
+
+ANTH 160D2 - Mon, Wed 10-10:50am in ILC 130
+CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</value>
+  </data>
+  <data name="AddClassesWithAi_ButtonCreate" xml:space="preserve">
+    <value>✨ Create classes and schedule</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorNoText" xml:space="preserve">
+    <value>You must provide text!</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorNetwork" xml:space="preserve">
+    <value>There was a problem connecting to the server. Make sure you're connected to the internet and try again.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorGeneric" xml:space="preserve">
+    <value>Something went wrong. Check your input text and try again.</value>
+  </data>
+  <data name="AddClassesWithAi_GeneratingTitle" xml:space="preserve">
+    <value>Generating classes and schedule...</value>
+  </data>
+  <data name="AddClassesWithAi_GeneratingSubtitle" xml:space="preserve">
+    <value>This should only take about 5 seconds!</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorNoClasses" xml:space="preserve">
+    <value>No classes were created. Try editing your text to be more clear.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorTooManyClasses" xml:space="preserve">
+    <value>There were over 15 classes that were trying to be created. This is probably an error. Try editing your text.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorTooManySchedules" xml:space="preserve">
+    <value>There were over 15 schedules that were trying to be created for a single class. This is probably an error. Try editing your text.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorInvalidName" xml:space="preserve">
+    <value>One or more classes had an invalid name.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorInvalidColor" xml:space="preserve">
+    <value>One or more classes had an invalid color.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorInvalidTime" xml:space="preserve">
+    <value>One or more schedules had an invalid start and end time.</value>
+  </data>
   <data name="ClassGrades_UnassignedItemsHeader" xml:space="preserve">
     <value>Unassigned items</value>
   </data>

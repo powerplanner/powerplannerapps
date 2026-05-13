@@ -21,7 +21,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public AddClassesAndScheduleWithAiViewModel(ScheduleViewModel parent) : base(parent)
         {
-            Title = "Add with AI";
+            Title = R.S("AddClassesWithAi_Title");
             _scheduleViewModel = parent;
             AllowLightDismiss = false;
         }
@@ -47,12 +47,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                             {
                                 new TextBlock
                                 {
-                                    Text = "Enter your class schedule in the text box below, and we'll use AI to create your classes and schedule in Power Planner!"
+                                    Text = R.S("AddClassesWithAi_Description")
                                 },
 
                                 new MultilineTextBox
                                 {
-                                    PlaceholderText = "Your your class schedule in any format, ex:\n\nANTH 160D2 - Mon, Wed 10-10:50am in ILC 130\nCSC 337 - Tue, Thu 9:30-10:45am in ILC 150",
+                                    PlaceholderText = R.S("AddClassesWithAi_PlaceholderText"),
                                     Margin = new Thickness(0, 6, 0, 0),
                                     AutoFocus = true,
                                     Text = VxValue.Create(_inputPrompt.Value, v => _inputPrompt.Value = v),
@@ -72,7 +72,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     
                     new AccentButton
                     {
-                        Text = "✨ Create classes and schedule",
+                        Text = R.S("AddClassesWithAi_ButtonCreate"),
                         Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
                         Click = CreateClassesAndSchedule,
                         IsEnabled = !_isGeneratingClasses.Value
@@ -91,13 +91,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         new TextBlock
                         {
-                            Text = "Generating classes and schedule...",
+                            Text = R.S("AddClassesWithAi_GeneratingTitle"),
                             TextAlignment = HorizontalAlignment.Center,
                         },
 
                         new TextBlock
                         {
-                            Text = "This should only take about 5 seconds!",
+                            Text = R.S("AddClassesWithAi_GeneratingSubtitle"),
                             TextAlignment = HorizontalAlignment.Center,
                             TextColor = Theme.Current.SubtleForegroundColor,
                             FontSize = Theme.Current.CaptionFontSize
@@ -135,7 +135,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
             if (string.IsNullOrWhiteSpace(_inputPrompt.Value))
             {
-                _errorText.Value = "You must provide text!";
+                _errorText.Value = R.S("AddClassesWithAi_ErrorNoText");
                 return;
             }
 
@@ -169,12 +169,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             {
                 if (ExceptionHelper.IsHttpWebIssue(ex))
                 {
-                    _errorText.Value = "There was a problem connecting to the server. Make sure you're connected to the internet and try again.";
+                    _errorText.Value = R.S("AddClassesWithAi_ErrorNetwork");
                     return;
                 }
                 else
                 {
-                    _errorText.Value = "Something went wrong. Check your input text and try again.";
+                    _errorText.Value = R.S("AddClassesWithAi_ErrorGeneric");
                     TelemetryExtension.Current.TrackEvent("AIAddClassesAndSchedule_Failed", new Dictionary<string, string> {
                         { "Exception", ExceptionHelper.GetFullDetail(ex) },
                         { "Input", _inputPrompt.Value }
@@ -199,41 +199,41 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         {
             if (response.Classes.Count == 0)
             {
-                _errorText.Value = "No classes were created. Try editing your text to be more clear.";
+                _errorText.Value = R.S("AddClassesWithAi_ErrorNoClasses");
                 return;
             }
 
             if (response.Classes.Count > 15)
             {
-                _errorText.Value = "There were over 15 classes that were trying to be created. This is probaly an error. Try editing your text.";
+                _errorText.Value = R.S("AddClassesWithAi_ErrorTooManyClasses");
                 TrackFailed("TooManyClasses");
                 return;
             }
 
             if (response.Classes.Any(i => i.Schedules.Count > 15))
             {
-                _errorText.Value = "There were over 15 schedules that were trying to be created for a single class. This is probaly an error. Try editing your text.";
+                _errorText.Value = R.S("AddClassesWithAi_ErrorTooManySchedules");
                 TrackFailed("TooManySchedules");
                 return;
             }
 
             if (response.Classes.Any(i => string.IsNullOrWhiteSpace(i.Name) || i.Name.Length > 100))
             {
-                _errorText.Value = "One or more classes had an invalid name.";
+                _errorText.Value = R.S("AddClassesWithAi_ErrorInvalidName");
                 TrackFailed("InvalidClassName");
                 return;
             }
 
             if (response.Classes.Any(i => i.Color == null))
             {
-                _errorText.Value = "One or more classes had an invalid color.";
+                _errorText.Value = R.S("AddClassesWithAi_ErrorInvalidColor");
                 TrackFailed("InvalidClassColor");
                 return;
             }
 
             if (response.Classes.Any(i => i.Schedules.Any(s => s.StartTime >= s.EndTime)))
             {
-                _errorText.Value = "One or more schedules had an invalid start and end time.";
+                _errorText.Value = R.S("AddClassesWithAi_ErrorInvalidTime");
                 TrackFailed("InvalidScheduleTime");
                 return;
             }

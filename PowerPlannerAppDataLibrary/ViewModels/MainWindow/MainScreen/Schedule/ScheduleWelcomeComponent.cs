@@ -61,7 +61,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
                     new AccentButton
                     {
-                        Text = "✨ Add classes and schedules with AI",
+                        Text = R.S("ScheduleWelcome_ButtonAddWithAi"),
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Click = () => ScheduleViewModel.ShowPopup(new AddClassesAndScheduleWithAiViewModel(ScheduleViewModel)),
                         Margin = new Thickness(0, 12, 0, 0)
@@ -69,7 +69,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
                     new TextBlock
                     {
-                        Text = "Or, add classes manually...",
+                        Text = R.S("ScheduleWelcome_TextOrManually"),
                         TextAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 12, 0, 0),
                         TextColor = Theme.Current.SubtleForegroundColor
