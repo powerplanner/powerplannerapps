@@ -1,16 +1,17 @@
+using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
+using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using PowerPlannerAppDataLibrary.ViewItems;
-using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
-using PowerPlannerAppDataLibrary.ViewItemsGroups;
-using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents;
-using PowerPlannerSending;
 using ToolsPortable;
 
 namespace PowerPlannerAppDataLibrary.Services
@@ -18,8 +19,8 @@ namespace PowerPlannerAppDataLibrary.Services
     public class AiService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        //private const string BaseApiUrl = "https://powerplannerai-gjfgfzfecwhhapey.westus-01.azurewebsites.net";
-        private const string BaseApiUrl = "http://localhost:7074";
+        private const string BaseApiUrl = "https://powerplannerai-gjfgfzfecwhhapey.westus-01.azurewebsites.net";
+        //private const string BaseApiUrl = "http://localhost:7074";
         private const string GenerateItemsApiUrl = BaseApiUrl + "/api/ai/generate-items";
         private const string GenerateClassesApiUrl = BaseApiUrl + "/api/ai/generate-classes";
 
@@ -384,6 +385,7 @@ namespace PowerPlannerAppDataLibrary.Services
 
         public async Task<GenerateClassesResponse> GenerateClassesAsync(
             string userInput,
+            List<GenerateClassesImage> images,
             DateOnly? semesterStartDate,
             DateOnly? semesterEndDate,
             string accountToken)
@@ -391,6 +393,7 @@ namespace PowerPlannerAppDataLibrary.Services
             var request = new GenerateClassesRequest
             {
                 UserInput = userInput,
+                Images = images != null && images.Count > 0 ? images : null,
                 SemesterStartDate = semesterStartDate,
                 SemesterEndDate = semesterEndDate
             };
@@ -417,6 +420,9 @@ namespace PowerPlannerAppDataLibrary.Services
             [JsonPropertyName("userInput")]
             public string UserInput { get; set; } = "";
 
+            [JsonPropertyName("images")]
+            public List<GenerateClassesImage> Images { get; set; }
+
             [JsonPropertyName("semesterStartDate")]
             public DateOnly? SemesterStartDate { get; set; }
 
@@ -424,10 +430,22 @@ namespace PowerPlannerAppDataLibrary.Services
             public DateOnly? SemesterEndDate { get; set; }
         }
 
+        public class GenerateClassesImage
+        {
+            [JsonPropertyName("data")]
+            public string Data { get; set; } = "";
+
+            [JsonPropertyName("mediaType")]
+            public string MediaType { get; set; } = "image/png";
+        }
+
         public class GenerateClassesResponse
         {
             [JsonPropertyName("classes")]
             public List<ProposedClass> Classes { get; set; } = new();
+
+            [JsonPropertyName("descriptionOfChanges")]
+            public string DescriptionOfChanges { get; set; } = "";
         }
 
         public class ProposedClass
@@ -438,23 +456,14 @@ namespace PowerPlannerAppDataLibrary.Services
             [JsonPropertyName("color")]
             public byte[] Color { get; set; }
 
-            [JsonPropertyName("details")]
-            public string? Details { get; set; }
-
-            [JsonPropertyName("startDate")]
-            public DateOnly? StartDate { get; set; }
-
-            [JsonPropertyName("endDate")]
-            public DateOnly? EndDate { get; set; }
-
             [JsonPropertyName("schedules")]
             public List<ProposedSchedule> Schedules { get; set; } = new();
         }
 
         public class ProposedSchedule
         {
-            [JsonPropertyName("dayOfWeeks")]
-            public List<DayOfWeek> DayOfWeeks { get; set; } = new();
+            [JsonPropertyName("dayOfWeek")]
+            public DayOfWeek DayOfWeek { get; set; }
 
             [JsonPropertyName("startTime")]
             public TimeSpan StartTime { get; set; } = TimeSpan.Zero;
