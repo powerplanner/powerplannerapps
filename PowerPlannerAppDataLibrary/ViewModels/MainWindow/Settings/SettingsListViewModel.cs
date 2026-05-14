@@ -248,16 +248,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     OpenGoogleCalendarIntegration);
             }
 
-            if (HasAccount && VxPlatform.Current == Platform.Uwp)
-            {
-                RenderOption(
-                    layout,
-                    MaterialDesign.MaterialDesignIcons.CalendarToday,
-                    PowerPlannerResources.GetString("Settings_MainPage_CalendarIntegrationItem.Title"),
-                    PowerPlannerResources.GetString("Settings_MainPage_CalendarIntegrationItem.Subtitle"),
-                    OpenCalendarIntegration);
-            }
-
             if (IsTwoWeekScheduleVisible)
             {
                 RenderOption(
@@ -694,11 +684,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public void OpenSyncOptions()
         {
             ShowPopup(new SyncOptionsViewModel(ParentForSubviews));
-        }
-
-        public void OpenCalendarIntegration()
-        {
-            Show(new CalendarIntegrationViewModel(ParentForSubviews));
         }
 
         public void OpenTwoWeekScheduleSettings()

@@ -54,22 +54,6 @@
           <source>version</source>
           <target state="final">version</target>
         </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Classes_Description.Text" translate="yes" xml:space="preserve">
-          <source>Power Planner can display your classes in the system calendar, so that you can view your schedule from the Calendar app.</source>
-          <target state="final" state-qualifier="mt-suggestion">Power Planner peut afficher vos classes dans le calendrier système, de sorte que vous pouvez afficher votre horaire à partir de l’application Calendrier.</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Classes_Header.Text" translate="yes" xml:space="preserve">
-          <source>CLASSES CALENDAR INTEGRATION</source>
-          <target state="final" state-qualifier="mt-suggestion">INTÉGRATION DU CALENDRIER DES CLASSES</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Tasks_Description.Text" translate="yes" xml:space="preserve">
-          <source>Power Planner can display your tasks and events in the system calendar, so that you can view them from the Calendar app.</source>
-          <target state="final" state-qualifier="mt-suggestion">Power Planner peut afficher vos tâches et événements dans le calendrier système, de sorte que vous pouvez les afficher à partir de l’application Calendrier.</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Tasks_Header.Text" translate="yes" xml:space="preserve">
-          <source>TASKS CALENDAR INTEGRATION</source>
-          <target state="final" state-qualifier="mt-suggestion">TÂCHES CALENDRIER INTÉGRATION</target>
-        </trans-unit>
         <trans-unit id="Settings_ChangeEmailPage.Title" translate="yes" xml:space="preserve">
           <source>CHANGE EMAIL</source>
           <target state="final" state-qualifier="mt-suggestion">MODIFIER L’E-MAIL</target>
@@ -281,14 +265,6 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
         <trans-unit id="Settings_MainPage_AboutItem.Title" translate="yes" xml:space="preserve">
           <source>About</source>
           <target state="final">À propos de</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Tasks and classes in native Calendar app</source>
-          <target state="final" state-qualifier="mt-suggestion">Tâches et classes dans l’application calendrier natif</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
-          <source>Calendar integration</source>
-          <target state="final" state-qualifier="mt-suggestion">Intégration du calendrier</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Tasks and classes in Google Calendar</source>

@@ -131,9 +131,6 @@ namespace PowerPlannerUWP
 
                 // Settings views
                 { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },
-                { typeof(CalendarIntegrationViewModel), typeof(BaseSettingsSplitView) },
-                { typeof(CalendarIntegrationClassesViewModel), typeof(CalendarIntegrationClassesView) },
-                { typeof(CalendarIntegrationTasksViewModel), typeof(CalendarIntegrationTasksView) },
                 { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
                 { typeof(ClassTileViewModel), typeof(ClassTileView) },
                 { typeof(MainTileViewModel), typeof(MainTileView) },
@@ -270,45 +267,6 @@ namespace PowerPlannerUWP
 
                     if (!string.IsNullOrWhiteSpace(protocolEventArgs.Uri.PathAndQuery) && protocolEventArgs.Uri.PathAndQuery.StartsWith("?"))
                         await HandleArguments(mainAppWindow, protocolEventArgs.Uri.PathAndQuery.Substring(1), LaunchSurface.Uri);
-                }
-
-                else if (e is AppointmentsProviderShowAppointmentDetailsActivatedEventArgs)
-                {
-                    // Note that this code is essentially deprecated and doesn't get hit... Uri launch happens instead
-                    var showDetailsArgs = e as AppointmentsProviderShowAppointmentDetailsActivatedEventArgs;
-
-                    try
-                    {
-                        AppointmentsHelper.RoamingIdData data = AppointmentsHelper.RoamingIdData.FromString(showDetailsArgs.RoamingId);
-
-                        string finalArgs = null;
-
-                        switch (data.ItemType)
-                        {
-                            case ItemType.Schedule:
-                                finalArgs = new ViewScheduleArguments()
-                                {
-                                    LocalAccountId = data.LocalAccountId
-                                }.SerializeToString();
-                                break;
-
-                            case ItemType.MegaItem:
-                                finalArgs = new ViewTaskArguments()
-                                {
-                                    LocalAccountId = data.LocalAccountId,
-                                    ItemId = data.Identifier
-                                }.SerializeToString();
-                                break;
-                        }
-
-                        if (finalArgs != null)
-                            await HandleArguments(mainAppWindow, finalArgs, LaunchSurface.Calendar);
-                    }
-
-                    catch (Exception ex)
-                    {
-                        TelemetryExtension.Current?.TrackException(ex);
-                    }
                 }
 
                 if (mainAppWindow.GetViewModel().Content == null)

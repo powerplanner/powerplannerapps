@@ -153,18 +153,6 @@
   <data name="Settings_AboutPage_VersionHeader.Text" xml:space="preserve">
     <value>version</value>
   </data>
-  <data name="Settings_CalendarIntegration_Classes_Description.Text" xml:space="preserve">
-    <value>Power Planner can display your classes in the system calendar, so that you can view your schedule from the Calendar app.</value>
-  </data>
-  <data name="Settings_CalendarIntegration_Classes_Header.Text" xml:space="preserve">
-    <value>CLASSES CALENDAR INTEGRATION</value>
-  </data>
-  <data name="Settings_CalendarIntegration_Tasks_Description.Text" xml:space="preserve">
-    <value>Power Planner can display your tasks and events in the system calendar, so that you can view them from the Calendar app.</value>
-  </data>
-  <data name="Settings_CalendarIntegration_Tasks_Header.Text" xml:space="preserve">
-    <value>TASKS CALENDAR INTEGRATION</value>
-  </data>
   <data name="Settings_ChangeEmailPage.Title" xml:space="preserve">
     <value>CHANGE EMAIL</value>
   </data>
@@ -321,12 +309,6 @@ Click Continue to login (which might cause duplicates).</value>
   </data>
   <data name="Settings_MainPage_AboutItem.Title" xml:space="preserve">
     <value>About</value>
-  </data>
-  <data name="Settings_MainPage_CalendarIntegrationItem.Subtitle" xml:space="preserve">
-    <value>Tasks and classes in native Calendar app</value>
-  </data>
-  <data name="Settings_MainPage_CalendarIntegrationItem.Title" xml:space="preserve">
-    <value>Calendar integration</value>
   </data>
   <data name="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" xml:space="preserve">
     <value>Tasks and classes in Google Calendar</value>

@@ -54,22 +54,6 @@
           <source>version</source>
           <target state="final">versão</target>
         </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Classes_Description.Text" translate="yes" xml:space="preserve">
-          <source>Power Planner can display your classes in the system calendar, so that you can view your schedule from the Calendar app.</source>
-          <target state="final">Power Planner pode exibir suas aulas no calendário do sistema, para que você possa exibir sua horário no Calendário.</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Classes_Header.Text" translate="yes" xml:space="preserve">
-          <source>CLASSES CALENDAR INTEGRATION</source>
-          <target state="final">INTEGRAÇÃO DE AULAS COM O CALENDÁRIO</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Tasks_Description.Text" translate="yes" xml:space="preserve">
-          <source>Power Planner can display your tasks and events in the system calendar, so that you can view them from the Calendar app.</source>
-          <target state="final">Power Planner pode exibir sua tarefas e os eventos no calendário do sistema, para que você possa vê-las no Calendário.</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Tasks_Header.Text" translate="yes" xml:space="preserve">
-          <source>TASKS CALENDAR INTEGRATION</source>
-          <target state="final">INTEGRAÇÃO DE TAREFAS COM O CALENDÁRIO</target>
-        </trans-unit>
         <trans-unit id="Settings_ChangeEmailPage.Title" translate="yes" xml:space="preserve">
           <source>CHANGE EMAIL</source>
           <target state="final">ALTERAR E-MAIL</target>
@@ -265,14 +249,6 @@ Clique em continuar para fazer o login (que pode causar duplicatas).</target>
         <trans-unit id="Settings_MainPage_AboutItem.Title" translate="yes" xml:space="preserve">
           <source>About</source>
           <target state="final">Sobre</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Tasks and classes in native Calendar app</source>
-          <target state="final">Tarefas e aulas no app nativo de calendário.</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
-          <source>Calendar integration</source>
-          <target state="final">Integração ao calendário</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_LiveTilesItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Edit Live Tile settings</source>

@@ -45,7 +45,6 @@ namespace PowerPlannerUWP
             PortableDispatcher.ObtainDispatcherFunction = () => { return new UwpDispatcher(); };
             TelemetryExtension.Current = new UWPTelemetryExtension();
             InAppPurchaseExtension.Current = new UWPInAppPurchaseExtension();
-            AppointmentsExtension.Current = new UWPAppointmentsExtension();
             NetworkInfoExtension.Current = new UWPNetworkInfoExtension();
             PushExtension.Current = new UWPPushExtension();
             ClassRemindersExtension.Current = new UWPClassRemindersExtension();

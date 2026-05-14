@@ -57,7 +57,10 @@ namespace PowerPlannerUWP.BackgroundTasks
                 catch (OperationCanceledException) { }
 
                 // Wait for the calendar integration to complete
-                await AppointmentsExtension.Current?.GetTaskForAllCompleted();
+                if (AppointmentsExtension.Current != null)
+                {
+                    await AppointmentsExtension.Current.GetTaskForAllCompleted();
+                }
             }
 
             catch (Exception ex)
