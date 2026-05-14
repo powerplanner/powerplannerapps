@@ -32,8 +32,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         protected override View Render()
         {
-            const int MAX_WIDTH = 700;
-
             var content = new LinearLayout
             {
                 Margin = new Thickness(Theme.Current.PageMargin)
@@ -45,7 +43,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         Text = R.S("SchedulePage_TextBlockWelcomeTitle.Text"),
                         TextAlignment = HorizontalAlignment.Center,
-                        MaxWidth = MAX_WIDTH,
                         FontWeight = FontWeights.SemiBold,
                         FontSize = Theme.Current.TitleFontSize
                     },
@@ -55,8 +52,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         Text = R.S("SchedulePage_TextBlockWelcomeSubtitle.Text"),
                         TextAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 6, 0, 0),
-                        TextColor = Theme.Current.SubtleForegroundColor,
-                        MaxWidth = MAX_WIDTH,
+                        TextColor = Theme.Current.SubtleForegroundColor
                     },
 
                     new AccentButton
@@ -79,7 +75,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         Text = "+ " + R.S("SchedulePage_ButtonAddClass.Content"),
                         Click = ScheduleViewModel.AddClass,
-                        MaxWidth = 180,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 6, 0, 0)
                     }
