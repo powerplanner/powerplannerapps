@@ -57,13 +57,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         Text = R.S("AddClassesWithAi_Description")
                     },
 
-                    UseMobileStyleUI && _errorText.Value != null ? new TextBlock
-                    {
-                        Text = _errorText.Value,
-                        TextColor = System.Drawing.Color.Red,
-                        Margin = new Thickness(0, 6, 0, 0)
-                    } : null,
-
                     new MultilineTextBox
                     {
                         PlaceholderText = R.S("AddClassesWithAi_PlaceholderText"),
@@ -102,13 +95,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                         {
                             Content = mainContent
                         }.LinearLayoutWeight(1),
-
-                        _errorText.Value == null ? null : new TextBlock
-                        {
-                            Text = _errorText.Value,
-                            Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, 12),
-                            TextColor = System.Drawing.Color.Red,
-                        },
 
                         new AccentButton
                         {
@@ -160,11 +146,43 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 }
             } : null;
 
+            var error = _errorText.Value == null ? null : new LinearLayout
+            {
+                BackgroundColor = System.Drawing.Color.FromArgb(153, 26, 26),
+                VerticalAlignment = VerticalAlignment.Top,
+                Orientation = Orientation.Horizontal,
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = _errorText.Value,
+                        IsTextSelectionEnabled = true,
+                        TextColor = System.Drawing.Color.White,
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, Theme.Current.PageMargin + NookInsets.Top, 0, Theme.Current.PageMargin)
+                    }.LinearLayoutWeight(1),
+
+                    new TransparentContentButton
+                    {
+                        Content = new FontIcon
+                        {
+                            Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                            Margin = new Thickness(Theme.Current.PageMargin, 6, Theme.Current.PageMargin + NookInsets.Right, 6),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Color = System.Drawing.Color.White,
+                            FontSize = 18
+                        },
+                        TooltipText = PowerPlannerResources.GetStringClose(),
+                        Click = () => _errorText.Value = null
+                    }
+                }
+            };
+
             return new FrameLayout
             {
                 Children =
                 {
                     mainContent,
+                    error,
                     overlay
                 }
             };
