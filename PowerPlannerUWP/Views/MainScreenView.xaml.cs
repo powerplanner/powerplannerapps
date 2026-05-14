@@ -9,6 +9,7 @@ using PowerPlannerUWP.Views.SettingsViews;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using ToolsPortable;
 using Vx.Uwp;
 using Windows.Foundation.Metadata;
