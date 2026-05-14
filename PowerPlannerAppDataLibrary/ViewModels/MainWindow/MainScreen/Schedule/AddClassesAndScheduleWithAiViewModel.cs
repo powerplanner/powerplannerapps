@@ -1,4 +1,4 @@
-﻿using BareMvvm.Core.ViewModels;
+using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -29,7 +29,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             if (UseMobileStyleUI)
             {
                 var saveCmd = PopupCommand.Save(CreateClassesAndSchedule);
-                saveCmd.Text = R.S("AddClassesWithAi_ButtonCreate");
+                if (VxPlatform.Current != Platform.iOS)
+                    saveCmd.Text = R.S("AddClassesWithAi_ButtonCreate");
                 PrimaryCommand = saveCmd;
             }
         }
