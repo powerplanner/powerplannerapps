@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using ToolsPortable;
+using Vx.Droid;
 
 namespace PowerPlannerAndroid.Views
 {
@@ -34,7 +35,7 @@ namespace PowerPlannerAndroid.Views
 
         private View _normalContent;
         private View _editingContent;
-        private View _welcomeContent;
+        private FrameLayout _welcomeContent;
         private ItemsControlWrapper _itemsWrapperEditingClasses;
         private AndroidX.AppCompat.Widget.Toolbar _weekToolbar;
 
@@ -64,7 +65,7 @@ namespace PowerPlannerAndroid.Views
 
             _normalContent = FindViewById(Resource.Id.NormalContent);
             _editingContent = FindViewById(Resource.Id.EditingContent);
-            _welcomeContent = FindViewById(Resource.Id.WelcomeContent);
+            _welcomeContent = FindViewById<FrameLayout>(Resource.Id.WelcomeContent);
 
             _weekToolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.WeekToolbar);
             MenuInflater inflater = new MenuInflater(Context);
@@ -74,16 +75,8 @@ namespace PowerPlannerAndroid.Views
 
             scrollViewSchedule.ViewChanging += new WeakEventHandler(ScrollViewSchedule_ViewChanging).Handler;
 
-            FindViewById<Button>(Resource.Id.ButtonLogIn).Text = R.S("WelcomePage_ButtonLogin.Content");
-            FindViewById<Button>(Resource.Id.ButtonLogIn).Click += new WeakEventHandler(ScheduleView_Click).Handler;
-
             _buttonAddClass = FindViewById<Button>(Resource.Id.ButtonAddClass);
             _buttonAddClass.Text = R.S("SchedulePage_ButtonAddClass.Content");
-            FindViewById<Button>(Resource.Id.ButtonWelcomeAddClass).Text = R.S("SchedulePage_ButtonAddClass.Content");
-            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewReturningUser).Text = R.S("SchedulePage_TextBlockReturningUser.Text");
-
-            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeTitle).Text = R.S("SchedulePage_TextBlockWelcomeTitle.Text");
-            FindViewById<TextView>(Resource.Id.SchedulePage_TextViewWelcomeSubtitle).Text = R.S("SchedulePage_TextBlockWelcomeSubtitle.Text");
 
             BindingHost.SetBinding<DateTime>(nameof(ViewModel.DisplayStartDate), displayStartDate =>
             {
@@ -197,7 +190,6 @@ namespace PowerPlannerAndroid.Views
             ViewModel.InitializeArrangers(HEIGHT_OF_HOUR, MyCollapsedEventItem.SPACING_WITH_NO_ADDITIONAL, MyCollapsedEventItem.SPACING_WITH_ADDITIONAL, MyCollapsedEventItem.WIDTH_OF_COLLAPSED_ITEM);
 
             FindViewById<Button>(Resource.Id.ButtonAddClass).Click += new WeakEventHandler(ButtonAddClass_Click).Handler;
-            FindViewById<Button>(Resource.Id.ButtonWelcomeAddClass).Click += new WeakEventHandler(ButtonAddClass_Click).Handler;
 
             ViewModel.OnFullReset += new WeakEventHandler(ViewModel_OnFullReset).Handler;
             ViewModel.OnItemsForDateChanged += new WeakEventHandler<DateTime>(ViewModel_OnItemsForDateChanged).Handler;
@@ -386,6 +378,14 @@ namespace PowerPlannerAndroid.Views
                     _normalContent.Visibility = ViewStates.Gone;
                     _editingContent.Visibility = ViewStates.Gone;
                     _welcomeContent.Visibility = ViewStates.Visible;
+                    if (_welcomeContent.ChildCount == 0)
+                    {
+                        _welcomeContent.AddView(new ScheduleWelcomeComponent()
+                        {
+                            ScheduleViewModel = ViewModel,
+                            NookInsets = ViewModel.NookInsets
+                        }.Render());
+                    }
                     break;
             }
 

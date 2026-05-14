@@ -1697,6 +1697,80 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <source>To get started, add your classes and schedule!</source>
           <target state="final" state-qualifier="mt-suggestion">Um zu beginnen, fügen Sie Ihre Klassen und Stundenplan hinzu!</target>
         </trans-unit>
+        <trans-unit id="ScheduleWelcome_ButtonAddWithAi" translate="yes" xml:space="preserve">
+          <source>✨ Add classes and schedules with AI</source>
+          <target state="final">✨ Kurse und Stundenplan mit KI hinzufügen</target>
+        </trans-unit>
+        <trans-unit id="ScheduleWelcome_TextOrManually" translate="yes" xml:space="preserve">
+          <source>Or, add classes manually...</source>
+          <target state="final">Oder Kurse manuell hinzufügen...</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_Title" translate="yes" xml:space="preserve">
+          <source>Add with AI</source>
+          <target state="final">Mit KI hinzufügen</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_Description" translate="yes" xml:space="preserve">
+          <source>Enter your class schedule in the text box below, and we'll use AI to create your classes and schedule in Power Planner!</source>
+          <target state="final">Geben Sie Ihren Stundenplan in das Textfeld unten ein, und wir verwenden KI, um Ihre Kurse und Ihren Stundenplan in Power Planner zu erstellen!</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter your class schedule in any format, ex:
+
+ANTH 160D2 - Mon, Wed 10-10:50am in ILC 130
+CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
+          <target state="final">Geben Sie Ihren Stundenplan in einem beliebigen Format ein, z. B.:
+
+Mathematik 101 - Mo, Mi 10:00-10:50 Uhr in Raum 130
+Physik 202 - Di, Do 9:30-10:45 Uhr in Raum 150</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ButtonCreate" translate="yes" xml:space="preserve">
+          <source>✨ Create classes and schedule</source>
+          <target state="final">✨ Kurse und Stundenplan erstellen</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNoText" translate="yes" xml:space="preserve">
+          <source>You must provide text!</source>
+          <target state="final">Sie müssen Text eingeben!</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNetwork" translate="yes" xml:space="preserve">
+          <source>There was a problem connecting to the server. Make sure you're connected to the internet and try again.</source>
+          <target state="final">Es gab ein Problem beim Verbinden mit dem Server. Stellen Sie sicher, dass Sie mit dem Internet verbunden sind, und versuchen Sie es erneut.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorGeneric" translate="yes" xml:space="preserve">
+          <source>Something went wrong. Check your input text and try again.</source>
+          <target state="final">Etwas ist schiefgelaufen. Überprüfen Sie Ihren Eingabetext und versuchen Sie es erneut.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_GeneratingTitle" translate="yes" xml:space="preserve">
+          <source>Generating classes and schedule...</source>
+          <target state="final">Kurse und Stundenplan werden erstellt...</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_GeneratingSubtitle" translate="yes" xml:space="preserve">
+          <source>This should only take about 5 seconds!</source>
+          <target state="final">Das sollte nur etwa 5 Sekunden dauern!</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNoClasses" translate="yes" xml:space="preserve">
+          <source>No classes were created. Try editing your text to be more clear.</source>
+          <target state="final">Es wurden keine Kurse erstellt. Versuchen Sie, Ihren Text klarer zu formulieren.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorTooManyClasses" translate="yes" xml:space="preserve">
+          <source>There were over 15 classes that were trying to be created. This is probably an error. Try editing your text.</source>
+          <target state="final">Es wurden mehr als 15 Kurse versucht zu erstellen. Das ist wahrscheinlich ein Fehler. Versuchen Sie, Ihren Text anzupassen.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorTooManySchedules" translate="yes" xml:space="preserve">
+          <source>There were over 15 schedules that were trying to be created for a single class. This is probably an error. Try editing your text.</source>
+          <target state="final">Es wurden mehr als 15 Stundenpläne für einen einzelnen Kurs versucht zu erstellen. Das ist wahrscheinlich ein Fehler. Versuchen Sie, Ihren Text anzupassen.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidName" translate="yes" xml:space="preserve">
+          <source>One or more classes had an invalid name.</source>
+          <target state="final">Ein oder mehrere Kurse hatten einen ungültigen Namen.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidColor" translate="yes" xml:space="preserve">
+          <source>One or more classes had an invalid color.</source>
+          <target state="final">Ein oder mehrere Kurse hatten eine ungültige Farbe.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidTime" translate="yes" xml:space="preserve">
+          <source>One or more schedules had an invalid start and end time.</source>
+          <target state="final">Ein oder mehrere Stundenpläne hatten eine ungültige Start- und Endzeit.</target>
+        </trans-unit>
         <trans-unit id="ClassGrades_UnassignedItemsHeader" translate="yes" xml:space="preserve">
           <source>Unassigned items</source>
           <target state="final">Nicht zugewiesenes Element</target>

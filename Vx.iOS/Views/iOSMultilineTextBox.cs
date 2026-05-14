@@ -35,7 +35,7 @@ namespace Vx.iOS.Views
             }
 
             View.Header = newView.Header;
-            //View.Placeholder = newView.PlaceholderText;
+            View.Placeholder = newView.PlaceholderText;
             View.ValidationState = newView.ValidationState;
             View.Enabled = newView.IsEnabled;
 
@@ -75,7 +75,18 @@ namespace Vx.iOS.Views
         public event EventHandler<bool> FocusChanged;
 
         public bool Enabled { get; set; }
-        public string Placeholder { get; set; }
+
+        private readonly UILabel _placeholderLabel;
+
+        public string Placeholder
+        {
+            get => _placeholderLabel.Text;
+            set
+            {
+                _placeholderLabel.Text = value;
+                UpdatePlaceholderVisibility();
+            }
+        }
 
         public UIRoundedTextView()
         {
@@ -87,8 +98,37 @@ namespace Vx.iOS.Views
 
             Editable = true;
 
+            _placeholderLabel = new UILabel
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                TextColor = UIColor.PlaceholderText,
+                Font = UIFont.PreferredBody,
+                Lines = 0
+            };
+            Add(_placeholderLabel);
+            _placeholderLabel.LeadingAnchor.ConstraintEqualTo(FrameLayoutGuide.LeadingAnchor, 10).Active = true;
+            _placeholderLabel.TrailingAnchor.ConstraintEqualTo(FrameLayoutGuide.TrailingAnchor, -10).Active = true;
+            _placeholderLabel.TopAnchor.ConstraintEqualTo(FrameLayoutGuide.TopAnchor, 8).Active = true;
+
+            Changed += (s, e) => UpdatePlaceholderVisibility();
+
             ShouldBeginEditing = CustomShouldBeginEditing;
             ShouldEndEditing = CustomShouldEndEditing;
+        }
+
+        public override string Text
+        {
+            get => base.Text;
+            set
+            {
+                base.Text = value;
+                UpdatePlaceholderVisibility();
+            }
+        }
+
+        private void UpdatePlaceholderVisibility()
+        {
+            _placeholderLabel.Hidden = !string.IsNullOrEmpty(Text);
         }
 
         private bool CustomShouldBeginEditing(UITextView tv)

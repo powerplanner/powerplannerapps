@@ -60,6 +60,20 @@ namespace Vx.iOS.Views
             set => SetValue(ref _width, value);
         }
 
+        private float _minWidth = float.NaN;
+        public float MinWidth
+        {
+            get => _minWidth;
+            set => SetValue(ref _minWidth, value);
+        }
+
+        private float _maxWidth = float.NaN;
+        public float MaxWidth
+        {
+            get => _maxWidth;
+            set => SetValue(ref _maxWidth, value);
+        }
+
         public void SetConstraints(
             WrapperConstraint? leftConstraint,
             WrapperConstraint? topConstraint,
@@ -351,6 +365,34 @@ namespace Vx.iOS.Views
                 WidthConstraint = null;
             }
 
+            if (MinWidth > 0)
+            {
+                MinWidthConstraint = NSLayoutConstraint.Create(
+                    ViewOrGuide,
+                    NSLayoutAttribute.Width,
+                    NSLayoutRelation.GreaterThanOrEqual,
+                    1,
+                    MinWidth);
+            }
+            else
+            {
+                MinWidthConstraint = null;
+            }
+
+            if (!float.IsPositiveInfinity(MaxWidth))
+            {
+                MaxWidthConstraint = NSLayoutConstraint.Create(
+                    ViewOrGuide,
+                    NSLayoutAttribute.Width,
+                    NSLayoutRelation.LessThanOrEqual,
+                    1,
+                    MaxWidth);
+            }
+            else
+            {
+                MaxWidthConstraint = null;
+            }
+
             if (heightConstraint != null)
             {
                 if (heightConstraint.Value.OtherView != null)
@@ -492,6 +534,20 @@ namespace Vx.iOS.Views
         {
             get => _widthConstraint;
             set => SetConstraint(ref _widthConstraint, value);
+        }
+
+        private NSLayoutConstraint _minWidthConstraint;
+        private NSLayoutConstraint MinWidthConstraint
+        {
+            get => _minWidthConstraint;
+            set => SetConstraint(ref _minWidthConstraint, value);
+        }
+
+        private NSLayoutConstraint _maxWidthConstraint;
+        private NSLayoutConstraint MaxWidthConstraint
+        {
+            get => _maxWidthConstraint;
+            set => SetConstraint(ref _maxWidthConstraint, value);
         }
 
         private NSLayoutConstraint _heightConstraint;

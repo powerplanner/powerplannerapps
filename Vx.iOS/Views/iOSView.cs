@@ -34,6 +34,8 @@ namespace Vx.iOS.Views
             ViewWrapper.Margin = newView.Margin;
             ViewWrapper.Height = newView.Height;
             ViewWrapper.Width = newView.Width;
+            ViewWrapper.MinWidth = newView.MinWidth;
+            ViewWrapper.MaxWidth = newView.MaxWidth;
             ViewWrapper.HorizontalAlignment = newView.HorizontalAlignment;
             ViewWrapper.VerticalAlignment = newView.VerticalAlignment;
 

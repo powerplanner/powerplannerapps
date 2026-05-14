@@ -426,57 +426,10 @@
 
         <Grid
             x:Name="WelcomeRoot"
-            x:DeferLoadStrategy="Lazy"
             Visibility="Collapsed"
             Grid.Row="1"
-            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-            Padding="24">
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-            <StackPanel
-                HorizontalAlignment="Right"
-                Grid.Row="0"
-                Orientation="Vertical"
-                Visibility="{x:Bind ViewModel.IsReturningUserVisible, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock
-                    Text="{x:Bind data:R.S('SchedulePage_TextBlockReturningUser.Text')}"
-                    Style="{ThemeResource BodyTextBlockStyle}"
-                    TextAlignment="Right"/>
-
-                <Button
-                    x:Name="ButtonLogIn"
-                    Style="{StaticResource WelcomeButtonStyle}"
-                    Content="{x:Bind data:R.S('WelcomePage_ButtonLogin.Content')}"
-                    Margin="0,6,0,0"
-                    HorizontalAlignment="Right"
-                    Click="ButtonLogIn_Click"
-                    MinWidth="120"/>
-            </StackPanel>
-
-            <StackPanel VerticalAlignment="Center">
-
-                <TextBlock
-                    Text="{x:Bind data:R.S('SchedulePage_TextBlockWelcomeTitle.Text')}"
-                    TextWrapping="Wrap"
-                    TextAlignment="Center"
-                    Style="{ThemeResource TitleTextBlockStyle}"/>
-
-                <TextBlock
-                    Text="{x:Bind data:R.S('SchedulePage_TextBlockWelcomeSubtitle.Text')}"
-                    Style="{ThemeResource BodyTextBlockStyle}"
-                    TextAlignment="Center"
-                    Margin="0,6,0,0"
-                    Opacity="0.6"/>
-
-                <Button
-                    x:Name="ButtonWelcomeAddClass"
-                    Style="{StaticResource WelcomeButtonStyle}"
-                    Content="{x:Bind data:PowerPlannerResources.GetCapitalizedString('SchedulePage_ButtonAddClass.Content')}"
-                    Margin="0,18,0,0"
-                    MaxWidth="300"
-                    Click="ButtonAddClass_Click"/>
-
-            </StackPanel>
-            
         </Grid>
 
 
