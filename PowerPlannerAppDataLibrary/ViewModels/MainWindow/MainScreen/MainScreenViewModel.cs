@@ -73,6 +73,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                 SelectedItem = i;
                             }
                         },
+                        HasClasses = AvailableItems.Contains(MainMenuSelections.Calendar),
                         IsOfflineOrHasSyncError = IsOffline || HasSyncErrors,
                         SyncState = SyncState,
                         UploadImageProgress = UploadImageProgress

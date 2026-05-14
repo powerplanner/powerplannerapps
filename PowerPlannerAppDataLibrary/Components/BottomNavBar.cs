@@ -13,6 +13,7 @@ namespace PowerPlannerAppDataLibrary.Components
         public MainScreenViewModel.SyncStates SyncState { get; set; } = MainScreenViewModel.SyncStates.Done;
         public double UploadImageProgress { get; set; } = 0;
         public bool IsOfflineOrHasSyncError { get; set; } = false;
+        public bool HasClasses { get; set; }
 
         protected override View Render()
         {
@@ -29,8 +30,8 @@ namespace PowerPlannerAppDataLibrary.Components
                         Orientation = Orientation.Horizontal,
                         Children =
                         {
-                            RenderItem(NavigationManager.MainMenuSelections.Calendar, MaterialDesign.MaterialDesignIcons.CalendarMonth),
-                            RenderItem(NavigationManager.MainMenuSelections.Agenda, MaterialDesign.MaterialDesignIcons.Task),
+                            HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Calendar, MaterialDesign.MaterialDesignIcons.CalendarMonth) : null,
+                            HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Agenda, MaterialDesign.MaterialDesignIcons.Task) : null,
                             RenderItem(NavigationManager.MainMenuSelections.Schedule, MaterialDesign.MaterialDesignIcons.Schedule),
                             RenderItem(NavigationManager.MainMenuSelections.Classes, MaterialDesign.MaterialDesignIcons.LibraryBooks),
                             RenderItem(NavigationManager.MainMenuSelections.Settings, MaterialDesign.MaterialDesignIcons.PersonOutline, IsOfflineOrHasSyncError)
