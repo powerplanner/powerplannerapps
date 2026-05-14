@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ToolsPortable;
+using Vx;
 using Vx.Views;
 using static PowerPlannerAppDataLibrary.Services.AiService;
 
@@ -24,6 +25,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             Title = R.S("AddClassesWithAi_Title");
             _scheduleViewModel = parent;
             AllowLightDismiss = false;
+
+            if (UseMobileStyleUI)
+            {
+                var saveCmd = PopupCommand.Save(CreateClassesAndSchedule);
+                saveCmd.Text = R.S("AddClassesWithAi_ButtonCreate");
+                PrimaryCommand = saveCmd;
+            }
         }
 
         private VxState<string> _inputPrompt = new VxState<string>("");
@@ -32,53 +40,86 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private VxState<string> _errorText = new VxState<string>(null);
 
+        /// <summary>
+        /// On Mobile, the keyboard hides the bottom save bar, so if true, save button should be in top right toolbar, and we'll move the error text higher up too.
+        /// </summary>
+        private bool UseMobileStyleUI = VxPlatform.Current != Platform.Uwp;
+
         protected override View Render()
         {
-            var content = new LinearLayout
+            View mainContent = new LinearLayout
             {
+                Margin = new Thickness(Theme.Current.PageMargin).Combine(NookInsets),
                 Children =
                 {
-                    new ScrollView
+                    new TextBlock
                     {
-                        Content = new LinearLayout
-                        {
-                            Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, Theme.Current.PageMargin, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin),
-                            Children =
-                            {
-                                new TextBlock
-                                {
-                                    Text = R.S("AddClassesWithAi_Description")
-                                },
+                        Text = R.S("AddClassesWithAi_Description")
+                    },
 
-                                new MultilineTextBox
-                                {
-                                    PlaceholderText = R.S("AddClassesWithAi_PlaceholderText"),
-                                    Margin = new Thickness(0, 6, 0, 0),
-                                    AutoFocus = true,
-                                    Text = VxValue.Create(_inputPrompt.Value, v => _inputPrompt.Value = v),
-                                    IsEnabled = !_isGeneratingClasses.Value,
-                                    Height = 200
-                                }
-                            }
-                        }
-                    }.LinearLayoutWeight(1),
-
-                    _errorText.Value == null ? null : new TextBlock
+                    UseMobileStyleUI && _errorText.Value != null ? new TextBlock
                     {
                         Text = _errorText.Value,
-                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, 12),
                         TextColor = System.Drawing.Color.Red,
-                    },
-                    
-                    new AccentButton
+                        Margin = new Thickness(0, 6, 0, 0)
+                    } : null,
+
+                    new MultilineTextBox
                     {
-                        Text = R.S("AddClassesWithAi_ButtonCreate"),
-                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
-                        Click = CreateClassesAndSchedule,
-                        IsEnabled = !_isGeneratingClasses.Value
+                        PlaceholderText = R.S("AddClassesWithAi_PlaceholderText"),
+                        Margin = new Thickness(0, 6, 0, 0),
+                        AutoFocus = true,
+                        Text = VxValue.Create(_inputPrompt.Value, v => _inputPrompt.Value = v),
+                        IsEnabled = !_isGeneratingClasses.Value,
+                        Height = 200
+                    },
+
+                    new TextBlock
+                    {
+                        Text = R.S("AddClassesWithAi_PlaceholderText"),
+                        Margin = new Thickness(0, 12, 0, 0),
+                        TextColor = Theme.Current.SubtleForegroundColor,
+                        IsTextSelectionEnabled = true,
+                        FontSize = Theme.Current.CaptionFontSize
                     }
                 }
             };
+
+            if (UseMobileStyleUI)
+            {
+                mainContent = new ScrollView
+                {
+                    Content = mainContent
+                };
+            }
+            else
+            {
+                mainContent = new LinearLayout
+                {
+                    Children =
+                    {
+                        new ScrollView
+                        {
+                            Content = mainContent
+                        }.LinearLayoutWeight(1),
+
+                        _errorText.Value == null ? null : new TextBlock
+                        {
+                            Text = _errorText.Value,
+                            Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, 12),
+                            TextColor = System.Drawing.Color.Red,
+                        },
+
+                        new AccentButton
+                        {
+                            Text = R.S("AddClassesWithAi_ButtonCreate"),
+                            Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 0, Theme.Current.PageMargin + NookInsets.Right, Theme.Current.PageMargin + NookInsets.Bottom),
+                            Click = CreateClassesAndSchedule,
+                            IsEnabled = !_isGeneratingClasses.Value
+                        }
+                    }
+                };
+            }
 
             var overlay = _isGeneratingClasses ? new Border
             {
@@ -123,7 +164,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             {
                 Children =
                 {
-                    content,
+                    mainContent,
                     overlay
                 }
             };
@@ -131,6 +172,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         private async void CreateClassesAndSchedule()
         {
+            if (_isGeneratingClasses.Value)
+            {
+                return;
+            }
+
             _errorText.Value = null;
 
             if (string.IsNullOrWhiteSpace(_inputPrompt.Value))
