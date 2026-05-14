@@ -1583,7 +1583,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
                         if (_checklist.Value != null && _checklist.Value.Length > 0)
                         {
-                            TelemetryExtension.Current?.TrackMetric("SavedChecklist", 1);
+                            TelemetryExtension.Current?.TrackEvent("SavedChecklist");
                         }
 
                         if (SelectedTimeOption == TimeOption_AllDay)

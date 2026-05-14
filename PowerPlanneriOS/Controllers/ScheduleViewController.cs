@@ -15,6 +15,7 @@ using System.Globalization;
 using PowerPlannerAppDataLibrary;
 using PowerPlanneriOS.Helpers;
 using InterfacesiOS.Helpers;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -260,85 +261,12 @@ namespace PowerPlanneriOS.Controllers
             {
                 if (_welcomeView == null)
                 {
-                    _welcomeView = new UIView()
+                    _welcomeView = new ScheduleWelcomeComponent()
                     {
-                        TranslatesAutoresizingMaskIntoConstraints = false,
-                        BackgroundColor = UIColorCompat.SystemBackgroundColor
-                    };
-                    {
-                        // New user
-                        var topSpacer = new UIView() { TranslatesAutoresizingMaskIntoConstraints = false };
-                        _welcomeView.Add(topSpacer);
-                        topSpacer.StretchWidth(_welcomeView);
-
-                        var bottomSpacer = new UIView() { TranslatesAutoresizingMaskIntoConstraints = false };
-                        _welcomeView.Add(bottomSpacer);
-                        bottomSpacer.StretchWidth(_welcomeView);
-
-                        var title = new UILabel()
-                        {
-                            TranslatesAutoresizingMaskIntoConstraints = false,
-                            Text = PowerPlannerResources.GetString("SchedulePage_TextBlockWelcomeTitle.Text"),
-                            AdjustsFontSizeToFitWidth = true,
-                            Font = UIFont.PreferredTitle3,
-                            TextAlignment = UITextAlignment.Center
-                        };
-                        _welcomeView.Add(title);
-                        title.StretchWidth(_welcomeView, left: 16, right: 16);
-
-                        var subtitle = new UILabel()
-                        {
-                            TranslatesAutoresizingMaskIntoConstraints = false,
-                            Text = PowerPlannerResources.GetString("SchedulePage_TextBlockWelcomeSubtitle.Text"),
-                            Lines = 0,
-                            Font = UIFont.PreferredCaption1,
-                            TextAlignment = UITextAlignment.Center
-                        };
-                        _welcomeView.Add(subtitle);
-                        subtitle.StretchWidth(_welcomeView, left: 16, right: 16);
-
-                        var buttonAddClass = new UIButton(UIButtonType.System)
-                        {
-                            TranslatesAutoresizingMaskIntoConstraints = false
-                        };
-                        buttonAddClass.SetTitle(PowerPlannerResources.GetString("SchedulePage_ButtonAddClass.Content"), UIControlState.Normal);
-                        buttonAddClass.SetTitleColor(new UIColor(1, 1), UIControlState.Normal);
-                        buttonAddClass.BackgroundColor = ColorResources.PowerPlannerAccentBlue;
-                        buttonAddClass.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.AddClass(); }).Handler;
-                        _welcomeView.Add(buttonAddClass);
-                        buttonAddClass.StretchWidth(_welcomeView, left: 16, right: 16);
-                        buttonAddClass.SetMaxWidth(250);
-
-                        _welcomeView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[topSpacer(==bottomSpacer)][title]-8-[subtitle]-16-[buttonAddClass][bottomSpacer]-32-|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                            "topSpacer", topSpacer,
-                            "title", title,
-                            "subtitle", subtitle,
-                            "buttonAddClass", buttonAddClass,
-                            "bottomSpacer", bottomSpacer));
-
-                        // Returning user (we add on top so it remains clickable
-                        if (ViewModel.IsReturningUserVisible)
-                        {
-                            var returningUser = new UILabel()
-                            {
-                                TranslatesAutoresizingMaskIntoConstraints = false,
-                                Text = PowerPlannerResources.GetString("SchedulePage_TextBlockReturningUser.Text"),
-                                Font = UIFont.PreferredCaption1
-                            };
-                            _welcomeView.Add(returningUser);
-                            returningUser.StretchWidth(_welcomeView, left: 16, right: 16);
-
-                            var buttonLogIn = PowerPlannerUIHelper.CreatePowerPlannerBlueButton(PowerPlannerResources.GetString("Button_LogIn.Content"));
-                            buttonLogIn.TranslatesAutoresizingMaskIntoConstraints = false;
-                            buttonLogIn.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.LogIn(); }).Handler;
-                            _welcomeView.Add(buttonLogIn);
-                            buttonLogIn.PinToLeft(_welcomeView, left: 16);
-
-                            _welcomeView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-16-[returningUser]-8-[buttonLogIn]", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                                "returningUser", returningUser,
-                                "buttonLogIn", buttonLogIn));
-                        }
-                    }
+                        ScheduleViewModel = ViewModel,
+                        NookInsets = ViewModel.NookInsets
+                    }.Render();
+                    _welcomeView.TranslatesAutoresizingMaskIntoConstraints = false;
                 }
 
                 // Display the welcome view on top of everything, including on top of the nav bar

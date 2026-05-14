@@ -1672,6 +1672,80 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <source>To get started, add your classes and schedule!</source>
           <target state="final" state-qualifier="mt-suggestion">Para comenzar, agregue sus clases y horario!</target>
         </trans-unit>
+        <trans-unit id="ScheduleWelcome_ButtonAddWithAi" translate="yes" xml:space="preserve">
+          <source>✨ Add classes and schedules with AI</source>
+          <target state="final">✨ Agregar clases y horario con IA</target>
+        </trans-unit>
+        <trans-unit id="ScheduleWelcome_TextOrManually" translate="yes" xml:space="preserve">
+          <source>Or, add classes manually...</source>
+          <target state="final">O, agregar clases manualmente...</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_Title" translate="yes" xml:space="preserve">
+          <source>Add with AI</source>
+          <target state="final">Agregar con IA</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_Description" translate="yes" xml:space="preserve">
+          <source>Enter your class schedule in the text box below, and we'll use AI to create your classes and schedule in Power Planner!</source>
+          <target state="final">Ingresa tu horario de clases en el cuadro de texto a continuación, ¡y usaremos IA para crear tus clases y horario en Power Planner!</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter your class schedule in any format, ex:
+
+ANTH 160D2 - Mon, Wed 10-10:50am in ILC 130
+CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
+          <target state="final">Ingresa tu horario en cualquier formato, ej.:
+
+Matemáticas 101 - Lun, Mié 10:00-10:50 en Aula 130
+Física 202 - Mar, Jue 9:30-10:45 en Aula 150</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ButtonCreate" translate="yes" xml:space="preserve">
+          <source>✨ Create classes and schedule</source>
+          <target state="final">✨ Crear clases y horario</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNoText" translate="yes" xml:space="preserve">
+          <source>You must provide text!</source>
+          <target state="final">¡Debes proporcionar texto!</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNetwork" translate="yes" xml:space="preserve">
+          <source>There was a problem connecting to the server. Make sure you're connected to the internet and try again.</source>
+          <target state="final">Hubo un problema al conectarse al servidor. Asegúrate de estar conectado a internet e inténtalo de nuevo.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorGeneric" translate="yes" xml:space="preserve">
+          <source>Something went wrong. Check your input text and try again.</source>
+          <target state="final">Algo salió mal. Revisa tu texto e inténtalo de nuevo.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_GeneratingTitle" translate="yes" xml:space="preserve">
+          <source>Generating classes and schedule...</source>
+          <target state="final">Generando clases y horario...</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_GeneratingSubtitle" translate="yes" xml:space="preserve">
+          <source>This should only take about 5 seconds!</source>
+          <target state="final">¡Esto solo debería tardar unos 5 segundos!</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNoClasses" translate="yes" xml:space="preserve">
+          <source>No classes were created. Try editing your text to be more clear.</source>
+          <target state="final">No se crearon clases. Intenta editar tu texto para que sea más claro.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorTooManyClasses" translate="yes" xml:space="preserve">
+          <source>There were over 15 classes that were trying to be created. This is probably an error. Try editing your text.</source>
+          <target state="final">Se intentaron crear más de 15 clases. Esto probablemente es un error. Intenta editar tu texto.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorTooManySchedules" translate="yes" xml:space="preserve">
+          <source>There were over 15 schedules that were trying to be created for a single class. This is probably an error. Try editing your text.</source>
+          <target state="final">Se intentaron crear más de 15 horarios para una sola clase. Esto probablemente es un error. Intenta editar tu texto.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidName" translate="yes" xml:space="preserve">
+          <source>One or more classes had an invalid name.</source>
+          <target state="final">Una o más clases tenían un nombre inválido.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidColor" translate="yes" xml:space="preserve">
+          <source>One or more classes had an invalid color.</source>
+          <target state="final">Una o más clases tenían un color inválido.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidTime" translate="yes" xml:space="preserve">
+          <source>One or more schedules had an invalid start and end time.</source>
+          <target state="final">Uno o más horarios tenían una hora de inicio y fin inválida.</target>
+        </trans-unit>
         <trans-unit id="ClassGrades_UnassignedItemsHeader" translate="yes" xml:space="preserve">
           <source>Unassigned items</source>
           <target state="final">Artículos sin asignar</target>

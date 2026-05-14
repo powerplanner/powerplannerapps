@@ -76,6 +76,8 @@ namespace Vx.Views
         public float Opacity { get; set; } = 1;
 
         public float Width { get; set; } = float.NaN;
+        public float MinWidth { get; set; } = 0;
+        public float MaxWidth { get; set; } = float.PositiveInfinity;
         public float Height { get; set; } = float.NaN;
 
         public Action<View> ViewRef { get; set; }
