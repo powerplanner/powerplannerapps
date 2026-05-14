@@ -380,7 +380,11 @@ namespace PowerPlannerAndroid.Views
                     _welcomeContent.Visibility = ViewStates.Visible;
                     if (_welcomeContent.ChildCount == 0)
                     {
-                        _welcomeContent.AddView(new ScheduleWelcomeComponent().Render());
+                        _welcomeContent.AddView(new ScheduleWelcomeComponent()
+                        {
+                            ScheduleViewModel = ViewModel,
+                            NookInsets = ViewModel.NookInsets
+                        }.Render());
                     }
                     break;
             }
