@@ -565,24 +565,14 @@ Click Continue to login (which might cause duplicates).</value>
     <value>UPGRADE TO PREMIUM</value>
   </data>
   <data name="Settings_UpgradeToPremium_Description.Text" xml:space="preserve">
-    <value>The premium version of Power Planner unlocks a number of useful features, and is a one-time lifetime purchase!
-
-The free version is limited to...
- - 1 semester
- - 5 grades per class
- - 1 repeating bulk entry of a task/event
- - Cannot pin classes as secondary tiles
- - 1 photo attachment per item
-
-Once you purchase the premium version, you own the premium version on all your devices.</value>
-  </data>
-  <data name="Settings_UpgradeToPremiumIOS_Description.Text" xml:space="preserve">
     <value>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
 
 The free version is limited to...
  - 1 semester
  - 5 grades per class
  - 1 repeating bulk entry of a task/event
+ - 1 photo attachment per item
+ - Cannot pin classes as secondary tiles
 
 Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</value>
   </data>

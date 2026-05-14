@@ -61,7 +61,7 @@ namespace PowerPlanneriOS.Controllers
             var labelDescription = new UILabel()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-                Text = PowerPlannerResources.GetString("Settings_UpgradeToPremiumIOS_Description.Text"),
+                Text = PowerPlannerResources.GetStringPremiumDescription(0, 1, 2, 3),
                 Lines = 0
             };
             StackView.AddArrangedSubview(labelDescription);

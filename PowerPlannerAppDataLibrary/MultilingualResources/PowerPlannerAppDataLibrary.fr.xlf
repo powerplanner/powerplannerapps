@@ -601,26 +601,26 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
           <target state="final" state-qualifier="mt-suggestion">MISE À NIVEAU VERS PREMIUM</target>
         </trans-unit>
         <trans-unit id="Settings_UpgradeToPremium_Description.Text" translate="yes" xml:space="preserve">
-          <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time lifetime purchase!
+          <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
 
 The free version is limited to...
  - 1 semester
  - 5 grades per class
  - 1 repeating bulk entry of a task/event
- - Cannot pin classes as secondary tiles
  - 1 photo attachment per item
+ - Cannot pin classes as secondary tiles
 
-Once you purchase the premium version, you own the premium version on all your devices.</source>
-          <target state="final" state-qualifier="mt-suggestion">La version premium de Power Planner déverrouille un certain nombre de fonctionnalités utiles, et est un achat unique à vie!
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
+          <target state="final">La version premium de Power Planner débloque un certain nombre de fonctionnalités utiles, et c'est un achat unique À VIE (pas d'abonnements mensuels/annuels) !
 
 La version gratuite est limitée à...
  - 1 semestre
  - 5 notes par classe
  - 1 répétition de l’entrée en vrac d’une tâche/événement
- - Ne peut pas épingler les classes comme tuiles secondaires
  - 1 pièce jointe photo par article
+ - Ne peut pas épingler les classes comme tuiles secondaires
 
-Une fois que vous achetez la version premium, vous possédez la version premium sur tous vos appareils.</target>
+Une fois que vous avez acheté la version premium, vous possédez la version premium sur tous vos appareils (elle est liée à votre compte en ligne).</target>
         </trans-unit>
         <trans-unit id="TextBox_Password.Header" translate="yes" xml:space="preserve">
           <source>Password</source>
@@ -2686,24 +2686,6 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Semester</source>
           <target state="final">Semestre</target>
         </trans-unit>
-        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
-  <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
-
-The free version is limited to...
- - 1 semester
- - 5 grades per class
- - 1 repeating bulk entry of a task/event
-
-Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
-  <target state="final">La version premium de Power Planner débloque un certain nombre de fonctionnalités utiles, et c'est un achat unique À VIE (pas d'abonnements mensuels/annuels) !
-
-La version gratuite est limitée à...
- - 1 semestre
- - 5 notes par classe
- - 1 entrée en masse répétitive d'une tâche/événement
-
-Une fois que vous avez acheté la version premium, vous possédez la version premium sur tous vos appareils (elle est liée à votre compte en ligne).</target>
-</trans-unit>
         <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
   <source>Restore Previous Purchase</source>
   <target state="final">Restaurer l'Achat Précédent</target>

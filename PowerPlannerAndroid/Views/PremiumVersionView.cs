@@ -22,7 +22,7 @@ namespace PowerPlannerAndroid.Views
 
             FindViewById<Button>(Resource.Id.ButtonUpgradeToPremium).Text = R.S("Settings_UpgradeToPremium_ButtonUpgrade.Content");
             FindViewById<Button>(Resource.Id.ButtonUpgradeToPremium).Click += ButtonUpgradeToPremium_Click;
-            FindViewById<TextView>(Resource.Id.TextViewPremiumExplanation).Text = PowerPlannerResources.GetStringPremiumDescription(0, 1, 2);
+            FindViewById<TextView>(Resource.Id.TextViewPremiumExplanation).Text = PowerPlannerResources.GetStringPremiumDescription(0, 1, 2, 3);
         }
 
         public override void OnViewModelSetOverride()
