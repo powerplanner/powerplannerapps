@@ -20,7 +20,7 @@ namespace PowerPlannerAppDataLibrary.Components
             {
                 Content = new FontIcon
                 {
-                    Glyph = MaterialDesign.MaterialDesignIcons.MoreHoriz,
+                    Glyph = MaterialDesign.MaterialDesignIcons.MoreVert,
                     FontSize = 16,
                     Margin = new Thickness(12, 0, 12, 0)
                 },
