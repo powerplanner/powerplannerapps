@@ -376,6 +376,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2605, 16, 0))
+                    {
+                        changedText += "\n - Fixed a bug where items on calendar sometimes disappear when moving them to different dates";
+                    }
+
                     if (v <= new Version(2605, 10, 0, 0))
                     {
                         changedText += "\n - Add checklists to tasks / events! Try it when adding a task, below the details text box!";

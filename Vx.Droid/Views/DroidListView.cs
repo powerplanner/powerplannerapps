@@ -41,6 +41,21 @@ namespace Vx.Droid.Views
             _currentItems = null;
         }
 
+        private void OnAttachedToWindow()
+        {
+            // When re-attached (e.g. after ViewPager2 brings the page back into range), the
+            // adapter's ItemsSource was nulled out on detach to prevent crashes. If the component
+            // didn't re-render in the meantime (because the SlideView position integer didn't
+            // change, so SetState detected no change), ApplyProperties is never called and the
+            // adapter stays disconnected. Re-connect it here using the last-applied VxView.
+            if (_currentItems == null && VxView is Vx.Views.ListView listView)
+            {
+                _adapter.ItemsSource = listView.Items as IReadOnlyList<object>;
+                _adapter.ItemTemplate = listView.ItemTemplate;
+                _currentItems = listView.Items;
+            }
+        }
+
         private class DetachListener : Java.Lang.Object, Android.Views.View.IOnAttachStateChangeListener
         {
             private readonly DroidListView _owner;
@@ -50,7 +65,10 @@ namespace Vx.Droid.Views
                 _owner = owner;
             }
 
-            public void OnViewAttachedToWindow(Android.Views.View attachedView) { }
+            public void OnViewAttachedToWindow(Android.Views.View attachedView)
+            {
+                _owner.OnAttachedToWindow();
+            }
 
             public void OnViewDetachedFromWindow(Android.Views.View detachedView)
             {
