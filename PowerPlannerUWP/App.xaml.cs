@@ -619,6 +619,11 @@ namespace PowerPlannerUWP
 
                     string changedText = "";
 
+                    if (v <= new Version(2606, 2, 0))
+                    {
+                        changedText += "\n - Bug fix for checklists being cleared when editing a graded item";
+                    }
+
                     if (v <= new Version(2605, 10, 0, 0))
                     {
                         changedText += "\n - Add checklists to tasks / events! Try it when adding a task, below the details text box!";

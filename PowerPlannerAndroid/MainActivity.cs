@@ -376,6 +376,11 @@ namespace PowerPlannerAndroid
                 {
                     string changedText = "";
 
+                    if (v <= new Version(2606, 2, 0))
+                    {
+                        changedText += "\n - Bug fix for checklists being cleared when editing a graded item";
+                    }
+
                     if (v <= new Version(2605, 16, 0))
                     {
                         changedText += "\n - Fixed a bug where items on calendar sometimes disappear when moving them to different dates";
