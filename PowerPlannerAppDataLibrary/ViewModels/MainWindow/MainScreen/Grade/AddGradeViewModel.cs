@@ -448,7 +448,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                             (g as DataItemMegaItem).WeightCategoryIdentifier = weightCategory.Identifier;
                         }
 
-                        g.Details = Details;
+                        // Preserve checklist if it's a task or event we're editing and it has checklists
+                        if (_editingGrade is ViewItemTaskOrEvent taskOrEvent)
+                        {
+                            if (taskOrEvent.Checklist != null && taskOrEvent.Checklist.Length > 0)
+                            {
+                                g.Details = ViewItemChecklistItem.ProduceDetailsWithChecklist(Details.Trim(), taskOrEvent.Checklist);
+                            }
+                            else
+                            {
+                                g.Details = Details.Trim();
+                            }
+                        }
+                        else
+                        {
+                            g.Details = Details.Trim();
+                        }
                         g.Date = DateTime.SpecifyKind(Date, DateTimeKind.Utc).Date.Add(_originalDateOffset);
                         g.GradeReceived = GradeReceived;
                         g.GradeTotal = GradeTotal;
