@@ -105,11 +105,13 @@ struct PPAgendaWidgetView: View {
                 HStack {
                     if #available(iOSApplicationExtension 15.0, *) {
                         Text(entry.title)
+                            .font(.footnote)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                             .foregroundStyle(.white)
                     } else {
                         Text(entry.title)
+                            .font(.footnote)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                             .foregroundColor(.white)
@@ -117,7 +119,7 @@ struct PPAgendaWidgetView: View {
                     Spacer()
                     Image("PowerPlannerIcon")
                         .resizable()
-                        .frame(width: 16, height: 27)
+                        .frame(width: 16, height: 20)
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(.white)
                         .padding(.horizontal)
@@ -151,7 +153,8 @@ struct PPAgendaWidgetView: View {
     // Date Header View
     func dateHeaderView(date: String) -> some View {
         Text(date)
-            .font(.headline)
+            .font(.caption)
+            .foregroundColor(.secondary)
             .padding(.leading)
             .lineLimit(1)
     }
@@ -169,7 +172,7 @@ struct PPAgendaWidgetView: View {
                 .padding(.leading, 6)
                 .padding(.vertical, 1)
                 .lineLimit(1)
-                .font(.callout)
+                .font(.caption)
         }.frame(height: 24, alignment: .leading)//.widgetURL(urlInApp("item"))
     }
     

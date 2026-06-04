@@ -143,12 +143,14 @@ struct PPScheduleWidgetView: View {
                 HStack {
                     if #available(iOSApplicationExtension 15.0, *) {
                         Text(headerText)
+                            .font(.footnote)
                             .padding(.leading)
                             .padding(.vertical, 8)
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     } else {
                         Text(headerText)
+                            .font(.footnote)
                             .padding(.leading)
                             .padding(.vertical, 8)
                             .foregroundColor(.white)
@@ -157,7 +159,7 @@ struct PPScheduleWidgetView: View {
                     Spacer()
                     Image("PowerPlannerIcon")
                         .resizable()
-                        .frame(width: 16, height: 27)
+                        .frame(width: 16, height: 20)
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(.white)
                         .padding(.horizontal)
