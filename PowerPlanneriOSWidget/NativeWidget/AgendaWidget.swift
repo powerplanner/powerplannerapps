@@ -70,7 +70,74 @@ struct DataEntry: TimelineEntry {
 
 struct PPAgendaWidgetView: View {
     var entry: DataEntry
+    @Environment(\.widgetFamily) var widgetFamily
+
     var body: some View {
+        if #available(iOSApplicationExtension 16.0, *) {
+            if widgetFamily == .accessoryRectangular {
+                lockScreenRectangularView
+            } else if widgetFamily == .accessoryInline {
+                lockScreenInlineView
+            } else {
+                homeScreenBody
+            }
+        } else {
+            homeScreenBody
+        }
+    }
+
+    @available(iOSApplicationExtension 16.0, *)
+    var lockScreenRectangularView: some View {
+        let today = entry.date
+        let firstItem = entry.items.first
+        let firstDateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
+        let totalCount = entry.items.count
+
+        VStack(alignment: .leading, spacing: 1) {
+            if entry.items.isEmpty {
+                Text(entry.allDoneString)
+                    .font(.caption)
+            } else {
+                // Line 1: date header
+                Text(firstDateCategory)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                // Line 2: first item name
+                Text(firstItem!.name)
+                    .font(.caption)
+                    .lineLimit(1)
+                // Line 3: "X more" if applicable
+                if totalCount > 2 {
+                    Text("\(totalCount - 1) more")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                } else if totalCount == 2 {
+                    Text(entry.items[1].name)
+                        .font(.caption)
+                        .lineLimit(1)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    @available(iOSApplicationExtension 16.0, *)
+    var lockScreenInlineView: some View {
+        let today = entry.date
+        if entry.items.isEmpty {
+            Text(entry.allDoneString)
+        } else {
+            let firstItem = entry.items.first!
+            let dateCategory = getDateCategory(for: firstItem.date, today: today, dateStrings: entry.dateStrings)
+            if entry.items.count == 1 {
+                Text("\(dateCategory) - \(firstItem.name)")
+            } else {
+                Text("\(dateCategory) - \(entry.items.count) items")
+            }
+        }
+    }
+
+    var homeScreenBody: some View {
         let items = entry.items // Sorted by date ascending
         let today = entry.date
         
@@ -206,6 +273,12 @@ struct AgendaWidget: Widget {
             .contentMarginsDisabled()
             .configurationDisplayName("Agenda")
             .description("Displays your upcoming tasks and events.")
-            .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+            .supportedFamilies({
+                var families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+                if #available(iOSApplicationExtension 16.0, *) {
+                    families.append(contentsOf: [.accessoryRectangular, .accessoryInline])
+                }
+                return families
+            }())
     }
 }

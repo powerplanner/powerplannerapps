@@ -132,7 +132,114 @@ struct ScheduleDataEntry: TimelineEntry {
 
 struct PPScheduleWidgetView: View {
     var entry: ScheduleDataEntry
+    @Environment(\.widgetFamily) var widgetFamily
+
     var body: some View {
+        if #available(iOSApplicationExtension 16.0, *) {
+            if widgetFamily == .accessoryRectangular {
+                lockScreenRectangularView
+            } else if widgetFamily == .accessoryInline {
+                lockScreenInlineView
+            } else {
+                homeScreenBody
+            }
+        } else {
+            homeScreenBody
+        }
+    }
+
+    @available(iOSApplicationExtension 16.0, *)
+    var lockScreenRectangularView: some View {
+        let today = Calendar.current.startOfDay(for: entry.date)
+        let isToday = entry.dateOfItems == nil || Calendar.current.isDate(entry.dateOfItems!, inSameDayAs: today)
+
+        VStack(alignment: .leading, spacing: 1) {
+            if let errorMessage = entry.errorMessage {
+                Text(errorMessage)
+                    .font(.caption)
+                    .lineLimit(2)
+            } else if let holidays = entry.holidays {
+                ForEach(holidays.prefix(3), id: \.self) { holiday in
+                    Text(holiday)
+                        .font(.caption)
+                        .lineLimit(1)
+                }
+            } else if let schedule = entry.schedules?.first {
+                // Line 1: class name
+                Text(schedule.className)
+                    .font(.caption)
+                    .lineLimit(1)
+                // Line 2: time (with date prefix if not today)
+                Text(formatScheduleTimeLine(schedule: schedule, isToday: isToday, today: today))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                // Line 3: room (optional)
+                if let room = schedule.room, !room.isEmpty {
+                    Text(room)
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    @available(iOSApplicationExtension 16.0, *)
+    var lockScreenInlineView: some View {
+        if let errorMessage = entry.errorMessage {
+            Text(errorMessage)
+        } else if let schedule = entry.schedules?.first {
+            let timeStr = formatScheduleTimeRange(schedule: schedule)
+            Text("\(schedule.className): \(timeStr)")
+                .lineLimit(1)
+                .truncationMode(.middle)
+        } else {
+            Text(entry.fallbackTitle)
+        }
+    }
+
+    private func formatScheduleTimeLine(schedule: ScheduleWidgetScheduleItem, isToday: Bool, today: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let startDate = calendar.date(bySettingHour: Int(schedule.startTime / 3600),
+                                      minute: Int((schedule.startTime.truncatingRemainder(dividingBy: 3600)) / 60),
+                                      second: 0, of: currentDate)!
+
+        if isToday {
+            let endDate = calendar.date(bySettingHour: Int(schedule.endTime / 3600),
+                                        minute: Int((schedule.endTime.truncatingRemainder(dividingBy: 3600)) / 60),
+                                        second: 0, of: currentDate)!
+            return "\(dateFormatter.string(from: startDate)) - \(dateFormatter.string(from: endDate))"
+        } else {
+            let dateOfItems = entry.dateOfItems ?? today
+            let dayStr = getRelativeDateString(for: dateOfItems, today: today, dateStrings: entry.dateStrings)
+            return "\(dayStr) \(dateFormatter.string(from: startDate))"
+        }
+    }
+
+    private func formatScheduleTimeRange(schedule: ScheduleWidgetScheduleItem) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let startDate = calendar.date(bySettingHour: Int(schedule.startTime / 3600),
+                                      minute: Int((schedule.startTime.truncatingRemainder(dividingBy: 3600)) / 60),
+                                      second: 0, of: currentDate)!
+        let endDate = calendar.date(bySettingHour: Int(schedule.endTime / 3600),
+                                    minute: Int((schedule.endTime.truncatingRemainder(dividingBy: 3600)) / 60),
+                                    second: 0, of: currentDate)!
+        return "\(dateFormatter.string(from: startDate)) - \(dateFormatter.string(from: endDate))"
+    }
+
+    var homeScreenBody: some View {
         let today = Calendar.current.startOfDay(for: entry.date)
         
         let headerText = entry.errorMessage != nil ? entry.fallbackTitle : getRelativeDateString(for: entry.dateOfItems ?? today, today: today, dateStrings: entry.dateStrings)
@@ -271,6 +378,12 @@ struct ScheduleWidget: Widget {
             .contentMarginsDisabled()
             .configurationDisplayName("Schedule")
             .description("Displays your upcoming classes.")
-            .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+            .supportedFamilies({
+                var families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+                if #available(iOSApplicationExtension 16.0, *) {
+                    families.append(contentsOf: [.accessoryRectangular, .accessoryInline])
+                }
+                return families
+            }())
     }
 }
