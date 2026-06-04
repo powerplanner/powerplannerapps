@@ -156,28 +156,28 @@ struct PPScheduleWidgetView: View {
         return VStack(alignment: .leading, spacing: 1) {
             if let errorMessage = entry.errorMessage {
                 Text(errorMessage)
-                    .font(.caption)
+                    .font(.body)
                     .lineLimit(2)
             } else if let holidays = entry.holidays {
                 ForEach(holidays.prefix(3), id: \.self) { holiday in
                     Text(holiday)
-                        .font(.caption)
+                        .font(.body)
                         .lineLimit(1)
                 }
             } else if let schedule = entry.schedules?.first {
                 // Line 1: class name
                 Text(schedule.className)
-                    .font(.caption)
+                    .font(.body)
                     .lineLimit(1)
                 // Line 2: time (with date prefix if not today)
                 Text(formatScheduleTimeLine(schedule: schedule, isToday: isToday, today: today))
-                    .font(.caption2)
+                    .font(.caption)
                     .foregroundColor(.secondary)
                     .lineLimit(1)
                 // Line 3: room (optional)
                 if let room = schedule.room, !room.isEmpty {
                     Text(room)
-                        .font(.caption2)
+                        .font(.caption)
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                 }
@@ -270,7 +270,7 @@ struct PPScheduleWidgetView: View {
                     Spacer()
                     Image("PowerPlannerIcon")
                         .resizable()
-                        .frame(width: 16, height: 20)
+                        .frame(width: 12, height: 20)
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(.white)
                         .padding(.horizontal)

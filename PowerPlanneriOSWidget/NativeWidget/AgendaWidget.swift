@@ -96,24 +96,24 @@ struct PPAgendaWidgetView: View {
         return VStack(alignment: .leading, spacing: 1) {
             if entry.items.isEmpty {
                 Text(entry.allDoneString)
-                    .font(.caption)
+                    .font(.body)
             } else {
                 // Line 1: date header
                 Text(firstDateCategory)
-                    .font(.caption2)
+                    .font(.caption)
                     .foregroundColor(.secondary)
                 // Line 2: first item name
                 Text(firstItem!.name)
-                    .font(.caption)
+                    .font(.body)
                     .lineLimit(1)
                 // Line 3: "X more" if applicable
                 if totalCount > 2 {
                     Text("\(totalCount - 1) more")
-                        .font(.caption2)
+                        .font(.caption)
                         .foregroundColor(.secondary)
                 } else if totalCount == 2 {
                     Text(entry.items[1].name)
-                        .font(.caption)
+                        .font(.body)
                         .lineLimit(1)
                 }
             }
@@ -184,7 +184,7 @@ struct PPAgendaWidgetView: View {
                     Spacer()
                     Image("PowerPlannerIcon")
                         .resizable()
-                        .frame(width: 16, height: 20)
+                        .frame(width: 12, height: 20)
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(.white)
                         .padding(.horizontal)
@@ -238,7 +238,7 @@ struct PPAgendaWidgetView: View {
                 .padding(.vertical, 1)
                 .lineLimit(1)
                 .font(.caption)
-        }.frame(height: 24, alignment: .leading)//.widgetURL(urlInApp("item"))
+        }.frame(height: 20, alignment: .leading)//.widgetURL(urlInApp("item"))
     }
     
     
