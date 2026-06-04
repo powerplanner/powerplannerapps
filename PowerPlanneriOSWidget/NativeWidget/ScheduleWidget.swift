@@ -153,7 +153,7 @@ struct PPScheduleWidgetView: View {
         let today = Calendar.current.startOfDay(for: entry.date)
         let isToday = entry.dateOfItems == nil || Calendar.current.isDate(entry.dateOfItems!, inSameDayAs: today)
 
-        VStack(alignment: .leading, spacing: 1) {
+        return VStack(alignment: .leading, spacing: 1) {
             if let errorMessage = entry.errorMessage {
                 Text(errorMessage)
                     .font(.caption)
@@ -189,14 +189,16 @@ struct PPScheduleWidgetView: View {
     @available(iOSApplicationExtension 16.0, *)
     var lockScreenInlineView: some View {
         if let errorMessage = entry.errorMessage {
-            Text(errorMessage)
+            return Text(errorMessage)
+                .lineLimit(1)
         } else if let schedule = entry.schedules?.first {
             let timeStr = formatScheduleTimeRange(schedule: schedule)
-            Text("\(schedule.className): \(timeStr)")
+            return Text("\(schedule.className): \(timeStr)")
                 .lineLimit(1)
                 .truncationMode(.middle)
         } else {
-            Text(entry.fallbackTitle)
+            return Text(entry.fallbackTitle)
+                .lineLimit(1)
         }
     }
 
@@ -244,7 +246,7 @@ struct PPScheduleWidgetView: View {
         
         let headerText = entry.errorMessage != nil ? entry.fallbackTitle : getRelativeDateString(for: entry.dateOfItems ?? today, today: today, dateStrings: entry.dateStrings)
         
-        GeometryReader { geometry in
+        return GeometryReader { geometry in
             VStack(alignment: .leading, spacing: 0) {
                 // Header bar
                 HStack {

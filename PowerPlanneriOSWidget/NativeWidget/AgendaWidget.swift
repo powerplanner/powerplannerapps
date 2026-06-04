@@ -93,7 +93,7 @@ struct PPAgendaWidgetView: View {
         let firstDateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
         let totalCount = entry.items.count
 
-        VStack(alignment: .leading, spacing: 1) {
+        return VStack(alignment: .leading, spacing: 1) {
             if entry.items.isEmpty {
                 Text(entry.allDoneString)
                     .font(.caption)
@@ -124,16 +124,14 @@ struct PPAgendaWidgetView: View {
     @available(iOSApplicationExtension 16.0, *)
     var lockScreenInlineView: some View {
         let today = entry.date
+        let firstItem = entry.items.first
+        let dateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
         if entry.items.isEmpty {
-            Text(entry.allDoneString)
+            return Text(entry.allDoneString)
+        } else if entry.items.count == 1 {
+            return Text("\(dateCategory) - \(firstItem!.name)")
         } else {
-            let firstItem = entry.items.first!
-            let dateCategory = getDateCategory(for: firstItem.date, today: today, dateStrings: entry.dateStrings)
-            if entry.items.count == 1 {
-                Text("\(dateCategory) - \(firstItem.name)")
-            } else {
-                Text("\(dateCategory) - \(entry.items.count) items")
-            }
+            return Text("\(dateCategory) - \(entry.items.count) items")
         }
     }
 
@@ -166,7 +164,7 @@ struct PPAgendaWidgetView: View {
             }
         }
         
-        GeometryReader { geometry in
+        return GeometryReader { geometry in
             VStack(alignment: .leading, spacing: 0) {
                 // Header bar
                 HStack {
