@@ -191,6 +191,7 @@ struct PPScheduleWidgetView: View {
         if let errorMessage = entry.errorMessage {
             return Text(errorMessage)
                 .lineLimit(1)
+                .truncationMode(.middle)
         } else if let schedule = entry.schedules?.first {
             let timeStr = formatScheduleTimeRange(schedule: schedule)
             return Text("\(schedule.className): \(timeStr)")
@@ -199,6 +200,7 @@ struct PPScheduleWidgetView: View {
         } else {
             return Text(entry.fallbackTitle)
                 .lineLimit(1)
+                .truncationMode(.middle)
         }
     }
 
