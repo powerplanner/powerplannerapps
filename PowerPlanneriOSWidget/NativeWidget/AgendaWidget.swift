@@ -70,7 +70,86 @@ struct DataEntry: TimelineEntry {
 
 struct PPAgendaWidgetView: View {
     var entry: DataEntry
+    @Environment(\.widgetFamily) var widgetFamily
+
     var body: some View {
+        if #available(iOSApplicationExtension 16.0, *) {
+            if widgetFamily == .accessoryRectangular {
+                lockScreenRectangularView
+            } else if widgetFamily == .accessoryInline {
+                lockScreenInlineView
+            } else {
+                homeScreenBody
+            }
+        } else {
+            homeScreenBody
+        }
+    }
+
+    @available(iOSApplicationExtension 16.0, *)
+    var lockScreenRectangularView: some View {
+        let today = entry.date
+        let firstItem = entry.items.first
+        let firstDateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
+        let totalCount = entry.items.count
+
+        return VStack(alignment: .leading, spacing: 1) {
+            if entry.items.isEmpty {
+                // Line 1: "Agenda" title
+                Text(entry.title)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.secondary)
+                // Line 2: "All done!" message
+                Text(entry.allDoneString)
+                    .font(.body)
+                    .fontWeight(.semibold)
+            } else {
+                // Line 1: date header
+                Text(firstDateCategory)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.secondary)
+                // Line 2: first item name
+                Text(firstItem!.name)
+                    .font(.body)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                // Line 3: "X more" if applicable
+                if totalCount > 2 {
+                    Text("\(totalCount - 1) more")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.secondary)
+                } else if totalCount == 2 {
+                    Text(entry.items[1].name)
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .lineLimit(1)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    @available(iOSApplicationExtension 16.0, *)
+    var lockScreenInlineView: some View {
+        let today = entry.date
+        let firstItem = entry.items.first
+        let dateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
+        if entry.items.isEmpty {
+            return Text(entry.allDoneString)
+                    .fontWeight(.semibold)
+        } else if entry.items.count == 1 {
+            return Text("\(dateCategory) - \(firstItem!.name)")
+                    .fontWeight(.semibold)
+        } else {
+            return Text("\(dateCategory) - \(entry.items.count) items")
+                    .fontWeight(.semibold)
+        }
+    }
+
+    var homeScreenBody: some View {
         let items = entry.items // Sorted by date ascending
         let today = entry.date
         
@@ -99,17 +178,19 @@ struct PPAgendaWidgetView: View {
             }
         }
         
-        GeometryReader { geometry in
+        return GeometryReader { geometry in
             VStack(alignment: .leading, spacing: 0) {
                 // Header bar
                 HStack {
                     if #available(iOSApplicationExtension 15.0, *) {
                         Text(entry.title)
+                            .font(.footnote)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                             .foregroundStyle(.white)
                     } else {
                         Text(entry.title)
+                            .font(.footnote)
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                             .foregroundColor(.white)
@@ -117,7 +198,7 @@ struct PPAgendaWidgetView: View {
                     Spacer()
                     Image("PowerPlannerIcon")
                         .resizable()
-                        .frame(width: 16, height: 27)
+                        .frame(width: 12, height: 20)
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(.white)
                         .padding(.horizontal)
@@ -151,7 +232,8 @@ struct PPAgendaWidgetView: View {
     // Date Header View
     func dateHeaderView(date: String) -> some View {
         Text(date)
-            .font(.headline)
+            .font(.caption)
+            .foregroundColor(.secondary)
             .padding(.leading)
             .lineLimit(1)
     }
@@ -169,8 +251,8 @@ struct PPAgendaWidgetView: View {
                 .padding(.leading, 6)
                 .padding(.vertical, 1)
                 .lineLimit(1)
-                .font(.callout)
-        }.frame(height: 24, alignment: .leading)//.widgetURL(urlInApp("item"))
+                .font(.caption)
+        }.frame(height: 20, alignment: .leading)//.widgetURL(urlInApp("item"))
     }
     
     
@@ -203,6 +285,12 @@ struct AgendaWidget: Widget {
             .contentMarginsDisabled()
             .configurationDisplayName("Agenda")
             .description("Displays your upcoming tasks and events.")
-            .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+            .supportedFamilies({
+                var families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+                if #available(iOSApplicationExtension 16.0, *) {
+                    families.append(contentsOf: [.accessoryRectangular, .accessoryInline])
+                }
+                return families
+            }())
     }
 }
