@@ -157,27 +157,32 @@ struct PPScheduleWidgetView: View {
             if let errorMessage = entry.errorMessage {
                 Text(errorMessage)
                     .font(.body)
+                    .fontWeight(.semibold)
                     .lineLimit(2)
             } else if let holidays = entry.holidays {
                 ForEach(holidays.prefix(3), id: \.self) { holiday in
                     Text(holiday)
                         .font(.body)
+                        .fontWeight(.semibold)
                         .lineLimit(1)
                 }
             } else if let schedule = entry.schedules?.first {
                 // Line 1: class name
                 Text(schedule.className)
                     .font(.body)
+                    .fontWeight(.semibold)
                     .lineLimit(1)
                 // Line 2: time (with date prefix if not today)
                 Text(formatScheduleTimeLine(schedule: schedule, isToday: isToday, today: today))
                     .font(.caption)
+                    .fontWeight(.semibold)
                     .foregroundColor(.secondary)
                     .lineLimit(1)
                 // Line 3: room (optional)
                 if let room = schedule.room, !room.isEmpty {
                     Text(room)
                         .font(.caption)
+                        .fontWeight(.semibold)
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                 }
@@ -191,15 +196,18 @@ struct PPScheduleWidgetView: View {
         if let errorMessage = entry.errorMessage {
             return Text(errorMessage)
                 .lineLimit(1)
+                .fontWeight(.semibold)
                 .truncationMode(.middle)
         } else if let schedule = entry.schedules?.first {
             let timeStr = formatScheduleTimeRange(schedule: schedule)
             return Text("\(schedule.className): \(timeStr)")
                 .lineLimit(1)
+                .fontWeight(.semibold)
                 .truncationMode(.middle)
         } else {
             return Text(entry.fallbackTitle)
                 .lineLimit(1)
+                .fontWeight(.semibold)
                 .truncationMode(.middle)
         }
     }

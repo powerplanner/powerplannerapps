@@ -95,25 +95,36 @@ struct PPAgendaWidgetView: View {
 
         return VStack(alignment: .leading, spacing: 1) {
             if entry.items.isEmpty {
+                // Line 1: "Agenda" title
+                Text(entry.title)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.secondary)
+                // Line 2: "All done!" message
                 Text(entry.allDoneString)
                     .font(.body)
+                    .fontWeight(.semibold)
             } else {
                 // Line 1: date header
                 Text(firstDateCategory)
                     .font(.caption)
+                    .fontWeight(.semibold)
                     .foregroundColor(.secondary)
                 // Line 2: first item name
                 Text(firstItem!.name)
                     .font(.body)
+                    .fontWeight(.semibold)
                     .lineLimit(1)
                 // Line 3: "X more" if applicable
                 if totalCount > 2 {
                     Text("\(totalCount - 1) more")
                         .font(.caption)
+                        .fontWeight(.semibold)
                         .foregroundColor(.secondary)
                 } else if totalCount == 2 {
                     Text(entry.items[1].name)
                         .font(.body)
+                        .fontWeight(.semibold)
                         .lineLimit(1)
                 }
             }
@@ -128,10 +139,13 @@ struct PPAgendaWidgetView: View {
         let dateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
         if entry.items.isEmpty {
             return Text(entry.allDoneString)
+                    .fontWeight(.semibold)
         } else if entry.items.count == 1 {
             return Text("\(dateCategory) - \(firstItem!.name)")
+                    .fontWeight(.semibold)
         } else {
             return Text("\(dateCategory) - \(entry.items.count) items")
+                    .fontWeight(.semibold)
         }
     }
 
