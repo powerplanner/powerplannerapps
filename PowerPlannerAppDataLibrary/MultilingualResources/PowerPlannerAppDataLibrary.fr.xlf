@@ -255,7 +255,7 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
           <target state="final" state-qualifier="mt-suggestion">Tutoriels et FAQ</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Title" translate="yes" xml:space="preserve">
-          <source>Other Apps</source>
+          <source>Other apps</source>
           <target state="final">Autres applications</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Subtitle" translate="yes" xml:space="preserve">
@@ -2907,6 +2907,14 @@ Physique 202 - Mar, Jeu 9h30-10h45 en Salle 150</target>
         <trans-unit id="String_Progress" translate="yes" xml:space="preserve">
           <source>Progress</source>
           <target state="final">Progression</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Title" translate="yes" xml:space="preserve">
+          <source>Rate and review</source>
+          <target state="final">Noter et évaluer</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Subtitle" translate="yes" xml:space="preserve">
+          <source>Leave a review of Power Planner!</source>
+          <target state="final">Laissez un avis sur Power Planner !</target>
         </trans-unit>
       </group>
     </body>

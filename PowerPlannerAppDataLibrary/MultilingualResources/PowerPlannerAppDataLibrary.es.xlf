@@ -2298,7 +2298,7 @@ Física 202 - Mar, Jue 9:30-10:45 en Aula 150</target>
           <target state="final" state-qualifier="mt-suggestion">Tutoriales y preguntas frecuentes</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Title" translate="yes" xml:space="preserve">
-          <source>Other Apps</source>
+          <source>Other apps</source>
           <target state="final">Otras aplicaciones</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Subtitle" translate="yes" xml:space="preserve">
@@ -2908,6 +2908,14 @@ Física 202 - Mar, Jue 9:30-10:45 en Aula 150</target>
         <trans-unit id="String_Progress" translate="yes" xml:space="preserve">
           <source>Progress</source>
           <target state="final">Progreso</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Title" translate="yes" xml:space="preserve">
+          <source>Rate and review</source>
+          <target state="final">Valorar y reseñar</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Subtitle" translate="yes" xml:space="preserve">
+          <source>Leave a review of Power Planner!</source>
+          <target state="final">¡Deja una reseña de Power Planner!</target>
         </trans-unit>
       </group>
     </body>

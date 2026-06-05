@@ -2301,7 +2301,7 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
           <target state="final" state-qualifier="mt-suggestion">الدروس والاسئله الشائعة</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Title" translate="yes" xml:space="preserve">
-          <source>Other Apps</source>
+          <source>Other apps</source>
           <target state="final">تطبيقات أخرى</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Subtitle" translate="yes" xml:space="preserve">
@@ -2911,6 +2911,14 @@ CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
         <trans-unit id="String_Progress" translate="yes" xml:space="preserve">
           <source>Progress</source>
           <target state="final">التقدم</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Title" translate="yes" xml:space="preserve">
+          <source>Rate and review</source>
+          <target state="final">تقييم ومراجعة</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Subtitle" translate="yes" xml:space="preserve">
+          <source>Leave a review of Power Planner!</source>
+          <target state="final">اترك مراجعة لـ Power Planner!</target>
         </trans-unit>
       </group>
     </body>

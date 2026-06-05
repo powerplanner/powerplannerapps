@@ -94,51 +94,12 @@ namespace PowerPlannerUWP.Views
 
                         try
                         {
-                            if (ApiInformation.IsMethodPresent("Windows.Services.Store.StoreRequestHelper", "SendRequestAsync"))
-                            {
-                                var result = await Windows.Services.Store.StoreRequestHelper.SendRequestAsync(
-                                    Windows.Services.Store.StoreContext.GetDefault(), 16, String.Empty);
-
-                                // If showing dialog succeeded
-                                if (result.ExtendedError == null)
-                                {
-                                    // We don't want exceptions parsing here to cause fallback behavior
-                                    try
-                                    {
-                                        var jsonObject = Newtonsoft.Json.Linq.JObject.Parse(result.Response);
-                                        string status = jsonObject.SelectToken("status")?.ToString() ?? "";
-
-                                        var props = new Dictionary<string, string>()
-                                        {
-                                            { "Status", status }
-                                        };
-                                        if (status == "success")
-                                        {
-                                            bool updated = jsonObject.SelectToken("data")?.Value<bool>("updated") ?? false;
-                                            props.Add("Updated", updated.ToString());
-                                        }
-
-                                        TelemetryExtension.Current?.TrackEvent("ReviewAppResponse", props);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        TelemetryExtension.Current?.TrackException(ex);
-                                    }
-
-                                    // We don't continue falling back at all
-                                    return;
-                                }
-
-                                TelemetryExtension.Current?.TrackException(result.ExtendedError);
-                            }
+                            await ReviewAppExtension.Current?.ReviewAppAsync();
                         }
                         catch (Exception ex)
                         {
                             TelemetryExtension.Current?.TrackException(ex);
-                            // Fall back to normal
                         }
-
-                        await Launcher.LaunchUriAsync(new Uri("ms-windows-store://review/?ProductId=9wzdncrfj25v"));
                         break;
 
                     // Email dev

@@ -29,7 +29,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private VxState<bool> _isFullVersion = new VxState<bool>(true);
 
-        public const string HelpUrl = "https://powerplanner.freshdesk.com/support/home";
+        public const string HelpUrl = "https://support.powerplanner.net";
         public const string OtherAppsUrl = "https://roamapps.com/embedded-apps";
 
         /// <summary>
@@ -308,6 +308,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 PowerPlannerResources.GetString("Settings_MainPage_HelpItem.Title"),
                 PowerPlannerResources.GetString("Settings_MainPage_HelpItem.Subtitle"),
                 OpenHelp);
+
+            if (HasAccount && CurrentSemesterName != null && ReviewAppExtension.Current != null)
+            {
+                RenderOption(
+                    layout,
+                    MaterialDesign.MaterialDesignIcons.RateReview,
+                    PowerPlannerResources.GetString("Settings_MainPage_RateReview.Title"),
+                    PowerPlannerResources.GetString("Settings_MainPage_RateReview.Subtitle"),
+                    OpenRateAndReview);
+            }
 
             RenderOption(
                 layout,
@@ -654,6 +664,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         public void StartSync()
         {
             MainScreenViewModel?.SyncCurrentAccount();
+        }
+
+        public async void OpenRateAndReview()
+        {
+            try
+            {
+                TelemetryExtension.Current?.TrackEvent("RateAndReview_FromSettings");
+                await ReviewAppExtension.Current?.ReviewAppAsync();
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
         }
 
         public void OpenMyAccount()
