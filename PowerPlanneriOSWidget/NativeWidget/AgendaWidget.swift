@@ -91,7 +91,7 @@ struct PPAgendaWidgetView: View {
         let today = entry.date
         let firstItem = entry.items.first
         let firstDateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
-        let totalCount = entry.items.count
+        let totalCount = entry.items.filter { getDateCategory(for: $0.date, today: today, dateStrings: entry.dateStrings) == firstDateCategory }.count
 
         return VStack(alignment: .leading, spacing: 1) {
             if entry.items.isEmpty {
@@ -137,14 +137,15 @@ struct PPAgendaWidgetView: View {
         let today = entry.date
         let firstItem = entry.items.first
         let dateCategory = firstItem != nil ? getDateCategory(for: firstItem!.date, today: today, dateStrings: entry.dateStrings) : ""
+        let dateCount = entry.items.filter { getDateCategory(for: $0.date, today: today, dateStrings: entry.dateStrings) == dateCategory }.count
         if entry.items.isEmpty {
             return Text(entry.allDoneString)
                     .fontWeight(.semibold)
-        } else if entry.items.count == 1 {
+        } else if dateCount == 1 {
             return Text("\(dateCategory) - \(firstItem!.name)")
                     .fontWeight(.semibold)
         } else {
-            return Text("\(dateCategory) - \(entry.items.count) items")
+            return Text("\(dateCategory) - \(dateCount) items")
                     .fontWeight(.semibold)
         }
     }
