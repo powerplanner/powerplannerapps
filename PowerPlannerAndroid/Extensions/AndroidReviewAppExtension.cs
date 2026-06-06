@@ -34,7 +34,7 @@ namespace PowerPlannerAndroid.Extensions
         {
             try
             {
-                Application.Context.StartActivity(intent);
+                MainActivity.GetCurrent().StartActivity(intent);
                 return true;
             }
             catch (ActivityNotFoundException)
