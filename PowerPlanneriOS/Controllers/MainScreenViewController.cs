@@ -357,17 +357,13 @@ namespace PowerPlanneriOS.Controllers
 
         private static async void OpenStoreReview()
         {
-            var url = $"itms-apps://itunes.apple.com/app/id1278178608?action=write-review";
-            bool opened = false;
             try
             {
-                opened = await UIApplication.SharedApplication.OpenUrlAsync(new NSUrl(url), new UIApplicationOpenUrlOptions());
+                await ReviewAppExtension.Current?.ReviewAppAsync();
             }
-            catch { }
-
-            if (!opened)
+            catch (Exception ex)
             {
-                var dontWait = new PortableMessageDialog("The Store failed to open. Try again later.", "Unable to open the Store").ShowAsync();
+                TelemetryExtension.Current?.TrackException(ex);
             }
         }
     }

@@ -193,6 +193,7 @@ namespace PowerPlanneriOS
             ScheduleTileExtension.Current = new iOSScheduleTileExtension();
             ImagePickerExtension.Current = new iOSImagePickerExtension();
             NetworkInfoExtension.Current = new iOSNetworkInfoExtension();
+            ReviewAppExtension.Current = new iOSReviewAppExtension();
 
 #if !DEBUG
             // On release, use the system language selector (in simulator the system settings doesn't support this).

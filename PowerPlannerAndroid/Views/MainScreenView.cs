@@ -274,33 +274,15 @@ namespace PowerPlannerAndroid.Views
             catch { }
         }
 
-        private void OpenReview()
-        {
-            Intent intent = new Intent(Intent.ActionView);
-            intent.SetData(Android.Net.Uri.Parse("market://details?id=" + Context.PackageName));
-
-            if (!TryStartActivity(intent))
-            {
-                // Google Play app not installed, try open web browser
-                intent.SetData(Android.Net.Uri.Parse("https://play.google.com/store/apps/details?id=" + Context.PackageName));
-
-                if (!TryStartActivity(intent))
-                {
-                    Toast.MakeText(Context, "Google Play not available", ToastLength.Short).Show();
-                }
-            }
-        }
-
-        private bool TryStartActivity(Intent intent)
+        private async void OpenReview()
         {
             try
             {
-                Context.StartActivity(intent);
-                return true;
+                await ReviewAppExtension.Current?.ReviewAppAsync();
             }
-            catch (ActivityNotFoundException)
+            catch (Exception ex)
             {
-                return false;
+                TelemetryExtension.Current?.TrackException(ex);
             }
         }
 

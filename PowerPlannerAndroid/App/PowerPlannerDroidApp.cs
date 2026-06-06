@@ -76,6 +76,7 @@ namespace PowerPlannerAndroid.App
             InAppPurchaseExtension.Current = new AndroidInAppPurchaseExtension();
             ClassRemindersExtension.Current = new DroidClassRemindersExtension();
             RemindersExtension.Current = new AndroidRemindersExtension();
+            ReviewAppExtension.Current = new AndroidReviewAppExtension();
             TilesExtension.Current = new DroidTilesExtension();
             PushExtension.Current = new DroidPushExtension();
             ImagePickerExtension.Current = new DroidImagePickerExtension();

@@ -60,6 +60,7 @@ namespace PowerPlannerUWP
             BrowserExtension.Current = new UWPBrowserExtension();
             EmailExtension.Current = new UWPEmailExtension();
             ThemeExtension.Current = new UWPThemeExtension();
+            ReviewAppExtension.Current = new UWPReviewAppExtension();
 
             // Register platform-specific theme color applier
             ThemeColorApplier.PlatformThemeApplier = UwpThemeColorApplier.Apply;

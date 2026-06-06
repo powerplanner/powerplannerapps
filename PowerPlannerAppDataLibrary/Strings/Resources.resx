@@ -302,10 +302,16 @@ Click Continue to login (which might cause duplicates).</value>
     <value>Tutorials and FAQ</value>
   </data>
   <data name="Settings_MainPage_OtherAppsItem.Title" xml:space="preserve">
-    <value>Other Apps</value>
+    <value>Other apps</value>
   </data>
   <data name="Settings_MainPage_OtherAppsItem.Subtitle" xml:space="preserve">
     <value>Check out our other apps</value>
+  </data>
+  <data name="Settings_MainPage_RateReview.Title" xml:space="preserve">
+    <value>Rate and review</value>
+  </data>
+  <data name="Settings_MainPage_RateReview.Subtitle" xml:space="preserve">
+    <value>Leave a review of Power Planner!</value>
   </data>
   <data name="Settings_MainPage_AboutItem.Title" xml:space="preserve">
     <value>About</value>
