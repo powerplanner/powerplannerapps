@@ -32,6 +32,8 @@ using PowerPlannerAppDataLibrary.ViewModels;
 using Vx.Extensions;
 using PowerPlannerAppDataLibrary.Views;
 using PowerPlanneriOS.Views;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.DataLayer;
 
 namespace PowerPlanneriOS
 {
@@ -215,6 +217,7 @@ namespace PowerPlanneriOS
 
             UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
             RemindersExtension.Current = new IOSRemindersExtension();
+            ClassRemindersExtension.Current = new IOSClassRemindersExtension();
 
             // Get whether launched from shortcut
             ShortcutAction? shortcutAction = null;
@@ -353,10 +356,45 @@ namespace PowerPlanneriOS
                             {
                                 TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_Event");
 
-                                // Show task
+                                // Show event
                                 _appDelegate.HandleLaunch(async (viewModel) =>
                                 {
                                     await viewModel.HandleViewEventActivation(localAccountId, eventIdentifier);
+                                });
+                            }
+
+                            else if (IOSClassRemindersExtension.TryParseClassReminderIdentifier(identifier, out Guid scheduleId))
+                            {
+                                TelemetryExtension.Current?.TrackEvent($"Launch_FromToast_Class");
+
+                                // Show the class - we need to find the class ID from the schedule ID
+                                _appDelegate.HandleLaunch(async (viewModel) =>
+                                {
+                                    try
+                                    {
+                                        var account = await AccountsManager.GetOrLoad(localAccountId);
+                                        if (account != null && account.CurrentSemesterId != Guid.Empty)
+                                        {
+                                            var scheduleViewGroup = await ScheduleViewItemsGroup.LoadAsync(
+                                                localAccountId, 
+                                                account.CurrentSemesterId, 
+                                                trackChanges: false, 
+                                                includeWeightCategories: false);
+                                            
+                                            var schedule = scheduleViewGroup?.Classes
+                                                .SelectMany(c => c.Schedules)
+                                                .FirstOrDefault(s => s.Identifier == scheduleId);
+                                            
+                                            if (schedule != null)
+                                            {
+                                                await viewModel.HandleViewClassActivation(localAccountId, schedule.Class.Identifier);
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        TelemetryExtension.Current?.TrackException(ex);
+                                    }
                                 });
                             }
                         }
