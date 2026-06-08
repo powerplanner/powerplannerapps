@@ -32,6 +32,8 @@ using PowerPlannerAppDataLibrary.ViewModels;
 using Vx.Extensions;
 using PowerPlannerAppDataLibrary.Views;
 using PowerPlanneriOS.Views;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.DataLayer;
 
 namespace PowerPlanneriOS
 {
