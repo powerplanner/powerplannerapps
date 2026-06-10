@@ -47,7 +47,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             return new SlideView
             {
                 Position = VxValue.Create((DisplayDate.Date - _thisDay).Days, i => OnDisplayDateChanged(_thisDay.AddDays(i))),
-                ItemTemplate = _itemTemplate,
+                ItemTemplate = _itemTemplate
             };
         }
 

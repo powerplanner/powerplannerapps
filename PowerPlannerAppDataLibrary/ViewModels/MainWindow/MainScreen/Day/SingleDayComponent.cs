@@ -83,7 +83,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             return new LinearLayout
             {
                 Orientation = Orientation.Horizontal,
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Children =
                 {
                     new TextBlock
