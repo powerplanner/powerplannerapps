@@ -27,7 +27,7 @@ namespace PowerPlannerAppDataLibrary.Components
             View content = new Border
             {
                 BackgroundColor = Item.Class.Color.ToColor(),
-                CornerRadius = 6,
+                CornerRadius = Item.IsComplete ? 0 : 6,
                 Content = new TextBlock
                 {
                     Text = Item.Name,
@@ -58,6 +58,11 @@ namespace PowerPlannerAppDataLibrary.Components
 
                             content.LinearLayoutWeight(1)
                         }
+                };
+                content = new Border()
+                {
+                    CornerRadius = 6,
+                    Content = content
                 };
             }
 
