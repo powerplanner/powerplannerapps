@@ -16,8 +16,6 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary;
-using Vx.Views;
-using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -202,7 +200,6 @@ namespace PowerPlanneriOS.Controllers
             MyNavigationController.View.TranslatesAutoresizingMaskIntoConstraints = false;
             MyNavigationController.View.StretchWidth(base.View);
             MyNavigationController.View.StretchHeight(base.View);
-            View.BackgroundColor = Theme.Current.BackgroundAlt2Color.ToUI();
         }
 
         public override void ViewDidLoad()
