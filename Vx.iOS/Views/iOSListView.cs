@@ -27,6 +27,10 @@ namespace Vx.iOS.Views
             View.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
 
             View.AllowsSelection = false;
+
+            // Clear out the background
+            View.BackgroundColor = UIColor.Clear;
+            View.BackgroundView = null;
         }
 
         private INotifyCollectionChanged _prevList;
