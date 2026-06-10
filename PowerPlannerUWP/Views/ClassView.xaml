@@ -127,7 +127,8 @@
 
                                 <TextBlock
                                     Text="{x:Bind data:R.S('ClassPage_TextBlockDetails.Text')}"
-                                        Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                                    FontWeight="Normal"/>
 
                                 <TextBlock
                                         Text="{x:Bind ViewModel.ViewItemsGroupClass.Class.Details, Mode=OneWay, FallbackValue=[details]}"
@@ -153,7 +154,8 @@
 
                                 <TextBlock
                                     Text="{x:Bind data:R.S('ClassPage_TextBlockClassTimes.Text')}"
-                                        Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                                    FontWeight="Normal"/>
 
                                 <ItemsControl
                                         ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Class.Schedules}"
@@ -181,7 +183,8 @@
 
                                 <TextBlock
                                     Text="{x:Bind data:R.S('ClassPage_TextBlockTasks.Text')}"
-                                        Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                                    FontWeight="Normal"/>
 
                                 <ItemsControl
                                         ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Tasks}"
@@ -209,7 +212,8 @@
 
                                 <TextBlock
                                     Text="{x:Bind data:R.S('ClassPage_TextBlockEvents.Text')}"
-                                        Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                                    FontWeight="Normal"/>
 
                                 <ItemsControl
                                         ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Events}"
@@ -231,7 +235,8 @@
                             <StackPanel>
                                 <TextBlock
                                     Text="{x:Bind data:R.S('ClassPage_TextBlockGrades.Text')}"
-                                        Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        Style="{ThemeResource SubtitleTextBlockStyle}"
+                                    FontWeight="Normal"/>
 
                                 <TextBlock
                                         Text="{x:Bind ViewModel.ViewItemsGroupClass.Class.Grade, Mode=OneWay, Converter={StaticResource NumberToFormatConverter}, ConverterParameter='0.##%', FallbackValue=[percent]}"

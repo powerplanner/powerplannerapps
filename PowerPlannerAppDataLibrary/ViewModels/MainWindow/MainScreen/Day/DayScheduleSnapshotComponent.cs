@@ -17,7 +17,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
     public class DayScheduleSnapshotComponent : VxComponent
     {
         private static readonly float TIME_INDICATOR_SIZE = 60;
-        private static readonly float GAP_SIZE = 2;
+        private static readonly float GAP_SIZE = 1;
         public static readonly float HEIGHT_OF_HOUR = TIME_INDICATOR_SIZE + GAP_SIZE;
 
         [VxSubscribe]
@@ -45,7 +45,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             var root = new FrameLayout
             {
                 Height = (float)ArrangedItems.TotalHeight,
-                Tapped = CollapseExpanded
+                Tapped = CollapseExpanded,
+                BackgroundColor = Theme.Current.SubtleForegroundColor.Opacity(0.2)
             };
 
             for (TimeSpan time = ArrangedItems.StartTime; time <= ArrangedItems.EndTime; time = time.Add(TimeSpan.FromHours(1)))
@@ -73,10 +74,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
                 root.Children.Add(new Border
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                    Margin = new Thickness(TIME_INDICATOR_SIZE + GAP_SIZE, fromTop, 0, 0),
+                    Margin = new Thickness(TIME_INDICATOR_SIZE, fromTop, 0, 0),
                     VerticalAlignment = VerticalAlignment.Top,
-                    Height = TIME_INDICATOR_SIZE
+                    Height = TIME_INDICATOR_SIZE,
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color
                 });
             }
 
@@ -295,7 +296,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             View viewToAdd = view;
 
             float leftOffset = TIME_INDICATOR_SIZE + GAP_SIZE + (float)item.LeftOffset;
-            float rightOffset = 0;
+            float rightOffset = Theme.Current.PageMargin;
 
             if (item.NumOfColumns > 1 && Size.Width > leftOffset)
             {

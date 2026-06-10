@@ -64,11 +64,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 Orientation = Orientation.Vertical,
                 Children =
                 {
-                    IncludeHeader ? Divider() : null,
-
                     IncludeHeader ? RenderHeader() : null,
-
-                    IncludeHeader ? Divider() : null,
 
                     new ListView
                     {

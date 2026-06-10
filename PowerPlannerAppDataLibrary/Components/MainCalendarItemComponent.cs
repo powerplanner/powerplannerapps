@@ -27,6 +27,7 @@ namespace PowerPlannerAppDataLibrary.Components
             View content = new Border
             {
                 BackgroundColor = Item.Class.Color.ToColor(),
+                CornerRadius = 6,
                 Content = new TextBlock
                 {
                     Text = Item.Name,
