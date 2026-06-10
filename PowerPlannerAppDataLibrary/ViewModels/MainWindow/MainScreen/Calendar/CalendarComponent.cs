@@ -362,7 +362,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public const int CompactRightMargin = 8;
             public const int CompactLeftMargin = 10;
             public const int FullSizeLeftRightMargin = 10;
-            private const int CircleSize = 5;
+            private static int CircleSize = VxPlatform.Current == Platform.iOS ? 7 : 5;
+            private static int CircleMargin = VxPlatform.Current == Platform.iOS ? 2 : 3;
 
             private View RenderDay(DateTime date)
             {
@@ -466,8 +467,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                 Color = item.Class.Color.ToColor(),
                                 Opacity = 0.7f,
                                 FontSize = 6,
-                                VerticalAlignment = VerticalAlignment.Bottom,
-                                Margin = new Thickness(first ? 0 : 3, 0, 0, 0)
+                                VerticalAlignment = VerticalAlignment.Top,
+                                Margin = new Thickness(first ? 0 : CircleMargin, 0, 0, 0)
                             });
                         }
                         else
@@ -478,8 +479,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                 Height = CircleSize,
                                 CornerRadius = CircleSize,
                                 BackgroundColor = item.Class.Color.ToColor(),
-                                VerticalAlignment = VerticalAlignment.Bottom,
-                                Margin = new Thickness(first ? 0 : 3, 0, 0, 0)
+                                VerticalAlignment = VerticalAlignment.Top,
+                                Margin = new Thickness(first ? 0 : CircleMargin, 0, 0, 0)
                             });
                         }
 
