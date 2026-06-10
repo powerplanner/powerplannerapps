@@ -27,16 +27,14 @@ namespace Vx.iOS.Views
             View.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
 
             View.AllowsSelection = false;
-
-            // Clear out the background
-            View.BackgroundColor = UIColor.Clear;
-            View.BackgroundView = null;
         }
 
         private INotifyCollectionChanged _prevList;
         protected override void ApplyProperties(ListView oldView, ListView newView)
         {
             base.ApplyProperties(oldView, newView);
+
+            View.BackgroundColor = newView.BackgroundColor.ToUI();
 
             var padding = newView.Padding.AsModified();
             View.ContentInset = new UIEdgeInsets(0, padding.Left, padding.Bottom, padding.Right);

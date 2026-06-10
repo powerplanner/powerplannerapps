@@ -85,6 +85,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new FrameLayout
                 {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
                     {
                         baseView,
@@ -102,6 +103,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new LinearLayout
                 {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
                     {
                         new Toolbar
@@ -127,6 +129,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new LinearLayout
                 {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     VerticalAlignment = VerticalAlignment.Center,
                     Children =
                     {
@@ -150,6 +153,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
             return new ListView
             {
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Items = ItemsWithHeaders,
                 ItemTemplate = RenderItem,
                 Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))

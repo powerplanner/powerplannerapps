@@ -77,6 +77,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
                     mobileContent = new ListView
                     {
+                        BackgroundColor = Theme.Current.BackgroundAlt2Color,
                         Items = MainScreenViewModel.Classes,
                         Padding = new Thickness(0, Theme.Current.PageMargin / 2f, 0, Theme.Current.PageMargin / 2f + floatingActionButtonOffset),
                         ItemTemplate = _renderClassMobileTemplate,
@@ -122,6 +123,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
                 content = new ListView
                 {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Items = MainScreenViewModel.Classes,
                     Padding = new Thickness(0, Theme.Current.PageMargin / 2f, 0, Theme.Current.PageMargin / 2f),
                     ItemTemplate = _renderClassTemplate,
@@ -227,6 +229,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
         {
             return new Border
             {
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Content = new LinearLayout
                 {
                     Margin = new Thickness(Theme.Current.PageMargin),

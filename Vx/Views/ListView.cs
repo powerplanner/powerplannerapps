@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Vx.Views
@@ -17,5 +18,7 @@ namespace Vx.Views
         public Action<object> ItemClicked { get; set; }
 
         public Thickness Padding { get; set; }
+
+        public Color BackgroundColor { get; set; }
     }
 }

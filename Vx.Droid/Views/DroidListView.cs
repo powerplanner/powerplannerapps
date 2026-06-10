@@ -86,6 +86,8 @@ namespace Vx.Droid.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.SetBackgroundColor(newView.BackgroundColor.ToDroid());
+
             _adapter.ItemClicked = newView.ItemClicked != null ? ItemClicked : null;
 
             if (!object.ReferenceEquals(_currentItems, newView.Items) || !object.ReferenceEquals(oldView?.ItemTemplate, newView.ItemTemplate))
