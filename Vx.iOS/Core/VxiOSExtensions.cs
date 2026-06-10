@@ -251,7 +251,7 @@ namespace Vx.iOS
             return view.CreateNativeView(parentView).View as UIViewWrapper;
         }
 
-        internal static UIColor ToUI(this Color color)
+        public static UIColor ToUI(this Color color)
         {
             return UIColor.FromRGBA(color.R, color.G, color.B, color.A);
         }
