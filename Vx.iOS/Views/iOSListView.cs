@@ -121,6 +121,10 @@ namespace Vx.iOS.Views
                 if (cell == null)
                 {
                     cell = new UITableViewCell(UITableViewCellStyle.Default, CellId);
+
+                    // Ensure clear background
+                    cell.BackgroundColor = UIColor.Clear;
+
                     var componentView = new VxDataTemplateComponent
                     {
                         Data = item,
