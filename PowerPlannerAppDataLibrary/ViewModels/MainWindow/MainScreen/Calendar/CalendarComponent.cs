@@ -413,18 +413,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 };
 
                 var dayBackgroundColor = Color.Transparent;
-
-                if (holidays.Any())
-                {
-                    dayBackgroundColor = dayBackgroundColor.Overlay(Color.Red, 0.3);
-                }
-                else if (IsSelected)
+                
+                if (IsSelected)
                 {
                     dayBackgroundColor = Theme.Current.AccentColor;
                 }
                 else if (isToday)
                 {
                     dayBackgroundColor = Theme.Current.SubtleForegroundColor.Opacity(0.2);
+                }
+                else if (holidays.Any())
+                {
+                    dayBackgroundColor = dayBackgroundColor.Overlay(Color.Red, 0.3);
                 }
 
                 var linearLayout = new LinearLayout
