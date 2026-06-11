@@ -184,10 +184,9 @@ jobs:
           -p:CreatePackage=true
           -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
           -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
-          -p:PackageSigningKey="3rd Party Mac Developer Installer: BareBones Dev%2c LLC (A9B367L69G)"
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
-      - name: Find and copy PKG
+      - name: Sign and copy PKG
         id: find-pkg
         shell: bash
         run: |
@@ -197,13 +196,16 @@ jobs:
             exit 1
           fi
           mkdir -p artifacts
-          cp "$pkg" "artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.0.pkg"
-          echo "PKG: artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.0.pkg"
+          productsign \
+            --sign "3rd Party Mac Developer Installer: BareBones Dev, LLC (A9B367L69G)" \
+            "$pkg" \
+            "artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
+          echo "PKG: artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
 
       - name: Upload PKG artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PowerPlannerMac.${{ env.BUILD_VERSION }}.0.pkg
+          name: PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg
           path: artifacts/*.pkg
 
       - name: Clean up keychain
