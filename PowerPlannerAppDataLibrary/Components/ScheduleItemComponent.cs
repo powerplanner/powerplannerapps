@@ -38,8 +38,6 @@ namespace PowerPlannerAppDataLibrary.Components
 
             var layout = new LinearLayout
             {
-                BackgroundColor = c.Color.ToColor(),
-                Height = (float)ScheduleItem.Height,
                 Children =
                 {
                     Text(c.Name)
@@ -84,7 +82,13 @@ namespace PowerPlannerAppDataLibrary.Components
                 }
             }
 
-            return layout;
+            return new Border
+            {
+                BackgroundColor = c.Color.ToColor(),
+                Height = (float)ScheduleItem.Height,
+                CornerRadius = 6,
+                Content = layout
+            };
         }
 
         private TextBlock Text(string txt)

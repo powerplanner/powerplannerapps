@@ -342,7 +342,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                             BackgroundColor = ColorBytesHelper.ToColor(c.Color),
                                             Width = 14,
                                             Height = 14,
-                                            VerticalAlignment = VerticalAlignment.Center
+                                            VerticalAlignment = VerticalAlignment.Center,
+                                            CornerRadius = 14
                                         },
                                         new TextBlock
                                         {

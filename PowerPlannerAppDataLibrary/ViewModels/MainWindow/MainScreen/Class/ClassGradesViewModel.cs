@@ -376,17 +376,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             return new Border
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Content = new TextBlock
                 {
                     Text = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader"),
                     FontSize = Theme.Current.SubtitleFontSize,
-                    Margin = new Thickness(12, 6, 6, 6),
+                    Margin = new Thickness(0, 6, 6, 6),
                     WrapText = false
                 },
-                Margin = new Thickness(includeMargin ? Theme.Current.PageMargin : 0, 18, includeMargin ? Theme.Current.PageMargin : 0, 3),
-                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
-                BorderThickness = new Thickness(1)
+                Margin = new Thickness(includeMargin ? Theme.Current.PageMargin : 0, 18, includeMargin ? Theme.Current.PageMargin : 0, 3)
             };
         }
 
@@ -403,7 +400,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 return new Border
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Content = new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
@@ -413,7 +409,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             Text = Weight.Name,
                             FontSize = Theme.Current.SubtitleFontSize,
-                            Margin = new Thickness(12, 6, 6, 6),
+                            Margin = new Thickness(0, 6, 6, 6),
                             WrapText = false
                         }.LinearLayoutWeight(1),
 
@@ -427,9 +423,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         }
                     }
                     },
-                    Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0),
-                    BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
-                    BorderThickness = new Thickness(1)
+                    Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0)
                 };
             }
         }

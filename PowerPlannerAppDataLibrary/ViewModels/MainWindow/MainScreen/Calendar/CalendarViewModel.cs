@@ -747,6 +747,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             var root = new LinearLayout
             {
                 Orientation = Orientation.Vertical,
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Children =
                 {
                     toolbar,
@@ -770,7 +771,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             AddEvent = () => AddEvent(),
                             AddHoliday = () => AddHoliday()
                         } : null
-                    }
+                    },
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color
                 };
             }
 

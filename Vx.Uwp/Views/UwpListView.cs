@@ -36,6 +36,8 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.Background = newView.BackgroundColor.ToUwpBrush();
+
             View.IsItemClickEnabled = newView.ItemClicked != null;
 
             View.Padding = newView.Padding.ToUwp();

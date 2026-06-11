@@ -64,11 +64,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                 Orientation = Orientation.Vertical,
                 Children =
                 {
-                    IncludeHeader ? Divider() : null,
-
                     IncludeHeader ? RenderHeader() : null,
-
-                    IncludeHeader ? Divider() : null,
 
                     new ListView
                     {
@@ -87,7 +83,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             return new LinearLayout
             {
                 Orientation = Orientation.Horizontal,
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Children =
                 {
                     new TextBlock

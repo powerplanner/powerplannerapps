@@ -34,6 +34,8 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.BackgroundColor = newView.BackgroundColor.ToUI();
+
             var padding = newView.Padding.AsModified();
             View.ContentInset = new UIEdgeInsets(0, padding.Left, padding.Bottom, padding.Right);
             View.TableHeaderView = new UIView(new CoreGraphics.CGRect(0, 0, 0, padding.Top)); // Have to use HeaderView for top padding since the ContentInset won't start scrolled (Insets are meant for a transparent header where the content scrolls underneath).
@@ -117,6 +119,10 @@ namespace Vx.iOS.Views
                 if (cell == null)
                 {
                     cell = new UITableViewCell(UITableViewCellStyle.Default, CellId);
+
+                    // Ensure clear background
+                    cell.BackgroundColor = UIColor.Clear;
+
                     var componentView = new VxDataTemplateComponent
                     {
                         Data = item,

@@ -33,8 +33,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public bool IsFullSize => _viewModel.DisplayState == CalendarViewModel.DisplayStates.FullCalendar;
 
-        public static Color CalendarColor => Theme.Current.IsDarkTheme ? Color.FromArgb(18, 18, 18) : Color.FromArgb(240, 240, 240);
-
         public CalendarComponent(CalendarViewModel viewModel)
         {
             _viewModel = viewModel;
@@ -235,7 +233,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             top: 6,
                             right: IsFullSize ? CalendarDayComponent.FullSizeLeftRightMargin : CalendarDayComponent.CompactRightMargin,
                             bottom: 6),
-                        TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right
+                        TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Center
                     }.LinearLayoutWeight(1));
                 }
 
@@ -243,13 +241,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 for (int r = 0; r < 6; r++)
                 {
-                    grid.Children.Add(new Border
-                    {
-                        BackgroundColor = Theme.Current.SubtleForegroundColor,
-                        Opacity = 0.3f,
-                        Height = 1
-                    });
-
                     var row = new LinearLayout
                     {
                         Orientation = Orientation.Horizontal
@@ -260,16 +251,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                         var date = array[r, c];
 
                         row.Children.Add(RenderDay(date).LinearLayoutWeight(1));
-
-                        if (c != 6)
-                        {
-                            row.Children.Add(new Border
-                            {
-                                BackgroundColor = Theme.Current.SubtleForegroundColor,
-                                Opacity = 0.3f,
-                                Width = 1
-                            });
-                        }
                     }
 
                     grid.Children.Add(row.LinearLayoutWeight(1));
@@ -293,7 +274,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 var finalLayout = new LinearLayout
                 {
-                    BackgroundColor = CalendarColor,
                     Children =
                     {
                         monthHeader,
@@ -382,7 +362,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public const int CompactRightMargin = 8;
             public const int CompactLeftMargin = 10;
             public const int FullSizeLeftRightMargin = 10;
-            private const int CircleSize = 5;
+            private static int CircleSize = VxPlatform.Current == Platform.iOS ? 7 : 5;
+            private static int CircleMargin = VxPlatform.Current == Platform.iOS ? 2 : 3;
 
             private View RenderDay(DateTime date)
             {
@@ -402,7 +383,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     dayType = DayType.NextMonth;
                 }
 
-                Color foregroundColor = isToday ? Color.White : Theme.Current.SubtleForegroundColor;
+                Color foregroundColor;
+                if (IsSelected)
+                {
+                    foregroundColor = Color.White;
+                }
+                else if (dayType != DayType.ThisMonth)
+                {
+                    foregroundColor = Theme.Current.SubtleForegroundColor;
+                }
+                else
+                {
+                    foregroundColor = Theme.Current.ForegroundColor;
+                }
 
                 var itemsOnDay = TasksOrEventsOnDay.Get(ViewModel.MainScreenViewModel.CurrentAccount, Items, date, ViewModel.Today, activeOnly: !ShowPastCompleteItems);
                 SubscribeToCollectionStrong(itemsOnDay, nameof(itemsOnDay));
@@ -414,16 +407,23 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Text = date.Day.ToString(),
                     Margin = IsFullSize ? new Thickness(FullSizeLeftRightMargin, 6, FullSizeLeftRightMargin, 6) : new Thickness(CompactLeftMargin, 4, CompactRightMargin, 0),
                     FontSize = IsFullSize ? Theme.Current.SubtitleFontSize : Theme.Current.BodyFontSize,
-                    FontWeight = FontWeights.SemiLight,
                     TextColor = foregroundColor,
                     VerticalAlignment = IsFullSize ? VerticalAlignment.Center : VerticalAlignment.Top,
-                    TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Right,
+                    TextAlignment = IsFullSize ? HorizontalAlignment.Left : HorizontalAlignment.Center,
                     WrapText = false
                 };
 
-                var dayBackgroundColor = isToday ? TodayColor : dayType == DayType.ThisMonth ? CalendarColor : OtherMonthColor;
-
-                if (holidays.Any())
+                var dayBackgroundColor = Color.Transparent;
+                
+                if (IsSelected)
+                {
+                    dayBackgroundColor = Theme.Current.AccentColor;
+                }
+                else if (isToday)
+                {
+                    dayBackgroundColor = Theme.Current.SubtleForegroundColor.Opacity(0.2);
+                }
+                else if (holidays.Any())
                 {
                     dayBackgroundColor = dayBackgroundColor.Overlay(Color.Red, 0.3);
                 }
@@ -451,11 +451,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     var itemCircles = new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
-                        Margin = new Thickness(5,0,5,5),
-                        AllowOverflowAndClip = true
+                        Margin = new Thickness(5,5,5,5),
+                        AllowOverflowAndClip = true,
+                        HorizontalAlignment = HorizontalAlignment.Center
                     };
 
-                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>())
+                    bool first = true;
+                    foreach (var item in itemsOnDay.OfType<ViewItemTaskOrEvent>().Take(8))
                     {
                         if (item.IsComplete)
                         {
@@ -465,8 +467,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                 Color = item.Class.Color.ToColor(),
                                 Opacity = 0.7f,
                                 FontSize = 6,
-                                VerticalAlignment = VerticalAlignment.Bottom,
-                                Margin = new Thickness(0, 0, 4, 0)
+                                VerticalAlignment = VerticalAlignment.Top,
+                                Margin = new Thickness(first ? 0 : CircleMargin, 0, 0, 0)
                             });
                         }
                         else
@@ -477,14 +479,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                 Height = CircleSize,
                                 CornerRadius = CircleSize,
                                 BackgroundColor = item.Class.Color.ToColor(),
-                                VerticalAlignment = VerticalAlignment.Bottom,
-                                Margin = new Thickness(0, 0, 4, 0)
+                                VerticalAlignment = VerticalAlignment.Top,
+                                Margin = new Thickness(first ? 0 : CircleMargin, 0, 0, 0)
                             });
                         }
+
+                        first = false;
                     }
 
                     linearLayout.Children.Add(tbDay);
-                    linearLayout.Children.Add(itemCircles.LinearLayoutWeight(1));
+                    linearLayout.Children.Add(itemCircles);
                 }
                 // FULL SIZE MODE: Show items on the day
                 else
@@ -559,10 +563,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 return new Border
                 {
-                    BorderThickness = new Thickness(2),
                     BackgroundColor = dayBackgroundColor,
-                    BorderColor = IsSelected ? Theme.Current.AccentColor : dayBackgroundColor,
-                    Content = linearLayout
+                    Content = linearLayout,
+                    CornerRadius = IsFullSize ? 9 : 6
                 }.AllowDropTaskOrEventOnDate(this.Date);
             }
 
@@ -573,7 +576,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Item = item,
                     ViewModel = ViewModel,
                     ShowItem = ShowItem,
-                    Margin = new Thickness(0, 0, 0, 1)
+                    Margin = new Thickness(2, 0, 2, 3)
                 };
             }
 
