@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Foundation;
-using InterfacesiOS.App;
 using UIKit;
+using InterfacesiOS.App;
 using PowerPlanneriOS.App;
 using PowerPlannerAppDataLibrary.Windows;
 using BareMvvm.Core.App;
@@ -229,7 +230,9 @@ namespace PowerPlanneriOS
 
             bool result = base.FinishedLaunching(application, launchOptions);
 
+#if !MACCATALYST
             RegisterWindow(shortcutAction);
+#endif
 
             return result;
         }
@@ -437,39 +440,73 @@ namespace PowerPlanneriOS
 
         public static bool _hasActivatedWindow;
         public static Func<MainWindowViewModel, Task> _handleLaunchAction;
+
+#if MACCATALYST
+        [Export("application:configurationForConnectingSceneSession:options:")]
+        public override UISceneConfiguration GetConfiguration(UIApplication application, UISceneSession connectingSceneSession, UISceneConnectionOptions options)
+        {
+            return new UISceneConfiguration("Default Configuration", connectingSceneSession.Role);
+        }
+
+        internal async void RegisterWindowForScene(UIWindow window, UIApplicationShortcutItem? shortcutItem)
+        {
+            this.Window = window;
+            await InitializeWindow(window, ConvertShortcutItem(shortcutItem));
+        }
+#endif
+
         private async void RegisterWindow(ShortcutAction? shortcutAction)
         {
 #pragma warning disable CA1422 // UIWindow(CGRect) is obsoleted on iOS 26.0, but needed for pre-scene-based lifecycle
             this.Window = new UIWindow(UIScreen.MainScreen.Bounds);
 #pragma warning restore CA1422
+            await InitializeWindow(this.Window, shortcutAction);
+        }
 
-            Window.BackgroundColor = UIColorCompat.SystemBackgroundColor;
-            Window.TintColor = ColorResources.PowerPlannerAccentBlue;
-            this.Window.RootViewController = UIStoryboard.FromName("LaunchScreen", null).InstantiateInitialViewController();
-
-            this.Window.MakeKeyAndVisible();
-
-            _mainAppWindow = new MainAppWindow();
-            await PortableApp.Current.RegisterWindowAsync(_mainAppWindow, new NativeiOSAppWindow(Window));
-
-            // Launch the app
-            var mainWindowViewModel = _mainAppWindow.GetViewModel();
-            if (shortcutAction != null)
+        private async Task InitializeWindow(UIWindow window, ShortcutAction? shortcutAction)
+        {
+            try
             {
-                HandleShortcutAction(shortcutAction.Value);
+                window.BackgroundColor = UIColorCompat.SystemBackgroundColor;
+                window.TintColor = ColorResources.PowerPlannerAccentBlue;
+                // Fallback to an empty VC if the launch screen storyboard isn't available (e.g. Mac Catalyst)
+                window.RootViewController = UIStoryboard.FromName("LaunchScreen", null)?.InstantiateInitialViewController()
+                    ?? new UIViewController();
 
-                // We make sure to activate the normal launch, and then later the HandleLaunch kicks in
-                if (!_hasActivatedWindow)
+                window.MakeKeyAndVisible();
+
+                _mainAppWindow = new MainAppWindow();
+                await PortableApp.Current.RegisterWindowAsync(_mainAppWindow, new NativeiOSAppWindow(window));
+
+                // Launch the app
+                var mainWindowViewModel = _mainAppWindow.GetViewModel();
+                if (shortcutAction != null)
+                {
+                    HandleShortcutAction(shortcutAction.Value);
+
+                    // We make sure to activate the normal launch, and then later the HandleLaunch kicks in
+                    if (!_hasActivatedWindow)
+                    {
+                        await mainWindowViewModel.HandleNormalLaunchActivation();
+                    }
+                }
+                else
                 {
                     await mainWindowViewModel.HandleNormalLaunchActivation();
                 }
-            }
-            else
-            {
-                await mainWindowViewModel.HandleNormalLaunchActivation();
-            }
 
-            ViewManager.RootViewModel = _mainAppWindow.ViewModel;
+                ViewManager.RootViewModel = _mainAppWindow.ViewModel;
+            }
+            catch (Exception ex)
+            {
+                // Show the exception as an alert so it's visible when debugging without Xcode
+                var alert = UIAlertController.Create(
+                    "Startup Error",
+                    ex.ToString(),
+                    UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                window.RootViewController?.PresentViewController(alert, true, null);
+            }
         }
 
         private void HandleShortcutAction(ShortcutAction action)
