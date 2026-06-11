@@ -163,7 +163,11 @@ jobs:
       - name: Add application-identifier to widget Entitlements
         shell: bash
         run: |
-          /usr/libexec/PlistBuddy -c 'add application-identifier string A9B367L69G.com.barebonesdev.powerplanner.widget' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
+          # Use Delete+Add to ensure the key is always set correctly regardless of prior state
+          /usr/libexec/PlistBuddy -c 'Delete :application-identifier' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c 'Add :application-identifier string A9B367L69G.com.barebonesdev.powerplanner.widget' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
+          echo "=== NativeWidgetExtension.entitlements after update ==="
+          cat PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
 
       - name: Set version in Info-Mac.plist and NativeWidget
         shell: bash
@@ -221,6 +225,9 @@ jobs:
             --options runtime \
             --timestamp \
             "$appex"
+
+          echo "=== Widget extension embedded entitlements after re-signing ==="
+          codesign -d --entitlements :- "$appex" 2>&1
 
           # Re-sign the outer app preserving original entitlements (provisioning profile, flags, etc.)
           codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
