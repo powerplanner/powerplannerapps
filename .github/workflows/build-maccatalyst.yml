@@ -146,6 +146,16 @@ jobs:
           cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.provisionprofile"
           echo "Installed widget provisioning profile: $UUID"
 
+      - name: Set widget provisioning profile in NativeApp.xcodeproj
+        shell: bash
+        run: |
+          sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner\.widget;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner.widget; PROVISIONING_PROFILE_SPECIFIER = "${{ vars.MAC_WIDGET_PROVISIONING_PROFILE_NAME }}";|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
+
+      - name: Set NativeApp provisioning profile in NativeApp.xcodeproj
+        shell: bash
+        run: |
+          sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner; PROVISIONING_PROFILE_SPECIFIER = "${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}";|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
+
       - name: Set version in Info-Mac.plist
         shell: bash
         run: |
@@ -170,7 +180,6 @@ jobs:
           -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
           -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
           -p:PackageSigningKey="3rd Party Mac Developer Installer: BareBones Dev%2c LLC (A9B367L69G)"
-          -p:MacWidgetProvisioningProfile="${{ vars.MAC_WIDGET_PROVISIONING_PROFILE_NAME }}"
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Find and copy PKG
