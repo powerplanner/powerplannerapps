@@ -186,45 +186,54 @@ jobs:
 
       - name: Publish PowerPlanneriOS (Mac Catalyst)
         # Omitting -r lets dotnet build a universal binary (arm64 + x64) automatically.
-        # CreatePackage is omitted so we can re-sign the widget extension before packaging.
         run: >-
           dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj
           -f net10.0-maccatalyst
           -c Release
           --self-contained
+          -p:CreatePackage=true
           -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
           -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
-      - name: Re-sign widget extension with entitlements
-        # dotnet publish re-signs the whole bundle, stripping application-identifier from the
-        # widget extension. Re-sign it explicitly before packaging.
+      - name: Fix widget signature and create signed PKG
+        # dotnet re-signs embedded extensions without application-identifier.
+        # Expand the pkg, fix only the widget signature (preserving everything else), re-flatten, sign.
         shell: bash
         run: |
-          app=$(find PowerPlanneriOS/bin -name "PowerPlanneriOS.app" -type d | head -1)
-          appex="$app/Contents/PlugIns/NativeWidgetExtension.appex"
+          pkg=$(find . -name "*.pkg" -not -path "*/obj/*" -type f | head -1)
+          if [ -z "$pkg" ]; then
+            echo "No PKG found"
+            exit 1
+          fi
 
+          EXPANDED="$RUNNER_TEMP/pkg_expanded"
+          REFLATTEN="$RUNNER_TEMP/pkg_reflatten.pkg"
+
+          pkgutil --expand-full "$pkg" "$EXPANDED"
+
+          appex=$(find "$EXPANDED" -name "NativeWidgetExtension.appex" -type d | head -1)
+          app=$(find "$EXPANDED" -name "PowerPlanneriOS.app" -type d | head -1)
+
+          # Re-sign the widget extension with full entitlements including application-identifier
           codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
             --entitlements PowerPlanneriOSWidget/NativeWidgetExtension.entitlements \
             --options runtime \
+            --timestamp \
             "$appex"
 
-          # Re-sign outer app to update the bundle hash after changing an embedded extension
+          # Re-sign the outer app preserving original entitlements (provisioning profile, flags, etc.)
           codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
-            --entitlements PowerPlanneriOS/Entitlements-Mac.plist \
-            --options runtime \
+            --preserve-metadata=entitlements,flags,runtime \
+            --timestamp \
             "$app"
 
-      - name: Create and sign PKG
-        id: find-pkg
-        shell: bash
-        run: |
-          app=$(find PowerPlanneriOS/bin -name "PowerPlanneriOS.app" -type d | head -1)
-          mkdir -p artifacts
+          pkgutil --flatten "$EXPANDED" "$REFLATTEN"
 
-          productbuild \
-            --component "$app" /Applications \
+          mkdir -p artifacts
+          productsign \
             --sign "3rd Party Mac Developer Installer: BareBones Dev, LLC (A9B367L69G)" \
+            "$REFLATTEN" \
             "artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
           echo "PKG: artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
 
