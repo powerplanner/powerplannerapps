@@ -222,9 +222,10 @@ jobs:
           echo "=== Widget extension embedded entitlements after re-signing ==="
           codesign -d --entitlements :- "$appex" 2>&1
 
-          # Re-sign outer app preserving original entitlements (provisioning profile, flags, etc.)
+          # Re-sign outer app with explicit entitlements (preserve-metadata was missing app-sandbox)
           codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
-            --preserve-metadata=entitlements,flags,runtime \
+            --entitlements PowerPlanneriOS/Entitlements-Mac.plist \
+            --options runtime \
             --timestamp \
             "$app"
 
