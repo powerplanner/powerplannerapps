@@ -5,7 +5,7 @@
     <key>CFBundleDisplayName</key>
     <string>Power Planner</string>
     <key>CFBundleIdentifier</key>
-    <string>com.barebonesdev.powerplanner</string>
+    <string>com.barebonesdev.powerplanner.dev</string>
     <key>CFBundleShortVersionString</key>
     <string>5.4.84</string>
     <key>CFBundleVersion</key>
