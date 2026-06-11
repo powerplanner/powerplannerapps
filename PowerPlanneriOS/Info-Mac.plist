@@ -87,5 +87,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 </dict>
 </plist> 
