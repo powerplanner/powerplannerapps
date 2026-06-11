@@ -202,24 +202,17 @@ jobs:
 
       - name: Fix widget signature and create signed PKG
         # dotnet re-signs embedded extensions without application-identifier.
-        # Expand the pkg, fix only the widget signature (preserving everything else), re-flatten, sign.
+        # Use the .app from the build output directly (avoids pkgutil flatten corrupting Mach-O sigs).
         shell: bash
         run: |
-          pkg=$(find . -name "*.pkg" -not -path "*/obj/*" -type f | head -1)
-          if [ -z "$pkg" ]; then
-            echo "No PKG found"
-            exit 1
-          fi
+          app=$(find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d | head -1)
+          appex="$app/Contents/PlugIns/NativeWidgetExtension.appex"
 
-          EXPANDED="$RUNNER_TEMP/pkg_expanded"
-          REFLATTEN="$RUNNER_TEMP/pkg_reflatten.pkg"
+          echo "App: $app"
+          echo "AppEx: $appex"
+          ls "$app/Contents/embedded.provisionprofile" && echo "Provisioning profile present" || echo "WARNING: No provisioning profile!"
 
-          pkgutil --expand-full "$pkg" "$EXPANDED"
-
-          appex=$(find "$EXPANDED" -name "NativeWidgetExtension.appex" -type d | head -1)
-          app=$(find "$EXPANDED" -name "PowerPlanneriOS.app" -type d | head -1)
-
-          # Re-sign the widget extension with full entitlements including application-identifier
+          # Re-sign widget extension with full entitlements including application-identifier
           codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
             --entitlements PowerPlanneriOSWidget/NativeWidgetExtension.entitlements \
             --options runtime \
@@ -229,18 +222,17 @@ jobs:
           echo "=== Widget extension embedded entitlements after re-signing ==="
           codesign -d --entitlements :- "$appex" 2>&1
 
-          # Re-sign the outer app preserving original entitlements (provisioning profile, flags, etc.)
+          # Re-sign outer app preserving original entitlements (provisioning profile, flags, etc.)
           codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
             --preserve-metadata=entitlements,flags,runtime \
             --timestamp \
             "$app"
 
-          pkgutil --flatten "$EXPANDED" "$REFLATTEN"
-
+          # Create and sign the pkg directly from the re-signed .app
           mkdir -p artifacts
-          productsign \
+          productbuild \
+            --component "$app" /Applications \
             --sign "3rd Party Mac Developer Installer: BareBones Dev, LLC (A9B367L69G)" \
-            "$REFLATTEN" \
             "artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
           echo "PKG: artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
 
