@@ -161,7 +161,8 @@ jobs:
         run: |
           VERSION="${{ env.BUILD_VERSION }}"
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOS/Info-Mac.plist
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION.0" PowerPlanneriOS/Info-Mac.plist
+          # macOS requires at most 3 version components; iOS uses $VERSION.0 but Mac cannot
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" PowerPlanneriOS/Info-Mac.plist
 
       - name: Restore PowerPlanneriOS
         run: dotnet restore PowerPlanneriOS/PowerPlanneriOS.csproj
