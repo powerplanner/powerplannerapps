@@ -160,13 +160,23 @@ jobs:
         run: |
           sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner; PROVISIONING_PROFILE_SPECIFIER = "${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}";|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
 
-      - name: Set version in Info-Mac.plist
+      - name: Add application-identifier to widget Entitlements
+        shell: bash
+        run: |
+          /usr/libexec/PlistBuddy -c 'add application-identifier string A9B367L69G.com.barebonesdev.powerplanner.widget' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
+
+      - name: Set version in Info-Mac.plist and NativeWidget
         shell: bash
         run: |
           VERSION="${{ env.BUILD_VERSION }}"
+
+          # Main app — macOS requires at most 3 version components (no .0 suffix)
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOS/Info-Mac.plist
-          # macOS requires at most 3 version components; iOS uses $VERSION.0 but Mac cannot
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" PowerPlanneriOS/Info-Mac.plist
+
+          # NativeWidget — must match the main app
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOSWidget/NativeWidget/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" PowerPlanneriOSWidget/NativeWidget/Info.plist
 
       - name: Restore PowerPlanneriOS
         run: dotnet restore PowerPlanneriOS/PowerPlanneriOS.csproj
