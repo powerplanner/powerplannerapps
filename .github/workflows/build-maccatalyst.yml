@@ -158,12 +158,6 @@ jobs:
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOS/Info-Mac.plist
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION.0" PowerPlanneriOS/Info-Mac.plist
 
-      - name: Fix bundle identifier for production
-        # Info-Mac.plist currently uses the .dev bundle ID; update it to the production ID for App Store submission.
-        shell: bash
-        run: |
-          /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.barebonesdev.powerplanner" PowerPlanneriOS/Info-Mac.plist
-
       - name: Restore PowerPlanneriOS
         run: dotnet restore PowerPlanneriOS/PowerPlanneriOS.csproj
 
