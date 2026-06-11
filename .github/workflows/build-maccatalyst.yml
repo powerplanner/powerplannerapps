@@ -118,7 +118,7 @@ jobs:
 
       - name: List signing identities
         shell: bash
-        run: security find-identity -v -p codesigning
+        run: security find-identity -v
 
       - name: Install Mac App Store provisioning profile
         # Requires a Mac Catalyst distribution provisioning profile (file extension: .provisionprofile).
@@ -184,7 +184,7 @@ jobs:
           -p:CreatePackage=true
           -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
           -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
-          -p:PackageSigningKey="3rd Party Mac Developer Installer: BareBones Dev, LLC (A9B367L69G)"
+          -p:PackageSigningKey="3rd Party Mac Developer Installer: BareBones Dev%2c LLC (A9B367L69G)"
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Find and copy PKG
