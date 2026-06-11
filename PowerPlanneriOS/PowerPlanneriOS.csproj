@@ -134,8 +134,18 @@
     <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphoneos -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp" />
     <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphonesimulator -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp" />
   </Target>
+
+  <!--For Mac Catalyst widget, in debug mode don't sign-->
+  <Target Name="BuildDebugXcodeProjectMac" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug' And '$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
+  </Target>
+
+  <!--For Mac Catalyst widget, in release mode it should sign-->
+  <Target Name="BuildReleaseXcodeProjectMac" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp" />
+  </Target>
   
-  <!--For widget-->
+  <!--For iOS widget-->
   <ItemGroup Condition="'$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' != 'maccatalyst'">
     <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
       <Name>NativeWidgetExtension</Name>
@@ -144,6 +154,13 @@
     </AdditionalAppExtensions>
   </ItemGroup>
 
-  <!--For widget-->
-  <Import Condition="'$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' != 'maccatalyst'" Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
+  <!--For Mac Catalyst widget-->
+  <ItemGroup Condition="'$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+    <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
+      <Name>NativeWidgetExtension</Name>
+      <BuildOutput>DerivedData/NativeApp/Build/Products/$(Configuration)-maccatalyst</BuildOutput>
+    </AdditionalAppExtensions>
+  </ItemGroup>
+
+  <Import Condition="'$(OS)' != 'Windows_NT'" Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
 </Project>

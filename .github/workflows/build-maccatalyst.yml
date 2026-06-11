@@ -131,6 +131,26 @@ jobs:
           cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.provisionprofile"
           echo "Installed provisioning profile: $UUID"
 
+      - name: Install Mac Widget provisioning profile
+        # Requires a Mac Catalyst distribution provisioning profile for com.barebonesdev.powerplanner.widget.
+        # Create it at developer.apple.com for the Mac Catalyst platform and store it as MAC_WIDGET_PROVISIONING_PROFILE_BASE64.
+        env:
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.MAC_WIDGET_PROVISIONING_PROFILE_BASE64 }}
+        shell: bash
+        run: |
+          PP_PATH="$RUNNER_TEMP/mac-widget.provisionprofile"
+          echo -n "$PROVISIONING_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.provisionprofile"
+          echo "Installed widget provisioning profile: $UUID"
+
+      - name: Set NativeWidget provisioning profile
+        shell: bash
+        run: |
+          sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner\.widget;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner.widget; PROVISIONING_PROFILE_SPECIFIER = ${{ vars.MAC_WIDGET_PROVISIONING_PROFILE_NAME }};|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
+
       - name: Set version in Info-Mac.plist
         shell: bash
         run: |
