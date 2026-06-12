@@ -114,11 +114,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                                         }
                                     }.Show(_filterButtonRef), v => _filterButtonRef = v),
 
-                                DateTools.SameMonth(_viewModel.DisplayMonth, _viewModel.Today) ? null : CreateIconButton(
+                                _viewModel.CanGoToToday ? CreateIconButton(
                                     glyph: MaterialDesign.MaterialDesignIcons.Today,
                                     tooltipText: PowerPlannerResources.GetString("String_GoToToday"),
                                     altText: null,
-                                    click: () => _viewModel.GoToToday()),
+                                    click: () => _viewModel.GoToToday()) : null,
 
                                 CreateArrowButton(
                                     glyph: MaterialDesign.MaterialDesignIcons.ArrowRight,

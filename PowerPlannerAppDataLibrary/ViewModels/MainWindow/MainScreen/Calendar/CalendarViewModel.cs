@@ -269,6 +269,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             set => SetProperty(ref _showGoToTodayInPrimaryCommands, value, nameof(ShowGoToTodayInPrimaryCommands));
         }
 
+        public bool CanGoToToday
+        {
+            get
+            {
+                // For day view, we can go to today if the selected date is not today
+                if (DisplayState == DisplayStates.Day)
+                {
+                    return SelectedDate.Date != Today.Date;
+                }
+
+                // For split view, we can go to today if the selected date is not today or if the display month is not the current month
+                if (DisplayState == DisplayStates.Split)
+                {
+                    return SelectedDate.Date != Today.Date || !DateTools.SameMonth(DisplayMonth, Today);
+                }
+                
+                // For other views, we can go to today if the display month is not the current month
+                return !DateTools.SameMonth(DisplayMonth, Today);
+            }
+        }
+
         public enum ViewSizeStates
         {
             /// <summary>
@@ -661,7 +682,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
 
                 // Go to today button
-                if (!DateTools.SameMonth(DisplayMonth, Today))
+                if (CanGoToToday)
                 {
                     var goToTodayMenuItem = new MenuItem
                     {
