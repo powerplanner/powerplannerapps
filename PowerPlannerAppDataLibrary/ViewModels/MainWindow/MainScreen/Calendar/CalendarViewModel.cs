@@ -661,21 +661,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
 
                 // Go to today button
-                var goToTodayMenuItem = new MenuItem
+                if (!DateTools.SameMonth(DisplayMonth, Today))
                 {
-                    Text = PowerPlannerResources.GetString("String_GoToToday"),
-                    Glyph = MaterialDesign.MaterialDesignIcons.Today,
-                    Click = GoToToday
-                };
-                if (ShowGoToTodayInPrimaryCommands)
-                {
-                    toolbar.PrimaryCommands.Add(goToTodayMenuItem);
-                }
-                else
-                {
-                    // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
-                    goToTodayMenuItem.Glyph = null;
-                    toolbar.SecondaryCommands.Add(goToTodayMenuItem);
+                    var goToTodayMenuItem = new MenuItem
+                    {
+                        Text = PowerPlannerResources.GetString("String_GoToToday"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                        Click = GoToToday
+                    };
+                    if (ShowGoToTodayInPrimaryCommands)
+                    {
+                        toolbar.PrimaryCommands.Add(goToTodayMenuItem);
+                    }
+                    else
+                    {
+                        // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
+                        goToTodayMenuItem.Glyph = null;
+                        toolbar.SecondaryCommands.Add(goToTodayMenuItem);
+                    }
                 }
 
                 // Only on full calendar, show the option for past complete
