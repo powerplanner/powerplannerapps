@@ -20,7 +20,10 @@ namespace InterfacesiOS.Extensions
 
             if (dialog.PositiveText != null)
             {
-                alert.AddAction(UIAlertAction.Create(dialog.NegativeText ?? "Cancel", UIAlertActionStyle.Cancel, _ => _completionSource.TrySetResult(false)));
+                if (dialog.NegativeText != null)
+                {
+                    alert.AddAction(UIAlertAction.Create(dialog.NegativeText, UIAlertActionStyle.Cancel, _ => _completionSource.TrySetResult(false)));
+                }
                 alert.AddAction(UIAlertAction.Create(dialog.PositiveText, UIAlertActionStyle.Default, _ => _completionSource.TrySetResult(true)));
             }
             else
