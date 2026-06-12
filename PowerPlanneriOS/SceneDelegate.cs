@@ -15,6 +15,11 @@ namespace PowerPlanneriOS
         {
             if (scene is UIWindowScene windowScene)
             {
+                // Configure title bar appearance
+                windowScene.Titlebar?.TitleVisibility = UITitlebarTitleVisibility.Hidden;
+                windowScene.Titlebar?.Toolbar = null;
+
+
                 Window ??= new UIWindow(windowScene);
                 var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
                 appDelegate?.RegisterWindowForScene(Window, connectionOptions.ShortcutItem);
