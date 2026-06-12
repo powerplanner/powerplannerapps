@@ -28,10 +28,16 @@
             <SwiftTargetTriple Condition="'$(_PlatformName)' == 'MacCatalyst'">$(SwiftArchName)-apple-ios$(SupportedOSPlatformVersion)-macabi</SwiftTargetTriple>
             <SwiftTargetTriple Condition="'$(_PlatformName)' == 'macOS'">$(SwiftArchName)-apple-macosx$(SupportedOSPlatformVersion)</SwiftTargetTriple>
         </PropertyGroup>
+        <!-- On Mac Catalyst, iOS-flavored system frameworks (e.g. WidgetKit) live under the macOS SDK's
+             iOSSupport directory. swiftc must be given that framework search path or symbols like
+             WidgetCenter import partially but resolve as "cannot find in scope". -->
+        <PropertyGroup>
+            <SwiftExtraFlags Condition="'$(_PlatformName)' == 'MacCatalyst'">-F $(_SdkRoot)/System/iOSSupport/System/Library/Frameworks -I $(_SdkRoot)/System/iOSSupport/System/Library/Frameworks</SwiftExtraFlags>
+        </PropertyGroup>
     </Target>
 
     <Target Name="CompileSwift" Inputs="@(CompileSwift)" Outputs="@(SwiftObjectFiles)" BeforeTargets="_ComputeLinkNativeExecutableInputs">
-        <Exec Command="xcrun swiftc -target $(SwiftTargetTriple) -sdk $(_SdkRoot) $(SwiftSourceFileList) -emit-object -parse-as-library -module-name '$(AssemblyName)' -swift-version 5" WorkingDirectory="$(IntermediateOutputPath)" />
+        <Exec Command="xcrun swiftc -target $(SwiftTargetTriple) -sdk $(_SdkRoot) $(SwiftExtraFlags) $(SwiftSourceFileList) -emit-object -parse-as-library -module-name '$(AssemblyName)' -swift-version 5" WorkingDirectory="$(IntermediateOutputPath)" />
         <ItemGroup>
             <_XamarinMainLibraries Include="@(SwiftObjectFiles)"/>
             <_MainLinkerFlags Include="-L/usr/lib/swift" />
