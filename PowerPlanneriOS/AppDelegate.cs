@@ -496,6 +496,8 @@ namespace PowerPlanneriOS
                 }
 
                 ViewManager.RootViewModel = _mainAppWindow.ViewModel;
+
+                AppUpdatedHandler.HandleAppVersionUpdated();
             }
             catch (Exception ex)
             {
