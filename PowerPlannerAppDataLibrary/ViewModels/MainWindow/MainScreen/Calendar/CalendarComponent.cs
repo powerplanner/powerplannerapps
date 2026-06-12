@@ -513,7 +513,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             }.LinearLayoutWeight(1) : null,
 
                             // ADD BUTTON
-                            new TransparentContentButton
+                            VxPlatform.Current == Platform.iOS ? new TransparentContentMenuButton
+                            {
+                                AltText = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
+                                Content = new FontIcon
+                                {
+                                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                    Color = foregroundColor,
+                                    FontSize = tbDay.FontSize,
+                                    Margin = new Thickness(6),
+                                    Opacity = IsMouseOver ? 1 : 0
+                                },
+                                Menu = new List<IMenuItem>
+                                {
+                                    new MenuItem
+                                    {
+                                        Text = PowerPlannerResources.GetString("String_Task"),
+                                        Click = () => ViewModel.AddTask(date)
+                                    },
+                                    new MenuItem
+                                    {
+                                        Text = PowerPlannerResources.GetString("String_Event"),
+                                        Click = () => ViewModel.AddEvent(date)
+                                    },
+                                    new MenuItem
+                                    {
+                                        Text = PowerPlannerResources.GetString("String_Holiday"),
+                                        Click = () => ViewModel.AddHoliday(date)
+                                    }
+                                }
+                            } : new TransparentContentButton
                             {
                                 AltText = PowerPlannerResources.GetString("Calendar_FullCalendarAddButton.ToolTipService.ToolTip"),
                                 Content = new FontIcon
