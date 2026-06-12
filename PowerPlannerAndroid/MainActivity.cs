@@ -95,7 +95,7 @@ namespace PowerPlannerAndroid
 
             HandleIntent();
 
-            AppUpdatedHandler.HandleAppVersionUpdated();
+            AppUpdatedHandler.DisplayWhatsNew();
         }
 
 #if DEBUG
@@ -191,7 +191,7 @@ namespace PowerPlannerAndroid
             Intent = intent;
             HandleIntent();
 
-            AppUpdatedHandler.HandleAppVersionUpdated();
+            AppUpdatedHandler.DisplayWhatsNew();
         }
 
         private async void HandleIntent()

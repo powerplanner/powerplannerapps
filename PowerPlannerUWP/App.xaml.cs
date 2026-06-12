@@ -288,7 +288,7 @@ namespace PowerPlannerUWP
                 ConfigureDataTransferManager();
 
                 // Display updates
-                AppUpdatedHandler.HandleAppVersionUpdated();
+                AppUpdatedHandler.DisplayWhatsNew();
             }
 
             catch (Exception ex)

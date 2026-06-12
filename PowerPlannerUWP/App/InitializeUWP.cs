@@ -1,6 +1,7 @@
 ﻿using InterfacesUWP;
 using InterfacesUWP.App;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
@@ -67,6 +68,9 @@ namespace PowerPlannerUWP
 
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is PowerPlannerAppDataLibrary.Views.CompletionSlider, v => new UwpCompletionSlider());
+
+            // Ensure we've loaded previous version info
+            AppUpdatedHandler.GetPreviousVersionBeforeAppInitializes();
         }
     }
 }

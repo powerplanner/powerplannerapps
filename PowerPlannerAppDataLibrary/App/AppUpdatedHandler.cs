@@ -9,21 +9,21 @@ namespace PowerPlannerAppDataLibrary.App
 {
     public class AppUpdatedHandler
     {
-        private static bool _alreadyHandledVersionChange;
-        public static void HandleAppVersionUpdated()
+        private const string VERSION = "Version";
+        private static Version _previousVersion;
+        /// <summary>
+        /// This needs to be called before we create any default accounts, but after we set the current app version
+        /// </summary>
+        public static void GetPreviousVersionBeforeAppInitializes()
         {
-            if (_alreadyHandledVersionChange)
+            if (_previousVersion != null)
             {
-                // We'll make sure not to do this multiple times in single app lifecycle
                 return;
             }
 
-            _alreadyHandledVersionChange = true;
-
-            const string VERSION = "Version";
-
             try
             {
+
                 var versionString = CrossSettings.Current.GetValueOrDefault(VERSION, null);
 
                 Version v;
@@ -54,8 +54,35 @@ namespace PowerPlannerAppDataLibrary.App
                         v = new Version(0, 0, 0, 0);
                     }
                 }
+            }
+            catch
+            {
+                _previousVersion = Variables.VERSION;
+            }
+        }
 
-                // Assign new version number
+        private static bool _alreadyHandledVersionChange;
+        public static void DisplayWhatsNew()
+        {
+            if (_alreadyHandledVersionChange)
+            {
+                // We'll make sure not to do this multiple times in single app lifecycle
+                return;
+            }
+
+            _alreadyHandledVersionChange = true;
+
+            if (_previousVersion == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var v = _previousVersion;
+
+                // Save new version number (we save it here to ensure we don't increment when
+                // simply running as background tasks).
                 if (v < Variables.VERSION)
                 {
                     CrossSettings.Current.AddOrUpdateValue(VERSION, Variables.VERSION.ToString());

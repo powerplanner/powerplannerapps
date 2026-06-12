@@ -220,6 +220,9 @@ namespace PowerPlanneriOS
             RemindersExtension.Current = new IOSRemindersExtension();
             ClassRemindersExtension.Current = new IOSClassRemindersExtension();
 
+            // Ensure we've loaded previous version info
+            AppUpdatedHandler.GetPreviousVersionBeforeAppInitializes();
+
             // Get whether launched from shortcut
             ShortcutAction? shortcutAction = null;
             if (launchOptions != null)
@@ -497,7 +500,7 @@ namespace PowerPlanneriOS
 
                 ViewManager.RootViewModel = _mainAppWindow.ViewModel;
 
-                AppUpdatedHandler.HandleAppVersionUpdated();
+                AppUpdatedHandler.DisplayWhatsNew();
             }
             catch (Exception ex)
             {
