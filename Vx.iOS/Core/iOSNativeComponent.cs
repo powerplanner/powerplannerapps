@@ -20,6 +20,8 @@ namespace Vx.iOS
 
         private IUITraitChangeRegistration _traitChangeRegistration;
 
+        private UIHoverGestureRecognizer _hoverGestureRecognizer;
+
         public iOSNativeComponent(VxComponent component)
         {
             Component = component;
@@ -31,6 +33,37 @@ namespace Vx.iOS
                 {
                     ThemeChanged?.Invoke(this, null);
                 });
+
+            if (component.SubscribeToIsMouseOver)
+            {
+                _hoverGestureRecognizer = new UIHoverGestureRecognizer(HandleHover);
+                AddGestureRecognizer(_hoverGestureRecognizer);
+            }
+        }
+
+        private void HandleHover(UIHoverGestureRecognizer recognizer)
+        {
+            switch (recognizer.State)
+            {
+                case UIGestureRecognizerState.Began:
+                case UIGestureRecognizerState.Changed:
+                    if (!Component.IsMouseOver.Value)
+                    {
+                        Component.IsMouseOver.Value = true;
+                        MouseOverChanged?.Invoke(this, true);
+                    }
+                    break;
+
+                case UIGestureRecognizerState.Ended:
+                case UIGestureRecognizerState.Cancelled:
+                case UIGestureRecognizerState.Failed:
+                    if (Component.IsMouseOver.Value)
+                    {
+                        Component.IsMouseOver.Value = false;
+                        MouseOverChanged?.Invoke(this, false);
+                    }
+                    break;
+            }
         }
 
         public SizeF ComponentSize => new SizeF((float)this.Bounds.Width, (float)this.Bounds.Height);
