@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
+using ToolsPortable;
 using UIKit;
 using Vx.Views;
 
@@ -14,7 +15,7 @@ namespace Vx.iOS
             return CreateMenu(menu.Items);
         }
 
-        private static UIMenu CreateMenu(IEnumerable<IMenuItem> contextMenuItems)
+        public static UIMenu CreateMenu(IEnumerable<IMenuItem> contextMenuItems)
         {
             UIMenuElement[] actions = CreateMenuElements(contextMenuItems);
             return UIMenu.Create(actions);
@@ -81,7 +82,21 @@ namespace Vx.iOS
         {
             if (item is MenuItem cmItem)
             {
-                if (cmItem.SubItems != null && cmItem.SubItems.Any(i => i != null))
+                if (cmItem.UseQuickConfirmDelete)
+                {
+                    // Handle quick confirm delete
+                    return UIMenu.Create(cmItem.Text, cmItem.Glyph.GlyphToUIImage(), UIMenuIdentifier.None, default(UIMenuOptions), CreateMenuElements(new MenuItem[]
+                    {
+                        new MenuItem
+                        {
+                            Text = PortableLocalizedResources.GetString("String_YesDelete"),
+                            Style = MenuItemStyle.Destructive,
+                            Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                            Click = cmItem.Click
+                        }
+                    }));
+                }
+                else if (cmItem.SubItems != null && cmItem.SubItems.Any(i => i != null))
                 {
                     return UIMenu.Create(cmItem.Text, cmItem.Glyph.GlyphToUIImage(), UIMenuIdentifier.None, default(UIMenuOptions), CreateMenuElements(cmItem.SubItems.Where(i => i != null)));
                 }

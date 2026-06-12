@@ -28,6 +28,7 @@ namespace Vx.Views
         public string Glyph { get; set; }
         public MenuItemStyle Style { get; set; }
         public List<IMenuItem> SubItems { get; } = new List<IMenuItem>();
+        public bool UseQuickConfirmDelete { get; set; }
 
         /// <summary>
         /// Does not compare Action, but compares all visual attributes
