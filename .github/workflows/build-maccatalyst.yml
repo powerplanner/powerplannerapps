@@ -163,9 +163,11 @@ jobs:
       - name: Add application-identifier to widget Entitlements
         shell: bash
         run: |
-          # Use Delete+Add to ensure the key is always set correctly regardless of prior state
+          # Mac Catalyst uses the com.apple.application-identifier key (the iOS key is application-identifier).
+          # Use Delete+Add to ensure the key is always set correctly regardless of prior state.
           /usr/libexec/PlistBuddy -c 'Delete :application-identifier' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements 2>/dev/null || true
-          /usr/libexec/PlistBuddy -c 'Add :application-identifier string A9B367L69G.com.barebonesdev.powerplanner.widget' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
+          /usr/libexec/PlistBuddy -c 'Delete :com.apple.application-identifier' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c 'Add :com.apple.application-identifier string A9B367L69G.com.barebonesdev.powerplanner.widget' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
           echo "=== NativeWidgetExtension.entitlements after update ==="
           cat PowerPlanneriOSWidget/NativeWidgetExtension.entitlements
 
@@ -189,13 +191,17 @@ jobs:
         run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj -c Release
 
       - name: Publish PowerPlanneriOS (Mac Catalyst)
-        # Omitting -r lets dotnet build a universal binary (arm64 + x64) automatically.
+        # RuntimeIdentifiers (plural) with both archs produces a universal binary (arm64 + x64).
         run: >-
           dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj
           -f net10.0-maccatalyst
           -c Release
           --self-contained
+          -p:RuntimeIdentifiers="maccatalyst-x64;maccatalyst-arm64"
           -p:CreatePackage=true
+          -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
+          -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
+          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
           -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
           -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
@@ -210,9 +216,18 @@ jobs:
 
           echo "App: $app"
           echo "AppEx: $appex"
-          ls "$app/Contents/embedded.provisionprofile" && echo "Provisioning profile present" || echo "WARNING: No provisioning profile!"
 
-          # Re-sign widget extension with full entitlements including application-identifier
+          # Verify the binary is universal (arm64 + x86_64)
+          echo "=== Main executable architectures ==="
+          lipo -info "$app/Contents/MacOS/"* 2>&1 || true
+
+          # Embed provisioning profiles into both bundles (required for TestFlight eligibility).
+          # The .app profile must sit at Contents/embedded.provisionprofile; the .appex at its own.
+          cp "$RUNNER_TEMP/mac.provisionprofile" "$app/Contents/embedded.provisionprofile"
+          cp "$RUNNER_TEMP/mac-widget.provisionprofile" "$appex/Contents/embedded.provisionprofile"
+          echo "Embedded provisioning profiles into app and widget."
+
+          # Re-sign widget extension with full entitlements including com.apple.application-identifier
           codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
             --entitlements PowerPlanneriOSWidget/NativeWidgetExtension.entitlements \
             --options runtime \
@@ -228,6 +243,9 @@ jobs:
             --options runtime \
             --timestamp \
             "$app"
+
+          echo "=== Main app embedded entitlements after re-signing ==="
+          codesign -d --entitlements :- "$app" 2>&1
 
           # Create and sign the pkg directly from the re-signed .app
           mkdir -p artifacts
