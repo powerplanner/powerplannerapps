@@ -87,6 +87,8 @@ namespace PowerPlannerAppDataLibrary.Components
                 answer.AllowDragViewItem(Item);
             }
 
+            answer.AllowDropTaskOrEventOnDate(Item.Date);
+
             return answer;
         }
 
