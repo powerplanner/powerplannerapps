@@ -269,6 +269,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             set => SetProperty(ref _showGoToTodayInPrimaryCommands, value, nameof(ShowGoToTodayInPrimaryCommands));
         }
 
+        public bool CanGoToToday
+        {
+            get
+            {
+                // For day view, we can go to today if the selected date is not today
+                if (DisplayState == DisplayStates.Day)
+                {
+                    return SelectedDate.Date != Today.Date;
+                }
+
+                // For split view, we can go to today if the selected date is not today or if the display month is not the current month
+                if (DisplayState == DisplayStates.Split)
+                {
+                    return SelectedDate.Date != Today.Date || !DateTools.SameMonth(DisplayMonth, Today);
+                }
+                
+                // For other views, we can go to today if the display month is not the current month
+                return !DateTools.SameMonth(DisplayMonth, Today);
+            }
+        }
+
         public enum ViewSizeStates
         {
             /// <summary>
@@ -628,6 +649,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 toolbar = new Toolbar
                 {
                     Title = CanGoBack ? "" : Title,
+                    AlignTitleToLeft = true,
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
                     BackText = CanGoBack ? Title : null,
                     PrimaryCommands =
@@ -661,21 +683,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
 
                 // Go to today button
-                var goToTodayMenuItem = new MenuItem
+                if (CanGoToToday)
                 {
-                    Text = PowerPlannerResources.GetString("String_GoToToday"),
-                    Glyph = MaterialDesign.MaterialDesignIcons.Today,
-                    Click = GoToToday
-                };
-                if (ShowGoToTodayInPrimaryCommands)
-                {
-                    toolbar.PrimaryCommands.Add(goToTodayMenuItem);
-                }
-                else
-                {
-                    // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
-                    goToTodayMenuItem.Glyph = null;
-                    toolbar.SecondaryCommands.Add(goToTodayMenuItem);
+                    var goToTodayMenuItem = new MenuItem
+                    {
+                        Text = PowerPlannerResources.GetString("String_GoToToday"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                        Click = GoToToday
+                    };
+                    if (ShowGoToTodayInPrimaryCommands)
+                    {
+                        toolbar.PrimaryCommands.Add(goToTodayMenuItem);
+                    }
+                    else
+                    {
+                        // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
+                        goToTodayMenuItem.Glyph = null;
+                        toolbar.SecondaryCommands.Add(goToTodayMenuItem);
+                    }
                 }
 
                 // Only on full calendar, show the option for past complete

@@ -3,20 +3,17 @@
     {
       "scale": "1x",
       "idiom": "universal",
-      "filename": "image8-Books Filled-30.png"
+      "filename": "icons8-Books Filled-30.png"
     },
     {
       "scale": "2x",
       "idiom": "universal",
-      "filename": "image8-Books Filled-60.png"
+      "filename": "icons8-Books Filled-60.png"
     },
     {
       "scale": "3x",
       "idiom": "universal",
-      "filename": "image8-Books Filled-90.png"
-    },
-    {
-      "idiom": "universal"
+      "filename": "icons8-Books Filled-90.png"
     }
   ],
   "properties": {

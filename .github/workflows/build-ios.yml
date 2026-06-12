@@ -71,7 +71,7 @@ jobs:
           dotnet-version: '10.0.202'
 
       - name: Install iOS workload
-        run: dotnet workload install ios android --version 10.0.202
+        run: dotnet workload install ios android maccatalyst --version 10.0.202
 
       - name: Write secrets.json
         shell: bash
@@ -174,6 +174,7 @@ jobs:
       - name: Publish PowerPlanneriOS
         run: >-
           dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj
+          -f net10.0-ios
           -c Release
           -r ios-arm64
           --self-contained

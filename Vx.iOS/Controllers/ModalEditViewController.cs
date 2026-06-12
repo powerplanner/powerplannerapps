@@ -187,8 +187,6 @@ namespace InterfacesiOS.Controllers
             });
         }
 
-        private nfloat? _originalContentViewHeight;
-
         void DoneButtonTapped(object sender, EventArgs e)
         {
             DismissViewController(true, null);

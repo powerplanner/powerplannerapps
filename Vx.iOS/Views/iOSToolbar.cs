@@ -40,6 +40,11 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            if (OperatingSystem.IsIOSVersionAtLeast(16))
+            {
+                NavBar.TopItem.Style = newView.AlignTitleToLeft ? UINavigationItemStyle.Editor : UINavigationItemStyle.Navigator;
+            }
+
             View.BackgroundColor = newView.BackgroundColor.ToUI();
             NavBar.BarTintColor = newView.BackgroundColor.ToUI();
 
@@ -96,7 +101,7 @@ namespace Vx.iOS.Views
         {
             if (toolbar.SecondaryCommands != null && toolbar.SecondaryCommands.Any())
             {
-                yield return new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIBarButtonItemStyle.Plain, new WeakEventHandler(ButtonMore_Clicked).Handler);
+                yield return new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), VxiOSContextMenu.CreateMenu(toolbar.SecondaryCommands));
             }
 
             if (toolbar.PrimaryCommands != null)
@@ -104,17 +109,17 @@ namespace Vx.iOS.Views
                 foreach (var command in toolbar.PrimaryCommands)
                 {
                     var button = command.ToUIBarButtonItem(skipClickHandler: true);
-                    button.Clicked += delegate
+                    if (command.Click != null)
                     {
-                        if (command.Click != null)
+                        button.Clicked += delegate
                         {
                             command.Click();
-                        }
-                        else if (command.SubItems != null && command.SubItems.Any(i => i != null))
-                        {
-                            ShowSubCommands(command.SubItems.OfType<MenuItem>().Where(i => i != null), button);
-                        }
-                    };
+                        };
+                    }
+                    else if (command.SubItems != null && command.SubItems.Any(i => i != null))
+                    {
+                        button.Menu = VxiOSContextMenu.CreateMenu(command.SubItems);
+                    }
                     yield return button;
                 }
             }
@@ -158,46 +163,6 @@ namespace Vx.iOS.Views
                 _backButtonContents.SizeToFit();
                 return _backButtonContents;
             }
-        }
-
-        private void ShowSubCommands(IEnumerable<MenuItem> commands, UIBarButtonItem source)
-        {
-            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
-            UIAlertController actionSheetMoreOptions = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
-
-            foreach (var option in commands)
-            {
-                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == MenuItemStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
-                {
-                    option.Click?.Invoke();
-                }));
-            }
-
-            actionSheetMoreOptions.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
-
-            // Required for iPad - You must specify a source for the Action Sheet since it is
-            // displayed as a popover
-            UIPopoverPresentationController presentationPopover = actionSheetMoreOptions.PopoverPresentationController;
-            if (presentationPopover != null)
-            {
-                if (OperatingSystem.IsIOSVersionAtLeast(16))
-                {
-                    presentationPopover.SourceItem = source;
-                }
-                else
-                {
-                    presentationPopover.BarButtonItem = source;
-                }
-                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
-            }
-
-            // Display the alert
-            View.GetViewController().PresentViewController(actionSheetMoreOptions, true, null);
-        }
-
-        private void ButtonMore_Clicked(object sender, EventArgs e)
-        {
-            ShowSubCommands(VxView.SecondaryCommands, NavBar.TopItem.RightBarButtonItems.First());
         }
 
         private static void SetNavigationBarAppearance(UINavigationBar navBar, UIColor backgroundColor, UIColor tintColor)

@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!-- The apps are not fully trimmed (e.g. MTouchLink=SdkOnly on Mac Catalyst), so the
+         trim/AOT analyzer (IL2xxx warnings) is disabled repo-wide. A project that supports
+         trimming can opt back in by setting <EnableTrimAnalyzer>true</EnableTrimAnalyzer>. -->
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+  </PropertyGroup>
+</Project>

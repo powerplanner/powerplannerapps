@@ -1,0 +1,405 @@
+name: Build Mac Catalyst
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-maccatalyst.yml'
+      - 'ApplySecrets.ps1'
+      - 'secrets.template.json'
+      - 'PowerPlanneriOS/**'
+      - 'PowerPlannerAppDataLibrary/**'
+      - 'portablelibraries/**'
+      - 'shared/**'
+      - 'Vx/**'
+      - 'Vx.iOS/**'
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: 'Branch, tag, or commit SHA to build'
+        required: false
+        default: 'main'
+      whats_new:
+        description: 'Release notes (Whats New) for the Mac App Store submission'
+        required: false
+        default: 'Bug fixes and improvements'
+
+# Version format: YYMM.D.run_number (e.g. 2506.15.42)
+
+jobs:
+  set-version:
+    runs-on: macos-latest
+    environment:
+      name: ${{ github.event_name == 'workflow_dispatch' && 'build-no-approval' || 'build-approval' }}
+    outputs:
+      build_version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Compute version
+        id: version
+        shell: bash
+        run: |
+          yymm=$(date -u +"%y%m")
+          day=$(date -u +"%-d")
+          version="$yymm.$day.${{ github.run_number }}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Build version: $version"
+
+  build:
+    needs: set-version
+    runs-on: macos-latest
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+      BUILD_CONFIGURATION: Release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.source_ref || github.ref }}
+          submodules: recursive
+
+      - name: Select Xcode 26.3
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.202'
+
+      - name: Install Mac Catalyst workload
+        run: dotnet workload install ios android maccatalyst --version 10.0.202
+
+      - name: Write secrets.json
+        shell: bash
+        run: |
+          echo '${{ secrets.SECRETS_JSON }}' > secrets.json
+
+      - name: Apply secrets
+        shell: pwsh
+        run: ./ApplySecrets.ps1
+
+      - name: Install Apple Distribution certificate
+        # Used to sign the .app bundle
+        env:
+          P12_BASE64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ github.run_id }}
+        shell: bash
+        run: |
+          CERT_PATH="$RUNNER_TEMP/certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+          echo -n "$P12_BASE64" | base64 --decode -o "$CERT_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          security import "$CERT_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain-db
+
+      - name: Install Mac Installer certificate
+        # Used to sign the .pkg installer — requires a separate "3rd Party Mac Developer Installer" certificate.
+        # Export it from Xcode/Keychain as a .p12 and store it as MAC_INSTALLER_CERTIFICATE_P12_BASE64 / MAC_INSTALLER_CERTIFICATE_PASSWORD.
+        env:
+          P12_BASE64: ${{ secrets.MAC_INSTALLER_CERTIFICATE_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.MAC_INSTALLER_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ github.run_id }}
+        shell: bash
+        run: |
+          CERT_PATH="$RUNNER_TEMP/installer-certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+          echo -n "$P12_BASE64" | base64 --decode -o "$CERT_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+      - name: List signing identities
+        shell: bash
+        run: security find-identity -v
+
+      - name: Install Mac App Store provisioning profile
+        # Requires a Mac Catalyst distribution provisioning profile (file extension: .provisionprofile).
+        # Create it at developer.apple.com for the Mac Catalyst platform and store it as MAC_PROVISIONING_PROFILE_BASE64.
+        env:
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.MAC_PROVISIONING_PROFILE_BASE64 }}
+        shell: bash
+        run: |
+          PP_PATH="$RUNNER_TEMP/mac.provisionprofile"
+          echo -n "$PROVISIONING_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.provisionprofile"
+          echo "Installed provisioning profile: $UUID"
+
+      - name: Install Mac Widget provisioning profile
+        # Requires a Mac Catalyst distribution provisioning profile for com.barebonesdev.powerplanner.widget.
+        # Create it at developer.apple.com for the Mac Catalyst platform and store it as MAC_WIDGET_PROVISIONING_PROFILE_BASE64.
+        env:
+          PROVISIONING_PROFILE_BASE64: ${{ secrets.MAC_WIDGET_PROVISIONING_PROFILE_BASE64 }}
+        shell: bash
+        run: |
+          PP_PATH="$RUNNER_TEMP/mac-widget.provisionprofile"
+          echo -n "$PROVISIONING_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.provisionprofile"
+          echo "Installed widget provisioning profile: $UUID"
+
+      - name: Set widget provisioning profile in NativeApp.xcodeproj
+        shell: bash
+        run: |
+          sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner\.widget;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner.widget; PROVISIONING_PROFILE_SPECIFIER = "${{ vars.MAC_WIDGET_PROVISIONING_PROFILE_NAME }}";|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
+
+      - name: Set NativeApp provisioning profile in NativeApp.xcodeproj
+        shell: bash
+        run: |
+          sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner; PROVISIONING_PROFILE_SPECIFIER = "${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}";|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
+
+      - name: Set version in Info-Mac.plist and NativeWidget
+        shell: bash
+        run: |
+          VERSION="${{ env.BUILD_VERSION }}"
+
+          # Main app — macOS requires at most 3 version components (no .0 suffix)
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOS/Info-Mac.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" PowerPlanneriOS/Info-Mac.plist
+
+          # NativeWidget — must match the main app
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOSWidget/NativeWidget/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" PowerPlanneriOSWidget/NativeWidget/Info.plist
+
+      - name: Restore PowerPlanneriOS
+        run: dotnet restore PowerPlanneriOS/PowerPlanneriOS.csproj
+
+      - name: Build XliffCompiler (dotnet build PowerPlanner)
+        run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj -c Release
+
+      - name: Publish PowerPlanneriOS (Mac Catalyst)
+        # RuntimeIdentifiers (set in the csproj for maccatalyst) produces a universal binary (arm64 + x64).
+        run: >-
+          dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj
+          -f net10.0-maccatalyst
+          -c Release
+          --self-contained
+          -p:CreatePackage=true
+          -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
+          -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
+          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
+          -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
+          -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
+          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
+
+      - name: Fix widget signature and create signed PKG
+        # dotnet re-signs embedded extensions without application-identifier, and the universal
+        # build can leave some dylib arch slices unsigned. Re-sign everything inside-out.
+        # Use the .app from the build output directly (avoids pkgutil flatten corrupting Mach-O sigs).
+        shell: bash
+        run: |
+          SIGN_ID="Apple Distribution: BareBones Dev, LLC (A9B367L69G)"
+
+          echo "=== Candidate .app bundles ==="
+          find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d
+
+          # Prefer the app that contains a compiled asset catalog (the final, complete bundle).
+          app=""
+          while IFS= read -r candidate; do
+            if [ -f "$candidate/Contents/Resources/Assets.car" ]; then
+              app="$candidate"
+              break
+            fi
+          done < <(find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d)
+          if [ -z "$app" ]; then
+            echo "::warning::No .app with Assets.car found; falling back to first candidate"
+            app=$(find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d | head -1)
+          fi
+
+          # Rename the bundle so Finder/Applications and the macOS menu bar show "Power Planner"
+          # (they display the .app bundle filename, not CFBundleDisplayName).
+          appdir=$(dirname "$app")
+          if [ "$app" != "$appdir/Power Planner.app" ]; then
+            mv "$app" "$appdir/Power Planner.app"
+            app="$appdir/Power Planner.app"
+          fi
+          appex="$app/Contents/PlugIns/NativeWidgetExtension.appex"
+
+          echo "App: $app"
+          echo "AppEx: $appex"
+
+          # Verify the binary is universal (arm64 + x86_64) and the asset catalog is present
+          echo "=== Main executable architectures ==="
+          lipo -info "$app/Contents/MacOS/"* 2>&1 || true
+          echo "=== Asset catalog ==="
+          ls -l "$app/Contents/Resources/Assets.car" 2>&1 || echo "WARNING: Assets.car missing!"
+
+          # Embed provisioning profiles into both bundles (required for TestFlight eligibility).
+          # The .app profile must sit at Contents/embedded.provisionprofile; the .appex at its own.
+          cp "$RUNNER_TEMP/mac.provisionprofile" "$app/Contents/embedded.provisionprofile"
+          cp "$RUNNER_TEMP/mac-widget.provisionprofile" "$appex/Contents/embedded.provisionprofile"
+          echo "Embedded provisioning profiles into app and widget."
+
+          # Sign every nested Mach-O (dylibs, .so, frameworks) so all arch slices are signed.
+          # codesign signs all slices of a fat binary, fixing 90238 (unsigned x86_64 slice).
+          echo "=== Signing nested dynamic libraries ==="
+          find "$app/Contents" \( -name "*.dylib" -o -name "*.so" \) -type f -print0 | while IFS= read -r -d '' lib; do
+            codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$lib"
+          done
+          # Sign any nested frameworks (bundles) if present
+          find "$app/Contents" -name "*.framework" -type d -print0 | while IFS= read -r -d '' fw; do
+            codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$fw"
+          done
+
+          # Re-sign widget extension with full entitlements including com.apple.application-identifier.
+          # Use the -Mac entitlements (includes the app sandbox required by the Mac App Store).
+          codesign --force --sign "$SIGN_ID" \
+            --entitlements PowerPlanneriOSWidget/NativeWidgetExtension-Mac.entitlements \
+            --options runtime \
+            --timestamp \
+            "$appex"
+
+          echo "=== Widget extension embedded entitlements after re-signing ==="
+          codesign -d --entitlements :- "$appex" 2>&1
+
+          # Re-sign outer app LAST with explicit entitlements (seals the now-signed nested code)
+          codesign --force --sign "$SIGN_ID" \
+            --entitlements PowerPlanneriOS/Entitlements-Mac.plist \
+            --options runtime \
+            --timestamp \
+            "$app"
+
+          echo "=== Main app embedded entitlements after re-signing ==="
+          codesign -d --entitlements :- "$app" 2>&1
+
+          # Verify the whole bundle signs cleanly before packaging
+          echo "=== Verifying signature ==="
+          codesign --verify --deep --strict --verbose=2 "$app" 2>&1 || echo "::warning::codesign verify reported issues"
+
+          # Create and sign the pkg directly from the re-signed .app
+          mkdir -p artifacts
+          productbuild \
+            --component "$app" /Applications \
+            --sign "3rd Party Mac Developer Installer: BareBones Dev, LLC (A9B367L69G)" \
+            "artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
+          echo "PKG: artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
+
+      - name: Upload PKG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg
+          path: artifacts/*.pkg
+
+      - name: Clean up keychain
+        if: always()
+        shell: bash
+        run: |
+          security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" || true
+
+  upload-testflight:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: Download PKG artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: PowerPlannerMac.*.pkg
+          path: artifacts
+
+      - name: Upload to TestFlight
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        shell: bash
+        run: |
+          mkdir -p ~/private_keys
+          KEY_PATH="$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+          echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode -o "$KEY_PATH"
+
+          PKG_PATH=$(find artifacts -name "*.pkg" -type f | head -1)
+          if [ -z "$PKG_PATH" ]; then
+            echo "::error::No PKG file found in artifacts"
+            exit 1
+          fi
+          echo "Uploading $PKG_PATH to TestFlight..."
+
+          xcrun altool --upload-app \
+            -f "$PKG_PATH" \
+            -t macos \
+            --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
+            --show-progress
+
+  promote-to-production:
+    needs:
+      - upload-testflight
+      - set-version
+    runs-on: macos-latest
+    environment: production
+    env:
+      BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
+    steps:
+      - name: Install Fastlane
+        run: |
+          gem install fastlane --no-document
+
+      - name: Write App Store Connect API key
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        run: |
+          mkdir -p ~/private_keys
+          echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode \
+            -o "$HOME/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8"
+
+      - name: Create Fastlane API key JSON
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+        shell: bash
+        run: |
+          python3 << 'PYEOF'
+          import json, os
+          key_path = os.path.expanduser("~/private_keys/AuthKey_" + os.environ["APP_STORE_CONNECT_API_KEY_ID"] + ".p8")
+          data = {
+              "key_id": os.environ["APP_STORE_CONNECT_API_KEY_ID"],
+              "issuer_id": os.environ["APP_STORE_CONNECT_API_ISSUER_ID"],
+              "key": open(key_path).read(),
+              "in_house": False
+          }
+          with open("api_key.json", "w") as f:
+              json.dump(data, f)
+          PYEOF
+
+      - name: Create deliver configuration
+        run: |
+          mkdir -p fastlane
+          echo 'app_identifier "com.barebonesdev.powerplanner"' > fastlane/Deliverfile
+
+      - name: Create release notes
+        shell: bash
+        env:
+          WHATS_NEW: ${{ github.event.inputs.whats_new || 'Bug fixes and improvements' }}
+        run: |
+          mkdir -p fastlane/metadata/en-US
+          printf '%s\n' "$WHATS_NEW" > fastlane/metadata/en-US/release_notes.txt
+
+      - name: Publish to Mac App Store
+        env:
+          BUILD_NUMBER: ${{ env.BUILD_VERSION }}.0
+          APP_VERSION: ${{ env.BUILD_VERSION }}
+        run: |
+          fastlane deliver \
+            --api_key_path api_key.json \
+            --app_identifier "com.barebonesdev.powerplanner" \
+            --app_version "$APP_VERSION" \
+            --build_number "$BUILD_NUMBER" \
+            --skip_screenshots \
+            --automatic_release "true" \
+            --precheck_include_in_app_purchases false \
+            --platform mac \
+            --force

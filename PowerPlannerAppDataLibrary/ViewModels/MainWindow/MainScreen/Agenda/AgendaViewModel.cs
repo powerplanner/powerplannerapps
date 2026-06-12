@@ -175,7 +175,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     FontSize = Theme.Current.SubtitleFontSize,
                     WrapText = false,
                     Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 3)
-                };
+                }.AllowDropTaskOrEventOnDate(header.DateToUseForNewItems);
             }
 
             else

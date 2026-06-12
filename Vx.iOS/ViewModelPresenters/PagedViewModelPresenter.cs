@@ -112,7 +112,7 @@ namespace InterfacesiOS.ViewModelPresenters
                     _viewModel = value;
                     OnViewModelChanged(oldViewModel, _viewModel);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 #if DEBUG
                     if (System.Diagnostics.Debugger.IsAttached)
@@ -120,7 +120,7 @@ namespace InterfacesiOS.ViewModelPresenters
                         System.Diagnostics.Debugger.Break();
                     }
 #endif
-                    throw ex;
+                    throw;
                 }
             }
         }

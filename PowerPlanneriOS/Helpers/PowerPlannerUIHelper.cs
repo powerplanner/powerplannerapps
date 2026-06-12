@@ -15,41 +15,6 @@ namespace PowerPlanneriOS.Helpers
 {
     public static class PowerPlannerUIHelper
     {
-        public static void ConfirmDeleteQuick(UIViewController viewController, UIBarButtonItem barButton, Action deleteAction, string deleteText = null)
-        {
-            if (deleteText == null)
-            {
-                deleteText = PowerPlannerResources.GetString("MenuItemDelete");
-            }
-
-            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
-            UIAlertController actionSheetAlert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
-
-            actionSheetAlert.AddAction(UIAlertAction.Create(deleteText, UIAlertActionStyle.Destructive, delegate { deleteAction(); }));
-            actionSheetAlert.AddAction(UIAlertAction.Create(PowerPlannerResources.GetStringCancel(), UIAlertActionStyle.Cancel, null));
-
-            // Required for iPad - You must specify a source for the Action Sheet since it is
-            // displayed as a popover
-            UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
-            if (presentationPopover != null)
-            {
-                if (OperatingSystem.IsIOSVersionAtLeast(16))
-                {
-                    presentationPopover.SourceItem = barButton;
-                }
-                else
-                {
-#pragma warning disable CA1422 // BarButtonItem is obsoleted on iOS 16.0 but needed for iOS 14-15
-                    presentationPopover.BarButtonItem = barButton;
-#pragma warning restore CA1422
-                }
-                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
-            }
-
-            // Display the alert
-            viewController.PresentViewController(actionSheetAlert, true, null);
-        }
-
         public static UIButton CreatePowerPlannerBlueButton(string title)
         {
             var button = new UIButton(UIButtonType.System);

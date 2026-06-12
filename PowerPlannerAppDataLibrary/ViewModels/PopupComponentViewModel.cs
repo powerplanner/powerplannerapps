@@ -123,8 +123,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels
 
     public class PopupCommand : MenuItem
     {
-        public bool UseQuickConfirmDelete { get; set; }
-
         public PopupCommand() { }
 
         public PopupCommand(string text, Action action, MenuItemStyle style = MenuItemStyle.Default)

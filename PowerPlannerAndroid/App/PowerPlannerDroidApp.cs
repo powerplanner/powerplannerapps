@@ -102,6 +102,9 @@ namespace PowerPlannerAndroid.App
             VxDroidExtensions.RegisterCustomView(v => v is CompletionSlider, v => new DroidCompletionSlider());
             VxDroidExtensions.RegisterCustomView(v => v is FloatingAddItemButton, v => new DroidFloatingAddItemButton());
 
+            // Ensure we've loaded previous version info
+            AppUpdatedHandler.GetPreviousVersionBeforeAppInitializes();
+
             return base.InitializeAsyncOverride();
         }
     }

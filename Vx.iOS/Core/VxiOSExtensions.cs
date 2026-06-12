@@ -1,5 +1,4 @@
-﻿using CarPlay;
-using Foundation;
+﻿using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -181,6 +180,11 @@ namespace Vx.iOS
                 if (view is Vx.Views.ProgressBar)
                 {
                     return new iOSProgressBar();
+                }
+
+                if (view is Vx.Views.TransparentContentMenuButton)
+                {
+                    return new iOSTransparentContentMenuButton();
                 }
 
 #if DEBUG
