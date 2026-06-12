@@ -40,6 +40,11 @@ namespace Vx.iOS.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            if (OperatingSystem.IsIOSVersionAtLeast(16))
+            {
+                NavBar.TopItem.Style = newView.AlignTitleToLeft ? UINavigationItemStyle.Editor : UINavigationItemStyle.Navigator;
+            }
+
             View.BackgroundColor = newView.BackgroundColor.ToUI();
             NavBar.BarTintColor = newView.BackgroundColor.ToUI();
 

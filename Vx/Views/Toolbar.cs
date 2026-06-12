@@ -21,6 +21,11 @@ namespace Vx.Views
         public List<MenuItem> SecondaryCommands { get; } = new List<MenuItem>();
 
         /// <summary>
+        /// This is only supported on iOS.
+        /// </summary>
+        public bool AlignTitleToLeft { get; set; }
+
+        /// <summary>
         /// Setting this displays a Close button on the far right (useful for popup toolbars). Currently only implemented on UWP.
         /// </summary>
         public Action OnClose { get; set; }
