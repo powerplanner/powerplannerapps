@@ -147,7 +147,7 @@
 
   <!--For Mac Catalyst widget, in release mode it should sign-->
   <Target Name="BuildReleaseXcodeProjectMac" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
-    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=&quot;Apple Distribution&quot; ARCHS='$$(ARCHS_STANDARD)' ONLY_ACTIVE_ARCH=NO" />
+    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=&quot;Apple Distribution&quot; ARCHS='%24(ARCHS_STANDARD)' ONLY_ACTIVE_ARCH=NO" />
   </Target>
   
   <!--For iOS widget-->
