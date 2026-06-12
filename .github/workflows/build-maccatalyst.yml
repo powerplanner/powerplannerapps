@@ -160,11 +160,22 @@ jobs:
         run: |
           sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner; PROVISIONING_PROFILE_SPECIFIER = "${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}";|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
 
-      - name: Add application-identifier to widget Entitlements
+      - name: Add application-identifier to entitlements
         shell: bash
         run: |
           # Mac Catalyst uses the com.apple.application-identifier key (the iOS key is application-identifier).
+          # Both the main app and the widget signature must carry the identifier that matches their
+          # provisioning profile, otherwise TestFlight rejects the build (error 90886).
           # Use Delete+Add to ensure the key is always set correctly regardless of prior state.
+
+          # --- Main app ---
+          /usr/libexec/PlistBuddy -c 'Delete :application-identifier' PowerPlanneriOS/Entitlements-Mac.plist 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c 'Delete :com.apple.application-identifier' PowerPlanneriOS/Entitlements-Mac.plist 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c 'Add :com.apple.application-identifier string A9B367L69G.com.barebonesdev.powerplanner' PowerPlanneriOS/Entitlements-Mac.plist
+          echo "=== Entitlements-Mac.plist after update ==="
+          cat PowerPlanneriOS/Entitlements-Mac.plist
+
+          # --- Widget ---
           /usr/libexec/PlistBuddy -c 'Delete :application-identifier' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements 2>/dev/null || true
           /usr/libexec/PlistBuddy -c 'Delete :com.apple.application-identifier' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements 2>/dev/null || true
           /usr/libexec/PlistBuddy -c 'Add :com.apple.application-identifier string A9B367L69G.com.barebonesdev.powerplanner.widget' PowerPlanneriOSWidget/NativeWidgetExtension.entitlements

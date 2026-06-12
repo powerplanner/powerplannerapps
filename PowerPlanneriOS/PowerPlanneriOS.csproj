@@ -16,8 +16,11 @@
     <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
     <CodeSignEntitlements>Entitlements-Mac.plist</CodeSignEntitlements>
     <MTouchLink>SdkOnly</MTouchLink>
-    <!-- Build a universal binary (arm64 + x64) for the Mac App Store -->
-    <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
+    <!-- The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
+         When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifer>.
+         The App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
+         either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
+    <!-- ex. <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <UseInterpreter>true</UseInterpreter>
@@ -144,7 +147,7 @@
 
   <!--For Mac Catalyst widget, in release mode it should sign-->
   <Target Name="BuildReleaseXcodeProjectMac" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
-    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=&quot;Apple Distribution&quot;" />
+    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=&quot;Apple Distribution&quot; ARCHS='$$(ARCHS_STANDARD)' ONLY_ACTIVE_ARCH=NO" />
   </Target>
   
   <!--For iOS widget-->
