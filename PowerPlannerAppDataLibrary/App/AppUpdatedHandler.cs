@@ -140,7 +140,7 @@ namespace PowerPlannerAppDataLibrary.App
 
             if (changedText.Length > 0)
             {
-                _ = new PortableMessageDialog("Power Planner just installed an update!\n\nHere's what's new...\n" + changedText, "Just updated").ShowAsync();
+                _ = new PortableMessageDialog("Power Planner just installed an update!\n" + changedText, "Just updated", "Continue").ShowAsync();
             }
         }
     }
