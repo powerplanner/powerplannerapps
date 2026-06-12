@@ -448,7 +448,7 @@ namespace PowerPlanneriOS
             return new UISceneConfiguration("Default Configuration", connectingSceneSession.Role);
         }
 
-        internal async void RegisterWindowForScene(UIWindow window, UIApplicationShortcutItem? shortcutItem)
+        internal async void RegisterWindowForScene(UIWindow window, UIApplicationShortcutItem shortcutItem)
         {
             this.Window = window;
             await InitializeWindow(window, ConvertShortcutItem(shortcutItem));
