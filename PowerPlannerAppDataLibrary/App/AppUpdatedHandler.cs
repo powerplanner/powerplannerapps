@@ -54,6 +54,8 @@ namespace PowerPlannerAppDataLibrary.App
                         v = new Version(0, 0, 0, 0);
                     }
                 }
+
+                _previousVersion = v;
             }
             catch
             {
