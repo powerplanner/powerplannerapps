@@ -56,12 +56,21 @@ namespace Vx.iOS.Views
             View.Add(_checkbox);
             _checkbox.StretchHeight(View, 5, 5);
 
+            // The control is often stretched to the full width of its parent (e.g. a vertical LinearLayout
+            // with the default Stretch alignment). Force both subviews to stay at their intrinsic width so the
+            // slack is absorbed by the flexible trailing space below, rather than unpredictably stretching one
+            // of them (which depends on the near-identical default hugging priorities of UIButton vs UILabel).
+            _checkbox.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
+            _label.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
+
             // Idk why, but on the add task page, if the keyboard is up, this doesn't get hit
             // even though on the inline edit controls the same code works. I investigated for 20 mins
             // and couldn't figure it out. It works on the edit schedule times page for some reason.
             View.TouchUpInside += View_TouchUpInside;
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[checkbox]-12-[label]|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null,
+            // Trailing space is >=0 (not pinned) so the checkbox + label hug to the left and any extra width
+            // becomes empty trailing space, instead of stretching the checkbox or label.
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[checkbox]-12-[label]-(>=0)-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null,
                 new NSDictionary(
                     "label", _label,
                     "checkbox", _checkbox
