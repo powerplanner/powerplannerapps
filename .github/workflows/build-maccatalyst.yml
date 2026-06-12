@@ -239,6 +239,14 @@ jobs:
             echo "::warning::No .app with Assets.car found; falling back to first candidate"
             app=$(find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d | head -1)
           fi
+
+          # Rename the bundle so Finder/Applications and the macOS menu bar show "Power Planner"
+          # (they display the .app bundle filename, not CFBundleDisplayName).
+          appdir=$(dirname "$app")
+          if [ "$app" != "$appdir/Power Planner.app" ]; then
+            mv "$app" "$appdir/Power Planner.app"
+            app="$appdir/Power Planner.app"
+          fi
           appex="$app/Contents/PlugIns/NativeWidgetExtension.appex"
 
           echo "App: $app"
