@@ -16,6 +16,8 @@
     <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
     <CodeSignEntitlements>Entitlements-Mac.plist</CodeSignEntitlements>
     <MTouchLink>SdkOnly</MTouchLink>
+    <!-- Build a universal binary (arm64 + x64) for the Mac App Store -->
+    <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <UseInterpreter>true</UseInterpreter>

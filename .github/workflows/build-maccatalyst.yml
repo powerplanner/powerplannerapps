@@ -191,13 +191,12 @@ jobs:
         run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj -c Release
 
       - name: Publish PowerPlanneriOS (Mac Catalyst)
-        # RuntimeIdentifiers (plural) with both archs produces a universal binary (arm64 + x64).
+        # RuntimeIdentifiers (set in the csproj for maccatalyst) produces a universal binary (arm64 + x64).
         run: >-
           dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj
           -f net10.0-maccatalyst
           -c Release
           --self-contained
-          -p:RuntimeIdentifiers="maccatalyst-x64%3Bmaccatalyst-arm64"
           -p:CreatePackage=true
           -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
           -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
