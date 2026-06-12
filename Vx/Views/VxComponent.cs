@@ -486,7 +486,7 @@ namespace Vx.Views
                 }
             }
 
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException)
             {
                 if (VxPlatform.Current == Platform.Android)
                 {
@@ -495,7 +495,7 @@ namespace Vx.Views
                 }
                 else
                 {
-                    throw ex;
+                    throw;
                 }
             }
 
