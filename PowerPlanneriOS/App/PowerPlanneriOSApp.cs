@@ -33,7 +33,11 @@ namespace PowerPlanneriOS.App
         {
             ThemeColorApplier.PlatformThemeApplier = iOSThemeColorApplier.Apply;
 
+#if __MACCATALYST__
+            PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for Mac"; };
+#else
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for iOS"; };
+#endif
 
             // Note that there's several places my code takes a dependency on this to change behavior for iOS version
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetPlatform = delegate { return "iOS"; };
