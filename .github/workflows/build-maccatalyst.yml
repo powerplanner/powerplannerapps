@@ -217,19 +217,38 @@ jobs:
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Fix widget signature and create signed PKG
-        # dotnet re-signs embedded extensions without application-identifier.
+        # dotnet re-signs embedded extensions without application-identifier, and the universal
+        # build can leave some dylib arch slices unsigned. Re-sign everything inside-out.
         # Use the .app from the build output directly (avoids pkgutil flatten corrupting Mach-O sigs).
         shell: bash
         run: |
-          app=$(find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d | head -1)
+          SIGN_ID="Apple Distribution: BareBones Dev, LLC (A9B367L69G)"
+
+          echo "=== Candidate .app bundles ==="
+          find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d
+
+          # Prefer the app that contains a compiled asset catalog (the final, complete bundle).
+          app=""
+          while IFS= read -r candidate; do
+            if [ -f "$candidate/Contents/Resources/Assets.car" ]; then
+              app="$candidate"
+              break
+            fi
+          done < <(find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d)
+          if [ -z "$app" ]; then
+            echo "::warning::No .app with Assets.car found; falling back to first candidate"
+            app=$(find PowerPlanneriOS/bin -path "*/net10.0-maccatalyst*" -name "PowerPlanneriOS.app" -type d | head -1)
+          fi
           appex="$app/Contents/PlugIns/NativeWidgetExtension.appex"
 
           echo "App: $app"
           echo "AppEx: $appex"
 
-          # Verify the binary is universal (arm64 + x86_64)
+          # Verify the binary is universal (arm64 + x86_64) and the asset catalog is present
           echo "=== Main executable architectures ==="
           lipo -info "$app/Contents/MacOS/"* 2>&1 || true
+          echo "=== Asset catalog ==="
+          ls -l "$app/Contents/Resources/Assets.car" 2>&1 || echo "WARNING: Assets.car missing!"
 
           # Embed provisioning profiles into both bundles (required for TestFlight eligibility).
           # The .app profile must sit at Contents/embedded.provisionprofile; the .appex at its own.
@@ -237,8 +256,19 @@ jobs:
           cp "$RUNNER_TEMP/mac-widget.provisionprofile" "$appex/Contents/embedded.provisionprofile"
           echo "Embedded provisioning profiles into app and widget."
 
+          # Sign every nested Mach-O (dylibs, .so, frameworks) so all arch slices are signed.
+          # codesign signs all slices of a fat binary, fixing 90238 (unsigned x86_64 slice).
+          echo "=== Signing nested dynamic libraries ==="
+          find "$app/Contents" \( -name "*.dylib" -o -name "*.so" \) -type f -print0 | while IFS= read -r -d '' lib; do
+            codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$lib"
+          done
+          # Sign any nested frameworks (bundles) if present
+          find "$app/Contents" -name "*.framework" -type d -print0 | while IFS= read -r -d '' fw; do
+            codesign --force --sign "$SIGN_ID" --options runtime --timestamp "$fw"
+          done
+
           # Re-sign widget extension with full entitlements including com.apple.application-identifier
-          codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
+          codesign --force --sign "$SIGN_ID" \
             --entitlements PowerPlanneriOSWidget/NativeWidgetExtension.entitlements \
             --options runtime \
             --timestamp \
@@ -247,8 +277,8 @@ jobs:
           echo "=== Widget extension embedded entitlements after re-signing ==="
           codesign -d --entitlements :- "$appex" 2>&1
 
-          # Re-sign outer app with explicit entitlements (preserve-metadata was missing app-sandbox)
-          codesign --force --sign "Apple Distribution: BareBones Dev, LLC (A9B367L69G)" \
+          # Re-sign outer app LAST with explicit entitlements (seals the now-signed nested code)
+          codesign --force --sign "$SIGN_ID" \
             --entitlements PowerPlanneriOS/Entitlements-Mac.plist \
             --options runtime \
             --timestamp \
@@ -256,6 +286,10 @@ jobs:
 
           echo "=== Main app embedded entitlements after re-signing ==="
           codesign -d --entitlements :- "$app" 2>&1
+
+          # Verify the whole bundle signs cleanly before packaging
+          echo "=== Verifying signature ==="
+          codesign --verify --deep --strict --verbose=2 "$app" 2>&1 || echo "::warning::codesign verify reported issues"
 
           # Create and sign the pkg directly from the re-signed .app
           mkdir -p artifacts
