@@ -1255,11 +1255,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <returns></returns>
         public async Task<string> GetNextImageToUploadAsync()
         {
-            return await System.Threading.Tasks.Task.Run(new Func<string>(GetNextImageToUploadBlocking));
+            using (await Locks.LockDataForReadAsync())
+            {
+                return GetNextImageToUploadBlocking();
+            }
         }
 
         /// <summary>
-        /// Doesn't use data lock
+        /// Caller must establish data lock
         /// </summary>
         /// <returns></returns>
         private string GetNextImageToUploadBlocking()
@@ -1274,14 +1277,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public async System.Threading.Tasks.Task MarkImageUploadedAsync(string fileName)
         {
-            await System.Threading.Tasks.Task.Run(delegate
+            using (await Locks.LockDataForWriteAsync())
             {
                 MarkImageUploadedBlocking(fileName);
-            });
+            }
         }
 
         /// <summary>
-        /// Doesn't use data lock
+        /// Caller must establish data lock
         /// </summary>
         /// <param name="fileName"></param>
         private void MarkImageUploadedBlocking(string fileName)
