@@ -401,5 +401,5 @@ jobs:
             --skip_screenshots \
             --automatic_release "true" \
             --precheck_include_in_app_purchases false \
-            --platform mac \
+            --platform osx \
             --force
