@@ -67,7 +67,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
@@ -167,7 +167,7 @@ jobs:
           Expand-Archive -Path "AppxPackages\PowerPlannerUWP.msixupload.zip" -DestinationPath "AppxPackages\Extracted"
 
       - name: Upload AppxPackages artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: AppxPackages_${{ matrix.platform }}
           path: AppxPackages/Extracted/
@@ -180,19 +180,19 @@ jobs:
 
     steps:
       - name: Download AppxPackages x86
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: AppxPackages_x86
           path: AppxPackages/
 
       - name: Download AppxPackages x64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: AppxPackages_x64
           path: AppxPackages/
 
       - name: Download AppxPackages ARM64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: AppxPackages_ARM64
           path: AppxPackages/
@@ -255,7 +255,7 @@ jobs:
           & $signtool.FullName sign /debug /a /v /fd SHA256 /f $certPath /p $env:SIGN_CERT_PASSWORD "PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle"
 
       - name: Upload test artifact (signed bundle)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_test
           path: bundles/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixbundle
@@ -269,7 +269,7 @@ jobs:
           Compress-Archive -Path "upload/*" -DestinationPath "upload/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixupload"
 
       - name: Upload appxupload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_appxupload
           path: upload/PowerPlannerUWP_${{ env.BUILD_VERSION }}.0_x86_x64_ARM64.msixupload
@@ -310,7 +310,7 @@ jobs:
 
     steps:
       - name: Download msixupload artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: PowerPlannerUWP_${{ env.BUILD_VERSION }}_appxupload
           path: upload/

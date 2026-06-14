@@ -65,13 +65,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.x'
           dotnet-quality: 'ga'
@@ -140,7 +140,7 @@ jobs:
           Write-Host "AAB: $destDir\$newName"
 
       - name: Upload AAB artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: com.barebonesdev.powerplanner.${{ env.BUILD_VERSION }}.0.aab
           path: artifacts/*.aab
@@ -152,7 +152,7 @@ jobs:
       BUILD_VERSION: ${{ needs.set-version.outputs.build_version }}
     steps:
       - name: Download AAB artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           pattern: com.barebonesdev.powerplanner.*.aab
           path: artifacts
