@@ -23,7 +23,8 @@ namespace PowerPlannerUWP.Extensions
         {
             try
             {
-                var config = TelemetryConfiguration.CreateDefault();
+                var config = new TelemetryConfiguration();
+                config.TelemetryChannel = new InMemoryChannel();
                 config.ConnectionString = Secrets.AppCenterAppSecret;
                 _client = new TelemetryClient(config);
 
