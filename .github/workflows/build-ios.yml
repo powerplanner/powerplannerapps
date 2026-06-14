@@ -57,7 +57,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
@@ -196,7 +196,7 @@ jobs:
           echo "IPA: artifacts/PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa"
 
       - name: Upload IPA artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa
           path: artifacts/*.ipa
@@ -212,7 +212,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Download IPA artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           pattern: PowerPlanneriOS.*.ipa
           path: artifacts

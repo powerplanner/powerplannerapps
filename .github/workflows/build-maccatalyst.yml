@@ -53,7 +53,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
@@ -287,7 +287,7 @@ jobs:
           echo "PKG: artifacts/PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg"
 
       - name: Upload PKG artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: PowerPlannerMac.${{ env.BUILD_VERSION }}.pkg
           path: artifacts/*.pkg
@@ -303,7 +303,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Download PKG artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           pattern: PowerPlannerMac.*.pkg
           path: artifacts
