@@ -37,6 +37,7 @@
 		<PackageReference Include="StorageEverywhereIncludingiOS">
 			<Version>10.0.4</Version>
 		</PackageReference>
+		<PackageReference Include="System.Drawing.Common" Version="4.7.3" /> <!--Only added since MS Toolkit UWP Notifs depends on >=4.7.0, but 4.7.0 has a security vulnerability-->
 	</ItemGroup>
 
 	<ItemGroup>
