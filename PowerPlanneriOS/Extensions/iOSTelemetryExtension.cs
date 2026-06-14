@@ -21,8 +21,7 @@ namespace PowerPlanneriOS.Extensions
         {
             try
             {
-                var config = new TelemetryConfiguration();
-                config.TelemetryChannel = new InMemoryChannel();
+                var config = TelemetryConfiguration.CreateDefault();
                 config.ConnectionString = Secrets.AppCenterAppSecret;
                 _client = new TelemetryClient(config);
 
@@ -101,19 +100,6 @@ namespace PowerPlanneriOS.Extensions
             _developerLogs.Add(str);
 
             _client.GetMetric(metricId, dim1Label, dim2Label).TrackValue(metricValue, dim1Value, dim2Value);
-        }
-
-        private string _lastPageName;
-        public override string LastPageName => _lastPageName;
-        public override void TrackPageVisited(string pageName)
-        {
-            try
-            {
-                _lastPageName = pageName;
-
-                _client.TrackPageView(pageName);
-            }
-            catch { }
         }
 
         public override void TrackException(Exception ex, [CallerMemberName] string exceptionName = null, IDictionary<string, string> properties = null)

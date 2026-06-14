@@ -438,6 +438,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
         public void HandleBeingLeft()
         {
             _timeLeftAt = DateTime.Now;
+            TelemetryExtension.Current?.LeavingApp();
         }
 
         public async Task HandleBeingReturnedTo()
@@ -485,6 +486,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
+
+            TelemetryExtension.Current?.ReturnedToApp();
         }
 
         public MainScreenViewModel GetMainScreenViewModel()

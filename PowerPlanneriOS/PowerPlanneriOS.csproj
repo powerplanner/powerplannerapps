@@ -59,7 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="3.1.2" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.4" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
     </PackageReference>
