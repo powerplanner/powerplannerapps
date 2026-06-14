@@ -923,6 +923,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 // On UWP, we were adding duplicates to calendar integration, so we'll reset calendar integration
                 needsAppointmentReset = true;
             }
+            if (version < 8)
+            {
+                // This fixes a VERY OLD bug that I never fixed, introduced around version 5.4.62.0...
+                // GpaType was added to DataItemClass a LONG time ago. However, unlike StartDate/EndDate (v4)
+                // and PassingGrade (v5), it was never backfilled, so class rows created before the column
+                // existed still hold NULL in this non-nullable column. This throws:
+                //   "The data is NULL at ordinal N. This method can't be called on NULL values."
+                // Only touch NULL rows so we don't clobber valid PassFail values on newer databases.
+                _db.Database.ExecuteSqlRaw("update DataItemClass set GpaType = {0} where GpaType is NULL", (int)GpaType.Standard);
+            }
             if (version < DataInfo.LATEST_VERSION)
             {
                 dataInfo.Version = DataInfo.LATEST_VERSION;
@@ -1099,7 +1109,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public class DataInfo
         {
-            public const int LATEST_VERSION = 7;
+            public const int LATEST_VERSION = 8;
 
             [Key]
             public short Key { get; set; } = 1;
