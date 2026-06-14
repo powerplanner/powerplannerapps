@@ -41,6 +41,9 @@ namespace PowerPlanneriOS.Extensions
 
         private static string GetDeviceType()
         {
+#if __MACCATALYST__
+            return "PC";
+#else
             try
             {
                 switch (UIDevice.CurrentDevice.UserInterfaceIdiom)
@@ -59,6 +62,7 @@ namespace PowerPlanneriOS.Extensions
                 }
             }
             catch { return "Phone"; }
+#endif
         }
 
         public override void TrackEvent(string eventName, IDictionary<string, string> properties = null)

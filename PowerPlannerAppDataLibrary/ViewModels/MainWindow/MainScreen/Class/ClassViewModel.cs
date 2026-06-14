@@ -121,7 +121,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             try
             {
-                if (App.PowerPlannerApp.ShowClassesAsPopups || SyncLayer.SyncExtensions.GetPlatform() == "iOS")
+                if (App.PowerPlannerApp.ShowClassesAsPopups || Vx.VxPlatform.Current == Vx.Platform.iOS)
                 {
                     RemoveViewModel();
                 }

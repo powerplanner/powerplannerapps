@@ -164,7 +164,7 @@ namespace PowerPlannerAppDataLibrary.App
                 // when there's already a popup visible (like adding semester -> repeating requires premium).
                 // I think it has to do with only being able to show one modal popup controller at a time.
                 // For Windows, we do NOT want that, since we want the popup shown on a separate layer, rather than in the same page stack as the current popup
-                if (SyncExtensions.GetPlatform() == "iOS")
+                if (Vx.VxPlatform.Current == Vx.Platform.iOS)
                 {
                     var popupViewModelHost = mainWindow.GetViewModel()?.GetFinalContent()?.GetPopupViewModelHost();
 

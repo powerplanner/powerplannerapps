@@ -39,8 +39,14 @@ namespace PowerPlanneriOS.App
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for iOS"; };
 #endif
 
-            // Note that there's several places my code takes a dependency on this to change behavior for iOS version
-            PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetPlatform = delegate { return "iOS"; };
+            PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetPlatform = delegate
+            {
+#if __MACCATALYST__
+                return "Mac";
+#else
+                return "iOS";
+#endif
+            };
 
             return base.InitializeAsyncOverride();
         }
