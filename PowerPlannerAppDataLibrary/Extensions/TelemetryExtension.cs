@@ -129,7 +129,17 @@ namespace PowerPlannerAppDataLibrary.Extensions
 
         public virtual void SuspendingApp()
         {
-
+            try
+            {
+                lock (_pageViewLock)
+                {
+                    if (_pageViewBundler != null)
+                    {
+                        FinishPageViewBundler();
+                    }
+                }
+            }
+            catch (Exception ex) { TrackException(ex); }
         }
 
         private void FinishPageViewBundler()

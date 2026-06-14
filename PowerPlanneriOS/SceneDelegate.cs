@@ -1,5 +1,9 @@
 #if MACCATALYST
 using Foundation;
+using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Windows;
+using System.Linq;
 using UIKit;
 
 namespace PowerPlanneriOS
@@ -30,10 +34,38 @@ namespace PowerPlanneriOS
         public void DidDisconnect(UIScene scene) { }
 
         [Export("sceneDidBecomeActive:")]
-        public void DidBecomeActive(UIScene scene) { }
+        public void DidBecomeActive(UIScene scene)
+        {
+            try
+            {
+                foreach (var window in PowerPlannerApp.Current.Windows.OfType<MainAppWindow>())
+                {
+                    var dontWait = window.GetViewModel().HandleBeingReturnedTo();
+                }
+            }
+
+            catch { }
+        }
 
         [Export("sceneWillResignActive:")]
-        public void WillResignActive(UIScene scene) { }
+        public void WillResignActive(UIScene scene)
+        {
+            try
+            {
+                foreach (var window in PowerPlannerApp.Current.Windows.OfType<MainAppWindow>())
+                {
+                    window.GetViewModel().HandleBeingLeft();
+                }
+            }
+
+            catch { }
+
+            try
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
+            catch { }
+        }
 
         [Export("sceneWillEnterForeground:")]
         public void WillEnterForeground(UIScene scene) { }
