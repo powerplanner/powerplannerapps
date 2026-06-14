@@ -57,7 +57,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.source_ref || github.ref }}
           submodules: recursive
@@ -66,7 +66,7 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_26.3.app
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.202'
 
@@ -196,7 +196,7 @@ jobs:
           echo "IPA: artifacts/PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa"
 
       - name: Upload IPA artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PowerPlanneriOS.${{ env.BUILD_VERSION }}.0.ipa
           path: artifacts/*.ipa
@@ -212,7 +212,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Download IPA artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: PowerPlanneriOS.*.ipa
           path: artifacts

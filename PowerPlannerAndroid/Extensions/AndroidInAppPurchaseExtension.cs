@@ -173,7 +173,7 @@ namespace PowerPlannerAndroid.Extensions
             {
                 var builder = BillingClient.NewBuilder(context.ApplicationContext);
                 builder.SetListener(PurchasesUpdatedListener);
-                builder.EnablePendingPurchases(); // This is required unfortunately
+                builder.EnablePendingPurchases(PendingPurchasesParams.NewBuilder().EnableOneTimeProducts().Build()); // This is required unfortunately
                 _billingClient = builder.Build();
             }
 

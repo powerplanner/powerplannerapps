@@ -20,7 +20,10 @@ namespace Vx.iOS.Views
         {
             // The default UIButton init produces a UIButtonType.Custom button (no system styling).
             // Explicitly ensure no configuration-based background is applied.
-            Configuration = null;
+            if (OperatingSystem.IsIOSVersionAtLeast(15))
+            {
+                Configuration = null;
+            }
 
             _contentView = new UIContentView
             {

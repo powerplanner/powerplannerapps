@@ -25,16 +25,16 @@
     <None Include="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.260219.4" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.4" />
-    <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
-    <PackageReference Include="TimeZoneNames" Version="6.0.0" />
+    <PackageReference Include="TimeZoneConverter" Version="7.2.0" />
+    <PackageReference Include="TimeZoneNames" Version="7.0.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta" />
-    <PackageReference Include="XliffCompiler" Version="1.0.12">
+    <PackageReference Include="XliffCompiler" Version="1.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
