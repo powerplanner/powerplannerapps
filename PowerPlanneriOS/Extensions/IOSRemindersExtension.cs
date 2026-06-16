@@ -111,6 +111,14 @@ namespace PowerPlanneriOS.Extensions
                     return;
                 }
 
+                // If user denied notification permission, skip all the work
+                var settings = await _notificationCenter.GetNotificationSettingsAsync();
+                if (settings.AuthorizationStatus != UNAuthorizationStatus.Authorized &&
+                    settings.AuthorizationStatus != UNAuthorizationStatus.Provisional)
+                {
+                    return;
+                }
+
                 await Task.Run(async delegate
                 {
                     // This gets called whenever changes are made in the account's data.
