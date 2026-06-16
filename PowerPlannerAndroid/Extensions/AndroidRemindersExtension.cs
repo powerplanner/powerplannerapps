@@ -116,6 +116,11 @@ namespace PowerPlannerAndroid.Extensions
 
         public static async Task UpdateAndScheduleNotifications(Context context, AccountDataItem account, bool fromForeground)
         {
+            if (!NotificationManagerCompat.From(context).AreNotificationsEnabled())
+            {
+                return;
+            }
+
             DateTime now = DateTime.Now;
             var agendaItems = await AndroidRemindersExtension.GetAgendaViewItemsGroup(account, now.Date);
             var notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
