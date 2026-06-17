@@ -190,9 +190,6 @@ jobs:
           -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
           -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
           ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
-          -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
-          -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
-          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Fix widget signature and create signed PKG
         # dotnet re-signs embedded extensions without application-identifier, and the universal
