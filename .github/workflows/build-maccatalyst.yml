@@ -393,6 +393,8 @@ jobs:
           BUILD_NUMBER: ${{ env.BUILD_VERSION }}.0
           APP_VERSION: ${{ env.BUILD_VERSION }}
         run: |
+          SUBMIT_FLAG="--submit_for_review"
+
           fastlane deliver \
             --api_key_path api_key.json \
             --app_identifier "com.barebonesdev.powerplanner" \
@@ -402,4 +404,5 @@ jobs:
             --automatic_release "true" \
             --precheck_include_in_app_purchases false \
             --platform osx \
-            --force
+            --force \
+            $SUBMIT_FLAG
