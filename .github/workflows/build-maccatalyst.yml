@@ -19,6 +19,15 @@ on:
         description: 'Branch, tag, or commit SHA to build'
         required: false
         default: 'main'
+      target_arch:
+        description: 'Mac Catalyst target architecture(s)'
+        required: false
+        default: 'universal'
+        type: choice
+        options:
+          - universal
+          - x86_64
+          - arm64
       whats_new:
         description: 'Release notes (Whats New) for the Mac App Store submission'
         required: false
@@ -179,17 +188,51 @@ jobs:
       - name: Build XliffCompiler (dotnet build PowerPlanner)
         run: dotnet build PowerPlannerAppDataLibrary/PowerPlanner.csproj -c Release
 
+      - name: Resolve Mac Catalyst publish target
+        id: maccatalyst_target
+        shell: bash
+        run: |
+          target_arch="universal"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.target_arch }}" ]; then
+            target_arch="${{ github.event.inputs.target_arch }}"
+          fi
+
+          publish_arch_args=""
+          case "$target_arch" in
+            x86_64)
+              publish_arch_args="-p:RuntimeIdentifier=maccatalyst-x64 -p:RuntimeIdentifiers=maccatalyst-x64"
+              ;;
+            arm64)
+              publish_arch_args="-p:RuntimeIdentifier=maccatalyst-arm64 -p:RuntimeIdentifiers=maccatalyst-arm64"
+              ;;
+            universal)
+              ;;
+            *)
+              echo "::error::Unsupported target_arch '$target_arch'"
+              exit 1
+              ;;
+          esac
+
+          echo "target_arch=$target_arch" >> "$GITHUB_OUTPUT"
+          echo "publish_arch_args=$publish_arch_args" >> "$GITHUB_OUTPUT"
+          echo "Building target_arch=$target_arch"
+
       - name: Publish PowerPlanneriOS (Mac Catalyst)
         # RuntimeIdentifiers (set in the csproj for maccatalyst) produces a universal binary (arm64 + x64).
-        run: >-
-          dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj
-          -f net10.0-maccatalyst
-          -c Release
-          --self-contained
-          -p:CreatePackage=true
-          -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}"
-          -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)"
-          ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARCH_ARGS="${{ steps.maccatalyst_target.outputs.publish_arch_args }}"
+
+          dotnet publish PowerPlanneriOS/PowerPlanneriOS.csproj \
+            -f net10.0-maccatalyst \
+            -c Release \
+            --self-contained \
+            -p:CreatePackage=true \
+            -p:CodesignProvision="${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}" \
+            -p:CodesignKey="Apple Distribution: BareBones Dev%2c LLC (A9B367L69G)" \
+            $ARCH_ARGS \
+            ${{ vars.ADDITIONAL_BUILD_ARGUMENTS }}
 
       - name: Fix widget signature and create signed PKG
         # dotnet re-signs embedded extensions without application-identifier, and the universal
