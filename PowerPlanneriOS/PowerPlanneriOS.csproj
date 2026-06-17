@@ -21,10 +21,12 @@
     <CodeSignEntitlements>Entitlements-Mac.plist</CodeSignEntitlements>
     <MTouchLink>SdkOnly</MTouchLink>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+  <!-- The interpreter is required on iOS and ARM64 Mac Catalyst (dynamic code generation is disallowed there),
+       but x64 Mac Catalyst supports JIT and crashes on launch if the interpreter is enabled, so exclude that RID. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' And '$(RuntimeIdentifier)' != 'maccatalyst-x64'">
     <UseInterpreter>true</UseInterpreter>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(RuntimeIdentifier)' != 'maccatalyst-x64'">
     <MtouchInterpreter>-all</MtouchInterpreter>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release' And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst' And '$(RuntimeIdentifier)' == ''">
