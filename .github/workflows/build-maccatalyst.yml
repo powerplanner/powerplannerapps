@@ -200,10 +200,10 @@ jobs:
           publish_arch_args=""
           case "$target_arch" in
             x86_64)
-              publish_arch_args="-p:RuntimeIdentifier=maccatalyst-x64 -p:RuntimeIdentifiers=maccatalyst-x64"
+              publish_arch_args="-p:RuntimeIdentifier=maccatalyst-x64"
               ;;
             arm64)
-              publish_arch_args="-p:RuntimeIdentifier=maccatalyst-arm64 -p:RuntimeIdentifiers=maccatalyst-arm64"
+              publish_arch_args="-p:RuntimeIdentifier=maccatalyst-arm64"
               ;;
             universal)
               ;;
