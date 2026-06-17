@@ -29,8 +29,12 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <UseInterpreter>true</UseInterpreter>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
     <MtouchInterpreter>-all</MtouchInterpreter>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+    <UseInterpreter>false</UseInterpreter>
+    <DebuggerSupport>false</DebuggerSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <DefineConstants>BUILD_OS_WINDOWS</DefineConstants>
