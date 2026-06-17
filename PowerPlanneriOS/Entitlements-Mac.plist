@@ -6,6 +6,14 @@
 	<string>A9B367L69G.com.barebonesdev.powerplanner</string>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	<key>com.apple.security.cs.allow-jit</key>
+	<true/>
+	<!-- Required for the Mono interpreter to generate trampolines on x86_64 (Intel) Mac Catalyst.
+	     arm64 uses the MAP_JIT mechanism covered by allow-jit, but x86_64 marks executable
+	     memory without MAP_JIT, which requires this entitlement; without it the x64 build
+	     crashes on launch (null jump while UIKit instantiates the AppDelegate). -->
+	<key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+	<true/>
 	<key>com.apple.security.network.client</key>
 	<true/>
 	<key>com.apple.security.application-groups</key>
