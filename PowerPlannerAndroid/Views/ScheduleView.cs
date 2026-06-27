@@ -194,8 +194,8 @@ namespace PowerPlannerAndroid.Views
             ViewModel.OnFullReset += new WeakEventHandler(ViewModel_OnFullReset).Handler;
             ViewModel.OnItemsForDateChanged += new WeakEventHandler<DateTime>(ViewModel_OnItemsForDateChanged).Handler;
 
-            BindingHost.SetBinding(nameof(ViewModel.LayoutMode), UpdateLayoutMode);
-            BindingHost.SetBinding(nameof(ViewModel.HasAllDayItems), RenderSchedule);
+            BindingHost.SetBinding(nameof(ViewModel.LayoutMode), UpdateLayoutMode, skipInvokingActionImmediately: true);
+            BindingHost.SetBinding(nameof(ViewModel.HasAllDayItems), RenderSchedule, skipInvokingActionImmediately: true);
 
             _itemsWrapperEditingClasses = new ItemsControlWrapper(FindViewById<ViewGroup>(Resource.Id.EditingClassesViewGroup))
             {
