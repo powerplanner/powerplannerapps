@@ -1677,8 +1677,8 @@ Por favor, ¡Piense en usar una cuenta en línea!</target>
           <target state="final">✨ Agregar clases y horario con IA</target>
         </trans-unit>
         <trans-unit id="ScheduleWelcome_TextOrManually" translate="yes" xml:space="preserve">
-          <source>Or, add classes manually...</source>
-          <target state="final">O, agregar clases manualmente...</target>
+          <source>Or you can...</source>
+          <target state="final">O puedes...</target>
         </trans-unit>
         <trans-unit id="AddClassesWithAi_Title" translate="yes" xml:space="preserve">
           <source>Add with AI</source>

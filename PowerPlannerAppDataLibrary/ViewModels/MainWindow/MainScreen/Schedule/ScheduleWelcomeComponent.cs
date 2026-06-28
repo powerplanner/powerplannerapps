@@ -57,26 +57,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
                     new AccentButton
                     {
-                        Text = R.S("ScheduleWelcome_ButtonAddWithAi"),
+                        Text = "+ " + R.S("SchedulePage_ButtonAddClass.Content"),
+                        Click = ScheduleViewModel.AddClass,
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        Click = () => ScheduleViewModel.ShowPopup(new AddClassesAndScheduleWithAiViewModel(ScheduleViewModel)),
                         Margin = new Thickness(0, 12, 0, 0)
                     },
 
                     new TextBlock
                     {
                         Text = R.S("ScheduleWelcome_TextOrManually"),
+                        TextColor = Theme.Current.SubtleForegroundColor,
                         TextAlignment = HorizontalAlignment.Center,
-                        Margin = new Thickness(0, 12, 0, 0),
-                        TextColor = Theme.Current.SubtleForegroundColor
+                        Margin = new Thickness(0, 12, 0, 0)
                     },
 
-                    new AccentButton
+                    new TextButton
                     {
-                        Text = "+ " + R.S("SchedulePage_ButtonAddClass.Content"),
-                        Click = ScheduleViewModel.AddClass,
+                        Text = R.S("ScheduleWelcome_ButtonAddWithAi"),
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        Margin = new Thickness(0, 6, 0, 0)
+                        Click = () => ScheduleViewModel.ShowPopup(new AddClassesAndScheduleWithAiViewModel(ScheduleViewModel)),
+                        Margin = new Thickness(0, 0, 0, 0)
                     }
                 }
             };

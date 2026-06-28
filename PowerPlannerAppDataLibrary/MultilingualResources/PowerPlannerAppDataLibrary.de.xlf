@@ -1678,8 +1678,8 @@ Bitte denken Sie darüber nach, ein Online-Konto zu verwenden!</target>
           <target state="final">✨ Kurse und Stundenplan mit KI hinzufügen</target>
         </trans-unit>
         <trans-unit id="ScheduleWelcome_TextOrManually" translate="yes" xml:space="preserve">
-          <source>Or, add classes manually...</source>
-          <target state="final">Oder Kurse manuell hinzufügen...</target>
+          <source>Or you can...</source>
+          <target state="final">Oder du kannst...</target>
         </trans-unit>
         <trans-unit id="AddClassesWithAi_Title" translate="yes" xml:space="preserve">
           <source>Add with AI</source>

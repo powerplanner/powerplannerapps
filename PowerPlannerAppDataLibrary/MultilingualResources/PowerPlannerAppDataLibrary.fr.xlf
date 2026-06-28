@@ -1768,8 +1768,8 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <target state="final">✨ Ajouter des cours et l'emploi du temps avec l'IA</target>
         </trans-unit>
         <trans-unit id="ScheduleWelcome_TextOrManually" translate="yes" xml:space="preserve">
-          <source>Or, add classes manually...</source>
-          <target state="final">Ou, ajouter des cours manuellement...</target>
+          <source>Or you can...</source>
+          <target state="final">Ou vous pouvez...</target>
         </trans-unit>
         <trans-unit id="AddClassesWithAi_Title" translate="yes" xml:space="preserve">
           <source>Add with AI</source>
