@@ -1199,8 +1199,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             // If already selected, do nothing
             if (value == SelectedItem)
-                return;
-            
+            {
+                if (value == MainMenuSelections.Classes && SelectedClass != null)
+                {
+                    // Clear selected class
+                    SelectClassWithinSemester(null);
+                }
+                return;   
+            }
+
             NavigationManager.MainMenuSelection = value;
 
             updateAvailableItems();

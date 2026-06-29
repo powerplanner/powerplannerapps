@@ -70,7 +70,6 @@ namespace PowerPlanneriOS
                 { typeof(InitialSyncViewModel), typeof(InitialSyncViewController) },
                 { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
                 { typeof(ScheduleViewModel), typeof(ScheduleViewController) },
-                { typeof(ClassesViewModel), typeof(ClassesViewController) },
                 { typeof(ClassViewModel), typeof(ClassViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },

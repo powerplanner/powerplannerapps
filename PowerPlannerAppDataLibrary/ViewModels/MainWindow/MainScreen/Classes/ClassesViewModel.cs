@@ -10,6 +10,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using ToolsPortable;
 using Vx;
 using Vx.Views;
@@ -58,7 +59,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         public void OpenClass(ViewItemClass viewItemClass)
         {
-            MainScreenViewModel.ViewClass(viewItemClass);
+            MainScreenViewModel.ViewClass(viewItemClass, ClassViewModel.LastSelectedPage ?? ClassViewModel.ClassPages.Overview);
         }
 
         protected override View Render()
@@ -173,7 +174,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                         Width = CIRCLE_SIZE,
                         Height = CIRCLE_SIZE,
                         VerticalAlignment = VerticalAlignment.Center,
-                        CornerRadius = CIRCLE_SIZE
+                        CornerRadius = CIRCLE_SIZE / 2f
                     },
                     new TextBlock
                     {

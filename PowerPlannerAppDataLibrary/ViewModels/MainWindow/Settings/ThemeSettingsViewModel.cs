@@ -139,7 +139,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                     swatchGrid.Children.Add(new Border
                     {
                         BackgroundColor = option.Color,
-                        CornerRadius = 24,
+                        CornerRadius = 18,
                         Width = 36,
                         Height = 36,
                         Margin = new Thickness(4),
@@ -163,7 +163,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 swatchGrid.Children.Add(new Border
                 {
                     BackgroundColor = isCustomSelected ? _selectedColor.Value : Color.FromArgb(120, 120, 120),
-                    CornerRadius = 24,
+                    CornerRadius = 18,
                     Width = 36,
                     Height = 36,
                     Margin = new Thickness(4),

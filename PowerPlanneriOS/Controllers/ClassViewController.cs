@@ -201,25 +201,30 @@ namespace PowerPlanneriOS.Controllers
         {
             if (currentController == _detailsViewController)
             {
+                ViewModel.CurrentPage = ClassViewModel.ClassPages.Details;
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonEditDetails };
             }
             else if (currentController == _timesViewController)
             {
+                ViewModel.CurrentPage = ClassViewModel.ClassPages.Times;
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonEditTimes };
             }
             else if (currentController == _tasksViewController)
             {
+                ViewModel.CurrentPage = ClassViewModel.ClassPages.Tasks;
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddTask };
                 ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
             }
             else if (currentController == _eventsViewController)
             {
+                ViewModel.CurrentPage = ClassViewModel.ClassPages.Events;
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddEvent };
                 ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
 
             }
             else if (currentController == _gradesViewController)
             {
+                ViewModel.CurrentPage = ClassViewModel.ClassPages.Grades;
                 NavItem.RightBarButtonItems = new UIBarButtonItem[] { _navButtonAddGrade };
                 ViewModel.ViewItemsGroupClass.LoadGrades();
             }

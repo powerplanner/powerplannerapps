@@ -201,10 +201,32 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             Grades = 5
         }
 
+        public static ClassPages? LastSelectedPage { get; private set; }
+
+        private ClassPages _currentPage = ClassPages.Overview;
+        public ClassPages CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                _currentPage = value;
+                LastSelectedPage = value;
+            }
+        }
+
+        private ClassPages? _initialPage;
         /// <summary>
         /// The initial page that should be displayed
         /// </summary>
-        public ClassPages? InitialPage { get; set; }
+        public ClassPages? InitialPage
+        {
+            get => _initialPage;
+            set
+            {
+                _initialPage = value;
+                CurrentPage = value ?? ClassPages.Overview;
+            }
+        }
 
         public void EditClass()
         {
