@@ -65,8 +65,9 @@ namespace PowerPlanneriOS.Controllers
 
                 if (value != null)
                 {
-#if !__MACCATALYST__
                     base.ViewModel = value;
+
+#if !__MACCATALYST__
                     value.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
                     value.AvailableItems.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(AvailableItems_CollectionChanged).Handler;
                     UpdateSelectedTab();
