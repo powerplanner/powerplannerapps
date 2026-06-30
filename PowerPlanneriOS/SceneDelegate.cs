@@ -1,4 +1,5 @@
 #if MACCATALYST
+using CoreGraphics;
 using Foundation;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
@@ -23,6 +24,8 @@ namespace PowerPlanneriOS
                 windowScene.Titlebar?.TitleVisibility = UITitlebarTitleVisibility.Hidden;
                 windowScene.Titlebar?.Toolbar = null;
 
+                // Configure minimum width
+                windowScene.SizeRestrictions?.MinimumSize = new CGSize(320, 340);
 
                 Window ??= new UIWindow(windowScene);
                 var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;

@@ -24,6 +24,12 @@ namespace Vx.iOS
             Theme.Current = new VxiOSTheme();
             VxPlatform.Current = Platform.iOS;
 
+#if __MACCATALYST__
+            VxDeviceType.Current = DeviceType.Desktop;
+#else
+            VxDeviceType.Current = DeviceType.Phone;
+#endif
+
             NativeView.CreateNativeView = view =>
             {
                 foreach (var customView in _customViews)
@@ -80,6 +86,11 @@ namespace Vx.iOS
                 if (view is Vx.Views.ScrollView)
                 {
                     return new iOSScrollView();
+                }
+
+                if (view is Vx.Views.PagedViewModelPresenterView)
+                {
+                    return new iOSPagedViewModelPresenterView();
                 }
 
                 if (view is Vx.Views.FontIcon)

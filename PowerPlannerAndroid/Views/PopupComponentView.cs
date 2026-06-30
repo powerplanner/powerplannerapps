@@ -39,9 +39,13 @@ namespace PowerPlannerAndroid.Views
             AddNonInflatedView(nativeView);
 
             // Make sure title and commands are called after calling AddNonInflatedView, since that method creates the toolbar/etc
-            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            UpdateTitle();
-            UpdateCommands();
+            BindingHost.SetBinding<string>(nameof(ViewModel.Title), t =>
+            {
+                Title = t;
+            });
+            BindingHost.SetBindings(
+                [nameof(ViewModel.Commands), nameof(ViewModel.SecondaryCommands)],
+                UpdateCommands);
 
             if (ViewModel.ImportantForAutofill)
             {
@@ -51,21 +55,6 @@ namespace PowerPlannerAndroid.Views
             if (InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets != null)
             {
                 UpdateNookInsets(InterfacesDroid.Windows.NativeDroidAppWindow.WindowInsets);
-            }
-        }
-
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(ViewModel.Commands):
-                case nameof(ViewModel.SecondaryCommands):
-                    UpdateCommands();
-                    break;
-
-                case nameof(ViewModel.Title):
-                    UpdateTitle();
-                    break;
             }
         }
 
@@ -112,11 +101,6 @@ namespace PowerPlannerAndroid.Views
                 default:
                     throw new NotImplementedException();
             }
-        }
-
-        private void UpdateTitle()
-        {
-            Title = ViewModel.Title;
         }
 
         public override async void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)

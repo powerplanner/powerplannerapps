@@ -18,6 +18,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerUWP.Helpers;
 using PowerPlannerAppDataLibrary;
+using System.Globalization;
 
 namespace PowerPlannerUWP.Extensions
 {
@@ -424,7 +425,7 @@ namespace PowerPlannerUWP.Extensions
                             Items =
                             {
                                 new ToastSelectionBoxItem("5", PowerPlannerResources.GetXMinutes(5)),
-                                new ToastSelectionBoxItem("15", PowerPlannerResources.GetXMinutes(5)),
+                                new ToastSelectionBoxItem("15", PowerPlannerResources.GetXMinutes(15)),
                                 new ToastSelectionBoxItem("60", PowerPlannerResources.GetXHours(1)),
                                 new ToastSelectionBoxItem("240", PowerPlannerResources.GetXHours(4)),
                                 new ToastSelectionBoxItem("1440", PowerPlannerResources.GetString("String_OneDay"))
@@ -493,7 +494,7 @@ namespace PowerPlannerUWP.Extensions
 
         internal static string TrimString(string str, int maxLength)
         {
-            if (str == null)
+            if (str == null || maxLength <= 0)
             {
                 return "";
             }
@@ -501,7 +502,37 @@ namespace PowerPlannerUWP.Extensions
             str = str.Trim();
 
             if (str.Length > maxLength)
-                str = str.Substring(0, maxLength - 3) + "...";
+            {
+                if (maxLength <= 3)
+                {
+                    return new string('.', maxLength);
+                }
+
+                int trimmedLength = maxLength - 3;
+                int[] textElementIndexes = StringInfo.ParseCombiningCharacters(str);
+                int safeLength = 0;
+
+                for (int i = 0; i < textElementIndexes.Length; i++)
+                {
+                    int textElementEnd = i + 1 < textElementIndexes.Length ? textElementIndexes[i + 1] : str.Length;
+
+                    if (textElementEnd <= trimmedLength)
+                    {
+                        safeLength = textElementEnd;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (safeLength <= 0)
+                {
+                    return "...";
+                }
+
+                str = str.Substring(0, safeLength) + "...";
+            }
 
             return str;
         }

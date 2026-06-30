@@ -193,7 +193,9 @@ namespace PowerPlannerAndroid.Views
 
             ViewModel.OnFullReset += new WeakEventHandler(ViewModel_OnFullReset).Handler;
             ViewModel.OnItemsForDateChanged += new WeakEventHandler<DateTime>(ViewModel_OnItemsForDateChanged).Handler;
-            ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
+
+            BindingHost.SetBinding(nameof(ViewModel.LayoutMode), UpdateLayoutMode, skipInvokingActionImmediately: true);
+            BindingHost.SetBinding(nameof(ViewModel.HasAllDayItems), RenderSchedule, skipInvokingActionImmediately: true);
 
             _itemsWrapperEditingClasses = new ItemsControlWrapper(FindViewById<ViewGroup>(Resource.Id.EditingClassesViewGroup))
             {
@@ -324,32 +326,6 @@ namespace PowerPlannerAndroid.Views
         private void View_OnAddClassTimeRequested(object sender, ViewItemClass e)
         {
             ViewModel.AddTime(e, useNewStyle: true);
-        }
-
-        private void ViewModel_OnChangesOccurred(object sender, PowerPlannerAppDataLibrary.DataLayer.DataChangedEvent e)
-        {
-            RenderSchedule();
-        }
-
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            try
-            {
-                switch (e.PropertyName)
-                {
-                    case nameof(ViewModel.LayoutMode):
-                        UpdateLayoutMode();
-                        break;
-
-                    case nameof(ViewModel.HasAllDayItems):
-                        RenderSchedule();
-                        break;
-                }
-            }
-            catch (ObjectDisposedException)
-            {
-
-            }
         }
 
         private void UpdateLayoutMode()

@@ -14,13 +14,15 @@ namespace PowerPlannerAppDataLibrary.Components
         public double UploadImageProgress { get; set; } = 0;
         public bool IsOfflineOrHasSyncError { get; set; } = false;
         public bool HasClasses { get; set; }
+        public Thickness NookInsets { get; set; } = new Thickness(0, 0, 0, 0);
+        public float BottomNookInset => Math.Max(0, NookInsets.Bottom - 15);
 
         protected override View Render()
         {
             return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
-                Height = 64,
+                Height = 64 + BottomNookInset,
                 Children =
                 {
                     MainScreenViewModel.RenderSyncProgressBar(SyncState, UploadImageProgress, VerticalAlignment.Bottom),
@@ -63,6 +65,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 Content = new LinearLayout
                 {
                     VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(0, 0, 0, BottomNookInset),
                     Children =
                     {
                         error ? (View)new FrameLayout

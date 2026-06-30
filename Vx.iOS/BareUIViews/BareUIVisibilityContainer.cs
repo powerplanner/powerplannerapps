@@ -53,6 +53,15 @@ namespace InterfacesiOS.Views
                 {
                     Add();
                 }
+                else
+                {
+                    // Ensure we collapse to zero height even when starting out hidden (the
+                    // IsVisible setter only collapses on a true->false transition, which never
+                    // happens if we're hidden from construction). Without this the container has an
+                    // undetermined height and can steal vertical space from siblings inside a
+                    // fixed-height parent (e.g. the multiline text box's text area).
+                    Collapse();
+                }
             }
         }
 
@@ -72,9 +81,14 @@ namespace InterfacesiOS.Views
             if (Child != null)
             {
                 Child.RemoveFromSuperview();
-                this.RemoveConstraints(this.Constraints);
-                this.SetHeight(0);
+                Collapse();
             }
+        }
+
+        private void Collapse()
+        {
+            this.RemoveConstraints(this.Constraints);
+            this.SetHeight(0);
         }
     }
 }

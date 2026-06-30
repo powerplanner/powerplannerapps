@@ -45,6 +45,36 @@ public class UIProgressBarWithIndeterminate : UIView
         UpdateProgress();
     }
 
+    /// <summary>
+    /// Reports a thin natural height (matching the underlying UIProgressView) so the manual Vx
+    /// layout engine doesn't collapse this control to zero height. Width stretches to the parent.
+    /// </summary>
+    public override CGSize SizeThatFits(CGSize size)
+    {
+        nfloat height = progressView.IntrinsicContentSize.Height;
+        if (height <= 0)
+        {
+            height = 4;
+        }
+
+        // Stretch to the available width; report 0 when unbounded so we never inflate a parent.
+        nfloat width = (size.Width > 0 && size.Width < Vx.iOS.Views.UIViewWrapper.UnboundedSize) ? size.Width : 0;
+        return new CGSize(width, height);
+    }
+
+    public override CGSize IntrinsicContentSize
+    {
+        get
+        {
+            nfloat height = progressView.IntrinsicContentSize.Height;
+            if (height <= 0)
+            {
+                height = 4;
+            }
+            return new CGSize(NoIntrinsicMetric, height);
+        }
+    }
+
     public bool IsIndeterminate
     {
         get => isIndeterminate;

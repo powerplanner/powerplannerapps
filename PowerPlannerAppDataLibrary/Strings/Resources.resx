@@ -1462,7 +1462,7 @@ Please think about using an online account instead!</value>
     <value>✨ Add classes and schedules with AI</value>
   </data>
   <data name="ScheduleWelcome_TextOrManually" xml:space="preserve">
-    <value>Or, add classes manually...</value>
+    <value>Or you can...</value>
   </data>
   <data name="AddClassesWithAi_Title" xml:space="preserve">
     <value>Add with AI</value>

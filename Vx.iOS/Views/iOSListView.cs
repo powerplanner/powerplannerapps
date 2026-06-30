@@ -25,8 +25,6 @@ namespace Vx.iOS.Views
             View.TableFooterView = new UIView(); // Eliminate extra separators on bottom of view
 
             View.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
-
-            View.AllowsSelection = false;
         }
 
         private INotifyCollectionChanged _prevList;
@@ -40,7 +38,9 @@ namespace Vx.iOS.Views
             View.ContentInset = new UIEdgeInsets(0, padding.Left, padding.Bottom, padding.Right);
             View.TableHeaderView = new UIView(new CoreGraphics.CGRect(0, 0, 0, padding.Top)); // Have to use HeaderView for top padding since the ContentInset won't start scrolled (Insets are meant for a transparent header where the content scrolls underneath).
 
-            if (oldView?.Items != newView.Items || oldView?.ItemTemplate != newView.ItemTemplate)
+            View.AllowsSelection = newView.ItemClicked != null;
+
+            if (oldView?.Items != newView.Items || oldView?.ItemTemplate != newView.ItemTemplate || oldView?.ItemClicked != newView.ItemClicked)
             {
                 if (newView.Items == null || newView.ItemTemplate == null)
                 {
@@ -49,7 +49,7 @@ namespace Vx.iOS.Views
                 }
                 else
                 {
-                    View.Source = new TableViewSource(newView.Items, newView.ItemTemplate);
+                    View.Source = new TableViewSource(newView.Items, newView.ItemTemplate, newView.ItemClicked);
 
                     if (_prevList != newView.Items)
                     {
@@ -80,12 +80,14 @@ namespace Vx.iOS.Views
             private IEnumerable _items;
             private IList _itemsList;
             private Func<object, Vx.Views.View> _itemTemplate;
+            private Action<object> _itemClicked;
             private const string CellId = "VxCellId";
-            public TableViewSource(IEnumerable items, Func<object, Vx.Views.View> itemTemplate)
+            public TableViewSource(IEnumerable items, Func<object, Vx.Views.View> itemTemplate, Action<object> itemClicked)
             {
                 _items = items;
                 _itemsList = items as IList;
                 _itemTemplate = itemTemplate;
+                _itemClicked = itemClicked;
             }
 
             private object GetItem(int row)
@@ -139,6 +141,12 @@ namespace Vx.iOS.Views
                 component.Data = item;
                 component.RenderOnDemand(); // Need it to update the views immediately before returning
                 return cell;
+            }
+
+            public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+            {
+                tableView.DeselectRow(indexPath, true);
+                _itemClicked?.Invoke(GetItem(indexPath.Row));
             }
 
             public override nint RowsInSection(UITableView tableview, nint section)

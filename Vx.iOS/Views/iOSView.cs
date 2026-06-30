@@ -118,6 +118,10 @@ namespace Vx.iOS.Views
                     _dragDelegate = null;
                 }
             }
+
+            // Any property change (text, image, size, alignment, etc.) may alter this view's
+            // desired size, so invalidate its cached measurement and propagate up the tree.
+            ViewWrapper.InvalidateMeasure();
         }
 
         private void OnDragStarting(Vx.Views.DragDrop.DragStartingEventArgs args)

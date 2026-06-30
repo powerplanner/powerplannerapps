@@ -70,24 +70,29 @@ namespace PowerPlannerAndroid.Views
             switch (_viewPager.CurrentItem)
             {
                 case ClassPagerAdapter.DETAILS:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Details;
                     ViewModel.CurrentViewModel = ViewModel.DetailsViewModel;
                     break;
 
                 case ClassPagerAdapter.TIMES:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Times;
                     ViewModel.CurrentViewModel = ViewModel.TimesViewModel;
                     break;
 
                 case ClassPagerAdapter.TASKS:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Tasks;
                     ViewModel.CurrentViewModel = ViewModel.TasksViewModel;
                     ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
                     break;
 
                 case ClassPagerAdapter.EVENTS:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Events;
                     ViewModel.CurrentViewModel = ViewModel.EventsViewModel;
                     ViewModel.ViewItemsGroupClass.LoadTasksAndEvents();
                     break;
 
                 case ClassPagerAdapter.GRADES:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Grades;
                     ViewModel.CurrentViewModel = ViewModel.GradesViewModel;
                     ViewModel.ViewItemsGroupClass.LoadGrades();
                     break;

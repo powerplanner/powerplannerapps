@@ -27,20 +27,41 @@ namespace Vx.iOS.Views
 
             _contentView = new UIContentView
             {
-                TranslatesAutoresizingMaskIntoConstraints = false,
+                TranslatesAutoresizingMaskIntoConstraints = true,
 
                 // Forward all touches to this button so it behaves as a single button
                 UserInteractionEnabled = false
             };
 
             base.AddSubview(_contentView);
-            _contentView.StretchWidthAndHeight(this);
         }
 
         public UIViewWrapper Content
         {
             get => _contentView.Content;
             set => _contentView.Content = value;
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            // Manually fill the button with the Vx content host (no Auto Layout constraints).
+            _contentView.Frame = Bounds;
+        }
+
+        public override CGSize SizeThatFits(CGSize size)
+        {
+            return _contentView.MeasureContent(size);
+        }
+
+        public override CGSize IntrinsicContentSize
+        {
+            get
+            {
+                nfloat width = Bounds.Width > 0 ? Bounds.Width : UIViewWrapper.UnboundedSize;
+                return _contentView.MeasureContent(new CGSize(width, UIViewWrapper.UnboundedSize));
+            }
         }
 
         public override bool Highlighted

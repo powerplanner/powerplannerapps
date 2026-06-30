@@ -65,9 +65,9 @@ Prereqs...
 
 Instructions...
 1. In Terminal, `cd` to the `PowerPlanneriOS` directory.
-1. Run `dotnet run`
+1. Run `dotnet run -f net10.0-ios`
 1. The simulator should launch!
-1. To specify a specific simulator, in XCode go to Window -> Devices and Simulators, and in the Simulators list, right click one from the left and click Copy Identifier. Then, use the command `dotnet run /p:_DeviceName=:v2:udid=78E660EB-A32F-4683-95CC-CA663D7D64D0` using the identifier you copied.
+1. To specify a specific simulator, in XCode go to Window -> Devices and Simulators, and in the Simulators list, right click one from the left and click Copy Identifier. Then, use the command `dotnet run -f net10.0-ios /p:_DeviceName=:v2:udid=185937CD-80A5-4A2D-A198-C4C9A4530C45` using the identifier you copied.
 
 #### Known iOS issues
 
@@ -80,6 +80,12 @@ Instructions...
   * If that still didn't work, try rebooting both machines
 * (When using PC) My edits don't seem to be applied when I re-deploy.
   * I've noticed this and not sure what causes it. Seems like you have to clean the project each time first before deploying. Hopefully VS fixes it soon.
+
+### Building Mac
+
+```bash
+dotnet run -f net10.0-maccatalyst
+```
 
 ## Architecture
 

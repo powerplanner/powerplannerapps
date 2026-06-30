@@ -33,6 +33,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             _originalClass = c;
             Title = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockHeader.Text");
+
+            // iOS uses system toolbar
+            if (VxPlatform.Current == Platform.iOS)
+            {
+                PrimaryCommand = new PopupCommand
+                {
+                    Text = PowerPlannerResources.GetString("String_NewGrade"),
+                    Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                    Click = AddGrade
+                };
+            }
         }
 
         private ViewItemClass _class;
@@ -265,7 +276,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     {
                         new Border
                         {
-                            BackgroundColor = Class.Color.ToColor(),
+                            BackgroundColor = Class.Color.ToColor().Opacity(0.2),
                             Content = new LinearLayout
                             {
                                 Margin = new Thickness(leftMargin, Theme.Current.PageMargin + NookInsets.Top, rightMargin, Theme.Current.PageMargin),
@@ -279,7 +290,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                         {
                                             new Border
                                             {
-                                                BackgroundColor = Color.White,
+                                                BackgroundColor = Class.Color.ToColor(),
                                                 Height = 4,
                                                 VerticalAlignment = VerticalAlignment.Center
                                             }.LinearLayoutWeight(1),
@@ -288,14 +299,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                             {
                                                 Text = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockHeader.Text"),
                                                 FontSize = Theme.Current.TitleFontSize,
-                                                TextColor = Color.White,
                                                 Margin = new Thickness(6, 0, 6, 0),
                                                 WrapText = false
                                             },
 
                                             new Border
                                             {
-                                                BackgroundColor = Color.White,
+                                                BackgroundColor = Class.Color.ToColor(),
                                                 Height = 4,
                                                 VerticalAlignment = VerticalAlignment.Center
                                             }.LinearLayoutWeight(1)
@@ -307,7 +317,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                         Content = new TextBlock
                                         {
                                             Text = PowerPlannerResources.GetString("ClassWhatIfPage_RunExplanation.Text"),
-                                            TextColor = Color.White,
                                             FontSize = Theme.Current.CaptionFontSize,
                                             Height = _isDescriptionExpanded.Value ? float.NaN : 40
                                         },
@@ -317,7 +326,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                     new TextBlock
                                     {
                                         Text = PowerPlannerResources.GetString("ClassWhatIfPage_TextBlockEnterDesired.Text"),
-                                        TextColor = Color.White,
                                         Margin = new Thickness(0, 6, 0, 0)
                                     },
 
@@ -356,7 +364,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                     DesiredErrorMessage != null ? new TextBlock
                                     {
                                         Text = DesiredErrorMessage,
-                                        TextColor = Color.White,
                                         FontWeight = FontWeights.SemiBold,
                                         FontSize = Theme.Current.CaptionFontSize,
                                         Margin = new Thickness(0, 6, 0, 0)
@@ -382,7 +389,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 }
             };
 
-            if (VxPlatform.Current != Platform.Android)
+            // Only UWP displays the toolbar - Android has the floating action button, and iOS uses system toolbar
+            if (VxPlatform.Current == Platform.Uwp)
             {
                 content = new LinearLayout
                 {

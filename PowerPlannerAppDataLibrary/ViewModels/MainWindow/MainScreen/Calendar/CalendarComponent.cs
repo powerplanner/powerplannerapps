@@ -477,7 +477,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             {
                                 Width = CircleSize,
                                 Height = CircleSize,
-                                CornerRadius = CircleSize,
+                                CornerRadius = CircleSize / 2f,
                                 BackgroundColor = item.Class.Color.ToColor(),
                                 VerticalAlignment = VerticalAlignment.Top,
                                 Margin = new Thickness(first ? 0 : CircleMargin, 0, 0, 0)

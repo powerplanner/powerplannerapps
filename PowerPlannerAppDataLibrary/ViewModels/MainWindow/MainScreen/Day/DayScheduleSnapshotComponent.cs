@@ -253,14 +253,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 
                         foreach (var a in EventItem.AdditionalItems)
                         {
-                            const int circleSize = 8;
-
                             additionalCircles.Children.Add(new Border
                             {
                                 BackgroundColor = a.IsComplete ? Theme.Current.SubtleForegroundColor.Opacity(0.3) : a.Class.Color.ToColor(),
                                 Width = ADDITIONAL_CIRCLES_WIDTH,
                                 Height = ADDITIONAL_CIRCLES_WIDTH,
-                                CornerRadius = circleSize,
+                                CornerRadius = ADDITIONAL_CIRCLES_WIDTH / 2f,
                                 Margin = new Thickness(0, 0, 0, 2)
                             });
                         }
