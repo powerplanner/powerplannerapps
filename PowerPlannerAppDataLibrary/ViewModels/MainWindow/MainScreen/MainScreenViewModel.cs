@@ -347,7 +347,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                             Width = 14,
                                             Height = 14,
                                             VerticalAlignment = VerticalAlignment.Center,
-                                            CornerRadius = 14
+                                            CornerRadius = 7
                                         },
                                         new TextBlock
                                         {
