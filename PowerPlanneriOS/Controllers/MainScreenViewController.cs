@@ -22,9 +22,10 @@ namespace PowerPlanneriOS.Controllers
 {
     public class MainScreenViewController : PagedViewModelWithPopupsPresenter
     {
-#if !__MACCATALYST__
         public static nfloat TAB_BAR_HEIGHT = 0;
+#if !__MACCATALYST__
         private static WeakReferenceList<Action> OnTabBarHeightChangedListeners = new WeakReferenceList<Action>();
+#endif
 
         /// <summary>
         /// Must provide a strong reference storage point in your child view controller so that the action will be persisted correctly
@@ -33,6 +34,9 @@ namespace PowerPlanneriOS.Controllers
         /// <returns></returns>
         public static void ListenToTabBarHeightChanged(ref object strongReferenceStorage, Action action)
         {
+#if __MACCATALYST__
+            action.Invoke();
+#else
             OnTabBarHeightChangedListeners.Add(action);
             OnTabBarHeightChangedListeners.CleanUpStaleReferences();
             if (TAB_BAR_HEIGHT != 0)
@@ -41,8 +45,8 @@ namespace PowerPlanneriOS.Controllers
             }
 
             strongReferenceStorage = action;
-        }
 #endif
+        }
 
         ~MainScreenViewController()
         {
@@ -72,6 +76,7 @@ namespace PowerPlanneriOS.Controllers
 
 #if __MACCATALYST__
                     var renderedView = ViewModel.Render();
+                    renderedView.TranslatesAutoresizingMaskIntoConstraints = false;
                     base.Add(renderedView);
                     renderedView.StretchWidthAndHeight(base.View);
 #endif
