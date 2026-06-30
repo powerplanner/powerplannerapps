@@ -308,8 +308,15 @@ namespace Vx.iOS.Views
                 case Vx.Views.HorizontalAlignment.Center:
                     x = slot.X + m.Left + (availW - w) / 2f;
                     break;
-                default: // Stretch: fills when it can, otherwise (fixed Width) centers, like WPF/UWP.
-                    x = slot.X + m.Left + (availW - w) / 2f;
+                default: // Stretch: fills when it can. When it can't (a fixed Width), the default
+                         // is to left-align (matching Android's FillHorizontal on a fixed-size view).
+                         // Images are the exception: a fixed-size image reads best centered, so we
+                         // center those. When actually stretching, w == availW so both reduce to
+                         // x = slot.X + m.Left.
+                    if (!stretchH && View is UIImageView)
+                        x = slot.X + m.Left + (availW - w) / 2f;
+                    else
+                        x = slot.X + m.Left;
                     break;
             }
 
@@ -325,8 +332,13 @@ namespace Vx.iOS.Views
                 case Vx.Views.VerticalAlignment.Center:
                     y = slot.Y + m.Top + (availH - h) / 2f;
                     break;
-                default: // Stretch: fills when it can, otherwise (fixed Height) centers, like WPF/UWP.
-                    y = slot.Y + m.Top + (availH - h) / 2f;
+                default: // Stretch: fills when it can; otherwise (fixed Height) it top-aligns,
+                         // matching Android. Images are the exception and center (see horizontal).
+                         // When stretching, h == availH so both reduce to y = slot.Y + m.Top.
+                    if (!stretchV && View is UIImageView)
+                        y = slot.Y + m.Top + (availH - h) / 2f;
+                    else
+                        y = slot.Y + m.Top;
                     break;
             }
 
