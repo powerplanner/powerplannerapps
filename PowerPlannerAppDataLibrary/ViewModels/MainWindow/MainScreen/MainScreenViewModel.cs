@@ -76,7 +76,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         HasClasses = AvailableItems.Contains(MainMenuSelections.Calendar),
                         IsOfflineOrHasSyncError = IsOffline || HasSyncErrors,
                         SyncState = SyncState,
-                        UploadImageProgress = UploadImageProgress
+                        UploadImageProgress = UploadImageProgress,
+                        NookInsets = NookInsets
                     } : null
                 }
             };
