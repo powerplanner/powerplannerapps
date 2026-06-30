@@ -160,7 +160,7 @@ jobs:
         run: |
           sed -i '' 's|PRODUCT_BUNDLE_IDENTIFIER = com\.barebonesdev\.powerplanner;|PRODUCT_BUNDLE_IDENTIFIER = com.barebonesdev.powerplanner; PROVISIONING_PROFILE_SPECIFIER = "${{ vars.MAC_APP_PROVISIONING_PROFILE_NAME }}";|g' PowerPlanneriOSWidget/NativeApp.xcodeproj/project.pbxproj
 
-      - name: Set version in Info-Mac.plist and NativeWidget
+      - name: Set version, name, and identifier in Info-Mac.plist and NativeWidget
         shell: bash
         run: |
           VERSION="${{ env.BUILD_VERSION }}"
@@ -168,6 +168,12 @@ jobs:
           # Main app — macOS requires at most 3 version components (no .0 suffix)
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOS/Info-Mac.plist
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" PowerPlanneriOS/Info-Mac.plist
+
+          # Override the dev name/identifier (the source plist keeps PP-Dev / .dev for local dev)
+          # with the production values used for the Mac App Store build.
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName Power Planner" PowerPlanneriOS/Info-Mac.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleName Power Planner" PowerPlanneriOS/Info-Mac.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.barebonesdev.powerplanner" PowerPlanneriOS/Info-Mac.plist
 
           # NativeWidget — must match the main app
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PowerPlanneriOSWidget/NativeWidget/Info.plist

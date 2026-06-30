@@ -26,6 +26,20 @@ namespace InterfacesiOS.ViewModelPresenters
             base.AddChildViewController(MyNavigationController);
         }
 
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            base.ViewSafeAreaInsetsDidChange();
+
+            if (ViewModel != null)
+            {
+                ViewModel.UpdateNookInsets(new Vx.Views.Thickness(
+                    (float)View.SafeAreaInsets.Left,
+                    (float)View.SafeAreaInsets.Top,
+                    (float)View.SafeAreaInsets.Right,
+                    (float)View.SafeAreaInsets.Bottom));
+            }
+        }
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();

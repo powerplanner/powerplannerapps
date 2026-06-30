@@ -61,7 +61,7 @@ namespace Vx.iOS.Views
                 if (_itemWidth != value)
                 {
                     _itemWidth = value;
-                    SetNeedsUpdateConstraints();
+                    InvalidateLayout();
                 }
             }
         }
@@ -75,73 +75,64 @@ namespace Vx.iOS.Views
                 if (_itemHeight != value)
                 {
                     _itemHeight = value;
-                    SetNeedsUpdateConstraints();
+                    InvalidateLayout();
                 }
             }
         }
 
-        public override void LayoutSubviews()
+        private void InvalidateLayout()
         {
-            base.LayoutSubviews();
-
-            SetNeedsUpdateConstraints();
+            MarkMeasureDirty();
+            SetNeedsLayout();
+            PropagateLayoutDirty(Superview);
         }
 
-        public override void ArrangeSubviews()
+        private int GetColumns(nfloat width)
         {
-#if DEBUG
-            try
+            if (width <= 0 || width >= UIViewWrapper.UnboundedSize)
             {
-#endif
-                var width = Frame.Size.Width;
-                if (width == 0)
-                {
-                    return;
-                }
-
-                var columns = (int)(width / ItemWidth);
-                if (columns == 0)
-                {
-                    columns = 1;
-                }
-
-                var rows = ArrangedSubviews.BatchAsArrays(columns).ToArray();
-
-                for (int rIndex = 0; rIndex < rows.Length; rIndex++)
-                {
-                    var r = rows[rIndex];
-
-                    for (int cIndex = 0; cIndex < columns && cIndex < r.Length; cIndex++)
-                    {
-                        var view = r[cIndex];
-
-                        var left = cIndex * ItemWidth;
-                        var top = rIndex * ItemHeight;
-
-                        view.SetConstraints(
-                            leftConstraint: new WrapperConstraint(this, NSLayoutAttribute.Left, 1, left),
-                            topConstraint: new WrapperConstraint(this, NSLayoutAttribute.Top, 1, top),
-                            rightConstraint: new WrapperConstraint(this, NSLayoutAttribute.Right) { GreaterThanOrEqual = true },
-                            bottomConstraint: new WrapperConstraint(this, NSLayoutAttribute.Bottom) { GreaterThanOrEqual = true },
-                            centeringHorizontalView: null,
-                            centeringVerticalView: null,
-                            widthConstraint: new WrapperConstraint(null, NSLayoutAttribute.Width, 1, ItemWidth - view.Margin.Width),
-                            heightConstraint: new WrapperConstraint(null, NSLayoutAttribute.Height, 1, ItemHeight - view.Margin.Height));
-                    }
-                }
-#if DEBUG
+                return ArrangedSubviews.Count > 0 ? ArrangedSubviews.Count : 1;
             }
-            catch (Exception ex)
+
+            int columns = (int)(width / ItemWidth);
+            return columns < 1 ? 1 : columns;
+        }
+
+        public override CGSize MeasureContent(CGSize available)
+        {
+            int count = ArrangedSubviews.Count;
+            if (count == 0)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
-                if (System.Diagnostics.Debugger.IsAttached)
-                {
-                    System.Diagnostics.Debugger.Break();
-                }
-
-                throw;
+                return CGSize.Empty;
             }
-#endif
+
+            int columns = GetColumns(available.Width);
+            if (columns > count)
+            {
+                columns = count;
+            }
+            int rows = (count + columns - 1) / columns;
+
+            return new CGSize(columns * ItemWidth, rows * ItemHeight);
+        }
+
+        public override void ArrangeContent(CGSize size)
+        {
+            var children = ArrangedSubviews;
+            if (children.Count == 0)
+            {
+                return;
+            }
+
+            int columns = GetColumns(size.Width);
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                int row = i / columns;
+                int col = i % columns;
+
+                children[i].Arrange(new CGRect(col * ItemWidth, row * ItemHeight, ItemWidth, ItemHeight));
+            }
         }
     }
 }

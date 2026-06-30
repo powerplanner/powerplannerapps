@@ -29,12 +29,14 @@ namespace Vx.iOS.Views
 
         public UIScrollViewWithPreferredMax()
         {
+            // Manual layout: the content view is positioned via its frame in LayoutSubviews,
+            // so the autoresizing-mask -> constraints translation must be enabled and we never
+            // configure Auto Layout scrolling constraints.
             _contentView = new UIContentView
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
+                TranslatesAutoresizingMaskIntoConstraints = true
             };
             AddSubview(_contentView);
-            _contentView.ConfigureForVerticalScrolling(this);
         }
 
         public UIViewWrapper Content
@@ -42,6 +44,22 @@ namespace Vx.iOS.Views
             get => _contentView.Content;
             set => _contentView.Content = value;
         }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            // Vertical scrolling: bound the content's width to our viewport and let it grow
+            // unbounded vertically, then size the scrollable content region to the result.
+            nfloat width = Bounds.Width;
+            var desired = _contentView.MeasureContent(new CGSize(width, UIViewWrapper.UnboundedSize));
+
+            nfloat contentHeight = MaxF(desired.Height, Bounds.Height);
+            _contentView.Frame = new CGRect(0, 0, width, contentHeight);
+            ContentSize = new CGSize(width, contentHeight);
+        }
+
+        private static nfloat MaxF(nfloat a, nfloat b) => a > b ? a : b;
     }
 
     public class UIVxScrollView : UIScrollView

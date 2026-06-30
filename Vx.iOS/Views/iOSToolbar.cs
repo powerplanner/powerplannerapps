@@ -1,25 +1,104 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CoreGraphics;
 using ToolsPortable;
 using UIKit;
 using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSToolbar : iOSView<Vx.Views.Toolbar, UIView>
+    /// <summary>
+    /// Root view for the toolbar. Hosts a native UINavigationBar (kept as a native control) plus a
+    /// status-bar background, but lays them out MANUALLY by frame to fit the manual Vx layout engine
+    /// (no Auto Layout / SystemLayoutSizeFittingSize, which was unreliable - it returned a zero
+    /// height before the nav bar's intrinsic size / safe area resolved). Height = safe-area top +
+    /// nav-bar height; we re-measure when the safe area changes.
+    /// </summary>
+    public class UIToolbarRootView : UIView
+    {
+        private UIView _statusBar;
+        private UINavigationBar _navBar;
+
+        public void Configure(UIView statusBar, UINavigationBar navBar)
+        {
+            _statusBar = statusBar;
+            _navBar = navBar;
+        }
+
+        private nfloat NavBarHeight
+        {
+            get
+            {
+                nfloat h = _navBar?.IntrinsicContentSize.Height ?? 0;
+                if (h <= 0)
+                {
+                    h = 44; // Standard navigation bar height.
+                }
+                return h;
+            }
+        }
+
+        public override CGSize SizeThatFits(CGSize size)
+        {
+            nfloat width = (size.Width > 0 && size.Width < UIViewWrapper.UnboundedSize)
+                ? size.Width
+                : UIScreen.MainScreen.Bounds.Width;
+
+            return new CGSize(width, SafeAreaInsets.Top + NavBarHeight);
+        }
+
+        public override CGSize IntrinsicContentSize => new CGSize(NoIntrinsicMetric, SafeAreaInsets.Top + NavBarHeight);
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            nfloat top = SafeAreaInsets.Top;
+
+            if (_statusBar != null)
+            {
+                _statusBar.Frame = new CGRect(0, 0, Bounds.Width, top);
+            }
+
+            if (_navBar != null)
+            {
+                _navBar.Frame = new CGRect(0, top, Bounds.Width, MaxF(0, Bounds.Height - top));
+            }
+        }
+
+        public override void SafeAreaInsetsDidChange()
+        {
+            base.SafeAreaInsetsDidChange();
+
+            // The toolbar height depends on the safe-area top inset, which resolves after the view
+            // enters the hierarchy. Re-measure and notify the parent Vx layout to re-measure too.
+            InvalidateIntrinsicContentSize();
+            SetNeedsLayout();
+            UIPanel.PropagateLayoutDirty(Superview);
+        }
+
+        private static nfloat MaxF(nfloat a, nfloat b) => a > b ? a : b;
+    }
+
+    public class iOSToolbar : iOSView<Vx.Views.Toolbar, UIToolbarRootView>
     {
         private UINavigationBar NavBar;
-
+        private UIView _statusBarView;
 
         public iOSToolbar()
         {
-            var statusBarView = UIStatusBarView.CreateAndAddTo(View);
-            statusBarView.StretchWidth(View);
+            // Manual layout: status bar background + nav bar are positioned by frame in
+            // UIToolbarRootView.LayoutSubviews (no Auto Layout constraints).
+            _statusBarView = new UIView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = true
+            };
+            View.AddSubview(_statusBarView);
 
             NavBar = new UINavigationBar()
             {
-                TranslatesAutoresizingMaskIntoConstraints = false,
+                TranslatesAutoresizingMaskIntoConstraints = true,
                 Translucent = false,
                 Items = new UINavigationItem[]
                 {
@@ -27,11 +106,8 @@ namespace Vx.iOS.Views
                 }
             };
             View.AddSubview(NavBar);
-            NavBar.StretchWidth(View);
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[statusBar][navBar]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                "statusBar", statusBarView,
-                "navBar", NavBar));
+            View.Configure(_statusBarView, NavBar);
         }
 
         private UIBackBarButtonItem _backButton;
@@ -46,6 +122,7 @@ namespace Vx.iOS.Views
             }
 
             View.BackgroundColor = newView.BackgroundColor.ToUI();
+            _statusBarView.BackgroundColor = newView.BackgroundColor.ToUI();
             NavBar.BarTintColor = newView.BackgroundColor.ToUI();
 
             if (oldView?.ForegroundColor != newView.ForegroundColor)

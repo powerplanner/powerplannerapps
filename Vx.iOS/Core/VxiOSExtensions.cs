@@ -88,6 +88,11 @@ namespace Vx.iOS
                     return new iOSScrollView();
                 }
 
+                if (view is Vx.Views.PagedViewModelPresenterView)
+                {
+                    return new iOSPagedViewModelPresenterView();
+                }
+
                 if (view is Vx.Views.FontIcon)
                 {
                     return new iOSFontIcon();

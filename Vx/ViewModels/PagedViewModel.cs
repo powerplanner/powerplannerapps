@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Views;
 
 namespace BareMvvm.Core.ViewModels
 {
@@ -30,6 +31,21 @@ namespace BareMvvm.Core.ViewModels
         public PagedViewModel(BaseViewModel parent) : base(parent)
         {
             (BackStack as INotifyCollectionChanged).CollectionChanged += PagedViewModel_CollectionChanged;
+        }
+
+        /// <summary>
+        /// Safe-area insets ("nook" insets) reported by the platform view, so content can avoid
+        /// notches/home indicators. Mirrors ComponentViewModel.NookInsets.
+        /// </summary>
+        public Thickness NookInsets { get; protected set; }
+
+        public void UpdateNookInsets(Thickness newInsets)
+        {
+            if (NookInsets != newInsets)
+            {
+                NookInsets = newInsets;
+                MarkDirty();
+            }
         }
 
         private void PagedViewModel_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

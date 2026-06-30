@@ -105,10 +105,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
         private View RenderSyncProgressBar()
         {
-            return RenderSyncProgressBar(SyncState, UploadImageProgress, VerticalAlignment.Top);
+            return RenderSyncProgressBar(SyncState, UploadImageProgress, VerticalAlignment.Top, NookInsets);
         }
 
-        public static View RenderSyncProgressBar(SyncStates SyncState, double UploadImageProgress, VerticalAlignment verticalAlignment)
+        public static View RenderSyncProgressBar(SyncStates SyncState, double UploadImageProgress, VerticalAlignment verticalAlignment, Thickness nookInsets = new Thickness())
         {
             return new ProgressBar
             {
@@ -117,7 +117,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 IsIndeterminate = SyncState == SyncStates.Syncing ? true : false,
                 Value = SyncState == SyncStates.UploadingImages ? UploadImageProgress : 0,
                 MaxValue = 1,
-                VerticalAlignment = verticalAlignment
+                VerticalAlignment = verticalAlignment,
+                Margin = new Thickness(0, nookInsets.Top, 0, 0)
             };
         }
 
@@ -126,6 +127,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return IsOffline || HasSyncErrors ? new TransparentContentButton
             {
                 VerticalAlignment = verticalAlignment,
+                Margin = new Thickness(0, NookInsets.Top, 0, 0),
                 Content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
@@ -185,10 +187,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             {
                                 Source = new UriImageSource
                                 {
-                                    UwpUri = "ms-appx:///Assets/Logo.png"
+                                    UwpUri = "ms-appx:///Assets/Logo.png",
+                                    IosBundleName = "PowerPlannerIcon"
                                 },
                                 Width = 58,
-                                Margin = new Thickness(0, 24, 0, 24),
+                                Margin = new Thickness(0, NookInsets.Top + 24, 0, 24),
                                 Tapped = SyncCurrentAccount
                             },
 
