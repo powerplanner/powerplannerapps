@@ -1176,7 +1176,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 }
                 else
                 {
-                    SetContent(new ClassViewModel(this, CurrentLocalAccountId, classId, DateTime.Today, CurrentSemester), preserveBack: allowGoingBack);
+                    SetContent(new ClassViewModel(this, CurrentLocalAccountId, classId, DateTime.Today, CurrentSemester)
+                    {
+                        InitialPage = ClassViewModel.LastSelectedPage
+                    }, preserveBack: allowGoingBack);
                 }
             }
             else
@@ -1767,13 +1770,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             if (PowerPlannerApp.ShowClassesAsPopups)
             {
-                OpenClassAsPopup(c, initialPage);
+                OpenClassAsPopup(c, initialPage ?? ClassViewModel.LastSelectedPage);
             }
             else
             {
                 Navigate(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester)
                 {
-                    InitialPage = initialPage
+                    InitialPage = initialPage ?? ClassViewModel.LastSelectedPage
                 });
             }
         }
