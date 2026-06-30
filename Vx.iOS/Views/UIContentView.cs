@@ -73,14 +73,19 @@ namespace Vx.iOS.Views
             nfloat availableWidth = available.Width;
             if (availableWidth > 0 && availableWidth < UIViewWrapper.UnboundedSize)
             {
-                availableWidth -= Padding.Left + Padding.Right;
+                // Subtract BOTH padding and the content's own margin, matching ArrangeContent
+                // (which lays the content out within size - padding - margin). Measuring with the
+                // margin still included would give the content more width than it's actually
+                // arranged with - which, right at a wrap threshold (e.g. AdaptiveGridPanel columns),
+                // makes the measured height too short and breaks scrolling.
+                availableWidth -= Padding.Left + Padding.Right + Content.Margin.Left + Content.Margin.Right;
                 if (availableWidth < 0) availableWidth = 0;
             }
 
             nfloat availableHeight = available.Height;
             if (availableHeight > 0 && availableHeight < UIViewWrapper.UnboundedSize)
             {
-                availableHeight -= Padding.Top + Padding.Bottom;
+                availableHeight -= Padding.Top + Padding.Bottom + Content.Margin.Top + Content.Margin.Bottom;
                 if (availableHeight < 0) availableHeight = 0;
             }
 
