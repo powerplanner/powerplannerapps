@@ -174,7 +174,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
-                Width = 215,
+                Width = 204,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Children =
                 {
