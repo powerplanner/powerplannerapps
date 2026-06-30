@@ -32,6 +32,7 @@ namespace Vx.Droid
         {
             Theme.Current = new VxDroidTheme();
             VxPlatform.Current = Platform.Android;
+            VxDeviceType.Current = DeviceType.Phone;
 
             NativeView.CreateNativeView = view =>
             {

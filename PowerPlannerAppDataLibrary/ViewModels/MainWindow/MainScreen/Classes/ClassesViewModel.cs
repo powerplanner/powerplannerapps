@@ -29,7 +29,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
         private Func<object, View> _renderClassTemplate;
 
         public bool IsDesktop { get; } = VxPlatform.Current == Platform.Uwp
-                || (VxPlatform.Current == Platform.iOS && SyncExtensions.GetPlatform() == "Mac");
+                || (VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Desktop);
 
         public ClassesViewModel(BaseViewModel parent) : base(parent)
         {

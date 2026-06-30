@@ -16,11 +16,13 @@ using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary;
+using Vx.iOS;
 
 namespace PowerPlanneriOS.Controllers
 {
     public class MainScreenViewController : PagedViewModelWithPopupsPresenter
     {
+#if !__MACCATALYST__
         public static nfloat TAB_BAR_HEIGHT = 0;
         private static WeakReferenceList<Action> OnTabBarHeightChangedListeners = new WeakReferenceList<Action>();
 
@@ -40,6 +42,7 @@ namespace PowerPlanneriOS.Controllers
 
             strongReferenceStorage = action;
         }
+#endif
 
         ~MainScreenViewController()
         {
@@ -58,19 +61,27 @@ namespace PowerPlanneriOS.Controllers
 
                 if (value != null)
                 {
+#if !__MACCATALYST__
                     base.ViewModel = value;
                     value.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
                     value.AvailableItems.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(AvailableItems_CollectionChanged).Handler;
                     UpdateSelectedTab();
                     UpdateAvailableTabs();
-                    UpdateSyncStates();
                     UpdateOfflineOrSyncErrors();
+#endif
+
+#if __MACCATALYST__
+                    var renderedView = ViewModel.Render();
+                    base.Add(renderedView);
+                    renderedView.StretchWidthAndHeight(base.View);
+#endif
 
                     TryAskingForRatingIfNeeded();
                 }
             }
         }
 
+#if !__MACCATALYST__
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
@@ -122,10 +133,6 @@ namespace PowerPlanneriOS.Controllers
                     UpdateSelectedTab();
                     break;
 
-                case nameof(ViewModel.SyncState):
-                    UpdateSyncStates();
-                    break;
-
                 case nameof(ViewModel.IsOffline):
                 case nameof(ViewModel.HasSyncErrors):
                     UpdateOfflineOrSyncErrors();
@@ -143,10 +150,6 @@ namespace PowerPlanneriOS.Controllers
             {
                 _tabBarItemMore.BadgeValue = null;
             }
-        }
-
-        private void UpdateSyncStates()
-        {
         }
 
         private void UpdateSelectedTab()
@@ -272,6 +275,7 @@ namespace PowerPlanneriOS.Controllers
                 ViewModel.SelectedItem = PowerPlannerAppDataLibrary.NavigationManager.MainMenuSelections.Settings;
             }
         }
+#endif
 
         private async void TryAskingForRatingIfNeeded()
         {
