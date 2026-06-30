@@ -101,7 +101,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 MarkDirty();
             }
 
-            IsCompactMode = size.Width < (VxPlatform.Current == Platform.iOS ? 800 : 700);
+            // If portrait ratio, enter compact
+            if (size.Height > size.Width * 1.3)
+            {
+                IsCompactMode = true;
+            }
+            else
+            {
+                // Otherwise enter based on width
+                IsCompactMode = size.Width < (VxPlatform.Current == Platform.iOS ? 800 : 700);
+            }
         }
 
         private View RenderSyncProgressBar()
