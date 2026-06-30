@@ -40,6 +40,14 @@ namespace PowerPlanneriOS.Controllers
             ContentView.Add(_nativeComponent);
             _nativeComponent.StretchWidthAndHeight(ContentView);
 
+            // The content host fills the available space and scrolls internally, so it must NOT
+            // impose its (now potentially tall) intrinsic content size on the surrounding Auto
+            // Layout chain. Otherwise it competes with the nav bar's height at the same default
+            // compression-resistance priority and forces the nav bar to collapse. Lowering its
+            // compression resistance lets the nav bar keep its natural intrinsic height.
+            _nativeComponent.SetContentCompressionResistancePriority((float)UILayoutPriority.DefaultLow, UILayoutConstraintAxis.Vertical);
+            _nativeComponent.SetContentCompressionResistancePriority((float)UILayoutPriority.DefaultLow, UILayoutConstraintAxis.Horizontal);
+
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
         }
 
