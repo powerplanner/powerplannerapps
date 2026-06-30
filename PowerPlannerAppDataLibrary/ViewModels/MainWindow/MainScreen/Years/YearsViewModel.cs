@@ -128,13 +128,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 });
             }
 
-            if (VxPlatform.Current == Platform.Uwp)
+            if (VxPlatform.Current == Platform.Uwp || VxPlatform.Current == Platform.iOS)
             {
                 return new LinearLayout
                 {
                     Children =
                     {
-                        MainScreenViewModel.IsCompactMode ? new Toolbar
+                        (MainScreenViewModel.IsCompactMode || VxPlatform.Current == Platform.iOS) ? new Toolbar
                         {
                             Title = Title
                         }.InnerToolbarThemed() : null,

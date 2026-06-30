@@ -11,6 +11,7 @@ using InterfacesiOS.Windows;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlanneriOS.Controllers;
@@ -73,6 +74,8 @@ namespace PowerPlanneriOS
                 { typeof(ClassViewModel), typeof(ClassViewController) },
                 { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
                 { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
+
+                { typeof(YearsViewModel), typeof(ComponentViewController) }, // Don't show Years as a popup on iOS
             };
         }
 
