@@ -206,6 +206,15 @@ namespace Vx.iOS.Views
             var v = start;
             while (v != null)
             {
+                // Stop before reaching a UIPickerView. The picker manages its own internal layout,
+                // and calling SetNeedsLayout on it (e.g. when a picker item's Vx component re-renders
+                // while the user is scrolling) causes it to re-lay its wheel and reset the scroll
+                // position, which breaks scrolling in comboboxes with custom item templates.
+                if (v is UIPickerView)
+                {
+                    break;
+                }
+
                 v.SetNeedsLayout();
                 if (v is UIPanel p)
                 {
