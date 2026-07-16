@@ -20,6 +20,10 @@
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Preserve EF Core entity types and their members from trimming -->
+    <TrimmerRootDescriptor Include="ILLink.Descriptors.xml" />
+  </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release'">
 	<Compile Remove="ViewModels\MainWindow\Settings\VxTests\*" />
   </ItemGroup>

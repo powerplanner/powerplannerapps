@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Trimmer roots for Entity Framework Core.
+
+  EF Core discovers and materializes entities by reflecting over their properties
+  (including inherited ones). Trimming can remove or rename those members because
+  they aren't statically referenced, which breaks the O/R mapping at runtime.
+
+  Preserve all members of the mapped entity types and their base-class hierarchy.
+-->
+<linker>
+  <assembly fullname="PowerPlannerAppDataLibrary">
+    <!-- All concrete DataItem entity types (DataItemClass, DataItemMegaItem, etc.) -->
+    <type fullname="PowerPlannerAppDataLibrary.DataLayer.DataItems.*" preserve="all" />
+
+    <!-- Their base-class hierarchy (BaseDataItem and friends), whose properties are also mapped -->
+    <type fullname="PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems.*" preserve="all" />
+
+    <!-- Other mapped entities that live directly under the DataLayer namespace -->
+    <type fullname="PowerPlannerAppDataLibrary.DataLayer.ImageToUpload" preserve="all" />
+    <type fullname="PowerPlannerAppDataLibrary.DataLayer.AccountDataStore/DataInfo" preserve="all" />
+  </assembly>
+</linker>
