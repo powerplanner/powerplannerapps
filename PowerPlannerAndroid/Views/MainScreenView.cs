@@ -140,8 +140,6 @@ namespace PowerPlannerAndroid.Views
             }
         }
 
-        private PropertyChangedEventHandler _viewModelPropertyChangedEventHandler;
-
         private BottomNavigationView _bottomNav;
 
         public View GetSnackbarAnchorView()
@@ -168,8 +166,12 @@ namespace PowerPlannerAndroid.Views
 
             _popupsPresenter.ViewModel = ViewModel;
 
-            _viewModelPropertyChangedEventHandler = new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
-            ViewModel.PropertyChanged += _viewModelPropertyChangedEventHandler;
+            BindingHost.SetBinding(nameof(ViewModel.SelectedItem), OnSelectedMenuItemChanged);
+            BindingHost.SetBinding(nameof(ViewModel.SelectedClass), OnSelectedClassChanged);
+            BindingHost.SetBindings(
+                [nameof(ViewModel.SyncState), nameof(ViewModel.UploadImageProgress)],
+                UpdateSyncBarStatus);
+
             ViewModel.AvailableItems.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(AvailableItems_CollectionChanged).Handler;
 
             UpdateActionBarTitle();
@@ -274,33 +276,15 @@ namespace PowerPlannerAndroid.Views
             catch { }
         }
 
-        private void OpenReview()
-        {
-            Intent intent = new Intent(Intent.ActionView);
-            intent.SetData(Android.Net.Uri.Parse("market://details?id=" + Context.PackageName));
-
-            if (!TryStartActivity(intent))
-            {
-                // Google Play app not installed, try open web browser
-                intent.SetData(Android.Net.Uri.Parse("https://play.google.com/store/apps/details?id=" + Context.PackageName));
-
-                if (!TryStartActivity(intent))
-                {
-                    Toast.MakeText(Context, "Google Play not available", ToastLength.Short).Show();
-                }
-            }
-        }
-
-        private bool TryStartActivity(Intent intent)
+        private async void OpenReview()
         {
             try
             {
-                Context.StartActivity(intent);
-                return true;
+                await ReviewAppExtension.Current?.ReviewAppAsync();
             }
-            catch (ActivityNotFoundException)
+            catch (Exception ex)
             {
-                return false;
+                TelemetryExtension.Current?.TrackException(ex);
             }
         }
 
@@ -370,39 +354,6 @@ namespace PowerPlannerAndroid.Views
                 }
 
                 ShowBackButton = false;
-            }
-        }
-
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            try
-            {
-                switch (e.PropertyName)
-                {
-                    case nameof(ViewModel.SelectedItem):
-                        OnSelectedMenuItemChanged();
-                        break;
-
-                    case nameof(ViewModel.SelectedClass):
-                        OnSelectedClassChanged();
-                        break;
-
-                    case nameof(ViewModel.SyncState):
-                    case nameof(ViewModel.UploadImageProgress):
-                        UpdateSyncBarStatus();
-                        break;
-                }
-            }
-            catch (ObjectDisposedException)
-            {
-                if (ViewModel != null && _viewModelPropertyChangedEventHandler != null)
-                {
-                    ViewModel.PropertyChanged -= _viewModelPropertyChangedEventHandler;
-                }
-            }
-            catch (Exception ex)
-            {
-                TelemetryExtension.Current?.TrackException(ex);
             }
         }
 

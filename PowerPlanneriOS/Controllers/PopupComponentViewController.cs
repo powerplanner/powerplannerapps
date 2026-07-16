@@ -40,6 +40,14 @@ namespace PowerPlanneriOS.Controllers
             ContentView.Add(_nativeComponent);
             _nativeComponent.StretchWidthAndHeight(ContentView);
 
+            // The content host fills the available space and scrolls internally, so it must NOT
+            // impose its (now potentially tall) intrinsic content size on the surrounding Auto
+            // Layout chain. Otherwise it competes with the nav bar's height at the same default
+            // compression-resistance priority and forces the nav bar to collapse. Lowering its
+            // compression resistance lets the nav bar keep its natural intrinsic height.
+            _nativeComponent.SetContentCompressionResistancePriority((float)UILayoutPriority.DefaultLow, UILayoutConstraintAxis.Vertical);
+            _nativeComponent.SetContentCompressionResistancePriority((float)UILayoutPriority.DefaultLow, UILayoutConstraintAxis.Horizontal);
+
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
         }
 
@@ -67,7 +75,7 @@ namespace PowerPlanneriOS.Controllers
         {
             if (ViewModel.SecondaryCommands != null && ViewModel.SecondaryCommands.Length > 0)
             {
-                yield return new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), UIBarButtonItemStyle.Plain, new WeakEventHandler(ButtonMore_Clicked).Handler);
+                yield return new UIBarButtonItem(UIImage.FromBundle("MenuVerticalIcon").ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), VxiOSContextMenu.CreateMenu(ViewModel.SecondaryCommands));
             }
 
             if (ViewModel.Commands != null)
@@ -77,55 +85,6 @@ namespace PowerPlanneriOS.Controllers
                     yield return command.ToUIBarButtonItem();
                 }
             }
-        }
-
-        private void ButtonMore_Clicked(object sender, EventArgs e)
-        {
-            // https://developer.xamarin.com/recipes/ios/standard_controls/alertcontroller/#ActionSheet_Alert
-            UIAlertController actionSheetMoreOptions = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
-
-            foreach (var option in ViewModel.SecondaryCommands)
-            {
-                actionSheetMoreOptions.AddAction(UIAlertAction.Create(option.Text, option.Style == MenuItemStyle.Destructive ? UIAlertActionStyle.Destructive : UIAlertActionStyle.Default, delegate
-                {
-                    if (option.UseQuickConfirmDelete)
-                    {
-                        ConfirmDelete(option.Click);
-                    }
-                    else
-                    {
-                        option.Click();
-                    }
-                }));
-            }
-
-            actionSheetMoreOptions.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
-
-            // Required for iPad - You must specify a source for the Action Sheet since it is
-            // displayed as a popover
-            UIPopoverPresentationController presentationPopover = actionSheetMoreOptions.PopoverPresentationController;
-            if (presentationPopover != null)
-            {
-                if (OperatingSystem.IsIOSVersionAtLeast(16))
-                {
-                    presentationPopover.SourceItem = NavItem.RightBarButtonItems.First();
-                }
-                else
-                {
-#pragma warning disable CA1422 // BarButtonItem is obsoleted on iOS 16.0 but needed for iOS 14-15
-                    presentationPopover.BarButtonItem = NavItem.RightBarButtonItems.First();
-#pragma warning restore CA1422
-                }
-                presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
-            }
-
-            // Display the alert
-            this.PresentViewController(actionSheetMoreOptions, true, null);
-        }
-
-        private void ConfirmDelete(Action actualDeleteAction)
-        {
-            PowerPlannerUIHelper.ConfirmDeleteQuick(this, NavItem.RightBarButtonItems.First(), actualDeleteAction, PowerPlannerResources.GetString("String_YesDelete"));
         }
 
         /// <summary>

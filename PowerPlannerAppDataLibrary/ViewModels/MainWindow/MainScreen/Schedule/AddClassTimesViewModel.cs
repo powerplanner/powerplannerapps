@@ -708,6 +708,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                                 new LinearLayout
                                 {
                                     Margin = new Thickness(6, 0, 0, 0),
+                                    AllowOverflowAndClip = true, // On iOS, helps ensure it gets displayed at the top
                                     Children =
                                     {
                                         new CheckBox

@@ -13,13 +13,16 @@ namespace PowerPlannerAppDataLibrary.Components
         public MainScreenViewModel.SyncStates SyncState { get; set; } = MainScreenViewModel.SyncStates.Done;
         public double UploadImageProgress { get; set; } = 0;
         public bool IsOfflineOrHasSyncError { get; set; } = false;
+        public bool HasClasses { get; set; }
+        public Thickness NookInsets { get; set; } = new Thickness(0, 0, 0, 0);
+        public float BottomNookInset => Math.Max(0, NookInsets.Bottom - 15);
 
         protected override View Render()
         {
             return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
-                Height = 64,
+                Height = 64 + BottomNookInset,
                 Children =
                 {
                     MainScreenViewModel.RenderSyncProgressBar(SyncState, UploadImageProgress, VerticalAlignment.Bottom),
@@ -29,8 +32,8 @@ namespace PowerPlannerAppDataLibrary.Components
                         Orientation = Orientation.Horizontal,
                         Children =
                         {
-                            RenderItem(NavigationManager.MainMenuSelections.Calendar, MaterialDesign.MaterialDesignIcons.CalendarMonth),
-                            RenderItem(NavigationManager.MainMenuSelections.Agenda, MaterialDesign.MaterialDesignIcons.Task),
+                            HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Calendar, MaterialDesign.MaterialDesignIcons.CalendarMonth) : null,
+                            HasClasses ? RenderItem(NavigationManager.MainMenuSelections.Agenda, MaterialDesign.MaterialDesignIcons.Task) : null,
                             RenderItem(NavigationManager.MainMenuSelections.Schedule, MaterialDesign.MaterialDesignIcons.Schedule),
                             RenderItem(NavigationManager.MainMenuSelections.Classes, MaterialDesign.MaterialDesignIcons.LibraryBooks),
                             RenderItem(NavigationManager.MainMenuSelections.Settings, MaterialDesign.MaterialDesignIcons.PersonOutline, IsOfflineOrHasSyncError)
@@ -62,6 +65,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 Content = new LinearLayout
                 {
                     VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(0, 0, 0, BottomNookInset),
                     Children =
                     {
                         error ? (View)new FrameLayout

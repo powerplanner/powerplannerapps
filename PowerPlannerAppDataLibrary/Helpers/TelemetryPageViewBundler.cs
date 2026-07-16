@@ -7,18 +7,13 @@ namespace PowerPlannerAppDataLibrary.Helpers
 {
     public class TelemetryPageViewBundler
     {
-        /// <summary>
-        /// Event properties will include AccountId, Date, and then 18 spots more left for page properties
-        /// </summary>
-        private const int MaxPageProperties = 18;
-
-        private const int MaxPropertyValueLength = 125;
+        private const int MaxPropertyValueLength = 8000; // Up to 8192 technically
 
         public DateTime UtcDate { get; private set; } = DateTime.UtcNow.Date;
 
         public string UserId { get; private set; }
 
-        private List<string> _pageProperties = new List<string>();
+        private string _pageEntries;
 
         public TelemetryPageViewBundler(string userId)
         {
@@ -42,24 +37,17 @@ namespace PowerPlannerAppDataLibrary.Helpers
             string pageEntry = FormatPageEntry(pageName, utcTimeVisited);
 
             // If very first
-            if (_pageProperties.Count == 0)
+            if (_pageEntries == null)
             {
-                _pageProperties.Add(pageEntry);
+                _pageEntries = pageEntry;
                 return true;
             }
 
             // If current has space
-            if (HasSpace(_pageProperties.Last(), pageEntry))
+            if (HasSpace(_pageEntries, pageEntry))
             {
-                _pageProperties[_pageProperties.Count - 1] = _pageProperties.Last() + ";" + pageEntry;
+                _pageEntries += ";" + pageEntry;
                 return true;
-            }
-
-            // Otherwise if we're under property limit
-            if (_pageProperties.Count <= MaxPageProperties)
-            {
-                // Add new
-                _pageProperties.Add(pageEntry);
             }
 
             // Otherwise we're full
@@ -74,10 +62,9 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 { "AccountId", UserId } // We have to add AccountId, since if it changed, the AccountId automatically logged would be different
             };
 
-            // Entries0 - Entries17
-            for (int i = 0; i < _pageProperties.Count; i++)
+            if (_pageEntries != null)
             {
-                answer.Add($"Entries{i}", _pageProperties[i]);
+                answer.Add("Entries", _pageEntries);
             }
 
             return answer;

@@ -31,7 +31,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             }
         }
 
-        private bool SupportsClassReminders = VxPlatform.Current != Platform.iOS;
+        private bool SupportsClassReminders = true;
 
         protected override View Render()
         {
@@ -221,6 +221,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
                 if (_account.AreClassRemindersEnabled())
                 {
+                    // Request permission when enabling class reminders
+                    RemindersExtension.Current?.RequestReminderPermission();
+                    
                     await ClassRemindersExtension.Current?.ResetAllRemindersAsync(_account);
                 }
                 else

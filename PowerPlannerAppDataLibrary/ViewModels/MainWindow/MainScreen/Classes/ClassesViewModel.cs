@@ -6,8 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using ToolsPortable;
 using Vx;
 using Vx.Views;
@@ -23,12 +26,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
             set => SetProperty(ref _hasClasses, value, nameof(HasClasses));
         }
 
-        private Func<object, View> _renderClassMobileTemplate;
         private Func<object, View> _renderClassTemplate;
+
+        public bool IsDesktop { get; } = VxPlatform.Current == Platform.Uwp
+                || (VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Desktop);
 
         public ClassesViewModel(BaseViewModel parent) : base(parent)
         {
-            _renderClassMobileTemplate = RenderClassMobile;
             _renderClassTemplate = RenderClass;
             MainScreenViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(MainScreenViewModel_PropertyChanged).Handler;
             MainScreenViewModel.Classes.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Classes_CollectionChanged).Handler;
@@ -55,64 +59,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         public void OpenClass(ViewItemClass viewItemClass)
         {
-            MainScreenViewModel.ViewClass(viewItemClass);
+            MainScreenViewModel.ViewClass(viewItemClass, ClassViewModel.LastSelectedPage ?? ClassViewModel.ClassPages.Overview);
         }
 
         protected override View Render()
         {
-            if (VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android)
-            {
-                View mobileContent;
-
-                // These platforms always are in compact mode, and they have headers built-in
-                if (!HasClasses)
-                {
-                    mobileContent = RenderInformationalText();
-                }
-                else
-                {
-                    SubscribeToCollection(MainScreenViewModel.Classes);
-
-                    float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
-
-                    mobileContent = new ListView
-                    {
-                        Items = MainScreenViewModel.Classes,
-                        Padding = new Thickness(0, Theme.Current.PageMargin / 2f, 0, Theme.Current.PageMargin / 2f + floatingActionButtonOffset),
-                        ItemTemplate = _renderClassMobileTemplate,
-                        ItemClicked = (cObj) =>
-                        {
-                            var c = cObj as ViewItemClass;
-                            OpenClass(c);
-                        }
-                    };
-                }
-
-                if (VxPlatform.Current == Platform.Android)
-                {
-                    return new FrameLayout
-                    {
-                        Children =
-                        {
-                            mobileContent,
-
-                            new FloatingActionButton
-                            {
-                                Click = AddClass,
-                                Margin = new Thickness(Theme.Current.PageMargin),
-                                HorizontalAlignment = HorizontalAlignment.Right,
-                                VerticalAlignment = VerticalAlignment.Bottom
-                            }
-                        }
-                    };
-                }
-
-                return mobileContent;
-            }
+            var currentlyHasDesktopSidebar = IsDesktop && !MainScreenViewModel.IsCompactMode;
 
             View content;
 
-            if (!HasClasses || !MainScreenViewModel.IsCompactMode)
+            if (!HasClasses || currentlyHasDesktopSidebar)
             {
                 content = RenderInformationalText();
             }
@@ -120,15 +76,51 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
             {
                 SubscribeToCollection(MainScreenViewModel.Classes);
 
-                content = new ListView
+                float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
+
+                content = new LinearLayout
                 {
-                    Items = MainScreenViewModel.Classes,
-                    Padding = new Thickness(0, Theme.Current.PageMargin / 2f, 0, Theme.Current.PageMargin / 2f),
-                    ItemTemplate = _renderClassTemplate,
-                    ItemClicked = (cObj) =>
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                    Children =
                     {
-                        var c = cObj as ViewItemClass;
-                        OpenClass(c);
+                        new ListView
+                        {
+                            Items = MainScreenViewModel.Classes,
+                            Padding = new Thickness(0, Theme.Current.PageMargin / 2f, 0, Theme.Current.PageMargin / 2f + floatingActionButtonOffset),
+                            ItemTemplate = _renderClassTemplate,
+                            ItemClicked = (cObj) =>
+                            {
+                                var c = cObj as ViewItemClass;
+                                OpenClass(c);
+                            }
+                        }.LinearLayoutWeight(1),
+
+                        new TextButton
+                        {
+                            Text = R.S("String_ViewYearsAndSemesters"),
+                            Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin / 2f, Theme.Current.PageMargin, Theme.Current.PageMargin),
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            Click = OpenYears
+                        }
+                    }
+                };
+            }
+
+            if (VxPlatform.Current == Platform.Android)
+            {
+                return new FrameLayout
+                {
+                    Children =
+                    {
+                        content,
+
+                        new FloatingActionButton
+                        {
+                            Click = AddClass,
+                            Margin = new Thickness(Theme.Current.PageMargin),
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Bottom
+                        }
                     }
                 };
             }
@@ -156,8 +148,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
             };
         }
 
+        private void OpenYears()
+        {
+            TelemetryExtension.Current?.TrackEvent("Action_OpenYearsFromClassesPage");
+            MainScreenViewModel.OpenOrShowYears();
+        }
+
         private View RenderClass(object classObject)
         {
+            float CIRCLE_SIZE = IsDesktop ? 16f : 32f;
+            float TEXT_SIZE = IsDesktop ? Theme.Current.BodyFontSize : Theme.Current.SubtitleFontSize;
+
             var c = classObject as ViewItemClass;
             return new LinearLayout
             {
@@ -170,51 +171,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                         BorderColor = System.Drawing.Color.Black,
                         BorderThickness = new Thickness(1),
                         BackgroundColor = ColorBytesHelper.ToColor(c.Color),
-                        Width = 14,
-                        Height = 14,
-                        VerticalAlignment = VerticalAlignment.Center
-                    },
-                    new TextBlock
-                    {
-                        Text = c.Name,
-                        FontSize = 14,
-                        Margin = new Thickness(12,0,0,0),
-                        WrapText = false,
-                        VerticalAlignment = VerticalAlignment.Center
-                    }
-                }
-            };
-        }
-
-        private View RenderClassMobile(object classObject)
-        {
-            var c = classObject as ViewItemClass;
-            return new LinearLayout
-            {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(Theme.Current.PageMargin, Theme.Current.PageMargin / 2f, Theme.Current.PageMargin, Theme.Current.PageMargin / 2f),
-                Children =
-                {
-                    new Border
-                    {
-                        BackgroundColor = ColorBytesHelper.ToColor(c.Color),
-                        Width = 36,
-                        Height = 36,
+                        Width = CIRCLE_SIZE,
+                        Height = CIRCLE_SIZE,
                         VerticalAlignment = VerticalAlignment.Center,
-                        CornerRadius = 36,
-                        Content = new TextBlock
-                        {
-                            Text = "" + c.Name?.FirstOrDefault(),
-                            TextColor = System.Drawing.Color.White,
-                            FontSize = 16,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center
-                        }
+                        CornerRadius = CIRCLE_SIZE / 2f
                     },
                     new TextBlock
                     {
                         Text = c.Name,
-                        FontSize = Theme.Current.SubtitleFontSize,
+                        FontSize = TEXT_SIZE,
                         Margin = new Thickness(12,0,0,0),
                         WrapText = false,
                         VerticalAlignment = VerticalAlignment.Center
@@ -225,29 +190,59 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         private View RenderInformationalText()
         {
-            return new Border
+            var currentlyHasDesktopSidebar = IsDesktop && !MainScreenViewModel.IsCompactMode;
+            bool showViewYearsAndSemesters;
+            if (currentlyHasDesktopSidebar)
             {
-                Content = new LinearLayout
-                {
-                    Margin = new Thickness(Theme.Current.PageMargin),
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = R.S(HasClasses ? "SelectClassPage_TextBlockHeader.Text" : "ClassesPage_TextBlockNoClassesHeader.Text"),
-                            TextAlignment = HorizontalAlignment.Center,
-                            WrapText = true
-                        }.TitleStyle(),
+                showViewYearsAndSemesters = false;
+            }
+            else if (!HasClasses)
+            {
+                showViewYearsAndSemesters = true;
+            }
+            else
+            {
+                showViewYearsAndSemesters = false;
+            }
 
-                        new TextBlock
+            return new LinearLayout
+            {
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                Children =
+                {
+                    new Border
+                    {
+                        Content = new LinearLayout
                         {
-                            Text = R.S(HasClasses ? "SelectClassPage_TextBlockExplanation.Text" : "ClassesPage_TextBlockNoClassesDescription.Text"),
-                            TextAlignment = HorizontalAlignment.Center,
-                            WrapText = true,
-                            TextColor = Theme.Current.SubtleForegroundColor
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Margin = new Thickness(Theme.Current.PageMargin),
+                            Children =
+                            {
+                                new TextBlock
+                                {
+                                    Text = R.S(HasClasses ? "SelectClassPage_TextBlockHeader.Text" : "ClassesPage_TextBlockNoClassesHeader.Text"),
+                                    TextAlignment = HorizontalAlignment.Center,
+                                    WrapText = true
+                                }.TitleStyle(),
+
+                                new TextBlock
+                                {
+                                    Text = R.S(HasClasses ? "SelectClassPage_TextBlockExplanation.Text" : "ClassesPage_TextBlockNoClassesDescription.Text"),
+                                    TextAlignment = HorizontalAlignment.Center,
+                                    WrapText = true,
+                                    TextColor = Theme.Current.SubtleForegroundColor
+                                }
+                            }
                         }
-                    }
+                    }.LinearLayoutWeight(1),
+
+                    showViewYearsAndSemesters ? new TextButton
+                    {
+                        Text = R.S("String_ViewYearsAndSemesters"),
+                        Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, Theme.Current.PageMargin),
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Click = OpenYears
+                    } : null
                 }
             };
         }

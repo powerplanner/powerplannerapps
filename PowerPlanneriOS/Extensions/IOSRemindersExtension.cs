@@ -68,11 +68,23 @@ namespace PowerPlanneriOS.Extensions
             }
         }
 
+        private async Task<bool> IsAuthorizedAsync()
+        {
+            var settings = await _notificationCenter.GetNotificationSettingsAsync();
+            return settings.AuthorizationStatus == UNAuthorizationStatus.Authorized
+                || settings.AuthorizationStatus == UNAuthorizationStatus.Provisional;
+        }
+
         protected override async Task ActuallyClearReminders(Guid localAccountId)
         {
             // This gets called upon account being deleted
             try
             {
+                if (!await IsAuthorizedAsync())
+                {
+                    return;
+                }
+
                 await Task.Run(async delegate
                 {
                     await RemoveAllNotificationsAsync(localAccountId);
@@ -90,6 +102,11 @@ namespace PowerPlanneriOS.Extensions
             // This gets called upon opening/returning to app/logging in
             try
             {
+                if (!await IsAuthorizedAsync())
+                {
+                    return;
+                }
+
                 await Task.Run(async delegate
                 {
                     await RemoveAllCurrentNotificationsAsync(localAccountId);
@@ -107,6 +124,12 @@ namespace PowerPlanneriOS.Extensions
             {
                 // If reminders disabled, do nothing
                 if (!account.RemindersDayBefore && !account.RemindersDayOf)
+                {
+                    return;
+                }
+
+                // If user denied notification permission, skip all the work
+                if (!await IsAuthorizedAsync())
                 {
                     return;
                 }

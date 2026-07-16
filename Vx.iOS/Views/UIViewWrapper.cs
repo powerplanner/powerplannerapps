@@ -6,49 +6,38 @@ using UIKit;
 
 namespace Vx.iOS.Views
 {
-    public struct WrapperConstraint
+    /// <summary>
+    /// Wraps a single <see cref="UIView"/> and holds the layout properties (margin, fixed size,
+    /// min/max width, alignment, attached values like weight) for the Vx layout engine.
+    ///
+    /// This is the layout node of the pure manual measure/arrange engine: it never creates
+    /// <see cref="NSLayoutConstraint"/> objects. Parents call <see cref="Measure"/> to discover a
+    /// child's desired size and <see cref="Arrange"/> to position it by setting its
+    /// <see cref="UIView.Frame"/>. Measurement results are cached and invalidated via a dirty flag.
+    /// </summary>
+    public class UIViewWrapper
     {
-        public WrapperConstraint(UIView otherView, NSLayoutAttribute otherViewAttribute, nfloat multiplier, nfloat constant)
+        /// <summary>
+        /// Represents an effectively-unbounded available size used during measurement
+        /// (the manual layout equivalent of "Auto"). Large but finite so arithmetic stays safe.
+        /// </summary>
+        public const float UnboundedSize = 1000000f;
+
+        public UIViewWrapper(UIView view)
         {
-            OtherView = otherView;
-            OtherViewAttribute = otherViewAttribute;
-            Multiplier = multiplier;
-            Constant = constant;
-            GreaterThanOrEqual = false;
+            ViewOrGuide = view ?? throw new ArgumentNullException(nameof(view));
         }
 
-        public WrapperConstraint(UIView otherView, NSLayoutAttribute otherViewAttribute)
+        public NSObject ViewOrGuide { get; }
+        public UIView View => ViewOrGuide as UIView;
+        public UIView Superview => View.Superview;
+
+        public void RemoveFromSuperview()
         {
-            OtherView = otherView;
-            OtherViewAttribute = otherViewAttribute;
-            Multiplier = 1;
-            Constant = 0;
-            GreaterThanOrEqual = false;
+            View.RemoveFromSuperview();
         }
 
-        public UIView OtherView;
-        public NSLayoutAttribute OtherViewAttribute;
-        public nfloat Multiplier;
-        public nfloat Constant;
-        public bool GreaterThanOrEqual;
-    }
-
-    public class UIGuideWrapper : UIViewOrGuideWrapper
-    {
-        public UIGuideWrapper(UILayoutGuide guide, UIView superview)
-        {
-            ViewOrGuide = guide;
-            Superview = superview;
-        }
-
-        public UILayoutGuide Guide => ViewOrGuide as UILayoutGuide;
-        public override UIView Superview { get; }
-    }
-
-    public abstract class UIViewOrGuideWrapper
-    {
-        public NSObject ViewOrGuide { get; protected set; }
-        public abstract UIView Superview { get; }
+        #region Layout properties
 
         private float _width = float.NaN;
         public float Width
@@ -57,92 +46,25 @@ namespace Vx.iOS.Views
             set => SetValue(ref _width, value);
         }
 
-        public void SetConstraints(
-            WrapperConstraint? leftConstraint,
-            WrapperConstraint? topConstraint,
-            WrapperConstraint? rightConstraint,
-            WrapperConstraint? bottomConstraint)
+        private float _height = float.NaN;
+        public float Height
         {
-            LeftConstraint = leftConstraint.HasValue ? TransformLeftConstraint(leftConstraint.Value) : null;
-            TopConstraint = topConstraint.HasValue ? TransformTopConstraint(topConstraint.Value) : null;
-            RightConstraint = rightConstraint.HasValue ? TransformRightConstraint(rightConstraint.Value) : null;
-            BottomConstraint = bottomConstraint.HasValue ? TransformBottomConstraint(bottomConstraint.Value) : null;
+            get => _height;
+            set => SetValue(ref _height, value);
         }
 
-        private NSLayoutConstraint TransformLeftConstraint(WrapperConstraint constraint)
+        private float _minWidth = 0;
+        public float MinWidth
         {
-            return NSLayoutConstraint.Create(
-                ViewOrGuide,
-                NSLayoutAttribute.Left,
-                PinLeft && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
-                constraint.OtherView,
-                constraint.OtherViewAttribute,
-                constraint.Multiplier,
-                constraint.Constant + Margin.Left);
+            get => _minWidth;
+            set => SetValue(ref _minWidth, value);
         }
 
-        private NSLayoutConstraint TransformRightConstraint(WrapperConstraint constraint)
+        private float _maxWidth = float.PositiveInfinity;
+        public float MaxWidth
         {
-            return NSLayoutConstraint.Create(
-                constraint.OtherView,
-                constraint.OtherViewAttribute,
-                PinRight && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
-                ViewOrGuide,
-                NSLayoutAttribute.Right,
-                constraint.Multiplier,
-                Margin.Right + constraint.Constant);
-        }
-
-        private NSLayoutConstraint TransformTopConstraint(WrapperConstraint constraint)
-        {
-            return NSLayoutConstraint.Create(
-                ViewOrGuide,
-                NSLayoutAttribute.Top,
-                PinTop && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
-                constraint.OtherView,
-                constraint.OtherViewAttribute,
-                constraint.Multiplier,
-                Margin.Top + constraint.Constant);
-        }
-
-        private NSLayoutConstraint TransformBottomConstraint(WrapperConstraint constraint)
-        {
-            return NSLayoutConstraint.Create(
-                constraint.OtherView,
-                constraint.OtherViewAttribute,
-                PinBottom && !constraint.GreaterThanOrEqual ? NSLayoutRelation.Equal : NSLayoutRelation.GreaterThanOrEqual,
-                ViewOrGuide,
-                NSLayoutAttribute.Bottom,
-                constraint.Multiplier,
-                Margin.Bottom + constraint.Constant);
-        }
-
-        private NSLayoutConstraint _topConstraint;
-        protected NSLayoutConstraint TopConstraint
-        {
-            get => _topConstraint;
-            set => SetConstraint(ref _topConstraint, value);
-        }
-
-        private NSLayoutConstraint _rightConstraint;
-        protected NSLayoutConstraint RightConstraint
-        {
-            get => _rightConstraint;
-            set => SetConstraint(ref _rightConstraint, value);
-        }
-
-        private NSLayoutConstraint _leftConstraint;
-        protected NSLayoutConstraint LeftConstraint
-        {
-            get => _leftConstraint;
-            set => SetConstraint(ref _leftConstraint, value);
-        }
-
-        private NSLayoutConstraint _bottomConstraint;
-        protected NSLayoutConstraint BottomConstraint
-        {
-            get => _bottomConstraint;
-            set => SetConstraint(ref _bottomConstraint, value);
+            get => _maxWidth;
+            set => SetValue(ref _maxWidth, value);
         }
 
         private Vx.Views.Thickness _margin;
@@ -152,61 +74,18 @@ namespace Vx.iOS.Views
             set => SetValue(ref _margin, value.AsModified());
         }
 
-        protected virtual bool PinLeft => true;
-        protected virtual bool PinTop => true;
-        protected virtual bool PinRight => true;
-        protected virtual bool PinBottom => true;
-
-        protected void SetConstraint(ref NSLayoutConstraint storage, NSLayoutConstraint value)
+        private Vx.Views.HorizontalAlignment _horizontalAlignment;
+        public Vx.Views.HorizontalAlignment HorizontalAlignment
         {
-            // If removing
-            if (storage != null && value == null)
-            {
-                // Simply remove
-                Superview.RemoveConstraint(storage);
-                storage = null;
-                return;
-            }
-
-            if (storage != null)
-            {
-                // If identical
-                if (object.ReferenceEquals(storage.FirstItem, value.FirstItem)
-                    && storage.FirstAttribute == value.FirstAttribute
-                    && storage.Relation == value.Relation
-                    && object.ReferenceEquals(storage.SecondItem, value.SecondItem)
-                    && storage.SecondAttribute == value.SecondAttribute
-                    && storage.Multiplier == value.Multiplier
-                    && storage.Constant == value.Constant)
-                {
-                    // No need to update
-                    return;
-                }
-
-                // Otherwise we need to remove existing constraint to update it
-                Superview.RemoveConstraint(storage);
-                storage = null;
-            }
-
-            if (value != null)
-            {
-                Superview.AddConstraint(value);
-                storage = value;
-            }
+            get => _horizontalAlignment;
+            set => SetValue(ref _horizontalAlignment, value);
         }
 
-        protected void SetValue<T>(ref T storage, T value)
+        private Vx.Views.VerticalAlignment _verticalAlignment;
+        public Vx.Views.VerticalAlignment VerticalAlignment
         {
-            if (!object.Equals(storage, value))
-            {
-                storage = value;
-                Invalidate();
-            }
-        }
-
-        private void Invalidate()
-        {
-            Superview?.SetNeedsUpdateConstraints();
+            get => _verticalAlignment;
+            set => SetValue(ref _verticalAlignment, value);
         }
 
         private Dictionary<string, object> _attachedValues;
@@ -228,305 +107,284 @@ namespace Vx.iOS.Views
                 _attachedValues = new Dictionary<string, object>();
             }
 
-            _attachedValues[key] = val;
-            Invalidate();
+            if (!object.Equals(_attachedValues.GetValueOrDefault(key), val))
+            {
+                _attachedValues[key] = val;
+                InvalidateMeasure();
+            }
+        }
+
+        private void SetValue<T>(ref T storage, T value)
+        {
+            if (!object.Equals(storage, value))
+            {
+                storage = value;
+                InvalidateMeasure();
+            }
+        }
+
+        #endregion
+
+        #region Measure / invalidation
+
+        private bool _measureDirty = true;
+        private CGSize _cachedAvailable;
+        private CGSize _cachedDesired;
+
+        /// <summary>
+        /// Marks this node's cached measurement stale and propagates the need for a new layout
+        /// pass up the view hierarchy (UIKit's <see cref="UIView.SetNeedsLayout"/> alone does not
+        /// notify ancestors that their measurement changed, so we walk up explicitly).
+        /// </summary>
+        public void InvalidateMeasure()
+        {
+            _measureDirty = true;
+            UIPanel.PropagateLayoutDirty(View?.Superview);
+            View?.SetNeedsLayout();
+        }
+
+        /// <summary>
+        /// Measures the desired size of this view (excluding its own margin) within the
+        /// given available size, honoring the wrapper's fixed Width/Height and Min/Max width.
+        /// Results are cached keyed on the available size.
+        /// </summary>
+        public CGSize Measure(CGSize available)
+        {
+            bool viewDirty = (View as UIPanel)?.IsMeasureDirty ?? false;
+
+            if (!_measureDirty && !viewDirty && _cachedAvailable == available)
+            {
+                return _cachedDesired;
+            }
+
+            var result = MeasureCore(available);
+
+            _cachedAvailable = available;
+            _cachedDesired = result;
+            _measureDirty = false;
+            (View as UIPanel)?.ClearMeasureDirty();
+
+            return result;
+        }
+
+        private CGSize MeasureCore(CGSize available)
+        {
+            bool hasWidth = !float.IsNaN(Width);
+            bool hasHeight = !float.IsNaN(Height);
+
+            nfloat w;
+            nfloat h;
+
+            if (hasWidth && hasHeight)
+            {
+                w = Width;
+                h = Height;
+            }
+            else if (View is UIImageView && (hasWidth ^ hasHeight))
+            {
+                // When only one dimension is fixed on an image, preserve its aspect ratio
+                var intrinsic = View.IntrinsicContentSize;
+                if (intrinsic.Width > 0 && intrinsic.Height > 0)
+                {
+                    if (hasWidth)
+                    {
+                        w = Width;
+                        h = (nfloat)Width * intrinsic.Height / intrinsic.Width;
+                    }
+                    else
+                    {
+                        h = Height;
+                        w = (nfloat)Height * intrinsic.Width / intrinsic.Height;
+                    }
+                }
+                else
+                {
+                    w = hasWidth ? Width : 0;
+                    h = hasHeight ? Height : 0;
+                }
+            }
+            else
+            {
+                nfloat constraintWidth = hasWidth ? (nfloat)Width : (IsBounded(available.Width) ? available.Width : UnboundedSize);
+                nfloat constraintHeight = hasHeight ? (nfloat)Height : (IsBounded(available.Height) ? available.Height : UnboundedSize);
+
+                var constraint = new CGSize(constraintWidth, constraintHeight);
+
+                // Both our own panels and native/leaf controls report their content size via
+                // SizeThatFits (panels route it to their MeasureContent override). We never use
+                // SystemLayoutSizeFittingSize on the tree, which would spin up an internal
+                // constraint solver per node.
+                CGSize fit = View.SizeThatFits(constraint);
+
+                // UIView's default SizeThatFits simply echoes the size it was given. Controls that
+                // don't implement it meaningfully (e.g. custom UIControls that rely solely on an
+                // intrinsic content size) would otherwise report the unbounded sentinel as their
+                // size. Detect that echo on an unbounded axis and fall back to the intrinsic size.
+                bool echoedUnboundedWidth = constraintWidth >= UnboundedSize && Math.Abs((double)(fit.Width - constraintWidth)) < 1;
+                bool echoedUnboundedHeight = constraintHeight >= UnboundedSize && Math.Abs((double)(fit.Height - constraintHeight)) < 1;
+
+                if (echoedUnboundedWidth || echoedUnboundedHeight || (fit.Width <= 0 && fit.Height <= 0))
+                {
+                    var intrinsic = View.IntrinsicContentSize;
+                    if (intrinsic.Width > 0 || intrinsic.Height > 0)
+                    {
+                        fit = intrinsic;
+                    }
+                    else
+                    {
+                        // The view implements neither SizeThatFits nor an intrinsic content size,
+                        // but it may be a composite native control built from internal Auto Layout
+                        // (e.g. a header + rounded text field stack, a combo/date picker). Ask Auto
+                        // Layout for the size that fits its own internal constraints. This is a
+                        // single, cached, NON-recursive measurement of a leaf - our own panels
+                        // implement MeasureContent and never reach this path, so this does not
+                        // reintroduce tree-wide constraint solving.
+                        var autoFit = MeasureViaInternalAutoLayout(constraintWidth, constraintHeight);
+
+                        fit = new CGSize(
+                            echoedUnboundedWidth ? autoFit.Width : (fit.Width > 0 ? fit.Width : autoFit.Width),
+                            echoedUnboundedHeight ? autoFit.Height : (fit.Height > 0 ? fit.Height : autoFit.Height));
+                    }
+                }
+
+                w = hasWidth ? Width : fit.Width;
+                h = hasHeight ? Height : fit.Height;
+            }
+
+            if (MinWidth > 0 && w < MinWidth)
+            {
+                w = MinWidth;
+            }
+            if (!float.IsPositiveInfinity(MaxWidth) && w > MaxWidth)
+            {
+                w = MaxWidth;
+            }
+            if (w < 0)
+            {
+                w = 0;
+            }
+            if (h < 0)
+            {
+                h = 0;
+            }
+
+            return new CGSize(w, h);
+        }
+
+        #endregion
+
+        #region Arrange
+
+        /// <summary>
+        /// Positions this view within the given slot rectangle (which INCLUDES this view's margin),
+        /// honoring margin, alignment, and fixed/measured size, by setting <see cref="UIView.Frame"/>.
+        /// </summary>
+        public void Arrange(CGRect slot)
+        {
+            var m = Margin;
+
+            nfloat availW = slot.Width - m.Left - m.Right;
+            nfloat availH = slot.Height - m.Top - m.Bottom;
+            if (availW < 0) availW = 0;
+            if (availH < 0) availH = 0;
+
+            var desired = Measure(new CGSize(availW, availH));
+
+            bool stretchH = HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch && float.IsNaN(Width);
+            bool stretchV = VerticalAlignment == Vx.Views.VerticalAlignment.Stretch && float.IsNaN(Height);
+
+            nfloat w = stretchH ? availW : MinF(desired.Width, availW);
+            nfloat h = stretchV ? availH : MinF(desired.Height, availH);
+
+            nfloat x;
+            switch (HorizontalAlignment)
+            {
+                case Vx.Views.HorizontalAlignment.Left:
+                    x = slot.X + m.Left;
+                    break;
+                case Vx.Views.HorizontalAlignment.Right:
+                    x = slot.X + slot.Width - m.Right - w;
+                    break;
+                case Vx.Views.HorizontalAlignment.Center:
+                    x = slot.X + m.Left + (availW - w) / 2f;
+                    break;
+                default: // Stretch: fills when it can. When it can't (a fixed Width), the default
+                         // is to left-align (matching Android's FillHorizontal on a fixed-size view).
+                         // Images are the exception: a fixed-size image reads best centered, so we
+                         // center those. When actually stretching, w == availW so both reduce to
+                         // x = slot.X + m.Left.
+                    if (!stretchH && View is UIImageView)
+                        x = slot.X + m.Left + (availW - w) / 2f;
+                    else
+                        x = slot.X + m.Left;
+                    break;
+            }
+
+            nfloat y;
+            switch (VerticalAlignment)
+            {
+                case Vx.Views.VerticalAlignment.Top:
+                    y = slot.Y + m.Top;
+                    break;
+                case Vx.Views.VerticalAlignment.Bottom:
+                    y = slot.Y + slot.Height - m.Bottom - h;
+                    break;
+                case Vx.Views.VerticalAlignment.Center:
+                    y = slot.Y + m.Top + (availH - h) / 2f;
+                    break;
+                default: // Stretch: fills when it can; otherwise (fixed Height) it top-aligns,
+                         // matching Android. Images are the exception and center (see horizontal).
+                         // When stretching, h == availH so both reduce to y = slot.Y + m.Top.
+                    if (!stretchV && View is UIImageView)
+                        y = slot.Y + m.Top + (availH - h) / 2f;
+                    else
+                        y = slot.Y + m.Top;
+                    break;
+            }
+
+            View.Frame = new CGRect(x, y, w, h);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Measures a leaf view that sizes itself purely via its own internal Auto Layout
+        /// constraints (no SizeThatFits, no intrinsic content size). The bounded axis is pinned at
+        /// required priority and the unbounded axis is solved at the fitting-size level so the
+        /// view reports its natural extent on that axis.
+        /// </summary>
+        private CGSize MeasureViaInternalAutoLayout(nfloat constraintWidth, nfloat constraintHeight)
+        {
+            bool widthBounded = constraintWidth < UnboundedSize;
+            bool heightBounded = constraintHeight < UnboundedSize;
+
+            var target = new CGSize(
+                widthBounded ? constraintWidth : 0,
+                heightBounded ? constraintHeight : 0);
+
+            float horizontalPriority = widthBounded
+                ? (float)UILayoutPriority.Required
+                : (float)UILayoutPriority.FittingSizeLevel;
+            float verticalPriority = heightBounded
+                ? (float)UILayoutPriority.Required
+                : (float)UILayoutPriority.FittingSizeLevel;
+
+            return View.SystemLayoutSizeFittingSize(target, horizontalPriority, verticalPriority);
+        }
+
+        private static bool IsBounded(nfloat value)
+        {
+            return value > 0 && value < UnboundedSize;
         }
 
         protected static nfloat MaxF(nfloat f1, nfloat f2)
         {
-            if (f1 > f2)
-            {
-                return f1;
-            }
-            return f2;
+            return f1 > f2 ? f1 : f2;
         }
 
         protected static nfloat MinF(nfloat f1, nfloat f2)
         {
-            if (f1 < f2)
-            {
-                return f1;
-            }
-            return f2;
-        }
-    }
-
-    public class UIViewWrapper : UIViewOrGuideWrapper
-    {
-        public UIView View => ViewOrGuide as UIView;
-        public override UIView Superview => View.Superview;
-
-        public void RemoveFromSuperview()
-        {
-            View.RemoveFromSuperview();
-
-            if (_centerYGuide != null)
-            {
-                DisposeCenterYGuide();
-            }
-        }
-
-#if DEBUG
-        public string DebugConstraintsString
-        {
-            get
-            {
-                return string.Join("\n", DebugDumpConstraints("Left", LeftConstraint), DebugDumpConstraints("Top", TopConstraint), DebugDumpConstraints("Right", RightConstraint), DebugDumpConstraints("Bottom", BottomConstraint), DebugDumpConstraints("Width", WidthConstraint), DebugDumpConstraints("Height", HeightConstraint), DebugDumpConstraints("CenterX", CenterXConstraint), DebugDumpConstraints("CenterY", CenterYConstraint));
-            }
-        }
-
-        public static string DebugDumpConstraints(string name, NSLayoutConstraint constraint)
-        {
-            if (constraint == null)
-            {
-                return $"{name}: null";
-            }
-
-            return $"{name}: {constraint.FirstAttribute} {constraint.FirstItem} {constraint.Relation} {constraint.Multiplier}x {constraint.SecondAttribute} {constraint.SecondItem} + {constraint.Constant}";
-        }
-#endif
-
-        public void SetConstraints(
-            WrapperConstraint? leftConstraint,
-            WrapperConstraint? topConstraint,
-            WrapperConstraint? rightConstraint,
-            WrapperConstraint? bottomConstraint,
-            UIView centeringHorizontalView,
-            UIView centeringVerticalView,
-            WrapperConstraint? widthConstraint = null,
-            WrapperConstraint? heightConstraint = null,
-            bool centerViaLayoutGuideIfNeeded = false)
-        {
-            base.SetConstraints(
-                leftConstraint,
-                topConstraint,
-                rightConstraint,
-                bottomConstraint);
-
-            if (widthConstraint != null)
-            {
-                if (widthConstraint.Value.OtherView != null)
-                {
-                    WidthConstraint = NSLayoutConstraint.Create(
-                        ViewOrGuide,
-                        NSLayoutAttribute.Width,
-                        NSLayoutRelation.Equal,
-                        widthConstraint.Value.OtherView,
-                        widthConstraint.Value.OtherViewAttribute,
-                        widthConstraint.Value.Multiplier,
-                        widthConstraint.Value.Constant);
-                }
-                else
-                {
-                    WidthConstraint = NSLayoutConstraint.Create(
-                        ViewOrGuide,
-                        NSLayoutAttribute.Width,
-                        NSLayoutRelation.Equal,
-                        widthConstraint.Value.Multiplier,
-                        widthConstraint.Value.Constant);
-                }
-            }
-            else if (!float.IsNaN(Width))
-            {
-                WidthConstraint = NSLayoutConstraint.Create(
-                    ViewOrGuide,
-                    NSLayoutAttribute.Width,
-                    NSLayoutRelation.Equal,
-                    1,
-                    Width);
-            }
-            else
-            {
-                WidthConstraint = null;
-            }
-
-            if (heightConstraint != null)
-            {
-                if (heightConstraint.Value.OtherView != null)
-                {
-                    HeightConstraint = NSLayoutConstraint.Create(
-                        ViewOrGuide,
-                        NSLayoutAttribute.Height,
-                        NSLayoutRelation.Equal,
-                        heightConstraint.Value.OtherView,
-                        heightConstraint.Value.OtherViewAttribute,
-                        heightConstraint.Value.Multiplier,
-                        heightConstraint.Value.Constant);
-                }
-                else
-                {
-                    HeightConstraint = NSLayoutConstraint.Create(
-                        ViewOrGuide,
-                        NSLayoutAttribute.Height,
-                        NSLayoutRelation.Equal,
-                        heightConstraint.Value.Multiplier,
-                        heightConstraint.Value.Constant);
-                }
-            }
-            else if (!float.IsNaN(Height))
-            {
-                HeightConstraint = NSLayoutConstraint.Create(
-                    ViewOrGuide,
-                    NSLayoutAttribute.Height,
-                    NSLayoutRelation.Equal,
-                    1,
-                    Height);
-            }
-            else
-            {
-                HeightConstraint = null;
-            }
-
-
-            ApplyHorizontalCenteringConstraintIfNeeded(centeringHorizontalView);
-            ApplyVerticalCenteringConstraintIfNeeded(centeringVerticalView, leftConstraint, topConstraint, rightConstraint, bottomConstraint, centerViaLayoutGuideIfNeeded);
-        }
-
-        private void ApplyHorizontalCenteringConstraintIfNeeded(UIView viewForCenter)
-        {
-            if (viewForCenter != null && HorizontalAlignment == Vx.Views.HorizontalAlignment.Center)
-            {
-                CenterXConstraint = NSLayoutConstraint.Create(
-                    View,
-                    NSLayoutAttribute.CenterX,
-                    NSLayoutRelation.Equal,
-                    viewForCenter,
-                    NSLayoutAttribute.CenterX,
-                    1,
-                    (Margin.Left - Margin.Right) / 2f);
-            }
-            else
-            {
-                CenterXConstraint = null;
-            }
-        }
-
-        private void ApplyVerticalCenteringConstraintIfNeeded(UIView viewForCenter,
-            WrapperConstraint? leftConstraint,
-            WrapperConstraint? topConstraint,
-            WrapperConstraint? rightConstraint,
-            WrapperConstraint? bottomConstraint,
-            bool centerViaLayoutGuideIfNeeded)
-        {
-            if (VerticalAlignment == Vx.Views.VerticalAlignment.Center)
-            {
-                NSObject objForCenter;
-
-                if (viewForCenter != null)
-                {
-                    objForCenter = viewForCenter;
-                    DisposeCenterYGuide();
-                }
-                else if (centerViaLayoutGuideIfNeeded)
-                {
-                    // The layout guide mostly works, doesn't work if we have a weighted view and then another view afterwards
-                    if (_centerYGuide == null)
-                    {
-                        var guide = new UILayoutGuide();
-                        _centerYGuide = new UIGuideWrapper(guide, View.Superview);
-                        View.Superview.AddLayoutGuide(guide);
-                    }
-
-                    _centerYGuide.SetConstraints(leftConstraint, topConstraint, rightConstraint, bottomConstraint);
-                    objForCenter = _centerYGuide.ViewOrGuide;
-                }
-                else
-                {
-                    CenterYConstraint = null;
-                    DisposeCenterYGuide();
-                    return;
-                }
-
-                CenterYConstraint = NSLayoutConstraint.Create(
-                    View,
-                    NSLayoutAttribute.CenterY,
-                    NSLayoutRelation.Equal,
-                    objForCenter,
-                    NSLayoutAttribute.CenterY,
-                    1,
-                    (Margin.Top - Margin.Bottom) / 2f);
-            }
-            else
-            {
-                CenterYConstraint = null;
-                DisposeCenterYGuide();
-            }
-        }
-
-        private void DisposeCenterYGuide()
-        {
-            if (_centerYGuide != null)
-            {
-                _centerYGuide.Superview.RemoveLayoutGuide(_centerYGuide.Guide);
-                _centerYGuide = null;
-            }
-        }
-
-        private NSLayoutConstraint _centerXConstraint;
-        private NSLayoutConstraint CenterXConstraint
-        {
-            get => _centerXConstraint;
-            set => SetConstraint(ref _centerXConstraint, value);
-        }
-
-        private NSLayoutConstraint _centerYConstraint;
-        private NSLayoutConstraint CenterYConstraint
-        {
-            get => _centerYConstraint;
-            set => SetConstraint(ref _centerYConstraint, value);
-        }
-
-        private NSLayoutConstraint _widthConstraint;
-        private NSLayoutConstraint WidthConstraint
-        {
-            get => _widthConstraint;
-            set => SetConstraint(ref _widthConstraint, value);
-        }
-
-        private NSLayoutConstraint _heightConstraint;
-        private NSLayoutConstraint HeightConstraint
-        {
-            get => _heightConstraint;
-            set => SetConstraint(ref _heightConstraint, value);
-        }
-
-        private UIGuideWrapper _centerYGuide;
-
-        private float _height = float.NaN;
-        public float Height
-        {
-            get => _height;
-            set => SetValue(ref _height, value);
-        }
-
-        private Vx.Views.HorizontalAlignment _horizontalAlignment;
-        public Vx.Views.HorizontalAlignment HorizontalAlignment
-        {
-            get => _horizontalAlignment;
-            set => SetValue(ref _horizontalAlignment, value);
-        }
-
-        private Vx.Views.VerticalAlignment _verticalAlignment;
-        public Vx.Views.VerticalAlignment VerticalAlignment
-        {
-            get => _verticalAlignment;
-            set => SetValue(ref _verticalAlignment, value);
-        }
-
-        protected override bool PinTop => VerticalAlignment == Vx.Views.VerticalAlignment.Stretch || VerticalAlignment == Vx.Views.VerticalAlignment.Top;
-        protected override bool PinLeft => HorizontalAlignment == Vx.Views.HorizontalAlignment.Left || HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch;
-        protected override bool PinRight => HorizontalAlignment == Vx.Views.HorizontalAlignment.Right || HorizontalAlignment == Vx.Views.HorizontalAlignment.Stretch;
-        protected override bool PinBottom => VerticalAlignment == Vx.Views.VerticalAlignment.Bottom || VerticalAlignment == Vx.Views.VerticalAlignment.Stretch;
-
-        public UIViewWrapper(UIView view)
-        {
-            if (view == null)
-            {
-                throw new ArgumentNullException(nameof(view));
-            }
-
-            ViewOrGuide = view;
+            return f1 < f2 ? f1 : f2;
         }
     }
 }
-

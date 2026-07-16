@@ -325,6 +325,15 @@ namespace Vx.Views
             }
         }
 
+        protected void Unsubscribe(INotifyPropertyChanged obj)
+        {
+            if (obj != null)
+            {
+                UnsubscribeToPropertyValue(obj);
+                _subscribed?.Remove(obj);
+            }
+        }
+
         private WeakReferenceList<INotifyCollectionChanged> _subscribedCollections;
         private NotifyCollectionChangedEventHandler _collectionChangedHandler;
         protected void SubscribeToCollection(INotifyCollectionChanged col)
@@ -482,7 +491,7 @@ namespace Vx.Views
                 }
             }
 
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException)
             {
                 if (VxPlatform.Current == Platform.Android)
                 {
@@ -491,7 +500,7 @@ namespace Vx.Views
                 }
                 else
                 {
-                    throw ex;
+                    throw;
                 }
             }
 

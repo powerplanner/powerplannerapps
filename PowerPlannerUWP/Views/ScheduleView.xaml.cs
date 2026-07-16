@@ -498,9 +498,18 @@ namespace PowerPlannerUWP.Views
             VisualStateManager.GoToState(this, "DefaultState", true);
         }
 
+        private ScheduleWelcomeComponent _welcomeComponent;
         private void GoToWelcomeState()
         {
             VisualStateManager.GoToState(this, "WelcomeState", true);
+            if (WelcomeRoot.Children.Count == 0)
+            {
+                WelcomeRoot.Children.Add(new ScheduleWelcomeComponent()
+                {
+                    ScheduleViewModel = ViewModel,
+                    NookInsets = new Vx.Views.Thickness(ViewModel.NookInsets.Left, 0, ViewModel.NookInsets.Right, 0)
+                }.Render());
+            }
         }
 
         private void ButtonAddClass_Click(object sender, RoutedEventArgs e)

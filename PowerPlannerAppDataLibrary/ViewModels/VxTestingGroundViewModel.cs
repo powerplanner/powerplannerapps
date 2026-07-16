@@ -20,7 +20,226 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         protected override View Render()
         {
             //return RenderHorizontalWithVerticals();
-            return RenderComplexYearsLayout();
+            //return RenderComplexYearsLayout();
+            return RenderLayoutGallery();
+        }
+
+        /// <summary>
+        /// A gallery of layout primitives and combinations used to verify the cross-platform
+        /// layout engine (especially the iOS manual LinearLayout implementation). Add new
+        /// scenarios here as we find layout bugs so we can reproduce them in isolation.
+        /// </summary>
+        private View RenderLayoutGallery()
+        {
+            return new LinearLayout
+            {
+                Orientation = Orientation.Vertical,
+                BackgroundColor = Color.White,
+                Children =
+                {
+                    // Toolbar at the top + weighted scrolling content (the calendar/classes pattern)
+                    new Toolbar
+                    {
+                        Title = "Vx Layout Tests"
+                    },
+
+                    new ScrollView
+                    {
+                        Content = new LinearLayout
+                        {
+                            Orientation = Orientation.Vertical,
+                            Children =
+                            {
+                                Section("1. Vertical: auto top, weighted fill, auto bottom",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Vertical,
+                                        Children =
+                                        {
+                                            Box("Top (auto height)", Color.LightBlue),
+                                            Box("Weighted fill (weight 1)", Color.LightGreen).LinearLayoutWeight(1),
+                                            Box("Bottom (auto height)", Color.LightBlue)
+                                        }
+                                    }, 170),
+
+                                Section("2. Horizontal: fixed-width sidebar + weighted content",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        Children =
+                                        {
+                                            Box("80px", Color.LightPink, width: 80),
+                                            Box("weight 1", Color.LightGreen).LinearLayoutWeight(1)
+                                        }
+                                    }, 100),
+
+                                Section("3. Horizontal: weights 1 : 2",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        Children =
+                                        {
+                                            Box("weight 1", Color.Khaki).LinearLayoutWeight(1),
+                                            Box("weight 2", Color.LightSalmon).LinearLayoutWeight(2)
+                                        }
+                                    }, 100),
+
+                                Section("4. Vertical: horizontal alignment Left / Center / Right / Stretch",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Vertical,
+                                        Children =
+                                        {
+                                            Box("Left", Color.LightBlue, h: HorizontalAlignment.Left),
+                                            Box("Center", Color.LightGreen, h: HorizontalAlignment.Center),
+                                            Box("Right", Color.LightPink, h: HorizontalAlignment.Right),
+                                            Box("Stretch", Color.Khaki, h: HorizontalAlignment.Stretch)
+                                        }
+                                    }, 200),
+
+                                Section("5. Horizontal: vertical alignment Top / Center / Bottom / Stretch",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        Children =
+                                        {
+                                            Box("Top", Color.LightBlue, width: 70, v: VerticalAlignment.Top),
+                                            Box("Center", Color.LightGreen, width: 70, v: VerticalAlignment.Center),
+                                            Box("Bottom", Color.LightPink, width: 70, v: VerticalAlignment.Bottom),
+                                            Box("Stretch", Color.Khaki, width: 70, v: VerticalAlignment.Stretch)
+                                        }
+                                    }, 140),
+
+                                Section("6. Nested: horizontal of two top-aligned vertical stacks",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        Children =
+                                        {
+                                            new LinearLayout
+                                            {
+                                                Orientation = Orientation.Vertical,
+                                                VerticalAlignment = VerticalAlignment.Top,
+                                                Children =
+                                                {
+                                                    Box("A1", Color.LightBlue),
+                                                    Box("A2", Color.LightBlue),
+                                                    Box("A3", Color.LightBlue)
+                                                }
+                                            }.LinearLayoutWeight(1),
+
+                                            Box("spacer", Color.White, width: 12),
+
+                                            new LinearLayout
+                                            {
+                                                Orientation = Orientation.Vertical,
+                                                VerticalAlignment = VerticalAlignment.Top,
+                                                Children =
+                                                {
+                                                    Box("B1", Color.LightGreen)
+                                                }
+                                            }.LinearLayoutWeight(1)
+                                        }
+                                    }, 180),
+
+                                Section("7. Border padding around content",
+                                    new Border
+                                    {
+                                        BackgroundColor = Color.LightSteelBlue,
+                                        Padding = new Thickness(20),
+                                        Content = Box("Padded 20 all around", Color.White)
+                                    }, 120),
+
+                                Section("8. Wrapping text inside a weighted fill",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Vertical,
+                                        Children =
+                                        {
+                                            new TextBlock
+                                            {
+                                                Text = "This is a long wrapping paragraph of text used to verify that width-constrained labels compute the correct height when laid out by the manual layout engine, and that the surrounding layout reacts to the measured height correctly.",
+                                                WrapText = true,
+                                                Margin = new Thickness(8)
+                                            },
+                                            Box("Below the text", Color.LightGreen)
+                                        }
+                                    }, 200),
+
+                                Section("9. Margins between horizontal boxes",
+                                    new LinearLayout
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        Children =
+                                        {
+                                            Box("m8", Color.LightBlue, margin: 8).LinearLayoutWeight(1),
+                                            Box("m8", Color.LightGreen, margin: 8).LinearLayoutWeight(1),
+                                            Box("m8", Color.LightPink, margin: 8).LinearLayoutWeight(1)
+                                        }
+                                    }, 100)
+                            }
+                        }
+                    }.LinearLayoutWeight(1)
+                }
+            };
+        }
+
+        private View Section(string title, View demo, float height)
+        {
+            return new LinearLayout
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(12, 12, 12, 0),
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = title,
+                        FontWeight = FontWeights.Bold,
+                        WrapText = true,
+                        Margin = new Thickness(0, 0, 0, 4)
+                    },
+
+                    new FrameLayout
+                    {
+                        Height = height,
+                        BackgroundColor = Color.FromArgb(255, 235, 235, 235),
+                        Children = { demo }
+                    }
+                }
+            };
+        }
+
+        private View Box(string text, Color color, float? width = null, float? height = null, float margin = 2, VerticalAlignment v = VerticalAlignment.Stretch, HorizontalAlignment h = HorizontalAlignment.Stretch)
+        {
+            var border = new Border
+            {
+                BackgroundColor = color,
+                Margin = new Thickness(margin),
+                VerticalAlignment = v,
+                HorizontalAlignment = h,
+                Content = new TextBlock
+                {
+                    Text = text,
+                    Margin = new Thickness(6),
+                    WrapText = false,
+                    TextAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                }
+            };
+
+            if (width.HasValue)
+            {
+                border.Width = width.Value;
+            }
+
+            if (height.HasValue)
+            {
+                border.Height = height.Value;
+            }
+
+            return border;
         }
 
         private View RenderHorizontalWithVerticals()

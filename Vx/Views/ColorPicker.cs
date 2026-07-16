@@ -92,7 +92,7 @@ namespace Vx.Views
 
             public bool Equals(byte[] other)
             {
-                if (Color == null || other == null)
+                if (other == null)
                     return false;
 
                 if (other.Length == 4)

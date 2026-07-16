@@ -1,6 +1,7 @@
 ﻿using InterfacesUWP;
 using InterfacesUWP.App;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.Views;
@@ -45,7 +46,6 @@ namespace PowerPlannerUWP
             PortableDispatcher.ObtainDispatcherFunction = () => { return new UwpDispatcher(); };
             TelemetryExtension.Current = new UWPTelemetryExtension();
             InAppPurchaseExtension.Current = new UWPInAppPurchaseExtension();
-            AppointmentsExtension.Current = new UWPAppointmentsExtension();
             NetworkInfoExtension.Current = new UWPNetworkInfoExtension();
             PushExtension.Current = new UWPPushExtension();
             ClassRemindersExtension.Current = new UWPClassRemindersExtension();
@@ -61,12 +61,16 @@ namespace PowerPlannerUWP
             BrowserExtension.Current = new UWPBrowserExtension();
             EmailExtension.Current = new UWPEmailExtension();
             ThemeExtension.Current = new UWPThemeExtension();
+            ReviewAppExtension.Current = new UWPReviewAppExtension();
 
             // Register platform-specific theme color applier
             ThemeColorApplier.PlatformThemeApplier = UwpThemeColorApplier.Apply;
 
             // Register custom Vx views
             VxUwpExtensions.RegisterCustomView(v => v is PowerPlannerAppDataLibrary.Views.CompletionSlider, v => new UwpCompletionSlider());
+
+            // Ensure we've loaded previous version info
+            AppUpdatedHandler.GetPreviousVersionBeforeAppInitializes();
         }
     }
 }

@@ -4,6 +4,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Vx.Views;
 
@@ -87,6 +88,8 @@ namespace PowerPlannerAppDataLibrary.Components
                 answer.AllowDragViewItem(Item);
             }
 
+            answer.AllowDropTaskOrEventOnDate(Item.Date);
+
             return answer;
         }
 
@@ -121,19 +124,56 @@ namespace PowerPlannerAppDataLibrary.Components
 
         private static string GetDetails(ViewItemTaskOrEvent Item)
         {
-            if (string.IsNullOrWhiteSpace(Item.Details) && !HasImageAttachments(Item))
+            bool hasDetails = !string.IsNullOrWhiteSpace(Item.Details);
+            bool hasImageAttachments = HasImageAttachments(Item);
+            bool hasChecklist = Item.Checklist != null && Item.Checklist.Length > 0;
+
+            if (!hasDetails && !hasImageAttachments && !hasChecklist)
             {
                 return null;
             }
 
-            string details = Item.Details.Replace("\n", "  ").Trim();
+            string details = Item.Details.Replace(Environment.NewLine, "  ").Trim();
 
-            if (HasImageAttachments(Item))
+            // CHECKLIST
+            if (hasChecklist)
             {
-                if (string.IsNullOrWhiteSpace(details))
-                    return IMAGE_ATTACHMENT_SYMBOL + " Image Attachment";
+                string checklistPart = Item.Checklist.Count(x => x.IsComplete) + "/" + Item.Checklist.Length;
+
+                // CHECKLIST + IMAGE ATTACHMENTS
+                if (hasImageAttachments)
+                {
+                    // CHECKLIST + IMAGE ATTACHMENTS + DETAILS
+                    if (hasDetails)
+                    {
+                        return $"{checklistPart} - {IMAGE_ATTACHMENT_SYMBOL} {details}";
+                    }
+                    // CHECKLIST + IMAGE ATTACHMENTS
+                    else
+                    {
+                        return $"{checklistPart} - {IMAGE_ATTACHMENT_SYMBOL} {R.S("String_ImageAttachments").ToLower()}";
+                    }
+                }
+                // CHECKST + DETAILS
+                else if (hasDetails)
+                {
+                    return checklistPart + " - " + details;
+                }
                 else
+                {
+                    return checklistPart + " " + R.S("String_ChecklistItemsCompleted");
+                }
+            }
+            else if (hasImageAttachments)
+            {
+                if (hasDetails)
+                {
                     return IMAGE_ATTACHMENT_SYMBOL + " " + details;
+                }
+                else
+                {
+                    return IMAGE_ATTACHMENT_SYMBOL + " " + R.S("String_ImageAttachments").ToLower();
+                }
             }
             else
             {

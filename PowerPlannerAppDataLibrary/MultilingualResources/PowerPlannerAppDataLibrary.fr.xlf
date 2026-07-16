@@ -54,22 +54,6 @@
           <source>version</source>
           <target state="final">version</target>
         </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Classes_Description.Text" translate="yes" xml:space="preserve">
-          <source>Power Planner can display your classes in the system calendar, so that you can view your schedule from the Calendar app.</source>
-          <target state="final" state-qualifier="mt-suggestion">Power Planner peut afficher vos classes dans le calendrier système, de sorte que vous pouvez afficher votre horaire à partir de l’application Calendrier.</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Classes_Header.Text" translate="yes" xml:space="preserve">
-          <source>CLASSES CALENDAR INTEGRATION</source>
-          <target state="final" state-qualifier="mt-suggestion">INTÉGRATION DU CALENDRIER DES CLASSES</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Tasks_Description.Text" translate="yes" xml:space="preserve">
-          <source>Power Planner can display your tasks and events in the system calendar, so that you can view them from the Calendar app.</source>
-          <target state="final" state-qualifier="mt-suggestion">Power Planner peut afficher vos tâches et événements dans le calendrier système, de sorte que vous pouvez les afficher à partir de l’application Calendrier.</target>
-        </trans-unit>
-        <trans-unit id="Settings_CalendarIntegration_Tasks_Header.Text" translate="yes" xml:space="preserve">
-          <source>TASKS CALENDAR INTEGRATION</source>
-          <target state="final" state-qualifier="mt-suggestion">TÂCHES CALENDRIER INTÉGRATION</target>
-        </trans-unit>
         <trans-unit id="Settings_ChangeEmailPage.Title" translate="yes" xml:space="preserve">
           <source>CHANGE EMAIL</source>
           <target state="final" state-qualifier="mt-suggestion">MODIFIER L’E-MAIL</target>
@@ -271,7 +255,7 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
           <target state="final" state-qualifier="mt-suggestion">Tutoriels et FAQ</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Title" translate="yes" xml:space="preserve">
-          <source>Other Apps</source>
+          <source>Other apps</source>
           <target state="final">Autres applications</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_OtherAppsItem.Subtitle" translate="yes" xml:space="preserve">
@@ -281,14 +265,6 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
         <trans-unit id="Settings_MainPage_AboutItem.Title" translate="yes" xml:space="preserve">
           <source>About</source>
           <target state="final">À propos de</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
-          <source>Tasks and classes in native Calendar app</source>
-          <target state="final" state-qualifier="mt-suggestion">Tâches et classes dans l’application calendrier natif</target>
-        </trans-unit>
-        <trans-unit id="Settings_MainPage_CalendarIntegrationItem.Title" translate="yes" xml:space="preserve">
-          <source>Calendar integration</source>
-          <target state="final" state-qualifier="mt-suggestion">Intégration du calendrier</target>
         </trans-unit>
         <trans-unit id="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" translate="yes" xml:space="preserve">
           <source>Tasks and classes in Google Calendar</source>
@@ -601,26 +577,26 @@ Cliquez sur Continuer à vous connecter (ce qui peut provoquer des doublons).</t
           <target state="final" state-qualifier="mt-suggestion">MISE À NIVEAU VERS PREMIUM</target>
         </trans-unit>
         <trans-unit id="Settings_UpgradeToPremium_Description.Text" translate="yes" xml:space="preserve">
-          <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time lifetime purchase!
+          <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
 
 The free version is limited to...
  - 1 semester
  - 5 grades per class
  - 1 repeating bulk entry of a task/event
- - Cannot pin classes as secondary tiles
  - 1 photo attachment per item
+ - Cannot pin classes as secondary tiles
 
-Once you purchase the premium version, you own the premium version on all your devices.</source>
-          <target state="final" state-qualifier="mt-suggestion">La version premium de Power Planner déverrouille un certain nombre de fonctionnalités utiles, et est un achat unique à vie!
+Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
+          <target state="final">La version premium de Power Planner débloque un certain nombre de fonctionnalités utiles, et c'est un achat unique À VIE (pas d'abonnements mensuels/annuels) !
 
 La version gratuite est limitée à...
  - 1 semestre
  - 5 notes par classe
  - 1 répétition de l’entrée en vrac d’une tâche/événement
- - Ne peut pas épingler les classes comme tuiles secondaires
  - 1 pièce jointe photo par article
+ - Ne peut pas épingler les classes comme tuiles secondaires
 
-Une fois que vous achetez la version premium, vous possédez la version premium sur tous vos appareils.</target>
+Une fois que vous avez acheté la version premium, vous possédez la version premium sur tous vos appareils (elle est liée à votre compte en ligne).</target>
         </trans-unit>
         <trans-unit id="TextBox_Password.Header" translate="yes" xml:space="preserve">
           <source>Password</source>
@@ -1787,6 +1763,80 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>To get started, add your classes and schedule!</source>
           <target state="final" state-qualifier="mt-suggestion">Pour commencer, ajoutez vos cours et votre horaire!</target>
         </trans-unit>
+        <trans-unit id="ScheduleWelcome_ButtonAddWithAi" translate="yes" xml:space="preserve">
+          <source>✨ Add classes and schedules with AI</source>
+          <target state="final">✨ Ajouter des cours et l'emploi du temps avec l'IA</target>
+        </trans-unit>
+        <trans-unit id="ScheduleWelcome_TextOrManually" translate="yes" xml:space="preserve">
+          <source>Or you can...</source>
+          <target state="final">Ou vous pouvez...</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_Title" translate="yes" xml:space="preserve">
+          <source>Add with AI</source>
+          <target state="final">Ajouter avec l'IA</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_Description" translate="yes" xml:space="preserve">
+          <source>Enter your class schedule in the text box below, and we'll use AI to create your classes and schedule in Power Planner!</source>
+          <target state="final">Entrez votre emploi du temps dans la zone de texte ci-dessous, et nous utiliserons l'IA pour créer vos cours et votre emploi du temps dans Power Planner !</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter your class schedule in any format, ex:
+
+ANTH 160D2 - Mon, Wed 10-10:50am in ILC 130
+CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</source>
+          <target state="final">Entrez votre emploi du temps dans n'importe quel format, ex. :
+
+Mathématiques 101 - Lun, Mer 10h00-10h50 en Salle 130
+Physique 202 - Mar, Jeu 9h30-10h45 en Salle 150</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ButtonCreate" translate="yes" xml:space="preserve">
+          <source>✨ Create classes and schedule</source>
+          <target state="final">✨ Créer des cours et l'emploi du temps</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNoText" translate="yes" xml:space="preserve">
+          <source>You must provide text!</source>
+          <target state="final">Vous devez fournir du texte !</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNetwork" translate="yes" xml:space="preserve">
+          <source>There was a problem connecting to the server. Make sure you're connected to the internet and try again.</source>
+          <target state="final">Un problème est survenu lors de la connexion au serveur. Assurez-vous d'être connecté à Internet et réessayez.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorGeneric" translate="yes" xml:space="preserve">
+          <source>Something went wrong. Check your input text and try again.</source>
+          <target state="final">Une erreur s'est produite. Vérifiez votre texte et réessayez.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_GeneratingTitle" translate="yes" xml:space="preserve">
+          <source>Generating classes and schedule...</source>
+          <target state="final">Génération des cours et de l'emploi du temps...</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_GeneratingSubtitle" translate="yes" xml:space="preserve">
+          <source>This should only take about 5 seconds!</source>
+          <target state="final">Cela ne devrait prendre qu'environ 5 secondes !</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorNoClasses" translate="yes" xml:space="preserve">
+          <source>No classes were created. Try editing your text to be more clear.</source>
+          <target state="final">Aucun cours n'a été créé. Essayez de modifier votre texte pour le rendre plus clair.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorTooManyClasses" translate="yes" xml:space="preserve">
+          <source>There were over 15 classes that were trying to be created. This is probably an error. Try editing your text.</source>
+          <target state="final">Plus de 15 cours ont tenté d'être créés. C'est probablement une erreur. Essayez de modifier votre texte.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorTooManySchedules" translate="yes" xml:space="preserve">
+          <source>There were over 15 schedules that were trying to be created for a single class. This is probably an error. Try editing your text.</source>
+          <target state="final">Plus de 15 emplois du temps ont tenté d'être créés pour un seul cours. C'est probablement une erreur. Essayez de modifier votre texte.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidName" translate="yes" xml:space="preserve">
+          <source>One or more classes had an invalid name.</source>
+          <target state="final">Un ou plusieurs cours avaient un nom invalide.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidColor" translate="yes" xml:space="preserve">
+          <source>One or more classes had an invalid color.</source>
+          <target state="final">Un ou plusieurs cours avaient une couleur invalide.</target>
+        </trans-unit>
+        <trans-unit id="AddClassesWithAi_ErrorInvalidTime" translate="yes" xml:space="preserve">
+          <source>One or more schedules had an invalid start and end time.</source>
+          <target state="final">Un ou plusieurs emplois du temps avaient une heure de début et de fin invalide.</target>
+        </trans-unit>
         <trans-unit id="ClassGrades_UnassignedItemsHeader" translate="yes" xml:space="preserve">
           <source>Unassigned items</source>
           <target state="final" state-qualifier="mt-suggestion">Articles non assignés</target>
@@ -2213,6 +2263,18 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
         <trans-unit id="String_ImageAttachments" translate="yes" xml:space="preserve">
           <source>Image attachments</source>
           <target state="final">Images en pièces jointes</target>
+        </trans-unit>
+        <trans-unit id="String_AddChecklist" translate="yes" xml:space="preserve">
+          <source>Add checklist</source>
+          <target state="final">Ajouter une liste de contrôle</target>
+        </trans-unit>
+        <trans-unit id="String_AddChecklistItem" translate="yes" xml:space="preserve">
+          <source>+ Add item</source>
+          <target state="final">+ Ajouter un élément</target>
+        </trans-unit>
+        <trans-unit id="String_ChecklistItemsCompleted" translate="yes" xml:space="preserve">
+          <source>items completed</source>
+          <target state="final">éléments terminés</target>
         </trans-unit>
         <trans-unit id="SchedulePage_TextBlockReturningUser.Text" translate="yes" xml:space="preserve">
           <source>Returning user?</source>
@@ -2674,24 +2736,6 @@ S’il vous plaît penser à utiliser un compte en ligne à la place!</target>
           <source>Semester</source>
           <target state="final">Semestre</target>
         </trans-unit>
-        <trans-unit id="Settings_UpgradeToPremiumIOS_Description.Text" translate="yes" xml:space="preserve">
-  <source>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
-
-The free version is limited to...
- - 1 semester
- - 5 grades per class
- - 1 repeating bulk entry of a task/event
-
-Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</source>
-  <target state="final">La version premium de Power Planner débloque un certain nombre de fonctionnalités utiles, et c'est un achat unique À VIE (pas d'abonnements mensuels/annuels) !
-
-La version gratuite est limitée à...
- - 1 semestre
- - 5 notes par classe
- - 1 entrée en masse répétitive d'une tâche/événement
-
-Une fois que vous avez acheté la version premium, vous possédez la version premium sur tous vos appareils (elle est liée à votre compte en ligne).</target>
-</trans-unit>
         <trans-unit id="Settings_UpgradeToPremium_ButtonRestore.Content" translate="yes" xml:space="preserve">
   <source>Restore Previous Purchase</source>
   <target state="final">Restaurer l'Achat Précédent</target>
@@ -2803,6 +2847,74 @@ Une fois que vous avez acheté la version premium, vous possédez la version pre
         <trans-unit id="Settings_ResetToDefault" translate="yes" xml:space="preserve">
           <source>Reset to default</source>
           <target state="final">Réinitialiser par défaut</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Title" translate="yes" xml:space="preserve">
+          <source>Edit with AI</source>
+          <target state="final">Modifier avec l'IA</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorEmpty" translate="yes" xml:space="preserve">
+          <source>Please describe the changes you'd like to make.</source>
+          <target state="final">Veuillez décrire les modifications que vous souhaitez apporter.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Placeholder" translate="yes" xml:space="preserve">
+          <source>Ask to add or edit tasks / events / holidays!</source>
+          <target state="final">Demandez à ajouter ou modifier des tâches / événements / vacances !</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Header" translate="yes" xml:space="preserve">
+          <source>Describe your changes</source>
+          <target state="final">Décrivez vos modifications</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_SuggestedPrompt_MoveOverdue" translate="yes" xml:space="preserve">
+          <source>Move my overdue items to today</source>
+          <target state="final">Déplacer mes éléments en retard à aujourd'hui</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_Description" translate="yes" xml:space="preserve">
+          <source>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</source>
+          <target state="final">Fonctionnalité bêta, nécessite internet. Dispose du contexte de vos cours, de votre emploi du temps, du mois en cours et de jusqu'à {0} éléments visibles. Permet d'ajouter / modifier / supprimer des tâches, événements ou vacances, et peut en modifier plusieurs !</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorGeneric" translate="yes" xml:space="preserve">
+          <source>Something went wrong. Please try again.</source>
+          <target state="final">Une erreur s'est produite. Veuillez réessayer.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_PreviewResults" translate="yes" xml:space="preserve">
+          <source>Preview results</source>
+          <target state="final">Aperçu des résultats</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_SaveChanges" translate="yes" xml:space="preserve">
+          <source>Save changes</source>
+          <target state="final">Enregistrer les modifications</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_ErrorSaveFailed" translate="yes" xml:space="preserve">
+          <source>Failed to save changes. Please try again.</source>
+          <target state="final">Impossible d'enregistrer les modifications. Veuillez réessayer.</target>
+        </trans-unit>
+        <trans-unit id="AiEdit_MinorChanges" translate="yes" xml:space="preserve">
+          <source>(minor changes)</source>
+          <target state="final">(modifications mineures)</target>
+        </trans-unit>
+        <trans-unit id="String_UnknownItem" translate="yes" xml:space="preserve">
+          <source>Unknown item</source>
+          <target state="final">Élément inconnu</target>
+        </trans-unit>
+        <trans-unit id="String_UnknownClass" translate="yes" xml:space="preserve">
+          <source>Unknown Class</source>
+          <target state="final">Cours inconnu</target>
+        </trans-unit>
+        <trans-unit id="String_Type" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="final">Type</target>
+        </trans-unit>
+        <trans-unit id="String_Progress" translate="yes" xml:space="preserve">
+          <source>Progress</source>
+          <target state="final">Progression</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Title" translate="yes" xml:space="preserve">
+          <source>Rate and review</source>
+          <target state="final">Noter et évaluer</target>
+        </trans-unit>
+        <trans-unit id="Settings_MainPage_RateReview.Subtitle" translate="yes" xml:space="preserve">
+          <source>Leave a review of Power Planner!</source>
+          <target state="final">Laissez un avis sur Power Planner !</target>
         </trans-unit>
       </group>
     </body>

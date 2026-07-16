@@ -11,9 +11,10 @@
     x:Name="ThisControl">
 
     <UserControl.Resources>
-        <Style x:Key="HeaderStyle" TargetType="Button" BasedOn="{StaticResource ItemContainerStyle}">
+        <Style x:Key="HeaderStyle" TargetType="Button" BasedOn="{StaticResource TransparentButtonStyle}">
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="SemiLight"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
     </UserControl.Resources>
 

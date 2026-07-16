@@ -111,65 +111,7 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/ReturningUserContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-			  android:id="@+id/SchedulePage_TextViewReturningUser"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="16dp"/>
-      
-            <Button
-              style="@style/PowerPlannerBlueButton"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="8dp"
-              android:maxWidth="200dp"
-              android:id="@+id/ButtonLogIn"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical">
-
-            <TextView
-              android:id="@+id/SchedulePage_TextViewWelcomeTitle"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:textAlignment="center"
-              android:gravity="center_horizontal"
-              style="@android:style/TextAppearance.Large"/>
-
-			<TextView
-              android:id="@+id/SchedulePage_TextViewWelcomeSubtitle"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="8dp"
-              android:textAlignment="center"
-              android:gravity="center_horizontal"
-              style="@android:style/TextAppearance.Small"/>
-      
-            <Button
-              style="@style/PowerPlannerBlueButton"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="16dp"
-              android:layout_marginBottom="32dp"
-              android:maxWidth="200dp"
-              android:layout_gravity="center_horizontal"
-              android:id="@+id/ButtonWelcomeAddClass"/>
-        </LinearLayout>
     
   </FrameLayout>
 

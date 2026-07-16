@@ -13,6 +13,11 @@ namespace Vx.Views
 
     public class View : IView
     {
+        /// <summary>
+        /// If set, when reconciling views, will ensure that even if it matches the view type, it creates a new one.
+        /// </summary>
+        public string Id { get; set; }
+
         public NativeView NativeView { get; internal set; }
 
         private Dictionary<string, object> _attachedProperties = new Dictionary<string, object>();
@@ -71,6 +76,8 @@ namespace Vx.Views
         public float Opacity { get; set; } = 1;
 
         public float Width { get; set; } = float.NaN;
+        public float MinWidth { get; set; } = 0;
+        public float MaxWidth { get; set; } = float.PositiveInfinity;
         public float Height { get; set; } = float.NaN;
 
         public Action<View> ViewRef { get; set; }

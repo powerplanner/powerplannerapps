@@ -153,18 +153,6 @@
   <data name="Settings_AboutPage_VersionHeader.Text" xml:space="preserve">
     <value>version</value>
   </data>
-  <data name="Settings_CalendarIntegration_Classes_Description.Text" xml:space="preserve">
-    <value>Power Planner can display your classes in the system calendar, so that you can view your schedule from the Calendar app.</value>
-  </data>
-  <data name="Settings_CalendarIntegration_Classes_Header.Text" xml:space="preserve">
-    <value>CLASSES CALENDAR INTEGRATION</value>
-  </data>
-  <data name="Settings_CalendarIntegration_Tasks_Description.Text" xml:space="preserve">
-    <value>Power Planner can display your tasks and events in the system calendar, so that you can view them from the Calendar app.</value>
-  </data>
-  <data name="Settings_CalendarIntegration_Tasks_Header.Text" xml:space="preserve">
-    <value>TASKS CALENDAR INTEGRATION</value>
-  </data>
   <data name="Settings_ChangeEmailPage.Title" xml:space="preserve">
     <value>CHANGE EMAIL</value>
   </data>
@@ -314,19 +302,19 @@ Click Continue to login (which might cause duplicates).</value>
     <value>Tutorials and FAQ</value>
   </data>
   <data name="Settings_MainPage_OtherAppsItem.Title" xml:space="preserve">
-    <value>Other Apps</value>
+    <value>Other apps</value>
   </data>
   <data name="Settings_MainPage_OtherAppsItem.Subtitle" xml:space="preserve">
     <value>Check out our other apps</value>
   </data>
+  <data name="Settings_MainPage_RateReview.Title" xml:space="preserve">
+    <value>Rate and review</value>
+  </data>
+  <data name="Settings_MainPage_RateReview.Subtitle" xml:space="preserve">
+    <value>Leave a review of Power Planner!</value>
+  </data>
   <data name="Settings_MainPage_AboutItem.Title" xml:space="preserve">
     <value>About</value>
-  </data>
-  <data name="Settings_MainPage_CalendarIntegrationItem.Subtitle" xml:space="preserve">
-    <value>Tasks and classes in native Calendar app</value>
-  </data>
-  <data name="Settings_MainPage_CalendarIntegrationItem.Title" xml:space="preserve">
-    <value>Calendar integration</value>
   </data>
   <data name="Settings_MainPage_GoogleCalendarIntegrationItem.Subtitle" xml:space="preserve">
     <value>Tasks and classes in Google Calendar</value>
@@ -565,24 +553,14 @@ Click Continue to login (which might cause duplicates).</value>
     <value>UPGRADE TO PREMIUM</value>
   </data>
   <data name="Settings_UpgradeToPremium_Description.Text" xml:space="preserve">
-    <value>The premium version of Power Planner unlocks a number of useful features, and is a one-time lifetime purchase!
-
-The free version is limited to...
- - 1 semester
- - 5 grades per class
- - 1 repeating bulk entry of a task/event
- - Cannot pin classes as secondary tiles
- - 1 photo attachment per item
-
-Once you purchase the premium version, you own the premium version on all your devices.</value>
-  </data>
-  <data name="Settings_UpgradeToPremiumIOS_Description.Text" xml:space="preserve">
     <value>The premium version of Power Planner unlocks a number of useful features, and is a one-time LIFETIME purchase (no monthly/yearly subscriptions)!
 
 The free version is limited to...
  - 1 semester
  - 5 grades per class
  - 1 repeating bulk entry of a task/event
+ - 1 photo attachment per item
+ - Cannot pin classes as secondary tiles
 
 Once you purchase the premium version, you own the premium version on all your devices (it is linked with your online account).</value>
   </data>
@@ -1480,6 +1458,60 @@ Please think about using an online account instead!</value>
   <data name="SchedulePage_TextBlockWelcomeSubtitle.Text" xml:space="preserve">
     <value>To get started, add your classes and schedule!</value>
   </data>
+  <data name="ScheduleWelcome_ButtonAddWithAi" xml:space="preserve">
+    <value>✨ Add classes and schedules with AI</value>
+  </data>
+  <data name="ScheduleWelcome_TextOrManually" xml:space="preserve">
+    <value>Or you can...</value>
+  </data>
+  <data name="AddClassesWithAi_Title" xml:space="preserve">
+    <value>Add with AI</value>
+  </data>
+  <data name="AddClassesWithAi_Description" xml:space="preserve">
+    <value>Enter your class schedule in the text box below, and we'll use AI to create your classes and schedule in Power Planner!</value>
+  </data>
+  <data name="AddClassesWithAi_PlaceholderText" xml:space="preserve">
+    <value>Enter your class schedule in any format, ex:
+
+ANTH 160D2 - Mon, Wed 10-10:50am in ILC 130
+CSC 337 - Tue, Thu 9:30-10:45am in ILC 150</value>
+  </data>
+  <data name="AddClassesWithAi_ButtonCreate" xml:space="preserve">
+    <value>✨ Create classes and schedule</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorNoText" xml:space="preserve">
+    <value>You must provide text!</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorNetwork" xml:space="preserve">
+    <value>There was a problem connecting to the server. Make sure you're connected to the internet and try again.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorGeneric" xml:space="preserve">
+    <value>Something went wrong. Check your input text and try again.</value>
+  </data>
+  <data name="AddClassesWithAi_GeneratingTitle" xml:space="preserve">
+    <value>Generating classes and schedule...</value>
+  </data>
+  <data name="AddClassesWithAi_GeneratingSubtitle" xml:space="preserve">
+    <value>This should only take about 5 seconds!</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorNoClasses" xml:space="preserve">
+    <value>No classes were created. Try editing your text to be more clear.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorTooManyClasses" xml:space="preserve">
+    <value>There were over 15 classes that were trying to be created. This is probably an error. Try editing your text.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorTooManySchedules" xml:space="preserve">
+    <value>There were over 15 schedules that were trying to be created for a single class. This is probably an error. Try editing your text.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorInvalidName" xml:space="preserve">
+    <value>One or more classes had an invalid name.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorInvalidColor" xml:space="preserve">
+    <value>One or more classes had an invalid color.</value>
+  </data>
+  <data name="AddClassesWithAi_ErrorInvalidTime" xml:space="preserve">
+    <value>One or more schedules had an invalid start and end time.</value>
+  </data>
   <data name="ClassGrades_UnassignedItemsHeader" xml:space="preserve">
     <value>Unassigned items</value>
   </data>
@@ -1806,6 +1838,15 @@ Please think about using an online account instead!</value>
   </data>
   <data name="String_ImageAttachments" xml:space="preserve">
     <value>Image attachments</value>
+  </data>
+  <data name="String_AddChecklist" xml:space="preserve">
+    <value>Add checklist</value>
+  </data>
+  <data name="String_AddChecklistItem" xml:space="preserve">
+    <value>+ Add item</value>
+  </data>
+  <data name="String_ChecklistItemsCompleted" xml:space="preserve">
+    <value>items completed</value>
   </data>
   <data name="SchedulePage_TextBlockReturningUser.Text" xml:space="preserve">
     <value>Returning user?</value>
@@ -2207,5 +2248,50 @@ Please think about using an online account instead!</value>
   </data>
   <data name="Settings_ResetToDefault" xml:space="preserve">
     <value>Reset to default</value>
+  </data>
+  <data name="AiEdit_Title" xml:space="preserve">
+    <value>Edit with AI</value>
+  </data>
+  <data name="AiEdit_ErrorEmpty" xml:space="preserve">
+    <value>Please describe the changes you'd like to make.</value>
+  </data>
+  <data name="AiEdit_Placeholder" xml:space="preserve">
+    <value>Ask to add or edit tasks / events / holidays!</value>
+  </data>
+  <data name="AiEdit_Header" xml:space="preserve">
+    <value>Describe your changes</value>
+  </data>
+  <data name="AiEdit_SuggestedPrompt_MoveOverdue" xml:space="preserve">
+    <value>Move my overdue items to today</value>
+  </data>
+  <data name="AiEdit_Description" xml:space="preserve">
+    <value>Beta feature, requires internet. This has context of your classes and class schedule, and current month, and up to {0} visible items. It allows adding / editing / deleting any task, event, or holiday items, and can edit multiple!</value>
+  </data>
+  <data name="AiEdit_ErrorGeneric" xml:space="preserve">
+    <value>Something went wrong. Please try again.</value>
+  </data>
+  <data name="AiEdit_PreviewResults" xml:space="preserve">
+    <value>Preview results</value>
+  </data>
+  <data name="AiEdit_SaveChanges" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="AiEdit_ErrorSaveFailed" xml:space="preserve">
+    <value>Failed to save changes. Please try again.</value>
+  </data>
+  <data name="AiEdit_MinorChanges" xml:space="preserve">
+    <value>(minor changes)</value>
+  </data>
+  <data name="String_UnknownItem" xml:space="preserve">
+    <value>Unknown item</value>
+  </data>
+  <data name="String_UnknownClass" xml:space="preserve">
+    <value>Unknown Class</value>
+  </data>
+  <data name="String_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="String_Progress" xml:space="preserve">
+    <value>Progress</value>
   </data>
 </root>

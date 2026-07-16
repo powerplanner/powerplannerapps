@@ -538,7 +538,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
             {
                 Width = size,
                 Height = size,
-                CornerRadius = size,
+                CornerRadius = size / 2f,
                 BackgroundColor = color,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(0, 0, size, 0)

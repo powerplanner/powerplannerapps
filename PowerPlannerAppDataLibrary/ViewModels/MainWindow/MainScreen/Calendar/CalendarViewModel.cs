@@ -98,9 +98,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             else
             {
-                return DisplayMonth.ToString("MMMM yyyy");
+                if (!ShowGoToTodayInPrimaryCommands)
+                {
+                    // Shorter month name for smaller screens
+                    return DisplayMonth.ToString("MMM yyyy");
+                }
+                else
+                {
+                    return DisplayMonth.ToString("MMMM yyyy");
+                }
             }
-        }, new string[] { nameof(DisplayState), nameof(SelectedDate), nameof(DisplayMonth) });
+        }, new string[] { nameof(DisplayState), nameof(SelectedDate), nameof(DisplayMonth), nameof(ShowGoToTodayInPrimaryCommands) });
 
         public override bool CanGoBack => CachedComputation<bool>(delegate
         {
@@ -247,11 +255,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }
 
+        private bool _showEditWithAiInPrimaryCommands = true;
+        public bool ShowEditWithAiInPrimaryCommands
+        {
+            get => _showEditWithAiInPrimaryCommands;
+            set => SetProperty(ref _showEditWithAiInPrimaryCommands, value, nameof(ShowEditWithAiInPrimaryCommands));
+        }
+
         private bool _showGoToTodayInPrimaryCommands = true;
         public bool ShowGoToTodayInPrimaryCommands
         {
             get => _showGoToTodayInPrimaryCommands;
             set => SetProperty(ref _showGoToTodayInPrimaryCommands, value, nameof(ShowGoToTodayInPrimaryCommands));
+        }
+
+        public bool CanGoToToday
+        {
+            get
+            {
+                // For day view, we can go to today if the selected date is not today
+                if (DisplayState == DisplayStates.Day)
+                {
+                    return SelectedDate.Date != Today.Date;
+                }
+
+                // For split view, we can go to today if the selected date is not today or if the display month is not the current month
+                if (DisplayState == DisplayStates.Split)
+                {
+                    return SelectedDate.Date != Today.Date || !DateTools.SameMonth(DisplayMonth, Today);
+                }
+                
+                // For other views, we can go to today if the display month is not the current month
+                return !DateTools.SameMonth(DisplayMonth, Today);
+            }
         }
 
         public enum ViewSizeStates
@@ -447,6 +483,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }));
         }
 
+        private void OpenEditWithAi()
+        {
+            MainScreenViewModel.ShowPopup(new AiEditWithAiViewModel(
+                MainScreenViewModel,
+                MainScreenViewModel.Classes,
+                MainScreenViewModel.CurrentSemester,
+                SemesterItemsViewGroup,
+                DateOnly.FromDateTime(DisplayMonth)));
+        }
+
         private DateTime? GetDateForAdd(DateTime? dueDate, bool useSelectedDate)
         {
             if (dueDate == null)
@@ -584,7 +630,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             else
                 ViewSizeState = ViewSizeStates.FullSize;
 
-            ShowGoToTodayInPrimaryCommands = Size.Width >= 435;
+            ShowEditWithAiInPrimaryCommands = VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android || Size.Width >= 435;
+            ShowGoToTodayInPrimaryCommands = Size.Width > 460;
         }
 
         protected override View Render()
@@ -602,6 +649,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 toolbar = new Toolbar
                 {
                     Title = CanGoBack ? "" : Title,
+                    AlignTitleToLeft = true,
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
                     BackText = CanGoBack ? Title : null,
                     PrimaryCommands =
@@ -635,21 +683,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
 
                 // Go to today button
-                var goToTodayMenuItem = new MenuItem
+                if (CanGoToToday)
                 {
-                    Text = PowerPlannerResources.GetString("String_GoToToday"),
-                    Glyph = MaterialDesign.MaterialDesignIcons.Today,
-                    Click = GoToToday
-                };
-                if (ShowGoToTodayInPrimaryCommands)
-                {
-                    toolbar.PrimaryCommands.Add(goToTodayMenuItem);
-                }
-                else
-                {
-                    // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
-                    goToTodayMenuItem.Glyph = null;
-                    toolbar.SecondaryCommands.Add(goToTodayMenuItem);
+                    var goToTodayMenuItem = new MenuItem
+                    {
+                        Text = PowerPlannerResources.GetString("String_GoToToday"),
+                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                        Click = GoToToday
+                    };
+                    if (ShowGoToTodayInPrimaryCommands)
+                    {
+                        toolbar.PrimaryCommands.Add(goToTodayMenuItem);
+                    }
+                    else
+                    {
+                        // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
+                        goToTodayMenuItem.Glyph = null;
+                        toolbar.SecondaryCommands.Add(goToTodayMenuItem);
+                    }
                 }
 
                 // Only on full calendar, show the option for past complete
@@ -660,9 +711,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 });
 
                 // Add button is displayed as floating action button sometimes on Android
+                bool hasAddButtonInToolbar = false;
                 if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
+                    hasAddButtonInToolbar = true;
+                }
+
+                var editWithAiMenuItem = new MenuItem
+                {
+                    Text = R.S("AiEdit_Title"),
+                    Glyph = MaterialDesign.MaterialDesignIcons.Bolt,
+                    Click = OpenEditWithAi
+                };
+                if (ShowEditWithAiInPrimaryCommands)
+                {
+                    toolbar.PrimaryCommands.Insert(hasAddButtonInToolbar ? 1 : 0, editWithAiMenuItem);
+                }
+                else
+                {
+                    // On narrow views, show it in secondary commands (without a glyph)
+                    editWithAiMenuItem.Glyph = null;
+                    toolbar.SecondaryCommands.Add(editWithAiMenuItem);
                 }
             }
 
@@ -702,6 +772,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             var root = new LinearLayout
             {
                 Orientation = Orientation.Vertical,
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Children =
                 {
                     toolbar,
@@ -725,7 +796,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                             AddEvent = () => AddEvent(),
                             AddHoliday = () => AddHoliday()
                         } : null
-                    }
+                    },
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color
                 };
             }
 

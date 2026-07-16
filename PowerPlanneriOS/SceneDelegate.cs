@@ -1,0 +1,80 @@
+#if MACCATALYST
+using CoreGraphics;
+using Foundation;
+using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Windows;
+using System.Linq;
+using UIKit;
+
+namespace PowerPlanneriOS
+{
+    [Register("SceneDelegate")]
+    public class SceneDelegate : UIResponder, IUIWindowSceneDelegate
+    {
+        [Export("window")]
+        public UIWindow Window { get; set; }
+
+        [Export("scene:willConnectToSession:options:")]
+        public void WillConnect(UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions)
+        {
+            if (scene is UIWindowScene windowScene)
+            {
+                // Configure title bar appearance
+                windowScene.Titlebar?.TitleVisibility = UITitlebarTitleVisibility.Hidden;
+                windowScene.Titlebar?.Toolbar = null;
+
+                // Configure minimum width
+                windowScene.SizeRestrictions?.MinimumSize = new CGSize(320, 340);
+
+                Window ??= new UIWindow(windowScene);
+                var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
+                appDelegate?.RegisterWindowForScene(Window, connectionOptions.ShortcutItem);
+            }
+        }
+
+        [Export("sceneDidDisconnect:")]
+        public void DidDisconnect(UIScene scene) { }
+
+        [Export("sceneDidBecomeActive:")]
+        public void DidBecomeActive(UIScene scene)
+        {
+            try
+            {
+                foreach (var window in PowerPlannerApp.Current.Windows.OfType<MainAppWindow>())
+                {
+                    var dontWait = window.GetViewModel().HandleBeingReturnedTo();
+                }
+            }
+
+            catch { }
+        }
+
+        [Export("sceneWillResignActive:")]
+        public void WillResignActive(UIScene scene)
+        {
+            try
+            {
+                foreach (var window in PowerPlannerApp.Current.Windows.OfType<MainAppWindow>())
+                {
+                    window.GetViewModel().HandleBeingLeft();
+                }
+            }
+
+            catch { }
+
+            try
+            {
+                TelemetryExtension.Current?.SuspendingApp();
+            }
+            catch { }
+        }
+
+        [Export("sceneWillEnterForeground:")]
+        public void WillEnterForeground(UIScene scene) { }
+
+        [Export("sceneDidEnterBackground:")]
+        public void DidEnterBackground(UIScene scene) { }
+    }
+}
+#endif

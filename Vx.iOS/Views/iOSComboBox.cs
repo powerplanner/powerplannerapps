@@ -18,9 +18,6 @@ namespace Vx.iOS.Views
         private UILabel _value;
         private INativeComponent _valueTemplated;
 
-        private ModalPickerViewController ModalController;
-        private UIPickerViewModel _pickerViewModel;
-
         public iOSComboBox()
         {
             _header = new UILabel

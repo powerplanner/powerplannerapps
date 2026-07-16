@@ -68,14 +68,13 @@ namespace PowerPlannerAndroid.App
         {
             PortableLocalizedResources.CultureExtension = delegate { return System.Globalization.CultureInfo.CurrentCulture; };
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetAppName = delegate { return "Power Planner for Android"; };
-
-            // Beware that ViewModel-related things are dependent on this value being exactly Android, do not change.
             PowerPlannerAppDataLibrary.SyncLayer.SyncExtensions.GetPlatform = delegate { return "Android"; };
 
             DateTimeFormatterExtension.Current = new DroidDateTimeFormatterExtension();
             InAppPurchaseExtension.Current = new AndroidInAppPurchaseExtension();
             ClassRemindersExtension.Current = new DroidClassRemindersExtension();
             RemindersExtension.Current = new AndroidRemindersExtension();
+            ReviewAppExtension.Current = new AndroidReviewAppExtension();
             TilesExtension.Current = new DroidTilesExtension();
             PushExtension.Current = new DroidPushExtension();
             ImagePickerExtension.Current = new DroidImagePickerExtension();
@@ -100,6 +99,9 @@ namespace PowerPlannerAndroid.App
             // Initialize custom views
             VxDroidExtensions.RegisterCustomView(v => v is CompletionSlider, v => new DroidCompletionSlider());
             VxDroidExtensions.RegisterCustomView(v => v is FloatingAddItemButton, v => new DroidFloatingAddItemButton());
+
+            // Ensure we've loaded previous version info
+            AppUpdatedHandler.GetPreviousVersionBeforeAppInitializes();
 
             return base.InitializeAsyncOverride();
         }

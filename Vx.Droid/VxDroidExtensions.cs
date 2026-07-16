@@ -32,6 +32,7 @@ namespace Vx.Droid
         {
             Theme.Current = new VxDroidTheme();
             VxPlatform.Current = Platform.Android;
+            VxDeviceType.Current = DeviceType.Phone;
 
             NativeView.CreateNativeView = view =>
             {
@@ -181,6 +182,11 @@ namespace Vx.Droid
                 if (view is Vx.Views.WrapGrid)
                 {
                     return new DroidWrapGrid();
+                }
+
+                if (view is Vx.Views.AdaptiveGridPanel)
+                {
+                    return new DroidAdaptiveGridPanel();
                 }
 
                 if (view is Vx.Views.ProgressBar)

@@ -302,17 +302,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     ShowWeightHeaderAsSum = showWeightHeaderAsSum
                 };
 
-                var unassignedPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
-                {
-                    MinColumnWidth = minColumnWidth,
-                    ColumnSpacing = columnSpacing
-                } : (View)new AdaptiveGridPanelComponent
+                var unassignedPanel = new AdaptiveGridPanel
                 {
                     MinColumnWidth = minColumnWidth,
                     ColumnSpacing = columnSpacing
                 };
 
-                List<View> unassignedPanelChildren = VxPlatform.Current == Platform.Uwp ? (unassignedPanel as AdaptiveGridPanel).Children : (unassignedPanel as AdaptiveGridPanelComponent).Children;
+                List<View> unassignedPanelChildren = unassignedPanel.Children;
 
                 foreach (var t in ViewItemsGroup.UnassignedItems)
                 {
@@ -380,17 +376,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             return new Border
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Content = new TextBlock
                 {
                     Text = PowerPlannerResources.GetString("ClassGrades_UnassignedItemsHeader"),
                     FontSize = Theme.Current.SubtitleFontSize,
-                    Margin = new Thickness(12, 6, 6, 6),
+                    Margin = new Thickness(0, 6, 6, 6),
                     WrapText = false
                 },
-                Margin = new Thickness(includeMargin ? Theme.Current.PageMargin : 0, 18, includeMargin ? Theme.Current.PageMargin : 0, 3),
-                BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
-                BorderThickness = new Thickness(1)
+                Margin = new Thickness(includeMargin ? Theme.Current.PageMargin : 0, 18, includeMargin ? Theme.Current.PageMargin : 0, 3)
             };
         }
 
@@ -407,7 +400,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 return new Border
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Content = new LinearLayout
                     {
                         Orientation = Orientation.Horizontal,
@@ -417,7 +409,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             Text = Weight.Name,
                             FontSize = Theme.Current.SubtitleFontSize,
-                            Margin = new Thickness(12, 6, 6, 6),
+                            Margin = new Thickness(0, 6, 6, 6),
                             WrapText = false
                         }.LinearLayoutWeight(1),
 
@@ -431,9 +423,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         }
                     }
                     },
-                    Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0),
-                    BorderColor = Theme.Current.ForegroundColor.Opacity(0.1),
-                    BorderThickness = new Thickness(1)
+                    Margin = IncludeMargin ? new Thickness(Theme.Current.PageMargin, 12, Theme.Current.PageMargin, 0) : new Thickness(0, 12, 0, 0)
                 };
             }
         }
@@ -478,17 +468,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 SubscribeToCollection(Class.WeightCategories);
 
-                var gridPanel = VxPlatform.Current == Platform.Uwp ? (View)new AdaptiveGridPanel
+                var gridPanel = new AdaptiveGridPanel
                 {
                     MinColumnWidth = MinColumnWidth,
                     ColumnSpacing = ColumnSpacing
-                } : (View)new AdaptiveGridPanelComponent
-                {
-                    MinColumnWidth = VxPlatform.Current == Platform.iOS ? 50000 : MinColumnWidth, // iOS doesn't work with this component at this time
-                    ColumnSpacing = ColumnSpacing
                 };
 
-                List<View> gridPanelChildren = VxPlatform.Current == Platform.Uwp ? (gridPanel as AdaptiveGridPanel).Children : (gridPanel as AdaptiveGridPanelComponent).Children;
+                List<View> gridPanelChildren = gridPanel.Children;
 
                 foreach (var weight in Class.WeightCategories)
                 {

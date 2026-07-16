@@ -20,8 +20,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             // We normalize line breaks for both get and set, since for a while we weren't normalizing when setting,
             // meaning that there's still string values using \r out there and Android would be displaying them incorrectly.
             // Windows uses \r from the TextBox control, hence why we're changing them to \n
-            get { return StringTools.NormalizeLineBreaks(GetValue<string>(DetailsProperty, "")); }
-            set { SetValue(DetailsProperty, StringTools.NormalizeLineBreaks(value)); }
+            get { return GetValue<string>(DetailsProperty, "").ReplaceLineEndings(); }
+            set { SetValue(DetailsProperty, value.ReplaceLineEndings()); }
         }
 
         protected override void serialize(Dictionary<string, object> into)

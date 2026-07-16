@@ -1,5 +1,4 @@
-﻿using CarPlay;
-using Foundation;
+﻿using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,6 +23,12 @@ namespace Vx.iOS
         {
             Theme.Current = new VxiOSTheme();
             VxPlatform.Current = Platform.iOS;
+
+#if __MACCATALYST__
+            VxDeviceType.Current = DeviceType.Desktop;
+#else
+            VxDeviceType.Current = DeviceType.Phone;
+#endif
 
             NativeView.CreateNativeView = view =>
             {
@@ -81,6 +86,11 @@ namespace Vx.iOS
                 if (view is Vx.Views.ScrollView)
                 {
                     return new iOSScrollView();
+                }
+
+                if (view is Vx.Views.PagedViewModelPresenterView)
+                {
+                    return new iOSPagedViewModelPresenterView();
                 }
 
                 if (view is Vx.Views.FontIcon)
@@ -163,6 +173,11 @@ namespace Vx.iOS
                     return new iOSWrapGrid();
                 }
 
+                if (view is Vx.Views.AdaptiveGridPanel)
+                {
+                    return new iOSAdaptiveGridPanel();
+                }
+
                 if (view is Vx.Views.ZoomableImageView)
                 {
                     return new iOSZoomableImageView();
@@ -176,6 +191,11 @@ namespace Vx.iOS
                 if (view is Vx.Views.ProgressBar)
                 {
                     return new iOSProgressBar();
+                }
+
+                if (view is Vx.Views.TransparentContentMenuButton)
+                {
+                    return new iOSTransparentContentMenuButton();
                 }
 
 #if DEBUG
@@ -330,6 +350,9 @@ namespace Vx.iOS
                 case MaterialDesign.MaterialDesignIcons.Close:
                     return "xmark";
 
+                case MaterialDesign.MaterialDesignIcons.Bolt:
+                    return "bolt";
+
                 default:
                     return null;
             }
@@ -365,7 +388,15 @@ namespace Vx.iOS
                         }
                         else
                         {
-                            btn = new UIBarButtonItem { Title = command.Text };
+                            var systemImage = command.Glyph.GlyphToUIImage();
+                            if (systemImage != null)
+                            {
+                                btn = new UIBarButtonItem(systemImage, UIBarButtonItemStyle.Plain, null);
+                            }
+                            else
+                            {
+                                btn = new UIBarButtonItem { Title = command.Text };
+                            }
                         }
                     }
                     break;

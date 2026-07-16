@@ -1,18 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <TargetFramework>net10.0-ios</TargetFramework>
+	  <TargetFrameworks>net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 	  <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
 		<SatelliteResourceLanguages>en;ar;de;es;fr;it;pt</SatelliteResourceLanguages> <!--Need to be specified so trimming doesn't remove these languages-->
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
+  <ItemGroup>
+    <!--Info.plist files are supposed to have Build action of None -->
+    <None Include="Info.plist" />
+    <None Include="Info-Mac.plist" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+    <None Remove="Info.plist" />
+    <None Include="Info-Mac.plist" Link="Info.plist" />
+  </ItemGroup>
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+    <CodeSignEntitlements>Entitlements-Mac.plist</CodeSignEntitlements>
+    <MTouchLink>SdkOnly</MTouchLink>
+    <!-- The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
+         When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifer>.
+         The App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
+         either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
+    <!-- ex. <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <UseInterpreter>true</UseInterpreter>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <MtouchInterpreter>-all</MtouchInterpreter>
+  </PropertyGroup>
+  <!-- x86_64 Mac Catalyst interprets ALL assemblies. With the default '-all' (AOT
+       everything), the AOT-generated native->managed trampolines that UIKit uses to
+       call into ObjC-registered managed types jump to null (rip=0x0) on x86_64. The
+       crash walked from the AppDelegate (PowerPlanneriOS) to a UIWindow layout
+       callback (Vx.iOS) as each assembly was interpreted, showing the AOT trampoline
+       is broken for every ObjC-registered type. Rather than chase assemblies one at a
+       time, interpret everything on x64. arm64 and iOS device builds work fine on
+       '-all', so this override is scoped to maccatalyst-x64 only and must come AFTER
+       the Release group (last-wins). The interpreter still supports EF Core's dynamic
+       code generation. Trade-off: slower startup/execution, but only on x64. -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'maccatalyst-x64' and '$(Configuration)' == 'Release'">
+    <MtouchInterpreter>all</MtouchInterpreter>
   </PropertyGroup>
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <DefineConstants>BUILD_OS_WINDOWS</DefineConstants>
@@ -41,8 +73,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
-    <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" /> <!--Keep on 2.x, 3.x is about 10MB bigger!-->
+    <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.4" />
     <PackageReference Include="Xam.Plugins.Settings" Version="5.0.0-beta">
     </PackageReference>
   </ItemGroup>
@@ -113,21 +145,31 @@
   </ItemGroup>
 
   <!--For widget, in debug mode don't sign-->
-  <Target Name="BuildDebugXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug' And '$(OS)' != 'Windows_NT'">
+  <Target Name="BuildDebugXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug' And '$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' != 'maccatalyst'">
     <!-- Command to build the Xcode project -->
     <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphoneos -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
     <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphonesimulator -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
   </Target>
 
   <!--For widget, in release mode it should sign-->
-  <Target Name="BuildReleaseXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
+  <Target Name="BuildReleaseXcodeProject" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release' And '$(TargetPlatformIdentifier)' != 'maccatalyst'">
     <!-- Command to build the Xcode project -->
     <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphoneos -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp" />
     <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -sdk iphonesimulator -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp" />
   </Target>
+
+  <!--For Mac Catalyst widget, in debug mode don't sign-->
+  <Target Name="BuildDebugXcodeProjectMac" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug' And '$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO" />
+  </Target>
+
+  <!--For Mac Catalyst widget, in release mode it should sign-->
+  <Target Name="BuildReleaseXcodeProjectMac" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Release' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+    <Exec Command="xcodebuild -project $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/NativeApp.xcodeproj -scheme NativeApp -destination 'platform=macOS,variant=Mac Catalyst' -configuration $(Configuration) -derivedDataPath $(MSBuildProjectDirectory)/../PowerPlanneriOSWidget/DerivedData/NativeApp CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=&quot;Apple Distribution&quot; ARCHS='%24(ARCHS_STANDARD)' ONLY_ACTIVE_ARCH=NO" />
+  </Target>
   
-  <!--For widget-->
-  <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
+  <!--For iOS widget-->
+  <ItemGroup Condition="'$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' != 'maccatalyst'">
     <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
       <Name>NativeWidgetExtension</Name>
       <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/NativeApp/Build/Products/$(Configuration)-iphoneos</BuildOutput>
@@ -135,6 +177,13 @@
     </AdditionalAppExtensions>
   </ItemGroup>
 
-  <!--For widget-->
+  <!--For Mac Catalyst widget-->
+  <ItemGroup Condition="'$(OS)' != 'Windows_NT' And '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+    <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../PowerPlanneriOSWidget">
+      <Name>NativeWidgetExtension</Name>
+      <BuildOutput>DerivedData/NativeApp/Build/Products/$(Configuration)-maccatalyst</BuildOutput>
+    </AdditionalAppExtensions>
+  </ItemGroup>
+
   <Import Condition="'$(OS)' != 'Windows_NT'" Project="$(MSBuildThisFileDirectory)CompileSwift.targets" />
 </Project>

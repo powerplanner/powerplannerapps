@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !__MACCATALYST__
+using System;
 using Foundation;
 using UIKit;
 
@@ -56,3 +57,4 @@ namespace NewSingleViewTemplate {
 		}
 	}
 }
+#endif

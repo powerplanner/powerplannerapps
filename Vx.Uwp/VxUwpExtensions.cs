@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using InterfacesUWP;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Vx.Uwp
         {
             Theme.Current = new VxUwpTheme();
             VxPlatform.Current = Platform.Uwp;
+            VxDeviceType.Current = DeviceInfo.DeviceFamily == DeviceFamily.Mobile ? DeviceType.Phone : DeviceType.Desktop;
 
             NativeView.CreateNativeView = view =>
             {

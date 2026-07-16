@@ -44,9 +44,10 @@ namespace PowerPlannerAppDataLibrary.Components
 
             return new Border
             {
-                Margin = new Thickness(0,2,0,0),
+                Margin = new Thickness(0,3,0,0),
                 BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 Tapped = () => OnRequestViewGrade?.Invoke(),
+                CornerRadius = 6,
                 Content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,

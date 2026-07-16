@@ -26,7 +26,7 @@ namespace Vx
                 changeView(null);
             }
 
-            else if (oldView == null || oldView.GetType() != newView.GetType())
+            else if (oldView == null || oldView.GetType() != newView.GetType() || oldView.Id != newView.Id)
             {
                 changeView(newView);
             }

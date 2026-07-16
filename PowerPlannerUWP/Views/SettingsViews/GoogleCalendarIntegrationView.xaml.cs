@@ -37,7 +37,7 @@ namespace PowerPlannerUWP.Views.SettingsViews
         {
             this.InitializeComponent();
 
-            Title = PowerPlannerResources.GetString("Settings_MainPage_GoogleCalendarIntegrationItem/Title").ToUpper();
+            Title = PowerPlannerResources.GetString("Settings_MainPage_GoogleCalendarIntegrationItem.Title").ToUpper();
         }
 
         protected override void UpdateMaxWindowSizeForNonFullScreen()

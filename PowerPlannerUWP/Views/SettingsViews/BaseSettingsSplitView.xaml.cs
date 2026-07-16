@@ -64,16 +64,6 @@ namespace PowerPlannerUWP.Views.SettingsViews
                 };
             }
 
-            else if (ViewModel is CalendarIntegrationViewModel)
-            {
-                this.Title = LocalizedResources.GetString("Settings_CalendarIntegration_Title");
-                ListBoxItems.ItemsSource = new SettingsListItem[]
-                {
-                    new SettingsListItem(LocalizedResources.GetString("Settings_CalendarIntegration_ItemTasks_DisplayName"), typeof(CalendarIntegrationTasksViewModel)),
-                    new SettingsListItem(LocalizedResources.GetString("Settings_CalendarIntegration_ItemClasses_DisplayName"), typeof(CalendarIntegrationClassesViewModel))
-                };
-            }
-
             else
             {
                 throw new NotImplementedException();

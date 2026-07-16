@@ -87,26 +87,32 @@ namespace PowerPlannerUWP.Views
             switch (PivotMain.SelectedIndex)
             {
                 case 0:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Overview;
                     GoToHomeVisualState();
                     break;
 
                 case 1:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Details;
                     GoToDetailsVisualState();
                     break;
 
                 case 2:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Times;
                     GoToClassTimesVisualState();
                     break;
 
                 case 3:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Tasks;
                     GoToTasksVisualState();
                     break;
 
                 case 4:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Events;
                     GoToEventsVisualState();
                     break;
 
                 case 5:
+                    ViewModel.CurrentPage = ClassViewModel.ClassPages.Grades;
                     GoToGradesVisualState();
                     break;
             }

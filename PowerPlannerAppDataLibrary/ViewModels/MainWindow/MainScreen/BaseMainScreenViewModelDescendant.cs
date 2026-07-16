@@ -63,7 +63,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             {
                 var task = dataOperation();
 
-                navigateOperation();
+                navigateOperation?.Invoke();
 
                 DateTime start = DateTime.Now;
 

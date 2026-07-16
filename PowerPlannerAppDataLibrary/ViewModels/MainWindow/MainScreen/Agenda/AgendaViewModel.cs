@@ -85,6 +85,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new FrameLayout
                 {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
                     {
                         baseView,
@@ -102,6 +103,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new LinearLayout
                 {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
                     {
                         new Toolbar
@@ -127,6 +129,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new LinearLayout
                 {
+                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     VerticalAlignment = VerticalAlignment.Center,
                     Children =
                     {
@@ -150,6 +153,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
             return new ListView
             {
+                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Items = ItemsWithHeaders,
                 ItemTemplate = RenderItem,
                 Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))
@@ -171,7 +175,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                     FontSize = Theme.Current.SubtitleFontSize,
                     WrapText = false,
                     Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 3)
-                };
+                }.AllowDropTaskOrEventOnDate(header.DateToUseForNewItems);
             }
 
             else
@@ -415,6 +419,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         public void ShowItem(ViewItemTaskOrEvent item)
         {
             MainScreenViewModel.ShowItem(item);
+        }
+
+        private void OpenEditWithAi()
+        {
+            var semesterItems = SemesterItemsViewGroup.Load(MainScreenViewModel.CurrentLocalAccountId, MainScreenViewModel.CurrentSemester);
+            MainScreenViewModel.ShowPopup(new TasksOrEvents.AiEditWithAiViewModel(
+                MainScreenViewModel,
+                MainScreenViewModel.Classes,
+                MainScreenViewModel.CurrentSemester,
+                semesterItems,
+                DateOnly.FromDateTime(DateTime.Today)));
         }
     }
 

@@ -8,6 +8,7 @@ using Foundation;
 using UIKit;
 using BareMvvm.Core.ViewModels;
 using ToolsPortable;
+using InterfacesiOS.Views;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
@@ -25,6 +26,59 @@ namespace InterfacesiOS.ViewModelPresenters
             // they contain a View object which they manipulate, they aren't views themselves.
             // AddChildViewContainer wires up events so they propogate downwards correctly
             base.AddChildViewController(MyNavigationController);
+        }
+
+        public override void ViewSafeAreaInsetsDidChange()
+        {
+            base.ViewSafeAreaInsetsDidChange();
+
+            if (ViewModel != null)
+            {
+                UpdateNookInsets();
+            }
+        }
+
+        private void UpdateNookInsets()
+        {
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            // Use the WINDOW's safe-area insets rather than this view's. The view's insets depend on
+            // where it sits in the hierarchy (a view that doesn't reach the screen edge reports 0),
+            // whereas the window always reports the true device insets (notch, home indicator, etc.).
+            var insets = GetWindowSafeAreaInsets();
+            ViewModel.UpdateNookInsets(new Vx.Views.Thickness((float)insets.Left, (float)insets.Top, (float)insets.Right, (float)insets.Bottom));
+        }
+
+        private UIEdgeInsets GetWindowSafeAreaInsets()
+        {
+            var window = View?.Window ?? GetKeyWindow();
+            return window?.SafeAreaInsets ?? UIEdgeInsets.Zero;
+        }
+
+        private static UIWindow GetKeyWindow()
+        {
+            foreach (NSObject scene in UIApplication.SharedApplication.ConnectedScenes)
+            {
+                if (scene is UIWindowScene windowScene)
+                {
+                    var key = windowScene.Windows.FirstOrDefault(w => w.IsKeyWindow);
+                    if (key != null)
+                    {
+                        return key;
+                    }
+
+                    var first = windowScene.Windows.FirstOrDefault();
+                    if (first != null)
+                    {
+                        return first;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public override void ViewDidLoad()
@@ -113,7 +167,7 @@ namespace InterfacesiOS.ViewModelPresenters
                     _viewModel = value;
                     OnViewModelChanged(oldViewModel, _viewModel);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 #if DEBUG
                     if (System.Diagnostics.Debugger.IsAttached)
@@ -121,7 +175,7 @@ namespace InterfacesiOS.ViewModelPresenters
                         System.Diagnostics.Debugger.Break();
                     }
 #endif
-                    throw ex;
+                    throw;
                 }
             }
         }

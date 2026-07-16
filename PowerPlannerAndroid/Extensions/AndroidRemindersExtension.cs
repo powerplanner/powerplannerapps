@@ -369,6 +369,13 @@ namespace PowerPlannerAndroid.Extensions
             {
                 return;
             }
+            
+            // Don't create new notifications for past-due tasks. We keep them in itemsThatCouldHaveNotifs
+            // so that already-visible notifications aren't cancelled, but we won't spam new ones.
+            if (existing == null && item.Date.Date < DateTime.Now.Date)
+            {
+                return;
+            }
 
             const string EXTRA_UNIQUE_ID = "UniqueId";
             string extraUniqueId = (item.Name + ";" + c.Name).GetHashCode().ToString();

@@ -33,6 +33,8 @@ namespace Vx.Droid.DroidViews
         {
         }
 
+        private readonly List<ChildWrapper> _cachedChildren = new List<ChildWrapper>();
+
         private Vx.Views.Orientation _orientation;
         public Vx.Views.Orientation Orientation
         {
@@ -63,18 +65,22 @@ namespace Vx.Droid.DroidViews
             }
         }
 
+        private void PopulateCachedChildren()
+        {
+            _cachedChildren.Clear();
+            for (int i = 0; i < ChildCount; i++)
+            {
+                var child = GetChildAt(i);
+                if (child.Visibility != ViewStates.Gone)
+                {
+                    _cachedChildren.Add(new ChildWrapper(child, Orientation));
+                }
+            }
+        }
+
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            // MeasureOverride is supposed to report the SMALLEST possible size that will fit the content. If availableSize.Height is 700
-            // but content could fit in 200, then should return 200. This effectively means that the weighted heights are treated as
-            // auto. This ensures that for the ViewTask dialog, even though it uses a weighted height, if the content is smaller, the
-            // window will stay smaller. And I've matched this to the behavior of UWP grids, where when there's less content, the Star row
-            // definitions behave as Auto. If the area can't fit all of the content, the Auto columns get first priority.
-
-            // However this does NOT work for calendar grid when each square has an excess amount of items, since the earlier rows will
-            // report they need more space and the later rows will not get enough space...
-            // We could measure all weighted with infinite height, to see how little they need?
-            // Think I solved it below...
+            PopulateCachedChildren();
 
             var widthMode = MeasureSpec.GetMode(widthMeasureSpec);
             var heightMode = MeasureSpec.GetMode(heightMeasureSpec);
@@ -103,27 +109,20 @@ namespace Vx.Droid.DroidViews
 
             int consumed = 0;
             int maxOtherDimension = 0;
-            float totalWeight = GetTotalWeight();
+            float totalWeight = 0;
+            for (int i = 0; i < _cachedChildren.Count; i++)
+            {
+                totalWeight += _cachedChildren[i].Weight;
+            }
 
             bool autoHeightsForAll = (isVert ? heightMode == MeasureSpecMode.Unspecified : widthMode == MeasureSpecMode.Unspecified) || totalWeight == 0;
-
-            Action setMeasuredDimension = () =>
-            {
-                if (isVert)
-                {
-                    SetMeasuredDimension(widthMode == MeasureSpecMode.Exactly ? availableSize.Secondary : maxOtherDimension, heightMode == MeasureSpecMode.Exactly ? availableSize.Primary : consumed);
-                }
-                else
-                {
-                    SetMeasuredDimension(widthMode == MeasureSpecMode.Exactly ? availableSize.Primary : consumed, heightMode == MeasureSpecMode.Exactly ? availableSize.Secondary : maxOtherDimension);
-                }
-            };
 
             // StackPanel essentially
             if (autoHeightsForAll)
             {
-                foreach (var child in WrappedVisibleChildren)
+                for (int i = 0; i < _cachedChildren.Count; i++)
                 {
+                    var child = _cachedChildren[i];
                     child.Measure(int.MaxValue, availableSize.Secondary, secondaryMode);
 
                     consumed += child.MeasuredPrimaryAxis;
@@ -131,53 +130,74 @@ namespace Vx.Droid.DroidViews
                 }
 
                 // Re-measure children that need to expand their secondary dimension to the max dimension
-                foreach (var child in WrappedVisibleChildren)
+                for (int i = 0; i < _cachedChildren.Count; i++)
                 {
+                    var child = _cachedChildren[i];
                     if (child.MeasuredSecondaryAxis != maxOtherDimension)
                     {
                         child.Measure(child.MeasuredPrimaryAxis, maxOtherDimension, MeasureSpecMode.Exactly);
                     }
                 }
 
-                setMeasuredDimension();
+                SetMeasuredDimensionForOrientation(isVert, widthMode, heightMode, availableSize, consumed, maxOtherDimension);
                 return;
             }
 
             // We measure autos FIRST, since those get priority
-            foreach (var child in WrappedVisibleChildren.Where(i => i.Weight == 0))
+            for (int i = 0; i < _cachedChildren.Count; i++)
             {
-                child.Measure(Math.Max(0, availableSize.Primary - consumed), availableSize.Secondary, secondaryMode);
-
-                consumed += child.MeasuredPrimaryAxis;
-                maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
-            }
-
-            double weightedAvailable = Math.Max(availableSize.Primary - consumed, 0);
-
-            if (totalWeight > 0)
-            {
-                foreach (var child in WrappedVisibleChildren.Where(i => i.Weight != 0))
+                var child = _cachedChildren[i];
+                if (child.Weight == 0)
                 {
-                    var weight = child.Weight;
-                    var childConsumed = (int)((weight / totalWeight) * weightedAvailable);
-
-                    child.Measure(childConsumed, availableSize.Secondary, secondaryMode);
+                    child.Measure(Math.Max(0, availableSize.Primary - consumed), availableSize.Secondary, secondaryMode);
 
                     consumed += child.MeasuredPrimaryAxis;
                     maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
                 }
             }
 
-            // Re-measure children that need to expand their secondary dimension to the max dimension
-            foreach (var child in WrappedVisibleChildren)
+            double weightedAvailable = Math.Max(availableSize.Primary - consumed, 0);
+
+            if (totalWeight > 0)
             {
+                for (int i = 0; i < _cachedChildren.Count; i++)
+                {
+                    var child = _cachedChildren[i];
+                    if (child.Weight != 0)
+                    {
+                        var childConsumed = (int)((child.Weight / totalWeight) * weightedAvailable);
+
+                        child.Measure(childConsumed, availableSize.Secondary, secondaryMode);
+
+                        consumed += child.MeasuredPrimaryAxis;
+                        maxOtherDimension = Math.Max(maxOtherDimension, child.MeasuredSecondaryAxis);
+                    }
+                }
+            }
+
+            // Re-measure children that need to expand their secondary dimension to the max dimension
+            for (int i = 0; i < _cachedChildren.Count; i++)
+            {
+                var child = _cachedChildren[i];
                 if (child.MeasuredSecondaryAxis != maxOtherDimension)
                 {
                     child.Measure(child.MeasuredPrimaryAxis, maxOtherDimension, MeasureSpecMode.Exactly);
                 }
             }
 
-            setMeasuredDimension();
+            SetMeasuredDimensionForOrientation(isVert, widthMode, heightMode, availableSize, consumed, maxOtherDimension);
+        }
+
+        private void SetMeasuredDimensionForOrientation(bool isVert, MeasureSpecMode widthMode, MeasureSpecMode heightMode, SizeInt availableSize, int consumed, int maxOtherDimension)
+        {
+            if (isVert)
+            {
+                SetMeasuredDimension(widthMode == MeasureSpecMode.Exactly ? availableSize.Secondary : maxOtherDimension, heightMode == MeasureSpecMode.Exactly ? availableSize.Primary : consumed);
+            }
+            else
+            {
+                SetMeasuredDimension(widthMode == MeasureSpecMode.Exactly ? availableSize.Primary : consumed, heightMode == MeasureSpecMode.Exactly ? availableSize.Secondary : maxOtherDimension);
+            }
         }
 
         private enum Align
@@ -399,112 +419,45 @@ namespace Vx.Droid.DroidViews
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            float totalWeight = GetTotalWeight();
             bool isVert = Orientation == Vx.Views.Orientation.Vertical;
 
             var finalSize = new SizeInt(
                 isVert ? b - t : r - l,
                 isVert ? r - l : b - t);
 
-            //bool autoHeightsForAll = double.IsPositiveInfinity(isVert ? finalSize.Height : finalSize.Width) || totalWeight == 0;
+            float totalWeight = 0;
+            int consumedByAuto = 0;
+            for (int i = 0; i < _cachedChildren.Count; i++)
+            {
+                var child = _cachedChildren[i];
+                totalWeight += child.Weight;
+                if (child.Weight == 0)
+                {
+                    consumedByAuto += child.MeasuredPrimaryAxis;
+                }
+            }
 
-
+            int weightedAvailable = Math.Max(0, finalSize.Primary - consumedByAuto);
             int pos = 0;
 
-            //if (autoHeightsForAll)
-            //{
-            //    foreach (var child in Children.Where(i => i.Visibility == Visibility.Visible))
-            //    {
-            //        child.Arrange(new Rect(isVert ? new Point(0, pos) : new Point(pos, 0), isVert ? new Size(finalSize.Width, child.MeasuredHeight) : new Size(child.MeasuredWidth, finalSize.Height)));
-            //        pos += isVert ? child.MeasuredHeight : child.MeasuredWidth;
-            //    }
-            //}
-
-            //else
+            for (int i = 0; i < _cachedChildren.Count; i++)
             {
-                int consumedByAuto = WrappedVisibleChildren.Where(i => i.Weight == 0).Sum(i => i.MeasuredPrimaryAxis);
-                int weightedAvailable = Math.Max(0, finalSize.Primary - consumedByAuto);
+                var child = _cachedChildren[i];
 
-                foreach (var child in WrappedVisibleChildren)
+                int consumed;
+                if (child.Weight == 0)
                 {
-                    var weight = child.Weight;
-
-                    int consumed;
-                    if (weight == 0)
-                    {
-                        consumed = child.MeasuredPrimaryAxis;
-                    }
-                    else
-                    {
-                        consumed = (int)((weight / totalWeight) * weightedAvailable);
-                    }
-
-                    child.Layout(pos, new SizeInt(consumed, finalSize.Secondary));
-
-                    pos += consumed;
+                    consumed = child.MeasuredPrimaryAxis;
                 }
-            }
-        }
-
-        private float GetTotalWeight()
-        {
-            return Children.Where(i => i.Visibility != ViewStates.Gone).Sum(i => GetWeight(i));
-        }
-
-        private IEnumerable<Android.Views.View> Children
-        {
-            get
-            {
-                for (int i = 0; i < ChildCount; i++)
+                else
                 {
-                    yield return GetChildAt(i);
+                    consumed = (int)((child.Weight / totalWeight) * weightedAvailable);
                 }
+
+                child.Layout(pos, new SizeInt(consumed, finalSize.Secondary));
+
+                pos += consumed;
             }
-        }
-
-        private IEnumerable<ChildWrapper> WrappedVisibleChildren
-        {
-            get
-            {
-                for (int i = 0; i < ChildCount; i++)
-                {
-                    var child = GetChildAt(i);
-                    if (child.Visibility != ViewStates.Gone)
-                    {
-                        yield return new ChildWrapper(child, Orientation);
-                    }
-                }
-            }
-        }
-
-        private static HorizontalAlignment GetHorizontalAlignment(Android.Views.View view)
-        {
-            return (view.LayoutParameters as LayoutParams)?.HorizontalAlignment ?? HorizontalAlignment.Stretch;
-        }
-
-        private static VerticalAlignment GetVerticalAlignment(Android.Views.View view)
-        {
-            return (view.LayoutParameters as LayoutParams)?.VerticalAlignment ?? VerticalAlignment.Stretch;
-        }
-
-        private static float GetWeight(Android.Views.View view)
-        {
-            if (view.LayoutParameters is LayoutParams lp)
-            {
-                return lp.Weight;
-            }
-
-            return 0;
-        }
-
-        private static ThicknessInt GetMargin(Android.Views.View view)
-        {
-            if (view.LayoutParameters is LayoutParams lp)
-            {
-                return lp.Margin;
-            }
-
-            return new ThicknessInt();
         }
 
         private static int GetHeight(Android.Views.View view)

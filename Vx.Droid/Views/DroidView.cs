@@ -107,6 +107,29 @@ namespace Vx.Droid.Views
                 };
             }
 
+            else if (VxParentView is Vx.Views.AdaptiveGridPanel)
+            {
+                // GridLayout children need GridLayout.LayoutParams; specific column layout
+                // is handled by AdaptiveGridPanelLayout.UpdateChildLayoutParams after reconciliation.
+                var lp = new GridLayout.LayoutParams(
+                    GridLayout.InvokeSpec(GridLayout.Undefined, 1f),
+                    GridLayout.InvokeSpec(GridLayout.Undefined, 1f));
+                lp.Width = 0;
+                int left = AsPx(newView.Margin.Left);
+                int top = AsPx(newView.Margin.Top);
+                int right = AsPx(newView.Margin.Right);
+                int bottom = AsPx(newView.Margin.Bottom);
+                lp.SetMargins(left, top, right, bottom);
+                View.LayoutParameters = lp;
+
+                // Update stored original margins for existing children
+                // (OnViewAdded handles initial creation)
+                if (View.Parent is DroidAdaptiveGridPanel.AdaptiveGridPanelLayout gridPanel)
+                {
+                    gridPanel.UpdateChildOriginalMargins(View, left, top, right, bottom);
+                }
+            }
+
             else if (VxParentView is Vx.Views.FrameLayout parentFrameLayout || VxParentView is Vx.Views.Border || VxParentView == null) // Null when it's top-level view
             {
                 int width;
@@ -151,6 +174,13 @@ namespace Vx.Droid.Views
                     BottomMargin = AsPx(newView.Margin.Bottom),
                     Gravity = VxParentView is Vx.Views.TransparentContentButton ? GravityFlags.Center : default(GravityFlags)
                 };
+            }
+
+            View.SetMinimumWidth(ThemeHelper.AsPx(View.Context, newView.MinWidth));
+
+            if (View is Android.Widget.TextView textView)
+            {
+                textView.SetMaxWidth(float.IsPositiveInfinity(newView.MaxWidth) ? int.MaxValue : ThemeHelper.AsPx(View.Context, newView.MaxWidth));
             }
 
             View.Alpha = newView.Opacity;

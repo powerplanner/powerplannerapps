@@ -73,9 +73,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                 SelectedItem = i;
                             }
                         },
+                        HasClasses = AvailableItems.Contains(MainMenuSelections.Calendar),
                         IsOfflineOrHasSyncError = IsOffline || HasSyncErrors,
                         SyncState = SyncState,
-                        UploadImageProgress = UploadImageProgress
+                        UploadImageProgress = UploadImageProgress,
+                        NookInsets = NookInsets
                     } : null
                 }
             };
@@ -99,15 +101,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 MarkDirty();
             }
 
-            IsCompactMode = size.Width < 670;
+            // If portrait ratio, enter compact
+            if (size.Height > size.Width * 1.3)
+            {
+                IsCompactMode = true;
+            }
+            else
+            {
+                // Otherwise enter based on width
+                IsCompactMode = size.Width < (VxPlatform.Current == Platform.iOS ? 800 : 700);
+            }
         }
 
         private View RenderSyncProgressBar()
         {
-            return RenderSyncProgressBar(SyncState, UploadImageProgress, VerticalAlignment.Top);
+            return RenderSyncProgressBar(SyncState, UploadImageProgress, VerticalAlignment.Top, NookInsets);
         }
 
-        public static View RenderSyncProgressBar(SyncStates SyncState, double UploadImageProgress, VerticalAlignment verticalAlignment)
+        public static View RenderSyncProgressBar(SyncStates SyncState, double UploadImageProgress, VerticalAlignment verticalAlignment, Thickness nookInsets = new Thickness())
         {
             return new ProgressBar
             {
@@ -116,7 +127,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 IsIndeterminate = SyncState == SyncStates.Syncing ? true : false,
                 Value = SyncState == SyncStates.UploadingImages ? UploadImageProgress : 0,
                 MaxValue = 1,
-                VerticalAlignment = verticalAlignment
+                VerticalAlignment = verticalAlignment,
+                Margin = new Thickness(0, nookInsets.Top, 0, 0)
             };
         }
 
@@ -125,6 +137,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return IsOffline || HasSyncErrors ? new TransparentContentButton
             {
                 VerticalAlignment = verticalAlignment,
+                Margin = new Thickness(0, NookInsets.Top, 0, 0),
                 Content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
@@ -170,7 +183,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
-                Width = 215,
+                Width = 204,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Children =
                 {
@@ -184,10 +197,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             {
                                 Source = new UriImageSource
                                 {
-                                    UwpUri = "ms-appx:///Assets/Logo.png"
+                                    UwpUri = "ms-appx:///Assets/Logo.png",
+                                    IosBundleName = "PowerPlannerIcon"
                                 },
                                 Width = 58,
-                                Margin = new Thickness(0, 24, 0, 24),
+                                Margin = new Thickness(0, NookInsets.Top + 24, 0, 24),
                                 Tapped = SyncCurrentAccount
                             },
 
@@ -341,7 +355,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                             BackgroundColor = ColorBytesHelper.ToColor(c.Color),
                                             Width = 14,
                                             Height = 14,
-                                            VerticalAlignment = VerticalAlignment.Center
+                                            VerticalAlignment = VerticalAlignment.Center,
+                                            CornerRadius = 7
                                         },
                                         new TextBlock
                                         {
@@ -804,6 +819,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             { typeof(ClassesViewModel), MainMenuSelections.Classes },
             { typeof(YearsViewModel), MainMenuSelections.Years },
             { typeof(SettingsViewModel), MainMenuSelections.Settings },
+            { typeof(SettingsListViewModel), MainMenuSelections.Settings },
             { typeof(ClassWhatIfViewModel), MainMenuSelections.Classes }
         };
 
@@ -1169,7 +1185,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 }
                 else
                 {
-                    SetContent(new ClassViewModel(this, CurrentLocalAccountId, classId, DateTime.Today, CurrentSemester), preserveBack: allowGoingBack);
+                    SetContent(new ClassViewModel(this, CurrentLocalAccountId, classId, DateTime.Today, CurrentSemester)
+                    {
+                        InitialPage = ClassViewModel.LastSelectedPage
+                    }, preserveBack: allowGoingBack);
                 }
             }
             else
@@ -1196,8 +1215,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             // If already selected, do nothing
             if (value == SelectedItem)
-                return;
-            
+            {
+                if (value == MainMenuSelections.Classes && SelectedClass != null)
+                {
+                    // Clear selected class
+                    SelectClassWithinSemester(null);
+                }
+                return;   
+            }
+
             NavigationManager.MainMenuSelection = value;
 
             updateAvailableItems();
@@ -1236,7 +1262,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         break;
 
                     case MainMenuSelections.Settings:
-                        SetContent(new SettingsViewModel(this));
+                        if (PowerPlannerApp.ShowSettingsPagesAsPopups)
+                            SetContent(new SettingsListViewModel(this));
+                        else
+                            SetContent(new SettingsViewModel(this));
                         break;
                 }
             }
@@ -1750,13 +1779,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             if (PowerPlannerApp.ShowClassesAsPopups)
             {
-                OpenClassAsPopup(c, initialPage);
+                OpenClassAsPopup(c, initialPage ?? ClassViewModel.LastSelectedPage);
             }
             else
             {
                 Navigate(new ClassViewModel(this, CurrentLocalAccountId, c.Identifier, DateTime.Today, CurrentSemester)
                 {
-                    InitialPage = initialPage
+                    InitialPage = initialPage ?? ClassViewModel.LastSelectedPage
                 });
             }
         }
