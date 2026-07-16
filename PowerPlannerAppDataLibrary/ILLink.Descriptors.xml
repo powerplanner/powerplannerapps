@@ -19,5 +19,14 @@
     <!-- Other mapped entities that live directly under the DataLayer namespace -->
     <type fullname="PowerPlannerAppDataLibrary.DataLayer.ImageToUpload" preserve="all" />
     <type fullname="PowerPlannerAppDataLibrary.DataLayer.AccountDataStore/DataInfo" preserve="all" />
+
+    <!--
+      Types serialized with DataContractSerializer. DataContractSerializer is reflection-based
+      and not trimming-safe: trimming strips the member metadata, so members are silently skipped
+      on deserialization (and because DataContractSerializer bypasses field/property initializers,
+      they end up null instead of their default values).
+    -->
+    <type fullname="PowerPlannerAppDataLibrary.DataLayer.AccountDataItem" preserve="all" />
+    <type fullname="PowerPlannerAppDataLibrary.DataLayer.TileSettings.*" preserve="all" />
   </assembly>
 </linker>
