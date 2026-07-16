@@ -23,16 +23,19 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             Account = account;
         }
 
-        // DbSets for all entity types
-        public DbSet<DataItemClass> Classes { get; set; }
-        public DbSet<DataItemMegaItem> MegaItems { get; set; }
-        public DbSet<DataItemGrade> Grades { get; set; }
-        public DbSet<DataItemSchedule> Schedules { get; set; }
-        public DbSet<DataItemSemester> Semesters { get; set; }
-        public DbSet<DataItemWeightCategory> WeightCategories { get; set; }
-        public DbSet<DataItemYear> Years { get; set; }
-        public DbSet<ImageToUpload> ImagesToUpload { get; set; }
-        public DbSet<AccountDataStore.DataInfo> DataInfos { get; set; }
+        // DbSets for all entity types.
+        // These use Set<T>() rather than auto-properties because EF Core's automatic
+        // reflection-based initialization of DbSet properties is not trimming-safe and
+        // leaves the properties null when trimming is enabled.
+        public DbSet<DataItemClass> Classes => Set<DataItemClass>();
+        public DbSet<DataItemMegaItem> MegaItems => Set<DataItemMegaItem>();
+        public DbSet<DataItemGrade> Grades => Set<DataItemGrade>();
+        public DbSet<DataItemSchedule> Schedules => Set<DataItemSchedule>();
+        public DbSet<DataItemSemester> Semesters => Set<DataItemSemester>();
+        public DbSet<DataItemWeightCategory> WeightCategories => Set<DataItemWeightCategory>();
+        public DbSet<DataItemYear> Years => Set<DataItemYear>();
+        public DbSet<ImageToUpload> ImagesToUpload => Set<ImageToUpload>();
+        public DbSet<AccountDataStore.DataInfo> DataInfos => Set<AccountDataStore.DataInfo>();
 
         /// <summary>
         /// Value converter for DateTime properties.
