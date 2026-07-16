@@ -179,7 +179,7 @@ namespace InterfacesiOS.Views
         }
     }
 
-    public class BareUIStackViewItemsSourceAdapter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] V> : BareUIStackViewItemsSourceAdapter where V : UIView
+    public class BareUIStackViewItemsSourceAdapter<V> : BareUIStackViewItemsSourceAdapter where V : BareUIView, new()
     {
         public event EventHandler<V> OnViewCreated;
 
@@ -188,17 +188,11 @@ namespace InterfacesiOS.Views
 
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "V has DynamicallyAccessedMembers annotation.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "V has DynamicallyAccessedMembers annotation.")]
         protected override UIView CreateView(object item)
         {
-            V view = Activator.CreateInstance<V>();
+            V view = new V();
 
-            var prop = view.GetType().GetProperty("DataContext");
-            if (prop != null)
-            {
-                prop.SetValue(view, item);
-            }
+            view.DataContext = item;
 
             OnViewCreated?.Invoke(this, view);
 

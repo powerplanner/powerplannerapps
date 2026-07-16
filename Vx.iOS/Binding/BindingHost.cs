@@ -184,25 +184,6 @@ namespace InterfacesiOS.Binding
             }).Handler;
         }
 
-        private List<EventHandler<EventArgs>> _toggledViaHeaderHandlers = new List<EventHandler<EventArgs>>();
-        public void SetSwitchBinding(BareUISwitch switchView, string propertyPath)
-        {
-            var reg = SetSwitchBinding(switchView.Switch, propertyPath);
-
-            var handler = new EventHandler<EventArgs>(delegate
-            {
-                reg.SetSourceValue(switchView.Switch.On);
-            });
-
-            // In order to avoid disposing, we need to store the handler.
-            // Using a weak event handler causes it to get disposed.
-            // Using a strong event handler causes it to not get let go.
-            _toggledViaHeaderHandlers.Add(handler);
-
-            switchView.ToggledViaHeader += new WeakEventHandler(handler).Handler;
-
-        }
-
         public BindingRegistration SetSwitchBinding(UISwitch switchView, string propertyPath)
         {
             var reg = SetBinding<bool>(propertyPath, value =>

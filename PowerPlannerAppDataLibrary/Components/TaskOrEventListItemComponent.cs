@@ -93,18 +93,17 @@ namespace PowerPlannerAppDataLibrary.Components
             return answer;
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "ViewItemTaskOrEvent is a well-known type whose properties are preserved.")]
         private static string GetSubtitle(ViewItemTaskOrEvent Item, bool IncludeDate, bool IncludeClass)
         {
             string txt;
 
             if (IncludeDate)
             {
-                txt = Item.GetType().GetProperty("SubtitleDueDate").GetValue(Item) as string;
+                txt = Item.SubtitleDueDate;
             }
             else
             {
-                txt = Item.GetType().GetProperty("SubtitleDueTime").GetValue(Item) as string;
+                txt = Item.SubtitleDueTime;
             }
 
             if (!IncludeClass || Item.Class == null || Item.Class.IsNoClassClass)
