@@ -59,8 +59,34 @@ namespace PowerPlanneriOS.Controllers
                     base.Add(renderedView);
                     renderedView.StretchWidthAndHeight(base.View);
 
+                    ActivatePendingLaunchAction();
                     TryAskingForRatingIfNeeded();
                 }
+            }
+        }
+
+        private async void ActivatePendingLaunchAction()
+        {
+            AppDelegate._hasActivatedWindow = true;
+
+            var action = AppDelegate._handleLaunchAction;
+            AppDelegate._handleLaunchAction = null;
+            if (action == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var mainWindowViewModel = (ViewModel.GetAppWindow() as PowerPlannerAppDataLibrary.Windows.MainAppWindow)?.GetViewModel();
+                if (mainWindowViewModel != null)
+                {
+                    await action(mainWindowViewModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
             }
         }
 

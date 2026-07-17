@@ -133,6 +133,8 @@ namespace PowerPlanneriOS
             {
                 HandleShortcutAction(action.Value);
             }
+
+            completionHandler(action != null);
         }
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
