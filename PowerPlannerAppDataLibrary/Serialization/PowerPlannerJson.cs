@@ -35,7 +35,10 @@ namespace PowerPlannerAppDataLibrary.Serialization
         }
     }
 
-    [JsonSourceGenerationOptions(IncludeFields = true, PropertyNameCaseInsensitive = true)]
+    [JsonSourceGenerationOptions(
+        IncludeFields = true,
+        PropertyNameCaseInsensitive = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonSerializable(typeof(CreateAccountRequest), TypeInfoPropertyName = "CreateAccountRequestTypeInfo")]
     [JsonSerializable(typeof(CreateAccountResponse), TypeInfoPropertyName = "CreateAccountResponseTypeInfo")]
     [JsonSerializable(typeof(ForgotUsernameRequest), TypeInfoPropertyName = "ForgotUsernameRequestTypeInfo")]
