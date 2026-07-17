@@ -80,7 +80,7 @@ namespace PowerPlanneriOS.Controllers
                 BackgroundColor = UIColor.Clear
             };
             _labelYearAndWeekContainer.Add(_labelYearAndWeek);
-            BindingHost.SetBindings(new string[]
+            BindingHost.SetBindings<ScheduleViewModel>(new string[]
             {
                 nameof(ViewModel.DisplayStartDate),
                 nameof(ViewModel.DisplayEndDate),

@@ -15,7 +15,11 @@ namespace InterfacesiOS.Windows
 {
     public class NativeiOSAppWindow : INativeAppWindow
     {
-        public event EventHandler<CancelEventArgs> BackPressed;
+        public event EventHandler<CancelEventArgs> BackPressed
+        {
+            add { }
+            remove { }
+        }
 
         public UIWindow NativeWindow { get; private set; }
 

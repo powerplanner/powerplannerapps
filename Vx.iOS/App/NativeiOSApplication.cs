@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,7 +93,7 @@ namespace InterfacesiOS.App
             PortableLocalizedResources.CultureExtension = GetCultureInfo;
 
             // Initialize the app
-            PortableApp.InitializeAsync((PortableApp)Activator.CreateInstance(GetPortableAppType()));
+            PortableApp.InitializeAsync(CreatePortableApp());
 
             return true;
         }
@@ -131,12 +130,11 @@ namespace InterfacesiOS.App
             // Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
         }
 
-        public abstract Dictionary<Type, Type> GetViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<UIViewController>> GetViewModelToViewMappings();
 
-        public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<UIViewController>> GetGenericViewModelToViewMappings();
 
-        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
-        public abstract Type GetPortableAppType();
+        public abstract PortableApp CreatePortableApp();
 
         private CultureInfo GetCultureInfo()
         {

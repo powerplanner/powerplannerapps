@@ -55,7 +55,7 @@ namespace InterfacesiOS.Controllers
     }
 #endif
 
-    public abstract class BareMvvmUIViewController<T> : UIViewController where T : BaseViewModel
+    public abstract class BareMvvmUIViewController<T> : UIViewController, ViewModelPresenters.IViewModelHost where T : BaseViewModel
     {
         public BareMvvmUIViewController()
         {
@@ -85,6 +85,12 @@ namespace InterfacesiOS.Controllers
                 OnViewModelSetOverride();
                 TriggerViewModelLoaded(value);
             }
+        }
+
+        BaseViewModel ViewModelPresenters.IViewModelHost.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (T)value; }
         }
 
         public virtual void OnViewModelSetOverride()
@@ -321,14 +327,14 @@ namespace InterfacesiOS.Controllers
         /// <param name="textField"></param>
         /// <param name="textBindingPropertyName"></param>
         /// <param name="firstResponder">Whether this text box should get the first focus on the page, causing the keyboard to appear</param>
-        protected void AddTextField(UIStackView stackView, UITextField textField, string textBindingPropertyName = null, bool firstResponder = false)
+        protected void AddTextField(UIStackView stackView, UITextField textField, string textBindingPropertyName = null, Func<T, string> getValue = null, Action<T, string> setValue = null, bool firstResponder = false)
         {
             textField.TranslatesAutoresizingMaskIntoConstraints = false;
             textField.AdjustsFontSizeToFitWidth = true;
 
             if (textBindingPropertyName != null)
             {
-                BindingHost.SetTextFieldTextBinding(textField, textBindingPropertyName);
+                BindingHost.SetTextFieldTextBinding(textField, textBindingPropertyName, getValue, setValue);
             }
 
             stackView.AddArrangedSubview(textField);

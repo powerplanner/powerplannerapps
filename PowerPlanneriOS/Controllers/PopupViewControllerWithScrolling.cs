@@ -6,6 +6,7 @@ using System.Text;
 using Foundation;
 using UIKit;
 using BareMvvm.Core.ViewModels;
+using BareMvvm.Core;
 using InterfacesiOS.Views;
 using ToolsPortable;
 using PowerPlanneriOS.Helpers;
@@ -113,25 +114,25 @@ namespace PowerPlanneriOS.Controllers
         /// <param name="textField"></param>
         /// <param name="textBindingPropertyName"></param>
         /// <param name="firstResponder">Whether this text box should get the first focus on the page, causing the keyboard to appear</param>
-        protected void AddTextField(UITextField textField, string textBindingPropertyName = null, bool firstResponder = false)
+        protected void AddTextField(UITextField textField, string textBindingPropertyName = null, Func<T, string> getValue = null, Action<T, string> setValue = null, bool firstResponder = false)
         {
-            AddTextField(StackView, textField, textBindingPropertyName: textBindingPropertyName, firstResponder: firstResponder);
+            AddTextField(StackView, textField, textBindingPropertyName: textBindingPropertyName, getValue: getValue, setValue: setValue, firstResponder: firstResponder);
         }
 
-        protected void AddTextField(BareUITextField textField, string textFieldBindingPropertyName = null, bool firstResponder = false)
+        protected void AddTextField(BareUITextField textField, string textFieldBindingPropertyName = null, Func<T, TextField> getValue = null, bool firstResponder = false)
         {
             if (textFieldBindingPropertyName != null)
             {
-                BindingHost.SetTextFieldBinding(textField, textFieldBindingPropertyName);
+                BindingHost.SetTextFieldBinding(textField, textFieldBindingPropertyName, getValue);
             }
 
             // We don't bind again here, already did binding (note need to cast to UITextField so it calls the right method)
             AddTextField(textField as UITextField, firstResponder: firstResponder);
         }
 
-        protected void AddUnderVisiblity(UIView view, string propertyName)
+        protected void AddUnderVisiblity<TValue>(UIView view, string propertyName, Func<T, TValue> getValue)
         {
-            StackView.AddUnderVisiblity(view, BindingHost, propertyName);
+            StackView.AddUnderVisiblity(view, BindingHost, propertyName, getValue);
         }
 
         private UIView _loadingIndicatorView;

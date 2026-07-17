@@ -53,7 +53,7 @@ namespace PowerPlanneriOS.Controllers
                         Color = UIColor.White
                     };
                     progressRing.StartAnimating();
-                    viewCenterContainer.AddUnderVisiblity(progressRing, BindingHost, nameof(ViewModel.IsSyncing));
+                    viewCenterContainer.AddUnderVisiblity(progressRing, BindingHost, nameof(ViewModel.IsSyncing), (InitialSyncViewModel viewModel) => viewModel.IsSyncing);
 
                     var labelSyncing = new UILabel()
                     {
@@ -63,7 +63,7 @@ namespace PowerPlanneriOS.Controllers
                         Font = UIFont.PreferredTitle2,
                         TextAlignment = UITextAlignment.Center
                     };
-                    viewCenterContainer.AddUnderVisiblity(labelSyncing, BindingHost, nameof(ViewModel.IsSyncing));
+                    viewCenterContainer.AddUnderVisiblity(labelSyncing, BindingHost, nameof(ViewModel.IsSyncing), (InitialSyncViewModel viewModel) => viewModel.IsSyncing);
 
                     var labelSyncError = new UILabel()
                     {
@@ -73,12 +73,12 @@ namespace PowerPlanneriOS.Controllers
                         Font = UIFont.PreferredTitle2,
                         TextAlignment = UITextAlignment.Center
                     };
-                    viewCenterContainer.AddUnderVisiblity(labelSyncError, BindingHost, nameof(ViewModel.IsSyncing), invert: true);
+                    viewCenterContainer.AddUnderVisiblity(labelSyncError, BindingHost, nameof(ViewModel.IsSyncing), (InitialSyncViewModel viewModel) => viewModel.IsSyncing, invert: true);
 
                     var buttonTryAgain = PowerPlannerUIHelper.CreatePowerPlannerBlueButton("Try again");
                     buttonTryAgain.TranslatesAutoresizingMaskIntoConstraints = false;
                     buttonTryAgain.TouchUpInside += new WeakEventHandler<EventArgs>(delegate { ViewModel.TryAgain(); }).Handler;
-                    viewCenterContainer.AddUnderVisiblity(buttonTryAgain, BindingHost, nameof(ViewModel.IsSyncing), invert: true);
+                    viewCenterContainer.AddUnderVisiblity(buttonTryAgain, BindingHost, nameof(ViewModel.IsSyncing), (InitialSyncViewModel viewModel) => viewModel.IsSyncing, invert: true);
 
                     var labelErrorDescription = new UILabel()
                     {
@@ -88,8 +88,8 @@ namespace PowerPlanneriOS.Controllers
                         TextAlignment = UITextAlignment.Left,
                         Lines = 0
                     };
-                    BindingHost.SetLabelTextBinding(labelErrorDescription, nameof(ViewModel.Error));
-                    viewCenterContainer.AddUnderVisiblity(labelErrorDescription, BindingHost, nameof(ViewModel.Error));
+                    BindingHost.SetLabelTextBinding(labelErrorDescription, nameof(ViewModel.Error), (InitialSyncViewModel viewModel) => viewModel.Error);
+                    viewCenterContainer.AddUnderVisiblity(labelErrorDescription, BindingHost, nameof(ViewModel.Error), (InitialSyncViewModel viewModel) => viewModel.Error);
                 }
                 safeView.Add(viewCenterContainer);
                 viewCenterContainer.StretchWidth(safeView, left: 16, right: 16);
@@ -134,7 +134,7 @@ namespace PowerPlanneriOS.Controllers
                         "image", settingsImage,
                         "label", label));
                 }
-                BindingHost.SetVisibilityBinding(buttonSettings, nameof(ViewModel.IsSyncing), invert: true);
+                BindingHost.SetVisibilityBinding(buttonSettings, nameof(ViewModel.IsSyncing), (InitialSyncViewModel viewModel) => viewModel.IsSyncing, invert: true);
                 safeView.Add(buttonSettings);
 
                 buttonSettings.TouchUpInside += new WeakEventHandler(delegate { ViewModel.OpenSettings(asPopup: true); }).Handler;

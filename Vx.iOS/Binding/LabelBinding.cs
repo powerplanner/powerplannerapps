@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -13,17 +12,19 @@ namespace InterfacesiOS.Binding
 {
     public static class LabelBinding
     {
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "Binding source types are preserved by the application.")]
-        public static void BindText(UILabel label, INotifyPropertyChanged source, string propertyName)
+        public static void BindText<TSource>(UILabel label, TSource source, string propertyName, Func<TSource, string> getValue) where TSource : INotifyPropertyChanged
         {
             Action applyFromData = delegate
             {
-                label.Text = source.GetType().GetProperty(propertyName).GetValue(source) as string;
+                label.Text = getValue(source);
             };
 
             source.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>((s, e) =>
             {
-                applyFromData();
+                if (string.IsNullOrEmpty(e.PropertyName) || e.PropertyName == propertyName)
+                {
+                    applyFromData();
+                }
             }).Handler;
 
             applyFromData();

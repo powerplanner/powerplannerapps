@@ -41,7 +41,7 @@ namespace PowerPlanneriOS.Views
 
                 _circle = new CAShapeLayer();
                 _circle.Path = CGPath.EllipseFromRect(new CGRect(8, 3, CIRCLE_HEIGHT, CIRCLE_HEIGHT));
-                BindingHost.SetColorBinding(_circle, nameof(ViewItemClass.Color));
+                BindingHost.SetColorBinding(_circle, nameof(ViewItemClass.Color), (ViewItemClass item) => item.Color);
                 headerView.Layer.AddSublayer(_circle);
 
                 _labelName = new UILabel()
@@ -50,7 +50,7 @@ namespace PowerPlanneriOS.Views
                     Font = UIFont.PreferredTitle3,
                     Lines = 1
                 };
-                BindingHost.SetLabelTextBinding(_labelName, nameof(ViewItemClass.Name));
+                BindingHost.SetLabelTextBinding(_labelName, nameof(ViewItemClass.Name), (ViewItemClass item) => item.Name);
                 headerView.Add(_labelName);
                 _labelName.StretchWidthAndHeight(headerView, left:  CIRCLE_HEIGHT + 8 + 8, right: 8);
 

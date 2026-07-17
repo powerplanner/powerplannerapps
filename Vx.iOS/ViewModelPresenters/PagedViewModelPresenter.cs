@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -12,7 +11,7 @@ using InterfacesiOS.Views;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
-    public class PagedViewModelPresenter : UIViewController
+    public class PagedViewModelPresenter : UIViewController, IViewModelHost
     {
         protected UINavigationController MyNavigationController { get; private set; }
         public PagedViewModelPresenter()
@@ -180,6 +179,12 @@ namespace InterfacesiOS.ViewModelPresenters
             }
         }
 
+        BaseViewModel IViewModelHost.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (PagedViewModel)value; }
+        }
+
         private void ViewModel_OnPresenterNeedsToClearBackStack(object sender, EventArgs e)
         {
             foreach (var viewController in MyNavigationController.ViewControllers.Where(i => i != MyNavigationController.TopViewController))
@@ -264,7 +269,6 @@ namespace InterfacesiOS.ViewModelPresenters
             ViewModel_OnPresenterNeedsToClearAll(null, null);
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View controller types are preserved by the application via ViewModelToViewConverter mappings.")]
         private static void RecursivelyDestroyDescendants(UIViewController controller)
         {
             foreach (var c in controller.ChildViewControllers)
@@ -275,10 +279,9 @@ namespace InterfacesiOS.ViewModelPresenters
                 }
                 else
                 {
-                    var viewModelProp = c.GetType().GetProperty("ViewModel");
-                    if (viewModelProp != null)
+                    if (c is IViewModelHost viewModelHost)
                     {
-                        BaseViewModel viewModel = viewModelProp.GetValue(c) as BaseViewModel;
+                        BaseViewModel viewModel = viewModelHost.ViewModel;
                         if (viewModel != null)
                         {
                             viewModel.SetNativeView(null);
