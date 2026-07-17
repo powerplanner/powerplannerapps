@@ -7,7 +7,8 @@
 		<Platforms>x86;x64;arm64</Platforms>
 		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 		<DefaultLanguage>en-US</DefaultLanguage>
-		<PublishAot>false</PublishAot><!--AOT causes XAML binding errors I haven't solved yet-->
+		<!-- EF Core 10 emits legacy query interceptors that the .NET 10 compiler ignores (CS9270). -->
+		<PublishAot>false</PublishAot>
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
@@ -20,9 +21,6 @@
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-		<PublishReadyToRun>true</PublishReadyToRun>
-		<PublishTrimmed>true</PublishTrimmed>
-		<TrimMode>partial</TrimMode>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.ApplicationInsights"> <!--Keep on 2.x, 3.x is about 10MB bigger!-->
