@@ -160,9 +160,6 @@ namespace PowerPlannerUWP
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            StartupDiagnostics.SetStage("Unhandled XAML exception");
-            _ = StartupDiagnostics.RecordFailureAsync(e.Exception);
-
             string currPage = TelemetryExtension.Current?.LastPageName;
             try
             {
@@ -183,7 +180,6 @@ namespace PowerPlannerUWP
         {
             try
             {
-                StartupDiagnostics.SetStage($"Launch entered ({e.GetType().Name}); content={Window.Current.Content?.GetType().FullName ?? "null"}");
 #if DEBUG
                 //if (System.Diagnostics.Debugger.IsAttached)
                 //{
@@ -194,7 +190,6 @@ namespace PowerPlannerUWP
                 // Register background tasks
                 if (!_registeredBackgroundTasks)
                 {
-                    StartupDiagnostics.SetStage("Registering background tasks");
                     try
                     {
                         // Make sure none are registered (they should have already been unregistered)
@@ -227,9 +222,7 @@ namespace PowerPlannerUWP
 
                 // Wait for initialization to complete, to ensure we don't accidently add multiple windows
                 // Although right now we don't even do any async tasks, so this will be useless
-                StartupDiagnostics.SetStage("Waiting for PowerPlannerApp initialization");
                 await PowerPlannerApp.InitializeTask;
-                StartupDiagnostics.SetStage("PowerPlannerApp initialization complete");
 
                 MainAppWindow mainAppWindow;
 
@@ -239,12 +232,9 @@ namespace PowerPlannerUWP
                 if (mainAppWindow == null)
                 {
                     // This configures the view models, does NOT call Activate yet
-                    StartupDiagnostics.SetStage("Constructing native and portable windows");
                     nativeWindow = new NativeUwpAppWindow();
                     mainAppWindow = new MainAppWindow();
-                    StartupDiagnostics.SetStage("Registering main window");
                     await PowerPlannerApp.Current.RegisterWindowAsync(mainAppWindow, nativeWindow);
-                    StartupDiagnostics.SetStage("Main window registered");
 
                     if (PowerPlannerApp.Current.Windows.Count > 1)
                     {
@@ -254,7 +244,6 @@ namespace PowerPlannerUWP
 
                 if (e is LaunchActivatedEventArgs)
                 {
-                    StartupDiagnostics.SetStage("Handling launch arguments");
                     var launchEventArgs = e as LaunchActivatedEventArgs;
                     var launchContext = !object.Equals(launchEventArgs.TileId, "App") ? LaunchSurface.SecondaryTile : LaunchSurface.Normal;
                     if (launchContext == LaunchSurface.Normal)
@@ -289,16 +278,12 @@ namespace PowerPlannerUWP
 
                 if (mainAppWindow.GetViewModel().Content == null)
                 {
-                    StartupDiagnostics.SetStage("Handling normal launch activation");
                     await mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
-                    StartupDiagnostics.SetStage($"Normal launch activation complete; view model={mainAppWindow.GetViewModel().Content?.GetType().FullName ?? "null"}");
                 }
 
                 // Show the window content and activate the window
-                StartupDiagnostics.SetStage("Displaying native window content");
                 nativeWindow?.DisplayWindowContent();
                 Window.Current.Activate();
-                StartupDiagnostics.SetStage($"Native window activated; content={Window.Current.Content?.GetType().FullName ?? "null"}");
 
                 // Listen to window activation changes
                 Window.Current.Activated += Current_Activated;
@@ -311,14 +296,12 @@ namespace PowerPlannerUWP
 
                 // Display updates
                 AppUpdatedHandler.DisplayWhatsNew();
-                StartupDiagnostics.SetStage("Launch complete");
             }
 
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("OnLaunchedOrActivated failed: " + ex);
                 TelemetryExtension.Current?.TrackException(ex);
-                await StartupDiagnostics.ShowFailureAsync(ex);
 
                 if (System.Diagnostics.Debugger.IsAttached)
                 {

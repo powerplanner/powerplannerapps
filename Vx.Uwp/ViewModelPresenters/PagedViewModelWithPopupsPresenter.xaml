@@ -13,15 +13,13 @@
     <Grid>
 
         <local:PagedViewModelPresenter
-            x:Name="ThisPagedViewModelPresenter"
-            ViewModel="{x:Bind ViewModel, Mode=OneWay}"/>
+            x:Name="ThisPagedViewModelPresenter"/>
 
         <local:PopupsPresenter
-            ViewModel="{x:Bind ViewModel, Mode=OneWay}"/>
+            x:Name="ThisPopupsPresenter"/>
 
         <local:GenericViewModelPresenter
-            ViewModel="{x:Bind ViewModel.FullScreenPopup, Mode=OneWay}"
-            Visibility="{x:Bind ViewModel.FullScreenPopup, Mode=OneWay, Converter={StaticResource NotNullToVisibilityConverter}}"/>
+            x:Name="ThisFullScreenPopupPresenter"/>
 
     </Grid>
     

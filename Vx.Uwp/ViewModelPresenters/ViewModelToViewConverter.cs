@@ -67,14 +67,14 @@ namespace InterfacesUWP.ViewModelPresenters
                 view = createGenericView(value);
             }
 
-            else if (value is PagedViewModelWithPopups)
+            else if (value is PagedViewModelWithPopups pagedViewModelWithPopups)
             {
-                view = new PagedViewModelWithPopupsPresenter();
+                view = new PagedViewModelWithPopupsPresenter { ViewModel = pagedViewModelWithPopups };
             }
 
-            else if (value is PagedViewModel)
+            else if (value is PagedViewModel pagedViewModel)
             {
-                view = new PagedViewModelPresenter();
+                view = new PagedViewModelPresenter { ViewModel = pagedViewModel };
             }
 
             else

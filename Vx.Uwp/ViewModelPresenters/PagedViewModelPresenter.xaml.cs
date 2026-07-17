@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using BareMvvm.Core.Binding;
 using BareMvvm.Core.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -22,9 +21,9 @@ namespace InterfacesUWP.ViewModelPresenters
 {
     public sealed partial class PagedViewModelPresenter : UserControl
     {
-        private BindingHost _viewModelBinding = new BindingHost();
         private ViewModelToViewConverter _viewModelToViewConverter = new ViewModelToViewConverter();
-        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "The binding uses the statically known BaseViewModel.Content property.")]
+        private PagedViewModel _subscribedViewModel;
+
         public PagedViewModelPresenter()
         {
             this.InitializeComponent();
@@ -34,22 +33,53 @@ namespace InterfacesUWP.ViewModelPresenters
 
             this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             this.VerticalContentAlignment = VerticalAlignment.Stretch;
-
-            _viewModelBinding = new BindingHost();
-            _viewModelBinding.SetBinding<BaseViewModel>(nameof(ViewModel.Content), (content) =>
-            {
-                this.Content = _viewModelToViewConverter.Convert(content, typeof(UIElement), null, null) as UIElement;
-            });
         }
 
         public PagedViewModel ViewModel
         {
             get { return (PagedViewModel)GetValue(ViewModelProperty); }
-            set { _viewModelBinding.DataContext = value; SetValue(ViewModelProperty, value); }
+            set { SetValue(ViewModelProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PagedViewModel), typeof(PagedViewModelPresenter), new PropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(PagedViewModel), typeof(PagedViewModelPresenter), new PropertyMetadata(null, OnViewModelChanged));
+
+        private static void OnViewModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as PagedViewModelPresenter).OnViewModelChanged(e.OldValue as PagedViewModel, e.NewValue as PagedViewModel);
+        }
+
+        private void OnViewModelChanged(PagedViewModel oldViewModel, PagedViewModel newViewModel)
+        {
+            if (oldViewModel != null)
+            {
+                oldViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            }
+
+            _subscribedViewModel = newViewModel;
+
+            if (newViewModel != null)
+            {
+                newViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            }
+
+            UpdateContent();
+        }
+
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PagedViewModel.Content))
+            {
+                UpdateContent();
+            }
+        }
+
+        private void UpdateContent()
+        {
+            Content = _subscribedViewModel?.Content == null
+                ? null
+                : _viewModelToViewConverter.Convert(_subscribedViewModel.Content, typeof(UIElement), null, null) as UIElement;
+        }
     }
 }
