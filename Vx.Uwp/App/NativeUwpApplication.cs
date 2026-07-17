@@ -22,7 +22,6 @@ namespace InterfacesUWP.App
     {
         public static CultureInfo OriginalCultureInfo => CultureOverride.OriginalCultureInfo;
 
-        [UnconditionalSuppressMessage("Trimming", "IL2072", Justification = "View mappings are supplied as typeof expressions by the application; Dictionary values cannot carry DynamicallyAccessedMembers annotations.")]
         public NativeUwpApplication()
         {
             // Capture the user's regional format culture before any override is applied.
@@ -107,9 +106,9 @@ namespace InterfacesUWP.App
 
         protected abstract Task OnLaunchedOrActivated(IActivatedEventArgs args);
 
-        public abstract Dictionary<Type, Type> GetViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<object, object>> GetViewModelToViewMappings();
 
-        public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<object, object>> GetGenericViewModelToViewMappings();
 
         [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public abstract Type GetPortableAppType();

@@ -98,47 +98,47 @@ namespace PowerPlannerUWP
             return typeof(PowerPlannerUwpApp);
         }
 
-        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        public override Dictionary<Type, Func<object, object>> GetGenericViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>
+            return new Dictionary<Type, Func<object, object>>
             {
-                { typeof(YearsViewModel), typeof(ComponentView) }, // Don't show Years as a popup on Windows
-                { typeof(ClassWhatIfViewModel), typeof(ComponentView) }, // Don't show What If as a popup on Windows
-                { typeof(ShowImagesViewModel), typeof(ComponentView) }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
-                { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
-                { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
+                { typeof(YearsViewModel), viewModel => new ComponentView { ViewModel = (YearsViewModel)viewModel } }, // Don't show Years as a popup on Windows
+                { typeof(ClassWhatIfViewModel), viewModel => new ComponentView { ViewModel = (ClassWhatIfViewModel)viewModel } }, // Don't show What If as a popup on Windows
+                { typeof(ShowImagesViewModel), viewModel => new ComponentView { ViewModel = (ShowImagesViewModel)viewModel } }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
+                { typeof(PopupComponentViewModel), viewModel => new PopupComponentView { ViewModel = (PopupComponentViewModel)viewModel } },
+                { typeof(ComponentViewModel), viewModel => new ComponentView { ViewModel = (ComponentViewModel)viewModel } } // Popup must be first since Popup is a subclass
             };
         }
 
-        public override Dictionary<Type, Type> GetViewModelToViewMappings()
+        public override Dictionary<Type, Func<object, object>> GetViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>()
+            return new Dictionary<Type, Func<object, object>>()
             {
                 // Main views
-                { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(AgendaViewModel), typeof(AgendaView) },
-                { typeof(CalendarViewModel), typeof(ComponentView) },
-                { typeof(ClassViewModel), typeof(ClassView) },
-                { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
-                { typeof(LoginViewModel), typeof(LoginView) },
-                { typeof(DayViewModel), typeof(MainContentDayView) },
-                { typeof(MainScreenViewModel), typeof(MainScreenView) },
-                { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
-                { typeof(PromoOtherPlatformsViewModel), typeof(PromoOtherPlatformsView) },
-                { typeof(QuickAddViewModel), typeof(QuickAddView) },
-                { typeof(ScheduleViewModel), typeof(ScheduleView) },
-                { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
-                { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(WelcomeViewModel), typeof(WelcomeView) },
+                { typeof(InitialSyncViewModel), viewModel => new InitialSyncView { ViewModel = (InitialSyncViewModel)viewModel } },
+                { typeof(AgendaViewModel), viewModel => new AgendaView { ViewModel = (AgendaViewModel)viewModel } },
+                { typeof(CalendarViewModel), viewModel => new ComponentView { ViewModel = (CalendarViewModel)viewModel } },
+                { typeof(ClassViewModel), viewModel => new ClassView { ViewModel = (ClassViewModel)viewModel } },
+                { typeof(EditClassDetailsViewModel), viewModel => new EditClassDetailsView { ViewModel = (EditClassDetailsViewModel)viewModel } },
+                { typeof(LoginViewModel), viewModel => new LoginView { ViewModel = (LoginViewModel)viewModel } },
+                { typeof(DayViewModel), viewModel => new MainContentDayView { ViewModel = (DayViewModel)viewModel } },
+                { typeof(MainScreenViewModel), viewModel => new MainScreenView { ViewModel = (MainScreenViewModel)viewModel } },
+                { typeof(PremiumVersionViewModel), viewModel => new PremiumVersionView { ViewModel = (PremiumVersionViewModel)viewModel } },
+                { typeof(PromoOtherPlatformsViewModel), viewModel => new PromoOtherPlatformsView { ViewModel = (PromoOtherPlatformsViewModel)viewModel } },
+                { typeof(QuickAddViewModel), viewModel => new QuickAddView { ViewModel = (QuickAddViewModel)viewModel } },
+                { typeof(ScheduleViewModel), viewModel => new ScheduleView { ViewModel = (ScheduleViewModel)viewModel } },
+                { typeof(ExportSchedulePopupViewModel), viewModel => new ExportSchedulePopupView { ViewModel = (ExportSchedulePopupViewModel)viewModel } },
+                { typeof(SyncErrorsViewModel), viewModel => new SyncErrorsView { ViewModel = (SyncErrorsViewModel)viewModel } },
+                { typeof(WelcomeViewModel), viewModel => new WelcomeView { ViewModel = (WelcomeViewModel)viewModel } },
 
                 // Settings views
-                { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },
-                { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
-                { typeof(ClassTileViewModel), typeof(ClassTileView) },
-                { typeof(MainTileViewModel), typeof(MainTileView) },
-                { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
-                { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
-                { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) }
+                { typeof(TileSettingsViewModel), viewModel => new BaseSettingsSplitView { ViewModel = (TileSettingsViewModel)viewModel } },
+                { typeof(ClassTilesViewModel), viewModel => new ClassTilesView { ViewModel = (ClassTilesViewModel)viewModel } },
+                { typeof(ClassTileViewModel), viewModel => new ClassTileView { ViewModel = (ClassTileViewModel)viewModel } },
+                { typeof(MainTileViewModel), viewModel => new MainTileView { ViewModel = (MainTileViewModel)viewModel } },
+                { typeof(QuickAddTileViewModel), viewModel => new QuickAddTileView { ViewModel = (QuickAddTileViewModel)viewModel } },
+                { typeof(ScheduleTileViewModel), viewModel => new ScheduleTileView { ViewModel = (ScheduleTileViewModel)viewModel } },
+                { typeof(GoogleCalendarIntegrationViewModel), viewModel => new GoogleCalendarIntegrationView { ViewModel = (GoogleCalendarIntegrationViewModel)viewModel } }
             };
         }
 
@@ -160,6 +160,9 @@ namespace PowerPlannerUWP
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
+            StartupDiagnostics.SetStage("Unhandled XAML exception");
+            _ = StartupDiagnostics.RecordFailureAsync(e.Exception);
+
             string currPage = TelemetryExtension.Current?.LastPageName;
             try
             {
@@ -180,6 +183,7 @@ namespace PowerPlannerUWP
         {
             try
             {
+                StartupDiagnostics.SetStage($"Launch entered ({e.GetType().Name}); content={Window.Current.Content?.GetType().FullName ?? "null"}");
 #if DEBUG
                 //if (System.Diagnostics.Debugger.IsAttached)
                 //{
@@ -190,6 +194,7 @@ namespace PowerPlannerUWP
                 // Register background tasks
                 if (!_registeredBackgroundTasks)
                 {
+                    StartupDiagnostics.SetStage("Registering background tasks");
                     try
                     {
                         // Make sure none are registered (they should have already been unregistered)
@@ -222,7 +227,9 @@ namespace PowerPlannerUWP
 
                 // Wait for initialization to complete, to ensure we don't accidently add multiple windows
                 // Although right now we don't even do any async tasks, so this will be useless
+                StartupDiagnostics.SetStage("Waiting for PowerPlannerApp initialization");
                 await PowerPlannerApp.InitializeTask;
+                StartupDiagnostics.SetStage("PowerPlannerApp initialization complete");
 
                 MainAppWindow mainAppWindow;
 
@@ -232,9 +239,12 @@ namespace PowerPlannerUWP
                 if (mainAppWindow == null)
                 {
                     // This configures the view models, does NOT call Activate yet
+                    StartupDiagnostics.SetStage("Constructing native and portable windows");
                     nativeWindow = new NativeUwpAppWindow();
                     mainAppWindow = new MainAppWindow();
+                    StartupDiagnostics.SetStage("Registering main window");
                     await PowerPlannerApp.Current.RegisterWindowAsync(mainAppWindow, nativeWindow);
+                    StartupDiagnostics.SetStage("Main window registered");
 
                     if (PowerPlannerApp.Current.Windows.Count > 1)
                     {
@@ -244,6 +254,7 @@ namespace PowerPlannerUWP
 
                 if (e is LaunchActivatedEventArgs)
                 {
+                    StartupDiagnostics.SetStage("Handling launch arguments");
                     var launchEventArgs = e as LaunchActivatedEventArgs;
                     var launchContext = !object.Equals(launchEventArgs.TileId, "App") ? LaunchSurface.SecondaryTile : LaunchSurface.Normal;
                     if (launchContext == LaunchSurface.Normal)
@@ -278,12 +289,16 @@ namespace PowerPlannerUWP
 
                 if (mainAppWindow.GetViewModel().Content == null)
                 {
+                    StartupDiagnostics.SetStage("Handling normal launch activation");
                     await mainAppWindow.GetViewModel().HandleNormalLaunchActivation();
+                    StartupDiagnostics.SetStage($"Normal launch activation complete; view model={mainAppWindow.GetViewModel().Content?.GetType().FullName ?? "null"}");
                 }
 
                 // Show the window content and activate the window
+                StartupDiagnostics.SetStage("Displaying native window content");
                 nativeWindow?.DisplayWindowContent();
                 Window.Current.Activate();
+                StartupDiagnostics.SetStage($"Native window activated; content={Window.Current.Content?.GetType().FullName ?? "null"}");
 
                 // Listen to window activation changes
                 Window.Current.Activated += Current_Activated;
@@ -296,12 +311,14 @@ namespace PowerPlannerUWP
 
                 // Display updates
                 AppUpdatedHandler.DisplayWhatsNew();
+                StartupDiagnostics.SetStage("Launch complete");
             }
 
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("OnLaunchedOrActivated failed: " + ex);
                 TelemetryExtension.Current?.TrackException(ex);
+                await StartupDiagnostics.ShowFailureAsync(ex);
 
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
