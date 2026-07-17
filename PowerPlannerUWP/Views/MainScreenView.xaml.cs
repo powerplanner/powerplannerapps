@@ -66,7 +66,7 @@ namespace PowerPlannerUWP.Views
                         {
                             using (await Locks.LockDataForReadAsync())
                             {
-                                return dataStore.TableMegaItems.Count() > 30 && dataStore.TableMegaItems.Any(i => i.DateCreated < DateTime.Today.AddDays(-60));
+                                return dataStore.HasManyOldMegaItems();
                             }
                         }))
                         {

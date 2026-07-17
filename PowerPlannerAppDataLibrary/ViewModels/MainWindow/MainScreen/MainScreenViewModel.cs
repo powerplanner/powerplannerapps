@@ -915,7 +915,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             using (await Locks.LockDataForReadAsync())
             {
-                return dataStore.TableSemesters.Count(i => i.Identifier == semesterId) > 0;
+                return dataStore.SemesterExists(semesterId);
             }
         }
 

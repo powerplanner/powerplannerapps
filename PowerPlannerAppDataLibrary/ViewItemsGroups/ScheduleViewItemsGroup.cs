@@ -115,20 +115,20 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             using (await Locks.LockDataForReadAsync("ScheduleViewItemsGroup.LoadBlocking"))
             {
                 var timeTracker = TimeTracker.Start();
-                dataSemester = dataStore.TableSemesters.FirstOrDefault(i => i.Identifier == SemesterId);
+                dataSemester = dataStore.GetSemester(SemesterId);
 
                 if (dataSemester == null)
                     throw new SemesterNotFoundException();
 
-                dataClasses = dataStore.TableClasses.Where(i => i.UpperIdentifier == SemesterId).ToArray();
+                dataClasses = dataStore.GetClassesUnderSemester(SemesterId);
 
                 Guid[] classIdentifiers = dataClasses.Select(i => i.Identifier).ToArray();
 
-                dataSchedules = dataStore.TableSchedules.Where(i => classIdentifiers.Contains(i.UpperIdentifier)).ToArray();
+                dataSchedules = dataStore.GetSchedulesUnderClasses(classIdentifiers);
 
                 if (_includeWeightCategories)
                 {
-                    dataWeights = dataStore.TableWeightCategories.Where(i => classIdentifiers.Contains(i.UpperIdentifier)).ToArray();
+                    dataWeights = dataStore.GetWeightCategoriesUnderClasses(classIdentifiers);
                 }
                 timeTracker.End(3, "ScheduleViewItemsGroup.LoadBlocking loading items from database");
 

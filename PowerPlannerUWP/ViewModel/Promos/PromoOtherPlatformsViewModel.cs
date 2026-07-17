@@ -48,7 +48,7 @@ namespace PowerPlannerUWP.ViewModel.Promos
                 bool hasContent;
                 using (await Locks.LockDataForReadAsync())
                 {
-                    hasContent = dataStore.TableClasses.Count() > 1;
+                    hasContent = dataStore.GetClassCount() > 1;
                 }
 
                 if (hasContent)

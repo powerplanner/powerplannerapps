@@ -329,9 +329,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                         return null;
                     }
 
-                    return dataStore.TableMegaItems.FirstOrDefault(i =>
-                        i.MegaItemType == PowerPlannerSending.MegaItemType.Holiday
-                        && i.Identifier == holidayId);
+                    return dataStore.GetHoliday(holidayId);
                 }
             });
 

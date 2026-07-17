@@ -77,15 +77,13 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
             // Need to lock the whole thing so that if something is added while we're constructing, it'll be added after we've constructed
             using (await Locks.LockDataForReadAsync("YearsViewItemsGroup.LoadBlocking"))
             {
-                dataYears = dataStore.TableYears.ToArray();
-                dataSemesters = dataStore.TableSemesters.ToArray();
-                dataClasses = dataStore.TableClasses.ToArray();
-                dataSchedules = dataStore.TableSchedules.ToArray();
-                dataWeightCategories = dataStore.TableWeightCategories.ToArray();
-                dataGrades = dataStore.TableGrades.ToArray();
-                dataMegaItems = dataStore.TableMegaItems.Where(i =>
-                    (i.MegaItemType == PowerPlannerSending.MegaItemType.Homework || i.MegaItemType == PowerPlannerSending.MegaItemType.Exam)
-                    && i.WeightCategoryIdentifier != PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED).ToArray();
+                dataYears = dataStore.GetYears();
+                dataSemesters = dataStore.GetSemesters();
+                dataClasses = dataStore.GetClasses();
+                dataSchedules = dataStore.GetSchedules();
+                dataWeightCategories = dataStore.GetWeightCategories();
+                dataGrades = dataStore.GetGrades();
+                dataMegaItems = dataStore.GetGradedMegaItems();
 
                 var school = School ?? new ViewItemSchool(CreateYear);
 

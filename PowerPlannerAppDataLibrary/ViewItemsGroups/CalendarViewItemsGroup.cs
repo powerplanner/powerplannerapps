@@ -149,7 +149,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 Guid[] classIdentifiers = Semester.Classes.Select(i => i.Identifier).ToArray();
 
-                DataItemMegaItem[] dataItems = dataStore.TableMegaItems.Where(ShouldIncludeItemFunction(classIdentifiers, notLoadedStart, notLoadedEnd)).ToArray();
+                DataItemMegaItem[] dataItems = dataStore.GetCalendarItems(classIdentifiers, notLoadedStart, notLoadedEnd);
 
                 // We need to dispatch to UI thread to actually change the collection
                 try

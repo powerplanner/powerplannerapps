@@ -251,7 +251,7 @@ namespace PowerPlannerUWP.TileHelpers
             using (await Locks.LockDataForReadAsync())
             {
                 // First we need to obtain the semester id
-                var c = data.TableClasses.FirstOrDefault(i => i.Identifier == classId);
+                var c = data.GetClass(classId);
 
                 if (c == null)
                     return null;

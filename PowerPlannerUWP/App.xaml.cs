@@ -298,7 +298,13 @@ namespace PowerPlannerUWP
 
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("OnLaunchedOrActivated failed: " + ex);
                 TelemetryExtension.Current?.TrackException(ex);
+
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
             }
         }
 

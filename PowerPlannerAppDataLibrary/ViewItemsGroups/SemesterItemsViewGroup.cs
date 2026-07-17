@@ -101,7 +101,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 Guid semesterIdentifier = Semester.Identifier;
                 Guid[] classIdentifiers = Semester.Classes.Select(i => i.Identifier).ToArray();
 
-                dataItems = dataStore.TableMegaItems.Where(ShouldIncludeItemFunction(semesterIdentifier, classIdentifiers)).ToArray();
+                dataItems = dataStore.GetSemesterItems(semesterIdentifier, classIdentifiers);
             }
 
             await Dispatcher.RunAsync(delegate

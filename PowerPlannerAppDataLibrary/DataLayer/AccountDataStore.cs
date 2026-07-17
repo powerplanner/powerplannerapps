@@ -16,7 +16,6 @@ using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using Newtonsoft.Json;
-using System.Linq.Expressions;
 using System.Reflection;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
@@ -268,46 +267,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
     /// </summary>
     public class AccountDataStore
     {
-        public class AccountApplier<T> : IEnumerable<T> where T : BaseDataItem
-        {
-            private AccountDataItem _account;
-            private IQueryable<T> _queryable;
-
-            public AccountApplier(AccountDataItem account, IQueryable<T> queryable)
-            {
-                _account = account;
-                _queryable = queryable;
-            }
-
-            public IEnumerator<T> GetEnumerator()
-            {
-                return _queryable.AsEnumerable().Select(i => ApplyAccount(i)).GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-
-            private T ApplyAccount(T item)
-            {
-                if (item != null)
-                {
-                    item.Account = _account;
-                }
-                return item;
-            }
-
-            public int Count() { return _queryable.Count(); }
-            public int Count(Expression<Func<T, bool>> predExpr) { return _queryable.Count(predExpr); }
-            public T ElementAt(int index) { return ApplyAccount(_queryable.AsEnumerable().ElementAt(index)); }
-            public T First() { return ApplyAccount(_queryable.First()); }
-            public T First(Expression<Func<T, bool>> predExpr) { return ApplyAccount(_queryable.First(predExpr)); }
-            public T FirstOrDefault() { return ApplyAccount(_queryable.FirstOrDefault()); }
-            public T FirstOrDefault(Expression<Func<T, bool>> predExpr) { return ApplyAccount(_queryable.FirstOrDefault(predExpr)); }
-            public AccountApplier<T> Where(Expression<Func<T, bool>> predExpr) { return new AccountApplier<T>(_account, _queryable.Where(predExpr)); }
-        }
-
         public AccountDataItem Account { get; private set; }
 
         private ChangedItems _loadedChangedItems;
@@ -985,7 +944,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             if (!homeworkTableExists)
                 return;
 
-            var classes = TableClasses.ToArray();
+            var classes = _db.Classes.ToArray();
 
             // Read all homework items using raw SQL and insert as MegaItems
             using (var cmd = connection.CreateCommand())
@@ -1140,81 +1099,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 _db = null;
             }
-        }
-
-        public IQueryable<ImageToUpload> TableImagesToUpload
-        {
-            get { return _db.ImagesToUpload; }
-        }
-
-        public AccountApplier<DataItemClass> TableClasses
-        {
-            get { return new AccountApplier<DataItemClass>(Account, _db.Classes); }
-        }
-
-        public AccountApplier<DataItemMegaItem> TableMegaItems
-        {
-            get { return new AccountApplier<DataItemMegaItem>(Account, _db.MegaItems); }
-        }
-
-        public AccountApplier<DataItemGrade> TableGrades
-        {
-            get { return new AccountApplier<DataItemGrade>(Account, _db.Grades); }
-        }
-
-        public AccountApplier<DataItemSchedule> TableSchedules
-        {
-            get { return new AccountApplier<DataItemSchedule>(Account, _db.Schedules); }
-        }
-
-        public AccountApplier<DataItemSemester> TableSemesters
-        {
-            get { return new AccountApplier<DataItemSemester>(Account, _db.Semesters); }
-        }
-
-        public AccountApplier<DataItemWeightCategory> TableWeightCategories
-        {
-            get { return new AccountApplier<DataItemWeightCategory>(Account, _db.WeightCategories); }
-        }
-
-        public AccountApplier<DataItemYear> TableYears
-        {
-            get { return new AccountApplier<DataItemYear>(Account, _db.Years); }
-        }
-
-        public IQueryable<DataItemClass> ActualTableClasses
-        {
-            get { return _db.Classes; }
-        }
-
-        public IQueryable<DataItemMegaItem> ActualTableMegaItems
-        {
-            get { return _db.MegaItems; }
-        }
-
-        public IQueryable<DataItemGrade> ActualTableGrades
-        {
-            get { return _db.Grades; }
-        }
-
-        public IQueryable<DataItemSchedule> ActualTableSchedules
-        {
-            get { return _db.Schedules; }
-        }
-
-        public IQueryable<DataItemSemester> ActualTableSemesters
-        {
-            get { return _db.Semesters; }
-        }
-
-        public IQueryable<DataItemWeightCategory> ActualTableWeightCategories
-        {
-            get { return _db.WeightCategories; }
-        }
-
-        public IQueryable<DataItemYear> ActualTableYears
-        {
-            get { return _db.Years; }
         }
 
         public enum ProcessType
@@ -1720,31 +1604,31 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             Func<bool> done = () => { return remainingIdentifiersToLookFor.Count == 0; };
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableMegaItems))
+            foreach (var i in FindMegaItems(identifiersToLookFor))
             { yield return found(i); }
             if (done()) yield break;
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableGrades))
+            foreach (var i in FindGrades(identifiersToLookFor))
             { yield return found(i); }
             if (done()) yield break;
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableClasses))
+            foreach (var i in FindClasses(identifiersToLookFor))
             { yield return found(i); }
             if (done()) yield break;
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableSchedules))
+            foreach (var i in FindSchedules(identifiersToLookFor))
             { yield return found(i); }
             if (done()) yield break;
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableSemesters))
+            foreach (var i in FindSemesters(identifiersToLookFor))
             { yield return found(i); }
             if (done()) yield break;
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableYears))
+            foreach (var i in FindYears(identifiersToLookFor))
             { yield return found(i); }
             if (done()) yield break;
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableWeightCategories))
+            foreach (var i in FindWeightCategories(identifiersToLookFor))
             { yield return found(i); }
         }
 
@@ -1762,180 +1646,186 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
             Func<bool> done = () => { return countFound >= maxItemsToReturn || remainingIdentifiersToLookFor.Count == 0; };
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableYears))
+            foreach (var i in FindYears(identifiersToLookFor))
             { yield return found(i); if (done()) yield break; }
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableSemesters))
+            foreach (var i in FindSemesters(identifiersToLookFor))
             { yield return found(i); if (done()) yield break; }
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableClasses))
+            foreach (var i in FindClasses(identifiersToLookFor))
             { yield return found(i); if (done()) yield break; }
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableWeightCategories))
+            foreach (var i in FindWeightCategories(identifiersToLookFor))
             { yield return found(i); if (done()) yield break; }
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableMegaItems))
+            foreach (var i in FindMegaItems(identifiersToLookFor))
             { yield return found(i); if (done()) yield break; }
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableGrades))
+            foreach (var i in FindGrades(identifiersToLookFor))
             { yield return found(i); if (done()) yield break; }
 
-            foreach (var i in FindAll(identifiersToLookFor, ActualTableSchedules))
+            foreach (var i in FindSchedules(identifiersToLookFor))
             { yield return found(i); if (done()) yield break; }
         }
 
-        private IEnumerable<BaseDataItem> FindAll<T>(Guid[] identifiersToLookFor, IQueryable<T> table) where T : BaseDataItem
+        private DataItemMegaItem[] FindMegaItems(Guid[] identifiers)
         {
-            const int max = 900;
-            if (identifiersToLookFor.Length > max)
-            {
-                foreach (var grouped in identifiersToLookFor.BatchAsArrays(900))
-                {
-                    foreach (var item in table.Where(i => grouped.Contains(i.Identifier)).AsEnumerable())
-                    {
-                        yield return item;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var item in table.Where(i => identifiersToLookFor.Contains(i.Identifier)).AsEnumerable())
-                {
-                    yield return item;
-                }
-            }
+            List<Guid> identifierList = identifiers.ToList();
+            return _db.MegaItems.Where(i => identifierList.Contains(i.Identifier)).ToArray();
+        }
+
+        private DataItemGrade[] FindGrades(Guid[] identifiers)
+        {
+            List<Guid> identifierList = identifiers.ToList();
+            return _db.Grades.Where(i => identifierList.Contains(i.Identifier)).ToArray();
+        }
+
+        private DataItemClass[] FindClasses(Guid[] identifiers)
+        {
+            List<Guid> identifierList = identifiers.ToList();
+            return _db.Classes.Where(i => identifierList.Contains(i.Identifier)).ToArray();
+        }
+
+        private DataItemSchedule[] FindSchedules(Guid[] identifiers)
+        {
+            List<Guid> identifierList = identifiers.ToList();
+            return _db.Schedules.Where(i => identifierList.Contains(i.Identifier)).ToArray();
+        }
+
+        private DataItemSemester[] FindSemesters(Guid[] identifiers)
+        {
+            List<Guid> identifierList = identifiers.ToList();
+            return _db.Semesters.Where(i => identifierList.Contains(i.Identifier)).ToArray();
+        }
+
+        private DataItemYear[] FindYears(Guid[] identifiers)
+        {
+            List<Guid> identifierList = identifiers.ToList();
+            return _db.Years.Where(i => identifierList.Contains(i.Identifier)).ToArray();
+        }
+
+        private DataItemWeightCategory[] FindWeightCategories(Guid[] identifiers)
+        {
+            List<Guid> identifierList = identifiers.ToList();
+            return _db.WeightCategories.Where(i => identifierList.Contains(i.Identifier)).ToArray();
         }
 
         private Guid[] FindAllIdentifiersThatAreChildren(Guid[] parentIdentifiers)
         {
             List<Guid> children = new List<Guid>();
 
-            children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableMegaItems));
-            children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableGrades));
-            children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableSchedules));
-            children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableClasses));
-            children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableSemesters));
-            children.AddRange(FindIdentifiersThatAreChildren(parentIdentifiers, ActualTableWeightCategories));
+            List<Guid> identifiers = parentIdentifiers.ToList();
+            children.AddRange(_db.MegaItems.Where(i => identifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray());
+            children.AddRange(_db.Grades.Where(i => identifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray());
+            children.AddRange(_db.Schedules.Where(i => identifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray());
+            children.AddRange(_db.Classes.Where(i => identifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray());
+            children.AddRange(_db.Semesters.Where(i => identifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray());
+            children.AddRange(_db.WeightCategories.Where(i => identifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray());
 
             return children.ToArray();
         }
 
-        private IEnumerable<Guid> FindIdentifiersThatAreChildren<T>(Guid[] parentIdentifiers, IQueryable<T> table) where T : BaseDataItemUnderOne
-        {
-            var items = table.Where(i => parentIdentifiers.Contains(i.UpperIdentifier)).Select(i => i.Identifier).ToArray();
-            return items;
-        }
-
-        private IEnumerable<Guid> FindIdentifiersThatAreChildrenOfEitherParent<T>(Guid[] parentIdentifiers, IQueryable<T> table) where T : BaseDataItemUnderTwo
-        {
-            if (parentIdentifiers.Length > 400)
-            {
-                List<Guid> answer = new List<Guid>();
-                foreach (Guid[] batched in parentIdentifiers.BatchAsArrays(400))
-                    answer.AddRange(FindIdentifiersThatAreChildrenOfEitherParent(batched, table));
-                return answer;
-            }
-
-            return table.Where(i => parentIdentifiers.Contains(i.UpperIdentifier) || parentIdentifiers.Contains(i.SecondUpperIdentifier)).Select(i => i.Identifier).ToArray();
-        }
-
         private int DeleteMegaItems(Guid[] identifiersToDelete, DeletedItems into)
         {
+            List<Guid> identifiers = identifiersToDelete.ToList();
             int before = into.DeletedTaskEventAppointments.Count;
 
-            into.DeletedTaskEventAppointments.AddRange(ActualTableMegaItems.Where(i =>
+            into.DeletedTaskEventAppointments.AddRange(_db.MegaItems.Where(i =>
                 (i.MegaItemType != MegaItemType.Holiday)
-                && identifiersToDelete.Contains(i.Identifier))
+                && identifiers.Contains(i.Identifier))
                 .AsEnumerable().Select(i => i.AppointmentLocalId));
 
             int after = into.DeletedTaskEventAppointments.Count;
 
             if (identifiersToDelete.Length != (after - before) && !into.DidDeleteHoliday)
             {
-                into.DidDeleteHoliday = TableMegaItems.Any(i => i.MegaItemType == MegaItemType.Holiday && identifiersToDelete.Contains(i.Identifier));
+                into.DidDeleteHoliday = _db.MegaItems.Any(i => i.MegaItemType == MegaItemType.Holiday && identifiers.Contains(i.Identifier));
             }
 
             if (before == after && !into.DidDeleteHoliday)
                 return 0;
 
-            var toDelete = _db.MegaItems.Where(i => identifiersToDelete.Contains(i.Identifier)).ToList();
+            var toDelete = _db.MegaItems.Where(i => identifiers.Contains(i.Identifier)).ToList();
             _db.MegaItems.RemoveRange(toDelete);
             return toDelete.Count;
         }
 
         private int DeleteSchedules(Guid[] identifiersToDelete, DeletedItems into)
         {
+            List<Guid> identifiers = identifiersToDelete.ToList();
             int before = into.DeletedScheduleAppointments.Count;
 
-            into.DeletedScheduleAppointments.AddRange(ActualTableSchedules.Where(i => identifiersToDelete.Contains(i.Identifier)).AsEnumerable().Select(i => i.AppointmentLocalId));
+            into.DeletedScheduleAppointments.AddRange(_db.Schedules.Where(i => identifiers.Contains(i.Identifier)).AsEnumerable().Select(i => i.AppointmentLocalId));
 
             int after = into.DeletedScheduleAppointments.Count;
 
             if (before == after)
                 return 0;
 
-            var toDelete = _db.Schedules.Where(i => identifiersToDelete.Contains(i.Identifier)).ToList();
+            var toDelete = _db.Schedules.Where(i => identifiers.Contains(i.Identifier)).ToList();
             _db.Schedules.RemoveRange(toDelete);
             return toDelete.Count;
         }
 
-        private int DeleteFromDbSet<T>(Guid[] identifiersToDelete, DbSet<T> dbSet) where T : BaseDataItem
+        private static int RemoveFromDbSet<T>(DbSet<T> dbSet, List<T> items) where T : BaseDataItem
         {
-            var toDelete = dbSet.Where(i => identifiersToDelete.Contains(i.Identifier)).ToList();
-            if (toDelete.Count > 0)
-                dbSet.RemoveRange(toDelete);
-            return toDelete.Count;
+            if (items.Count > 0)
+                dbSet.RemoveRange(items);
+            return items.Count;
         }
 
         private void Delete(Guid[] identifiersToDelete, DeletedItems into)
         {
+            List<Guid> identifiers = identifiersToDelete.ToList();
             int countDeleted = 0;
 
             countDeleted += DeleteMegaItems(identifiersToDelete, into);
             if (countDeleted >= identifiersToDelete.Length) return;
 
-            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Grades);
+            countDeleted += RemoveFromDbSet(_db.Grades, _db.Grades.Where(i => identifiers.Contains(i.Identifier)).ToList());
             if (countDeleted >= identifiersToDelete.Length) return;
 
             countDeleted += DeleteSchedules(identifiersToDelete, into);
             if (countDeleted >= identifiersToDelete.Length) return;
 
-            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Classes);
+            countDeleted += RemoveFromDbSet(_db.Classes, _db.Classes.Where(i => identifiers.Contains(i.Identifier)).ToList());
             if (countDeleted >= identifiersToDelete.Length) return;
 
-            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Semesters);
+            countDeleted += RemoveFromDbSet(_db.Semesters, _db.Semesters.Where(i => identifiers.Contains(i.Identifier)).ToList());
             if (countDeleted >= identifiersToDelete.Length) return;
 
-            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.WeightCategories);
+            countDeleted += RemoveFromDbSet(_db.WeightCategories, _db.WeightCategories.Where(i => identifiers.Contains(i.Identifier)).ToList());
             if (countDeleted >= identifiersToDelete.Length) return;
 
-            countDeleted += DeleteFromDbSet(identifiersToDelete, _db.Years);
+            countDeleted += RemoveFromDbSet(_db.Years, _db.Years.Where(i => identifiers.Contains(i.Identifier)).ToList());
         }
 
         private List<BaseDataItem> GetExistingItems(IEnumerable<BaseDataItem> itemsToMatch)
         {
             List<BaseDataItem> existingItems = new List<BaseDataItem>();
 
-            AddExistingItemsOfType<DataItemClass>(itemsToMatch, existingItems, _db.Classes);
-            AddExistingItemsOfType<DataItemGrade>(itemsToMatch, existingItems, _db.Grades);
-            AddExistingItemsOfType<DataItemMegaItem>(itemsToMatch, existingItems, _db.MegaItems);
-            AddExistingItemsOfType<DataItemSchedule>(itemsToMatch, existingItems, _db.Schedules);
-            AddExistingItemsOfType<DataItemSemester>(itemsToMatch, existingItems, _db.Semesters);
-            AddExistingItemsOfType<DataItemWeightCategory>(itemsToMatch, existingItems, _db.WeightCategories);
-            AddExistingItemsOfType<DataItemYear>(itemsToMatch, existingItems, _db.Years);
+            List<Guid> classIdentifiers = itemsToMatch.OfType<DataItemClass>().Select(i => i.Identifier).ToList();
+            existingItems.AddRange(_db.Classes.Where(i => classIdentifiers.Contains(i.Identifier)).ToArray());
+
+            List<Guid> gradeIdentifiers = itemsToMatch.OfType<DataItemGrade>().Select(i => i.Identifier).ToList();
+            existingItems.AddRange(_db.Grades.Where(i => gradeIdentifiers.Contains(i.Identifier)).ToArray());
+
+            List<Guid> megaItemIdentifiers = itemsToMatch.OfType<DataItemMegaItem>().Select(i => i.Identifier).ToList();
+            existingItems.AddRange(_db.MegaItems.Where(i => megaItemIdentifiers.Contains(i.Identifier)).ToArray());
+
+            List<Guid> scheduleIdentifiers = itemsToMatch.OfType<DataItemSchedule>().Select(i => i.Identifier).ToList();
+            existingItems.AddRange(_db.Schedules.Where(i => scheduleIdentifiers.Contains(i.Identifier)).ToArray());
+
+            List<Guid> semesterIdentifiers = itemsToMatch.OfType<DataItemSemester>().Select(i => i.Identifier).ToList();
+            existingItems.AddRange(_db.Semesters.Where(i => semesterIdentifiers.Contains(i.Identifier)).ToArray());
+
+            List<Guid> weightCategoryIdentifiers = itemsToMatch.OfType<DataItemWeightCategory>().Select(i => i.Identifier).ToList();
+            existingItems.AddRange(_db.WeightCategories.Where(i => weightCategoryIdentifiers.Contains(i.Identifier)).ToArray());
+
+            List<Guid> yearIdentifiers = itemsToMatch.OfType<DataItemYear>().Select(i => i.Identifier).ToList();
+            existingItems.AddRange(_db.Years.Where(i => yearIdentifiers.Contains(i.Identifier)).ToArray());
 
             return existingItems;
-        }
-
-        private void AddExistingItemsOfType<T>(IEnumerable allItemsToMatch, List<BaseDataItem> listToAddTo, DbSet<T> dbSet) where T : BaseDataItem
-        {
-            foreach (Guid[] identifiersBatchGroup in allItemsToMatch.OfType<T>().Select(i => i.Identifier).BatchAsArrays(500))
-            {
-                if (identifiersBatchGroup.Length == 0)
-                    return;
-
-                listToAddTo.AddRange(dbSet.Where(i => identifiersBatchGroup.Contains(i.Identifier)));
-            }
         }
 
         private List<BaseDataItem> GetExistingItems(UpdatedItems updatedItems)
@@ -1943,50 +1833,284 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             List<BaseDataItem> existingItems = new List<BaseDataItem>();
 
             if (updatedItems.Classes.Count > 0)
-                existingItems.AddRange(TableClasses.Where(i => updatedItems.Classes.Select(x => x.Identifier).Contains(i.Identifier)));
+            {
+                List<Guid> identifiers = updatedItems.Classes.Select(i => i.Identifier).ToList();
+                existingItems.AddRange(_db.Classes.Where(i => identifiers.Contains(i.Identifier)).ToArray());
+            }
 
             if (updatedItems.MegaItems.Count > 0)
-                existingItems.AddRange(TableMegaItems.Where(i => updatedItems.MegaItems.Select(x => x.Identifier).Contains(i.Identifier)));
+            {
+                List<Guid> identifiers = updatedItems.MegaItems.Select(i => i.Identifier).ToList();
+                existingItems.AddRange(_db.MegaItems.Where(i => identifiers.Contains(i.Identifier)).ToArray());
+            }
 
             if (updatedItems.Grades.Count > 0)
-                existingItems.AddRange(TableGrades.Where(i => updatedItems.Grades.Select(x => x.Identifier).Contains(i.Identifier)));
+            {
+                List<Guid> identifiers = updatedItems.Grades.Select(i => i.Identifier).ToList();
+                existingItems.AddRange(_db.Grades.Where(i => identifiers.Contains(i.Identifier)).ToArray());
+            }
 
             if (updatedItems.Schedules.Count > 0)
-                existingItems.AddRange(TableSchedules.Where(i => updatedItems.Schedules.Select(x => x.Identifier).Contains(i.Identifier)));
+            {
+                List<Guid> identifiers = updatedItems.Schedules.Select(i => i.Identifier).ToList();
+                existingItems.AddRange(_db.Schedules.Where(i => identifiers.Contains(i.Identifier)).ToArray());
+            }
 
             if (updatedItems.Semesters.Count > 0)
-                existingItems.AddRange(TableSemesters.Where(i => updatedItems.Semesters.Select(x => x.Identifier).Contains(i.Identifier)));
+            {
+                List<Guid> identifiers = updatedItems.Semesters.Select(i => i.Identifier).ToList();
+                existingItems.AddRange(_db.Semesters.Where(i => identifiers.Contains(i.Identifier)).ToArray());
+            }
 
             if (updatedItems.WeightCategories.Count > 0)
-                existingItems.AddRange(TableWeightCategories.Where(i => updatedItems.WeightCategories.Select(x => x.Identifier).Contains(i.Identifier)));
+            {
+                List<Guid> identifiers = updatedItems.WeightCategories.Select(i => i.Identifier).ToList();
+                existingItems.AddRange(_db.WeightCategories.Where(i => identifiers.Contains(i.Identifier)).ToArray());
+            }
 
             if (updatedItems.Years.Count > 0)
-                existingItems.AddRange(TableYears.Where(i => updatedItems.Years.Select(x => x.Identifier).Contains(i.Identifier)));
+            {
+                List<Guid> identifiers = updatedItems.Years.Select(i => i.Identifier).ToList();
+                existingItems.AddRange(_db.Years.Where(i => identifiers.Contains(i.Identifier)).ToArray());
+            }
 
             return existingItems;
         }
 
         public DataItemYear[] GetYears()
         {
-            return TableYears.ToArray();
+            return _db.Years.ToArray();
+        }
+
+        public int GetYearCount()
+        {
+            return _db.Years.Count();
         }
 
         public DataItemSemester[] GetSemesters()
         {
-            return TableSemesters.ToArray();
+            return _db.Semesters.ToArray();
+        }
+
+        public int GetSemesterCount()
+        {
+            return _db.Semesters.Count();
+        }
+
+        public DataItemClass[] GetClasses()
+        {
+            return _db.Classes.ToArray();
+        }
+
+        public int GetClassCount()
+        {
+            return _db.Classes.Count();
+        }
+
+        public DataItemSchedule[] GetSchedules()
+        {
+            return _db.Schedules.ToArray();
+        }
+
+        public DataItemWeightCategory[] GetWeightCategories()
+        {
+            return _db.WeightCategories.ToArray();
+        }
+
+        public DataItemGrade[] GetGrades()
+        {
+            return _db.Grades.ToArray();
         }
 
         public DataItemSemester GetSemester(Guid identifier)
         {
-            return TableSemesters.FirstOrDefault(i => i.Identifier == identifier);
+            Guid semesterIdentifier = identifier;
+            return _db.Semesters.FirstOrDefault(i => i.Identifier == semesterIdentifier);
+        }
+
+        public bool SemesterExists(Guid identifier)
+        {
+            Guid semesterIdentifier = identifier;
+            return _db.Semesters.Any(i => i.Identifier == semesterIdentifier);
+        }
+
+        public DataItemClass GetClass(Guid identifier)
+        {
+            Guid classIdentifier = identifier;
+            return _db.Classes.FirstOrDefault(i => i.Identifier == classIdentifier);
+        }
+
+        public DataItemClass[] GetClassesUnderSemester(Guid identifier)
+        {
+            Guid semesterIdentifier = identifier;
+            return _db.Classes.Where(i => i.UpperIdentifier == semesterIdentifier).ToArray();
+        }
+
+        public DataItemSchedule[] GetSchedulesUnderClasses(Guid[] identifiers)
+        {
+            List<Guid> classIdentifiers = identifiers.ToList();
+            return _db.Schedules.Where(i => classIdentifiers.Contains(i.UpperIdentifier)).ToArray();
+        }
+
+        public DataItemWeightCategory[] GetWeightCategoriesUnderClasses(Guid[] identifiers)
+        {
+            List<Guid> classIdentifiers = identifiers.ToList();
+            return _db.WeightCategories.Where(i => classIdentifiers.Contains(i.UpperIdentifier)).ToArray();
+        }
+
+        public DataItemGrade[] GetGradesUnderWeightCategories(Guid[] identifiers)
+        {
+            List<Guid> weightCategoryIdentifiers = identifiers.ToList();
+            return _db.Grades.Where(i => weightCategoryIdentifiers.Contains(i.UpperIdentifier)).ToArray();
+        }
+
+        public DataItemMegaItem GetMegaItem(Guid identifier)
+        {
+            Guid megaItemIdentifier = identifier;
+            return _db.MegaItems.FirstOrDefault(i => i.Identifier == megaItemIdentifier);
+        }
+
+        public DataItemMegaItem GetHoliday(Guid identifier)
+        {
+            Guid holidayIdentifier = identifier;
+            return _db.MegaItems.FirstOrDefault(i =>
+                i.MegaItemType == MegaItemType.Holiday
+                && i.Identifier == holidayIdentifier);
+        }
+
+        public DataItemMegaItem[] GetAgendaItems(Guid[] identifiers, DateTime date)
+        {
+            List<Guid> classIdentifiers = identifiers.ToList();
+            DateTime todayAsUtc = date;
+            return _db.MegaItems.Where(i =>
+                (((i.MegaItemType == MegaItemType.Homework && i.PercentComplete < 1.0)
+                    || (i.MegaItemType == MegaItemType.Exam && i.Date >= todayAsUtc))
+                    && classIdentifiers.Contains(i.UpperIdentifier))
+                || (i.MegaItemType == MegaItemType.Task && i.PercentComplete < 1.0)
+                || (i.MegaItemType == MegaItemType.Event && i.Date >= todayAsUtc)).ToArray();
+        }
+
+        public DataItemMegaItem[] GetCalendarItems(Guid[] identifiers, DateTime startDate, DateTime endDate)
+        {
+            List<Guid> classIdentifiers = identifiers.ToList();
+            DateTime start = startDate;
+            DateTime end = endDate;
+            return _db.MegaItems.Where(i =>
+                (i.MegaItemType == MegaItemType.Homework
+                    || i.MegaItemType == MegaItemType.Exam
+                    || i.MegaItemType == MegaItemType.Task
+                    || i.MegaItemType == MegaItemType.Event)
+                && classIdentifiers.Contains(i.UpperIdentifier)
+                && i.Date >= start
+                && i.Date <= end).ToArray();
+        }
+
+        public DataItemMegaItem[] GetSemesterItems(Guid identifier, Guid[] identifiers)
+        {
+            Guid semesterIdentifier = identifier;
+            List<Guid> classIdentifiers = identifiers.ToList();
+            return _db.MegaItems.Where(i =>
+                ((i.MegaItemType == MegaItemType.Holiday
+                    || i.MegaItemType == MegaItemType.Task
+                    || i.MegaItemType == MegaItemType.Event)
+                    && i.UpperIdentifier == semesterIdentifier)
+                || ((i.MegaItemType == MegaItemType.Homework || i.MegaItemType == MegaItemType.Exam)
+                    && classIdentifiers.Contains(i.UpperIdentifier))).ToArray();
+        }
+
+        public DataItemMegaItem[] GetCurrentClassItems(Guid identifier, DateTime date)
+        {
+            Guid classIdentifier = identifier;
+            DateTime todayAsUtc = date;
+            return _db.MegaItems.Where(i =>
+                (i.MegaItemType == MegaItemType.Homework
+                    && i.UpperIdentifier == classIdentifier
+                    && (i.PercentComplete < 1.0 || i.Date >= todayAsUtc))
+                || (i.MegaItemType == MegaItemType.Exam
+                    && i.UpperIdentifier == classIdentifier
+                    && i.Date >= todayAsUtc)).ToArray();
+        }
+
+        public bool HasPastCompletedTasks(Guid identifier, DateTime date)
+        {
+            Guid classIdentifier = identifier;
+            DateTime todayAsUtc = date;
+            return _db.MegaItems.Any(i =>
+                i.MegaItemType == MegaItemType.Homework
+                && i.UpperIdentifier == classIdentifier
+                && i.PercentComplete >= 1.0
+                && i.Date < todayAsUtc);
+        }
+
+        public bool HasPastCompletedEvents(Guid identifier, DateTime date)
+        {
+            Guid classIdentifier = identifier;
+            DateTime nextDay = date.Date.AddDays(1);
+            return _db.MegaItems.Any(i =>
+                i.MegaItemType == MegaItemType.Exam
+                && i.UpperIdentifier == classIdentifier
+                && i.Date < nextDay);
+        }
+
+        public DataItemMegaItem[] GetPastCompletedTasksAndEvents(Guid identifier, DateTime date)
+        {
+            Guid classIdentifier = identifier;
+            DateTime todayAsUtc = date;
+            DateTime nextDay = date.Date.AddDays(1);
+            return _db.MegaItems.Where(i =>
+                (i.MegaItemType == MegaItemType.Homework
+                    && i.UpperIdentifier == classIdentifier
+                    && i.PercentComplete >= 1.0
+                    && i.Date < todayAsUtc)
+                || (i.MegaItemType == MegaItemType.Exam
+                    && i.UpperIdentifier == classIdentifier
+                    && i.Date < nextDay)).ToArray();
+        }
+
+        public DataItemMegaItem[] GetHolidays(Guid identifier, DateTime startDate, DateTime endDate)
+        {
+            Guid semesterIdentifier = identifier;
+            DateTime startAsUtc = startDate;
+            DateTime endAsUtc = endDate;
+            return _db.MegaItems.Where(i =>
+                i.MegaItemType == MegaItemType.Holiday
+                && i.UpperIdentifier == semesterIdentifier
+                && ((i.Date <= startAsUtc && i.EndTime >= startAsUtc)
+                    || (i.Date >= startAsUtc && i.Date <= endAsUtc))).ToArray();
+        }
+
+        public DataItemMegaItem[] GetGradedMegaItems()
+        {
+            return _db.MegaItems.Where(i =>
+                (i.MegaItemType == MegaItemType.Homework || i.MegaItemType == MegaItemType.Exam)
+                && i.WeightCategoryIdentifier != BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED).ToArray();
+        }
+
+        public DataItemMegaItem[] GetGradedMegaItemsUnderClass(Guid identifier)
+        {
+            Guid classIdentifier = identifier;
+            return _db.MegaItems.Where(i =>
+                (i.MegaItemType == MegaItemType.Exam || i.MegaItemType == MegaItemType.Homework)
+                && i.UpperIdentifier == classIdentifier
+                && i.WeightCategoryIdentifier != BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED).ToArray();
+        }
+
+        public bool HasManyOldMegaItems()
+        {
+            if (_db.MegaItems.Count() <= 30)
+                return false;
+
+            DateTime cutoff = DateTime.Today.AddDays(-60);
+            return _db.MegaItems.Any(i => i.DateCreated < cutoff);
         }
 
 #region GetClasses
 
         public Guid[] GetClassIdentifiersUnderSemester(Guid semesterIdentifier)
         {
+            Guid identifier = semesterIdentifier;
             return _db.Classes
-                .Where(c => c.UpperIdentifier == semesterIdentifier)
+                .Where(c => c.UpperIdentifier == identifier)
                 .Select(c => c.Identifier)
                 .ToArray();
         }
@@ -2036,7 +2160,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             using (await Locks.LockDataForReadAsync())
             {
-                return TableClasses.Where(i => i.Identifier == classId).Select(i => i.UpperIdentifier).FirstOrDefault();
+                Guid classIdentifier = classId;
+                return _db.Classes.Where(i => i.Identifier == classIdentifier).Select(i => i.UpperIdentifier).FirstOrDefault();
             }
         }
 

@@ -21,6 +21,14 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         {
             _databasePath = databasePath;
             Account = account;
+
+            ChangeTracker.Tracked += (sender, args) =>
+            {
+                if (args.Entry.Entity is BaseDataItem item)
+                {
+                    item.Account = Account;
+                }
+            };
         }
 
         // DbSets for all entity types.

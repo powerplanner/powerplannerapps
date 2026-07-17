@@ -35,7 +35,7 @@ namespace UnitTestProject
 
             await DataStore.ProcessLocalChanges(changes);
 
-            Assert.AreEqual(1, DataStore.TableYears.Count(), "Database count of years incorrect");
+            Assert.AreEqual(1, DataStore.GetYearCount(), "Database count of years incorrect");
 
             Assert.AreEqual(1, years.Count, "View model didn't update");
 
@@ -55,7 +55,7 @@ namespace UnitTestProject
 
             await DataStore.ProcessLocalChanges(changes);
 
-            Assert.AreEqual(2, DataStore.TableYears.Count(), "Database count of years incorrect");
+            Assert.AreEqual(2, DataStore.GetYearCount(), "Database count of years incorrect");
 
             Assert.AreEqual(2, years.Count);
 
@@ -78,7 +78,7 @@ namespace UnitTestProject
 
             await DataStore.ProcessLocalChanges(changes);
 
-            Assert.AreEqual(2, DataStore.TableYears.Count());
+            Assert.AreEqual(2, DataStore.GetYearCount());
             Assert.AreEqual(2, years.Count);
 
             viewYear = years.First();
@@ -131,8 +131,8 @@ namespace UnitTestProject
 
             await DataStore.ProcessLocalChanges(changes);
 
-            Assert.AreEqual(2, DataStore.TableYears.Count(), "Database count of years incorrect");
-            Assert.AreEqual(3, DataStore.TableSemesters.Count(), "Database count of semesters incorrect");
+            Assert.AreEqual(2, DataStore.GetYearCount(), "Database count of years incorrect");
+            Assert.AreEqual(3, DataStore.GetSemesterCount(), "Database count of semesters incorrect");
 
 
             changes = new DataChanges();
@@ -141,8 +141,8 @@ namespace UnitTestProject
 
             await DataStore.ProcessLocalChanges(changes);
 
-            Assert.AreEqual(1, DataStore.TableYears.Count(), "Database count of years incorrect");
-            Assert.AreEqual(1, DataStore.TableSemesters.Count(), "Database count of semesters incorrect");
+            Assert.AreEqual(1, DataStore.GetYearCount(), "Database count of years incorrect");
+            Assert.AreEqual(1, DataStore.GetSemesterCount(), "Database count of semesters incorrect");
         }
     }
 }
