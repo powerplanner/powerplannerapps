@@ -9,6 +9,8 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using System.ComponentModel;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary;
+using PowerPlannerAppDataLibrary.DataLayer;
+using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -155,6 +157,14 @@ namespace PowerPlannerUWP.Views
                 // Otherwise switch to password box so user can type password
                 else
                     tbPassword.Focus(FocusState.Programmatic);
+            }
+        }
+
+        private void tbUsername_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem is AccountDataItem account)
+            {
+                sender.Text = account.Username;
             }
         }
 

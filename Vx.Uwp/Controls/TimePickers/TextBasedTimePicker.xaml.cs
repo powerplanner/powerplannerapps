@@ -218,7 +218,8 @@ namespace Vx.Uwp.Controls.TimePickers
             return new TimeEntry(time);
         }
 
-        protected class TimeEntry : BindableBase
+        [WinRT.GeneratedBindableCustomProperty]
+        protected partial class TimeEntry : BindableBase
         {
             public TimeSpan Time { get; private set; }
 
@@ -306,7 +307,8 @@ namespace Vx.Uwp.Controls.TimePickers
             return false;
         }
 
-        private class EndTimeEntry : TimeEntry
+        [WinRT.GeneratedBindableCustomProperty]
+        private partial class EndTimeEntry : TimeEntry
         {
             private TextBasedEndTimePicker _endTimePickerControl;
 
