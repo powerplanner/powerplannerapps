@@ -65,16 +65,42 @@ namespace PowerPlanneriOS.Controllers
             }
         }
 
-        private async void ActivatePendingLaunchAction()
+        private Func<PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainWindowViewModel, System.Threading.Tasks.Task> _pendingLaunchAction;
+        private bool _hasRunPendingLaunchAction;
+
+        private void ActivatePendingLaunchAction()
         {
             AppDelegate._hasActivatedWindow = true;
 
-            var action = AppDelegate._handleLaunchAction;
+            // Capture the pending action, but don't run it yet. Running it here (during the
+            // ViewModel setter) would try to present a popup before this view controller is in
+            // the window hierarchy, which iOS silently drops. We defer it to ViewDidAppear.
+            _pendingLaunchAction = AppDelegate._handleLaunchAction;
             AppDelegate._handleLaunchAction = null;
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+
+            RunPendingLaunchActionIfNeeded();
+        }
+
+        private async void RunPendingLaunchActionIfNeeded()
+        {
+            if (_hasRunPendingLaunchAction)
+            {
+                return;
+            }
+
+            var action = _pendingLaunchAction;
+            _pendingLaunchAction = null;
             if (action == null)
             {
                 return;
             }
+
+            _hasRunPendingLaunchAction = true;
 
             try
             {
