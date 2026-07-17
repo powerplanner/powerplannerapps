@@ -22,17 +22,17 @@ namespace PowerPlannerAndroid.Views.ListItems
             var g = new ScheduleGroup(schedules);
             DataContext = g;
 
-            BindingHost.SetBinding<string>(nameof(g.DaysText), daysText =>
+            BindingHost.SetBinding<ScheduleGroup, string>(nameof(g.DaysText), group => group.DaysText, daysText =>
             {
                 FindViewById<TextView>(Resource.Id.ListItemEditingScheduleClassTime_DaysText).Text = daysText;
             });
 
-            BindingHost.SetBinding<string>(nameof(g.TimeText), t =>
+            BindingHost.SetBinding<ScheduleGroup, string>(nameof(g.TimeText), group => group.TimeText, t =>
             {
                 FindViewById<TextView>(Resource.Id.ListItemEditingScheduleClassTime_TimeText).Text = t;
             });
 
-            BindingHost.SetBinding<string>(nameof(g.Room), t =>
+            BindingHost.SetBinding<ScheduleGroup, string>(nameof(g.Room), group => group.Room, t =>
             {
                 FindViewById<TextView>(Resource.Id.ListItemEditingScheduleClassTime_RoomText).Text = t;
             });

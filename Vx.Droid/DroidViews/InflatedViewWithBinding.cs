@@ -11,7 +11,7 @@ using BareMvvm.Core.Binding;
 
 namespace InterfacesDroid.Views
 {
-    public class InflatedViewWithBindingHost : RelativeLayout, INotifyPropertyChanged
+    public class InflatedViewWithBindingHost : RelativeLayout, INotifyPropertyChanged, IDataContextView
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

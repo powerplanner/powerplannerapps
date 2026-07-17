@@ -198,7 +198,7 @@ namespace InterfacesDroid.ViewModelPresenters
 
             base.AddView(_fullScreenPresenter);
 
-            _bindingHost.SetBinding<BaseViewModel>(nameof(ViewModel.FullScreenPopup), fullScreenPopup =>
+            _bindingHost.SetBinding<PagedViewModelWithPopups, BaseViewModel>(nameof(ViewModel.FullScreenPopup), viewModel => viewModel.FullScreenPopup, fullScreenPopup =>
             {
                 _fullScreenPresenter.ViewModel = fullScreenPopup;
                 _fullScreenPresenter.Visibility = fullScreenPopup != null ? ViewStates.Visible : ViewStates.Gone;

@@ -105,7 +105,7 @@ namespace PowerPlannerAndroid.Views
 
         public override void OnViewModelSetOverride()
         {
-            BindingHost.SetBinding<string>(nameof(ViewModel.ClassName), className =>
+            BindingHost.SetBinding<ClassViewModel, string>(nameof(ViewModel.ClassName), viewModel => viewModel.ClassName, className =>
             {
                 Title = className;
             });

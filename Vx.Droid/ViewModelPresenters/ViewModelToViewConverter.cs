@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -11,66 +10,59 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using BareMvvm.Core.ViewModels;
-using System.Reflection;
 using InterfacesDroid.Views;
 
 namespace InterfacesDroid.ViewModelPresenters
 {
     public class ViewModelToViewConverter
     {
-        private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
-        private static Dictionary<Type, Type> ViewModelToSplashMappings = new Dictionary<Type, Type>();
-        private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
+        private static Dictionary<Type, Func<ViewGroup, View>> ViewModelToViewMappings = new Dictionary<Type, Func<ViewGroup, View>>();
+        private static Dictionary<Type, Func<ViewGroup, View>> ViewModelToSplashMappings = new Dictionary<Type, Func<ViewGroup, View>>();
+        private static Dictionary<Type, Func<ViewGroup, View>> GenericViewModelToViewMappings = new Dictionary<Type, Func<ViewGroup, View>>();
 
-        public static void AddMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
+        public static void AddMapping(Type viewModelType, Func<ViewGroup, View> createView)
         {
-            ViewModelToViewMappings[viewModelType] = viewType;
+            ViewModelToViewMappings[viewModelType] = createView;
         }
 
-        public static void AddSplashMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
+        public static void AddSplashMapping(Type viewModelType, Func<ViewGroup, View> createView)
         {
-            ViewModelToSplashMappings[viewModelType] = viewType;
+            ViewModelToSplashMappings[viewModelType] = createView;
         }
 
-        public static void AddGenericMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
+        public static void AddGenericMapping(Type viewModelType, Func<ViewGroup, View> createView)
         {
-            GenericViewModelToViewMappings[viewModelType] = viewType;
+            GenericViewModelToViewMappings[viewModelType] = createView;
         }
 
-        private static bool TryFindGeneric(Type viewModelType, out Type genericViewType)
+        private static bool TryFindGeneric(Type viewModelType, out Func<ViewGroup, View> createView)
         {
             foreach (var pair in GenericViewModelToViewMappings)
             {
                 if (pair.Key.IsAssignableFrom(viewModelType))
                 {
-                    genericViewType = pair.Value;
+                    createView = pair.Value;
                     return true;
                 }
             }
 
-            genericViewType = null;
+            createView = null;
             return false;
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping preserve public properties.")]
         public static View GetSplash(ViewGroup root, object viewModel)
         {
             if (viewModel == null)
                 return null;
 
-            Type viewType;
-
-            if (ViewModelToSplashMappings.TryGetValue(viewModel.GetType(), out viewType))
+            if (ViewModelToSplashMappings.TryGetValue(viewModel.GetType(), out Func<ViewGroup, View> createView))
             {
-                return CreateView(root, viewType);
+                return createView(root);
             }
 
             return null;
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping preserve public properties.")]
         public static View Convert(ViewGroup root, object value)
         {
             if (value == null)
@@ -88,18 +80,16 @@ namespace InterfacesDroid.ViewModelPresenters
                 }
             }
 
-            Type viewType;
-            
             View view = null;
 
-            if (ViewModelToViewMappings.TryGetValue(value.GetType(), out viewType))
+            if (ViewModelToViewMappings.TryGetValue(value.GetType(), out Func<ViewGroup, View> createView))
             {
-                view = CreateView(root, viewType);
+                view = createView(root);
             }
 
-            else if (TryFindGeneric(value.GetType(), out Type genericViewType))
+            else if (TryFindGeneric(value.GetType(), out Func<ViewGroup, View> createGenericView))
             {
-                view = CreateView(root, genericViewType);
+                view = createGenericView(root);
             }
 
             else if (value is PagedViewModelWithPopups)
@@ -123,37 +113,16 @@ namespace InterfacesDroid.ViewModelPresenters
                 (value as BaseViewModel).SetNativeView(view);
             }
 
-            // Get the ViewModel property
-            var viewModelProperty = view.GetType().GetProperties().FirstOrDefault(p => p.Name.Equals("ViewModel"));
-            if (viewModelProperty == null)
+            if (view is not ViewHostGeneric viewHost)
             {
-                throw new InvalidOperationException("View must have a ViewModel property");
+                throw new InvalidOperationException("Mapped view must derive from ViewHostGeneric.");
             }
 
-            // And set the property
-            viewModelProperty.SetValue(view, value);
+            viewHost.ViewModel = (BaseViewModel)value;
 
             // And return the view
             return view;
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
-        private static View CreateView(ViewGroup root, Type viewType)
-        {
-            try
-            {
-                if (viewType.IsSubclassOf(typeof(ViewHostGeneric)))
-                    return (View)Activator.CreateInstance(viewType, root);
-                else
-                    return (View)Activator.CreateInstance(viewType, root.Context);
-            }
-            catch (TargetInvocationException ex)
-            {
-#if DEBUG
-                System.Diagnostics.Debugger.Break();
-#endif
-                throw new TargetInvocationException("View likely didn't have the correct constructor.", ex);
-            }
-        }
     }
 }

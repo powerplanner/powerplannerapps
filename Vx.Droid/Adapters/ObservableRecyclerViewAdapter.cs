@@ -279,7 +279,6 @@ namespace InterfacesDroid.Adapters
         /// </summary>
         /// <param name="holder"></param>
         /// <param name="item"></param>
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types used with adapters are preserved by the application.")]
         protected virtual void OnBindViewHolder(RecyclerView.ViewHolder holder, object item)
         {
 #if DEBUG
@@ -288,10 +287,8 @@ namespace InterfacesDroid.Adapters
 #endif
                 var view = holder.ItemView;
 
-                var dataContextProperty = view.GetType().GetProperties().FirstOrDefault(i => i.Name.Equals("DataContext"));
-
-                if (dataContextProperty != null)
-                    dataContextProperty.SetValue(view, item);
+                if (view is IDataContextView dataContextView)
+                    dataContextView.DataContext = item;
 #if DEBUG
             }
             catch (Exception ex)

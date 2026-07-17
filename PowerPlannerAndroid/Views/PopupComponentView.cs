@@ -39,11 +39,11 @@ namespace PowerPlannerAndroid.Views
             AddNonInflatedView(nativeView);
 
             // Make sure title and commands are called after calling AddNonInflatedView, since that method creates the toolbar/etc
-            BindingHost.SetBinding<string>(nameof(ViewModel.Title), t =>
+            BindingHost.SetBinding<PopupComponentViewModel, string>(nameof(ViewModel.Title), viewModel => viewModel.Title, t =>
             {
                 Title = t;
             });
-            BindingHost.SetBindings(
+            BindingHost.SetBindings<PopupComponentViewModel>(
                 [nameof(ViewModel.Commands), nameof(ViewModel.SecondaryCommands)],
                 UpdateCommands);
 

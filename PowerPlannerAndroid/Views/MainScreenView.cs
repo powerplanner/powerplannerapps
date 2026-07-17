@@ -44,7 +44,7 @@ namespace PowerPlannerAndroid.Views
             ApplyThemeColors(DroidThemeColorApplier.Current);
 
             // Handle class name changing in toolbar
-            _selectedClassBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), selectedClassName =>
+            _selectedClassBindingHost.SetBinding<ViewItemClass, string>(nameof(ViewItemClass.Name), item => item.Name, selectedClassName =>
             {
                 if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes && selectedClassName != null)
                 {
@@ -166,9 +166,9 @@ namespace PowerPlannerAndroid.Views
 
             _popupsPresenter.ViewModel = ViewModel;
 
-            BindingHost.SetBinding(nameof(ViewModel.SelectedItem), OnSelectedMenuItemChanged);
-            BindingHost.SetBinding(nameof(ViewModel.SelectedClass), OnSelectedClassChanged);
-            BindingHost.SetBindings(
+            BindingHost.SetBinding<MainScreenViewModel>(nameof(ViewModel.SelectedItem), OnSelectedMenuItemChanged);
+            BindingHost.SetBinding<MainScreenViewModel>(nameof(ViewModel.SelectedClass), OnSelectedClassChanged);
+            BindingHost.SetBindings<MainScreenViewModel>(
                 [nameof(ViewModel.SyncState), nameof(ViewModel.UploadImageProgress)],
                 UpdateSyncBarStatus);
 

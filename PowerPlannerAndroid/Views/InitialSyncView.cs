@@ -30,7 +30,7 @@ namespace PowerPlannerAndroid.Views
             FindViewById<TextView>(Resource.Id.InitialSync_SyncErrorHeader).Text = R.S("String_SyncError");
             FindViewById<Button>(Resource.Id.ButtonSettings).Text = R.S("MainMenuItem_Settings");
 
-            BindingHost.SetBinding<bool>(nameof(ViewModel.IsSyncing), isSyncing =>
+            BindingHost.SetBinding<InitialSyncViewModel, bool>(nameof(ViewModel.IsSyncing), viewModel => viewModel.IsSyncing, isSyncing =>
             {
                 FindViewById(Resource.Id.InitialSync_ProgressBar).Visibility = isSyncing ? ViewStates.Visible : ViewStates.Gone;
                 FindViewById(Resource.Id.InitialSync_SyncingText).Visibility = isSyncing ? ViewStates.Visible : ViewStates.Gone;
@@ -39,7 +39,7 @@ namespace PowerPlannerAndroid.Views
                 FindViewById(Resource.Id.InitialSync_ResyncContainer).Visibility = !isSyncing ? ViewStates.Visible : ViewStates.Gone;
             });
 
-            BindingHost.SetBinding<string>(nameof(ViewModel.Error), error =>
+            BindingHost.SetBinding<InitialSyncViewModel, string>(nameof(ViewModel.Error), viewModel => viewModel.Error, error =>
             {
                 FindViewById<TextView>(Resource.Id.InitialSync_SyncErrorText).Text = error;
                 FindViewById<TextView>(Resource.Id.InitialSync_SyncErrorText).Visibility = string.IsNullOrEmpty(error) ? ViewStates.Gone : ViewStates.Visible;

@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Android.App;
 using Android.Runtime;
+using Android.Views;
 using BareMvvm.Core.App;
 using InterfacesDroid.ViewModelPresenters;
 using ToolsPortable;
@@ -109,9 +110,9 @@ namespace InterfacesDroid.App
         //    base.AttachBaseContext(ViewPumpContextWrapper.Wrap(@base));
         //}
 
-        public abstract Dictionary<Type, Type> GetViewModelToViewMappings();
-        public abstract Dictionary<Type, Type> GetViewModelToSplashMappings();
-        public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<ViewGroup, View>> GetViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<ViewGroup, View>> GetViewModelToSplashMappings();
+        public abstract Dictionary<Type, Func<ViewGroup, View>> GetGenericViewModelToViewMappings();
 
         [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public abstract Type GetPortableAppType();

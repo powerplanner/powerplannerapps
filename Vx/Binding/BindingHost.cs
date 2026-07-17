@@ -143,6 +143,51 @@ namespace BareMvvm.Core.Binding
         private Dictionary<string, List<InternalBindingRegistration>> _bindings = new Dictionary<string, List<InternalBindingRegistration>>();
         private Dictionary<string, BindingHost> _subPropertyBindings = new Dictionary<string, BindingHost>();
 
+        public BindingRegistration SetBinding<TDataContext, T>(string propertyName, Func<TDataContext, T> getValue, Action<T> action)
+        {
+            return SetDirectBinding(propertyName, () =>
+            {
+                action(DataContext is TDataContext dataContext ? getValue(dataContext) : default);
+            });
+        }
+
+        public BindingRegistration SetBinding<TDataContext>(string propertyName, Action action, bool skipInvokingActionImmediately = false)
+        {
+            return SetDirectBinding(propertyName, action, skipInvokingActionImmediately);
+        }
+
+        public void SetBindings<TDataContext>(string[] propertyNames, Action action)
+        {
+            foreach (string propertyName in propertyNames)
+            {
+                SetDirectBinding(propertyName, action, skipInvokingActionImmediately: true);
+            }
+
+            if (DataContext is TDataContext)
+            {
+                action();
+            }
+        }
+
+        private BindingRegistration SetDirectBinding(string propertyName, Action action, bool skipInvokingActionImmediately = false)
+        {
+            if (!_bindings.TryGetValue(propertyName, out List<InternalBindingRegistration> storedBindings))
+            {
+                storedBindings = new List<InternalBindingRegistration>();
+                _bindings[propertyName] = storedBindings;
+            }
+
+            var internalRegistration = new InternalBindingRegistration(action);
+            storedBindings.Add(internalRegistration);
+
+            if (DataContext != null && !skipInvokingActionImmediately)
+            {
+                action();
+            }
+
+            return new BindingRegistration(this, propertyName, internalRegistration, new[] { propertyName });
+        }
+
         internal void UnregisterBinding(BindingRegistration registration)
         {
             if (registration.InternalRegistration != null)

@@ -125,7 +125,7 @@ namespace InterfacesDroid.Views
                 var valueText = FindViewById<TextView>(Resource.Id.ColorValue);
                 var seekBar = FindViewById<SeekBar>(Resource.Id.ColorSeekBar);
 
-                _bindingHost.SetBinding<int>(nameof(c.Value), channelValue =>
+                _bindingHost.SetBinding<Channel, int>(nameof(c.Value), channel => channel.Value, channelValue =>
                 {
                     valueText.Text = channelValue.ToString();
                     seekBar.Progress = channelValue;
