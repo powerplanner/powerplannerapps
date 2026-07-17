@@ -676,10 +676,16 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 accountChanged = true;
             }
 
-            if (settings.NoClassColor != null && (this.NoClassColor == null || !this.NoClassColor.SequenceEqual(settings.NoClassColor)))
+            if (settings.NoClassColor != null)
             {
-                this.NoClassColor = settings.NoClassColor;
-                accountChanged = true;
+                byte[] syncedNoClassColor = settings.NoClassColor.Length == 0 ? null : settings.NoClassColor;
+                if ((syncedNoClassColor == null || syncedNoClassColor.Length == 3) &&
+                    ((this.NoClassColor == null) != (syncedNoClassColor == null) ||
+                    (this.NoClassColor != null && !this.NoClassColor.SequenceEqual(syncedNoClassColor))))
+                {
+                    this.NoClassColor = syncedNoClassColor;
+                    accountChanged = true;
+                }
             }
 
             return accountChanged;
