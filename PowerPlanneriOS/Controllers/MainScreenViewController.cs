@@ -17,6 +17,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary;
 using Vx.iOS;
+using BareMvvm.Core.ViewModels;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -61,6 +62,11 @@ namespace PowerPlanneriOS.Controllers
                     TryAskingForRatingIfNeeded();
                 }
             }
+        }
+
+        protected override void SetHostedViewModel(BaseViewModel viewModel)
+        {
+            ViewModel = (MainScreenViewModel)viewModel;
         }
 
         private async void TryAskingForRatingIfNeeded()

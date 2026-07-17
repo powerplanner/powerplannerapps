@@ -182,7 +182,12 @@ namespace InterfacesiOS.ViewModelPresenters
         BaseViewModel IViewModelHost.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (PagedViewModel)value; }
+            set { SetHostedViewModel(value); }
+        }
+
+        protected virtual void SetHostedViewModel(BaseViewModel viewModel)
+        {
+            ViewModel = (PagedViewModel)viewModel;
         }
 
         private void ViewModel_OnPresenterNeedsToClearBackStack(object sender, EventArgs e)
