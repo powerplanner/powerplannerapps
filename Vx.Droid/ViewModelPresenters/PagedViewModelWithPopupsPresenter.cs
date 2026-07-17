@@ -168,7 +168,7 @@ namespace InterfacesDroid.ViewModelPresenters
         }
     }
 
-    public class PagedViewModelWithPopupsPresenter : FrameLayout
+    public class PagedViewModelWithPopupsPresenter : FrameLayout, IViewModelHost
     {
         private PagedViewModelPresenter _pagedViewModelPresenter;
         private PopupsPresenter _popupsPresenter;
@@ -228,6 +228,12 @@ namespace InterfacesDroid.ViewModelPresenters
 
                 // Full screen popup is configured via the binding in Initialize()
             }
+        }
+
+        BaseViewModel IViewModelHost.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (PagedViewModelWithPopups)value; }
         }
 
         

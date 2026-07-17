@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using BareMvvm.Core.ViewModels;
+using InterfacesDroid.ViewModelPresenters;
 using ToolsPortable;
 
 namespace InterfacesDroid.Views
@@ -55,7 +56,7 @@ namespace InterfacesDroid.Views
     }
 #endif
 
-    public abstract class ViewHostGeneric : InflatedViewWithBindingHost
+    public abstract class ViewHostGeneric : InflatedViewWithBindingHost, IViewModelHost
     {
         public BaseViewModel ViewModel
         {

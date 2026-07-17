@@ -113,12 +113,12 @@ namespace InterfacesDroid.ViewModelPresenters
                 (value as BaseViewModel).SetNativeView(view);
             }
 
-            if (view is not ViewHostGeneric viewHost)
+            if (view is not IViewModelHost viewModelHost)
             {
-                throw new InvalidOperationException("Mapped view must derive from ViewHostGeneric.");
+                throw new InvalidOperationException("Mapped view must implement IViewModelHost.");
             }
 
-            viewHost.ViewModel = (BaseViewModel)value;
+            viewModelHost.ViewModel = (BaseViewModel)value;
 
             // And return the view
             return view;
