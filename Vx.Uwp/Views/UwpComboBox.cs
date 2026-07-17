@@ -18,13 +18,12 @@ namespace Vx.Uwp.Views
             _comboBoxNum++;
         }
 
-        private bool _ignoreSelectionChanged;
+        private bool _isApplyingProperties;
 
         private void View_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_ignoreSelectionChanged)
+            if (_isApplyingProperties)
             {
-                _ignoreSelectionChanged = false;
                 return;
             }
 
@@ -38,39 +37,46 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
-            View.IsEnabled = newView.IsEnabled;
-            View.Header = newView.Header;
-            View.DataContext = newView.ItemTemplate;
-            // ItemsSource and selected item will be tricky...
-
-            if (!object.ReferenceEquals(oldView?.Items, newView.Items))
+            _isApplyingProperties = true;
+            try
             {
-                if (View.SelectedItem != null)
+                View.IsEnabled = newView.IsEnabled;
+                View.Header = newView.Header;
+                View.DataContext = newView.ItemTemplate;
+
+                if (!object.ReferenceEquals(oldView?.Items, newView.Items))
                 {
-                    // Changing the items source while there's currently a selected item will cause the selected item to clear (go to null).
-                    // But we need to ignore that change, since we want to apply whatever selected item we'll have.
-                    _ignoreSelectionChanged = true;
+                    View.Items.Clear();
+                    if (newView.Items != null)
+                    {
+                        foreach (object item in newView.Items)
+                        {
+                            View.Items.Add(item);
+                        }
+                    }
                 }
 
-                View.ItemsSource = newView.Items;
-            }
-
-            if (newView.ItemTemplate != null)
-            {
-                if (View.ItemTemplate == null)
+                if (newView.ItemTemplate != null)
                 {
-                    View.ItemTemplate = UwpDataTemplateView.GetDataTemplate(View.Name);
+                    if (View.ItemTemplate == null)
+                    {
+                        View.ItemTemplate = UwpDataTemplateView.GetDataTemplate(View.Name);
+                    }
                 }
-            }
-            else
-            {
-                if (View.ItemTemplate != null)
+                else
                 {
-                    View.ItemTemplate = null;
+                    if (View.ItemTemplate != null)
+                    {
+                        View.ItemTemplate = null;
+                    }
                 }
-            }
 
-            View.SelectedItem = newView.SelectedItem?.Value;
+                View.SelectedItem = newView.SelectedItem?.Value;
+            }
+            finally
+            {
+                _isApplyingProperties = false;
+            }
         }
     }
 }
