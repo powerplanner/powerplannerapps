@@ -66,10 +66,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         public async Task<IDisposable> LockForReadAsync(Func<string> customMessage, [CallerMemberName]string callerName = null, [CallerFilePath]string callerFilePath = null)
         {
-            // EF Core's DbContext is not thread-safe. Since a single DbContext is shared per account,
-            // concurrent read locks would allow multiple threads to access it simultaneously,
-            // corrupting the SQLite connection handle (causing ArgumentNullException in sqlite3_prepare_v2).
-            // Redirect all reads to write locks to ensure exclusive access.
+            // A single SQLite connection is shared per account. Serialize reads with writes so
+            // commands and transactions never overlap on that connection.
             return await LockForWriteAsync(customMessage, callerName, callerFilePath);
         }
 

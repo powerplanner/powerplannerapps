@@ -7,8 +7,7 @@
 		<Platforms>x86;x64;arm64</Platforms>
 		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 		<DefaultLanguage>en-US</DefaultLanguage>
-		<!-- EF Core 10 emits legacy query interceptors that the .NET 10 compiler ignores (CS9270). -->
-		<PublishAot>false</PublishAot>
+		<PublishAot>true</PublishAot>
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
