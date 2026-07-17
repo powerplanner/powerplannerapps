@@ -158,7 +158,7 @@
                                     FontWeight="Normal"/>
 
                                 <ItemsControl
-                                        ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Class.Schedules}"
+                                    x:Name="SchedulesPreview"
                                         Grid.Row="1"
                                         ItemTemplate="{StaticResource DataTemplateDayPreview}">
                                 </ItemsControl>
@@ -187,7 +187,7 @@
                                     FontWeight="Normal"/>
 
                                 <ItemsControl
-                                        ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Tasks}"
+                                    x:Name="TasksPreview"
                                         Grid.Row="1"
                                         Style="{StaticResource TasksOrEventsPreviewItemsControlStyle}">
                                 </ItemsControl>
@@ -216,7 +216,7 @@
                                     FontWeight="Normal"/>
 
                                 <ItemsControl
-                                        ItemsSource="{x:Bind ViewModel.ViewItemsGroupClass.Events}"
+                                    x:Name="EventsPreview"
                                         Grid.Row="1"
                                         Style="{StaticResource TasksOrEventsPreviewItemsControlStyle}">
                                 </ItemsControl>
