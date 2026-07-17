@@ -8,7 +8,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class PopupViewHostComponent : VxComponent
+    public partial class PopupViewHostComponent : VxComponent
     {
         private ObservableCollection<PopupCommand> _primaryCommands;
         public ObservableCollection<PopupCommand> PrimaryCommands

@@ -1,5 +1,4 @@
 ﻿using BareMvvm.Core.ViewModels;
-using Newtonsoft.Json.Linq;
 using PowerPlannerAppDataLibrary.Converters;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
@@ -13,7 +12,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ImageUploadOptionsViewModel : PopupComponentViewModel
+    public partial class ImageUploadOptionsViewModel : PopupComponentViewModel
     {
         private AccountDataItem _account;
 

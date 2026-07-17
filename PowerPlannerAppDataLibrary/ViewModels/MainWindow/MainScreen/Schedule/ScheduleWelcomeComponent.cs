@@ -16,7 +16,7 @@ using static PowerPlannerAppDataLibrary.Services.AiService;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
-    public class ScheduleWelcomeComponent : VxComponent
+    public partial class ScheduleWelcomeComponent : VxComponent
     {
         public ScheduleViewModel ScheduleViewModel { get; set; }
         public Thickness NookInsets { get; set; }

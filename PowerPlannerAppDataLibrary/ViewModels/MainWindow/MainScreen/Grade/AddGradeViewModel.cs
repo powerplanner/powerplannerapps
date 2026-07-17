@@ -19,7 +19,7 @@ using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
-    public class AddGradeViewModel : PopupComponentViewModel
+    public partial class AddGradeViewModel : PopupComponentViewModel
     {
         /// <summary>
         /// View should set this if it enables editing IsDropped from here
@@ -27,7 +27,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
         public bool UsesIsDropped { get; set; }
 
         protected override bool InitialAllowLightDismissValue => false;
-
         public AddGradeViewModel(BaseViewModel parent, OperationState state) : base(parent)
         {
             State = state;

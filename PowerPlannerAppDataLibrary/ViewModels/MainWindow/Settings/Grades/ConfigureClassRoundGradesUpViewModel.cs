@@ -80,7 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void EditDefaultRoundGradesUp()
         {
-            ConfigureClassGradesListViewModel.ShowViewModel<ConfigureDefaultRoundGradesUpViewModel>(this);
+            ConfigureClassGradesListViewModel.ShowViewModel(this, parent => new ConfigureDefaultRoundGradesUpViewModel(parent));
         }
 
         private async void Save(bool roundGradesUp)

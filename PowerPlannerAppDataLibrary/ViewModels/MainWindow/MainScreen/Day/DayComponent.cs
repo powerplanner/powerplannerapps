@@ -7,7 +7,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 {
-    public class DayComponent : VxComponent
+    public partial class DayComponent : VxComponent
     {
         private DateTime _thisDay;
         private Func<int, View> _itemTemplate;

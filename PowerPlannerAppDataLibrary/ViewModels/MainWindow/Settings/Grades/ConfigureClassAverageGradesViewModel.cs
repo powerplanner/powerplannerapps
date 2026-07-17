@@ -80,7 +80,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void EditDefaultAverageGrades()
         {
-            ConfigureClassGradesListViewModel.ShowViewModel<ConfigureDefaultAverageGradesViewModel>(this);
+            ConfigureClassGradesListViewModel.ShowViewModel(this, parent => new ConfigureDefaultAverageGradesViewModel(parent));
         }
 
         private async void Save(bool averageGrades)

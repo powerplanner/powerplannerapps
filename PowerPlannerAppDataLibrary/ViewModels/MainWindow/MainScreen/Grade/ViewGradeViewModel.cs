@@ -17,7 +17,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
     public class ViewGradeViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public BaseViewItemMegaItem Grade { get; private set; }
         public bool IsInWhatIfMode { get; private set; }
 
@@ -32,6 +31,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
             };
 
             UpdateSecondaryCommands();
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Grade);
         }
 
         private bool? _isDropped;

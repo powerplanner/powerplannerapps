@@ -11,8 +11,6 @@
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<PublishAot>true</PublishAot>
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
-		<!-- Serializer models are explicitly rooted; remaining warnings are fixed legacy-format and external-package boundaries. -->
-		<NoWarn>$(NoWarn);IL2026;IL2087;IL2090;IL2104;IL3050;IL3053</NoWarn>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
 		<EnableMsixTooling>true</EnableMsixTooling>
@@ -26,9 +24,6 @@
 		<DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.ApplicationInsights"> <!--Keep on 2.x, 3.x is about 10MB bigger!-->
-			<Version>2.23.0</Version>
-		</PackageReference>
 		<PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
 			<Version>7.1.3</Version>
 		</PackageReference>

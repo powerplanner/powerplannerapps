@@ -27,7 +27,7 @@ using BareMvvm.Core;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
-    public class AddTaskOrEventViewModel : PopupComponentViewModel
+    public partial class AddTaskOrEventViewModel : PopupComponentViewModel
     {
         public IList<ViewItemClass> Classes { get; private set; }
 
@@ -303,10 +303,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             return RenderGenericPopupContent(views.ToArray());
         }
 
-        private class RecurrenceControlComponent : VxComponent
+        private partial class RecurrenceControlComponent : VxComponent
         {
-            [VxSubscribe]
             public RecurrenceControlViewModel ViewModel { get; set; }
+
+            protected override void RegisterPropertySubscriptions()
+            {
+                base.RegisterPropertySubscriptions();
+                Subscribe(ViewModel);
+            }
 
             protected override View Render()
             {
@@ -946,8 +951,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             return answer.ToArray();
         }
 
-        [VxSubscribe]
         public TextField Name { get; private set; }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Name);
+        }
 
         private static TextField GenerateNameField(string initialText)
         {
@@ -1437,7 +1447,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             try
             {
                 string name = Name.Text.Trim();
-                if (!ValidateAllInputs())
+                if (!ValidateAllInputs(new[] { Name }))
                 {
                     return;
                 }

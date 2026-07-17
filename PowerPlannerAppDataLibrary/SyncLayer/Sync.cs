@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using StorageEverywhere;
+﻿using StorageEverywhere;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
@@ -20,6 +19,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using ToolsPortable;
+using PowerPlannerAppDataLibrary.Serialization;
 
 namespace PowerPlannerAppDataLibrary.SyncLayer
 {
@@ -601,16 +601,15 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         {
                             var partialFile = await partialSyncsFolder.CreateFileAsync("Partial" + partialSyncNumber, CreationCollisionOption.ReplaceExisting);
                             partialSyncFiles.Add(partialFile);
-                            var jsonSerializer = new JsonSerializer();
                             using (var stream = await partialFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                             {
                                 using (var streamWriter = new StreamWriter(stream))
                                 {
-                                    jsonSerializer.Serialize(streamWriter, new UpdatedItems()
+                                    streamWriter.Write(PowerPlannerJson.Serialize(new UpdatedItems()
                                     {
                                         MegaItems = response.UpdatedItems.MegaItems,
                                         Grades = response.UpdatedItems.Grades
-                                    });
+                                    }));
                                 }
                             }
                         }
@@ -683,10 +682,7 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                         {
                             using (var streamReader = new StreamReader(stream))
                             {
-                                using (var jsonReader = new JsonTextReader(streamReader))
-                                {
-                                    partialItems = new JsonSerializer().Deserialize<UpdatedItems>(jsonReader);
-                                }
+                                partialItems = PowerPlannerJson.Deserialize<UpdatedItems>(streamReader.ReadToEnd());
                             }
                         }
 
@@ -1222,13 +1218,10 @@ namespace PowerPlannerAppDataLibrary.SyncLayer
                                 {
                                     using (var responseReader = new StreamReader(responseStream))
                                     {
-                                        using (var jsonReader = new JsonTextReader(responseReader))
+                                        var resp = PowerPlannerJson.Deserialize<UploadImageResponse>(responseReader.ReadToEnd());
+                                        if (resp.Error != null)
                                         {
-                                            var resp = new JsonSerializer().Deserialize<UploadImageResponse>(jsonReader);
-                                            if (resp.Error != null)
-                                            {
-                                                throw new Exception(resp.Error);
-                                            }
+                                            throw new Exception(resp.Error);
                                         }
                                     }
                                 }

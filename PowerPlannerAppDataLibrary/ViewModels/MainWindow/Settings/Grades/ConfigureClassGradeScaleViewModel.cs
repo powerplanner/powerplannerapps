@@ -18,7 +18,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassGradeScaleViewModel : PopupComponentViewModel
+    public partial class ConfigureClassGradeScaleViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 
@@ -92,7 +92,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void EditDefaultGradeScale()
         {
-            ConfigureClassGradesListViewModel.ShowViewModel<ConfigureDefaultGradeScaleViewModel>(this);
+            ConfigureClassGradesListViewModel.ShowViewModel(this, parent => new ConfigureDefaultGradeScaleViewModel(parent));
         }
 
         public async void Save()

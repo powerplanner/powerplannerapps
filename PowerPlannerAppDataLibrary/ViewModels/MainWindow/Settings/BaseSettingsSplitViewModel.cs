@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class BaseSettingsSplitViewModel : BaseSettingsViewModelWithAccount
+    public partial class BaseSettingsSplitViewModel : BaseSettingsViewModelWithAccount
     {
         public BaseSettingsSplitViewModel(BaseViewModel parent) : base(parent)
         {

@@ -8,7 +8,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class SuccessfullyCreatedAccountViewModel : PopupComponentViewModel
+    public partial class SuccessfullyCreatedAccountViewModel : PopupComponentViewModel
     {
         public SuccessfullyCreatedAccountViewModel(BaseViewModel parent) : base(parent)
         {

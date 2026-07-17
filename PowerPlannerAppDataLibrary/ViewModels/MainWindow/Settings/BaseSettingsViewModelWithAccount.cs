@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class BaseSettingsViewModelWithAccount : BaseViewModel
+    public partial class BaseSettingsViewModelWithAccount : BaseViewModel
     {
         public BaseSettingsViewModelWithAccount(BaseViewModel parent) : base(parent)
         {

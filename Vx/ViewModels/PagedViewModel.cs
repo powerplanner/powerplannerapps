@@ -9,7 +9,7 @@ using Vx.Views;
 
 namespace BareMvvm.Core.ViewModels
 {
-    public class PagedViewModel : BaseViewModel
+    public partial class PagedViewModel : BaseViewModel
     {
         public event EventHandler OnPresenterNeedsToGoBack;
         public event EventHandler<BaseViewModel> OnPresenterNeedsToRemoveModelFromBackStack;

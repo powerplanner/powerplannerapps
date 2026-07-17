@@ -14,12 +14,11 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Holiday
 {
-    public class AddHolidayViewModel : PopupComponentViewModel
+    public partial class AddHolidayViewModel : PopupComponentViewModel
     {
         public enum OperationState { Adding, Editing }
 
         public OperationState State { get; private set; }
-
         protected override bool InitialAllowLightDismissValue => false;
 
         public override string GetPageName()

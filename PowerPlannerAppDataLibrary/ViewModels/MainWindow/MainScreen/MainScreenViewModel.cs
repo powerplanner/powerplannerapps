@@ -37,7 +37,7 @@ using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
-    public class MainScreenViewModel : PagedViewModelWithPopups
+    public partial class MainScreenViewModel : PagedViewModelWithPopups
     {
         protected override View Render()
         {

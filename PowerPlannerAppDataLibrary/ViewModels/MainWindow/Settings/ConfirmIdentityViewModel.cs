@@ -13,7 +13,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ConfirmIdentityViewModel : PopupComponentViewModel
+    public partial class ConfirmIdentityViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;

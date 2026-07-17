@@ -23,6 +23,27 @@ namespace Vx.Views
             return null;
         }
 
+        internal bool ApplyParameters(VxComponent source)
+        {
+            return ApplyParametersFrom(source);
+        }
+
+        protected virtual bool ApplyParametersFrom(VxComponent source)
+        {
+            return false;
+        }
+
+        protected static bool ApplyParameter<T>(T currentValue, T newValue, Action<T> apply)
+        {
+            if (ReferenceEquals(currentValue, newValue) || Equals(currentValue, newValue))
+            {
+                return false;
+            }
+
+            apply(newValue);
+            return true;
+        }
+
         public WeakReference<INativeComponent> NativeComponent { get; set; }
 
         public void InitializeForDisplay(INativeComponent nativeComponent)
@@ -74,7 +95,6 @@ namespace Vx.Views
             //    base.Content = renderedContentContainer;
             //}
 
-            SubscribeToStates();
             SubscribeToProperties();
 
             RenderActual();
@@ -161,51 +181,23 @@ namespace Vx.Views
             // Nothing
         }
 
-        private void SubscribeToStates()
+        private HashSet<VxState> _trackedStates = new HashSet<VxState>();
+
+        internal void TrackState(VxState state)
         {
-            foreach (var state in AllStates())
+            if (_trackedStates.Add(state))
             {
                 state.ValueChanged += State_ValueChanged;
             }
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
-        private IEnumerable<VxState> AllStates()
-        {
-            var stateType = typeof(VxState);
-            foreach (var prop in this.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(i => i.CanRead && stateType.IsAssignableFrom(i.PropertyType)))
-            {
-                var state = prop.GetValue(this) as VxState;
-                if (state == null)
-                {
-#if DEBUG
-                    System.Diagnostics.Debugger.Break();
-#endif
-                    throw new NullReferenceException("VxState was null");
-                }
-                yield return state;
-            }
-            foreach (var prop in this.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(i => stateType.IsAssignableFrom(i.FieldType)))
-            {
-                var state = prop.GetValue(this) as VxState;
-                if (state == null)
-                {
-#if DEBUG
-                    System.Diagnostics.Debugger.Break();
-#endif
-                    throw new NullReferenceException("VxState was null");
-                }
-                yield return state;
-            }
-        }
-
         private void UnsubscribeFromStates()
         {
-            foreach (var state in AllStates())
+            foreach (var state in _trackedStates)
             {
                 state.ValueChanged -= State_ValueChanged;
             }
+            _trackedStates.Clear();
         }
 
         private void State_ValueChanged(object sender, EventArgs e)
@@ -214,16 +206,24 @@ namespace Vx.Views
         }
 
         private PropertyChangedEventHandler _propertyValuePropertyChangedHandler;
-        private static Type _iNotifyPropertyChangedType = typeof(INotifyPropertyChanged);
 
         private void SubscribeToProperties()
         {
             _propertyValuePropertyChangedHandler = new WeakEventHandler<PropertyChangedEventArgs>(PropertyValue_PropertyChanged).Handler;
 
-            foreach (var propVal in AllSubscribeablePropertyValues())
+            if (_subscribed != null)
             {
-                SubscribeToPropertyValue(propVal);
+                foreach (INotifyPropertyChanged propertyValue in _subscribed)
+                {
+                    SubscribeToPropertyValue(propertyValue);
+                }
             }
+
+            RegisterPropertySubscriptions();
+        }
+
+        protected virtual void RegisterPropertySubscriptions()
+        {
         }
 
         private void UnsubscribeFromProperties()
@@ -233,10 +233,15 @@ namespace Vx.Views
                 return;
             }
 
-            foreach (var propVal in AllSubscribeablePropertyValues())
+            if (_subscribed != null)
             {
-                UnsubscribeToPropertyValue(propVal);
+                foreach (INotifyPropertyChanged propertyValue in _subscribed)
+                {
+                    UnsubscribeToPropertyValue(propertyValue);
+                }
             }
+
+            _subscribed = null;
         }
 
         private void UnsubscribeFromCollections()
@@ -259,39 +264,6 @@ namespace Vx.Views
                 }
 
                 _subscribedCollectionsStrong = null;
-            }
-        }
-
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
-        private IEnumerable<INotifyPropertyChanged> AllSubscribeablePropertyValues()
-        {
-            var seenProps = new HashSet<string>();
-
-            foreach (var prop in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(i => i.CanRead && _iNotifyPropertyChangedType.IsAssignableFrom(i.PropertyType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
-            {
-                // Avoid subscribing to properties overridden by "new" keyword
-                if (seenProps.Add(prop.Name))
-                {
-                    var propVal = prop.GetValue(this) as INotifyPropertyChanged;
-                    if (propVal != null)
-                    {
-                        yield return propVal;
-                    }
-                }
-            }
-
-            foreach (var prop in this.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(i => _iNotifyPropertyChangedType.IsAssignableFrom(i.FieldType) && i.GetCustomAttribute<VxSubscribeAttribute>() != null))
-            {
-                // Avoid subscribing to properties overridden by "new" keyword
-                if (seenProps.Add(prop.Name))
-                {
-                    var propVal = prop.GetValue(this) as INotifyPropertyChanged;
-                    if (propVal != null)
-                    {
-                        yield return propVal;
-                    }
-                }
             }
         }
 
@@ -320,7 +292,10 @@ namespace Vx.Views
 
             if (!_subscribed.Contains(obj))
             {
-                SubscribeToPropertyValue(obj);
+                if (_propertyValuePropertyChangedHandler != null)
+                {
+                    SubscribeToPropertyValue(obj);
+                }
                 _subscribed.Add(obj);
             }
         }
@@ -466,7 +441,16 @@ namespace Vx.Views
 
             var now = DateTime.Now;
 
-            View newView = Render();
+            View newView;
+            VxState.RenderingComponent = this;
+            try
+            {
+                newView = Render();
+            }
+            finally
+            {
+                VxState.RenderingComponent = null;
+            }
             View oldView = RenderedContent;
 
             try

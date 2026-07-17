@@ -4,9 +4,12 @@ using PowerPlannerAppDataLibrary.Extensions.Telemetry;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using PowerPlannerAppDataLibrary.Serialization;
 
 namespace PowerPlannerAppDataLibrary.DataLayer
 {
@@ -42,7 +45,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
                 {
-                    scales = SERIALIZER.ReadObject(s) as GradeScale[];
+                    using (var reader = new StreamReader(s))
+                    {
+                        string contents = reader.ReadToEnd();
+                        scales = contents.TrimStart().StartsWith("<")
+                            ? ReadLegacyGradeScales(contents)
+                            : PowerPlannerJson.Deserialize<GradeScale[]>(contents);
+                    }
                 }
 
                 if (scales == null)
@@ -74,11 +83,25 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             IFile file = await _savedGradeScalesFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
             using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
             {
-                SERIALIZER.WriteObject(s, scales);
+                using (var writer = new StreamWriter(s))
+                {
+                    writer.Write(PowerPlannerJson.Serialize(scales));
+                }
             }
         }
 
-        private static DataContractSerializer SERIALIZER = new DataContractSerializer(typeof(GradeScale[]));
+        private static GradeScale[] ReadLegacyGradeScales(string contents)
+        {
+            return XDocument.Parse(contents)
+                .Descendants()
+                .Where(element => element.Name.LocalName == "GradeScale")
+                .Select(element => new GradeScale
+                {
+                    StartGrade = double.Parse(element.Elements().First(child => child.Name.LocalName == "StartGrade").Value, CultureInfo.InvariantCulture),
+                    GPA = double.Parse(element.Elements().First(child => child.Name.LocalName == "GPA").Value, CultureInfo.InvariantCulture)
+                })
+                .ToArray();
+        }
 
         /// <summary>
         /// Returns null if account doesn't exist.

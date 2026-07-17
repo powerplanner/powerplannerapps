@@ -10,7 +10,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class ScheduleItemComponent : VxComponent
+    public partial class ScheduleItemComponent : VxComponent
     {
         public const float WIDTH_OF_COLLAPSED_ITEM = 36;
         public static readonly float SPACING_WITH_NO_ADDITIONAL = WIDTH_OF_COLLAPSED_ITEM + 6;

@@ -9,12 +9,17 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class GradeListViewItemComponent : VxComponent
+    public partial class GradeListViewItemComponent : VxComponent
     {
-        [VxSubscribe] // Subscribe is needed for What If? mode
         public BaseViewItemMegaItem Item { get; set; }
         public Action OnRequestViewGrade { get; set; }
         public bool IsInWhatIfMode { get; set; }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Item);
+        }
 
         protected override View Render()
         {

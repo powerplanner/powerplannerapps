@@ -13,7 +13,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ChangeEmailViewModel : PopupComponentViewModel
+    public partial class ChangeEmailViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -114,8 +114,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             set { SetProperty(ref _isUpdatingEmail, value, nameof(IsUpdatingEmail)); }
         }
 
-        [VxSubscribe]
         public TextField Email { get; private set; } = CreateAccountViewModel.GenerateEmailTextField();
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Email);
+        }
 
         private void SetError(string error)
         {
@@ -124,7 +129,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         public async void UpdateEmail()
         {
-            if (!ValidateAllInputs())
+            if (!ValidateAllInputs(new[] { Email }))
             {
                 return;
             }

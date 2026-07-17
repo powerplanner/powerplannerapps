@@ -11,7 +11,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class TwoWeekScheduleSettingsViewModel : PopupComponentViewModel
+    public partial class TwoWeekScheduleSettingsViewModel : PopupComponentViewModel
     {
         public AccountDataItem Account { get; private set; }
 

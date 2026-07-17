@@ -11,7 +11,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ReminderSettingsViewModel : PopupComponentViewModel
+    public partial class ReminderSettingsViewModel : PopupComponentViewModel
     {
         private AccountDataItem _account;
 

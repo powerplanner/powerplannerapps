@@ -2,7 +2,7 @@
 using System.ComponentModel;
 namespace Vx.Views
 {
-    public static class DataTemplateHelper
+    public static partial class DataTemplateHelper
     {
         /// <summary>
         /// Caller needs to handle calling render to native on component if hasn't been rendered natively yet
@@ -29,7 +29,7 @@ namespace Vx.Views
             return true;
         }
 
-        public class VxDataTemplateComponent : VxComponent
+        public partial class VxDataTemplateComponent : VxComponent
         {
             public object Data { get => GetState<object>(); set => SetState(value); }
 

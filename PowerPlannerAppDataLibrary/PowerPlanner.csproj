@@ -14,11 +14,13 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>PowerPlannerAppDataLibrary</RootNamespace>
     <AssemblyName>PowerPlannerAppDataLibrary</AssemblyName>
-    <!-- Legacy persisted/network formats use rooted serializer models; changing serializers would break compatibility. -->
-    <NoWarn>$(NoWarn);NU1903;NU1904;IL2026</NoWarn>
+    <NoWarn>$(NoWarn);NU1903;NU1904</NoWarn>
     <IsTrimmable>true</IsTrimmable>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <InterceptorsNamespaces>$(InterceptorsNamespaces);Dapper.AOT</InterceptorsNamespaces>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'ARM64'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />
@@ -36,8 +38,7 @@
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Dapper.AOT" Version="1.0.52" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.260219.4" />
+    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.260717.1" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.4" />
     <PackageReference Include="TimeZoneConverter" Version="7.2.0" />
     <PackageReference Include="TimeZoneNames" Version="7.0.0" />
@@ -51,5 +52,6 @@
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj" />
     <ProjectReference Include="..\Vx\Vx.csproj" />
+    <ProjectReference Include="..\Vx.Generators\Vx.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

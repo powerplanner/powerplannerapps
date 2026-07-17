@@ -8,6 +8,15 @@ namespace Vx.Views
 {
     public class VxState
     {
+        [ThreadStatic]
+        private static VxComponent _renderingComponent;
+
+        internal static VxComponent RenderingComponent
+        {
+            get => _renderingComponent;
+            set => _renderingComponent = value;
+        }
+
         private Action _onChanged;
         public event EventHandler ValueChanged;
 
@@ -23,7 +32,11 @@ namespace Vx.Views
         private object _value;
         public object Value
         {
-            get => _value;
+            get
+            {
+                _renderingComponent?.TrackState(this);
+                return _value;
+            }
             set
             {
                 if (!object.Equals(_value, value))

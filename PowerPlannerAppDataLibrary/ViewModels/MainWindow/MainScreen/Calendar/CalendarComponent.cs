@@ -18,9 +18,8 @@ using Vx.Views.DragDrop;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 {
-    public class CalendarComponent : VxComponent
+    public partial class CalendarComponent : VxComponent
     {
-        [VxSubscribe]
         private CalendarViewModel _viewModel;
 
         private DateTime _thisMonth;
@@ -38,6 +37,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             _viewModel = viewModel;
             _thisMonth = DateTools.GetMonth(DateTime.Today);
             _itemTemplate = RenderContent;
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(_viewModel);
         }
 
         protected override View Render()
@@ -185,7 +190,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             };
         }
 
-        private class CalendarMonthComponent : VxComponent
+        private partial class CalendarMonthComponent : VxComponent
         {
             public DateTime Month { get; set; }
             public MyObservableList<BaseViewItemMegaItem> Items { get; set; }
@@ -335,7 +340,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             }
         }
 
-        private class CalendarDayComponent : VxComponent
+        private partial class CalendarDayComponent : VxComponent
         {
             public DateTime Month { get; set; }
             public MyObservableList<BaseViewItemMegaItem> Items { get; set; }

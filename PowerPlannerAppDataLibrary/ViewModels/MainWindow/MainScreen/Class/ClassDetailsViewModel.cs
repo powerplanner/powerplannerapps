@@ -14,12 +14,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
     public class ClassDetailsViewModel : BaseClassContentViewModel
     {
-        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
         public ClassDetailsViewModel(ClassViewModel parent) : base(parent)
         {
             Class = parent.ViewItemsGroupClass.Class;
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Class);
         }
 
         protected override View Render()

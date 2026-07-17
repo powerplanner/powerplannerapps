@@ -15,7 +15,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ChangePasswordViewModel : PopupComponentViewModel
+    public partial class ChangePasswordViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -66,11 +66,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             );
         }
 
-        [VxSubscribe]
         public TextField Password { get; private set; }
 
-        [VxSubscribe]
         public TextField ConfirmPassword { get; private set; }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Password);
+            Subscribe(ConfirmPassword);
+        }
 
         private bool _isUpdatingPassword;
 
@@ -86,7 +91,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
             try
             {
-                if (!ValidateAllInputs())
+                if (!ValidateAllInputs(new[] { Password, ConfirmPassword }))
                 {
                     return;
                 }

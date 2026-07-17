@@ -18,7 +18,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 {
-    public class CreateAccountViewModel : PopupComponentViewModel
+    public partial class CreateAccountViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -126,7 +126,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
         /// </summary>
         public bool IsCreateLocalAccountVisible => DefaultAccountToUpgrade == null;
 
-        [VxSubscribe]
         public TextField Username { get; private set; }
 
         private InputValidationState ValidateUsername(string username)
@@ -165,11 +164,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
             return InputValidationState.Valid;
         }
 
-        [VxSubscribe]
         public TextField Password { get; private set; }
 
-        [VxSubscribe]
         public TextField Email { get; private set; }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Username);
+            Subscribe(Password);
+            Subscribe(Email);
+        }
 
         private bool isOkayToCreate()
         {
@@ -194,10 +199,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
                 return;
             }
 
-            if (!ValidateAllInputs(customValidators: new Dictionary<string, Action<TextField>>()
+            if (!ValidateAllInputs(new[] { Username, Email, Password }, customValidators: new Dictionary<TextField, Action<TextField>>()
             {
                 // Email isn't required for local accounts
-                { nameof(Email), f => f.Validate(overrideRequired: false) }
+                { Email, field => field.Validate(overrideRequired: false) }
             }))
             {
                 return;
@@ -227,7 +232,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount
 
         public async void CreateAccount()
         {
-            if (!ValidateAllInputs())
+            if (!ValidateAllInputs(new[] { Username, Email, Password }))
             {
                 return;
             }

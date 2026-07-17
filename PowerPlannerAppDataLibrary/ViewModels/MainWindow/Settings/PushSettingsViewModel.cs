@@ -11,7 +11,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class PushSettingsViewModel : PopupComponentViewModel
+    public partial class PushSettingsViewModel : PopupComponentViewModel
     {
         private AccountDataItem Account;
 

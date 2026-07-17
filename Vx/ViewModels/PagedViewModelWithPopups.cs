@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace BareMvvm.Core.ViewModels
 {
-    public abstract class PagedViewModelWithPopups : PagedViewModel
+    public abstract partial class PagedViewModelWithPopups : PagedViewModel
     {
         public PagedViewModelWithPopups(BaseViewModel parent) : base(parent)
         {

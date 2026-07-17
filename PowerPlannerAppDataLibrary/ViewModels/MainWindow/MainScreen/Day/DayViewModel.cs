@@ -19,12 +19,11 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 {
-    public class DayViewModel : BaseMainScreenViewModelChild, ICalendarOrDayViewModel
+    public partial class DayViewModel : BaseMainScreenViewModelChild, ICalendarOrDayViewModel
     {
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; private set; }
 
         public DateTime Today { get; private set; } = DateTime.Today;
-
         public DayViewModel(BaseViewModel parent, Guid localAccountId, ViewItemSemester semester) : base(parent)
         {
             Initialize(localAccountId, semester);

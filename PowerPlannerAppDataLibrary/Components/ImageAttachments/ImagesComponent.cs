@@ -10,7 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
 {
-    internal class ImagesComponent : VxComponent
+    internal partial class ImagesComponent : VxComponent
     {
         public ImageAttachmentViewModel[] ImageAttachments { get; set; }
 
@@ -63,14 +63,19 @@ namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
         }
     }
 
-    internal class ImageComponent : VxComponent
+    internal partial class ImageComponent : VxComponent
     {
-        [VxSubscribe]
         public ImageAttachmentViewModel ImageAttachment { get; set; }
 
         public bool IsThumbnail { get; set; }
 
         public bool DontIncludeMargin { get; set; }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(ImageAttachment);
+        }
 
         protected override void Initialize()
         {

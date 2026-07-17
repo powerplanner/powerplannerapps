@@ -16,10 +16,10 @@ using PowerPlannerAppDataLibrary.Helpers;
 using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Extensions.Telemetry;
-using Newtonsoft.Json;
 using System.Reflection;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using PowerPlannerAppDataLibrary.Serialization;
 
 [module: DapperAot]
 
@@ -415,7 +415,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     timeTracker = TimeTracker.Start();
                     using (StreamWriter writer = new StreamWriter(s))
                     {
-                        GetSerializer().Serialize(writer, _items);
+                        writer.Write(PowerPlannerJson.Serialize(_items));
                     }
                     timeTracker.End(3, $"ChangedItems.Save serializing to stream. {_items.Count} items.");
                 }
@@ -447,11 +447,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                 ChangedItems changedItems = new ChangedItems(localAccountId, rawData);
                 await changedItems.Save();
-            }
-
-            private static Newtonsoft.Json.JsonSerializer GetSerializer()
-            {
-                return new Newtonsoft.Json.JsonSerializer();
             }
 
             private static async Task<IFile> CreateFile(Guid localAccountId)
@@ -500,7 +495,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 {
                     timeTracker.End(3, "ChangedItems.Load OpenAsync");
 
-                    var serializer = GetSerializer();
                     Dictionary<Guid, ChangedPropertiesOfDataItem> answer;
 
                     try
@@ -508,10 +502,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                         timeTracker = TimeTracker.Start();
                         using (StreamReader reader = new StreamReader(s))
                         {
-                            using (var jsonReader = new JsonTextReader(reader))
-                            {
-                                answer = serializer.Deserialize<Dictionary<Guid, ChangedPropertiesOfDataItem>>(jsonReader);
-                            }
+                            answer = PowerPlannerJson.Deserialize<Dictionary<Guid, ChangedPropertiesOfDataItem>>(reader.ReadToEnd());
                         }
                         timeTracker.End(3, "ChangedItems.Load read and deserialize");
                     }

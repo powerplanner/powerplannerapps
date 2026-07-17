@@ -64,8 +64,6 @@ namespace Vx
         internal Action<View, View> OnApplyPropertiesValidationHook { get; set; }
 #endif
 
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "VxComponent subclasses are preserved by the application as they are directly instantiated in Render methods.")]
         private void HandleInnerComponent(VxComponent oldView, VxComponent newView)
         {
             if (oldView == null)
@@ -74,24 +72,7 @@ namespace Vx
                 return;
             }
 
-            bool changed = false;
-
-            // Only want properties above the base VxComponent
-            foreach (var p in newView.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && typeof(VxComponent).IsAssignableFrom(i.DeclaringType) && i.Name != nameof(VxComponent.NativeComponent)))
-            {
-                var oldVal = p.GetValue(_originalComponent);
-                var newVal = p.GetValue(newView);
-
-                if (object.ReferenceEquals(oldVal, newVal) || object.Equals(oldVal, newVal))
-                {
-                    continue;
-                }
-
-                p.SetValue(_originalComponent, newVal);
-                changed = true;
-            }
-
-            if (changed)
+            if (_originalComponent.ApplyParameters(newView))
             {
                 // We render on demand here to stay in sync with the parent view changes.
                 // This is critical for iOS ListView to work correctly with changing views

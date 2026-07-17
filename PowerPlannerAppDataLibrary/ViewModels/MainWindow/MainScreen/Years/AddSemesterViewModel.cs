@@ -15,7 +15,7 @@ using static PowerPlannerSending.Schedule;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
-    public class AddSemesterViewModel : PopupComponentViewModel
+    public partial class AddSemesterViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 

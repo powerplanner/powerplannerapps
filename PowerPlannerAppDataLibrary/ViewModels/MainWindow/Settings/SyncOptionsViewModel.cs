@@ -13,13 +13,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
     public class SyncOptionsViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public AccountDataItem Account { get; private set; }
 
         public SyncOptionsViewModel(BaseViewModel parent) : base(parent)
         {
             Title = R.S("Settings_SyncOptions_Title");
             Account = MainScreenViewModel.CurrentAccount;
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Account);
         }
 
         protected override View Render()
@@ -46,18 +51,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         private void OpenImageUploadOptions()
         {
-            ShowViewModel<ImageUploadOptionsViewModel>();
+            ShowViewModel(parent => new ImageUploadOptionsViewModel(parent));
         }
 
         private void OpenPushSettings()
         {
-            ShowViewModel<PushSettingsViewModel>();
+            ShowViewModel(parent => new PushSettingsViewModel(parent));
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "View model types are preserved as they are directly referenced in code.")]
-        private void ShowViewModel<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>() where T : BaseViewModel
+        private void ShowViewModel(Func<BaseViewModel, BaseViewModel> createViewModel)
         {
-            ShowPopup(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
+            ShowPopup(createViewModel(this));
         }
     }
 }

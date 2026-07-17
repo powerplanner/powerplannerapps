@@ -20,9 +20,8 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class SettingsListViewModel : ComponentViewModel
+    public partial class SettingsListViewModel : ComponentViewModel
     {
-        [VxSubscribe]
         public DataLayer.AccountDataItem Account { get; private set; }
 
         public new MainScreenViewModel MainScreenViewModel { get; set; }
@@ -45,6 +44,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             Title = PowerPlannerResources.GetString("String_More");
 
             UpdateIsFullVersion();
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Account);
         }
 
         private bool _updatingIsFullVersion;

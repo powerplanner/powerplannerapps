@@ -1,6 +1,7 @@
 ﻿using PowerPlannerAppDataLibrary.DataLayer.TileSettings;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
+using PowerPlannerAppDataLibrary.Serialization;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerSending;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using ToolsPortable;
+using System.Xml.Linq;
 
 namespace PowerPlannerAppDataLibrary.DataLayer
 {
@@ -568,8 +570,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 {
                     using (Stream s = await file.OpenAsync(StorageEverywhere.FileAccess.Read))
                     {
-                        ClassTileSettings answer = (ClassTileSettings)GetClassTileSettingsSerializer().ReadObject(s);
-                        return answer;
+                        using (var reader = new StreamReader(s))
+                        {
+                            string contents = reader.ReadToEnd();
+                            return contents.TrimStart().StartsWith("<")
+                                ? ReadLegacyClassTileSettings(contents)
+                                : PowerPlannerJson.Deserialize<ClassTileSettings>(contents);
+                        }
                     }
                 }
             }
@@ -594,7 +601,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             // Write the data to the temp file
             using (Stream s = await temp.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
             {
-                GetClassTileSettingsSerializer().WriteObject(s, settings);
+                using (var writer = new StreamWriter(s))
+                {
+                    writer.Write(PowerPlannerJson.Serialize(settings));
+                }
             }
 
             // Move the temp file to the actual file
@@ -675,9 +685,24 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             return accountChanged;
         }
 
-        private static DataContractSerializer GetClassTileSettingsSerializer()
+        private static ClassTileSettings ReadLegacyClassTileSettings(string contents)
         {
-            return new DataContractSerializer(typeof(ClassTileSettings));
+            XDocument document = XDocument.Parse(contents);
+            string GetValue(string name) => document.Descendants().FirstOrDefault(element => element.Name.LocalName == name)?.Value;
+
+            var answer = new ClassTileSettings();
+            if (bool.TryParse(GetValue("ShowTasks"), out bool showTasks))
+                answer.ShowTasks = showTasks;
+            if (bool.TryParse(GetValue("ShowEvents"), out bool showEvents))
+                answer.ShowEvents = showEvents;
+            if (int.TryParse(GetValue("SkipItemsOlderThan"), out int skipItemsOlderThan))
+                answer.SkipItemsOlderThan = skipItemsOlderThan;
+
+            string customColor = GetValue("CustomColor");
+            if (!string.IsNullOrEmpty(customColor))
+                answer.CustomColor = Convert.FromBase64String(customColor);
+
+            return answer;
         }
 
 
@@ -860,7 +885,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 Token = Token
             };
 
-            return await WebHelper.Download<K, T>(url, postData, Website.ApiKey, cancellationToken ?? System.Threading.CancellationToken.None);
+            return await WebHelper.Download(
+                url,
+                postData,
+                Website.ApiKey,
+                PowerPlannerJson.Serialize,
+                PowerPlannerJson.Deserialize<T>,
+                cancellationToken ?? System.Threading.CancellationToken.None);
         }
 
         public async Task<PlainResponse> RecoverDeletedItemAsync(PastDeletedItem item)
@@ -909,7 +940,19 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 #if !ANDROID
         [Obsolete("Non-Android platforms should NOT use this property")]
 #endif
-        public DateTime DateLastDayBeforeReminderWasSent { get; set; }
+        public DateTime DateLastDayBeforeReminderWasSent
+        {
+            get => _dateLastDayBeforeReminderWasSent;
+            set => _dateLastDayBeforeReminderWasSent = value;
+        }
+
+        private DateTime _dateLastDayBeforeReminderWasSent;
+
+        internal DateTime PersistedDateLastDayBeforeReminderWasSent
+        {
+            get => _dateLastDayBeforeReminderWasSent;
+            set => _dateLastDayBeforeReminderWasSent = value;
+        }
 
 
 

@@ -5,7 +5,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class ListHeaderComponent : VxComponent
+    public partial class ListHeaderComponent : VxComponent
     {
         public string Text { get; set; }
 

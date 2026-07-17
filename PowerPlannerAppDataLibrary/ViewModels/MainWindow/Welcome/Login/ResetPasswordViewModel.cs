@@ -1,5 +1,6 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Serialization;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
-    public class ResetPasswordViewModel : PopupComponentViewModel
+    public partial class ResetPasswordViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -91,7 +92,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 ResetPasswordResponse resp = await WebHelper.Download<ResetPasswordRequest, ResetPasswordResponse>(
                     Website.ClientApiUrl + "resetpasswordmodern",
                     new ResetPasswordRequest() { Username = username, Email = email },
-                    Website.ApiKey);
+                    Website.ApiKey,
+                    PowerPlannerJson.Serialize,
+                    PowerPlannerJson.Deserialize<ResetPasswordResponse>);
 
                 if (resp == null)
                     return;

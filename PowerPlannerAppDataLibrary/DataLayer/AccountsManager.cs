@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Runtime.Serialization;
 using System.Diagnostics;
 using StorageEverywhere;
 using PowerPlannerAppDataLibrary.Extensions;
@@ -271,11 +270,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             }
         }
 
-        private static DataContractSerializer GetSerializer()
-        {
-            return new DataContractSerializer(typeof(AccountDataItem));
-        }
-
         /// <summary>
         /// Not thread safe. Loads and returns the account if it exists, otherwise returns null
         /// </summary>
@@ -301,7 +295,10 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                 timeTracker = TimeTracker.Start();
                 try
                 {
-                    account = (AccountDataItem)GetSerializer().ReadObject(s);
+                    using (var reader = new StreamReader(s))
+                    {
+                        account = AccountDataPersistence.Deserialize(reader.ReadToEnd(), localAccountId);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -406,44 +403,42 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         /// <returns></returns>
         public static async Task Save(AccountDataItem account)
         {
-            using (MemoryStream stream = new MemoryStream())
+            string serializedAccount = AccountDataPersistence.Serialize(account);
+
+            await Task.Run(async delegate
             {
-                // Serialize on current thread
-                GetSerializer().WriteObject(stream, account);
-                stream.Position = 0;
-
-                await Task.Run(async delegate
+                using (await Locks.LockAccounts())
                 {
-                    using (await Locks.LockAccounts())
+                    // Get the account folder
+                    var timeTracker = TimeTracker.Start();
+                    IFolder accountFolder = await FileHelper.GetOrCreateAccountFolder(account.LocalAccountId);
+                    timeTracker.End(3, "AccountsManager.Save GetOrCreateAccountFolder");
+
+                    // Create a temp file to write to
+                    timeTracker = TimeTracker.Start();
+                    IFile tempAccountFile = await accountFolder.CreateFileAsync("TempAccountData.dat", CreationCollisionOption.ReplaceExisting);
+                    timeTracker.End(3, "AccountsManager.Save creating temp file");
+
+                    // Write the data to the temp file
+                    timeTracker = TimeTracker.Start();
+                    using (Stream s = await tempAccountFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
                     {
-                        // Get the account folder
-                        var timeTracker = TimeTracker.Start();
-                        IFolder accountFolder = await FileHelper.GetOrCreateAccountFolder(account.LocalAccountId);
-                        timeTracker.End(3, "AccountsManager.Save GetOrCreateAccountFolder");
+                        timeTracker.End(3, "AccountsManager.Save opening file stream");
 
-                        // Create a temp file to write to
                         timeTracker = TimeTracker.Start();
-                        IFile tempAccountFile = await accountFolder.CreateFileAsync("TempAccountData.dat", CreationCollisionOption.ReplaceExisting);
-                        timeTracker.End(3, "AccountsManager.Save creating temp file");
-
-                        // Write the data to the temp file
-                        timeTracker = TimeTracker.Start();
-                        using (Stream s = await tempAccountFile.OpenAsync(StorageEverywhere.FileAccess.ReadAndWrite))
+                        using (var writer = new StreamWriter(s))
                         {
-                            timeTracker.End(3, "AccountsManager.Save opening file stream");
-
-                            timeTracker = TimeTracker.Start();
-                            stream.CopyTo(s);
-                            timeTracker.End(3, "AccountsManager.Save copying stream to file");
+                            writer.Write(serializedAccount);
                         }
-
-                        // Move the temp file to the actual file
-                        timeTracker = TimeTracker.Start();
-                        await tempAccountFile.RenameAsync(FileNames.ACCOUNT_FILE_NAME, NameCollisionOption.ReplaceExisting);
-                        timeTracker.End(3, "AccountsManager.Save renaming temp file to final");
+                        timeTracker.End(3, "AccountsManager.Save writing account data");
                     }
-                });
-            }
+
+                    // Move the temp file to the actual file
+                    timeTracker = TimeTracker.Start();
+                    await tempAccountFile.RenameAsync(FileNames.ACCOUNT_FILE_NAME, NameCollisionOption.ReplaceExisting);
+                    timeTracker.End(3, "AccountsManager.Save renaming temp file to final");
+                }
+            });
         }
 
         /// <summary>

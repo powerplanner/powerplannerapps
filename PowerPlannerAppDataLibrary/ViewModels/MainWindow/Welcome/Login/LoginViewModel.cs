@@ -12,11 +12,12 @@ using ToolsPortable;
 using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppAuthLibrary;
+using PowerPlannerAppDataLibrary.Serialization;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
-    public class LoginViewModel : PopupComponentViewModel
+    public partial class LoginViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -313,7 +314,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
         private static AccountDataItem FindAccountByUsername(IEnumerable<AccountDataItem> allAccounts, string username)
         {
-            return allAccounts.FirstOrDefault(i => i.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase));
+            return allAccounts.FirstOrDefault(i => string.Equals(i.Username, username, StringComparison.CurrentCultureIgnoreCase));
         }
 
         private async void IncorrectLocalPassword(AccountDataItem account, string password)
@@ -419,7 +420,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 
                 else
                 {
-                    SyncedSettings syncedSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<SyncedSettings>(Newtonsoft.Json.JsonConvert.SerializeObject(resp.Settings));
+                    SyncedSettings syncedSettings = AuthSyncedSettingsMapper.Convert(resp.Settings);
 
                     AccountDataItem account = await CreateAccount(username, resp.LocalToken, resp.Token, resp.AccountId, resp.DeviceId, syncedSettings, resp.DefaultGradeScaleIndex);
 

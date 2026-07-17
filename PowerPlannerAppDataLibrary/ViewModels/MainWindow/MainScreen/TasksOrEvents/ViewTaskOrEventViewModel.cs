@@ -27,7 +27,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 {
     public class ViewTaskOrEventViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public ViewItemTaskOrEvent Item { get; private set; }
 
         public bool IsUnassigedMode { get; private set; }
@@ -56,6 +55,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
 
             PrimaryCommand = PopupCommand.Edit(Edit);
             UpdateSecondaryCommands();
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Item);
         }
 
         private void UpdateSecondaryCommands()

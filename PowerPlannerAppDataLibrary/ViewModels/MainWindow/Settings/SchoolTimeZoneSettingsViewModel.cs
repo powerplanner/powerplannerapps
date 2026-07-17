@@ -13,7 +13,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class SchoolTimeZoneSettingsViewModel : PopupComponentViewModel
+    public partial class SchoolTimeZoneSettingsViewModel : PopupComponentViewModel
     {
         public AccountDataItem Account { get; private set; }
 
