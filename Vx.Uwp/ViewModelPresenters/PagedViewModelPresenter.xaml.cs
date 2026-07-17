@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,6 +24,7 @@ namespace InterfacesUWP.ViewModelPresenters
     {
         private BindingHost _viewModelBinding = new BindingHost();
         private ViewModelToViewConverter _viewModelToViewConverter = new ViewModelToViewConverter();
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "The binding uses the statically known BaseViewModel.Content property.")]
         public PagedViewModelPresenter()
         {
             this.InitializeComponent();

@@ -43,6 +43,7 @@ namespace InterfacesUWP.ViewModelPresenters
 
         [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
         [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
+        [UnconditionalSuppressMessage("Trimming", "IL2072", Justification = "View types registered via AddMapping/AddGenericMapping preserve public and non-public property metadata used by WinRT projection.")]
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value == null)

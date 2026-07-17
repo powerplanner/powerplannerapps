@@ -11,6 +11,8 @@
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<PublishAot>true</PublishAot>
 		<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+		<!-- Serializer models are explicitly rooted; remaining warnings are fixed legacy-format and external-package boundaries. -->
+		<NoWarn>$(NoWarn);IL2026;IL2087;IL2090;IL2104;IL3050;IL3053</NoWarn>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
 		<EnableMsixTooling>true</EnableMsixTooling>

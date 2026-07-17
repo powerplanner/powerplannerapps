@@ -53,6 +53,7 @@ using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
 using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PowerPlannerUWP
 {
@@ -91,6 +92,7 @@ namespace PowerPlannerUWP
             var dontWait = ConfigureJumpList();
         }
 
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public override Type GetPortableAppType()
         {
             return typeof(PowerPlannerUwpApp);

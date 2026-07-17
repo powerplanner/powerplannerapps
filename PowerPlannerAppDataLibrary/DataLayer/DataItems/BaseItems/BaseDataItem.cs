@@ -91,6 +91,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
 
         private static Dictionary<Type, DataItemProperty[]> _cachedProperties = new Dictionary<Type, DataItemProperty[]>();
         
+        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Concrete data item types and their static DataItemProperty fields are rooted by normal construction and sync usage.")]
         internal DataItemProperty[] GetProperties()
         {
             // The properties are static readonly properties on the class. So if an instance of the class already exists, that means the properties 

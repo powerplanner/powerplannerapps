@@ -498,7 +498,6 @@ namespace PowerPlannerUWP.Views
             VisualStateManager.GoToState(this, "DefaultState", true);
         }
 
-        private ScheduleWelcomeComponent _welcomeComponent;
         private void GoToWelcomeState()
         {
             VisualStateManager.GoToState(this, "WelcomeState", true);

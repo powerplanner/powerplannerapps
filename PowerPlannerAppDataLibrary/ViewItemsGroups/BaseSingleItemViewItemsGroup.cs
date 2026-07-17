@@ -117,7 +117,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 // And update the class
                 var newClass = s.Classes.FirstOrDefault(c => c.Identifier == (Item.DataItem as DataItemMegaItem).UpperIdentifier);
-                Item.GetType().GetRuntimeProperty("Class").SetValue(Item, newClass);
+                Item.Class = newClass;
             }
         }
     }

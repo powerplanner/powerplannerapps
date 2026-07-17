@@ -3,6 +3,7 @@
 <linker>
   <assembly fullname="PowerPlannerAppDataLibrary">
     <type fullname="PowerPlannerAppDataLibrary.DataLayer.AccountDataItem" preserve="all" />
+    <type fullname="PowerPlannerAppDataLibrary.DataLayer.GradeScale" preserve="all" />
     <type fullname="PowerPlannerAppDataLibrary.DataLayer.TileSettings.*" preserve="all" />
   </assembly>
 </linker>

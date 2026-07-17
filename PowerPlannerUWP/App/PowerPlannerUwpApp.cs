@@ -30,7 +30,7 @@ namespace PowerPlannerUWP
             InitializeUWP.Initialize();
 
             // We register promoting other accounts as one of the first promotions
-            PromoRegistrations.Registrations.Insert(0, typeof(PromoOtherPlatformsViewModel.Registration));
+            PromoRegistrations.Registrations.Insert(0, () => new PromoOtherPlatformsViewModel.Registration());
 
             // Register settings extensions
             if (TileHelpers.TileHelper.AreLiveTilesSupported)
