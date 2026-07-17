@@ -50,6 +50,8 @@ namespace PowerPlannerAppDataLibrary.Serialization
     [JsonSerializable(typeof(SyncSettingsResponse), TypeInfoPropertyName = "SyncSettingsResponseTypeInfo")]
     [JsonSerializable(typeof(AddPremiumAccountDurationRequest), TypeInfoPropertyName = "AddPremiumAccountDurationRequestTypeInfo")]
     [JsonSerializable(typeof(AddPremiumAccountDurationResponse), TypeInfoPropertyName = "AddPremiumAccountDurationResponseTypeInfo")]
+    [JsonSerializable(typeof(ShouldSuggestOtherPlatformsRequest), TypeInfoPropertyName = "ShouldSuggestOtherPlatformsRequestTypeInfo")]
+    [JsonSerializable(typeof(ShouldSuggestOtherPlatformsResponse), TypeInfoPropertyName = "ShouldSuggestOtherPlatformsResponseTypeInfo")]
     [JsonSerializable(typeof(PartialLoginRequest), TypeInfoPropertyName = "PartialLoginRequestTypeInfo")]
     [JsonSerializable(typeof(GetDeletedYearsAndSemestersResponse), TypeInfoPropertyName = "GetDeletedYearsAndSemestersResponseTypeInfo")]
     [JsonSerializable(typeof(GetEmailRequest), TypeInfoPropertyName = "GetEmailRequestTypeInfo")]

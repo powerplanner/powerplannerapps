@@ -47,11 +47,13 @@ namespace PowerPlannerUWP.Views
             return INITIAL_MARGIN + Math.Max((itemTime - baseTime).TotalHours * HEIGHT_OF_HOUR, 0);
         }
 
+        private readonly GridLength _columnGridLength;
         private ScheduleToolbarComponent _toolbar;
 
         public ScheduleView()
         {
             this.InitializeComponent();
+            _columnGridLength = grid.ColumnDefinitions[1].Width;
 
             _toolbar = new ScheduleToolbarComponent();
             Root.Children.Add(_toolbar.Render());
@@ -140,9 +142,9 @@ namespace PowerPlannerUWP.Views
         {
             int col = getColumn(date.DayOfWeek);
 
-            grid.ColumnDefinitions[col].Width = (GridLength)Resources["ColumnGridLength"];
-            GridDaysHeader.ColumnDefinitions[col].Width = (GridLength)Resources["ColumnGridLength"];
-            AllDayItemsGrid.ColumnDefinitions[col].Width = (GridLength)Resources["ColumnGridLength"];
+            grid.ColumnDefinitions[col].Width = _columnGridLength;
+            GridDaysHeader.ColumnDefinitions[col].Width = _columnGridLength;
+            AllDayItemsGrid.ColumnDefinitions[col].Width = _columnGridLength;
 
             // Clear current items (skip first since that's the rectangle background)
             var toRemove = ChildrenInColumn(col).ToArray();
