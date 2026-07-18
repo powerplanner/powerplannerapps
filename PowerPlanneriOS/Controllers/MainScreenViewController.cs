@@ -102,7 +102,7 @@ namespace PowerPlanneriOS.Controllers
         private void UpdateSnackbarBottomOffset()
         {
             BareSnackbarPresenter.BottomOffset = ViewModel?.IsCompactMode == true
-                ? 64 + Math.Max(0, View.SafeAreaInsets.Bottom - 15)
+                ? (nfloat)(64 + Math.Max(0, (double)View.SafeAreaInsets.Bottom - 15))
                 : 0;
         }
 
