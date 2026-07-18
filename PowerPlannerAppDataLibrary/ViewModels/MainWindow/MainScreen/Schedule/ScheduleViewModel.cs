@@ -15,10 +15,11 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using PowerPlannerAppDataLibrary.Exceptions;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
-    public class ScheduleViewModel : BaseMainScreenViewModelChild, IDataChangedEventHandler
+    public partial class ScheduleViewModel : BaseMainScreenViewModelChild, IDataChangedEventHandler
     {
         public SemesterItemsViewGroup SemesterViewItemsGroup { get; private set; }
 

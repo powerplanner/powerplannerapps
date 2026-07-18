@@ -52,30 +52,30 @@ namespace PowerPlanneriOS
             Variables.VERSION = Version.Parse(versionName);
         }
 
-        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        public override Dictionary<Type, Func<UIViewController>> GetGenericViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>
+            return new Dictionary<Type, Func<UIViewController>>
             {
-                { typeof(PopupComponentViewModel), typeof(PopupComponentViewController) },
-                { typeof(ComponentViewModel), typeof(ComponentViewController) } // This needs to be after Popup since Popup is a subclass
+                { typeof(PopupComponentViewModel), () => new PopupComponentViewController() },
+                { typeof(ComponentViewModel), () => new ComponentViewController() } // This needs to be after Popup since Popup is a subclass
             };
         }
 
-        public override Dictionary<Type, Type> GetViewModelToViewMappings()
+        public override Dictionary<Type, Func<UIViewController>> GetViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>()
+            return new Dictionary<Type, Func<UIViewController>>()
             {
                 // Welcome views
-                { typeof(WelcomeViewModel), typeof(WelcomeViewController) },
+                { typeof(WelcomeViewModel), () => new WelcomeViewController() },
 
-                { typeof(InitialSyncViewModel), typeof(InitialSyncViewController) },
-                { typeof(MainScreenViewModel), typeof(MainScreenViewController) },
-                { typeof(ScheduleViewModel), typeof(ScheduleViewController) },
-                { typeof(ClassViewModel), typeof(ClassViewController) },
-                { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsViewController) },
-                { typeof(PremiumVersionViewModel), typeof(PremiumVersionViewController) },
+                { typeof(InitialSyncViewModel), () => new InitialSyncViewController() },
+                { typeof(MainScreenViewModel), () => new MainScreenViewController() },
+                { typeof(ScheduleViewModel), () => new ScheduleViewController() },
+                { typeof(ClassViewModel), () => new ClassViewController() },
+                { typeof(EditClassDetailsViewModel), () => new EditClassDetailsViewController() },
+                { typeof(PremiumVersionViewModel), () => new PremiumVersionViewController() },
 
-                { typeof(YearsViewModel), typeof(ComponentViewController) }, // Don't show Years as a popup on iOS
+                { typeof(YearsViewModel), () => new ComponentViewController() }, // Don't show Years as a popup on iOS
             };
         }
 
@@ -133,6 +133,8 @@ namespace PowerPlanneriOS
             {
                 HandleShortcutAction(action.Value);
             }
+
+            completionHandler(action != null);
         }
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
@@ -538,9 +540,9 @@ namespace PowerPlanneriOS
             });
         }
 
-        public override Type GetPortableAppType()
+        public override PortableApp CreatePortableApp()
         {
-            return typeof(PowerPlanneriOSApp);
+            return new PowerPlanneriOSApp();
         }
     }
 }

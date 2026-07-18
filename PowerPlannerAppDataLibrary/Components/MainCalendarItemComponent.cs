@@ -15,12 +15,17 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class MainCalendarItemComponent : VxComponent
+    public partial class MainCalendarItemComponent : VxComponent
     {
-        [VxSubscribe]
         public ViewItemTaskOrEvent Item { get; set; }
         public BaseMainScreenViewModelDescendant ViewModel { get; set; }
         public Action<ViewItemTaskOrEvent> ShowItem { get; set; }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Item);
+        }
 
         protected override View Render()
         {

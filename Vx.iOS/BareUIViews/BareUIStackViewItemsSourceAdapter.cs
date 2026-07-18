@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -178,7 +179,7 @@ namespace InterfacesiOS.Views
         }
     }
 
-    public class BareUIStackViewItemsSourceAdapter<V> : BareUIStackViewItemsSourceAdapter where V : UIView
+    public class BareUIStackViewItemsSourceAdapter<V> : BareUIStackViewItemsSourceAdapter where V : BareUIView, new()
     {
         public event EventHandler<V> OnViewCreated;
 
@@ -189,13 +190,9 @@ namespace InterfacesiOS.Views
 
         protected override UIView CreateView(object item)
         {
-            V view = Activator.CreateInstance<V>();
+            V view = new V();
 
-            var prop = view.GetType().GetProperty("DataContext");
-            if (prop != null)
-            {
-                prop.SetValue(view, item);
-            }
+            view.DataContext = item;
 
             OnViewCreated?.Invoke(this, view);
 

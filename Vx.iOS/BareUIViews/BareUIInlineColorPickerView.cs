@@ -149,10 +149,7 @@ namespace InterfacesiOS.Views
             if (view == null)
             {
                 view = new BareUIPickerViewItemTextWithColorCircle(c.Text, c.Color);
-                view.BindingHost.SetBinding(nameof(c.Color), delegate
-                {
-                    view.Color = (view.DataContext as ColorItem)?.Color;
-                });
+                view.BindingHost.SetBinding<ColorItem, CGColor>(nameof(ColorItem.Color), item => item.Color, color => view.Color = color);
             }
             view.Text = c.Text;
             view.DataContext = c;

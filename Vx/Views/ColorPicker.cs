@@ -15,7 +15,7 @@ namespace Vx.Views
         public VxValue<Color> Color { get; set; }
     }
 
-    public class InternalColorPickerComponent : VxComponent
+    public partial class InternalColorPickerComponent : VxComponent
     {
         public string Header { get => GetState<string>(); set => SetState(value); }
         public bool IsEnabled { get => GetState<bool>(); set => SetState(value); }

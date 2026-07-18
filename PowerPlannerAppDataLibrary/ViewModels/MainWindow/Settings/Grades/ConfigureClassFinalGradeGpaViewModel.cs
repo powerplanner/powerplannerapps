@@ -10,7 +10,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassFinalGradeGpaViewModel : PopupComponentViewModel
+    public partial class ConfigureClassFinalGradeGpaViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 

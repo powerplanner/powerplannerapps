@@ -320,7 +320,7 @@ namespace InterfacesDroid.Views
                     }
                 };
 
-                _bindingHost.SetBinding<Color>(nameof(item.Color), color =>
+                _bindingHost.SetBinding<ColorItem, Color>(nameof(item.Color), colorItem => colorItem.Color, color =>
                 {
                     _colorSquare.SetBackgroundColor(color);
                 });

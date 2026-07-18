@@ -13,10 +13,11 @@ using PowerPlannerAppDataLibrary.ViewItems.BaseViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades;
 using ToolsPortable;
 using System.ComponentModel;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class ClassViewModel : BaseMainScreenViewModelDescendant
+    public partial class ClassViewModel : BaseMainScreenViewModelDescendant
     {
         private string _className = "";
         /// <summary>

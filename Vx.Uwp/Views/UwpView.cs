@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vx.Views;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace Vx.Uwp.Views
 {
@@ -105,7 +106,7 @@ namespace Vx.Uwp.Views
                 VxView.Tapped();
                 e.Handled = true;
             }
-            else if (View.GetType().GetEvent("Click") != null)
+            else if (View is ButtonBase)
             {
                 e.Handled = true;
             }

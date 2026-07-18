@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Vx.Views;
@@ -71,24 +72,7 @@ namespace Vx
                 return;
             }
 
-            bool changed = false;
-
-            // Only want properties above the base VxComponent
-            foreach (var p in newView.GetType().GetProperties().Where(i => i.CanWrite && i.CanRead && typeof(VxComponent).IsAssignableFrom(i.DeclaringType) && i.Name != nameof(VxComponent.NativeComponent)))
-            {
-                var oldVal = p.GetValue(_originalComponent);
-                var newVal = p.GetValue(newView);
-
-                if (object.ReferenceEquals(oldVal, newVal) || object.Equals(oldVal, newVal))
-                {
-                    continue;
-                }
-
-                p.SetValue(_originalComponent, newVal);
-                changed = true;
-            }
-
-            if (changed)
+            if (_originalComponent.ApplyParameters(newView))
             {
                 // We render on demand here to stay in sync with the parent view changes.
                 // This is critical for iOS ListView to work correctly with changing views

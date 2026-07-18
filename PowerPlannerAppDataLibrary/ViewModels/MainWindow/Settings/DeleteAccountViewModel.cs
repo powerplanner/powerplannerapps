@@ -10,7 +10,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class DeleteAccountViewModel : PopupComponentViewModel
+    public partial class DeleteAccountViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 

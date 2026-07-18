@@ -7,6 +7,7 @@ using ToolsPortable;
 using System.Collections;
 using BareMvvm.Core;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace BareMvvm.Core.Binding
@@ -60,6 +61,7 @@ namespace BareMvvm.Core.Binding
             }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "BindingHost is inherently reflection-based; callers are warned via RequiresUnreferencedCode on public API.")]
         private void DataContext_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // We call ToArray() since a binding action could cause a new binding to be added while we're working
@@ -89,6 +91,7 @@ namespace BareMvvm.Core.Binding
             }
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "BindingHost is inherently reflection-based; callers are warned via RequiresUnreferencedCode on public API.")]
         private void UpdateAllBindings()
         {
             // Grab these as a copied array so that any of the sub actions don't modify them as we iterate
@@ -140,6 +143,51 @@ namespace BareMvvm.Core.Binding
         private Dictionary<string, List<InternalBindingRegistration>> _bindings = new Dictionary<string, List<InternalBindingRegistration>>();
         private Dictionary<string, BindingHost> _subPropertyBindings = new Dictionary<string, BindingHost>();
 
+        public BindingRegistration SetBinding<TDataContext, T>(string propertyName, Func<TDataContext, T> getValue, Action<T> action)
+        {
+            return SetDirectBinding(propertyName, () =>
+            {
+                action(DataContext is TDataContext dataContext ? getValue(dataContext) : default);
+            });
+        }
+
+        public BindingRegistration SetBinding<TDataContext>(string propertyName, Action action, bool skipInvokingActionImmediately = false)
+        {
+            return SetDirectBinding(propertyName, action, skipInvokingActionImmediately);
+        }
+
+        public void SetBindings<TDataContext>(string[] propertyNames, Action action)
+        {
+            foreach (string propertyName in propertyNames)
+            {
+                SetDirectBinding(propertyName, action, skipInvokingActionImmediately: true);
+            }
+
+            if (DataContext is TDataContext)
+            {
+                action();
+            }
+        }
+
+        private BindingRegistration SetDirectBinding(string propertyName, Action action, bool skipInvokingActionImmediately = false)
+        {
+            if (!_bindings.TryGetValue(propertyName, out List<InternalBindingRegistration> storedBindings))
+            {
+                storedBindings = new List<InternalBindingRegistration>();
+                _bindings[propertyName] = storedBindings;
+            }
+
+            var internalRegistration = new InternalBindingRegistration(action);
+            storedBindings.Add(internalRegistration);
+
+            if (DataContext != null && !skipInvokingActionImmediately)
+            {
+                action();
+            }
+
+            return new BindingRegistration(this, propertyName, internalRegistration, new[] { propertyName });
+        }
+
         internal void UnregisterBinding(BindingRegistration registration)
         {
             if (registration.InternalRegistration != null)
@@ -173,6 +221,7 @@ namespace BareMvvm.Core.Binding
             return _bindings.Count == 0 && _subPropertyBindings.Count == 0;
         }
 
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         public BindingRegistration SetBinding<T>(string propertyPath, Action<T> action)
         {
             return SetBinding(propertyPath, () =>
@@ -189,6 +238,7 @@ namespace BareMvvm.Core.Binding
             });
         }
 
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         public BindingRegistration SetBinding(string propertyPath, Action<object> action)
         {
             return SetBinding(propertyPath, () =>
@@ -203,11 +253,13 @@ namespace BareMvvm.Core.Binding
             return new BindingRegistration(this, null, internalRegistration: null, propertyPath.Split('.'));
         }
 
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         public BindingRegistration SetBinding(string propertyPath, Action action, bool skipInvokingActionImmediately = false)
         {
             return SetBinding(propertyPath.Split('.'), action, skipInvokingActionImmediately);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "BindingHost is inherently reflection-based; callers are warned via RequiresUnreferencedCode on public API.")]
         private BindingRegistration SetBinding(string[] propertyPaths, Action action, bool skipInvokingActionImmediately, bool topLevel = true)
         {
             string immediatePath = propertyPaths[0];
@@ -256,11 +308,13 @@ namespace BareMvvm.Core.Binding
             }
         }
 
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         private object GetValueFromSingleProperty(string propertyName)
         {
             return DataContext?.GetType().GetProperty(propertyName).GetValue(DataContext);
         }
 
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         private object GetValue(string propertyPath)
         {
             // We support binding to the data context itself
@@ -296,6 +350,7 @@ namespace BareMvvm.Core.Binding
             return obj;
         }
 
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         public PropertyInfoAndObject GetProperty(string[] propertyPath)
         {
             string[] paths = propertyPath;
@@ -332,6 +387,7 @@ namespace BareMvvm.Core.Binding
         /// </summary>
         /// <param name="propertyPath"></param>
         /// <param name="value"></param>
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         internal void SetValue(string[] propertyPath, object value, BindingRegistration bindingRegistrationToSkipNotifying, PropertyInfoAndObject preObtainedSourceProperty = null)
         {
             var property = preObtainedSourceProperty ?? GetProperty(propertyPath);
@@ -380,6 +436,7 @@ namespace BareMvvm.Core.Binding
             }
         }
 
+        [RequiresUnreferencedCode("Binding uses reflection to access properties by name.")]
         public void SetBindings(string[] propertyPaths, Action action)
         {
             foreach (var p in propertyPaths)

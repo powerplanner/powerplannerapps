@@ -40,7 +40,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
             using (await Locks.LockDataForReadAsync("BaseSingleItemViewItemsGroup.LoadBlocking"))
             {
-                dataItem = dataStore.TableMegaItems.FirstOrDefault(i => i.Identifier == examId);
+                dataItem = dataStore.GetMegaItem(examId);
                 if (dataItem == null)
                 {
                     TelemetryExtension.Current?.TrackEvent("Error_LoadSingleItem_CouldNotFind", new Dictionary<string, string>()
@@ -59,7 +59,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 }
                 else
                 {
-                    var dataClass = dataStore.TableClasses.FirstOrDefault(i => i.Identifier == dataItem.UpperIdentifier);
+                    var dataClass = dataStore.GetClass(dataItem.UpperIdentifier);
                     if (dataClass == null)
                     {
                         throw new NullReferenceException("Class not found. Item id " + examId);
@@ -117,7 +117,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 // And update the class
                 var newClass = s.Classes.FirstOrDefault(c => c.Identifier == (Item.DataItem as DataItemMegaItem).UpperIdentifier);
-                Item.GetType().GetRuntimeProperty("Class").SetValue(Item, newClass);
+                Item.Class = newClass;
             }
         }
     }

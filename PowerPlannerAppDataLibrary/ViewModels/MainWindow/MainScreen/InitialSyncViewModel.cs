@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
-    public class InitialSyncViewModel : PagedViewModelWithPopups
+    public partial class InitialSyncViewModel : PagedViewModelWithPopups
     {
         public readonly AccountDataItem Account;
         private EventHandler<SyncQueuedEventArgs> _syncQueuedEventHandler;

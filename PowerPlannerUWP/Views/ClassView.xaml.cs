@@ -15,6 +15,10 @@ using PowerPlannerUWP.TileHelpers;
 using Vx.Uwp;
 using Vx.Components.OnlyForNativeLibraries;
 using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.ViewItemsGroups;
+using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -25,6 +29,11 @@ namespace PowerPlannerUWP.Views
     /// </summary>
     public sealed partial class ClassView : MainScreenContentViewHostGeneric
     {
+        private readonly ItemsControlCollectionBridge _schedulesPreviewBridge;
+        private readonly ItemsControlCollectionBridge _tasksPreviewBridge;
+        private readonly ItemsControlCollectionBridge _eventsPreviewBridge;
+        private ClassViewItemsGroup _previewGroup;
+
         public new ClassViewModel ViewModel
         {
             get { return base.ViewModel as ClassViewModel; }
@@ -35,6 +44,13 @@ namespace PowerPlannerUWP.Views
         {
             this.InitializeComponent();
 
+            _schedulesPreviewBridge = new ItemsControlCollectionBridge(SchedulesPreview);
+            _tasksPreviewBridge = new ItemsControlCollectionBridge(TasksPreview);
+            _eventsPreviewBridge = new ItemsControlCollectionBridge(EventsPreview);
+
+            Loaded += ClassView_Loaded;
+            Unloaded += ClassView_Unloaded;
+
             Root.RowDefinitions[0].Height = new GridLength(ToolbarComponent.ToolbarHeight);
         }
 
@@ -44,11 +60,110 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelSetOverride();
 
+            SetPreviewGroup(ViewModel.ViewItemsGroupClass);
+
             _toolbar.ViewModel = ViewModel;
             _toolbar.OnPinClass = PinClass;
             _toolbar.OnUnpinClass = UnpinClass;
 
             Root.Children.Add(_toolbar.Render());
+        }
+
+        private void ClassView_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetPreviewGroup(ViewModel?.ViewItemsGroupClass);
+        }
+
+        private void ClassView_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SetPreviewGroup(null);
+        }
+
+        private void SetPreviewGroup(ClassViewItemsGroup group)
+        {
+            if (_previewGroup != null)
+            {
+                _previewGroup.PropertyChanged -= PreviewGroup_PropertyChanged;
+            }
+
+            _previewGroup = group;
+
+            if (_previewGroup != null)
+            {
+                _previewGroup.PropertyChanged += PreviewGroup_PropertyChanged;
+            }
+
+            _schedulesPreviewBridge.SetSource(group?.Class?.Schedules);
+            _tasksPreviewBridge.SetSource(group?.Tasks);
+            _eventsPreviewBridge.SetSource(group?.Events);
+        }
+
+        private void PreviewGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ClassViewItemsGroup.Tasks):
+                    _tasksPreviewBridge.SetSource(_previewGroup.Tasks);
+                    break;
+
+                case nameof(ClassViewItemsGroup.Events):
+                    _eventsPreviewBridge.SetSource(_previewGroup.Events);
+                    break;
+            }
+        }
+
+        private sealed class ItemsControlCollectionBridge
+        {
+            private readonly ItemsControl _itemsControl;
+            private IEnumerable _source;
+            private INotifyCollectionChanged _observableSource;
+
+            public ItemsControlCollectionBridge(ItemsControl itemsControl)
+            {
+                _itemsControl = itemsControl;
+            }
+
+            public void SetSource(IEnumerable source)
+            {
+                if (ReferenceEquals(_source, source))
+                {
+                    return;
+                }
+
+                if (_observableSource != null)
+                {
+                    _observableSource.CollectionChanged -= Source_CollectionChanged;
+                }
+
+                _source = source;
+                _observableSource = source as INotifyCollectionChanged;
+
+                if (_observableSource != null)
+                {
+                    _observableSource.CollectionChanged += Source_CollectionChanged;
+                }
+
+                SynchronizeItems();
+            }
+
+            private void Source_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                SynchronizeItems();
+            }
+
+            private void SynchronizeItems()
+            {
+                _itemsControl.Items.Clear();
+                if (_source == null)
+                {
+                    return;
+                }
+
+                foreach (object item in _source)
+                {
+                    _itemsControl.Items.Add(item);
+                }
+            }
         }
 
         public override async void OnViewModelLoadedOverride()

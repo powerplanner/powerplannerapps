@@ -9,14 +9,24 @@
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net10.0;net10.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('win-'))">net10.0</TargetFrameworks>
     <Configurations>Debug;Release;</Configurations>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RootNamespace>PowerPlannerAppDataLibrary</RootNamespace>
     <AssemblyName>PowerPlannerAppDataLibrary</AssemblyName>
-    <NoWarn>$(NoWarn);NU1903;NU1904</NoWarn> <!--Don't warn about System.Drawing, it's used by XliffCompiler which is just a build step-->
+    <NoWarn>$(NoWarn);NU1903;NU1904</NoWarn>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Dapper.AOT</InterceptorsNamespaces>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'ARM64'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App\Secrets.template.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <TrimmerRootDescriptor Include="ILLink.Descriptors.xml" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Release'">
 	<Compile Remove="ViewModels\MainWindow\Settings\VxTests\*" />
@@ -25,11 +35,10 @@
     <None Include="App\Secrets.template.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.260219.4" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Dapper.AOT" Version="1.0.52" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
+    <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.260717.1" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.4" />
     <PackageReference Include="TimeZoneConverter" Version="7.2.0" />
     <PackageReference Include="TimeZoneNames" Version="7.0.0" />
@@ -43,5 +52,6 @@
     <ProjectReference Include="..\PortableLibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
     <ProjectReference Include="..\shared\PowerPlannerSending\PowerPlannerSending\PowerPlannerSending.csproj" />
     <ProjectReference Include="..\Vx\Vx.csproj" />
+    <ProjectReference Include="..\Vx.Generators\Vx.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

@@ -11,7 +11,7 @@ using InterfacesiOS.Views;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
-    public class PagedViewModelPresenter : UIViewController
+    public class PagedViewModelPresenter : UIViewController, IViewModelHost
     {
         protected UINavigationController MyNavigationController { get; private set; }
         public PagedViewModelPresenter()
@@ -179,6 +179,17 @@ namespace InterfacesiOS.ViewModelPresenters
             }
         }
 
+        BaseViewModel IViewModelHost.ViewModel
+        {
+            get { return ViewModel; }
+            set { SetHostedViewModel(value); }
+        }
+
+        protected virtual void SetHostedViewModel(BaseViewModel viewModel)
+        {
+            ViewModel = (PagedViewModel)viewModel;
+        }
+
         private void ViewModel_OnPresenterNeedsToClearBackStack(object sender, EventArgs e)
         {
             foreach (var viewController in MyNavigationController.ViewControllers.Where(i => i != MyNavigationController.TopViewController))
@@ -273,10 +284,9 @@ namespace InterfacesiOS.ViewModelPresenters
                 }
                 else
                 {
-                    var viewModelProp = c.GetType().GetProperty("ViewModel");
-                    if (viewModelProp != null)
+                    if (c is IViewModelHost viewModelHost)
                     {
-                        BaseViewModel viewModel = viewModelProp.GetValue(c) as BaseViewModel;
+                        BaseViewModel viewModel = viewModelHost.ViewModel;
                         if (viewModel != null)
                         {
                             viewModel.SetNativeView(null);

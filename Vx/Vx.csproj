@@ -2,6 +2,11 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'ARM64'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Label="MultilingualAppToolkit">
     <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
@@ -17,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\portablelibraries\ToolsPortable\ToolsPortable\ToolsPortable.csproj" />
+    <ProjectReference Include="..\Vx.Generators\Vx.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Strings\Resources.Designer.cs">

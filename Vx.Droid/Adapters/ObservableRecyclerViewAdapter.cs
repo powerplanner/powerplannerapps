@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Android.App;
@@ -286,10 +287,8 @@ namespace InterfacesDroid.Adapters
 #endif
                 var view = holder.ItemView;
 
-                var dataContextProperty = view.GetType().GetProperties().FirstOrDefault(i => i.Name.Equals("DataContext"));
-
-                if (dataContextProperty != null)
-                    dataContextProperty.SetValue(view, item);
+                if (view is IDataContextView dataContextView)
+                    dataContextView.DataContext = item;
 #if DEBUG
             }
             catch (Exception ex)

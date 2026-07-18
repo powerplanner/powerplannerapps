@@ -17,6 +17,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary;
 using Vx.iOS;
+using BareMvvm.Core.ViewModels;
 
 namespace PowerPlanneriOS.Controllers
 {
@@ -58,9 +59,66 @@ namespace PowerPlanneriOS.Controllers
                     base.Add(renderedView);
                     renderedView.StretchWidthAndHeight(base.View);
 
+                    ActivatePendingLaunchAction();
                     TryAskingForRatingIfNeeded();
                 }
             }
+        }
+
+        private Func<PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainWindowViewModel, System.Threading.Tasks.Task> _pendingLaunchAction;
+        private bool _hasRunPendingLaunchAction;
+
+        private void ActivatePendingLaunchAction()
+        {
+            AppDelegate._hasActivatedWindow = true;
+
+            // Capture the pending action, but don't run it yet. Running it here (during the
+            // ViewModel setter) would try to present a popup before this view controller is in
+            // the window hierarchy, which iOS silently drops. We defer it to ViewDidAppear.
+            _pendingLaunchAction = AppDelegate._handleLaunchAction;
+            AppDelegate._handleLaunchAction = null;
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+
+            RunPendingLaunchActionIfNeeded();
+        }
+
+        private async void RunPendingLaunchActionIfNeeded()
+        {
+            if (_hasRunPendingLaunchAction)
+            {
+                return;
+            }
+
+            var action = _pendingLaunchAction;
+            _pendingLaunchAction = null;
+            if (action == null)
+            {
+                return;
+            }
+
+            _hasRunPendingLaunchAction = true;
+
+            try
+            {
+                var mainWindowViewModel = (ViewModel.GetAppWindow() as PowerPlannerAppDataLibrary.Windows.MainAppWindow)?.GetViewModel();
+                if (mainWindowViewModel != null)
+                {
+                    await action(mainWindowViewModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        protected override void SetHostedViewModel(BaseViewModel viewModel)
+        {
+            ViewModel = (MainScreenViewModel)viewModel;
         }
 
         private async void TryAskingForRatingIfNeeded()
@@ -79,7 +137,7 @@ namespace PowerPlanneriOS.Controllers
                         {
                             using (await Locks.LockDataForReadAsync())
                             {
-                                return dataStore.TableMegaItems.Count() > 30 && dataStore.TableMegaItems.Any(i => i.DateCreated < DateTime.Today.AddDays(-60));
+                                return dataStore.HasManyOldMegaItems();
                             }
                         }))
                         {

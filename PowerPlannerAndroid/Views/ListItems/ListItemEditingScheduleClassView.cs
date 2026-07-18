@@ -34,12 +34,12 @@ namespace PowerPlannerAndroid.Views.ListItems
         {
             DataContext = c;
 
-            BindingHost.SetBinding<byte[]>(nameof(c.Color), (color) =>
+            BindingHost.SetBinding<ViewItemClass, byte[]>(nameof(c.Color), item => item.Color, color =>
             {
                 FindViewById(Resource.Id.ListItemEditingScheduleClass_ColorContainer).SetBackgroundColor(ColorBytesHelper.ToColor(color).ToPlatformColor());
             });
 
-            BindingHost.SetBinding<string>(nameof(c.Name), (name) =>
+            BindingHost.SetBinding<ViewItemClass, string>(nameof(c.Name), item => item.Name, name =>
             {
                FindViewById<TextView>(Resource.Id.ListItemEditingScheduleClass_ClassName).Text = name;
             });

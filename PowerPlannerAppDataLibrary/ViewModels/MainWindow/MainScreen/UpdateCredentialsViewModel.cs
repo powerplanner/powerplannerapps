@@ -14,7 +14,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
-    public class UpdateCredentialsViewModel : PopupComponentViewModel
+    public partial class UpdateCredentialsViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 

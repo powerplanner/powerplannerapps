@@ -143,7 +143,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 _semester = new ViewItemSemester(dataClass.UpperIdentifier, createClassMethod: CreateClass);
 
-                dataClasses = dataStore.TableClasses.Where(i => i.UpperIdentifier == _semester.Identifier).ToArray();
+                dataClasses = dataStore.GetClassesUnderSemester(_semester.Identifier);
 
                 _semester.FilterAndAddChildren(dataClasses);
 
@@ -207,13 +207,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                         {
                             Guid[] weightIds = this.Class.WeightCategories.Select(i => i.Identifier).ToArray();
 
-                            dataGrades = dataStore.TableGrades.Where(i => weightIds.Contains(i.UpperIdentifier)).ToArray();
+                            dataGrades = dataStore.GetGradesUnderWeightCategories(weightIds);
 
-                            dataItems = dataStore.TableMegaItems.Where(i =>
-                                (i.MegaItemType == PowerPlannerSending.MegaItemType.Exam || i.MegaItemType == PowerPlannerSending.MegaItemType.Homework)
-                                && i.UpperIdentifier == _classId
-                                && i.WeightCategoryIdentifier != PowerPlannerSending.BaseHomeworkExam.WEIGHT_CATEGORY_EXCLUDED)
-                                .ToArray();
+                            dataItems = dataStore.GetGradedMegaItemsUnderClass(_classId);
 
                             var unassignedItems = new MyObservableList<ViewItemTaskOrEvent>();
                             unassignedItems.InsertSorted(dataItems
@@ -311,13 +307,13 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                         using (await Locks.LockDataForReadAsync())
                         {
-                            dataTasksOrEvents = dataStore.TableMegaItems.Where(ShouldIncludeTaskOrEventFunction(_classId, TodayAsUtc)).ToArray();
+                            dataTasksOrEvents = dataStore.GetCurrentClassItems(_classId, TodayAsUtc);
 
                             this.Class.AddTasksAndEventsChildrenHelper(CreateTaskOrEvent, ShouldIncludeTaskOrEventFunction(_classId, TodayAsUtc));
                             this.Class.FilterAndAddChildren(dataTasksOrEvents);
 
-                            hasPastCompletedTasks = dataStore.TableMegaItems.Any(IsPastCompletedTaskFunction(_classId, TodayAsUtc));
-                            hasPastCompletedEvents = dataStore.TableMegaItems.Any(IsPastCompletedEventFunction(_classId, TodayAsUtc));
+                            hasPastCompletedTasks = dataStore.HasPastCompletedTasks(_classId, TodayAsUtc);
+                            hasPastCompletedEvents = dataStore.HasPastCompletedEvents(_classId, TodayAsUtc);
                         }
                     });
                 }
@@ -591,7 +587,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
                 using (await Locks.LockDataForReadAsync())
                 {
                     // Get the data items that we haven't loaded yet
-                    additionalTasksAndEvents = dataStore.TableMegaItems.Where(IsPastCompletedTaskOrEventFunction(_classId, TodayAsUtc)).ToArray();
+                    additionalTasksAndEvents = dataStore.GetPastCompletedTasksAndEvents(_classId, TodayAsUtc);
 
                     // Exclude any that are already loaded (due to the events being complicated to calculate whether they're incomplete, we end up double loading items that are on today)
                     additionalTasksAndEvents = additionalTasksAndEvents.Where(a => !this.Class.TasksAndEvents.Any(i => i.Identifier == a.Identifier)).ToArray();

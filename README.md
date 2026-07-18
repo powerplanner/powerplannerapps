@@ -60,7 +60,7 @@ Each platform-specific app simply needs to build views on top of the shared view
 Prereqs...
 * Be on Mac
 * Have latest XCode installed, with simulators installed and iOS SDK installed
-* Install .NET 8 SDK
+* Install .NET 10 SDK
 * Install .NET `maui` workload
 
 Instructions...

@@ -17,7 +17,7 @@ using System.ComponentModel;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
-    public class YearsViewModel : PopupComponentViewModel
+    public partial class YearsViewModel : PopupComponentViewModel
     {
         private YearsViewItemsGroup _yearsViewItemsGroup;
         public YearsViewItemsGroup YearsViewItemsGroup

@@ -21,16 +21,21 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class ClassGradesViewModel : BaseClassContentViewModel
+    public partial class ClassGradesViewModel : BaseClassContentViewModel
     {
         public static readonly string UNASSIGNED_ITEMS_HEADER = "Unassigned items";
 
-        [VxSubscribe]
         public ViewItemsGroups.ClassViewItemsGroup ViewItemsGroup { get; private set; }
 
         public ClassGradesViewModel(ClassViewModel parent) : base(parent)
         {
             ViewItemsGroup = ClassViewModel.ViewItemsGroupClass;
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(ViewItemsGroup);
         }
 
         protected override async Task LoadAsyncOverride()
@@ -387,14 +392,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             };
         }
 
-        private class WeightHeaderComponent : VxComponent
+        private partial class WeightHeaderComponent : VxComponent
         {
-            [VxSubscribe] // Subscribing is needed for What If? mode
             public ViewItemWeightCategory Weight { get; set; }
 
             public bool IncludeMargin { get; set; }
 
             public bool ShowWeightHeaderAsSum { get; set; }
+
+            protected override void RegisterPropertySubscriptions()
+            {
+                base.RegisterPropertySubscriptions();
+                Subscribe(Weight);
+            }
 
             protected override View Render()
             {
@@ -451,7 +461,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public GradesSummaryComponent SummaryComponent { get; private set; }
 
-        internal class AdaptiveGradesListComponent : VxComponent
+        internal partial class AdaptiveGradesListComponent : VxComponent
         {
             public const float MinColumnWidth = 280;
             public const float ColumnSpacing = 24;
@@ -500,14 +510,19 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        public class GradesSummaryComponent : VxComponent
+        public partial class GradesSummaryComponent : VxComponent
         {
-            [VxSubscribe]
             public ViewItemClass Class { get; set; }
 
             public Action OnRequestConfigureGrades { get; set; }
 
             public Action OnRequestOpenWhatIf { get; set; }
+
+            protected override void RegisterPropertySubscriptions()
+            {
+                base.RegisterPropertySubscriptions();
+                Subscribe(Class);
+            }
 
             protected override View Render()
             {

@@ -168,7 +168,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 DateTime todayAsUtc = DateTime.SpecifyKind(Today, DateTimeKind.Utc);
 
-                dataItems = dataStore.TableMegaItems.Where(ShouldIncludeItemFunction(classIdentifiers, todayAsUtc)).ToArray();
+                dataItems = dataStore.GetAgendaItems(classIdentifiers, todayAsUtc);
 
                 this.Items = new MyObservableList<ViewItemTaskOrEvent>();
 

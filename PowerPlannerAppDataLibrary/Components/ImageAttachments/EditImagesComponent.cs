@@ -7,7 +7,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components.ImageAttachments
 {
-    internal class EditImagesComponent : VxComponent
+    internal partial class EditImagesComponent : VxComponent
     {
         public ObservableCollection<BaseEditingImageAttachmentViewModel> ImageAttachments { get; set; }
 

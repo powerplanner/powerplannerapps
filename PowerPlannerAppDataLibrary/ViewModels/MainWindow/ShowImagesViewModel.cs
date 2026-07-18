@@ -11,7 +11,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
-    public class ShowImagesViewModel : PopupComponentViewModel
+    public partial class ShowImagesViewModel : PopupComponentViewModel
     {
         private Func<int, View> _itemTemplate;
 

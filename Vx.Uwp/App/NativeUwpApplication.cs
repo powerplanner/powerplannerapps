@@ -4,6 +4,7 @@ using InterfacesUWP.Extensions;
 using InterfacesUWP.ViewModelPresenters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -105,10 +106,11 @@ namespace InterfacesUWP.App
 
         protected abstract Task OnLaunchedOrActivated(IActivatedEventArgs args);
 
-        public abstract Dictionary<Type, Type> GetViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<object, object>> GetViewModelToViewMappings();
 
-        public abstract Dictionary<Type, Type> GetGenericViewModelToViewMappings();
+        public abstract Dictionary<Type, Func<object, object>> GetGenericViewModelToViewMappings();
 
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public abstract Type GetPortableAppType();
 
         private CultureInfo GetCultureInfo()

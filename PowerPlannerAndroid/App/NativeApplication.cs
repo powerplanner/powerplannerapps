@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -78,44 +79,45 @@ namespace PowerPlannerAndroid.App
             base.OnCreate();
         }
 
-        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        public override Dictionary<Type, Func<ViewGroup, View>> GetGenericViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>()
+            return new Dictionary<Type, Func<ViewGroup, View>>()
             {
-                { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
-                { typeof(ComponentViewModel), typeof(ComponentView) } // This must be after Popup since Popup is a subclass
+                { typeof(PopupComponentViewModel), root => new PopupComponentView(root) },
+                { typeof(ComponentViewModel), root => new ComponentView(root) } // This must be after Popup since Popup is a subclass
             };
         }
 
-        public override Dictionary<Type, Type> GetViewModelToViewMappings()
+        public override Dictionary<Type, Func<ViewGroup, View>> GetViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>()
+            return new Dictionary<Type, Func<ViewGroup, View>>()
             {
                 // Welcome views
-                { typeof(WelcomeViewModel), typeof(WelcomeView) },
+                { typeof(WelcomeViewModel), root => new WelcomeView(root) },
 
                 // Main views
-                { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(MainScreenViewModel), typeof(MainScreenView) },
-                { typeof(ScheduleViewModel), typeof(ScheduleView) },
-                { typeof(CalendarViewModel), typeof(ComponentView) },
-                { typeof(AgendaViewModel), typeof(ComponentView) },
-                { typeof(ClassViewModel), typeof(ClassView) },
-                { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
-                { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
-                { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(QuickAddViewModel), typeof(QuickAddView) }
+                { typeof(InitialSyncViewModel), root => new InitialSyncView(root) },
+                { typeof(MainScreenViewModel), root => new MainScreenView(root) },
+                { typeof(ScheduleViewModel), root => new ScheduleView(root) },
+                { typeof(CalendarViewModel), root => new ComponentView(root) },
+                { typeof(AgendaViewModel), root => new ComponentView(root) },
+                { typeof(ClassViewModel), root => new ClassView(root) },
+                { typeof(EditClassDetailsViewModel), root => new EditClassDetailsView(root) },
+                { typeof(PremiumVersionViewModel), root => new PremiumVersionView(root) },
+                { typeof(SyncErrorsViewModel), root => new SyncErrorsView(root) },
+                { typeof(QuickAddViewModel), root => new QuickAddView(root) }
             };
         }
 
-        public override Dictionary<Type, Type> GetViewModelToSplashMappings()
+        public override Dictionary<Type, Func<ViewGroup, View>> GetViewModelToSplashMappings()
         {
-            return new Dictionary<Type, Type>()
+            return new Dictionary<Type, Func<ViewGroup, View>>()
             {
-                { typeof(MainWindowViewModel), typeof(SplashScreenView) }
+                { typeof(MainWindowViewModel), root => new SplashScreenView(root.Context) }
             };
         }
 
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public override Type GetPortableAppType()
         {
             return typeof(PowerPlannerDroidApp);

@@ -20,7 +20,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEvents
 {
-    public class AiEditWithAiViewModel : PopupComponentViewModel
+    public partial class AiEditWithAiViewModel : PopupComponentViewModel
     {
         public enum ViewState { Input, Preview }
 

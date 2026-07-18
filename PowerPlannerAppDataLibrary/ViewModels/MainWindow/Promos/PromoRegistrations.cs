@@ -13,9 +13,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
     public static class PromoRegistrations
     {
         private static bool _hasBeenRequestedThisSession;
-        public static readonly List<Type> Registrations = new List<Type>()
+        public static readonly List<Func<PromoRegistration>> Registrations = new List<Func<PromoRegistration>>()
         {
-            //typeof(PromoPriceIncreaseViewModel.Registration)
+            //() => new PromoPriceIncreaseViewModel.Registration()
         };
 
         /// <summary>
@@ -43,11 +43,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos
                     // First wait a bit to no slow down app initialization
                     await Task.Delay(3000);
 
-                    foreach (var regType in Registrations.Distinct())
+                    foreach (var createRegistration in Registrations.Distinct())
                     {
                         try
                         {
-                            var reg = (PromoRegistration)Activator.CreateInstance(regType);
+                            var reg = createRegistration();
                             if (await reg.ShouldShowAsync(account))
                             {
                                 return reg;

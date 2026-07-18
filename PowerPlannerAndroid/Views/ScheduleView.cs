@@ -78,23 +78,23 @@ namespace PowerPlannerAndroid.Views
             _buttonAddClass = FindViewById<Button>(Resource.Id.ButtonAddClass);
             _buttonAddClass.Text = R.S("SchedulePage_ButtonAddClass.Content");
 
-            BindingHost.SetBinding<DateTime>(nameof(ViewModel.DisplayStartDate), displayStartDate =>
+            BindingHost.SetBinding<ScheduleViewModel, DateTime>(nameof(ViewModel.DisplayStartDate), viewModel => viewModel.DisplayStartDate, displayStartDate =>
             {
                 FindViewById<TextView>(Resource.Id.Schedule_DisplayStartDateWeek).Text = WeekDateToStringConverter.Convert(displayStartDate);
                 FindViewById<TextView>(Resource.Id.Schedule_DisplayStartDateYear).Text = displayStartDate.ToString("yyyy");
             });
 
-            BindingHost.SetBinding<DateTime>(nameof(ViewModel.DisplayEndDate), displayEndDate =>
+            BindingHost.SetBinding<ScheduleViewModel, DateTime>(nameof(ViewModel.DisplayEndDate), viewModel => viewModel.DisplayEndDate, displayEndDate =>
             {
                 FindViewById<TextView>(Resource.Id.Schedule_DisplayEndDateWeek).Text = WeekDateToStringConverter.Convert(displayEndDate);
             });
 
-            BindingHost.SetBinding<PowerPlannerSending.Schedule.Week>(nameof(ViewModel.CurrentWeek), currentWeek =>
+            BindingHost.SetBinding<ScheduleViewModel, PowerPlannerSending.Schedule.Week>(nameof(ViewModel.CurrentWeek), viewModel => viewModel.CurrentWeek, currentWeek =>
             {
                 FindViewById<TextView>(Resource.Id.Schedule_CurrentWeek).Text = $", {PowerPlannerResources.GetLocalizedWeek(currentWeek)}";
             });
 
-            BindingHost.SetBinding<bool>(nameof(ViewModel.HasTwoWeekSchedule), hasTwoWeekSchedule =>
+            BindingHost.SetBinding<ScheduleViewModel, bool>(nameof(ViewModel.HasTwoWeekSchedule), viewModel => viewModel.HasTwoWeekSchedule, hasTwoWeekSchedule =>
             {
                 FindViewById(Resource.Id.Schedule_CurrentWeek).Visibility = hasTwoWeekSchedule ? ViewStates.Visible : ViewStates.Gone;
             });
@@ -194,8 +194,8 @@ namespace PowerPlannerAndroid.Views
             ViewModel.OnFullReset += new WeakEventHandler(ViewModel_OnFullReset).Handler;
             ViewModel.OnItemsForDateChanged += new WeakEventHandler<DateTime>(ViewModel_OnItemsForDateChanged).Handler;
 
-            BindingHost.SetBinding(nameof(ViewModel.LayoutMode), UpdateLayoutMode, skipInvokingActionImmediately: true);
-            BindingHost.SetBinding(nameof(ViewModel.HasAllDayItems), RenderSchedule, skipInvokingActionImmediately: true);
+            BindingHost.SetBinding<ScheduleViewModel>(nameof(ViewModel.LayoutMode), UpdateLayoutMode, skipInvokingActionImmediately: true);
+            BindingHost.SetBinding<ScheduleViewModel>(nameof(ViewModel.HasAllDayItems), RenderSchedule, skipInvokingActionImmediately: true);
 
             _itemsWrapperEditingClasses = new ItemsControlWrapper(FindViewById<ViewGroup>(Resource.Id.EditingClassesViewGroup))
             {

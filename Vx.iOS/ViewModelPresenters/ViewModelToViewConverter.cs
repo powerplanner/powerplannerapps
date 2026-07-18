@@ -1,52 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using Foundation;
 using UIKit;
 using BareMvvm.Core.ViewModels;
-using InterfacesiOS.App;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
     public static class ViewModelToViewConverter
     {
-        private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
-        private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
+        private static readonly Dictionary<Type, Func<UIViewController>> ViewModelToViewMappings = new Dictionary<Type, Func<UIViewController>>();
+        private static readonly Dictionary<Type, Func<UIViewController>> GenericViewModelToViewMappings = new Dictionary<Type, Func<UIViewController>>();
 
-        public static void AddMapping(Type viewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] Type viewType)
+        public static void AddMapping(Type viewModelType, Func<UIViewController> createView)
         {
-            ViewModelToViewMappings[viewModelType] = viewType;
+            ViewModelToViewMappings[viewModelType] = createView;
         }
 
-        public static void AddGenericMapping(Type genericViewModelType, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] Type genericViewType)
+        public static void AddGenericMapping(Type genericViewModelType, Func<UIViewController> createView)
         {
-            GenericViewModelToViewMappings[genericViewModelType] = genericViewType;
+            GenericViewModelToViewMappings[genericViewModelType] = createView;
         }
 
-        private static bool TryFindGeneric(Type viewModelType, out Type genericViewType)
+        private static bool TryFindGeneric(Type viewModelType, out Func<UIViewController> createView)
         {
             foreach (var pair in GenericViewModelToViewMappings)
             {
                 if (pair.Key.IsAssignableFrom(viewModelType))
                 {
-                    genericViewType = pair.Value;
+                    createView = pair.Value;
                     return true;
                 }
             }
 
-            genericViewType = null;
+            createView = null;
             return false;
         }
 
-        // Trim safety is ensured by the DynamicallyAccessedMembers annotations on AddMapping/AddGenericMapping parameters.
-        // The trimmer cannot track annotations through dictionary lookups, so we suppress the warnings here.
-        [UnconditionalSuppressMessage("Trimming", "IL2067", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2057", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Types are registered via AddMapping/AddGenericMapping which have DynamicallyAccessedMembers annotations.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
         public static UIViewController Convert(BaseViewModel viewModel)
         {
             if (viewModel == null)
@@ -60,38 +48,16 @@ namespace InterfacesiOS.ViewModelPresenters
                 return cachedView as UIViewController;
             }
 
-            Type viewType;
-
             UIViewController view;
 
-            if (ViewModelToViewMappings.TryGetValue(viewModel.GetType(), out viewType))
+            if (ViewModelToViewMappings.TryGetValue(viewModel.GetType(), out Func<UIViewController> createView))
             {
-                view = Activator.CreateInstance(viewType) as UIViewController;
-                if (view == null)
-                {
-#if DEBUG
-                    if (System.Diagnostics.Debugger.IsAttached)
-                    {
-                        System.Diagnostics.Debugger.Break();
-                    }
-#endif
-                    throw new InvalidOperationException("Created view instance must be of type UIViewController");
-                }
+                view = createView();
             }
 
-            else if (TryFindGeneric(viewModel.GetType(), out Type genericViewType))
+            else if (TryFindGeneric(viewModel.GetType(), out Func<UIViewController> createGenericView))
             {
-                view = Activator.CreateInstance(genericViewType) as UIViewController;
-                if (view == null)
-                {
-#if DEBUG
-                    if (System.Diagnostics.Debugger.IsAttached)
-                    {
-                        System.Diagnostics.Debugger.Break();
-                    }
-#endif
-                    throw new InvalidOperationException("Created view instance must be of type UIViewController");
-                }
+                view = createGenericView();
             }
 
             else if (viewModel is PagedViewModelWithPopups)
@@ -115,34 +81,19 @@ namespace InterfacesiOS.ViewModelPresenters
                 throw new NotImplementedException("ViewModel type was unknown: " + viewModel.GetType());
             }
 
-            // And assign the native view to the view model
-            viewModel.SetNativeView(view);
-
-            // Get the ViewModel property
-            var viewModelProperty = view.GetType().GetRuntimeProperties().FirstOrDefault(i => i.Name.Equals("ViewModel"));
-            if (viewModelProperty != null)
+            if (view is not IViewModelHost viewModelHost)
             {
-                // And set the property
-                viewModelProperty.SetValue(view, viewModel);
+                throw new InvalidOperationException("Mapped view must implement IViewModelHost.");
             }
 
-            // And return the view
+            viewModel.SetNativeView(view);
+            viewModelHost.ViewModel = viewModel;
             return view;
         }
 
-        [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
-        [UnconditionalSuppressMessage("Trimming", "IL2070", Justification = "View types registered via AddMapping/AddGenericMapping preserve public properties.")]
         public static BaseViewModel GetViewModelFromView(UIViewController view)
         {
-            // Get the ViewModel property
-            var viewModelProperty = view.GetType().GetRuntimeProperties().FirstOrDefault(i => i.Name.Equals("ViewModel"));
-            if (viewModelProperty != null)
-            {
-                // And get the property
-                return viewModelProperty.GetValue(view) as BaseViewModel;
-            }
-
-            return null;
+            return (view as IViewModelHost)?.ViewModel;
         }
     }
 }

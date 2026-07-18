@@ -9,7 +9,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class ClassToolbarComponent : VxComponent
+    public partial class ClassToolbarComponent : VxComponent
     {
         private VxState<int> _selectedIndex = new VxState<int>(0);
         public int SelectedIndex
@@ -18,11 +18,16 @@ namespace PowerPlannerAppDataLibrary.Components
             set => _selectedIndex.Value = value;
         }
 
-        [VxSubscribe]
         public ClassViewModel ViewModel { get; set; }
 
         public Action OnPinClass { get; set; }
         public Action OnUnpinClass { get; set; }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(ViewModel);
+        }
 
         private VxState<bool> _isPinned = new VxState<bool>(false);
         public bool IsPinned

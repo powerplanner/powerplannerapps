@@ -21,7 +21,7 @@ using static PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda.
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 {
-    public class AgendaViewModel : BaseMainScreenViewModelChild
+    public partial class AgendaViewModel : BaseMainScreenViewModelChild
     {
         private AgendaViewItemsGroup _agendaViewItemsGroup;
         public AgendaViewItemsGroup AgendaViewItemsGroup
@@ -433,7 +433,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
         }
     }
 
-    public class ItemsGroupHeader : BindableBase
+    public class ItemsGroupHeader : BindableBase, ICollapsibleHeader
     {
         public ItemsGroup Group { get; set; }
 

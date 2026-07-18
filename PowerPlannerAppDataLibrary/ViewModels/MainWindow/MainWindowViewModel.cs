@@ -19,10 +19,11 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachmen
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Promos;
 using PowerPlannerAppDataLibrary.ViewItems;
 using Vx;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
 {
-    public class MainWindowViewModel : PagedViewModelWithPopups
+    public partial class MainWindowViewModel : PagedViewModelWithPopups
     {
         private static bool _hasInitializedAppShortcuts;
         public static event EventHandler<AccountDataItem> LoggedInFromNormalActivation;
@@ -329,9 +330,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow
                         return null;
                     }
 
-                    return dataStore.TableMegaItems.FirstOrDefault(i =>
-                        i.MegaItemType == PowerPlannerSending.MegaItemType.Holiday
-                        && i.Identifier == holidayId);
+                    return dataStore.GetHoliday(holidayId);
                 }
             });
 

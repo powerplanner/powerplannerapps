@@ -1,42 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BareMvvm.Core.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using System.Reflection;
 
 namespace InterfacesUWP.ViewModelPresenters
 {
     public partial class ViewModelToViewConverter : IValueConverter
     {
-        private static Dictionary<Type, Type> ViewModelToViewMappings = new Dictionary<Type, Type>();
-        private static Dictionary<Type, Type> GenericViewModelToViewMappings = new Dictionary<Type, Type>();
+        private static Dictionary<Type, Func<object, object>> ViewModelToViewMappings = new Dictionary<Type, Func<object, object>>();
+        private static Dictionary<Type, Func<object, object>> GenericViewModelToViewMappings = new Dictionary<Type, Func<object, object>>();
 
-        public static void AddMapping(Type viewModelType, Type viewType)
+        public static void AddMapping(Type viewModelType, Func<object, object> createView)
         {
-            ViewModelToViewMappings[viewModelType] = viewType;
+            ViewModelToViewMappings[viewModelType] = createView;
         }
 
-        public static void AddGenericMapping(Type viewModelType, Type viewType)
+        public static void AddGenericMapping(Type viewModelType, Func<object, object> createView)
         {
-            GenericViewModelToViewMappings[viewModelType] = viewType;
+            GenericViewModelToViewMappings[viewModelType] = createView;
         }
 
-        private static bool TryFindGeneric(Type viewModelType, out Type genericViewType)
+        private static bool TryFindGeneric(Type viewModelType, out Func<object, object> createView)
         {
             foreach (var pair in GenericViewModelToViewMappings)
             {
                 if (pair.Key.IsAssignableFrom(viewModelType))
                 {
-                    genericViewType = pair.Value;
+                    createView = pair.Value;
                     return true;
                 }
             }
 
-            genericViewType = null;
+            createView = null;
             return false;
         }
 
@@ -55,28 +55,26 @@ namespace InterfacesUWP.ViewModelPresenters
                 }
             }
 
-            Type viewType;
-
             object view;
 
-            if (ViewModelToViewMappings.TryGetValue(value.GetType(), out viewType))
+            if (ViewModelToViewMappings.TryGetValue(value.GetType(), out Func<object, object> createView))
             {
-                view = Activator.CreateInstance(viewType);
+                view = createView(value);
             }
 
-            else if (TryFindGeneric(value.GetType(), out Type genericViewType))
+            else if (TryFindGeneric(value.GetType(), out Func<object, object> createGenericView))
             {
-                view = Activator.CreateInstance(genericViewType);
+                view = createGenericView(value);
             }
 
-            else if (value is PagedViewModelWithPopups)
+            else if (value is PagedViewModelWithPopups pagedViewModelWithPopups)
             {
-                view = new PagedViewModelWithPopupsPresenter();
+                view = new PagedViewModelWithPopupsPresenter { ViewModel = pagedViewModelWithPopups };
             }
 
-            else if (value is PagedViewModel)
+            else if (value is PagedViewModel pagedViewModel)
             {
-                view = new PagedViewModelPresenter();
+                view = new PagedViewModelPresenter { ViewModel = pagedViewModel };
             }
 
             else
@@ -88,29 +86,6 @@ namespace InterfacesUWP.ViewModelPresenters
             if (value is BaseViewModel)
             {
                 (value as BaseViewModel).SetNativeView(view);
-            }
-
-            // Get the ViewModel property
-            var viewModelProperty = view.GetType().GetRuntimeProperties().FirstOrDefault(i => i.Name.Equals("ViewModel"));
-            if (viewModelProperty == null)
-            {
-                throw new InvalidOperationException("View must have a ViewModel property");
-            }
-
-            // And set the property
-            try
-            {
-                viewModelProperty.SetValue(view, value);
-            }
-            catch (Exception ex)
-            {
-                ToolsPortable.ExceptionHelper.OnHandledExceptionOccurred?.Invoke(ex);
-#if DEBUG
-                if (System.Diagnostics.Debugger.IsAttached)
-                {
-                    System.Diagnostics.Debugger.Break();
-                }
-#endif
             }
 
             // And return the view

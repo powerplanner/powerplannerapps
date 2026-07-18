@@ -13,7 +13,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class ConfigureClassCreditsViewModel : PopupComponentViewModel
+    public partial class ConfigureClassCreditsViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 

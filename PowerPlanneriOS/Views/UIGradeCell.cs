@@ -68,7 +68,7 @@ namespace PowerPlanneriOS.Views
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.PreferredCaption1
                 };
-                BindingHost.SetLabelTextBinding(_labelTitle, nameof(DataContext.Name));
+                BindingHost.SetLabelTextBinding(_labelTitle, nameof(DataContext.Name), (BaseViewItemMegaItem item) => item.Name);
                 titleAndGrade.Add(_labelTitle);
                 _labelTitle.StretchHeight(titleAndGrade);
 
@@ -77,7 +77,7 @@ namespace PowerPlanneriOS.Views
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.PreferredCaption2.Bold()
                 };
-                BindingHost.SetLabelTextBinding(_labelGrade, nameof(DataContext.GradeSubtitle));
+                BindingHost.SetLabelTextBinding(_labelGrade, nameof(DataContext.GradeSubtitle), (BaseViewItemMegaItem item) => item.GradeSubtitle);
                 titleAndGrade.Add(_labelGrade);
                 _labelGrade.StretchHeight(titleAndGrade);
 
@@ -101,14 +101,14 @@ namespace PowerPlanneriOS.Views
                 Font = UIFont.PreferredCaption1,
                 TextColor = UIColorCompat.SecondaryLabelColor
             };
-            BindingHost.SetLabelTextBinding(_labelDescription, nameof(DataContext.Details));
+            BindingHost.SetLabelTextBinding(_labelDescription, nameof(DataContext.Details), (BaseViewItemMegaItem item) => item.Details);
             _stackView.AddArrangedSubview(_labelDescription);
             _labelDescription.StretchWidth(_stackView);
 
             ContentView.AddSubview(_stackView);
             _stackView.StretchWidthAndHeight(ContentView, left: 16, top: 8, bottom: 8);
 
-            BindingHost.SetBinding(nameof(DataContext.IsDropped), delegate
+            BindingHost.SetBinding<BaseViewItemMegaItem>(nameof(DataContext.IsDropped), delegate
             {
                 if (_constraintCompletionBarHeight != null)
                 {
@@ -129,7 +129,7 @@ namespace PowerPlanneriOS.Views
                     multiplier,
                     0);
                 ContentView.AddConstraint(_constraintCompletionBarHeight);
-            });
+            }, skipInvokingActionImmediately: false);
         }
 
         protected override void OnDataContextChanged()

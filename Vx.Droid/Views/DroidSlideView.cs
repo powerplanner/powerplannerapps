@@ -98,7 +98,6 @@ namespace Vx.Droid.Views
         {
             private int? _minPosition;
             private int? _maxPosition;
-            private bool _isUnlimited = true;
             private int _itemCount = int.MaxValue;
             public override int ItemCount => _itemCount;
             private Func<object, Vx.Views.View> _itemTemplate;
@@ -108,7 +107,6 @@ namespace Vx.Droid.Views
                 if (minPosition != null && maxPosition != null)
                 {
                     _itemCount = maxPosition.Value - minPosition.Value + 1;
-                    _isUnlimited = false;
                 }
 
                 _minPosition = minPosition;

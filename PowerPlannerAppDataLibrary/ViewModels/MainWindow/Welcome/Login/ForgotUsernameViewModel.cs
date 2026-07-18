@@ -7,11 +7,12 @@ using BareMvvm.Core.ViewModels;
 using PowerPlannerSending;
 using ToolsPortable;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Serialization;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
 {
-    public class ForgotUsernameViewModel : PopupComponentViewModel
+    public partial class ForgotUsernameViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -85,7 +86,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login
                 ForgotUsernameResponse response = await WebHelper.Download<ForgotUsernameRequest, ForgotUsernameResponse>(
                         Website.ClientApiUrl + "forgotusernamemodern",
                         new ForgotUsernameRequest() { Email = email },
-                        Website.ApiKey);
+                        Website.ApiKey,
+                        PowerPlannerJson.Serialize,
+                        PowerPlannerJson.Deserialize<ForgotUsernameResponse>);
 
                 if (response == null)
                 {

@@ -37,7 +37,7 @@ using Vx;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 {
-    public class MainScreenViewModel : PagedViewModelWithPopups
+    public partial class MainScreenViewModel : PagedViewModelWithPopups
     {
         protected override View Render()
         {
@@ -915,7 +915,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             using (await Locks.LockDataForReadAsync())
             {
-                return dataStore.TableSemesters.Count(i => i.Identifier == semesterId) > 0;
+                return dataStore.SemesterExists(semesterId);
             }
         }
 

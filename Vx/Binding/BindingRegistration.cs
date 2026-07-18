@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 
@@ -41,11 +42,13 @@ namespace BareMvvm.Core.Binding
         /// </summary>
         /// <param name="propertyPath"></param>
         /// <param name="value"></param>
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "BindingHost is inherently reflection-based; callers are warned via RequiresUnreferencedCode on public API.")]
         public void SetSourceValue(object value, PropertyInfoAndObject preObtainedSourceProperty = null)
         {
             BindingHost.SetValue(_fullPropertyPath, value, IsEmptyRegistration ? null : this, preObtainedSourceProperty: preObtainedSourceProperty);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "BindingHost is inherently reflection-based; callers are warned via RequiresUnreferencedCode on public API.")]
         public PropertyInfoAndObject GetSourceProperty()
         {
             return BindingHost.GetProperty(_fullPropertyPath);

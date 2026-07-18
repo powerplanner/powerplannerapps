@@ -23,7 +23,7 @@ namespace PowerPlanneriOS.Views
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Font = UIFont.PreferredSubheadline.Bold()
             };
-            _bindingHost.SetLabelTextBinding(_labelName, nameof(ViewItemWeightCategory.Name));
+            _bindingHost.SetLabelTextBinding(_labelName, nameof(ViewItemWeightCategory.Name), (ViewItemWeightCategory item) => item.Name);
             ContentView.Add(_labelName);
             _labelName.StretchWidthAndHeight(ContentView, left: 15, top: 8, right: 0, bottom: 8);
         }

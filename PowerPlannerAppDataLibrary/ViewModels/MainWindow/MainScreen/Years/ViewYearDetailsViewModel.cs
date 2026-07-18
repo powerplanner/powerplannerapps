@@ -9,7 +9,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
     public class ViewYearDetailsViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public ViewItemYear Year { get; private set; }
 
         public ViewYearDetailsViewModel(YearsViewModel parent, ViewItemYear year) : base(parent)
@@ -17,6 +16,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             Year = year;
             Title = year.Name;
             PrimaryCommand = PopupCommand.Edit(Edit);
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Year);
         }
 
         protected override View Render()

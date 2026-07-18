@@ -14,16 +14,21 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
 {
-    public class DayScheduleSnapshotComponent : VxComponent
+    public partial class DayScheduleSnapshotComponent : VxComponent
     {
         private static readonly float TIME_INDICATOR_SIZE = 60;
         private static readonly float GAP_SIZE = 1;
         public static readonly float HEIGHT_OF_HOUR = TIME_INDICATOR_SIZE + GAP_SIZE;
 
-        [VxSubscribe]
         public DayScheduleItemsArranger ArrangedItems { get; set; }
 
         private VxState<DayScheduleItemsArranger.EventItem> ExpandedTaskOrEvent = new VxState<DayScheduleItemsArranger.EventItem>(null);
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(ArrangedItems);
+        }
 
         protected override void OnSizeChanged(SizeF size, SizeF previousSize)
         {
@@ -161,7 +166,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             return b;
         }
 
-        private class ExpandableTaskOrEventComponent : VxComponent
+        private partial class ExpandableTaskOrEventComponent : VxComponent
         {
             public DayScheduleItemsArranger.EventItem EventItem { get; set; }
             public bool IsExpanded { get; set; }

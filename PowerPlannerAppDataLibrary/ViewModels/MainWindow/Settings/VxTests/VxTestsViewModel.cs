@@ -20,17 +20,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                 {
                     Children =
                     {
-                        RenderOption<VxLinearLayoutTestsViewModel>("LinearLayout tests"),
-                        RenderOption<VxTopLevelLinearLayoutTestViewModel>("Top level LinearLayout"),
-                        RenderOption<VxBorderChildAlignmentTestViewModel>("Border child alignment"),
-                        RenderOption<VxScrollViewerTestViewModel>("Scroll view test"),
-                        RenderOption<VxTransparentContentButtonTestViewModel>("Transparent content button test")
+                        RenderOption("LinearLayout tests", () => new VxLinearLayoutTestsViewModel(this)),
+                        RenderOption("Top level LinearLayout", () => new VxTopLevelLinearLayoutTestViewModel(this)),
+                        RenderOption("Border child alignment", () => new VxBorderChildAlignmentTestViewModel(this)),
+                        RenderOption("Scroll view test", () => new VxScrollViewerTestViewModel(this)),
+                        RenderOption("Transparent content button test", () => new VxTransparentContentButtonTestViewModel(this))
                     }
                 }
             };
         }
 
-        private View RenderOption<T>(string name) where T : PopupComponentViewModel
+        private View RenderOption(string name, Func<PopupComponentViewModel> createViewModel)
         {
             return new TransparentContentButton
             {
@@ -41,8 +41,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.VxTests
                 },
                 Click = () =>
                 {
-                    var model = Activator.CreateInstance(typeof(T), this) as T;
-                    ShowPopup(model);
+                    ShowPopup(createViewModel());
                 }
             };
         }

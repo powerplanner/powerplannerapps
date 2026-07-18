@@ -32,7 +32,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
         MainScreenViewModel MainScreenViewModel { get; }
     }
 
-    public class CalendarViewModel : ComponentViewModel, ICalendarOrDayViewModel
+    public partial class CalendarViewModel : ComponentViewModel, ICalendarOrDayViewModel
     {
         private static DisplayStates _lastDisplayState;
         private static DateTime _initialSelectedDate;

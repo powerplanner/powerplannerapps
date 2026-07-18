@@ -33,7 +33,7 @@ namespace PowerPlanneriOS.Controllers.ClassViewControllers
             StackView.AddArrangedSubview(textViewDetails);
             textViewDetails.StretchWidth(StackView);
             textViewDetails.SetMinimumHeight(60);
-            BindingHost.SetTextViewTextBinding(textViewDetails, nameof(ViewModel.Details));
+            BindingHost.SetTextViewTextBinding<EditClassDetailsViewModel>(textViewDetails, nameof(ViewModel.Details), viewModel => viewModel.Details, (viewModel, value) => viewModel.Details = value);
 
             AddSectionDivider();
         }

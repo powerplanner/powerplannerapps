@@ -227,10 +227,8 @@ namespace InterfacesDroid.Adapters
                     convertView = CreateView.Invoke(parent);
                 }
 
-                var dataContextProperty = convertView.GetType().GetProperties().FirstOrDefault(i => i.Name.Equals("DataContext"));
-
-                if (dataContextProperty != null)
-                    dataContextProperty.SetValue(convertView, item);
+                if (convertView is IDataContextView dataContextView)
+                    dataContextView.DataContext = item;
 
                 return convertView;
             }
@@ -247,10 +245,8 @@ namespace InterfacesDroid.Adapters
                     convertView = CreateDropDownViewFunction.Invoke(parent);
                 }
 
-                var dataContextProperty = convertView.GetType().GetProperties().FirstOrDefault(i => i.Name.Equals("DataContext"));
-
-                if (dataContextProperty != null)
-                    dataContextProperty.SetValue(convertView, item);
+                if (convertView is IDataContextView dataContextView)
+                    dataContextView.DataContext = item;
 
                 return convertView;
             }

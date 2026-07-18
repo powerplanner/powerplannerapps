@@ -9,6 +9,7 @@
 	<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	<AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>

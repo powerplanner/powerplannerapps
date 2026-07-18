@@ -106,6 +106,11 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
+            if (v <= new Version(2607, 17, 0, 0))
+            {
+                changedText += "\n - Significantly faster launch speed!";
+            }
+
             if (v <= new Version(2606, 12, 0, 0))
             {
                 changedText += "\n - Mac version of Power Planner is now available!";

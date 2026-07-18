@@ -9,7 +9,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
     public class ViewSemesterDetailsViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public ViewItemSemester Semester { get; private set; }
 
         public ViewSemesterDetailsViewModel(YearsViewModel parent, ViewItemSemester semester) : base(parent)
@@ -17,6 +16,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             Semester = semester;
             Title = semester.Name;
             PrimaryCommand = PopupCommand.Edit(Edit);
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Semester);
         }
 
         protected override View Render()

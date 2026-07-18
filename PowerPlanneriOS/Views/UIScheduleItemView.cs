@@ -25,7 +25,7 @@ namespace PowerPlanneriOS.Views
             Item = item;
             m_classBindingHost.DataContext = item.Class;
 
-            m_classBindingHost.SetBackgroundColorBinding(this, nameof(item.Class.Color));
+            m_classBindingHost.SetBackgroundColorBinding(this, nameof(item.Class.Color), (ViewItemClass itemClass) => itemClass.Color);
 
             var minTextHeight = UIFont.PreferredCaption1.LineHeight;
 
@@ -36,7 +36,7 @@ namespace PowerPlanneriOS.Views
                 Lines = 0,
                 Font = UIFont.PreferredCaption1
             };
-            m_classBindingHost.SetLabelTextBinding(labelClass, nameof(item.Class.Name));
+            m_classBindingHost.SetLabelTextBinding(labelClass, nameof(item.Class.Name), (ViewItemClass itemClass) => itemClass.Name);
             this.Add(labelClass);
             labelClass.StretchWidth(this, left: 4);
 

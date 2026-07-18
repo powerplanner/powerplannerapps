@@ -15,7 +15,7 @@ using PowerPlannerAppDataLibrary.Components;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 {
-    public class AddYearViewModel : PopupComponentViewModel
+    public partial class AddYearViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
 

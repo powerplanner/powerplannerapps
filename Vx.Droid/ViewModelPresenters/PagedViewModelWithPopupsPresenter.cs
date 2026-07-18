@@ -168,7 +168,7 @@ namespace InterfacesDroid.ViewModelPresenters
         }
     }
 
-    public class PagedViewModelWithPopupsPresenter : FrameLayout
+    public class PagedViewModelWithPopupsPresenter : FrameLayout, IViewModelHost
     {
         private PagedViewModelPresenter _pagedViewModelPresenter;
         private PopupsPresenter _popupsPresenter;
@@ -198,7 +198,7 @@ namespace InterfacesDroid.ViewModelPresenters
 
             base.AddView(_fullScreenPresenter);
 
-            _bindingHost.SetBinding<BaseViewModel>(nameof(ViewModel.FullScreenPopup), fullScreenPopup =>
+            _bindingHost.SetBinding<PagedViewModelWithPopups, BaseViewModel>(nameof(ViewModel.FullScreenPopup), viewModel => viewModel.FullScreenPopup, fullScreenPopup =>
             {
                 _fullScreenPresenter.ViewModel = fullScreenPopup;
                 _fullScreenPresenter.Visibility = fullScreenPopup != null ? ViewStates.Visible : ViewStates.Gone;
@@ -228,6 +228,12 @@ namespace InterfacesDroid.ViewModelPresenters
 
                 // Full screen popup is configured via the binding in Initialize()
             }
+        }
+
+        BaseViewModel IViewModelHost.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (PagedViewModelWithPopups)value; }
         }
 
         

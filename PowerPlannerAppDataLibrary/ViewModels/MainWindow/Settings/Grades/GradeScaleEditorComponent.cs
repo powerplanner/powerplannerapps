@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using PowerPlannerAppDataLibrary.ViewItems;
+﻿using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
-    public class GradeScaleEditorComponent : VxComponent
+    public partial class GradeScaleEditorComponent : VxComponent
     {
         public class EditingGradeScale
         {

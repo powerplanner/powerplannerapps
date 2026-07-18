@@ -5,6 +5,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassGradesListViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
         public ConfigureClassGradesListViewModel(BaseViewModel parent, ViewItemClass c) : base(parent)
@@ -23,6 +23,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
             // Technically I should bind to this but I currently don't, that's okay though, super rare that class name will be changed.
             Title = c.Name;
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Class);
         }
 
         protected override View Render()
@@ -89,52 +95,54 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         public void ConfigureOverrideFinalGradeGpa()
         {
-            ShowClassViewModel<ConfigureClassFinalGradeGpaViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassFinalGradeGpaViewModel(parent, itemClass));
         }
 
         public void ConfigureCredits()
         {
-            ShowClassViewModel<ConfigureClassCreditsViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassCreditsViewModel(parent, itemClass));
         }
 
         public void ConfigureGradeScale()
         {
-            ShowClassViewModel<ConfigureClassGradeScaleViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassGradeScaleViewModel(parent, itemClass));
         }
 
         public void ConfigureWeightCategories()
         {
-            ShowClassViewModel<ConfigureClassWeightCategoriesViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassWeightCategoriesViewModel(parent, itemClass));
         }
 
         public void ConfigureAverageGrades()
         {
-            ShowClassViewModel<ConfigureClassAverageGradesViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassAverageGradesViewModel(parent, itemClass));
         }
 
         public void ConfigureRoundGradesUp()
         {
-            ShowClassViewModel<ConfigureClassRoundGradesUpViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassRoundGradesUpViewModel(parent, itemClass));
         }
 
         public void ConfigureGpaType()
         {
-            ShowClassViewModel<ConfigureClassGpaTypeViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassGpaTypeViewModel(parent, itemClass));
         }
 
         public void ConfigurePassingGrade()
         {
-            ShowClassViewModel<ConfigureClassPassingGradeViewModel>();
+            ShowClassViewModel((parent, itemClass) => new ConfigureClassPassingGradeViewModel(parent, itemClass));
         }
 
-        private void ShowClassViewModel<T>() where T : BaseViewModel
+        private void ShowClassViewModel(Func<BaseViewModel, ViewItemClass, BaseViewModel> createViewModel)
         {
-            FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), FindAncestor<PagedViewModelWithPopups>(), Class) as BaseViewModel);
+            var parent = FindAncestor<PagedViewModelWithPopups>();
+            parent.ShowPopup(createViewModel(parent, Class));
         }
 
-        public static void ShowViewModel<T>(BaseViewModel current) where T : BaseViewModel
+        public static void ShowViewModel(BaseViewModel current, Func<BaseViewModel, BaseViewModel> createViewModel)
         {
-            current.FindAncestor<PagedViewModelWithPopups>().ShowPopup(Activator.CreateInstance(typeof(T), current.FindAncestor<PagedViewModelWithPopups>()) as BaseViewModel);
+            var parent = current.FindAncestor<PagedViewModelWithPopups>();
+            parent.ShowPopup(createViewModel(parent));
         }
     }
 }

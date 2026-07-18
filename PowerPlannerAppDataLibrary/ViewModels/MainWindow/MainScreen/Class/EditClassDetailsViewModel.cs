@@ -9,15 +9,15 @@ using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.App;
 using PowerPlannerAppDataLibrary.Extensions;
+using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 {
-    public class EditClassDetailsViewModel : BaseMainScreenViewModelChild
+    public partial class EditClassDetailsViewModel : BaseMainScreenViewModelChild
     {
         protected override bool InitialAllowLightDismissValue => false;
 
         public ViewItemClass Class { get; private set; }
-
         private string _details = "";
         public string Details
         {

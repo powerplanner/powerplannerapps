@@ -33,7 +33,7 @@ namespace InterfacesiOS.Views
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            m_internalBinding.SetBackgroundColorBinding(rectanglePreview, nameof(Color));
+            m_internalBinding.SetBackgroundColorBinding(rectanglePreview, nameof(Color), (BareUICustomColorPicker picker) => picker.Color);
             AddSubview(rectanglePreview);
             rectanglePreview.StretchWidth(this);
 

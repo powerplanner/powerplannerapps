@@ -9,7 +9,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class LanguageSettingsViewModel : PopupComponentViewModel
+    public partial class LanguageSettingsViewModel : PopupComponentViewModel
     {
         public class LanguageOption
         {

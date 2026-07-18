@@ -19,7 +19,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureClassGpaTypeViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public ViewItemClass Class { get; private set; }
 
         private VxState<bool> _isEnabled = new VxState<bool>(true);
@@ -28,6 +27,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
         {
             Class = c;
             Title = PowerPlannerResources.GetString("Settings_GradeOptions_GpaType");
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Class);
         }
 
         protected override View Render()

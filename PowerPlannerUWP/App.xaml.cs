@@ -53,6 +53,7 @@ using PowerPlannerAppDataLibrary.Helpers;
 using Windows.System.Profile;
 using PowerPlannerUWP.BackgroundTasks;
 using PowerPlannerAppDataLibrary.ViewModels;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PowerPlannerUWP
 {
@@ -91,52 +92,53 @@ namespace PowerPlannerUWP
             var dontWait = ConfigureJumpList();
         }
 
+        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
         public override Type GetPortableAppType()
         {
             return typeof(PowerPlannerUwpApp);
         }
 
-        public override Dictionary<Type, Type> GetGenericViewModelToViewMappings()
+        public override Dictionary<Type, Func<object, object>> GetGenericViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>
+            return new Dictionary<Type, Func<object, object>>
             {
-                { typeof(YearsViewModel), typeof(ComponentView) }, // Don't show Years as a popup on Windows
-                { typeof(ClassWhatIfViewModel), typeof(ComponentView) }, // Don't show What If as a popup on Windows
-                { typeof(ShowImagesViewModel), typeof(ComponentView) }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
-                { typeof(PopupComponentViewModel), typeof(PopupComponentView) },
-                { typeof(ComponentViewModel), typeof(ComponentView) } // Popup must be first since Popup is a subclass
+                { typeof(YearsViewModel), viewModel => new ComponentView { ViewModel = (YearsViewModel)viewModel } }, // Don't show Years as a popup on Windows
+                { typeof(ClassWhatIfViewModel), viewModel => new ComponentView { ViewModel = (ClassWhatIfViewModel)viewModel } }, // Don't show What If as a popup on Windows
+                { typeof(ShowImagesViewModel), viewModel => new ComponentView { ViewModel = (ShowImagesViewModel)viewModel } }, // Don't show ShowImages as a popup on Windows (we have integrated titlebar back button)
+                { typeof(PopupComponentViewModel), viewModel => new PopupComponentView { ViewModel = (PopupComponentViewModel)viewModel } },
+                { typeof(ComponentViewModel), viewModel => new ComponentView { ViewModel = (ComponentViewModel)viewModel } } // Popup must be first since Popup is a subclass
             };
         }
 
-        public override Dictionary<Type, Type> GetViewModelToViewMappings()
+        public override Dictionary<Type, Func<object, object>> GetViewModelToViewMappings()
         {
-            return new Dictionary<Type, Type>()
+            return new Dictionary<Type, Func<object, object>>()
             {
                 // Main views
-                { typeof(InitialSyncViewModel), typeof(InitialSyncView) },
-                { typeof(AgendaViewModel), typeof(AgendaView) },
-                { typeof(CalendarViewModel), typeof(ComponentView) },
-                { typeof(ClassViewModel), typeof(ClassView) },
-                { typeof(EditClassDetailsViewModel), typeof(EditClassDetailsView) },
-                { typeof(LoginViewModel), typeof(LoginView) },
-                { typeof(DayViewModel), typeof(MainContentDayView) },
-                { typeof(MainScreenViewModel), typeof(MainScreenView) },
-                { typeof(PremiumVersionViewModel), typeof(PremiumVersionView) },
-                { typeof(PromoOtherPlatformsViewModel), typeof(PromoOtherPlatformsView) },
-                { typeof(QuickAddViewModel), typeof(QuickAddView) },
-                { typeof(ScheduleViewModel), typeof(ScheduleView) },
-                { typeof(ExportSchedulePopupViewModel), typeof(ExportSchedulePopupView) },
-                { typeof(SyncErrorsViewModel), typeof(SyncErrorsView) },
-                { typeof(WelcomeViewModel), typeof(WelcomeView) },
+                { typeof(InitialSyncViewModel), viewModel => new InitialSyncView { ViewModel = (InitialSyncViewModel)viewModel } },
+                { typeof(AgendaViewModel), viewModel => new AgendaView { ViewModel = (AgendaViewModel)viewModel } },
+                { typeof(CalendarViewModel), viewModel => new ComponentView { ViewModel = (CalendarViewModel)viewModel } },
+                { typeof(ClassViewModel), viewModel => new ClassView { ViewModel = (ClassViewModel)viewModel } },
+                { typeof(EditClassDetailsViewModel), viewModel => new EditClassDetailsView { ViewModel = (EditClassDetailsViewModel)viewModel } },
+                { typeof(LoginViewModel), viewModel => new LoginView { ViewModel = (LoginViewModel)viewModel } },
+                { typeof(DayViewModel), viewModel => new MainContentDayView { ViewModel = (DayViewModel)viewModel } },
+                { typeof(MainScreenViewModel), viewModel => new MainScreenView { ViewModel = (MainScreenViewModel)viewModel } },
+                { typeof(PremiumVersionViewModel), viewModel => new PremiumVersionView { ViewModel = (PremiumVersionViewModel)viewModel } },
+                { typeof(PromoOtherPlatformsViewModel), viewModel => new PromoOtherPlatformsView { ViewModel = (PromoOtherPlatformsViewModel)viewModel } },
+                { typeof(QuickAddViewModel), viewModel => new QuickAddView { ViewModel = (QuickAddViewModel)viewModel } },
+                { typeof(ScheduleViewModel), viewModel => new ScheduleView { ViewModel = (ScheduleViewModel)viewModel } },
+                { typeof(ExportSchedulePopupViewModel), viewModel => new ExportSchedulePopupView { ViewModel = (ExportSchedulePopupViewModel)viewModel } },
+                { typeof(SyncErrorsViewModel), viewModel => new SyncErrorsView { ViewModel = (SyncErrorsViewModel)viewModel } },
+                { typeof(WelcomeViewModel), viewModel => new WelcomeView { ViewModel = (WelcomeViewModel)viewModel } },
 
                 // Settings views
-                { typeof(TileSettingsViewModel), typeof(BaseSettingsSplitView) },
-                { typeof(ClassTilesViewModel), typeof(ClassTilesView) },
-                { typeof(ClassTileViewModel), typeof(ClassTileView) },
-                { typeof(MainTileViewModel), typeof(MainTileView) },
-                { typeof(QuickAddTileViewModel), typeof(QuickAddTileView) },
-                { typeof(ScheduleTileViewModel), typeof(ScheduleTileView) },
-                { typeof(GoogleCalendarIntegrationViewModel), typeof(GoogleCalendarIntegrationView) }
+                { typeof(TileSettingsViewModel), viewModel => new BaseSettingsSplitView { ViewModel = (TileSettingsViewModel)viewModel } },
+                { typeof(ClassTilesViewModel), viewModel => new ClassTilesView { ViewModel = (ClassTilesViewModel)viewModel } },
+                { typeof(ClassTileViewModel), viewModel => new ClassTileView { ViewModel = (ClassTileViewModel)viewModel } },
+                { typeof(MainTileViewModel), viewModel => new MainTileView { ViewModel = (MainTileViewModel)viewModel } },
+                { typeof(QuickAddTileViewModel), viewModel => new QuickAddTileView { ViewModel = (QuickAddTileViewModel)viewModel } },
+                { typeof(ScheduleTileViewModel), viewModel => new ScheduleTileView { ViewModel = (ScheduleTileViewModel)viewModel } },
+                { typeof(GoogleCalendarIntegrationViewModel), viewModel => new GoogleCalendarIntegrationView { ViewModel = (GoogleCalendarIntegrationViewModel)viewModel } }
             };
         }
 
@@ -298,7 +300,13 @@ namespace PowerPlannerUWP
 
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("OnLaunchedOrActivated failed: " + ex);
                 TelemetryExtension.Current?.TrackException(ex);
+
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
             }
         }
 

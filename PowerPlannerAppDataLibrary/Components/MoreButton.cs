@@ -5,7 +5,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    internal class MoreButton : VxComponent
+    internal partial class MoreButton : VxComponent
     {
         /// <summary>
         /// The context menu to show when clicked

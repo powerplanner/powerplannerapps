@@ -10,7 +10,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class ScheduleToolbarComponent : VxComponent
+    public partial class ScheduleToolbarComponent : VxComponent
     {
         public ScheduleViewModel ViewModel { get; set; }
 

@@ -6,7 +6,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    public class DifferentSemesterComponent : VxComponent
+    public partial class DifferentSemesterComponent : VxComponent
     {
         public Action OnDismiss { get; set; }
 

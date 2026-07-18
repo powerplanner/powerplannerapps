@@ -8,6 +8,7 @@ using ToolsPortable;
 using PowerPlannerSending;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
+using PowerPlannerAppDataLibrary.Serialization;
 using PowerPlannerAppDataLibrary.SyncLayer;
 using BareMvvm.Core;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.CreateAccount;
@@ -15,7 +16,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ConvertToOnlineViewModel : PopupComponentViewModel
+    public partial class ConvertToOnlineViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;
@@ -56,8 +57,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             );
         }
 
-        [VxSubscribe]
         public TextField Email { get; private set; } = CreateAccountViewModel.GenerateEmailTextField();
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Email);
+        }
 
         private bool _showConfirmMergeExisting;
         public bool ShowConfirmMergeExisting
@@ -71,7 +77,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private CreateAccountResponse _response;
         public async System.Threading.Tasks.Task CreateOnlineAccountAsync()
         {
-            if (!ValidateAllInputs())
+            if (!ValidateAllInputs(new[] { Email }))
             {
                 return;
             }
@@ -92,7 +98,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         Password = currAccount.LocalToken,
                         Email = email,
                         AddDevice = true
-                    }, Website.ApiKey);
+                    }, Website.ApiKey, PowerPlannerJson.Serialize, PowerPlannerJson.Deserialize<CreateAccountResponse>);
 
                 if (_response.Error != null)
                 {

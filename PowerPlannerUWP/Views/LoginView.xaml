@@ -10,7 +10,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:data="using:PowerPlannerAppDataLibrary">
+    xmlns:data="using:PowerPlannerAppDataLibrary"
+    xmlns:dataLayer="using:PowerPlannerAppDataLibrary.DataLayer">
 
     <views:PopupViewHostGeneric.MainContent>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -34,9 +35,15 @@
 
                     KeyUp="tbUsername_KeyUp"
                     ItemsSource="{x:Bind ViewModel.AccountsWithRememberUsername}"
-                    DisplayMemberPath="Username" TextMemberPath="Username"
+                    SuggestionChosen="tbUsername_SuggestionChosen"
                     Loaded="tbUsername_Loaded"
                         Text="{x:Bind ViewModel.Username, Mode=TwoWay}">
+
+                        <AutoSuggestBox.ItemTemplate>
+                            <DataTemplate x:DataType="dataLayer:AccountDataItem">
+                                <TextBlock Text="{x:Bind Username}"/>
+                            </DataTemplate>
+                        </AutoSuggestBox.ItemTemplate>
 
                         <AutoSuggestBox.TextBoxStyle>
                             <Style TargetType="TextBox">

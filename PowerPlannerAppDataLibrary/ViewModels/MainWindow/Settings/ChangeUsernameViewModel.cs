@@ -11,7 +11,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class ChangeUsernameViewModel : PopupComponentViewModel
+    public partial class ChangeUsernameViewModel : PopupComponentViewModel
     {
         protected override bool InitialAllowLightDismissValue => false;
         public override bool ImportantForAutofill => true;

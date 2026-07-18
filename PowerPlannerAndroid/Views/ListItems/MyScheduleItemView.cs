@@ -25,7 +25,7 @@ namespace PowerPlannerAndroid.Views.ListItems
             base.Orientation = Orientation.Vertical;
             base.SetPaddingRelative(ThemeHelper.AsPx(context, 5), ThemeHelper.AsPx(context, 5), 0, 0);
 
-            _classBindingHost.SetBinding<byte[]>(nameof(ViewItemClass.Color), color =>
+            _classBindingHost.SetBinding<ViewItemClass, byte[]>(nameof(ViewItemClass.Color), item => item.Color, color =>
             {
                 base.Background = new ColorDrawable(ColorTools.GetColor(color));
             });
@@ -34,7 +34,7 @@ namespace PowerPlannerAndroid.Views.ListItems
             // to room like I did on UWP, so just limiting name to 2 lines for now till someone complains.
             var textViewName = CreateTextView("");
 
-            _classBindingHost.SetBinding<string>(nameof(ViewItemClass.Name), className =>
+            _classBindingHost.SetBinding<ViewItemClass, string>(nameof(ViewItemClass.Name), item => item.Name, className =>
             {
                 textViewName.Text = className;
             });

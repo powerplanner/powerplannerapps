@@ -16,7 +16,7 @@ using ToolsPortable;
 
 namespace InterfacesDroid.ViewModelPresenters
 {
-    public class PagedViewModelPresenter : FrameLayout
+    public class PagedViewModelPresenter : FrameLayout, IViewModelHost
     {
         public event EventHandler ContentChanged;
         private PropertyChangedEventHandler _viewModelPropertyChangedHandler;
@@ -53,6 +53,12 @@ namespace InterfacesDroid.ViewModelPresenters
 
                 UpdateContent();
             }
+        }
+
+        BaseViewModel IViewModelHost.ViewModel
+        {
+            get { return ViewModel; }
+            set { ViewModel = (PagedViewModel)value; }
         }
 
         private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

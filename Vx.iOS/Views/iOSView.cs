@@ -3,6 +3,7 @@ using Foundation;
 using GameController;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using UIKit;
@@ -10,7 +11,7 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public abstract class iOSView<V, N> : NativeView<V, UIViewWrapper> where V : View where N : UIView
+    public abstract class iOSView<V, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicProperties)] N> : NativeView<V, UIViewWrapper> where V : View where N : UIView
     {
         private UITapGestureRecognizer _tapGestureRecognizer;
         private ContextMenuInteractionHandler _cmInteractionHandler;

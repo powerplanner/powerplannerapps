@@ -13,12 +13,11 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 {
-    public class MyAccountViewModel : PopupComponentViewModel
+    public partial class MyAccountViewModel : PopupComponentViewModel
     {
         private static DateTime _timeLastConfirmed = DateTime.MinValue;
         private static Guid _lastConfrimedAccountId;
 
-        [VxSubscribe]
         public AccountDataItem CurrentAccount { get; private set; }
 
         private VxState<string> _email = new VxState<string>(R.S("String_Loading"));
@@ -29,6 +28,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
         private MyAccountViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("Settings_MyAccount_Header.Text");
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(CurrentAccount);
         }
 
         protected override async void Initialize()

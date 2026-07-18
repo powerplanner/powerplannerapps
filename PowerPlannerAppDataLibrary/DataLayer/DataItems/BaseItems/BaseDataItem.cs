@@ -1,17 +1,18 @@
 ﻿using PowerPlannerSending;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
 using System.IO;
 using ToolsPortable;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PowerPlannerAppDataLibrary.Serialization;
 
 namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
 {
@@ -88,32 +89,6 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             return (BaseDataItem)this.MemberwiseClone();
         }
 
-        private static Dictionary<Type, DataItemProperty[]> _cachedProperties = new Dictionary<Type, DataItemProperty[]>();
-        
-        internal DataItemProperty[] GetProperties()
-        {
-            // The properties are static readonly properties on the class. So if an instance of the class already exists, that means the properties 
-            // have already been assigned and will never change. Thus, we can load them once for each type and then simply cache them for
-            // future lookups.
-
-            DataItemProperty[] properties;
-
-            Type type = this.GetType();
-
-            // If the properties have already been loaded for this type
-            if (_cachedProperties.TryGetValue(type, out properties))
-                return properties;
-
-            // Otherwise load the properties for this type
-            properties = type.GetTypeInfo().DeclaredFields.Where(f => f.IsStatic && f.FieldType == typeof(DataItemProperty)).Select(f => f.GetValue(null)).OfType<DataItemProperty>().ToArray();
-
-            // And then cache the properties for this type
-            _cachedProperties[type] = properties;
-
-            // And then return them
-            return properties;
-        }
-
         /// <summary>
         /// Gets a collection of properties that have already been set on the item
         /// </summary>
@@ -161,19 +136,12 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             return changedSyncProperties;
         }
 
-        public static string SerializeToString(object obj)
+        public static string SerializeToString<T>(T obj)
         {
             if (obj == null)
                 return null;
 
-            using (StringWriter writer = new StringWriter())
-            {
-                new JsonSerializer().Serialize(writer, obj);
-
-                writer.Flush();
-
-                return writer.ToString();
-            }
+            return PowerPlannerJson.Serialize(obj);
         }
 
         public static T DeserializeFromString<T>(string str)
@@ -181,16 +149,13 @@ namespace PowerPlannerAppDataLibrary.DataLayer.DataItems.BaseItems
             if (str == null)
                 return default(T);
 
-            using (StringReader reader = new StringReader(str))
+            try
             {
-                try
-                {
-                    return (T)new JsonSerializer().Deserialize(reader, typeof(T));
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Failed deserialize string: " + str, ex);
-                }
+                return PowerPlannerJson.Deserialize<T>(str);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed deserialize string: " + str, ex);
             }
         }
 

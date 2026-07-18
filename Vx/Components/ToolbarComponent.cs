@@ -10,7 +10,7 @@ namespace Vx.Components.OnlyForNativeLibraries
     /// <summary>
     /// This is only for rendering a toolbar when the native platform doesn't have a good toolbar (like UWP)
     /// </summary>
-    public class ToolbarComponent : VxComponent
+    public partial class ToolbarComponent : VxComponent
     {
         public static readonly int ToolbarHeight = 48;
         public Toolbar Toolbar { get; set; }

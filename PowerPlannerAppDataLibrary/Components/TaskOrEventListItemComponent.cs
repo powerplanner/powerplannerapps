@@ -3,6 +3,7 @@ using PowerPlannerAppDataLibrary.ViewItems;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Vx.Views;
@@ -98,11 +99,11 @@ namespace PowerPlannerAppDataLibrary.Components
 
             if (IncludeDate)
             {
-                txt = Item.GetType().GetProperty("SubtitleDueDate").GetValue(Item) as string;
+                txt = Item.SubtitleDueDate;
             }
             else
             {
-                txt = Item.GetType().GetProperty("SubtitleDueTime").GetValue(Item) as string;
+                txt = Item.SubtitleDueTime;
             }
 
             if (!IncludeClass || Item.Class == null || Item.Class.IsNoClassClass)

@@ -221,10 +221,8 @@ namespace InterfacesUWP.Controls
 
             if (SelectedItem != ComboBox.SelectedItem)
             {
-                var removed = SelectedItem == null ? new object[0] : new object[] { SelectedItem };
                 SelectedItem = ComboBox.SelectedItem;
-                var added = SelectedItem == null ? new object[0] : new object[] { SelectedItem };
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(removed, added));
+                SelectionChanged?.Invoke(this, e);
             }
         }
     }

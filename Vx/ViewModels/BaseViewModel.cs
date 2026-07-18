@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -53,7 +54,7 @@ namespace BareMvvm.Core.ViewModels
     }
 #endif
 
-    public abstract class BaseViewModel : VxComponent, INotifyPropertyChanged
+    public abstract partial class BaseViewModel : VxComponent, INotifyPropertyChanged
     {
         public event EventHandler NavigatedTo;
         public event EventHandler NavigatedFrom;
@@ -752,18 +753,15 @@ namespace BareMvvm.Core.ViewModels
             NavigatedFrom?.Invoke(this, new EventArgs());
         }
 
-        protected bool ValidateAllInputs(bool showValidationErrorMessage = true, Dictionary<string, Action<TextField>> customValidators = null)
+        protected bool ValidateAllInputs(IEnumerable<TextField> fields, bool showValidationErrorMessage = true, Dictionary<TextField, Action<TextField>> customValidators = null)
         {
-            var props = this.GetType().GetRuntimeProperties().Where(i => i.PropertyType == typeof(TextField));
-
             bool isValid = true;
 
-            foreach (var p in props)
+            foreach (TextField field in fields)
             {
-                TextField field = p.GetValue(this) as TextField;
                 if (field != null)
                 {
-                    if (customValidators != null && customValidators.TryGetValue(p.Name, out Action<TextField> customValidator))
+                    if (customValidators != null && customValidators.TryGetValue(field, out Action<TextField> customValidator))
                     {
                         customValidator(field);
                     }

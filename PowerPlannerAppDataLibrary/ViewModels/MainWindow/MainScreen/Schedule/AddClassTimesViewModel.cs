@@ -21,7 +21,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
-    public class AddClassTimesViewModel : PopupComponentViewModel
+    public partial class AddClassTimesViewModel : PopupComponentViewModel
     {
         public class ClassTimeGroup : BindableBase
         {

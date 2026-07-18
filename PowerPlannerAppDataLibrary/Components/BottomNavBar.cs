@@ -6,7 +6,7 @@ using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.Components
 {
-    internal class BottomNavBar : VxComponent
+    internal partial class BottomNavBar : VxComponent
     {
         public NavigationManager.MainMenuSelections? SelectedItem { get; set; }
         public Action<NavigationManager.MainMenuSelections> SetSelectedItem { get; set; }

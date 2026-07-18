@@ -65,11 +65,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
             using (await Locks.LockDataForReadAsync("HolidayViewItemsGroup.LoadBlocking"))
             {
-                dataItemHolidays = dataStore.TableMegaItems.Where(i =>
-                    i.MegaItemType == PowerPlannerSending.MegaItemType.Holiday
-                    && i.UpperIdentifier == semesterId
-                    && ((i.Date <= startAsUtc && i.EndTime >= startAsUtc)
-                        || (i.Date >= startAsUtc && i.Date <= endAsUtc))).ToArray();
+                dataItemHolidays = dataStore.GetHolidays(semesterId, startAsUtc, endAsUtc);
             }
 
             Holidays = new MyObservableList<ViewItemHoliday>(dataItemHolidays.Select(i => new ViewItemHoliday(i)));

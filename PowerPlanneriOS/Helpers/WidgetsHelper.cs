@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using Foundation;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using PowerPlannerAppDataLibrary;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.Extensions;
@@ -126,7 +127,7 @@ namespace PowerPlanneriOS.Helpers
 
         private static void SavePrimaryWidgetData(PrimaryWidgetData data)
         {
-            SaveWidgetState("primaryWidget.json", data);
+            SaveWidgetState("primaryWidget.json", data, WidgetsJsonContext.Default.PrimaryWidgetData);
         }
 
         private static PrimaryWidgetDataItem[] ConvertToPrimaryWidgetDataItems(List<ViewItemTaskOrEvent> items)
@@ -178,21 +179,16 @@ namespace PowerPlanneriOS.Helpers
 
         private static void SaveScheduleWidgetData(ScheduleWidgetData data)
         {
-            SaveWidgetState("scheduleWidget.json", data);
+            SaveWidgetState("scheduleWidget.json", data, WidgetsJsonContext.Default.ScheduleWidgetData);
         }
 
-        private static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
-        {
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        };
-
-        private static void SaveWidgetState(string fileName, object data)
+        private static void SaveWidgetState<T>(string fileName, T data, JsonTypeInfo<T> typeInfo)
         {
             try
             {
                 NSUrl url = NSFileManager.DefaultManager.GetContainerUrl("group.com.barebonesdev.powerplanner");
                 url = url.Append(fileName, false);
-                System.IO.File.WriteAllText(url.Path, JsonConvert.SerializeObject(data, _jsonSettings));
+                System.IO.File.WriteAllText(url.Path, JsonSerializer.Serialize(data, typeInfo));
             }
             catch (Exception ex)
             {
@@ -273,12 +269,19 @@ namespace PowerPlanneriOS.Helpers
         public TimeSpan EndTime { get; set; }
 
         // Swift is able to parse seconds directly into TimeInterval
-        [JsonProperty("startTime")]
+        [JsonPropertyName("startTime")]
         public int StartTimeInSeconds => (int)StartTime.TotalSeconds;
 
-        [JsonProperty("endTime")]
+        [JsonPropertyName("endTime")]
         public int EndTimeInSeconds => (int)EndTime.TotalSeconds;
 
         public string Room { get; set; }
+    }
+
+    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
+    [JsonSerializable(typeof(PrimaryWidgetData))]
+    [JsonSerializable(typeof(ScheduleWidgetData))]
+    internal partial class WidgetsJsonContext : JsonSerializerContext
+    {
     }
 }

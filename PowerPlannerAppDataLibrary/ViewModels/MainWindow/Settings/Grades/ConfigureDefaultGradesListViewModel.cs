@@ -4,6 +4,7 @@ using PowerPlannerAppDataLibrary.Converters;
 using PowerPlannerAppDataLibrary.DataLayer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Vx;
 using Vx.Views;
@@ -12,13 +13,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 {
     public class ConfigureDefaultGradesListViewModel : PopupComponentViewModel
     {
-        [VxSubscribe]
         public AccountDataItem Account { get; private set; }
 
         public ConfigureDefaultGradesListViewModel(BaseViewModel parent) : base(parent)
         {
             Title = PowerPlannerResources.GetString("Settings_MainPage_DefaultGradeOptions.Title");
             Account = MainScreenViewModel.CurrentAccount;
+        }
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(Account);
         }
 
         protected override View Render()
@@ -58,22 +64,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings.Grades
 
         private void ConfigureAverageGrades()
         {
-            ShowViewModel<ConfigureDefaultAverageGradesViewModel>();
+            ShowViewModel(parent => new ConfigureDefaultAverageGradesViewModel(parent));
         }
 
         private void ConfigureRoundGradesUp()
         {
-            ShowViewModel<ConfigureDefaultRoundGradesUpViewModel>();
+            ShowViewModel(parent => new ConfigureDefaultRoundGradesUpViewModel(parent));
         }
 
         private void ConfigureGradeScale()
         {
-            ShowViewModel<ConfigureDefaultGradeScaleViewModel>();
+            ShowViewModel(parent => new ConfigureDefaultGradeScaleViewModel(parent));
         }
 
-        private void ShowViewModel<T>() where T : BaseViewModel
+        private void ShowViewModel(Func<BaseViewModel, BaseViewModel> createViewModel)
         {
-            ShowPopup(Activator.CreateInstance(typeof(T), this) as BaseViewModel);
+            ShowPopup(createViewModel(this));
         }
     }
 }

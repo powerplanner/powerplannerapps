@@ -13,14 +13,14 @@ namespace InterfacesiOS.App
 {
     public class ViewManager
     {
-        public void AddMapping(Type viewModelType, Type viewControllerType)
+        public void AddMapping(Type viewModelType, Func<UIViewController> createView)
         {
-            ViewModelToViewConverter.AddMapping(viewModelType, viewControllerType);
+            ViewModelToViewConverter.AddMapping(viewModelType, createView);
         }
 
-        public void AddGenericMapping(Type viewModelType, Type viewControllerType)
+        public void AddGenericMapping(Type viewModelType, Func<UIViewController> createView)
         {
-            ViewModelToViewConverter.AddGenericMapping(viewModelType, viewControllerType);
+            ViewModelToViewConverter.AddGenericMapping(viewModelType, createView);
         }
 
         public RootViewController RootViewController { get; private set; }

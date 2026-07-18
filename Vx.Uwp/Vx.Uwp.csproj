@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+		<TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
 		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 		<UseUwp>true</UseUwp>
+		<UseUwpTools>true</UseUwpTools>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<IsAotCompatible>true</IsAotCompatible>
 		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>

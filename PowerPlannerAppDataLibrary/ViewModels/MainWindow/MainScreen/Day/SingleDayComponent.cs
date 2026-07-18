@@ -40,19 +40,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         }
     }
 
-    public class SingleDayComponent : VxComponent
+    public partial class SingleDayComponent : VxComponent
     {
         public DateTime Date { get; set; }
         public DateTime Today { get; set; } = DateTime.Today;
         public SemesterItemsViewGroup SemesterItemsViewGroup { get; set; }
         public ICalendarOrDayViewModel ViewModel { get; set; }
 
-        [VxSubscribe]
         public SingleDayComponentLiveProps LiveProps { get; set; }
 
         private static object SCHEDULE_SNAPSHOT = new object();
 
         private SemesterItemsViewGroup.DayWithScheduleSnapshot _dayWithScheduleSnapshot;
+
+        protected override void RegisterPropertySubscriptions()
+        {
+            base.RegisterPropertySubscriptions();
+            Subscribe(LiveProps);
+        }
 
         protected override View Render()
         {
