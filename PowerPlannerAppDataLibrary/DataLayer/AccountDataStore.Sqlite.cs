@@ -21,7 +21,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private const string GradeColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, Details, ImageNames, Date, GradeReceived, GradeTotal, IsDropped, IndividualWeight";
         private const string ScheduleColumns = "Identifier, DateCreated, Updated, UpperIdentifier, DayOfWeek, StartTime, EndTime, Room, ScheduleType, ScheduleWeek, LocationLatitude, LocationLongitude, AppointmentLocalId, Name, Details, ImageNames";
         private const string SemesterColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, Start, End, OverriddenGPA, OverriddenCredits, Details, ImageNames";
-        private const string YearColumns = "Identifier, DateCreated, Updated, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames";
+        private const string YearColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames";
         private const string WeightCategoryColumns = "Identifier, DateCreated, Updated, UpperIdentifier, Name, WeightValue, Details, ImageNames";
 
         private void CreateSchema()
@@ -55,7 +55,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     Name TEXT, Start INTEGER, End INTEGER, OverriddenGPA REAL, OverriddenCredits REAL, Details TEXT,
                     ImageNames TEXT);
                 CREATE TABLE IF NOT EXISTS DataItemYear (
-                    Identifier TEXT NOT NULL PRIMARY KEY, DateCreated INTEGER, Updated INTEGER, Name TEXT,
+                    Identifier TEXT NOT NULL PRIMARY KEY, DateCreated INTEGER, Updated INTEGER, UpperIdentifier TEXT NOT NULL,
+                    Name TEXT,
                     OverriddenGPA REAL, OverriddenCredits REAL, Details TEXT, ImageNames TEXT);
                 CREATE TABLE IF NOT EXISTS DataItemWeightCategory (
                     Identifier TEXT NOT NULL PRIMARY KEY, DateCreated INTEGER, Updated INTEGER, UpperIdentifier TEXT,
@@ -88,6 +89,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             EnsureColumn("DataItemClass", "LastTaskDueTime", "INTEGER");
             EnsureColumn("DataItemClass", "LastEventStartTime", "INTEGER");
             EnsureColumn("DataItemClass", "LastEventDurationProperty", "INTEGER");
+            EnsureColumn("DataItemYear", "UpperIdentifier", "TEXT");
         }
 
         private void EnsureColumn(string tableName, string columnName, string columnType)
@@ -240,10 +242,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
         private DataItemYear ToEntity(YearRow row)
         {
             var item = new DataItemYear();
-            ApplyBase(item, row);
-            item.Name = row.Name ?? string.Empty;
-            item.Details = row.Details ?? string.Empty;
-            item.RawImageNames = row.ImageNames;
+            ApplyWithImages(item, row);
             item.OverriddenGPA = row.OverriddenGPA ?? Grade.UNGRADED;
             item.OverriddenCredits = row.OverriddenCredits ?? Grade.UNGRADED;
             return item;
@@ -288,7 +287,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
         private DataItemYear[] LoadYears(SqliteTransaction transaction = null)
         {
-            return _db.Query<YearRow>("SELECT Identifier, DateCreated, Updated, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames FROM DataItemYear", transaction: transaction).Select(ToEntity).ToArray();
+            return _db.Query<YearRow>("SELECT Identifier, DateCreated, Updated, UpperIdentifier, Name, OverriddenGPA, OverriddenCredits, Details, ImageNames FROM DataItemYear", transaction: transaction).Select(ToEntity).ToArray();
         }
 
         private DataItemWeightCategory[] LoadWeightCategories(SqliteTransaction transaction = null)
@@ -324,7 +323,7 @@ namespace PowerPlannerAppDataLibrary.DataLayer
                     _db.Execute($"INSERT OR REPLACE INTO DataItemSemester ({SemesterColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @Start, @End, @OverriddenGPA, @OverriddenCredits, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, Start = value.Start.Ticks, End = value.End.Ticks, value.OverriddenGPA, value.OverriddenCredits, value.Details, ImageNames = value.RawImageNames }, transaction);
                     break;
                 case DataItemYear value:
-                    _db.Execute($"INSERT OR REPLACE INTO DataItemYear ({YearColumns}) VALUES (@Identifier, @DateCreated, @Updated, @Name, @OverriddenGPA, @OverriddenCredits, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, value.Name, value.OverriddenGPA, value.OverriddenCredits, value.Details, ImageNames = value.RawImageNames }, transaction);
+                    _db.Execute($"INSERT OR REPLACE INTO DataItemYear ({YearColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @OverriddenGPA, @OverriddenCredits, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.OverriddenGPA, value.OverriddenCredits, value.Details, ImageNames = value.RawImageNames }, transaction);
                     break;
                 case DataItemWeightCategory value:
                     _db.Execute($"INSERT OR REPLACE INTO DataItemWeightCategory ({WeightCategoryColumns}) VALUES (@Identifier, @DateCreated, @Updated, @UpperIdentifier, @Name, @WeightValue, @Details, @ImageNames)", new { Identifier = value.Identifier.ToString(), DateCreated = value.DateCreated.Ticks, Updated = value.Updated.Ticks, UpperIdentifier = value.UpperIdentifier.ToString(), value.Name, value.WeightValue, value.Details, ImageNames = value.RawImageNames }, transaction);
@@ -421,11 +420,8 @@ namespace PowerPlannerAppDataLibrary.DataLayer
             public double? OverriddenCredits { get; set; }
         }
 
-        internal sealed class YearRow : BaseRow
+        internal sealed class YearRow : WithImagesRow
         {
-            public string Name { get; set; }
-            public string Details { get; set; }
-            public string ImageNames { get; set; }
             public double? OverriddenGPA { get; set; }
             public double? OverriddenCredits { get; set; }
         }

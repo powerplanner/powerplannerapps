@@ -83,7 +83,27 @@ namespace PowerPlanneriOS.Controllers
         {
             base.ViewDidAppear(animated);
 
+            UpdateSnackbarBottomOffset();
             RunPendingLaunchActionIfNeeded();
+        }
+
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+            UpdateSnackbarBottomOffset();
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            BareSnackbarPresenter.BottomOffset = 0;
+            base.ViewWillDisappear(animated);
+        }
+
+        private void UpdateSnackbarBottomOffset()
+        {
+            BareSnackbarPresenter.BottomOffset = ViewModel?.IsCompactMode == true
+                ? (nfloat)(64 + Math.Max(0, (double)View.SafeAreaInsets.Bottom - 15))
+                : 0;
         }
 
         private async void RunPendingLaunchActionIfNeeded()
