@@ -38,9 +38,9 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         public ViewItemClass Class { get; private set; }
 
-        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Tasks { get; private set; }
+        public MyObservableList<ViewItemTaskOrEvent> Tasks { get; private set; }
 
-        public IMyObservableReadOnlyList<ViewItemTaskOrEvent> Events { get; private set; }
+        public MyObservableList<ViewItemTaskOrEvent> Events { get; private set; }
 
         public MyObservableList<ViewItemTaskOrEvent> PastCompletedTasksAndEvents;
 
@@ -320,10 +320,8 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
                 HasPastCompletedTasks = hasPastCompletedTasks;
                 HasPastCompletedEvents = hasPastCompletedEvents;
-                Tasks = this.Class.TasksAndEvents.Sublist(ShouldIncludeInNormalTasksFunction(TodayAsUtc)).Cast<ViewItemTaskOrEvent>();
-                Events = new MyObservableList<ViewItemTaskOrEvent>();
-                (Events as MyObservableList<ViewItemTaskOrEvent>).InsertSorted(
-                    this.Class.TasksAndEvents.Sublist(ShouldIncludeInNormalExamsFunction()).Cast<ViewItemTaskOrEvent>());
+                Tasks = this.Class.TasksAndEvents.Sublist(ShouldIncludeInNormalTasksFunction(TodayAsUtc));
+                Events = this.Class.TasksAndEvents.Sublist(ShouldIncludeInNormalExamsFunction());
                 OnPropertyChanged(nameof(Tasks));
                 OnPropertyChanged(nameof(Events));
 
@@ -662,7 +660,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         private class PastCompletedEventsList : MyObservableList<ViewItemTaskOrEvent>
         {
-            public PastCompletedEventsList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
+            public PastCompletedEventsList(MyObservableList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
             {
                 base.Filter = new FilterUsingFunction(i => !ShouldIncludeInNormalExamsFunction().Invoke(i));
                 base.Comparer = new PastCompletedEventsComparer();
@@ -681,7 +679,7 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
         private class PastCompletedTasksList : MyObservableList<ViewItemTaskOrEvent>
         {
-            public PastCompletedTasksList(IMyObservableReadOnlyList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
+            public PastCompletedTasksList(MyObservableList<ViewItemTaskOrEvent> sourceList, DateTime todayAsUtc)
             {
                 base.Filter = new FilterUsingFunction(i => !ShouldIncludeInNormalTasksFunction(todayAsUtc).Invoke(i));
                 base.Comparer = new PastCompletedTasksComparer();
