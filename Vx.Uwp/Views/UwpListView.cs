@@ -32,6 +32,11 @@ namespace Vx.Uwp.Views
             VxView.ItemClicked?.Invoke(e.ClickedItem);
         }
 
+        // The source list that _wrappedItemsSource was created from. Used so we only rebuild the
+        // wrapper when the underlying list reference actually changes, not on every render.
+        private object _wrappedItemsSourceSource;
+        private MyAppendedObservableLists<object> _wrappedItemsSource;
+
         protected override void ApplyProperties(Vx.Views.ListView oldView, Vx.Views.ListView newView)
         {
             base.ApplyProperties(oldView, newView);
@@ -49,10 +54,35 @@ namespace Vx.Uwp.Views
                 // For some reason we need to cast this for it to work correctly in .NET 10...
                 if (newView.Items is MyAppendedObservableLists<object> appendedObservableList)
                 {
+                    _wrappedItemsSourceSource = null;
+                    _wrappedItemsSource = null;
                     View.ItemsSource = appendedObservableList;
+                }
+                else if (newView.Items is MyObservableList<object> observableList)
+                {
+                    // CsWinRT in .NET 10 fails to marshal types that derive from ObservableCollection<T>
+                    // (such as MyObservableList and MyHeaderedObservableList) when they're assigned to a
+                    // WinRT ItemsSource, throwing "Value does not fall within the expected range." right
+                    // inside set_ItemsSource (before any item is even enumerated).
+                    //
+                    // MyAppendedObservableLists is a plain IList + INotifyCollectionChanged implementation
+                    // (it does NOT derive from ObservableCollection), and CsWinRT projects it correctly.
+                    // So we wrap the observable list in one (appending an empty list to satisfy its
+                    // minimum of two lists) to get reliable projection while preserving change tracking.
+                    // We cache the wrapper against its source list so we don't create a new wrapper (and
+                    // re-assign ItemsSource) unnecessarily.
+                    if (!object.ReferenceEquals(_wrappedItemsSourceSource, observableList))
+                    {
+                        _wrappedItemsSourceSource = observableList;
+                        _wrappedItemsSource = new MyAppendedObservableLists<object>(observableList, System.Array.Empty<object>());
+                    }
+
+                    View.ItemsSource = _wrappedItemsSource;
                 }
                 else
                 {
+                    _wrappedItemsSourceSource = null;
+                    _wrappedItemsSource = null;
                     View.ItemsSource = newView.Items;
                 }
             }

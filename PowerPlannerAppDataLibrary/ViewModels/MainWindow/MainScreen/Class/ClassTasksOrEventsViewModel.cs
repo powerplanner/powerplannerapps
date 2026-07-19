@@ -21,8 +21,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
     {
         public TaskOrEventType Type { get; private set; }
 
-        private IReadOnlyList<object> _itemsWithHeaders;
-        public IReadOnlyList<object> ItemsWithHeaders
+        /// <summary>
+        /// Reference-type wrapper around the grouping date. A boxed <see cref="DateTime"/> can't be used as a
+        /// header item directly because on UWP/.NET 10 the boxed value gets marshaled to a WinRT
+        /// <c>Windows.Foundation.DateTime</c> when assigned to the native ListView's ItemsSource, which throws
+        /// "Value does not fall within the expected range." for dates outside the WinRT range.
+        /// </summary>
+        public class DateHeader : IEquatable<DateHeader>
+        {
+            public DateTime Date { get; }
+
+            public DateHeader(DateTime date)
+            {
+                Date = date;
+            }
+
+            public bool Equals(DateHeader other)
+            {
+                return other != null && other.Date == Date;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return Equals(obj as DateHeader);
+            }
+
+            public override int GetHashCode()
+            {
+                return Date.GetHashCode();
+            }
+        }
+
+        private MyHeaderedObservableList<ViewItemTaskOrEvent, DateHeader> _itemsWithHeaders;
+        public MyHeaderedObservableList<ViewItemTaskOrEvent, DateHeader> ItemsWithHeaders
         {
             get
             {
@@ -47,9 +78,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
         }
 
-        private DateTime ItemToGroupHeader(ViewItemTaskOrEvent item)
+        private DateHeader ItemToGroupHeader(ViewItemTaskOrEvent item)
         {
-            return item.EffectiveDateForDisplayInDateBasedGroups.Date;
+            return new DateHeader(item.EffectiveDateForDisplayInDateBasedGroups.Date);
         }
 
         public ClassTasksOrEventsViewModel(ClassViewModel parent, TaskOrEventType type) : base(parent)
@@ -162,15 +193,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 return listItem;
             }
 
-            else if (item is DateTime header)
+            else if (item is DateHeader header)
             {
                 return new TextBlock
                 {
-                    Text = GetHeaderText(header),
+                    Text = GetHeaderText(header.Date),
                     FontSize = Theme.Current.SubtitleFontSize,
                     WrapText = false,
                     Margin = new Thickness(PageMargin, 12, 0, 3)
-                }.AllowDropTaskOrEventOnDate(header);
+                }.AllowDropTaskOrEventOnDate(header.Date);
             }
 
             else
@@ -285,7 +316,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                     if (_pastCompletedItemsWithHeaders == null)
                     {
-                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedTasks.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, DateTime>(ItemToGroupHeader);
+                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedTasks.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, DateHeader>(ItemToGroupHeader);
                     }
 
                     return _pastCompletedItemsWithHeaders;
@@ -299,7 +330,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
                     if (_pastCompletedItemsWithHeaders == null)
                     {
-                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedEvents.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, DateTime>(ItemToGroupHeader);
+                        _pastCompletedItemsWithHeaders = ClassViewModel.ViewItemsGroupClass.PastCompletedEvents.ToSortedList().ToHeaderedList<ViewItemTaskOrEvent, DateHeader>(ItemToGroupHeader);
                     }
 
                     return _pastCompletedItemsWithHeaders;
