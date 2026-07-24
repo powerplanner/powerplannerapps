@@ -36,10 +36,20 @@ namespace PowerPlanneriOS.Extensions
             }
         }
 
+        private Task<bool> IsAuthorizedAsync()
+        {
+            return IOSRemindersExtension.IsAuthorizedAsync(_notificationCenter);
+        }
+
         protected override async Task ResetAllReminders(AccountDataItem account, ScheduleViewItemsGroup scheduleViewItemsGroup)
         {
             try
             {
+                if (!await IsAuthorizedAsync())
+                {
+                    return;
+                }
+
                 await Task.Run(async delegate
                 {
                     // Remove all existing class reminder notifications for this account
