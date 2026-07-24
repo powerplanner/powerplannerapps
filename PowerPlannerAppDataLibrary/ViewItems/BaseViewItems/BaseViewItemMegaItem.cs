@@ -129,12 +129,12 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
                     answer = PowerPlannerResources.GetString("ViewGradePage_TextBlockDropped.Text").ToUpper() + " - ";
 
                 if (this.GradeReceived == PowerPlannerSending.Grade.UNGRADED)
-                    return answer + "----  -  --/" + this.GradeTotal;
+                    return answer + "----  -  --/" + GradeDisplayFormatter.FormatGradeValue(this.GradeTotal);
 
                 if (this.GradeTotal == 0)
-                    return answer + PowerPlannerResources.GetString("String_ExtraCreditAbbreviation") + " - " + this.GradeReceived;
+                    return answer + PowerPlannerResources.GetString("String_ExtraCreditAbbreviation") + " - " + GradeDisplayFormatter.FormatGradeValue(this.GradeReceived);
 
-                return answer + this.GradePercent.ToString("0.##%") + "  -  " + this.GradeReceived + "/" + this.GradeTotal;
+                return answer + GradeDisplayFormatter.FormatGradePercent(this.GradePercent) + "  -  " + GradeDisplayFormatter.FormatGradeValue(this.GradeReceived) + "/" + GradeDisplayFormatter.FormatGradeValue(this.GradeTotal);
             }
         }
 

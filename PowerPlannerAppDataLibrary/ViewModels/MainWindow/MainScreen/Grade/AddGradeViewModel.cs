@@ -327,7 +327,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
                     return GradeReceived + " " + PowerPlannerResources.GetString("String_ExtraCreditAbbreviation");
                 }
 
-                return (GradeReceived / GradeTotal).ToString("0.##%");
+                return GradeDisplayFormatter.FormatGradePercent(GradeReceived / GradeTotal);
             }
         }
 
