@@ -16,6 +16,7 @@ using BareMvvm.Core.Snackbar;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class;
 using Vx.Views;
 using Vx;
+using PowerPlannerAppDataLibrary.Helpers;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Grade
 {
