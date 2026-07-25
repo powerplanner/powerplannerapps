@@ -68,11 +68,21 @@ namespace PowerPlanneriOS.Extensions
             }
         }
 
-        private async Task<bool> IsAuthorizedAsync()
+        internal static async Task<bool> IsAuthorizedAsync(UNUserNotificationCenter notificationCenter)
         {
-            var settings = await _notificationCenter.GetNotificationSettingsAsync();
+            if (notificationCenter == null)
+            {
+                throw new ArgumentNullException(nameof(notificationCenter));
+            }
+
+            var settings = await notificationCenter.GetNotificationSettingsAsync();
             return settings.AuthorizationStatus == UNAuthorizationStatus.Authorized
                 || settings.AuthorizationStatus == UNAuthorizationStatus.Provisional;
+        }
+
+        private async Task<bool> IsAuthorizedAsync()
+        {
+            return await IsAuthorizedAsync(_notificationCenter);
         }
 
         protected override async Task ActuallyClearReminders(Guid localAccountId)
