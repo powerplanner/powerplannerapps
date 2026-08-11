@@ -13,6 +13,7 @@ using PowerPlannerAppDataLibrary.ViewItemsGroups;
 using PowerPlannerAppDataLibrary.ViewLists;
 using ToolsPortable;
 using UserNotifications;
+using Vx.Extensions;
 
 namespace PowerPlanneriOS.Extensions
 {
@@ -121,8 +122,8 @@ namespace PowerPlanneriOS.Extensions
                 // Format time range
                 string timeRange = string.Format(
                     PowerPlannerResources.GetString("String_TimeToTime"),
-                    schedule.StartTimeInLocalTime(date).ToString("t"),
-                    schedule.EndTimeInLocalTime(date).ToString("t"));
+                    DateTimeFormatterExtension.Current.FormatAsShortTime(schedule.StartTimeInLocalTime(date)),
+                    DateTimeFormatterExtension.Current.FormatAsShortTime(schedule.EndTimeInLocalTime(date)));
 
                 // Add room if available
                 if (!string.IsNullOrWhiteSpace(schedule.Room))
