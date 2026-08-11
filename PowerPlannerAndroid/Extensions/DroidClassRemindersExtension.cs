@@ -11,6 +11,7 @@ using Android.Service.Notification;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.App;
+using InterfacesDroid.Helpers;
 using PowerPlannerAndroid.Helpers;
 using PowerPlannerAndroid.Receivers;
 using PowerPlannerAppDataLibrary;
@@ -177,7 +178,7 @@ namespace PowerPlannerAndroid.Extensions
             builder.SetShowWhen(false);
             builder.SetContentTitle(currSchedule.Class.Name);
 
-            string summaryText = string.Format(PowerPlannerResources.GetString("String_TimeToTime"), currSchedule.StartTimeInLocalTime(date).ToString("t"), currSchedule.EndTimeInLocalTime(date).ToString("t"));
+            string summaryText = string.Format(PowerPlannerResources.GetString("String_TimeToTime"), DateHelper.ToShortTimeString(currSchedule.StartTimeInLocalTime(date)), DateHelper.ToShortTimeString(currSchedule.EndTimeInLocalTime(date)));
             if (!string.IsNullOrWhiteSpace(currSchedule.Room))
             {
                 builder.SetContentText(summaryText + " - " + currSchedule.Room);
