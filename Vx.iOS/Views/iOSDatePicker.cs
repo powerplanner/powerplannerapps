@@ -1,52 +1,55 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CoreGraphics;
 using InterfacesiOS.Helpers;
 using UIKit;
 using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSDatePicker : iOSView<DatePicker, UIView>
+    public class iOSDatePicker : iOSView<DatePicker, ManualLayoutView>
     {
         private UILabel _header;
-        private UIControl _valueContainer;
+        private ManualLayoutControl _valueContainer;
         private UILabel _value;
 
         public iOSDatePicker()
         {
-            _header = new UILabel
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
+            _header = new UILabel();
 
             View.AddSubview(_header);
 
-            _header.StretchWidth(View);
-
-            _valueContainer = new UIControl
+            _valueContainer = new ManualLayoutControl
             {
-                TranslatesAutoresizingMaskIntoConstraints = false,
                 ClipsToBounds = true,
                 BackgroundColor = UIColorCompat.TertiarySystemFillColor
             };
             _valueContainer.Layer.CornerRadius = 10;
             _valueContainer.TouchUpInside += _valueContainer_TouchUpInside;
 
-            _value = new UILabel
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                Lines = 1
-            };
+            _value = new UILabel { Lines = 1 };
             _valueContainer.Add(_value);
-            _value.StretchWidthAndHeight(_valueContainer, 10, 0, 10, 0);
 
             View.AddSubview(_valueContainer);
 
-            _valueContainer.StretchWidth(View);
+            View.LayoutAction = LayoutSubviews;
+            View.MeasureAction = Measure;
+            _valueContainer.LayoutAction = () => _value.Frame = _valueContainer.Bounds.Inset(10, 0);
+        }
 
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[valueContainer(36)]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                "header", _header,
-                "valueContainer", _valueContainer));
+        private CGSize Measure(CGSize availableSize)
+        {
+            var headerSize = _header.SizeThatFits(new CGSize(availableSize.Width, UIViewWrapper.UnboundedSize));
+            var valueSize = _value.SizeThatFits(new CGSize(UIViewWrapper.UnboundedSize, 36));
+            var width = availableSize.Width >= UIViewWrapper.UnboundedSize ? Math.Max(headerSize.Width, valueSize.Width + 20) : availableSize.Width;
+            return new CGSize(width, headerSize.Height + 40);
+        }
+
+        private void LayoutSubviews()
+        {
+            var headerSize = _header.SizeThatFits(new CGSize(View.Bounds.Width, UIViewWrapper.UnboundedSize));
+            _header.Frame = new CGRect(0, 0, View.Bounds.Width, headerSize.Height);
+            _valueContainer.Frame = new CGRect(0, headerSize.Height + 4, View.Bounds.Width, 36);
         }
 
         private async void _valueContainer_TouchUpInside(object sender, EventArgs e)
@@ -80,6 +83,8 @@ namespace Vx.iOS.Views
 
             _header.Text = newView.Header;
             _valueContainer.Alpha = newView.IsEnabled ? 1f : 0.5f;
+            View.InvalidateIntrinsicContentSize();
+            View.SetNeedsLayout();
 
             if (newView.Value?.Value != null)
             {

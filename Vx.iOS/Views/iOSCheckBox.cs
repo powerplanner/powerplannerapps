@@ -6,28 +6,8 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class UICheckBoxControl : UIControl
+    public class UICheckBoxControl : ManualLayoutControl
     {
-        private bool _computingIntrinsicSize;
-
-        public override CGSize IntrinsicContentSize
-        {
-            get
-            {
-                if (_computingIntrinsicSize)
-                    return base.IntrinsicContentSize;
-
-                _computingIntrinsicSize = true;
-                try
-                {
-                    return SystemLayoutSizeFittingSize(UILayoutFittingCompressedSize);
-                }
-                finally
-                {
-                    _computingIntrinsicSize = false;
-                }
-            }
-        }
     }
 
     public class iOSCheckBox : iOSView<CheckBox, UICheckBoxControl>
@@ -41,42 +21,38 @@ namespace Vx.iOS.Views
             _label = new UILabel()
             {
                 Lines = 0,
-                Font = UIFont.PreferredBody,
-                TranslatesAutoresizingMaskIntoConstraints = false
+                Font = UIFont.PreferredBody
             };
             View.Add(_label);
-            _label.StretchHeight(View, 5, 5);
 
-            _checkbox = new UIButton(UIButtonType.System)
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
+            _checkbox = new UIButton(UIButtonType.System);
             _checkbox.SetPreferredSymbolConfiguration(UIImageSymbolConfiguration.Create(UIFont.PreferredBody.PointSize), UIControlState.Normal);
             UpdateCheckboxImage();
             View.Add(_checkbox);
-            _checkbox.StretchHeight(View, 5, 5);
 
-            // The control is often stretched to the full width of its parent (e.g. a vertical LinearLayout
-            // with the default Stretch alignment). Force both subviews to stay at their intrinsic width so the
-            // slack is absorbed by the flexible trailing space below, rather than unpredictably stretching one
-            // of them (which depends on the near-identical default hugging priorities of UIButton vs UILabel).
-            _checkbox.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
-            _label.SetContentHuggingPriority(1000, UILayoutConstraintAxis.Horizontal);
+            View.LayoutAction = LayoutSubviews;
+            View.MeasureAction = Measure;
 
             // Idk why, but on the add task page, if the keyboard is up, this doesn't get hit
             // even though on the inline edit controls the same code works. I investigated for 20 mins
             // and couldn't figure it out. It works on the edit schedule times page for some reason.
             View.TouchUpInside += View_TouchUpInside;
 
-            // Trailing space is >=0 (not pinned) so the checkbox + label hug to the left and any extra width
-            // becomes empty trailing space, instead of stretching the checkbox or label.
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[checkbox]-12-[label]-(>=0)-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, null,
-                new NSDictionary(
-                    "label", _label,
-                    "checkbox", _checkbox
-                    )));
-
             _checkbox.TouchUpInside += _checkbox_TouchUpInside;
+        }
+
+        private CGSize Measure(CGSize availableSize)
+        {
+            var checkboxSize = _checkbox.SizeThatFits(availableSize);
+            var labelSize = _label.SizeThatFits(new CGSize(Math.Max(0, availableSize.Width - checkboxSize.Width - 12), availableSize.Height));
+            return new CGSize(checkboxSize.Width + 12 + labelSize.Width, Math.Max(checkboxSize.Height, labelSize.Height) + 10);
+        }
+
+        private void LayoutSubviews()
+        {
+            var checkboxSize = _checkbox.SizeThatFits(View.Bounds.Size);
+            _checkbox.Frame = new CGRect(0, (View.Bounds.Height - checkboxSize.Height) / 2, checkboxSize.Width, checkboxSize.Height);
+            _label.Frame = new CGRect(checkboxSize.Width + 12, 5, Math.Max(0, View.Bounds.Width - checkboxSize.Width - 12), Math.Max(0, View.Bounds.Height - 10));
         }
 
         private void UpdateCheckboxImage()

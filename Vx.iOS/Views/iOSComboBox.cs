@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CoreGraphics;
 using InterfacesiOS.Controllers;
 using InterfacesiOS.Helpers;
 using InterfacesiOS.Views;
@@ -11,24 +12,18 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSComboBox : iOSView<Vx.Views.ComboBox, UIView>
+    public class iOSComboBox : iOSView<Vx.Views.ComboBox, ManualLayoutView>
     {
         private UILabel _header;
-        private UIView _valueContainer;
+        private ManualLayoutView _valueContainer;
         private UILabel _value;
         private INativeComponent _valueTemplated;
 
         public iOSComboBox()
         {
-            _header = new UILabel
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
+            _header = new UILabel();
 
-            _valueContainer = new UIView
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
+            _valueContainer = new ManualLayoutView();
             _valueContainer.BackgroundColor = UIColorCompat.TertiarySystemFillColor;
             _valueContainer.ClipsToBounds = true;
             _valueContainer.Layer.CornerRadius = 10;
@@ -36,17 +31,39 @@ namespace Vx.iOS.Views
             View.Add(_header);
             View.Add(_valueContainer);
 
-            _header.StretchWidth(View);
-            _valueContainer.StretchWidth(View);
-
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[valueContainer(36)]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                "header", _header,
-                "valueContainer", _valueContainer));
+            View.LayoutAction = LayoutSubviews;
+            View.MeasureAction = Measure;
+            _valueContainer.LayoutAction = LayoutValueContainer;
 
             // Handle clicks
             UITapGestureRecognizer tapRecognizer = new UITapGestureRecognizer();
             tapRecognizer.AddTarget(ShowOptions);
             View.AddGestureRecognizer(tapRecognizer);
+        }
+
+        private CGSize Measure(CGSize availableSize)
+        {
+            var headerSize = _header.SizeThatFits(new CGSize(availableSize.Width, UIViewWrapper.UnboundedSize));
+            var valueView = _valueTemplated as UIView ?? _value;
+            var valueSize = valueView?.SizeThatFits(new CGSize(UIViewWrapper.UnboundedSize, 36)) ?? CGSize.Empty;
+            var width = availableSize.Width >= UIViewWrapper.UnboundedSize ? Math.Max(headerSize.Width, valueSize.Width + 20) : availableSize.Width;
+            return new CGSize(width, headerSize.Height + 40);
+        }
+
+        private void LayoutSubviews()
+        {
+            var headerSize = _header.SizeThatFits(new CGSize(View.Bounds.Width, UIViewWrapper.UnboundedSize));
+            _header.Frame = new CGRect(0, 0, View.Bounds.Width, headerSize.Height);
+            _valueContainer.Frame = new CGRect(0, headerSize.Height + 4, View.Bounds.Width, 36);
+        }
+
+        private void LayoutValueContainer()
+        {
+            var content = _valueTemplated as UIView ?? _value;
+            if (content != null)
+            {
+                content.Frame = _valueContainer.Bounds.Inset(10, 10);
+            }
         }
 
         protected override void ApplyProperties(ComboBox oldView, ComboBox newView)
@@ -65,9 +82,8 @@ namespace Vx.iOS.Views
                 if (DataTemplateHelper.ProcessAndIsNewComponent(newView.SelectedItem?.Value, newView.ItemTemplate, _valueTemplated, out VxComponent newComponent))
                 {
                     _valueTemplated = newComponent.Render();
-                    (_valueTemplated as UIView).TranslatesAutoresizingMaskIntoConstraints = false;
                     _valueContainer.Add(_valueTemplated as UIView);
-                    (_valueTemplated as UIView).StretchWidthAndHeight(_valueContainer, 10, 10, 10, 10);
+                    _valueContainer.SetNeedsLayout();
                 }
             }
             else
@@ -80,17 +96,16 @@ namespace Vx.iOS.Views
 
                 if (_value == null)
                 {
-                    _value = new UILabel
-                    {
-                        TranslatesAutoresizingMaskIntoConstraints = false,
-                        Lines = 1
-                    };
+                    _value = new UILabel { Lines = 1 };
                     _valueContainer.Add(_value);
-                    _value.StretchWidthAndHeight(_valueContainer, 10, 0, 10, 0);
+                    _valueContainer.SetNeedsLayout();
                 }
 
                 _value.Text = newView.SelectedItem?.Value?.ToString();
             }
+
+            View.InvalidateIntrinsicContentSize();
+            View.SetNeedsLayout();
 
             base.ApplyProperties(oldView, newView);
         }
