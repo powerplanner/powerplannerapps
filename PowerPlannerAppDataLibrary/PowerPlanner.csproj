@@ -37,7 +37,7 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.79" />
     <PackageReference Include="Dapper.AOT" Version="1.0.52" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
     <PackageReference Include="PowerPlannerAppAuthLibrary" Version="1.260717.1" />
     <PackageReference Include="StorageEverywhereIncludingiOS" Version="10.0.4" />
     <PackageReference Include="TimeZoneConverter" Version="7.2.0" />
