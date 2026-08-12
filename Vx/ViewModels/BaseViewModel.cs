@@ -318,6 +318,19 @@ namespace BareMvvm.Core.ViewModels
         /// </summary>
         protected virtual bool InitialAllowLightDismissValue { get => true; }
 
+        public bool IsPopup
+        {
+            get
+            {
+                var parentHost = GetPopupViewModelHost();
+                if (parentHost != null)
+                {
+                    return parentHost.Popups.Contains(this);
+                }
+                return false;
+            }
+        }
+
         public bool IsCurrentNavigatedPage { get; private set; }
         public bool IsFocused { get; private set; }
 

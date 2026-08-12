@@ -106,6 +106,11 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
+            if (v <= new Version(2608, 12, 0, 0) && VxPlatform.Current == Platform.Uwp)
+            {
+                changedText += "\n - Press Esc to close non-editing popups.";
+            }
+
             if (v <= new Version(2608, 10, 0, 0) && (VxPlatform.Current == Platform.iOS || VxPlatform.Current == Platform.Android))
             {
                 changedText += "\n - Fixed time formatting (12 vs 24hr) on class reminders.";
