@@ -62,7 +62,7 @@ namespace Vx.iOS.Views
             var content = _valueTemplated as UIView ?? _value;
             if (content != null)
             {
-                content.Frame = _valueContainer.Bounds.Inset(10, 10);
+                content.Frame = _valueContainer.Bounds.Inset(10, 0);
             }
         }
 
