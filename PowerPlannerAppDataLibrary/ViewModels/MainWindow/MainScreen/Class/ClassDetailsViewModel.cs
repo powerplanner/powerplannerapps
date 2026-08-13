@@ -40,7 +40,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         IsTextSelectionEnabled = true
                     } : null,
 
-                    string.IsNullOrWhiteSpace(Class.Details) ? new TextBlock
+                    (string.IsNullOrWhiteSpace(Class.Details) && Class.ImageAttachments.Length == 0) ? new TextBlock
                     {
                         Text = R.S("ClassPage_Details_NothingHereString"),
                         TextColor = Theme.Current.SubtleForegroundColor

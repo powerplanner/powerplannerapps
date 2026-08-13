@@ -102,7 +102,6 @@ namespace PowerPlannerAndroid.App
                 { typeof(CalendarViewModel), root => new ComponentView(root) },
                 { typeof(AgendaViewModel), root => new ComponentView(root) },
                 { typeof(ClassViewModel), root => new ClassView(root) },
-                { typeof(EditClassDetailsViewModel), root => new EditClassDetailsView(root) },
                 { typeof(PremiumVersionViewModel), root => new PremiumVersionView(root) },
                 { typeof(SyncErrorsViewModel), root => new SyncErrorsView(root) },
                 { typeof(QuickAddViewModel), root => new QuickAddView(root) }
