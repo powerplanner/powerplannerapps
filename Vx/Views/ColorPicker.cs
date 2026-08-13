@@ -136,7 +136,6 @@ namespace Vx.Views
                         ColorChanged?.Invoke(Color);
                     }
                 }),
-                Margin = new Thickness(0, 18, 0, 0),
                 ItemTemplate = v =>
                 {
                     if (v == null)
