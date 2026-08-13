@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using ToolsPortable;
 using Vx.Views;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.Controls
@@ -117,9 +118,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.Controls
 
         public static Task<bool> ShowForResultAsync(string message, string title)
         {
-            var parent = PowerPlannerApp.Current.GetMainWindowViewModel();
-            var viewModel = new ConfirmDeleteViewModel(parent, message, title, R.S("Settings_DeleteAccountPage_Description.Text"));
-            parent.ShowPopup(viewModel);
+            var popupHost = PowerPlannerApp.Current.GetCurrentWindow()?.ViewModel?.GetFinalContent()?.GetPopupViewModelHost();
+
+            if (popupHost == null)
+            {
+                return new PortableMessageDialog(message ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemMessage"), title ?? PowerPlannerResources.GetString("String_ConfirmDeleteItemHeader"), PowerPlannerResources.GetString("MenuItemDelete"), PowerPlannerResources.GetString("MenuItemCancel")).ShowForResultAsync();
+            }
+
+            var viewModel = new ConfirmDeleteViewModel(popupHost, message, title, R.S("Settings_DeleteAccountPage_Description.Text"));
+            popupHost.ShowPopup(viewModel);
 
             return viewModel._taskCompletionSource.Task;
         }
