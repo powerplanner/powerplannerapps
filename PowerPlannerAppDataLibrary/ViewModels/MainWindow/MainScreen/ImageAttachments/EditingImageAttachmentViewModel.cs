@@ -12,7 +12,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttac
 {
     public class EditingExistingImageAttachmentViewModel : BaseEditingImageAttachmentViewModel
     {
-        public EditingExistingImageAttachmentViewModel(AddTaskOrEventViewModel parent, string imageName) : base(parent)
+        public EditingExistingImageAttachmentViewModel(BaseViewModel parent, string imageName, Action<BaseEditingImageAttachmentViewModel> removeImageAttachment) : base(parent, removeImageAttachment)
         {
             ImageAttachment = new ImageAttachmentViewModel(imageName);
         }
@@ -22,7 +22,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttac
     {
         public IFile TempFile { get; private set; }
 
-        public EditingNewImageAttachmentViewModel(AddTaskOrEventViewModel parent, IFile tempFile) : base(parent)
+        public EditingNewImageAttachmentViewModel(BaseViewModel parent, IFile tempFile, Action<BaseEditingImageAttachmentViewModel> removeImageAttachment) : base(parent, removeImageAttachment)
         {
             TempFile = tempFile;
             ImageAttachment = new ImageAttachmentViewModel(TempFile);
@@ -31,17 +31,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttac
 
     public class BaseEditingImageAttachmentViewModel : BaseMainScreenViewModelDescendant
     {
-        private AddTaskOrEventViewModel _addTaskOrEventViewModel;
-        public BaseEditingImageAttachmentViewModel(AddTaskOrEventViewModel parent) : base(parent)
+        private Action<BaseEditingImageAttachmentViewModel> _removeImageAttachment;
+        public BaseEditingImageAttachmentViewModel(BaseViewModel parent, Action<BaseEditingImageAttachmentViewModel> removeImageAttachment) : base(parent)
         {
-            _addTaskOrEventViewModel = parent;
+            _removeImageAttachment = removeImageAttachment;
         }
 
         public ImageAttachmentViewModel ImageAttachment { get; protected set; }
 
         public void RemoveThisImageAttachment()
         {
-            _addTaskOrEventViewModel.RemoveImageAttachment(this);
+            _removeImageAttachment(this);
         }
     }
 }

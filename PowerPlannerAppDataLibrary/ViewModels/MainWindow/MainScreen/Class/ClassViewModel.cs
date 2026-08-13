@@ -243,7 +243,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void EditDetails()
         {
-            MainScreenViewModel.ShowPopup(new EditClassDetailsViewModel(MainScreenViewModel, ViewItemsGroupClass.Class));
+            EditClassWithDetails();
         }
 
         public void EditTimes()
