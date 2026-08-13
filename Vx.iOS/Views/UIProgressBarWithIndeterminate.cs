@@ -15,14 +15,10 @@ public class UIProgressBarWithIndeterminate : UIView
 
     public UIProgressBarWithIndeterminate()
     {
-        progressView = new UIProgressView(UIProgressViewStyle.Default)
-        {
-            TranslatesAutoresizingMaskIntoConstraints = false
-        };
+        progressView = new UIProgressView(UIProgressViewStyle.Default);
 
         indeterminateView = new UIView
         {
-            TranslatesAutoresizingMaskIntoConstraints = false,
             BackgroundColor = foreground,
             Hidden = true
         };
@@ -30,19 +26,21 @@ public class UIProgressBarWithIndeterminate : UIView
         AddSubview(progressView);
         AddSubview(indeterminateView);
 
-        NSLayoutConstraint.ActivateConstraints(new[]
-        {
-            progressView.LeadingAnchor.ConstraintEqualTo(LeadingAnchor),
-            progressView.TrailingAnchor.ConstraintEqualTo(TrailingAnchor),
-            progressView.CenterYAnchor.ConstraintEqualTo(CenterYAnchor),
-
-            indeterminateView.LeadingAnchor.ConstraintEqualTo(LeadingAnchor),
-            indeterminateView.TrailingAnchor.ConstraintEqualTo(TrailingAnchor),
-            indeterminateView.TopAnchor.ConstraintEqualTo(TopAnchor),
-            indeterminateView.BottomAnchor.ConstraintEqualTo(BottomAnchor),
-        });
-
         UpdateProgress();
+    }
+
+    public override void LayoutSubviews()
+    {
+        base.LayoutSubviews();
+
+        nfloat progressHeight = progressView.IntrinsicContentSize.Height;
+        if (progressHeight <= 0)
+        {
+            progressHeight = 4;
+        }
+
+        progressView.Frame = new CGRect(0, (Bounds.Height - progressHeight) / 2, Bounds.Width, progressHeight);
+        indeterminateView.Frame = Bounds;
     }
 
     /// <summary>

@@ -39,6 +39,22 @@ namespace InterfacesUWP.AppWindows
             // Back button
             _navigationManager = SystemNavigationManagerEnhanced.GetForCurrentView();
             _navigationManager.BackRequested += new WeakEventHandler<BackRequestedEventArgs>(_navigationManager_BackRequested).Handler;
+
+            // Esc handler
+            Window.CoreWindow.KeyDown += CoreWindow_KeyDown;
+        }
+
+        private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            if (!args.Handled && args.VirtualKey == Windows.System.VirtualKey.Escape)
+            {
+                var currentViewModel = _presenter?.ViewModel?.GetFinalContent();
+                if (currentViewModel != null && currentViewModel.IsPopup && currentViewModel.AllowLightDismiss)
+                {
+                    currentViewModel.TryRemoveViewModelViaUserInteraction();
+                    args.Handled = true;
+                }
+            }
         }
 
         public void DisplayWindowContent()

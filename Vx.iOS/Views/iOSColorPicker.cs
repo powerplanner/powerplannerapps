@@ -1,4 +1,5 @@
 ﻿using System;
+using CoreGraphics;
 using InterfacesiOS.Controllers;
 using InterfacesiOS.Helpers;
 using ToolsPortable;
@@ -7,9 +8,10 @@ using Vx.Views;
 
 namespace Vx.iOS.Views
 {
-    public class iOSColorPicker : iOSView<ColorPicker, UIView>
+    public class iOSColorPicker : iOSView<ColorPicker, ManualLayoutView>
     {
         private InternalColorPickerComponent _internalColorPickerComponent;
+        private UIView _rendered;
 
         public iOSColorPicker()
         {
@@ -18,10 +20,21 @@ namespace Vx.iOS.Views
                 PickCustomColor = PickCustomColor,
                 ColorChanged = c => VxView?.Color?.ValueChanged?.Invoke(c)
             };
-            var rendered = _internalColorPickerComponent.Render();
-            rendered.TranslatesAutoresizingMaskIntoConstraints = false;
-            View.AddSubview(rendered);
-            rendered.StretchWidthAndHeight(View);
+            _rendered = _internalColorPickerComponent.Render();
+            View.AddSubview(_rendered);
+
+            View.MeasureAction = Measure;
+            View.LayoutAction = LayoutSubviews;
+        }
+
+        private CGSize Measure(CGSize availableSize)
+        {
+            return _rendered.SizeThatFits(availableSize);
+        }
+
+        private void LayoutSubviews()
+        {
+            _rendered.Frame = View.Bounds;
         }
 
         protected override void ApplyProperties(ColorPicker oldView, ColorPicker newView)
@@ -31,6 +44,9 @@ namespace Vx.iOS.Views
             _internalColorPickerComponent.Header = newView.Header;
             _internalColorPickerComponent.IsEnabled = newView.IsEnabled;
             _internalColorPickerComponent.Color = newView.Color?.Value ?? default(System.Drawing.Color);
+
+            View.InvalidateIntrinsicContentSize();
+            View.SetNeedsLayout();
         }
 
         private void PickCustomColor()

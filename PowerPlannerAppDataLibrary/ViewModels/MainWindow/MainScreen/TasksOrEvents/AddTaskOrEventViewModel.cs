@@ -795,7 +795,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             };
 
             // Assign existing image attachments
-            model.ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(cloneParams.Item.ImageNames.Select(i => new EditingExistingImageAttachmentViewModel(model, i)));
+            model.ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(cloneParams.Item.ImageNames.Select(i => new EditingExistingImageAttachmentViewModel(model, i, img => model.RemoveImageAttachment(img))));
 
             switch (cloneParams.Item.GetActualTimeOption())
             {
@@ -883,7 +883,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
             };
 
             // Assign existing image attachments
-            model.ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(editParams.Item.ImageNames.Select(i => new EditingExistingImageAttachmentViewModel(model, i)));
+            model.ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(editParams.Item.ImageNames.Select(i => new EditingExistingImageAttachmentViewModel(model, i, img => model.RemoveImageAttachment(img))));
 
             switch (editParams.Item.GetActualTimeOption())
             {
@@ -1128,7 +1128,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.TasksOrEve
                 IFile[] files = await ImagePickerExtension.Current.PickImagesAsync();
                 foreach (var file in files)
                 {
-                    ImageAttachments.Add(new EditingNewImageAttachmentViewModel(this, file));
+                    ImageAttachments.Add(new EditingNewImageAttachmentViewModel(this, file, img => RemoveImageAttachment(img)));
                 }
 
                 IsAddingNewImages = false;

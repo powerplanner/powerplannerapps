@@ -119,7 +119,6 @@ namespace PowerPlannerUWP
                 { typeof(AgendaViewModel), viewModel => new AgendaView { ViewModel = (AgendaViewModel)viewModel } },
                 { typeof(CalendarViewModel), viewModel => new ComponentView { ViewModel = (CalendarViewModel)viewModel } },
                 { typeof(ClassViewModel), viewModel => new ClassView { ViewModel = (ClassViewModel)viewModel } },
-                { typeof(EditClassDetailsViewModel), viewModel => new EditClassDetailsView { ViewModel = (EditClassDetailsViewModel)viewModel } },
                 { typeof(LoginViewModel), viewModel => new LoginView { ViewModel = (LoginViewModel)viewModel } },
                 { typeof(DayViewModel), viewModel => new MainContentDayView { ViewModel = (DayViewModel)viewModel } },
                 { typeof(MainScreenViewModel), viewModel => new MainScreenView { ViewModel = (MainScreenViewModel)viewModel } },

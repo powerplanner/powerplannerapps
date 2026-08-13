@@ -168,6 +168,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             set { SetProperty(ref _desiredErrorMessage, value, nameof(DesiredErrorMessage)); }
         }
 
+        private double[] _gpaOptions;
+        private Func<object, View> _desiredGpaItemTemplate;
+
+        private View DesiredGpaItemTemplate(object item)
+        {
+            string s = "--";
+            if (item is double d)
+            {
+                s = string.Format(R.S("String_GPA"), d);
+            }
+            return new TextBlock
+            {
+                Text = s
+            };
+        }
 
         protected override Task LoadAsyncOverride()
         {
@@ -196,7 +211,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             Class.CalculateEverything();
             Class.PrepareForWhatIf();
-            DesiredGPA = Class.GPA;
+
+            if (Class.GradeScales != null)
+            {
+                _gpaOptions = Class.GradeScales.Select(i => i.GPA).Distinct().OrderByDescending(i => i).ToArray();
+            }
+
+            if (_gpaOptions == null || _gpaOptions.Length == 0)
+            {
+                _gpaOptions = new double[] { 4, 3, 2, 1 };
+            }
+
+            if (_gpaOptions.Contains(Class.GPA))
+            {
+                DesiredGPA = Class.GPA;
+            }
+            else
+            {
+                DesiredGPA = _gpaOptions.FirstOrDefault();
+            }
+
+            _desiredGpaItemTemplate = DesiredGpaItemTemplate;
 
             return Task.FromResult(true);
         }
@@ -347,15 +382,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                                                 Margin = new Thickness(0, 0, 6, 0)
                                             }.LinearLayoutWeight(1),
 
-                                            new NumberTextBox
+                                            new ComboBox
                                             {
-                                                Number = VxValue.Create<double?>(DesiredGPA, v =>
+                                                Items = _gpaOptions,
+                                                SelectedItem = VxValue.Create<object>(DesiredGPA, v =>
                                                 {
-                                                    if (v != null)
+                                                    if (v is double d)
                                                     {
-                                                        DesiredGPA = v.Value;
+                                                        DesiredGPA = d;
                                                     }
                                                 }),
+                                                ItemTemplate = _desiredGpaItemTemplate,
                                                 Margin = new Thickness(6, 0, 0, 0)
                                             }.LinearLayoutWeight(1)
                                         }

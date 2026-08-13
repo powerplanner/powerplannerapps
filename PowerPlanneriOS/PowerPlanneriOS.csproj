@@ -3,7 +3,7 @@
   <PropertyGroup>
 	  <TargetFrameworks>net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 	  <OutputType>Exe</OutputType>
-    <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
 		<SatelliteResourceLanguages>en;ar;de;es;fr;it;pt</SatelliteResourceLanguages> <!--Need to be specified so trimming doesn't remove these languages-->
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>

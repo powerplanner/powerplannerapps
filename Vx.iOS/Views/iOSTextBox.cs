@@ -171,81 +171,87 @@ namespace Vx.iOS.Views
         public event EventHandler<bool> FocusChanged;
 
         private UILabel _header;
+        private UIView _headerContainer;
         private UIRoundedTextField _textField;
         private UILabel _errorSymbol;
         private UILabel _errorMessage;
-        private InterfacesiOS.Views.BareUIVisibilityContainer _errorMessageContainer;
+        private UIView _errorMessageContainer;
 
         public UIRoundedTextField TextField => _textField;
 
         public UIRoundedTextFieldWithHeader()
         {
-            var headerContainer = new UIView
+            _headerContainer = new UIView();
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
-            {
-                _header = new UILabel
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false
-                };
+                _header = new UILabel();
 
                 _errorSymbol = new UILabel
                 {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.FromName("Material Icons Outlined", UIFont.PreferredBody.PointSize),
                     Alpha = 0
                 };
 
-                headerContainer.Add(_header);
-                headerContainer.Add(_errorSymbol);
-
-                _header.StretchHeight(headerContainer);
-                _errorSymbol.StretchHeight(headerContainer);
-
-                headerContainer.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[header]->=0-[errorSymbol]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                    "header", _header,
-                    "errorSymbol", _errorSymbol));
+                _headerContainer.Add(_header);
+                _headerContainer.Add(_errorSymbol);
             }
 
-            _textField = new UIRoundedTextField
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false
-            };
+            _textField = new UIRoundedTextField();
             _textField.EditingChanged += TextUpdated;
             _textField.EditingDidEnd += TextUpdated;
             _textField.EditingDidEndOnExit += TextUpdated;
             _textField.FocusChanged += _textField_FocusChanged;
 
-            _errorMessageContainer = new InterfacesiOS.Views.BareUIVisibilityContainer
+            _errorMessageContainer = new UIView
             {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                IsVisible = false
+                Hidden = true
             };
             {
                 _errorMessage = new UILabel
                 {
-                    TranslatesAutoresizingMaskIntoConstraints = false,
                     TextColor = UIColor.Red,
                     Font = UIFont.PreferredCaption1,
                     Lines = 0
                 };
-                _errorMessageContainer.Child = _errorMessage.WrapInPadding(top: 4);
+                _errorMessageContainer.Add(_errorMessage);
             }
 
-            Add(headerContainer);
+            Add(_headerContainer);
             Add(_textField);
             Add(_errorMessageContainer);
-
-            headerContainer.StretchWidth(this);
-            _textField.StretchWidth(this);
-            _errorMessageContainer.StretchWidth(this);
-
-            this.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[header]-4-[textField(36)][errorMessage]|", NSLayoutFormatOptions.DirectionLeadingToTrailing,
-                "header", headerContainer,
-                "textField", _textField,
-                "errorMessage", _errorMessageContainer));
         }
+
+        public override CGSize SizeThatFits(CGSize size)
+        {
+            nfloat width = size.Width >= UIViewWrapper.UnboundedSize ? NMax(_header.SizeThatFits(size).Width, _textField.SizeThatFits(size).Width) : size.Width;
+            return new CGSize(width, HeaderHeight(width) + (nfloat)40 + ErrorHeight(width));
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            var headerHeight = HeaderHeight(Bounds.Width);
+            var errorHeight = ErrorHeight(Bounds.Width);
+            var symbolSize = _errorSymbol.SizeThatFits(new CGSize(UIViewWrapper.UnboundedSize, headerHeight));
+            _headerContainer.Frame = new CGRect(0, 0, Bounds.Width, headerHeight);
+            _header.Frame = new CGRect(0, 0, NMax(0, Bounds.Width - symbolSize.Width), headerHeight);
+            _errorSymbol.Frame = new CGRect(Bounds.Width - symbolSize.Width, 0, symbolSize.Width, headerHeight);
+            _textField.Frame = new CGRect(0, headerHeight + 4, Bounds.Width, 36);
+            _errorMessageContainer.Frame = new CGRect(0, headerHeight + 40, Bounds.Width, errorHeight);
+            _errorMessage.Frame = new CGRect(0, 4, Bounds.Width, NMax(0, errorHeight - 4));
+        }
+
+        private nfloat HeaderHeight(nfloat width)
+        {
+            return NMax(_header.SizeThatFits(new CGSize(width, UIViewWrapper.UnboundedSize)).Height, _errorSymbol.SizeThatFits(new CGSize(UIViewWrapper.UnboundedSize, UIViewWrapper.UnboundedSize)).Height);
+        }
+
+        private nfloat ErrorHeight(nfloat width)
+        {
+            return _errorMessageContainer.Hidden ? (nfloat)0 : _errorMessage.SizeThatFits(new CGSize(width, UIViewWrapper.UnboundedSize)).Height + 4;
+        }
+
+        private static nfloat NMax(nfloat a, nfloat b) => a > b ? a : b;
 
         public override bool BecomeFirstResponder()
         {
@@ -327,20 +333,23 @@ namespace Vx.iOS.Views
                     _errorSymbol.Text = MaterialDesign.MaterialDesignIcons.ErrorOutline;
                     _errorSymbol.TextColor = UIColor.SystemRed;
                     _errorMessage.Text = value.ErrorMessage;
-                    _errorMessageContainer.IsVisible = true;
+                    _errorMessageContainer.Hidden = false;
                 }
                 else if (value == InputValidationState.Valid)
                 {
                     _errorSymbol.Alpha = 1;
                     _errorSymbol.Text = MaterialDesign.MaterialDesignIcons.CheckCircleOutline;
                     _errorSymbol.TextColor = UIColor.SystemGreen;
-                    _errorMessageContainer.IsVisible = false;
+                    _errorMessageContainer.Hidden = true;
                 }
                 else
                 {
                     _errorSymbol.Alpha = 0;
-                    _errorMessageContainer.IsVisible = false;
+                    _errorMessageContainer.Hidden = true;
                 }
+
+                InvalidateIntrinsicContentSize();
+                SetNeedsLayout();
             }
         }
 

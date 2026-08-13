@@ -1,15 +1,20 @@
 ﻿using BareMvvm.Core.ViewModels;
 using PowerPlannerAppDataLibrary.App;
+using PowerPlannerAppDataLibrary.Components.ImageAttachments;
 using PowerPlannerAppDataLibrary.DataLayer;
 using PowerPlannerAppDataLibrary.DataLayer.DataItems;
 using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.ImageAttachments;
+using StorageEverywhere;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsPortable;
@@ -82,8 +87,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 ClassToEdit = classToEdit,
                 Name = classToEdit.Name,
                 Color = classToEdit.Color,
-                Details = classToEdit.Details
+                Details = classToEdit.Details,
+                ImageNames = classToEdit.ImageNames.ToArray(),
             };
+
+            // Assign existing image attachments
+            answer.ImageAttachments = new ObservableCollection<BaseEditingImageAttachmentViewModel>(classToEdit.ImageNames.Select(i => new EditingExistingImageAttachmentViewModel(answer, i, img => answer.RemoveImageAttachment(img))));
 
             if (!PowerPlannerSending.DateValues.IsUnassigned(classToEdit.StartDate))
             {
@@ -160,6 +169,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     Text = VxValue.Create(Details, v => Details = v),
                     Height = 180, // For now we're just going to leave height as fixed height, haven't implemented dynamic height in iOS
                     Margin = new Thickness(0, 18, 0, 0)
+                } : null,
+
+                IncludesEditingDetails ? new TextBlock
+                {
+                    Text = R.S("String_ImageAttachments"),
+                    WrapText = false,
+                    Margin = new Thickness(0, 18, 0, 0)
+                } : null,
+
+                IncludesEditingDetails ? new EditImagesComponent
+                {
+                    ImageAttachments = ImageAttachments,
+                    RequestAddImage = () => _ = AddNewImageAttachmentAsync(),
+                    Margin = new Thickness(0, 6, 0, 0),
+                    Opacity = IsAddingNewImages ? 0.5f : 1
                 } : null
 
             );
@@ -265,6 +289,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                             Name = name,
                             RawColor = Color
                         };
+
+                        string[] updatedImageNames = await SaveImageAttachmentsAsync();
+                        if (updatedImageNames != null)
+                        {
+                            c.ImageNames = updatedImageNames;
+                        }
+                        else
+                        {
+                            c.ImageNames = ImageNames;
+                        }
 
                         PopulateClassInfo(c);
 
@@ -384,6 +418,133 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             {
                 RemoveViewModel();
             });
+        }
+
+        public string[] ImageNames { get; set; }
+
+        private List<EditingExistingImageAttachmentViewModel> _removedImageAttachments = new List<EditingExistingImageAttachmentViewModel>();
+        public ObservableCollection<BaseEditingImageAttachmentViewModel> ImageAttachments { get; private set; }
+
+        private bool _isAddingNewImages;
+        public bool IsAddingNewImages
+        {
+            get => _isAddingNewImages;
+            set => SetProperty(ref _isAddingNewImages, value, nameof(IsAddingNewImages));
+        }
+
+        public async Task AddNewImageAttachmentAsync()
+        {
+            if (IsAddingNewImages)
+            {
+                return;
+            }
+
+            try
+            {
+                if (!(await PowerPlannerApp.Current.IsFullVersionAsync()) && ImageAttachments.Count >= 1)
+                {
+                    PowerPlannerApp.Current.PromptPurchase("The free version only lets you attach one photo per item. Would you like to upgrade to premium and attach unlimited photos per item?");
+                    return;
+                }
+
+                if (ImagePickerExtension.Current == null)
+                {
+                    throw new PlatformNotSupportedException("ImagePickerExtension wasn't implemented");
+                }
+
+                IsAddingNewImages = true;
+
+                IFile[] files = await ImagePickerExtension.Current.PickImagesAsync();
+                foreach (var file in files)
+                {
+                    ImageAttachments.Add(new EditingNewImageAttachmentViewModel(this, file, img => RemoveImageAttachment(img)));
+                }
+
+                IsAddingNewImages = false;
+            }
+            catch (Exception ex)
+            {
+                IsAddingNewImages = false;
+                TelemetryExtension.Current?.TrackException(ex);
+            }
+        }
+
+        public void RemoveImageAttachment(BaseEditingImageAttachmentViewModel imageAttachment)
+        {
+            ImageAttachments.Remove(imageAttachment);
+            if (imageAttachment is EditingExistingImageAttachmentViewModel existing)
+            {
+                _removedImageAttachments.Add(existing);
+            }
+        }
+
+        private async Task<string[]> SaveImageAttachmentsAsync()
+        {
+            var newImages = ImageAttachments.OfType<EditingNewImageAttachmentViewModel>().ToArray();
+            if (_removedImageAttachments.Count > 0 || newImages.Length > 0)
+            {
+                var currAccount = base.MainScreenViewModel.CurrentAccount;
+
+                if (currAccount == null)
+                    throw new NullReferenceException("Account was null");
+
+                IFolder imagesFolderPortable = await FileHelper.GetOrCreateImagesFolder(currAccount.LocalAccountId);
+
+                List<string> finalImageNames = ImageAttachments.Select(i => i.ImageAttachment.ImageName).ToList();
+
+                // Delete images
+                foreach (var removedImage in _removedImageAttachments)
+                {
+                    try
+                    {
+                        var file = await imagesFolderPortable.GetFileAsync(removedImage.ImageAttachment.ImageName);
+                        await file.DeleteAsync();
+                    }
+
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+                    }
+                }
+
+                // Add new images
+                foreach (var newImage in newImages)
+                {
+                    try
+                    {
+                        await newImage.TempFile.MoveAsync(Path.Combine(imagesFolderPortable.Path, newImage.TempFile.Name), NameCollisionOption.ReplaceExisting);
+                        if (newImage.TempFile is Helpers.TempFile tempFile)
+                        {
+                            tempFile.DetachTempDisposer();
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        TelemetryExtension.Current?.TrackException(ex);
+
+                        try
+                        {
+                            finalImageNames.Remove(newImage.ImageAttachment.ImageName);
+                        }
+                        catch { }
+                    }
+                }
+
+                // If there were new images, add them to the needing upload list
+                var newImageNames = newImages.Select(i => i.ImageAttachment.ImageName).Intersect(finalImageNames).ToArray();
+                if (newImageNames.Any())
+                {
+                    var dataStore = await AccountDataStore.Get(currAccount.LocalAccountId);
+                    await dataStore.AddImagesToUploadAsync(newImageNames);
+                }
+
+                return finalImageNames.ToArray();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
