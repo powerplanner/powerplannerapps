@@ -139,19 +139,25 @@ namespace InterfacesiOS.ViewModelPresenters
         }
 
         private bool _isShown;
+        private bool _isDismissing;
         private void UpdateVisibility()
         {
             if (ViewModel == null || ViewModel.Popups.Count == 0 || _destroyed)
             {
-                if (_isShown)
+                if (_isShown && !_isDismissing)
                 {
-                    _listPresenter.DismissViewController(true, null);
-                    _isShown = false;
+                    _isDismissing = true;
+                    _listPresenter.DismissViewController(true, delegate
+                    {
+                        _isShown = false;
+                        _isDismissing = false;
+                        UpdateVisibility();
+                    });
                 }
             }
             else
             {
-                if (!_isShown)
+                if (!_isShown && !_isDismissing)
                 {
                     ShowDetailViewController(_listPresenter, null);
                     _isShown = true;

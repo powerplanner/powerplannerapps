@@ -58,7 +58,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
             Title = PowerPlannerResources.GetString(state == OperationState.Adding ? "AddClassPage_AddTitle" : "AddClassPage_EditTitle");
 
-            PrimaryCommand = PopupCommand.Save(Save);
+            PrimaryCommand = PopupCommand.Save(() => _ = SaveAsync());
 
             if (state == OperationState.Editing)
             {
@@ -253,7 +253,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             set { SetProperty(ref _details, value, nameof(Details)); }
         }
 
-        public async void Save()
+        private async Task SaveAsync()
         {
             try
             {
@@ -336,7 +336,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                         {
                             DataItemClass c = (DataItemClass)newItems.First();
 
-                            var dontWait = MainScreenViewModel.SelectClass(c.Identifier);
+                            await MainScreenViewModel.SelectClass(c.Identifier);
+                            cancellationToken.ThrowIfCancellationRequested();
                         }
                     }
 

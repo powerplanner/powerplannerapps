@@ -54,7 +54,14 @@ namespace PowerPlanneriOS.Extensions
 
         public static void FailedToRegisterForRemoteNotifications(string error)
         {
-            TelemetryExtension.Current?.TrackException(new Exception(error));
+            if (error?.IndexOf("Notifications are not allowed for this application", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                TelemetryExtension.Current?.TrackEvent("RemoteNotificationsNotAllowed");
+            }
+            else
+            {
+                TelemetryExtension.Current?.TrackException(new Exception(error));
+            }
 
             _channelTaskCompletionSource.TrySetResult(null);
         }
