@@ -124,7 +124,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                     Header = PowerPlannerResources.GetString("AddClassPage_TextBoxName.Header"),
                     Text = VxValue.Create(Name, v => Name = v),
                     AutoFocus = State == OperationState.Adding,
-                    OnSubmit = Save
+                    OnSubmit = () => _ = SaveAsync()
                 },
 
                 new ColorPicker
