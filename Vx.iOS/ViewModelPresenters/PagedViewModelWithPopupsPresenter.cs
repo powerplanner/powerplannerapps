@@ -280,9 +280,33 @@ namespace InterfacesiOS.ViewModelPresenters
 
             var newController = ViewModelToViewConverter.Convert(targetViewModel);
             AddChildViewController(newController);
-            newController.View.TranslatesAutoresizingMaskIntoConstraints = false;
-            View.AddSubview(newController.View);
-            newController.View.StretchWidthAndHeight(View);
+            var popupView = newController.View;
+            popupView.TranslatesAutoresizingMaskIntoConstraints = false;
+            View.AddSubview(popupView);
+
+            const float MaxWidth = 460f;
+            const float HorizontalPadding = 24f;
+            const float VerticalPadding = 24f;
+
+            // Center the popup horizontally, with a max width of 460px but shrinking to keep at
+            // least 24px padding on each side. The popup fills the available height minus 24px
+            // padding on top and bottom (its max). The content is a navigation controller, which
+            // has no intrinsic content size (it always fills its container), so we must give it a
+            // definite height via top/bottom constraints rather than relying on content-hugging.
+            var widthConstraint = popupView.WidthAnchor.ConstraintEqualTo(MaxWidth);
+            widthConstraint.Priority = (float)UILayoutPriority.DefaultHigh;
+
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                popupView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
+                popupView.WidthAnchor.ConstraintLessThanOrEqualTo(MaxWidth),
+                popupView.LeadingAnchor.ConstraintGreaterThanOrEqualTo(View.LeadingAnchor, HorizontalPadding),
+                popupView.TrailingAnchor.ConstraintLessThanOrEqualTo(View.TrailingAnchor, -HorizontalPadding),
+                popupView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor, VerticalPadding),
+                popupView.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, -VerticalPadding),
+                widthConstraint
+            });
+
             newController.DidMoveToParentViewController(this);
 
             _inPlacePopupController = newController;
