@@ -22,7 +22,7 @@ namespace InterfacesiOS.ViewModelPresenters
         // Used for in-place popup presentation (Mac Catalyst / Desktop), where popups are shown
         // embedded within this view (behind a dimming backdrop) instead of presented modally.
         private UIView _inPlaceBackdrop;
-        private UIViewController _inPlacePopupController;
+        private UIView _inPlacePopupView;
         private BaseViewModel _inPlacePopupViewModel;
 
         public new PagedViewModelWithPopups ViewModel
@@ -227,8 +227,7 @@ namespace InterfacesiOS.ViewModelPresenters
         protected virtual void UpdateInPlacePopupPresentation()
         {
             // Only the top-most popup is ever shown (matching the other platforms' behavior of
-            // stacking popups and only displaying the last one), filling the full content area
-            // behind a dimming backdrop.
+            // stacking popups and only displaying the last one), centered behind a dimming backdrop.
             var targetViewModel = ViewModel != null && !_destroyed && ViewModel.Popups.Count > 0
                 ? ViewModel.Popups[ViewModel.Popups.Count - 1]
                 : null;
@@ -241,12 +240,10 @@ namespace InterfacesiOS.ViewModelPresenters
             _inPlacePopupViewModel = targetViewModel;
 
             // Remove any existing popup content
-            if (_inPlacePopupController != null)
+            if (_inPlacePopupView != null)
             {
-                _inPlacePopupController.WillMoveToParentViewController(null);
-                _inPlacePopupController.View.RemoveFromSuperview();
-                _inPlacePopupController.RemoveFromParentViewController();
-                _inPlacePopupController = null;
+                _inPlacePopupView.RemoveFromSuperview();
+                _inPlacePopupView = null;
             }
 
             if (targetViewModel == null)
@@ -278,38 +275,46 @@ namespace InterfacesiOS.ViewModelPresenters
                 View.BringSubviewToFront(_inPlaceBackdrop);
             }
 
-            var newController = ViewModelToViewConverter.Convert(targetViewModel);
-            AddChildViewController(newController);
-            var popupView = newController.View;
+            var popupView = CreateInPlacePopupView(targetViewModel);
             popupView.TranslatesAutoresizingMaskIntoConstraints = false;
+            popupView.Layer.CornerRadius = 8;
+            popupView.ClipsToBounds = true;
             View.AddSubview(popupView);
 
             const float MaxWidth = 460f;
             const float HorizontalPadding = 24f;
             const float VerticalPadding = 24f;
 
-            // Center the popup horizontally, with a max width of 460px but shrinking to keep at
-            // least 24px padding on each side. The popup fills the available height minus 24px
-            // padding on top and bottom (its max). The content is a navigation controller, which
-            // has no intrinsic content size (it always fills its container), so we must give it a
-            // definite height via top/bottom constraints rather than relying on content-hugging.
+            // Center the popup, with a max width of 460px but shrinking to keep at least 24px
+            // padding on each side. The popup hugs its content's natural height, but is capped to
+            // the available window height minus 24px padding on top and bottom (beyond which its
+            // content scrolls internally).
             var widthConstraint = popupView.WidthAnchor.ConstraintEqualTo(MaxWidth);
             widthConstraint.Priority = (float)UILayoutPriority.DefaultHigh;
 
             NSLayoutConstraint.ActivateConstraints(new[]
             {
                 popupView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
+                popupView.CenterYAnchor.ConstraintEqualTo(View.CenterYAnchor),
                 popupView.WidthAnchor.ConstraintLessThanOrEqualTo(MaxWidth),
                 popupView.LeadingAnchor.ConstraintGreaterThanOrEqualTo(View.LeadingAnchor, HorizontalPadding),
                 popupView.TrailingAnchor.ConstraintLessThanOrEqualTo(View.TrailingAnchor, -HorizontalPadding),
-                popupView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor, VerticalPadding),
-                popupView.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, -VerticalPadding),
+                popupView.TopAnchor.ConstraintGreaterThanOrEqualTo(View.SafeAreaLayoutGuide.TopAnchor, VerticalPadding),
+                popupView.BottomAnchor.ConstraintLessThanOrEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, -VerticalPadding),
                 widthConstraint
             });
 
-            newController.DidMoveToParentViewController(this);
+            _inPlacePopupView = popupView;
+        }
 
-            _inPlacePopupController = newController;
+        /// <summary>
+        /// Creates the native view used to display an in-place popup. The default implementation
+        /// renders the view model directly as a component (without any popup chrome); app-level
+        /// subclasses can override this to wrap the content with a themed popup host.
+        /// </summary>
+        protected virtual UIView CreateInPlacePopupView(BaseViewModel viewModel)
+        {
+            return Vx.iOS.VxiOSExtensions.Render(viewModel);
         }
 
         private void OnInPlaceBackdropTapped()

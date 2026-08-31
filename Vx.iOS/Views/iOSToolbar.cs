@@ -148,7 +148,7 @@ namespace Vx.iOS.Views
                 NavBar.TopItem.RightBarButtonItems = GetRightBarButtonItems(newView).ToArray();
             }
 
-            if (newView.OnBack != null)
+            if (newView.OnBack != null || newView.OnClose != null)
             {
                 if (_backButton == null)
                 {
@@ -171,7 +171,14 @@ namespace Vx.iOS.Views
 
         private void _backButton_Clicked(object sender, EventArgs e)
         {
-            VxView.OnBack?.Invoke();
+            if (VxView.OnBack != null)
+            {
+                VxView.OnBack.Invoke();
+            }
+            else
+            {
+                VxView.OnClose?.Invoke();
+            }
         }
 
         private IEnumerable<UIBarButtonItem> GetRightBarButtonItems(Toolbar toolbar)
