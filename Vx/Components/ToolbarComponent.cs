@@ -52,7 +52,8 @@ namespace Vx.Components.OnlyForNativeLibraries
                     WrapText = false,
                     FontWeight = FontWeights.SemiLight,
                     VerticalAlignment = VerticalAlignment.Center,
-                    TextAlignment = HorizontalAlignment.Left
+                    TextAlignment = HorizontalAlignment.Left,
+                    Margin = isIOS ? new Thickness() : new Thickness(Toolbar.OnBack != null ? 6 : Theme.Current.PageMargin,0,Theme.Current.PageMargin,0)
                 }.LinearLayoutWeight(1));
 
             foreach (var c in Toolbar.PrimaryCommands.Where(i => i != null))
