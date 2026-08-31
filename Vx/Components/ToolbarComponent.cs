@@ -24,27 +24,39 @@ namespace Vx.Components.OnlyForNativeLibraries
                 return null;
             }
 
+            // On iOS, the platform convention is a centered title with the close button on the
+            // left and the remaining commands on the right.
+            bool isIOS = VxPlatform.Current == Platform.iOS;
+
             var layout = new LinearLayout
             {
                 Orientation = Orientation.Horizontal,
                 BackgroundColor = Toolbar.BackgroundColor,
-                Height = ToolbarHeight,
-                Children =
-                {
-                    Toolbar.OnBack != null ? RenderButton(MaterialDesign.MaterialDesignIcons.ArrowBack, PortableLocalizedResources.GetString("String_Back"), () => Toolbar.OnBack()) : null,
-
-                    Toolbar.CustomTitle != null ? Toolbar.CustomTitle.LinearLayoutWeight(1) : (View)new TextBlock
-                    {
-                        Text = Toolbar.Title ?? "",
-                        TextColor = Toolbar.ForegroundColor,
-                        FontSize = 20,
-                        WrapText = false,
-                        FontWeight = FontWeights.SemiLight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(Toolbar.OnBack != null ? 6 : Theme.Current.PageMargin,0,Theme.Current.PageMargin,0)
-                    }.LinearLayoutWeight(1)
-                }
+                Height = ToolbarHeight
             };
+
+            if (Toolbar.OnBack != null)
+            {
+                layout.Children.Add(RenderButton(MaterialDesign.MaterialDesignIcons.ArrowBack, PortableLocalizedResources.GetString("String_Back"), () => Toolbar.OnBack()));
+            }
+
+            if (isIOS && Toolbar.OnClose != null)
+            {
+                layout.Children.Add(RenderButton(MaterialDesign.MaterialDesignIcons.Close, PortableLocalizedResources.GetString("String_Close"), Toolbar.OnClose));
+            }
+
+            layout.Children.Add(
+                Toolbar.CustomTitle != null ? Toolbar.CustomTitle.LinearLayoutWeight(1) : (View)new TextBlock
+                {
+                    Text = Toolbar.Title ?? "",
+                    TextColor = Toolbar.ForegroundColor,
+                    FontSize = 20,
+                    WrapText = false,
+                    FontWeight = FontWeights.SemiLight,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    TextAlignment = isIOS ? HorizontalAlignment.Center : HorizontalAlignment.Left,
+                    Margin = new Thickness(Toolbar.OnBack != null ? 6 : Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
+                }.LinearLayoutWeight(1));
 
             foreach (var c in Toolbar.PrimaryCommands.Where(i => i != null))
             {
@@ -64,7 +76,7 @@ namespace Vx.Components.OnlyForNativeLibraries
                         (moreButton) => _moreButtonRef = moreButton));
             }
 
-            if (Toolbar.OnClose != null)
+            if (!isIOS && Toolbar.OnClose != null)
             {
                 layout.Children.Add(
                     RenderButton(
