@@ -10,6 +10,7 @@ using ToolsPortable;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Vx;
+using Vx.iOS.Views;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
@@ -17,6 +18,12 @@ namespace InterfacesiOS.ViewModelPresenters
     {
         private ListOfViewModelsPresenter _listPresenter;
         private bool _destroyed = false;
+
+        // Used for in-place popup presentation (Mac Catalyst / Desktop), where popups are shown
+        // embedded within this view (behind a dimming backdrop) instead of presented modally.
+        private UIView _inPlaceBackdrop;
+        private UIViewController _inPlacePopupController;
+        private BaseViewModel _inPlacePopupViewModel;
 
         public new PagedViewModelWithPopups ViewModel
         {
@@ -219,6 +226,71 @@ namespace InterfacesiOS.ViewModelPresenters
 
         protected virtual void UpdateInPlacePopupPresentation()
         {
+            // Only the top-most popup is ever shown (matching the other platforms' behavior of
+            // stacking popups and only displaying the last one), filling the full content area
+            // behind a dimming backdrop.
+            var targetViewModel = ViewModel != null && !_destroyed && ViewModel.Popups.Count > 0
+                ? ViewModel.Popups[ViewModel.Popups.Count - 1]
+                : null;
+
+            if (targetViewModel == _inPlacePopupViewModel)
+            {
+                return;
+            }
+
+            _inPlacePopupViewModel = targetViewModel;
+
+            // Remove any existing popup content
+            if (_inPlacePopupController != null)
+            {
+                _inPlacePopupController.WillMoveToParentViewController(null);
+                _inPlacePopupController.View.RemoveFromSuperview();
+                _inPlacePopupController.RemoveFromParentViewController();
+                _inPlacePopupController = null;
+            }
+
+            if (targetViewModel == null)
+            {
+                if (_inPlaceBackdrop != null)
+                {
+                    _inPlaceBackdrop.RemoveFromSuperview();
+                    _inPlaceBackdrop = null;
+                }
+
+                return;
+            }
+
+            if (_inPlaceBackdrop == null)
+            {
+                _inPlaceBackdrop = new UIView
+                {
+                    BackgroundColor = UIColor.Black.ColorWithAlpha(0.3f),
+                    TranslatesAutoresizingMaskIntoConstraints = false
+                };
+
+                _inPlaceBackdrop.AddGestureRecognizer(new UITapGestureRecognizer(OnInPlaceBackdropTapped));
+
+                View.AddSubview(_inPlaceBackdrop);
+                _inPlaceBackdrop.StretchWidthAndHeight(View);
+            }
+            else
+            {
+                View.BringSubviewToFront(_inPlaceBackdrop);
+            }
+
+            var newController = ViewModelToViewConverter.Convert(targetViewModel);
+            AddChildViewController(newController);
+            newController.View.TranslatesAutoresizingMaskIntoConstraints = false;
+            View.AddSubview(newController.View);
+            newController.View.StretchWidthAndHeight(View);
+            newController.DidMoveToParentViewController(this);
+
+            _inPlacePopupController = newController;
+        }
+
+        private void OnInPlaceBackdropTapped()
+        {
+            _ = ViewModel?.TryDismissCurrentPopupViaUserInteractionAsync();
         }
     }
 }
