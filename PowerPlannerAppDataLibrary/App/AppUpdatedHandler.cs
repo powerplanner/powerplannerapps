@@ -106,6 +106,14 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
+            if (v <= new Version(2608, 31, 0, 0))
+            {
+                if (VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Desktop)
+                {
+                    changedText += "Improved Mac reliability";
+                }
+            }
+
             if (v <= new Version(2608, 12, 0, 0))
             {
                 changedText += "\n - Image attachments in class details!";
