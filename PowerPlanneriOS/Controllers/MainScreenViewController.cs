@@ -65,16 +65,6 @@ namespace PowerPlanneriOS.Controllers
             }
         }
 
-        protected override UIView CreateInPlacePopupView(BaseViewModel viewModel)
-        {
-            if (viewModel is PowerPlannerAppDataLibrary.ViewModels.PopupComponentViewModel popupViewModel)
-            {
-                return new PowerPlanneriOS.Views.iOSPopupComponentView(popupViewModel);
-            }
-
-            return base.CreateInPlacePopupView(viewModel);
-        }
-
         private Func<PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainWindowViewModel, System.Threading.Tasks.Task> _pendingLaunchAction;
         private bool _hasRunPendingLaunchAction;
 

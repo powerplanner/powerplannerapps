@@ -314,8 +314,16 @@ namespace InterfacesiOS.ViewModelPresenters
         /// </summary>
         protected virtual UIView CreateInPlacePopupView(BaseViewModel viewModel)
         {
-            return Vx.iOS.VxiOSExtensions.Render(viewModel);
+            return InPlacePopupViewFactory?.Invoke(viewModel)
+                ?? Vx.iOS.VxiOSExtensions.Render(viewModel);
         }
+
+        /// <summary>
+        /// Optional app-level factory for creating in-place popup views (e.g. wrapping a view model
+        /// with themed popup chrome). Return null to fall back to the default component rendering.
+        /// Registered once at startup so every popup presenter - not just specific subclasses - uses it.
+        /// </summary>
+        public static Func<BaseViewModel, UIView> InPlacePopupViewFactory;
 
         private void OnInPlaceBackdropTapped()
         {
