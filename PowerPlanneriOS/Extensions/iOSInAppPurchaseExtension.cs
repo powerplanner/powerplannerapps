@@ -14,29 +14,35 @@ namespace PowerPlanneriOS.Extensions
 {
     public class iOSInAppPurchaseExtension : InAppPurchaseExtension
     {
-        public static bool IsNewPurchaseOperation;
-        public static event EventHandler<InAppPurchaseHelper.PurchaseResponse> ResponseReceived;
-
         public override Task<bool> OwnsInAppPurchaseAsync()
         {
             return Task.FromResult(Settings.OwnsInAppPurchase);
         }
 
-        public override async Task<bool> PromptPurchase()
+        public override bool CanMakePayments => InAppPurchaseHelper.CanMakePayments;
+
+        public override Task<string> GetPriceAsync() => InAppPurchaseHelper.GetPriceAsync();
+
+        public override bool SupportsRestore => true;
+
+        public override Task<bool> PromptPurchase()
         {
-            Task<InAppPurchaseHelper.PurchaseResponse> responseTask;
+            return CompleteAsync(InAppPurchaseHelper.PurchaseAsync());
+        }
 
-            if (IsNewPurchaseOperation)
-            {
-                responseTask = InAppPurchaseHelper.PurchaseAsync();
-            }
-            else
-            {
-                responseTask = InAppPurchaseHelper.RestoreAsync();
-            }
+        public override Task<bool> PromptRestore()
+        {
+            return CompleteAsync(InAppPurchaseHelper.RestoreAsync());
+        }
 
+        private static async Task<bool> CompleteAsync(Task<InAppPurchaseHelper.PurchaseResponse> responseTask)
+        {
             var response = await responseTask;
-            ResponseReceived?.Invoke(null, response);
+
+            if (!response.Success && !string.IsNullOrEmpty(response.Error))
+            {
+                throw new InAppPurchaseException(response.Error);
+            }
 
             return response.Success;
         }
