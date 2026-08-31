@@ -100,7 +100,7 @@ namespace InterfacesUWP.ViewModelPresenters
         {
             if (ViewModel != null)
             {
-                ViewModel.TryClearPopupsViaUserInteraction();
+                _ = ViewModel.TryDismissCurrentPopupViaUserInteractionAsync();
                 e.Handled = true;
             }
         }

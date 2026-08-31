@@ -276,6 +276,24 @@ namespace BareMvvm.Core.ViewModels
             }
         }
 
+        public async Task TryDismissCurrentPopupViaUserInteractionAsync()
+        {
+            try
+            {
+                await HandleUserInteractionAsync("DismissCurrentPopup", delegate
+                {
+                    if (CurrentPopupAllowsLightDismiss && Popups.Count > 0)
+                    {
+                        Popups.RemoveAt(Popups.Count - 1);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.ReportHandledException(ex);
+            }
+        }
+
         public override bool CanGoBack
         {
             get

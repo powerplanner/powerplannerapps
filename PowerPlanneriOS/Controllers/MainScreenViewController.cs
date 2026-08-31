@@ -18,11 +18,19 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings;
 using PowerPlannerAppDataLibrary;
 using Vx.iOS;
 using BareMvvm.Core.ViewModels;
+using PowerPlannerAppDataLibrary.Components;
+using PowerPlannerAppDataLibrary.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace PowerPlanneriOS.Controllers
 {
     public class MainScreenViewController : PagedViewModelWithPopupsPresenter
     {
+        private readonly PopupViewHostComponent _popupHost = new PopupViewHostComponent();
+        private iOSNativeComponent _nativePopupHost;
+        private UIView _popupBackdrop;
+        private PopupComponentViewModel _displayedPopup;
+
         public static nfloat TAB_BAR_HEIGHT = 0;
 
         /// <summary>
@@ -85,6 +93,112 @@ namespace PowerPlanneriOS.Controllers
 
             UpdateSnackbarBottomOffset();
             RunPendingLaunchActionIfNeeded();
+        }
+
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            UpdateInPlacePopupPresentation();
+        }
+
+        protected override bool DisplaysPopupsInPlace => VxDeviceType.Current == Vx.DeviceType.Desktop
+            && ViewModel?.Popups.All(i => i is PopupComponentViewModel) != false;
+
+        protected override void UpdateInPlacePopupPresentation()
+        {
+            if (!IsViewLoaded)
+            {
+                return;
+            }
+
+            var popup = ViewModel?.Popups.LastOrDefault() as PopupComponentViewModel;
+            if (popup == null)
+            {
+                RemoveInPlacePopup();
+                return;
+            }
+
+            EnsureInPlacePopup();
+
+            if (_displayedPopup != popup)
+            {
+                if (_displayedPopup != null)
+                {
+                    _displayedPopup.PropertyChanged -= Popup_PropertyChanged;
+                }
+
+                _displayedPopup = popup;
+                _displayedPopup.PropertyChanged += Popup_PropertyChanged;
+                _popupHost.NativeContent = popup.Render();
+                _popupHost.OnClose = popup.TryRemoveViewModelViaUserInteraction;
+            }
+
+            UpdatePopupHost();
+        }
+
+        private void EnsureInPlacePopup()
+        {
+            if (_popupBackdrop == null)
+            {
+                _popupBackdrop = new UIView
+                {
+                    BackgroundColor = UIColor.Black,
+                    Alpha = 0.3f,
+                    TranslatesAutoresizingMaskIntoConstraints = false
+                };
+                _popupBackdrop.AddGestureRecognizer(new UITapGestureRecognizer(() => _ = ViewModel.TryDismissCurrentPopupViaUserInteractionAsync()));
+            }
+
+            if (_popupBackdrop.Superview == null)
+            {
+                base.View.Add(_popupBackdrop);
+                _popupBackdrop.StretchWidthAndHeight(base.View);
+            }
+
+            if (_nativePopupHost == null)
+            {
+                _nativePopupHost = _popupHost.Render();
+                _nativePopupHost.TranslatesAutoresizingMaskIntoConstraints = false;
+            }
+
+            if (_nativePopupHost.Superview == null)
+            {
+                base.View.Add(_nativePopupHost);
+                _nativePopupHost.CenterXAnchor.ConstraintEqualTo(base.View.CenterXAnchor).Active = true;
+                _nativePopupHost.CenterYAnchor.ConstraintEqualTo(base.View.CenterYAnchor).Active = true;
+                _nativePopupHost.WidthAnchor.ConstraintLessThanOrEqualTo(550).Active = true;
+                _nativePopupHost.HeightAnchor.ConstraintLessThanOrEqualTo(700).Active = true;
+                _nativePopupHost.WidthAnchor.ConstraintLessThanOrEqualTo(base.View.WidthAnchor).Active = true;
+                _nativePopupHost.HeightAnchor.ConstraintLessThanOrEqualTo(base.View.HeightAnchor).Active = true;
+            }
+        }
+
+        private void RemoveInPlacePopup()
+        {
+            _popupBackdrop?.RemoveFromSuperview();
+            _nativePopupHost?.RemoveFromSuperview();
+
+            if (_displayedPopup != null)
+            {
+                _displayedPopup.PropertyChanged -= Popup_PropertyChanged;
+                _displayedPopup = null;
+            }
+        }
+
+        private void Popup_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == _displayedPopup)
+            {
+                UpdatePopupHost();
+            }
+        }
+
+        private void UpdatePopupHost()
+        {
+            _popupHost.Title = _displayedPopup.Title;
+            _popupHost.PrimaryCommands = new ObservableCollection<PopupCommand>(_displayedPopup.Commands ?? Array.Empty<PopupCommand>());
+            _popupHost.SecondaryCommands = new ObservableCollection<PopupCommand>(_displayedPopup.SecondaryCommands ?? Array.Empty<PopupCommand>());
+            _popupHost.RenderOnDemand();
         }
 
         public override void ViewDidLayoutSubviews()

@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using ToolsPortable;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using Vx;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
@@ -45,7 +46,7 @@ namespace InterfacesiOS.ViewModelPresenters
         private PropertyChangedEventHandler _propertyChangedEventHandler;
         protected override void OnViewModelChanged(PagedViewModel oldViewModel, PagedViewModel currentViewModel)
         {
-            _listPresenter.ViewModels = ViewModel?.Popups;
+            _listPresenter.ViewModels = DisplaysPopupsInPlace ? null : ViewModel?.Popups;
 
             Deregister(oldViewModel);
 
@@ -142,6 +143,22 @@ namespace InterfacesiOS.ViewModelPresenters
         private bool _isDismissing;
         private void UpdateVisibility()
         {
+            if (DisplaysPopupsInPlace)
+            {
+                if (_listPresenter.ViewModels != null)
+                {
+                    _listPresenter.ViewModels = null;
+                }
+
+                UpdateInPlacePopupPresentation();
+                return;
+            }
+
+            if (_listPresenter.ViewModels != ViewModel?.Popups)
+            {
+                _listPresenter.ViewModels = ViewModel?.Popups;
+            }
+
             if (ViewModel == null || ViewModel.Popups.Count == 0 || _destroyed)
             {
                 if (_isShown && !_isDismissing)
@@ -196,6 +213,12 @@ namespace InterfacesiOS.ViewModelPresenters
             _listPresenter.ViewModels = null;
 
             base.Destroy();
+        }
+
+        protected virtual bool DisplaysPopupsInPlace => VxDeviceType.Current == DeviceType.Desktop;
+
+        protected virtual void UpdateInPlacePopupPresentation()
+        {
         }
     }
 }
