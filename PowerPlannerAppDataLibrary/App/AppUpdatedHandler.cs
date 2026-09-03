@@ -106,12 +106,14 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
-            if (v <= new Version(2608, 31, 0, 0))
+            if (v <= new Version(2609, 2) && VxPlatform.Current == Platform.Uwp)
             {
-                if (VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Desktop)
-                {
-                    changedText += "Improved Mac reliability";
-                }
+                changedText += "\n - Fixed crash in Export Schedule to Image feature";
+            }
+
+            if (v <= new Version(2608, 31, 0, 0) && VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Desktop)
+            {
+                changedText += "\n - Improved Mac reliability";
             }
 
             if (v <= new Version(2608, 12, 0, 0))

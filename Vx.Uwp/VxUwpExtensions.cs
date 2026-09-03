@@ -68,6 +68,11 @@ namespace Vx.Uwp
                     return new UwpTransparentContentButton();
                 }
 
+                if (view is TransparentContentMenuButton)
+                {
+                    return new UwpTransparentContentMenuButton();
+                }
+
                 if (view is Vx.Views.Button)
                 {
                     if (view is Vx.Views.TextButton)
