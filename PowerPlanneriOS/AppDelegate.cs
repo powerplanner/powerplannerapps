@@ -50,6 +50,18 @@ namespace PowerPlanneriOS
         {
             string versionName = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString") as NSString;
             Variables.VERSION = Version.Parse(versionName);
+
+            // Register how in-place popups (e.g. on Mac Catalyst) are rendered, so that every popup
+            // presenter wraps PopupComponentViewModels with the themed Vx popup chrome.
+            InterfacesiOS.ViewModelPresenters.PagedViewModelWithPopupsPresenter.InPlacePopupViewFactory = (viewModel) =>
+            {
+                if (viewModel is PopupComponentViewModel popupViewModel)
+                {
+                    return new iOSPopupComponentView(popupViewModel);
+                }
+
+                return null;
+            };
         }
 
         public override Dictionary<Type, Func<UIViewController>> GetGenericViewModelToViewMappings()
@@ -72,7 +84,6 @@ namespace PowerPlanneriOS
                 { typeof(MainScreenViewModel), () => new MainScreenViewController() },
                 { typeof(ScheduleViewModel), () => new ScheduleViewController() },
                 { typeof(ClassViewModel), () => new ClassViewController() },
-                { typeof(PremiumVersionViewModel), () => new PremiumVersionViewController() },
 
                 { typeof(YearsViewModel), () => new ComponentViewController() }, // Don't show Years as a popup on iOS
             };

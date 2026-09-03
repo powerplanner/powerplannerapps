@@ -4,6 +4,7 @@ using System.Linq;
 using CoreGraphics;
 using ToolsPortable;
 using UIKit;
+using Vx.Components.OnlyForNativeLibraries;
 using Vx.Views;
 
 namespace Vx.iOS.Views
@@ -19,11 +20,47 @@ namespace Vx.iOS.Views
     {
         private UIView _statusBar;
         private UINavigationBar _navBar;
+        private UIView _vxContent;
 
         public void Configure(UIView statusBar, UINavigationBar navBar)
         {
             _statusBar = statusBar;
             _navBar = navBar;
+        }
+
+        /// <summary>
+        /// Hosts a Vx-rendered toolbar (from <see cref="ToolbarComponent"/>) instead of the native
+        /// nav bar, hiding the native nav bar + status-bar background. Used when the Vx Toolbar has
+        /// ForceUseVx set (e.g. in-place popups).
+        /// </summary>
+        public void SetVxContent(UIView vxContent)
+        {
+            if (_vxContent == vxContent)
+            {
+                return;
+            }
+
+            _vxContent?.RemoveFromSuperview();
+            _vxContent = vxContent;
+
+            if (_statusBar != null)
+            {
+                _statusBar.Hidden = vxContent != null;
+            }
+            if (_navBar != null)
+            {
+                _navBar.Hidden = vxContent != null;
+            }
+
+            if (vxContent != null)
+            {
+                vxContent.TranslatesAutoresizingMaskIntoConstraints = true;
+                AddSubview(vxContent);
+            }
+
+            InvalidateIntrinsicContentSize();
+            SetNeedsLayout();
+            UIPanel.PropagateLayoutDirty(Superview);
         }
 
         private nfloat NavBarHeight
@@ -45,14 +82,38 @@ namespace Vx.iOS.Views
                 ? size.Width
                 : UIScreen.MainScreen.Bounds.Width;
 
+            if (_vxContent != null)
+            {
+                var contentSize = _vxContent.SizeThatFits(new CGSize(width, size.Height));
+                return new CGSize(width, contentSize.Height);
+            }
+
             return new CGSize(width, SafeAreaInsets.Top + NavBarHeight);
         }
 
-        public override CGSize IntrinsicContentSize => new CGSize(NoIntrinsicMetric, SafeAreaInsets.Top + NavBarHeight);
+        public override CGSize IntrinsicContentSize
+        {
+            get
+            {
+                if (_vxContent != null)
+                {
+                    var contentSize = _vxContent.SizeThatFits(new CGSize(UIViewWrapper.UnboundedSize, UIViewWrapper.UnboundedSize));
+                    return new CGSize(NoIntrinsicMetric, contentSize.Height);
+                }
+
+                return new CGSize(NoIntrinsicMetric, SafeAreaInsets.Top + NavBarHeight);
+            }
+        }
 
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
+
+            if (_vxContent != null)
+            {
+                _vxContent.Frame = Bounds;
+                return;
+            }
 
             nfloat top = SafeAreaInsets.Top;
 
@@ -112,9 +173,24 @@ namespace Vx.iOS.Views
 
         private UIBackBarButtonItem _backButton;
 
+        private ToolbarComponent _vxToolbarComponent;
+
         protected override void ApplyProperties(Toolbar oldView, Toolbar newView)
         {
             base.ApplyProperties(oldView, newView);
+
+            if (newView.ForceUseVx)
+            {
+                if (_vxToolbarComponent == null)
+                {
+                    _vxToolbarComponent = new ToolbarComponent();
+                    View.SetVxContent(Vx.iOS.VxiOSExtensions.Render(_vxToolbarComponent));
+                }
+
+                _vxToolbarComponent.Toolbar = newView;
+                _vxToolbarComponent.RenderOnDemand();
+                return;
+            }
 
             if (OperatingSystem.IsIOSVersionAtLeast(16))
             {
@@ -148,7 +224,7 @@ namespace Vx.iOS.Views
                 NavBar.TopItem.RightBarButtonItems = GetRightBarButtonItems(newView).ToArray();
             }
 
-            if (newView.OnBack != null)
+            if (newView.OnBack != null || newView.OnClose != null)
             {
                 if (_backButton == null)
                 {
@@ -171,7 +247,14 @@ namespace Vx.iOS.Views
 
         private void _backButton_Clicked(object sender, EventArgs e)
         {
-            VxView.OnBack?.Invoke();
+            if (VxView.OnBack != null)
+            {
+                VxView.OnBack.Invoke();
+            }
+            else
+            {
+                VxView.OnClose?.Invoke();
+            }
         }
 
         private IEnumerable<UIBarButtonItem> GetRightBarButtonItems(Toolbar toolbar)

@@ -59,7 +59,27 @@ namespace Vx.iOS.Views
             ContentSize = new CGSize(width, contentHeight);
         }
 
+        public override CGSize SizeThatFits(CGSize size)
+        {
+            // Report the natural height of our content (measured at our width, growing
+            // vertically) so that parents which want to hug their content - like an in-place
+            // popup card - can size to the content instead of collapsing us to zero (a plain
+            // UIScrollView has no intrinsic content size). When our height is bounded we cap at
+            // that height and scroll internally.
+            nfloat width = size.Width;
+            var desired = _contentView.MeasureContent(new CGSize(width, UIViewWrapper.UnboundedSize));
+
+            nfloat height = desired.Height;
+            if (size.Height > 0 && size.Height < UIViewWrapper.UnboundedSize)
+            {
+                height = MinF(height, size.Height);
+            }
+
+            return new CGSize(width, height);
+        }
+
         private static nfloat MaxF(nfloat a, nfloat b) => a > b ? a : b;
+        private static nfloat MinF(nfloat a, nfloat b) => a < b ? a : b;
     }
 
     public class UIVxScrollView : UIScrollView

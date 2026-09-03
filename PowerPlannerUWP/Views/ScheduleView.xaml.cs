@@ -210,7 +210,6 @@ namespace PowerPlannerUWP.Views
             {
                 var diffSemesterOverlay = new DifferentSemesterOverlayControl();
                 Grid.SetColumn(diffSemesterOverlay, col);
-                Grid.SetRowSpan(diffSemesterOverlay, int.MaxValue);
                 diffSemesterOverlay.VerticalAlignment = VerticalAlignment.Top;
                 diffSemesterOverlay.Height = 300;
                 grid.Children.Add(diffSemesterOverlay);
@@ -229,7 +228,6 @@ namespace PowerPlannerUWP.Views
                     Fill = new SolidColorBrush(Color.FromArgb(80, 228, 0, 137))
                 };
                 Grid.SetColumn(holidayOverlay, col);
-                Grid.SetRowSpan(holidayOverlay, int.MaxValue);
                 grid.Children.Add(holidayOverlay);
             }
 
@@ -271,7 +269,6 @@ namespace PowerPlannerUWP.Views
 
             root.Margin = new Thickness(leftMargin, item.TopOffset + INITIAL_MARGIN, 12, 24);
             Grid.SetColumn(root, getColumn(day));
-            Grid.SetRowSpan(root, int.MaxValue);
 
             grid.Children.Add(root);
         }

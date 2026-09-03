@@ -15,8 +15,6 @@ namespace Vx.Components.OnlyForNativeLibraries
         public static readonly int ToolbarHeight = 48;
         public Toolbar Toolbar { get; set; }
 
-        private View _moreButtonRef;
-
         protected override View Render()
         {
             if (Toolbar == null)
@@ -24,47 +22,62 @@ namespace Vx.Components.OnlyForNativeLibraries
                 return null;
             }
 
+            // On iOS, the platform convention is a centered title with the close button on the
+            // left and the remaining commands on the right.
+            bool isIOS = VxPlatform.Current == Platform.iOS;
+
             var layout = new LinearLayout
             {
                 Orientation = Orientation.Horizontal,
                 BackgroundColor = Toolbar.BackgroundColor,
-                Height = ToolbarHeight,
-                Children =
-                {
-                    Toolbar.OnBack != null ? RenderButton(MaterialDesign.MaterialDesignIcons.ArrowBack, PortableLocalizedResources.GetString("String_Back"), () => Toolbar.OnBack()) : null,
-
-                    Toolbar.CustomTitle != null ? Toolbar.CustomTitle.LinearLayoutWeight(1) : (View)new TextBlock
-                    {
-                        Text = Toolbar.Title ?? "",
-                        TextColor = Toolbar.ForegroundColor,
-                        FontSize = 20,
-                        WrapText = false,
-                        FontWeight = FontWeights.SemiLight,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(Toolbar.OnBack != null ? 6 : Theme.Current.PageMargin,0,Theme.Current.PageMargin,0)
-                    }.LinearLayoutWeight(1)
-                }
+                Height = ToolbarHeight
             };
+
+            if (Toolbar.OnBack != null)
+            {
+                layout.Children.Add(RenderButton(MaterialDesign.MaterialDesignIcons.ArrowBack, PortableLocalizedResources.GetString("String_Back"), () => Toolbar.OnBack()));
+            }
+
+            if (isIOS && Toolbar.OnClose != null)
+            {
+                layout.Children.Add(RenderButton(MaterialDesign.MaterialDesignIcons.Close, PortableLocalizedResources.GetString("String_Close"), Toolbar.OnClose));
+            }
+
+            layout.Children.Add(
+                Toolbar.CustomTitle != null ? Toolbar.CustomTitle.LinearLayoutWeight(1) : (View)new TextBlock
+                {
+                    Text = Toolbar.Title ?? "",
+                    TextColor = Toolbar.ForegroundColor,
+                    FontSize = 20,
+                    WrapText = false,
+                    FontWeight = FontWeights.SemiLight,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    TextAlignment = HorizontalAlignment.Left,
+                    Margin = isIOS ? new Thickness() : new Thickness(Toolbar.OnBack != null ? 6 : Theme.Current.PageMargin,0,Theme.Current.PageMargin,0)
+                }.LinearLayoutWeight(1));
 
             foreach (var c in Toolbar.PrimaryCommands.Where(i => i != null))
             {
-                View buttonRef = null;
-                Action action = c.SubItems != null && c.SubItems.Any() ? () => ShowContextMenu(buttonRef, c.SubItems) : c.Click;
-                layout.Children.Add(RenderButton(c.Glyph, c.Text, action, (view) => buttonRef = view));
+                if (c.SubItems != null && c.SubItems.Any())
+                {
+                    layout.Children.Add(RenderMenuButton(c.Glyph, c.Text, c.SubItems));
+                }
+                else
+                {
+                    layout.Children.Add(RenderButton(c.Glyph, c.Text, c.Click));
+                }
             }
 
             if (Toolbar.SecondaryCommands.Any(i => i != null))
             {
                 layout.Children.Add(
-                    RenderButton(
+                    RenderMenuButton(
                         MaterialDesign.MaterialDesignIcons.MoreHoriz,
                         PortableLocalizedResources.GetString("String_More"),
-                        () => ShowContextMenu(_moreButtonRef, Toolbar.SecondaryCommands),
-
-                        (moreButton) => _moreButtonRef = moreButton));
+                        Toolbar.SecondaryCommands));
             }
 
-            if (Toolbar.OnClose != null)
+            if (!isIOS && Toolbar.OnClose != null)
             {
                 layout.Children.Add(
                     RenderButton(
@@ -74,17 +87,6 @@ namespace Vx.Components.OnlyForNativeLibraries
             }
 
             return layout;
-        }
-
-        private void ShowContextMenu(View viewRef, IEnumerable<IMenuItem> commands)
-        {
-            var cm = new ContextMenu();
-            foreach (var c in commands.Where(i => i != null))
-            {
-                cm.Items.Add(c);
-            }
-
-            cm.Show(viewRef);
         }
 
         private View RenderButton(string glyph, string title, Action onClick, Action<View> viewRef = null)
@@ -103,6 +105,25 @@ namespace Vx.Components.OnlyForNativeLibraries
                 AltText = title,
                 Click = onClick,
                 ViewRef = viewRef,
+                TooltipText = title
+            };
+        }
+
+        private View RenderMenuButton(string glyph, string title, IEnumerable<IMenuItem> menu)
+        {
+            return new TransparentContentMenuButton
+            {
+                Width = ToolbarHeight,
+                Content = new FontIcon
+                {
+                    FontSize = 20,
+                    Glyph = glyph,
+                    Color = Toolbar.ForegroundColor,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                },
+                AltText = title,
+                Menu = menu.Where(i => i != null).ToList(),
                 TooltipText = title
             };
         }

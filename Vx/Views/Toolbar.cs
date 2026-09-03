@@ -31,6 +31,12 @@ namespace Vx.Views
         public Action OnClose { get; set; }
 
         /// <summary>
+        /// When true, forces the toolbar to render using the cross-platform Vx <see cref="Vx.Components.OnlyForNativeLibraries.ToolbarComponent"/>
+        /// instead of the native platform toolbar. Useful for in-place popups (e.g. Mac Catalyst) that want the Vx toolbar style. Only affects iOS.
+        /// </summary>
+        public bool ForceUseVx { get; set; }
+
+        /// <summary>
         /// iOS reverses the primary commands, so the first one is displayed on the right. If you have relational-specific commands,
         /// like Previous and Next, use this to determine if you should reveres those command orders.
         /// </summary>

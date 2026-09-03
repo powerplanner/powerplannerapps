@@ -9,6 +9,8 @@ using System.Collections.Specialized;
 using ToolsPortable;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using Vx;
+using Vx.iOS.Views;
 
 namespace InterfacesiOS.ViewModelPresenters
 {
@@ -16,6 +18,12 @@ namespace InterfacesiOS.ViewModelPresenters
     {
         private ListOfViewModelsPresenter _listPresenter;
         private bool _destroyed = false;
+
+        // Used for in-place popup presentation (Mac Catalyst / Desktop), where popups are shown
+        // embedded within this view (behind a dimming backdrop) instead of presented modally.
+        private UIView _inPlaceBackdrop;
+        private UIView _inPlacePopupView;
+        private BaseViewModel _inPlacePopupViewModel;
 
         public new PagedViewModelWithPopups ViewModel
         {
@@ -45,7 +53,7 @@ namespace InterfacesiOS.ViewModelPresenters
         private PropertyChangedEventHandler _propertyChangedEventHandler;
         protected override void OnViewModelChanged(PagedViewModel oldViewModel, PagedViewModel currentViewModel)
         {
-            _listPresenter.ViewModels = ViewModel?.Popups;
+            _listPresenter.ViewModels = DisplaysPopupsInPlace ? null : ViewModel?.Popups;
 
             Deregister(oldViewModel);
 
@@ -139,19 +147,41 @@ namespace InterfacesiOS.ViewModelPresenters
         }
 
         private bool _isShown;
+        private bool _isDismissing;
         private void UpdateVisibility()
         {
+            if (DisplaysPopupsInPlace)
+            {
+                if (_listPresenter.ViewModels != null)
+                {
+                    _listPresenter.ViewModels = null;
+                }
+
+                UpdateInPlacePopupPresentation();
+                return;
+            }
+
+            if (_listPresenter.ViewModels != ViewModel?.Popups)
+            {
+                _listPresenter.ViewModels = ViewModel?.Popups;
+            }
+
             if (ViewModel == null || ViewModel.Popups.Count == 0 || _destroyed)
             {
-                if (_isShown)
+                if (_isShown && !_isDismissing)
                 {
-                    _listPresenter.DismissViewController(true, null);
-                    _isShown = false;
+                    _isDismissing = true;
+                    _listPresenter.DismissViewController(true, delegate
+                    {
+                        _isShown = false;
+                        _isDismissing = false;
+                        UpdateVisibility();
+                    });
                 }
             }
             else
             {
-                if (!_isShown)
+                if (!_isShown && !_isDismissing)
                 {
                     ShowDetailViewController(_listPresenter, null);
                     _isShown = true;
@@ -190,6 +220,114 @@ namespace InterfacesiOS.ViewModelPresenters
             _listPresenter.ViewModels = null;
 
             base.Destroy();
+        }
+
+        protected virtual bool DisplaysPopupsInPlace => VxDeviceType.Current == DeviceType.Desktop;
+
+        protected virtual void UpdateInPlacePopupPresentation()
+        {
+            // Only the top-most popup is ever shown (matching the other platforms' behavior of
+            // stacking popups and only displaying the last one), centered behind a dimming backdrop.
+            var targetViewModel = ViewModel != null && !_destroyed && ViewModel.Popups.Count > 0
+                ? ViewModel.Popups[ViewModel.Popups.Count - 1]
+                : null;
+
+            if (targetViewModel == _inPlacePopupViewModel)
+            {
+                return;
+            }
+
+            _inPlacePopupViewModel = targetViewModel;
+
+            // Remove any existing popup content
+            if (_inPlacePopupView != null)
+            {
+                _inPlacePopupView.RemoveFromSuperview();
+                _inPlacePopupView = null;
+            }
+
+            if (targetViewModel == null)
+            {
+                if (_inPlaceBackdrop != null)
+                {
+                    _inPlaceBackdrop.RemoveFromSuperview();
+                    _inPlaceBackdrop = null;
+                }
+
+                return;
+            }
+
+            if (_inPlaceBackdrop == null)
+            {
+                _inPlaceBackdrop = new UIView
+                {
+                    BackgroundColor = UIColor.Black.ColorWithAlpha(0.3f),
+                    TranslatesAutoresizingMaskIntoConstraints = false
+                };
+
+                _inPlaceBackdrop.AddGestureRecognizer(new UITapGestureRecognizer(OnInPlaceBackdropTapped));
+
+                View.AddSubview(_inPlaceBackdrop);
+                _inPlaceBackdrop.StretchWidthAndHeight(View);
+            }
+            else
+            {
+                View.BringSubviewToFront(_inPlaceBackdrop);
+            }
+
+            var popupView = CreateInPlacePopupView(targetViewModel);
+            popupView.TranslatesAutoresizingMaskIntoConstraints = false;
+            popupView.Layer.CornerRadius = 8;
+            popupView.ClipsToBounds = true;
+            View.AddSubview(popupView);
+
+            const float MaxWidth = 460f;
+            const float HorizontalPadding = 24f;
+            const float VerticalPadding = 24f;
+
+            // Center the popup, with a max width of 460px but shrinking to keep at least 24px
+            // padding on each side. The popup hugs its content's natural height, but is capped to
+            // the available window height minus 24px padding on top and bottom (beyond which its
+            // content scrolls internally).
+            var widthConstraint = popupView.WidthAnchor.ConstraintEqualTo(MaxWidth);
+            widthConstraint.Priority = (float)UILayoutPriority.DefaultHigh;
+
+            NSLayoutConstraint.ActivateConstraints(new[]
+            {
+                popupView.CenterXAnchor.ConstraintEqualTo(View.CenterXAnchor),
+                popupView.CenterYAnchor.ConstraintEqualTo(View.CenterYAnchor),
+                popupView.WidthAnchor.ConstraintLessThanOrEqualTo(MaxWidth),
+                popupView.LeadingAnchor.ConstraintGreaterThanOrEqualTo(View.LeadingAnchor, HorizontalPadding),
+                popupView.TrailingAnchor.ConstraintLessThanOrEqualTo(View.TrailingAnchor, -HorizontalPadding),
+                popupView.TopAnchor.ConstraintGreaterThanOrEqualTo(View.SafeAreaLayoutGuide.TopAnchor, VerticalPadding),
+                popupView.BottomAnchor.ConstraintLessThanOrEqualTo(View.SafeAreaLayoutGuide.BottomAnchor, -VerticalPadding),
+                widthConstraint
+            });
+
+            _inPlacePopupView = popupView;
+        }
+
+        /// <summary>
+        /// Creates the native view used to display an in-place popup. The default implementation
+        /// renders the view model directly as a component (without any popup chrome); app-level
+        /// subclasses can override this to wrap the content with a themed popup host.
+        /// </summary>
+        protected virtual UIView CreateInPlacePopupView(BaseViewModel viewModel)
+        {
+            return InPlacePopupViewFactory?.Invoke(viewModel)
+                ?? Vx.iOS.VxiOSExtensions.Render(viewModel);
+        }
+
+        /// <summary>
+        /// Optional app-level factory for creating in-place popup views (e.g. wrapping a view model
+        /// with themed popup chrome). Return null to fall back to the default component rendering.
+        /// Registered once at startup so every popup presenter - not just specific subclasses - uses it.
+        /// </summary>
+        public static Func<BaseViewModel, UIView> InPlacePopupViewFactory;
+
+        private void OnInPlaceBackdropTapped()
+        {
+            _ = ViewModel?.TryDismissCurrentPopupViaUserInteractionAsync();
         }
     }
 }

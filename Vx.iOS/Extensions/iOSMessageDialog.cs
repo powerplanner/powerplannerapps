@@ -38,9 +38,33 @@ namespace InterfacesiOS.Extensions
 
         private Task<bool> Show()
         {
-            var viewController = GetTopViewController();
-            viewController?.PresentViewController(_alert, true, null);
+            UIApplication.SharedApplication.BeginInvokeOnMainThread(Present);
             return _completionSource.Task;
+        }
+
+        private void Present()
+        {
+            try
+            {
+                var viewController = GetTopViewController();
+                if (viewController == null)
+                {
+                    _completionSource.TrySetException(new InvalidOperationException("Could not find a view controller to present the message dialog."));
+                    return;
+                }
+
+                viewController.PresentViewController(_alert, true, delegate
+                {
+                    if (_alert.PresentingViewController == null)
+                    {
+                        _completionSource.TrySetException(new InvalidOperationException("The message dialog could not be presented."));
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _completionSource.TrySetException(ex);
+            }
         }
 
         private static UIViewController GetTopViewController()
@@ -60,6 +84,18 @@ namespace InterfacesiOS.Extensions
                         }
                     }
                     if (window != null) break;
+                }
+            }
+
+            if (window == null)
+            {
+                foreach (var scene in UIApplication.SharedApplication.ConnectedScenes)
+                {
+                    if (scene is UIWindowScene windowScene)
+                    {
+                        window = windowScene.Windows.FirstOrDefault();
+                        if (window != null) break;
+                    }
                 }
             }
 

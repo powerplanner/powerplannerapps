@@ -6,7 +6,7 @@ namespace Vx.Views
 {
     /// <summary>
     /// A button that displays transparent content and has a menu.
-    /// Currently only implemented on iOS. Implemented as a separate control since if the inner view is complicated, it doesn't lay out correctly. Works well for Glyphs.
+    /// Currently only implemented on iOS and Windows. Implemented as a separate control since if the inner view is complicated, it doesn't lay out correctly. Works well for Glyphs.
     /// </summary>
     public class TransparentContentMenuButton : View
     {

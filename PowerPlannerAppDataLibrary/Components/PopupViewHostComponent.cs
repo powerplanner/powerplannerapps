@@ -64,7 +64,8 @@ namespace PowerPlannerAppDataLibrary.Components
 
         private VxState<object> _nativeContent = new VxState<object>(null);
         /// <summary>
-        /// For UWP, this should be a UIElement. Note that iOS/Android don't implement native content containers yet.
+        /// For UWP, this should be a UIElement. Note that Android doesn't implement native content containers yet.
+        /// If set, this takes precedence over <see cref="Content"/>.
         /// </summary>
         public object NativeContent
         {
@@ -72,12 +73,28 @@ namespace PowerPlannerAppDataLibrary.Components
             set => _nativeContent.Value = value;
         }
 
+        private VxState<View> _content = new VxState<View>(null);
+        /// <summary>
+        /// A Vx view to display as the popup's main content. Used when <see cref="NativeContent"/>
+        /// is null. Since view models are themselves derivatives of <see cref="VxComponent"/>, a
+        /// view model can be passed directly here.
+        /// </summary>
+        public View Content
+        {
+            get => _content.Value;
+            set => _content.Value = value;
+        }
+
         protected override View Render()
         {
             var titlebar = new Toolbar
             {
                 Title = Title,
-                OnClose = OnClose
+                OnClose = OnClose,
+
+                // In-place popups (e.g. Mac Catalyst) want the Vx toolbar style rather than the
+                // native iOS nav bar.
+                ForceUseVx = true
             };
             if (PrimaryCommands != null)
             {
@@ -88,13 +105,17 @@ namespace PowerPlannerAppDataLibrary.Components
                 titlebar.SecondaryCommands.AddRange(HandleQuickConfirmDelete(SecondaryCommands));
             }
 
+            View mainContent = NativeContent != null
+                ? new NativeContentContainer(NativeContent)
+                : Content;
+
             return new LinearLayout
             {
                 BackgroundColor = Theme.Current.PopupPageBackgroundColor,
                 Children =
                 {
                     titlebar,
-                    new NativeContentContainer(NativeContent).LinearLayoutWeight(1)
+                    mainContent?.LinearLayoutWeight(1)
                 }
             };
         }

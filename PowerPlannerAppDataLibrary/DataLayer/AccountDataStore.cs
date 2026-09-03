@@ -1245,7 +1245,18 @@ namespace PowerPlannerAppDataLibrary.DataLayer
 
                     foreach (var p in changedProperties)
                     {
-                        changes[p.ToString()] = item.GetPropertyValue(p);
+                        try
+                        {
+                            changes[p.ToString()] = item.GetPropertyValue(p);
+                        }
+                        catch (ArgumentException ex) when (ex.Message == "Property wasn't found: " + p.ToString())
+                        {
+                            TelemetryExtension.Current?.TrackEvent("IgnoredInvalidChangedProperty", new Dictionary<string, string>
+                            {
+                                { "ItemType", item.ItemType.ToString() },
+                                { "Property", p.ToString() }
+                            });
+                        }
                     }
 
                     answer.Add(changes);

@@ -94,7 +94,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
             public void CalculateOffsets()
             {
                 TopOffset = Arranger.HeightOfHour * (StartTime - Arranger.StartTime).TotalHours;
-                Height = Arranger.HeightOfHour * (EndTime - StartTime).TotalHours;
+                Height = Math.Max(Arranger.HeightOfHour * (EndTime - StartTime).TotalHours, 0);
             }
 
             public bool CollidesWith(BaseScheduleItem other)
@@ -566,17 +566,30 @@ namespace PowerPlannerAppDataLibrary.ViewLists
         private static void AccomodateTouchingItemsIfNeeded(BaseScheduleItem first, BaseScheduleItem second)
         {
             const int collisionPadding = 8;
+            var halfPadding = TimeSpan.FromMinutes(collisionPadding / 2);
 
             if (first.StartTime == second.EndTime)
             {
-                second.EndTime = second.EndTime.Subtract(TimeSpan.FromMinutes(collisionPadding / 2));
-                first.StartTime = first.StartTime.Add(TimeSpan.FromMinutes(collisionPadding / 2));
+                if (second.EndTime - second.StartTime > halfPadding)
+                {
+                    second.EndTime = second.EndTime.Subtract(halfPadding);
+                }
+                if (first.EndTime - first.StartTime > halfPadding)
+                {
+                    first.StartTime = first.StartTime.Add(halfPadding);
+                }
             }
 
             else if (first.EndTime == second.StartTime)
             {
-                first.EndTime = first.EndTime.Subtract(TimeSpan.FromMinutes(collisionPadding / 2));
-                second.StartTime = second.StartTime.Add(TimeSpan.FromMinutes(collisionPadding / 2));
+                if (first.EndTime - first.StartTime > halfPadding)
+                {
+                    first.EndTime = first.EndTime.Subtract(halfPadding);
+                }
+                if (second.EndTime - second.StartTime > halfPadding)
+                {
+                    second.StartTime = second.StartTime.Add(halfPadding);
+                }
             }
         }
 

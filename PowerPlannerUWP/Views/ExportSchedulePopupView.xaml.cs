@@ -3,6 +3,7 @@ using PowerPlannerAppDataLibrary.Extensions;
 using PowerPlannerUWP.ViewModel.MainWindow.MainScreen.Schedule;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -40,7 +41,7 @@ namespace PowerPlannerUWP.Views
         {
             base.OnViewModelSetOverride();
 
-            ListViewShareItems.ItemsSource = ViewModel.ShareItems;
+            ListViewShareItems.ItemsSource = new ObservableCollection<ExportSchedulePopupViewModel.ShareItem>(ViewModel.ShareItems);
             CanvasForRenderingSchedule.Children.Add(ViewModel.Element);
 
             ViewModel.PanelForPrinting = GridForPrinting;

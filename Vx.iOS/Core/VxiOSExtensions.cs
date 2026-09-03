@@ -45,6 +45,11 @@ namespace Vx.iOS
                     return new iOSVxComponent(c);
                 }
 
+                if (view is Vx.Views.NativeContentContainer)
+                {
+                    return new iOSNativeContentContainer();
+                }
+
                 if (view is Vx.Views.TextBlock)
                 {
                     if (view is Vx.Views.HyperlinkTextBlock)
