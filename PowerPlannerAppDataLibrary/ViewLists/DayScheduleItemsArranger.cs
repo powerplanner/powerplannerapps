@@ -178,7 +178,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
             }
 
-            public void AddAdditionalItem(EventItem item)
+            public void AddAdditionalItem(EventItem item, bool extendEndTime = true)
             {
                 if (AdditionalItems == null)
                 {
@@ -187,7 +187,7 @@ namespace PowerPlannerAppDataLibrary.ViewLists
 
                 AdditionalItems.Add(item.Item);
 
-                if (item.EndTime > EndTime)
+                if (extendEndTime && item.EndTime > EndTime)
                 {
                     EndTime = item.EndTime;
                 }
@@ -427,46 +427,50 @@ namespace PowerPlannerAppDataLibrary.ViewLists
                 }
                 else
                 {
-                    // More than two items
-                    EventItem prev = null;
-                    bool isLeftSide = true;
+                    // More than two items collide (though not necessarily all at the same instant, e.g. a wide
+                    // event overlapping two other events that don't overlap each other). Only two real columns
+                    // are supported for side-by-side display, so process chronologically and reuse a column as
+                    // soon as it's free. Anything that still overlaps once both columns are occupied gets
+                    // collapsed into a mini "AdditionalItem" attached to whichever column item it overlaps with.
+                    var sortedEvents = collidingEvents.OrderBy(i => i.StartTime).ToList();
+                    collidingEvents.Clear();
 
-                    while (collidingEvents.Count > 0)
+                    EventItem[] columns = new EventItem[2];
+
+                    foreach (var evt in sortedEvents)
                     {
-                        var curr = collidingEvents[0];
-                        curr.NumOfColumns = 2;
-                        collidingEvents.RemoveAt(0);
-
-                        if (prev != null)
+                        int freeColumn = -1;
+                        for (int c = 0; c < columns.Length; c++)
                         {
-                            if (!isLeftSide)
+                            if (columns[c] == null || !columns[c].CollidesWith(evt))
                             {
-                                curr.Column = 1;
-                            }
-
-                            // Find out if any items collide with the prev item, and therefore need to become mini-items with the curr item
-                            while (collidingEvents.Count > 0)
-                            {
-                                var next = collidingEvents[0];
-                                if (prev.CollidesWith(next))
-                                {
-                                    collidingEvents.RemoveAt(0);
-                                    curr.AddAdditionalItem(next);
-                                    eventsFinal.Remove(next);
-                                }
-                                else
-                                {
-                                    AccomodateTouchingItemsIfNeeded(prev, next);
-                                    break;
-                                }
+                                freeColumn = c;
+                                break;
                             }
                         }
 
-                        // Prev becomes curr
-                        prev = curr;
+                        if (freeColumn != -1)
+                        {
+                            evt.NumOfColumns = 2;
+                            evt.Column = freeColumn;
 
-                        // And we switch the side
-                        isLeftSide = !isLeftSide;
+                            if (columns[freeColumn] != null)
+                            {
+                                AccomodateTouchingItemsIfNeeded(columns[freeColumn], evt);
+                            }
+
+                            columns[freeColumn] = evt;
+                        }
+                        else
+                        {
+                            // Both columns are currently occupied by items that overlap this one, so it can't get its own column.
+                            // Attach it to whichever occupant started most recently, since that's the more specific/relevant overlap
+                            // rather than a long-running background event. Don't stretch the target's own displayed time span to
+                            // cover the merged item, since the target's box should still reflect its own actual start/end time.
+                            var target = columns[0].StartTime >= columns[1].StartTime ? columns[0] : columns[1];
+                            target.AddAdditionalItem(evt, extendEndTime: false);
+                            eventsFinal.Remove(evt);
+                        }
                     }
                 }
             }
