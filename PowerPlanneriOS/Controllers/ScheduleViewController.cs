@@ -23,6 +23,8 @@ namespace PowerPlanneriOS.Controllers
     {
         private UIBarButtonItem _editButton;
         private UIBarButtonItem _doneButton;
+        private UIToolbar _toolbar;
+        private UIBarButtonItem[] _toolbarItems;
 
         public ScheduleViewController()
         {
@@ -63,10 +65,14 @@ namespace PowerPlanneriOS.Controllers
             ContentView.Add(_scheduleView);
             _scheduleView.StretchWidthAndHeight(ContentView);
 
-            var toolbar = new UIToolbar()
+            // Must be kept in a field: otherwise nothing roots the toolbar (or its UIBarButtonItems)
+            // managed wrapper, so it can be garbage collected and its Clicked handlers stop firing
+            // even though the native button remains visible on screen.
+            _toolbar = new UIToolbar()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
+            var toolbar = _toolbar;
             ContentView.Add(toolbar);
             toolbar.StretchWidth(ContentView);
             toolbar.SetHeight(44);
@@ -90,7 +96,7 @@ namespace PowerPlanneriOS.Controllers
                 nameof(ViewModel.CurrentWeek),
                 nameof(ViewModel.HasTwoWeekSchedule)
             }, UpdateToolbarLabels);
-            toolbar.Items = new UIBarButtonItem[]
+            _toolbarItems = new UIBarButtonItem[]
             {
                 new UIBarButtonItem(_labelDateRange),
                 new UIBarButtonItem(UIBarButtonSystemItem.FixedSpace)
@@ -106,6 +112,7 @@ namespace PowerPlanneriOS.Controllers
                 },
                 new UIBarButtonItem(UIImage.FromBundle("ToolbarForward"), UIBarButtonItemStyle.Plain, new WeakEventHandler(delegate { ViewModel.NextWeek(); }).Handler)
             };
+            toolbar.Items = _toolbarItems;
             MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
             {
                 toolbar.RemovePinToBottom(ContentView).PinToBottom(ContentView, (int)MainScreenViewController.TAB_BAR_HEIGHT);
