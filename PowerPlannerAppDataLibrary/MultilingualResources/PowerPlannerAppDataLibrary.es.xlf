@@ -785,7 +785,7 @@ Una vez que compres la versión premium, posees la versión premium en todos tus
         </trans-unit>
         <trans-unit id="RelativeDate_WithinXDays" translate="yes" xml:space="preserve">
           <source>Within {0} days</source>
-          <target state="final">Dentro de {0} días</target>
+          <target state="final">En {0} días o menos</target>
         </trans-unit>
         <trans-unit id="String_GoToToday" translate="yes" xml:space="preserve">
           <source>Go to today</source>

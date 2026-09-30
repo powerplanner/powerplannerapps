@@ -283,10 +283,21 @@ namespace PowerPlannerAppDataLibrary.ViewItemsGroups
 
             public DayWithScheduleSnapshot(SemesterItemsViewGroup semesterItems, DateTime date)
             {
-                _arrangedItems = DayScheduleItemsArranger.Create(PowerPlannerApp.Current.GetCurrentAccount(), semesterItems, PowerPlannerApp.Current.GetMainScreenViewModel().ScheduleViewItemsGroup, date, DayScheduleSnapshotComponent.HEIGHT_OF_HOUR, ScheduleItemComponent.SPACING_WITH_NO_ADDITIONAL, ScheduleItemComponent.SPACING_WITH_ADDITIONAL, ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
+                // Account/main screen may have been torn down (e.g. logout or account switch) between when
+                // this render was queued and when it actually ran, so bail out gracefully instead of crashing.
+                var account = AccountsManager.GetCached(semesterItems.LocalAccountId);
+                var mainScreenViewModel = PowerPlannerApp.Current.GetMainScreenViewModel();
+                if (account == null || mainScreenViewModel == null)
+                {
+                    Extensions.TelemetryExtension.Current?.TrackEvent("DayWithScheduleSnapshot_AccountOrMainScreenViewModelNull");
+                    Items = new List<object>();
+                    return;
+                }
+
+                _arrangedItems = DayScheduleItemsArranger.Create(account, semesterItems, mainScreenViewModel.ScheduleViewItemsGroup, date, DayScheduleSnapshotComponent.HEIGHT_OF_HOUR, ScheduleItemComponent.SPACING_WITH_NO_ADDITIONAL, ScheduleItemComponent.SPACING_WITH_ADDITIONAL, ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM, includeTasksAndEventsAndHolidays: true);
                 _arrangedItems.OnItemsChanged += new WeakEventHandler(_arrangedItems_OnItemsChanged).Handler;
 
-                _tasks = TasksOrEventsOnDay.Get(AccountsManager.GetCached(semesterItems.LocalAccountId), semesterItems.Items, date);
+                _tasks = TasksOrEventsOnDay.Get(account, semesterItems.Items, date);
                 _tasks.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(Tasks_CollectionChanged).Handler;
 
                 UpdateScheduleSnapshot();

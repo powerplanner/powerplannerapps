@@ -23,6 +23,8 @@ namespace PowerPlanneriOS.Controllers
     {
         private UIBarButtonItem _editButton;
         private UIBarButtonItem _doneButton;
+        private UIToolbar _toolbar;
+        private UIBarButtonItem[] _toolbarItems;
 
         public ScheduleViewController()
         {
@@ -33,14 +35,15 @@ namespace PowerPlanneriOS.Controllers
             {
                 Title = PowerPlannerResources.GetString("AppBarButtonEdit.Label")
             };
-            _editButton.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.EnterEditMode(); }).Handler;
+            // Owned by this same controller (field), so a direct handler is safe: no external publisher could keep this alive longer than needed.
+            _editButton.Clicked += (sender, e) => ViewModel.EnterEditMode();
             NavItem.RightBarButtonItem = _editButton;
 
             _doneButton = new UIBarButtonItem
             {
                 Title = PowerPlannerResources.GetString("String_Done")
             };
-            _doneButton.Clicked += new WeakEventHandler<EventArgs>(delegate { ViewModel.ExitEditMode(); }).Handler;
+            _doneButton.Clicked += (sender, e) => ViewModel.ExitEditMode();
 
             // Add a dummy scroll view that will get the auto content inset behavior
             ContentView.Add(new UIScrollView());
@@ -49,21 +52,28 @@ namespace PowerPlanneriOS.Controllers
         private UILabel _labelDateRange;
         private UIView _labelYearAndWeekContainer;
         private UILabel _labelYearAndWeek;
+        private UIScheduleView _scheduleView;
         public override void OnViewModelAndViewLoadedOverride()
         {
             base.OnViewModelAndViewLoadedOverride();
 
-            var scheduleView = new UIScheduleView(ViewModel)
+            // Must be kept in a field: ViewModel only holds WeakEventHandler subscriptions to it, so
+            // without a strong reference here it can be garbage collected and silently stop updating.
+            _scheduleView = new UIScheduleView(ViewModel)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            ContentView.Add(scheduleView);
-            scheduleView.StretchWidthAndHeight(ContentView);
+            ContentView.Add(_scheduleView);
+            _scheduleView.StretchWidthAndHeight(ContentView);
 
-            var toolbar = new UIToolbar()
+            // Must be kept in a field: otherwise nothing roots the toolbar (or its UIBarButtonItems)
+            // managed wrapper, so it can be garbage collected and its Clicked handlers stop firing
+            // even though the native button remains visible on screen.
+            _toolbar = new UIToolbar()
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
+            var toolbar = _toolbar;
             ContentView.Add(toolbar);
             toolbar.StretchWidth(ContentView);
             toolbar.SetHeight(44);
@@ -87,7 +97,7 @@ namespace PowerPlanneriOS.Controllers
                 nameof(ViewModel.CurrentWeek),
                 nameof(ViewModel.HasTwoWeekSchedule)
             }, UpdateToolbarLabels);
-            toolbar.Items = new UIBarButtonItem[]
+            _toolbarItems = new UIBarButtonItem[]
             {
                 new UIBarButtonItem(_labelDateRange),
                 new UIBarButtonItem(UIBarButtonSystemItem.FixedSpace)
@@ -96,13 +106,15 @@ namespace PowerPlanneriOS.Controllers
                 },
                 new UIBarButtonItem(_labelYearAndWeekContainer),
                 new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace),
-                new UIBarButtonItem(UIImage.FromBundle("ToolbarBack"), UIBarButtonItemStyle.Plain, new WeakEventHandler(delegate { ViewModel.PreviousWeek(); }).Handler),
+                // Owned by this same controller (_toolbarItems field), so a direct handler is safe here.
+                new UIBarButtonItem(UIImage.FromBundle("ToolbarBack"), UIBarButtonItemStyle.Plain, (sender, e) => PreviousWeekClicked()),
                 new UIBarButtonItem(UIBarButtonSystemItem.FixedSpace)
                 {
                     Width = 20
                 },
-                new UIBarButtonItem(UIImage.FromBundle("ToolbarForward"), UIBarButtonItemStyle.Plain, new WeakEventHandler(delegate { ViewModel.NextWeek(); }).Handler)
+                new UIBarButtonItem(UIImage.FromBundle("ToolbarForward"), UIBarButtonItemStyle.Plain, (sender, e) => NextWeekClicked())
             };
+            toolbar.Items = _toolbarItems;
             MainScreenViewController.ListenToTabBarHeightChanged(ref _tabBarHeightListener, delegate
             {
                 toolbar.RemovePinToBottom(ContentView).PinToBottom(ContentView, (int)MainScreenViewController.TAB_BAR_HEIGHT);
@@ -110,6 +122,34 @@ namespace PowerPlanneriOS.Controllers
 
             ViewModel.PropertyChanged += new WeakEventHandler<PropertyChangedEventArgs>(ViewModel_PropertyChanged).Handler;
             UpdateLayoutMode();
+        }
+
+        private void PreviousWeekClicked()
+        {
+            try
+            {
+                ViewModel.PreviousWeek();
+            }
+            catch (Exception ex)
+            {
+                // Surface this instead of letting it vanish at the native callback boundary with no visible effect.
+                System.Diagnostics.Debug.WriteLine("PreviousWeek failed: " + ex);
+                ExceptionHelper.ReportHandledException(ex);
+            }
+        }
+
+        private void NextWeekClicked()
+        {
+            try
+            {
+                ViewModel.NextWeek();
+            }
+            catch (Exception ex)
+            {
+                // Surface this instead of letting it vanish at the native callback boundary with no visible effect.
+                System.Diagnostics.Debug.WriteLine("NextWeek failed: " + ex);
+                ExceptionHelper.ReportHandledException(ex);
+            }
         }
 
         private void UpdateToolbarLabels()

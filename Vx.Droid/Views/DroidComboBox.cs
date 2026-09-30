@@ -39,7 +39,7 @@ namespace Vx.Droid.Views
             var textVal = e.Text.ToString();
             var matching = VxView.Items.OfType<object>().FirstOrDefault(i => i.ToString() == textVal);
 
-            if (VxView.SelectedItem != null && matching != VxView.SelectedItem.Value)
+            if (matching != null && VxView.SelectedItem != null && matching != VxView.SelectedItem.Value)
             {
                 VxView.SelectedItem.ValueChanged?.Invoke(matching);
             }
