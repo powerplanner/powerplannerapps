@@ -49,16 +49,19 @@ namespace PowerPlanneriOS.Controllers
         private UILabel _labelDateRange;
         private UIView _labelYearAndWeekContainer;
         private UILabel _labelYearAndWeek;
+        private UIScheduleView _scheduleView;
         public override void OnViewModelAndViewLoadedOverride()
         {
             base.OnViewModelAndViewLoadedOverride();
 
-            var scheduleView = new UIScheduleView(ViewModel)
+            // Must be kept in a field: ViewModel only holds WeakEventHandler subscriptions to it, so
+            // without a strong reference here it can be garbage collected and silently stop updating.
+            _scheduleView = new UIScheduleView(ViewModel)
             {
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
-            ContentView.Add(scheduleView);
-            scheduleView.StretchWidthAndHeight(ContentView);
+            ContentView.Add(_scheduleView);
+            _scheduleView.StretchWidthAndHeight(ContentView);
 
             var toolbar = new UIToolbar()
             {
