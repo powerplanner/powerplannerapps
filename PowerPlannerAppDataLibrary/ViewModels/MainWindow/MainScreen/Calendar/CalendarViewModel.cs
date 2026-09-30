@@ -144,16 +144,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             return base.GoBack();
         }
 
-        public bool IncludeToolbarPrevNextButtons => CachedComputation<bool>(delegate
-        {
-            return ViewSizeState == ViewSizeStates.FullSize;
-        }, new string[] { nameof(ViewSizeState) });
-
-        public bool IncludeToolbarFilterButton => CachedComputation<bool>(delegate
-        {
-            return DisplayState == DisplayStates.FullCalendar;
-        }, new string[] { nameof(DisplayState) });
-
         private string GetDateHeaderText(DateTime date)
         {
             if (date.Date == DateTime.Today)
@@ -643,9 +633,40 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
             Toolbar toolbar = null;
 
-            // Add toolbar to all but UWP
-            if (true)
+            // Add toolbar
             {
+                Action<bool> addGoToTodayMenuItem = (bool insert) =>
+                {
+                    // Go to today button
+                    if (CanGoToToday)
+                    {
+                        var goToTodayMenuItem = new MenuItem
+                        {
+                            Text = PowerPlannerResources.GetString("String_GoToToday"),
+                            Glyph = MaterialDesign.MaterialDesignIcons.Today,
+                            Click = GoToToday
+                        };
+                        if (ShowGoToTodayInPrimaryCommands)
+                        {
+                            if (insert)
+                            {
+                                toolbar.PrimaryCommands.Insert(0, goToTodayMenuItem);
+
+                            }
+                            else
+                            {
+                                toolbar.PrimaryCommands.Add(goToTodayMenuItem);
+                            }
+                        }
+                        else
+                        {
+                            // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
+                            goToTodayMenuItem.Glyph = null;
+                            toolbar.SecondaryCommands.Add(goToTodayMenuItem);
+                        }
+                    }
+                };
+
                 toolbar = new Toolbar
                 {
                     Title = CanGoBack ? "" : Title,
@@ -676,31 +697,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 toolbar = VxPlatform.Current == Platform.Uwp ? toolbar.InnerToolbarThemed() : toolbar.PowerPlannerThemed();
 
-                // iOS reverses the order of toolbar items, so to ensure prev and next are int he right order, we reverse
+                // iOS reverses the order of toolbar items, so to ensure prev and next are in the right order, we reverse
                 if (Toolbar.DisplaysPrimaryCommandsRightToLeft)
                 {
                     toolbar.PrimaryCommands.Reverse();
+
+                    addGoToTodayMenuItem(false);
                 }
 
-                // Go to today button
-                if (CanGoToToday)
+                else
                 {
-                    var goToTodayMenuItem = new MenuItem
-                    {
-                        Text = PowerPlannerResources.GetString("String_GoToToday"),
-                        Glyph = MaterialDesign.MaterialDesignIcons.Today,
-                        Click = GoToToday
-                    };
-                    if (ShowGoToTodayInPrimaryCommands)
-                    {
-                        toolbar.PrimaryCommands.Add(goToTodayMenuItem);
-                    }
-                    else
-                    {
-                        // On narrow views, show it in secondary commands (without a glyph, since the Show past complete doesn't have a glyph either)
-                        goToTodayMenuItem.Glyph = null;
-                        toolbar.SecondaryCommands.Add(goToTodayMenuItem);
-                    }
+                    addGoToTodayMenuItem(true);
                 }
 
                 // Only on full calendar, show the option for past complete
