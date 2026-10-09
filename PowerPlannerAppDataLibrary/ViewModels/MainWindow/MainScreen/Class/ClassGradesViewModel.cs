@@ -211,7 +211,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         public void OpenWhatIf()
         {
-            if (PowerPlannerApp.ShowClassesAsPopups || VxPlatform.Current == Platform.iOS)
+            if (PowerPlannerApp.ShowClassesAsPopups || (VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Phone))
             {
                 MainScreenViewModel.ShowPopup(new ClassWhatIfViewModel(MainScreenViewModel, Class));
             }

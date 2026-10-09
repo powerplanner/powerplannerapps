@@ -106,6 +106,11 @@ namespace PowerPlannerAppDataLibrary.App
         {
             string changedText = "";
 
+            if (v <= new Version(2610, 8) && VxPlatform.Current == Platform.iOS && VxDeviceType.Current == DeviceType.Desktop)
+            {
+                changedText += "\n - Fixed viewing What If mode on grades page";
+            }
+
             if (v <= new Version(2609, 2) && VxPlatform.Current == Platform.Uwp)
             {
                 changedText += "\n - Fixed crash in Export Schedule to Image feature";
