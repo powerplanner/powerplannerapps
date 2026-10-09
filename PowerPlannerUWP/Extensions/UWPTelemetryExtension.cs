@@ -179,7 +179,7 @@ namespace PowerPlannerUWP.Extensions
             {
                 { "ai.application.ver", Variables.VERSION.ToString() },
                 { "ai.device.os", "Windows" },
-                { "ai.device.osVersion", "10.0." + DeviceInfo.BuildNumber },
+                { "ai.device.osVersion", "Windows 10.0." + DeviceInfo.BuildNumber },
                 { "ai.session.id", _sessionId }
             };
 
