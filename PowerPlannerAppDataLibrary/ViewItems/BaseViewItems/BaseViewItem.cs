@@ -206,7 +206,12 @@ namespace PowerPlannerAppDataLibrary.ViewItems.BaseViewItems
 
         public virtual int CompareTo(BaseViewItem other)
         {
-            return this.DateCreated.CompareTo(other.DateCreated);
+            int comp = this.DateCreated.CompareTo(other.DateCreated);
+            if (comp == 0)
+            {
+                comp = this.Identifier.CompareTo(other.Identifier);
+            }
+            return comp;
         }
 
         public virtual int CompareTo(object obj)
