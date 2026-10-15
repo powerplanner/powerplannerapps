@@ -853,6 +853,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 }
             }
 
+            // If no current semester, see if they have semesters, and if they only have one, select it
+            if (model.CurrentSemesterId == Guid.Empty)
+            {
+                var semesterIds = await GetSemestersAsync(account.LocalAccountId);
+                if (semesterIds.Length == 1)
+                {
+                    await account.SetCurrentSemesterAsync(semesterIds[0]);
+                    model.CurrentSemesterId = semesterIds[0];
+                    await model.OnSemesterChanged(); // Loads the classes
+
+                    TelemetryExtension.Current?.TrackEvent("NoCurrentSemester_AutoSelected");
+                }
+                else
+                {
+                    TelemetryExtension.Current?.TrackEvent("NoCurrentSemester", new Dictionary<string, string>()
+                    {
+                        { "Semesters", semesterIds.Length.ToString() }
+                    });
+                }
+            }
+
             model.updateAvailableItems();
 
             MainMenuSelections? selectedItem = null;
@@ -916,6 +937,24 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             using (await Locks.LockDataForReadAsync())
             {
                 return dataStore.SemesterExists(semesterId);
+            }
+        }
+
+        private static async Task<Guid[]> GetSemestersAsync(Guid localAccountId)
+        {
+            return await Task.Run(async delegate
+            {
+                return await GetSemestersBlocking(localAccountId);
+            });
+        }
+
+        private static async Task<Guid[]> GetSemestersBlocking(Guid localAccountId)
+        {
+            var dataStore = await AccountDataStore.Get(localAccountId);
+
+            using (await Locks.LockDataForReadAsync())
+            {
+                return dataStore.GetSemesters().Select(i => i.Identifier).ToArray();
             }
         }
 
