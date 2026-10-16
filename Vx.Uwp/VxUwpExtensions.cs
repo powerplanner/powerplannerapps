@@ -191,11 +191,6 @@ namespace Vx.Uwp
                     return new UwpPagedViewModelPresenterView();
                 }
 
-                if (view is Vx.Views.Toolbar)
-                {
-                    return new UwpToolbar();
-                }
-
                 if (view is Vx.Views.NativeContentContainer)
                 {
                     return new UwpNativeContentContainer();

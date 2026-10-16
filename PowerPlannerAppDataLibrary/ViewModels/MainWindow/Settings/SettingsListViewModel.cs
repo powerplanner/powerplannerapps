@@ -357,7 +357,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                 {
                     hasTitlebar ? new Toolbar
                     {
-                        Title = Title
+                        Title = Title,
+                        NookInsets = NookInsets
                     }.InnerToolbarThemed() : null,
 
                     new ScrollView(finalContent).LinearLayoutWeight(1)

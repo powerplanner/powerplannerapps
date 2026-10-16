@@ -673,6 +673,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     AlignTitleToLeft = true,
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
                     BackText = CanGoBack ? Title : null,
+                    NookInsets = NookInsets,
                     PrimaryCommands =
                     {
                         // Add will get inserted here unless it's used as floating action
@@ -695,18 +696,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     }
                 };
 
-                // iOS reverses the order of toolbar items, so to ensure prev and next are in the right order, we reverse
-                if (Toolbar.DisplaysPrimaryCommandsRightToLeft)
-                {
-                    toolbar.PrimaryCommands.Reverse();
-
-                    addGoToTodayMenuItem(false);
-                }
-
-                else
-                {
-                    addGoToTodayMenuItem(true);
-                }
+                addGoToTodayMenuItem(true);
 
                 // Only on full calendar, show the option for past complete
                 toolbar.SecondaryCommands.Add(new MenuItem

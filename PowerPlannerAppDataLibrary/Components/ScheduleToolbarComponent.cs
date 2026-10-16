@@ -29,6 +29,7 @@ namespace PowerPlannerAppDataLibrary.Components
             return new Toolbar
             {
                 Title = !hasScheduleContent ? MainScreenViewModel.MainMenuItemToString(NavigationManager.MainMenuSelections.Schedule) : null,
+                NookInsets = ViewModel.NookInsets,
                 CustomTitle = hasScheduleContent ? new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,

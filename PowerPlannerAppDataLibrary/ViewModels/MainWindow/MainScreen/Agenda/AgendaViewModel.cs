@@ -121,7 +121,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
                             PrimaryCommands =
                             {
                                 ToolbarHelper.AddCommand(AddTask, AddEvent)
-                            }
+                            },
+                            NookInsets = NookInsets
                         }.PowerPlannerThemed(),
 
                         baseView.LinearLayoutWeight(1)

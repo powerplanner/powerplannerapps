@@ -14,6 +14,7 @@ namespace Vx.Components.OnlyForNativeLibraries
     {
         public static readonly int ToolbarHeight = 48;
         public Toolbar Toolbar { get; set; }
+        public Thickness NookInsets { get; set; }
 
         protected override View Render()
         {

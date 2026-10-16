@@ -169,11 +169,6 @@ namespace Vx.Droid
                     return new DroidFloatingActionButton();
                 }
 
-                if (view is Vx.Views.Toolbar)
-                {
-                    return new DroidToolbar();
-                }
-
                 if (view is Vx.Views.ImageView)
                 {
                     if (view is Vx.Views.ZoomableImageView)

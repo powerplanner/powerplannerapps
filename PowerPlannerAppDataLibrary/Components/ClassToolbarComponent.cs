@@ -41,6 +41,7 @@ namespace PowerPlannerAppDataLibrary.Components
             return new Toolbar
             {
                 Title = ViewModel.ClassName,
+                NookInsets = ViewModel.MainScreenViewModel.NookInsets,
                 PrimaryCommands =
                 {
                     SelectedIndex == 0 ? new MenuItem

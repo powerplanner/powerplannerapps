@@ -150,7 +150,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                                 Glyph = MaterialDesign.MaterialDesignIcons.Add,
                                 Click = AddClass
                             }
-                        }
+                        },
+                        NookInsets = NookInsets
                     }.InnerToolbarThemed(),
 
                     content.LinearLayoutWeight(1)

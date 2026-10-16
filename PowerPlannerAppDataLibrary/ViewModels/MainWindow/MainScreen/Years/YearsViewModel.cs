@@ -136,7 +136,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     {
                         (MainScreenViewModel.IsCompactMode || VxPlatform.Current == Platform.iOS) ? new Toolbar
                         {
-                            Title = Title
+                            Title = Title,
+                            NookInsets = NookInsets
                         }.InnerToolbarThemed() : null,
 
                         new ScrollView
