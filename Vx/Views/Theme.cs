@@ -29,6 +29,8 @@ namespace Vx.Views
 
         public abstract bool IsDarkTheme { get; }
 
+        public Color PrimaryColor { get; set; } = Color.Blue;
+
         public static Color DefaultAccentColor { get; set; } = Color.Blue;
 
         /// <summary>
@@ -39,18 +41,22 @@ namespace Vx.Views
         /// <summary>
         /// Background color of buttons, titlebars, etc
         /// </summary>
-        public Color ChromeColor { get; set; } = Color.Blue;
+        public Color ChromeColor => IsDarkTheme ? DarkThemeChromeColor : LightThemeChromeColor;
+
+        public Color DarkThemeChromeColor { get; set; } = Color.FromArgb(15, 15, 15);
+
+        public Color LightThemeChromeColor { get; set; } = Color.FromArgb(239, 244, 249);
 
         /// <summary>
         /// Lighter variant of <see cref="ChromeColor"/>, used for ripple/pressed states.
         /// </summary>
-        public Color ChromeLightColor { get; set; } = Color.Blue;
+        public Color ChromeLightColor => IsDarkTheme ? Color.FromArgb(31, 40, 48) : Color.FromArgb(230, 235, 239);
 
         public abstract Color ForegroundColor { get; }
 
         public abstract Color SubtleForegroundColor { get; }
 
-        public Color BackgroundColor => IsDarkTheme ? Color.Black : Color.White;
+        public Color BackgroundColor => IsDarkTheme ? Color.FromArgb(30, 30, 30) : Color.White;
 
         public abstract Color PopupPageBackgroundColor { get; }
 
@@ -84,6 +90,10 @@ namespace Vx.Views
         /// Android typically works in units of 8dp, only 16dp for page margins, but otherwise straightforward with Windows?
         /// </summary>
         public float PageMargin => _pageMargin.Value;
+
+        public float SmallPageMargin => 6;
+
+        public float CornerRadius => 6;
 
         public virtual float CaptionFontSize => 12;
 

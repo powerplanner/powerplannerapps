@@ -34,7 +34,7 @@ namespace PowerPlannerUWP
         {
             this.InitializeComponent();
 
-            Background = Vx.Uwp.VxUwpExtensions.ToUwpBrush(Vx.Views.Theme.Current.ChromeColor);
+            Background = Vx.Uwp.VxUwpExtensions.ToUwpBrush(Vx.Views.Theme.Current.PrimaryColor);
 
             // Listen for window resize events to reposition the extended splash screen image accordingly.
             // This ensures that the extended splash screen formats properly in response to window resizing.

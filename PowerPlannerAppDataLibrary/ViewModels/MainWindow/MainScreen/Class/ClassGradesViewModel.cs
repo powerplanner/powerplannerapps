@@ -374,7 +374,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
 
         private View RenderUnassignedItem(ViewItemTaskOrEvent t, bool includeMargin = true)
         {
-            return Components.TaskOrEventListItemComponent.Render(t, this, IncludeMargin: includeMargin, InterceptOnTapped: () => ShowUnassignedItem(t), AllowDrag: true);
+            return Components.TaskOrEventListItemComponent.Render(t, this, horizontalMargin: includeMargin ? null : 0, InterceptOnTapped: () => ShowUnassignedItem(t), AllowDrag: true);
         }
 
         private View RenderUnassignedHeader(bool includeMargin = true)

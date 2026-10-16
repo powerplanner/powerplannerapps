@@ -65,7 +65,7 @@ namespace PowerPlannerUWP.Helpers
         {
             try
             {
-                var colors = ThemeColorGenerator.Generate(Theme.Current.ChromeColor);
+                var colors = ThemeColorGenerator.Generate(Theme.Current.AccentColor);
                 UpdateTitleBar(colors);
             }
             catch (Exception ex)
@@ -79,20 +79,20 @@ namespace PowerPlannerUWP.Helpers
             var view = ApplicationView.GetForCurrentView();
             var titleBar = view.TitleBar;
 
-            var darkColor = ToUwpColor(colors.PrimaryDarkest);
+            var darkColor = ToUwpColor(colors.PrimaryDark);
             var hoverColor = ToUwpColor(colors.PrimaryHover);
-            var lightColor = ToUwpColor(colors.PrimaryLight);
+            var primaryColor = ToUwpColor(colors.Primary);
 
             // Generate an inactive color (lighter variant of primary)
             var inactiveColor = ToUwpColor(colors.PrimaryInactive);
 
-            titleBar.BackgroundColor = darkColor;
+            titleBar.BackgroundColor = Theme.Current.IsDarkTheme ? darkColor : primaryColor;
             titleBar.ForegroundColor = Colors.White;
 
             titleBar.InactiveBackgroundColor = inactiveColor;
             titleBar.InactiveForegroundColor = Colors.LightGray;
 
-            titleBar.ButtonBackgroundColor = darkColor;
+            titleBar.ButtonBackgroundColor = Theme.Current.IsDarkTheme ? darkColor : primaryColor;
             titleBar.ButtonForegroundColor = Colors.White;
 
             titleBar.ButtonHoverBackgroundColor = hoverColor;
@@ -101,7 +101,7 @@ namespace PowerPlannerUWP.Helpers
             titleBar.ButtonInactiveBackgroundColor = inactiveColor;
             titleBar.ButtonInactiveForegroundColor = Colors.LightGray;
 
-            titleBar.ButtonPressedBackgroundColor = lightColor;
+            titleBar.ButtonPressedBackgroundColor = Theme.Current.IsDarkTheme ? primaryColor : darkColor;
             titleBar.ButtonPressedForegroundColor = Colors.White;
         }
 

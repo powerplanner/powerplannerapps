@@ -17,7 +17,7 @@ namespace Vx.iOS
 
         public override Color SubtleForegroundColor => UIColorCompat.SecondaryLabelColor.ToVx();
 
-        public override Color PopupPageBackgroundColor => UIColorCompat.SystemBackgroundColor.ToVx();
+        public override Color PopupPageBackgroundColor => BackgroundColor;
 
         public override Color PopupPageBackgroundAltColor => UIColorCompat.SystemGroupedBackgroundColor.ToVx();
 

@@ -48,6 +48,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
             return new LinearLayout
             {
+                BackgroundColor = Theme.Current.ChromeColor,
                 Orientation = IsCompactMode ? Orientation.Vertical : Orientation.Horizontal,
                 Children =
                 {
@@ -193,16 +194,35 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         VerticalAlignment = VerticalAlignment.Stretch,
                         Children =
                         {
-                            new ImageView
+                            new LinearLayout
                             {
-                                Source = new UriImageSource
+                                Orientation = Orientation.Horizontal,
+                                Margin = new Thickness(Theme.Current.PageMargin, NookInsets.Top + 16, 0, 18),
+                                Children =
                                 {
-                                    UwpUri = "ms-appx:///Assets/Logo.png",
-                                    IosBundleName = "PowerPlannerIcon"
-                                },
-                                Width = 58,
-                                Margin = new Thickness(0, NookInsets.Top + 24, 0, 24),
-                                Tapped = SyncCurrentAccount
+                                    new ImageView
+                                    {
+                                        Source = new UriImageSource
+                                        {
+                                            UwpUri = Theme.Current.IsDarkTheme ? "ms-appx:///Assets/Logo.png" : "ms-appx:///Assets/LogoDark.png",
+                                            IosBundleName = Theme.Current.IsDarkTheme ? "PowerPlannerIcon" : "PowerPlannerIconDark"
+                                        },
+                                        Height = 24,
+                                        Width = 18,
+                                        Tapped = SyncCurrentAccount
+                                    },
+
+                                    new TextBlock
+                                    {
+                                        Text = (CurrentAccount?.IsDefaultOfflineAccount ?? false) ? "Power Planner" : (CurrentAccount?.Username ?? "Power Planner"),
+                                        WrapText = false,
+                                        TextColor = Theme.Current.ForegroundColor,
+                                        FontSize = 14,
+                                        VerticalAlignment = VerticalAlignment.Center,
+                                        Margin = new Thickness(8, 0, 0, 2),
+                                        FontWeight = FontWeights.SemiBold
+                                    }.LinearLayoutWeight(1)
+                                }
                             },
 
                             new ScrollView
@@ -227,13 +247,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             {
                 Content = new Border
                 {
-                    BackgroundColor = SelectedItem == MainMenuSelections.Settings ? ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryLight : System.Drawing.Color.Transparent,
+                    BackgroundColor = SelectedItem == MainMenuSelections.Settings ? Theme.Current.AccentColor.Opacity(0.2) : System.Drawing.Color.Transparent,
                     Content = new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("MainMenuItem_Settings"),
-                        TextColor = System.Drawing.Color.White,
-                        FontSize = 16,
-                        Margin = new Thickness(20, 12, 0, 20),
+                        TextColor = Theme.Current.ForegroundColor,
+                        FontSize = 14,
+                        Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 20),
                         FontWeight = FontWeights.SemiLight,
                         WrapText = false,
                         VerticalAlignment = VerticalAlignment.Center
@@ -276,6 +296,36 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
         }
 
+        private string MainMenuItemToGlyph(MainMenuSelections value)
+        {
+            switch (value)
+            {
+                case MainMenuSelections.Agenda:
+                    return MaterialDesign.MaterialDesignIcons.Task;
+
+                case MainMenuSelections.Calendar:
+                    return MaterialDesign.MaterialDesignIcons.CalendarMonth;
+
+                case MainMenuSelections.Classes:
+                    return MaterialDesign.MaterialDesignIcons.LibraryBooks;
+
+                case MainMenuSelections.Day:
+                    return MaterialDesign.MaterialDesignIcons.ViewDay;
+
+                case MainMenuSelections.Schedule:
+                    return MaterialDesign.MaterialDesignIcons.Schedule;
+
+                case MainMenuSelections.Settings:
+                    return MaterialDesign.MaterialDesignIcons.Settings;
+
+                case MainMenuSelections.Years:
+                    return MaterialDesign.MaterialDesignIcons.Class;
+
+                default:
+                    throw new NotImplementedException("Unknown MainMenuSelections enum value");
+            }
+        }
+
         private View RenderMenuItems()
         {
             var menuItems = new LinearLayout
@@ -289,93 +339,122 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     continue;
                 }
 
-                var tb = new TextBlock
+                bool isSelected = i == SelectedItem;
+                if (isSelected && SelectedItem == MainMenuSelections.Classes && SelectedClass != null)
                 {
-                    Text = MainMenuItemToString(i),
-                    TextColor = System.Drawing.Color.White,
-                    Margin = new Thickness(20, 8, 0, 8),
-                    FontSize = 20,
-                    FontWeight = FontWeights.SemiLight,
-                    WrapText = false
+                    isSelected = false;
+                }
+                Color foregroundColor = isSelected ?
+                    Theme.Current.IsDarkTheme ?
+                        ThemeColorGenerator.Generate(Theme.Current.AccentColor).PrimaryLight :
+                        ThemeColorGenerator.Generate(Theme.Current.AccentColor).PrimaryDark
+                    : Theme.Current.SubtleForegroundColor;
+
+                var linearLayout = new LinearLayout
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new Border
+                        {
+                            Width = 3,
+                            BackgroundColor = isSelected ? foregroundColor : Color.Transparent
+                        },
+
+                        new FontIcon
+                        {
+                            Glyph = MainMenuItemToGlyph(i),
+                            FontSize = 18,
+                            Color = foregroundColor,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Margin = new Thickness(Theme.Current.PageMargin - 9, 8, 0, 8)
+                        },
+
+                        new TextBlock
+                        {
+                            Text = MainMenuItemToString(i),
+                            TextColor = foregroundColor,
+                            Margin = new Thickness(8, 8, 0, 10),
+                            FontSize = 16,
+                            FontWeight = FontWeights.SemiLight,
+                            WrapText = false,
+                            VerticalAlignment = VerticalAlignment.Center
+                        }.LinearLayoutWeight(1),
+
+                        i == MainMenuSelections.Classes ? new TransparentContentButton
+                        {
+                            Content = new FontIcon
+                            {
+                                Glyph = MaterialDesign.MaterialDesignIcons.Add,
+                                FontSize = 16,
+                                Color = foregroundColor,
+                                Margin = new Thickness(12,0,12,0)
+                            },
+                            Click = () =>
+                            {
+                                AddClass(navigateToClassAfterAdd: true);
+                            },
+                            TooltipText = R.S("SchedulePage_ButtonAddClass.Content")
+                        } : null
+                    }
                 };
 
-                menuItems.Children.Add(new Border
+                menuItems.Children.Add(new TransparentContentButton
                 {
-                    Content = new TransparentContentButton
+                    Content = linearLayout,
+                    Click = () =>
                     {
-                        Content = i == MainMenuSelections.Classes ? (View)new LinearLayout
-                        {
-                            Orientation = Orientation.Horizontal,
-                            Children =
-                            {
-                                tb.LinearLayoutWeight(1),
-                                SelectedItem == MainMenuSelections.Classes ? new TransparentContentButton
-                                {
-                                    Content = new FontIcon
-                                    {
-                                        Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                                        FontSize = 16,
-                                        Color = System.Drawing.Color.White,
-                                        Margin = new Thickness(12,0,12,0)
-                                    },
-                                    Click = () =>
-                                    {
-                                        AddClass(navigateToClassAfterAdd: true);
-                                    },
-                                    TooltipText = R.S("SchedulePage_ButtonAddClass.Content")
-                                } : null
-                            }
-                        } : (View)tb,
-                        Click = () =>
-                        {
-                            SelectedItem = i;
-                        }
+                        SelectedItem = i;
                     },
-                    BackgroundColor = SelectedItem == i ? ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryLight : System.Drawing.Color.Transparent
+                    Margin = new Thickness(6, 0, 0, 0),
+                    BackgroundColor = i == SelectedItem ? Theme.Current.AccentColor.Opacity(0.2) : Color.Transparent,
+                    CornerRadius = 6
                 });
 
                 if (i == MainMenuSelections.Classes && SelectedItem == MainMenuSelections.Classes)
                 {
                     foreach (var c in Classes)
                     {
-                        menuItems.Children.Add(new Border
+                        menuItems.Children.Add(new TransparentContentButton
                         {
-                            Content = new TransparentContentButton
+                            Margin = new Thickness(12, 0, 6, 0),
+                            CornerRadius = 6,
+                            BackgroundColor = SelectedClass == c ? Theme.Current.AccentColor.Opacity(0.1) : Color.Transparent,
+                            Content = new LinearLayout
                             {
-                                Content = new LinearLayout
+                                Orientation = Orientation.Horizontal,
+                                Children =
                                 {
-                                    Orientation = Orientation.Horizontal,
-                                    Margin = new Thickness(24, 10, 0, 10),
-                                    Children =
+                                    new Border
                                     {
-                                        new Border
-                                        {
-                                            BorderColor = System.Drawing.Color.Black,
-                                            BorderThickness = new Thickness(1),
-                                            BackgroundColor = ColorBytesHelper.ToColor(c.Color),
-                                            Width = 14,
-                                            Height = 14,
-                                            VerticalAlignment = VerticalAlignment.Center,
-                                            CornerRadius = 7
-                                        },
-                                        new TextBlock
-                                        {
-                                            Text = c.Name,
-                                            TextColor = System.Drawing.Color.White,
-                                            FontSize = 14,
-                                            FontWeight = FontWeights.SemiLight,
-                                            Margin = new Thickness(12,0,0,0),
-                                            WrapText = false,
-                                            VerticalAlignment = VerticalAlignment.Center
-                                        }
+                                        Width = 3,
+                                        BackgroundColor = SelectedClass == c ? foregroundColor : Color.Transparent
+                                    },
+                                    new Border
+                                    {
+                                        BackgroundColor = ColorBytesHelper.ToColor(c.Color),
+                                        Width = 12,
+                                        Height = 12,
+                                        VerticalAlignment = VerticalAlignment.Center,
+                                        CornerRadius = 6,
+                                        Margin = new Thickness(Theme.Current.PageMargin - 3 - 12, 6, 0, 6)
+                                    },
+                                    new TextBlock
+                                    {
+                                        Text = c.Name,
+                                        TextColor = SelectedClass == c ? foregroundColor : Theme.Current.SubtleForegroundColor,
+                                        FontSize = 14,
+                                        FontWeight = FontWeights.SemiLight,
+                                        Margin = new Thickness(12,6,0,6),
+                                        WrapText = false,
+                                        VerticalAlignment = VerticalAlignment.Center
                                     }
-                                },
-                                Click = () =>
-                                {
-                                    SelectClassWithinSemester(c);
                                 }
                             },
-                            BackgroundColor = SelectedClass == c ? ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryHover : ThemeColorGenerator.Generate(Theme.Current.ChromeColor).PrimaryLight
+                            Click = () =>
+                            {
+                                SelectClassWithinSemester(c);
+                            }
                         }.AllowDropTaskOrEventOnClass(c));
                     }
                 }

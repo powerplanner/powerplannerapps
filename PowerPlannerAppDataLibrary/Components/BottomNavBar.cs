@@ -51,7 +51,7 @@ namespace PowerPlannerAppDataLibrary.Components
                 (SelectedItem == NavigationManager.MainMenuSelections.Day && item == NavigationManager.MainMenuSelections.Calendar);
 
             var title = item == NavigationManager.MainMenuSelections.Settings ? PowerPlannerResources.GetString("String_More") : MainScreenViewModel.MainMenuItemToString(item);
-            var color = isThisItem ? System.Drawing.Color.White : System.Drawing.Color.LightGray;
+            var color = isThisItem ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor;
 
             var icon = new FontIcon
             {
@@ -88,7 +88,7 @@ namespace PowerPlannerAppDataLibrary.Components
                         isThisItem ? new TextBlock
                         {
                             Text = title,
-                            TextColor = System.Drawing.Color.White,
+                            TextColor = color,
                             TextAlignment = HorizontalAlignment.Center,
                             WrapText = false,
                             FontSize = 12

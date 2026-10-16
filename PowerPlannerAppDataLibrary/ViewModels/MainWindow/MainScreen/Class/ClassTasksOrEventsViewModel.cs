@@ -188,7 +188,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
         {
             if (item is ViewItemTaskOrEvent taskOrEvent)
             {
-                var listItem = TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false, IncludeMargin: false, AllowDrag: true);
+                var listItem = TaskOrEventListItemComponent.Render(taskOrEvent, this, IncludeDate: true, IncludeClass: false, horizontalMargin: 0, AllowDrag: true);
                 listItem.Margin = new Thickness(PageMargin, listItem.Margin.Top, PageMargin, listItem.Margin.Bottom);
                 return listItem;
             }

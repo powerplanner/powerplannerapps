@@ -16,7 +16,7 @@ namespace Vx.Views
         public Action OnBack { get; set; }
         public string BackText { get; set; }
         public Color BackgroundColor { get; set; } = Theme.Current.ChromeColor;
-        public Color ForegroundColor { get; set; } = Color.White;
+        public Color ForegroundColor { get; set; } = Theme.Current.ForegroundColor;
         public List<MenuItem> PrimaryCommands { get; } = new List<MenuItem>();
         public List<MenuItem> SecondaryCommands { get; } = new List<MenuItem>();
 

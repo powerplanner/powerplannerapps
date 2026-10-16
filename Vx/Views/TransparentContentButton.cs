@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Vx.Views
 {
@@ -11,5 +12,9 @@ namespace Vx.Views
         public string AltText { get; set; }
 
         public string TooltipText { get; set; }
+
+        public float CornerRadius { get; set; }
+
+        public Color BackgroundColor { get; set; }
     }
 }

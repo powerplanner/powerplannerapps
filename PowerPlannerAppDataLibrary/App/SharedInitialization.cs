@@ -46,10 +46,9 @@ namespace PowerPlannerAppDataLibrary.App
                 }
             }
             var colors = ThemeColorGenerator.Generate(primary);
+            Theme.Current.PrimaryColor = primary;
             Theme.DefaultAccentColor = colors.Accent;
             Theme.DefaultDarkAccentColor = colors.DarkAccent;
-            Theme.Current.ChromeColor = colors.Primary;
-            Theme.Current.ChromeLightColor = colors.PrimaryLight;
         }
 
         private static void SetUpApiKey()

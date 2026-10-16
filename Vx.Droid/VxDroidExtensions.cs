@@ -99,6 +99,11 @@ namespace Vx.Droid
                     return new DroidTransparentContentButton();
                 }
 
+                if (view is Vx.Views.TransparentContentMenuButton)
+                {
+                    return new DroidTransparentContentMenuButton();
+                }
+
                 if (view is Vx.Views.ScrollView)
                 {
                     return new DroidScrollView();

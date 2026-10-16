@@ -28,6 +28,9 @@ namespace Vx.Uwp.Views
         {
             base.ApplyProperties(oldView, newView);
 
+            View.Background = newView.BackgroundColor.ToUwpBrush();
+            View.CornerRadius = new Windows.UI.Xaml.CornerRadius(newView.CornerRadius);
+
             VxReconciler.Reconcile(oldView?.Content, newView.Content, view => View.Content = view?.CreateFrameworkElement());
 
             AutomationProperties.SetName(View, newView.AltText ?? newView.TooltipText ?? "");

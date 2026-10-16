@@ -25,7 +25,7 @@
     <viewModelPresenters:ViewModelToViewConverter x:Key="ViewModelToViewConverter"/>
 
     <Style TargetType="views:TransparentButton">
-        <Setter Property="Background" Value="{ThemeResource ApplicationForegroundThemeBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -57,11 +57,11 @@
                                 <VisualState x:Name="PointerFocused"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid x:Name="Border" Background="Transparent">
+                        <Grid x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}">
                             <Rectangle
-                                                x:Name="ButtonBackground"
-                                                Opacity="0"
-                                                Fill="{TemplateBinding Background}"/>
+                                x:Name="ButtonBackground"
+                                Opacity="0"
+                                Fill="{ThemeResource ApplicationForegroundThemeBrush}"/>
                             <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Grid>
                     </Grid>

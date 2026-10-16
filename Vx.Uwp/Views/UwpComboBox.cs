@@ -71,7 +71,12 @@ namespace Vx.Uwp.Views
                     }
                 }
 
-                View.SelectedItem = newView.SelectedItem?.Value;
+                int index = -1;
+                if (newView.SelectedItem != null && newView.Items != null)
+                {
+                    index = newView.Items.OfType<object>().ToArray().IndexOf(newView.SelectedItem.Value);
+                }
+                View.SelectedIndex = index;
             }
             finally
             {

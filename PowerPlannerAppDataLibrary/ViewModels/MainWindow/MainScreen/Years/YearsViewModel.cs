@@ -141,7 +141,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
                         new ScrollView
                         {
-                            Content = linearLayout
+                            Content = new Border
+                            {
+                                CornerRadius = Theme.Current.CornerRadius,
+                                Margin = new Thickness(Theme.Current.SmallPageMargin),
+                                BackgroundColor = Theme.Current.BackgroundColor,
+                                Content = linearLayout
+                            }
                         }.LinearLayoutWeight(1)
                     }
                 };
@@ -149,7 +155,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             return new ScrollView
             {
-                Content = linearLayout
+                Content = new Border
+                {
+                    CornerRadius = 6,
+                    Margin = new Thickness(6),
+                    BackgroundColor = Theme.Current.BackgroundColor,
+                    Content = linearLayout
+                }
             };
         }
 
@@ -284,7 +296,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 BackgroundColor = Theme.Current.BackgroundAlt1Color,
                 Content = linearLayout,
                 Margin = new Thickness(0, 24, 0, 0),
-                VerticalAlignment = VerticalAlignment.Top
+                VerticalAlignment = VerticalAlignment.Top,
+                CornerRadius = 9
             };
         }
 
@@ -424,7 +437,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             {
                 Margin = new Thickness(12, 0, 12, 12),
                 BackgroundColor = Theme.Current.BackgroundAlt2Color,
-                Content = linearLayout
+                Content = linearLayout,
+                CornerRadius = 6
             };
         }
 

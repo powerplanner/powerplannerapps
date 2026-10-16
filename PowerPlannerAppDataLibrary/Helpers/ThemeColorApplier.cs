@@ -23,8 +23,8 @@ namespace PowerPlannerAppDataLibrary.Helpers
 
             var colors = ThemeColorGenerator.Generate(primary);
 
-            Theme.Current.ChromeColor = colors.Primary;
-            Theme.Current.ChromeLightColor = colors.PrimaryLight;
+            //Theme.Current.ChromeColor = colors.Primary;
+            //Theme.Current.ChromeLightColor = colors.PrimaryLight;
             Theme.DefaultAccentColor = colors.Accent;
             Theme.DefaultDarkAccentColor = colors.DarkAccent;
 

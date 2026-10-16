@@ -109,13 +109,17 @@ namespace PowerPlannerAppDataLibrary.Components
                 ? new NativeContentContainer(NativeContent)
                 : Content;
 
-            return new LinearLayout
+            return new Border
             {
-                BackgroundColor = Theme.Current.PopupPageBackgroundColor,
-                Children =
+                CornerRadius = 12,
+                Content = new LinearLayout
                 {
-                    titlebar,
-                    mainContent?.LinearLayoutWeight(1)
+                    BackgroundColor = Theme.Current.PopupPageBackgroundColor,
+                    Children =
+                    {
+                        titlebar,
+                        mainContent?.LinearLayoutWeight(1)
+                    }
                 }
             };
         }

@@ -695,8 +695,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     }
                 };
 
-                toolbar = VxPlatform.Current == Platform.Uwp ? toolbar.InnerToolbarThemed() : toolbar.PowerPlannerThemed();
-
                 // iOS reverses the order of toolbar items, so to ensure prev and next are in the right order, we reverse
                 if (Toolbar.DisplaysPrimaryCommandsRightToLeft)
                 {
@@ -776,15 +774,29 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 day.LinearLayoutWeight(1);
             }
 
+            Border content = new Border
+            {
+                CornerRadius = Theme.Current.CornerRadius,
+                BackgroundColor = Theme.Current.BackgroundColor,
+                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
+                Content = new LinearLayout
+                {
+                    Children =
+                    {
+                        calendar,
+                        day
+                    }
+                }
+            }.LinearLayoutWeight(1);
+
             var root = new LinearLayout
             {
                 Orientation = Orientation.Vertical,
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                BackgroundColor = Theme.Current.ChromeColor,
                 Children =
                 {
                     toolbar,
-                    calendar,
-                    day
+                    content
                 }
             };
 

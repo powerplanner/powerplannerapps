@@ -33,7 +33,7 @@ namespace Vx.Uwp.Views
             View.Content = newView.Text;
             View.IsEnabled = newView.IsEnabled;
 
-            var accentBrush = Vx.Views.Theme.Current.ChromeColor.ToUwpBrush();
+            var accentBrush = Vx.Views.Theme.Current.AccentColor.ToUwpBrush();
             View.Resources["CheckBoxCheckBackgroundFillChecked"] = accentBrush;
             View.Resources["CheckBoxCheckBackgroundFillCheckedPointerOver"] = accentBrush;
             View.Resources["CheckBoxCheckBackgroundFillCheckedPressed"] = accentBrush;

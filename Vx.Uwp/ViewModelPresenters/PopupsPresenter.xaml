@@ -17,7 +17,7 @@
 
         <Rectangle
             x:Name="RectangleBackdrop"
-            Fill="Black"
+            Fill="{ThemeResource ApplicationForegroundThemeBrush}"
             Opacity="0.3"
             Tapped="RectangleBackdrop_Tapped"/>
 

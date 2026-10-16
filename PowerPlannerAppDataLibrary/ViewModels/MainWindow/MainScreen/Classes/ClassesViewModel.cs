@@ -80,7 +80,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
                 content = new LinearLayout
                 {
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color,
                     Children =
                     {
                         new ListView
@@ -105,6 +104,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                     }
                 };
             }
+
+            bool hasTitlebar = VxPlatform.Current != Platform.Android;
+
+            // Wrap content in rounded border
+            content = new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundColor,
+                CornerRadius = Theme.Current.CornerRadius,
+                Margin = new Thickness(Theme.Current.SmallPageMargin, hasTitlebar ? 0 : Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
+                Content = content
+            };
 
             if (VxPlatform.Current == Platform.Android)
             {
@@ -207,7 +217,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
             return new LinearLayout
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Children =
                 {
                     new Border
