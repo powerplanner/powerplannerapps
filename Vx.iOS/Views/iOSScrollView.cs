@@ -18,6 +18,7 @@ namespace Vx.iOS.Views
             View.MaximumZoomScale = newView.MaximumZoomScale;
             View.MinimumZoomScale = newView.MinimumZoomScale;
             View.ConfigureZoom(newView.MaximumZoomScale != newView.MinimumZoomScale);
+            View.HorizontalScrollEnabled = newView.HorizontalScrollEnabled;
 
             ReconcileContentNew(oldView?.Content, newView.Content, changedView =>
             {

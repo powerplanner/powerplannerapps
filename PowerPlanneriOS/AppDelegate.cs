@@ -82,7 +82,6 @@ namespace PowerPlanneriOS
 
                 { typeof(InitialSyncViewModel), () => new InitialSyncViewController() },
                 { typeof(MainScreenViewModel), () => new MainScreenViewController() },
-                { typeof(ScheduleViewModel), () => new ScheduleViewController() },
                 { typeof(ClassViewModel), () => new ClassViewController() },
 
                 { typeof(YearsViewModel), () => new ComponentViewController() }, // Don't show Years as a popup on iOS
