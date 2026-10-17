@@ -75,6 +75,8 @@ namespace PowerPlannerAppDataLibrary.Components
                 DateTime date = ViewModel.StartDate.AddDays(i);
                 var arranger = ViewModel.Items[date.DayOfWeek];
 
+                Subscribe(arranger);
+
                 bool hideDay = !arranger.HolidayAndAllDayItems.Any() && !arranger.EventItems.Any() && !arranger.ScheduleItems.Any()
                     && (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday);
                 if (hideDay)
