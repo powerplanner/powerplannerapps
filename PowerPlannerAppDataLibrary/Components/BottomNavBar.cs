@@ -17,6 +17,11 @@ namespace PowerPlannerAppDataLibrary.Components
         public Thickness NookInsets { get; set; } = new Thickness(0, 0, 0, 0);
         public float BottomNookInset => Math.Max(0, NookInsets.Bottom - 15);
 
+        public static float FinalHeight(Thickness nookInsets)
+        {
+            return 64 + Math.Max(0, nookInsets.Bottom - 15);
+        }
+
         protected override View Render()
         {
             return new FrameLayout

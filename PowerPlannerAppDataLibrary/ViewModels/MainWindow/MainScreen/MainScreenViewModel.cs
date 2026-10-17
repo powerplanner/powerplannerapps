@@ -46,17 +46,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 return null;
             }
 
-            return new LinearLayout
+            return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
-                Orientation = IsCompactMode ? Orientation.Vertical : Orientation.Horizontal,
                 Children =
                 {
                     IsCompactMode ? new FrameLayout() : RenderSidebar(),
 
                     new PagedViewModelPresenterView
                     {
-                        ViewModel = this
+                        ViewModel = this,
+                        Margin = new Thickness(
+                            IsCompactMode ? 0 : SidebarWidth,
+                            0,
+                            0,
+                            IsCompactMode ? BottomNavBar.FinalHeight(NookInsets) : 0)
                     }.LinearLayoutWeight(1),
 
                     IsCompactMode ? new BottomNavBar
@@ -78,7 +82,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         IsOfflineOrHasSyncError = IsOffline || HasSyncErrors,
                         SyncState = SyncState,
                         UploadImageProgress = UploadImageProgress,
-                        NookInsets = NookInsets
+                        NookInsets = NookInsets,
+                        VerticalAlignment = VerticalAlignment.Bottom
                     } : null
                 }
             };
@@ -177,6 +182,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             } : null;
         }
 
+        private float SidebarWidth => 204 + NookInsets.Left;
+
         private View RenderSidebar()
         {
             var menuItems = RenderMenuItems();
@@ -184,8 +191,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
-                Width = 204 + NookInsets.Left,
+                Width = SidebarWidth,
                 VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Left,
                 Children =
                 {
                     new LinearLayout
