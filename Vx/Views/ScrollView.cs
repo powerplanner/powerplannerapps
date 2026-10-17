@@ -17,6 +17,8 @@ namespace Vx.Views
 
         public bool HorizontalScrollEnabled { get; set; }
 
-        public bool ZoomEnabled { get; set; }
+        public float MaximumZoomScale { get; set; } = 1.0f;
+
+        public float MinimumZoomScale { get; set; } = 1.0f;
     }
 }

@@ -216,7 +216,8 @@ namespace PowerPlannerAppDataLibrary.Components
                 Content = new ScrollView(frame)
                 {
                     HorizontalScrollEnabled = true,
-                    ZoomEnabled = true
+                    MaximumZoomScale = 1.0f,
+                    MinimumZoomScale = 0.3f
                 }
             };
         }
