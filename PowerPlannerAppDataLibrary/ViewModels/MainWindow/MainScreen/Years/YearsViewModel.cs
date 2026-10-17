@@ -38,6 +38,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             switch (e.PropertyName)
             {
                 case nameof(MainScreenViewModel.IsCompactMode):
+                case nameof(MainScreenViewModel.NookInsets):
                     MarkDirty();
                     break;
             }
@@ -53,9 +54,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             // Subscribe to the school
             Subscribe(YearsViewItemsGroup.School);
 
+            bool hasTitlebar = !MainScreenViewModel.IsCompactMode;
+            var contentNookInsets = hasTitlebar ? new Thickness(MainScreenViewModel.ContentNookInsets.Left, 0, MainScreenViewModel.ContentNookInsets.Right, MainScreenViewModel.ContentNookInsets.Bottom) : MainScreenViewModel.ContentNookInsets;
+
             var linearLayout = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin).Combine(NookInsets),
+                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin).Combine(contentNookInsets),
                 Children =
                 {
                     new LinearLayout
@@ -134,10 +138,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 {
                     Children =
                     {
-                        (MainScreenViewModel.IsCompactMode || VxPlatform.Current == Platform.iOS) ? new Toolbar
+                        hasTitlebar ? new Toolbar
                         {
                             Title = Title,
-                            NookInsets = NookInsets
+                            NookInsets = MainScreenViewModel.ContentNookInsets
                         }.InnerToolbarThemed() : null,
 
                         new ScrollView
