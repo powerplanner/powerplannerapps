@@ -111,14 +111,14 @@ namespace Vx.Views
                         OnClose));
             }
 
-            if (NookInsets.Top > 0)
+            if (NookInsets.Top > 0 || NookInsets.Left > 0 || NookInsets.Right > 0)
             {
                 return new Border
                 {
                     BackgroundColor = BackgroundColor,
                     Content = layout,
                     Height = ToolbarHeight + NookInsets.Top,
-                    Padding = new Thickness(0, NookInsets.Top, 0, 0)
+                    Padding = new Thickness(NookInsets.Left, NookInsets.Top, NookInsets.Right, 0)
                 };
             }
 

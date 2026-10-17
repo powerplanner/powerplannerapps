@@ -669,7 +669,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 toolbar = new Toolbar
                 {
-                    Title = CanGoBack ? "" : Title,
+                    Title = (CanGoBack && VxPlatform.Current == Platform.Uwp) ? "" : Title,
                     AlignTitleToLeft = true,
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
                     BackText = CanGoBack ? Title : null,
@@ -768,7 +768,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 CornerRadius = Theme.Current.CornerRadius,
                 BackgroundColor = Theme.Current.BackgroundColor,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
+                Margin = new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, 0, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom),
                 Content = new LinearLayout
                 {
                     Children =
