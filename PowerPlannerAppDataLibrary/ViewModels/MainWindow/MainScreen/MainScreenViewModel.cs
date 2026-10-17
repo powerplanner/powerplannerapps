@@ -251,7 +251,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     Content = new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("MainMenuItem_Settings"),
-                        TextColor = Theme.Current.ForegroundColor,
+                        TextColor = SelectedItem == MainMenuSelections.Settings ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor,
                         FontSize = 14,
                         Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 12, 0, 20 + NookInsets.Bottom),
                         FontWeight = FontWeights.SemiLight,
@@ -346,9 +346,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     isSelected = false;
                 }
                 Color foregroundColor = isSelected ?
-                    Theme.Current.IsDarkTheme ?
-                        ThemeColorGenerator.Generate(Theme.Current.AccentColor).PrimaryLight :
-                        ThemeColorGenerator.Generate(Theme.Current.AccentColor).PrimaryDark
+                    Theme.Current.AccentColor
                     : Theme.Current.SubtleForegroundColor;
 
                 var linearLayout = new LinearLayout
@@ -408,19 +406,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         SelectedItem = i;
                     },
                     Margin = new Thickness(6, 0, 0, 0),
-                    BackgroundColor = i == SelectedItem ? Theme.Current.AccentColor.Opacity(0.2) : Color.Transparent,
+                    BackgroundColor = isSelected ? Theme.Current.AccentColor.Opacity(0.2) : Color.Transparent,
                     CornerRadius = 6
                 });
 
-                if (i == MainMenuSelections.Classes && SelectedItem == MainMenuSelections.Classes)
+                if (i == MainMenuSelections.Classes)
                 {
                     foreach (var c in Classes)
                     {
+                        bool isClassSelected = SelectedItem == MainMenuSelections.Classes && c == SelectedClass;
+
                         menuItems.Children.Add(new TransparentContentButton
                         {
-                            Margin = new Thickness(12, 0, 6, 0),
+                            Margin = new Thickness(24, 0, 6, 0),
                             CornerRadius = 6,
-                            BackgroundColor = SelectedClass == c ? Theme.Current.AccentColor.Opacity(0.1) : Color.Transparent,
+                            BackgroundColor = isClassSelected ? Theme.Current.AccentColor.Opacity(0.2) : Color.Transparent,
                             Content = new LinearLayout
                             {
                                 Orientation = Orientation.Horizontal,
@@ -429,7 +429,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                     new Border
                                     {
                                         Width = 3,
-                                        BackgroundColor = SelectedClass == c ? foregroundColor : Color.Transparent
+                                        BackgroundColor = isClassSelected ? ColorBytesHelper.ToColor(c.Color) : Color.Transparent
                                     },
                                     new Border
                                     {
@@ -443,10 +443,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                     new TextBlock
                                     {
                                         Text = c.Name,
-                                        TextColor = SelectedClass == c ? foregroundColor : Theme.Current.SubtleForegroundColor,
+                                        TextColor = isClassSelected ? foregroundColor : Theme.Current.SubtleForegroundColor,
                                         FontSize = 14,
                                         FontWeight = FontWeights.SemiLight,
-                                        Margin = new Thickness(12,6,0,6),
+                                        Margin = new Thickness(9,6,0,6),
                                         WrapText = false,
                                         VerticalAlignment = VerticalAlignment.Center
                                     }
