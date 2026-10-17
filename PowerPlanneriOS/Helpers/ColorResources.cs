@@ -6,6 +6,7 @@ using System.Text;
 using Foundation;
 using InterfacesiOS.Views;
 using UIKit;
+using Vx.Views;
 
 namespace PowerPlanneriOS.Helpers
 {
@@ -28,18 +29,18 @@ namespace PowerPlanneriOS.Helpers
 
         public static void ConfigureNavBar(UINavigationBar navBar)
         {
-            navBar.BarTintColor = PowerPlannerBlueChromeColor;
-            navBar.TintColor = UIColor.White;
+            navBar.BarTintColor = iOSThemeColorApplier.ToUIColor(Theme.Current.ChromeColor);
+            navBar.TintColor = iOSThemeColorApplier.ToUIColor(Theme.Current.ForegroundColor);
             navBar.Translucent = false;
 
             navBar.TitleTextAttributes = new UIStringAttributes()
             {
-                ForegroundColor = UIColor.White
+                ForegroundColor = iOSThemeColorApplier.ToUIColor(Theme.Current.ForegroundColor)
             };
 
             var appearance = new UINavigationBarAppearance();
             appearance.ConfigureWithOpaqueBackground();
-            appearance.BackgroundColor = PowerPlannerBlueChromeColor;
+            appearance.BackgroundColor = iOSThemeColorApplier.ToUIColor(Theme.Current.ChromeColor);
             appearance.TitleTextAttributes = new UIStringAttributes()
             {
                 ForegroundColor = navBar.TintColor
