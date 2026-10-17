@@ -169,7 +169,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         private View RenderClass(object classObject)
         {
-            float CIRCLE_SIZE = IsDesktop ? 16f : 32f;
+            float CIRCLE_SIZE = IsDesktop ? 16f : 24f;
             float TEXT_SIZE = IsDesktop ? Theme.Current.BodyFontSize : Theme.Current.SubtitleFontSize;
 
             var c = classObject as ViewItemClass;
@@ -181,8 +181,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                 {
                     new Border
                     {
-                        BorderColor = System.Drawing.Color.Black,
-                        BorderThickness = new Thickness(1),
                         BackgroundColor = ColorBytesHelper.ToColor(c.Color),
                         Width = CIRCLE_SIZE,
                         Height = CIRCLE_SIZE,
