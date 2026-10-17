@@ -138,7 +138,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return IsOffline || HasSyncErrors ? new TransparentContentButton
             {
                 VerticalAlignment = verticalAlignment,
-                Margin = new Thickness(0, NookInsets.Top, 0, 0),
+                Margin = new Thickness(NookInsets.Left, NookInsets.Top, 0, 0),
                 Content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
@@ -184,7 +184,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
-                Width = 204,
+                Width = 204 + NookInsets.Left,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Children =
                 {
@@ -197,7 +197,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             new LinearLayout
                             {
                                 Orientation = Orientation.Horizontal,
-                                Margin = new Thickness(Theme.Current.PageMargin, NookInsets.Top + 16, 0, 18),
+                                Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, NookInsets.Top + 16, 0, 18),
                                 Children =
                                 {
                                     new ImageView
@@ -253,7 +253,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         Text = PowerPlannerResources.GetString("MainMenuItem_Settings"),
                         TextColor = Theme.Current.ForegroundColor,
                         FontSize = 14,
-                        Margin = new Thickness(Theme.Current.PageMargin, 12, 0, 20),
+                        Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, 12, 0, 20 + NookInsets.Bottom),
                         FontWeight = FontWeights.SemiLight,
                         WrapText = false,
                         VerticalAlignment = VerticalAlignment.Center
@@ -330,7 +330,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             var menuItems = new LinearLayout
             {
-                Orientation = Orientation.Vertical
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(NookInsets.Left, 0, 0, 0)
             };
             foreach (var i in AvailableItems)
             {
@@ -472,8 +473,26 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 if (_isCompactMode != value)
                 {
                     SetProperty(ref _isCompactMode, value, nameof(IsCompactMode));
+                    RefreshContentNookInsets();
                 }
             }
+        }
+
+        /// <summary>
+        /// Insets for the page content. The sidebar absorbs the left/bottom insets in full mode, and the bottom nav bar absorbs the bottom in compact mode.
+        /// </summary>
+        public Thickness ContentNookInsets => IsCompactMode
+            ? new Thickness(NookInsets.Left, NookInsets.Top, NookInsets.Right, 0)
+            : new Thickness(0, NookInsets.Top, NookInsets.Right, NookInsets.Bottom);
+
+        protected override void OnNookInsetsChanged()
+        {
+            RefreshContentNookInsets();
+        }
+
+        private void RefreshContentNookInsets()
+        {
+            (Content as ComponentViewModel)?.RefreshNookInsets();
         }
 
         public enum SyncStates
