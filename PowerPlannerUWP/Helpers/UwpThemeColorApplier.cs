@@ -35,6 +35,8 @@ namespace PowerPlannerUWP.Helpers
             SetBrushColor(resources, "PowerPlannerDarkerBlue", colors.PrimaryDark);
             SetBrushColor(resources, "PowerPlannerCommandBarBackground", colors.PrimaryDark);
             SetBrushColor(resources, "TaskOrEventBrush", colors.PrimaryLight);
+
+            SetBrushColor(resources, "ApplicationPageBackgroundThemeBrush", Theme.Current.BackgroundColor);
         }
 
         private static void UpdateColorResources(ThemeColors colors)
