@@ -214,7 +214,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                                     new TextBlock
                                     {
-                                        Text = (CurrentAccount?.IsDefaultOfflineAccount ?? false) ? "Power Planner" : (CurrentAccount?.Username ?? "Power Planner"),
+                                        Text = "Power Planner",
                                         WrapText = false,
                                         TextColor = Theme.Current.ForegroundColor,
                                         FontSize = 14,

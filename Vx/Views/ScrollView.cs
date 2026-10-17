@@ -14,5 +14,9 @@ namespace Vx.Views
         }
 
         public View Content { get; set; }
+
+        public bool HorizontalScrollEnabled { get; set; }
+
+        public bool ZoomEnabled { get; set; }
     }
 }

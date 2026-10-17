@@ -16,6 +16,7 @@ using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome.Login;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.Welcome;
 using PowerPlannerAppDataLibrary.Exceptions;
 using Vx.Views;
+using PowerPlannerAppDataLibrary.Components;
 
 namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 {
@@ -54,7 +55,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
         public DateTime Today { get; private set; } = DateTime.Today;
 
-        public DateTime StartDate { get; private set; }
+        private static DateTime _cachedStartDate;
+        private static Guid _cachedSemesterId;
+        private static DateTime _cachedToday;
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get => _startDate;
+            private set
+            {
+                _startDate = value;
+                _cachedStartDate = value;
+                _cachedSemesterId = SemesterViewItemsGroup?.Semester?.Identifier ?? Guid.Empty;
+                _cachedToday = Today;
+            }
+        }
 
         /// <summary>
         /// UWP uses this to support pinning.
@@ -249,7 +264,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             FirstDayOfWeek = acct.WeekChangesOn;
 
             DateTime today = DateTime.Today;
-            if (semesterGroup.Semester.IsDateDuringThisSemester(today))
+
+            // Restore cached start date if it's still valid
+            if (_cachedStartDate != default(DateTime) && _cachedSemesterId == semesterGroup.Semester.Identifier && _cachedToday == today)
+            {
+                StartDate = DateTools.Last(FirstDayOfWeek, _cachedStartDate);
+            }
+            else if (semesterGroup.Semester.IsDateDuringThisSemester(today))
             {
                 StartDate = DateTools.Last(FirstDayOfWeek);
             }
@@ -531,6 +552,94 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         public void LogIn()
         {
             ShowPopup(new ExistingUserViewModel(this));
+        }
+
+        protected override View Render()
+        {
+            if (LayoutMode == LayoutModes.Welcome)
+            {
+                return RenderNoClassesView();
+            }
+
+            View content;
+
+            switch (LayoutMode)
+            {
+                case LayoutModes.Normal:
+                    content = RenderNormalView(new Thickness(NookInsets.Left, 0, NookInsets.Right, NookInsets.Bottom));
+                    break;
+
+                case LayoutModes.FullEditing:
+                    content = RenderEditingView(new Thickness(NookInsets.Left, 0, NookInsets.Right, NookInsets.Bottom));
+                    break;
+
+                case LayoutModes.SplitEditing:
+                    content = new LinearLayout
+                    {
+                        Children =
+                        {
+                            RenderNormalView(new Thickness(NookInsets.Left, 0, NookInsets.Right, 0)).LinearLayoutWeight(1),
+                            RenderEditingView(new Thickness(NookInsets.Left, 0, NookInsets.Right, NookInsets.Bottom)).LinearLayoutWeight(1)
+                        }
+                    };
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+
+            bool showLeftRight = LayoutMode != LayoutModes.FullEditing;
+
+            var root = new LinearLayout
+            {
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
+                {
+                    new ScheduleToolbarComponent
+                    {
+                        ViewModel = this
+                    },
+
+                    content.LinearLayoutWeight(1)
+                }
+            };
+
+            return root;
+        }
+
+        private View RenderNoClassesView()
+        {
+            return new Border
+            {
+                BackgroundColor = Theme.Current.BackgroundColor,
+                CornerRadius = Theme.Current.CornerRadius,
+                Margin = new Thickness(Theme.Current.SmallPageMargin),
+                Content = new ScheduleWelcomeComponent()
+                {
+                    ScheduleViewModel = this,
+                    NookInsets = new Thickness(NookInsets.Left, NookInsets.Top, NookInsets.Right, NookInsets.Bottom)
+                }
+            };
+        }
+
+        private View RenderNormalView(Thickness nookInsets)
+        {
+            return new ScheduleViewComponent
+            {
+                ViewModel = this,
+                NookInsets = nookInsets,
+                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin)
+            };
+        }
+
+        private View RenderEditingView(Thickness nookInsets)
+        {
+            return new EditingScheduleComponent
+            {
+                ViewModel = this,
+                NookInsets = nookInsets,
+                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin)
+            };
         }
     }
 }

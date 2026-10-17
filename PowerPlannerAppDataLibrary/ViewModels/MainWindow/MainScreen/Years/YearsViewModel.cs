@@ -55,7 +55,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             var linearLayout = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin).Combine(NookInsets),
+                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin).Combine(NookInsets),
                 Children =
                 {
                     new LinearLayout

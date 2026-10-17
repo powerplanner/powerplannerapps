@@ -78,7 +78,7 @@ namespace PowerPlannerAppDataLibrary.Components
                     ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.SplitEditing || ViewModel.LayoutMode == ScheduleViewModel.LayoutModes.FullEditing ? new MenuItem
                     {
                         Text = PowerPlannerResources.GetStringClose(),
-                        Glyph = MaterialDesign.MaterialDesignIcons.Close,
+                        Glyph = MaterialDesign.MaterialDesignIcons.Check,
                         Click = ViewModel.ExitEditMode
                     } : new MenuItem
                     {
