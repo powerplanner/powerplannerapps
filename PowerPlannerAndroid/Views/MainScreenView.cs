@@ -19,221 +19,74 @@ using AndroidX.Core.View;
 using BareMvvm.Core.Binding;
 using PowerPlannerAndroid.Helpers;
 using PowerPlannerAppDataLibrary.Helpers;
+using Vx.Droid;
+using InterfacesDroid.Themes;
+using AndroidX.CoordinatorLayout.Widget;
+using InterfacesDroid.Windows;
 
 namespace PowerPlannerAndroid.Views
 {
-    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView, AndroidX.Core.View.IOnApplyWindowInsetsListener
+    public class MainScreenView : InterfacesDroid.Views.PopupViewHost<MainScreenViewModel>, InterfacesDroid.Views.IGetSnackbarAnchorView
     {
-        private PagedViewModelPresenter _contentPresenter;
         private PopupsPresenter _popupsPresenter;
-        private ProgressBar _syncProgressBar;
-        private BindingHost _selectedClassBindingHost = new BindingHost();
-        public AndroidX.AppCompat.Widget.Toolbar Toolbar { get; private set; }
 
         public MainScreenView(ViewGroup root) : base(Resource.Layout.MainScreen, root)
         {
-            Toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.Toolbar);
-            Toolbar.MenuItemClick += Toolbar_MenuItemClick;
-            Toolbar.NavigationClick += Toolbar_NavigationClick;
-            _syncProgressBar = FindViewById<ProgressBar>(Resource.Id.SyncProgressBar);
             _popupsPresenter = FindViewById<PopupsPresenter>(Resource.Id.MainScreenPopupsPresenter);
-
-            ViewCompat.SetOnApplyWindowInsetsListener(FindViewById(Resource.Id.MainContentView), this);
-
-            // Apply current theme colors (subscription moved to OnAttachedToWindow)
-            ApplyThemeColors(DroidThemeColorApplier.Current);
-
-            // Handle class name changing in toolbar
-            _selectedClassBindingHost.SetBinding<ViewItemClass, string>(nameof(ViewItemClass.Name), item => item.Name, selectedClassName =>
-            {
-                if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes && selectedClassName != null)
-                {
-                    Toolbar.Title = selectedClassName;
-                }
-            });
+            NativeDroidAppWindow.WindowInsetsChanged += new WeakEventHandler<WindowInsetsCompat>(NativeDroidAppWindow_WindowInsetsChanged).Handler;
         }
 
-        private void ApplyThemeColors(ThemeColors colors)
+        private void NativeDroidAppWindow_WindowInsetsChanged(object sender, WindowInsetsCompat e)
+        {
+            UpdateNookInsets();
+        }
+
+        private void UpdateNookInsets()
         {
             try
             {
-                var primaryDark = DroidThemeColorApplier.ToDroid(colors.PrimaryDark);
-                var primary = DroidThemeColorApplier.ToDroid(colors.Primary);
-
-                FindViewById(Resource.Id.StatusBarSpacer)?.SetBackgroundColor(primaryDark);
-                Toolbar?.SetBackgroundColor(primary);
-
-                var bottomNav = FindViewById<Google.Android.Material.BottomNavigation.BottomNavigationView>(Resource.Id.BottomNav);
-                bottomNav?.SetBackgroundColor(primaryDark);
-
-                FindViewById(Resource.Id.BottomInsets)?.SetBackgroundColor(primaryDark);
-            }
-            catch (Exception ex)
-            {
-                PowerPlannerAppDataLibrary.Extensions.TelemetryExtension.Current?.TrackException(ex);
-            }
-        }
-
-        protected override void OnAttachedToWindow()
-        {
-            base.OnAttachedToWindow();
-            DroidThemeColorApplier.ThemeChanged += ApplyThemeColors;
-        }
-
-        protected override void OnDetachedFromWindow()
-        {
-            DroidThemeColorApplier.ThemeChanged -= ApplyThemeColors;
-            base.OnDetachedFromWindow();
-        }
-
-        public WindowInsetsCompat OnApplyWindowInsets(View v, WindowInsetsCompat windowInsets)
-        {
-            var insets = windowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
-
-            var statusBarSpacer = FindViewById(Resource.Id.StatusBarSpacer);
-            var statusBarSpacerLp = statusBarSpacer.LayoutParameters;
-            statusBarSpacerLp.Height = insets.Top;
-            statusBarSpacer.LayoutParameters = statusBarSpacerLp;
-
-            var bottomInsets = FindViewById(Resource.Id.BottomInsets);
-            var lp = bottomInsets.LayoutParameters;
-            lp.Height = insets.Bottom;
-            bottomInsets.LayoutParameters = lp;
-
-            // Return CONSUMED if you don't want want the window insets to keep being
-            // passed down to descendant views.
-            return WindowInsetsCompat.Consumed;
-        }
-
-        private void Toolbar_NavigationClick(object sender, AndroidX.AppCompat.Widget.Toolbar.NavigationClickEventArgs e)
-        {
-            ViewModel.Content?.GoBack();
-        }
-
-        private void Toolbar_MenuItemClick(object sender, AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
-        {
-            IMainScreenToolbarHandler handler = _contentPresenter?.CurrentView as IMainScreenToolbarHandler;
-
-            if (handler != null)
-                handler.OnMenuItemClick(e);
-        }
-
-        private bool _showBackButton;
-        public bool ShowBackButton
-        {
-            get => _showBackButton;
-            set
-            {
-                if (_showBackButton != value)
+                if (ViewModel != null && NativeDroidAppWindow.WindowInsets != null)
                 {
-                    _showBackButton = value;
-
-                    if (value)
+                    var insets = NativeDroidAppWindow.WindowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
+                    if (insets != null)
                     {
-                        Toolbar.SetNavigationIcon(Resource.Drawable.ic_arrow_back_black_24dp);
-                    }
-                    else
-                    {
-                        Toolbar.NavigationIcon = null;
+                        ViewModel.UpdateNookInsets(new Vx.Views.Thickness
+                        {
+                            Left = ThemeHelper.FromPxPrecise(Context, insets.Left),
+                            Top = ThemeHelper.FromPxPrecise(Context, insets.Top),
+                            Right = ThemeHelper.FromPxPrecise(Context, insets.Right),
+                            Bottom = ThemeHelper.FromPxPrecise(Context, insets.Bottom)
+                        });
                     }
                 }
             }
+            catch { }
         }
-
-        private BottomNavigationView _bottomNav;
 
         public View GetSnackbarAnchorView()
         {
-            var fab = FindViewById(Resource.Id.FloatingActionButtonAdd);
-            if (fab != null)
-            {
-                return fab;
-            }
-
-            return _bottomNav;
+            return FindViewById(Resource.Id.SnackbarAnchorView);
         }
 
         public override void OnViewModelLoadedOverride()
         {
-            _bottomNav = FindViewById<BottomNavigationView>(Resource.Id.BottomNav);
-            _bottomNav.ItemSelected += BottomNav_NavigationItemSelected;
-
-            // Place the content presenter
-            _contentPresenter = new PagedViewModelPresenter(Context);
-            _contentPresenter.ContentChanged += _contentPresenter_ContentChanged;
-            FindViewById<FrameLayout>(Resource.Id.ContentFrame).AddView(_contentPresenter); // Add view before assigning ViewModel, so that parent can be found
-            _contentPresenter.ViewModel = ViewModel;
-
-            _popupsPresenter.ViewModel = ViewModel;
-
-            BindingHost.SetBinding<MainScreenViewModel>(nameof(ViewModel.SelectedItem), OnSelectedMenuItemChanged);
-            BindingHost.SetBinding<MainScreenViewModel>(nameof(ViewModel.SelectedClass), OnSelectedClassChanged);
-            BindingHost.SetBindings<MainScreenViewModel>(
-                [nameof(ViewModel.SyncState), nameof(ViewModel.UploadImageProgress)],
-                UpdateSyncBarStatus);
-
-            ViewModel.AvailableItems.CollectionChanged += new WeakEventHandler<NotifyCollectionChangedEventArgs>(AvailableItems_CollectionChanged).Handler;
-
-            UpdateActionBarTitle();
-            UpdateBottomNavMenu();
-            UpdateSyncBarStatus();
-
-            TryAskingForRatingIfNeeded();
-        }
-
-        private void AvailableItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            UpdateBottomNavMenu();
-        }
-
-        private NavigationManager.MainMenuSelections? _bottomMenuFirstItem;
-        private void UpdateBottomNavMenu()
-        {
-            var correctFirstItem = ViewModel.AvailableItems.First();
-
-            if (_bottomMenuFirstItem != null && _bottomMenuFirstItem.Value == correctFirstItem)
+            var mainContentView = FindViewById<FrameLayout>(Resource.Id.MainContentView);
+            if (mainContentView.ChildCount > 0)
             {
-                // If we're already set up correctly
-                return;
+                throw new InvalidOperationException("This view controller can't be recycled, a new one must be created when assigning a new view model");
             }
 
-            _bottomMenuFirstItem = correctFirstItem;
-
-            _bottomNav.Menu.Clear();
-
-            if (ViewModel.AvailableItems.Contains(NavigationManager.MainMenuSelections.Schedule))
+            if (ViewModel != null)
             {
-                if (ViewModel.AvailableItems.Contains(NavigationManager.MainMenuSelections.Calendar))
-                {
-                    AddMenuItem(NavigationManager.MainMenuSelections.Calendar, "MainMenuItem_Calendar", Resource.Drawable.ic_icons8_calendar_24);
-                    AddMenuItem(NavigationManager.MainMenuSelections.Agenda, "MainMenuItem_Agenda", Resource.Drawable.ic_icons8_todo_list_24);
-                }
+                UpdateNookInsets();
+                var renderedView = ViewModel.Render();
+                renderedView.LayoutParameters = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent);
+                mainContentView.AddView(renderedView);
 
-                AddMenuItem(NavigationManager.MainMenuSelections.Schedule, "MainMenuItem_Schedule", Resource.Drawable.ic_icons8_timesheet_24);
-                AddMenuItem(NavigationManager.MainMenuSelections.Classes, "MainMenuItem_Classes", Resource.Drawable.ic_icons8_book_shelf_24);
+                _popupsPresenter.ViewModel = ViewModel;
+
+                TryAskingForRatingIfNeeded();
             }
-
-            AddMenuItem(NavigationManager.MainMenuSelections.Settings, "String_More", Resource.Drawable.ic_student);
-
-            UpdateSelectedMenuItem();
-        }
-
-        private void AddMenuItem(NavigationManager.MainMenuSelections selection, string localizedId, int icon)
-        {
-            _bottomNav.Menu.Add(IMenu.None, (int)selection, IMenu.None, PowerPlannerResources.GetString(localizedId)).SetIcon(icon);
-        }
-
-        private void UpdateSelectedMenuItem()
-        {
-            if (ViewModel.SelectedItem != null)
-            {
-                _bottomNav.SelectedItemId = (int)ViewModel.SelectedItem.Value;
-            }
-        }
-
-        private void BottomNav_NavigationItemSelected(object sender, BottomNavigationView.ItemSelectedEventArgs e)
-        {
-            ViewModel.SelectedItem = (NavigationManager.MainMenuSelections)e.Item.ItemId;
         }
 
         private async void TryAskingForRatingIfNeeded()
@@ -286,87 +139,6 @@ namespace PowerPlannerAndroid.Views
             {
                 TelemetryExtension.Current?.TrackException(ex);
             }
-        }
-
-        private void _contentPresenter_ContentChanged(object sender, EventArgs e)
-        {
-            IMainScreenToolbarHandler handler = _contentPresenter?.CurrentView as IMainScreenToolbarHandler;
-
-            if (handler != null)
-                handler.RequestUpdateMenu();
-            else
-                Toolbar.Menu.Clear();
-        }
-
-        private void UpdateSyncBarStatus()
-        {
-            switch (ViewModel.SyncState)
-            {
-                case MainScreenViewModel.SyncStates.Done:
-                    _syncProgressBar.Indeterminate = false;
-                    _syncProgressBar.Progress = 0;
-                    _syncProgressBar.Visibility = ViewStates.Gone;
-                    break;
-
-                case MainScreenViewModel.SyncStates.Syncing:
-                    _syncProgressBar.Indeterminate = true;
-                    _syncProgressBar.Visibility = ViewStates.Visible;
-                    break;
-
-                case MainScreenViewModel.SyncStates.UploadingImages:
-                    _syncProgressBar.Indeterminate = false;
-                    _syncProgressBar.Visibility = ViewStates.Visible;
-                    _syncProgressBar.Progress = (int)(ViewModel.UploadImageProgress * 100);
-                    break;
-            }
-        }
-
-        private void UpdateActionBarTitle()
-        {
-            Toolbar.Visibility = ViewStates.Visible;
-
-            if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Classes)
-            {
-                if (ViewModel.SelectedClass != null)
-                {
-                    Toolbar.Title = ViewModel.SelectedClass.Name;
-                }
-                else
-                    Toolbar.Title = PowerPlannerResources.GetStringMenuItem(NavigationManager.MainMenuSelections.Classes);
-
-                ShowBackButton = false;
-            }
-
-            else if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Calendar)
-            {
-                Toolbar.Visibility = ViewStates.Gone;
-            }
-
-            else
-            {
-                if (ViewModel.SelectedItem == NavigationManager.MainMenuSelections.Settings)
-                {
-                    Toolbar.Title = PowerPlannerResources.GetString("String_More");
-                }
-                else
-                {
-                    Toolbar.Title = PowerPlannerResources.GetStringMenuItem(ViewModel.SelectedItem.GetValueOrDefault());
-                }
-
-                ShowBackButton = false;
-            }
-        }
-
-        private void OnSelectedMenuItemChanged()
-        {
-            UpdateActionBarTitle();
-            UpdateSelectedMenuItem();
-        }
-
-        private void OnSelectedClassChanged()
-        {
-            _selectedClassBindingHost.DataContext = ViewModel.SelectedClass;
-            UpdateActionBarTitle();
         }
     }
 }

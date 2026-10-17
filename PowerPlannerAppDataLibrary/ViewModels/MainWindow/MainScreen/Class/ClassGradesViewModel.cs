@@ -240,7 +240,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
             }
 
             View finalView;
-            float floatingActionButtonOffset = VxPlatform.Current == Platform.Android ? Theme.Current.PageMargin + FloatingActionButton.DefaultSize : 0;
+            float floatingActionButtonOffset = Theme.Current.PageMargin + FloatingActionButton.DefaultSize;
 
             var topMargin = VxPlatform.Current == Platform.iOS ? Theme.Current.PageMargin : 0;
 
@@ -344,32 +344,27 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Class
                 };
             }
 
-            // Add floating action button for Android
+            // Add floating action button
             return WrapInFloatingActionButtonIfNeeded(finalView, Add, new Thickness());
         }
 
         internal static View WrapInFloatingActionButtonIfNeeded(View view, Action addAction, Thickness nookInsets)
         {
-            if (VxPlatform.Current == Platform.Android)
+            return new FrameLayout
             {
-                return new FrameLayout
+                Children =
                 {
-                    Children =
+                    view,
+
+                    new FloatingActionButton
                     {
-                        view,
-
-                        new FloatingActionButton
-                        {
-                            Click = addAction,
-                            Margin = new Thickness(Theme.Current.PageMargin).Combine(nookInsets),
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Bottom
-                        }
+                        Click = addAction,
+                        Margin = new Thickness(Theme.Current.PageMargin).Combine(nookInsets),
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Bottom
                     }
-                };
-            }
-
-            return view;
+                }
+            };
         }
 
         private View RenderUnassignedItem(ViewItemTaskOrEvent t, bool includeMargin = true)

@@ -38,25 +38,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
         {
             var baseView = RenderBase();
 
-            if (VxPlatform.Current == Platform.Android)
+            return new FrameLayout
             {
-                return new FrameLayout
+                Children =
                 {
-                    Children =
+                    baseView,
+
+                    new FloatingAddItemButton
                     {
-                        baseView,
-
-                        new FloatingAddItemButton
-                        {
-                            AddTask = AddTask,
-                            AddEvent = AddEvent,
-                            AddHoliday = AddHoliday
-                        }
+                        AddTask = AddTask,
+                        AddEvent = AddEvent,
+                        AddHoliday = AddHoliday
                     }
-                };
-            }
-
-            return baseView;
+                }
+            };
         }
 
         private View RenderBase()

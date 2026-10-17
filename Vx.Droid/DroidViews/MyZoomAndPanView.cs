@@ -103,8 +103,8 @@ namespace InterfacesDroid.Views
         /// </summary>
         public float ZoomFactor { get; private set; } = 1;
 
-        public float MinZoomFactor { get; private set; } = 0.3f;
-        public float MaxZoomFactor { get; private set; } = 1.5f;
+        public float MinZoomFactor { get; set; } = 0.3f;
+        public float MaxZoomFactor { get; set; } = 1.5f;
 
         public void ChangeView(float? horizontalOffset, float? verticalOffset, float? zoomFactor)
         {

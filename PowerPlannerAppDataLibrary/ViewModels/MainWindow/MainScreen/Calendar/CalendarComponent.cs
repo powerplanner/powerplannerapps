@@ -28,7 +28,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
         public static bool IntegratedTopControls = false;
 
-        public override bool SubscribeToIsMouseOver => IntegratedTopControls;
+        public override bool SubscribeToMouseEvents => IntegratedTopControls;
 
         public bool IsFullSize => _viewModel.DisplayState == CalendarViewModel.DisplayStates.FullCalendar;
 
@@ -352,7 +352,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             public bool IsSelected { get; set; }
             public bool ShowPastCompleteItems { get; set; }
 
-            public override bool SubscribeToIsMouseOver => true;
+            public override bool SubscribeToMouseEvents => true;
 
             protected override View Render()
             {

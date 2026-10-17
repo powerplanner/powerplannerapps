@@ -194,6 +194,11 @@ namespace Vx.Droid
                     return new DroidProgressBar();
                 }
 
+                if (view is Vx.Views.PagedViewModelPresenterView)
+                {
+                    return new DroidPagedViewModelPresenterView();
+                }
+
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif

@@ -105,36 +105,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
                 };
             }
 
-            bool hasTitlebar = VxPlatform.Current != Platform.Android;
-
             // Wrap content in rounded border
             content = new Border
             {
                 BackgroundColor = Theme.Current.BackgroundColor,
                 CornerRadius = Theme.Current.CornerRadius,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, hasTitlebar ? 0 : Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
+                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
                 Content = content
             };
-
-            if (VxPlatform.Current == Platform.Android)
-            {
-                return new FrameLayout
-                {
-                    BackgroundColor = Theme.Current.ChromeColor,
-                    Children =
-                    {
-                        content,
-
-                        new FloatingActionButton
-                        {
-                            Click = AddClass,
-                            Margin = new Thickness(Theme.Current.PageMargin),
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            VerticalAlignment = VerticalAlignment.Bottom
-                        }
-                    }
-                };
-            }
 
             return new LinearLayout
             {

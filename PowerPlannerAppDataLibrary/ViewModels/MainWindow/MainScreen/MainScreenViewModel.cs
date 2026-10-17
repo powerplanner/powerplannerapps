@@ -561,7 +561,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         SelectedItem = AvailableItems.First();
                     }
 
-                    if (PowerPlannerApp.DoNotShowYearsInTabItems && closeYearsPopup)
+                    if (PowerPlannerApp.ShowYearsAsPopups && closeYearsPopup)
                     {
                         // We need to clear the Years page
                         Popups.Clear();
@@ -585,7 +585,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 SelectedItem = null;
             }
 
-            if (PowerPlannerApp.DoNotShowYearsInTabItems && AvailableItems.Any() && closeYearsPopup)
+            if (PowerPlannerApp.ShowYearsAsPopups && AvailableItems.Any() && closeYearsPopup)
             {
                 // We need to clear the Years page
                 Popups.Clear();
@@ -1605,14 +1605,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 desiredList.Remove(MainMenuSelections.Day);
             }
 
-            if (PowerPlannerApp.DoNotShowYearsInTabItems)
+            if (PowerPlannerApp.ShowYearsAsPopups)
             {
                 desiredList.Remove(MainMenuSelections.Years);
             }
 
             bool answer = IListExtensions.MakeListLike(_availableItems, desiredList);
 
-            if (PowerPlannerApp.DoNotShowYearsInTabItems && !AvailableItems.Any() && Popups.Count == 0)
+            if (PowerPlannerApp.ShowYearsAsPopups && !AvailableItems.Any() && Popups.Count == 0)
             {
                 OpenYears();
             }
@@ -1884,7 +1884,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         {
             try
             {
-                if (!PowerPlannerApp.DoNotShowYearsInTabItems)
+                if (!PowerPlannerApp.ShowYearsAsPopups)
                 {
                     throw new InvalidOperationException("If you're using this, you should have set DoNotShowYearsInTabItems to true");
                 }
@@ -1902,7 +1902,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         /// </summary>
         public void OpenOrShowYears()
         {
-            if (PowerPlannerApp.DoNotShowYearsInTabItems)
+            if (PowerPlannerApp.ShowYearsAsPopups)
             {
                 OpenYears();
             }

@@ -98,9 +98,6 @@ namespace PowerPlannerAndroid.App
                 // Main views
                 { typeof(InitialSyncViewModel), root => new InitialSyncView(root) },
                 { typeof(MainScreenViewModel), root => new MainScreenView(root) },
-                { typeof(ScheduleViewModel), root => new ScheduleView(root) },
-                { typeof(CalendarViewModel), root => new ComponentView(root) },
-                { typeof(AgendaViewModel), root => new ComponentView(root) },
                 { typeof(ClassViewModel), root => new ClassView(root) },
                 { typeof(PremiumVersionViewModel), root => new PremiumVersionView(root) },
                 { typeof(SyncErrorsViewModel), root => new SyncErrorsView(root) },

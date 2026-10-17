@@ -80,57 +80,44 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
 
             var baseView = RenderBase();
 
-            bool hasTitlebar = VxPlatform.Current != Platform.Android;
+            bool hasFab = VxPlatform.Current == Platform.Android;
 
             // Wrap baseView in rounded border
             baseView = new Border
             {
                 BackgroundColor = Theme.Current.BackgroundColor,
                 CornerRadius = Theme.Current.CornerRadius,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, hasTitlebar ? 0 : Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
+                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
                 Content = baseView
             };
 
             // Wrap in floating action button
-            if (!hasTitlebar)
+            return new FrameLayout
             {
-                return new FrameLayout
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
                 {
-                    BackgroundColor = Theme.Current.ChromeColor,
-                    Children =
+                    new LinearLayout
                     {
-                        baseView,
-
-                        new FloatingAddItemButton
+                        Children =
                         {
-                            AddTask = AddTask,
-                            AddEvent = AddEvent
-                        }
-                    }
-                };
-            }
-
-            else
-            {
-                return new LinearLayout
-                {
-                    BackgroundColor = Theme.Current.ChromeColor,
-                    Children =
-                    {
-                        new Toolbar
-                        {
-                            Title = "Agenda",
-                            PrimaryCommands =
+                            new Toolbar
                             {
-                                ToolbarHelper.AddCommand(AddTask, AddEvent)
+                                Title = PowerPlannerResources.GetStringMenuItem(NavigationManager.MainMenuSelections.Agenda),
+                                NookInsets = NookInsets
                             },
-                            NookInsets = NookInsets
-                        }.PowerPlannerThemed(),
 
-                        baseView.LinearLayoutWeight(1)
+                            baseView.LinearLayoutWeight(1)
+                        }
+                    },
+
+                    new FloatingAddItemButton
+                    {
+                        AddTask = AddTask,
+                        AddEvent = AddEvent
                     }
-                };
-            }
+                }
+            };
         }
 
         private View RenderBase()
@@ -164,7 +151,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 Items = ItemsWithHeaders,
                 ItemTemplate = RenderItem,
-                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + (VxPlatform.Current == Platform.Android ? (FloatingActionButton.DefaultSize + Theme.Current.PageMargin) : 0))
+                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + FloatingActionButton.DefaultSize + Theme.Current.PageMargin)
             };
         }
 

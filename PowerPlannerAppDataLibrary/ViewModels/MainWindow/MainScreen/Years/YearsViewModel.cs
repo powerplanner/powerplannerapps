@@ -54,12 +54,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             // Subscribe to the school
             Subscribe(YearsViewItemsGroup.School);
 
-            bool hasTitlebar = MainScreenViewModel.IsCompactMode;
+            bool hasTitlebar = MainScreenViewModel.IsCompactMode && !PowerPlannerApp.ShowYearsAsPopups;
             var contentNookInsets = hasTitlebar ? new Thickness(MainScreenViewModel.ContentNookInsets.Left, 0, MainScreenViewModel.ContentNookInsets.Right, MainScreenViewModel.ContentNookInsets.Bottom) : MainScreenViewModel.ContentNookInsets;
 
             var linearLayout = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin),
+                Margin = new Thickness(Theme.Current.PageMargin - (PowerPlannerApp.ShowYearsAsPopups ? 0 :Theme.Current.SmallPageMargin)),
                 Children =
                 {
                     new LinearLayout
@@ -102,6 +102,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 }
             };
 
+            if (PowerPlannerApp.ShowYearsAsPopups)
+            {
+                linearLayout.Margin = linearLayout.Margin.Combine(new Thickness(0, 0, 0, 24));
+            }
+
             List<View> adaptiveGridPanelChildren;
 
             var adaptiveGridPanel = new AdaptiveGridPanel();
@@ -130,6 +135,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     Margin = new Thickness(0, 24, 0, 0),
                     Click = () => ShowPopup(new RecoverDeletedYearsAndSemestersViewModel(Parent))
                 });
+            }
+
+            if (PowerPlannerApp.ShowYearsAsPopups)
+            {
+                return new ScrollView
+                {
+                    Content = linearLayout
+                };
             }
 
             return new LinearLayout
@@ -578,7 +591,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
         public override bool GoBack()
         {
-            if (PowerPlannerApp.DoNotShowYearsInTabItems && !MainScreenViewModel.AvailableItems.Any())
+            if (PowerPlannerApp.ShowYearsAsPopups && !MainScreenViewModel.AvailableItems.Any())
             {
                 return false;
             }

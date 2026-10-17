@@ -705,9 +705,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     Click = () => ShowPastCompleteItemsOnCalendar = !ShowPastCompleteItemsOnCalendar
                 });
 
-                // Add button is displayed as floating action button sometimes on Android
+                // Add button is displayed as floating action button sometimes
                 bool hasAddButtonInToolbar = false;
-                if (VxPlatform.Current != Platform.Android || DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
+                if (DisplayState == DisplayStates.FullCalendar || DisplayState == DisplayStates.CompactCalendar)
                 {
                     toolbar.PrimaryCommands.Insert(0, ToolbarHelper.AddCommand(() => AddTask(), () => AddEvent(), () => AddHoliday()));
                     hasAddButtonInToolbar = true;
@@ -757,9 +757,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                     DisplayDate = SelectedDate,
                     OnDisplayDateChanged = value => SelectedDate = value,
                     IncludeHeader = DisplayState == DisplayStates.Split,
-                    OnExpand = DisplayState == DisplayStates.Split && VxPlatform.Current != Platform.Uwp ? ExpandDay : (Action)null,
-                    IncludeAdd = VxPlatform.Current == Platform.Uwp
-                    
+                    OnExpand = DisplayState == DisplayStates.Split && VxPlatform.Current != Platform.Uwp ? ExpandDay : (Action)null
                 };
                 day.LinearLayoutWeight(1);
             }
@@ -790,27 +788,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
                 }
             };
 
-            // Add floating action button for Android
-            if (VxPlatform.Current == Platform.Android)
+            return new FrameLayout
             {
-                return new FrameLayout
+                Children =
                 {
-                    Children =
+                    root,
+
+                    day != null ? new FloatingAddItemButton
                     {
-                        root,
-
-                        day != null ? new FloatingAddItemButton
-                        {
-                            AddTask = () => AddTask(),
-                            AddEvent = () => AddEvent(),
-                            AddHoliday = () => AddHoliday()
-                        } : null
-                    },
-                    BackgroundColor = Theme.Current.BackgroundAlt2Color
-                };
-            }
-
-            return root;
+                        AddTask = () => AddTask(),
+                        AddEvent = () => AddEvent(),
+                        AddHoliday = () => AddHoliday()
+                    } : null
+                },
+                BackgroundColor = Theme.Current.ChromeColor
+            };
         }
     }
 }

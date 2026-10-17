@@ -34,7 +34,7 @@ namespace Vx.iOS
                     ThemeChanged?.Invoke(this, null);
                 });
 
-            if (component.SubscribeToIsMouseOver)
+            if (component.SubscribeToMouseEvents)
             {
                 _hoverGestureRecognizer = new UIHoverGestureRecognizer(HandleHover);
                 AddGestureRecognizer(_hoverGestureRecognizer);

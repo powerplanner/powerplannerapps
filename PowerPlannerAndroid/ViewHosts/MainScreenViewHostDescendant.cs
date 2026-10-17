@@ -47,25 +47,25 @@ namespace PowerPlannerAndroid.ViewHosts
 
         public void RequestUpdateMenu()
         {
-            int menuResource = GetMenuResource();
+            //int menuResource = GetMenuResource();
 
-            if (menuResource == -1)
-            {
-                // -1 means view will handle menu on its own
-                return;
-            }
+            //if (menuResource == -1)
+            //{
+            //    // -1 means view will handle menu on its own
+            //    return;
+            //}
 
-            MainScreenView.Toolbar.Menu.Clear();
+            //MainScreenView.Toolbar.Menu.Clear();
 
-            if (menuResource == 0)
-            {
-                return;
-            }
+            //if (menuResource == 0)
+            //{
+            //    return;
+            //}
 
-            MenuInflater inflater = new MenuInflater(Context);
-            inflater.Inflate(menuResource, MainScreenView.Toolbar.Menu);
+            //MenuInflater inflater = new MenuInflater(Context);
+            //inflater.Inflate(menuResource, MainScreenView.Toolbar.Menu);
 
-            LocalizationHelper.LocalizeMenu(MainScreenView.Toolbar.Menu);
+            //LocalizationHelper.LocalizeMenu(MainScreenView.Toolbar.Menu);
         }
 
         public virtual void OnMenuItemClick(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)

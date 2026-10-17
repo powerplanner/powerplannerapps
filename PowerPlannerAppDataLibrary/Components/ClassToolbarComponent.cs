@@ -63,27 +63,6 @@ namespace PowerPlannerAppDataLibrary.Components
                         Text = PowerPlannerResources.GetString("String_EditTimes"),
                         Glyph = MaterialDesign.MaterialDesignIcons.Edit,
                         Click = ViewModel.EditTimes
-                    } : null,
-
-                    SelectedIndex >= 3 ? new MenuItem
-                    {
-                        Text = PowerPlannerResources.GetString(SelectedIndex == 3 ? "String_NewTask" : SelectedIndex == 4 ? "String_NewEvent" : "String_NewGrade"),
-                        Glyph = MaterialDesign.MaterialDesignIcons.Add,
-                        Click = () =>
-                        {
-                            if (SelectedIndex == 3)
-                            {
-                                ViewModel.TasksViewModel.Add();
-                            }
-                            else if (SelectedIndex == 4)
-                            {
-                                ViewModel.EventsViewModel.Add();
-                            }
-                            else
-                            {
-                                ViewModel.GradesViewModel.Add();
-                            }
-                        }
                     } : null
                 },
 

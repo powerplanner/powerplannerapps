@@ -93,7 +93,7 @@ namespace Vx.Views
 
         public float SmallPageMargin => 6;
 
-        public float CornerRadius => 6;
+        public float CornerRadius => 9;
 
         public virtual float CaptionFontSize => 12;
 

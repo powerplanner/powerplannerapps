@@ -171,7 +171,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
             public DayScheduleItemsArranger.EventItem EventItem { get; set; }
             public bool IsExpanded { get; set; }
             public Action<DayScheduleItemsArranger.EventItem> SetExpanded { get; set; }
-            public override bool SubscribeToIsMouseOver => true;
+            public override bool SubscribeToMouseEvents => true;
             private DateTime _ignoreMouseTill;
             public const float ADDITIONAL_CIRCLES_MARGIN = 2;
             public const float ADDITIONAL_CIRCLES_WIDTH = 8;

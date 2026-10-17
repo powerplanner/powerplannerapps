@@ -228,6 +228,7 @@ namespace PowerPlanneriOS
 
             // Register custom views
             Vx.iOS.VxiOSExtensions.RegisterCustomView(v => v is CompletionSlider, v => new iOSCompletionSlider());
+            Vx.iOS.VxiOSExtensions.RegisterCustomView(v => v is FloatingAddItemButton, v => new iOSFloatingAddItemButton());
 
             UNUserNotificationCenter.Current.Delegate = new MyUserNotificationCenterDelegate(this);
             RemindersExtension.Current = new IOSRemindersExtension();

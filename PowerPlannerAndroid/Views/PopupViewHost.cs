@@ -99,8 +99,8 @@ namespace PowerPlannerAndroid.Views
         {
             try
             {
-                _statusBarSpacer?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(colors.PrimaryDark));
-                Toolbar?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(colors.Primary));
+                _statusBarSpacer?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(Vx.Views.Theme.Current.ChromeColor));
+                Toolbar?.SetBackgroundColor(DroidThemeColorApplier.ToDroid(Vx.Views.Theme.Current.ChromeColor));
             }
             catch (Exception ex)
             {

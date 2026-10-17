@@ -29,12 +29,24 @@ namespace Vx.Uwp
             SizeChanged += UwpNativeComponent_SizeChanged;
             ActualThemeChanged += UwpNativeComponent_ActualThemeChanged;
 
-            if (component.SubscribeToIsMouseOver)
+            if (component.SubscribeToMouseEvents)
             {
                 PointerEntered += UwpNativeComponent_PointerEntered;
                 PointerExited += UwpNativeComponent_PointerExited;
                 PointerCaptureLost += UwpNativeComponent_PointerCaptureLost;
+                PointerPressed += UwpNativeComponent_PointerPressed;
+                PointerReleased += UwpNativeComponent_PointerReleased;
             }
+        }
+
+        private void UwpNativeComponent_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            Component.IsMouseDown.Value = false;
+        }
+
+        private void UwpNativeComponent_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            Component.IsMouseDown.Value = true;
         }
 
         private void UwpNativeComponent_PointerCaptureLost(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
@@ -43,6 +55,7 @@ namespace Vx.Uwp
             if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
             {
                 Component.IsMouseOver.Value = false;
+                Component.IsMouseDown.Value = false;
                 MouseOverChanged?.Invoke(this, false);
             }
         }
@@ -50,6 +63,7 @@ namespace Vx.Uwp
         private void UwpNativeComponent_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             Component.IsMouseOver.Value = false;
+            Component.IsMouseDown.Value = false;
             MouseOverChanged?.Invoke(this, false);
         }
 

@@ -563,14 +563,16 @@ namespace Vx.Views
         }
 
         /// <summary>
-        /// To use this, override <see cref="SubscribeToIsMouseOver"/>.
+        /// To use this, override <see cref="SubscribeToMouseEvents"/>.
         /// </summary>
         public VxState<bool> IsMouseOver = new VxState<bool>(false);
+
+        public VxState<bool> IsMouseDown = new VxState<bool>(false);
 
         /// <summary>
         /// Components can override this to react to mouse over changes
         /// </summary>
-        public virtual bool SubscribeToIsMouseOver => false;
+        public virtual bool SubscribeToMouseEvents => false;
 
         /// <summary>
         /// Components can override this to react to when a breakpoint is hit. Note that a breakpoint of 600 will trigger when going from 599 to 600, or when going from 600 to 599. Your rendering logic should use if >= 600.
@@ -587,7 +589,7 @@ namespace Vx.Views
         }
 
         /// <summary>
-        /// Must override <see cref="SubscribeToIsMouseOver"/> to true to use this. Components can override this to react to mouse over, but must mark dirty if a render change is desired.
+        /// Must override <see cref="SubscribeToMouseEvents"/> to true to use this. Components can override this to react to mouse over, but must mark dirty if a render change is desired.
         /// </summary>
         /// <param name="isMouseOver"></param>
         protected virtual void OnMouseOverChanged(bool isMouseOver)
