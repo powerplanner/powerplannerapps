@@ -65,7 +65,7 @@ namespace Vx.Droid.Views
                     {
                         // Untested code, I haven't used resource IDs yet
                         // https://nsian.medium.com/use-variables-for-resource-id-in-android-5e64bba59284
-                        var resId = Application.Context.Resources.GetIdentifier(uriImageSource.AndroidResourceName, "drawable", null);
+                        var resId = Application.Context.Resources.GetIdentifier(uriImageSource.AndroidResourceName, "drawable", Android.App.Application.Context.PackageName);
                         if (resId != 0)
                         {
                             view.SetImageResource(resId);

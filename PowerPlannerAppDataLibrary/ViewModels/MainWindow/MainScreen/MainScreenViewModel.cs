@@ -213,7 +213,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                         Source = new UriImageSource
                                         {
                                             UwpUri = Theme.Current.IsDarkTheme ? "ms-appx:///Assets/Logo.png" : "ms-appx:///Assets/LogoDark.png",
-                                            IosBundleName = Theme.Current.IsDarkTheme ? "PowerPlannerIcon" : "PowerPlannerIconDark"
+                                            IosBundleName = Theme.Current.IsDarkTheme ? "PowerPlannerIcon" : "PowerPlannerIconDark",
+                                            AndroidResourceName = Theme.Current.IsDarkTheme ? "logo" : "logoDark"
                                         },
                                         Height = 24,
                                         Width = 18,
