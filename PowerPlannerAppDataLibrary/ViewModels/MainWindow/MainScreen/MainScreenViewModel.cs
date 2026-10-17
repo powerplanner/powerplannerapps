@@ -374,7 +374,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         {
                             Text = MainMenuItemToString(i),
                             TextColor = foregroundColor,
-                            Margin = new Thickness(8, 8, 0, 10),
+                            Margin = new Thickness(8, 8, 0, 9),
                             FontSize = 16,
                             FontWeight = FontWeights.SemiLight,
                             WrapText = false,
