@@ -669,7 +669,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
 
                 toolbar = new Toolbar
                 {
-                    Title = CanGoBack ? "" : Title,
+                    Title = (CanGoBack && VxPlatform.Current == Platform.Uwp) ? "" : Title,
                     AlignTitleToLeft = true,
                     OnBack = CanGoBack ? () => GoBack() : (Action)null,
                     BackText = CanGoBack ? Title : null,
