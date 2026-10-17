@@ -78,7 +78,7 @@ namespace Vx.Views
                     FontWeight = FontWeights.SemiLight,
                     VerticalAlignment = VerticalAlignment.Center,
                     TextAlignment = HorizontalAlignment.Left,
-                    Margin = isIOS ? new Thickness() : new Thickness(OnBack != null ? 6 : Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
+                    Margin = (isIOS && OnClose != null) ? new Thickness() : new Thickness(OnBack != null ? 6 : Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0)
                 }.LinearLayoutWeight(1));
 
             foreach (var c in PrimaryCommands.Where(i => i != null))
@@ -109,6 +109,17 @@ namespace Vx.Views
                         MaterialDesign.MaterialDesignIcons.Close,
                         PortableLocalizedResources.GetString("String_Close"),
                         OnClose));
+            }
+
+            if (NookInsets.Top > 0)
+            {
+                return new Border
+                {
+                    BackgroundColor = BackgroundColor,
+                    Content = layout,
+                    Height = ToolbarHeight + NookInsets.Top,
+                    Padding = new Thickness(0, NookInsets.Top, 0, 0)
+                };
             }
 
             return layout;
