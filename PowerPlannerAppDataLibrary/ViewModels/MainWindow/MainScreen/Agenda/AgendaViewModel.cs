@@ -96,6 +96,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new FrameLayout
                 {
+                    BackgroundColor = Theme.Current.ChromeColor,
                     Children =
                     {
                         baseView,
@@ -113,6 +114,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 return new LinearLayout
                 {
+                    BackgroundColor = Theme.Current.ChromeColor,
                     Children =
                     {
                         new Toolbar

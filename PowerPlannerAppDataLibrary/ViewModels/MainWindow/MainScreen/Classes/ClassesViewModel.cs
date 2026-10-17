@@ -120,6 +120,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
             {
                 return new FrameLayout
                 {
+                    BackgroundColor = Theme.Current.ChromeColor,
                     Children =
                     {
                         content,
@@ -137,6 +138,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
             return new LinearLayout
             {
+                BackgroundColor = Theme.Current.ChromeColor,
                 Children =
                 {
                     new Toolbar
