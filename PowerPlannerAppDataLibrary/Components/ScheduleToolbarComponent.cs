@@ -41,7 +41,6 @@ namespace PowerPlannerAppDataLibrary.Components
                         {
                             Text = ViewModel.DisplayStartDate.ToString(GetWeekDateConverterParameter()) + "-" +
                                 ViewModel.DisplayEndDate.ToString(GetWeekDateConverterParameter()),
-                            TextColor = Color.White,
                             FontSize = 20,
                             FontWeight = FontWeights.SemiLight,
                             WrapText = false
@@ -49,7 +48,6 @@ namespace PowerPlannerAppDataLibrary.Components
                         new TextBlock
                         {
                             Text = ViewModel.DisplayStartDate.ToString("yyyy") + (ViewModel.HasTwoWeekSchedule ? ", " + PowerPlannerResources.GetLocalizedWeek(ViewModel.CurrentWeek) : ""),
-                            TextColor = Color.White,
                             Opacity = 0.7f,
                             FontSize = 16,
                             FontWeight = FontWeights.SemiLight,
