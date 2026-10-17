@@ -47,7 +47,7 @@ namespace PowerPlannerAndroid.Views
             {
                 if (ViewModel != null && NativeDroidAppWindow.WindowInsets != null)
                 {
-                    var insets = NativeDroidAppWindow.WindowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars());
+                    var insets = NativeDroidAppWindow.WindowInsets.GetInsets(WindowInsetsCompat.Type.SystemBars() | WindowInsetsCompat.Type.DisplayCutout());
                     if (insets != null)
                     {
                         ViewModel.UpdateNookInsets(new Vx.Views.Thickness

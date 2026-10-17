@@ -87,7 +87,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 BackgroundColor = Theme.Current.BackgroundColor,
                 CornerRadius = Theme.Current.CornerRadius,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
+                Margin = new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, 0, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom),
                 Content = baseView
             };
 
