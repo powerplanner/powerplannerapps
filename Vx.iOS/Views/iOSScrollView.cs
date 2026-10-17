@@ -11,7 +11,6 @@ namespace Vx.iOS.Views
 {
     public class iOSScrollView : iOSView<Vx.Views.ScrollView, UIScrollViewWithPreferredMax>
     {
-        // TODO: Maybe I just need to implement my own scroll view? Can't figure out how to get the width passed to the child with auto layout...
         protected override void ApplyProperties(ScrollView oldView, ScrollView newView)
         {
             base.ApplyProperties(oldView, newView);
@@ -80,46 +79,5 @@ namespace Vx.iOS.Views
 
         private static nfloat MaxF(nfloat a, nfloat b) => a > b ? a : b;
         private static nfloat MinF(nfloat a, nfloat b) => a < b ? a : b;
-    }
-
-    public class UIVxScrollView : UIScrollView
-    {
-        private UIViewWrapper _content;
-        public UIViewWrapper Content
-        {
-            get => _content;
-            set
-            {
-                if (value != Content)
-                {
-                    _content = value;
-                    Subviews.FirstOrDefault()?.RemoveFromSuperview();
-
-                    if (value != null)
-                    {
-                        base.AddSubview(value.View);
-                    }
-
-                    InvalidateIntrinsicContentSize();
-                    SetNeedsLayout();
-                }
-            }
-        }
-
-        private Thickness _padding = new Thickness();
-        public Thickness Padding
-        {
-            get => _padding;
-            set
-            {
-                if (value != _padding)
-                {
-                    _padding = value;
-
-                    InvalidateIntrinsicContentSize();
-                    SetNeedsLayout();
-                }
-            }
-        }
     }
 }
