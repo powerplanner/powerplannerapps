@@ -597,7 +597,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 {
                     new ScheduleToolbarComponent
                     {
-                        ViewModel = this
+                        ViewModel = this,
+                        NookInsets = NookInsets
                     },
 
                     content.LinearLayoutWeight(1)

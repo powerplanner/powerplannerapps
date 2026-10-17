@@ -13,6 +13,7 @@ namespace PowerPlannerAppDataLibrary.Components
     public partial class ScheduleToolbarComponent : VxComponent
     {
         public ScheduleViewModel ViewModel { get; set; }
+        public Thickness NookInsets { get; set; }
 
         protected override View Render()
         {
@@ -29,7 +30,7 @@ namespace PowerPlannerAppDataLibrary.Components
             return new Toolbar
             {
                 Title = !hasScheduleContent ? MainScreenViewModel.MainMenuItemToString(NavigationManager.MainMenuSelections.Schedule) : null,
-                NookInsets = ViewModel.NookInsets,
+                NookInsets = NookInsets,
                 CustomTitle = hasScheduleContent ? new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
