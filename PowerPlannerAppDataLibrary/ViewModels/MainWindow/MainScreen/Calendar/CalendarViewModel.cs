@@ -768,7 +768,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Calendar
             {
                 CornerRadius = Theme.Current.CornerRadius,
                 BackgroundColor = Theme.Current.BackgroundColor,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
+                Margin = new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, 0, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom),
                 Content = new LinearLayout
                 {
                     Children =
