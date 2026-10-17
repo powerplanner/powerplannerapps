@@ -19,7 +19,6 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
     public partial class ScheduleWelcomeComponent : VxComponent
     {
         public ScheduleViewModel ScheduleViewModel { get; set; }
-        public Thickness NookInsets { get; set; }
 
         private VxState<bool> _displayInScrollView = new VxState<bool>(false);
 
@@ -34,9 +33,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         {
             var content = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin)
-                                .Combine(NookInsets)
-                                .Combine(new Thickness(0, 60, 0, 60)),
+                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin),
                 Children =
                 {
                     new TextBlock
@@ -98,23 +95,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
 
             return new FrameLayout
             {
-                BackgroundColor = Theme.Current.BackgroundAlt2Color,
                 Children =
                 {
                     contentContainer,
 
                     ScheduleViewModel.IsReturningUserVisible ? new LinearLayout
                     {
-                        Margin = new Thickness(Theme.Current.PageMargin, 0, Theme.Current.PageMargin, 0).Combine(NookInsets),
-                        BackgroundColor = Theme.Current.BackgroundAlt2Color,
+                        Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin),
                         VerticalAlignment = VerticalAlignment.Top,
                         Children =
                         {
                             new TextBlock
                             {
                                 Text = R.S("SchedulePage_TextBlockReturningUser.Text"),
-                                TextAlignment = HorizontalAlignment.Right,
-                                Margin = new Thickness(0, Theme.Current.PageMargin + NookInsets.Top - 8, 0, 0)
+                                TextAlignment = HorizontalAlignment.Right
                             },
 
                             new AccentButton

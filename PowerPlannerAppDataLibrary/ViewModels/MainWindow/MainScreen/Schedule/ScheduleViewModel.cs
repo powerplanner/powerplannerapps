@@ -611,13 +611,16 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
         {
             return new Border
             {
-                BackgroundColor = Theme.Current.BackgroundColor,
-                CornerRadius = Theme.Current.CornerRadius,
-                Margin = new Thickness(Theme.Current.SmallPageMargin),
-                Content = new ScheduleWelcomeComponent()
+                BackgroundColor = Theme.Current.ChromeColor,
+                Content = new Border
                 {
-                    ScheduleViewModel = this,
-                    NookInsets = new Thickness(NookInsets.Left, NookInsets.Top, NookInsets.Right, NookInsets.Bottom)
+                    BackgroundColor = Theme.Current.BackgroundColor,
+                    CornerRadius = Theme.Current.CornerRadius,
+                    Margin = new Thickness(Theme.Current.SmallPageMargin).Combine(NookInsets),
+                    Content = new ScheduleWelcomeComponent()
+                    {
+                        ScheduleViewModel = this
+                    }
                 }
             };
         }
