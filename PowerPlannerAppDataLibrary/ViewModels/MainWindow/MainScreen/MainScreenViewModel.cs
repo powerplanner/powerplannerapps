@@ -1343,7 +1343,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 SelectClassWithoutLoading(classToSelect.Identifier, allowGoingBack);
         }
 
-        private void setSelectedItem(NavigationManager.MainMenuSelections value)
+        private void setSelectedItem(NavigationManager.MainMenuSelections value, bool preserveBack = false)
         {
             if (!AvailableItems.Contains(value))
             {
@@ -1370,39 +1370,39 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 switch (value)
                 {
                     case NavigationManager.MainMenuSelections.Calendar:
-                        SetContent(new CalendarViewModel(this, CurrentLocalAccountId, CurrentSemester));
+                        SetContent(new CalendarViewModel(this, CurrentLocalAccountId, CurrentSemester), preserveBack);
                         break;
 
                     case NavigationManager.MainMenuSelections.Day:
-                        SetContent(new DayViewModel(this, CurrentLocalAccountId, CurrentSemester));
+                        SetContent(new DayViewModel(this, CurrentLocalAccountId, CurrentSemester), preserveBack);
                         break;
 
                     case NavigationManager.MainMenuSelections.Agenda:
-                        SetContent(new AgendaViewModel(this, CurrentLocalAccountId, CurrentSemester, DateTime.Today));
+                        SetContent(new AgendaViewModel(this, CurrentLocalAccountId, CurrentSemester, DateTime.Today), preserveBack);
                         break;
 
                     case MainMenuSelections.Schedule:
-                        SetContent(new ScheduleViewModel(this));
+                        SetContent(new ScheduleViewModel(this), preserveBack);
                         break;
 
                     case MainMenuSelections.Classes:
 
                         if (this.SelectedClass != null)
-                            SetContent(new ClassViewModel(this, CurrentLocalAccountId, SelectedClass.Identifier, DateTime.Today, CurrentSemester));
+                            SetContent(new ClassViewModel(this, CurrentLocalAccountId, SelectedClass.Identifier, DateTime.Today, CurrentSemester), preserveBack);
                         else
-                            SetContent(new ClassesViewModel(this));
+                            SetContent(new ClassesViewModel(this), preserveBack);
 
                         break;
 
                     case MainMenuSelections.Years:
-                        SetContent(new YearsViewModel(this));
+                        SetContent(new YearsViewModel(this), preserveBack);
                         break;
 
                     case MainMenuSelections.Settings:
                         if (PowerPlannerApp.ShowSettingsPagesAsPopups)
-                            SetContent(new SettingsListViewModel(this));
+                            SetContent(new SettingsListViewModel(this), preserveBack);
                         else
-                            SetContent(new SettingsViewModel(this));
+                            SetContent(new SettingsViewModel(this), preserveBack);
                         break;
                 }
             }
@@ -1908,7 +1908,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             }
             else
             {
-                SelectedItem = MainMenuSelections.Years;
+                setSelectedItem(MainMenuSelections.Years, preserveBack: true);
             }
         }
 

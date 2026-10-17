@@ -54,12 +54,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             // Subscribe to the school
             Subscribe(YearsViewItemsGroup.School);
 
-            bool hasTitlebar = !MainScreenViewModel.IsCompactMode;
+            bool hasTitlebar = MainScreenViewModel.IsCompactMode;
             var contentNookInsets = hasTitlebar ? new Thickness(MainScreenViewModel.ContentNookInsets.Left, 0, MainScreenViewModel.ContentNookInsets.Right, MainScreenViewModel.ContentNookInsets.Bottom) : MainScreenViewModel.ContentNookInsets;
 
             var linearLayout = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin).Combine(contentNookInsets),
+                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin),
                 Children =
                 {
                     new LinearLayout
@@ -132,40 +132,28 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                 });
             }
 
-            if (VxPlatform.Current == Platform.Uwp || VxPlatform.Current == Platform.iOS)
+            return new LinearLayout
             {
-                return new LinearLayout
+                BackgroundColor = Theme.Current.ChromeColor,
+                Children =
                 {
-                    Children =
+                    hasTitlebar ? new Toolbar
                     {
-                        hasTitlebar ? new Toolbar
-                        {
-                            Title = Title,
-                            NookInsets = MainScreenViewModel.ContentNookInsets
-                        }.InnerToolbarThemed() : null,
+                        Title = Title,
+                        NookInsets = MainScreenViewModel.ContentNookInsets,
+                        OnBack = CanGoBack ? () => GoBack() : null,
+                    }.InnerToolbarThemed() : null,
 
-                        new ScrollView
+                    new Border
+                    {
+                        CornerRadius = Theme.Current.CornerRadius,
+                        Margin = new Thickness(Theme.Current.SmallPageMargin).Combine(contentNookInsets),
+                        BackgroundColor = Theme.Current.BackgroundColor,
+                        Content = new ScrollView
                         {
-                            Content = new Border
-                            {
-                                CornerRadius = Theme.Current.CornerRadius,
-                                Margin = new Thickness(Theme.Current.SmallPageMargin),
-                                BackgroundColor = Theme.Current.BackgroundColor,
-                                Content = linearLayout
-                            }
-                        }.LinearLayoutWeight(1)
-                    }
-                };
-            }
-
-            return new ScrollView
-            {
-                Content = new Border
-                {
-                    CornerRadius = 6,
-                    Margin = new Thickness(6),
-                    BackgroundColor = Theme.Current.BackgroundColor,
-                    Content = linearLayout
+                            Content = linearLayout
+                        }
+                    }.LinearLayoutWeight(1)
                 }
             };
         }

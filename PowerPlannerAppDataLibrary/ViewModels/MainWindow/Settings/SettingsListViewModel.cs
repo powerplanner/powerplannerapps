@@ -78,10 +78,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
 
         protected override View Render()
         {
-            var layout = new LinearLayout()
-            {
-                Margin = NookInsets
-            };
+            var layout = new LinearLayout();
 
             if (IsViewYearsAndSemestersVisible)
             {
@@ -347,12 +344,13 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 BackgroundColor = Theme.Current.BackgroundColor,
                 CornerRadius = Theme.Current.CornerRadius,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, hasTitlebar ? 0 : Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin),
-                Content = layout
+                Margin = new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, hasTitlebar ? 0 : Theme.Current.SmallPageMargin + NookInsets.Top, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom),
+                Content = new ScrollView(layout)
             };
 
             return new LinearLayout
             {
+                BackgroundColor = Theme.Current.ChromeColor,
                 Children =
                 {
                     hasTitlebar ? new Toolbar
@@ -361,7 +359,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
                         NookInsets = NookInsets
                     }.InnerToolbarThemed() : null,
 
-                    new ScrollView(finalContent).LinearLayoutWeight(1)
+                    finalContent.LinearLayoutWeight(1)
                 }
             };
         }
