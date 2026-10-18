@@ -55,11 +55,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
             Subscribe(YearsViewItemsGroup.School);
 
             bool hasTitlebar = MainScreenViewModel.IsCompactMode && !PowerPlannerApp.ShowYearsAsPopups;
-            var contentNookInsets = hasTitlebar ? new Thickness(MainScreenViewModel.ContentNookInsets.Left, 0, MainScreenViewModel.ContentNookInsets.Right, MainScreenViewModel.ContentNookInsets.Bottom) : MainScreenViewModel.ContentNookInsets;
+            var contentMargins = PowerPlannerApp.ShowYearsAsPopups ? new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom) : MainScreenViewModel.ContentMargins;
 
             var linearLayout = new LinearLayout
             {
-                Margin = new Thickness(Theme.Current.PageMargin - (PowerPlannerApp.ShowYearsAsPopups ? 0 :Theme.Current.SmallPageMargin)),
+                Margin = new Thickness(Theme.Current.PageMargin - Theme.Current.SmallPageMargin),
                 Children =
                 {
                     new LinearLayout
@@ -104,7 +104,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
 
             if (PowerPlannerApp.ShowYearsAsPopups)
             {
-                linearLayout.Margin = linearLayout.Margin.Combine(new Thickness(0, 0, 0, 24));
+                linearLayout.Margin = linearLayout.Margin.Combine(new Thickness(0, 0, 0, 24)).Combine(new Thickness(Theme.Current.SmallPageMargin));
             }
 
             List<View> adaptiveGridPanelChildren;
@@ -160,7 +160,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     new Border
                     {
                         CornerRadius = Theme.Current.CornerRadius,
-                        Margin = ContentMargins,
+                        Margin = new Thickness(contentMargins.Left, hasTitlebar ? 0 : contentMargins.Top, contentMargins.Right, contentMargins.Bottom),
                         BackgroundColor = Theme.Current.BackgroundColor,
                         Content = new ScrollView
                         {
