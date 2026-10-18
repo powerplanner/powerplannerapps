@@ -344,7 +344,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.Settings
             {
                 BackgroundColor = Theme.Current.BackgroundColor,
                 CornerRadius = Theme.Current.CornerRadius,
-                Margin = new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, hasTitlebar ? 0 : Theme.Current.SmallPageMargin + NookInsets.Top, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom),
+                Margin = new Thickness(ContentMargins.Left, hasTitlebar ? 0 : ContentMargins.Top, ContentMargins.Right, ContentMargins.Bottom),
                 Content = new ScrollView(layout)
             };
 

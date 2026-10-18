@@ -26,7 +26,12 @@ namespace PowerPlannerAppDataLibrary.ViewModels
         /// </summary>
         public virtual Thickness NookInsets => MainScreenViewModel.ContentNookInsets;
 
-        internal void RefreshNookInsets()
+        /// <summary>
+        /// Includes nook insets
+        /// </summary>
+        public virtual Thickness ContentMargins => MainScreenViewModel.ContentMargins;
+
+        internal void RefreshContentNookInsetsAndMargins()
         {
             MarkDirty();
         }

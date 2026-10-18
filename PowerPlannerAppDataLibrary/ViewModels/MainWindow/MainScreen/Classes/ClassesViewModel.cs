@@ -110,7 +110,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
             {
                 BackgroundColor = Theme.Current.BackgroundColor,
                 CornerRadius = Theme.Current.CornerRadius,
-                Margin = new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, 0, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom),
+                Margin = new Thickness(ContentMargins.Left, 0, ContentMargins.Right, ContentMargins.Bottom),
                 Content = content
             };
 

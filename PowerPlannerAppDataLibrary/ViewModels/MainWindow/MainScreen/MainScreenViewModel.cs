@@ -482,7 +482,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 if (_isCompactMode != value)
                 {
                     SetProperty(ref _isCompactMode, value, nameof(IsCompactMode));
-                    RefreshContentNookInsets();
+                    RefreshContentNookInsetsAndMargins();
                 }
             }
         }
@@ -494,14 +494,18 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             ? new Thickness(NookInsets.Left, NookInsets.Top, NookInsets.Right, 0)
             : new Thickness(0, NookInsets.Top, NookInsets.Right, NookInsets.Bottom);
 
+        public Thickness ContentMargins => IsCompactMode
+            ? new Thickness(Theme.Current.SmallPageMargin + NookInsets.Left, Theme.Current.SmallPageMargin + NookInsets.Top, Theme.Current.SmallPageMargin + NookInsets.Right, 0)
+            : new Thickness(Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin + NookInsets.Top, Theme.Current.SmallPageMargin + NookInsets.Right, Theme.Current.SmallPageMargin + NookInsets.Bottom);
+
         protected override void OnNookInsetsChanged()
         {
-            RefreshContentNookInsets();
+            RefreshContentNookInsetsAndMargins();
         }
 
-        private void RefreshContentNookInsets()
+        private void RefreshContentNookInsetsAndMargins()
         {
-            (Content as ComponentViewModel)?.RefreshNookInsets();
+            (Content as ComponentViewModel)?.RefreshContentNookInsetsAndMargins();
         }
 
         public enum SyncStates

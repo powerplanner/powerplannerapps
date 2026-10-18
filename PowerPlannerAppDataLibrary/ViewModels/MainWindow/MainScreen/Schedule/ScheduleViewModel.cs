@@ -566,11 +566,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             switch (LayoutMode)
             {
                 case LayoutModes.Normal:
-                    content = RenderNormalView(new Thickness(NookInsets.Left, 0, NookInsets.Right, NookInsets.Bottom));
+                    content = RenderNormalView(ContentMargins);
                     break;
 
                 case LayoutModes.FullEditing:
-                    content = RenderEditingView(new Thickness(NookInsets.Left, 0, NookInsets.Right, NookInsets.Bottom));
+                    content = RenderEditingView(ContentMargins);
                     break;
 
                 case LayoutModes.SplitEditing:
@@ -578,8 +578,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         Children =
                         {
-                            RenderNormalView(new Thickness(NookInsets.Left, 0, NookInsets.Right, 0)).LinearLayoutWeight(1),
-                            RenderEditingView(new Thickness(NookInsets.Left, 0, NookInsets.Right, NookInsets.Bottom)).LinearLayoutWeight(1)
+                            RenderNormalView(new Thickness(ContentMargins.Left, 0, ContentMargins.Right, 0)).LinearLayoutWeight(1),
+                            RenderEditingView(new Thickness(ContentMargins.Left, 0, ContentMargins.Right, ContentMargins.Bottom)).LinearLayoutWeight(1)
                         }
                     };
                     break;
@@ -617,7 +617,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                 {
                     BackgroundColor = Theme.Current.BackgroundColor,
                     CornerRadius = Theme.Current.CornerRadius,
-                    Margin = new Thickness(Theme.Current.SmallPageMargin).Combine(NookInsets),
+                    Margin = ContentMargins,
                     Content = new ScheduleWelcomeComponent()
                     {
                         ScheduleViewModel = this
@@ -626,23 +626,21 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
             };
         }
 
-        private View RenderNormalView(Thickness nookInsets)
+        private View RenderNormalView(Thickness contentMargins)
         {
             return new ScheduleViewComponent
             {
                 ViewModel = this,
-                NookInsets = nookInsets,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin)
+                Margin = new Thickness(contentMargins.Left, 0, contentMargins.Right, contentMargins.Bottom)
             };
         }
 
-        private View RenderEditingView(Thickness nookInsets)
+        private View RenderEditingView(Thickness contentMargins)
         {
             return new EditingScheduleComponent
             {
                 ViewModel = this,
-                NookInsets = nookInsets,
-                Margin = new Thickness(Theme.Current.SmallPageMargin, 0, Theme.Current.SmallPageMargin, Theme.Current.SmallPageMargin)
+                Margin = new Thickness(contentMargins.Left, 0, contentMargins.Right, contentMargins.Bottom)
             };
         }
     }

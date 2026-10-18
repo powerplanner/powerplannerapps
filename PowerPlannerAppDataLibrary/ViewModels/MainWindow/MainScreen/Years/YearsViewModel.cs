@@ -160,7 +160,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Years
                     new Border
                     {
                         CornerRadius = Theme.Current.CornerRadius,
-                        Margin = new Thickness(Theme.Current.SmallPageMargin).Combine(contentNookInsets),
+                        Margin = ContentMargins,
                         BackgroundColor = Theme.Current.BackgroundColor,
                         Content = new ScrollView
                         {

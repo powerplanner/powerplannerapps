@@ -504,8 +504,7 @@ namespace PowerPlannerUWP.Views
             {
                 WelcomeRoot.Children.Add(new ScheduleWelcomeComponent()
                 {
-                    ScheduleViewModel = ViewModel,
-                    NookInsets = new Vx.Views.Thickness(ViewModel.NookInsets.Left, 0, ViewModel.NookInsets.Right, 0)
+                    ScheduleViewModel = ViewModel
                 }.Render());
             }
         }
