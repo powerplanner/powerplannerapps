@@ -83,19 +83,38 @@ namespace Vx.iOS
             {
                 base.Bounds = value;
 
-                if (!_rendered)
+                HandleBoundsChanged();
+            }
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            // Auto Layout / the parent panel resize us natively without going through the managed Bounds setter,
+            // so we also need to check for size changes here
+            HandleBoundsChanged(initializeIfEmpty: false);
+        }
+
+        private void HandleBoundsChanged(bool initializeIfEmpty = true)
+        {
+            if (!_rendered)
+            {
+                if (!initializeIfEmpty && Bounds.Width <= 0)
                 {
-                    _rendered = true;
-                    Component.InitializeForDisplay(this);
+                    return;
                 }
-                else
+
+                _rendered = true;
+                Component.InitializeForDisplay(this);
+            }
+            else
+            {
+                var newSize = ComponentSize;
+                if (_currSize != newSize)
                 {
-                    var newSize = ComponentSize;
-                    if (_currSize != newSize)
-                    {
-                        _currSize = newSize;
-                        ComponentSizeChanged?.Invoke(this, newSize);
-                    }
+                    _currSize = newSize;
+                    ComponentSizeChanged?.Invoke(this, newSize);
                 }
             }
         }

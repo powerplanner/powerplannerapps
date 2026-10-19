@@ -75,7 +75,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Day
                     {
                         Items = _dayWithScheduleSnapshot.Items,
                         ItemTemplate = RenderItem,
-                        Padding = new Thickness(0, 0, 0, 12)
+                        Padding = new Thickness(0, 0, 0, Vx.Views.FloatingActionButton.DefaultSize + (Theme.Current.PageMargin - Theme.Current.SmallPageMargin) * 2)
                     }.LinearLayoutWeight(1)
                 }
             }.AllowDropTaskOrEventOnDate(Date);

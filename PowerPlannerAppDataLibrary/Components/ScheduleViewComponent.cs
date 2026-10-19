@@ -1,5 +1,6 @@
 using PowerPlannerAppDataLibrary.Helpers;
 using PowerPlannerAppDataLibrary.ViewItems;
+using PowerPlannerAppDataLibrary.ViewLists;
 using PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule;
 using System;
 using System.Drawing;
@@ -20,7 +21,11 @@ namespace PowerPlannerAppDataLibrary.Components
         private const float ALL_DAY_ITEM_HEIGHT = 30;
         private const float ALL_DAY_ITEM_SPACING = 1;
 
+        private const float COLUMN_GAP = 2;
+
         private bool _arrangersInitialized;
+
+        private VxState<DayScheduleItemsArranger.EventItem> ExpandedTaskOrEvent = new VxState<DayScheduleItemsArranger.EventItem>(null);
 
         public ScheduleViewModel ViewModel { get; set; }
 
@@ -39,7 +44,8 @@ namespace PowerPlannerAppDataLibrary.Components
             var frame = new FrameLayout
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top
+                VerticalAlignment = VerticalAlignment.Top,
+                Tapped = () => ExpandedTaskOrEvent.Value = null
             };
 
             DateTime today = DateTime.Today;
@@ -47,14 +53,18 @@ namespace PowerPlannerAppDataLibrary.Components
             DateTime endTime = today.Add(ViewModel.EndTime);
 
             int maxAllDayItems = 0;
+            double maxArrangerHeight = 0;
             for (int i = 0; i < 7; i++)
             {
-                maxAllDayItems = Math.Max(maxAllDayItems, ViewModel.Items[ViewModel.StartDate.AddDays(i).DayOfWeek].HolidayAndAllDayItems.Count);
+                var dayArranger = ViewModel.Items[ViewModel.StartDate.AddDays(i).DayOfWeek];
+                maxAllDayItems = Math.Max(maxAllDayItems, dayArranger.HolidayAndAllDayItems.Count);
+                maxArrangerHeight = Math.Max(maxArrangerHeight, dayArranger.TotalHeight);
             }
             float allDayHeight = maxAllDayItems * (ALL_DAY_ITEM_HEIGHT + ALL_DAY_ITEM_SPACING);
             float scheduleTop = DAYS_ROW_HEIGHT + allDayHeight;
 
-            float contentHeight = INITIAL_MARGIN + ((endTime - startTime).Hours + 1) * HEIGHT_OF_HOUR + 55;
+            // The arrangers' height also accounts for expanded tasks/events extending past the last hour
+            float contentHeight = INITIAL_MARGIN + Math.Max(((endTime - startTime).Hours + 1) * HEIGHT_OF_HOUR, (float)maxArrangerHeight) + 55;
 
             for (DateTime time = startTime; endTime >= time; time = time.AddHours(1))
             {
@@ -160,13 +170,12 @@ namespace PowerPlannerAppDataLibrary.Components
 
                 foreach (var s in arranger.ScheduleItems)
                 {
-                    float width = (COL_WIDTH - COL_PADDING * 2) / s.NumOfColumns;
-                    float itemLeft = left + COL_PADDING + width * s.Column;
+                    GetHorizontalPlacement(s, left, out float itemLeft, out float width);
                     var item = s;
 
                     frame.Children.Add(new FrameLayout
                     {
-                        Width = width - (s.NumOfColumns > 1 ? 2 : 0),
+                        Width = width,
                         Height = (float)s.Height,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
@@ -192,6 +201,42 @@ namespace PowerPlannerAppDataLibrary.Components
                         VerticalAlignment = VerticalAlignment.Stretch,
                         Width = COL_WIDTH,
                         Margin = new Thickness(left, scheduleTop + INITIAL_MARGIN, 0, 0)
+                    });
+                }
+
+                // Reverse the order so that when items expand, they appear on top of the items beneath them.
+                // Added after the holiday overlay so that the items remain clickable.
+                foreach (var e in arranger.EventItems.Reverse())
+                {
+                    bool isExpanded = ExpandedTaskOrEvent.Value == e;
+                    GetHorizontalPlacement(e, left, out float eventLeft, out float eventWidth);
+
+                    if (isExpanded)
+                    {
+                        // Expanded items span the full column so that all the items can be read
+                        eventLeft = left + COL_PADDING;
+                        eventWidth = COL_WIDTH - COL_PADDING * 2;
+                    }
+                    else if (e.IsCollapsedMode && e.NumOfColumns == 1)
+                    {
+                        // Keep the collapsed item narrow so it doesn't steal the clicks of the class beside it
+                        eventWidth = ScheduleItemComponent.WIDTH_OF_COLLAPSED_ITEM;
+                        if (e.AdditionalItems != null && e.AdditionalItems.Count > 0)
+                        {
+                            eventWidth += ExpandableTaskOrEventComponent.ADDITIONAL_CIRCLES_MARGIN + ExpandableTaskOrEventComponent.ADDITIONAL_CIRCLES_WIDTH;
+                        }
+                    }
+
+                    frame.Children.Add(new FrameLayout
+                    {
+                        Width = eventWidth,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        Margin = new Thickness(eventLeft, scheduleTop + INITIAL_MARGIN + (float)e.TopOffset, 0, 0),
+                        Children =
+                        {
+                            ExpandableTaskOrEventComponent.CreateView(e, ExpandedTaskOrEvent.Value, exp => ExpandedTaskOrEvent.Value = exp)
+                        }
                     });
                 }
 
@@ -222,6 +267,15 @@ namespace PowerPlannerAppDataLibrary.Components
                     MinimumZoomScale = 0.3f
                 }
             };
+        }
+
+        private static void GetHorizontalPlacement(DayScheduleItemsArranger.BaseScheduleItem item, float columnLeft, out float itemLeft, out float width)
+        {
+            // Schedule items are shifted over (LeftOffset) to make room for collapsed tasks/events beside them
+            float availableWidth = COL_WIDTH - COL_PADDING * 2 - (float)item.LeftOffset;
+            float columnWidth = availableWidth / item.NumOfColumns;
+            itemLeft = columnLeft + COL_PADDING + (float)item.LeftOffset + columnWidth * item.Column;
+            width = columnWidth - (item.NumOfColumns > 1 ? COLUMN_GAP : 0);
         }
 
         private static float GetTopMargin(TimeSpan itemTime, TimeSpan baseTime)

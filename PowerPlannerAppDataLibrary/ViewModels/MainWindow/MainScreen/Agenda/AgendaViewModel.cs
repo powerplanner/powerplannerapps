@@ -151,7 +151,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Agenda
             {
                 Items = ItemsWithHeaders,
                 ItemTemplate = RenderItem,
-                Padding = new Thickness(0, 0, 0, Theme.Current.PageMargin + FloatingActionButton.DefaultSize + Theme.Current.PageMargin)
+                Padding = new Thickness(0, 0, 0, FloatingActionButton.DefaultSize + (Theme.Current.PageMargin - Theme.Current.SmallPageMargin) * 2)
             };
         }
 
