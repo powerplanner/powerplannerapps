@@ -53,8 +53,6 @@ namespace PowerPlannerAppDataLibrary.Components
                 CornerRadius = Theme.Current.CornerRadius,
                 Content = new ScrollView(layout)
             };
-
-            return new ScrollView(layout);
         }
 
         private View RenderClass(ViewItemClass c)
