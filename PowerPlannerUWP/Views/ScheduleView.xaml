@@ -80,7 +80,7 @@
 
         <Grid Grid.Row="1">
 
-            <Grid x:Name="GridSchedule" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" CornerRadius="6" Margin="6, 0, 6, 6">
+            <Grid x:Name="GridSchedule" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" CornerRadius="9" Margin="6, 0, 6, 6">
 
                 <ScrollViewer x:Name="ScrollViewerSchedule" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" Grid.Row="0" ViewChanging="ScrollViewerSchedule_ViewChanging" Tapped="ScrollViewerSchedule_Tapped">
                     <Grid>
@@ -345,7 +345,7 @@
             Visibility="Collapsed"
             Grid.Row="2"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-            CornerRadius="6"
+            CornerRadius="9"
             Margin="6, 0, 6, 6">
 
             <Grid.RowDefinitions>
