@@ -578,7 +578,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Schedule
                     {
                         Children =
                         {
-                            RenderNormalView(new Thickness(ContentMargins.Left, 0, ContentMargins.Right, 0)).LinearLayoutWeight(1),
+                            RenderNormalView(new Thickness(ContentMargins.Left, 0, ContentMargins.Right, Theme.Current.SmallPageMargin)).LinearLayoutWeight(1),
                             RenderEditingView(new Thickness(ContentMargins.Left, 0, ContentMargins.Right, ContentMargins.Bottom)).LinearLayoutWeight(1)
                         }
                     };
