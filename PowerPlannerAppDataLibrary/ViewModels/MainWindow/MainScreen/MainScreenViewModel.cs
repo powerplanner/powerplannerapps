@@ -134,7 +134,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 Value = SyncState == SyncStates.UploadingImages ? UploadImageProgress : 0,
                 MaxValue = 1,
                 VerticalAlignment = verticalAlignment,
-                Margin = new Thickness(0, nookInsets.Top, 0, 0)
+                Margin = new Thickness(0, verticalAlignment == VerticalAlignment.Bottom ? 0 : nookInsets.Top, 0, 0)
             };
         }
 
