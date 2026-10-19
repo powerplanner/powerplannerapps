@@ -20,7 +20,7 @@ namespace Vx.Views
         public string UwpUri { get; set; }
         public string AndroidUri { get; set; }
         /// <summary>
-        /// The same ID string you'd use when calling Resource.Drawable.XYZ (only specify the XYZ)
+        /// The same ID string you'd use when calling Resource.Drawable.XYZ (only specify the XYZ). Note that it should be ALL LOWERCASE.
         /// </summary>
         public string AndroidResourceName { get; set; }
         public string IosBundleName { get; set; }
