@@ -235,8 +235,10 @@ namespace PowerPlanneriOS.Views
 
             _overlay.Frame = Bounds;
 
-            var right = Bounds.Width - EdgeMargin;
-            nfloat y = Bounds.Height - EdgeMargin - MainSize;
+            // Move the buttons left/up only as far as needed to stay clear of nooks (rounded corners, home indicator, etc.)
+            var nookInsets = GetNookInsets();
+            var right = Bounds.Width - (nfloat)Math.Max(EdgeMargin, nookInsets.Right);
+            nfloat y = Bounds.Height - (nfloat)Math.Max(EdgeMargin, nookInsets.Bottom) - MainSize;
             PlaceRow(_taskRow, right, y);
 
             // Center the smaller buttons over the main button
@@ -247,6 +249,40 @@ namespace PowerPlanneriOS.Views
 
             y -= RowSpacing + MiniSize;
             PlaceRow(_holidayRow, miniRight, y);
+        }
+
+        public override void SafeAreaInsetsDidChange()
+        {
+            base.SafeAreaInsetsDidChange();
+            SetNeedsLayout();
+        }
+
+        /// <summary>
+        /// How far this view extends into the window's unsafe area. Uses the window's safe area rather than this view's own
+        /// insets, since a view that doesn't reach the screen edge (for example one sitting above the tab bar) reports none.
+        /// </summary>
+        private UIEdgeInsets GetNookInsets()
+        {
+            var window = Window;
+            if (window == null)
+            {
+                return UIEdgeInsets.Zero;
+            }
+
+            var windowInsets = window.SafeAreaInsets;
+            var safeRect = ConvertRectFromView(
+                new CGRect(
+                    windowInsets.Left,
+                    windowInsets.Top,
+                    window.Bounds.Width - windowInsets.Left - windowInsets.Right,
+                    window.Bounds.Height - windowInsets.Top - windowInsets.Bottom),
+                window);
+
+            return new UIEdgeInsets(
+                (nfloat)Math.Max(0, safeRect.Top - Bounds.Top),
+                (nfloat)Math.Max(0, safeRect.Left - Bounds.Left),
+                (nfloat)Math.Max(0, Bounds.Bottom - safeRect.Bottom),
+                (nfloat)Math.Max(0, Bounds.Right - safeRect.Right));
         }
 
         // Uses Bounds/Center rather than Frame since rows are animated with a transform
