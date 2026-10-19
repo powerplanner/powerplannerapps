@@ -11,7 +11,7 @@ namespace Vx.Droid.Views
 {
     internal class DroidProgressBar : DroidView<Vx.Views.ProgressBar, ProgressBar>
     {
-        public DroidProgressBar() : base(new ProgressBar(VxDroidExtensions.ApplicationContext))
+        public DroidProgressBar() : base(new ProgressBar(VxDroidExtensions.ApplicationContext, null, Android.Resource.Attribute.ProgressBarStyleHorizontal))
         {
         }
 

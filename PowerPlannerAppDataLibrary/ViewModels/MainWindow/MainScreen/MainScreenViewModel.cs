@@ -129,7 +129,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             return new ProgressBar
             {
                 Opacity = SyncState == SyncStates.Done ? 0 : 1,
-                Color = System.Drawing.Color.White,
+                Color = Theme.Current.ForegroundColor,
                 IsIndeterminate = SyncState == SyncStates.Syncing ? true : false,
                 Value = SyncState == SyncStates.UploadingImages ? UploadImageProgress : 0,
                 MaxValue = 1,
@@ -152,14 +152,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         {
                             Glyph = MaterialDesign.MaterialDesignIcons.Error,
                             FontSize = 12,
-                            Color = System.Drawing.Color.White,
+                            Color = Theme.Current.SubtleForegroundColor,
                             VerticalAlignment = VerticalAlignment.Center
                         },
                         new TextBlock
                         {
                             Text = HasSyncErrors ? PowerPlannerResources.GetString("String_SyncError") : IsOffline ? PowerPlannerResources.GetString("String_Offline") : "",
                             WrapText = false,
-                            TextColor = System.Drawing.Color.White,
+                            TextColor = Theme.Current.SubtleForegroundColor,
                             FontSize = 10,
                             VerticalAlignment = VerticalAlignment.Center,
                             Margin = new Thickness(6,0,0,0)
