@@ -11,10 +11,11 @@
         android:layout_height="0dp"
         android:background="@color/primaryDark"/>
         
-    <androidx.appcompat.widget.Toolbar
+    <FrameLayout
         android:id="@+id/Toolbar"
-        style="@style/ActionBar"
-        android:layout_below="@id/StatusBarSpacer"/>
+        android:layout_below="@id/StatusBarSpacer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
             
     <FrameLayout
         android:id="@+id/ContentFrame"

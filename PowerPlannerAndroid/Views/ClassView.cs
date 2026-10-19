@@ -257,53 +257,61 @@ namespace PowerPlannerAndroid.Views
 
         private void UpdateMenu()
         {
-            SetMenu(GetMenuResource());
-        }
+            var editClass = new Vx.Views.MenuItem
+            {
+                Text = R.S("String_EditClass"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Edit,
+                Click = ViewModel.EditClassWithDetails
+            };
 
-        private int GetMenuResource()
-        {
+            var deleteClass = new Vx.Views.MenuItem
+            {
+                Text = R.S("String_DeleteClass"),
+                Glyph = MaterialDesign.MaterialDesignIcons.Delete,
+                Click = PromptDeleteClass
+            };
+
             switch (_viewPager.CurrentItem)
             {
-                case ClassPagerAdapter.DETAILS:
-                    return Resource.Menu.class_details_menu;
-
                 case ClassPagerAdapter.TIMES:
-                    return Resource.Menu.class_times_menu;
-
-                case ClassPagerAdapter.GRADES:
-                    return Resource.Menu.class_grades_menu;
-            }
-
-            return Resource.Menu.class_basic_menu;
-        }
-
-        public override void OnMenuItemClicked(AndroidX.AppCompat.Widget.Toolbar.MenuItemClickEventArgs e)
-        {
-            switch (e.Item.ItemId)
-            {
-                case Resource.Id.MenuItemEdit:
-
-                    switch (_viewPager.CurrentItem)
+                    Toolbar.PrimaryCommands = new List<Vx.Views.MenuItem>
                     {
-                        case ClassPagerAdapter.DETAILS:
-                            ViewModel.EditDetails();
-                            break;
-
-                        case ClassPagerAdapter.TIMES:
-                            ViewModel.EditTimes();
-                            break;
-                    }
-
+                        new Vx.Views.MenuItem
+                        {
+                            Text = R.S("String_EditTimes"),
+                            Glyph = MaterialDesign.MaterialDesignIcons.Edit,
+                            Click = ViewModel.EditTimes
+                        }
+                    };
+                    Toolbar.SecondaryCommands = new List<Vx.Views.MenuItem>
+                    {
+                        editClass,
+                        deleteClass
+                    };
                     break;
-
-                case Resource.Id.MenuItemEditClass:
-                    ViewModel.EditClass();
+                case ClassPagerAdapter.TASKS:
+                case ClassPagerAdapter.EVENTS:
+                case ClassPagerAdapter.GRADES:
+                    Toolbar.PrimaryCommands = new();
+                    Toolbar.SecondaryCommands = new List<Vx.Views.MenuItem>
+                    {
+                        editClass,
+                        deleteClass
+                    };
                     break;
-
-                case Resource.Id.MenuItemDeleteClass:
-                    PromptDeleteClass();
+                default:
+                    Toolbar.PrimaryCommands = new List<Vx.Views.MenuItem>
+                    {
+                        editClass
+                    };
+                    Toolbar.SecondaryCommands = new List<Vx.Views.MenuItem>
+                    {
+                        deleteClass
+                    };
                     break;
             }
+
+            Toolbar.RenderOnDemand();
         }
 
         private void PromptDeleteClass()
