@@ -138,22 +138,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             };
         }
 
-        private View RenderOfflineOrErrorsView(VerticalAlignment verticalAlignment = VerticalAlignment.Top)
+        private View RenderOfflineOrErrorsView(Thickness margin)
         {
-            return IsOffline || HasSyncErrors ? new TransparentContentButton
+            return new TransparentContentButton
             {
-                VerticalAlignment = verticalAlignment,
-                Margin = new Thickness(NookInsets.Left, NookInsets.Top, 0, 0),
+                Margin = margin,
                 Content = new LinearLayout
                 {
                     Orientation = Orientation.Horizontal,
-                    Margin = new Thickness(6),
                     Children =
                     {
                         new FontIcon
                         {
                             Glyph = MaterialDesign.MaterialDesignIcons.Error,
-                            FontSize = 16,
+                            FontSize = 12,
                             Color = System.Drawing.Color.White,
                             VerticalAlignment = VerticalAlignment.Center
                         },
@@ -162,7 +160,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             Text = HasSyncErrors ? PowerPlannerResources.GetString("String_SyncError") : IsOffline ? PowerPlannerResources.GetString("String_Offline") : "",
                             WrapText = false,
                             TextColor = System.Drawing.Color.White,
-                            FontSize = 12,
+                            FontSize = 10,
                             VerticalAlignment = VerticalAlignment.Center,
                             Margin = new Thickness(6,0,0,0)
                         }.LinearLayoutWeight(1)
@@ -179,7 +177,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         this.SyncCurrentAccount();
                     }
                 }
-            } : null;
+            };
         }
 
         private float SidebarWidth => 204 + NookInsets.Left;
@@ -187,6 +185,17 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
         private View RenderSidebar()
         {
             var menuItems = RenderMenuItems();
+
+            var powerPlannerText = new TextBlock
+            {
+                Text = "Power Planner",
+                WrapText = false,
+                TextColor = Theme.Current.ForegroundColor,
+                FontSize = 14,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(8, 0, 0, 2),
+                FontWeight = FontWeights.SemiBold
+            };
 
             return new FrameLayout
             {
@@ -221,16 +230,14 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                         Tapped = SyncCurrentAccount
                                     },
 
-                                    new TextBlock
+                                    IsOffline || HasSyncErrors ? new LinearLayout
                                     {
-                                        Text = "Power Planner",
-                                        WrapText = false,
-                                        TextColor = Theme.Current.ForegroundColor,
-                                        FontSize = 14,
-                                        VerticalAlignment = VerticalAlignment.Center,
-                                        Margin = new Thickness(8, 0, 0, 2),
-                                        FontWeight = FontWeights.SemiBold
-                                    }.LinearLayoutWeight(1)
+                                        Children =
+                                        {
+                                            powerPlannerText,
+                                            RenderOfflineOrErrorsView(new Thickness(8, 0, 0, 0))
+                                        }
+                                    }.LinearLayoutWeight(1) : powerPlannerText.LinearLayoutWeight(1)
                                 }
                             },
 
@@ -243,9 +250,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         }
                     },
 
-                    RenderSyncProgressBar(),
-
-                    RenderOfflineOrErrorsView(),
+                    RenderSyncProgressBar()
                 }
             };
         }
