@@ -180,7 +180,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
             };
         }
 
-        private float SidebarWidth => 204 + NookInsets.Left;
+        private float SidebarWidth => (IsSidebarExpanded ? 204 : 48) + NookInsets.Left;
 
         private View RenderSidebar()
         {
@@ -197,6 +197,22 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 FontWeight = FontWeights.SemiBold
             };
 
+            var expandCollapseButton = new TransparentContentButton
+            {
+                Content = new FontIcon
+                {
+                    Glyph = IsSidebarExpanded ? MaterialDesign.MaterialDesignIcons.ChevronLeft : MaterialDesign.MaterialDesignIcons.ChevronRight,
+                    Color = Theme.Current.SubtleForegroundColor,
+                    FontSize = 16,
+                    Margin = new Thickness(Theme.Current.SmallPageMargin, 6, Theme.Current.SmallPageMargin, 6)
+                },
+                Click = () =>
+                {
+                    IsSidebarExpanded = !IsSidebarExpanded;
+                },
+                Margin = IsSidebarExpanded ? new Thickness() : new Thickness(NookInsets.Left + 9, NookInsets.Top + 14, 0, 12)
+            };
+
             return new FrameLayout
             {
                 BackgroundColor = Theme.Current.ChromeColor,
@@ -211,10 +227,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         VerticalAlignment = VerticalAlignment.Stretch,
                         Children =
                         {
-                            new LinearLayout
+                            IsSidebarExpanded ? new LinearLayout
                             {
                                 Orientation = Orientation.Horizontal,
-                                Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, NookInsets.Top + 16, 0, 18),
+                                Margin = new Thickness(Theme.Current.PageMargin + NookInsets.Left, NookInsets.Top + 14, 0, 12),
                                 Children =
                                 {
                                     new ImageView
@@ -237,9 +253,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                             powerPlannerText,
                                             RenderOfflineOrErrorsView(new Thickness(8, 0, 0, 0))
                                         }
-                                    }.LinearLayoutWeight(1) : powerPlannerText.LinearLayoutWeight(1)
+                                    }.LinearLayoutWeight(1) : powerPlannerText.LinearLayoutWeight(1),
+
+                                    expandCollapseButton
                                 }
-                            },
+                            } : expandCollapseButton,
 
                             new ScrollView
                             {
@@ -262,7 +280,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 Content = new Border
                 {
                     BackgroundColor = SelectedItem == MainMenuSelections.Settings ? Theme.Current.AccentColor.Opacity(0.2) : System.Drawing.Color.Transparent,
-                    Content = new TextBlock
+                    Content = IsSidebarExpanded ? new TextBlock
                     {
                         Text = PowerPlannerResources.GetString("MainMenuItem_Settings"),
                         TextColor = SelectedItem == MainMenuSelections.Settings ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor,
@@ -271,7 +289,15 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                         FontWeight = FontWeights.SemiLight,
                         WrapText = false,
                         VerticalAlignment = VerticalAlignment.Center
-                    }
+                    } : new FontIcon
+                    {
+                        Glyph = MaterialDesign.MaterialDesignIcons.Settings,
+                        FontSize = 16,
+                        Color = SelectedItem == MainMenuSelections.Settings ? Theme.Current.ForegroundColor : Theme.Current.SubtleForegroundColor,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Margin = new Thickness(9, 12, 0, 20 + NookInsets.Bottom)
+                    },
                 },
                 Click = () =>
                 {
@@ -380,10 +406,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             FontSize = 18,
                             Color = foregroundColor,
                             VerticalAlignment = VerticalAlignment.Center,
-                            Margin = new Thickness(Theme.Current.PageMargin - 9, 8, 0, 8)
-                        },
+                            Margin = new Thickness(IsSidebarExpanded ? (Theme.Current.PageMargin - 9) : 0, 8, 0, 8)
+                        }.LinearLayoutWeight(IsSidebarExpanded ? 0 : 1),
 
-                        new TextBlock
+                        IsSidebarExpanded ? new TextBlock
                         {
                             Text = MainMenuItemToString(i),
                             TextColor = foregroundColor,
@@ -392,9 +418,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                             FontWeight = FontWeights.SemiLight,
                             WrapText = false,
                             VerticalAlignment = VerticalAlignment.Center
-                        }.LinearLayoutWeight(1),
+                        }.LinearLayoutWeight(1) : null,
 
-                        i == MainMenuSelections.Classes ? new TransparentContentButton
+                        i == MainMenuSelections.Classes && IsSidebarExpanded ? new TransparentContentButton
                         {
                             Content = new FontIcon
                             {
@@ -421,7 +447,8 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                     },
                     Margin = new Thickness(6, 0, 0, 0),
                     BackgroundColor = isSelected ? Theme.Current.AccentColor.Opacity(0.2) : Color.Transparent,
-                    CornerRadius = 6
+                    CornerRadius = 6,
+                    TooltipText = IsSidebarExpanded ? null : MainMenuItemToString(i)
                 });
 
                 if (i == MainMenuSelections.Classes)
@@ -432,9 +459,10 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
 
                         menuItems.Children.Add(new TransparentContentButton
                         {
-                            Margin = new Thickness(24, 0, 6, 0),
+                            Margin = new Thickness(IsSidebarExpanded ? 24 : 6, 0, 0, 0),
                             CornerRadius = 6,
                             BackgroundColor = isClassSelected ? Theme.Current.AccentColor.Opacity(0.2) : Color.Transparent,
+                            TooltipText = IsSidebarExpanded ? null : c.Name,
                             Content = new LinearLayout
                             {
                                 Orientation = Orientation.Horizontal,
@@ -451,10 +479,11 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                         Width = 12,
                                         Height = 12,
                                         VerticalAlignment = VerticalAlignment.Center,
+                                        HorizontalAlignment = IsSidebarExpanded ? default : HorizontalAlignment.Center,
                                         CornerRadius = 6,
-                                        Margin = new Thickness(Theme.Current.PageMargin - 3 - 12, 6, 0, 6)
-                                    },
-                                    new TextBlock
+                                        Margin = new Thickness(IsSidebarExpanded ? (Theme.Current.PageMargin - 3 - 12) : 0, 6, 0, 6)
+                                    }.LinearLayoutWeight(IsSidebarExpanded ? 0 : 1),
+                                    IsSidebarExpanded ? new TextBlock
                                     {
                                         Text = c.Name,
                                         TextColor = isClassSelected ? foregroundColor : Theme.Current.SubtleForegroundColor,
@@ -463,7 +492,7 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                                         Margin = new Thickness(9,6,0,6),
                                         WrapText = false,
                                         VerticalAlignment = VerticalAlignment.Center
-                                    }
+                                    }.LinearLayoutWeight(1) : null
                                 }
                             },
                             Click = () =>
@@ -488,6 +517,20 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen
                 {
                     SetProperty(ref _isCompactMode, value, nameof(IsCompactMode));
                     RefreshContentNookInsetsAndMargins();
+                }
+            }
+        }
+
+        private bool _isSidebarExpanded = NavigationManager.IsSidebarExpanded;
+        public bool IsSidebarExpanded
+        {
+            get => _isSidebarExpanded;
+            set
+            {
+                if (_isSidebarExpanded != value)
+                {
+                    NavigationManager.IsSidebarExpanded = value;
+                    SetProperty(ref _isSidebarExpanded, value, nameof(IsSidebarExpanded));
                 }
             }
         }

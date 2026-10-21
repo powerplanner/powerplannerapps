@@ -38,7 +38,13 @@ namespace PowerPlannerAppDataLibrary
                 ClassSelectedOn = DateTime.Now;
             }
         }
-        
+
+        public static bool IsSidebarExpanded
+        {
+            get { return Settings.NavigationManagerSettings.IsSidebarExpanded; }
+            set { Settings.NavigationManagerSettings.IsSidebarExpanded = value; }
+        }
+
         /// <summary>
         /// This property is NOT stored. Only kept in runtime.
         /// </summary>

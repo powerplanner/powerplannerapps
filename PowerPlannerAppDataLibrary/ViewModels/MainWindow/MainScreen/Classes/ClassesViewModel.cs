@@ -64,11 +64,9 @@ namespace PowerPlannerAppDataLibrary.ViewModels.MainWindow.MainScreen.Classes
 
         protected override View Render()
         {
-            var currentlyHasDesktopSidebar = IsDesktop && !MainScreenViewModel.IsCompactMode;
-
             View content;
 
-            if (!HasClasses || currentlyHasDesktopSidebar)
+            if (!HasClasses)
             {
                 content = RenderInformationalText();
             }

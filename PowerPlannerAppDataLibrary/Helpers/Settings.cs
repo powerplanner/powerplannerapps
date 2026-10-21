@@ -302,6 +302,7 @@ namespace PowerPlannerAppDataLibrary.Helpers
         {
             private const string MAIN_MENU_SELECTION = "NavManager_MainMenuSelection";
             private const string CLASS_SELECTION = "NavManager_ClassSelection";
+            private const string IS_SIDEBAR_EXPANDED = "NavManager_IsSidebarExpanded";
 
             static NavigationManagerSettings()
             {
@@ -326,10 +327,17 @@ namespace PowerPlannerAppDataLibrary.Helpers
                 set { AppSettings.AddOrUpdateValue(CLASS_SELECTION, value); }
             }
 
+            public static bool IsSidebarExpanded
+            {
+                get { return AppSettings.GetValueOrDefault(IS_SIDEBAR_EXPANDED, true); }
+                set { AppSettings.AddOrUpdateValue(IS_SIDEBAR_EXPANDED, value); }
+            }
+
             public static void Clear()
             {
                 AppSettings.Remove(MAIN_MENU_SELECTION);
                 AppSettings.Remove(CLASS_SELECTION);
+                AppSettings.Remove(IS_SIDEBAR_EXPANDED);
             }
         }
     }
